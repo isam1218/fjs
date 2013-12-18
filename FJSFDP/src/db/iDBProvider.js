@@ -101,3 +101,10 @@ fjs.db.IDBProvider.prototype.selectByIndex = function(tableName, rule, itemCallb
 fjs.db.IDBProvider.prototype.selectByKey = function(tableName, key, callback) {
 
 };
+
+/**
+ * @param {Function} callback
+ */
+fjs.db.IDBProvider.prototype.clear = function(callback) {
+
+};

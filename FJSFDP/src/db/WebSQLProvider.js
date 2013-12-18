@@ -253,6 +253,13 @@ fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback)
     });
 };
 
+fjs.db.WebSQLProvider.prototype.clear = function(callback) {
+    this.db.transaction(function(tx){
+        var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
+        tx.executeSql(query, [],  callback, function(e){new Error(e)});
+    });
+
+};
 
 
 

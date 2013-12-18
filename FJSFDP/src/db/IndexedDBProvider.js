@@ -252,10 +252,20 @@ fjs.db.IndexedDBProvider.prototype.selectByKey = function(tableName, key, callba
         callback(request.result);
     };
 };
-
-//fjs.db.IndexedDBProvider.prototype.clear = function() {
-//    for(var i=0; i<this.db.objectStoreNames.length; i++) {
-//        var clearTransaction = this.db.transaction([this.db.objectStoreNames[i]], "readwrite");
-//        clearTransaction.objectStore(this.db.objectStoreNames[i]).clear();
-//    }
-//};
+/**
+ * @param {Function} callback
+ */
+fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
+    var count = this.db.objectStoreNames.length;
+    for(var i=0; i<this.db.objectStoreNames.length; i++) {
+        var clearTransaction = this.db.transaction([this.db.objectStoreNames[i]], "readwrite");
+        var request = clearTransaction.objectStore(this.db.objectStoreNames[i]).clear();
+        request.onsuccess = function(e) {
+            count--;
+            if(callback && count==0) {
+                callback(e);
+            }
+        };
+        request.onerror = this.db.onerror;
+    }
+};
