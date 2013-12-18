@@ -9,12 +9,37 @@ namespace("fjs.db");
  * @implements fjs.db.IDBProvider
  */
 fjs.db.IndexedDBProvider = function(globalObj) {
+    /**
+     * @type {window|*}
+     * @private
+     */
     this.globalObj = globalObj || window;
+    /**
+     * @type {indexedDB}
+     * @private
+     */
     this.indexedDB = globalObj.indexedDB || globalObj.mozIndexedDB || globalObj.webkitIndexedDB || globalObj.msIndexedDB;
+    /**
+     *
+     * @type {IDBTransaction}
+     * @private
+     */
     this.IDBTransaction = globalObj.IDBTransaction || globalObj.webkitIDBTransaction || globalObj.msIDBTransaction;
+    /**
+     * @type {IDBKeyRange}
+     * @private
+     */
     this.IDBKeyRange = globalObj.IDBKeyRange || globalObj.webkitIDBKeyRange || globalObj.msIDBKeyRange;
-
+    /**
+     * @type {IDBDatabase}
+     * @private
+     */
     this.db = null;
+    /**
+     * @type {*}
+     * @private
+     */
+    this.tables = {};
 };
 
 /**
@@ -27,9 +52,10 @@ fjs.db.IndexedDBProvider.check= function(globalObj) {
 /**
  *
  * @param {string} name
- * @param {Number} version
+ * @param {number} version
+ * @param {function(IDBDatabase)} callback
  */
-fjs.db.IndexedDBProvider.prototype.open = function(name, version, onsuccess, onupgraded) {
+fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     var request = this.globalObj.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
         new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
@@ -37,11 +63,11 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, onsuccess, onu
     var onError = function(event) {
         new Error("Database error: " + event.target.errorCode);
     };
-    request.onsuccess = function(event) {
+    request.onsuccess = function() {
         context.db = request.result;
-        context.db.onerror = onError
-        if(onsuccess) {
-            onsuccess(context.db);
+        context.db.onerror = onError;
+        if(callback) {
+            callback(context.db);
         }
     };
 
@@ -50,19 +76,50 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, onsuccess, onu
         e.target.transaction.onerror = db.onerror = onError;
         for(var i=0; i<db.objectStoreNames.length; ) {
             db.deleteObjectStore(db.objectStoreNames[0]);
-        };
-        if(onupgraded) {
-            onupgraded(context.db);
+        }
+        for(var key in context.tables) {
+            if(context.tables.hasOwnProperty(key)) {
+                /**
+                 * @type {{key:string, indexes:Array}}
+                 */
+                var table = context.tables[key];
+                context.createTable(key, table.key, table.indexes);
+            }
         }
     };
 };
 
-fjs.db.IndexedDBProvider.prototype.createTable = function(name, key) {
-    return this.db.createObjectStore(name, {keyPath: key});
-
+/**
+ * @param {string} name
+ * @param {string} key
+ * @param {string} indexes
+ */
+fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
+    this.tables[name] = {'key':key, 'indexes':indexes};
 };
 
-fjs.db.IndexedDBProvider.prototype.insert = function(tableName, item, callback) {
+/**
+ * @param {string} name
+ * @param {string} key
+ * @param {string} indexes
+ * @protected
+ */
+fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
+    /**
+     * @type {IDBObjectStore}
+     */
+    var objectStore = this.db.createObjectStore(name, {keyPath: key});
+    for(var i=0; i< indexes.length; i++) {
+        objectStore.createIndex(indexes[i], indexes[i], { unique: false });
+    }
+};
+
+/**
+ * @param {string} tableName
+ * @param {*} item
+ * @param {Function} callback
+ */
+fjs.db.IndexedDBProvider.prototype.insertOne = function(tableName, item, callback) {
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var request = store.put(item);
@@ -75,10 +132,40 @@ fjs.db.IndexedDBProvider.prototype.insert = function(tableName, item, callback) 
     request.onerror = this.db.onerror;
 };
 
-fjs.db.IndexedDBProvider.prototype.delete = function(tableName, key, callback) {
-    var request = this.db.transaction([tableName], "readwrite")
-        .objectStore(tableName)
-        .delete(key);
+/**
+ * @param {string} tableName
+ * @param {Array} items
+ * @param {Function} callback
+ */
+fjs.db.IndexedDBProvider.prototype.insertArray = function(tableName, items, callback) {
+    var trans = this.db.transaction([tableName], "readwrite");
+    var store = trans.objectStore(tableName);
+    var count = items.length;
+    for(var i=0; i<items.length; i++) {
+    var request = store.put(items[i]);
+        request.onsuccess = function(e) {
+            count--;
+            if(callback && count==0) {
+                callback(e);
+            }
+        };
+        request.onerror = this.db.onerror;
+    }
+};
+/**
+ * @param {string} tableName
+ * @param {string} key
+ * @param {Function} callback
+ */
+fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callback) {
+    var request, tran = this.db.transaction([tableName], "readwrite")
+        .objectStore(tableName);
+    if(key!=null) {
+        request = tran.delete(key);
+    }
+    else {
+        request = tran.clear();
+    }
     request.onsuccess = function(e) {
         if(callback) {
             callback(e);
@@ -86,11 +173,14 @@ fjs.db.IndexedDBProvider.prototype.delete = function(tableName, key, callback) {
     }
 };
 
-fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemСallback, allCallback) {
+/**
+ * @param {string} tableName
+ * @param {Function} itemCallback
+ * @param {function(Array)} allCallback
+ */
+fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
-
-    // Get everything in the store;
     var keyRange = this.IDBKeyRange.lowerBound(0);
     var cursorRequest = store.openCursor(keyRange);
     var rows=[];
@@ -105,22 +195,28 @@ fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemСallback
         }
         rows.push(result.value);
 
-        if(itemСallback) {
-            itemСallback(result.value);
+        if(itemCallback) {
+            itemCallback(result.value);
         }
         result.continue();
     };
     cursorRequest.onerror = this.db.onerror;
 };
 
-fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, condition, itemСallback, allCallback) {
+/**
+ *
+ * @param {string} tableName
+ * @param {{key:string, value:*}} rule
+ * @param {Function} itemCallback
+ * @param {function(Array)} allCallback
+ */
+fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
 
-    var indexName = condition.key;
-    var indexValue = condition.value;
+    var indexName = rule.key;
+    var indexValue = rule.value;
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var index = store.index(indexName);
-    // Get everything in the store;
     var singleKeyRange = IDBKeyRange.only(indexValue);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
@@ -135,33 +231,31 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, condition
         }
         rows.push(result.value);
 
-        if(itemСallback) {
-            itemСallback(result.value);
+        if(itemCallback) {
+            itemCallback(result.value);
         }
         result.continue();
     };
     cursorRequest.onerror = this.db.onerror;
 };
-
-fjs.db.IndexedDBProvider.prototype.getItem = function(tableName, key, callback) {
+/**
+ * @param {string} tableName
+ * @param {string} key
+ * @param {Function} callback
+ */
+fjs.db.IndexedDBProvider.prototype.selectByKey = function(tableName, key, callback) {
     var transaction = this.db.transaction([tableName]);
     var objectStore = transaction.objectStore(tableName);
     var request = objectStore.get(key);
     request.onerror = this.db.onerror;
-    request.onsuccess = function(event) {
+    request.onsuccess = function() {
         callback(request.result);
     };
 };
 
-fjs.db.IndexedDBProvider.prototype.createIndex = function(tableName, field, unique) {
-    var trans = this.db.transaction([tableName], "readwrite");
-    var store = trans.objectStore(tableName);
-    store.createIndex(field, field, { unique: unique });
-};
-
-fjs.db.IndexedDBProvider.prototype.clear = function() {
-    for(var i=0; i<this.db.objectStoreNames.length; i++) {
-        var clearTransaction = this.db.transaction([this.db.objectStoreNames[i]], "readwrite");
-        var clearRequest = clearTransaction.objectStore(this.db.objectStoreNames[i]).clear();
-    };
-};
+//fjs.db.IndexedDBProvider.prototype.clear = function() {
+//    for(var i=0; i<this.db.objectStoreNames.length; i++) {
+//        var clearTransaction = this.db.transaction([this.db.objectStoreNames[i]], "readwrite");
+//        clearTransaction.objectStore(this.db.objectStoreNames[i]).clear();
+//    }
+//};
