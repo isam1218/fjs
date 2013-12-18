@@ -10,7 +10,8 @@ module.exports = function(grunt) {
                 separator: ''
             },
             dist: {
-                src: ['src/db/IndexedDBProvider.js'],
+                src: ['src/db/IndexedDBProvider.js'
+                    , 'src/db/WebSQLProvider.js'],
                 dest: 'bin/fjs.fdp.debug.js'
             }
         }

@@ -603,6 +603,11 @@ IDBTransaction.prototype.onerror = null;
 
 webkitIndexedDB = indexedDB;
 webkitIDBKeyRange = IDBKeyRange;
+webkitIDBTransaction = IDBTransaction;
 
 mozIndexedDB = indexedDB;
 mozIDBKeyRange = IDBKeyRange;
+
+msIndexedDB = indexedDB;
+msIDBKeyRange = IDBKeyRange;
+msIDBTransaction = IDBTransaction;

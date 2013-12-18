@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="lib/fjs.core.debug.js"></script>
+    <script type="text/javascript" src="bin/fjs.fdp.debug.js"></script>
+</head>
+<body>
+    <script>
+        console.time("idb open");
+        var idbP = new fjs.db.IndexedDBProvider(window);
+
+        idbP.declareTable("tTest1", "id", ["f1", "f2"]);
+        idbP.declareTable("tTest2", "id", ["f3", "f4"]);
+
+        idbP.open('dbTest4', "2.9", function(){
+            console.timeEnd("idb open");
+            idbP.deleteByKey("tTest1", null, function(){});
+            //idbP.deleteByKey("tTest2", null, function(){});
+            console.time("idb insertOne");
+            idbP.insertOne("tTest1", {'id':'1', 'f1': '123', 'f2': 'zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}, function(){
+                console.timeEnd("idb insertOne");
+            });
+            idbP.insertOne("tTest2", {'id':'2', 'f4': '@@@###!!!!!####!!!!!!@@@@@', 'f2': 'zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true});
+            console.time("idb insertArray");
+            idbP.insertArray("tTest2", [{'id':'3', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'4', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'5', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'6', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'7', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'8', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'9', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'10', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'11', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'12', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'13', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'14', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'15', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'16', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'17', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'18', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'19', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'20', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'21', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+
+            ], function(){console.timeEnd("idb insertArray");});
+
+            console.time("idb selectAll");
+            idbP.selectAll("tTest2", function(item){console.log(item)}, function(arr){
+                console.log(arr);
+                console.timeEnd("idb selectAll");
+            });
+            console.time("idb selectByIndex");
+            idbP.selectByIndex('tTest2', {key:'f4', value:'123' }, function(item){console.log(item)}, function(arr){
+                console.log(arr);
+                console.timeEnd("idb selectByIndex");
+            });
+
+             console.time("idb selectByKey");
+            idbP.selectByKey('tTest2', "5", function(item){
+             console.log(item);
+             console.timeEnd("idb selectByKey");
+             });
+
+        });
+
+
+        console.time("wsql");
+        var wsqlP = new fjs.db.WebSQLProvider(window);
+        wsqlP.declareTable("tTest1", "id", ["f1", "f2"]);
+        wsqlP.declareTable("tTest2", "id", ["f3", "f4"]);
+
+        wsqlP.open('dbTest8', "2.9", function(){
+            console.timeEnd("wsql");
+            console.time("wsql insertOne");
+            wsqlP.deleteByKey("tTest1", null, function(){});
+            //wsqlP.deleteByKey("tTest2", null, function(){});
+            wsqlP.insertOne("tTest1", {'id':'1', 'f1': '!!!!!!@@@@@@@!!!!!!', 'f2': 'zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}, function(){
+                console.timeEnd("wsql insertOne");
+            });
+            wsqlP.insertOne("tTest2", {'id':'2', 'f4': '%%%%!!!!!!@@@@@@@!!!!!!%%%%%%', 'f2': 'zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true});
+            console.time("wsql insertArray");
+            wsqlP.insertArray("tTest2", [{'id':'3', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'4', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'5', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'6', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'7', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'8', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'9', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'10', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'11', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'12', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'13', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'14', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'15', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'16', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'17', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'18', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'19', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+                , {'id':'20', 'f4': '123', 'f2': 'zxczxcxzc zxczxczxc ', 'f3':true}
+                , {'id':'21', 'f4': '1235', 'f2': '123 123 zxczxcxzc zxczxczxc zxczxczxc zxczxczxc zxczxc', 'f3':true}
+            ]
+            , function(){console.timeEnd("wsql insertArray");});
+            console.time("wsql selectAll");
+            wsqlP.selectAll("tTest2", function(item){console.log(item)}, function(arr){
+                console.log(arr);
+                console.timeEnd("wsql selectAll");
+            });
+
+            console.time("wsql selectByIndex");
+            wsqlP.selectByIndex('tTest2', {key:'f4', value:'123' }, function(item){console.log(item)}, function(arr){
+                console.log(arr);
+                console.timeEnd("wsql selectByIndex");
+            });
+
+            console.time("wsql selectByKey");
+            wsqlP.selectByKey('tTest2', '5', function(item){
+                console.log(item);
+                console.timeEnd("wsql selectByKey");
+            });
+
+
+        });
+
+
+    </script>
+</body>
+</html>

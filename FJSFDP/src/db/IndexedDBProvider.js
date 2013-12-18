@@ -158,19 +158,19 @@ fjs.db.IndexedDBProvider.prototype.insertArray = function(tableName, items, call
  * @param {Function} callback
  */
 fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callback) {
-    var request, tran = this.db.transaction([tableName], "readwrite")
-        .objectStore(tableName);
-    if(key!=null) {
-        request = tran.delete(key);
-    }
-    else {
-        request = tran.clear();
-    }
-    request.onsuccess = function(e) {
-        if(callback) {
-            callback(e);
+        var request, tran = this.db.transaction([tableName], "readwrite")
+            .objectStore(tableName);
+        if(key!=null) {
+            request = tran.delete(key);
         }
-    }
+        else {
+            request = tran.clear();
+        }
+        request.onsuccess = function(e) {
+            if(callback) {
+                callback(e);
+            }
+        }
 };
 
 /**
@@ -268,4 +268,11 @@ fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
         };
         request.onerror = this.db.onerror;
     }
+};
+/**
+ * @param {string} tableName
+ * @private
+ */
+fjs.db.IndexedDBProvider.prototype.checkStore = function(tableName) {
+    return this.db.objectStoreNames.contains(tableName);
 };
