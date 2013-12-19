@@ -19,7 +19,7 @@
             this.constructor.__instance = this;
         else return this.constructor.__instance;
 
-        this.state = sm.NOT_INITIALIZED;
+        this.state = sm.state.NOT_INITIALIZED;
 
         this.config = fjs.fdp.CONFIG;
 
@@ -117,7 +117,7 @@
         /**
          * @type {states}
          */
-        this.state = sm.INITIALIZATION;
+        this.state = sm.state.INITIALIZATION;
         this.ticket = ticket;
         this.node = node;
         this.serverHost = serverUrl;
@@ -189,7 +189,7 @@
             this.startSync(this.suspendFeeds);
         }
 
-        this.state = sm.READY;
+        this.state = sm.state.READY;
     };
 
     /**
@@ -492,7 +492,7 @@
 
     fjs.fdp.SyncManager.prototype.getAuthTicket = function() {
         var context = this;
-        if(this.state == sm.READY) {
+        if(this.state == sm.state.READY) {
             if(this.db) {
                 this.db.clear(function(){
                     context.authHandler.requestAuth();
@@ -523,7 +523,7 @@
             }
         }
 
-        if(this.state!=sm.READY ) {
+        if(this.state!=sm.state.READY ) {
             if(this.suspendFeeds.indexOf(feedName)<0) {
                 this.suspendFeeds.push(feedName);
             }
@@ -621,7 +621,7 @@
         this.node = null;
         this.serverHost = null;
         this.getAuthTicket();
-        this.state = sm.NOT_INITIALIZED;
+        this.state = sm.state.NOT_INITIALIZED;
     }
 })();
 
