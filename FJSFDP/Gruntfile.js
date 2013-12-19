@@ -11,7 +11,8 @@ module.exports = function(grunt) {
             },
             dist: {
                 src: ['src/db/IndexedDBProvider.js'
-                    , 'src/db/WebSQLProvider.js'],
+                    , 'src/db/WebSQLProvider.js'
+                    , 'src/sync/*.js'],
                 dest: 'bin/fjs.fdp.debug.js'
             }
         }

@@ -101,7 +101,7 @@ fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
 /**
  * @param {string} name
  * @param {string} key
- * @param {Array} indexes
+ * @param {Array=} indexes
  * @protected
  */
 fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
@@ -109,8 +109,10 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
      * @type {IDBObjectStore}
      */
     var objectStore = this.db.createObjectStore(name, {keyPath: key});
-    for(var i=0; i< indexes.length; i++) {
-        objectStore.createIndex(indexes[i], indexes[i], { unique: false });
+    if(indexes) {
+        for(var i=0; i< indexes.length; i++) {
+            objectStore.createIndex(indexes[i], indexes[i], { unique: false });
+        }
     }
 };
 

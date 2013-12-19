@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="lib/fjs.core.debug.js"></script>
+    <script type="text/javascript" src="bin/fjs.fdp.debug.js"></script>
+    <script type="text/javascript" src="src/properties.js"></script>
+</head>
+<body>
+    <script>
+        var db = new fjs.db.IndexedDBProvider(window);
+        var ajax = new fjs.ajax.XHRAjax();
+        var sm = new fjs.fdp.SyncManager(db, ajax);
+        sm.addListener("contacts", function(data){
+            console.log(data);
+        })
+        sm.init("3dbdf0bcaaeaad4da154daf51fb00d2084c24a80609b77b2", null, fjs.fdp.CONFIG.SERVER.serverURL, {setNode:function(node){console.log("node: "+node)}, requestAuth: function(){console.error("Need auth")}}, function(){
+
+        });
+    </script>
+</body>
+</html>

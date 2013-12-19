@@ -19,7 +19,7 @@
             this.constructor.__instance = this;
         else return this.constructor.__instance;
 
-        this.state = sm.state.NOT_INITIALIZED;
+        this.state = sm.states.NOT_INITIALIZED;
 
         this.config = fjs.fdp.CONFIG;
 
@@ -112,12 +112,14 @@
      * @param {string} node
      * @param {string} serverUrl
      * @param {{requestAuth:Function, setNode:function(string)}} authHandler
+     * @param {Function} callback
      */
-    fjs.fdp.SyncManager.prototype.init = function(ticket, node, serverUrl, authHandler) {
+    fjs.fdp.SyncManager.prototype.init = function(ticket, node, serverUrl, authHandler, callback) {
+        var context = this;
         /**
          * @type {states}
          */
-        this.state = sm.state.INITIALIZATION;
+        this.state = sm.states.INITIALIZATION;
         this.ticket = ticket;
         this.node = node;
         this.serverHost = serverUrl;
@@ -128,18 +130,19 @@
 
         if(!this.node) {
             this.requestClientRegistry(function(){
-                this.initDataBase();
+                context.initDataBase(callback);
             });
         }
         else {
-            this.initDataBase();
+            this.initDataBase(callback);
         }
     };
 
     /**
+     * @param {Function} callback
      * @private
      */
-    fjs.fdp.SyncManager.prototype.initDataBase = function() {
+    fjs.fdp.SyncManager.prototype.initDataBase = function(callback) {
         if(this.db) {
             /**
              * @type {fjs.fdp.SyncManager}
@@ -160,18 +163,19 @@
              * Open DB
              */
             this.db.open(this.config.DB.name, this.config.DB.version, function(){
-                context.finishInitialization();
+                context.finishInitialization(callback);
             });
         }
         else {
-            this.finishInitialization();
+            this.finishInitialization(callback);
         }
     };
 
     /**
+     * @param {Function} callback
      * @private
      */
-    fjs.fdp.SyncManager.prototype.finishInitialization = function() {
+    fjs.fdp.SyncManager.prototype.finishInitialization = function(callback) {
         /**
          * Init for for feeds attached before init complete
          */
@@ -182,14 +186,16 @@
             for(var i=0; i<this.suspendFeeds.length; i++) {
                 this.getFeedData(this.suspendFeeds[i]);
             }
-            this.suspendFeeds = [];
             /**
              * Start synchronization
              */
             this.startSync(this.suspendFeeds);
+
+            this.suspendFeeds = [];
         }
 
-        this.state = sm.state.READY;
+        this.state = sm.states.READY;
+        callback();
     };
 
     /**
@@ -221,7 +227,7 @@
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
         if(this.db) {
-            this.db.insert("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
+            this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
     /**
@@ -348,7 +354,12 @@
      * @param {*} data
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
-        var _data = null, context= this ;
+        var _data = null
+        /**
+         *
+         * @type {fjs.fdp.SyncManager}
+         */
+        var context= this ;
         try {
             _data = JSON.parse(data);
         }
@@ -387,10 +398,10 @@
                                         var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
                                         switch(etype) {
                                             case "push":
-                                                context.db.insert(feedName, entry.entry, null);
+                                                context.db.insertOne(feedName, entry.entry, null);
                                                 break;
                                             case "delete":
-                                                context.db.delete(feedName, entry.xpid, null);
+                                                context.db.deleteByKey(feedName, entry.xpid, null);
                                                 break;
                                         }
                                         _listener(entry);
@@ -467,13 +478,17 @@
      * @param callback
      */
     fjs.fdp.SyncManager.prototype.requestClientRegistry = function(callback) {
-        var context = this, url = this.serverHost+sm.CLIENT_REGISRY_PATH;
+        /**
+         * @type {fjs.fdp.SyncManager}
+         */
+        var context = this;
+        var url = this.serverHost+sm.CLIENT_REGISRY_PATH;
         this.sendRequest(url, {"path":location.href.substring(0,location.href.indexOf("js/fdp/")), "no_image":"/img/Generic-Avatar-Small.png" }, function(xhr, data, isOk) {
             if(isOk) {
                 var _data = context.parseFdpData(data);
                 if(_data["node"]) {
                     context.node = _data["node"];
-                    context.authHandler.node(context.node);
+                    context.authHandler.setNode(context.node);
                     callback(isOk, data);
                 }
             }
@@ -492,7 +507,7 @@
 
     fjs.fdp.SyncManager.prototype.getAuthTicket = function() {
         var context = this;
-        if(this.state == sm.state.READY) {
+        if(this.state == sm.states.READY) {
             if(this.db) {
                 this.db.clear(function(){
                     context.authHandler.requestAuth();
@@ -523,7 +538,7 @@
             }
         }
 
-        if(this.state!=sm.state.READY ) {
+        if(this.state != sm.states.READY ) {
             if(this.suspendFeeds.indexOf(feedName)<0) {
                 this.suspendFeeds.push(feedName);
             }
@@ -532,7 +547,7 @@
             if(this.versionsFeeds.indexOf(feedName) < 0) {
                 this.versionsFeeds.push(feedName);
             }
-            if(this.versionsTimeoutId!=null) {
+            if(this.versionsTimeoutId != null) {
                 clearTimeout(this.versionsTimeoutId);
                 this.versionsTimeoutId = null;
             }
@@ -543,7 +558,7 @@
             },100);
             this.getFeedData(feedName, listener);
         }
-        else if(this.syncFeeds.indexOf(feedName)>=0 && this.state==sm.READY) {
+        else if(this.syncFeeds.indexOf(feedName) >= 0 && this.states==sm.READY) {
             this.getFeedData(feedName, listener);
         }
     };
@@ -621,7 +636,7 @@
         this.node = null;
         this.serverHost = null;
         this.getAuthTicket();
-        this.state = sm.state.NOT_INITIALIZED;
+        this.state = sm.states.NOT_INITIALIZED;
     }
 })();
 
