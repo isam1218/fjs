@@ -16,15 +16,24 @@ module.exports = function(grunt) {
                 dest: 'bin/fjs.fdp.debug.js'
             }
         }
-        , 'karma': {
-            unit: {
-                configFile: 'karma.conf.js'
+        , 'copy': {
+            main: {
+                files: [
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/lib/'}
+                ]
             }
         }
+
+//        , 'karma': {
+//            unit: {
+//                configFile: 'karma.conf.js'
+//            }
+//        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     //grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('build', ['concat']);
+    grunt.registerTask('build', ['concat', 'copy']);
 };
