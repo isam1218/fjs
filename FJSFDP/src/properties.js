@@ -7,6 +7,10 @@ fjs.fdp.CONFIG = {
     , DB: {
         name: "HUD"
         , version: 1
+        /**
+         * @type {Array}
+         */
+        , dbProviders:['indexedDB', 'webSQL', 'localStorage']
         , tables: [
             {name:"versions", key:"feedSource", indexes:["source", "feedName"]}
             , {name:"calls", key: "xpid"}
