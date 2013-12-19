@@ -73,6 +73,10 @@ fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
         query += indexes ? ', ' + indexes.join(" TEXT, ") + " TEXT": '' ;
         query += ', data TEXT)';
         tx.executeSql(query);
+        for(var i=0; i<indexes.length; i++) {
+            var _query = "CREATE INDEX "+name+"_"+indexes[i]+"_idx ON "+ name +" ("+indexes[i]+")";
+            tx.executeSql(_query);
+        }
     });
 };
 
