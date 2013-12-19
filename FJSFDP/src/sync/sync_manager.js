@@ -9,8 +9,8 @@
     namespace("fjs.fdp");
     /**
      * SyncManager
-     * @param {IDBProvider} dbProvider
-     * @param {IAjaxProvider} ajaxProvider
+     * @param {IDBProvider=} dbProvider
+     * @param {IAjaxProvider=} ajaxProvider
      * @constructor
      */
     fjs.fdp.SyncManager = function(dbProvider, ajaxProvider) {
@@ -77,7 +77,9 @@
          */
         this.versionsTimeoutId = null;
     };
+
     var sm = fjs.fdp.SyncManager;
+
     /**
      * Sync manager states
      * @enum {number}
