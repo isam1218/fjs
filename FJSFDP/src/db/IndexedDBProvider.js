@@ -101,7 +101,7 @@ fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
 /**
  * @param {string} name
  * @param {string} key
- * @param {string} indexes
+ * @param {Array} indexes
  * @protected
  */
 fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
@@ -268,11 +268,4 @@ fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
         };
         request.onerror = this.db.onerror;
     }
-};
-/**
- * @param {string} tableName
- * @private
- */
-fjs.db.IndexedDBProvider.prototype.checkStore = function(tableName) {
-    return this.db.objectStoreNames.contains(tableName);
 };

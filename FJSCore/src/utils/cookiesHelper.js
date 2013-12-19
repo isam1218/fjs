@@ -1,6 +1,5 @@
 namespace('fjs.utils');
 /**
- * 123123!!
  * @type {{getCookie: function(string), setCookie: function(string, string, {expires:(number|Date)}), deleteCookie: function(string)}}
  */
 fjs.utils.Cookies = {

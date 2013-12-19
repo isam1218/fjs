@@ -15,9 +15,15 @@ module.exports = function(grunt) {
                 dest: 'bin/fjs.fdp.debug.js'
             }
         }
+        , 'karma': {
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
+    //grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('build', ['concat']);
 };

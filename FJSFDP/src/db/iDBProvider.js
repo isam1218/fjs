@@ -38,7 +38,6 @@ fjs.db.IDBProvider.prototype.createTable = function(name, key, indexes) {
 };
 
 /**
- *
  * @param {string} name
  * @param {string} key
  * @param {Array} indexes
@@ -83,7 +82,6 @@ fjs.db.IDBProvider.prototype.selectAll = function(tableName, itemCallback, allCa
 
 };
 /**
- *
  * @param {string} tableName
  * @param {{key:string, value:*}} rule
  * @param {Function} itemCallback

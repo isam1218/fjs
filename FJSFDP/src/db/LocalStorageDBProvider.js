@@ -24,7 +24,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
  * @returns {boolean}
  */
 fjs.db.LocalStorageDbProvider.check = function(globalObj) {
-    return false;
+    return !!globalObj.localStorage;
 };
 
 /**

@@ -262,7 +262,6 @@ fjs.db.WebSQLProvider.prototype.clear = function(callback) {
         var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
         tx.executeSql(query, [],  callback, function(e){new Error(e)});
     });
-
 };
 
 
