@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inspections version="1.0" is_locked="false">
+  <option name="myName" value="Project Default" />
+  <option name="myLocal" value="false" />
+  <inspection_tool class="FunctionWithInconsistentReturnsJS" enabled="true" level="INFO" enabled_by_default="true" />
+  <inspection_tool class="JSAccessibilityCheck" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="JSClosureCompilerSyntax" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="JSCommentMatchesSignature" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="JSDeprecatedSymbols" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="JSUnresolvedFunction" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="JSUnresolvedVariable" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="JSValidateJSDoc" enabled="true" level="ERROR" enabled_by_default="true" />
+  <inspection_tool class="ReservedWordUsedAsNameJS" enabled="true" level="INFO" enabled_by_default="true" />
+</inspections>
+
