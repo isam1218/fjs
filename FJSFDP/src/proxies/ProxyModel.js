@@ -20,17 +20,17 @@ fjs.fdp.ProxyModel = function(feeds) {
     this._attached = false;
     var onSyncEvent = function(data) {
         context.onSyncEvent(data);
-    }
+    };
     this.attach = function() {
         for(var i = 0; i<this.feeds.length; i++) {
             this.sm.addListener(this.feeds[i], onSyncEvent);
         }
-    }
+    };
     this.detach = function() {
         for(var i = 0; i<this.feeds.length; i++) {
             this.sm.removeListener(this.feeds[i], onSyncEvent);
         }
-    }
+    };
 };
 
 
@@ -91,7 +91,7 @@ fjs.fdp.ProxyModel.prototype.onEntryChange = function(data) {
      */
     var item = this.items[data.xpid];
     if(!item) {
-        item = this.items[data.xpid] = new fjs.fdp.EntryModel(data.entry);
+        this.items[data.xpid] = new fjs.fdp.EntryModel(data.entry);
         this.fillChanges(data.xpid, data.entry, 'change');
     }
     else {
