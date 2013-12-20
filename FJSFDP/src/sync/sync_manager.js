@@ -91,6 +91,21 @@
     };
 
     /**
+     * Sync manager event types
+     * @enum {string}
+     */
+    fjs.fdp.SyncManager.eventTypes = {
+        'SYNC_START': 'syncStart'
+        , 'SYNC_COMPLETE': 'syncComplete'
+        , 'FEED_START': 'feedStart'
+        , 'FEED_COMPLETE': 'feedComplete'
+        , 'SOURCE_START': 'sourceStart'
+        , 'SOURCE_COMPLETE': 'sourceComplete'
+        , 'ENTRY_CHANGE': 'push'
+        , 'ENTRY_DELETION': 'delete'
+    };
+
+    /**
      * @const {string}
      */
     fjs.fdp.SyncManager.VERSIONS_PATH = "/v1/versions";
@@ -177,14 +192,28 @@
      */
     fjs.fdp.SyncManager.prototype.finishInitialization = function(callback) {
         /**
+         * @type {fjs.fdp.SyncManager}
+         */
+        var context = this;
+        /**
          * Init for for feeds attached before init complete
          */
         if(this.suspendFeeds.length > 0) {
             /**
              * Load data from localDB
              */
+            var count = this.suspendFeeds.length;
             for(var i=0; i<this.suspendFeeds.length; i++) {
-                this.getFeedData(this.suspendFeeds[i]);
+                this.fireEvent(null, {eventType:sm.eventTypes.SYNC_START});
+                this.getFeedData(this.suspendFeeds[i], function(data){
+                    if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                        --count;
+                        if(count === 0) {
+                            context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                        }
+                    }
+                    context.fireEvent(data.feed, data);
+                });
             }
             /**
              * Start synchronization
@@ -375,9 +404,11 @@
         function isSource(sourceId) {
             return sourceId != 'full';
         }
+        this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
         for (var feedName in _data) {
             if (_data.hasOwnProperty(feedName)) {
                 var feedData = _data[feedName];
+                this.fireEvent(feedName, {eventType: sm.eventTypes.FEED_START, feed:feedName});
                 for (var sourceId in feedData) {
                     if (feedData.hasOwnProperty(sourceId) && isSource(sourceId)) {
                         var _source = feedData[sourceId];
@@ -389,7 +420,7 @@
                             for (var i = 0; i < tmpListeners.length; i++) {
                                 var _listener = tmpListeners[i];
                                 if (_listener) {
-                                    _listener({eventType: "start", syncType: type, feed:feedName, sourceId:sourceId});
+                                    _listener({eventType: sm.eventTypes.SOURCE_START, syncType: type, feed:feedName, sourceId:sourceId});
                                     for (var j = 0; j < items.length; j++) {
                                         var etype = items[j]["xef001type"] || 'push';
                                         var xpid = sourceId + "_" + items[j]["xef001id"];
@@ -406,15 +437,17 @@
                                         }
                                         _listener(entry);
                                     }
-                                    _listener({eventType: "complete", feed:feedName});
+                                    _listener({eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName});
                                 }
                             }
                         }
                         this.saveVersions(feedName, sourceId, ver);
                     }
                 }
+                this.fireEvent(feedName, {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName});
             }
         }
+        this.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
     };
 
     /**
@@ -556,10 +589,22 @@
                 context.versionsFeeds = [];
                 context.versionsTimeoutId = null;
             },100);
-            this.getFeedData(feedName, listener);
+            this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
+            this.getFeedData(feedName, function(data){
+                if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                    this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
+                }
+                listener(data);
+            });
         }
         else if(this.syncFeeds.indexOf(feedName) >= 0 && this.states==sm.READY) {
-            this.getFeedData(feedName, listener);
+            this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
+            this.getFeedData(feedName, function(data){
+                if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                    this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
+                }
+                listener(data);
+            });
         }
     };
 
@@ -568,20 +613,20 @@
      * @param {Function=} listener
      */
     fjs.fdp.SyncManager.prototype.getFeedData = function(feedName, listener) {
-        var context = this, data = {eventType: "start", syncType: "F", feed:feedName};
+        var context = this, data = {eventType:sm.eventTypes.FEED_START , syncType: "F", feed:feedName};
         this.fireEvent(feedName, data, listener);
         if(this.db) {
             this.db.selectAll(feedName, function(item){
-                var data = {eventType: "push", feed:feedName, xpid: item.xpid, entry: item};
+                var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                 context.fireEvent(feedName, data, listener);
             }
             , function() {
-                var data = {eventType: "complete", feed:feedName};
+                var data = {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName};
                 context.fireEvent(feedName, data, listener);
             });
         }
         else {
-            var entry = {eventType: "complete", feed:feedName};
+            var entry = {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName};
             this.fireEvent(feedName, entry, listener);
         }
     };
@@ -610,12 +655,23 @@
         if(listener) {
             listener(data);
         }
-        else {
+        else if(feedName) {
             var _listeners = this.listeners[feedName];
             if (_listeners) {
                 for (var i = 0; i < _listeners.length; i++) {
                     var _listener = _listeners[i];
                     _listener(data);
+                }
+            }
+        }
+        else {
+            for(var _feedName in this.listeners) {
+                var _listeners = this.listeners[_feedName];
+                if (_listeners) {
+                    for (var i = 0; i < _listeners.length; i++) {
+                        var _listener = _listeners[i];
+                        _listener(data);
+                    }
                 }
             }
         }

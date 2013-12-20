@@ -12,10 +12,8 @@
         var db = dbFactory.getDB();
         var ajax = new fjs.ajax.XHRAjax();
         var sm = new fjs.fdp.SyncManager(db, ajax);
-        sm.addListener("contacts", function(data){
-            console.log(data);
-        });
-        sm.init("3dbdf0bcaaeaad4da154daf51fb00d2084c24a80609b77b2", null, fjs.fdp.CONFIG.SERVER.serverURL, {setNode:function(node){console.log("node: "+node)}, requestAuth: function(){console.error("Need auth")}}, function(){
+        var contactsProxy = new fjs.fdp.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails']);
+        sm.init("f9cc1caf68372329401c8b79d723f51d530ee5dc8a867423", null, fjs.fdp.CONFIG.SERVER.serverURL, {setNode:function(node){console.log("node: "+node)}, requestAuth: function(){console.error("Need auth")}}, function(){
 
         });
     </script>
