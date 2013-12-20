@@ -72,8 +72,8 @@ fjs.fdp.ProxyModel.prototype.fillChanges = function(xpid, changes, type) {
     if(!_changes) {
         _changes = this.changes[xpid] = {};
     }
-    if(type=='change'&& _changes.type!='delete') {
-        _changes.type = 'change';
+    if(type=='change'&& _changes.chtype!='delete') {
+        _changes.chtype = 'change';
         for(var key in changes) {
             if(changes.hasOwnProperty(key)) {
                 _changes[key] = changes[key];
@@ -81,7 +81,7 @@ fjs.fdp.ProxyModel.prototype.fillChanges = function(xpid, changes, type) {
         }
     }
     else if(type=='delete') {
-        _changes.type = 'delete';
+        _changes.chtype = 'delete';
     }
 };
 
@@ -101,9 +101,10 @@ fjs.fdp.ProxyModel.prototype.onEntryChange = function(data) {
     if(data.feed!=this.feedName && !this.feedFields[data.feed]) {
         this.feedFields[data.feed] = {};
         for(var key in data.entry) {
-            if(data.entry.hasOwnProperty(key) && key!='xef001id' && key!='xef001iver' && key!='xpid') {
-                this.feedFields[data.feed][key] = null;
-            }
+            if(data.entry.hasOwnProperty(key))
+                if(key!='xef001id' && key!='xef001iver' && key!='xpid') {
+                    this.feedFields[data.feed][key] = null;
+                }
         }
     }
 };

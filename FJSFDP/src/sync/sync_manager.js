@@ -383,7 +383,7 @@
      * @param {*} data
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
-        var _data = null
+        var _data = null;
         /**
          *
          * @type {fjs.fdp.SyncManager}
@@ -415,32 +415,24 @@
                         var ver = _source["xef001ver"];
                         var items = _source["items"];
                         var type = _source["xef001type"];
-                        var tmpListeners = this.listeners[feedName];
-                        if (tmpListeners) {
-                            for (var i = 0; i < tmpListeners.length; i++) {
-                                var _listener = tmpListeners[i];
-                                if (_listener) {
-                                    _listener({eventType: sm.eventTypes.SOURCE_START, syncType: type, feed:feedName, sourceId:sourceId});
-                                    for (var j = 0; j < items.length; j++) {
-                                        var etype = items[j]["xef001type"] || 'push';
-                                        var xpid = sourceId + "_" + items[j]["xef001id"];
-                                        delete items[j]["xef001type"];
-                                        items[j]["xpid"] = xpid;
-                                        var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
-                                        switch(etype) {
-                                            case "push":
-                                                context.db.insertOne(feedName, entry.entry, null);
-                                                break;
-                                            case "delete":
-                                                context.db.deleteByKey(feedName, entry.xpid, null);
-                                                break;
-                                        }
-                                        _listener(entry);
-                                    }
-                                    _listener({eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName});
-                                }
+                        this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_START, syncType: type, feed:feedName, sourceId:sourceId});
+                        for (var j = 0; j < items.length; j++) {
+                            var etype = items[j]["xef001type"] || 'push';
+                            var xpid = sourceId + "_" + items[j]["xef001id"];
+                            delete items[j]["xef001type"];
+                            items[j]["xpid"] = xpid;
+                            var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
+                            switch(etype) {
+                                case "push":
+                                    context.db.insertOne(feedName, entry.entry, null);
+                                    break;
+                                case "delete":
+                                    context.db.deleteByKey(feedName, entry.xpid, null);
+                                    break;
                             }
+                            this.fireEvent(feedName, entry);
                         }
+                        this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName});
                         this.saveVersions(feedName, sourceId, ver);
                     }
                 }

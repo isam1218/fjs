@@ -23,7 +23,8 @@ module.exports = function(grunt) {
         , 'copy': {
             main: {
                 files: [
-                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/lib/'}
+                    {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/src/js/lib/'}
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/bin/'}
                 ]
             }
         }

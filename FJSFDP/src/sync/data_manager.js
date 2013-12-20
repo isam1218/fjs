@@ -1,23 +1,26 @@
 namespace("fjs.fdp");
 /**
  * @param {string} authTicket
+ * @param {string} node
+ * @param {window} globalObject
  * @param {{requestAuth: Function, setNode: (function(string))}} authHandler
  * @param {Function} callback
  * @constructor
  */
-fjs.fdp.DataManager = function(authTicket, authHandler, callback) {
+fjs.fdp.DataManager = function(authTicket, node, globalObject, authHandler, callback) {
     //Singleton
     if (!this.constructor.__instance)
         this.constructor.__instance = this;
     else return this.constructor.__instance;
     this.ticket = authTicket;
+    var dbFactory = new fjs.db.DBFactory(globalObject);
     this.db = dbFactory.getDB();
     this.ajax = new fjs.ajax.XHRAjax();
     /**
      * @type {fjs.fdp.SyncManager}
      */
     this.sm = new fjs.fdp.SyncManager(this.db, this.ajax);
-    sm.init(this.ticket, null, fjs.fdp.CONFIG.SERVER.serverURL, authHandler, function(){
+    this.sm.init(this.ticket, null, fjs.fdp.CONFIG.SERVER.serverURL, authHandler, function(){
         callback();
     });
     this.proxies = {};

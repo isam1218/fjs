@@ -1,4 +1,4 @@
-
+namespace("fjs.fdp");
 fjs.fdp.CONFIG = {
     SERVER: {
         serverURL: "https://huc-dev.fonality.com:8081"
