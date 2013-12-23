@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="HUDWeb">
+<head>
+    <title>Fonality HUDWeb</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
+
+    <link type="text/css" rel="stylesheet" href="css/wk.css">
+
+    <!-- LIBS -->
+
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/angular.route.min.js"></script>
+    <script src="js/lib/fjs.core.debug.js"></script>
+    <script src="js/lib/fjs.fdp.api.debug.js"></script>
+
+    <!--MODEL-->
+
+    <script src="js/model/entryModel.js"></script>
+    <script src="js/model/feedModel.js"></script>
+    <script src="js/model/data_provider.js"></script>
+    <script src="js/model/module.js"></script>
+
+
+    <!--UI-->
+
+    <script src="js/ui/controllers/base/Controller.js"></script>
+    <script src="js/ui/controllers/MainController.js"></script>
+
+
+    <script src="js/ui/module.js"></script>
+
+
+    <!---->
+    <!--<script src="js/fdp/worker_manager.js"></script>-->
+    <!--<script src="js/fdp/extension_provider.js"></script>-->
+
+
+
+
+    <!--<script src="js/fdp/data_provider.js"></script>-->
+    <!--<script src="js/fdp/feedModel.js"></script>-->
+    <!--<script src="js/fdp/entryModel.js"></script>-->
+    <!--<script src="js/fdp/contactStatusEntryModel.js"></script>-->
+    <!--<script src="js/fdp/callDetailsEntryModel.js"></script>-->
+    <!--<script src="js/fdp/callEntryModel.js"></script>-->
+    <!--<script src="js/fdp/contactEntryModel.js"></script>-->
+    <!--<script src="js/fdp/myCallEntryModel.js"></script>-->
+    <!--<script src="js/fdp/myCallDetailsEntryModel.js"></script>-->
+    <!--<script src="js/fdp/groupEntryModel.js"></script>-->
+    <!--<script src="js/fdp/groupStatusEntryModel.js"></script>-->
+    <!--<script src="js/fdp/groupsFeedModel.js"></script>-->
+    <!--<script src="js/fdp/groupMemberEntryModel.js"></script>-->
+    <!--<script src="js/fdp/groupMembersFeedModel.js"></script>-->
+    <!--<script src="js/fdp/conferenceEntryModel.js"></script>-->
+    <!--<script src="js/fdp/conferenceStatusEntryModel.js"></script>-->
+    <!--<script src="js/fdp/conferenceMemberEntryModel.js"></script>-->
+    <!--<script src="js/fdp/conferencesFeedModel.js"></script>-->
+
+    <!--<script src="js/fdp/meFeedModel.js"></script>-->
+    <!--<script src="js/fdp/locationsFeedModel.js"></script>-->
+    <!--<script src="js/fdp/contactsFeedModel.js"></script>-->
+    <!--<script src="js/fdp/myCallsFeedModel.js"></script>-->
+
+    <!--<script src="js/ui/ControllerBase.js"></script>-->
+    <!--<script src="js/ui/MainController.js"></script>-->
+    <!--<script src="js/ui/MeWidgetController.js"></script>-->
+    <!--<script src="js/ui/LocationsController.js"></script>-->
+    <!--<script src="js/ui/LeftBarController.js"></script>-->
+    <!--<script src="js/ui/AllContactsController.js"></script>-->
+    <!--<script src="js/ui/ExternalContactsController.js"></script>-->
+    <!--<script src="js/ui/GroupsController.js"></script>-->
+    <!--<script src="js/ui/LeftBarCallsController.js"></script>-->
+    <!--<script src="js/ui/MyCallController.js"></script>-->
+    <!--<script src="js/ui/EditContactDialog.js"></script>-->
+    <!--<script src="js/ui/TopNavigatonController.js"></script>-->
+    <!--<script src="js/ui/ConferencesWidgetController.js"></script>-->
+    <!--<script src="js/ui/ContactWidgetChatController.js"></script>-->
+    <!--<script src="js/ui/ContactWidgetGroupsController.js"></script>-->
+    <!--<script src="js/ui/FavoriteContactsController.js"></script>-->
+    <!--<script src="js/ui/ContactController.js"></script>-->
+
+    <!--<script src="js/ui/app.js"></script>-->
+    <script src="js/properties.js"></script>
+
+
+</head>
+<body data-ng-controller="MainController" data-ng-click="onBodyClick()">
+
+<!--
+
+
+<div class="TopBar2">
+    <div class="TopBar2TopBorder"></div>
+    <div class="TopBar2Logo">
+        <div class="TopBar2LogoInner"></div>
+    </div>
+    <div class="fj-hbox TopBarIcons" data-ng-controller="TopNavigationController">
+        <a href="#/me" class="fj-hbox-cell TopBar2ItemMe TopBar2ItemApp AvatarHoverArea">
+            <div class="TopBar2ItemAppIcon">
+                <div class="Avatar AvatarNormal">
+                    <img class="AvatarImgPH" onerror="this.src='img/Generic-Avatar-Small.png'"
+                         data-ng-src="{{getMeAvatarUrl()}}">
+
+                    <div class="AvatarForeground AvatarInteractable"></div>
+                </div>
+            </div>
+            <div class="TopBar2ItemAppName">Me</div>
+        </a>
+
+        <div class="fj-hbox-space TopBar2Apps">
+            <div class="TopBar2AppsLeftSpace"></div>
+            <a href="{{icon.url}}" class="TopBar2ItemApp" data-ng-repeat="icon in appIcons">
+                <div class="TopBar2ItemAppIcon {{ icon.key }}"></div>
+                <div class="TopBar2ItemAppName">{{ icon.title }}</div>
+            </a>
+        </div>
+        <div class="TopBar2MeInfo TopBarMeStatus">
+            <div class="TopBarMeStatus-row">
+                <div class="XButton XButtonNormal" data-ng-click="logout()"><span>Sign out</span>
+                    <div class="logout-ico"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="TopBar2BottomLine"></div>
+</div>
+
+-->
+<!--
+
+
+<div class="fj-vbox LeftSideBar" data-ng-controller="LeftBarController">
+    <div class="LeftSideBarSectionTop Head"></div>
+    <div class="fj-vbox-space LeftSideBarSection">
+        <div class="LeftSideBarSectionTop"></div>
+        <div class="LeftSideBarSectionBody Tall">
+            <div ng-include="currentTab.url" class="LeftSideWidgetTabContent fj-content WidgetTabContent">
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="fj-vbox-cell LeftSideBarSection LeftSideBarSectionHead" data-ng-controller="LeftBarCallsController">
+        <div class="LeftSideBarSectionBody">
+            <div class="LeftBarPhoneCalls">
+                <div class="PhoneCallsPanel">
+                    <div class="fj-phone-section-content" >
+                        <div data-ng-controller="MyCallController" class="MyCallBlock AvatarHoverArea {{ call.getCallType() }} " data-ng-class="{'IsHold-true': call.state == 3}" data-ng-repeat="call in calls">
+                            <div class="fj-hbox MyCallHolder">
+                                <div class="fj-hbox-cell MyCallBlockCallIconHolder">
+                                    <div class="MyCallBlock_CallIcon Category-{{ call.getCallType() }}">
+                                        <div class="MyCallBlock_CallIconInner" data-ng-class="{'IsMute-true': call.mute}"></div>
+                                    </div>
+                                </div>
+                                <div class="fj-hbox-space MyCallBlockCallLineHolder">
+                                    <div class="fj-hbox MyCallBlock_CallLineTop">
+                                        <div class="fj-hbox-space MyCallBlock_CallerName">{{ call.displayName }}</div>
+                                        <div class="fj-hbox-cell MyCallBlock_Rec {{call.record}}"></div>
+                                    </div>
+                                    <div class="fj-hbox MyCallBlock_CallLineBottom">
+                                        <div class="fj-hbox-space MyCallBlock_CallInfo"><span>{{call.incoming && "Inbound" || "Outbound"}}</span><span
+                                                class="fj-visibility-{{call.state != 3}}">&nbsp; on hold &nbsp;</span><span
+                                                class="fj-visibility-{{call.state == 3}}">&nbsp; on call &nbsp;</span><span
+                                                class="MyCallBlock_Duration" >{{duration}}</span><span
+                                                class="fj-visibility-false">&nbsp;/&nbsp;</span><span
+                                                class="MyCallBlock_HoldInfo_Timer fj-visibility-false">{{holdDuration}}</span></div>
+                                        <div class="fj-hbox-cell MyCallBlock_MutedText fj-visibility-{{call.mute}}">
+                                            Muted
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fj-hbox-cell MyCallBlockButtonsHolder">
+                                    <div class="fj-hbox MyCallBlock_Buttons fj-visibility-{{call.state!=0 || call.incoming}}">
+                                        <div class="fj-hbox-space MyCallBlock_Buttons_Left">
+                                            <div data-ng-click="hangup()" class="XButton XButtonNormal {{call.state==0}}">
+                                                <span>Decline</span></div>
+                                            <div data-ng-click="hangup()" data-event="click" class="XButton XButtonNormal {{call.state!=0}}">
+                                                <span>End</span></div>
+                                        </div>
+                                        <div class="fj-hbox-space MyCallBlock_Buttons_Right">
+                                            <div data-ng-click="accept()" class="XButton XButtonNormal {{call.state==0}}">
+                                                <span>Accept</span></div>
+                                            <div data-ng-click="hold()" class="XButton XButtonNormal {{call.state==2}} disabled-{{!!call.details.conferenceId}}">
+                                                <span>Hold</span></div>
+                                            <div data-ng-click="unhold()" class="XButton XButtonNormal {{call.state==3}}">
+                                                <span>Talk</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="fj-hbox MyCallBlock_Buttons fj-visibility-{{call.state==0 && !call.incoming}}">
+                                        <div class="fj-hbox-space">
+                                            <div class="XButton XButtonNormal" data-ng-click="hangup()">
+                                                <span>Cancel</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="LeftSideBarSectionBottom Phone"></div>
+            <div class="LeftSideBarSectionNewCall">
+                <div class="PhoneInputBox"><input type="tel" id="callinput" data-ng-model="number" class="InputNewCall" placeholder="Phone number"></div>
+                <div data-ng-click="call()" class="XButton XButtonGreen XButtonCall"><span>New Call</span></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="LeftSideWidgetTabs WidgetTabBar">
+        <div class="WidgetTabBarButton Ready" data-ng-class="{'fj-selected-item': (tab.key == currentTab.key)}" data-ng-click="selectTab(tab)" style="width: {{ tab.width }};" data-ng-repeat="tab in tabs">
+            <div class="inner">{{tab.title}}</div>
+            <div class="arrow"></div>
+        </div>
+    </div>
+</div>
+
+
+-->
+
+<!--<div  class="fj-widget-area Widget">
+    <ng-view></ng-view>
+</div>-->
+<div ng-include="currentPopup.url"></div>
+
+<div  id="fj-loading" class="fj-loading">
+    <div class="fj-loading-inner">
+        <div class="fj-loading-logo">
+            <div class="fj-loading-logoTitle">
+                <div class="fj-loading-logoIco"></div>
+                <span class="fj-loading-logoTitleText">Fonality</span></div>
+        </div>
+    </div>
+    <div class="fji-box">
+        <div class="fji-label">Loading...</div>
+        <div class="loading-amination">
+            <img src="img/ajax-loader.gif">
+        </div>
+    </div>
+</div>
+</body>
+</html>

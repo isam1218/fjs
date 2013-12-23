@@ -70,18 +70,18 @@ fjs.fdp.ProxyModel.prototype.fillChanges = function(xpid, changes, type) {
     }
     var _changes = this.changes[xpid];
     if(!_changes) {
-        _changes = this.changes[xpid] = {};
+        _changes = this.changes[xpid] = {xpid:xpid, entry:{}};
     }
-    if(type=='change'&& _changes.chtype!='delete') {
-        _changes.chtype = 'change';
+    if(type=='change'&& _changes.type!='delete') {
+        _changes.type = 'change';
         for(var key in changes) {
             if(changes.hasOwnProperty(key)) {
-                _changes[key] = changes[key];
+                _changes.entry[key] = changes[key];
             }
         }
     }
     else if(type=='delete') {
-        _changes.chtype = 'delete';
+        _changes.type = 'delete';
     }
 };
 

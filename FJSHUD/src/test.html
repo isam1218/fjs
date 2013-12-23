@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="js/lib/fjs.core.debug.js"></script>
+    <script src="js/lib/fjs.fdp.api.debug.js"></script>
+    <script src="js/properties.js"></script>
+
+</head>
+<body>
+    <script>
+        var factory = new fjs.api.FDPProviderFactory();
+        var provider = factory.getProvider('53beab9fd66416d0c3a89c458408667f6ab9cdb29a0277af', null, function(){
+           provider.addSyncForFeed("contacts");
+        });
+        provider.addListener("sync", function(data) {
+            console.log(data);
+        });
+        provider.addListener("setNode", function(data) {
+            console.log(data);
+        });
+        provider.addListener("requestAuth", function(data) {
+            console.log(data);
+        });
+    </script>
+</body>
+</html>
