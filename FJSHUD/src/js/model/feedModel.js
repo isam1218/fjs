@@ -25,20 +25,17 @@ fjs.hud.FeedModel = function(feedName, dataManager) {
 fjs.hud.FeedModel.prototype.init = function() {
     var context = this;
     this.fdp.addListener(this.feedName, function(data){
-        if(context.listeners.start.length>0) {
-            context.onSyncStart({feed:data["feed"], eventType:start});
-        }
+        context.onSyncStart({feed:data["feed"], eventType:"start"});
         var changes = data["changes"];
         for(var key in changes) {
             if(changes[key].type=="change") {
                 context.onEntryChange(changes[key]);
             }
             else if(changes[key].type=="delete") {
-                context.onEntryDeletion()
+                context.onEntryDeletion(changes[key]);
             }
         }
-        if(context.listeners.complete>0)
-        context.onSyncComplete({feed:data["feed"], eventType:complete});
+        context.onSyncComplete({feed:data["feed"], eventType:"complete"});
     });
 
 };
@@ -80,8 +77,8 @@ fjs.hud.FeedModel.prototype.onSyncComplete = function(data) {
 fjs.hud.FeedModel.prototype.addListener = function(eventType, callback) {
     this.listeners[eventType].push(callback);
     if(eventType=="change") {
-        for(var i in this.items) {
-            callback({eventType:"change", xpid:i, entry:this.items[i]});
+        for(var key in this.items) {
+            callback({eventType:"change", xpid:key, entry:this.items[key]});
         }
     }
 };

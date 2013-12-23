@@ -30,6 +30,6 @@ hud_web.controller("MainController", ['$scope', 'DataManager', fjs.ui.MainContro
 //hud_web.controller("GroupsController", fjs.ui.GroupsController);
 //hud_web.controller("MyCallController", fjs.ui.MyCallController);
 //hud_web.controller("EditContactDialog", fjs.ui.EditContactDialog);
-//hud_web.controller("TopNavigationController", fjs.ui.TopNavigationController);
+hud_web.controller("TopNavigationController", ['$scope', 'DataManager', fjs.ui.TopNavigationController]);
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);
 //hud_web.controller("ContactController", fjs.ui.ContactController);
