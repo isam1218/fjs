@@ -15,7 +15,7 @@ Function.prototype.extend = function(superClass) {
  * @param {string} ns_name namespace;
  * @returns {*|{}}
  */
-window["namespace"] = function(ns_name) {
+var namespace = function(ns_name) {
     var parts = ns_name.split(".");
 
     var ns = self[parts[0]] = self[parts[0]] || {};
