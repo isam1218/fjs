@@ -63,3 +63,17 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
             return new fjs.fdp.ProxyModel([feedName]);
     }
 };
+
+fjs.fdp.DataManager.prototype.logout = function() {
+    this.sm.logout();
+};
+/**
+ * @param {string} feedName
+ * @param {string} actionName
+ * @param {*} data
+ */
+fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) {
+    this.sm.sendAction(feedName, actionName, data, function(){
+
+    });
+};

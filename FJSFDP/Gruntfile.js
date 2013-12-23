@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                     , 'src/db/LocalStorageDBProvider.js'
                     , 'src/db/DBFactory.js'
                     , 'src/models/entryModel.js'
-                    , 'src/proxies/ProxyModel.js'
+                    , 'src/models/proxyModel.js'
                     , 'src/sync/*.js'],
                 dest: 'bin/fjs.fdp.debug.js'
             }

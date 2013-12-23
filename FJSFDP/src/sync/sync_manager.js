@@ -644,25 +644,28 @@
      * @param {Function} listener
      */
     fjs.fdp.SyncManager.prototype.fireEvent = function(feedName, data, listener) {
+        var _listeners, i , _listener;
         if(listener) {
             listener(data);
         }
         else if(feedName) {
-            var _listeners = this.listeners[feedName];
+            _listeners = this.listeners[feedName];
             if (_listeners) {
-                for (var i = 0; i < _listeners.length; i++) {
-                    var _listener = _listeners[i];
+                for (i = 0; i < _listeners.length; i++) {
+                    _listener = _listeners[i];
                     _listener(data);
                 }
             }
         }
         else {
             for(var _feedName in this.listeners) {
-                var _listeners = this.listeners[_feedName];
-                if (_listeners) {
-                    for (var i = 0; i < _listeners.length; i++) {
-                        var _listener = _listeners[i];
-                        _listener(data);
+                if(this.listeners.hasOwnProperty(_feedName)) {
+                    _listeners = this.listeners[_feedName];
+                    if (_listeners) {
+                        for (i = 0; i < _listeners.length; i++) {
+                            _listener = _listeners[i];
+                            _listener(data);
+                        }
                     }
                 }
             }
