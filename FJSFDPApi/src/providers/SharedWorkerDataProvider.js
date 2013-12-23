@@ -20,7 +20,7 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
     this.worker.port.start();
     this.sendMessage = function(message) {
         context.worker.port.postMessage(message);
-    }
+    };
     this.sendMessage({action:'init', data:{ticket:this.ticket, node:this.node}});
 
     setTimeout(function(){callback()},0);
@@ -32,10 +32,4 @@ fjs.api.SharedWorkerDataProvider.extend(fjs.api.ClientDataProviderBase);
  */
 fjs.api.SharedWorkerDataProvider.check = function() {
     return  !!window.SharedWorker;
-};
-/**
- * @param {{action:string, data:*}} message
- */
-fjs.api.SharedWorkerDataProvider.prototype.sendMessage = function(message) {
-    this.worker.postMessage(message);
 };

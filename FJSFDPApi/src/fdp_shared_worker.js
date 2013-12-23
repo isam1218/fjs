@@ -33,7 +33,7 @@ function handleMessage(data, callback) {
                     requestAuth:function() {
                         postToPage({"action":"requestAuth"});
                     }
-                    , node:function(node){
+                    , setNode:function(node){
                         postToPage({"action":"setNode", "data":{"value":node}});
                     }
                 };
