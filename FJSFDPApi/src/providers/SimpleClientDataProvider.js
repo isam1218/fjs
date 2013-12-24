@@ -22,7 +22,7 @@ fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
             context.fireEvent("requestAuth", null);
         }
         , setNode: function(node) {
-            context.fireEvent("setNode", {node:node});
+            context.fireEvent("setNode", {"node":node});
         }
     };
 
