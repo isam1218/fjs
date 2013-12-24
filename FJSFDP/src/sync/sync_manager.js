@@ -1,10 +1,10 @@
 /**
-* Created with JetBrains WebStorm.
-* User: ddyachenko
-* Date: 19.08.13
-* Time: 13:08
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with JetBrains WebStorm.
+ * User: ddyachenko
+ * Date: 19.08.13
+ * Time: 13:08
+ * To change this template use File | Settings | File Templates.
+ */
 (function(){
     namespace("fjs.fdp");
     /**
@@ -42,6 +42,11 @@
          * @private
          */
         this.versions = {};
+        /**
+         * @dict
+         * @private
+         */
+        this.historyversions = {};
         /**
          * @type {string}
          */
@@ -616,13 +621,13 @@
         this.fireEvent(feedName, data, listener);
         if(this.db) {
             this.db.selectAll(feedName, function(item){
-                var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
-                context.fireEvent(feedName, data, listener);
-            }
-            , function() {
-                var data = {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName};
-                context.fireEvent(feedName, data, listener);
-            });
+                    var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
+                    context.fireEvent(feedName, data, listener);
+                }
+                , function() {
+                    var data = {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName};
+                    context.fireEvent(feedName, data, listener);
+                });
         }
         else {
             var entry = {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName};
@@ -679,15 +684,227 @@
         }
     };
 
-    fjs.fdp.SyncManager.prototype.loadNext = function(feedName, filter, count) {
-        var url = this.serverHost+"v1/history/"+feedName;
-        var _data = {"s.limit":count, "sh.filter": filter};
-        this.sendRequest(url, _data, function(xhr, data, isOK) {
-            if(isOK) {
+    /**
+     *
+     * @param {string} feedName
+     * @param {*} _filter
+     * @param {number} count
+     * @param callback
+     */
+    fjs.fdp.SyncManager.prototype.loadNext = function(feedName, _filter, count, callback) {
 
-            }
+        var filter = JSON.stringify(_filter);
+        var feedHVersions = this.historyversions[feedName];
+        if(!feedHVersions){
+            feedHVersions={};
+            this.historyversions[feedName] = feedHVersions;
+        }
+        if(feedHVersions[filter]){
+            this.processHistoryVersions(feedName, filter, count, feedHVersions[filter], callback)
+            return;
+        }
+
+        var context = this;
+        var hVersions = [];
+        this.fillHistoryVersions(feedName, filter, count, hVersions, function(){
+            context.processHistoryVersions(feedName, filter, count, hVersions, callback);
         });
     };
+
+    fjs.fdp.SyncManager.prototype.fillHistoryVersions = function (feedName, filter, count, _historyVersions, callback) {
+        if (this.db) {
+            var context = this;
+            this.db.selectByIndex2("historyversions", {key: "feedName", value: feedName}, {key: "filter", value: filter}, function (item) {
+                _historyVersions.push(item["source"] + ":" + item["version"]);
+            }, function () {
+                if(_historyVersions.length==0){
+                    context.fillEmptyHistoryVersionsFromFeed(feedName,_historyVersions, callback);
+                }else{
+                    callback();
+                }
+            });
+        }
+    };
+
+    fjs.fdp.SyncManager.prototype.fillEmptyHistoryVersionsFromFeed = function(feedName, _historyVersions, callback) {
+        if(this.db) {
+            //fill 0 versions for known sources
+            this.db.selectByIndex("versions", {key:"feedName", value:feedName}, function(item) {
+                _historyVersions.push(item["source"]+":0");
+            }, callback);
+        }
+    };
+
+    fjs.fdp.SyncManager.prototype.processHistoryVersions = function(feedName, filter, count, _historyVersions, callback) {
+        if(_historyVersions.length==0)
+        {
+            if(callback){
+                callback(false);
+            }
+            return;
+        }
+        this.historyversions[feedName][filter]=_historyVersions;
+
+        var url = this.serverHost+"/v1/history/"+feedName;
+        var _data = {"s.limit":count, "sh.filter": filter, "sh.versions": _historyVersions.join("@")};
+
+        var context = this;
+        this.sendRequest(url, _data, function(xhr, data, isOK) {
+            if(isOK) {
+                if(context.processHistory(feedName,  filter, data,_historyVersions)){
+                    //save versions
+                    context.notifyTabsHistory(feedName, filter, data, _historyVersions);
+                }else{
+                    setTimeout(function()
+                    {
+                        context.loadNext(feedName, filter, count);
+                    }, 500);
+                }
+            }else{
+                console.debug("loadNext: onAjaxError: " + feedName + " " + filter + " " + count);
+            }
+        });
+        if(callback){
+            callback(true);
+        }
+    };
+
+    /**
+     * @param {string} feedName
+     * @param {*} data
+     * @param {*} filter
+     * @param {*} historyVersions
+     * @return boolean
+     * @private
+     */
+    fjs.fdp.SyncManager.prototype.processHistory = function(feedName, filter, data, historyVersions) {
+        var hasData = false;
+        var _data ;
+        try {
+            _data = JSON.parse(data);
+        }
+        catch (e) {
+//            try {
+//                _data = (new Function("return " + data+ ";" ))();
+//            }
+//            catch(e) {
+//                console.error('Sync data error', e);
+//            }
+            console.error('Sync data error', e);
+            return false;
+        }
+        this.fireEvent(feedName, {eventType: sm.eventTypes.SYNC_START, syncType: "Lazy", feed:feedName});
+        for(var _sourceId in _data)
+        {
+            if(!_data.hasOwnProperty(_sourceId)){
+                continue;
+            }
+            var source = _data[_sourceId];
+
+            var items = source["items"];
+            var /**@type {String}*/ hver = source["h_ver"] || "-1";
+            if("-2" == hver)
+            {
+                //server error occurred
+                return false;
+            }
+
+            var /**@type {String}*/ cnt = items.length;
+
+            if(cnt > 0)
+            {
+                hasData = true;
+                //listeners.onSyncStart(lazy)
+                this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_START, syncType: "Lazy", feed:feedName, sourceId:_sourceId});
+
+                for(var i = 0; i < cnt; i ++)
+                {
+                    {
+                        var type = items[i]["xef001type"];
+                        if(type == "push")
+                        {
+                            var xpid = _sourceId + "_" + items[i]["xef001id"];
+                            delete items[i]["xef001type"];
+                            items[i]["xpid"] = xpid;
+                            var entry = {eventType: type, feed:feedName, xpid: xpid, entry: items[i]};
+
+                            this.db.insertOne(feedName, entry.entry, null);
+                            this.fireEvent(feedName, entry);
+                        }
+                        else
+                        {
+                            throw new Error("Unexpected item type in history sync " + type);
+                        }
+                    }
+                    // if last item has been processed:
+                }
+                //save history versions in db and cache
+                this.saveHistoryVersions(feedName, _sourceId, filter, hver);
+                this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName});
+            }
+        }
+        if(!hasData)
+        {
+            this.saveEmptyHistoryVersions(feedName, filter);
+        }
+
+        this.fireEvent(feedName, {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName});
+
+        return true;
+    };
+
+    /**
+     * Saves versions
+     * @param {string} feedName
+     * @param {string} source
+     * @param {string} filter
+     * @param {string} version
+     */
+    fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
+        if(this.db) {
+            this.db.insertOne("historyversions", {"feedSourceFilter": feedName+"_"+source+"_"+"filter", "feedName":feedName, "source":source, filter: filter, "version":version});
+            var feedHVersions = this.historyversions[feedName];
+            if(feedHVersions){
+                delete feedHVersions[filter];
+                if(!feedHVersions){
+                    delete this.historyversions[feedName];
+                }
+            }
+
+        }
+    };
+
+    /**
+     * Saves versions
+     * @param {string} feedName
+     * @param {string} filter
+     */
+    fjs.fdp.SyncManager.prototype.saveEmptyHistoryVersions = function(feedName, filter) {
+        if(this.db) {
+            this.db.insertOne("historyversions", {"feedName":feedName, filter: filter, "version":"-1"});
+            delete this.historyversions[feedName];
+        }
+    };
+
+    /**
+     * @param {string} feedName
+     * @param {*} data
+     * @param {*} filter
+     * @param {*} historyVersions
+     * @return boolean
+     * @private
+     */
+    fjs.fdp.SyncManager.prototype.notifyTabsHistory = function(feedName, filter, data, historyVersions) {
+//            final JsonObject dataObj = new JsonObject();
+//            dataObj.$set("_type", "history");
+//            dataObj.$set("data", data);
+//            dataObj.$set("name", feedName);
+//            dataObj.$set("filter", filter);
+//            dataObj.$set("version", historyVersions);
+//
+//            final String str = JSON.stringify(dataObj);
+//            this.dataSynchronizer.writeData(SYNC_PROCESS, str);
+    }
 
     fjs.fdp.SyncManager.prototype.logout = function() {
         this.ticket = null;
@@ -697,8 +914,3 @@
         this.state = sm.states.NOT_INITIALIZED;
     }
 })();
-
-
-
-
-

@@ -7,13 +7,14 @@ fjs.fdp.CONFIG = {
     , providers: ['simple', 'sharedWorker', 'webWorker']
     , DB: {
         name: "HUD"
-        , version: 1
+        , version: 8
         /**
          * @type {Array}
          */
         , dbProviders:['indexedDB', 'webSQL', 'localStorage']
         , tables: [
             {name:"versions", key:"feedSource", indexes:["source", "feedName"]}
+            , {name:"historyversions", key:"feedSourceFilter", indexes:["source", "feedName", "filter",["feedName", "filter"]]}
             , {name:"calls", key: "xpid"}
             , {name:"calldetails", key: "xpid"}
             , {name:"calllog", key: "xpid"}

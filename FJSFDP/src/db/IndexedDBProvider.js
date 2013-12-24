@@ -111,7 +111,7 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
     var objectStore = this.db.createObjectStore(name, {keyPath: key});
     if(indexes) {
         for(var i=0; i< indexes.length; i++) {
-            objectStore.createIndex(indexes[i], indexes[i], { unique: false });
+            objectStore.createIndex((typeof indexes[i]=="string")?indexes[i]:indexes[i].join(','), indexes[i], { unique: false });
         }
     }
 };
@@ -240,6 +240,40 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rule, ite
     };
     cursorRequest.onerror = this.db.onerror;
 };
+
+/**
+ *
+ * @param {string} tableName
+ * @param {{key:string, value:*}} rule1
+ * * @param {{key:string, value:*}} rule2
+ * @param {Function} itemCallback
+ * @param {function(Array)} allCallback
+ */
+fjs.db.IndexedDBProvider.prototype.selectByIndex2 = function(tableName, rule1, rule2, itemCallback, allCallback) {
+
+    var trans = this.db.transaction([tableName], "readwrite");
+    var store = trans.objectStore(tableName);
+    var cursorRequest = store.index(rule1.key + "," + rule2.key).openCursor(IDBKeyRange.only([rule1.value, rule2.value]));
+    var rows=[];
+    cursorRequest.onsuccess = function(e) {
+        var result = e.target.result;
+
+        if(!!result == false) {
+            if(allCallback) {
+                allCallback(rows);
+            }
+            return;
+        }
+        rows.push(result.value);
+
+        if(itemCallback) {
+            itemCallback(result.value);
+        }
+        result.continue();
+    };
+    cursorRequest.onerror = this.db.onerror;
+};
+
 /**
  * @param {string} tableName
  * @param {string} key

@@ -92,6 +92,18 @@ fjs.db.IDBProvider.prototype.selectByIndex = function(tableName, rule, itemCallb
 };
 
 /**
+ *
+ * @param {string} tableName
+ * @param {{key:string, value:*}} rule1
+ * @param {{key:string, value:*}} rule2
+ * @param {Function} itemCallback
+ * @param {function(Array)} allCallback
+ */
+fjs.db.WebSQLProvider.prototype.selectByIndex2 = function(tableName, rule1, rule2, itemCallback, allCallback) {
+
+};
+
+/**
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback

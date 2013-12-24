@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="js/lib/fjs.core.debug.js"></script>
+    <script src="js/lib/fjs.fdp.api.debug.js"></script>
+    <script src="js/lib/fjs.fdp.debug.js"></script>
+    <script src="properties.js"></script>
+
+</head>
+<body>
+<script>
+    var factory = new fjs.api.FDPProviderFactory();
+    var provider = factory.getProvider('83851a881c0e84e4787e5b24d79a05330edfd53406a86303', null, function(){
+        provider.addSyncForFeed("contacts");
+        provider.addSyncForFeed("streamevent");
+    });
+    provider.addListener("sync", function(data) {
+        console.log(data);
+    });
+    provider.addListener("setNode", function(data) {
+        console.log(data);
+    });
+    provider.addListener("requestAuth", function(data) {
+        console.log(data);
+    });
+    var dbFactory = new fjs.db.DBFactory(window);
+    var db = dbFactory.getDB();
+    var ajax = new fjs.ajax.XHRAjax();
+    var sm = new fjs.fdp.SyncManager(db, ajax);
+    var contactsProxy = new fjs.fdp.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails']);
+    var i = 0;
+    sm.addListener("streamevent", function(e){
+        if(e["eventType"]==fjs.fdp.SyncManager.eventTypes.FEED_COMPLETE){
+            if(++i<3){
+                sm.loadNext("streamevent", {"type":"f.conversation","key":{"feedName":"contacts","xpid":"10000424f_1226260"}}, i*10);
+            }
+        }
+    })
+    sm.init("83851a881c0e84e4787e5b24d79a05330edfd53406a86303", null, fjs.fdp.CONFIG.SERVER.serverURL, {setNode:function(node){console.log("node: "+node)}, requestAuth: function(){console.error("Need auth")}}, function(){
+        //load next
+        //sh.versions:0:0@1100000000:0@d00000000:0
+        sm.loadNext("streamevent", {"type":"f.conversation","key":{"feedName":"contacts","xpid":"10000424f_1226260"}}, 10);
+    });
+</script>
+</body>
+</html>

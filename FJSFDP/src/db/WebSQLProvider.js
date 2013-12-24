@@ -233,6 +233,35 @@ fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rule, itemCa
     });
 };
 
+/**
+ *
+ * @param {string} tableName
+ * @param {{key:string, value:*}} rule1
+ * @param {{key:string, value:*}} rule2
+ * @param {Function} itemCallback
+ * @param {function(Array)} allCallback
+ */
+fjs.db.WebSQLProvider.prototype.selectByIndex2 = function(tableName, rule1, rule2, itemCallback, allCallback) {
+    this.db.transaction(function(tx){
+        var query = "SELECT data FROM " + tableName + " WHERE " + rule1.key+"='"+rule1.value+"' AND "+ rule2.key+"='"+rule2.value;
+
+        tx.executeSql(query, [], function(tr, result){
+            /**
+             * @type {Array}
+             */
+            var arr = [];
+            if(result.rows) {
+                for(var i=0; i<result.rows.length; i++) {
+                    var item = result.rows.item(i).data;
+                    item = JSON.parse(item);
+                    arr.push(item);
+                    itemCallback(item);
+                }
+                allCallback(arr);
+            }
+        }, function(e){new Error(e)});
+    });
+};
 
 /**
  * @param {string} tableName
