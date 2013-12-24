@@ -37,7 +37,7 @@ function handleMessage(data, callback) {
                         postToPage({"action":"requestAuth"});
                     }
                     , setNode:function(node){
-                        postToPage({"action":"setNode", "data":{"value":node}});
+                        postToPage({"action":"setNode", "data":{"node":node}});
                     }
                 };
                 dataManager = new fjs.fdp.DataManager(data.data.ticket, data.data.node, self, authHandler, function(){});
