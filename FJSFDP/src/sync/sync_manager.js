@@ -144,8 +144,10 @@
         this.authHandler = authHandler;
 
         if(!this.node) {
-            this.requestClientRegistry(function(){
-                context.initDataBase(callback);
+            this.requestClientRegistry(function(isOK){
+                if(isOK) {
+                    context.initDataBase(callback);
+                }
             });
         }
         else {
@@ -352,7 +354,7 @@
      * Versionscache request
      */
     fjs.fdp.SyncManager.prototype.requestVersionscache = function() {
-        var data = {"path":location.href.substring(0,location.href.indexOf("js/fdp/")), "no_image":"/img/Generic-Avatar-Small.png" }, context = this;
+        var data = {"path":this.getOrigin(), "no_image":"/img/Generic-Avatar-Small.png" }, context = this;
         var url = this.serverHost+sm.VERSIONSCACHE_PATH;
         this.currentVersioncache = this.sendRequest(url, data, function(xhr, data, isOk) {
             if(isOk) {
@@ -499,6 +501,12 @@
     };
 
     /**
+     * @return {string}
+     */
+    fjs.fdp.SyncManager.prototype.getOrigin = function() {
+        return location.protocol+"//"+location.host + (location.port ? ":" + location.port : "")+"/";
+    };
+    /**
      * ClientRegistry request
      * @param callback
      */
@@ -508,7 +516,8 @@
          */
         var context = this;
         var url = this.serverHost+sm.CLIENT_REGISRY_PATH;
-        this.sendRequest(url, {"path":location.href.substring(0,location.href.indexOf("js/fdp/")), "no_image":"/img/Generic-Avatar-Small.png" }, function(xhr, data, isOk) {
+
+        this.sendRequest(url, {"path":this.getOrigin(), "no_image":"/img/Generic-Avatar-Small.png" }, function(xhr, data, isOk) {
             if(isOk) {
                 var _data = context.parseFdpData(data);
                 if(_data["node"]) {
@@ -532,15 +541,13 @@
 
     fjs.fdp.SyncManager.prototype.getAuthTicket = function() {
         var context = this;
-        if(this.state == sm.states.READY) {
-            if(this.db) {
-                this.db.clear(function(){
-                    context.authHandler.requestAuth();
-                });
-            }
-            else {
-                this.authHandler.requestAuth();
-            }
+        if(this.state == sm.states.READY && this.db) {
+            this.db.clear(function(){
+                context.authHandler.requestAuth();
+            });
+        }
+        else {
+            this.authHandler.requestAuth();
         }
     };
 

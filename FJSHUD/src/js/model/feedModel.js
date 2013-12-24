@@ -91,12 +91,13 @@ fjs.hud.FeedModel.prototype.removeListener = function(eventType, callback) {
 };
 
 fjs.hud.FeedModel.prototype.fireEvent = function(eventType, data) {
+    /**
+     * @type {Array}
+     */
     var listeners = this.listeners[eventType];
     if(listeners) {
         for(var i=0; i<listeners.length; i++) {
-            if(listeners[i]) {
                 listeners[i](data);
-            }
         }
     }
 };

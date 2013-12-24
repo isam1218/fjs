@@ -19,7 +19,6 @@ function handleMessage(data, callback) {
     switch(data.action) {
         case "init":
             if(!dataManager) {
-
                 var authHandler = {
                     requestAuth:function() {
                         postToPage({"action":"requestAuth"});
@@ -32,7 +31,7 @@ function handleMessage(data, callback) {
             }
             break;
         case "registerSync":
-            dataManager.addListener(data.feedName, callback);
+            dataManager.addListener(data.data.feedName, callback);
             break;
         case "action":
             dataManager.sendAction(data.data.feedName, data.data.actionName, data.data.data);

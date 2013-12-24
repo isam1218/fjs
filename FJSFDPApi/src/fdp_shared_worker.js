@@ -4,6 +4,7 @@ importScripts('properties.js');
 
 var connections = 0;
 var ports = [];
+var dataManager = null;
 
 var postToPage = function(message) {
     for(var i=0; i<ports.length; i++) {
@@ -22,6 +23,8 @@ self.addEventListener("connect", function (e) {
             port.postMessage({"action":"sync", "data":data});
         });
     }, false);
+    port.start();
+    port.postMessage({action:"ready"})
 });
 
 function handleMessage(data, callback) {
@@ -41,7 +44,7 @@ function handleMessage(data, callback) {
             }
             break;
         case "registerSync":
-            dataManager.addListener(data.feedName, callback);
+            dataManager.addListener(data.data.feedName, callback);
             break;
         case "action":
             dataManager.sendAction(data.data.feedName, data.data.actionName, data.data.data);

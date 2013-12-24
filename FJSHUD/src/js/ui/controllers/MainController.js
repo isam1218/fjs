@@ -10,9 +10,11 @@ fjs.ui.MainController = function($scope, dataProvider) {
 
     var onLoaded = function() {
         if(meModel.order.length>0) {
-            meModel.removeListener("complete", onLoaded);
-            var loading = document.getElementById("fj-loading");
-            loading.style.display = "none";
+            setTimeout(function(){
+                meModel.removeListener("complete", onLoaded);
+                var loading = document.getElementById("fj-loading");
+                loading.style.display = "none";
+            });
         }
     }
 

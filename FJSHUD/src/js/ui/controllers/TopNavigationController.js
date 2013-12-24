@@ -3,10 +3,16 @@ namespace("fjs.ui");
 fjs.ui.TopNavigationController = function($scope, dataManager) {
 
     fjs.ui.Controller.call(this, $scope);
+    /**
+     * @type {fjs.hud.MeFeedModel}
+     */
     var meModel = dataManager.getModel("me");
-    meModel.addListener("complete", $scope.$safeApply);
+    meModel.addListener("complete", function(){
+        $scope.$safeApply();
+    });
+
     $scope.getMeAvatarUrl = function(){
-        return ;//meModel.getMyAvatarUrl(38, 38);
+        return meModel.getMyAvatarUrl(38, 38);
     };
 
     $scope.appIcons = [
@@ -21,4 +27,4 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
     });
 
 };
-fjs.ui.TopNavigationController.extends(fjs.ui.Controller);
+fjs.ui.TopNavigationController.extend(fjs.ui.Controller);

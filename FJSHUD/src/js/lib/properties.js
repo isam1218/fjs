@@ -1,9 +1,10 @@
 namespace("fjs.fdp");
 fjs.fdp.CONFIG = {
     SERVER: {
-        serverURL: "https://huc-dev.fonality.com:8081"
-        , loginURL: "https://huc-dev.fonality.com:5501/oauth/authentication"
+        serverURL: "https://dev4.fon9.com:8081"
+        , loginURL: "https://dev4.fon9.com:5501/oauth/authentication"
     }
+    , providers: ['sharedWorker', 'webWorker', 'simple']
     , DB: {
         name: "HUD"
         , version: 1

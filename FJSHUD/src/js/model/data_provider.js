@@ -72,11 +72,11 @@ fjs.hud.FDPDataManager.prototype.init = function() {
 
 fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
     if(!this.feeds[feedName]) {
-        return new fjs.hud.FeedModel(feedName, this);
-//        switch (feedName) {
-//            case "me":
-//                this.feeds[feedName] = new fjs.fdp.MeFeedModel(this);
-//                break;
+        //return new fjs.hud.FeedModel(feedName, this);
+        switch (feedName) {
+            case "me":
+                this.feeds[feedName] = new fjs.hud.MeFeedModel(this);
+                break;
 //            case "locations":
 //                this.feeds[feedName] = new fjs.fdp.LocationsFeedModel(this);
 //                break;
@@ -95,9 +95,9 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
 //            case "conferences":
 //                this.feeds[feedName] = new fjs.fdp.ConferencesFeedModel(this);
 //                break;
-//            default:
-//                this.feeds[feedName] = new fjs.fdp.FeedModel(feedName, this);
-//        }
+            default:
+                this.feeds[feedName] = new fjs.fdp.FeedModel(feedName, this);
+        }
     }
     return this.feeds[feedName];
 };

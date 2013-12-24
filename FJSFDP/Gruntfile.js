@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                 files: [
                     {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/src/js/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/bin/'}
-                    , {expand: true, cwd: 'src/', src: ['properties.js'], dest: '../FJSHUD/src/js'}
+                    , {expand: true, cwd: 'src/', src: ['properties.js'], dest: '../FJSHUD/src/js/lib/'}
                 ]
             }
         }

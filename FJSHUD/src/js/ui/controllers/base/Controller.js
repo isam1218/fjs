@@ -8,7 +8,12 @@ fjs.ui.Controller = function($scope) {
                 fn();
             }
         } else {
-            $scope.$apply(fn);
+            if(fn && (typeof(fn) === 'function')) {
+                $scope.$apply(fn);
+            }
+            else {
+                $scope.$apply();
+            }
         }
     };
 };
