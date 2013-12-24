@@ -13,7 +13,7 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
 
     $scope.appIcons = [
         {title:"Conferencing", url:"#/conferences", key:"Conferences"}
-        , {title:"Zoom", url:"#/zoom", key:"Video Collaboration"}
+        , {title:"Video Collaboration", url:"#/zoom", key:"Zoom"}
         , {title:"Box", url:"#/box", key:"Box"}
     ];
 

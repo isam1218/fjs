@@ -12,6 +12,7 @@ hud_web.config(['$routeProvider', function($routeProvider) {
 //        when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
 //        when('/contact/:contactId/groups', {templateUrl: 'templates/ContactWidgetGroupsController.html', controller: fjs.ui.ContactWidgetGroupsController}).
         //when('/phones/:phoneId', {templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl}).
+        when('/zoom', {templateUrl: 'templates/ZoomWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]}).
         otherwise({redirectTo: '/me'});
 }]);
 //ng_app.controller("NewCallController", fjs.controllers.NewCallController);

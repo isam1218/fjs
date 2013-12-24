@@ -1,0 +1,47 @@
+<div class="Widget WidgetZoom" id="widget-zoom">
+    <div class="WidgetHeader">
+        <div class="Avatar AvatarApp">
+            <div class="TopBar2ItemAppIcon Zoom"></div>
+        </div>
+        <div class="WidgetHeaderTitle Single" >
+            Video Collaboration
+        </div>
+    </div>
+    <div class="WidgetBody" fj-local-id="zoom-widget-body">
+        <div class="ListSection">
+            <div class="ListSectionHeaderTitle">Topic</div>
+            <div class="widget-zoom-topic">
+                <textarea fj-local-id="topic">
+                </textarea>
+            </div>
+        </div>
+        <div class="ListSection widget-zoom-join">
+            <div class="ListSectionHeaderTitle">Join</div>
+            <div class="SearchInputBox">
+                <div class="SearchInputBoxInputHolder">
+                    <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" fj-local-id="JoinInput" placeholder="Meeting ID" />
+                </div>
+            </div>
+            <div data-ng-click="joinConference(meetingId)" class="XButton XButton XButtonWide XButtonBlue"><span>Join conference</span></div>
+        </div>
+        <div class="ListSection">
+            <div class="ListSectionHeaderTitle">Members</div>
+            <view fj-local-id="addContact" />
+            <div class="widget-zoom-buttons">
+                <div class="XButton XButtonBlue XButtonWide" event="click" fj-local-id="btn-start-video" ><span>Start conference</span></div>
+            </div>
+        </div>
+        <div class="widget-zoom-contacts">
+            <scrollable class=""> <view fj-local-id="contacts" /> </scrollable>
+        </div>
+    </div>
+    <div fj-local-id="widget-zoom-body-started" class="WidgetBody WidgetBodyStarted">
+        <p><h2>Video meeting has been created</h2></p>
+        <p>Your meeting will begin in 30 seconds. If your meeting doesn't begin automatically, please use this <a target="_blank" fj-local-id="widget-zoom-link-to-start">link</a></p>
+        <p>Link to join: <br/><a target="_blank" fj-local-id="widget-zoom-link-to-join"></a></p>
+    </div>
+    <div fj-local-id="widget-zoom-body-error" class="WidgetBody WidgetBodyStarted">
+        <p><h2>Video meeting hasn't been created</h2></p>
+        <p>Please check Zoom service availability.</p>
+    </div>
+</div>
