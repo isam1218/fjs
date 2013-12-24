@@ -96,14 +96,14 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
 //                this.feeds[feedName] = new fjs.fdp.ConferencesFeedModel(this);
 //                break;
             default:
-                this.feeds[feedName] = new fjs.fdp.FeedModel(feedName, this);
+                this.feeds[feedName] = new fjs.hud.FeedModel(feedName, this);
         }
     }
     return this.feeds[feedName];
 };
 
 fjs.hud.FDPDataManager.prototype.sendAction = function(feedName, action, data, callback) {
-    this.dataProvider.sendMessage({"action":"action", "data": {"feedName":feedName, "actionName":action, "params": data}});
+    this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
 };
 
 fjs.hud.FDPDataManager.prototype.addListener = function(feedName, listener) {

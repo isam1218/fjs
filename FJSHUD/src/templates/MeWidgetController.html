@@ -1,0 +1,50 @@
+<div class="WidgetMe">
+    <div class="unpin" data-ng-click="unpin()">unpin</div>
+    <div class="WidgetHeader">
+
+        <div class="WidgetHeaderTitle Single">{{ meData.display_name.propertyValue }}</div>
+        <div class="MeInfoBlock">
+            <div class="fj-hbox">
+                <div class="fj-hbox-cell AvatarHolder">
+                    <div class="Avatar AvatarBig">
+                        <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl()}}">
+                            <div class="AvatarForeground AvatarStatic"></div>
+                    </div>
+                </div>
+                <div class="fj-hbox-cell ChatStatusesHolder">
+                    <div class="MeInfoTitle">CHAT STATUS</div>
+                    <div class="MenuSection">
+                        <div class="fj-hbox MenuItem" data-ng-class="{'selected-true':(meData.chat_status.propertyValue ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
+                            <div class="fj-hbox-cell MenuItemIcon XIcon-ChatStatus-{{ cstatus.title }}" >
+                                <div class="status-icon-inner"></div>
+                            </div>
+                            <div class="fj-hbox-cell MenuItemText">{{ cstatus.title }}</div>
+                            <div class="fj-hbox-cell SelectedIcon"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fj-hbox-cell">
+                    <div class="MeInfoTitle">CUSTOM STATUS</div>
+                    <div class="LeftBarMeCustomStatusSection">
+                        <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meData.chat_custom_status.propertyValue" placeholder="Custom message">
+
+                        </textarea>
+                    </div>
+                    <div class="MeInfoTitle">LOCATION</div>
+                    <div class="LocationSelector ">
+                        <div class="SelectBox" data-ng-click="showLocationsPopup($event)">
+                            <div class="fj-hbox">
+                                <div class="fj-hbox-space SelectBoxText">
+                                    <span class="InnerIco">@ </span><span>{{ getCurrentLocationTitle() }}</span>
+                                </div>
+                                <div class="fj-hbox-cell SelectBoxArrowBox">
+                                    <div class="SelectBoxArrow"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

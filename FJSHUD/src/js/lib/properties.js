@@ -4,7 +4,7 @@ fjs.fdp.CONFIG = {
         serverURL: "https://dev4.fon9.com:8081"
         , loginURL: "https://dev4.fon9.com:5501/oauth/authentication"
     }
-    , providers: ['sharedWorker', 'webWorker', 'simple']
+    , providers: ['simple', 'sharedWorker', 'webWorker']
     , DB: {
         name: "HUD"
         , version: 1

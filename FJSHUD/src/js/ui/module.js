@@ -2,18 +2,18 @@ var hud_web = angular.module('HUDWeb', ['ngRoute', 'HUD_model']);
 
 
 
-/*hud_web.config(['$routeProvider', function($routeProvider) {
+hud_web.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
-        when('/me', {templateUrl: 'templates/MeWidgetController.html',   controller: fjs.ui.MeWidgetController}).
-        when('/conferences', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
-        when('/conferences/my', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
-        when('/conferences/all', {templateUrl: 'templates/AllConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
-        when('/contact/:contactId', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
-        when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
-        when('/contact/:contactId/groups', {templateUrl: 'templates/ContactWidgetGroupsController.html', controller: fjs.ui.ContactWidgetGroupsController}).
+        when('/me', {templateUrl: 'templates/MeWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
+//        when('/conferences', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
+//        when('/conferences/my', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
+//        when('/conferences/all', {templateUrl: 'templates/AllConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
+//        when('/contact/:contactId', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
+//        when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
+//        when('/contact/:contactId/groups', {templateUrl: 'templates/ContactWidgetGroupsController.html', controller: fjs.ui.ContactWidgetGroupsController}).
         //when('/phones/:phoneId', {templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl}).
         otherwise({redirectTo: '/me'});
-}]);*/
+}]);
 //ng_app.controller("NewCallController", fjs.controllers.NewCallController);
 //ng_app.controller("CallsListController", fjs.controllers.CallsListController);
 //ng_app.controller("CallController", fjs.controllers.CallController);
