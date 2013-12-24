@@ -57,7 +57,7 @@ fjs.hud.MeFeedModel.prototype.getMyPid = function() {
  * @returns {string}
  */
 fjs.hud.MeFeedModel.prototype.getMyChatStatus = function() {
-   return this.itemsByKey.chat_status.propertyValue;
+   return this.itemsByKey["chat_status"] && this.itemsByKey["chat_status"].propertyValue;
 };
 
 

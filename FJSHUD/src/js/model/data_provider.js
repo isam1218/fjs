@@ -60,7 +60,6 @@ fjs.hud.FDPDataManager.prototype.clearHash = function(href){
 
 fjs.hud.FDPDataManager.prototype.init = function() {
     var context = this;
-
         var providerFactory = new fjs.api.FDPProviderFactory();
           context.dataProvider = providerFactory.getProvider(context.ticket, context.node, function(){
               for(var i=0; i<context.suspendListeners.length; i++) {
@@ -76,7 +75,7 @@ fjs.hud.FDPDataManager.prototype.init = function() {
             location.href = context.getLogoutUrl();
         });
         this.dataProvider.addListener("setNode", function(data) {
-            context.node = data.value;
+            context.node = data.node;
             fjs.utils.Cookies.set("node", data.node);
         });
 };
