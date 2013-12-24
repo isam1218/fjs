@@ -20,6 +20,8 @@ fjs.hud.FDPDataManager = function() {
     if(/access_token/ig.test(location.href)) {
         this.ticket = location.href.match(/access_token=([^&]+)/)[1];
         fjs.utils.Cookies.set("Authorization", this.ticket);
+        //clear hash with access token
+        location.href = this.clearHash(location.href);
     }
     else {
         this.ticket = fjs.utils.Cookies.get("Authorization");
@@ -34,7 +36,7 @@ fjs.hud.FDPDataManager = function() {
 
     this.getLogoutUrl = function() {
         return fjs.fdp.CONFIG.SERVER.loginURL+"?response_type=token" +
-            "&redirect_uri="+encodeURIComponent(location.href)
+            "&redirect_uri="+encodeURIComponent(this.clearHash(location.href))
             +"&display=page"
             +"&client_id=web.hud.fonality.com"
             +"&lang=eng"
@@ -46,6 +48,15 @@ fjs.hud.FDPDataManager = function() {
     }
     this.init();
 };
+
+fjs.hud.FDPDataManager.prototype.clearHash = function(href){
+    var ind = href.indexOf('#');
+    if(ind > 0) // remove tail
+    {
+        return href.substring(0, ind);
+    }
+    return href;
+}
 
 fjs.hud.FDPDataManager.prototype.init = function() {
     var context = this;
