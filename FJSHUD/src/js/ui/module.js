@@ -22,7 +22,7 @@ hud_web.config(['$routeProvider', function($routeProvider) {
 
 hud_web.controller("MainController", ['$scope', 'DataManager', fjs.ui.MainController]);
 //hud_web.controller("MeWidgetController", fjs.ui.MeWidgetController);
-//hud_web.controller("LocationsController", fjs.ui.LocationsController);
+hud_web.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);
 //hud_web.controller("LeftBarController", fjs.ui.LeftBarController);
 //hud_web.controller("AllContactsController", fjs.ui.AllContactsController);
 //hud_web.controller("LeftBarCallsController", fjs.ui.LeftBarCallsController);

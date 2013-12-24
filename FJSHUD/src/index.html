@@ -32,6 +32,7 @@
     <script src="js/ui/controllers/MainController.js"></script>
     <script src="js/ui/controllers/TopNavigationController.js"></script>
     <script src="js/ui/controllers/MeWidgetController.js"></script>
+    <script src="js/ui/controllers/LocationsController.js"></script>
 
     <script src="js/ui/module.js"></script>
 
@@ -104,7 +105,7 @@
             <div class="TopBar2ItemAppIcon">
                 <div class="Avatar AvatarNormal">
                     <img class="AvatarImgPH" onerror="this.src='img/Generic-Avatar-Small.png'"
-                         data-ng-src="{{getMeAvatarUrl()}}">
+                         data-ng-src="{{model.getMyAvatarUrl(38, 38)}}">
 
                     <div class="AvatarForeground AvatarInteractable"></div>
                 </div>
@@ -124,6 +125,14 @@
                 <div class="XButton XButtonNormal" data-ng-click="logout()"><span>Sign out</span>
                     <div class="logout-ico"></div>
                 </div>
+            </div>
+            <div class="TopBarMeStatus-row">
+                <span>Me in (4)</span>
+                <div class="ListRowStatusIcon Small XIcon-QueueStatus LoggedIn"></div>
+            </div>
+            <div class="TopBarMeStatus-row">
+                <span>{{ model.getMyChatStatus() }}</span>
+                <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{ model.getMyChatStatus() }}"></div>
             </div>
         </div>
     </div>

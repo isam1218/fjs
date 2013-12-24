@@ -6,14 +6,10 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
     /**
      * @type {fjs.hud.MeFeedModel}
      */
-    var meModel = dataManager.getModel("me");
-    meModel.addListener("complete", function(){
+    $scope.model = dataManager.getModel("me");
+    $scope.model.addListener("complete", function(){
         $scope.$safeApply();
     });
-
-    $scope.getMeAvatarUrl = function(){
-        return meModel.getMyAvatarUrl(38, 38);
-    };
 
     $scope.appIcons = [
         {title:"Conferencing", url:"#/conferences", key:"Conferences"}
@@ -23,7 +19,7 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
 
 
     $scope.$on("$destroy", function() {
-        meModel.removeListener("complete", $scope.$safeApply);
+        $scope.model.removeListener("complete", $scope.$safeApply);
     });
 
 };

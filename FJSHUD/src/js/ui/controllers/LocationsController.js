@@ -3,18 +3,18 @@
  */
 namespace("fjs.ui");
 
-fjs.ui.LocationsController = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
-    var dataProvider = new fjs.fdp.FDPDataProvider();
-    var locationsModel = dataProvider.getModel("locations");
-    var meModel = dataProvider.getModel("me");
+fjs.ui.LocationsController = function($scope, $element, dataManager) {
+    fjs.ui.Controller.call(this, $scope);
+
+    var locationsModel = dataManager.getModel("locations");
+    var meModel = dataManager.getModel("me");
     $scope.locations = locationsModel.items;
     $scope.setLocation = function(locationId){
-        dataProvider.sendAction("locations", "select", {"a.locationId":meModel.itemsByKey.current_location.propertyValue = locationId});
+        dataManager.sendAction("locations", "select", {"a.locationId":meModel.itemsByKey["current_location"].propertyValue = locationId});
     };
     $scope.getCurrentLocationTitle = function() {
         var currentLocation;
-        if(meModel.itemsByKey.current_location && (currentLocation = locationsModel.items[meModel.itemsByKey.current_location.propertyValue])) {
+        if(meModel.itemsByKey["current_location"] && (currentLocation = locationsModel.items[meModel.itemsByKey["current_location"].propertyValue])) {
             return currentLocation.name+" ("+currentLocation.phone+")";
         }
         else {
@@ -22,8 +22,8 @@ fjs.ui.LocationsController = function($scope) {
         }
     }
     $scope.getCurrentLocationId = function() {
-        return meModel.itemsByKey.current_location && meModel.itemsByKey.current_location.propertyValue;
+        return meModel.itemsByKey["current_location"] && meModel.itemsByKey["current_location"].propertyValue;
     }
 };
 
-fjs.ui.LocationsController.extends(fjs.ui.ControllerBase);
+fjs.ui.LocationsController.extend(fjs.ui.Controller);

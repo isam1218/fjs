@@ -3045,7 +3045,7 @@ input.text.ToolBarSearchItemInput
     position : absolute;
     top : 4px;
     left : 320px;
-    right : 120px;
+    right : 0px;
     bottom : 0px;
 }
 .TopBarIcon

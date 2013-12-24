@@ -39,7 +39,7 @@ fjs.hud.FDPDataManager = function() {
             +"&client_id=web.hud.fonality.com"
             +"&lang=eng"
             +"&revoke_token="+this.ticket;
-    }
+    };
 
     if(!this.ticket) {
         location.href = this.getLogoutUrl();

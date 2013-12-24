@@ -33,7 +33,11 @@ fjs.hud.MeFeedModel.prototype.onEntryChange = function(data) {
     data.entry = item;
     this.fireEvent("push", data);
 };
-
+/**
+ * @param {number} width
+ * @param {number} height
+ * @returns {string}
+ */
 fjs.hud.MeFeedModel.prototype.getMyAvatarUrl = function(width, height) {
     var myPid = this.getMyPid();
     if(myPid) {
@@ -43,9 +47,17 @@ fjs.hud.MeFeedModel.prototype.getMyAvatarUrl = function(width, height) {
         return "img/Generic-Avatar-Small.png";
     }
 };
-
+/**
+ * @returns {string=}
+ */
 fjs.hud.MeFeedModel.prototype.getMyPid = function() {
     return this.itemsByKey["my_pid"] && this.itemsByKey["my_pid"].propertyValue;
+};
+/**
+ * @returns {string}
+ */
+fjs.hud.MeFeedModel.prototype.getMyChatStatus = function() {
+   return this.itemsByKey.chat_status.propertyValue;
 };
 
 
