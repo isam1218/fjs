@@ -62,6 +62,9 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
         case 'locations':
             return new fjs.fdp.ProxyModel(['locations', 'location_status']);
         break;
+        case 'mycalls':
+            return new fjs.fdp.ProxyModel(['mycalls', 'mycalldetails']);
+        break;
         default :
             return new fjs.fdp.ProxyModel([feedName]);
     }
