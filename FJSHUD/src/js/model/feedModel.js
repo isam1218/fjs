@@ -56,7 +56,7 @@ fjs.hud.FeedModel.prototype.onEntryDeletion = function(data) {
 fjs.hud.FeedModel.prototype.onEntryChange = function(data) {
     var entry = this.items[data.xpid];
     if(!entry) {
-        entry = this.items[data.xpid] = new fjs.hud.EntryModel(data.entry);
+        entry = this.items[data.xpid] = this.createEntry(data.entry);
         this.order.push(entry);
     }
     else {
@@ -100,4 +100,8 @@ fjs.hud.FeedModel.prototype.fireEvent = function(eventType, data) {
                 listeners[i](data);
         }
     }
+};
+
+fjs.hud.FeedModel.prototype.createEntry = function(obj) {
+    return new fjs.hud.EntryModel(obj);
 };

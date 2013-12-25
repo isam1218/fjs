@@ -90,9 +90,9 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
 //            case "locations":
 //                this.feeds[feedName] = new fjs.fdp.LocationsFeedModel(this);
 //                break;
-//            case "contacts":
-//                this.feeds[feedName] = new fjs.fdp.ContactsFeedModel(this);
-//                break;
+            case "contacts":
+                this.feeds[feedName] = new fjs.hud.ContactsFeedModel(this);
+                break;
 //            case "mycalls":
 //                this.feeds[feedName] = new fjs.fdp.MyCallsFeedModel(this);
 //                break;

@@ -51,13 +51,31 @@ fjs.hud.MeFeedModel.prototype.getMyAvatarUrl = function(width, height) {
  * @returns {string=}
  */
 fjs.hud.MeFeedModel.prototype.getMyPid = function() {
-    return this.itemsByKey["my_pid"] && this.itemsByKey["my_pid"].propertyValue;
+    var entry = this.itemsByKey["my_pid"];
+    return entry && entry.propertyValue;
 };
 /**
  * @returns {string}
  */
 fjs.hud.MeFeedModel.prototype.getMyChatStatus = function() {
-   return this.itemsByKey["chat_status"] && this.itemsByKey["chat_status"].propertyValue;
+    var entry = this.itemsByKey["chat_status"]
+   return entry && entry.propertyValue;
 };
+
+/**
+ * @returns {string}
+ */
+fjs.hud.MeFeedModel.prototype.getMyAgentStatus = function() {
+    var entry = this.itemsByKey["queue_agent_status"];
+    return entry && entry.propertyValue;
+};
+/**
+ * @returns {number=}
+ */
+fjs.hud.MeFeedModel.prototype.getMyAgentStatusDetails = function() {
+    var entry = this.itemsByKey["queue_list_login"];
+    return entry && entry.propertyValue.split(",").length;
+};
+
 
 
