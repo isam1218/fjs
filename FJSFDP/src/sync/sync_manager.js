@@ -714,7 +714,7 @@
     fjs.fdp.SyncManager.prototype.fillHistoryVersions = function (feedName, filter, count, _historyVersions, callback) {
         if (this.db) {
             var context = this;
-            this.db.selectByIndex2("historyversions", {key: "feedName", value: feedName}, {key: "filter", value: filter}, function (item) {
+            this.db.selectByIndex("historyversions", {"feedName": feedName, "filter": filter}, function (item) {
                 _historyVersions.push(item["source"] + ":" + item["version"]);
             }, function () {
                 if(_historyVersions.length==0){

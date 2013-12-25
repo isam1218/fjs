@@ -111,7 +111,53 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
     var objectStore = this.db.createObjectStore(name, {keyPath: key});
     if(indexes) {
         for(var i=0; i< indexes.length; i++) {
-            objectStore.createIndex((typeof indexes[i]=="string")?indexes[i]:indexes[i].join(','), indexes[i], { unique: false });
+            if(Object.prototype.toString.call(indexes[i]) == "[object Array]") {
+                if(fjs.utils.Browser.isIE()) {
+                    objectStore.createIndex(indexes[i].join(","), indexes[i].join(","), { unique: false });
+                }
+                else {
+                    objectStore.createIndex(indexes[i].join(","), indexes[i], { unique: false });
+                }
+            }
+            else {
+                objectStore.createIndex(indexes[i], indexes[i], { unique: false });
+            }
+        }
+    }
+};
+
+/**
+ * @param {IDBObjectStore} store
+ * @private
+ */
+fjs.db.IndexedDBProvider.prototype.IEGetMultipleIndexes = function(store) {
+    var multipleIndexes = {}
+    for(var i=0; i<store.indexNames.length; i++) {
+        if(/,/.test(store.indexNames[i])) {
+            multipleIndexes[store.indexNames[i]] = store.indexNames[i].split(",");
+        }
+    }
+    return multipleIndexes;
+};
+
+fjs.db.IndexedDBProvider.prototype.IEApplyMultipleIndexesForItem = function(indexes, item) {
+    for(var key in indexes) {
+        if(indexes.hasOwnProperty(key)) {
+            var index = indexes[key];
+            var fields = [];
+            for(var i=0; i<index.length; i++) {
+                var val = item[index[i]]!=null ? item[index[i]] : "";
+                fields.push(val);
+            }
+            item[key] = fields.join(",");
+        }
+    }
+};
+
+fjs.db.IndexedDBProvider.prototype.IEClearMultipleIndexesForItem = function(indexes, item) {
+    for(var key in indexes) {
+        if(indexes.hasOwnProperty(key)) {
+            delete item[key];
         }
     }
 };
@@ -123,7 +169,13 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
  */
 fjs.db.IndexedDBProvider.prototype.insertOne = function(tableName, item, callback) {
     var trans = this.db.transaction([tableName], "readwrite");
+    /**
+     * @type {IDBObjectStore}
+     */
     var store = trans.objectStore(tableName);
+    if(fjs.utils.Browser.isIE()) {
+        this.IEApplyMultipleIndexesForItem(this.IEGetMultipleIndexes(store), item);
+    }
     var request = store.put(item);
 
     request.onsuccess = function(e) {
@@ -143,8 +195,16 @@ fjs.db.IndexedDBProvider.prototype.insertArray = function(tableName, items, call
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var count = items.length;
+    var multipleIndexes = null;
+    if(fjs.utils.Browser.isIE()) {
+        multipleIndexes = this.IEGetMultipleIndexes(store);
+    }
     for(var i=0; i<items.length; i++) {
-    var request = store.put(items[i]);
+        var item = items[i];
+        if(multipleIndexes) {
+           this.IEApplyMultipleIndexesForItem(multipleIndexes, item);
+        }
+    var request = store.put(item);
         request.onsuccess = function(e) {
             count--;
             if(callback && count==0) {
@@ -181,11 +241,16 @@ fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callba
  * @param {function(Array)} allCallback
  */
 fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
+    var context =this;
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var keyRange = this.IDBKeyRange.lowerBound(0);
     var cursorRequest = store.openCursor(keyRange);
     var rows=[];
+    var multipleIndexes = null;
+    if(fjs.utils.Browser.isIE()) {
+        multipleIndexes = this.IEGetMultipleIndexes(store);
+    }
     cursorRequest.onsuccess = function(e) {
         var result = e.target.result;
 
@@ -195,10 +260,14 @@ fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback,
             }
             return;
         }
-        rows.push(result.value);
+        var row = result.value;
+        if(multipleIndexes) {
+            context.IEClearMultipleIndexesForItem(multipleIndexes, row);
+        }
+        rows.push(row);
 
         if(itemCallback) {
-            itemCallback(result.value);
+            itemCallback(row);
         }
         result.continue();
     };
@@ -208,18 +277,34 @@ fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback,
 /**
  *
  * @param {string} tableName
- * @param {{key:string, value:*}} rule
+ * @param {*} rules Map key->value
  * @param {Function} itemCallback
  * @param {function(Array)} allCallback
  */
-fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
-
-    var indexName = rule.key;
-    var indexValue = rule.value;
+fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, itemCallback, allCallback) {
+    var context =this;
+    var keys = [];
+    var values = [];
+    for(var key in rules) {
+        if(rules.hasOwnProperty(key)) {
+            keys.push(key);
+            values.push(rules[key]);
+        }
+    }
+    if(values.length==1) {
+        values = values[0];
+    }
+    else if(fjs.utils.Browser.isIE()) {
+        values = values.join(",");
+    }
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
-    var index = store.index(indexName);
-    var singleKeyRange = IDBKeyRange.only(indexValue);
+    var multipleIndexes = null;
+    if(fjs.utils.Browser.isIE()) {
+        multipleIndexes = this.IEGetMultipleIndexes(store);
+    }
+    var index = store.index(keys.join(","));
+    var singleKeyRange = IDBKeyRange.only(values);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
     cursorRequest.onsuccess = function(e) {
@@ -231,43 +316,14 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rule, ite
             }
             return;
         }
-        rows.push(result.value);
+        var row = result.value;
+        if(multipleIndexes) {
+            context.IEClearMultipleIndexesForItem(multipleIndexes, row);
+        }
+        rows.push(row);
 
         if(itemCallback) {
-            itemCallback(result.value);
-        }
-        result.continue();
-    };
-    cursorRequest.onerror = this.db.onerror;
-};
-
-/**
- *
- * @param {string} tableName
- * @param {{key:string, value:*}} rule1
- * * @param {{key:string, value:*}} rule2
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
- */
-fjs.db.IndexedDBProvider.prototype.selectByIndex2 = function(tableName, rule1, rule2, itemCallback, allCallback) {
-
-    var trans = this.db.transaction([tableName], "readwrite");
-    var store = trans.objectStore(tableName);
-    var cursorRequest = store.index(rule1.key + "," + rule2.key).openCursor(IDBKeyRange.only([rule1.value, rule2.value]));
-    var rows=[];
-    cursorRequest.onsuccess = function(e) {
-        var result = e.target.result;
-
-        if(!!result == false) {
-            if(allCallback) {
-                allCallback(rows);
-            }
-            return;
-        }
-        rows.push(result.value);
-
-        if(itemCallback) {
-            itemCallback(result.value);
+            itemCallback(row);
         }
         result.continue();
     };
@@ -280,12 +336,18 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex2 = function(tableName, rule1, r
  * @param {Function} callback
  */
 fjs.db.IndexedDBProvider.prototype.selectByKey = function(tableName, key, callback) {
+    var context = this;
     var transaction = this.db.transaction([tableName]);
-    var objectStore = transaction.objectStore(tableName);
-    var request = objectStore.get(key);
+    var store = transaction.objectStore(tableName);
+    var request = store.get(key);
     request.onerror = this.db.onerror;
     request.onsuccess = function() {
-        callback(request.result);
+        var row = request.result;
+        if(fjs.utils.Browser.isIE()) {
+           var multipleIndexes = context.IEGetMultipleIndexes(store);
+            context.IEClearMultipleIndexesForItem(multipleIndexes, row);
+        }
+        callback(row);
     };
 };
 /**

@@ -82,26 +82,17 @@ fjs.db.IDBProvider.prototype.selectAll = function(tableName, itemCallback, allCa
 
 };
 /**
- * @param {string} tableName
- * @param {{key:string, value:*}} rule
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
- */
-fjs.db.IDBProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
-
-};
-
-/**
  *
  * @param {string} tableName
- * @param {{key:string, value:*}} rule1
- * @param {{key:string, value:*}} rule2
+ * @param {*} rules Map key->value
  * @param {Function} itemCallback
  * @param {function(Array)} allCallback
  */
-fjs.db.WebSQLProvider.prototype.selectByIndex2 = function(tableName, rule1, rule2, itemCallback, allCallback) {
+fjs.db.IDBProvider.prototype.selectByIndex = function(tableName, rules, itemCallback, allCallback) {
 
 };
+
+
 
 /**
  * @param {string} tableName

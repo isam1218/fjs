@@ -11,15 +11,15 @@ describe("IndexedDB", function() {
                 this.f3 = f3;
                 this.f4 = f4;
             };
-            var doneFlag = false, item1, item2, item3, allItems, filteredItems1;
+            var doneFlag = false, item1, item2, item3, allItems, filteredItems1, filteredItems2;
 
             runs(function(){
                 var idbP = new fjs.db.IndexedDBProvider(window);
 
                 idbP.declareTable("tTest1", "id", ["f1", "f2"]);
-                idbP.declareTable("tTest2", "id", ["f3", "f4"]);
+                idbP.declareTable("tTest2", "id", ["f3", "f4", ["f3", "f4"]]);
 
-                idbP.open('dbTest', 1, function(){
+                idbP.open('dbTest',5, function(){
                     //Clear
                     idbP.deleteByKey("tTest1", null, function(){});
                     idbP.deleteByKey("tTest2", null, function(){});
@@ -39,10 +39,15 @@ describe("IndexedDB", function() {
                         }, function(items){
                             allItems = items;
                         });
-                        idbP.selectByIndex('tTest2', {key:"f3", value:3}, function(item){
+                        idbP.selectByIndex('tTest2', {"f3":3}, function(item){
                             item2 = item;
                         }, function(items){
                             filteredItems1 = items;
+                        });
+                        idbP.selectByIndex('tTest2', {"f3":3, "f4":"test3"}, function(item){
+                            item3 = item;
+                        }, function(items){
+                            filteredItems2 = items;
                             doneFlag = true;
                         });
                     });
@@ -61,6 +66,9 @@ describe("IndexedDB", function() {
                 expect(1).toBe(filteredItems1.length);
                 expect("test3").toBe(item2.f4);
                 expect("3").toBe(item2.id);
+                expect(1).toBe(filteredItems2.length);
+                expect("test3").toBe(item3.f4);
+                expect("3").toBe(item3.id);
             });
         }
     });

@@ -207,13 +207,20 @@ fjs.db.WebSQLProvider.prototype.selectAll = function(tableName, itemCallback, al
 /**
  *
  * @param {string} tableName
- * @param {{key:string, value:*}} rule
+ * @param {*} rules Map key->value
  * @param {Function} itemCallback
  * @param {function(Array)} allCallback
  */
-fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
+fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rules, itemCallback, allCallback) {
+    var query = "SELECT data FROM " + tableName + " WHERE ";
+    var rulesArr = [];
+    for(var key in rules) {
+        if(rules.hasOwnProperty(key)) {
+            rulesArr.push(key+"='"+rules[key]+"'");
+        }
+    }
+    query += rulesArr.join(" AND ");
     this.db.transaction(function(tx){
-        var query = "SELECT data FROM " + tableName + " WHERE " + rule.key+"='"+rule.value+"'";
 
         tx.executeSql(query, [], function(tr, result){
             /**

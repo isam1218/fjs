@@ -39,7 +39,7 @@ describe("WebSQL", function() {
                         }, function(items){
                             allItems = items;
                         });
-                        idbP.selectByIndex('tTest2', {key:"f3", value:3}, function(item){
+                        idbP.selectByIndex('tTest2', {"f3":3}, function(item){
                             item2 = item;
                         }, function(items){
                             filteredItems1 = items;
