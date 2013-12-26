@@ -6,6 +6,7 @@ namespace("fjs.fdp")
  * @extends fjs.hud.EntryModel
  */
 fjs.hud.ContactEntryModel = function(obj) {
+
     fjs.hud.EntryModel.call(this, obj);
 };
 fjs.hud.ContactEntryModel.extend(fjs.hud.EntryModel);

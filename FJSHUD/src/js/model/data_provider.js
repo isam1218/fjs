@@ -162,5 +162,14 @@ fjs.hud.FDPDataManager.prototype.logout = function() {
     this.dataProvider.logout();
 };
 
+fjs.hud.FDPDataManager.prototype.sendFDPRequest = function(url, data, callback) {
+    data["t"] = "web";
+    data["alt"] = 'j';
+    var headers = {Authorization: "auth="+this.ticket, node:this.node};
+
+    var ajax = new fjs.ajax.XHRAjax();
+    ajax.send('POST', fjs.fdp.CONFIG.SERVER.serverURL+url, headers, data, callback);
+};
+
 
 

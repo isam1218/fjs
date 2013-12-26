@@ -1,0 +1,35 @@
+<div class="ExpandedToolBarHolder" data-ng-controller="AddContactPopupMenu" data-ng-class="{'WidgetTabEditMode':searchInput}">
+    <div class="ExpandedToolBar">
+        <div class="Cover"></div>
+        <div class="MenuWindowTitle">Add team member</div>
+        <!--  			<div class="ExpandedToolBarHelp">Click on contact to add</div> -->
+        <div class="SearchInputBox Add" data-ng-class="{'InSearch':searchInput}">
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" data-ng-model="searchInput" placeholder="Add someone" x-webkit-speech></div>
+            <div class="SearchInputBoxStateButton" data-ng-click="clearSearch()" fj-local-id="SearchInputBoxStateButton"><div class="SearchInputBoxStateButtonIcon"></div></div>
+        </div>
+        <div class="">
+            <div fj-local-id="contactsStream" ></div>
+        </div>
+        <div class="fj-scrollable SearchResults">
+            <div class="fj-content">
+                <div class="ListRow Small fj-hbox" data-ng-click="addContact(contact.xpid)" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in contacts | filter:{displayName:searchInput} |filter:filterFn | orderBy:'displayName'">
+                    <div class="AvatarSmall Avatar"><img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(40,40)}}">
+                        <div class="AvatarStatic AvatarForeground"></div>
+                        <div class="AvatarCustomPH"></div>
+                    </div>
+                    <div class="ListRowContent Small">
+                        <div class="fj-hbox ListRowTitle Small">
+                            <div class="fj-hbox-space name">{{ contact.displayName }}</div><div class="fj-hbox-cell link">{{ contact.primaryExtension}}</div>
+                        </div>
+                        <div class="fj-hbox ListRowStatus Small">
+                            <div class="fj-hbox-cell ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp}}">
+                                <div class="status-icon-inner"></div>
+                            </div>
+                            <div class="fj-hbox-space ListRowStatusText Small">{{contact.xmpp}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

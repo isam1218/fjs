@@ -13942,6 +13942,7 @@ body.FJTutorialOn .Widget
     bottom : 10px;
     left : 10px;
     right : 10px;
+    overflow-y: auto;
 }
 .widget-zoom-join
 {
