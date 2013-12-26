@@ -1,4 +1,4 @@
-describe("IndexedDB", function() {
+describe("IndexedDBProvider", function() {
     var dbName = 'dbTest';
     var dbVersion = 11;
 
@@ -46,7 +46,7 @@ describe("IndexedDB", function() {
 
     it("insertOne/selectByKey", function() {
         if(fjs.db.IndexedDBProvider.check(window)) {
-            var doneFlag
+            var doneFlag;
             /**
              * @type {TestModel1}
              */
@@ -100,15 +100,12 @@ describe("IndexedDB", function() {
                     }
                     db.insertArray("tTest1", items, function(){
                         db.selectAll("tTest1", function(item){
-                            /**
-                            * @type {TestModel1}
-                            */
-                            var _item = item;
-                            if(_item.id == '1') {
-                                item1 = _item;
+
+                            if(item.id == '1') {
+                                item1 = item;
                             }
-                            if(_item.id == '2') {
-                                item2 = _item
+                            if(item.id == '2') {
+                                item2 = item
                             }
                         },
                         function(items){
@@ -237,7 +234,6 @@ describe("IndexedDB", function() {
                     db.deleteByKey("tTest1", null, function(){});
                     db.deleteByKey("tTest2", null, function(){});
                     var items = [];
-                    var str = "";
                     for(var i=0; i<100;i++) {
                         var bv = !!(i%2);
                         items.push(new TestModel2(i+"", bv ? "123" : "321", "test"+i, bv));

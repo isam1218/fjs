@@ -36,6 +36,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
                  * @type {{key:string, indexes:Array}}
                  */
                 var table = context.tables[i];
+
                 context.createTable(i, table.key, table.indexes);
                 console.log(i+" table created");
             }
@@ -44,16 +45,18 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
     }
     else if(db.version!==version) {
         db.changeVersion(db.version, version, function(){
-            for(var i in context.tables) {
-                if(context.tables.hasOwnProperty(i)) {
-                    /**
-                     * @type {{key:string, indexes:Array}}
-                     */
-                    var table = context.tables[i];
-                    context.createTable(i, table.key, table.indexes);
+            context.clear(function(){
+                for(var i in context.tables) {
+                    if(context.tables.hasOwnProperty(i)) {
+                        /**
+                         * @type {{key:string, indexes:Array}}
+                         */
+                        var table = context.tables[i];
+                        context.createTable(i, table.key, table.indexes);
+                    }
                 }
-            }
-            callback(db);
+                callback(db);
+            });
         });
     }
     else {
@@ -70,7 +73,7 @@ fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
     this.db.transaction(function(tx) {
         var query = 'CREATE TABLE IF NOT EXISTS ';
         query += name + '(' + key + ' TEXT PRIMARY KEY';
-        query += indexes ? ', ' + indexes.join(" TEXT, ") + " TEXT": '' ;
+        query += (indexes.length > 0 ? ', ' + indexes.join(" TEXT, ") + " TEXT": '');
         query += ', data TEXT)';
         tx.executeSql(query);
         if(indexes) {
@@ -88,7 +91,23 @@ fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
  * @param {Array} indexes
  */
 fjs.db.WebSQLProvider.prototype.declareTable = function(name, key, indexes) {
-    this.tables[name] = {'key':key, 'indexes':indexes};
+    var _indexes = [];
+    if(indexes) {
+        for(var i=0; i<indexes.length; i++) {
+            if(Object.prototype.toString.call(indexes[i]) != "[object Array]") {
+                _indexes.push(indexes[i]);
+            }
+            else {
+                for(var j=0; j<indexes[i].length; j++) {
+                    var ind = indexes[i][j];
+                    if(indexes.indexOf(ind)<0) {
+                        _indexes.push(ind);
+                    }
+                }
+            }
+        }
+    }
+    this.tables[name] = {'key':key, 'indexes':_indexes};
 };
 
 /**
@@ -116,7 +135,7 @@ fjs.db.WebSQLProvider.prototype.insertOne = function(tableName, item, callback) 
             }
         }
         query+=JSON.stringify(item)+"')";
-        tx.executeSql(query, [],  callback, function(e){new Error(e)});
+        tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
     });
 };
 
@@ -153,7 +172,7 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
                 if(callback && count==0) {
                     callback();
                 }
-            }, function(e){new Error(e)});
+            }, function(e){throw (new Error(e))});
         }
     });
 };
@@ -173,7 +192,7 @@ fjs.db.WebSQLProvider.prototype.deleteByKey = function(tableName, key, callback)
                 if(key!=null) {
                     query+= " WHERE " + table.key + " = '" + key +"'";
                 }
-            tx.executeSql(query, [],  callback, function(e){new Error(e)});
+            tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
         });
 };
 
@@ -201,7 +220,7 @@ fjs.db.WebSQLProvider.prototype.selectAll = function(tableName, itemCallback, al
                 }
                 allCallback(arr);
             }
-        }, function(e){new Error(e)});
+        }, function(e){throw (new Error(e))});
     });
 };
 /**
@@ -236,7 +255,7 @@ fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rules, itemC
                 }
                 allCallback(arr);
             }
-        }, function(e){new Error(e)});
+        }, function(e){throw (new Error(e))});
     });
 };
 
@@ -266,7 +285,7 @@ fjs.db.WebSQLProvider.prototype.selectByIndex2 = function(tableName, rule1, rule
                 }
                 allCallback(arr);
             }
-        }, function(e){new Error(e)});
+        }, function(e){throw (new Error(e))});
     });
 };
 
@@ -291,14 +310,14 @@ fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback)
                     callback(null);
                 }
             }
-        }, function(e){new Error(e)});
+        }, function(e){throw (new Error(e))});
     });
 };
 
 fjs.db.WebSQLProvider.prototype.clear = function(callback) {
     this.db.transaction(function(tx){
         var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
-        tx.executeSql(query, [],  callback, function(e){new Error(e)});
+        tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
     });
 };
 
