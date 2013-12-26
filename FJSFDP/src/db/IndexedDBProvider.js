@@ -32,7 +32,6 @@ fjs.db.IndexedDBProvider = function(globalObj) {
     this.IDBKeyRange = globalObj.IDBKeyRange || globalObj.webkitIDBKeyRange || globalObj.msIDBKeyRange;
     /**
      * @type {IDBDatabase}
-     * @private
      */
     this.db = null;
     /**
@@ -47,7 +46,7 @@ fjs.db.IndexedDBProvider = function(globalObj) {
  * @returns {boolean}
  */
 fjs.db.IndexedDBProvider.check= function(globalObj) {
-    return globalObj.indexedDB || globalObj.mozIndexedDB || globalObj.webkitIndexedDB || globalObj.msIndexedDB;
+    return !!(globalObj.indexedDB = (globalObj.indexedDB || globalObj.mozIndexedDB || globalObj.webkitIndexedDB || globalObj.msIndexedDB));
 };
 /**
  *
@@ -246,7 +245,7 @@ fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callba
 
 /**
  * @param {string} tableName
- * @param {Function} itemCallback
+ * @param {function(*)} itemCallback
  * @param {function(Array)} allCallback
  */
 fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {

@@ -1,4 +1,5 @@
 describe("WebSQL", function() {
+
     it("test1", function(){
         if(fjs.db.WebSQLProvider.check(window)) {
             var testModel1 = function(id, f1, f2) {
@@ -19,7 +20,7 @@ describe("WebSQL", function() {
                 idbP.declareTable("tTest1", "id", ["f1", "f2"]);
                 idbP.declareTable("tTest2", "id", ["f3", "f4"]);
 
-                idbP.open('dbTest', 1, function(){
+                idbP.open('dbTest', 10, function(){
                     //Clear
                     idbP.deleteByKey("tTest1", null, function(){});
                     idbP.deleteByKey("tTest2", null, function(){});

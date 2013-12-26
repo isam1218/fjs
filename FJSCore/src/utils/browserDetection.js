@@ -1,10 +1,8 @@
 namespace("fjs.utils");
-
-fjs.utils.Browser = {
-    _ieV: null
-    , getIEVersion: function ()
-    {
-        if(this._ieV==null) {
+(function(){
+    var _ieV = null;
+    function getIEVersion() {
+        if(_ieV==null) {
             var rv = -1;
             if (navigator.appName == 'Microsoft Internet Explorer')
             {
@@ -20,12 +18,15 @@ fjs.utils.Browser = {
                 if (re.exec(ua) != null)
                     rv = parseFloat( RegExp.$1 );
             }
-            return this._ieV = rv;
+            return _ieV = rv;
         }
-        return this._ieV;
+        return _ieV;
     }
+
+    fjs.utils.Browser = {
+    getIEVersion: getIEVersion
     , isIE: function() {
-        if(this.getIEVersion() != -1) {
+        if(getIEVersion() != -1) {
             return function(){return true; }
         }
         else {
@@ -33,7 +34,7 @@ fjs.utils.Browser = {
         }
     }()
     , isIE7: function() {
-        if(this.getIEVersion() == 7) {
+        if(getIEVersion() == 7) {
             return function(){return true;}
         }
         else {
@@ -41,7 +42,7 @@ fjs.utils.Browser = {
         }
     }()
     , isIE8: function() {
-        if(this.getIEVersion() == 8) {
+        if(getIEVersion() == 8) {
             return function(){return true;}
         }
         else {
@@ -49,7 +50,7 @@ fjs.utils.Browser = {
         }
     }()
     , isIE9: function() {
-        if(this.getIEVersion() == 9) {
+        if(getIEVersion() == 9) {
             return function(){return true;}
         }
         else {
@@ -57,7 +58,7 @@ fjs.utils.Browser = {
         }
     }()
     , isIE10: function() {
-        if(this.getIEVersion() == 10) {
+        if(getIEVersion() == 10) {
             return function(){return true;}
         }
         else {
@@ -65,7 +66,7 @@ fjs.utils.Browser = {
         }
     }()
     , isIE11: function() {
-        if(this.getIEVersion() == 11) {
+        if(getIEVersion() == 11) {
             return function(){return true;}
         }
         else {
@@ -105,3 +106,4 @@ fjs.utils.Browser = {
         }
     }()
 };
+})();
