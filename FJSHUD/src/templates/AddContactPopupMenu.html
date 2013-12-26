@@ -4,7 +4,7 @@
         <div class="MenuWindowTitle">Add team member</div>
         <!--  			<div class="ExpandedToolBarHelp">Click on contact to add</div> -->
         <div class="SearchInputBox Add" data-ng-class="{'InSearch':searchInput}">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" data-ng-model="searchInput" placeholder="Add someone" x-webkit-speech></div>
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" data-ng-keyup="keyUp($event)" data-ng-model="searchInput" placeholder="Add someone" x-webkit-speech></div>
             <div class="SearchInputBoxStateButton" data-ng-click="clearSearch()"><div class="SearchInputBoxStateButtonIcon"></div></div>
         </div>
         <div class="fj-scrollable SearchResults">

@@ -29,6 +29,11 @@ fjs.ui.AddContactMenuController = function($scope, $element, dataManager) {
     $scope.filterContactFn = function(contact){
         return contact.pass($scope.searchInput);
     }
+    $scope.keyUp = function(e){
+        if(e.keyCode==27){
+            $scope.clearSearch();
+        }
+    }
 };
 
 fjs.ui.AddContactMenuController.extend(fjs.ui.Controller);
