@@ -11,7 +11,7 @@ describe("WebSQL", function() {
                 this.f3 = f3;
                 this.f4 = f4;
             };
-            var doneFlag = false, item1, item2, item3, allItems, filteredItems1;
+            var doneFlag = false, item1, item2, item3, allItems, filteredItems1, filteredItems2;
 
             runs(function(){
                 var idbP = new fjs.db.WebSQLProvider(window);
@@ -43,6 +43,11 @@ describe("WebSQL", function() {
                             item2 = item;
                         }, function(items){
                             filteredItems1 = items;
+                        });
+                        idbP.selectByIndex('tTest2', {"f3":3, "f4":"test3"}, function(item){
+                            item3 = item;
+                        }, function(items){
+                            filteredItems2 = items;
                             doneFlag = true;
                         });
                     });
@@ -61,6 +66,9 @@ describe("WebSQL", function() {
                 expect(1).toBe(filteredItems1.length);
                 expect("test3").toBe(item2.f4);
                 expect("3").toBe(item2.id);
+                expect(1).toBe(filteredItems2.length);
+                expect("test3").toBe(item3.f4);
+                expect("3").toBe(item3.id);
             });
         }
     });
