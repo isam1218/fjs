@@ -7,7 +7,7 @@
             Video Collaboration
         </div>
     </div>
-    <div class="WidgetBody" fj-local-id="zoom-widget-body" data-ng-style="{display: bodyDisplay}">
+    <div class="WidgetBody" data-ng-style="{display: bodyDisplay}">
         <div class="ListSection">
             <div class="ListSectionHeaderTitle">Topic</div>
             <div class="widget-zoom-topic">
@@ -19,7 +19,7 @@
             <div class="ListSectionHeaderTitle">Join</div>
             <div class="SearchInputBox">
                 <div class="SearchInputBoxInputHolder">
-                    <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" fj-local-id="JoinInput" placeholder="Meeting ID" />
+                    <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="Meeting ID" />
                 </div>
             </div>
             <div data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue"><span>Join conference</span></div>
@@ -62,7 +62,7 @@
         <p>Your meeting will begin in 30 seconds. If your meeting doesn't begin automatically, please use this <a target="_blank" data-ng-href="{{startUrl}}">link</a></p>
         <p>Link to join: <br/><a target="_blank" data-ng-href="{{joinUrl}}">{{joinUrl}}</a></p>
     </div>
-    <div fj-local-id="widget-zoom-body-error" class="WidgetBody WidgetBodyStarted"  data-ng-style="{display: bodyErrorDisplay}">
+    <div class="WidgetBody WidgetBodyStarted"  data-ng-style="{display: bodyErrorDisplay}">
         <p><h2>Video meeting hasn't been created</h2></p>
         <p>Please check Zoom service availability.</p>
     </div>

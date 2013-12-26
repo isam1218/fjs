@@ -31,14 +31,14 @@ fjs.ui.ZoomWidgetController = function($scope, dataManager) {
     };
     $scope.filterFn = function(contact){
         return (context.addedContactsId.indexOf(contact.xpid)!=-1);
-    }
+    };
     $scope.deleteContact = function(contactId){
         var index = context.addedContactsId.indexOf(contactId);
         if (index != -1) {
             context.addedContactsId.splice(index, 1);
         }
         $scope.$broadcast('deleteContact', contactId);
-    }
+    };
     $scope.$on('addContact', function(e, contactId){
         context.addedContactsId.push(contactId);
     });

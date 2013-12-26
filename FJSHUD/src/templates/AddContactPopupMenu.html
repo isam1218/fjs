@@ -5,14 +5,11 @@
         <!--  			<div class="ExpandedToolBarHelp">Click on contact to add</div> -->
         <div class="SearchInputBox Add" data-ng-class="{'InSearch':searchInput}">
             <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" data-ng-model="searchInput" placeholder="Add someone" x-webkit-speech></div>
-            <div class="SearchInputBoxStateButton" data-ng-click="clearSearch()" fj-local-id="SearchInputBoxStateButton"><div class="SearchInputBoxStateButtonIcon"></div></div>
-        </div>
-        <div class="">
-            <div fj-local-id="contactsStream" ></div>
+            <div class="SearchInputBoxStateButton" data-ng-click="clearSearch()"><div class="SearchInputBoxStateButtonIcon"></div></div>
         </div>
         <div class="fj-scrollable SearchResults">
             <div class="fj-content">
-                <div class="ListRow Small fj-hbox" data-ng-click="addContact(contact.xpid)" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in contacts | filter:{displayName:searchInput} |filter:filterFn | orderBy:'displayName'">
+                <div class="ListRow Small fj-hbox" data-ng-click="addContact(contact.xpid)" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in contacts | filter:filterContactFn |filter:filterFn | orderBy:'displayName'">
                     <div class="AvatarSmall Avatar"><img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(40,40)}}">
                         <div class="AvatarStatic AvatarForeground"></div>
                         <div class="AvatarCustomPH"></div>

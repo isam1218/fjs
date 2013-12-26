@@ -21,11 +21,13 @@ fjs.ui.AddContactMenuController = function($scope, $element, dataManager) {
 
     });
     $scope.filterFn = function(contact){
-        //TODO: search by several fields
         return (meModel.getMyPid()!= contact.xpid) && (addedContactsId.indexOf(contact.xpid)==-1);
     }
     $scope.clearSearch = function(){
         $scope.searchInput='';
+    }
+    $scope.filterContactFn = function(contact){
+        return contact.pass($scope.searchInput);
     }
 };
 
