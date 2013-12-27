@@ -260,36 +260,6 @@ fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rules, itemC
 };
 
 /**
- *
- * @param {string} tableName
- * @param {{key:string, value:*}} rule1
- * @param {{key:string, value:*}} rule2
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
- */
-fjs.db.WebSQLProvider.prototype.selectByIndex2 = function(tableName, rule1, rule2, itemCallback, allCallback) {
-    this.db.transaction(function(tx){
-        var query = "SELECT data FROM " + tableName + " WHERE " + rule1.key+"='"+rule1.value+"' AND "+ rule2.key+"='"+rule2.value;
-
-        tx.executeSql(query, [], function(tr, result){
-            /**
-             * @type {Array}
-             */
-            var arr = [];
-            if(result.rows) {
-                for(var i=0; i<result.rows.length; i++) {
-                    var item = result.rows.item(i).data;
-                    item = JSON.parse(item);
-                    arr.push(item);
-                    itemCallback(item);
-                }
-                allCallback(arr);
-            }
-        }, function(e){throw (new Error(e))});
-    });
-};
-
-/**
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback
@@ -318,6 +288,38 @@ fjs.db.WebSQLProvider.prototype.clear = function(callback) {
     this.db.transaction(function(tx){
         var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
         tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
+    });
+};
+
+/**
+ * @param {string} tableName
+ * @param {*} rules
+ * @param {Function} callback
+ */
+fjs.db.WebSQLProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
+    this.db.transaction(function(tx){
+        var query = tableName;
+        if(rules!=null) {
+            query+= " WHERE ";
+            var rulesArr = [];
+            for(var key in rules) {
+                if(rules.hasOwnProperty(key)) {
+                    rulesArr.push(key+"='"+rules[key]+"'");
+                }
+            }
+            query += rulesArr.join(" AND ");
+        }
+        tx.executeSql('SELECT data FROM ' + query, [], function(tr, result){
+            var arr = [];
+            if(result.rows) {
+                for(var i=0; i<result.rows.length; i++) {
+                    var item = result.rows.item(i).data;
+                    item = JSON.parse(item);
+                    arr.push(item);
+                }
+                tx.executeSql('DELETE FROM ' + query, [],  callback(arr), function(e){throw (new Error(e))});
+            }
+        }, function(e){throw (new Error(e))});
     });
 };
 

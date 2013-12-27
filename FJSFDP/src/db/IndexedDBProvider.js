@@ -133,7 +133,7 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
  * @private
  */
 fjs.db.IndexedDBProvider.prototype.IEDeclareMultipleIndexes = function(indexes) {
-    var multipleIndexes = {}
+    var multipleIndexes = {};
     for(var i=0; i<indexes.length; i++) {
         if(Object.prototype.toString.call(indexes[i]) == "[object Array]") {
             multipleIndexes[indexes[i].join(",")] = indexes[i];
@@ -366,4 +366,53 @@ fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
         };
         request.onerror = this.db.onerror;
     }
+};
+
+/**
+ * @param {string} tableName
+ * @param {*} rules
+ * @param {Function} callback
+ */
+fjs.db.IndexedDBProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
+    var context =this;
+    var keys = [];
+    var values = [];
+    for(var key in rules) {
+        if(rules.hasOwnProperty(key)) {
+            keys.push(key);
+            values.push(rules[key]);
+        }
+    }
+    if(values.length==1) {
+        values = values[0];
+    }
+    else if(fjs.utils.Browser.isIE()) {
+        values = values.join(",");
+    }
+    var trans = this.db.transaction([tableName], "readwrite");
+    var store = trans.objectStore(tableName);
+    var index = store.index(keys.join(","));
+    var singleKeyRange = IDBKeyRange.only(values);
+    var cursorRequest = index.openCursor(singleKeyRange);
+    var rows=[];
+
+    cursorRequest.onsuccess = function(e) {
+        var result = e.target.result;
+        if(!!result == false) {
+            if(callback) {
+                callback(rows);
+            }
+            return;
+        }
+        else {
+            var row = result.value;
+            if(fjs.utils.Browser.isIE()) {
+                context.IEClearMultipleIndexesForItem(tableName, row);
+            }
+            rows.push(row);
+            result.delete();
+            result.continue();
+        }
+    };
+    cursorRequest.onerror = this.db.onerror;
 };

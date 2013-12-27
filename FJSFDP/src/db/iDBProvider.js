@@ -72,6 +72,14 @@ fjs.db.IDBProvider.prototype.insertArray = function(tableName, items, callback) 
 fjs.db.IDBProvider.prototype.deleteByKey = function(tableName, key, callback) {
 
 };
+/**
+ * @param {string} tableName
+ * @param {*} rules
+ * @param {Function} callback
+ */
+fjs.db.IDBProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
+
+};
 
 /**
  * @param {string} tableName

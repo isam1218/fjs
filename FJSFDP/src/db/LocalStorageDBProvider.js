@@ -108,3 +108,12 @@ fjs.db.LocalStorageDbProvider.prototype.selectByKey = function(tableName, key, c
 fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
 
 };
+
+/**
+ * @param {string} tableName
+ * @param {*} rules
+ * @param {Function} callback
+ */
+fjs.db.LocalStorageDbProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
+
+};

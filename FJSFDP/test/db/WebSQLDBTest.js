@@ -34,7 +34,7 @@ describe("WebSQLProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 10000);
+            }, "Flag should be set", 2000);
             runs(function(){
                 expect(true).toBe(doneFlag);
             });
@@ -67,7 +67,7 @@ describe("WebSQLProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 10000);
+            }, "Flag should be set", 2000);
 
             runs(function(){
                 expect(true).toBe(doneFlag);
@@ -115,7 +115,7 @@ describe("WebSQLProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 10000);
+            }, "Flag should be set", 2000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(100).toBe(itemsCount);
@@ -162,7 +162,7 @@ describe("WebSQLProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 10000);
+            }, "Flag should be set", 2000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(1).toBe(itemsCount);
@@ -206,7 +206,7 @@ describe("WebSQLProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 10000);
+            }, "Flag should be set", 2000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(1).toBe(itemsCount);
@@ -249,11 +249,52 @@ describe("WebSQLProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 10000);
+            }, "Flag should be set", 2000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(50).toBe(itemsCount);
             });
         }
     });
+
+    it("deleteByIndex", function(){
+        if(fjs.db.WebSQLProvider.check(window)) {
+            var doneFlag, itemsCount, deletedItemsCount;
+            /**
+             * @type {TestModel1}
+             */
+            runs(function(){
+                var db = new fjs.db.WebSQLProvider(window);
+                db.declareTable("tTest1", "id", ["field1", "field2"]);
+                db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
+                db.open(dbName, dbVersion , function(){
+                    db.deleteByKey("tTest1", null, function(){});
+                    db.deleteByKey("tTest2", null, function(){});
+                    var items = [];
+                    for(var i=0; i<100;i++) {
+                        var bv = !!(i%2);
+                        items.push(new TestModel2(i+"", bv ? "123" : "321", "test"+i, bv));
+                    }
+                    db.insertArray("tTest2", items, function(){
+                        db.deleteByIndex("tTest2", {"field3":"123"}, function(delItems){
+                            deletedItemsCount = delItems.length;
+                            db.selectAll("tTest2", function(item){}, function(items){
+                                itemsCount = items.length;
+                                doneFlag = true;
+                            });
+                        });
+                    });
+                });
+            });
+            waitsFor(function() {
+                return doneFlag;
+            }, "Flag should be set", 2000);
+            runs(function(){
+                expect(true).toBe(doneFlag);
+                expect(50).toBe(itemsCount);
+                expect(50).toBe(deletedItemsCount);
+            });
+        }
+    });
+
 });
