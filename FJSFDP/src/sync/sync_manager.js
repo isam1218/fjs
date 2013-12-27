@@ -282,7 +282,7 @@
             callback(data[feedName] = this.versions[feedName]);
         }
         if(this.db) {
-            this.db.selectByIndex("versions", {key:"feedName", value:feedName}, function(item) {
+            this.db.selectByIndex("versions", {feedName:feedName}, function(item) {
                 versionsArr.push(item.source+"@"+item.version);
             }, function() {
                 context.versions[feedName] = data[feedName] = versionsArr.join(",");
@@ -473,9 +473,9 @@
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data, callback) {
         var context = this;
         data["action"] = actionName;
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(responce, isOK){
+        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(request, responce, isOK){
             if(callback) {
-                var _responce = context.parseFdpData(responce);
+                var _responce = JSON.parse(responce);
                 callback(isOK && _responce.result == "OK");
             }
         });
@@ -729,7 +729,7 @@
     fjs.fdp.SyncManager.prototype.fillEmptyHistoryVersionsFromFeed = function(feedName, _historyVersions, callback) {
         if(this.db) {
             //fill 0 versions for known sources
-            this.db.selectByIndex("versions", {key:"feedName", value:feedName}, function(item) {
+            this.db.selectByIndex("versions", {feedName:feedName}, function(item) {
                 _historyVersions.push(item["source"]+":0");
             }, callback);
         }

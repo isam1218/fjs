@@ -5,9 +5,9 @@ var hud_web = angular.module('HUDWeb', ['ngRoute', 'HUD_model']);
 hud_web.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/me', {templateUrl: 'templates/MeWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
-//        when('/conferences', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
-//        when('/conferences/my', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
-//        when('/conferences/all', {templateUrl: 'templates/AllConferencesWidgetController.html', controller: fjs.ui.ConferencesWidgetController}).
+        when('/conferences', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
+        when('/conferences/my', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
+        when('/conferences/all', {templateUrl: 'templates/AllConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
 //        when('/contact/:contactId', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
 //        when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
 //        when('/contact/:contactId/groups', {templateUrl: 'templates/ContactWidgetGroupsController.html', controller: fjs.ui.ContactWidgetGroupsController}).
@@ -25,6 +25,7 @@ hud_web.controller("MainController", ['$scope', 'DataManager', fjs.ui.MainContro
 //hud_web.controller("MeWidgetController", fjs.ui.MeWidgetController);
 hud_web.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);
 hud_web.controller("AddContactPopupMenu", ['$scope', '$element', 'DataManager', fjs.ui.AddContactMenuController]);
+hud_web.controller("SortMenuController", ['$scope', '$element', fjs.ui.SortMenuController]);
 //hud_web.controller("LeftBarController", fjs.ui.LeftBarController);
 //hud_web.controller("AllContactsController", fjs.ui.AllContactsController);
 //hud_web.controller("LeftBarCallsController", fjs.ui.LeftBarCallsController);

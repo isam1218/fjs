@@ -18,6 +18,8 @@ fjs.hud.FeedModel = function(feedName, dataManager) {
         "start":[]
         , "change":[]
         , "complete": []
+        , "push": []
+        , "delete": []
     };
     this.init();
 };
@@ -104,4 +106,7 @@ fjs.hud.FeedModel.prototype.fireEvent = function(eventType, data) {
 
 fjs.hud.FeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.EntryModel(obj);
+};
+fjs.hud.FeedModel.prototype.getEntry = function(xpid) {
+    return this.items[xpid];
 };

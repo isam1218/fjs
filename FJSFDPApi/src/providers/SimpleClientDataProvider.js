@@ -12,6 +12,9 @@ fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
     fjs.api.ClientDataProviderBase.call(this, ticket, node);
     var SYNCHRONIZATION_URL = "js/lib/fjs.fdp.debug.js";
     var script = document.createElement('script');
+    /**
+     * @type {fjs.fdp.DataManager}
+     */
     this.dataManager = null;
 
     this.onSync = function(data) {

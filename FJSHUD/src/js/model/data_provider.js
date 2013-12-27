@@ -102,9 +102,9 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
 //            case "groupcontacts":
 //                this.feeds[feedName] = new fjs.fdp.GroupsMembersFeedModel(this);
 //                break;
-//            case "conferences":
-//                this.feeds[feedName] = new fjs.fdp.ConferencesFeedModel(this);
-//                break;
+            case "conferences":
+                this.feeds[feedName] = new fjs.hud.ConferenceFeedModel(this);
+                break;
             default:
                 this.feeds[feedName] = new fjs.hud.FeedModel(feedName, this);
         }

@@ -17,11 +17,11 @@
             </div>
             <div class="fj-hbox WidgetStatEntry c10">
                 <div class="fj-hbox-cell Label">Talking:</div>
-                <div class="fj-hbox-space Value">{{membersOrder.length}}</div>
+                <div class="fj-hbox-space Value">{{conferenceMembers.length}}</div>
             </div>
             <div class="fj-hbox WidgetStatEntry c11">
                 <div class="fj-hbox-cell Label">Total:</div>
-                <div class="fj-hbox-space Value">{{membersOrder.length}}</div>
+                <div class="fj-hbox-space Value">{{conferenceMembers.length}}</div>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
                     <span>Sort by Activity</span>
                     <div class="XButtonDropDownArrow"></div>
                 </div>
-                <div class="XButtonWide XButton XButtonNormal disabled-false"><span>Find Free Room &amp; Join</span></div>
+                <div class="XButtonWide XButton XButtonNormal disabled-{{isFindFreeAndJoinDisabled}}" data-ng-click="findFreeAndJoinDisabled()"><span>Find Free Room &amp; Join</span></div>
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
                         <input class="SearchInputBoxInput" data-ng-model="query" type="text" x-webkit-speech="" placeholder="Search">
@@ -54,7 +54,11 @@
             </div>
             <div class="ListView WithToolBar">
                 <div class="InlineList">
-                    <div class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter:query">
+                    <div class="ListViewTopNote" data-ng-hide="hideNote">
+                        <span>You may have limited control over some rooms in this list, such as adding or removing other users.</span>
+                        <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
+                    </div>
+                    <a href="#/conference/pid={{conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences | filter:query">
                         <div class="Avatar AvatarNormal">
                             <div class="AvatarImgPH GroupAvatarShowDefault-false">
                                 <img class="default-avatar">
@@ -78,7 +82,7 @@
                         <div class="ListRowContent">
                             <div class="fj-hbox ListRowTitle">
                                 <div class="fj-hbox-space name"><span>{{conference.name}}</span>
-                                    <span class="details">at {{conference.getServerNumber()}}</span>
+                                    <span class="details">at {{conference.getServerName()}}</span>
                                 </div>
                             </div>
                             <div data-ng-if="conference.membersOrder.length == 0" class="fj-hbox ListRowStatus">
@@ -103,7 +107,7 @@
                                         </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

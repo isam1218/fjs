@@ -4,10 +4,10 @@ fjs.fdp.CONFIG = {
         serverURL: "https://dev4.fon9.com:8081"
         , loginURL: "https://dev4.fon9.com:5501/oauth/authorize"
     }
-    , providers: ['webWorker', 'sharedWorker', 'simple']
+    , providers: ['simple', 'webWorker', 'sharedWorker']
     , DB: {
         name: "HUD"
-        , version: 8
+        , version: 10
         /**
          * @type {Array}
          */
@@ -55,6 +55,7 @@ fjs.fdp.CONFIG = {
             , {name:"queuepermissions", key: "xpid"}
             , {name:"queue_stat_calls", key: "xpid"}
             , {name:"quickinbox", key: "xpid"}
+            , {name:"server", key: "xpid"}
             , {name:"settings", key: "xpid"}
             , {name:"streamevent", key: "xpid"}
             , {name:"voicemailbox", key: "xpid"}

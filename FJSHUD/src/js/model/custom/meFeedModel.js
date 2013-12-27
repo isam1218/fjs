@@ -55,6 +55,25 @@ fjs.hud.MeFeedModel.prototype.getMyPid = function() {
     return entry && entry.propertyValue;
 };
 /**
+ * @returns {boolean}
+ */
+fjs.hud.MeFeedModel.prototype.isMyPid = function(pid) {
+    return this.getMyPid() == pid;
+};
+/**
+ * @returns {string=}
+ */
+fjs.hud.MeFeedModel.prototype.getMyServerId = function() {
+    var entry = this.itemsByKey["server_id"];
+    return entry && entry.propertyValue;
+};
+/**
+ * @returns {boolean}
+ */
+fjs.hud.MeFeedModel.prototype.isMyServerId = function(pid) {
+    return this.getMyServerId() == pid;
+};
+/**
  * @returns {string}
  */
 fjs.hud.MeFeedModel.prototype.getMyChatStatus = function() {

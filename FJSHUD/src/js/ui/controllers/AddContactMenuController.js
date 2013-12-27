@@ -21,7 +21,7 @@ fjs.ui.AddContactMenuController = function($scope, $element, dataManager) {
 
     });
     $scope.filterFn = function(contact){
-        return (meModel.getMyPid()!= contact.xpid) && (addedContactsId.indexOf(contact.xpid)==-1);
+        return (!meModel.isMyPid(contact.xpid) && (addedContactsId.indexOf(contact.xpid)==-1));
     }
     $scope.clearSearch = function(){
         $scope.searchInput='';
