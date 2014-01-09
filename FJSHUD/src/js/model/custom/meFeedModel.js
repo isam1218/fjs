@@ -77,7 +77,7 @@ fjs.hud.MeFeedModel.prototype.isMyServerId = function(pid) {
  * @returns {string}
  */
 fjs.hud.MeFeedModel.prototype.getMyChatStatus = function() {
-    var entry = this.itemsByKey["chat_status"]
+    var entry = this.itemsByKey["chat_status"];
    return entry && entry.propertyValue;
 };
 
@@ -95,6 +95,8 @@ fjs.hud.MeFeedModel.prototype.getMyAgentStatusDetails = function() {
     var entry = this.itemsByKey["queue_list_login"];
     return entry && entry.propertyValue.split(",").length;
 };
+
+
 
 
 

@@ -11,4 +11,4 @@ fjs.hud.ContactsFeedModel.extend(fjs.hud.FeedModel);
 
 fjs.hud.ContactsFeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.ContactEntryModel(obj);
-}
+};

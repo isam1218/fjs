@@ -1,4 +1,4 @@
-namespace("fjs.fdp")
+namespace("fjs.fdp");
 
 /**
  * @param {*} obj
@@ -22,6 +22,7 @@ fjs.hud.ContactEntryModel.prototype.pass = function(query) {
     return re.test(this["primaryExtension"])||re.test(this["displayName"])||re.test(this["firstName"])||re.test(this["lastName"])||re.test(this["phoneMobile"])||re.test(this["phoneMobile"]);
 };
 fjs.hud.ContactEntryModel.prototype.getAvatarUrl = function(width, height) {
+
     return fjs.fdp.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="+this.xpid+"&w="+width+"&h="+height;
 };
 
