@@ -1,7 +1,7 @@
 namespace("fjs.ui");
 
 fjs.ui.FavoriteContactsController = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
+    fjs.ui.Controller.call(this, $scope);
     var dataProvider = new fjs.fdp.FDPDataProvider();
     var groupContactsModel = dataProvider.getModel("groupcontacts");
     var contactsModel = dataProvider.getModel("contacts")
@@ -55,4 +55,4 @@ fjs.ui.FavoriteContactsController = function($scope) {
     }
 
 };
-fjs.ui.FavoriteContactsController.extends(fjs.ui.ControllerBase);
+fjs.ui.FavoriteContactsController.extend(fjs.ui.Controller);

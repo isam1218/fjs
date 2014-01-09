@@ -1,7 +1,7 @@
 namespace("fjs.ui");
 
 fjs.ui.ContactWidgetChatController = function($scope, $routeParams) {
-    fjs.ui.ControllerBase.call(this, $scope);
+    fjs.ui.Controller.call(this, $scope);
     var dataProvider = new fjs.fdp.FDPDataProvider();
     var contactModel = dataProvider.getModel("contacts");
     $scope.contactId = $routeParams.contactId;
@@ -39,5 +39,5 @@ fjs.ui.ContactWidgetChatController = function($scope, $routeParams) {
     });
 };
 
-fjs.ui.ContactWidgetChatController.extends(fjs.ui.ControllerBase);
+fjs.ui.ContactWidgetChatController.extend(fjs.ui.Controller);
 

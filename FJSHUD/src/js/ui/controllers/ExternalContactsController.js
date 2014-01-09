@@ -1,7 +1,7 @@
 namespace("fjs.ui");
 
 fjs.ui.ExternalContactsController = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
+    fjs.ui.Controller.call(this, $scope);
     var dataProvider = new fjs.fdp.FDPDataProvider();
     var contactsModel = dataProvider.getModel("contacts");
     $scope.query = "";
@@ -29,4 +29,4 @@ fjs.ui.ExternalContactsController = function($scope) {
     });
 
 };
-fjs.ui.ExternalContactsController.extends(fjs.ui.ControllerBase);
+fjs.ui.ExternalContactsController.extend(fjs.ui.Controller);

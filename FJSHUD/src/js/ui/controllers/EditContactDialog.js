@@ -2,7 +2,7 @@
 namespace("fjs.ui");
 
 fjs.ui.EditContactDialog = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
+    fjs.ui.Controller.call(this, $scope);
 
     var dataProvider = new fjs.fdp.FDPDataProvider();
 
@@ -42,4 +42,4 @@ fjs.ui.EditContactDialog = function($scope) {
     $scope.favorite = false;
 
 }
-fjs.ui.EditContactDialog.extends(fjs.ui.ControllerBase);
+fjs.ui.EditContactDialog.extend(fjs.ui.Controller);

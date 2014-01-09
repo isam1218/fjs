@@ -1,8 +1,8 @@
 namespace("fjs.ui");
 
 fjs.ui.AllContactsController = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
-    var dataProvider = new fjs.fdp.FDPDataProvider();
+    fjs.ui.Controller.call(this, $scope);
+    var dataProvider = new fjs.hud.FDPDataManager();
     var contactsModel = dataProvider.getModel("contacts");
     $scope.query = "";
     $scope.sortField = "displayName";
@@ -33,4 +33,4 @@ fjs.ui.AllContactsController = function($scope) {
         contactsModel.removeListener("complete", $scope.$safeApply);
     });
 };
-fjs.ui.AllContactsController.extends(fjs.ui.ControllerBase);
+fjs.ui.AllContactsController.extend(fjs.ui.Controller);

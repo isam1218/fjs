@@ -1,8 +1,8 @@
 namespace("fjs.ui");
 
 fjs.ui.GroupsController = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
-    var dataProvider = new fjs.fdp.FDPDataProvider();
+    fjs.ui.Controller.call(this, $scope);
+    var dataProvider = new fjs.fdp.FDPDataManager();
     var groupsModel = dataProvider.getModel("groups");
     $scope.query = "";
     $scope.sortField = "name";
@@ -33,4 +33,4 @@ fjs.ui.GroupsController = function($scope) {
         groupsModel.removeListener("complete", update);
     });
 };
-fjs.ui.GroupsController.extends(fjs.ui.ControllerBase);
+fjs.ui.GroupsController.extend(fjs.ui.Controller);

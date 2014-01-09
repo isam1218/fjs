@@ -24,11 +24,11 @@ hud_web.config(['$routeProvider', function($routeProvider) {
 hud_web.controller("MainController", ['$scope', 'DataManager', fjs.ui.MainController]);
 //hud_web.controller("MeWidgetController", fjs.ui.MeWidgetController);
 hud_web.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);
-hud_web.controller("AddContactPopupMenu", ['$scope', '$element', 'DataManager', fjs.ui.AddContactMenuController]);
 hud_web.controller("SortMenuController", ['$scope', '$element', fjs.ui.SortMenuController]);
 //hud_web.controller("LeftBarController", fjs.ui.LeftBarController);
+hud_web.controller("LeftBarController", ['$scope', '$filter', 'DataManager', fjs.ui.LeftBarController]);
 //hud_web.controller("AllContactsController", fjs.ui.AllContactsController);
-//hud_web.controller("LeftBarCallsController", fjs.ui.LeftBarCallsController);
+hud_web.controller("LeftBarCallsController", ['$scope', 'DataManager', fjs.ui.LeftBarCallsController]);
 //hud_web.controller("ExternalContactsController", fjs.ui.ExternalContactsController);
 //hud_web.controller("GroupsController", fjs.ui.GroupsController);
 //hud_web.controller("MyCallController", fjs.ui.MyCallController);

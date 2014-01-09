@@ -26,7 +26,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager) {
          else {
              return "Loading...";
          }
-    }
+    };
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
@@ -52,6 +52,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager) {
         meModel.removeListener("complete", $scope.$safeApply);
         locationsModel.removeListener("complete", $scope.$safeApply);
     });
+    $scope.somechild = "templates/testTemplate.html";
 };
 
 fjs.ui.MeWidgetController.extend(fjs.ui.Controller);

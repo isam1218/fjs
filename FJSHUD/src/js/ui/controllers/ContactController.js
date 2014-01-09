@@ -1,7 +1,7 @@
 namespace("fjs.ui");
 
 fjs.ui.ContactController = function($scope) {
-    fjs.ui.ControllerBase.call(this, $scope);
+    fjs.ui.Controller.call(this, $scope);
     var dataProvider = new fjs.fdp.FDPDataProvider();
     var contactsModel = dataProvider.getModel("contacts");
     var updateFn = function(data) {
@@ -16,4 +16,4 @@ fjs.ui.ContactController = function($scope) {
     });
 };
 
-fjs.ui.ContactController.extends(fjs.ui.ControllerBase);
+fjs.ui.ContactController.extend(fjs.ui.Controller);

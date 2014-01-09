@@ -1,8 +1,8 @@
 namespace("fjs.ui");
 
 fjs.ui.ContactWidgetGroupsController = function($scope, $routeParams) {
-    fjs.ui.ControllerBase.call(this, $scope);
-    var dataProvider = new fjs.fdp.FDPDataProvider();
+    fjs.ui.Controller.call(this, $scope);
+    var dataProvider = new fjs.hud.FDPDataManager();
     var contactModel = dataProvider.getModel("contacts");
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactModel.items[$routeParams.contactId];
@@ -22,7 +22,7 @@ fjs.ui.ContactWidgetGroupsController = function($scope, $routeParams) {
 
     $scope.query = "";
 
-    $scope.groups = groupcontactsModel.membersByContatcId[$scope.contactId];
+    $scope.groups = groupcontactsModel["membersByContatcId"][$scope.contactId];
 
 
     $scope.$on("$destroy", function() {
@@ -31,4 +31,4 @@ fjs.ui.ContactWidgetGroupsController = function($scope, $routeParams) {
     });
 };
 
-fjs.ui.ContactWidgetGroupsController.extends(fjs.ui.ControllerBase);
+fjs.ui.ContactWidgetGroupsController.extend(fjs.ui.Controller);
