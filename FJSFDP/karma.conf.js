@@ -16,6 +16,7 @@ module.exports = function(config) {
     files: [
       'lib/fjs.core.debug.js'
       , 'bin/fjs.fdp.debug.js'
+      , 'test/*.js'
       , 'test/**/*.js'
     ],
 

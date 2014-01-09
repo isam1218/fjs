@@ -10,6 +10,9 @@ fjs.db.WebSQLProvider = function(globalObject) {
      * @type {Database}
      */
     this.db = null;
+    /**
+     * @type {Object}
+     */
     this.tables = {};
 };
 /**
@@ -78,6 +81,7 @@ fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
         tx.executeSql(query);
         if(indexes) {
             for(var i=0; i<indexes.length; i++) {
+                //TODO: multiple indexes
                 var _query = "CREATE INDEX "+name+"_"+indexes[i]+"_idx ON "+ name +" ("+indexes[i]+")";
                 tx.executeSql(_query);
             }

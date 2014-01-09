@@ -1,6 +1,6 @@
 describe("IndexedDBProvider", function() {
-    var dbName = 'dbTest';
-    var dbVersion = 11;
+    var dbName = 'testDB';
+    var dbVersion = 3;
 
     var TestModel1 = function(id, field1, field2) {
         this.id = id;
@@ -36,7 +36,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(2).toBe(tablesCount);
@@ -70,7 +70,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
 
             runs(function(){
                 expect(true).toBe(doneFlag);
@@ -118,7 +118,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(100).toBe(itemsCount);
@@ -165,7 +165,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(1).toBe(itemsCount);
@@ -209,7 +209,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(1).toBe(itemsCount);
@@ -252,7 +252,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(50).toBe(itemsCount);
@@ -290,7 +290,7 @@ describe("IndexedDBProvider", function() {
             });
             waitsFor(function() {
                 return doneFlag;
-            }, "Flag should be set", 2000);
+            }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
                 expect(50).toBe(itemsCount);

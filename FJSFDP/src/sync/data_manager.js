@@ -12,6 +12,7 @@ fjs.fdp.DataManager = function(authTicket, node, globalObject, authHandler, call
     if (!this.constructor.__instance)
         this.constructor.__instance = this;
     else return this.constructor.__instance;
+
     this.ticket = authTicket;
     var dbFactory = new fjs.db.DBFactory(globalObject);
     this.db = dbFactory.getDB();
@@ -19,8 +20,8 @@ fjs.fdp.DataManager = function(authTicket, node, globalObject, authHandler, call
     /**
      * @type {fjs.fdp.SyncManager}
      */
-    this.sm = new fjs.fdp.SyncManager(this.db, this.ajax);
-    this.sm.init(this.ticket, null, fjs.fdp.CONFIG.SERVER.serverURL, authHandler, function(){
+    this.sm = new fjs.fdp.SyncManager(this.db, this.ajax, fjs.fdp.CONFIG);
+    this.sm.init(this.ticket, null, authHandler, function(){
         callback();
     });
     this.proxies = {};

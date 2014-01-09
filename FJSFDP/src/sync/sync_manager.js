@@ -11,9 +11,10 @@
      * SyncManager
      * @param {IDBProvider=} dbProvider
      * @param {IAjaxProvider=} ajaxProvider
+     * @param {*} config
      * @constructor
      */
-    fjs.fdp.SyncManager = function(dbProvider, ajaxProvider) {
+    fjs.fdp.SyncManager = function(dbProvider, ajaxProvider, config) {
         //Singleton
         if (!this.constructor.__instance)
             this.constructor.__instance = this;
@@ -21,7 +22,7 @@
 
         this.state = sm.states.NOT_INITIALIZED;
 
-        this.config = fjs.fdp.CONFIG;
+        this.config = config;
 
         /**
          *
@@ -33,7 +34,7 @@
          */
         this.db = dbProvider;
         /**
-         * @dict
+         * @type {Object}
          * @private
          */
         this.listeners = {};
@@ -58,7 +59,7 @@
         /**
          * @type {string}
          */
-        this.serverHost = null;
+        this.serverHost = this.config.SERVER.serverURL;
         /**
          * @type {Array}
          */
@@ -81,6 +82,11 @@
          * @type {?number}
          */
         this.versionsTimeoutId = null;
+        /**
+         * @type {number}
+         * @private
+         */
+        this._clientRegistryFailedCount = 0;
     };
 
     var sm = fjs.fdp.SyncManager;
@@ -111,6 +117,17 @@
     };
 
     /**
+     * FDP sync types
+     * @enum {string}
+     */
+    fjs.fdp.SyncManager.syncTypes = {
+        'FULL':'F'
+        , 'KEEP':'I'
+        , 'LAZY':'L'
+        , 'HISTORY':'H'
+    };
+
+    /**
      * @const {string}
      */
     fjs.fdp.SyncManager.VERSIONS_PATH = "/v1/versions";
@@ -130,11 +147,10 @@
     /**
      * @param {string} ticket
      * @param {string} node
-     * @param {string} serverUrl
      * @param {{requestAuth:Function, setNode:function(string)}} authHandler
      * @param {Function} callback
      */
-    fjs.fdp.SyncManager.prototype.init = function(ticket, node, serverUrl, authHandler, callback) {
+    fjs.fdp.SyncManager.prototype.init = function(ticket, node, authHandler, callback) {
         var context = this;
         /**
          * @type {states}
@@ -142,7 +158,6 @@
         this.state = sm.states.INITIALIZATION;
         this.ticket = ticket;
         this.node = node;
-        this.serverHost = serverUrl;
         /**
          * @type {{requestAuth: Function, setNode: (function(string))}}
          */
@@ -282,7 +297,7 @@
             callback(data[feedName] = this.versions[feedName]);
         }
         if(this.db) {
-            this.db.selectByIndex("versions", {feedName:feedName}, function(item) {
+            this.db.selectByIndex("versions", {"feedName":feedName}, function(item) {
                 versionsArr.push(item.source+"@"+item.version);
             }, function() {
                 context.versions[feedName] = data[feedName] = versionsArr.join(",");
@@ -310,6 +325,7 @@
      * @param {string} data
      */
     fjs.fdp.SyncManager.prototype.parseVersionsResponse = function(data) {
+        //TODO: parse db and server versions;
         var params = data.split(";"), feeds = {}, feedsCount = 0;
         if(params) {
             for(var i=2; i<params.length-1; i++) {
@@ -387,30 +403,57 @@
     };
 
     /**
-     * @param {*} data
+     * @param str
+     * @returns {*}
+     * @private
      */
-    fjs.fdp.SyncManager.prototype.onSync = function (data) {
+    fjs.fdp.SyncManager.prototype.parseJSON = function(str) {
         var _data = null;
-        /**
-         *
-         * @type {fjs.fdp.SyncManager}
-         */
-        var context= this ;
         try {
-            _data = JSON.parse(data);
+            _data = JSON.parse(str);
         }
         catch (e) {
             try {
-                _data = (new Function("return " + data+ ";" ))();
+                _data = (new Function("return " + str+ ";" ))();
             }
             catch(e) {
                 console.error('Sync data error', e);
             }
         }
+        return _data;
+    };
+
+    fjs.fdp.SyncManager.prototype.parseSyncSourceData = function(items, feedName, sourceId) {
+        for (var j = 0; j < items.length; j++) {
+            var etype = items[j]["xef001type"] || 'push';
+            var xpid = sourceId + "_" + items[j]["xef001id"];
+            delete items[j]["xef001type"];
+            items[j]["xpid"] = xpid;
+            var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
+            switch(etype) {
+                case "push":
+                    this.db.insertOne(feedName, entry.entry, null);
+                    break;
+                case "delete":
+                    this.db.deleteByKey(feedName, entry.xpid, null);
+                    break;
+            }
+            this.fireEvent(feedName, entry);
+        }
+    };
+
+
+    /**
+     * @param {*} data
+     */
+    fjs.fdp.SyncManager.prototype.onSync = function (data) {
+
+        var _data = this.parseJSON(data);
 
         function isSource(sourceId) {
             return sourceId != 'full';
         }
+
         this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
         for (var feedName in _data) {
             if (_data.hasOwnProperty(feedName)) {
@@ -423,22 +466,15 @@
                         var items = _source["items"];
                         var type = _source["xef001type"];
                         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_START, syncType: type, feed:feedName, sourceId:sourceId});
-                        for (var j = 0; j < items.length; j++) {
-                            var etype = items[j]["xef001type"] || 'push';
-                            var xpid = sourceId + "_" + items[j]["xef001id"];
-                            delete items[j]["xef001type"];
-                            items[j]["xpid"] = xpid;
-                            var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
-                            switch(etype) {
-                                case "push":
-                                    context.db.insertOne(feedName, entry.entry, null);
-                                    break;
-                                case "delete":
-                                    context.db.deleteByKey(feedName, entry.xpid, null);
-                                    break;
-                            }
-                            this.fireEvent(feedName, entry);
+                        if(type == sm.syncTypes.FULL) {
+                            context.db.deleteByIndex(feedName, {'source': sourceId}, function(items) {
+                                for(var i=0; i<items.length; i++) {
+                                    var entry = {eventType: sm.eventTypes.ENTRY_DELETION, feed:feedName, xpid: items.xpid, entry: null};
+                                    context.fireEvent(feedName, entry);
+                                }
+                            });
                         }
+                        this.parseSyncSourceData(items, feedName, sourceId);
                         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName});
                         this.saveVersions(feedName, sourceId, ver);
                     }
@@ -473,9 +509,9 @@
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data, callback) {
         var context = this;
         data["action"] = actionName;
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(request, responce, isOK){
+        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(responce, isOK){
             if(callback) {
-                var _responce = JSON.parse(responce);
+                var _responce = context.parseFdpData(responce);
                 callback(isOK && _responce.result == "OK");
             }
         });
@@ -488,7 +524,7 @@
         var data = {};
         var  context=this;
         if(feeds) {
-            var _count=0;
+            var _count = 0;
             for(var i=0; i<feeds.length; i++) {
                 _count++;
                 this.syncFeeds.push(feeds[i]);
@@ -524,6 +560,7 @@
 
         this.sendRequest(url, {"path":this.getOrigin(), "no_image":"/img/Generic-Avatar-Small.png" }, function(xhr, data, isOk) {
             if(isOk) {
+                this._clientRegistryFailedCount = 0;
                 var _data = context.parseFdpData(data);
                 if(_data["node"]) {
                     context.node = _data["node"];
@@ -537,7 +574,14 @@
                     context.getAuthTicket();
                 }
                 else {
-                    context.requestClientRegistry(callback);
+                    if(this._clientRegistryFailedCount<10) {
+                        this._clientRegistryFailedCount++;
+                        context.requestClientRegistry(callback);
+                    }
+                    else {
+                        callback(false);
+                        context.getAuthTicket();
+                    }
                 }
             }
         });
@@ -596,7 +640,7 @@
             this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
             this.getFeedData(feedName, function(data){
                 if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
-                    this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
+                    context.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
                 }
                 listener(data);
             });
@@ -700,7 +744,7 @@
             this.historyversions[feedName] = feedHVersions;
         }
         if(feedHVersions[filter]){
-            this.processHistoryVersions(feedName, filter, count, feedHVersions[filter], callback)
+            this.processHistoryVersions(feedName, filter, count, feedHVersions[filter], callback);
             return;
         }
 
@@ -719,7 +763,7 @@
             }, function () {
                 if(_historyVersions.length==0){
                     context.fillEmptyHistoryVersionsFromFeed(feedName,_historyVersions, callback);
-                }else{
+                } else {
                     callback();
                 }
             });
@@ -729,7 +773,7 @@
     fjs.fdp.SyncManager.prototype.fillEmptyHistoryVersionsFromFeed = function(feedName, _historyVersions, callback) {
         if(this.db) {
             //fill 0 versions for known sources
-            this.db.selectByIndex("versions", {feedName:feedName}, function(item) {
+            this.db.selectByIndex("versions", {"feedName":feedName}, function(item) {
                 _historyVersions.push(item["source"]+":0");
             }, callback);
         }
@@ -802,14 +846,14 @@
             var source = _data[_sourceId];
 
             var items = source["items"];
-            var /**@type {String}*/ hver = source["h_ver"] || "-1";
+            var /**@type {string}*/ hver = source["h_ver"] || "-1";
             if("-2" == hver)
             {
                 //server error occurred
                 return false;
             }
 
-            var /**@type {String}*/ cnt = items.length;
+            var /**@type {number}*/ cnt = items.length;
 
             if(cnt > 0)
             {
@@ -894,7 +938,7 @@
      * @return boolean
      * @private
      */
-    fjs.fdp.SyncManager.prototype.notifyTabsHistory = function(feedName, filter, data, historyVersions) {
+    fjs.fdp.SyncManager.prototype.notifyTabsHistory = function (feedName, filter, data, historyVersions) {
 //            final JsonObject dataObj = new JsonObject();
 //            dataObj.$set("_type", "history");
 //            dataObj.$set("data", data);
@@ -904,12 +948,11 @@
 //
 //            final String str = JSON.stringify(dataObj);
 //            this.dataSynchronizer.writeData(SYNC_PROCESS, str);
-    }
+    };
 
     fjs.fdp.SyncManager.prototype.logout = function() {
         this.ticket = null;
         this.node = null;
-        this.serverHost = null;
         this.getAuthTicket();
         this.state = sm.states.NOT_INITIALIZED;
     }
