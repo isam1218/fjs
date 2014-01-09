@@ -10,5 +10,13 @@ var fjs = {
      * @namespace
      */
     ui: {}
-    , hud: {}
-}
+    /**
+     * @namespace
+     */
+    , hud: {
+        /**
+         * @namespace
+         */
+        filter: {}
+    }
+};
