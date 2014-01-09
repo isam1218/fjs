@@ -7,7 +7,7 @@
             Video Collaboration
         </div>
     </div>
-    <div class="WidgetBody" data-ng-style="{display: bodyDisplay}">
+    <div class="WidgetBody" data-ng-if="bodyDisplay">
         <div class="ListSection">
             <div class="ListSectionHeaderTitle">Topic</div>
             <div class="widget-zoom-topic">
@@ -26,14 +26,14 @@
         </div>
         <div class="ListSection">
             <div class="ListSectionHeaderTitle">Members</div>
-            <div ng-include="addContactsMenu"></div>
+            <div data-ng-include="addContactsMenu"></div>
             <div class="widget-zoom-buttons">
                 <div data-ng-click="startMeeting(topic)" class="XButton XButtonBlue XButtonWide" ><span>Start conference</span></div>
             </div>
         </div>
         <div class="widget-zoom-contacts fj-scrollable">
                 <div class="fj-content">
-                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in contacts | filter:filterFn | orderBy:'displayName'">
+                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
                         <div class="AvatarSmall Avatar">
                             <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(40,40)}}">
                             <div class="AvatarStatic AvatarForeground"></div>
@@ -53,16 +53,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div data-ng-click="deleteContact(contact.xpid)" class="GroupContactItemDel XButton XButtonRed fj-visibility-true"><span>Delete</span></div></div>
+                        <div data-ng-click="deleteContact(contact)" class="GroupContactItemDel XButton XButtonRed fj-visibility-true"><span>Delete</span></div></div>
                 </div>
         </div>
     </div>
-    <div class="WidgetBody WidgetBodyStarted"  data-ng-style="{display: bodyStartedDisplay}">
+    <div class="WidgetBody WidgetBodyStarted"  data-ng-if="bodyStartedDisplay">
         <p><h2>Video meeting has been created</h2></p>
         <p>Your meeting will begin in 30 seconds. If your meeting doesn't begin automatically, please use this <a target="_blank" data-ng-href="{{startUrl}}">link</a></p>
         <p>Link to join: <br/><a target="_blank" data-ng-href="{{joinUrl}}">{{joinUrl}}</a></p>
     </div>
-    <div class="WidgetBody WidgetBodyStarted"  data-ng-style="{display: bodyErrorDisplay}">
+    <div class="WidgetBody WidgetBodyStarted"  data-ng-if="bodyErrorDisplay">
         <p><h2>Video meeting hasn't been created</h2></p>
         <p>Please check Zoom service availability.</p>
     </div>
