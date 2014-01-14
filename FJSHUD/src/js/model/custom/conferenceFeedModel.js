@@ -21,7 +21,8 @@ fjs.hud.ConferenceFeedModel = function(dataManager) {
 fjs.hud.ConferenceFeedModel.extend(fjs.hud.FeedModel);
 
 fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(data) {
-    var conference = this.items[data.entry["fdpConferenceId"]];
+    var conferenceId = data.entry["fdpConferenceId"];
+    var conference = this.items[conferenceId];
     if(conference){
         conference.addMember(data["xpid"], data.entry);
     }
@@ -39,8 +40,8 @@ fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(data) {
             this.talkingMembersOrder.push(data["xpid"]);
         }
     }
-    if(this.occupiedConferences.indexOf(conference) == -1){
-        this.occupiedConferences.push(conference);
+    if(this.occupiedConferences.indexOf(conferenceId) == -1){
+        this.occupiedConferences.push(conferenceId);
     }
 };
 fjs.hud.ConferenceFeedModel.prototype.deleteConferenceMember = function(data) {
