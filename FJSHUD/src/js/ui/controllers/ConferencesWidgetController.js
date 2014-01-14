@@ -85,6 +85,11 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
         $scope.$emit("showPopup", {key:"SortMenuPopup", x:100, y:200, model: model, id:"conferences"});
         return false;
     };
+    $scope.filterConferenceFn = function(query) {
+        return function(conference){
+            return conference.pass(query);
+        };
+    };
     sortModel.addXpidListener(this.sortingKey, sortChangeListener);
 
 };

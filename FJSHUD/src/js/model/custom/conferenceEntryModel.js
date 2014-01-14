@@ -4,18 +4,17 @@ namespace("fjs.fdp");
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
+ * @param conferenceFeed {ConferenceFeedModel}
  */
 fjs.hud.ConferenceEntryModel = function(obj, conferenceFeed) {
     fjs.hud.EntryModel.call(this, obj);
     this.members = [];
     this.memberIds = [];
     /**
-     *
      * @type {ConferenceFeedModel}
      */
-    this.conferenceFeed = conferenceFeed
+    this.conferenceFeed = conferenceFeed;
     /**
-     *
      * @type {FDPDataManager}
      */
     this.dataManager = new fjs.hud.FDPDataManager();
@@ -74,7 +73,7 @@ fjs.hud.ConferenceEntryModel.prototype.deleteMember = function(memberId){
  */
 fjs.hud.ConferenceEntryModel.prototype.getMembersCount = function(){
     return this.members.length;
-}
+};
 /**
  *
  * @param index {Number}
@@ -107,6 +106,26 @@ fjs.hud.ConferenceEntryModel.prototype.compareTo = function(other){
         }
         return this.getServerName().localeCompare(other.getServerName());
     }
+};
+/**
+ * @returns {boolean}
+ */
+fjs.hud.ConferenceEntryModel.prototype.pass = function(query){
+    if(!query){
+        return true;
+    }
+    var re = new RegExp('(^|\\s)(' + query + ')(\\S)*(\\s|$)', 'i');
+    var res =  re.test(this["roomNumber"])||re.test(this["extensionNumber"])||re.test(this["name"]);
+    if(res){
+        return true;
+    }
+    for(var i = 0; i<this.members.length; i++){
+        var contact = this.members[i].getContact();
+        if(contact && contact.pass(query)){
+            return true;
+        }
+    }
+    return false;
 };
 
 
