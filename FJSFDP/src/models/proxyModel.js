@@ -100,8 +100,9 @@ fjs.fdp.ProxyModel.prototype.onEntryChange = function(data) {
     }
     if(data.feed!=this.feedName && !this.feedFields[data.feed]) {
         this.feedFields[data.feed] = {};
-        for(var key in data.entry) {
-            if(data.entry.hasOwnProperty(key))
+        var _entry = data["entry"];
+        for(var key in _entry) {
+            if(_entry.hasOwnProperty(key))
                 if(key!='xef001id' && key!='xef001iver' && key!='xpid') {
                     this.feedFields[data.feed][key] = null;
                 }
@@ -146,4 +147,10 @@ fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {
             break;
     }
 };
+
+
+fjs.fdp.ProxyModel.prototype.sendAction = function(){
+    this.sm.apply(this, arguments)
+}
+
 

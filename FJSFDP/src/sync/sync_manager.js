@@ -669,6 +669,9 @@
         this.fireEvent(feedName, data, listener);
         if(this.db) {
             this.db.selectAll(feedName, function(item){
+                    /**
+                     * @type {{eventType: (fjs.fdp.SyncManager.eventTypes|string), feed: string, xpid: (*|.key.xpid|xpid|entry.xpid|data.xpid|fjs.hud.EntryModel.xpid), entry: Object}}
+                     */
                     var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                     context.fireEvent(feedName, data, listener);
                 }

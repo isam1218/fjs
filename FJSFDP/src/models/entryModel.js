@@ -21,11 +21,3 @@ fjs.fdp.EntryModel.prototype.fill = function(obj) {
     }
     return changes;
 };
-
-fjs.fdp.EntryModel.prototype.clear = function() {
-    for(var i in this) {
-        if(this.hasOwnProperty(i)) {
-            this[i] = null;
-        }
-    }
-};
