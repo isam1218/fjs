@@ -39,10 +39,10 @@
         <div class="fj-content WidgetTabContent">
             <div class="ToolBar">
                 <div class="XButton XButtonNormal XButtonDropDown XSortButton disabled-false" data-ng-click="showSortMenu($event)">
-                    <span>Sort by Activity</span>
+                    <span>Sort by {{sortedBy}}</span>
                     <div class="XButtonDropDownArrow"></div>
                 </div>
-                <div class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findMyFreeAndJoinDisabled()"><span>Find Free Room &amp; Join</span></div>
+                <div class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findMyFreeAndJoin()"><span>Find Free Room &amp; Join</span></div>
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
                         <input class="SearchInputBoxInput" data-ng-model="query" type="text" x-webkit-speech="" placeholder="Search">
@@ -58,7 +58,7 @@
                         <span>You may have limited control over some rooms in this list, such as adding or removing other users.</span>
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a  href="#/conference/pid={{conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences | filter:isMyConference | filter:query">
+                    <a  href="#/conference/pid={{conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences | SortConference:getSortMode() | filter:isMyConference | filter:query">
                         <div class="Avatar AvatarNormal">
                             <div class="AvatarImgPH GroupAvatarShowDefault-false">
                                 <img class="default-avatar">
@@ -85,20 +85,20 @@
                                     <span class="details">at {{conference.getServerName()}}</span>
                                 </div>
                             </div>
-                            <div data-ng-if="conference.membersOrder.length == 0" class="fj-hbox ListRowStatus">
+                            <div data-ng-if="conference.members.length == 0" class="fj-hbox ListRowStatus">
                                 <div class="fj-hbox-cell ListRowStatusIcon XIcon-ChatStatus-Offline">
                                 </div>
                                 <div  class="fj-hbox-space ListRowStatusText">Free room</div>
                             </div>
-                            <div data-ng-if="conference.membersOrder.length > 0" class="fj-hbox ListRowStatus">
+                            <div data-ng-if="conference.members.length > 0" class="fj-hbox ListRowStatus">
                                 <div class="fj-hbox-cell ListRowStatusIcon XIcon-ChatStatus-Available">
                                 </div>
-                                <div  class="fj-hbox-space ListRowStatusText">{{conference.membersOrder.length}} member(s) on a call</div>
+                                <div  class="fj-hbox-space ListRowStatusText">{{conference.members.length}} member(s) on a call</div>
                             </div>
                         </div>
-                        <div data-fj-local-id="membersList" data-ng-if="conference.membersOrder.length > 0" class="ListRow-Conference-Members">
+                        <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="fj-content">
-                                <div class="conferences-room-item-member" data-ng-repeat="member in conference.membersOrder">
+                                <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
                                     <div class="Avatar CallSmallAvatar CallSmallAvatar_Office">
                                         <img class="AvatarImgPH" data-ng-src="{{member.getContact().getAvatarUrl(28, 28)}}">
                                         <div class="AvatarInteractable AvatarForeground"></div>

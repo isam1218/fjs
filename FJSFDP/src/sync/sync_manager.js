@@ -447,7 +447,11 @@
      * @param {*} data
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
-
+        /**
+         *
+         * @type {fjs.fdp.SyncManager}
+         */
+        var context= this ;
         var _data = this.parseJSON(data);
 
         function isSource(sourceId) {

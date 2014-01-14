@@ -1,13 +1,15 @@
 namespace("fjs.fdp");
 fjs.fdp.CONFIG = {
     SERVER: {
-        serverURL: "https://dev4.fon9.com:8081"
+        //serverURL: "https://dev4.fon9.com:8081"
+        //, loginURL: "https://dev4.fon9.com:5501/oauth/authorize"
+        serverURL: "http://localhost:8081"
         , loginURL: "https://dev4.fon9.com:5501/oauth/authorize"
     }
     , providers: ['simple', 'webWorker', 'sharedWorker']
     , DB: {
         name: "HUD"
-        , version: 10
+        , version: 12
         /**
          * @type {Array}
          */
@@ -55,11 +57,13 @@ fjs.fdp.CONFIG = {
             , {name:"queuepermissions", key: "xpid", indexes:["source"]}
             , {name:"queue_stat_calls", key: "xpid", indexes:["source"]}
             , {name:"quickinbox", key: "xpid", indexes:["source"]}
+            , {name:"server", key: "xpid", indexes:["source"]}
             , {name:"settings", key: "xpid", indexes:["source"]}
             , {name:"streamevent", key: "xpid", indexes:["source"]}
             , {name:"voicemailbox", key: "xpid", indexes:["source"]}
             , {name:"weblauncher", key: "xpid", indexes:["source"]}
             , {name:"weblaunchervariables", key: "xpid", indexes:["source"]}
-            , {name:"fdpImage", key: "xpid", indexes:["source"]}]
+            , {name:"fdpImage", key: "xpid", indexes:["source"]}
+            , {name:"sorting", key:"id"}]
     }
 };

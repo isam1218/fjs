@@ -8,6 +8,7 @@ namespace("fjs.fdp");
 fjs.hud.ConferenceEntryModel = function(obj, conferenceFeed) {
     fjs.hud.EntryModel.call(this, obj);
     this.members = [];
+    this.memberIds = [];
     /**
      *
      * @type {ConferenceFeedModel}
@@ -18,6 +19,7 @@ fjs.hud.ConferenceEntryModel = function(obj, conferenceFeed) {
      * @type {FDPDataManager}
      */
     this.dataManager = new fjs.hud.FDPDataManager();
+    this.conferenceMembersModel = this.dataManager.getModel("conferencemembers");
 };
 fjs.hud.ConferenceEntryModel.extend(fjs.hud.EntryModel);
 
@@ -53,17 +55,59 @@ fjs.hud.ConferenceEntryModel.prototype.isJoinMeEnabled = function() {
 fjs.hud.ConferenceEntryModel.prototype.joinMe = function() {
     this.conferenceFeed.actionJoinMe(this.xpid);
 };
-fjs.hud.ConferenceEntryModel.prototype.addMember = function(memberId){
-    if(this.members.indexOf(memberId) == -1){
-        this.members.push(memberId);
+fjs.hud.ConferenceEntryModel.prototype.addMember = function(memberId, member){
+    if(this.memberIds.indexOf(memberId) == -1){
+        this.memberIds.push(memberId);
+        this.members.push(member);
     }
-}
+};
 fjs.hud.ConferenceEntryModel.prototype.deleteMember = function(memberId){
-    var index = this.members.indexOf(memberId);
-    if(i != -1){
+    var index = this.memberIds.indexOf(memberId);
+    if(index != -1){
+        this.memberIds.splice(index);
         this.members.splice(index);
     }
+};
+/**
+ *
+ * @returns {Number}
+ */
+fjs.hud.ConferenceEntryModel.prototype.getMembersCount = function(){
+    return this.members.length;
 }
+/**
+ *
+ * @param index {Number}
+ * @param width {Number}
+ * @param height {Number}
+ * @returns {String}
+ */
+fjs.hud.ConferenceEntryModel.prototype.getAvatar = function(index, width, height) {
+    if(this.members.length > index){
+        return this.members[index].getAvatarUrl(width, height);
+    }
+    return "img/Generic-Avatar-Small.png";
+};
+/**
+ *
+ * @param other {ConferenceEntryModel}
+ * @returns {number}
+ */
+fjs.hud.ConferenceEntryModel.prototype.compareTo = function(other){
+    if(this.serverNumber == other.serverNumber)
+    {
+        return this.roomNumber - other.roomNumber;
+    }
+    else
+    {
+        var diff = (this.isMyServer() ? 0 : 1) - (other.isMyServer() ? 0 : 1);
+        if(diff)
+        {
+            return diff;
+        }
+        return this.getServerName().localeCompare(other.getServerName());
+    }
+};
 
 
 

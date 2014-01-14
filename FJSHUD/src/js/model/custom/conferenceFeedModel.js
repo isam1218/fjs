@@ -18,52 +18,47 @@ fjs.hud.ConferenceFeedModel = function(dataManager) {
 };
 fjs.hud.ConferenceFeedModel.extend(fjs.hud.FeedModel);
 
-fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(member) {
-    var conference = this.items[member["conferenceId"]];
+fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(data) {
+    var conference = this.items[data.entry["fdpConferenceId"]];
     if(conference){
-        if(conference.members.indexOf(member["xpid"]) == -1){
-            conference.members.push(member["xpid"]);
-        }
+        conference.addMember(data["xpid"], data.entry);
     }
-    if(this.membersOrder.indexOf(member["xpid"]) == -1){
-        this.membersOrder.push(member["xpid"]);
+    if(this.membersOrder.indexOf(data["xpid"]) == -1){
+        this.membersOrder.push(data["xpid"]);
     }
 
-}
-fjs.hud.ConferenceFeedModel.prototype.deleteConferenceMember = function(member) {
-    var conference = this.items[member["conferenceId"]];
-    if(conference){
-        var index = conference.members.indexOf(member["xpid"]);
-        if( index != -1){
-            delete conference.members[member["xpid"]];
-        }
+};
+fjs.hud.ConferenceFeedModel.prototype.deleteConferenceMember = function(data) {
+    //var conference = this.items[data.entry["conferenceId"]];//empty entry
+    for(var conferenceId in this.items){
+        this.items[conferenceId].deleteMember(data["xpid"]);
     }
-    var index = this.membersOrder.indexOf(member["xpid"]);
+    var index = this.membersOrder.indexOf(data["xpid"]);
     if( index != -1){
-        delete this.membersOrder[member["xpid"]];
+        delete this.membersOrder.splice(index, 1);
     }
-}
+};
 fjs.hud.ConferenceFeedModel.prototype.onEntryChange = function(data) {
     var isNew = !this.items[data["xpid"]];
     this.superClass.onEntryChange.call(this, data);
     if(isNew){
         var conference = this.items[data["xpid"]];
-        for(var member in this.conferenceMembersModel.items){
-            if(member["conferenceId"] == data["xpid"]){
-                conference.members.push(member["xpid"]);
+        for(var memberId in this.conferenceMembersModel.items){
+            if(this.conferenceMembersModel.items[memberId]["fdpConferenceId"] == data["xpid"]){
+                conference.addMember(memberId, data.entry);
             }
         }
     }
-}
+};
 fjs.hud.ConferenceFeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.ConferenceEntryModel(obj, this);
-}
+};
 fjs.hud.ConferenceFeedModel.prototype.actionJoinMe = function(confId) {
     this.actionJoinContact(confId, this.fdp.getModel("me").getMyPid());
-}
+};
 fjs.hud.ConferenceFeedModel.prototype.actionJoinContact = function(confId, contactId) {
     this.fdp.sendAction("conferences", "joinContact", {"a.conferenceId":confId, "a.contactId":contactId});
-}
+};
 fjs.hud.ConferenceFeedModel.prototype.getFreeConferenceRoomToJoin = function() {
     var candidate = undefined;
     for(var i in this.order){
@@ -79,7 +74,7 @@ fjs.hud.ConferenceFeedModel.prototype.getFreeConferenceRoomToJoin = function() {
         }
     }
     return candidate;
-}
+};
 fjs.hud.ConferenceFeedModel.prototype.compareFreeConferences = function(conf1, conf2) {
     if(conf1.isEditEnabled()!= conf2.isEditEnabled()){
         return conf1.isEditEnabled()?-1:1;
@@ -89,7 +84,7 @@ fjs.hud.ConferenceFeedModel.prototype.compareFreeConferences = function(conf1, c
     }
     //TODO: compare by serverName
     return conf1["roomNumber"] - conf2["roomNumber"];
-}
+};
 
 fjs.hud.ConferenceFeedModel.prototype.getMyFreeConferenceRoomToJoin = function() {
     var candidate = undefined;
@@ -105,7 +100,7 @@ fjs.hud.ConferenceFeedModel.prototype.getMyFreeConferenceRoomToJoin = function()
             }
         }
     }
-}
+};
 
 //public ConferenceEntryModel getFreeConferenceRoomToJoin()
 //{

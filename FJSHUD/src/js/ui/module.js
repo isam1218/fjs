@@ -36,3 +36,4 @@ hud_web.controller("LeftBarCallsController", ['$scope', 'DataManager', fjs.ui.Le
 hud_web.controller("TopNavigationController", ['$scope', 'DataManager', fjs.ui.TopNavigationController]);
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);
 //hud_web.controller("ContactController", fjs.ui.ContactController);
+

@@ -3,12 +3,11 @@
 <head>
     <title></title>
     <script type="text/javascript" src="lib/fjs.core.debug.js"></script>
-    <script type="text/javascript" src="../FJSFDPApi/src/providers/ClientDataProviderBase.js"></script>
-    <script type="text/javascript" src="../FJSFDPApi/src/providers/SimpleClientDataProvider.js"></script>
+    <script type="text/javascript" src="src/api/client/ClientDataProviderBase.js"></script>
+    <script type="text/javascript" src="src/api/client/SimpleClientDataProvider.js"></script>
     <script type="text/javascript" src="src/properties.js"></script>
 </head>
 <body>
-123123123123
     <script>
         var provider = new fjs.api.SimpleClientDataProvider('c63f0135ac08530a8e53e641d50b08f440344d7b9151f52c', null, function(){
             provider.addSyncForFeed("contacts");
@@ -23,6 +22,17 @@
         });
         provider.addListener("requestAuth", function(data){
             console.log(data);
+        });
+
+        var dbFactory = new fjs.db.DBFactory(window);
+        var db = dbFactory.getDB();
+        var ajax = new fjs.ajax.XHRAjax();
+        var sm = new fjs.fdp.SyncManager(db, ajax);
+        var contactsProxy = new fjs.fdp.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails']);
+        sm.init("83851a881c0e84e4787e5b24d79a05330edfd53406a86303", null, fjs.fdp.CONFIG.SERVER.serverURL, {setNode:function(node){console.log("node: "+node)}, requestAuth: function(){console.error("Need auth")}}, function(){
+            //load next
+            //sh.versions:0:0@1100000000:0@d00000000:0
+            sm.loadNext("streamevent", {"type":"f.conversation","key":{"feedName":"contacts","xpid":"10000424f_1226260"}}, 10);
         });
     </script>
 </body>

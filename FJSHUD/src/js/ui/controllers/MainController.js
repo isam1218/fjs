@@ -36,6 +36,7 @@ fjs.ui.MainController = function($scope, dataProvider) {
         $scope.currentPopup.url = "templates/"+data.key+".html";
         $scope.currentPopup.x = data.x;
         $scope.currentPopup.y = data.y;
+        $scope.currentPopup.model = data.model;
     });
 
     $scope.logout = function() {
