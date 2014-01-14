@@ -108,7 +108,7 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
             case "conferencemembers":
                 this.feeds[feedName] = new fjs.hud.ConferenceMemberFeedModel(this);
                 break;
-            case "sorting":
+            case "sortings":
                 this.feeds[feedName] = new fjs.hud.SortingFeedModel(this);
                 break;
             default:

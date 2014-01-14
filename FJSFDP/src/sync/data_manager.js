@@ -68,6 +68,8 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
         break;
         case 'conferences':
             return new fjs.fdp.ProxyModel(['conferences', 'conferencestatus', 'conferencepermissions']);
+        case 'sortings':
+            return new fjs.fdp.ClientProxyModel(['sortings']);
         default :
             return new fjs.fdp.ProxyModel([feedName]);
     }
@@ -82,7 +84,10 @@ fjs.fdp.DataManager.prototype.logout = function() {
  * @param {*} data
  */
 fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) {
-    this.sm.sendAction(feedName, actionName, data, function(){
-
-    });
+    var /** @type (fjs.fdp.ProxyModel) */ proxy = this.proxies[feedName];
+    if(!proxy)  {
+        console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
+        return;
+    }
+    proxy.sendAction(feedName, actionName, data);
 };

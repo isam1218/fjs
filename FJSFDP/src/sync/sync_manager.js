@@ -39,6 +39,12 @@
          */
         this.listeners = {};
         /**
+         * Listeners for db data that don't sync with server
+         * @type {Object}
+         * @private
+         */
+        this.suspendedDbListeners = {};
+        /**
          * @dict
          * @private
          */
@@ -218,6 +224,18 @@
          */
         var context = this;
         /**
+         * Load data from localDB
+         */
+        for(var feedName in this.suspendedDbListeners) {
+            if(this.suspendedDbListeners.hasOwnProperty(feedName)){
+                for(var i = 0; i<this.suspendedDbListeners[feedName].length; i++){
+                    this.doFillDbData(feedName, this.suspendedDbListeners[feedName][i]);
+                }
+            }
+        }
+        this.suspendedDbListeners = {};
+
+        /**
          * Init for for feeds attached before init complete
          */
         if(this.suspendFeeds.length > 0) {
@@ -225,7 +243,7 @@
              * Load data from localDB
              */
             var count = this.suspendFeeds.length;
-            for(var i=0; i<this.suspendFeeds.length; i++) {
+            for(i=0; i<this.suspendFeeds.length; i++) {
                 this.fireEvent(null, {eventType:sm.eventTypes.SYNC_START});
                 this.getFeedData(this.suspendFeeds[i], function(data){
                     if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
@@ -521,6 +539,22 @@
         });
     };
 
+    fjs.fdp.SyncManager.prototype.insertDbEntry = function(feedName, entry, listener) {
+        if(this.db){
+            var context = this, data = {eventType:sm.eventTypes.SYNC_START , syncType: "L", feed:feedName};
+            this.fireEvent(feedName, data, listener);
+            this.db.insertOne(feedName, entry.entry, function(){
+                var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: entry.xpid, entry: entry.entry};
+                context.fireEvent(feedName, data, listener);
+                context.fireEvent(feedName, {eventType: sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
+            });
+
+        }else{
+            console.error("SyncManager error: can't insert db entry:"+feedName+" :" + entry + ". Db is not initialized.");
+        }
+    };
+
+
     /**
      * @param {Array} feeds
      */
@@ -658,6 +692,48 @@
                 listener(data);
             });
         }
+    };
+
+    /**
+     * Fills data from db if ready else - postpone.
+     * @param feedName
+     * @param listener
+     */
+    fjs.fdp.SyncManager.prototype.fillDbData = function(feedName, listener) {
+        if(!listener || !feedName){
+            console.error("SyncManager error: try to fill db data for empty feed:"+feedName+" or listener:" + listener);
+            return;
+        }
+        if(this.states==sm.states.READY) {
+            this.doFillDbData(feedName, listener);
+        }else{
+            var tmpListeners = this.suspendedDbListeners[feedName];
+            if(!tmpListeners) {
+                tmpListeners = this.suspendedDbListeners[feedName] = [];
+            }
+            if(-1 < tmpListeners.indexOf(listener)) {
+                console.error("SyncManager error: duplicate listener for" + feedName);
+            }
+            else {
+                tmpListeners.push(listener);
+            }
+        }
+    };
+
+    /**
+     * Fill data without check
+     * @param feedName
+     * @param listener
+     */
+    fjs.fdp.SyncManager.prototype.doFillDbData = function(feedName, listener) {
+        var context = this;
+        this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
+        this.getFeedData(feedName, function(data){
+            if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                context.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
+            }
+            listener(data);
+        });
     };
 
     /**
@@ -899,7 +975,7 @@
             this.saveEmptyHistoryVersions(feedName, filter);
         }
 
-        this.fireEvent(feedName, {eventType: sm.eventTypes.FEED_COMPLETE, feed:feedName});
+        this.fireEvent(feedName, {eventType: sm.eventTypes.SYNC_COMPLETE, feed:feedName});
 
         return true;
     };

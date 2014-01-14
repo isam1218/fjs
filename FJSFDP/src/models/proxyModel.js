@@ -149,8 +149,9 @@ fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {
 };
 
 
-fjs.fdp.ProxyModel.prototype.sendAction = function(){
-    this.sm.apply(this, arguments)
+fjs.fdp.ProxyModel.prototype.sendAction = function(feedName, actionName, data){
+    this.sm.sendAction(feedName, actionName, data, function(){
+    });
 }
 
 

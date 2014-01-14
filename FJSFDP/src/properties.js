@@ -9,7 +9,7 @@ fjs.fdp.CONFIG = {
     , providers: ['simple', 'webWorker', 'sharedWorker']
     , DB: {
         name: "HUD"
-        , version: 12
+        , version: 13
         /**
          * @type {Array}
          */
@@ -64,6 +64,7 @@ fjs.fdp.CONFIG = {
             , {name:"weblauncher", key: "xpid", indexes:["source"]}
             , {name:"weblaunchervariables", key: "xpid", indexes:["source"]}
             , {name:"fdpImage", key: "xpid", indexes:["source"]}
-            , {name:"sorting", key:"id"}]
+            <!-- client feed -->
+            , {name:"sortings", key:"xpid"}]
     }
 };

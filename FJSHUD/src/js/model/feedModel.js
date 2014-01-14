@@ -21,6 +21,7 @@ fjs.hud.FeedModel = function(feedName, dataManager) {
         , "push": []
         , "delete": []
     };
+    this.xpidListeners = {};
     this.init();
 };
 
@@ -91,7 +92,32 @@ fjs.hud.FeedModel.prototype.removeListener = function(eventType, callback) {
         this.listeners[eventType].splice(i, 1);
     }
 };
+fjs.hud.FeedModel.prototype.addXpidListener = function(xpid, callback) {
+    var _listeners = this.xpidListeners[xpid];
+    if(!_listeners){
+        this.xpidListeners[xpid] = _listeners = [];
+    }
+    var index = _listeners.indexOf(callback);
+    if(index<0) {
+        _listeners.push(callback);
+    }
+    if(this.items[xpid]) {
+        callback({eventType:"change", xpid:xpid, entry:this.items[xpid]});
+    }
+};
 
+fjs.hud.FeedModel.prototype.removeXpidListener = function(xpid, listener) {
+    var _listeners = this.xpidListeners[xpid];
+    if(_listeners){
+        var index = _listeners.indexOf(listener);
+        if(index>-1) {
+            _listeners.splice(index, 1);
+        }
+        if(_listeners.length == 0){
+            delete this.xpidListeners[xpid];
+        }
+    }
+};
 fjs.hud.FeedModel.prototype.fireEvent = function(eventType, data) {
     /**
      * @type {Array}
@@ -100,6 +126,14 @@ fjs.hud.FeedModel.prototype.fireEvent = function(eventType, data) {
     if(listeners) {
         for(var i=0; i<listeners.length; i++) {
                 listeners[i](data);
+        }
+    }
+    if(data.xpid){
+        var _listeners = this.xpidListeners[data.xpid];
+        if(_listeners) {
+            for(var i=0; i<_listeners.length; i++) {
+                _listeners[i](data);
+            }
         }
     }
 };

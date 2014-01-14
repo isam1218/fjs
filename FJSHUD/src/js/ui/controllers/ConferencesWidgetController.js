@@ -7,28 +7,25 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     var conferenceMembersModel = dataManager.getModel("conferencemembers");
     conferencesModel.addListener("complete", $scope.$safeApply);
     conferenceMembersModel.addListener("complete", $scope.$safeApply);
+
     this.sortingKey = "conferences";
     this.defaultSortMode = "location";
     this.selectedSortMode = undefined;
     this.sortMenuItems = {location:"Location", number: "Room Number", activity: "Activity"};
+
+    var sortChangeListener = function(data){
+        context.selectedSortMode = data.entry.value;
+        $scope.$safeApply(function(){
+            $scope.sortedBy = context.getSortedByName();
+        });
+    };
+    var /** @type{fjs.hud.SortingFeedModel}*/ sortModel =  dataManager.getModel("sortings");
+
     $scope.getSortMode = function(){
         return context.selectedSortMode || context.defaultSortMode;
     };
-    this.updateSortMode = function(){
-//        dataManager.dataProvider.dataManager.db.selectByKey("sorting", context.sortingKey, function(row){
-//            if(row){
-//                $scope.$safeApply(function(){
-//                    context.selectedSortMode = row.value;
-//                    $scope.sortedBy = context.getSortedByName();
-//                });
-//            }
-//        });
-    };
-    this.updateSortMode();
     this.setSortMode = function(sortMode){
-        dataManager.dataProvider.dataManager.db.insertOne("sorting", {'id': context.sortingKey, 'value': sortMode});
-        context.selectedSortMode = sortMode;
-        $scope.sortedBy = context.getSortedByName();
+        sortModel.actionSort(context.sortingKey, sortMode);
     };
     this.getSortedByName = function(){
         return this.sortMenuItems[$scope.getSortMode()]||this.sortMenuItems[this.defaultSortMode];
@@ -43,6 +40,7 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
         conferencesModel.removeListener("complete", $scope.$safeApply);
         conferenceMembersModel.removeListener("complete", $scope.$safeApply);
         dataManager.getModel("server").removeListener("complete", $scope.$safeApply);
+        dataManager.getModel("sortings").removeXpidListener(context.sortingKey, sortChangeListener);
 
     });
     $scope.unpin = function() {
@@ -75,7 +73,9 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
         e.stopPropagation();
         var items = [];
         for (var id in context.sortMenuItems){
-            items.push({"id": id, "name": context.sortMenuItems[id], "selected": $scope.getSortMode() == id});
+            if(context.sortMenuItems.hasOwnProperty(id)){
+                items.push({"id": id, "name": context.sortMenuItems[id], "selected": $scope.getSortMode() == id});
+            }
         }
         var model = {};
         model.items = items;
@@ -83,7 +83,7 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
         $scope.$emit("showPopup", {key:"SortMenuPopup", x:100, y:200, model: model, id:"conferences"});
         return false;
     };
-
+    sortModel.addXpidListener(this.sortingKey, sortChangeListener);
 
 };
 
