@@ -34,7 +34,9 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     dataManager.getModel("server").addListener("complete", $scope.$safeApply);
 
     $scope.conferenceMembers = conferencesModel.membersOrder;
+    $scope.talkingMembers = conferencesModel.talkingMembersOrder;
     $scope.conferences = conferencesModel.order;
+    $scope.occupiedConferences = conferencesModel.occupiedConferences;
     $scope.query = "";
     $scope.$on("$destroy", function() {
         conferencesModel.removeListener("complete", $scope.$safeApply);

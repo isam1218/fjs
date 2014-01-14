@@ -7,6 +7,8 @@ namespace("fjs.hud");
 fjs.hud.ConferenceFeedModel = function(dataManager) {
     fjs.hud.FeedModel.call(this, "conferences", dataManager);
     this.membersOrder = [];
+    this.talkingMembersOrder = [];
+    this.occupiedConferences = [];
     this.conferenceMembersModel = dataManager.getModel("conferencemembers");
     context = this;
     this.conferenceMembersModel.addListener("push", function(data){
@@ -26,17 +28,41 @@ fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(data) {
     if(this.membersOrder.indexOf(data["xpid"]) == -1){
         this.membersOrder.push(data["xpid"]);
     }
-
+    if(data.entry.muted){
+        var index = this.talkingMembersOrder.indexOf(data["xpid"]);
+        if( index != -1){
+            this.talkingMembersOrder.splice(index, 1);
+        }
+    }else{
+        var index = this.talkingMembersOrder.indexOf(data["xpid"]);
+        if( index == -1){
+            this.talkingMembersOrder.push(data["xpid"]);
+        }
+    }
+    if(this.occupiedConferences.indexOf(conference) == -1){
+        this.occupiedConferences.push(conference);
+    }
 };
 fjs.hud.ConferenceFeedModel.prototype.deleteConferenceMember = function(data) {
     //var conference = this.items[data.entry["conferenceId"]];//empty entry
     for(var conferenceId in this.items){
         this.items[conferenceId].deleteMember(data["xpid"]);
+        if(this.items[conferenceId].getMembersCount() == 0){
+            var index = this.occupiedConferences.indexOf(conferenceId);
+            if(index != -1){
+                this.occupiedConferences.splice(index, 1);
+            }
+        }
     }
     var index = this.membersOrder.indexOf(data["xpid"]);
     if( index != -1){
-        delete this.membersOrder.splice(index, 1);
+        this.membersOrder.splice(index, 1);
     }
+    index = this.talkingMembersOrder.indexOf(data["xpid"]);
+    if( index != -1){
+        this.talkingMembersOrder.splice(index, 1);
+    }
+
 };
 fjs.hud.ConferenceFeedModel.prototype.onEntryChange = function(data) {
     var isNew = !this.items[data["xpid"]];

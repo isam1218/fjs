@@ -5,7 +5,7 @@ fjs.hud.filter.ContactsWithoutMe = function() {
     return function(items) {
         if(!myPid) myPid = new fjs.hud.FDPDataManager().getModel("me").getMyPid();
         return items.filter(function(element) {
-            return element.xpid != myPid;
+            return element && element.xpid != myPid;
         });
     };
 };
