@@ -1,0 +1,84 @@
+.Avatar {
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
+    display: inline-block;
+    position: relative;
+    border: 1px solid #739D03;
+    line-height: 0px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.AvatarInteractable {
+    right: 1px;
+    bottom: 1px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 0;
+    border-bottom: 8px solid #739D03;
+    position: absolute;
+    display: none;
+}
+
+.Avatar:hover .AvatarInteractable, .AvatarHoverArea:hover .AvatarInteractable {
+    display: block;
+}
+
+.AvatarNormal, .AvatarNormal img {
+    width:38px;
+    height:38px;
+}
+.AvatarBig,  .AvatarBig img {
+    width:90px;
+    height:90px;
+}
+.AvatarSmall, .AvatarSmall img {
+    width:30px;
+    height:30px;
+}
+
+.AvatarApp {
+    width:40px;
+    height:40px;
+    border:none;
+}
+.AvatarApp .TopBarItemAppIcon {
+    top:0;
+    left:0;
+}
+
+.AvatarNormal .GroupAvatarItem {
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 19px;
+    height: 19px;
+}
+
+.AvatarNormal .GroupAvatarItemImg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 19px;
+    height: 19px;
+}
+
+.CallAvatar {
+    border-radius:20px;
+    border: 2px solid #666;
+}
+
+.CallAvatar .AvatarInteractable {
+    right:0px;
+    bottom:0px;
+}
+
+.CallAvatar_Office {
+    border: 2px solid #009cff;
+}
+
+.CallAvatar_Office .AvatarInteractable {
+    border-bottom: 14px solid #009cff;
+    border-left: 14px solid transparent;
+}

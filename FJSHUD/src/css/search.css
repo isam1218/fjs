@@ -1,0 +1,59 @@
+.SearchInputBox {
+    position: absolute;
+    margin: 0;
+    left: 14px;
+    top: 14px;
+    right: 14px;
+    height: 28px;
+    border-radius: 3px;
+    background-color: white;
+    border: solid 1px #729C00;
+}
+
+.SearchInputBoxInputHolder {
+    position: absolute;
+    margin: 0;
+    left: 28px;
+    top: 4px;
+    right: 8px;
+    height: 18px;
+    border: none;
+    color: #729c00;
+}
+
+.SearchInputBoxInput {
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 18px;
+    border: none;
+    color: #729c00;
+}
+
+.SearchInputBoxStateButton {
+    position: absolute;
+    width: 26px;
+    top: 1px;
+    left: 1px;
+    height: 26px;
+    border-radius: 3px;
+}
+
+.SearchInputBoxStateButtonIcon {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    background: url("../img/XIconSet-24x24.png") no-repeat -168px -24px;
+}
+
+.Add .SearchInputBoxStateButtonIcon {
+    background: url("../img/XIconSet-24x24.png") no-repeat -284px -24px;
+}
+
+.InSearch .SearchInputBoxStateButtonIcon {
+    background: url("../img/XIconSet-24x24.png") no-repeat -191px -24px;
+}

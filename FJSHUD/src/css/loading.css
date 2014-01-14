@@ -1,0 +1,35 @@
+.fj-loading
+{
+    position: absolute;
+    left:0;
+    top:0;
+    right: 0;
+    bottom: 0;
+    background: #ccc url(../img/bg.png);
+    z-index: 1000;
+}
+
+.fj-loading .fji-label
+{
+    position: relative;
+    font-size: 40px;
+    line-height: 60px;
+    height: 60px;
+    text-align:center;
+    color: #333;
+    font-weight:bold;
+    text-shadow: 0 2px 0 #fff;
+}
+
+.fj-loading .fji-box
+{
+    position: relative;
+    margin: auto;
+    margin-top:200px;
+    height: 100px;
+    width: 30%;
+}
+
+.loading-amination {
+    text-align: center;
+}
