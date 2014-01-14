@@ -15,14 +15,14 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
         return context.selectedSortMode || context.defaultSortMode;
     };
     this.updateSortMode = function(){
-        dataManager.dataProvider.dataManager.db.selectByKey("sorting", context.sortingKey, function(row){
-            if(row){
-                $scope.$safeApply(function(){
-                    context.selectedSortMode = row.value;
-                    $scope.sortedBy = context.getSortedByName();
-                });
-            }
-        });
+//        dataManager.dataProvider.dataManager.db.selectByKey("sorting", context.sortingKey, function(row){
+//            if(row){
+//                $scope.$safeApply(function(){
+//                    context.selectedSortMode = row.value;
+//                    $scope.sortedBy = context.getSortedByName();
+//                });
+//            }
+//        });
     };
     this.updateSortMode();
     this.setSortMode = function(sortMode){

@@ -1,14 +1,12 @@
 namespace("fjs.ui");
 
-fjs.ui.AllContactsController = function($scope) {
+fjs.ui.AllContactsController = function($scope, dataManager) {
     fjs.ui.Controller.call(this, $scope);
-    var dataProvider = new fjs.hud.FDPDataManager();
-    var contactsModel = dataProvider.getModel("contacts");
+    var contactsModel = dataManager.getModel("contacts");
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverce = false;
     $scope.contacts = contactsModel.order;
-
 
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
@@ -27,6 +25,12 @@ fjs.ui.AllContactsController = function($scope) {
         e.stopPropagation();
         $scope.$emit("showPopup", {key:"EditContactDialog"});
         return false;
+    };
+
+    $scope.filterContactFn = function(searchInput) {
+        return function(contact){
+            return contact.pass(searchInput);
+        };
     };
 
     $scope.$on("$destroy", function() {

@@ -30,7 +30,6 @@ fjs.ui.AddContactMenuController = function($scope, dataManager, templateUrl) {
 
 
     $scope.addContactsMenu = templateUrl;
-
     /**
      * @param item
      * @param {Array} arr1
@@ -60,5 +59,8 @@ fjs.ui.AddContactMenuController = function($scope, dataManager, templateUrl) {
         return function(contact){
             return contact.pass(searchInput);
         };
+    };
+    $scope.close = function() {
+        $scope.clearSearch();
     };
 };

@@ -6,9 +6,25 @@
 
     <link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
 
-    <link type="text/css" rel="stylesheet" href="css/wk.css">
-    <link type="text/css" rel="stylesheet" href="css/new/leftBar.css">
-    <link type="text/css" rel="stylesheet" href="css/new/listRow.css">
+    <link type="text/css" rel="stylesheet" href="css/base.css">
+    <link type="text/css" rel="stylesheet" href="css/loading.css">
+    <link type="text/css" rel="stylesheet" href="css/topBar.css">
+    <link type="text/css" rel="stylesheet" href="css/avatar.css">
+    <link type="text/css" rel="stylesheet" href="css/widget.css">
+    <link type="text/css" rel="stylesheet" href="css/button.css">
+    <link type="text/css" rel="stylesheet" href="css/menu.css">
+    <link type="text/css" rel="stylesheet" href="css/chat-status.css">
+    <link type="text/css" rel="stylesheet" href="css/queue-status.css">
+    <link type="text/css" rel="stylesheet" href="css/select-box.css">
+    <link type="text/css" rel="stylesheet" href="css/leftBar.css">
+    <link type="text/css" rel="stylesheet" href="css/search.css">
+    <link type="text/css" rel="stylesheet" href="css/listRow.css">
+    <link type="text/css" rel="stylesheet" href="css/list-section.css">
+    <link type="text/css" rel="stylesheet" href="css/expandedToolbar.css">
+    <link type="text/css" rel="stylesheet" href="css/media.css">
+    <link type="text/css" rel="stylesheet" href="css/tabs.css">
+    <link type="text/css" rel="stylesheet" href="css/toolbar.css">
+    <link type="text/css" rel="stylesheet" href="css/table.css">
 
     <!-- LIBS -->
 
@@ -53,6 +69,7 @@
     <script src="js/ui/controllers/base/AddContactMenuController.js"></script>
     <script src="js/ui/controllers/ZoomWidgetController.js"></script>
     <script src="js/ui/controllers/ConferencesWidgetController.js"></script>
+    <script src="js/ui/controllers/AllContactsController.js"></script>
 
 
     <script src="js/ui/controllers/SortMenuController.js"></script>
@@ -62,57 +79,6 @@
     <script src="js/ui/controllers/LeftBarCallsController.js"></script>
 
     <script src="js/ui/module.js"></script>
-
-
-    <!---->
-    <!--<script src="js/fdp/worker_manager.js"></script>-->
-    <!--<script src="js/fdp/extension_provider.js"></script>-->
-
-
-
-
-    <!--<script src="js/fdp/data_provider.js"></script>-->
-    <!--<script src="js/fdp/feedModel.js"></script>-->
-    <!--<script src="js/fdp/entryModel.js"></script>-->
-    <!--<script src="js/fdp/contactStatusEntryModel.js"></script>-->
-    <!--<script src="js/fdp/callDetailsEntryModel.js"></script>-->
-    <!--<script src="js/fdp/callEntryModel.js"></script>-->
-    <!--<script src="js/fdp/contactEntryModel.js"></script>-->
-    <!--<script src="js/fdp/myCallEntryModel.js"></script>-->
-    <!--<script src="js/fdp/myCallDetailsEntryModel.js"></script>-->
-    <!--<script src="js/fdp/groupEntryModel.js"></script>-->
-    <!--<script src="js/fdp/groupStatusEntryModel.js"></script>-->
-    <!--<script src="js/fdp/groupsFeedModel.js"></script>-->
-    <!--<script src="js/fdp/groupMemberEntryModel.js"></script>-->
-    <!--<script src="js/fdp/groupMembersFeedModel.js"></script>-->
-    <!--<script src="js/fdp/conferenceEntryModel.js"></script>-->
-    <!--<script src="js/fdp/conferenceStatusEntryModel.js"></script>-->
-    <!--<script src="js/fdp/conferenceMemberEntryModel.js"></script>-->
-    <!--<script src="js/fdp/conferencesFeedModel.js"></script>-->
-
-    <!--<script src="js/fdp/meFeedModel.js"></script>-->
-    <!--<script src="js/fdp/locationsFeedModel.js"></script>-->
-    <!--<script src="js/fdp/contactsFeedModel.js"></script>-->
-    <!--<script src="js/fdp/myCallsFeedModel.js"></script>-->
-
-    <!--<script src="js/ui/ControllerBase.js"></script>-->
-    <!--<script src="js/ui/MainController.js"></script>-->
-    <!--<script src="js/ui/MeWidgetController.js"></script>-->
-    <!--<script src="js/ui/LocationsController.js"></script>-->
-    <!--<script src="js/ui/LeftBarController.js"></script>-->
-    <!--<script src="js/ui/AllContactsController.js"></script>-->
-    <!--<script src="js/ui/ExternalContactsController.js"></script>-->
-    <!--<script src="js/ui/GroupsController.js"></script>-->
-    <!--<script src="js/ui/LeftBarCallsController.js"></script>-->
-    <!--<script src="js/ui/MyCallController.js"></script>-->
-    <!--<script src="js/ui/EditContactDialog.js"></script>-->
-    <!--<script src="js/ui/TopNavigationController.js"></script>-->
-    <!--<script src="js/ui/ContactWidgetChatController.js"></script>-->
-    <!--<script src="js/ui/ContactWidgetGroupsController.js"></script>-->
-    <!--<script src="js/ui/FavoriteContactsController.js"></script>-->
-    <!--<script src="js/ui/ContactController.js"></script>-->
-
-    <!--<script src="js/ui/app.js"></script>-->
     <script src="js/lib/properties.js"></script>
 
 
@@ -121,36 +87,29 @@
 
 
 
-<div class="TopBar2">
-    <div class="TopBar2TopBorder"></div>
-    <div class="TopBar2Logo">
-        <div class="TopBar2LogoInner"></div>
+<div class="TopBar">
+    <div class="TopBarLogo">
     </div>
-    <div class="fj-hbox TopBarIcons" data-ng-controller="TopNavigationController">
-        <a href="#/me" class="fj-hbox-cell TopBar2ItemMe TopBar2ItemApp AvatarHoverArea">
-            <div class="TopBar2ItemAppIcon">
-                <div class="Avatar AvatarNormal">
-                    <img class="AvatarImgPH" onerror="this.src='img/Generic-Avatar-Small.png'"
-                         data-ng-src="{{model.getMyAvatarUrl(38, 38)}}">
-
-                    <div class="AvatarForeground AvatarInteractable"></div>
+    <div class="TopBarIcons" data-ng-controller="TopNavigationController">
+            <a href="#/me" class="TopBarItemMe TopBarItemApp AvatarHoverArea">
+                <div class="TopBarItemAppIcon">
+                    <div class="Avatar AvatarNormal">
+                        <img class="AvatarImgPH" data-ng-src="{{model.getMyAvatarUrl(38, 38)}}">
+                        <div class="AvatarInteractable"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="TopBar2ItemAppName">Me</div>
-        </a>
-
-        <div class="fj-hbox-space TopBar2Apps">
-            <div class="TopBar2AppsLeftSpace"></div>
-            <a href="{{icon.url}}" class="TopBar2ItemApp" data-ng-repeat="icon in appIcons">
-                <div class="TopBar2ItemAppIcon {{ icon.key }}"></div>
-                <div class="TopBar2ItemAppName">{{ icon.title }}</div>
+                <div class="TopBarItemAppName">Me</div>
             </a>
-        </div>
-        <div class="TopBar2MeInfo TopBarMeStatus">
+            <a href="{{icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons">
+                    <div class="TopBarItemAppIcon {{ icon.key }}"></div>
+                    <div class="TopBarItemAppName">{{ icon.title }}</div>
+            </a>
+    </div>
+    <div class="TopBarMeStatus">
             <div class="TopBarMeStatus-row">
-                <div class="XButton XButtonNormal" data-ng-click="logout()"><span>Sign out</span>
-                    <div class="logout-ico"></div>
-                </div>
+                <button class="XButton" data-ng-click="logout()">
+                    <div class="logout-ico"></div> Sign out
+                </button>
             </div>
             <div class="TopBarMeStatus-row">
                 <span>Me in ({{ model.getMyAgentStatusDetails() }})</span>
@@ -161,111 +120,68 @@
                 <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{ model.getMyChatStatus() }}"></div>
             </div>
         </div>
-    </div>
-
-
-    <div class="TopBar2BottomLine"></div>
+    <div class="TopBarBottomLine"></div>
 </div>
 
 
 
-<div class="fj-vbox LeftSideBar" data-ng-controller="LeftBarController">
-    <div class="LeftSideBarSectionTop Head"></div>
-    <div class="fj-vbox-space LeftSideBarSection">
-        <div class="LeftSideBarSectionTop"></div>
-        <div class="LeftSideBarSectionBody Tall">
-            <div class="left-phone-search" data-ng-class="{'hasresults':number!=''}">
-                <div class="SearchInputBox">
-                    <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng type="search" data-ng-keyup="onkeyup($event)" placeholder="Quick call" data-ng-model="number" data-ng-change="numberChanged()">
-                    </div>
-                    <div class="SearchInputBoxStateButton">
-                        <div class="SearchInputBoxStateButtonIcon"></div>
-                    </div>
-                </div>
-                <div data-ng-if="canCall()" class="CallButtonPlaceholder">
-                    <div class="XButton XButtonGreen XButtonCall ButtonFillWidth" >
-                        <span>Call number</span>
-                    </div>
-                </div>
-                <div data-ng-if="number" class="finded">
-                    <div data-ng-class="{'selected': selectedContact == contact}" data-ng-click="selectContact(contact.xpid)" class="ListRowSmallest" data-ng-repeat="contact in filteredContacts">
-                        <div class="Avatar AvatarSmall">
-                            <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}">
-                        </div>
-                        <div class="ListRowContent">
-                            <div class="ListRowLeftArea">
-                                <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
-                                <div class="ListRowStatus">
-                                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.xmpp || 'offline'}}"></div>
-                                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
-                                    <div class="LisrRowDesc">#{{ contact.primaryExtension }}</div>
+<div class="LeftSideBar" data-ng-controller="LeftBarController">
+    <div class="LeftSideBarHead"></div>
+    <div data-ng-include="currentTab.url"></div>
+    <div class="LeftSideWidgetTabs WidgetTabBar">
+        <div class="WidgetTabBarButton Ready" data-ng-class="{'fj-selected-item': (tab.key == currentTab.key)}" data-ng-click="selectTab(tab)" data-ng-repeat="tab in tabs">
+            <div class="inner">{{tab.title}}</div>
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+        <!--<div class="LeftBarPhoneSection">
+            <div class="LeftBarNewCall">
+                    <div class="left-phone-search" data-ng-class="{'hasresults':number!=''}">
+                                <div class="SearchInputBox">
+                                    <div class="SearchInputBoxInputHolder">
+                                        <input class="SearchInputBoxInput" data-ng type="search" data-ng-keyup="onkeyup($event)" placeholder="Quick call" data-ng-model="number" data-ng-change="numberChanged()">
+                                    </div>
+                                    <div class="SearchInputBoxStateButton">
+                                        <div class="SearchInputBoxStateButtonIcon"></div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="canCall()" class="CallButtonPlaceholder">
+                                    <div class="XButton XButtonGreen" >
+                                        <span>Call number</span>
+                                    </div>
+                                </div>
+                                <div data-ng-if="number" class="finded">
+                                    <div data-ng-class="{'selected': selectedContact == contact}" data-ng-click="selectContact(contact.xpid)" class="ListRow ListRowSmallest AvatarHoverArea" data-ng-repeat="contact in filteredContacts">
+                                        <div class="Avatar AvatarSmall">
+                                            <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}">
+                                            <div class="AvatarInteractable"></div>
+                                        </div>
+                                        <div class="ListRowContent">
+                                            <div class="ListRowLeftArea">
+                                                <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
+                                                <div class="ListRowStatus">
+                                                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.xmpp || 'offline'}}"></div>
+                                                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                                                    <div class="LisrRowDesc">#{{ contact.primaryExtension }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="ListRowButtons">
+                                                <div data-ng-if="contact.jid" class="ListRowActionButton ListRowActionButtonChat"></div>
+                                                <div title="{{ contact.primaryExtension }}" data-ng-if="contact.primaryExtension" class="ListRowActionButton ListRowActionButtonCall"></div>
+                                                <div title="{{ contact.email }}" data-ng-if="contact.email" class="ListRowActionButton ListRowActionButtonEmail"></div>
+                                                <div title="{{ contact.phoneMobile }}" data-ng-if="contact.phoneMobile" class="ListRowActionButton ListRowActionButtonMobile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="ListRowButtons">
-                                <div data-ng-if="contact.jid" class="ListRowActionButton ListRowActionButtonChat"></div>
-                                <div title="{{ contact.primaryExtension }}" data-ng-if="contact.primaryExtension" class="ListRowActionButton ListRowActionButtonCall"></div>
-                                <div title="{{ contact.email }}" data-ng-if="contact.email" class="ListRowActionButton ListRowActionButtonEmail"></div>
-                                <div title="{{ contact.phoneMobile }}" data-ng-if="contact.phoneMobile" class="ListRowActionButton ListRowActionButtonMobile"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
-    <div class="LeftBarCallsHolder" data-ng-controller="LeftBarCallsController">
-        <div data-ng-controller="MyCallController" class="MyCallBlock AvatarHoverArea {{ call.getCallType() }} " data-ng-class="{'IsHold-true': call.state == 3}" data-ng-repeat="call in calls">
-            <div class="fj-hbox MyCallHolder">
-                <div class="fj-hbox-cell MyCallBlockCallIconHolder">
-                    <div class="MyCallBlock_CallIcon Category-{{ call.getCallType() }}">
-                        <div class="MyCallBlock_CallIconInner" data-ng-class="{'IsMute-true': call.mute}"></div>
-                    </div>
-                </div>
-                <div class="fj-hbox-space MyCallBlockCallLineHolder">
-                    <div class="fj-hbox MyCallBlock_CallLineTop">
-                        <div class="fj-hbox-space MyCallBlock_CallerName">{{ call.displayName }}</div>
-                        <div class="fj-hbox-cell MyCallBlock_Rec {{call.record}}"></div>
-                    </div>
-                    <div class="fj-hbox MyCallBlock_CallLineBottom">
-                        <div class="fj-hbox-space MyCallBlock_CallInfo"><span>{{call.incoming && "Inbound" || "Outbound"}}</span><span
-                                class="fj-visibility-{{call.state != 3}}">&nbsp; on hold &nbsp;</span><span
-                                class="fj-visibility-{{call.state == 3}}">&nbsp; on call &nbsp;</span><span
-                                class="MyCallBlock_Duration" >{{duration}}</span><span
-                                class="fj-visibility-false">&nbsp;/&nbsp;</span><span
-                                class="MyCallBlock_HoldInfo_Timer fj-visibility-false">{{holdDuration}}</span></div>
-                        <div class="fj-hbox-cell MyCallBlock_MutedText fj-visibility-{{call.mute}}">
-                            Muted
-                        </div>
-                    </div>
-                </div>
-                <div class="fj-hbox-cell MyCallBlockButtonsHolder">
-                    <div class="fj-hbox MyCallBlock_Buttons fj-visibility-{{call.state!=0 || call.incoming}}">
-                        <div class="fj-hbox-space MyCallBlock_Buttons_Left">
-                            <div data-ng-click="hangup()" class="XButton XButtonNormal {{call.state==0}}">
-                                <span>Decline</span></div>
-                            <div data-ng-click="hangup()" data-event="click" class="XButton XButtonNormal {{call.state!=0}}">
-                                <span>End</span></div>
-                        </div>
-                        <div class="fj-hbox-space MyCallBlock_Buttons_Right">
-                            <div data-ng-click="accept()" class="XButton XButtonNormal {{call.state==0}}">
-                                <span>Accept</span></div>
-                            <div data-ng-click="hold()" class="XButton XButtonNormal {{call.state==2}} disabled-{{!!call.conferenceId}}">
-                                <span>Hold</span></div>
-                            <div data-ng-click="unhold()" class="XButton XButtonNormal {{call.state==3}}">
-                                <span>Talk</span></div>
-                        </div>
-                    </div>
-                    <div class="fj-hbox MyCallBlock_Buttons fj-visibility-{{call.state==0 && !call.incoming}}">
-                        <div class="fj-hbox-space">
-                            <div class="XButton XButtonNormal" data-ng-click="hangup()">
-                                <span>Cancel</span></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="LeftBarCalls">
+
             </div>
-        </div>
-    </div>
+        </div>-->
+
 
 
    <!-- <div class="fj-vbox-cell LeftSideBarSection LeftSideBarSectionHead" data-ng-controller="LeftBarCallsController">
@@ -343,22 +259,11 @@
     </div>-->
 </div>
 
-
-
-<div  class="fj-widget-area Widget">
-    <ng-view></ng-view>
-</div>
+<ng-view></ng-view>
 
 <div ng-include="currentPopup.url"></div>
 
 <div  id="fj-loading" class="fj-loading">
-    <div class="fj-loading-inner">
-        <div class="fj-loading-logo">
-            <div class="fj-loading-logoTitle">
-                <div class="fj-loading-logoIco"></div>
-                <span class="fj-loading-logoTitleText">Fonality</span></div>
-        </div>
-    </div>
     <div class="fji-box">
         <div class="fji-label">Loading...</div>
         <div class="loading-amination">

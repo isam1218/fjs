@@ -1,0 +1,56 @@
+<div data-ng-controller="AllContactsController">
+    <div class="ToolBar">
+        <div class="SearchInputBox">
+            <div class="SearchInputBoxInputHolder">
+                <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech="" data-ng-model="query" placeholder="Search">
+            </div>
+            <div class="SearchInputBoxStateButton">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
+        </div>
+        <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
+        </button>
+    </div>
+    <div class="ListLineContent Header LeftContactsColumns">
+        <div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>NAME</span>/
+            <div class="DirectionArrow"></div>
+        </div>
+        <div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>EXTENSION</span>
+            <div class="DirectionArrow"></div>
+        </div>
+        <div data-ng-click="sort()"  class="ListLineContentCell CallStatus {{(sortField == 'call.xpid' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>CALL STATUS</span>
+            <div class="DirectionArrow"></div>
+        </div>
+        <div data-ng-click="sort('xmpp')"  class="ListLineContentCell HudStatus {{(sortField == 'xmpp' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>HUD STATUS</span>
+            <div class="DirectionArrow"></div>
+        </div>
+    </div>
+    <div  class="LeftBarTabContentList">
+        <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" ng-show="([contact.displayName, contact.primaryExtension] | ContactsWithoutMe | filter:query).length" data-ng-repeat="contact in contacts | orderBy:sortField:sortReverce">
+            <div class="Avatar AvatarSmall">
+                <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}">
+                <div class="AvatarInteractable"></div>
+            </div>
+            <div class="ListRowContent">
+                    <div class="ListRowLeftArea">
+                        <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
+                        <div class="link ListRowDesc">#{{ contact.primaryExtension }}</div>
+                    </div>
+                    <div data-ng-if="contact.call.xpid" class="ListRowCallArea">
+                        <div class="Avatar AvatarSmall">
+                            <img class="AvatarImgPH" data-ng-src="{{contact.call.getAvatarUrl(28, 28)}}">
+                        </div>
+                    </div>
+                    <div class="ListRowStatus">
+                            <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp || 'offline'}}"></div>
+                            <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                            <div class="ListRowStatusText">{{contact.xmppCustom || contact.xmpp || 'offline'}}</div>
+                    </div>
+            </div>
+        </a>
+    </div>
+</div>

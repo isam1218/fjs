@@ -27,7 +27,7 @@ hud_web.controller("LocationsController", ['$scope', '$element', 'DataManager', 
 hud_web.controller("SortMenuController", ['$scope', '$element', fjs.ui.SortMenuController]);
 //hud_web.controller("LeftBarController", fjs.ui.LeftBarController);
 hud_web.controller("LeftBarController", ['$scope', '$filter', 'DataManager', fjs.ui.LeftBarController]);
-//hud_web.controller("AllContactsController", fjs.ui.AllContactsController);
+hud_web.controller("AllContactsController", ['$scope', 'DataManager', fjs.ui.AllContactsController]);
 hud_web.controller("LeftBarCallsController", ['$scope', 'DataManager', fjs.ui.LeftBarCallsController]);
 //hud_web.controller("ExternalContactsController", fjs.ui.ExternalContactsController);
 //hud_web.controller("GroupsController", fjs.ui.GroupsController);

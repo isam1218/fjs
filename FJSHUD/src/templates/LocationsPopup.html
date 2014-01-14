@@ -1,19 +1,16 @@
-<div class="MenuWindow SelectMenu Down Wide" data-ng-controller="LocationsController" style="top: 165px; left: 536px;">
-    <div class="fj-hbox SelectBoxMenu">
-        <div class="fj-hbox-space SelectBoxText"><span class="InnerIco">@ </span><span>{{ getCurrentLocationTitle() }}</span></div>
-        <div class="fj-hbox-cell SelectBoxArrowBox">
-            <div class="SelectBoxArrow"></div>
+<div class="MenuWindow LocationsMenu" data-ng-controller="LocationsController">
+    <div class="SelectBoxMenu">
+        <div class="SelectBoxText">
+            <span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span>
         </div>
+        <div class="SelectBoxArrow"></div>
     </div>
-    <div class="SelectBoxMenuSelector"></div>
     <div class="MenuContent">
-        <div class="fj-scrollable MenuSection">
-             <div class="fj-content">
-                    <div class="LocationMenuItem MenuItem fj-hbox" data-ng-click="setLocation(location.xpid)" data-ng-class="{'selected':location.xpid == getCurrentLocationId()}" data-ng-repeat="location in locations">
-                        <div class="fj-hbox-cell MenuItemCheck"></div>
-                        <div class="fj-hbox-space MenuItemText">{{ location.name }} ({{ location.phone }})</div>
-                        <div class="fj-hbox-cell MenuItemTextStatus">{{ location.status.deviceStatus=='r' && 'registered' || 'unregistered' }}</div>
-                    </div>
+        <div class="MenuSection">
+             <div class="MenuItem" data-ng-click="setLocation(location.xpid)" data-ng-class="{'selected':location.xpid == getCurrentLocationId()}" data-ng-repeat="location in locations">
+                <div class="SelectedIcon"></div>
+                <div class="MenuItemText">{{ location.name }} ({{ location.phone }})</div>
+                <div class="MenuItemTextStatus">{{ location.status.deviceStatus=='r' && 'registered' || 'unregistered' }}</div>
              </div>
         </div>
     </div>
