@@ -82,7 +82,9 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
         var model = {};
         model.items = items;
         model.callback = context.setSortMode;
-        $scope.$emit("showPopup", {key:"SortMenuPopup", x:100, y:200, model: model, id:"conferences"});
+        var eventTarget = context.getEventHandlerElement(e.target, e);
+        var offset = fjs.utils.DOM.getElementOffset(eventTarget);
+        $scope.$emit("showPopup", {key:"SortMenuPopup", x:offset.x, y:offset.y+30, model: model, id:"conferences"});
         return false;
     };
     $scope.filterConferenceFn = function(query) {

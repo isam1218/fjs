@@ -1,6 +1,6 @@
 namespace("fjs.ui");
 
-fjs.ui.AllContactsController = function($scope, dataManager) {
+fjs.ui.LeftBarContactsController = function($scope, dataManager) {
     fjs.ui.Controller.call(this, $scope);
     var contactsModel = dataManager.getModel("contacts");
     $scope.query = "";
@@ -29,7 +29,10 @@ fjs.ui.AllContactsController = function($scope, dataManager) {
 
     $scope.filterContactFn = function(searchInput) {
         return function(contact){
-            return contact.pass(searchInput);
+            if(searchInput) {
+                return contact.pass(searchInput);
+            }
+            return true;
         };
     };
 
@@ -37,4 +40,4 @@ fjs.ui.AllContactsController = function($scope, dataManager) {
         contactsModel.removeListener("complete", $scope.$safeApply);
     });
 };
-fjs.ui.AllContactsController.extend(fjs.ui.Controller);
+fjs.ui.LeftBarContactsController.extend(fjs.ui.Controller);

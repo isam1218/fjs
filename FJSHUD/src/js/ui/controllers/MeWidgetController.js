@@ -8,6 +8,8 @@ namespace("fjs.ui");
  * @constructor
  */
 fjs.ui.MeWidgetController = function($scope, dataManager) {
+    var context = this;
+
     fjs.ui.Controller.call(this, $scope);
 
     var meModel = dataManager.getModel("me");
@@ -40,7 +42,9 @@ fjs.ui.MeWidgetController = function($scope, dataManager) {
     };
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
-        $scope.$emit("showPopup", {key:"LocationsPopup", x:100, y:200});
+        var eventTarget = context.getEventHandlerElement(e.target, e);
+        var offset = fjs.utils.DOM.getElementOffset(eventTarget);
+        $scope.$emit("showPopup", {key:"LocationsPopup", x:offset.x-60, y:offset.y});
         return false;
     };
 

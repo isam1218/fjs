@@ -2,6 +2,7 @@ namespace("fjs.fdp");
 /**
  * @param {Array} feeds
  * @constructor
+ * @extends fjs.fdp.ProxyModel
  */
 fjs.fdp.ClientProxyModel = function(feeds) {
     fjs.fdp.ProxyModel.call(this, feeds);

@@ -34,8 +34,7 @@ fjs.ui.MainController = function($scope, dataProvider) {
             return;
         }
         $scope.currentPopup.url = "templates/"+data.key+".html";
-        $scope.currentPopup.x = data.x;
-        $scope.currentPopup.y = data.y;
+        $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
     });
 

@@ -30,26 +30,26 @@
         </div>
     </div>
     <div  class="LeftBarTabContentList">
-        <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn(query) |  orderBy:sortField:sortReverce">
+        <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="contact in contacts | ExternalContacts | filter:filterContactFn(query) |  orderBy:sortField:sortReverce">
             <div class="Avatar AvatarSmall">
                 <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}">
                 <div class="AvatarInteractable"></div>
             </div>
             <div class="ListRowContent">
-                    <div class="ListRowLeftArea">
-                        <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
-                        <div class="link ListRowDesc">#{{ contact.primaryExtension }}</div>
+                <div class="ListRowLeftArea">
+                    <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
+                    <div class="link ListRowDesc">#{{ contact.primaryExtension }}</div>
+                </div>
+                <div data-ng-if="contact.call.xpid" class="ListRowCallArea">
+                    <div class="Avatar AvatarSmall">
+                        <img class="AvatarImgPH" data-ng-src="{{contact.call.getAvatarUrl(28, 28)}}">
                     </div>
-                    <div data-ng-if="contact.call.xpid" class="ListRowCallArea">
-                        <div class="Avatar AvatarSmall">
-                            <img class="AvatarImgPH" data-ng-src="{{contact.call.getAvatarUrl(28, 28)}}">
-                        </div>
-                    </div>
-                    <div class="ListRowStatus">
-                            <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp || 'offline'}}"></div>
-                            <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
-                            <div class="ListRowStatusText">{{contact.xmppCustom || contact.xmpp || 'offline'}}</div>
-                    </div>
+                </div>
+                <div class="ListRowStatus">
+                    <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp || 'offline'}}"></div>
+                    <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                    <div class="ListRowStatusText">{{contact.xmppCustom || contact.xmpp || 'offline'}}</div>
+                </div>
             </div>
         </a>
     </div>

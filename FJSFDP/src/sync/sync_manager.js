@@ -531,7 +531,7 @@
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data, callback) {
         var context = this;
         data["action"] = actionName;
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(responce, isOK){
+        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(xhr, responce, isOK){
             if(callback) {
                 var _responce = context.parseFdpData(responce);
                 callback(isOK && _responce.result == "OK");

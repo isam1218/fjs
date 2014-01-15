@@ -12,7 +12,7 @@ fjs.hud.filter.SortConferenceFilter = function() {
         switch (mode){
             case 'number':
                 compareFn = function(conf1, conf2){
-                    var diff = conf1.roomNumber - conf2.roomNumber;
+                    var diff = conf1["roomNumber"] - conf2["roomNumber"];
                     if(diff)
                     {
                         return diff;
@@ -24,19 +24,19 @@ fjs.hud.filter.SortConferenceFilter = function() {
                     }
 
                     return conf1.getServerName().localeCompare(conf2.getServerName());
-                }
+                };
                 break;
             case 'activity':
                 compareFn = function(conf1, conf2){
                     var diff = (conf1.getMembersCount() > 0 ? 0 : 1) - (conf2.getMembersCount() > 0 ? 0 : 1);
                     return diff||conf1.compareTo(conf2);
-                }
+                };
                 break;
             case 'location':
             default:
                 compareFn = function(conf1, conf2){
                     return conf1.compareTo(conf2);
-                }
+                };
 
                 break;
         }

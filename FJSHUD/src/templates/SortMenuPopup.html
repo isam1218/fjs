@@ -1,12 +1,10 @@
-<div class="MenuWindow WidgetActionDropDownMenu" data-ng-controller="SortMenuController" style="top: 216px; left: 661px;">
+<div class="MenuWindow WidgetActionDropDownMenu" data-ng-controller="SortMenuController" data-ng-style="currentPopup.position">
     <div class="MenuContent">
         <div class="MenuSection" data-event="mousedown mouseover mouseup">
             <div data-template-id="widget-action-menu-list-item" data-event="mousedown mouseover mouseup" data-ng-repeat="item in model">
-                <div data-ng-click="applySorting(item.id)" class="fj-hbox MenuItem selected-{{item.selected}}">
-                    <div class="fj-hbox-cell MenuItemCheck-{{item.selected}}">
-                        <div class="status-icon-inner"></div>
-                    </div>
-                    <div class="fj-hbox-space MenuItemText">{{item.name}}</div>
+                <div data-ng-click="applySorting(item.id)" data-ng-class="{'selected':item.selected}" class="MenuItem">
+                    <div class="SelectedIcon"></div>
+                    <div class="MenuItemText">{{item.name}}</div>
                 </div>
             </div>
         </div>

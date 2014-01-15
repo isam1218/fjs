@@ -8,7 +8,7 @@ fjs.ui.LeftBarController = function($scope) {
     $scope.tabs = [
         {"key": "all", "title": "All", "url":"templates/LeftBarTabAllContacts.html"}
         , {"key": "favorites", "title": "Favorites", "url":"templates/LeftBarTabFavorites.html"}
-        , {"key": "external", "title": "External", "url":"templates/LeftBarTabExternal.html"}
+        , {"key": "external", "title": "External", "url":"templates/LeftBarTabExternalContacts.html"}
         , {"key": "groups", "title": "Groups", "url":"templates/LeftBarTabGroups.html"}
     ];
 

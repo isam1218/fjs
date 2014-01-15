@@ -17,3 +17,17 @@ fjs.ui.Controller = function($scope) {
         }
     };
 };
+
+/**
+ * @param {HTMLElement} target
+ * @param {UIEvent} event
+ * @returns {*}
+ */
+fjs.ui.Controller.prototype.getEventHandlerElement = function(target, event) {
+      if(target.getAttribute("data-ng-"+event.type)) {
+          return target;
+      }
+      else if(target.parentNode) {
+          return this.getEventHandlerElement(target.parentNode, event);
+      }
+};

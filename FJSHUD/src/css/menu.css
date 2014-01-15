@@ -42,6 +42,12 @@
     border-radius: 1px;
 }
 
+.MenuItem:hover {
+    background-color: #729C00;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
 .MenuItemIcon {
     width: 24px;
     height: 24px;
@@ -70,12 +76,15 @@
     display:inline-block;
     vertical-align: top;
     font-size: 11px;
+    margin-right:5px;
 }
 
 .MenuContent {
     position: relative;
     margin: 10px;
-    margin-top: 41px;
+}
+.MenuItem:hover {
+
 }
 
 /********LocationsMenu******/
