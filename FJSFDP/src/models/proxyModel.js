@@ -63,8 +63,11 @@ fjs.fdp.ProxyModel.prototype.fireEvent = function(data) {
         this.listeners[i](data);
     }
 };
-
-fjs.fdp.ProxyModel.prototype.fillChanges = function(xpid, changes, type) {
+/**
+ * @returns {*}
+ * @protected
+ */
+fjs.fdp.ProxyModel.prototype.createChange = function(xpid) {
     if(!this.changes) {
         this.changes = {};
     }
@@ -72,16 +75,60 @@ fjs.fdp.ProxyModel.prototype.fillChanges = function(xpid, changes, type) {
     if(!_changes) {
         _changes = this.changes[xpid] = {xpid:xpid, entry:{}};
     }
-    if(type=='change'&& _changes.type!='delete') {
-        _changes.type = 'change';
-        for(var key in changes) {
-            if(changes.hasOwnProperty(key)) {
-                _changes.entry[key] = changes[key];
+    return _changes;
+};
+
+/**
+ *
+ * @param {string} xpid
+ * @param {*} changes
+ * @param {string} feedName
+ * @protected
+ */
+fjs.fdp.ProxyModel.prototype.fillChange = function(xpid, changes, feedName) {
+    var _changes = this.createChange(xpid);
+    _changes.type = 'change';
+    for(var key in changes) {
+        if(changes.hasOwnProperty(key)) {
+            _changes.entry[key] = changes[key];
+        }
+    }
+};
+/**
+ * @param xpid
+ * @param feedName
+ * @protected
+ */
+fjs.fdp.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
+    var _changes = this.createChange(xpid);
+    if(feedName==this.feedName) {
+        _changes.type = 'delete';
+    }
+    else {
+        var changes = this.feedFields[feedName];
+        if(changes) {
+            for (var key in changes) {
+                if(changes.hasOwnProperty(key)) {
+                    _changes.entry[key] = changes[key];
+                }
             }
         }
     }
-    else if(type=='delete') {
-        _changes.type = 'delete';
+};
+
+fjs.fdp.ProxyModel.prototype.fieldPass = function(feedName, fieldName) {
+    return fieldName!='xef001id' && feedName!='xef001iver' && feedName!='xpid';
+};
+
+fjs.fdp.ProxyModel.prototype.collectFields = function(feedName, entry) {
+    if(feedName!=this.feedName && !this.feedFields[feedName]) {
+        this.feedFields[feedName] = {};
+        for(var key in entry) {
+            if(entry.hasOwnProperty(key))
+                if(this.fieldPass(feedName, key)) {
+                    this.feedFields[feedName][key] = null;
+                }
+        }
     }
 };
 
@@ -92,32 +139,19 @@ fjs.fdp.ProxyModel.prototype.onEntryChange = function(data) {
     var item = this.items[data.xpid];
     if(!item) {
         this.items[data.xpid] = new fjs.fdp.EntryModel(data.entry);
-        this.fillChanges(data.xpid, data.entry, 'change');
+        this.fillChange(data.xpid, data.entry, data.feed);
     }
     else {
         var changes = item.fill(data.entry);
-        this.fillChanges(data.xpid, changes, 'change');
-    }
-    if(data.feed!=this.feedName && !this.feedFields[data.feed]) {
-        this.feedFields[data.feed] = {};
-        var _entry = data["entry"];
-        for(var key in _entry) {
-            if(_entry.hasOwnProperty(key))
-                if(key!='xef001id' && key!='xef001iver' && key!='xpid') {
-                    this.feedFields[data.feed][key] = null;
-                }
-        }
+        this.fillChange(data.xpid, changes, data.feed);
     }
 };
 
 fjs.fdp.ProxyModel.prototype.onEntryDeletion = function(data) {
     if(data.feed == this.feedName) {
         delete this.items[data.xpid];
-        this.fillChanges(data.xpid, null, 'delete');
     }
-    else {
-        this.fillChanges(data.xpid, this.feedFields[data.feed], 'change');
-    }
+    this.fillDeletion(data.xpid, data.feed);
 };
 
 fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {

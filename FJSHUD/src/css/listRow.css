@@ -89,6 +89,19 @@
     text-decoration: none;
 }
 
+.ListRowCallArea {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    margin-top: 5px;
+    margin-right: 3px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: solid 1px #ccc;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.05);
+}
+
+
 .ListRowDesc {
     vertical-align: top;
     display: inline-block;
@@ -143,6 +156,13 @@
     font-size: 10px;
 }
 
+.ListRow.Small .ListRowCallArea {
+    width: 34px;
+    height: 34px;
+    margin: 2px;
+    border-radius: 3px;
+}
+
 .ListRowSmallest {
     height: 32px;
 }
@@ -186,6 +206,18 @@
 
 .ListRow.Table .ListRowLeftArea {
     width:175px;
+}
+
+.ListRow.Table .ListRowCallArea + .ListRowLeftArea {
+    width:150px;
+}
+
+.ListRow.Table .ListRowCallArea {
+    position:absolute;
+    left:155px;
+}
+.ListRow.Table .ListRowCallArea .Avatar {
+    margin:0;
 }
 
 .ListRow.Table .ListRowStatus {
@@ -236,6 +268,9 @@
 }
 
 
+
+
+
 /********************Conference************************************/
 .ListRow-Conference-Members {
     margin-left: 50px;
@@ -276,5 +311,7 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
+
 
 

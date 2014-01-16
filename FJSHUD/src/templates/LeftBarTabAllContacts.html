@@ -20,7 +20,7 @@
             <span>EXTENSION</span>
             <div class="DirectionArrow"></div>
         </div>
-        <div data-ng-click="sort()"  class="ListLineContentCell CallStatus {{(sortField == 'call.xpid' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+        <div data-ng-click="sort('startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'startedAt' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
             <span>CALL STATUS</span>
             <div class="DirectionArrow"></div>
         </div>
@@ -36,15 +36,17 @@
                 <div class="AvatarInteractable"></div>
             </div>
             <div class="ListRowContent">
+                <div data-ng-if="contact.hasCall" class="ListRowCallArea">
+                    <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{contact.getCallType()}}">
+                        <img class="AvatarImgPH" data-ng-src="{{contact.getCallAvatarUrl(28, 28)}}">
+                        <div class="AvatarInteractable"></div>
+                    </div>
+                </div>
                     <div class="ListRowLeftArea">
                         <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
                         <div class="link ListRowDesc">#{{ contact.primaryExtension }}</div>
                     </div>
-                    <div data-ng-if="contact.call.xpid" class="ListRowCallArea">
-                        <div class="Avatar AvatarSmall">
-                            <img class="AvatarImgPH" data-ng-src="{{contact.call.getAvatarUrl(28, 28)}}">
-                        </div>
-                    </div>
+
                     <div class="ListRowStatus">
                             <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp || 'offline'}}"></div>
                             <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>

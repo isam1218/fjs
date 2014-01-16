@@ -58,7 +58,7 @@ fjs.fdp.DataManager.prototype.removeListener = function(feedName, listener) {
 fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
     switch(feedName) {
         case 'contacts':
-            return new fjs.fdp.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails']);
+            return new fjs.fdp.ContactsProxyModel();
         break;
         case 'locations':
             return new fjs.fdp.ProxyModel(['locations', 'location_status']);

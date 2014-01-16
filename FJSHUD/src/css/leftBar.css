@@ -117,6 +117,18 @@
     width: 30px;
 }
 
+.LeftSideBar .ListLineContentCell.Extension {
+    margin-left: -3px;
+}
+
+.LeftSideBar .ListLineContentCell.CallStatus {
+    left: 75px;
+}
+
+.LeftSideBar .ListLineContentCell.HudStatus {
+    left: 80px;
+}
+
 .LeftSideBar .DirectionArrow {
     position: absolute;
     left: 50%;
@@ -127,6 +139,7 @@
     top:0;
 }
 
-.LeftSideBar .ToolBar .XButton {
+ .ToolBar .XButton {
     width: 90px;
 }
+
