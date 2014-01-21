@@ -96,9 +96,9 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
 //            case "mycalls":
 //                this.feeds[feedName] = new fjs.fdp.MyCallsFeedModel(this);
 //                break;
-//            case "groups":
-//                this.feeds[feedName] = new fjs.fdp.GroupsFeedModel(this);
-//                break;
+            case "groups":
+                this.feeds[feedName] = new fjs.hud.GroupsFeedModel(this);
+                break;
 //            case "groupcontacts":
 //                this.feeds[feedName] = new fjs.fdp.GroupsMembersFeedModel(this);
 //                break;
@@ -110,6 +110,9 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
                 break;
             case "sortings":
                 this.feeds[feedName] = new fjs.hud.SortingFeedModel(this);
+                break;
+            case "voicemailbox":
+                this.feeds[feedName] = new fjs.hud.VoicemailMessageFeedModel(this);
                 break;
             default:
                 this.feeds[feedName] = new fjs.hud.FeedModel(feedName, this);

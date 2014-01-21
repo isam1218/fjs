@@ -23,3 +23,11 @@ fjs.hud.EntryModel.prototype.clear = function() {
         }
     }
 };
+fjs.hud.EntryModel.prototype.getSourceId = function() {
+    if(this.xpid){
+        var index = this.xpid.indexOf('_');
+        if(index != -1){
+            return this.xpid.substring(0, index);
+        }
+    }
+};

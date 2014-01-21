@@ -1,0 +1,57 @@
+<div class="WidgetTabContent">
+    <div class="ToolBar">
+        <button class="XButtonWide XButton XButtonNormal" data-ng-click="doActionNew()">New</button>
+        <div class="SearchInputBox">
+            <div class="SearchInputBoxInputHolder">
+                <input class="SearchInputBoxInput" data-ng-model="query" type="text" x-webkit-speech="" placeholder="Search">
+            </div>
+            <div class="SearchInputBoxStateButton">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ListView WithToolBar">
+        <div class="ListViewTopSpace"></div>
+        <div class="InlineList">
+            <div data-ng-show="departments.length">
+                <div class="ListSection">
+                    <div class="ListSectionHeader">
+                        <div class="ListSectionHeaderTitle">DEPARTMENT</div>
+                        <div class="ListSectionHeaderRight"></div>
+                    </div>
+                    <div class="ListSectionBody">Contact is a member of this department</div>
+                </div>
+                <a href="#/group/pid={{group.xpid}}" class="ListRow ListRow-Group"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="group in departments = (groups | orderBy:'name' | filter:filterGroup() | filter:filterDepartment() | filter:filterSearch(query))">
+                    <div ng-include src="'templates/GroupRow.html'"></div>
+                </a>
+            </div>
+            <div data-ng-show="ourTeams.length">
+                <div class="ListSection">
+                    <div class="ListSectionHeader">
+                        <div class="ListSectionHeaderTitle">OUR TEAMS</div>
+                        <div class="ListSectionHeaderRight"></div>
+                    </div>
+                    <div class="ListSectionBody">We are both in these teams</div>
+                </div>
+                <a href="#/group/pid={{group.xpid}}" class="ListRow ListRow-Group"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="group in ourTeams = (groups | orderBy:'name' | filter:filterGroup() | filter:filterMeInGroup() | filter:filterSearch(query))">
+                    <div ng-include src="'templates/GroupRow.html'"></div>
+                </a>
+            </div>
+            <div data-ng-show="otherTeams.length">
+                <div class="ListSection">
+                    <div class="ListSectionHeader">
+                        <div class="ListSectionHeaderTitle">OTHERS</div>
+                        <div class="ListSectionHeaderRight"></div>
+                    </div>
+                    <div class="ListSectionBody">Other teams of {{contact.getDisplayName()}}</div>
+                </div>
+                <a href="#/group/pid={{group.xpid}}" class="ListRow ListRow-Group"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="group in otherTeams = (groups | orderBy:'name' | filter:filterGroup() | filter:filterOther() | filter:filterSearch(query))">
+                    <div ng-include src="'templates/GroupRow.html'"></div>
+                </a>
+            </div>
+            <div class="ListSection" data-ng-hide="departments.length||ourTeams.length||otherTeams.length">
+                {{contact.getDisplayName()}} is not a member of any group
+            </div>
+        </div>
+    </div>
+</div>

@@ -37,7 +37,7 @@
             </div>
             <div class="ListRowContent">
                 <div class="ListRowLeftArea">
-                    <div class="ListRowTitle"> {{ contact.displayName || contact.jid }}</div>
+                    <div class="ListRowTitle"> {{ contact.getDisplayName() }}</div>
                     <div class="link ListRowDesc">#{{ contact.primaryExtension }}</div>
                 </div>
                 <div data-ng-if="contact.call.xpid" class="ListRowCallArea">

@@ -8,9 +8,11 @@ hud_web.config(['$routeProvider', function($routeProvider) {
         when('/conferences', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/conferences/my', {templateUrl: 'templates/MyConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/conferences/all', {templateUrl: 'templates/AllConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
+        when('/contact/:contactId', {templateUrl: 'templates/ConversationWidgetVoicemails.html', controller: ['$scope', '$routeParams', 'DataManager', fjs.ui.ConversationWidgetVoicemailsController]}).
 //        when('/contact/:contactId', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
 //        when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
-//        when('/contact/:contactId/groups', {templateUrl: 'templates/ContactWidgetGroupsController.html', controller: fjs.ui.ContactWidgetGroupsController}).
+        when('/contact/:contactId/groups', {templateUrl: 'templates/ConversationWidgetGroups.html', controller:  ['$scope', '$routeParams', 'DataManager', fjs.ui.ConversationWidgetGroupsController]}).
+        when('/contact/:contactId/voicemails', {templateUrl: 'templates/ConversationWidgetVoicemails.html', controller: ['$scope', '$routeParams', 'DataManager', fjs.ui.ConversationWidgetVoicemailsController]}).
         //when('/phones/:phoneId', {templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl}).
         when('/zoom', {templateUrl: 'templates/ZoomWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]}).
         otherwise({redirectTo: '/me'});
@@ -25,6 +27,7 @@ hud_web.controller("MainController", ['$scope', 'DataManager', fjs.ui.MainContro
 //hud_web.controller("MeWidgetController", fjs.ui.MeWidgetController);
 hud_web.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);
 hud_web.controller("SortMenuController", ['$scope', '$element', fjs.ui.SortMenuController]);
+hud_web.controller("ActionMenuController", ['$scope', '$element', fjs.ui.ActionMenuController]);
 //hud_web.controller("LeftBarController", fjs.ui.LeftBarController);
 hud_web.controller("LeftBarController", ['$scope', '$filter', 'DataManager', fjs.ui.LeftBarController]);
 hud_web.controller("LeftBarContactsController", ['$scope', 'DataManager', fjs.ui.LeftBarContactsController]);

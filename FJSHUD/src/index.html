@@ -25,6 +25,7 @@
     <link type="text/css" rel="stylesheet" href="css/tabs.css">
     <link type="text/css" rel="stylesheet" href="css/toolbar.css">
     <link type="text/css" rel="stylesheet" href="css/table.css">
+    <link type="text/css" rel="stylesheet" href="css/listMessage.css">
 
     <!-- LIBS -->
 
@@ -44,6 +45,10 @@
     <script src="js/model/custom/conferenceFeedModel.js"></script>
     <script src="js/model/custom/conferenceMemberEntryModel.js"></script>
     <script src="js/model/custom/conferenceMemberFeedModel.js"></script>
+    <script src="js/model/custom/groupEntryModel.js"></script>
+    <script src="js/model/custom/groupFeedModel.js"></script>
+    <script src="js/model/custom/voicemailMessageEntryModel.js"></script>
+    <script src="js/model/custom/voicemailMessageFeedModel.js"></script>
 
     <!-- client model -->
     <script src="js/model/client/clientFeedModel.js"></script>
@@ -53,7 +58,9 @@
     <!--filters-->
     <script src="js/model/filters/contactsWithoutMeFilter.js"></script>
     <script src="js/model/filters/sortConferenceFilter.js"></script>
+    <script src="js/model/filters/sortVoicemailFilter.js"></script>
     <script src="js/model/filters/externalContactsFilter.js"></script>
+    <script src="js/model/filters/durationFormatFilter.js"></script>
 
 
     <script src="js/model/data_provider.js"></script>
@@ -63,6 +70,10 @@
     <!--UI-->
 
     <script src="js/ui/controllers/base/Controller.js"></script>
+    <script src="js/ui/controllers/base/SortableController.js"></script>
+    <script src="js/ui/controllers/base/SortMenuController.js"></script>
+    <script src="js/ui/controllers/base/ActionMenuController.js"></script>
+
     <script src="js/ui/controllers/MainController.js"></script>
     <script src="js/ui/controllers/TopNavigationController.js"></script>
     <script src="js/ui/controllers/MeWidgetController.js"></script>
@@ -71,9 +82,12 @@
     <script src="js/ui/controllers/ZoomWidgetController.js"></script>
     <script src="js/ui/controllers/ConferencesWidgetController.js"></script>
     <script src="js/ui/controllers/LeftBarContactsController.js"></script>
+    <script src="js/ui/controllers/ConversationWidgetController.js"></script>
+    <script src="js/ui/controllers/VoicemailTab.js"></script>
+    <script src="js/ui/controllers/GroupsTab.js"></script>
+    <script src="js/ui/controllers/ConversationWidgetVoicemailsController.js"></script>
+    <script src="js/ui/controllers/ConversationWidgetGroupsController.js"></script>
 
-
-    <script src="js/ui/controllers/SortMenuController.js"></script>
 
 
     <script src="js/ui/controllers/LeftBarController.js"></script>

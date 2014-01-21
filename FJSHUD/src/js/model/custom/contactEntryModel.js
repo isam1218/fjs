@@ -55,6 +55,60 @@ fjs.hud.ContactEntryModel.prototype.getCallAvatarUrl = function(width, height) {
                 return "img/Generic-Avatar-Small.png";
         }
 };
+fjs.hud.ContactEntryModel.prototype.getDisplayName = function() {
+    return (this.isExternal() && !this.displayName)?this.jid:this.displayName;
+};
+fjs.hud.ContactEntryModel.prototype.getChatStatus = function() {
+    switch(this.xmpp){
+        case 'available':
+        case 'freeForChat':
+            return 'Available';
+        case 'away':
+        case 'xa':
+            return 'Away';
+        case 'dnd':
+            return 'Busy';
+        case 'offline':
+        case 'invisible':
+        default:
+             return 'Offline';
+    }
+};
+fjs.hud.ContactEntryModel.prototype.getQueueStatus = function() {
+    switch(this.queueStatus){
+        case 'login':
+            return 'LoggedIn';
+        case 'login-permanent':
+            return 'LockedIn';
+        case 'logout':
+            return 'LoggedOut';
+        case 'logout-permanent':
+            return 'LockedOut';
+        case 'disabled':
+        default:
+            return 'NotAgent';
+    }
+};
+fjs.hud.ContactEntryModel.prototype.getQueueStatusTitle = function() {
+    switch(this.getQueueStatus()){
+        case 'LoggedIn':
+            return 'Logged in';
+        case 'LockedIn':
+            return 'Locked in';
+        case 'LockedOut':
+            return 'Locked out';
+        case 'LoggedOut':
+            return 'Logged out' + ": " + this.queueStatusReason;
+        default:
+            return 'Not agent';
+    }
+};
+fjs.hud.ContactEntryModel.prototype.getCustomXmppStatus = function() {
+    return this.xmppCustom||this.xmpp||"offline";
+}
+fjs.hud.ContactEntryModel.prototype.getPhone = function() {
+    return this.primaryExtension||this.phoneBusiness||this.phoneMobile;
+}
 
 fjs.hud.ContactEntryModel.prototype.getCallType = function() {
     if(this.type==null)

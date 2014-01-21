@@ -8,6 +8,7 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     conferencesModel.addListener("complete", $scope.$safeApply);
     conferenceMembersModel.addListener("complete", $scope.$safeApply);
 
+    <!-- Sorting:start-->
     this.sortingKey = "conferences";
     this.defaultSortMode = "location";
     this.selectedSortMode = undefined;
@@ -30,6 +31,26 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     this.getSortedByName = function(){
         return this.sortMenuItems[$scope.getSortMode()]||this.sortMenuItems[this.defaultSortMode];
     };
+    $scope.sortedBy = this.getSortedByName();
+    $scope.showSortMenu = function(e) {
+        e.stopPropagation();
+        var items = [];
+        for (var id in context.sortMenuItems){
+            if(context.sortMenuItems.hasOwnProperty(id)){
+                items.push({"id": id, "name": context.sortMenuItems[id], "selected": $scope.getSortMode() == id});
+            }
+        }
+        var model = {};
+        model.items = items;
+        model.callback = context.setSortMode;
+        var eventTarget = context.getEventHandlerElement(e.target, e);
+        var offset = fjs.utils.DOM.getElementOffset(eventTarget);
+        $scope.$emit("showPopup", {key:"SortMenuPopup", x:offset.x, y:offset.y+30, model: model, id:"conferences"});
+        return false;
+    };
+
+    sortModel.addXpidListener(this.sortingKey, sortChangeListener);
+    <!-- Sorting:end-->
 
     dataManager.getModel("server").addListener("complete", $scope.$safeApply);
 
@@ -54,7 +75,6 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     $scope.openConferenceDetail = function(conferenceId) {
         //dataManager.runApp("conferences");
     };
-    $scope.sortedBy = this.getSortedByName();
     $scope.hideNote = false;
     $scope.isFindFreeAndJoinDisabled = !conferencesModel.getFreeConferenceRoomToJoin();
     $scope.isFindMyFreeAndJoinDisabled = !conferencesModel.getMyFreeConferenceRoomToJoin();
@@ -71,28 +91,11 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
             conference.joinMe();
         }
     };
-    $scope.showSortMenu = function(e) {
-        e.stopPropagation();
-        var items = [];
-        for (var id in context.sortMenuItems){
-            if(context.sortMenuItems.hasOwnProperty(id)){
-                items.push({"id": id, "name": context.sortMenuItems[id], "selected": $scope.getSortMode() == id});
-            }
-        }
-        var model = {};
-        model.items = items;
-        model.callback = context.setSortMode;
-        var eventTarget = context.getEventHandlerElement(e.target, e);
-        var offset = fjs.utils.DOM.getElementOffset(eventTarget);
-        $scope.$emit("showPopup", {key:"SortMenuPopup", x:offset.x, y:offset.y+30, model: model, id:"conferences"});
-        return false;
-    };
     $scope.filterConferenceFn = function(query) {
         return function(conference){
             return conference.pass(query);
         };
     };
-    sortModel.addXpidListener(this.sortingKey, sortChangeListener);
 
 };
 

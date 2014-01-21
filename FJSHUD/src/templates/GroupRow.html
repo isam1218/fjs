@@ -1,0 +1,45 @@
+<div class="Avatar AvatarNormal" data-ng-click="">
+    <div class="GroupAvatarItem GroupAvatarItem_0">
+        <img class="GroupAvatarItemImg" data-ng-src="group.getAvatar(0, 19, 19)">
+    </div>
+    <div class="GroupAvatarItem GroupAvatarItem_1">
+        <img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(1, 19, 19) }}">
+    </div>
+    <div class="GroupAvatarItem GroupAvatarItem_2">
+        <img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(2, 19, 19) }}">
+    </div>
+    <div class="GroupAvatarItem GroupAvatarItem_3">
+        <img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(3, 19, 19) }}">
+    </div>
+    <div class="AvatarInteractable"></div>
+</div>
+<div class="ListRowContent" data-event="click" data-fj-local-id="row-content" event="c">
+    <div class="fj-hbox">
+        <div class="fj-hbox-space ListRowLeftArea">
+            <div class="fj-hbox ListRowTitle"><div class="fj-hbox-space name">{{group.name}}</div>
+                <div class="fj-hbox-cell link">
+                    <span data-ng-show="group.extension">#{{group.extension}}</span>
+                    <span data-ng-show="group.ownerId">owner:{{group.getOwnerName()}}</span>
+                </div>
+            </div>
+            <div class="fj-hbox ListRowStatus">
+                <div class="fj-hbox-cell ListRowStatusIcon XIcon-ChatStatus-{{group.getChatStatus()}}">
+                    <div class="status-icon-inner"></div>
+                </div>
+                <div class="fj-hbox-space ListRowStatusText">{{group.getMembersCount()}} member(s)</div>
+            </div>
+        </div>
+        <div data-ng-click="" class="fj-hbox-cell ListRowCallArea" ng-show="group.hasCall">
+            <div class="Avatar CallSmallAvatar CallSmallAvatar_Office">
+                <img class="AvatarImgPH" src="/repository/fj.hud/1.3/img/Generic-Avatar-Small.png?ver=1389855851522">
+                <div class="AvatarForeground AvatarInteractable"></div>
+            </div>
+            <div class="fj-hbox CallLineTop">
+                <div class="fj-hbox-space CallerName"></div>
+                <div class="fj-hbox-cell CallDuration duration" data-fj-local-id="duration" data-duration="0">
+                </div>
+            </div>
+            <div class="CallerPhone"></div>
+        </div>
+    </div>
+</div>

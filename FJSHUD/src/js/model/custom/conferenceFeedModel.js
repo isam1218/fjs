@@ -29,13 +29,14 @@ fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(data) {
     if(this.membersOrder.indexOf(data["xpid"]) == -1){
         this.membersOrder.push(data["xpid"]);
     }
+    var index;
     if(data.entry.muted){
-        var index = this.talkingMembersOrder.indexOf(data["xpid"]);
+        index = this.talkingMembersOrder.indexOf(data["xpid"]);
         if( index != -1){
             this.talkingMembersOrder.splice(index, 1);
         }
     }else{
-        var index = this.talkingMembersOrder.indexOf(data["xpid"]);
+        index = this.talkingMembersOrder.indexOf(data["xpid"]);
         if( index == -1){
             this.talkingMembersOrder.push(data["xpid"]);
         }
@@ -47,15 +48,17 @@ fjs.hud.ConferenceFeedModel.prototype.pushConferenceMember = function(data) {
 fjs.hud.ConferenceFeedModel.prototype.deleteConferenceMember = function(data) {
     //var conference = this.items[data.entry["conferenceId"]];//empty entry
     for(var conferenceId in this.items){
-        this.items[conferenceId].deleteMember(data["xpid"]);
-        if(this.items[conferenceId].getMembersCount() == 0){
-            var index = this.occupiedConferences.indexOf(conferenceId);
-            if(index != -1){
-                this.occupiedConferences.splice(index, 1);
+        if(this.items.hasOwnProperty(conferenceId)){
+            this.items[conferenceId].deleteMember(data["xpid"]);
+            if(this.items[conferenceId].getMembersCount() == 0){
+                var index = this.occupiedConferences.indexOf(conferenceId);
+                if(index != -1){
+                    this.occupiedConferences.splice(index, 1);
+                }
             }
         }
     }
-    var index = this.membersOrder.indexOf(data["xpid"]);
+    index = this.membersOrder.indexOf(data["xpid"]);
     if( index != -1){
         this.membersOrder.splice(index, 1);
     }
@@ -71,7 +74,7 @@ fjs.hud.ConferenceFeedModel.prototype.onEntryChange = function(data) {
     if(isNew){
         var conference = this.items[data["xpid"]];
         for(var memberId in this.conferenceMembersModel.items){
-            if(this.conferenceMembersModel.items[memberId]["fdpConferenceId"] == data["xpid"]){
+            if(this.conferenceMembersModel.items.hasOwnProperty(memberId) && (this.conferenceMembersModel.items[memberId]["fdpConferenceId"] == data["xpid"])){
                 conference.addMember(memberId, data.entry);
             }
         }
@@ -88,7 +91,7 @@ fjs.hud.ConferenceFeedModel.prototype.actionJoinContact = function(confId, conta
 };
 fjs.hud.ConferenceFeedModel.prototype.getFreeConferenceRoomToJoin = function() {
     var candidate = undefined;
-    for(var i in this.order){
+    for(var i=0; i<this.order.length; i++){
         var conference = this.order[i];
         if(conference.isEmpty() && conference.isViewEnabled()){
             if(!candidate){
@@ -115,7 +118,7 @@ fjs.hud.ConferenceFeedModel.prototype.compareFreeConferences = function(conf1, c
 
 fjs.hud.ConferenceFeedModel.prototype.getMyFreeConferenceRoomToJoin = function() {
     var candidate = undefined;
-    for(var i in this.order){
+    for(var i=0; i< this.order.length; i++){
         var conference = this.order[i];
         if(conference.isEmpty() && conference.isEditEnabled()){
             if(!candidate){

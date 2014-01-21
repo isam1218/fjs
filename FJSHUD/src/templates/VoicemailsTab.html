@@ -1,0 +1,65 @@
+<div class="WidgetTabContent">
+    <div class="ToolBar">
+        <div class="SelectBox XButton" data-ng-click="showSortMenu($event)">
+            <div class="SelectBoxText"> Sort by {{sortedBy}}</div>
+            <div class="SelectBoxArrow"></div>
+        </div>
+        <div class="SelectBox XButton" data-ng-click="showActionMenu($event)">
+            <div class="SelectBoxText"> Actions </div>
+            <div class="SelectBoxArrow"></div>
+        </div>
+        <div class="SearchInputBox">
+            <div class="SearchInputBoxInputHolder">
+                <input class="SearchInputBoxInput" data-ng-model="query" type="text" x-webkit-speech="" placeholder="Search">
+            </div>
+            <div class="SearchInputBoxStateButton">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ListView WithToolBar">
+        <div class="ListViewTopSpace"></div>
+        <div class="InlineList">
+            <div class="ListMessage Read-{{voicemail.readStatus}} Voicemail"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="voicemail in voicemails | orderBy:orderBy | filter:filterSearch(query) | filter:filterVoicemail()">
+                <!--orderBy:predicate:reverse SortVoicemail:getSortMode()   {{getSortBy()}}-->
+                <div class="ListMessageLeft">
+                    <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{voicemail.getCallStatus()}}">
+                        <img class="AvatarImgPH" data-ng-src="{{voicemail.getAvatarUrl(40,40)}}">
+                        <!-- TODO : group avatar for conference, group, queue call-->
+                    </div>
+                </div>
+                <div class="ListMessageContent ClickArea" data-ng-click="select(voicemail)">
+                    <div class="ListMessageHeader">
+                        <div class="ListMessageHeaderPrefix" data-ng-show="voicemail.isFromMe()">ME&nbsp;<span>...to</span></div>
+                        <div class="ListMessageHeaderPrefix" data-ng-hide="voicemail.isFromMe()"><span>...from</span></div>
+                        <div class="name ListMessageHeaderName"><span>{{voicemail.displayName}}&nbsp;</span> <span>{{voicemail.getFormatedContactPhone()}}</span></div>
+                        <!--                    <fragment>
+                                                <case>
+                                                    <hbox-cell class="ListMessageHeaderPrefix fj-visibility-<%= isFromMe()%>">ME&nbsp;<span>...to</span></hbox-cell>
+                                                    <hbox-cell class="ListMessageHeaderPrefix fj-visibility-<%== !data.isFromMe()%>"><span>...from</span></hbox-cell>
+                                                    <hbox-space class="name ListMessageHeaderName"><span><%= getDisplayName()%>&nbsp;</span> <span><%= getFormatedContactPhone()%></span></hbox-space>
+                                                </case>
+                                                <case lang="ja">
+                                                    <hbox-cell class="ListMessageHeaderPrefix fj-visibility-<%= isFromMe()%>">ME&nbsp;<span>to</span></hbox-cell>
+                                                    <hbox-space class="name ListMessageHeaderName fj-visibility-<%= isFromMe()%>"> <%= getDisplayName()%><%= getFormatedContactPhone()%></hbox-space>
+
+                                                    <hbox-space class="name ListMessageHeaderName fj-visibility-<%== !data.isFromMe()%>"> <%= getDisplayName()%><%= getFormatedContactPhone()%> from</hbox-space>
+                                                </case>
+                                            </fragment>
+                         -->
+                        <div class="MessageDate time">{{voicemail.date|date:'yyyy MMMM dd, h:mm a'}}</div>
+                    </div>
+                    <div class="ListMessageText">
+                        <span class="ListMessageDuration">{{voicemail.duration|Duration}}</span>
+                        <span class="Transcription-{{voicemail.getTranscriptionStatus()}}">{{voicemail.getTranscription()}}</span>
+                    </div>
+                </div>
+                <div data-ng-click="voicemail.actionCallback()" fj-local-id="phone-ext" class="CallButton XButton XButtonGreen" data-ng-show="voicemail.hasPhone()">
+                    Call
+                </div>
+            </div>
+            <div fj-local-id="stream" >
+            </div>
+        </div>
+    </div>
+</div>
