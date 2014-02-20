@@ -1,20 +1,23 @@
+//we load scripts of libs
 importScripts('fjs.core.debug.js');
 importScripts('fjs.fdp.debug.js');
 importScripts('properties.js');
 
 var dataManager = null;
 
+//we listen messages from page
 self.addEventListener("message", function(e) {
     handleMessage(e.data, function(data){
         self.postMessage({"action":"sync", "data":data});
     });
 }, false);
 
+//we send messages to page
 var postToPage = function(message) {
     self.postMessage(message);
 };
 
-
+//and we handle this messages
 function handleMessage(data, callback) {
     switch(data.action) {
         case "init":

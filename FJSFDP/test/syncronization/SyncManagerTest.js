@@ -27,7 +27,7 @@ describe("SyncManager", function() {
             + "db_version=3\n"
             + "runtime_version= 4\n"
             + "it= 7\n"
-        + "build= 3.7.0.0\n";
+            + "build= 3.7.0.0\n";
         var _data = sm.parseFdpData(data);
         expect('1_1').toBe(_data['DB']);
         expect('node2').toBe(_data['node']);

@@ -40,7 +40,7 @@ fjs.hud.FDPDataManager = function() {
             +"&display=page"
             +"&client_id=web.hud.fonality.com"
             +"&lang=eng"
-            +"&revoke_token="+this.ticket;
+            + (this.ticket ? "&revoke_token="+this.ticket : "");
     };
 
     if(!this.ticket) {

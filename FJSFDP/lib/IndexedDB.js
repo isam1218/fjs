@@ -336,7 +336,9 @@ IDBIndex.prototype.count = function (key) {
     IDBKeyRange.prototype.bound = function (lower, upper, lowerOpen, upperOpen) {
         return new IDBKeyRange();
     };
-
+    /**
+     * @type {IDBKeyRange}
+     */
     window.IDBKeyRange = new IDBKeyRange();
 
 })();

@@ -5,7 +5,7 @@ namespace('fjs.utils');
 fjs.utils.Cookies = {
     /**
      * Returns cookie value by name
-     * @param {string} name cookie name
+     * @param {string} name - cookie name
      * @return {string} cookie value
      */
     get: function(name) {
@@ -15,8 +15,9 @@ fjs.utils.Cookies = {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
     /**
-     * @param {string} name
-     * @param {string} value
+     * Saves property to cookies
+     * @param {string} name - cookie name
+     * @param {string} value - cookie value
      * @param {{expires:(number|Date)}} options
      */
     , set: function(name, value, options) {
@@ -51,7 +52,7 @@ fjs.utils.Cookies = {
 
     /**
      * Removes cookies by name
-     * @param {string} name
+     * @param {string} name - cookie name
      */
     , remove: function(name) {
         fjs.utils.Cookies.set(name, '', { expires: -1 });

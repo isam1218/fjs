@@ -1,10 +1,8 @@
 
 namespace("fjs.ui");
 
-fjs.ui.EditContactDialog = function($scope) {
+fjs.ui.EditContactDialog = function($scope, dataManager) {
     fjs.ui.Controller.call(this, $scope);
-
-    var dataProvider = new fjs.fdp.FDPDataProvider();
 
     $scope.stopPropagation = function(e) {
         e.stopPropagation();
@@ -12,7 +10,7 @@ fjs.ui.EditContactDialog = function($scope) {
     }
 
     $scope.save = function() {
-        dataProvider.sendAction("contacts", "addContact", {
+        dataManager.sendAction("contacts", "addContact", {
             "a.jid":$scope.jid
             ,"a.firstName":$scope.firstName
             ,"a.lastName":$scope.lastName

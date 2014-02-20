@@ -26,6 +26,7 @@ fjs.fdp.ClientProxyModel.extend(fjs.fdp.ProxyModel);
 
 
 /**
+ *
  * @param {string} feedName
  * @param {string} actionName
  * @param {*} data

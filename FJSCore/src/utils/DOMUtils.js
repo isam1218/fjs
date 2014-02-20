@@ -4,8 +4,9 @@ fjs.utils.DOM = function() {
 
 };
 /**
- * @param {HTMLElement} element
- * @returns {{x: number, y: number}}
+ * Returns top and left offsets from edge of the window
+ * @param {HTMLElement} element - html element
+ * @returns {{x: number, y: number}|undefined}
  */
 fjs.utils.DOM.getElementOffset = function(element) {
         if(element != undefined)

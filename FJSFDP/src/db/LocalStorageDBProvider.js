@@ -9,7 +9,7 @@ fjs.db.LocalStorageDbProvider = function(globalObject) {
 };
 
 /**
- * Opens storage
+ * Opens connection to storage
  * @param {string} name
  * @param {number} version
  * @param {function} callback
@@ -19,7 +19,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
 };
 
 /**
- * Checks if you can use this storage
+ * Returns true if you can use localStorage in this browser
  * @param {window} globalObj
  * @returns {boolean}
  */
@@ -28,6 +28,7 @@ fjs.db.LocalStorageDbProvider.check = function(globalObj) {
 };
 
 /**
+ * Creates table (protected)
  * @param {string} name
  * @param {string} key
  * @param {Array} indexes
@@ -38,7 +39,7 @@ fjs.db.LocalStorageDbProvider.prototype.createTable = function(name, key, indexe
 };
 
 /**
- *
+ * Declare table for creation (table will be created after only after Db version change)
  * @param {string} name
  * @param {string} key
  * @param {Array} indexes
@@ -48,6 +49,7 @@ fjs.db.LocalStorageDbProvider.prototype.declareTable = function(name, key, index
 };
 
 /**
+ * Inserts one row
  * @param {string} tableName
  * @param {*} item
  * @param {Function} callback
@@ -57,6 +59,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, ca
 };
 
 /**
+ * Inserts array of rows
  * @param {string} tableName
  * @param {Array} items
  * @param {Function} callback
@@ -66,6 +69,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
 };
 
 /**
+ * Deletes row by primary key
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback
@@ -75,6 +79,7 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
 };
 
 /**
+ * Returns all rows from table
  * @param {string} tableName
  * @param {Function} itemCallback
  * @param {function(Array)} allCallback
@@ -82,10 +87,11 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
 fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
 
 };
+
 /**
- *
+ * Returns rows by index
  * @param {string} tableName
- * @param {{key:string, value:*}} rule
+ * @param {*} rule Map key->value
  * @param {Function} itemCallback
  * @param {function(Array)} allCallback
  */
@@ -94,6 +100,7 @@ fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule
 };
 
 /**
+ * Returns row by primary key
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback
@@ -103,6 +110,7 @@ fjs.db.LocalStorageDbProvider.prototype.selectByKey = function(tableName, key, c
 };
 
 /**
+ * Clears database (drops all tables)
  * @param {Function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
@@ -110,6 +118,7 @@ fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
 };
 
 /**
+ * Deletes row by index
  * @param {string} tableName
  * @param {*} rules
  * @param {Function} callback

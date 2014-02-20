@@ -1,8 +1,9 @@
 (function() {
     namespace('fjs.ajax');
 
-
+  var _a =
   /**
+  * XHR wrapper class
   * @constructor
   * @implements {fjs.ajax.IAjaxProvider}
   */
@@ -17,7 +18,7 @@
         else return this.constructor.__instance;
     };
 
-    var a = fjs.ajax.XHRAjax;
+
 
     /**
      * XHR States
@@ -32,6 +33,7 @@
     };
 
     /**
+     * Returns instance of XMLHTTPRequest
      * @return {XMLHttpRequest}
      * @private
      */
@@ -59,6 +61,7 @@
     };
 
     /**
+     * Prepares request data
      * @param {*} data
      * @return {string}
      * @private
@@ -74,11 +77,11 @@
     };
 
     /**
-     *
-     * @param {string} method
-     * @param {string} url
-     * @param {*} headers
-     * @param {*} data
+     * Sends ajax request
+     * @param {string} method - Request method (POST or GET)
+     * @param {string} url - Request URL
+     * @param {*} headers - Request (HTTP) headers
+     * @param {*} data - Request data
      * @param {function(XMLHttpRequest, string, boolean)} callback
      * @return {XMLHttpRequest}
      */
@@ -99,7 +102,7 @@
         }
 
         xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState !== a.states.REQUEST_COMPLETED) return;
+            if (xmlhttp.readyState !== _a.states.REQUEST_COMPLETED) return;
 
             if (callback) {
                 if (xmlhttp.status === 200) {
@@ -117,10 +120,11 @@
     };
 
     /**
+     * Aborts request
      * @param {XMLHttpRequest} xhr
      */
     fjs.ajax.XHRAjax.prototype.abort = function(xhr) {
-        if (xhr && xhr.readyState !== a.states.REQUEST_COMPLETED) {
+        if (xhr && xhr.readyState !== _a.states.REQUEST_COMPLETED) {
             xhr['aborted'] = true;
             xhr.abort();
         }

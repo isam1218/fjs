@@ -4,6 +4,7 @@ namespace("fjs.api");
  * @param {string} node
  * @param {*} config
  * @constructor
+ * @implements fjs.api.IDataProvider
  */
 fjs.api.ClientDataProviderBase = function(ticket, node, config) {
     this.ticket = ticket;
@@ -58,6 +59,7 @@ fjs.api.ClientDataProviderBase.prototype.fireEvent = function(eventType, data) {
 };
 /**
  * @param {{action:string, data:*}} message
+ * @protected
  */
 fjs.api.ClientDataProviderBase.prototype.sendMessage = function(message) {
 

@@ -42,6 +42,7 @@ fjs.db.IndexedDBProvider = function(globalObj) {
 };
 
 /**
+ * Returns true if you can use IndexedDB in this browser
  * @param {window} globalObj
  * @returns {boolean}
  */
@@ -49,7 +50,7 @@ fjs.db.IndexedDBProvider.check= function(globalObj) {
     return !!(globalObj.indexedDB = (globalObj.indexedDB || globalObj.mozIndexedDB || globalObj.webkitIndexedDB || globalObj.msIndexedDB));
 };
 /**
- *
+ * Opens connection to storage
  * @param {string} name
  * @param {number} version
  * @param {function(IDBDatabase)} callback
@@ -89,9 +90,10 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
 };
 
 /**
+ * Declare table for creation (table will be created after only after Db version change)
  * @param {string} name
  * @param {string} key
- * @param {Array|string} indexes
+ * @param {Array} indexes
  */
 fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
     var table = this.tables[name] = {'key':key, 'indexes':indexes};
@@ -101,9 +103,10 @@ fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
 };
 
 /**
+ * Creates table (protected)
  * @param {string} name
  * @param {string} key
- * @param {Array=} indexes
+ * @param {Array} indexes
  * @protected
  */
 fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
@@ -144,9 +147,12 @@ fjs.db.IndexedDBProvider.prototype.IEDeclareMultipleIndexes = function(indexes) 
 /**
  * @param {string} tableName
  * @param item
- * @constructor
+ * @private
  */
 fjs.db.IndexedDBProvider.prototype.IEApplyMultipleIndexesForItem = function(tableName, item) {
+    /**
+     * @type {*}
+     */
     var indexes = this.tables[tableName].multipleIndexes;
     for(var key in indexes) {
         if(indexes.hasOwnProperty(key)) {
@@ -163,9 +169,12 @@ fjs.db.IndexedDBProvider.prototype.IEApplyMultipleIndexesForItem = function(tabl
 /**
  * @param {string} tableName
  * @param item
- * @constructor
+ * @private
  */
 fjs.db.IndexedDBProvider.prototype.IEClearMultipleIndexesForItem = function(tableName, item) {
+    /**
+     * @type {*}
+     */
     var indexes = this.tables[tableName].multipleIndexes;
     for(var key in indexes) {
         if(indexes.hasOwnProperty(key)) {
@@ -175,6 +184,7 @@ fjs.db.IndexedDBProvider.prototype.IEClearMultipleIndexesForItem = function(tabl
 };
 
 /**
+ * Inserts one row
  * @param {string} tableName
  * @param {*} item
  * @param {Function} callback
@@ -199,6 +209,7 @@ fjs.db.IndexedDBProvider.prototype.insertOne = function(tableName, item, callbac
 };
 
 /**
+ * Inserts array of rows
  * @param {string} tableName
  * @param {Array} items
  * @param {Function} callback
@@ -222,7 +233,9 @@ fjs.db.IndexedDBProvider.prototype.insertArray = function(tableName, items, call
         request.onerror = this.db.onerror;
     }
 };
+
 /**
+ * Deletes row by primary key
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback
@@ -244,8 +257,9 @@ fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callba
 };
 
 /**
+ * Returns all rows from table
  * @param {string} tableName
- * @param {function(*)} itemCallback
+ * @param {Function} itemCallback
  * @param {function(Array)} allCallback
  */
 fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
@@ -280,7 +294,7 @@ fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback,
 };
 
 /**
- *
+ * Returns rows by index
  * @param {string} tableName
  * @param {*} rules Map key->value
  * @param {Function} itemCallback
@@ -305,6 +319,7 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, it
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var index = store.index(keys.join(","));
+
     var singleKeyRange = IDBKeyRange.only(values);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
@@ -332,6 +347,7 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, it
 };
 
 /**
+ * Returns row by primary key
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback
@@ -350,7 +366,9 @@ fjs.db.IndexedDBProvider.prototype.selectByKey = function(tableName, key, callba
         callback(row);
     };
 };
+
 /**
+ * Clears database (drops all tables)
  * @param {Function} callback
  */
 fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
@@ -369,6 +387,7 @@ fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
 };
 
 /**
+ * Deletes row by index
  * @param {string} tableName
  * @param {*} rules
  * @param {Function} callback

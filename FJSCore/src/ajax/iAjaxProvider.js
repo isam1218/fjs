@@ -1,5 +1,5 @@
 /**
- *   Ajax provider interface
+ * Ajax provider interface
  * @interface
  * @template T
  */
@@ -7,16 +7,18 @@ fjs.ajax.IAjaxProvider = function() {};
 
 
 /**
- * @param {T} transport
+ * Aborts request
+ * @param {T} transport - Ajax transport
  */
 fjs.ajax.IAjaxProvider.prototype.abort = function(transport) {};
 
 
 /**
- * @param {string} method
- * @param {string} url
- * @param {*} headers
- * @param {*} data
+ * Sends ajax request
+ * @param {string} method - Request method
+ * @param {string} url - Request URL
+ * @param {*} headers - Request headers
+ * @param {*} data - Request data
  * @param {function(T, string, boolean)} callback
  * @return {T}
  */

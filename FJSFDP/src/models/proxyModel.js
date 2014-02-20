@@ -1,6 +1,7 @@
 namespace("fjs.fdp");
 /**
- * @param {Array} feeds
+ * Base proxy model
+ * @param {Array} feeds - list of joined feeds (parent feed first)
  * @constructor
  */
 fjs.fdp.ProxyModel = function(feeds) {
@@ -34,7 +35,10 @@ fjs.fdp.ProxyModel = function(feeds) {
 };
 
 
-
+/**
+ * Adds listener function to feed changes
+ * @param {Function} listener
+ */
 fjs.fdp.ProxyModel.prototype.addListener = function(listener) {
     var index = this.listeners.indexOf(listener);
     if(index<0) {
@@ -46,6 +50,10 @@ fjs.fdp.ProxyModel.prototype.addListener = function(listener) {
     }
 };
 
+/**
+ * Removes listener function from feed
+ * @param {Function} listener
+ */
 fjs.fdp.ProxyModel.prototype.removeListener = function(listener) {
     var index = this.listeners.indexOf(listener);
     if(index>-1) {
@@ -57,7 +65,10 @@ fjs.fdp.ProxyModel.prototype.removeListener = function(listener) {
     }
 };
 
-
+/**
+ * @param {*} data
+ * @protected
+ */
 fjs.fdp.ProxyModel.prototype.fireEvent = function(data) {
     for(var i=0; i<this.listeners.length; i++) {
         this.listeners[i](data);
@@ -116,6 +127,11 @@ fjs.fdp.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
     }
 };
 
+/**
+ * @param {string} feedName
+ * @param {string} fieldName
+ * @returns {boolean}
+ */
 fjs.fdp.ProxyModel.prototype.fieldPass = function(feedName, fieldName) {
     return fieldName!='xef001id' && feedName!='xef001iver' && feedName!='xpid';
 };

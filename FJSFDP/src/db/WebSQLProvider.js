@@ -16,6 +16,7 @@ fjs.db.WebSQLProvider = function(globalObject) {
     this.tables = {};
 };
 /**
+ * Returns true if you can use WebSQL in this browser
  * @param {window} globalObj
  * @return {boolean}
  */
@@ -24,6 +25,7 @@ fjs.db.WebSQLProvider.check = function(globalObj) {
 };
 
 /**
+ * Opens connection to storage
  * @param name
  * @param version
  * @param callback
@@ -67,6 +69,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
     }
 };
 /**
+ * Creates table (protected)
  * @param {string} name
  * @param {string} key
  * @param {Array} indexes
@@ -90,6 +93,7 @@ fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
 };
 
 /**
+ * Declare table for creation (table will be created after only after Db version change)
  * @param {string} name
  * @param {string} key
  * @param {Array} indexes
@@ -144,7 +148,7 @@ fjs.db.WebSQLProvider.prototype.insertOne = function(tableName, item, callback) 
 };
 
 /**
- *
+ * Inserts array of rows
  * @param {string} tableName
  * @param {Array} items
  * @param {Function} callback
@@ -181,11 +185,12 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
     });
 };
 
-    /**
-     * @param {string} tableName
-     * @param {string} key
-     * @param {Function} callback
-     */
+/**
+ * Deletes row by primary key
+ * @param {string} tableName
+ * @param {string} key
+ * @param {Function} callback
+ */
 fjs.db.WebSQLProvider.prototype.deleteByKey = function(tableName, key, callback) {
         /**
          * @type {{key:string, indexes: Array}}
@@ -202,6 +207,7 @@ fjs.db.WebSQLProvider.prototype.deleteByKey = function(tableName, key, callback)
 
 
 /**
+ * Returns all rows from table
  * @param {string} tableName
  * @param {Function} itemCallback
  * @param {function(Array)} allCallback
@@ -228,7 +234,7 @@ fjs.db.WebSQLProvider.prototype.selectAll = function(tableName, itemCallback, al
     });
 };
 /**
- *
+ * Returns rows by index
  * @param {string} tableName
  * @param {*} rules Map key->value
  * @param {Function} itemCallback
@@ -264,6 +270,7 @@ fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rules, itemC
 };
 
 /**
+ * Returns row by primary key
  * @param {string} tableName
  * @param {string} key
  * @param {Function} callback
@@ -288,6 +295,10 @@ fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback)
     });
 };
 
+/**
+ * Clears database (drops all tables)
+ * @param {Function} callback
+ */
 fjs.db.WebSQLProvider.prototype.clear = function(callback) {
     this.db.transaction(function(tx){
         var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
@@ -296,6 +307,7 @@ fjs.db.WebSQLProvider.prototype.clear = function(callback) {
 };
 
 /**
+ * Deletes row by index
  * @param {string} tableName
  * @param {*} rules
  * @param {Function} callback

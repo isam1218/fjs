@@ -1,5 +1,10 @@
 namespace("fjs.fdp");
 /**
+ * @type {}
+ */
+var a = self;
+
+/**
  * @param {string} authTicket
  * @param {string} node
  * @param {window} globalObject
