@@ -8,7 +8,7 @@ fjs.fdp.CONFIG = {
 //        serverURL: "https://huc-qa.fonality.com:8081"
 //        , loginURL: "https://huc-qa.fonality.com:5501/oauth/authorize"
     }
-    , providers: ['simple', 'webWorker', 'sharedWorker']
+    , providers: ['sharedWorker', 'webWorker', 'simple']
     , DB: {
         name: "HUD"
         , version: 13

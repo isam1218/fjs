@@ -4,6 +4,7 @@ namespace("fjs.api");
  * @param {string} node
  * @param {*} config
  * @constructor
+ * @implements fjs.api.IDataProvider
  */
 fjs.api.ClientDataProviderBase = function(ticket, node, config) {
     this.ticket = ticket;
@@ -58,6 +59,7 @@ fjs.api.ClientDataProviderBase.prototype.fireEvent = function(eventType, data) {
 };
 /**
  * @param {{action:string, data:*}} message
+ * @protected
  */
 fjs.api.ClientDataProviderBase.prototype.sendMessage = function(message) {
 
@@ -230,6 +232,11 @@ fjs.api.SharedWorkerDataProvider.check = function() {
 namespace("fjs.api");
 
 fjs.api.FDPProviderFactory = function() {
+    /**
+     * register of providers
+     * @type {{sharedWorker: SharedWorkerDataProvider, webWorker: WebWorkerDataProvider, simple: SimpleClientDataProvider}}
+     * @private
+     */
     this._providers = {
         'sharedWorker': fjs.api.SharedWorkerDataProvider
         , 'webWorker': fjs.api.WebWorkerDataProvider
@@ -246,6 +253,9 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
     for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
         var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
         if(provider.check()) {
+            /**
+             * we create first avaliable provider.
+             */
             return new provider(ticket, node, callback);
         }
     }
