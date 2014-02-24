@@ -4,20 +4,20 @@ namespace("fjs.fdp");
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
- * @param conferenceFeed {ConferenceFeedModel}
+ * @param conferenceFeed {fjs.hud.ConferenceFeedModel}
  */
 fjs.hud.ConferenceEntryModel = function(obj, conferenceFeed) {
     fjs.hud.EntryModel.call(this, obj);
     this.members = [];
     this.memberIds = [];
     /**
-     * @type {ConferenceFeedModel}
+     * @type {fjs.hud.ConferenceFeedModel}
      */
     this.conferenceFeed = conferenceFeed;
     /**
-     * @type {FDPDataManager}
+     * @type {fjs.hud.DataManager}
      */
-    this.dataManager = new fjs.hud.FDPDataManager();
+    this.dataManager = new fjs.hud.DataManager();
     this.conferenceMembersModel = this.dataManager.getModel("conferencemembers");
 };
 fjs.hud.ConferenceEntryModel.extend(fjs.hud.EntryModel);

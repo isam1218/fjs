@@ -14,10 +14,7 @@ fjs.ui.ContactWidgetChatController = function($scope, $routeParams) {
             updateFavicon();
             $scope.$safeApply();
         }
-    }
-
-
-
+    };
 
     contactModel.addListener("push", update);
 
@@ -27,7 +24,7 @@ fjs.ui.ContactWidgetChatController = function($scope, $routeParams) {
             link.href = $scope.contact.getAvatarUrl(32,32);
             document.title= $scope.contact.displayName;
         }
-    };
+    }
 
     $scope.unpin = function() {
         dataProvider.runApp("contact/"+$scope.contactId);

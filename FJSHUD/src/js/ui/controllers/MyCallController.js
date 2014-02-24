@@ -4,7 +4,7 @@ fjs.ui.MyCallController = function($scope, $timeout, $filter) {
     fjs.ui.Controller.call(this, $scope);
     var durationTimer = null;
     var timeSync = null;//new fjs.TimeSync();
-    var dataProvider = new fjs.hud.FDPDataManager();
+    var dataProvider = new fjs.hud.DataManager();
     var onDurationTimeout = function() {
         var date = new Date();
         var time =  date.getTime()-  timeSync.getDefault() + (new Date(1).getTimezoneOffset() * 1000 * 60);

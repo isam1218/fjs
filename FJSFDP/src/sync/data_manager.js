@@ -1,8 +1,4 @@
 namespace("fjs.fdp");
-/**
- * @type {}
- */
-var a = self;
 
 /**
  * @param {string} authTicket

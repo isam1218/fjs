@@ -6,6 +6,9 @@ namespace("fjs.fdp");
  */
 fjs.fdp.ProxyModel = function(feeds) {
     var context = this;
+    /**
+     * @type {Object}
+     */
     this.items ={};
     this.changes=null;
     this.feeds = feeds;
@@ -43,6 +46,7 @@ fjs.fdp.ProxyModel.prototype.addListener = function(listener) {
     var index = this.listeners.indexOf(listener);
     if(index<0) {
         this.listeners.push(listener);
+        listener({feed:this.feedName, changes:this.createFullChange()});
     }
     if(!this._attached) {
         this.attach();
@@ -88,6 +92,16 @@ fjs.fdp.ProxyModel.prototype.createChange = function(xpid) {
     }
     return _changes;
 };
+
+fjs.fdp.ProxyModel.prototype.createFullChange = function() {
+    var _changes = {};
+    for(var key in this.items) {
+        if(this.items.hasOwnProperty(key)) {
+            _changes[key] = {xpid:key, entry:this.items[key], type:'change'};
+        }
+    }
+    return _changes;
+}
 
 /**
  *
@@ -202,6 +216,6 @@ fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {
 fjs.fdp.ProxyModel.prototype.sendAction = function(feedName, actionName, data){
     this.sm.sendAction(feedName, actionName, data, function(){
     });
-}
+};
 
 

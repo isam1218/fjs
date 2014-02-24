@@ -23,9 +23,6 @@ namespace("fjs.utils");
         return _ieV;
     }
 
-    /**
-     * @type {{getIEVersion: getIEVersion, isIE: , isIE7: , isIE8: , isIE9: , isIE10: , isIE11: , isChrome: , isFirefox: , isSafari: , isOpera: }}
-     */
     fjs.utils.Browser = {
     /**
     * Returns Internet explorer major version

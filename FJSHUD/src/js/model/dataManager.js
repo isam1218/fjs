@@ -1,8 +1,11 @@
 namespace("fjs.hud");
-
-fjs.hud.FDPDataManager = function() {
-
-    //Singleton
+/**
+ * Data manager
+ * @constructor
+ * @final
+ */
+fjs.hud.DataManager = function() {
+//Singleton
     if (!this.constructor.__instance)
         this.constructor.__instance = this;
     else return this.constructor.__instance;
@@ -48,17 +51,25 @@ fjs.hud.FDPDataManager = function() {
     }
     this.init();
 };
-
-fjs.hud.FDPDataManager.prototype.clearHash = function(href){
+/**
+ * Clears hash from url
+ * @param {string} href
+ * @returns {string}
+ * @private
+ */
+fjs.hud.DataManager.prototype.clearHash = function(href){
     var ind = href.indexOf('#');
     if(ind > 0) // remove tail
     {
         return href.substring(0, ind);
     }
     return href;
-}
-
-fjs.hud.FDPDataManager.prototype.init = function() {
+};
+/**
+ * Initialises work with FJSFDPApi
+ * @private
+ */
+fjs.hud.DataManager.prototype.init = function() {
     var context = this;
         var providerFactory = new fjs.api.FDPProviderFactory();
           context.dataProvider = providerFactory.getProvider(context.ticket, context.node, function(){
@@ -79,10 +90,13 @@ fjs.hud.FDPDataManager.prototype.init = function() {
             fjs.utils.Cookies.set("node", data.node);
         });
 };
-
-fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
+/**
+ * Returns feed model by name
+ * @param {string} feedName - Feed Name
+ * @returns {fjs.hud.FeedModel}
+ */
+fjs.hud.DataManager.prototype.getModel = function(feedName) {
     if(!this.feeds[feedName]) {
-        //return new fjs.hud.FeedModel(feedName, this);
         switch (feedName) {
             case "me":
                 this.feeds[feedName] = new fjs.hud.MeFeedModel(this);
@@ -121,11 +135,22 @@ fjs.hud.FDPDataManager.prototype.getModel = function(feedName) {
     return this.feeds[feedName];
 };
 
-fjs.hud.FDPDataManager.prototype.sendAction = function(feedName, action, data, callback) {
+/**
+ * Sends action to FDP server
+ * @param {string} feedName
+ * @param {string} action
+ * @param {*} data
+ */
+
+fjs.hud.DataManager.prototype.sendAction = function(feedName, action, data) {
     this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
 };
-
-fjs.hud.FDPDataManager.prototype.addListener = function(feedName, listener) {
+/**
+ * Adds listener on feed changes
+ * @param feedName
+ * @param listener
+ */
+fjs.hud.DataManager.prototype.addListener = function(feedName, listener) {
     if(!this.isReady) {
         this.suspendListeners.push(feedName);
     }
@@ -146,7 +171,13 @@ fjs.hud.FDPDataManager.prototype.addListener = function(feedName, listener) {
     }
 };
 
-fjs.hud.FDPDataManager.prototype.removeListener = function(feedName, listener) {
+/**
+ * Removes listener from feed changes
+ * @param {string} feedName
+ * @param {Function} listener
+ */
+
+fjs.hud.DataManager.prototype.removeListener = function(feedName, listener) {
     var tmpListeners = this.listeners[feedName];
     if(tmpListeners)
     {
@@ -156,22 +187,29 @@ fjs.hud.FDPDataManager.prototype.removeListener = function(feedName, listener) {
         }
     }
 };
-
-fjs.hud.FDPDataManager.prototype.fireEvent = function(feedName, data) {
+/**
+ * Sends events
+ * @param feedName
+ * @param data
+ * @private
+ */
+fjs.hud.DataManager.prototype.fireEvent = function(feedName, data) {
     if(this.listeners[feedName]) {
         for(var i=0; i<this.listeners[feedName].length; i++) {
             this.listeners[feedName][i](data);
         }
     }
 };
-
-fjs.hud.FDPDataManager.prototype.logout = function() {
+/**
+ * Forgets auth info and do logout.
+ */
+fjs.hud.DataManager.prototype.logout = function() {
     fjs.utils.Cookies.remove("Authorization");
     fjs.utils.Cookies.remove("node");
     this.dataProvider.logout();
 };
 
-fjs.hud.FDPDataManager.prototype.sendFDPRequest = function(url, data, callback) {
+fjs.hud.DataManager.prototype.sendFDPRequest = function(url, data, callback) {
     data["t"] = "web";
     data["alt"] = 'j';
     var headers = {Authorization: "auth="+this.ticket, node:this.node};

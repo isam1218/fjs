@@ -2,16 +2,20 @@ namespace("fjs.hud");
 
 /**
  * @param {string} feedName
- * @param {fjs.hud.FDPDataManager} dataManager
+ * @param {fjs.hud.DataManager} dataManager
  * @constructor
  */
 fjs.hud.FeedModel = function(feedName, dataManager) {
     this.feedName = feedName;
+
+    /**
+     * @type {Object}
+     */
     this.items = {};
     this.order = [];
     /**
      *
-     * @type {fjs.hud.FDPDataManager}
+     * @type {fjs.hud.DataManager}
      */
     this.fdp = dataManager;
     this.listeners = {
@@ -24,7 +28,10 @@ fjs.hud.FeedModel = function(feedName, dataManager) {
     this.xpidListeners = {};
     this.init();
 };
-
+/**
+ * Initializes model
+ * @protected
+ */
 fjs.hud.FeedModel.prototype.init = function() {
     var context = this;
     this.fdp.addListener(this.feedName, function(data){
@@ -43,10 +50,20 @@ fjs.hud.FeedModel.prototype.init = function() {
 
 };
 
+/**
+ * Sync start event handler
+ * @param data
+ * @protected
+ */
 fjs.hud.FeedModel.prototype.onSyncStart = function(data) {
     this.fireEvent("start", data);
 };
 
+/**
+ * Entry deletion event handler
+ * @param data
+ * @protected
+ */
 fjs.hud.FeedModel.prototype.onEntryDeletion = function(data) {
     var index = this.order.indexOf(this.items[data.xpid]);
     if(index>=0) {
@@ -56,6 +73,11 @@ fjs.hud.FeedModel.prototype.onEntryDeletion = function(data) {
     this.fireEvent("delete", data);
 };
 
+/**
+ * Entry change event handler
+ * @param data
+ * @protected
+ */
 fjs.hud.FeedModel.prototype.onEntryChange = function(data) {
     var entry = this.items[data.xpid];
     if(!entry) {
@@ -69,14 +91,27 @@ fjs.hud.FeedModel.prototype.onEntryChange = function(data) {
     this.fireEvent("push", data);
 };
 
+/**
+ * @protected
+ */
 fjs.hud.FeedModel.prototype.clearOrder = function() {
         this.order.splice(0, this.order.length);
 };
 
+/**
+ * Entry sync complete handler
+ * @param data
+ * @protected
+ */
 fjs.hud.FeedModel.prototype.onSyncComplete = function(data) {
     this.fireEvent("complete", data);
 };
 
+/**
+ *
+ * @param eventType
+ * @param callback
+ */
 fjs.hud.FeedModel.prototype.addListener = function(eventType, callback) {
     this.listeners[eventType].push(callback);
     if(eventType=="change") {
@@ -141,6 +176,11 @@ fjs.hud.FeedModel.prototype.fireEvent = function(eventType, data) {
 fjs.hud.FeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.EntryModel(obj);
 };
+/**
+ *
+ * @param xpid
+ * @returns {*}
+ */
 fjs.hud.FeedModel.prototype.getEntry = function(xpid) {
     return this.items[xpid];
 };

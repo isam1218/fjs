@@ -16,7 +16,7 @@ fjs.ui.ExternalContactsController = function($scope) {
         else {
             $scope.sortReverce = !$scope.sortReverce;
         }
-    }
+    };
     contactsModel.addListener("complete", $scope.$safeApply());
     $scope.createContact= function(e) {
         e.stopPropagation();

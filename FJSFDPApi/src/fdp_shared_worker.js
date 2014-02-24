@@ -52,4 +52,4 @@ function handleMessage(data, callback) {
         case "logout":
             dataManager.logout();
     }
-};
+}

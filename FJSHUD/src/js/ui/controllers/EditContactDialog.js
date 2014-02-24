@@ -7,7 +7,7 @@ fjs.ui.EditContactDialog = function($scope, dataManager) {
     $scope.stopPropagation = function(e) {
         e.stopPropagation();
         return false;
-    }
+    };
 
     $scope.save = function() {
         dataManager.sendAction("contacts", "addContact", {
@@ -23,11 +23,11 @@ fjs.ui.EditContactDialog = function($scope, dataManager) {
 
     });
         $scope.$emit("showPopup", {});
-    }
+    };
 
     $scope.cancel = function() {
         $scope.$emit("showPopup", {});
-    }
+    };
 
     $scope.jid = "";
     $scope.ims = "";
@@ -39,5 +39,5 @@ fjs.ui.EditContactDialog = function($scope, dataManager) {
     $scope.mobile = "";
     $scope.favorite = false;
 
-}
+};
 fjs.ui.EditContactDialog.extend(fjs.ui.Controller);

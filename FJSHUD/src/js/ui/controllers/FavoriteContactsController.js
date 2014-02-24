@@ -2,9 +2,9 @@ namespace("fjs.ui");
 
 fjs.ui.FavoriteContactsController = function($scope) {
     fjs.ui.Controller.call(this, $scope);
-    var dataProvider = new fjs.fdp.FDPDataProvider();
+    var dataProvider = new fjs.hud.DataManager();
     var groupContactsModel = dataProvider.getModel("groupcontacts");
-    var contactsModel = dataProvider.getModel("contacts")
+    var contactsModel = dataProvider.getModel("contacts");
     var groupId = "400000000_1";
     var onGroupChanged = function(data) {
         if(data.entry && data.entry.groupId==groupId) {
@@ -13,7 +13,7 @@ fjs.ui.FavoriteContactsController = function($scope) {
             }
             $scope.$safeApply();
         }
-    }
+    };
 
     groupContactsModel.addListener('push', onGroupChanged);
 
@@ -30,7 +30,7 @@ fjs.ui.FavoriteContactsController = function($scope) {
         else {
             $scope.sortReverce = !$scope.sortReverce;
         }
-    }
+    };
 
     $scope.changeQuery = function() {
         if($scope.query != "") {

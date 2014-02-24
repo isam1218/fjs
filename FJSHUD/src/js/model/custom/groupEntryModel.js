@@ -14,9 +14,9 @@ fjs.hud.GroupEntryModel = function(obj, groupFeed) {
      */
     this.groupFeed = groupFeed;
     /**
-     * @type {FDPDataManager}
+     * @type {DataManager}
      */
-    this.dataManager = new fjs.hud.FDPDataManager();
+    this.dataManager = new fjs.hud.DataManager();
     this.groupContactsModel = this.dataManager.getModel("groupcontacts");
     this.contactsModel = this.dataManager.getModel("contacts");
     /**
@@ -117,10 +117,10 @@ fjs.hud.GroupEntryModel.prototype.hasContact = function(contactId){
 fjs.hud.GroupEntryModel.prototype.hasMe = function(){
     return this.memberIds.indexOf(this.meModel.getMyPid()) != -1;
 };
-fjs.hud.GroupEntryModel.prototype.isChatEnabled = function(contactId){
+fjs.hud.GroupEntryModel.prototype.isChatEnabled = function(){
     return this.hasMe();
 };
-fjs.hud.GroupEntryModel.prototype.getChatStatus = function(contactId){
+fjs.hud.GroupEntryModel.prototype.getChatStatus = function(){
     return this.isChatEnabled()?'Available':'Offline';
 };
 /**

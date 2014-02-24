@@ -1,6 +1,6 @@
 namespace("fjs.hud");
 /**
- * @param {fjs.hud.FDPDataManager} dataManager
+ * @param {fjs.hud.DataManager} dataManager
  * @constructor
  *@extends fjs.hud.FeedModel
  */

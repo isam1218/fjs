@@ -8,7 +8,6 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     conferencesModel.addListener("complete", $scope.$safeApply);
     conferenceMembersModel.addListener("complete", $scope.$safeApply);
 
-    <!-- Sorting:start-->
     this.sortingKey = "conferences";
     this.defaultSortMode = "location";
     this.selectedSortMode = undefined;
@@ -50,7 +49,6 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
     };
 
     sortModel.addXpidListener(this.sortingKey, sortChangeListener);
-    <!-- Sorting:end-->
 
     dataManager.getModel("server").addListener("complete", $scope.$safeApply);
 

@@ -23,7 +23,7 @@ fjs.hud.ContactEntryModel.prototype.pass = function(query) {
 };
 fjs.hud.ContactEntryModel.prototype.getAvatarUrl = function(width, height) {
     if(this.hasImage) {
-        var dm = new fjs.hud.FDPDataManager();
+        var dm = new fjs.hud.DataManager();
         return fjs.fdp.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="+this.xpid+"&w="+width+"&h="+height+"&Authorization="+dm.ticket+"&node="+dm.node+"&v="+this.imageVersion;
     }
     else {
@@ -40,7 +40,7 @@ fjs.hud.ContactEntryModel.prototype.getAvatarUrl = function(width, height) {
 
 fjs.hud.ContactEntryModel.prototype.getCallAvatarUrl = function(width, height) {
     if(this.contactId) {
-        var dm = new fjs.hud.FDPDataManager();
+        var dm = new fjs.hud.DataManager();
         var contact = dm.getModel('contacts').items[this.contactId];
         if(contact) {
             return contact.getCallAvatarUrl(width, height);
@@ -105,10 +105,10 @@ fjs.hud.ContactEntryModel.prototype.getQueueStatusTitle = function() {
 };
 fjs.hud.ContactEntryModel.prototype.getCustomXmppStatus = function() {
     return this.xmppCustom||this.xmpp||"offline";
-}
+};
 fjs.hud.ContactEntryModel.prototype.getPhone = function() {
     return this.primaryExtension||this.phoneBusiness||this.phoneMobile;
-}
+};
 
 fjs.hud.ContactEntryModel.prototype.getCallType = function() {
     if(this.type==null)
@@ -125,7 +125,7 @@ fjs.hud.ContactEntryModel.prototype.getCallType = function() {
         default:
             return "Office";
     }
-}
+};
 
 
 

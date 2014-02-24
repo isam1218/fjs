@@ -8,7 +8,7 @@ fjs.fdp.EntryModel = function(obj) {
 };
 
 fjs.fdp.EntryModel.prototype.fill = function(obj) {
-    var changes = {}
+    var changes = {};
     if(obj) {
         for(var i in obj) {
             if(obj.hasOwnProperty(i)) {

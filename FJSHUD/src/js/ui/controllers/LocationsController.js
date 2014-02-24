@@ -20,7 +20,7 @@ fjs.ui.LocationsController = function($scope, $element, dataManager) {
         else {
             return "Loading...";
         }
-    }
+    };
     $scope.getCurrentLocationId = function() {
         return meModel.itemsByKey["current_location"] && meModel.itemsByKey["current_location"].propertyValue;
     }

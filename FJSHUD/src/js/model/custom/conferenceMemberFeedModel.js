@@ -1,6 +1,6 @@
 namespace("fjs.hud");
 /**
- * @param {fjs.hud.FDPDataManager} dataManager
+ * @param {fjs.hud.DataManager} dataManager
  * @constructor
  *@extends fjs.hud.FeedModel
  */
@@ -12,4 +12,4 @@ fjs.hud.ConferenceMemberFeedModel.extend(fjs.hud.FeedModel);
 
 fjs.hud.ConferenceMemberFeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.ConferenceMemberEntryModel(obj, this);
-}
+};

@@ -4,11 +4,11 @@ fjs.fdp.CONFIG = {
         serverURL: "https://dev4.fon9.com:8081"
         , loginURL: "https://dev4.fon9.com:5501/oauth/authorize"
 //        serverURL: "https://huc-dev.fonality.com:8081"
-//        , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
-//        serverURL: "https://huc-qa.fonality.com:8081"
-//        , loginURL: "https://huc-qa.fonality.com:5501/oauth/authorize"
+//      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
+//       serverURL: "https://huc-qa.fonality.com:8081"
+//       , loginURL: "https://huc-qa.fonality.com:5501/oauth/authorize"
     }
-    , providers: ['sharedWorker', 'webWorker', 'simple']
+    , providers: ['sharedWorker', 'simple', 'webWorker']
     , DB: {
         name: "HUD"
         , version: 13
@@ -66,7 +66,6 @@ fjs.fdp.CONFIG = {
             , {name:"weblauncher", key: "xpid", indexes:["source"]}
             , {name:"weblaunchervariables", key: "xpid", indexes:["source"]}
             , {name:"fdpImage", key: "xpid", indexes:["source"]}
-            <!-- client feed -->
             , {name:"sortings", key:"xpid"}]
     }
 };

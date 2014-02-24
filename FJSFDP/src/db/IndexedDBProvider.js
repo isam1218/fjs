@@ -97,7 +97,7 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
  */
 fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
     var table = this.tables[name] = {'key':key, 'indexes':indexes};
-    if(fjs.utils.Browser.isIE()) {
+    if(fjs.utils.Browser.isIE() && indexes) {
         table.multipleIndexes = this.IEDeclareMultipleIndexes(indexes);
     }
 };
@@ -320,7 +320,7 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, it
     var store = trans.objectStore(tableName);
     var index = store.index(keys.join(","));
 
-    var singleKeyRange = IDBKeyRange.only(values);
+    var singleKeyRange = IDBKeyRange['only'](values);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
     cursorRequest.onsuccess = function(e) {
@@ -411,7 +411,7 @@ fjs.db.IndexedDBProvider.prototype.deleteByIndex = function(tableName, rules, ca
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var index = store.index(keys.join(","));
-    var singleKeyRange = IDBKeyRange.only(values);
+    var singleKeyRange = IDBKeyRange['only'](values);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
 
@@ -421,7 +421,7 @@ fjs.db.IndexedDBProvider.prototype.deleteByIndex = function(tableName, rules, ca
             if(callback) {
                 callback(rows);
             }
-            return;
+            return
         }
         else {
             var row = result.value;

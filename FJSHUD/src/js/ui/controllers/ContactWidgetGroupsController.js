@@ -2,7 +2,7 @@ namespace("fjs.ui");
 
 fjs.ui.ContactWidgetGroupsController = function($scope, $routeParams) {
     fjs.ui.Controller.call(this, $scope);
-    var dataProvider = new fjs.hud.FDPDataManager();
+    var dataProvider = new fjs.hud.DataManager();
     var contactModel = dataProvider.getModel("contacts");
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactModel.items[$routeParams.contactId];
@@ -13,7 +13,7 @@ fjs.ui.ContactWidgetGroupsController = function($scope, $routeParams) {
             }
             $scope.$safeApply();
         }
-    }
+    };
     contactModel.addListener("push", update);
 
     var groupcontactsModel = dataProvider.getModel("groupcontacts");

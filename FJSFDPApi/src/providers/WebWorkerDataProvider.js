@@ -19,7 +19,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     });
     this.sendMessage = function(message) {
         context.worker.postMessage(message);
-    }
+    };
     this.sendMessage({action:'init', data:{ticket:this.ticket, node:this.node}});
 
     setTimeout(function(){callback()},0);

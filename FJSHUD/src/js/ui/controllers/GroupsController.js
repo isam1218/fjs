@@ -2,7 +2,7 @@ namespace("fjs.ui");
 
 fjs.ui.GroupsController = function($scope) {
     fjs.ui.Controller.call(this, $scope);
-    var dataProvider = new fjs.fdp.FDPDataManager();
+    var dataProvider = new fjs.fdp.DataManager();
     var groupsModel = dataProvider.getModel("groups");
     $scope.query = "";
     $scope.sortField = "name";

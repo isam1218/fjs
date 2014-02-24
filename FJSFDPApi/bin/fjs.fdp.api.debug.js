@@ -175,7 +175,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     });
     this.sendMessage = function(message) {
         context.worker.postMessage(message);
-    }
+    };
     this.sendMessage({action:'init', data:{ticket:this.ticket, node:this.node}});
 
     setTimeout(function(){callback()},0);
@@ -234,7 +234,7 @@ namespace("fjs.api");
 fjs.api.FDPProviderFactory = function() {
     /**
      * register of providers
-     * @type {{sharedWorker: SharedWorkerDataProvider, webWorker: WebWorkerDataProvider, simple: SimpleClientDataProvider}}
+     * @enum {Function}
      * @private
      */
     this._providers = {
@@ -247,15 +247,12 @@ fjs.api.FDPProviderFactory = function() {
  * @param ticket
  * @param node
  * @param callback
- * @returns {fjs.api.ClientDataProviderBase=}
+ * @returns {fjs.api.ClientDataProviderBase|undefined}
  */
 fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callback) {
     for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
         var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
         if(provider.check()) {
-            /**
-             * we create first avaliable provider.
-             */
             return new provider(ticket, node, callback);
         }
     }

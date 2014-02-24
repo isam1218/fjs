@@ -1,5 +1,8 @@
 namespace("fjs.ui");
-
+/**
+ * @param $scope
+ * @constructor
+ */
 fjs.ui.Controller = function($scope) {
     $scope.$safeApply = function(fn) {
         var phase = $scope.$root.$$phase;

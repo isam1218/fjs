@@ -13,9 +13,9 @@ fjs.hud.VoicemailMessageEntryModel = function(obj, voicemailFeed) {
      */
     this.voicemailFeed = voicemailFeed;
     /**
-     * @type {FDPDataManager}
+     * @type {DataManager}
      */
-    this.dataManager = new fjs.hud.FDPDataManager();
+    this.dataManager = new fjs.hud.DataManager();
 };
 fjs.hud.VoicemailMessageEntryModel.extend(fjs.hud.EntryModel);
 
@@ -24,7 +24,6 @@ fjs.hud.VoicemailMessageEntryModel.prototype.markAsRead = function() {
 };
 /**
  *
- * @param index {Number}
  * @param width {Number}
  * @param height {Number}
  * @returns {String}
@@ -66,7 +65,7 @@ fjs.hud.VoicemailMessageEntryModel.prototype.getConference = function(){
 };
 fjs.hud.VoicemailMessageEntryModel.prototype.getGroup = function(){
     return this.dataManager.getModel("groups").getEntry(this.groupId);
-}
+};
 fjs.hud.VoicemailMessageEntryModel.prototype.getQueue = function(){
     return this.dataManager.getModel("queues").getEntry(this.queueId);
 };

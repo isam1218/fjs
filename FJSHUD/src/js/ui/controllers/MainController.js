@@ -16,7 +16,7 @@ fjs.ui.MainController = function($scope, dataProvider) {
                 loading.style.display = "none";
             });
         }
-    }
+    };
 
 
     var meModel = dataProvider.getModel("me");
