@@ -1,9 +1,10 @@
-namespace("fjs.fdp");
+namespace("fjs.hud");
 
 /**
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
+ * @implements fjs.fdp.ContactEntryModel
  */
 fjs.hud.ContactEntryModel = function(obj) {
 
@@ -12,7 +13,7 @@ fjs.hud.ContactEntryModel = function(obj) {
 fjs.hud.ContactEntryModel.extend(fjs.hud.EntryModel);
 
 fjs.hud.ContactEntryModel.prototype.isExternal = function() {
-    return !this["primaryExtension"];
+    return !this.primaryExtension;
 };
 fjs.hud.ContactEntryModel.prototype.pass = function(query) {
     if(!query){
