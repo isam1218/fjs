@@ -284,7 +284,7 @@
                 data.a[key] = parameters[key];
             }
         }
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(xhr, responce, isOK){
+        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(xhr, response, isOK){
             if(!isOK) {
                 context.fireEvent('error', {type:'requestError', requestType:'actionRequest', message:'Action request error'});
             }
