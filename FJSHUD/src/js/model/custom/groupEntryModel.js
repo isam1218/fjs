@@ -4,6 +4,7 @@ namespace("fjs.hud");
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
+ * @extends fjs.fdp.GroupEntryModelBase
  * @param groupFeed {fjs.hud.GroupsFeedModel}
  */
 fjs.hud.GroupEntryModel = function(obj, groupFeed) {
