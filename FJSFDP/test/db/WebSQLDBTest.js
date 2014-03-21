@@ -18,14 +18,14 @@ describe("WebSQLProvider", function() {
         if(fjs.utils.Browser.isChrome()
             || fjs.utils.Browser.isSafari()
             || fjs.utils.Browser.isOpera()) {
-            expect(true).toBe(fjs.db.WebSQLProvider.check(window));
+            expect(true).toBe(fjs.db.WebSQLProvider.check());
         }
     });
     it("open", function(){
-        if(fjs.db.WebSQLProvider.check(window)) {
+        if(fjs.db.WebSQLProvider.check()) {
             var doneFlag;
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -42,14 +42,14 @@ describe("WebSQLProvider", function() {
     });
 
     it("insertOne/selectByKey", function() {
-        if(fjs.db.WebSQLProvider.check(window)) {
+        if(fjs.db.WebSQLProvider.check()) {
             var doneFlag;
             /**
              * @type {TestModel1}
              */
             var item1 = null;
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -79,13 +79,13 @@ describe("WebSQLProvider", function() {
     });
 
     it("insertArray/selectAll", function(){
-        if(fjs.db.WebSQLProvider.check(window)) {
+        if(fjs.db.WebSQLProvider.check()) {
             var doneFlag, itemsCount, item1, item2;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -130,13 +130,13 @@ describe("WebSQLProvider", function() {
     });
 
     it("selectByIndex1", function(){
-        if(fjs.db.WebSQLProvider.check(window)) {
+        if(fjs.db.WebSQLProvider.check()) {
             var doneFlag, itemsCount, item1;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -180,7 +180,7 @@ describe("WebSQLProvider", function() {
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -218,13 +218,13 @@ describe("WebSQLProvider", function() {
         }
     });
     it("selectByIndex3", function(){
-        if(fjs.db.WebSQLProvider.check(window)) {
+        if(fjs.db.WebSQLProvider.check()) {
             var doneFlag, itemsCount;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -258,13 +258,13 @@ describe("WebSQLProvider", function() {
     });
 
     it("deleteByIndex", function(){
-        if(fjs.db.WebSQLProvider.check(window)) {
+        if(fjs.db.WebSQLProvider.check()) {
             var doneFlag, itemsCount, deletedItemsCount;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.WebSQLProvider(window);
+                var db = new fjs.db.WebSQLProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){

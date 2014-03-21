@@ -19,14 +19,14 @@ describe("IndexedDBProvider", function() {
             || fjs.utils.Browser.isChrome()
             || fjs.utils.Browser.isFirefox()
             || fjs.utils.Browser.isOpera()) {
-            expect(true).toBe(fjs.db.IndexedDBProvider.check(window));
+            expect(true).toBe(fjs.db.IndexedDBProvider.check());
         }
     });
     it("open", function(){
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag, tablesCount = 0;
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -45,14 +45,14 @@ describe("IndexedDBProvider", function() {
     });
 
     it("insertOne/selectByKey", function() {
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag;
             /**
              * @type {TestModel1}
              */
             var item1 = null;
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -82,13 +82,13 @@ describe("IndexedDBProvider", function() {
     });
 
     it("insertArray/selectAll", function(){
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag, itemsCount, item1, item2;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -133,13 +133,13 @@ describe("IndexedDBProvider", function() {
     });
 
     it("selectByIndex1", function(){
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag, itemsCount, item1;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -177,13 +177,13 @@ describe("IndexedDBProvider", function() {
         }
     });
     it("selectByIndex2", function(){
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag, itemsCount, item1;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -221,13 +221,13 @@ describe("IndexedDBProvider", function() {
         }
     });
     it("selectByIndex3", function(){
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag, itemsCount;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
@@ -260,13 +260,13 @@ describe("IndexedDBProvider", function() {
         }
     });
     it("deleteByIndex", function(){
-        if(fjs.db.IndexedDBProvider.check(window)) {
+        if(fjs.db.IndexedDBProvider.check()) {
             var doneFlag, itemsCount, deletedItemsCount;
             /**
              * @type {TestModel1}
              */
             runs(function(){
-                var db = new fjs.db.IndexedDBProvider(window);
+                var db = new fjs.db.IndexedDBProvider();
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){

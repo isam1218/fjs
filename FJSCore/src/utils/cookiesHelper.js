@@ -1,6 +1,9 @@
+(function(){
 namespace('fjs.utils');
 /**
- * @type {{getCookie: function(string), setCookie: function(string, string, {expires:(number|Date)}), deleteCookie: function(string)}}
+ * Helper class to facilitate work with cookies
+ * @class
+ * @static
  */
 fjs.utils.Cookies = {
     /**
@@ -13,14 +16,14 @@ fjs.utils.Cookies = {
             '(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
+    },
     /**
      * Saves property to cookies
      * @param {string} name - cookie name
      * @param {string} value - cookie value
      * @param {{expires:(number|Date)}} options
      */
-    , set: function(name, value, options) {
+    set: function(name, value, options) {
         options = options || {};
 
         var expires = options.expires;
@@ -48,13 +51,14 @@ fjs.utils.Cookies = {
             }
         }
         document.cookie = updatedCookie;
-    }
+    },
 
     /**
      * Removes cookies by name
      * @param {string} name - cookie name
      */
-    , remove: function(name) {
+    remove: function(name) {
         fjs.utils.Cookies.set(name, '', { expires: -1 });
     }
 };
+})();

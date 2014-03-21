@@ -1,11 +1,9 @@
 namespace("fjs.db");
 /**
- * @param {window} globalObject
  * @constructor
  * @implements fjs.db.IDBProvider
  */
-fjs.db.WebSQLProvider = function(globalObject) {
-    this.gloalObject = globalObject;
+fjs.db.WebSQLProvider = function() {
     /**
      * @type {Database}
      */
@@ -17,11 +15,10 @@ fjs.db.WebSQLProvider = function(globalObject) {
 };
 /**
  * Returns true if you can use WebSQL in this browser
- * @param {window} globalObj
  * @return {boolean}
  */
-fjs.db.WebSQLProvider.check = function(globalObj) {
-    return typeof (globalObj.openDatabase) !== 'undefined';
+fjs.db.WebSQLProvider.check = function() {
+    return typeof (self.openDatabase) !== 'undefined';
 };
 
 /**
@@ -32,7 +29,7 @@ fjs.db.WebSQLProvider.check = function(globalObj) {
  */
 fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
     var dbSize = 5 * 1024 * 1024, context = this;
-    var db = this.db = this.gloalObject.openDatabase(name,"" ,name , dbSize, function(){
+    var db = this.db = self.openDatabase(name,"" ,name , dbSize, function(){
     });
     if(db.version==='') {
         for(var i in context.tables) {

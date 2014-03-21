@@ -4,7 +4,7 @@ importScripts('fjs.fdp.debug.js');
 importScripts('properties.js');
 
 var dataManager = null;
-
+self.web_worker = true;
 //we listen messages from page
 self.addEventListener("message", function(e) {
     handleMessage(e.data, function(data){

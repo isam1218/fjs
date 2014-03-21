@@ -18,7 +18,18 @@ module.exports = function(grunt) {
                     , 'src/models/proxyModel.js'
                     , 'src/models/contactsProxyModel.js'
                     , 'src/models/clientProxyModel.js'
-                    , 'src/sync/*.js'],
+                    , 'src/transport/transport.js'
+                    , 'src/transport/ajaxTransport.js'
+                    , 'src/transport/XHRTransport.js'
+                    , 'src/transport/XDRTransport.js'
+                    , 'src/transport/IframeTransport.js'
+                    , 'src/transport/localStorageTransport.js'
+                    , 'src/transport/transportFactory.js'
+                    , 'src/sync/tabsSyncronizer.js'
+                    , 'src/sync/sync_manager.js'
+                    , 'src/sync/data_manager.js'
+
+                ],
                 dest: 'bin/fjs.fdp.debug.js'
             }
         }

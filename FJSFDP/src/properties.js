@@ -8,14 +8,14 @@ fjs.fdp.CONFIG = {
 //       serverURL: "https://huc-qa.fonality.com:8081"
 //       , loginURL: "https://huc-qa.fonality.com:5501/oauth/authorize"
     }
-    , providers: ['sharedWorker', 'simple', 'webWorker']
+    , providers: ['simple', 'sharedWorker', 'webWorker']
     , DB: {
         name: "HUD"
         , version: 13
         /**
          * @type {Array}
          */
-        , dbProviders:['indexedDB', 'webSQL', 'localStorage']
+        , dbProviders:['indexedDB', 'webSQL']
         , tables: [
             {name:"versions", key:"feedSource", indexes:["source", "feedName"]}
             , {name:"historyversions", key:"feedSourceFilter", indexes:["source", "feedName", "filter",["feedName", "filter"]]}

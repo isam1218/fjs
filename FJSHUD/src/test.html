@@ -1,27 +1,33 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html ng-app="personalLog">
 <head>
-    <title></title>
-    <script src="js/lib/fjs.core.debug.js"></script>
-    <script src="js/lib/fjs.fdp.api.debug.js"></script>
-    <script src="js/properties.js"></script>
-
-</head>
-<body>
+    <title>Personal Log</title>
+    <script src="../../src/loader.js"></script>
     <script>
-        var factory = new fjs.api.FDPProviderFactory();
-        var provider = factory.getProvider('53beab9fd66416d0c3a89c458408667f6ab9cdb29a0277af', null, function(){
-           provider.addSyncForFeed("contacts");
-        });
-        provider.addListener("sync", function(data) {
-            console.log(data);
-        });
-        provider.addListener("setNode", function(data) {
-            console.log(data);
-        });
-        provider.addListener("requestAuth", function(data) {
-            console.log(data);
-        });
+        setupModuleLoader(window);
     </script>
+    <script src="personalLog.js"></script>
+    <script src="../../src/angular-bootstrap.js"></script>
+    <script src="../../src/ngCookies/cookies.js"></script>
+</head>
+
+
+<body ng-controller="LogCtrl">
+
+<form action="" ng-submit="addLog(newMsg)">
+    <input type="text" ng-model="newMsg">
+    <input type="submit" value="add">
+    <input type="button" value="remove all" ng-click="rmLogs()">
+</form>
+
+<hr/>
+<h2>Logs:</h2>
+<ul>
+    <li ng-repeat="log in logs | orderBy:'-at'">
+        {{log.at | date:'yy-MM-dd HH:mm'}} {{log.msg}}
+        [<a href="" ng-click="rmLog(log)">x</a>]
+    </li>
+</ul>
+
 </body>
 </html>

@@ -1,13 +1,12 @@
 /**
- * @namespace {{ajax: {}, utils: {}}}
+ * @namespace
  */
-var fjs = {
-    /**
-     * @namespace;
-     */
-    ajax: {}
-    /**
-     * @namespace;
-     */
-    , utils: {}
-};
+var fjs = {};
+/**
+* @namespace
+*/
+fjs.ajax = {};
+/**
+* @namespace
+*/
+fjs.utils = {};

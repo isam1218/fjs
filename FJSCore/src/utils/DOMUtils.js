@@ -1,5 +1,9 @@
 namespace("fjs.utils");
-
+/**
+ * Static class to facilitate work with DOM objects.
+ * @constructor
+ * @static
+ */
 fjs.utils.DOM = function() {
 
 };

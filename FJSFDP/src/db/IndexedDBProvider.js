@@ -4,32 +4,26 @@
 namespace("fjs.db");
 /**
  *
- * @param {window} globalObj
  * @constructor
  * @implements fjs.db.IDBProvider
  */
-fjs.db.IndexedDBProvider = function(globalObj) {
-    /**
-     * @type {window|*}
-     * @private
-     */
-    this.globalObj = globalObj || window;
+fjs.db.IndexedDBProvider = function() {
     /**
      * @type {indexedDB}
      * @private
      */
-    this.indexedDB = globalObj.indexedDB || globalObj.mozIndexedDB || globalObj.webkitIndexedDB || globalObj.msIndexedDB;
+    this.indexedDB = self['indexedDB'] || self['mozIndexedDB'] || self['webkitIndexedDB'] || self['msIndexedDB'];
     /**
      *
      * @type {IDBTransaction}
      * @private
      */
-    this.IDBTransaction = globalObj.IDBTransaction || globalObj.webkitIDBTransaction || globalObj.msIDBTransaction;
+    this.IDBTransaction = self['IDBTransaction'] || self['webkitIDBTransaction'] || self['msIDBTransaction'];
     /**
      * @type {IDBKeyRange}
      * @private
      */
-    this.IDBKeyRange = globalObj.IDBKeyRange || globalObj.webkitIDBKeyRange || globalObj.msIDBKeyRange;
+    this.IDBKeyRange = self['IDBKeyRange'] || self['webkitIDBKeyRange'] || self['msIDBKeyRange'];
     /**
      * @type {IDBDatabase}
      */
@@ -43,11 +37,10 @@ fjs.db.IndexedDBProvider = function(globalObj) {
 
 /**
  * Returns true if you can use IndexedDB in this browser
- * @param {window} globalObj
  * @returns {boolean}
  */
-fjs.db.IndexedDBProvider.check= function(globalObj) {
-    return !!(globalObj.indexedDB = (globalObj.indexedDB || globalObj.mozIndexedDB || globalObj.webkitIndexedDB || globalObj.msIndexedDB));
+fjs.db.IndexedDBProvider.check= function() {
+    return !!(self['indexedDB'] || self['mozIndexedDB'] || self['webkitIndexedDB'] || self['msIndexedDB']);
 };
 /**
  * Opens connection to storage
@@ -56,7 +49,7 @@ fjs.db.IndexedDBProvider.check= function(globalObj) {
  * @param {function(IDBDatabase)} callback
  */
 fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
-    var request = this.globalObj.indexedDB.open(name, version), context = this;
+    var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
         new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
     };
@@ -320,7 +313,7 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, it
     var store = trans.objectStore(tableName);
     var index = store.index(keys.join(","));
 
-    var singleKeyRange = IDBKeyRange['only'](values);
+    var singleKeyRange = this.IDBKeyRange['only'](values);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
     cursorRequest.onsuccess = function(e) {
@@ -411,7 +404,7 @@ fjs.db.IndexedDBProvider.prototype.deleteByIndex = function(tableName, rules, ca
     var trans = this.db.transaction([tableName], "readwrite");
     var store = trans.objectStore(tableName);
     var index = store.index(keys.join(","));
-    var singleKeyRange = IDBKeyRange['only'](values);
+    var singleKeyRange = this.IDBKeyRange['only'](values);
     var cursorRequest = index.openCursor(singleKeyRange);
     var rows=[];
 

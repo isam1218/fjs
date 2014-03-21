@@ -1,43 +1,44 @@
-/**
- * Created with JetBrains WebStorm.
- * User: ddyachenko
- * Date: 19.08.13
- * Time: 13:08
- * To change this template use File | Settings | File Templates.
- */
 (function(){
     namespace("fjs.fdp");
     /**
-     * SyncManager
-     * @param {IDBProvider=} dbProvider
-     * @param {IAjaxProvider=} ajaxProvider
-     * @param {*} config
+     * <p>
+     *     Synchronization manager. Main logic of synchronization with FDP server.
+     * <p>
+     * <p>
+     *      It starts synchronization loop, receives required fdp data, sends actions to FDP server.
+     * </p>
+     * @param {Object} config
      * @constructor
+     * @extends fjs.EventsSource
      */
-    fjs.fdp.SyncManager = function(dbProvider, ajaxProvider, config) {
+    fjs.fdp.SyncManager = function(config) {
         //Singleton
         if (!this.constructor.__instance)
             this.constructor.__instance = this;
         else return this.constructor.__instance;
 
-        this.state = sm.states.NOT_INITIALIZED;
+        fjs.EventsSource.call(this);
 
-        this.config = config;
+        this.db = new fjs.db.DBFactory().getDB();
 
         /**
-         *
-         * @type {IAjaxProvider}
+         * Current SyncManager state
+         * @type {fjs.fdp.SyncManager.states|number}
          */
-        this.ajax = ajaxProvider;
-        /**
-         * @type {IDBProvider}
-         */
-        this.db = dbProvider;
+        this.status = sm.states.NOT_INITIALIZED;
+
         /**
          * @type {Object}
          * @private
          */
-        this.listeners = {};
+        this.config = config;
+
+        /**
+         * Ajax provider
+         * @type {fjs.fdp.FDPTransport}
+         */
+        this.transport = null;
+
         /**
          * Listeners for db data that don't sync with server
          * @type {Object}
@@ -55,25 +56,25 @@
          */
         this.historyversions = {};
         /**
+         * Auth ticket
          * @type {string}
          */
         this.ticket = null;
         /**
+         * Node Id
          * @type {string}
          */
         this.node = null;
         /**
+         * URl to FDP server
          * @type {string}
          */
         this.serverHost = this.config.SERVER.serverURL;
         /**
          * @type {Array}
+         * @private
          */
         this.syncFeeds = [];
-        /**
-         * @type {*}
-         */
-        this.currentVersioncache = null;
         /**
          * @type {Array}
          * @private
@@ -86,99 +87,168 @@
         this.versionsFeeds = [];
         /**
          * @type {?number}
-         */
-        this.versionsTimeoutId = null;
-        /**
-         * @type {number}
          * @private
          */
-        this._clientRegistryFailedCount = 0;
+        this.versionsTimeoutId = null;
+
+
+        this.tabsSyncronizer = null;
     };
+
+    fjs.fdp.SyncManager.extend(fjs.EventsSource);
 
     var sm = fjs.fdp.SyncManager;
 
     /**
-     * Sync manager states
+     * <b>Enumerator</b> <br/> SyncManager states
      * @enum {number}
      */
     fjs.fdp.SyncManager.states = {
-        'NOT_INITIALIZED':-1
-        , 'INITIALIZATION':0
-        , 'READY':1
+        /**
+         * SyncManager not initialized. To start initialization you should call .init(ticket, node, authHandler, callback) method;
+         */
+        'NOT_INITIALIZED':-1,
+        /**
+         * SyncManager is in the process of initialization;
+         */
+         'INITIALIZATION':0,
+        /**
+         * SyncManager initialized and ready to work.
+         */
+        'READY':1
     };
 
     /**
+     * <b>Enumerator</b> <br/>
      * Sync manager event types
      * @enum {string}
      */
     fjs.fdp.SyncManager.eventTypes = {
-        'SYNC_START': 'syncStart'
-        , 'SYNC_COMPLETE': 'syncComplete'
-        , 'FEED_START': 'feedStart'
-        , 'FEED_COMPLETE': 'feedComplete'
-        , 'SOURCE_START': 'sourceStart'
-        , 'SOURCE_COMPLETE': 'sourceComplete'
-        , 'ENTRY_CHANGE': 'push'
-        , 'ENTRY_DELETION': 'delete'
+        /**
+         * Start of receiving (parsing) FDP sync data
+         */
+        'SYNC_START': 'syncStart',
+        /**
+         * End of receiving (parsing) FDP sync data
+         */
+        'SYNC_COMPLETE': 'syncComplete',
+        /**
+         * Start of parsing sync data for specified feed
+         */
+        'FEED_START': 'feedStart',
+        /**
+         * End of parsing data for specified feed
+         */
+        'FEED_COMPLETE': 'feedComplete',
+        /**
+         * Start of parsing data for specified data source
+         */
+        'SOURCE_START': 'sourceStart',
+        /**
+         * End of parsing data for specified data source
+         */
+        'SOURCE_COMPLETE': 'sourceComplete',
+        /**
+         * Entry was added or changed
+         */
+        'ENTRY_CHANGE': 'push',
+        /**
+         * Entry was deleted
+         */
+        'ENTRY_DELETION': 'delete'
     };
 
     /**
+     * <b>Enumerator</b> <br/>
      * FDP sync types
      * @enum {string}
      */
     fjs.fdp.SyncManager.syncTypes = {
-        'FULL':'F'
-        , 'KEEP':'I'
-        , 'LAZY':'L'
-        , 'HISTORY':'H'
+        /**
+         * Full sync, need to remove all previous data entries
+         */
+        'FULL':'F',
+        /**
+         * Keep sync, need to remove previous data entries except with status 'keep'
+         */
+        'KEEP':'I',
+        /**
+         * Lazy sync, need apple received changes only
+         */
+        'LAZY':'L',
+        /**
+         * History sync, part fo feed history was downloaded
+         */
+        'HISTORY':'H'
     };
 
-    /**
-     * @const {string}
-     */
-    fjs.fdp.SyncManager.VERSIONS_PATH = "/v1/versions";
-    /**
-     * @const {string}
-     */
-    fjs.fdp.SyncManager.VERSIONSCACHE_PATH = "/v1/versionscache";
-    /**
-     * @const {string}
-     */
-    fjs.fdp.SyncManager.CLIENT_REGISRY_PATH = "/accounts/ClientRegistry";
-    /**
-     * @const {string}
-     */
-    fjs.fdp.SyncManager.SYNC_PATH = "/v1/sync";
+
 
     /**
-     * @param {string} ticket
-     * @param {string} node
-     * @param {{requestAuth:Function, setNode:function(string)}} authHandler
-     * @param {Function} callback
+     * Initializes Synchronization Manager
+     * @param {string} ticket Auth ticket
+     * @param {string} node Node ID
+     * @param {fjs.fdp.IAuthHandler} authHandler Handler of authentication events and errors
+     * @param {Function} callback Method to execute when SyncManager initialized
      */
     fjs.fdp.SyncManager.prototype.init = function(ticket, node, authHandler, callback) {
         var context = this;
         /**
          * @type {states}
          */
-        this.state = sm.states.INITIALIZATION;
+        this.status = sm.states.INITIALIZATION;
         this.ticket = ticket;
         this.node = node;
         /**
-         * @type {{requestAuth: Function, setNode: (function(string))}}
+         * @type {fjs.fdp.IAuthHandler}
          */
         this.authHandler = authHandler;
 
-        if(!this.node) {
-            this.requestClientRegistry(function(isOK){
-                if(isOK) {
-                    context.initDataBase(callback);
+        /**
+         * @param {fjs.fdp.FDPTransport} transport
+         */
+        function addTransportEvents(transport) {
+            transport.addEventListener('message', function(e){
+                switch(e.type) {
+                    case 'sync':
+                        context.onSync(e.data);
+                        break;
+                    case 'node':
+                        context.authHandler.setNode(e.data.nodeId);
+                        break;
+                }
+                if(new fjs.fdp.TabsSyncronizer().isMaster) {
+                    fjs.fdp.LocalStorageTransport.masterSend('message', e);
+                }
+            });
+            transport.addEventListener('error', function(e){
+                switch(e.type) {
+                    case 'requestError':
+
+                        break;
+                    case 'auth':
+                        context.authHandler.requestAuth();
+                        break;
+                }
+                if(new fjs.fdp.TabsSyncronizer().isMaster) {
+                    fjs.fdp.LocalStorageTransport.masterSend('error', e);
                 }
             });
         }
-        else {
-            this.initDataBase(callback);
+
+        if(fjs.fdp.TabsSyncronizer.useLocalStorageSyncronization()) {
+            this.tabsSyncronizer = new fjs.fdp.TabsSyncronizer();
+            this.tabsSyncronizer.addEventListener('master_changed', function(){
+                context.transport.close();
+                context.transport = fjs.fdp.TransportFactory.getTransport(context.ticket, context.node, context.serverHost);
+                addTransportEvents(context.transport);
+                clearTimeout(context.versionsTimeoutId);
+                context.startSync(context.syncFeeds);
+            });
         }
+        this.transport = fjs.fdp.TransportFactory.getTransport(context.ticket, context.node, context.serverHost);
+        addTransportEvents(this.transport);
+        this.initDataBase(callback);
     };
 
     /**
@@ -196,9 +266,7 @@
              * Declare tables from config
              */
             for(var i=0; i<this.config.DB.tables.length; i++) {
-                /**
-                 * @type {{name:string, key:string, indexes:Array}}
-                 */
+
                 var table = this.config.DB.tables[i];
                 this.db.declareTable(table.name, table.key, table.indexes);
             }
@@ -223,9 +291,7 @@
          * @type {fjs.fdp.SyncManager}
          */
         var context = this;
-        /**
-         * Load data from localDB
-         */
+
         for(var feedName in this.suspendedDbListeners) {
             if(this.suspendedDbListeners.hasOwnProperty(feedName)){
                 for(var i = 0; i<this.suspendedDbListeners[feedName].length; i++){
@@ -235,9 +301,6 @@
         }
         this.suspendedDbListeners = {};
 
-        /**
-         * Init for for feeds attached before init complete
-         */
         if(this.suspendFeeds.length > 0) {
             /**
              * Load data from localDB
@@ -263,28 +326,28 @@
             this.suspendFeeds = [];
         }
 
-        this.state = sm.states.READY;
+        this.status = sm.states.READY;
         callback();
     };
 
-    /**
-     * @param {string} data
-     * @returns {Object}
-     */
-    fjs.fdp.SyncManager.prototype.parseFdpData = function(data) {
-        var dataArr = data.split('\n');
-        var result = {};
-        for(var i=0; i<dataArr.length; i++) {
-            if(dataArr[i].indexOf("=")>-1) {
-                var itemArr = dataArr[i].split("=");
-                var key = itemArr[0].trim();
-                var val = itemArr[1].trim();
-                if(key && val) {
-                    result[key] = val;
-                }
+    fjs.fdp.SyncManager.prototype.startSync = function(feeds) {
+        var data = {};
+        var  context=this;
+        if(feeds) {
+            var _count = 0;
+            for(var i=0; i<feeds.length; i++) {
+                _count++;
+                this.getVersions(feeds[i], data, function(){
+                    --_count;
+                    if(_count===0) {
+                        context.transport.send({'type':'synchronize', data:{versions:data}});
+                    }
+                });
             }
         }
-        return result;
+        else {
+            new Error ("You must set feeds names array");
+        }
     };
 
 
@@ -293,6 +356,7 @@
      * @param {string} feedName
      * @param {string} source
      * @param {string} version
+     * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
         if(this.db) {
@@ -304,6 +368,7 @@
      * @param {string} feedName
      * @param {*} data
      * @param {Function} callback
+     * @private
      */
     fjs.fdp.SyncManager.prototype.getVersions = function(feedName, data, callback) {
         var versionsArr = [];
@@ -324,126 +389,9 @@
         }
     };
 
-
-    /**
-     *
-     * @param {String} url
-     * @param {*} data
-     * @param {Function} callback
-     * @return {*}
-     */
-    fjs.fdp.SyncManager.prototype.sendRequest = function(url, data, callback) {
-        data["t"] = "web";
-        data["alt"] = 'j';
-        var headers = {Authorization: "auth="+this.ticket, node:this.node};
-        return this.ajax.send("POST", url, headers, data, callback);
-    };
-
-    /**
-     * @param {string} data
-     */
-    fjs.fdp.SyncManager.prototype.parseVersionsResponse = function(data) {
-        //TODO: parse db and server versions;
-        var params = data.split(";"), feeds = {}, feedsCount = 0;
-        if(params) {
-            for(var i=2; i<params.length-1; i++) {
-                if(params[i]) {
-                    feeds[params[i]]  = "";
-                    feedsCount++;
-                }
-            }
-        }
-        return feedsCount ? feeds : null;
-    };
-
-    /**
-     * Versions request
-     * @param {Object} feedsVersions
-     */
-    fjs.fdp.SyncManager.prototype.requestVersions = function(feedsVersions) {
-        var context = this;
-
-        if(this.currentVersioncache!=null) {
-            this.ajax.abort(this.currentVersioncache);
-        }
-
-        var url = this.serverHost+sm.VERSIONS_PATH;
-
-        this.sendRequest(url, feedsVersions, function(xhr, data, isOk) {
-            if(isOk) {
-                var feeds = context.parseVersionsResponse(data);
-                if(feeds) {
-                    context.syncRequest(feeds);
-                }
-                else {
-                    context.requestVersionscache();
-                }
-            }
-            else {
-                if(xhr.status == 401 || xhr.status == 403) {
-                    context.requestClientRegistry(function() {
-                        context.requestVersions(feedsVersions);
-                    });
-                }
-            }
-        });
-    };
-
-    /**
-     * Versionscache request
-     */
-    fjs.fdp.SyncManager.prototype.requestVersionscache = function() {
-        var data = {"path":this.getOrigin(), "no_image":"/img/Generic-Avatar-Small.png" }, context = this;
-        var url = this.serverHost+sm.VERSIONSCACHE_PATH;
-        this.currentVersioncache = this.sendRequest(url, data, function(xhr, data, isOk) {
-            if(isOk) {
-                var feeds = context.parseVersionsResponse(data);
-                if(feeds) {
-                    context.syncRequest(feeds);
-                }
-                else {
-                    context.requestVersionscache();
-                }
-            }
-            else {
-                if(xhr.status == 401 || xhr.status == 403) {
-                    context.requestClientRegistry(function(isOK) {
-                        if(isOK) {
-                            context.requestVersionscache();
-                        }
-                    });
-                }
-                else if(!xhr["aborted"]) {
-                    context.requestVersionscache();
-                }
-            }
-        });
-    };
-
-    /**
-     * @param str
-     * @returns {*}
-     * @private
-     */
-    fjs.fdp.SyncManager.prototype.parseJSON = function(str) {
-        var _data = null;
-        try {
-            _data = JSON.parse(str);
-        }
-        catch (e) {
-            try {
-                _data = (new Function("return " + str+ ";" ))();
-            }
-            catch(e) {
-                console.error('Sync data error', e);
-            }
-        }
-        return _data;
-    };
-
     fjs.fdp.SyncManager.prototype.parseSyncSourceData = function(items, feedName, sourceId) {
         for (var j = 0; j < items.length; j++) {
-            var etype = items[j]["xef001type"] || 'push';
+            var etype = (items[j]["xef001type"] || 'push') ;
             var xpid = sourceId + "_" + items[j]["xef001id"];
             delete items[j]["xef001type"];
             items[j]["xpid"] = xpid;
@@ -463,6 +411,7 @@
 
     /**
      * @param {*} data
+     * @private
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
         /**
@@ -470,7 +419,7 @@
          * @type {fjs.fdp.SyncManager}
          */
         var context= this ;
-        var _data = this.parseJSON(data);
+        var _data = fjs.utils.JSON.parse(data);
 
         function isSource(sourceId) {
             return sourceId != 'full';
@@ -508,37 +457,23 @@
     };
 
     /**
-     * Sync request
-     * @param {Object} feeds
+     * Sends action to FDP server
+     * @param {string} feedName Feed name
+     * @param {string} actionName Action name
+     * @param {Object} data Request parameters ({'key':'value',...})
      */
-    fjs.fdp.SyncManager.prototype.syncRequest = function(feeds) {
-        var context = this, url = this.serverHost+sm.SYNC_PATH;
-        this.sendRequest(url, feeds, function(xhr, data, isOK) {
-            if(isOK) {
-                context.onSync(data);
-                context.requestVersionscache();
-            }
-        });
+    fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data) {
+        var context = this;
+        data["action"] = actionName;
+        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(){});
     };
 
     /**
-     *
-     * @param {string} feedName
-     * @param {string} actionName
-     * @param {*} data
-     * @param {Function} callback
+     * @param feedName
+     * @param entry
+     * @param listener
+     * @private
      */
-    fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data, callback) {
-        var context = this;
-        data["action"] = actionName;
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(xhr, responce, isOK){
-            if(callback) {
-                var _responce = context.parseFdpData(responce);
-                callback(isOK && _responce.result == "OK");
-            }
-        });
-    };
-
     fjs.fdp.SyncManager.prototype.insertDbEntry = function(feedName, entry, listener) {
         if(this.db){
             var context = this, data = {eventType:sm.eventTypes.SYNC_START , syncType: "L", feed:feedName};
@@ -555,77 +490,10 @@
     };
 
 
-    /**
-     * @param {Array} feeds
-     */
-    fjs.fdp.SyncManager.prototype.startSync = function(feeds) {
-        var data = {};
-        var  context=this;
-        if(feeds) {
-            var _count = 0;
-            for(var i=0; i<feeds.length; i++) {
-                _count++;
-                this.syncFeeds.push(feeds[i]);
-                this.getVersions(feeds[i], data, function(){
-                    --_count;
-                    if(_count===0) {
-                        context.requestVersions(data);
-                    }
-                });
-            }
-        }
-        else {
-            new Error ("You must set feeds names array");
-        }
-    };
 
     /**
-     * @return {string}
+     * @private
      */
-    fjs.fdp.SyncManager.prototype.getOrigin = function() {
-        return location.protocol+"//"+location.host + (location.port ? ":" + location.port : "")+"/";
-    };
-    /**
-     * ClientRegistry request
-     * @param callback
-     */
-    fjs.fdp.SyncManager.prototype.requestClientRegistry = function(callback) {
-        /**
-         * @type {fjs.fdp.SyncManager}
-         */
-        var context = this;
-        var url = this.serverHost+sm.CLIENT_REGISRY_PATH;
-
-        this.sendRequest(url, {"path":this.getOrigin(), "no_image":"/img/Generic-Avatar-Small.png" }, function(xhr, data, isOk) {
-            if(isOk) {
-                this._clientRegistryFailedCount = 0;
-                var _data = context.parseFdpData(data);
-                if(_data["node"]) {
-                    context.node = _data["node"];
-                    context.authHandler.setNode(context.node);
-                    callback(isOk, data);
-                }
-            }
-            else {
-                if(xhr.status == 403) {
-                    callback(false);
-                    context.getAuthTicket();
-                }
-                else {
-                    if(this._clientRegistryFailedCount<10) {
-                        this._clientRegistryFailedCount++;
-                        context.requestClientRegistry(callback);
-                    }
-                    else {
-                        callback(false);
-                        context.getAuthTicket();
-                    }
-                }
-            }
-        });
-    };
-
-
     fjs.fdp.SyncManager.prototype.getAuthTicket = function() {
         var context = this;
         if(this.state == sm.states.READY && this.db) {
@@ -639,30 +507,23 @@
     };
 
     /**
-     *
-     * @param {string} feedName
+     * Adds listener on feed. If feed does not synchronize, adds this feed to synchronization.
+     * @param {string} feedName Feed name
      * @param {Function} listener
      */
     fjs.fdp.SyncManager.prototype.addListener = function(feedName, listener) {
-        if(listener) {
-            var tmpListeners = this.listeners[feedName], context = this;
-            if(!tmpListeners) {
-                tmpListeners = this.listeners[feedName] = [];
-            }
-            if(-1 < tmpListeners.indexOf(listener)) {
-                console.error("SyncManager error: duplicate listener for" + feedName);
-            }
-            else {
-                tmpListeners.push(listener);
-            }
-        }
 
-        if(this.state != sm.states.READY ) {
+        var context = this;
+
+        this.superClass.addEventListener.apply(this, arguments);
+
+        if(this.status != sm.states.READY ) {
             if(this.suspendFeeds.indexOf(feedName)<0) {
                 this.suspendFeeds.push(feedName);
             }
         }
         else if(this.syncFeeds.indexOf(feedName)<0) {
+            this.syncFeeds.push(feedName);
             if(this.versionsFeeds.indexOf(feedName) < 0) {
                 this.versionsFeeds.push(feedName);
             }
@@ -698,6 +559,7 @@
      * Fills data from db if ready else - postpone.
      * @param feedName
      * @param listener
+     * @private
      */
     fjs.fdp.SyncManager.prototype.fillDbData = function(feedName, listener) {
         if(!listener || !feedName){
@@ -724,6 +586,7 @@
      * Fill data without check
      * @param feedName
      * @param listener
+     * @private
      */
     fjs.fdp.SyncManager.prototype.doFillDbData = function(feedName, listener) {
         var context = this;
@@ -739,15 +602,14 @@
     /**
      * @param {string} feedName
      * @param {Function=} listener
+     * @private
      */
     fjs.fdp.SyncManager.prototype.getFeedData = function(feedName, listener) {
         var context = this, data = {eventType:sm.eventTypes.FEED_START , syncType: "F", feed:feedName};
         this.fireEvent(feedName, data, listener);
         if(this.db) {
             this.db.selectAll(feedName, function(item){
-                    /**
-                     * @type {{eventType: (fjs.fdp.SyncManager.eventTypes|string), feed: string, xpid: (*|.key.xpid|xpid|entry.xpid|data.xpid|fjs.hud.EntryModel.xpid), entry: Object}}
-                     */
+
                     var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                     context.fireEvent(feedName, data, listener);
                 }
@@ -762,18 +624,18 @@
         }
     };
     /**
-     *
+     * Removes listener from feed, if the number of listeners == 0, it stops synchronization for this feed.
      * @param {string} feedName
      * @param {Function} listener
      */
     fjs.fdp.SyncManager.prototype.removeListener = function(feedName, listener) {
-        var _listeners = this.listeners[feedName];
-        if(_listeners)
-        {
-            var i = _listeners.indexOf(listener);
-            if(i > -1) {
-                _listeners.splice(i, 1);
-            }
+        this.superClass.removeEventListener.apply(this, arguments);
+        var index;
+        if((index = this.syncFeeds.indexOf(feedName))>-1) {
+            this.syncFeeds.splice(index, 1);
+        }
+        if(this.listeners[feedName] && this.listeners[feedName].length == 0) {
+            this.transport.send({'type':'forget', 'data':{'feedName':feedName}});
         }
     };
 
@@ -781,38 +643,26 @@
      * @param {string} feedName
      * @param {*} data
      * @param {Function} listener
+     * @private
      */
     fjs.fdp.SyncManager.prototype.fireEvent = function(feedName, data, listener) {
-        var _listeners, i , _listener;
         if(listener) {
             listener(data);
         }
         else if(feedName) {
-            _listeners = this.listeners[feedName];
-            if (_listeners) {
-                for (i = 0; i < _listeners.length; i++) {
-                    _listener = _listeners[i];
-                    _listener(data);
-                }
-            }
+            this.superClass.fireEvent.call(this, feedName, data);
         }
         else {
             for(var _feedName in this.listeners) {
                 if(this.listeners.hasOwnProperty(_feedName)) {
-                    _listeners = this.listeners[_feedName];
-                    if (_listeners) {
-                        for (i = 0; i < _listeners.length; i++) {
-                            _listener = _listeners[i];
-                            _listener(data);
-                        }
-                    }
+                    this.superClass.fireEvent.call(this, _feedName, data);
                 }
             }
         }
     };
 
     /**
-     *
+     * Loads more items for feeds with dynamic loading
      * @param {string} feedName
      * @param {*} _filter
      * @param {number} count
@@ -838,6 +688,15 @@
         });
     };
 
+    /**
+     *
+     * @param feedName
+     * @param filter
+     * @param count
+     * @param _historyVersions
+     * @param callback
+     * @private
+     */
     fjs.fdp.SyncManager.prototype.fillHistoryVersions = function (feedName, filter, count, _historyVersions, callback) {
         if (this.db) {
             var context = this;
@@ -853,6 +712,13 @@
         }
     };
 
+    /**
+     *
+     * @param feedName
+     * @param _historyVersions
+     * @param callback
+     * @private
+     */
     fjs.fdp.SyncManager.prototype.fillEmptyHistoryVersionsFromFeed = function(feedName, _historyVersions, callback) {
         if(this.db) {
             //fill 0 versions for known sources
@@ -862,6 +728,15 @@
         }
     };
 
+    /**
+     *
+     * @param feedName
+     * @param filter
+     * @param count
+     * @param _historyVersions
+     * @param callback
+     * @private
+     */
     fjs.fdp.SyncManager.prototype.processHistoryVersions = function(feedName, filter, count, _historyVersions, callback) {
         if(_historyVersions.length==0)
         {
@@ -986,6 +861,7 @@
      * @param {string} source
      * @param {string} filter
      * @param {string} version
+     * @private
      */
     fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
         if(this.db) {
@@ -997,7 +873,6 @@
                     delete this.historyversions[feedName];
                 }
             }
-
         }
     };
 
@@ -1005,6 +880,7 @@
      * Saves versions
      * @param {string} feedName
      * @param {string} filter
+     * @private
      */
     fjs.fdp.SyncManager.prototype.saveEmptyHistoryVersions = function(feedName, filter) {
         if(this.db) {
@@ -1032,11 +908,13 @@
 //            final String str = JSON.stringify(dataObj);
 //            this.dataSynchronizer.writeData(SYNC_PROCESS, str);
     };
-
+    /**
+     * Forgets auth info and call requestAuth method from the Auth Handler.
+     */
     fjs.fdp.SyncManager.prototype.logout = function() {
         this.ticket = null;
         this.node = null;
         this.getAuthTicket();
-        this.state = sm.states.NOT_INITIALIZED;
+        this.status = sm.states.NOT_INITIALIZED;
     }
 })();

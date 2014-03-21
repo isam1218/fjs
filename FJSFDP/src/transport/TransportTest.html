@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <title>FDP transports test</title>
+    <style>
+        #syncLog, #errorsLog, #nodeLog {
+            width:30%;
+            border:1px solid black;
+            margin:2px;
+            display:inline-block;
+            overflow: auto;
+            height: 500px;
+            vertical-align: top;
+        }
+    </style>
+    <script type="text/javascript" src="../../lib/fjs.core.debug.js"></script>
+    <script type="text/javascript" src="transport.js"></script>
+    <script type="text/javascript" src="ajaxTransport.js"></script>
+    <script type="text/javascript" src="XHRTransport.js"></script>
+    <script type="text/javascript" src="XDRTransport.js"></script>
+    <script type="text/javascript" src="IframeTransport.js"></script>
+</head>
+<body>
+   <label>Auth ticket: <input type="test" id="authTicket" /></label><br/>
+   <label>Node: <input type="test" id="node" /></label><br/>
+   <label>Feeds:<br/>
+   <textarea id="feeds"></textarea>
+   </label>
+   <button onclick="runSyncronization()">Run</button>
+   <button onclick="stopSyncronization()">Stop</button>
+   <ul>
+        <li><a href="#XHR">XHR</a></li>
+        <li><a href="#XDR">XDR</a></li>
+        <li><a href="#IFrame">IFrame</a></li>
+   </ul>
+   <div>
+        <div id="syncLog"></div>
+        <div id="errorsLog"></div>
+        <div id="nodeLog"></div>
+   </div>
+   <script>
+        var transport;
+        document.getElementById('authTicket').value = fjs.utils.Cookies.get('Authorization');
+        document.getElementById('node').value = fjs.utils.Cookies.get('node');
+        function runSyncronization() {
+            transport = new fjs.fdp.XHRTransport(document.getElementById('authTicket').value, document.getElementById('node').value, 'https://dev4.fon9.com:8081');
+            transport.addEventListener('error', function(e){
+                document.getElementById('errorsLog').innerHTML += '<div>'+ e.message+'</div>';
+            });
+            transport.addEventListener('message', function(e) {
+                if(e.type == 'sync') {
+                    document.getElementById('syncLog').innerHTML += '<div>' + e.data + '</div>';
+                }
+            });
+            transport.send({type:'synchronize', data:{versions:{contacts:null, locations:null, me:null}}});
+        }
+       function stopSyncronization() {
+           if(transport) {
+               transport.close();
+           }
+       }
+   </script>
+</body>
+</html>

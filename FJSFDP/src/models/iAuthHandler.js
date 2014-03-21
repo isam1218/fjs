@@ -1,7 +1,8 @@
 namespace("fjs.db");
 
 /**
- * @interface
+ * @constructor
+ * @abstract
  */
 fjs.fdp.IAuthHandler = function() {
 

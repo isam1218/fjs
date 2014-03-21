@@ -24,6 +24,6 @@ fjs.ui.LocationsController = function($scope, $element, dataManager) {
     $scope.getCurrentLocationId = function() {
         return meModel.itemsByKey["current_location"] && meModel.itemsByKey["current_location"].propertyValue;
     }
-};
+}
 
 fjs.ui.LocationsController.extend(fjs.ui.Controller);

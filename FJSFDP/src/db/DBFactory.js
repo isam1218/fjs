@@ -1,10 +1,9 @@
 namespace('fjs.db');
 /**
  * Database providers factory
- * @param {window} globalObject
  * @constructor
  */
-fjs.db.DBFactory = function(globalObject) {
+fjs.db.DBFactory = function() {
     /**
      * @enum {fjs.db.IDBProvider}
      * @private
@@ -14,7 +13,6 @@ fjs.db.DBFactory = function(globalObject) {
         , 'webSQL': fjs.db.WebSQLProvider
         , 'localStorage': fjs.db.LocalStorageDbProvider
     };
-    this.globalObject = globalObject;
 };
 
 /**
@@ -28,8 +26,8 @@ fjs.db.DBFactory.prototype.getDB = function() {
      */
     var dbs = fjs.fdp.CONFIG.DB.dbProviders;
     for(var i=0; i<dbs.length; i++) {
-        if(this._dbRegister[dbs[i]].check(this.globalObject)) {
-            return new this._dbRegister[dbs[i]](this.globalObject);
+        if(this._dbRegister[dbs[i]].check()) {
+            return new this._dbRegister[dbs[i]]();
         }
     }
 };

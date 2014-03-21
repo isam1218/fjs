@@ -1,11 +1,11 @@
 (function() {
-    namespace('fjs.ajax');
+  namespace('fjs.ajax');
 
   var _a =
   /**
-  * XHR wrapper class
+  * <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHTTPRequest</a> wrapper class
   * @constructor
-  * @implements {fjs.ajax.IAjaxProvider}
+  * @implements {fjs.ajax.IAjaxProvider.<XMLHttpRequest>}
   */
   fjs.ajax.XHRAjax = function() {
         //Singleton

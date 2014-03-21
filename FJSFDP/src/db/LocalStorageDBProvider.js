@@ -1,11 +1,9 @@
 namespace("fjs.db");
 /**
- * @param {window} globalObject
  * @interface
  * @implements fjs.db.IDBProvider
  */
-fjs.db.LocalStorageDbProvider = function(globalObject) {
-    this.gloalObject = globalObject
+fjs.db.LocalStorageDbProvider = function() {
 };
 
 /**
@@ -20,11 +18,10 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
 
 /**
  * Returns true if you can use localStorage in this browser
- * @param {window} globalObj
  * @returns {boolean}
  */
-fjs.db.LocalStorageDbProvider.check = function(globalObj) {
-    return !!globalObj.localStorage;
+fjs.db.LocalStorageDbProvider.check = function() {
+    return !!self.localStorage;
 };
 
 /**

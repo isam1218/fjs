@@ -1,6 +1,6 @@
 /**
  * Inheritance function
- * @param {function} superClass super class constructor
+ * @param {Function} superClass super class constructor
  */
 Function.prototype.extend = function(superClass) {
     var F = new Function();
@@ -8,12 +8,7 @@ Function.prototype.extend = function(superClass) {
     this.prototype = new F();
     this.prototype.constructor = this;
     this.prototype.superClass = superClass.prototype;
-};
-/**
- * Multiple inheritance function
- */
-Function.prototype.multiple_extend = function() {
-    for( var i = 0; i < arguments.length; ++i )
+    for( var i = 1; i < arguments.length; ++i )
     {
         var parent = arguments[i];
         for (var prop in parent.prototype)
@@ -22,6 +17,7 @@ Function.prototype.multiple_extend = function() {
         }
         this.prototype[parent.prototype['__class_name']] = parent.prototype;
     }
+
 };
 
 /**

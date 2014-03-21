@@ -10,8 +10,8 @@ hud_web.config(['$routeProvider', function($routeProvider) {
         when('/conferences/all', {templateUrl: 'templates/AllConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/test', {templateUrl: 'templates/TestWidget.html', controller: ['$scope', fjs.ui.TestWidget]}).
         when('/contact/:contactId', {templateUrl: 'templates/ConversationWidgetVoicemails.html', controller: ['$scope', '$routeParams', 'DataManager', fjs.ui.ConversationWidgetVoicemailsController]}).
-//        when('/contact/:contactId', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
-//        when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
+//      when('/contact/:contactId', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
+//      when('/contact/:contactId/chat', {templateUrl: 'templates/ContactWidgetChatController.html', controller: fjs.ui.ContactWidgetChatController}).
         when('/contact/:contactId/groups', {templateUrl: 'templates/ConversationWidgetGroups.html', controller:  ['$scope', '$routeParams', 'DataManager', fjs.ui.ConversationWidgetGroupsController]}).
         when('/contact/:contactId/voicemails', {templateUrl: 'templates/ConversationWidgetVoicemails.html', controller: ['$scope', '$routeParams', 'DataManager', fjs.ui.ConversationWidgetVoicemailsController]}).
         //when('/phones/:phoneId', {templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl}).

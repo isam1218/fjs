@@ -1,5 +1,5 @@
-namespace("fjs.utils");
 (function(){
+    namespace("fjs.utils");
     var _ieV = null;
     function getIEVersion() {
         if(_ieV==null) {
@@ -23,131 +23,135 @@ namespace("fjs.utils");
         return _ieV;
     }
 
-    fjs.utils.Browser = {
+    /**
+     * Static class is responsible for browser detection.
+     * @class
+     * @static
+     */
+    fjs.utils.Browser = function(){};
     /**
     * Returns Internet explorer major version
     * @return {string}
     */
-    getIEVersion: getIEVersion
+    fjs.utils.Browser.getIEVersion = getIEVersion;
     /**
     * Returns true if browser is Internet Explorer
     * @return {boolean}
     */
-    , isIE: function() {
+    fjs.utils.Browser.isIE = function() {
         if(getIEVersion() != -1) {
             return function(){return true; }
         }
         else {
             return function(){return false; }
         }
-    }()
-        /**
-         * Returns true if browser is Internet Explorer 7
-         * @return {boolean}
-         */
-    , isIE7: function() {
+    }();
+    /**
+    * Returns true if browser is Internet Explorer 7
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isIE7 =  function() {
         if(getIEVersion() == 7) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Internet Explorer 8
-         * @return {boolean}
-         */
-    , isIE8: function() {
+    }();
+    /**
+    * Returns true if browser is Internet Explorer 8
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isIE8 = function() {
         if(getIEVersion() == 8) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Internet Explorer 9
-         * @return {boolean}
-         */
-    , isIE9: function() {
+    }();
+    /**
+    * Returns true if browser is Internet Explorer 9
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isIE9 = function() {
         if(getIEVersion() == 9) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Internet Explorer 10
-         * @return {boolean}
-         */
-    , isIE10: function() {
+    }();
+    /**
+    * Returns true if browser is Internet Explorer 10
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isIE10 = function() {
         if(getIEVersion() == 10) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Internet Explorer 11
-         * @return {boolean}
-         */
-        , isIE11: function() {
+    }();
+    /**
+    * Returns true if browser is Internet Explorer 11
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isIE11 = function() {
         if(getIEVersion() == 11) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Chrome or Chromium
-         * @return {boolean}
-         */
-        , isChrome: function() {
+    }();
+    /**
+    * Returns true if browser is Chrome or Chromium
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isChrome = function() {
         if(/chrom(e|ium)/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Firefox
-         * @return {boolean}
-         */
-    , isFirefox: function() {
+    }();
+    /**
+    * Returns true if browser is Firefox
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isFirefox = function() {
         if(/firefox/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Safari
-         * @return {boolean}
-         */
-    , isSafari: function() {
+    }();
+    /**
+    * Returns true if browser is Safari
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isSafari = function() {
         if(/safari/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-        /**
-         * Returns true if browser is Opera
-         * @return {boolean}
-         */
-    , isOpera: function() {
+    }();
+    /**
+    * Returns true if browser is Opera
+    * @return {boolean}
+    */
+    fjs.utils.Browser.isOpera = function() {
         if(/Opera/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
             return function(){return false;}
         }
-    }()
-};
+    }();
 })();

@@ -11,7 +11,8 @@ module.exports = function(grunt) {
             dist: {
                 src: ['src/oop.js'
                     , 'src/utils/*.js'
-                    , 'src/ajax/XHRAjax.js'],
+                    , 'src/ajax/*.js'
+                    , 'src/eventsSource.js'],
                 dest: 'bin/fjs.core.debug.js'
             }
         }
@@ -21,7 +22,6 @@ module.exports = function(grunt) {
                     {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../FJSFDP/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../FJSHUD/bin/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../FJSHUD/src/js/lib/'}
-
                 ]
             }
         }
