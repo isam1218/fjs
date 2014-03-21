@@ -1,9 +1,10 @@
-namespace("fjs.fdp");
+namespace("fjs.hud");
 
 /**
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
+ * @extends fjs.fdp.ConferenceMemberEntryModelBase
  */
 fjs.hud.ConferenceMemberEntryModel = function(obj, conferenceMemberFeed) {
     fjs.hud.EntryModel.call(this, obj);

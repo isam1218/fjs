@@ -1,9 +1,10 @@
-namespace("fjs.fdp");
+namespace("fjs.hud");
 
 /**
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
+ * @extends fjs.fdp.VoicemailMessageEntryModelBase
  * @param voicemailFeed {VoicemailMessageFeedModel}
  */
 fjs.hud.VoicemailMessageEntryModel = function(obj, voicemailFeed) {

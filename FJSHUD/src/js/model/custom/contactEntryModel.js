@@ -4,7 +4,7 @@ namespace("fjs.hud");
  * @param {*} obj
  * @constructor
  * @extends fjs.hud.EntryModel
- * @extends fjs.fdp.ContactEntryModel
+ * @extends fjs.fdp.ContactEntryModelBase
  */
 fjs.hud.ContactEntryModel = function(obj) {
 

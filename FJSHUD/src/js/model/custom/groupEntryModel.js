@@ -1,4 +1,4 @@
-namespace("fjs.fdp");
+namespace("fjs.hud");
 
 /**
  * @param {*} obj
