@@ -185,17 +185,19 @@
              * @type {fjs.ajax.IFrameRequest}
              */
             var _request = this.requests[id];
-            _request.status = request.status;
-            _request.responseText = request.responseText;
-            var listener = this.listeners[id];
-            if(listener) {
-                if(!request.error) {
-                    listener(_request, _request.responseText, true);
+            if(_request) {
+                _request.status = request.status;
+                _request.responseText = request.responseText;
+                var listener = this.listeners[id];
+                if (listener) {
+                    if (!request.error) {
+                        listener(_request, _request.responseText, true);
+                    }
+                    else {
+                        listener(_request, _request.responseText, false);
+                    }
+                    delete this.listeners[id];
                 }
-                else {
-                    listener(_request, _request.responseText, false);
-                }
-                delete this.listeners[id];
             }
             delete this.requests[id];
         }

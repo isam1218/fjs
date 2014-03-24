@@ -52,6 +52,7 @@ fjs.utils.JSON.check = function(str) {
      * @returns {string}
      */
 fjs.utils.JSON.stringify = function(obj) {
+    if(typeof (obj) == 'string') return obj;
     return JSON.stringify(obj);
 };
 })();
