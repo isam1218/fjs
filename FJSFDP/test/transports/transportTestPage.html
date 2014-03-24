@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../lib/fjs.core.debug.js"></script>
+    <script src="../../bin/fjs.fdp.debug.js"></script>
+    <script src="../testClasses/testModel.js"></script>
+    <script src="../testClasses/testAjaxTransport.js"></script>
+    <script src="../testClasses/TestAjaxRequest.js"></script>
+
+</head>
+<body>
+    <script>
+        var transport = new fjs.fdp.TestAjaxTransport("validTicket", null, 'https://dev4.fon9.com:8081');
+        transport.addEventListener('error', function(e){
+            console.error(e);
+        });
+        transport.addEventListener('message', function(e) {
+            console.log(e)
+        });
+        transport.send({type:'synchronize', data:{versions:{test_feed:null}}});
+    </script>
+</body>
+</html>

@@ -241,8 +241,10 @@
             this.ajax.abort(this._currentVersioncache);
         }
         if(!this.node) {
-            return this.requestClientRegistry(function() {
-                context.requestVersions(versions);
+            return this.requestClientRegistry(function(isOk) {
+                if(isOk) {
+                    context.requestVersions(versions);
+                }
             });
         }
 
