@@ -5,6 +5,7 @@
      * Wrapper class for XMLHTTPRequest to work via iframe. <br>
      * Inner class only for internal usage.<br>
      * THIS LINE IS TEST UPDATE TO TEST REVIEW cycle for this code.
+     * THIS LINE IS SECOND TEST UPDATE TO TEST REVIEW cycle for this code.
      * @param {string} id Request id. ID for synchronization requests between page and iframe.
      * @constructor
      * @inner
