@@ -104,6 +104,9 @@
             case 'action':
                 this.sendAction(message.data.feedName, message.data.actionName, message.data.parameters);
                 break;
+            case 'loadNext':
+                this.loadNext(message);
+                break;
             case 'synchronize':
                 this.requestVersions(message.data.versions);
                 break;
@@ -111,6 +114,25 @@
                 this._forgetFeed(message.data.feedName);
                 break;
         }
+    };
+
+    fjs.fdp.AJAXTransport.prototype.loadNext = function(message) {
+        var _data = message.data, context = this;
+        this.sendRequest(this.url+"/v1/history/"+_data.feedName, _data.data, function(xhr, data, isOk) {
+            if(isOk) {
+                data = fjs.utils.JSON.parse(data);
+                var syncData = {};
+                syncData[_data.feedName] = data;
+
+                for (var key in data) {
+                    if(data.hasOwnProperty(key)) {
+                        data[key].filter = _data.data["sh.filter"];
+                    }
+                }
+
+                context.fireEvent('message', {type: 'sync', data: syncData});
+            }
+        });
     };
 
     /**

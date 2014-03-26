@@ -456,6 +456,9 @@
                     if (feedData.hasOwnProperty(sourceId) && isSource(sourceId)) {
                         var _source = feedData[sourceId];
                         var ver = _source["xef001ver"];
+                        if(_source["filter"]) {
+                            this.saveHistoryVersions(feedName, sourceId, _source["filter"], _source["h_ver"]);
+                        }
                         var items = _source["items"];
                         var type = _source["xef001type"];
                         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_START, syncType: type, feed:feedName, sourceId:sourceId});
@@ -734,21 +737,7 @@
         var _data = {"s.limit":count, "sh.filter": filter, "sh.versions": _historyVersions.join("@")};
 
         var context = this;
-        this.transport.sendRequest(url, _data, function(xhr, data, isOK) {
-            if(isOK) {
-                if(context.processHistory(feedName,  filter, data,_historyVersions)){
-                    //save versions
-                    context.notifyTabsHistory(feedName, filter, data, _historyVersions);
-                }else{
-                    setTimeout(function()
-                    {
-                        context.loadNext(feedName, filter, count);
-                    }, 500);
-                }
-            }else{
-                console.debug("loadNext: onAjaxError: " + feedName + " " + filter + " " + count);
-            }
-        });
+        this.transport.send({type:"loadNext", data:{feedName:feedName, data:_data}});
         if(callback){
             callback(true);
         }
@@ -762,7 +751,9 @@
      * @return boolean
      * @private
      */
-    fjs.fdp.SyncManager.prototype.processHistory = function(feedName, filter, data, historyVersions) {
+    fjs.fdp.SyncManager.prototype.processHistory = function(feedName, historyData) {
+        var filter = historyData["sh.filter"];
+        var historyVersions = ["sh.versions"];
         var hasData = false;
         var _data ;
         try {
