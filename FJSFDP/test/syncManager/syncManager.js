@@ -86,7 +86,6 @@ describe("syncManager", function () {
         runs(function () {
             expect(true).toBe(doneFlag);
             expect('0_1').toBe(entry.xpid);
-            expect("zero").toBe(entry.field2);
             sm.db = db;
         });
     }) ;
