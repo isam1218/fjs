@@ -1,7 +1,7 @@
 (function(){
 namespace('fjs.utils');
 /**
- * Helper class to facilitate work with cookies
+ * Utils static class for reading, writing and deleting cookies.
  * @class
  * @static
  */

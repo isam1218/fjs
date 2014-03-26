@@ -1,6 +1,7 @@
 (function(){
     /**
-     * Class to create incremental values
+     * Class to operate with incremental values. <br>
+     * <b>Singleton</b>
      * @constructor
      */
     fjs.utils.Increment = function() {
@@ -16,7 +17,7 @@
     };
     /**
      * Creates incremental value by string key (starts from 1)
-     * @param {string} key
+     * @param {string} key Key of incremental value
      * @returns {number}
      */
     fjs.utils.Increment.prototype.get = function(key) {
@@ -26,8 +27,8 @@
         return ++this.counters[key];
     };
     /**
-     * Sets increment value to 0
-     * @param {string} key
+     * Resets the incremental value (Sets incremental value to 0)
+     * @param {string} key Key of incremental value
      */
     fjs.utils.Increment.prototype.clear = function(key) {
         this.counters[key] = 0;

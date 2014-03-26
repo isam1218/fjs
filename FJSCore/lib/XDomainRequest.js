@@ -1,6 +1,6 @@
 
 var XDomainRequest = function() {
-
+    this.status = null;
 };
 XDomainRequest.prototype.onload = function(){};
 XDomainRequest.prototype.onerror = function(){};

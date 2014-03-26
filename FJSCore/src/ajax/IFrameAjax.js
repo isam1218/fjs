@@ -2,9 +2,11 @@
     namespace('fjs.ajax');
 
     /**
-     * Wrapper class for XMLHTTPRequest to work via iframe.
-     * @param {string} id - request id
+     * Wrapper class for XMLHTTPRequest to work via iframe. <br>
+     * Inner class only for internal usage.<br>
+     * @param {string} id Request id. ID for synchronization requests between page and iframe.
      * @constructor
+     * @inner
      */
     fjs.ajax.IFrameRequest = function(id) {
         /**
@@ -46,26 +48,23 @@
 
     var _a =
     /**
-     * Class providing ajax communication with other domain via iframe.
-     * Old IE browsers don't allow to make cross-domain requests.
-     * To circumvent this restriction we load to iframe the special page form other domain.
-     * This page makes same-domain requests. To communicate with this page (say what we want send) we use postMessage
-     *
-     * @param {string} host cross domain iframe host
+     * Represents a cross-domain AJAX request via iframe.<br>
+     * Old IE browsers don't allow to make cross-domain requests.<br>
+     * To circumvent this restriction we load to iframe the special page form other domain.<br>
+     * This page makes same-domain requests. To communicate with this page (say what we want to send) we use postMessage.<br>
+     * <b>Singleton</b>
+     * @param {string} host Cross domain iframe url
      * @constructor
      * @implements {fjs.ajax.IAjaxProvider.<fjs.ajax.IFrameRequest>}
      */
      fjs.ajax.IFrameAjax = function(host) {
         //Singleton
         if (!this.constructor.__instance)
-            /**
-             * @type {fjs.ajax.IFrameAjax}
-             * @private
-             */
             this.constructor.__instance = this;
         else return this.constructor.__instance;
         var context = this;
         /**
+         * Cross domain iframe url
          * @type {string}
          * @private
          */
@@ -94,7 +93,12 @@
           */
          this.requests = {};
 
+         /**
+          * @type {HTMLElement}
+          * @private
+          */
         this.crdmnFrame = document.getElementById('crdmnFrame');
+
         if(!this.crdmnFrame) {
             this.status = _a.states.INITIALIZATION;
             this.crdmnFrame = document.createElement('iframe');
@@ -135,10 +139,10 @@
      * Sends ajax request
      * @param {string} method - Request method (POST or GET)
      * @param {string} url - Request URL
-     * @param {*} headers - Request (HTTP) headers
-     * @param {*} data - Request data
-     * @param {function(fjs.ajax.IFrameRequest, string, boolean)} callback
-     * @param {fjs.ajax.IFrameRequest=} request
+     * @param {Object} headers - Request (HTTP) headers
+     * @param {Object} data - Request data
+     * @param {function(fjs.ajax.IFrameRequest, string, boolean)} callback Request handler function
+     * @param {fjs.ajax.IFrameRequest=} request Internal parameter. Should be null for external call.
      * @return {fjs.ajax.IFrameRequest}
      */
     fjs.ajax.IFrameAjax.prototype.send = function(method, url, headers, data, callback, request) {
@@ -163,17 +167,22 @@
     };
     /**
      * Aborts request
-     * @param {fjs.ajax.IFrameRequest} request
+     * @param {fjs.ajax.IFrameRequest} request Request for abort
      */
     fjs.ajax.IFrameAjax.prototype.abort = function(request) {
         var message = {type:'abort', data:request};
         this.crdmnFrame.contentWindow.postMessage(fjs.utils.JSON.stringify(message), '*');
+        request['aborted'] = true;
+        request.status = 0;
+        if(this.listeners[request.id]) {
+            this.listeners[request.id](request, "", false);
+        }
         delete this.listeners[request.id];
         delete this.requests[request.id];
     };
 
     /**
-     * @param {MessageEvent} e - post message event
+     * @param {MessageEvent} e Post message event
      * @private
      */
     fjs.ajax.IFrameAjax.prototype.onResponse = function(e) {

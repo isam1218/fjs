@@ -21,8 +21,8 @@ Function.prototype.extend = function(superClass) {
 };
 
 /**
- * Creates namespace
- * @param {string} ns_name namespace;
+ * Creates and returns namespace
+ * @param {string} ns_name namespace string
  * @returns {*|{}}
  */
 var namespace = function(ns_name) {

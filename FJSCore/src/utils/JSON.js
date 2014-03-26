@@ -2,7 +2,7 @@
 namespace("fjs.utils");
 var _j =
  /**
- * Wrapper for JSON static class.
+ * Wrapper for native JSON object. <br>
  * Fixes some JSON issues.
  * @constructor
  * @static

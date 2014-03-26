@@ -24,14 +24,14 @@
     }
 
     /**
-     * Static class is responsible for browser detection.
+     * Static class is responsible for browser type detection.
      * @class
      * @static
      */
     fjs.utils.Browser = function(){};
     /**
     * Returns Internet explorer major version
-    * @return {string}
+    * @return {number}
     */
     fjs.utils.Browser.getIEVersion = getIEVersion;
     /**

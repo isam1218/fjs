@@ -1,5 +1,6 @@
 /**
- * Implements event source logic.
+ * Implements event target logic. <br>
+ * Inherited class can fire events and have listeners for them.
  * @constructor
  * @abstract
  */

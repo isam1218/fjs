@@ -15,8 +15,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'bin/fjs.core.debug.js'
-      , 'test/*.js'
-      , 'test/**/*.js'
+      , 'test/**/*Test.js'
     ],
 
 

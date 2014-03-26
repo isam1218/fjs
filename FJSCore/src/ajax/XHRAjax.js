@@ -3,17 +3,14 @@
 
   var _a =
   /**
-  * <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHTTPRequest</a> wrapper class
+  * Represents AJAX requests based on <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHTTPRequest</a> <br>
+  * <b>Singleton</b>
   * @constructor
   * @implements {fjs.ajax.IAjaxProvider.<XMLHttpRequest>}
   */
   fjs.ajax.XHRAjax = function() {
         //Singleton
         if (!this.constructor.__instance)
-            /**
-             * @type {fjs.ajax.XHRAjax}
-             * @private
-             */
             this.constructor.__instance = this;
         else return this.constructor.__instance;
     };
@@ -25,10 +22,25 @@
      * @enum {number}
      */
     fjs.ajax.XHRAjax.states = {
+        /**
+         * request not initialized
+         */
         REQUEST_NOT_INITIALIZED: 0,
+        /**
+         * server connection established
+         */
         REQUEST_CONNECTION_ESTABLISHED: 1,
+        /**
+         * request received
+         */
         REQUEST_RECEIVED: 2,
+        /**
+         * processing request
+         */
         REQUEST_PROCESSING: 3,
+        /**
+         * request finished and response is ready
+         */
         REQUEST_COMPLETED: 4
     };
 
@@ -62,7 +74,7 @@
 
     /**
      * Prepares request data
-     * @param {*} data
+     * @param {Object} data
      * @return {string}
      * @private
      */
@@ -80,8 +92,8 @@
      * Sends ajax request
      * @param {string} method - Request method (POST or GET)
      * @param {string} url - Request URL
-     * @param {*} headers - Request (HTTP) headers
-     * @param {*} data - Request data
+     * @param {Object} headers - Request (HTTP) headers
+     * @param {Object} data - Request data
      * @param {function(XMLHttpRequest, string, boolean)} callback
      * @return {XMLHttpRequest}
      */
@@ -105,11 +117,16 @@
             if (xmlhttp.readyState !== _a.states.REQUEST_COMPLETED) return;
 
             if (callback) {
-                if (xmlhttp.status === 200) {
-                    callback(xmlhttp, xmlhttp.responseText, true);
+                try {
+                    if (xmlhttp.status === 200) {
+                        callback(xmlhttp, xmlhttp.responseText, true);
+                    }
+                    else {
+                        callback(xmlhttp, xmlhttp.responseText, false);
+                    }
                 }
-                else {
-                    callback(xmlhttp, xmlhttp.responseText, false);
+                catch (e) {
+                    callback({"status":0, responseText:"", aborted:true}, "", false);
                 }
             }
         };
