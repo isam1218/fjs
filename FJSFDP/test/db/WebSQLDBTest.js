@@ -1,6 +1,6 @@
 describe("WebSQLProvider", function() {
-    var dbName = 'testDB';
-    var dbVersion = 3;
+    var dbName = CONFIG.DB.name;
+    var dbVersion = CONFIG.DB.version;
 
     var TestModel1 = function(id, field1, field2) {
         this.id = id;

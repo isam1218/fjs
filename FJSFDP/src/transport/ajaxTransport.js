@@ -1,10 +1,10 @@
 (function() {
     namespace("fjs.fdp");
     /**
-     *
-     * @param {string} ticket
-     * @param {string} node
-     * @param {string} url
+     * Base class of all FDPTransports based on AJAX.
+     * @param {string} ticket Auth ticket
+     * @param {string} node Node ID
+     * @param {string} url FDP server URL
      * @constructor
      * @extends fjs.fdp.FDPTransport
      * @abstract
@@ -13,6 +13,7 @@
 
         fjs.fdp.FDPTransport.call(this, ticket, node, url);
         /**
+         * Ajax provider
          * @type {fjs.ajax.IAjaxProvider}
          * @protected
          */
@@ -37,49 +38,71 @@
          */
         this._currentRequest = null;
         /**
+         * Versions servlet URL
          * @const {string}
          * @protected
          */
         this.VERSIONS_PATH = "/v1/versions";
         /**
+         * Versionscache servlet URL
          * @const {string}
          * @protected
          */
         this.VERSIONSCACHE_PATH = "/v1/versionscache";
         /**
+         * Client registry servlet URL
          * @const {string}
          * @protected
          */
         this.CLIENT_REGISRY_PATH = "/accounts/ClientRegistry";
         /**
+         * Sync servlet URL
          * @const {string}
          * @protected
          */
         this.SYNC_PATH = "/v1/sync";
 
+        /**
+         * Transport is stoped
+         * @type {boolean}
+         * @private
+         */
         this.closed = false;
 
     };
     fjs.fdp.AJAXTransport.extend(fjs.fdp.FDPTransport);
 
     /**
-     * @param {string} url
-     * @param {Object} data
-     * @param {Function} callback
+     * Sends request use self ajax provider
+     * @param {string} url Request URL
+     * @param {Object} data Request data
+     * @param {Function} callback Success handler
      * @abstract
      */
     fjs.fdp.AJAXTransport.prototype.sendRequest = function (url, data, callback) {
     };
 
     /**
-     * @param {Object} message
+     *  This method provides all actions to works with simple FDP syncronization.
+     *  Exist 3 message types:
+     *  <ul>
+     *      <li>
+     *          'action' - sends action to FDP server
+     *      </li>
+     *      <li>
+     *          'synchronize' - starts syncronization for list of feeds
+     *      </li>
+     *      <li>
+     *          'forget' - ends suncronization for feed
+     *      </li>
+     *  </ul>
+     * @param {Object} message - Action message
+     * @abstract
      */
     fjs.fdp.AJAXTransport.prototype.send = function(message) {
         switch(message.type) {
             case 'action':
                 this.sendAction(message.data.feedName, message.data.actionName, message.data.parameters);
-                break;
-            case 'load_next':
                 break;
             case 'synchronize':
                 this.requestVersions(message.data.versions);
@@ -131,7 +154,6 @@
          */
         var context = this;
         var url = this.url+this.CLIENT_REGISRY_PATH;
-
         this._currentRequest = this.sendRequest(url, {}, function(request, data, isOk) {
             if(isOk) {
                 this._clientRegistryFailedCount = 0;
@@ -144,7 +166,7 @@
             else {
                 if(request.status == 403) {
                     callback(false);
-                    context.fireEvent('error', {type:'auth', message:'Auth ticket wrong or expired'})
+                    context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'})
                 }
                 else {
                     if(this._clientRegistryFailedCount<10) {
@@ -262,8 +284,10 @@
             }
             else {
                 if(xhr.status == 401 || xhr.status == 403) {
-                    context.requestClientRegistry(function() {
-                        context.requestVersions(versions);
+                    context.requestClientRegistry(function(isOk) {
+                        if(isOk) {
+                            context.requestVersions(versions);
+                        }
                     });
                 }
             }
@@ -278,25 +302,27 @@
     fjs.fdp.AJAXTransport.prototype.sendAction = function(feedName, actionName, parameters) {
         var context = this;
         var data = {
-            action:action.name
-            , a:{}
+            action:actionName
         };
         for(var key in parameters) {
             if(parameters.hasOwnProperty(key)) {
-                data.a[key] = parameters[key];
+                data["a."+key] = parameters[key];
             }
         }
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(xhr, response, isOK){
+        this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             if(!isOK) {
                 context.fireEvent('error', {type:'requestError', requestType:'actionRequest', message:'Action request error'});
             }
         });
     };
-
+    /**
+     * Ends syncronization throws this transport
+     * @abstract
+     */
     fjs.fdp.AJAXTransport.prototype.close = function() {
         this.closed = true;
         if(this._currentRequest) {
-            this._currentRequest.abort();
+            this.ajax.abort(this._currentRequest);
         }
     };
 })();

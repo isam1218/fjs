@@ -3,7 +3,8 @@
  */
 namespace("fjs.db");
 /**
- *
+ * Wrapper class for <a href="https://developer.mozilla.org/ru/docs/IndexedDB">indexedDB</a> <br/>
+ * This class implements IDBProvider interface (common interface to work with all client side storages)
  * @constructor
  * @implements fjs.db.IDBProvider
  */
@@ -25,6 +26,7 @@ fjs.db.IndexedDBProvider = function() {
      */
     this.IDBKeyRange = self['IDBKeyRange'] || self['webkitIDBKeyRange'] || self['msIDBKeyRange'];
     /**
+     * Database object
      * @type {IDBDatabase}
      */
     this.db = null;
@@ -43,11 +45,11 @@ fjs.db.IndexedDBProvider.check= function() {
     return !!(self['indexedDB'] || self['mozIndexedDB'] || self['webkitIndexedDB'] || self['msIndexedDB']);
 };
 /**
- * Opens connection to storage
- * @param {string} name
- * @param {number} version
- * @param {function(IDBDatabase)} callback
- */
+* Opens connection to storage
+* @param {string} name Database name
+* @param {number} version Database version
+* @param {function(IDBDatabase)} callback - Handler function to execute when database was ready
+*/
 fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
@@ -84,9 +86,9 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
 
 /**
  * Declare table for creation (table will be created after only after Db version change)
- * @param {string} name
- * @param {string} key
- * @param {Array} indexes
+ * @param {string} name Table name
+ * @param {string} key Primary key
+ * @param {Array} indexes Table indexes
  */
 fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
     var table = this.tables[name] = {'key':key, 'indexes':indexes};
@@ -96,10 +98,10 @@ fjs.db.IndexedDBProvider.prototype.declareTable = function(name, key, indexes) {
 };
 
 /**
- * Creates table (protected)
- * @param {string} name
- * @param {string} key
- * @param {Array} indexes
+ * Creates table
+ * @param {string} name Table name
+ * @param {string} key Primary key
+ * @param {Array} indexes Table indexes
  * @protected
  */
 fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
@@ -125,6 +127,8 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
 };
 
 /**
+ * Declares multiple indexes for IE <br>
+ * Workaround to fix IE issue with multiple indexes
  * @param {Array} indexes
  * @private
  */
@@ -138,6 +142,8 @@ fjs.db.IndexedDBProvider.prototype.IEDeclareMultipleIndexes = function(indexes) 
     return multipleIndexes;
 };
 /**
+ * Creates multiples indexes for IE
+ * Workaround to fix IE issue with multiple indexes
  * @param {string} tableName
  * @param item
  * @private
@@ -177,10 +183,10 @@ fjs.db.IndexedDBProvider.prototype.IEClearMultipleIndexesForItem = function(tabl
 };
 
 /**
- * Inserts one row
- * @param {string} tableName
- * @param {*} item
- * @param {Function} callback
+ * Inserts one row to the database table
+ * @param {string} tableName Table name
+ * @param {*} item Item to insert
+ * @param {Function} callback - Handler function to execute when row added
  */
 fjs.db.IndexedDBProvider.prototype.insertOne = function(tableName, item, callback) {
     var trans = this.db.transaction([tableName], "readwrite");
@@ -202,10 +208,10 @@ fjs.db.IndexedDBProvider.prototype.insertOne = function(tableName, item, callbac
 };
 
 /**
- * Inserts array of rows
- * @param {string} tableName
- * @param {Array} items
- * @param {Function} callback
+ * Inserts array of rows to the database table
+ * @param {string} tableName Table name
+ * @param {Array} items Array of items to insert
+ * @param {Function} callback Handler function to execute when all rows added
  */
 fjs.db.IndexedDBProvider.prototype.insertArray = function(tableName, items, callback) {
     var trans = this.db.transaction([tableName], "readwrite");
@@ -229,9 +235,9 @@ fjs.db.IndexedDBProvider.prototype.insertArray = function(tableName, items, call
 
 /**
  * Deletes row by primary key
- * @param {string} tableName
- * @param {string} key
- * @param {Function} callback
+ * @param {string} tableName Table name
+ * @param {string} key Primary key
+ * @param {Function} callback Handler function to execute when row deleted
  */
 fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callback) {
         var request, tran = this.db.transaction([tableName], "readwrite")
@@ -250,10 +256,10 @@ fjs.db.IndexedDBProvider.prototype.deleteByKey = function(tableName, key, callba
 };
 
 /**
- * Returns all rows from table
- * @param {string} tableName
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
+ * Selects all rows from table
+ * @param {string} tableName Table name
+ * @param {Function} itemCallback Handler function to execute when one row selected
+ * @param {function(Array)} allCallback Handler function to execute when all rows selected
  */
 fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
     var context =this;
@@ -287,11 +293,11 @@ fjs.db.IndexedDBProvider.prototype.selectAll = function(tableName, itemCallback,
 };
 
 /**
- * Returns rows by index
- * @param {string} tableName
+ * Selects rows by index
+ * @param {string} tableName Table name
  * @param {*} rules Map key->value
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
+ * @param {Function} itemCallback Handler function to execute when one row selected
+ * @param {function(Array)} allCallback Handler function to execute when all rows selected
  */
 fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, itemCallback, allCallback) {
     var context =this;
@@ -340,10 +346,10 @@ fjs.db.IndexedDBProvider.prototype.selectByIndex = function(tableName, rules, it
 };
 
 /**
- * Returns row by primary key
- * @param {string} tableName
- * @param {string} key
- * @param {Function} callback
+ * Selects row by primary key
+ * @param {string} tableName Table name
+ * @param {string} key Primary key
+ * @param {Function} callback Handler function to execute when one row selected
  */
 fjs.db.IndexedDBProvider.prototype.selectByKey = function(tableName, key, callback) {
     var context = this;
@@ -362,7 +368,7 @@ fjs.db.IndexedDBProvider.prototype.selectByKey = function(tableName, key, callba
 
 /**
  * Clears database (drops all tables)
- * @param {Function} callback
+ * @param {Function} callback Handler function to execute when all tables removed.
  */
 fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
     var count = this.db.objectStoreNames.length;
@@ -381,9 +387,9 @@ fjs.db.IndexedDBProvider.prototype.clear = function(callback) {
 
 /**
  * Deletes row by index
- * @param {string} tableName
- * @param {*} rules
- * @param {Function} callback
+ * @param {string} tableName Table name
+ * @param {Object} rules Map key->value
+ * @param {Function} callback Handler function to execute when rows deleted.
  */
 fjs.db.IndexedDBProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
     var context =this;
@@ -414,7 +420,7 @@ fjs.db.IndexedDBProvider.prototype.deleteByIndex = function(tableName, rules, ca
             if(callback) {
                 callback(rows);
             }
-            return
+            return;
         }
         else {
             var row = result.value;

@@ -1,6 +1,10 @@
 (function() {
     namespace("fjs.fdp");
     /**
+     * FDPTransport based on XHRAjax (XMLHTTPRequest)
+     * @param {string} ticket Auth ticket
+     * @param {string} node Node ID
+     * @param {string} url FDP server URL
      * @constructor
      * @extends fjs.fdp.AJAXTransport
      */
@@ -14,9 +18,10 @@
     fjs.fdp.XHRTransport.extend(fjs.fdp.AJAXTransport);
 
     /**
-     * @param url
-     * @param data
-     * @param callback
+     * Sends ajax request use XMLHTTPRequest
+     * @param {string} url Request URL
+     * @param {Object} data Request data
+     * @param {Function} callback Success handler
      */
     fjs.fdp.XHRTransport.prototype.sendRequest = function (url, data, callback) {
         if(this.closed) {
@@ -25,7 +30,7 @@
         data = data || {};
         data["t"] = "web";
         data["alt"] = 'j';
-        var headers = {Authorization: "auth="+this.ticket, node:this.node};
-        return this.ajax.send('post', url, headers, data, callback)
+        var headers = {Authorization: "auth="+this.ticket, node: this.node || ""};
+        return this.ajax.send('post', url, headers, data, callback);
     };
 })();

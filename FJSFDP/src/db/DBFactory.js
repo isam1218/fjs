@@ -1,9 +1,12 @@
 namespace('fjs.db');
 /**
- * Database providers factory
+ * Database providers factory.<br/>
+ * It checks the capabilities of browsers and creates database providers.
  * @constructor
  */
-fjs.db.DBFactory = function() {
+fjs.db.DBFactory = function(config) {
+
+    this.config = config;
     /**
      * @enum {fjs.db.IDBProvider}
      * @private
@@ -24,7 +27,7 @@ fjs.db.DBFactory.prototype.getDB = function() {
      * priority of databases
      * @type {Array}
      */
-    var dbs = fjs.fdp.CONFIG.DB.dbProviders;
+    var dbs = this.config.DB.dbProviders;
     for(var i=0; i<dbs.length; i++) {
         if(this._dbRegister[dbs[i]].check()) {
             return new this._dbRegister[dbs[i]]();

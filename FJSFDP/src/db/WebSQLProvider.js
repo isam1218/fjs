@@ -1,15 +1,19 @@
 namespace("fjs.db");
 /**
+ * Wrapper class for <a href="http://en.wikipedia.org/wiki/Web_SQL_Database">WebSQL</a> <br/>
+ * This class implements IDBProvider interface (common interface to work with all client side storages)
  * @constructor
  * @implements fjs.db.IDBProvider
  */
 fjs.db.WebSQLProvider = function() {
     /**
+     * Database object
      * @type {Database}
      */
     this.db = null;
     /**
      * @type {Object}
+     * @private
      */
     this.tables = {};
 };
@@ -23,9 +27,9 @@ fjs.db.WebSQLProvider.check = function() {
 
 /**
  * Opens connection to storage
- * @param name
- * @param version
- * @param callback
+ * @param {string} name Database name
+ * @param {number} version Database version
+ * @param {function(IDBDatabase)} callback - Handler function to execute when database was ready
  */
 fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
     var dbSize = 5 * 1024 * 1024, context = this;
@@ -66,10 +70,10 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
     }
 };
 /**
- * Creates table (protected)
- * @param {string} name
- * @param {string} key
- * @param {Array} indexes
+ * Creates table
+ * @param {string} name Table name
+ * @param {string} key Primary key
+ * @param {Array} indexes Table indexes
  * @protected
  */
 fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
@@ -91,9 +95,9 @@ fjs.db.WebSQLProvider.prototype.createTable = function(name, key, indexes) {
 
 /**
  * Declare table for creation (table will be created after only after Db version change)
- * @param {string} name
- * @param {string} key
- * @param {Array} indexes
+ * @param {string} name Table name
+ * @param {string} key Primary key
+ * @param {Array} indexes Table indexes
  */
 fjs.db.WebSQLProvider.prototype.declareTable = function(name, key, indexes) {
     var _indexes = [];
@@ -116,10 +120,10 @@ fjs.db.WebSQLProvider.prototype.declareTable = function(name, key, indexes) {
 };
 
 /**
- *
- * @param {string} tableName
- * @param {*} item
- * @param {Function} callback
+ * Inserts one row to the database table
+ * @param {string} tableName Table name
+ * @param {*} item Item to insert
+ * @param {Function} callback - Handler function to execute when row added
  */
 fjs.db.WebSQLProvider.prototype.insertOne = function(tableName, item, callback) {
 
@@ -139,16 +143,16 @@ fjs.db.WebSQLProvider.prototype.insertOne = function(tableName, item, callback) 
                 query += item[table.indexes[i]]+"', '";
             }
         }
-        query+=JSON.stringify(item)+"')";
+        query+=fjs.utils.JSON.stringify(item)+"')";
         tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
     });
 };
 
 /**
- * Inserts array of rows
- * @param {string} tableName
- * @param {Array} items
- * @param {Function} callback
+ * Inserts array of rows to the database table
+ * @param {string} tableName Table name
+ * @param {Array} items Array of items to insert
+ * @param {Function} callback Handler function to execute when all rows added
  */
 fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callback) {
     /**
@@ -171,7 +175,7 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
                     query += item[table.indexes[i]]+"', '";
                 }
             }
-            query+=JSON.stringify(item)+"')";
+            query+=fjs.utils.JSON.stringify(item)+"')";
             tx.executeSql(query, [],  function() {
                 count--;
                 if(callback && count==0) {
@@ -184,9 +188,9 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
 
 /**
  * Deletes row by primary key
- * @param {string} tableName
- * @param {string} key
- * @param {Function} callback
+ * @param {string} tableName Table name
+ * @param {string} key Primary key
+ * @param {Function} callback Handler function to execute when row deleted
  */
 fjs.db.WebSQLProvider.prototype.deleteByKey = function(tableName, key, callback) {
         /**
@@ -204,10 +208,10 @@ fjs.db.WebSQLProvider.prototype.deleteByKey = function(tableName, key, callback)
 
 
 /**
- * Returns all rows from table
- * @param {string} tableName
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
+ * Selects all rows from table
+ * @param {string} tableName Table name
+ * @param {Function} itemCallback Handler function to execute when one row selected
+ * @param {function(Array)} allCallback Handler function to execute when all rows selected
  */
 fjs.db.WebSQLProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
     this.db.transaction(function(tx){
@@ -231,11 +235,11 @@ fjs.db.WebSQLProvider.prototype.selectAll = function(tableName, itemCallback, al
     });
 };
 /**
- * Returns rows by index
- * @param {string} tableName
+ * Selects rows by index
+ * @param {string} tableName Table name
  * @param {*} rules Map key->value
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
+ * @param {Function} itemCallback Handler function to execute when one row selected
+ * @param {function(Array)} allCallback Handler function to execute when all rows selected
  */
 fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rules, itemCallback, allCallback) {
     var query = "SELECT data FROM " + tableName + " WHERE ";
@@ -267,10 +271,10 @@ fjs.db.WebSQLProvider.prototype.selectByIndex = function(tableName, rules, itemC
 };
 
 /**
- * Returns row by primary key
- * @param {string} tableName
- * @param {string} key
- * @param {Function} callback
+ * Selects row by primary key
+ * @param {string} tableName Table name
+ * @param {string} key Primary key
+ * @param {Function} callback Handler function to execute when one row selected
  */
 fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback) {
     var context = this;
@@ -294,7 +298,7 @@ fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback)
 
 /**
  * Clears database (drops all tables)
- * @param {Function} callback
+ * @param {Function} callback Handler function to execute when all tables removed.
  */
 fjs.db.WebSQLProvider.prototype.clear = function(callback) {
     this.db.transaction(function(tx){
@@ -305,9 +309,9 @@ fjs.db.WebSQLProvider.prototype.clear = function(callback) {
 
 /**
  * Deletes row by index
- * @param {string} tableName
- * @param {*} rules
- * @param {Function} callback
+ * @param {string} tableName Table name
+ * @param {Object} rules Map key->value
+ * @param {Function} callback Handler function to execute when rows deleted.
  */
 fjs.db.WebSQLProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
     this.db.transaction(function(tx){

@@ -1,8 +1,9 @@
 (function(){
     /**
-     * @param {string} ticket
-     * @param {string} node
-     * @param {string} url
+     * FDPTransport based on WebSockets
+     * @param {string} ticket Auth ticket
+     * @param {string} node Node ID
+     * @param {string} url FDP server URL
      * @constructor
      * @extends fjs.fdp.FDPTransport
      */

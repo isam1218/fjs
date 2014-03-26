@@ -1,7 +1,8 @@
 namespace("fjs.fdp");
 /**
- * Base proxy model
- * @param {Array} feeds - list of joined feeds (parent feed first)
+ * Base proxy model. <br/>
+ * It combines joined feeds, monitors and collect changes and sends changed fields only.
+ * @param {Array.<string>} feeds - List of joined feeds (parent feed first)
  * @constructor
  */
 fjs.fdp.ProxyModel = function(feeds) {
@@ -25,28 +26,43 @@ fjs.fdp.ProxyModel = function(feeds) {
     var onSyncEvent = function(data) {
         context.onSyncEvent(data);
     };
+
+    /**
+     * Adds listeners to sync manager. <br>
+     * That action initiates syncronization for this feeds
+     * @private
+     */
     this.attach = function() {
         for(var i = 0; i<this.feeds.length; i++) {
-            this.sm.addListener(this.feeds[i], onSyncEvent);
+            this.sm.addFeedListener(this.feeds[i], onSyncEvent);
         }
     };
+
+    /**
+     * Removes listeners from sync manager <br>
+     * That action ends syncronization for this feeds
+     * @private
+     */
     this.detach = function() {
         for(var i = 0; i<this.feeds.length; i++) {
-            this.sm.removeListener(this.feeds[i], onSyncEvent);
+            this.sm.removeFeedListener(this.feeds[i], onSyncEvent);
         }
     };
 };
 
 
 /**
- * Adds listener function to feed changes
- * @param {Function} listener
+ * Adds event handler function to feed changes
+ * @param {Function} listener - Event handler, method to execute when fdp data changed.
  */
 fjs.fdp.ProxyModel.prototype.addListener = function(listener) {
     var index = this.listeners.indexOf(listener);
     if(index<0) {
         this.listeners.push(listener);
-        listener({feed:this.feedName, changes:this.createFullChange()});
+        var changes = this.createFullChange();
+        if(changes) {
+            listener({feed: this.feedName, changes:changes});
+        }
     }
     if(!this._attached) {
         this.attach();
@@ -56,7 +72,7 @@ fjs.fdp.ProxyModel.prototype.addListener = function(listener) {
 
 /**
  * Removes listener function from feed
- * @param {Function} listener
+ * @param {Function} listener Event handler, method to execute when fdp data changed.
  */
 fjs.fdp.ProxyModel.prototype.removeListener = function(listener) {
     var index = this.listeners.indexOf(listener);
@@ -70,17 +86,19 @@ fjs.fdp.ProxyModel.prototype.removeListener = function(listener) {
 };
 
 /**
- * @param {*} data
+ * Sends event to listeners
+ * @param {Object} event Event object ({feed:string, changes:{xpid:entry}})
  * @protected
  */
-fjs.fdp.ProxyModel.prototype.fireEvent = function(data) {
+fjs.fdp.ProxyModel.prototype.fireEvent = function(event) {
     for(var i=0; i<this.listeners.length; i++) {
-        this.listeners[i](data);
+        this.listeners[i](event);
     }
 };
 /**
- * @returns {*}
- * @protected
+ * Creates a template object for change
+ * @returns {{xpid:string, entry:{}}}
+ * @private
  */
 fjs.fdp.ProxyModel.prototype.createChange = function(xpid) {
     if(!this.changes) {
@@ -93,24 +111,33 @@ fjs.fdp.ProxyModel.prototype.createChange = function(xpid) {
     return _changes;
 };
 
+/**
+ * Creates changes object with all existed items.
+ * @returns {Object | null}
+ * @private
+ */
 fjs.fdp.ProxyModel.prototype.createFullChange = function() {
-    var _changes = {};
+    var _changes = {}, entriesCount=0;
     for(var key in this.items) {
         if(this.items.hasOwnProperty(key)) {
             _changes[key] = {xpid:key, entry:this.items[key], type:'change'};
+            entriesCount++;
         }
     }
+    if(entriesCount>0)
     return _changes;
+    else return null;
 }
 
 /**
- *
- * @param {string} xpid
- * @param {*} changes
- * @param {string} feedName
+ * Applies changes form fdp 'push' entry, and updates changes object.
+ * @param {string} xpid XPID of changed entry
+ * @param {Object} changes Object with FDP changes.
+ * @param {string} feedName Feed name
  * @protected
  */
 fjs.fdp.ProxyModel.prototype.fillChange = function(xpid, changes, feedName) {
+    this.collectFields(feedName, changes);
     var _changes = this.createChange(xpid);
     _changes.type = 'change';
     for(var key in changes) {
@@ -118,16 +145,19 @@ fjs.fdp.ProxyModel.prototype.fillChange = function(xpid, changes, feedName) {
             _changes.entry[key] = changes[key];
         }
     }
+    return _changes;
 };
 /**
- * @param xpid
- * @param feedName
+ * Applies changes form fdp 'delete' entry, and updates changes object.
+ * @param xpid XPID of deleted entry
+ * @param feedName Feed name
  * @protected
  */
 fjs.fdp.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
     var _changes = this.createChange(xpid);
     if(feedName==this.feedName) {
         _changes.type = 'delete';
+        _changes.entry = null;
     }
     else {
         var changes = this.feedFields[feedName];
@@ -135,21 +165,31 @@ fjs.fdp.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
             for (var key in changes) {
                 if(changes.hasOwnProperty(key)) {
                     _changes.entry[key] = changes[key];
+                    if(this.items[xpid]) {
+                        this.items[xpid][key] = _changes.entry[key]
+                    }
                 }
             }
         }
     }
+    return _changes;
 };
 
 /**
  * @param {string} feedName
  * @param {string} fieldName
  * @returns {boolean}
+ * @private
  */
 fjs.fdp.ProxyModel.prototype.fieldPass = function(feedName, fieldName) {
     return fieldName!='xef001id' && feedName!='xef001iver' && feedName!='xpid';
 };
-
+/**
+ * Collects field names from joined feeds, then to remove them if joined feed entry deleted
+ * @param {string} feedName Feed name
+ * @param {Object} entry FDP Feed entry
+ * @private
+ */
 fjs.fdp.ProxyModel.prototype.collectFields = function(feedName, entry) {
     if(feedName!=this.feedName && !this.feedFields[feedName]) {
         this.feedFields[feedName] = {};
@@ -161,32 +201,70 @@ fjs.fdp.ProxyModel.prototype.collectFields = function(feedName, entry) {
         }
     }
 };
-
-fjs.fdp.ProxyModel.prototype.onEntryChange = function(data) {
+/**
+ * Updates field names for joined feed as (feedName+"_"+fieldName)
+ * @param {Object} entry
+ * @param {string} feedName
+ * @returns {Object}
+ * @private
+ */
+fjs.fdp.ProxyModel.prototype.prepareEntry = function(entry, feedName) {
+    var preparedEntry = {}, key;
+    if(feedName!=this.feedName) {
+        for(key in entry) {
+            if (entry.hasOwnProperty(key)) {
+                preparedEntry[feedName + "_" + key] = entry[key];
+            }
+        }
+    }
+    else {
+        for(key in entry) {
+            if (entry.hasOwnProperty(key)) {
+                preparedEntry[key] = entry[key];
+            }
+        }
+    }
+    return preparedEntry;
+};
+/**
+ * Handler of that entry has changed
+ * @param {Object} event - Event object
+ * @protected
+ */
+fjs.fdp.ProxyModel.prototype.onEntryChange = function(event) {
     /**
      * @type {fjs.fdp.EntryModel}
      */
-    var item = this.items[data.xpid];
+    var item = this.items[event.xpid];
+    var _entry = this.prepareEntry(event.entry, event.feed);
     if(!item) {
-        this.items[data.xpid] = new fjs.fdp.EntryModel(data.entry);
-        this.fillChange(data.xpid, data.entry, data.feed);
+        this.items[event.xpid] = new fjs.fdp.EntryModel(_entry);
+        this.fillChange(event.xpid, _entry, event.feed);
     }
     else {
-        var changes = item.fill(data.entry);
-        this.fillChange(data.xpid, changes, data.feed);
+        var changes = item.fill(_entry);
+        if(changes)
+        this.fillChange(event.xpid, changes, event.feed);
     }
 };
-
-fjs.fdp.ProxyModel.prototype.onEntryDeletion = function(data) {
-    if(data.feed == this.feedName) {
-        delete this.items[data.xpid];
+/**
+ * Handler of that entry has deleted
+ * @param {Object} event Event object
+ */
+fjs.fdp.ProxyModel.prototype.onEntryDeletion = function(event) {
+    if(event.feed == this.feedName) {
+        delete this.items[event.xpid];
     }
-    this.fillDeletion(data.xpid, data.feed);
+    this.fillDeletion(event.xpid, event.feed);
 };
-
-fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {
+/**
+ * Handler of SyncManager events
+ * @param event Event object
+ * @protected
+ */
+fjs.fdp.ProxyModel.prototype.onSyncEvent = function(event) {
     var eventTypes = fjs.fdp.SyncManager.eventTypes;
-    switch(data.eventType) {
+    switch(event.eventType) {
         case eventTypes.SYNC_START:
             break;
         case eventTypes.FEED_START:
@@ -194,10 +272,10 @@ fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {
         case eventTypes.SOURCE_START:
             break;
         case eventTypes.ENTRY_CHANGE:
-            this.onEntryChange(data);
+            this.onEntryChange(event);
             break;
         case eventTypes.ENTRY_DELETION:
-            this.onEntryDeletion(data);
+            this.onEntryDeletion(event);
             break;
         case eventTypes.SOURCE_COMPLETE:
             break;
@@ -212,10 +290,14 @@ fjs.fdp.ProxyModel.prototype.onSyncEvent = function(data) {
     }
 };
 
-
+/**
+ * Sends action to FDP server
+ * @param {string} feedName Feed name
+ * @param {string} actionName Action name
+ * @param {Object} data Request parameters ({'key':'value',...})
+ */
 fjs.fdp.ProxyModel.prototype.sendAction = function(feedName, actionName, data){
-    this.sm.sendAction(feedName, actionName, data, function(){
-    });
+    this.sm.sendAction(feedName, actionName, data);
 };
 
 

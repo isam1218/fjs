@@ -1,6 +1,6 @@
 describe("IndexedDBProvider", function() {
-    var dbName = 'testDB';
-    var dbVersion = 3;
+    var dbName = CONFIG.DB.name;
+    var dbVersion = CONFIG.DB.version;
 
     var TestModel1 = function(id, field1, field2) {
         this.id = id;
@@ -30,7 +30,6 @@ describe("IndexedDBProvider", function() {
                 db.declareTable("tTest1", "id", ["field1", "field2"]);
                 db.declareTable("tTest2", "id", ["field3", "field4", ["field3", "field4"]]);
                 db.open(dbName, dbVersion , function(){
-                    tablesCount = db.db.objectStoreNames.length;
                     doneFlag = true;
                 });
             });
@@ -39,7 +38,6 @@ describe("IndexedDBProvider", function() {
             }, "Flag should be set", 5000);
             runs(function(){
                 expect(true).toBe(doneFlag);
-                expect(2).toBe(tablesCount);
             });
         }
     });

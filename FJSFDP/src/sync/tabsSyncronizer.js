@@ -1,5 +1,8 @@
 (function(){
     /**
+     * Manager is responsible for assign general tab (Syncronization tab)
+     * <br>
+     * <b>Singleton</b>
      * @constructor
      * @extends fjs.EventsSource
      */
@@ -12,17 +15,52 @@
 
        fjs.EventsSource.call(this);
 
+        /**
+        * Time after which main tab may be change if previous tab silent or die
+        * @type {number}
+        * @private
+        */
        this.CHANGE_TAB_TIMEOUT = 2000;
+        /**
+         * Interval that which the main tab says that he is alive
+         * @type {number}
+         * @private
+         */
        this.MASTER_ACTIVITY_TIMEOUT = 500;
+        /**
+         * LocalStorage key for main tab id
+         * @type {string}
+         * @private
+         */
        this.TABS_SYNCRONIZE_KEY = 'tabs_sync_maintab';
+        /**
+         * Tab ID
+         * @type {string}
+         */
        this.tabId = Date.now()+'_'+fjs.utils.GUID.create();
+        /**
+         * Timeout Id
+         * @type {null}
+         * @private
+         */
        this.timeoutId  = null;
+        /**
+         * Is main tab flag
+         * @type {boolean}
+         */
        this.isMaster = false;
 
+        /**
+         * runs master iteration
+         * @private
+         */
         this._runMaster = function() {
             context._masterIteration();
         };
 
+        /**
+         * @private
+         */
         this._masterIteration = function() {
             localStorage[context.TABS_SYNCRONIZE_KEY] = context.tabId+"|"+Date.now();
             if(!context.isMaster) {
@@ -56,10 +94,12 @@
         }
 
    };
-    fjs.fdp.TabsSyncronizer.extend(fjs.EventsSource);
+   fjs.fdp.TabsSyncronizer.extend(fjs.EventsSource);
 
-
-
+    /**
+     * Check if is necessary use local storage synchronization.
+     * @returns {boolean|Object|*}
+     */
     fjs.fdp.TabsSyncronizer.useLocalStorageSyncronization = function() {
         return !(window.document === undefined) || (self && self["web_worker"]);
     };

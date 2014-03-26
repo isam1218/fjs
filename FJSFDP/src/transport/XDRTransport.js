@@ -1,9 +1,14 @@
 (function() {
     namespace("fjs.fdp");
     /**
+     * FDPTransport based on XDRAjax (XDomainRequest)
+     * @param {string} ticket Auth ticket
+     * @param {string} node Node ID
+     * @param {string} url FDP server URL
      * @constructor
      * @extends fjs.fdp.AJAXTransport
      */
+
     fjs.fdp.XDRTransport = function(ticket, node, url) {
         fjs.fdp.AJAXTransport.call(this, ticket, node, url);
         /**
@@ -15,9 +20,10 @@
     fjs.fdp.XDRTransport.extend(fjs.fdp.AJAXTransport);
 
     /**
-     * @param url
-     * @param data
-     * @param callback
+     * Sends ajax request use XDomainRequest
+     * @param {string} url Request URL
+     * @param {Object} data Request data
+     * @param {Function} callback Success handler
      */
     fjs.fdp.XDRTransport.prototype.sendRequest = function (url, data, callback) {
         var context = this;

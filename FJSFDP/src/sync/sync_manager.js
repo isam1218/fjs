@@ -7,7 +7,8 @@
      * <p>
      *      It starts synchronization loop, receives required fdp data, sends actions to FDP server.
      * </p>
-     * @param {Object} config
+     * <b>Singleton</b>
+     * @param {Object} config Properties object
      * @constructor
      * @extends fjs.EventsSource
      */
@@ -19,7 +20,7 @@
 
         fjs.EventsSource.call(this);
 
-        this.db = new fjs.db.DBFactory().getDB();
+        this.db = new fjs.db.DBFactory(config).getDB();
 
         /**
          * Current SyncManager state
@@ -34,17 +35,11 @@
         this.config = config;
 
         /**
-         * Ajax provider
+         * Transport to communicate with FDP server
          * @type {fjs.fdp.FDPTransport}
          */
         this.transport = null;
 
-        /**
-         * Listeners for db data that don't sync with server
-         * @type {Object}
-         * @private
-         */
-        this.suspendedDbListeners = {};
         /**
          * @dict
          * @private
@@ -80,6 +75,12 @@
          * @private
          */
         this.suspendFeeds=[];
+
+        /**
+         *
+         * @type {Array}
+         */
+        this.suspendClientFeeds = [];
         /**
          * @type {Array}
          * @private
@@ -105,7 +106,7 @@
      */
     fjs.fdp.SyncManager.states = {
         /**
-         * SyncManager not initialized. To start initialization you should call .init(ticket, node, authHandler, callback) method;
+         * SyncManager not initialized. To start initialization you should call .init(ticket, node, callback) method;
          */
         'NOT_INITIALIZED':-1,
         /**
@@ -188,10 +189,9 @@
      * Initializes Synchronization Manager
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
-     * @param {fjs.fdp.IAuthHandler} authHandler Handler of authentication events and errors
      * @param {Function} callback Method to execute when SyncManager initialized
      */
-    fjs.fdp.SyncManager.prototype.init = function(ticket, node, authHandler, callback) {
+    fjs.fdp.SyncManager.prototype.init = function(ticket, node, callback) {
         var context = this;
         /**
          * @type {states}
@@ -199,10 +199,8 @@
         this.status = sm.states.INITIALIZATION;
         this.ticket = ticket;
         this.node = node;
-        /**
-         * @type {fjs.fdp.IAuthHandler}
-         */
-        this.authHandler = authHandler;
+
+
 
         /**
          * @param {fjs.fdp.FDPTransport} transport
@@ -214,29 +212,44 @@
                         context.onSync(e.data);
                         break;
                     case 'node':
-                        context.authHandler.setNode(e.data.nodeId);
+                        context.fireEvent("node", e.data.nodeId);
                         break;
                 }
-                if(new fjs.fdp.TabsSyncronizer().isMaster) {
+                if(fjs.fdp.TabsSyncronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSyncronizer().isMaster) {
                     fjs.fdp.LocalStorageTransport.masterSend('message', e);
                 }
             });
             transport.addEventListener('error', function(e){
                 switch(e.type) {
                     case 'requestError':
-
+                        context.fireEvent("requestError", e);
                         break;
-                    case 'auth':
-                        context.authHandler.requestAuth();
+                    case 'authError':
+                        context.fireEvent("authError", e);
                         break;
                 }
-                if(new fjs.fdp.TabsSyncronizer().isMaster) {
+                if(fjs.fdp.TabsSyncronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSyncronizer().isMaster) {
                     fjs.fdp.LocalStorageTransport.masterSend('error', e);
                 }
             });
         }
 
         if(fjs.fdp.TabsSyncronizer.useLocalStorageSyncronization()) {
+            this.onStorage = function(e) {
+                if(e.key.indexOf('lsp_')>-1) {
+                    var eventType = e.key.replace('lsp_', '');
+                    if(new fjs.fdp.TabsSyncronizer().isMaster) {
+                        var obj = fjs.utils.JSON.parse(e.newValue);
+                        if(eventType == "clientSync") {
+                            context.onClientSync(obj);
+                        }
+                        else {
+                            context.transport.send({type:eventType, data:obj});
+                        }
+                    }
+                }
+            };
+            window.addEventListener('storage', this.onStorage, false);
             this.tabsSyncronizer = new fjs.fdp.TabsSyncronizer();
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.transport.close();
@@ -292,15 +305,6 @@
          */
         var context = this;
 
-        for(var feedName in this.suspendedDbListeners) {
-            if(this.suspendedDbListeners.hasOwnProperty(feedName)){
-                for(var i = 0; i<this.suspendedDbListeners[feedName].length; i++){
-                    this.doFillDbData(feedName, this.suspendedDbListeners[feedName][i]);
-                }
-            }
-        }
-        this.suspendedDbListeners = {};
-
         if(this.suspendFeeds.length > 0) {
             /**
              * Load data from localDB
@@ -330,6 +334,10 @@
         callback();
     };
 
+    /**
+     * @param {Array.<string>} feeds
+     * @private
+     */
     fjs.fdp.SyncManager.prototype.startSync = function(feeds) {
         var data = {};
         var  context=this;
@@ -359,7 +367,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db) {
+        if(this.db && version !== undefined) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -377,7 +385,9 @@
          */
         var context = this;
         if(this.versions[feedName]) {
-            callback(data[feedName] = this.versions[feedName]);
+            setTimeout(function(){
+                callback(data[feedName] = context.versions[feedName]);
+            });
         }
         if(this.db) {
             this.db.selectByIndex("versions", {"feedName":feedName}, function(item) {
@@ -387,22 +397,35 @@
                 callback(data[feedName]);
             });
         }
+        else {
+            setTimeout(function(){
+                callback(data[feedName] = "");
+            });
+        }
     };
 
+    /**
+     * @param {Array} items
+     * @param {string} feedName
+     * @param {string} sourceId
+     * @private
+     */
     fjs.fdp.SyncManager.prototype.parseSyncSourceData = function(items, feedName, sourceId) {
         for (var j = 0; j < items.length; j++) {
             var etype = (items[j]["xef001type"] || 'push') ;
-            var xpid = sourceId + "_" + items[j]["xef001id"];
+            var xpid = items[j].xpid ? items[j].xpid : sourceId + "_" + items[j]["xef001id"];
             delete items[j]["xef001type"];
             items[j]["xpid"] = xpid;
             var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
-            switch(etype) {
-                case "push":
-                    this.db.insertOne(feedName, entry.entry, null);
-                    break;
-                case "delete":
-                    this.db.deleteByKey(feedName, entry.xpid, null);
-                    break;
+            if(this.db) {
+                switch (etype) {
+                    case "push":
+                        this.db.insertOne(feedName, entry.entry, null);
+                        break;
+                    case "delete":
+                        this.db.deleteByKey(feedName, entry.xpid, null);
+                        break;
+                }
             }
             this.fireEvent(feedName, entry);
         }
@@ -415,7 +438,6 @@
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
         /**
-         *
          * @type {fjs.fdp.SyncManager}
          */
         var context= this ;
@@ -437,7 +459,7 @@
                         var items = _source["items"];
                         var type = _source["xef001type"];
                         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_START, syncType: type, feed:feedName, sourceId:sourceId});
-                        if(type == sm.syncTypes.FULL) {
+                        if(type == sm.syncTypes.FULL && context.db) {
                             context.db.deleteByIndex(feedName, {'source': sourceId}, function(items) {
                                 for(var i=0; i<items.length; i++) {
                                     var entry = {eventType: sm.eventTypes.ENTRY_DELETION, feed:feedName, xpid: items.xpid, entry: null};
@@ -465,77 +487,77 @@
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data) {
         var context = this;
         data["action"] = actionName;
-        this.sendRequest(this.serverHost+"/v1/"+feedName, data, function(){});
+        this.transport.send({type:"action", data:{feedName:feedName, actionName:actionName, parameters: data}});
     };
 
     /**
-     * @param feedName
-     * @param entry
-     * @param listener
-     * @private
+     * Handler function to execute when client feed data has hanged.
+     * @param {Object} message sync object (changes object)
      */
-    fjs.fdp.SyncManager.prototype.insertDbEntry = function(feedName, entry, listener) {
-        if(this.db){
-            var context = this, data = {eventType:sm.eventTypes.SYNC_START , syncType: "L", feed:feedName};
-            this.fireEvent(feedName, data, listener);
-            this.db.insertOne(feedName, entry.entry, function(){
-                var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: entry.xpid, entry: entry.entry};
-                context.fireEvent(feedName, data, listener);
-                context.fireEvent(feedName, {eventType: sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
-            });
-
-        }else{
-            console.error("SyncManager error: can't insert db entry:"+feedName+" :" + entry + ". Db is not initialized.");
+    fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
+        if(!fjs.fdp.TabsSyncronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSyncronizer().isMaster) {
+           this.onSync(message);
+           fjs.fdp.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
+        }
+        else {
+            fjs.fdp.LocalStorageTransport.masterSend('clientSync', message);
         }
     };
 
-
-
     /**
+     * Clears stored data and throw auth error
      * @private
      */
     fjs.fdp.SyncManager.prototype.getAuthTicket = function() {
         var context = this;
         if(this.state == sm.states.READY && this.db) {
             this.db.clear(function(){
-                context.authHandler.requestAuth();
+                context.fireEvent("authError", {type:'authError', message:'Auth ticket wrong or expired'});
             });
         }
         else {
-            this.authHandler.requestAuth();
+            context.fireEvent("authError", {type:'authError', message:'Auth ticket wrong or expired'});
         }
     };
 
     /**
      * Adds listener on feed. If feed does not synchronize, adds this feed to synchronization.
      * @param {string} feedName Feed name
-     * @param {Function} listener
+     * @param {Function} listener Handler function to execute when feed data changed
+     * @param {boolean=} isClient True if is client feed (optional)
      */
-    fjs.fdp.SyncManager.prototype.addListener = function(feedName, listener) {
+    fjs.fdp.SyncManager.prototype.addFeedListener = function(feedName, listener, isClient) {
 
         var context = this;
 
         this.superClass.addEventListener.apply(this, arguments);
 
         if(this.status != sm.states.READY ) {
+            if(isClient) {
+                if (this.suspendClientFeeds.indexOf(feedName) < 0) {
+                    this.suspendClientFeeds.push(feedName);
+                }
+            }
             if(this.suspendFeeds.indexOf(feedName)<0) {
                 this.suspendFeeds.push(feedName);
             }
         }
         else if(this.syncFeeds.indexOf(feedName)<0) {
-            this.syncFeeds.push(feedName);
-            if(this.versionsFeeds.indexOf(feedName) < 0) {
-                this.versionsFeeds.push(feedName);
+            if(!isClient) {
+                this.syncFeeds.push(feedName);
+                if (this.versionsFeeds.indexOf(feedName) < 0) {
+                    this.versionsFeeds.push(feedName);
+                }
+                if (this.versionsTimeoutId != null) {
+                    clearTimeout(this.versionsTimeoutId);
+                    this.versionsTimeoutId = null;
+                }
+                this.versionsTimeoutId = setTimeout(function () {
+                    context.startSync(context.versionsFeeds);
+                    context.versionsFeeds = [];
+                    context.versionsTimeoutId = null;
+                }, 100);
             }
-            if(this.versionsTimeoutId != null) {
-                clearTimeout(this.versionsTimeoutId);
-                this.versionsTimeoutId = null;
-            }
-            this.versionsTimeoutId = setTimeout(function(){
-                context.startSync(context.versionsFeeds);
-                context.versionsFeeds = [];
-                context.versionsTimeoutId = null;
-            },100);
             this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
             this.getFeedData(feedName, function(data){
                 if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
@@ -548,7 +570,7 @@
             this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
             this.getFeedData(feedName, function(data){
                 if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
-                    this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
+                    context.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
                 }
                 listener(data);
             });
@@ -556,51 +578,27 @@
     };
 
     /**
-     * Fills data from db if ready else - postpone.
-     * @param feedName
-     * @param listener
-     * @private
-     */
-    fjs.fdp.SyncManager.prototype.fillDbData = function(feedName, listener) {
-        if(!listener || !feedName){
-            console.error("SyncManager error: try to fill db data for empty feed:"+feedName+" or listener:" + listener);
-            return;
-        }
-        if(this.states==sm.states.READY) {
-            this.doFillDbData(feedName, listener);
-        }else{
-            var tmpListeners = this.suspendedDbListeners[feedName];
-            if(!tmpListeners) {
-                tmpListeners = this.suspendedDbListeners[feedName] = [];
-            }
-            if(-1 < tmpListeners.indexOf(listener)) {
-                console.error("SyncManager error: duplicate listener for" + feedName);
-            }
-            else {
-                tmpListeners.push(listener);
-            }
-        }
-    };
-
-    /**
-     * Fill data without check
-     * @param feedName
-     * @param listener
-     * @private
-     */
-    fjs.fdp.SyncManager.prototype.doFillDbData = function(feedName, listener) {
-        var context = this;
-        this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
-        this.getFeedData(feedName, function(data){
-            if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
-                context.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_COMPLETE, feed:feedName}, listener);
-            }
-            listener(data);
-        });
-    };
-
-    /**
+     * Removes listener from feed, if the number of listeners == 0, it stops synchronization for this feed.
      * @param {string} feedName
+     * @param {Function} listener
+     * @param {boolean=} isClient
+     */
+    fjs.fdp.SyncManager.prototype.removeFeedListener = function(feedName, listener, isClient) {
+        this.superClass.removeEventListener.apply(this, arguments);
+        if(!isClient) {
+            var index;
+            if ((index = this.syncFeeds.indexOf(feedName)) > -1) {
+                this.syncFeeds.splice(index, 1);
+            }
+            if (this.listeners[feedName] && this.listeners[feedName].length == 0) {
+                this.transport.send({'type': 'forget', 'data': {'feedName': feedName}});
+            }
+        }
+    };
+
+    /**
+     * Selects data for feed form database.
+     * @param {string} feedName Feed name
      * @param {Function=} listener
      * @private
      */
@@ -623,26 +621,13 @@
             this.fireEvent(feedName, entry, listener);
         }
     };
-    /**
-     * Removes listener from feed, if the number of listeners == 0, it stops synchronization for this feed.
-     * @param {string} feedName
-     * @param {Function} listener
-     */
-    fjs.fdp.SyncManager.prototype.removeListener = function(feedName, listener) {
-        this.superClass.removeEventListener.apply(this, arguments);
-        var index;
-        if((index = this.syncFeeds.indexOf(feedName))>-1) {
-            this.syncFeeds.splice(index, 1);
-        }
-        if(this.listeners[feedName] && this.listeners[feedName].length == 0) {
-            this.transport.send({'type':'forget', 'data':{'feedName':feedName}});
-        }
-    };
 
     /**
-     * @param {string} feedName
-     * @param {*} data
-     * @param {Function} listener
+     * Sends event to listeners
+     *
+     * @param {string} feedName Feed name
+     * @param {*} data Event object
+     * @param {Function} listener Handler function
      * @private
      */
     fjs.fdp.SyncManager.prototype.fireEvent = function(feedName, data, listener) {
@@ -655,7 +640,9 @@
         else {
             for(var _feedName in this.listeners) {
                 if(this.listeners.hasOwnProperty(_feedName)) {
-                    this.superClass.fireEvent.call(this, _feedName, data);
+                    if(this.syncFeeds.indexOf(_feedName)>-1) {
+                        this.superClass.fireEvent.call(this, _feedName, data);
+                    }
                 }
             }
         }
@@ -663,38 +650,36 @@
 
     /**
      * Loads more items for feeds with dynamic loading
-     * @param {string} feedName
-     * @param {*} _filter
-     * @param {number} count
-     * @param callback
+     * @param {string} feedName Feed name
+     * @param {*} _filter Filter to load only specified data
+     * @param {number} count Count of items
      */
-    fjs.fdp.SyncManager.prototype.loadNext = function(feedName, _filter, count, callback) {
+    fjs.fdp.SyncManager.prototype.loadNext = function(feedName, _filter, count) {
 
-        var filter = JSON.stringify(_filter);
+        var filter = fjs.utils.JSON.stringify(_filter);
         var feedHVersions = this.historyversions[feedName];
         if(!feedHVersions){
             feedHVersions={};
             this.historyversions[feedName] = feedHVersions;
         }
         if(feedHVersions[filter]){
-            this.processHistoryVersions(feedName, filter, count, feedHVersions[filter], callback);
+            this.processHistoryVersions(feedName, filter, count, feedHVersions[filter], function(){});
             return;
         }
 
         var context = this;
         var hVersions = [];
         this.fillHistoryVersions(feedName, filter, count, hVersions, function(){
-            context.processHistoryVersions(feedName, filter, count, hVersions, callback);
+            context.processHistoryVersions(feedName, filter, count, hVersions, function(){});
         });
     };
 
     /**
-     *
-     * @param feedName
-     * @param filter
-     * @param count
-     * @param _historyVersions
-     * @param callback
+     * @param {string} feedName
+     * @param {Object} filter
+     * @param {number} count
+     * @param {Array} _historyVersions
+     * @param {Function} callback
      * @private
      */
     fjs.fdp.SyncManager.prototype.fillHistoryVersions = function (feedName, filter, count, _historyVersions, callback) {
@@ -713,10 +698,9 @@
     };
 
     /**
-     *
-     * @param feedName
-     * @param _historyVersions
-     * @param callback
+     * @param {string} feedName
+     * @param {Array} _historyVersions
+     * @param {Function} callback
      * @private
      */
     fjs.fdp.SyncManager.prototype.fillEmptyHistoryVersionsFromFeed = function(feedName, _historyVersions, callback) {
@@ -729,12 +713,11 @@
     };
 
     /**
-     *
-     * @param feedName
-     * @param filter
-     * @param count
-     * @param _historyVersions
-     * @param callback
+     * @param {string} feedName
+     * @param {Object} filter
+     * @param {number} count
+     * @param {Array} _historyVersions
+     * @param {Function} callback
      * @private
      */
     fjs.fdp.SyncManager.prototype.processHistoryVersions = function(feedName, filter, count, _historyVersions, callback) {
@@ -751,7 +734,7 @@
         var _data = {"s.limit":count, "sh.filter": filter, "sh.versions": _historyVersions.join("@")};
 
         var context = this;
-        this.sendRequest(url, _data, function(xhr, data, isOK) {
+        this.transport.sendRequest(url, _data, function(xhr, data, isOK) {
             if(isOK) {
                 if(context.processHistory(feedName,  filter, data,_historyVersions)){
                     //save versions
@@ -856,7 +839,7 @@
     };
 
     /**
-     * Saves versions
+     * Saves history versions
      * @param {string} feedName
      * @param {string} source
      * @param {string} filter
@@ -889,25 +872,6 @@
         }
     };
 
-    /**
-     * @param {string} feedName
-     * @param {*} data
-     * @param {*} filter
-     * @param {*} historyVersions
-     * @return boolean
-     * @private
-     */
-    fjs.fdp.SyncManager.prototype.notifyTabsHistory = function (feedName, filter, data, historyVersions) {
-//            final JsonObject dataObj = new JsonObject();
-//            dataObj.$set("_type", "history");
-//            dataObj.$set("data", data);
-//            dataObj.$set("name", feedName);
-//            dataObj.$set("filter", filter);
-//            dataObj.$set("version", historyVersions);
-//
-//            final String str = JSON.stringify(dataObj);
-//            this.dataSynchronizer.writeData(SYNC_PROCESS, str);
-    };
     /**
      * Forgets auth info and call requestAuth method from the Auth Handler.
      */

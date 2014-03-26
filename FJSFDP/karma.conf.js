@@ -16,8 +16,16 @@ module.exports = function(config) {
     files: [
       'lib/fjs.core.debug.js'
       , 'bin/fjs.fdp.debug.js'
-      , 'test/*.js'
-      , 'test/**/*.js'
+      , 'test/testClasses/testConfig.js'
+      , 'test/testClasses/TestAjaxRequest.js'
+      , 'test/testClasses/testAjaxTransport.js'
+      , 'test/testClasses/testAuthTicketsGenerator.js'
+      , 'test/testClasses/testModel.js'
+      , 'test/models/EntryModelTest.js'
+      , 'test/syncManager/syncManager.js'
+      , 'test/transports/*.js'
+      , 'test/db/*.js'
+      , 'test/proxies/*.js'
     ],
 
 
@@ -57,7 +65,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome', 'Firefox', 'IE', 'PhantomJS'],
+    browsers: ['Chrome', 'Firefox', 'IE'],
 
 
     // If browser does not capture in given timeout [ms], kill it

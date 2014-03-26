@@ -1,7 +1,7 @@
-describe("ajaxTransport", function () {
+describe("IFrameTransport", function () {
     it("wrongAuthTicket", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("notValidTicket", null, 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport("notValidTicket", null, 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         runs(function () {
             transport.addEventListener('error', function(e){
@@ -12,9 +12,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect('authError').toBe(errorType);
@@ -24,7 +26,7 @@ describe("ajaxTransport", function () {
 
     it("errorAuthTicket", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("error", null, 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport("error", null, 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         runs(function () {
             transport.addEventListener('error', function(e){
@@ -35,9 +37,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect('requestError').toBe(errorType);
@@ -47,7 +51,7 @@ describe("ajaxTransport", function () {
 
     it("getNode", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("validTicket", null, 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport(fjs.test.Tickets.get(), null, 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         var node = null
         runs(function () {
@@ -62,9 +66,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect(null).toBe(errorType);
@@ -76,7 +82,7 @@ describe("ajaxTransport", function () {
 
     it("FirsSync", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("validTicket", "node", 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         var messageType = null;
         var data = null;
@@ -91,9 +97,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect(null).toBe(errorType);
@@ -107,7 +115,7 @@ describe("ajaxTransport", function () {
     });
     it("newEntry", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("validTicket", "node", 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         var messageType = null;
         var data = null;
@@ -127,9 +135,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect(null).toBe(errorType);
@@ -144,7 +154,7 @@ describe("ajaxTransport", function () {
     });
     it("deleteEntry", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("validTicket", "node", 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         var messageType = null;
         var data = null;
@@ -164,9 +174,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect(null).toBe(errorType);
@@ -180,7 +192,7 @@ describe("ajaxTransport", function () {
     });
     it("updateEntry", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.TestAjaxTransport("validTicket", "node", 'http://localhost:99');
+        var transport = new fjs.fdp.IFrameTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99', 'http://localhost:99/crossdomainTest.html');
         var errorType = null;
         var messageType = null;
         var data = null;
@@ -202,9 +214,11 @@ describe("ajaxTransport", function () {
             });
             transport.send({type:'synchronize', data:{versions:{testFeed:null}}});
         });
+
         waitsFor(function () {
             return doneFlag;
         }, "Flag should be set", 5000);
+
         runs(function () {
             expect(true).toBe(doneFlag);
             expect(null).toBe(errorType);

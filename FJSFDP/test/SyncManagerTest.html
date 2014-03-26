@@ -2,9 +2,56 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Sync Manager Test Page!</title>
+    <title>SyncManager test</title>
+    <script type="text/javascript" src="../lib/fjs.core.debug.js"></script>
+    <script type="text/javascript" src="../bin/fjs.fdp.debug.js"></script>
+    <script type="text/javascript" src="../src/properties.js"></script>
 </head>
 <body>
-  
+<h1>See results in the console</h1>
+<label>Auth ticket:<input type="text" id="authTicket"></label><br>
+<label>Node id:<input type="text" id="nodeId"></label><br>
+<button onclick="startSync()">Start syncronization</button><br>
+<label>Contact xpid to load history: <input type="text" id="contactId"></label>
+<button onclick="loadNext()">
+    LoadNext
+</button><br>
+<button onclick="logout()">
+    logout
+</button>
+<script>
+    var data_manager;
+    function startSync() {
+        data_manager = new fjs.fdp.DataManager(document.getElementById("authTicket").value || '0864ca75c97e062bba86a78a29c281ea8c8f8525c9977a47', document.getElementById("nodeId").value || 'fdp2.dev4.fon9.com', function () {
+            data_manager.addFeedListener('me', function (e) {
+                console.log(e);
+            });
+            data_manager.addFeedListener('contacts', function (e) {
+                console.log(e);
+            });
+            data_manager.addFeedListener('mycalls', function (e) {
+                console.log(e);
+            });
+            data_manager.addFeedListener('streamevent', function (e) {
+                console.log(e);
+            });
+            data_manager.addEventListener("authError", function (e) {
+                console.error(e);
+            });
+            data_manager.addEventListener("requestError", function (e) {
+                console.error(e);
+            });
+            data_manager.addEventListener("node", function (e) {
+                console.log(e);
+            });
+        });
+    }
+    function loadNext() {
+        data_manager.loadNext("streamevent", {"type":"f.conversation","key":{"feedName":"contacts","xpid":document.getElementById('contactId').value}}, 10);
+    }
+    function logout() {
+        data_manager.logout();
+    }
+</script>
 </body>
 </html>

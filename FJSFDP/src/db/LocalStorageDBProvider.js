@@ -2,6 +2,7 @@ namespace("fjs.db");
 /**
  * @interface
  * @implements fjs.db.IDBProvider
+ * @private
  */
 fjs.db.LocalStorageDbProvider = function() {
 };

@@ -54,14 +54,14 @@
             }
 
             xmlreq.id = request.id;
-            requests[request.id] = xmlreq.id;
+            requests[request.id] = xmlreq;
             xmlreq.onreadystatechange = $process;
             xmlreq.open(request.method, request.url, true);
             xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             for(var key in request.headers) {
                 xmlreq.setRequestHeader(key, request.headers[key]);
             }
-            xmlreq.send(request.postData);
+            xmlreq.send(getParamData(request.postData));
         }
 
         function abort(requestId){
@@ -73,6 +73,16 @@
             target.postMessage(JSON.stringify(message), '*');
         }
 
+        var getParamData = function(data) {
+            var paramStrings = [], i;
+            for (i in data) {
+                if (data.hasOwnProperty(i)) {
+                    paramStrings.push(i + '=' + data[i]);
+                }
+            }
+            return paramStrings.join('&');
+        };
+
         function processMessage(event){
             var message=JSON.parse(event.data);
             if(message) {
@@ -82,12 +92,16 @@
                         doRequest(message.data);
                         break;
                     case 'abort':
-                        requests[message.data.id].abort();
-                        delete requests[message.data.id];
+                            if(requests[message.data.id]) {
+                                requests[message.data.id].abort();
+                                delete requests[message.data.id];
+                            }
                         break;
                 }
             }
         }
+
+
         if(window.addEventListener)
             window.addEventListener ('message', processMessage, false);
         else if(window.attachEvent)

@@ -1,5 +1,10 @@
 (function(){
 
+    /**
+     *
+     * @constructor
+     * @static
+     */
     fjs.fdp.TransportFactory = function() {};
     /**
      * @param {string} ticket

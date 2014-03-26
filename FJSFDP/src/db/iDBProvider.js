@@ -53,7 +53,7 @@ fjs.db.IDBProvider.prototype.declareTable = function(name, key, indexes) {
  * Inserts one row
 * @param {string} tableName
 * @param {*} item
-* @param {Function} callback
+* @param {Function=} callback
 */
 fjs.db.IDBProvider.prototype.insertOne = function(tableName, item, callback) {
 
