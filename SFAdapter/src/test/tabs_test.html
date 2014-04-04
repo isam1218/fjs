@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        localStorage.clear();
+
+        var openTab = function() {
+            window.open("http://localhost:63342/sf.adpater.br_1.0/src/test/test.html");
+        }
+
+        var checkMasters = function(){
+            var str="";
+            var i;
+            for(i =0; i < localStorage.length; i++ ) {
+                var key = localStorage.key(i);
+                if( key.indexOf("Leader_") == 0) {
+                    str = str + localStorage.getItem(key);
+                }
+            }
+            console.log(" " + str + " " + Date.now());
+        };
+
+        if (window.addEventListener){
+            window.addEventListener('storage',checkMasters);
+        } else {
+            window.attachEvent('storage',checkMasters);
+        }
+
+        var i = 0;
+        for(i = 0; i < 2; i++) {
+            setTimeout(openTab, getRandomInt(100, 10000));
+        }
+
+        setTimeout(function() {
+            clearTimeout(t);
+        }, 20000);
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+</body>
+</html>

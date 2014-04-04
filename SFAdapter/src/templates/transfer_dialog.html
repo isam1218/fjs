@@ -1,0 +1,12 @@
+<div ng-controller="TransferDialog">
+    <form ng-submit="transfer()">
+        <input class="call-item-transfer-input" type="text" ng-model="transfer_phone" placeholder="Phone number" id="inputTransfer" />
+        <button class="transfer-btn" ng-click="transfer()">Xfer</button>
+    </form>
+    <div>
+         <ng-include src="dialpadPath"></ng-include>
+    </div>
+    <div>
+         <button class="cancel-transfer-btn" ng-click="closeDialog()">Cancel</button>
+    </div>
+</div>

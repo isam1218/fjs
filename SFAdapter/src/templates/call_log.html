@@ -1,0 +1,11 @@
+<div>
+    <div ng-class="{'hidden':who.length <= 1}">
+        <label>Name</label>
+        <select ng-model="callLog.whoId" ng-options="item._id as (item.object + ': ' + item.Name) for item in who | orderBy:'object + Name'"></select>
+    </div>
+    <div ng-class="{'hidden':(what.length <= 1 || callLog.whatId == null)}">
+        <label>RelatedTo</label>
+        <select ng-model="callLog.whatId" ng-options="item._id as (item.object + ': ' + item.Name) for item in what | orderBy:'object + Name'"></select>
+    </div>
+    <label>Comments</label><textarea maxlength="255" ng-model="callLog.note"></textarea>
+</div>

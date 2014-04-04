@@ -1,0 +1,252 @@
+.call-item-inner {
+    min-height:30px;
+    position:relative;
+}
+
+.call-item-head {
+    height: 30px;
+    position:relative;
+    background-color: #dedede;
+    border-bottom:1px solid #999;
+    vertical-align: top;
+}
+
+.call-item-head .call-item-buttons-block {
+    height:30px;
+    width:130px;
+    position:absolute;
+    top:0px;
+    right:0px;
+}
+.call-item-buttons-block button {
+    width: 60px;
+    margin:5px 1px 5px 3px;
+    padding:3px 0;
+}
+
+.incoming-true
+, .incoming-false {
+}
+
+.call-item.call-item-selected .call-item-head .call-item-buttons-block
+, .call-item-transfer-opened .call-item-buttons-block
+, .call-item-inner.state0 .call-item-buttons-block .call-item-hold-btn
+, .call-item-inner.state0 .call-item-buttons-block .call-item-unhold-btn
+, .call-item-inner.state0.incoming-true .call-item-buttons-block .call-item-transfer-btn
+, .call-item-inner.state0.incoming-false .call-item-buttons-block .call-item-transfer-btn
+, .call-item-inner.state2 .call-item-buttons-block .call-item-unhold-btn
+, .call-item-inner.state2 .call-item-buttons-block .call-item-accept-button
+, .call-item-inner.state3 .call-item-buttons-block .call-item-hold-btn
+, .call-item-inner.state3 .call-item-buttons-block .call-item-accept-button
+, .call-item-inner.state0.incoming-false .call-item-buttons-block .call-item-accept-button
+, .call-item-inner.type0 .call-item-buttons-block .call-item-transfer-btn
+,.call-item-inner.type0 .call-item-buttons-block .call-item-hold-btn
+{
+    display:none;
+}
+
+.call-item-inner.state0.incoming-true .call-item-buttons-block .call-item-accept-button
+, .call-item-inner.state0.incoming-true .call-item-buttons-block .call-item-end-btn
+, .call-item-inner.state0.incoming-false .call-item-buttons-block .call-item-transfer-btn
+, .call-item-inner.state0.incoming-false .call-item-buttons-block .call-item-end-btn
+{
+    width: 93px;
+}
+
+.call-item-inner.state0.incoming-true .call-item-buttons-block .call-item-end-btn {
+    width: 93px;
+    position: relative;
+    left: 0px;
+}
+
+.call-item-inner.state0 .call-item-buttons-block .call-item-end-btn
+,.call-item-inner.state2.type0 .call-item-buttons-block .call-item-end-btn
+{
+    width: 93px;
+    position: relative;
+    left: 95px;
+}
+
+.call-item-inner.type0 .call-item-buttons-block .call-item-end-btn
+, .call-item-inner.state3.type0 .call-item-buttons-block .call-item-unhold-btn
+{
+    width: 93px;
+    position: relative;
+}
+
+.call-state-ico {
+    vertical-align: top;
+    position:relative;
+    top:8px;
+    left:5px;
+    width:16px;
+    height:16px;
+    display:inline-block;
+}
+
+.call-title {
+    position: relative;
+    display:inline-block;
+    left:10px;
+    line-height:30px;
+    cursor: pointer;
+    width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.call-duration {
+    position: relative;
+    display:inline-block;
+    left:15px;
+    line-height:30px;
+    font-size:10px;
+}
+
+.call-item-inner.state0 .call-state-ico {
+    background-image: url(../img/ico_status_ani_red.gif);
+}
+
+.call-item-info-area {
+}
+
+.call-info-row {
+    margin: 0 5px;
+    border-bottom:1px solid #e0e3e5;
+    height:20px;
+    line-height: 20px;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.call-info-row label {
+    font-weight: bold;
+    width:77px;
+    text-align: right;
+    display:inline-block;
+    margin-right:5px;
+}
+
+.call-item-inner.state2 .call-state-ico {
+    background-image: url(../img/ico_status_active.gif);
+}
+
+.call-item-inner.state3 .call-state-ico {
+    background-image: url(../img/ico_status_ani_red.gif);
+}
+
+.call-item-details {
+    display:none;
+    border-bottom: 1px solid #999;
+    background-color: #f8f8f8;
+}
+
+.call-item.call-item-selected .call-item-details {
+    display:block;
+}
+
+.dialpad {
+    width:200px;
+}
+
+.dialpad button {
+    width:60px;
+    margin:3px 1px;
+    float:none;
+}
+
+.call-item-transfer .dialpad button {
+    width:60px;
+    margin:3px 2px;
+}
+
+.call-item-transfer-input {
+    width: 120px;
+    border:1px solid #999;
+    padding:2px;
+    margin-left: 3px;
+    position: relative;
+    top: 2px;
+}
+
+.call-item-log-title {
+    background-color: #8b9db1;
+    height:16px;
+    color:#fff;
+    font-size: 11px;
+}
+.call-item-log-body {
+
+}
+.call-item-log-body label {
+    font-size: 10px;
+    font-weight: bold;
+    width:60px;
+    display: inline-block;
+    text-align:right;
+    margin-right: 3px;
+    vertical-align: top;
+    position: relative;
+    margin-top: 5px;
+}
+.call-item-log-body input {
+    width: 126px;
+    font-size: 11px;
+    margin-top: 2px;
+    padding:2px;
+    border:1px solid #999;
+}
+
+.call-item-log-body select {
+    margin-left: -3px;
+    width: 132px;
+    margin-top: 2px;
+    font-size: 11px;
+}
+.call-item-log-body textarea {
+    width:126px;
+    height:50px;
+    font-size: 11px;
+    font-family: Arial;
+    margin-top: 2px;
+    resize: none;
+}
+
+.call-item-log-title-arrow
+, .call-item-log-title-caption {
+    display: inline-block;
+    position: relative;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.call-item-log-title-arrow
+, .call-item-log-title-caption {
+    display: inline-block;
+    position: relative;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.call-item-log {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.cancel-transfer-btn {
+    width: 194px;
+    margin-left: 2px;
+    margin-bottom: 4px;
+}
+.transfer-btn {
+    width:60px;
+    margin-left:5px;
+    margin-top:2px;
+}
+

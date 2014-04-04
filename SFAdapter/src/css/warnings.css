@@ -1,0 +1,79 @@
+.warning-inner {
+    position:relative;
+    width: 400px;
+}
+
+.warning-row {
+    margin: 0 5px;
+    border-bottom:1px solid #e0e3e5;
+    height:20px;
+    line-height: 20px;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+    width: 190px;
+}
+
+.warning-row label {
+    font-weight: bold;
+    width:77px;
+    text-align: right;
+    display:inline-block;
+    margin-right:5px;
+}
+
+.icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    top: 3px;
+    position: relative;
+}
+
+.icon.passed-true {
+    background-image: url(../img/passed.png);
+}
+
+.icon.passed-false {
+    background-image: url(../img/not_passed.png);
+}
+
+.warning-textarea {
+    top: 3px;
+    left: 2px;
+    width: 185px;
+    height: 35px;
+    position: relative;
+    bottom: 2px;
+    resize: none;
+}
+
+.warning-screen-button {
+    padding: 0px;
+    width: 94px;
+    top: 2px;
+    position: relative;
+}
+
+.warning-footer {
+    background:#d0dbe8;
+    height:75px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    padding: 0 2px;
+    z-index: 100;
+}
+
+.warning-button {
+    background-image: url(../img/warning.png);
+    width: 16px;
+    height: 16px;
+    top:7px;
+    right: 7px;
+    position: absolute;
+    cursor: pointer;
+}

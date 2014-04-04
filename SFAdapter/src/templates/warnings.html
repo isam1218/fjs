@@ -1,0 +1,26 @@
+<div class="" ng-controller="WarningsController">
+    <div class="warning-inner">
+        <div class="warning-row">
+             <label>Username</label><span>{{name}}</span>
+        </div>
+        <div class="warning-row">
+            <label>Extension</label><span>{{extension}}</span>
+        </div>
+        <div class="warning-row">
+            <label>Location</label><span>{{location}}</span><span> {{locationState}}</span>
+        </div>
+        <div class="warning-row">
+            <label>Authorization</label><div class="icon passed-{{loggined}}"></div>
+        </div>
+        <div class="warning-row">
+            <label>FDP access</label><div class="icon passed-{{connection}}"></div>
+        </div>
+    </div>
+    <div class="warning-footer">
+        <form> <!--ng-submit="actionCall(phone)">-->
+            <textarea class="warning-textarea" ng-model="msg" type="text" placeholder="You can write some comment for support."></textarea>
+        </form>
+        <button class="warning-screen-button" ng-click="close()">Close</button>
+        <button class="warning-screen-button" ng-click="sendFeedback(msg)">Send Feedback</button>
+    </div>
+</div>

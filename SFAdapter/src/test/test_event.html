@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script>
+
+    window.addEventListener("storage", function(e) {
+        console.log("2 " + e.newValue + " " +  (Date.now()));
+    });
+
+   var counter = 0;
+    var func = function() {
+        localStorage["test_event"] = Date.now();
+        counter++;
+        if(counter>100) clearInterval(intrId);
+    }
+
+    var intrId = setInterval(func, 50)
+</script>
+</body>
+</html>

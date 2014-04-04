@@ -1,0 +1,211 @@
+<project name="SFAdapter" default="build">
+    <taskdef resource="net/sf/antcontrib/antlib.xml" />
+
+    <tstamp>
+        <format property="build.timestamp" pattern="yyyyMMdd_HHmm" locale="en" />
+    </tstamp>
+
+    <property name="svn.base" value="https://america.axmor.com/svn"/>
+    <property name="svn.extra.args" value="--non-interactive --trust-server-cert --username hudbuilder --password J100uhfvbvcz!" />
+
+    <target name="build" depends="prerequisites, get.branch, build.number, ttp.add.number, svn.tag, app.build, ttp.release">
+        <echo message="Build ${build.number} finished successfully" />
+    </target>
+
+    <target name="prerequisites">
+        <condition property="is.unix">
+            <os family="unix" />
+        </condition>
+        <fail unless="is.unix" message="This script must be run on Unix-like OS only!" />
+
+        <fail unless="builds.dir" message="builds.dir property is not set. I don't know where to put the packages!" />
+
+        <delete dir="target" />
+    </target>
+
+    <!-- Retrieve and increment build number -->
+    <target name="build.number">
+        <mkdir dir="target/bndir" />
+    	<echo message="${user.name}"/>
+
+        <exec executable="svn" failonerror="true"  >
+            <arg line="--depth files" />
+            <arg line="--non-interactive --trust-server-cert --username hudbuilder --password J100uhfvbvcz!" />
+            <arg line="checkout ${svn.base}/build/trunk/build target/bndir" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+
+        <property file="target/bndir/build.number" />
+
+        <!-- Increment build number -->
+        <propertyfile file="target/bndir/build.number">
+            <entry key="build.number" type="int" default="000000" operation="+" pattern="000000" />
+        </propertyfile>
+
+        <!-- Commit it back -->
+        <exec executable="svn" failonerror="true">
+            <arg line="commit target/bndir/build.number" />
+            <arg line="-m 'build number ${build.number} (SFAdapter)'" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+
+        <echo message="build.number = ${build.number}" />
+
+        <property name="build.stamp" value="build_${build.timestamp}_${build.number}" />
+        <echo message="build.stamp = ${build.stamp}" />
+
+        <property name="build.dir" value="${builds.dir}/${build.stamp}" />
+        <echo message="build.dir = ${build.dir}" />
+        <mkdir dir="${build.dir}" />
+
+        <echo file="${build.dir}/branch" message="${branch}" />
+    </target>
+
+	<target name="ttp.add.number">
+		<exec executable="mvn" failonerror="true">
+			<arg line="ttp:add-build-number -X" />
+			<arg line="-Dbuild.number=${build.number} --non-recursive" />
+		</exec>
+	</target>
+	
+    <!-- Retrieve branch information -->
+    <target name="get.branch">
+        <mkdir dir="target" />
+
+        <exec executable="svn" output="target/svn.properties" failonerror="true">
+            <arg line="info" />
+        </exec>
+
+        <property prefix="svn" file="target/svn.properties" />
+      <!--  <fail unless="svn.Revision" message="Unexpected error: property svn.Revision is empty" /> -->
+
+        <if>
+            <contains string="${svn.URL}" substring="/trunk" />
+            <then>
+                <property name="branch" value="trunk" />
+            </then>
+
+            <elseif>
+                <contains string="${svn.URL}" substring="/branches/" />
+                <then>
+                    <propertyregex property="branch" input="${svn.URL}" regexp="(branches/.*)" select="\1" />
+                </then>
+            </elseif>
+        </if>
+
+        <fail unless="branch" message="Build from tag is not supported" />
+
+        <echo message="branch = ${branch}" />
+    </target>
+
+    <!-- Tag salesforce -->
+    <target name="svn.tag">
+        <fail unless="build.number" message="Strange, build.number is not set" />
+        <fail unless="build.stamp" message="Strange, build.stamp is not set" />
+
+        <exec executable="svn" failonerror="true">
+            <arg line="copy" />
+            <arg line="${svn.base}/salesforce/${branch}/@${svn.Revision}" />
+            <arg line="${svn.base}/salesforce/tags/${build.stamp}/" />
+            <arg line="-m &quot;build ${build.stamp}&quot;" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+
+        <echo file="${build.dir}/tag" message="${build.stamp}" />
+    </target>
+
+    <!-- Create result zip -->
+    <target name="app.build">
+        <echo message="console.log('Build ' + '${build.number}')" output="./src/js/build_number.js"/>
+    	<zip destfile="${build.dir}/SFAdapter-${build.number}.zip" basedir="./src" excludes="target/**"/>
+    </target>
+
+    <!-- Create branch using known tag. 'tag' and 'version' properties are required -->
+    <target name="branch">
+        <fail unless="tag" message="'tag' property required, format: build_19700101_0000_000000" />
+        <fail unless="version" message="'version' property required, format: SFAdapter_0_00" />
+        <property name="branch" value="branches/${version}" />
+        <echo message="branch = ${branch}" />
+        <property file="fj.hud/fj.hud.package/ci/package.properties" />
+        <delete dir="target" />
+        <mkdir dir="target" />
+
+        <!-- Retrieve revision info from svn:externals -->
+        <exec executable="svn">
+            <arg line="checkout ${svn.base}/fj/tags/${tag} target/fj" />
+            <arg line="--depth empty" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+
+        <exec executable="svn" outputproperty="svn.externals" dir="target/fj" failonerror="true">
+            <arg line="propget svn:externals" />
+        </exec>
+
+        <for list="${repository.list}" param="repository" trim="true">
+            <sequential>
+                <propertyregex property="svn.@{repository}.path" input="${svn.externals}" regexp="(@{repository}/.+)\s+@{repository}" select="\1" />
+                <fail unless="svn.@{repository}.path" message="Unable to retrieve SVN path from svn:externals:${svn.externals} for @{repository}" />
+                <echo message="svn.@{repository}.path = ${svn.@{repository}.path}" />
+            </sequential>
+        </for>
+
+        <!-- Set svn:externals to HEAD -->
+        <copy file="svn.externals" todir="target" overwrite="true" />
+
+        <replace file="target/svn.externals" token="@BRANCH@" value="${branch}" />
+
+        <for list="${repository.list}" param="repository" trim="true">
+            <sequential>
+                <!-- Set peg revision to empty value since we need HEAD -->
+                <replace file="target/svn.externals" token="@REVISION.@{repository}@" value="" />
+            </sequential>
+        </for>
+
+        <!-- Create branches for each repository -->
+        <echo message="Branch ${svn.base}/fj/tags/${tag} to ${svn.base}/fj/${branch}" />
+        <exec executable="svn" failonerror="true">
+            <arg line="copy ${svn.base}/fj/tags/${tag} ${svn.base}/fj/${branch}" />
+            <arg line="-m 'branch ${version}'" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+
+        <for list="${repository.list}" param="repository" trim="true">
+            <sequential>
+                <echo message="Branch ${svn.base}/${svn.@{repository}.path} to ${svn.base}/@{repository}/${branch}" />
+                <exec executable="svn" failonerror="true">
+                    <arg line="copy ${svn.base}/${svn.@{repository}.path} ${svn.base}/@{repository}/${branch}" />
+                    <arg line="-m 'branch ${version}'" />
+                    <arg line="${svn.extra.args}" />
+                </exec>
+            </sequential>
+        </for>
+
+        <delete dir="target/fj" />
+
+        <exec executable="svn" failonerror="true">
+            <arg line="checkout ${svn.base}/fj/${branch}" />
+            <arg line="target/fj" />
+            <arg line="--depth empty" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+
+        <exec executable="svn" outputproperty="svn.externals" failonerror="true">
+            <arg line="propset svn:externals target/fj" />
+            <arg line="-F target/svn.externals" />
+        </exec>
+
+        <echo message="Updating svn:externals" />
+        <exec executable="svn" failonerror="true">
+            <arg line="commit target/fj" />
+            <arg line="-m &quot;Updated svn:externals to HEAD revisions&quot;" />
+            <arg line="${svn.extra.args}" />
+        </exec>
+    </target>
+
+	<target name="ttp.release">
+			<exec executable="mvn" failonerror="true">
+				<arg line="ttp:release-tickets -X" />
+				<arg line="-Dbuild.number=${build.number} --non-recursive" />
+			</exec>
+	</target>
+</project>

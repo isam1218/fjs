@@ -1,0 +1,37 @@
+<div class="call-item-inner state{{ call.state }} incoming-{{ call.incoming }} type{{ call.type }}" >
+    <div class="call-item-head" ng-click="showDetails()" >
+        <div class="call-state-ico"></div>
+        <div class="call-title" >{{ call.displayName }}</div>
+    </div>
+    <div class="call-item-details {{ isTransferDialogClass }}">
+        <div class="call-item-info-area">
+            <div class="call-info-row">
+                <label>Phone</label><span>{{ call.phone }}</span>
+            </div>
+            <div class="call-info-row">
+                <label>Duration</label><span>{{duration}}</span>
+            </div>
+            <div class="call-info-row" ng-class="{'hidden': !onHold}">
+                <label>Hold Duration</label><span>{{holdDuration}}</span>
+            </div>
+            <div class="call-info-row" ng-repeat="field in fields">
+                <label>{{ field.title }}</label><span ng-click="openSFLink(field.id)" class="underlined">{{ field.value }}</span>
+            </div>
+        </div>
+        <div class="call-item-buttons-block ">
+            <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept</button>
+            <button class="call-item-hold-btn" ng-click="hold()">Hold</button>
+            <button class="call-item-unhold-btn" ng-click="unhold()">Retrieve</button>
+            <button class="call-item-end-btn"  ng-click="end()">End</button>
+            <button class="call-item-transfer-btn" ng-click="transfer()">Transfer</button>
+        </div>
+        <div class="call-item-log">
+            <div class="call-item-log-title" ng-click="toggleCallLog()">
+                <div class="call-item-log-title-arrow" ng-bind-html-unsafe="triangle"></div>
+                <div class="call-item-log-title-caption">Current Call Log</div>
+            </div>
+            <ng-include class="call-item-log-body" src="callLogPath"></ng-include>
+        </div>
+        <ng-include class="call-item-transfer" src="transferDialogPath"></ng-include>
+    </div>
+</div>

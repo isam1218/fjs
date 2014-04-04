@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SFAdapter</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <description>Phone adapter for HUD users.</description>
+    <namespacePrefix>Fon</namespacePrefix>
+    <types>
+        <members>FonAdapterController</members>
+        <members>FonAdapterControllerTest</members>
+        <members>FonLogin</members>
+        <members>FonLoginTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>FonAdapterPage</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>FonSFAdapter</members>
+        <name>CallCenter</name>
+    </types>
+    <types>
+        <members>AdminCredentials__c.CommentsLabel__c</members>
+        <members>AdminCredentials__c.Login__c</members>
+        <members>AdminCredentials__c.ServerURL__c</members>
+        <members>AdminCredentials__c.Token__c</members>
+        <members>HudAccount__c.UserHudLogin__c</members>
+        <members>HudAccount__c.UserId__c</members>
+        <members>User.UserId__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>AdminCredentials__c</members>
+        <members>HudAccount__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Fonality_Settings</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>AdminCredentials__c-AdminCredential Layout</members>
+        <members>HudAccount__c-HudAccounts Layout</members>
+        <members>Task-Fonality SFAdapter Task Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>FonAdapterConfTemplate</members>
+        <name>StaticResource</name>
+    </types>
+    <version>29.0</version>
+</Package>

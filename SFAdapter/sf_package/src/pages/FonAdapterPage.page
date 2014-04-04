@@ -1,0 +1,79 @@
+<apex:page controller="FonAdapterController">
+    <apex:sectionHeader title="Fonality Settings" subtitle="Fonality Salesforce Adapter Settings"/>
+    <apex:pageMessages id="error" />
+    <br /> 
+    <apex:form id="loginForm">
+        <apex:pageBlock title="Get Server Token">
+       * Don't forget to regenerate your server token after changing admin credentials.
+            <apex:outputPanel layout="block">
+                    <apex:panelGrid columns="2" style="margin-top:1em;">
+                        <apex:outputLabel value="Server URL" for="serverURL" />
+                        <apex:inputText id="serverURL" value="{!serverURL}" />
+                        <apex:outputLabel value="Admin Username" for="username" />
+                        <apex:inputText id="username" value="{!username}" />
+                        <apex:outputLabel value="Admin Password" for="password" />
+                        <apex:inputSecret id="password" value="{!password}" />
+                        <br />
+                        <apex:commandButton action="{!login}"
+                            value="Get Server Token" id="loginButton" />
+                        <br />
+                     </apex:panelGrid>
+            </apex:outputPanel>
+            <apex:pageblocktable value="{!uploadedServer}" var="server" rendered="{!NOT(ISNULL(uploadedServer))}">
+              <apex:column headerValue="Admin Login">
+                  <apex:outputField value="{!server.Login__c }"/>
+              </apex:column>
+               <apex:column headerValue="Server Token">
+                  <apex:outputField value="{!server.Token__c}"/>
+              </apex:column>
+              <apex:column headerValue="Server URL">
+                  <apex:outputField value="{!server.ServerURL__c }"/>
+              </apex:column>
+            </apex:pageblocktable>  
+        </apex:pageBlock> 
+    </apex:form>
+    <apex:form >
+        <apex:pageBlock title="Call-log Settings">
+             <apex:outputPanel layout="block">    
+                <div>Choose the Activity History field to save call log comments.</div>
+                <apex:panelGrid columns="2" style="margin-top:1em;">
+                    <apex:selectList value="{!label}"  size="1" onselect="selectLabel">
+                        <apex:selectOptions value="{!items}"/>
+                    </apex:selectList>
+                    <apex:commandButton value="Apply" action="{!applyLabel}"  status="status" disabled="{!isDisabled}"/>
+                </apex:panelGrid>
+            </apex:outputPanel>
+       </apex:pageBlock>
+    </apex:form>  
+    <apex:form enctype="multipart/form-data">
+      <apex:pageBlock title="Upload Configuration File">
+       <apex:pageBlockSection columns="1">
+        <div> Upload CSV file to configure Fonality Salesforce Adapter. Every line should contain HUD account for Salesforce users in the format of "sf_user_id,hud_user_account".
+            <a href="{!URLFOR($Resource.FonAdapterConfTemplate)}" target="_blank"> Click here </a> to download the template.
+        </div> 
+        <apex:outputPanel layout="block">
+            <apex:outputLabel value="Adapter configuration file" for="file"/>
+            <apex:inputFile value="{!contentFile}" filename="{!nameFile}" id="file"/>
+            <apex:commandButton action="{!upload}" value="Upload File" id="theButton" style="width:70px;"/>
+            <br />
+        </apex:outputPanel>
+        </apex:pageBlockSection>
+      
+        <apex:pageBlockSection columns="1">
+            <apex:pageblocktable value="{!uploadedAccounts}" var="user" rendered="{!NOT(ISNULL(uploadedAccounts))}">
+                 <apex:column headerValue="Action">
+                      <apex:commandLink value="Remove" action="{!removeAccount}">
+                           <apex:param name="cid" value="{!user.id}" assignTo="{!userId}"/>
+                      </apex:commandLink>
+                  </apex:column>
+                 <apex:column headerValue="User Name">
+                      <apex:outputField value="{!user.UserId__c}"/>
+                  </apex:column>
+                  <apex:column headerValue="User HUD Login">
+                      <apex:outputField value="{!user.UserHudLogin__c}"/>
+                  </apex:column>
+            </apex:pageblocktable> 
+         </apex:pageBlockSection>
+      </apex:pageBlock> 
+    </apex:form> 
+</apex:page>

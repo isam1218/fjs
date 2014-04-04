@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>sf.adapter</groupId>
+  <artifactId>sf.adapter</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+	<build>
+		<pluginManagement>
+			<plugins>
+                <plugin>
+                    <groupId>com.fonality.maven.plugins</groupId>
+                    <artifactId>fj-sdk-maven-plugin</artifactId>
+                    <version>${project.version}</version>
+                    <configuration>
+                        <workingDirectory>${working.directory}</workingDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+				<plugin>
+					<groupId>com.fonality.maven.plugins</groupId>
+					<artifactId>ttp-maven-plugin</artifactId>
+					<version>1.1.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
+		<plugins>
+			<!-- Adds build number to TTP / Releases fixed tickets -->
+			<plugin>
+				<groupId>com.fonality.maven.plugins</groupId>
+				<artifactId>ttp-maven-plugin</artifactId>
+				<configuration>
+					<releaseEventName>Build</releaseEventName>
+					<version>${build.number}</version>
+					<filter>ZNBSFAdapter_FIXED</filter>
+				</configuration>
+				<inherited>false</inherited>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+

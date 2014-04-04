@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="SFAdapter">
+<head>
+    <title>Fonality SFAdapter</title>
+
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="css/call.css" rel="stylesheet" type="text/css"/>
+    <link href="css/warnings.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript" src="js/libs/angular.js"></script>
+    <script type="text/javascript" src="js/libs/ls.js"></script>
+    <script src="https://c.na1.visual.force.com/support/api/30.0/interaction.js"></script>
+ <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
+
+    <script type="text/javascript" src="js/fjs.js"></script>
+    <script type="text/javascript" src="js/core/oop.js"></script>
+
+    <script type="text/javascript" src="js/salesforce_api/sf_api.js"></script>
+
+    <script type="text/javascript" src="js/core/cookiesHelper.js"></script>
+    <script type="text/javascript" src="js/core/ajax.js"></script>
+    <script type="text/javascript" src="js/core/timeSync.js"></script>
+
+    <script type="text/javascript" src="js/fdp/sync_manager.js"></script>
+    <script type="text/javascript" src="js/build_number.js"></script>
+
+    <script type="text/javascript" src="js/model/feedModel.js"></script>
+    <script type="text/javascript" src="js/model/myCallsFeedModel.js"></script>
+
+    <script type="text/javascript" src="js/controllers/commonController.js"></script>
+    <script type="text/javascript" src="js/controllers/newCallController.js"></script>
+    <script type="text/javascript" src="js/controllers/callsListController.js"></script>
+    <script type="text/javascript" src="js/controllers/callController.js"></script>
+    <script type="text/javascript" src="js/controllers/dialpadController.js"></script>
+    <script type="text/javascript" src="js/controllers/transferDialog.js"></script>
+    <script type="text/javascript" src="js/controllers/callLogController.js"></script>
+    <script type="text/javascript" src="js/controllers/mainController.js"></script>
+    <script type="text/javascript" src="js/controllers/warningsController.js"></script>
+
+    <script type="text/javascript" src="js/modules/SFAdapter.js"></script>
+
+    <!--Config-->
+    <script type="text/javascript" src="js/config/properties.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+</head>
+<body ng-controller="MainController">
+<header>
+    <div class="title">
+        Fonality CRMLink
+    </div>
+    <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="showWarnings()"></div>
+</header>
+<div ng-class="{'hidden':isWarningsShown==false}">
+    <ng-include src="warningsTemplatePath"></ng-include>
+</div>
+<div class="content" ng-class="{'hidden':isWarningsShown==true}" ng-controller="CallsListController">
+    <div class="user-info" ng-class="{'hidden':calls.length > 0}">
+        <div class="line">{{name}}</div>
+        <div class="line">{{extension}}</div>
+    </div>
+    <ul>
+        <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.selected}"
+            data-xpid="{{ call.xpid }}" ng-repeat="call in calls" ng-controller="CallController">
+            <ng-include src="templatePath"></ng-include>
+        </li>
+    </ul>
+</div>
+<footer ng-class = "{'hidden':isWarningsShown==true}" ng-controller="NewCallController" id="NewCallController">
+    <div class="new-call-dialpad-holder" id="dialpad_holder">
+        <ng-include src="dialogPath"></ng-include>
+    </div>
+    <form ng-submit="actionCall(phone)">
+        <input class="new-call-input" ng-model="phone" type="text" placeholder="Phone number" id="inputPhone"/>
+    </form>
+    <button class="new-call-button" ng-click="actionCall(phone)">Call</button>
+    <button class="new-call-dialpad" ng-click="showDialpad()">&#9000;</button>
+</footer>
+<iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
+<div class="plate" id="plate"></div>
+<script>
+    var SFApp = new fjs.app.SFAdapter();
+    SFApp.init();
+</script>
+</body>
+</html>
