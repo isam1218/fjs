@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                 src: ['src/oop.js'
                     , 'src/utils/*.js'
                     , 'src/ajax/*.js'
-                    , 'src/eventsSource.js'],
+                    , 'src/EventsSource.js'],
                 dest: 'bin/fjs.core.debug.js'
             }
         }
