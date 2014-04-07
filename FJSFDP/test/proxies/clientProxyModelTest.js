@@ -1,7 +1,7 @@
 describe("clientProxyModelTest.js", function () {
     var clientProxy;
     it("createSyncData", function () {
-        clientProxy = new fjs.fdp.ClientProxyModel(["tesClientFeed"]);;
+        clientProxy = new fjs.fdp.model.ClientFeedProxyModel(["tesClientFeed"]);;
         var syncObj = clientProxy.createSyncData("push", {field1:1, field2:"2"});
         expect('{"tesClientFeed":{"":{"items":[{"field1":1,"field2":"2","xef001type":"push"}]}}}').toBe(fjs.utils.JSON.stringify(syncObj));
         syncObj = clientProxy.createSyncData("delete", {xpid:1});

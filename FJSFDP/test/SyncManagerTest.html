@@ -22,7 +22,7 @@
 <script>
     var data_manager;
     function startSync() {
-        data_manager = new fjs.fdp.DataManager(document.getElementById("authTicket").value || '0864ca75c97e062bba86a78a29c281ea8c8f8525c9977a47', document.getElementById("nodeId").value || 'fdp2.dev4.fon9.com', function () {
+        data_manager = new fjs.fdp.DataManager(document.getElementById("authTicket").value || '0864ca75c97e062bba86a78a29c281ea8c8f8525c9977a47', document.getElementById("nodeId").value || 'fdp2.dev4.fon9.com', fjs.fdp.CONFIG, function () {
             data_manager.addFeedListener('me', function (e) {
                 console.log(e);
             });

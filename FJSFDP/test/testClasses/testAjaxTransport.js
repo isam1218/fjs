@@ -2,17 +2,17 @@
     namespace("fjs.fdp");
     /**
      * @constructor
-     * @extends fjs.fdp.AJAXTransport
+     * @extends fjs.fdp.transport.AJAXTransport
      */
     fjs.fdp.TestAjaxTransport = function(ticket, node, url) {
-        fjs.fdp.AJAXTransport.call(this, ticket, node, url);
+        fjs.fdp.transport.AJAXTransport.call(this, ticket, node, url);
         this.changes = [
             new fjs.fdp.testModel(2, "qwe", "push")
             , new fjs.fdp.testModel(5, "asd", "push")
         ];
         this.isFullSync = true;
     };
-    fjs.fdp.TestAjaxTransport.extend(fjs.fdp.AJAXTransport);
+    fjs.fdp.TestAjaxTransport.extend(fjs.fdp.transport.AJAXTransport);
 
     /**
      * @param url

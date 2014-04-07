@@ -1,7 +1,7 @@
 describe("XHRTransport.js", function () {
     it("wrongAuthTicket", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport("notValidTicket", null, 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport("notValidTicket", null, 'http://localhost:99');
         var errorType = null;
         runs(function () {
             transport.addEventListener('error', function(e){
@@ -24,7 +24,7 @@ describe("XHRTransport.js", function () {
 
     it("errorAuthTicket", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport("error", null, 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport("error", null, 'http://localhost:99');
         var errorType = null;
         runs(function () {
             transport.addEventListener('error', function(e){
@@ -47,7 +47,7 @@ describe("XHRTransport.js", function () {
 
     it("getNode", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport(fjs.test.Tickets.get(), null, 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport(fjs.test.Tickets.get(), null, 'http://localhost:99');
         var errorType = null;
         var node = null
         runs(function () {
@@ -76,7 +76,7 @@ describe("XHRTransport.js", function () {
 
     it("FirsSync", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
         var errorType = null;
         var messageType = null;
         var data = null;
@@ -107,12 +107,12 @@ describe("XHRTransport.js", function () {
     });
     it("newEntry", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
         var errorType = null;
         var messageType = null;
         var data = null;
         runs(function () {
-            transport.addEventListener('error', function(e){
+            transport.addEventListener('error', function(e) {
                 errorType = e.type;
             });
             transport.addEventListener('message', function(e) {
@@ -144,7 +144,7 @@ describe("XHRTransport.js", function () {
     });
     it("deleteEntry", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
         var errorType = null;
         var messageType = null;
         var data = null;
@@ -180,7 +180,7 @@ describe("XHRTransport.js", function () {
     });
     it("updateEntry", function () {
         var doneFlag = false;
-        var transport = new fjs.fdp.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+        var transport = new fjs.fdp.transport.XHRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
         var errorType = null;
         var messageType = null;
         var data = null;

@@ -7,7 +7,7 @@ describe("ProxyModelTest", function () {
         };
         runs(function () {
 
-            proxyModel1 = new fjs.fdp.ProxyModel(["testFakeModel"]);
+            proxyModel1 = new fjs.fdp.model.ProxyModel(["testFakeModel"]);
             proxyModel1.addListener(listener);
             proxyModel1.fireEvent({field1: 1, xpid: '1'});
         });
@@ -26,7 +26,7 @@ describe("ProxyModelTest", function () {
     it("removeListener", function () {
         var doneFlag, timeoutId;
         runs(function () {
-            proxyModel1 = new fjs.fdp.ProxyModel(["testFakeModel"]);
+            proxyModel1 = new fjs.fdp.model.ProxyModel(["testFakeModel"]);
             var callbackFn = function(){
                 clearTimeout(timeoutId);
             }

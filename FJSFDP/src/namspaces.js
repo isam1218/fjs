@@ -9,8 +9,17 @@ var fjs = {};
  */
 fjs.db = {};
 /**
- * FDP syncronization functionality
+ * FDP synchronization functionality
  * @namespace
  */
 fjs.fdp = {};
-
+/**
+ * FDP models
+ * @namespace
+ */
+fjs.fdp.model = {};
+/**
+ * FDP transports
+ * @namespace
+ */
+fjs.fdp.transport = {};

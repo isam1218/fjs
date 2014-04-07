@@ -2,7 +2,7 @@ describe("XDRTransport.js", function () {
     if(self.XDomainRequest) {
         it("wrongAuthTicket", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport("notValidTicket", null, 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport("notValidTicket", null, 'http://localhost:99');
             var errorType = null;
             runs(function () {
                 transport.addEventListener('error', function (e) {
@@ -25,7 +25,7 @@ describe("XDRTransport.js", function () {
 
         it("errorAuthTicket", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport("error", null, 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport("error", null, 'http://localhost:99');
             var errorType = null;
             runs(function () {
                 transport.addEventListener('error', function (e) {
@@ -48,7 +48,7 @@ describe("XDRTransport.js", function () {
 
         it("getNode", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport(fjs.test.Tickets.get(), null, 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport(fjs.test.Tickets.get(), null, 'http://localhost:99');
             var errorType = null;
             var node = null
             runs(function () {
@@ -77,7 +77,7 @@ describe("XDRTransport.js", function () {
 
         it("FirsSync", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
             var errorType = null;
             var messageType = null;
             var data = null;
@@ -108,7 +108,7 @@ describe("XDRTransport.js", function () {
         });
         it("newEntry", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
             var errorType = null;
             var messageType = null;
             var data = null;
@@ -145,7 +145,7 @@ describe("XDRTransport.js", function () {
         });
         it("deleteEntry", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
             var errorType = null;
             var messageType = null;
             var data = null;
@@ -181,7 +181,7 @@ describe("XDRTransport.js", function () {
         });
         it("updateEntry", function () {
             var doneFlag = false;
-            var transport = new fjs.fdp.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
+            var transport = new fjs.fdp.transport.XDRTransport(fjs.test.Tickets.get(), "node", 'http://localhost:99');
             var errorType = null;
             var messageType = null;
             var data = null;
