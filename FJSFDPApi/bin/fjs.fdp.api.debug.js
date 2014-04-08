@@ -5,86 +5,57 @@ namespace("fjs.api");
  * @param {*} config
  * @constructor
  * @implements fjs.api.IDataProvider
+ * @extends fjs.EventsSource
  */
-fjs.api.ClientDataProviderBase = function(ticket, node, config) {
+fjs.api.DataProviderBase = function(ticket, node, config) {
+    fjs.EventsSource.call(this);
     this.ticket = ticket;
     this.node = node;
     this.config = config;
     this.listeners = {};
 };
+fjs.api.DataProviderBase.extend(fjs.EventsSource);
+
 
 /**
  * @returns {boolean}
  */
-fjs.api.ClientDataProviderBase.check = function() {
+fjs.api.DataProviderBase.check = function() {
     return false;
 };
 
 
 /**
- * @param {string} eventType
- * @param {Function} listener
- */
-fjs.api.ClientDataProviderBase.prototype.addListener = function(eventType, listener) {
-    if(!this.listeners[eventType]) {
-        this.listeners[eventType] = [];
-    }
-    this.listeners[eventType].push(listener);
-};
-
-/**
- * @param {string} eventType
- * @param {Function} listener
- */
-fjs.api.ClientDataProviderBase.prototype.removeListener = function(eventType, listener) {
-    if(this.listeners[eventType]) {
-        var index = this.listeners[eventType].indexOf(listener);
-        if(index>=0) {
-            this.listeners[eventType].splice(index, 1);
-        }
-    }
-};
-
-/**
- * @param {string} eventType
- * @param {*} data
- * @protected
- */
-fjs.api.ClientDataProviderBase.prototype.fireEvent = function(eventType, data) {
-    if(this.listeners[eventType]) {
-        for(var i=0; i<this.listeners[eventType].length; i++) {
-            this.listeners[eventType][i](data);
-        }
-    }
-};
-/**
  * @param {{action:string, data:*}} message
  * @protected
  */
-fjs.api.ClientDataProviderBase.prototype.sendMessage = function(message) {
+fjs.api.DataProviderBase.prototype.sendMessage = function(message) {
 
 };
 /**
  * @param {string} feedName
  */
-fjs.api.ClientDataProviderBase.prototype.addSyncForFeed = function(feedName) {
+fjs.api.DataProviderBase.prototype.addSyncForFeed = function(feedName) {
     this.sendMessage({action:"registerSync", data:{feedName:feedName}});
 };
 
 /**
  * @param {string} feedName
  */
-fjs.api.ClientDataProviderBase.prototype.removeSyncForFeed = function(feedName) {
+fjs.api.DataProviderBase.prototype.removeSyncForFeed = function(feedName) {
     this.sendMessage({action:"unregisterSync", data:{feedName:feedName}});
 };
 
-fjs.api.ClientDataProviderBase.prototype.logout = function() {
+fjs.api.DataProviderBase.prototype.logout = function() {
     this.sendMessage({action:'logout', data:null});
 };
 
-fjs.api.ClientDataProviderBase.prototype.sendAction = function(feedName, actionName, data) {
+fjs.api.DataProviderBase.prototype.sendAction = function(feedName, actionName, data) {
     this.sendMessage({action:'fdp_action', data:{'actionName':actionName, 'params':data}});
 };
+
+
+
 
 
 namespace("fjs.api");
@@ -94,11 +65,11 @@ namespace("fjs.api");
  * @param {string} node
  * @param {Function} callback
  * @constructor
- * @extends fjs.api.ClientDataProviderBase
+ * @extends fjs.api.DataProviderBase
  */
 fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
     var context = this;
-    fjs.api.ClientDataProviderBase.call(this, ticket, node);
+    fjs.api.DataProviderBase.call(this, ticket, node);
     var SYNCHRONIZATION_URL = "js/lib/fjs.fdp.debug.js";
     var script = document.createElement('script');
     /**
@@ -109,23 +80,19 @@ fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
     this.onSync = function(data) {
         context.fireEvent("sync", data);
     };
-    this.authHandler = {
-        requestAuth: function() {
-            context.fireEvent("requestAuth", null);
-        }
-        , setNode: function(node) {
-            context.fireEvent("setNode", {"node":node});
-        }
-    };
+
 
     script.onload = function() {
-        context.dataManager = new fjs.fdp.DataManager(context.ticket, context.node, window, context.authHandler, function(){});
+        context.dataManager = new fjs.fdp.DataManager(context.ticket, context.node, fjs.fdp.CONFIG, function(){});
+        context.dataManager.addEventListener("", function(e) {
+            context.fireEvent(e.eventType, e);
+        });
         callback();
     };
     document.head.appendChild(script);
     script.src = SYNCHRONIZATION_URL;
 };
-fjs.api.SimpleClientDataProvider.extend(fjs.api.ClientDataProviderBase);
+fjs.api.SimpleClientDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
  * @returns {boolean}
@@ -140,10 +107,10 @@ fjs.api.SimpleClientDataProvider.check = function() {
 fjs.api.SimpleClientDataProvider.prototype.sendMessage = function(message) {
     switch (message.action) {
         case "registerSync":
-            this.dataManager.addListener(message.data.feedName, this.onSync);
+            this.dataManager.addFeedListener(message.data.feedName, this.onSync);
             break;
         case "unregisterSync":
-            this.dataManager.removeListener(message.data.feedName, this.onSync);
+            this.dataManager.removeFeedListener(message.data.feedName, this.onSync);
             break;
         case "logout":
             this.dataManager.logout();
@@ -151,6 +118,11 @@ fjs.api.SimpleClientDataProvider.prototype.sendMessage = function(message) {
         case "fdp_action":
             this.dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.params);
             break;
+        case "SFLogin":
+            this.dataManager.SFLogin(message.data);
+            break;
+        default:
+            console.error("Unknown action: " + message.action);
     }
 };
 
@@ -161,14 +133,14 @@ namespace("fjs.api");
  * @param {string} node
  * @param {Function} callback
  * @constructor
- * @extends fjs.api.ClientDataProviderBase
+ * @extends fjs.api.DataProviderBase
  */
 fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     var context =this;
-    fjs.api.ClientDataProviderBase.call(this, ticket, node);
+    fjs.api.DataProviderBase.call(this, ticket, node);
     this.worker = new Worker("js/lib/fdp_worker.js");
     this.worker.addEventListener("message", function(e) {
-        context.fireEvent(e.data["action"], e.data["data"]);
+        context.fireEvent(e.data["eventType"], e.data["data"]);
     }, false);
     this.worker.addEventListener("error", function(e){
         console.error("Worker Error", e);
@@ -180,7 +152,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
 
     setTimeout(function(){callback()},0);
 };
-fjs.api.WebWorkerDataProvider.extend(fjs.api.ClientDataProviderBase);
+fjs.api.WebWorkerDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
  * @returns {boolean}
@@ -200,18 +172,18 @@ fjs.api.WebWorkerDataProvider.prototype.sendMessage = function(message) {
  * @param {string} node
  * @param {Function} callback
  * @constructor
- * @extends fjs.api.ClientDataProviderBase
+ * @extends fjs.api.DataProviderBase
  */
 fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
     var context =this;
-    fjs.api.ClientDataProviderBase.call(this, ticket, node);
+    fjs.api.DataProviderBase.call(this, ticket, node);
     this.worker = new SharedWorker("js/lib/fdp_shared_worker.js");
     this.worker.port.addEventListener("message", function(e) {
-        if(e.data["action"]=="ready") {
+        if(e.data["eventType"]=="ready") {
             context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node}});
             callback();
         }
-        context.fireEvent(e.data["action"], e.data["data"]);
+        context.fireEvent(e.data["eventType"], e.data["data"]);
     }, false);
     this.worker.port.addEventListener("error", function(e){
         console.error("Worker Error", e);
@@ -221,7 +193,7 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
         this.worker.port.postMessage(message);
     };
 };
-fjs.api.SharedWorkerDataProvider.extend(fjs.api.ClientDataProviderBase);
+fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
  * @returns {boolean}
@@ -247,7 +219,7 @@ fjs.api.FDPProviderFactory = function() {
  * @param ticket
  * @param node
  * @param callback
- * @returns {fjs.api.ClientDataProviderBase|undefined}
+ * @returns {fjs.api.DataProviderBase|undefined}
  */
 fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callback) {
     for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {

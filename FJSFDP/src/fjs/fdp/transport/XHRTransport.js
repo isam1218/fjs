@@ -8,8 +8,8 @@
      * @constructor
      * @extends fjs.fdp.transport.AJAXTransport
      */
-    fjs.fdp.transport.XHRTransport = function(ticket, node, url) {
-        fjs.fdp.transport.AJAXTransport.call(this, ticket, node, url);
+    fjs.fdp.transport.XHRTransport = function(ticket, node, url, type) {
+        fjs.fdp.transport.AJAXTransport.call(this, ticket, node, url, type);
         /**
          * @type {fjs.ajax.XHRAjax}
          */
@@ -28,7 +28,7 @@
             return null;
         }
         data = data || {};
-        data["t"] = "web";
+        data["t"] = this.type;
         data["alt"] = 'j';
         var headers = {Authorization: "auth="+this.ticket, node: this.node || ""};
         return this.ajax.send('post', url, headers, data, callback);

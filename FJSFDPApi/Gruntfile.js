@@ -10,7 +10,7 @@ module.exports = function(grunt) {
                 separator: ''
             },
             dist: {
-                src: ['src/providers/ClientDataProviderBase.js'
+                src: ['src/providers/DataProviderBase.js'
                     , 'src/providers/SimpleClientDataProvider.js'
                     , 'src/providers/WebWorkerDataProvider.js'
                     , 'src/providers/SharedWorkerDataProvider.js'
@@ -28,6 +28,9 @@ module.exports = function(grunt) {
                     , {expand: true, cwd: 'bin/', src: ['fjs.fdp.api.debug.js'], dest: '../FJSHUD/bin/'}
                     , {expand: true, cwd: 'src/', src: ['fdp_worker.js'], dest: '../FJSHUD/bin/'}
                     , {expand: true, cwd: 'src/', src: ['fdp_shared_worker.js'], dest: '../FJSHUD/bin/'}
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.api.debug.js'], dest: '../SFAdapter/src/js/lib/'}
+                    , {expand: true, cwd: 'src/', src: ['fdp_worker.js'], dest: '../SFAdapter/src/js/lib/'}
+                    , {expand: true, cwd: 'src/', src: ['fdp_shared_worker.js'], dest: '../SFAdapter/src/js/lib/'}
                 ]
             }
         }

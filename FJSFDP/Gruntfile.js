@@ -10,24 +10,24 @@ module.exports = function(grunt) {
                 separator: ''
             },
             dist: {
-                src: ['src/db/IndexedDBProvider.js'
-                    , 'src/db/WebSQLProvider.js'
-                    , 'src/db/LocalStorageDBProvider.js'
-                    , 'src/db/DBFactory.js'
-                    , 'src/models/EntryModel.js'
-                    , 'src/models/ProxyModel.js'
-                    , 'src/models/contactsProxyModel.js'
-                    , 'src/models/ClientFeedProxyModel.js'
-                    , 'src/transport/FDPTransport.js'
-                    , 'src/transport/AJAXTransport.js'
-                    , 'src/transport/XHRTransport.js'
-                    , 'src/transport/XDRTransport.js'
-                    , 'src/transport/IframeTransport.js'
-                    , 'src/transport/LocalStorageTransport.js'
-                    , 'src/transport/TransportFactory.js'
-                    , 'src/sync/TabsSyncronizer.js'
-                    , 'src/sync/SyncManager.js'
-                    , 'src/sync/DataManager.js'
+                src: ['src/fjs/db/IndexedDBProvider.js'
+                    , 'src/fjs/db/WebSQLProvider.js'
+                    , 'src/fjs/db/LocalStorageDBProvider.js'
+                    , 'src/fjs/db/DBFactory.js'
+                    , 'src/fjs/fdp/model/EntryModel.js'
+                    , 'src/fjs/fdp/model/ProxyModel.js'
+                    , 'src/fjs/fdp/model/contactsProxyModel.js'
+                    , 'src/fjs/fdp/model/ClientFeedProxyModel.js'
+                    , 'src/fjs/fdp/transport/FDPTransport.js'
+                    , 'src/fjs/fdp/transport/AJAXTransport.js'
+                    , 'src/fjs/fdp/transport/XHRTransport.js'
+                    , 'src/fjs/fdp/transport/XDRTransport.js'
+                    , 'src/fjs/fdp/transport/IframeTransport.js'
+                    , 'src/fjs/fdp/transport/LocalStorageTransport.js'
+                    , 'src/fjs/fdp/transport/TransportFactory.js'
+                    , 'src/fjs/fdp/TabsSyncronizer.js'
+                    , 'src/fjs/fdp/SyncManager.js'
+                    , 'src/fjs/fdp/DataManager.js'
 
                 ],
                 dest: 'bin/fjs.fdp.debug.js'
@@ -36,9 +36,9 @@ module.exports = function(grunt) {
         , 'copy': {
             main: {
                 files: [
-                    {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/src/js/lib/'}
+                    {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/src/fjs/js/lib/'}
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../SFAdapter/src/js/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/bin/'}
-                    , {expand: true, cwd: 'src/', src: ['properties.js'], dest: '../FJSHUD/src/js/lib/'}
                 ]
             }
         }

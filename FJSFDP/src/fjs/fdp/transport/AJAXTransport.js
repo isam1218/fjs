@@ -9,7 +9,7 @@
      * @extends fjs.fdp.transport.FDPTransport
      * @abstract
      */
-    fjs.fdp.transport.AJAXTransport = function(ticket, node, url) {
+    fjs.fdp.transport.AJAXTransport = function(ticket, node, url, type) {
 
         fjs.fdp.transport.FDPTransport.call(this, ticket, node, url);
         /**
@@ -18,6 +18,8 @@
          * @protected
          */
         this.ajax = null;
+
+        this.type = type;
         /**
          * @type {Array.<string>}
          * @private
@@ -61,6 +63,9 @@
          * @protected
          */
         this.SYNC_PATH = "/v1/sync";
+
+        this.SF_LOGIN_PATH = "/accounts/salesforce";
+
 
         /**
          * Transport is stoped
@@ -113,7 +118,31 @@
             case 'forget':
                 this._forgetFeed(message.data.feedName);
                 break;
+            case 'SFLogin':
+                this.SFLogin(message.data);
+                break;
         }
+    };
+
+    fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
+        var context = this;
+        this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
+              if(isOk) {
+                  var _data = fjs.utils.JSON.parse(data);
+                  var ticket = _data["Auth"];
+                  var node = _data["node"];
+                  if(ticket && node) {
+                      context.fireEvent('message', {type:'node', data:{nodeId:(context.node = node)}});
+                      context.fireEvent('message', {type:'ticket', data:{ticket:(context.ticket = ticket)}});
+                  }
+                  else {
+                      context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
+                  }
+              }
+              else {
+                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed'});
+              }
+          });
     };
 
     fjs.fdp.transport.AJAXTransport.prototype.loadNext = function(message) {
@@ -129,7 +158,6 @@
                         data[key].filter = _data.data["sh.filter"];
                     }
                 }
-
                 context.fireEvent('message', {type: 'sync', data: syncData});
             }
         });
@@ -188,10 +216,10 @@
             else {
                 if(request.status == 403) {
                     callback(false);
-                    context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'})
+                    context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
                 else {
-                    if(this._clientRegistryFailedCount<10) {
+                    if(this._clientRegistryFailedCount < 10) {
                         this._clientRegistryFailedCount++;
                         context.requestClientRegistry(callback);
                     }
@@ -337,6 +365,7 @@
             }
         });
     };
+
     /**
      * Ends synchronization throws this transport
      * @abstract

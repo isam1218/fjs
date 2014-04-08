@@ -68,4 +68,5 @@ fjs.fdp.CONFIG = {
             , {name:"fdpImage", key: "xpid", indexes:["source"]}
             , {name:"sortings", key:"xpid"}]
     }
+    , CLIENT: {type:'web'}
 };

@@ -5,18 +5,18 @@ namespace("fjs.api");
  * @param {string} node
  * @param {Function} callback
  * @constructor
- * @extends fjs.api.ClientDataProviderBase
+ * @extends fjs.api.DataProviderBase
  */
 fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
     var context =this;
-    fjs.api.ClientDataProviderBase.call(this, ticket, node);
+    fjs.api.DataProviderBase.call(this, ticket, node);
     this.worker = new SharedWorker("js/lib/fdp_shared_worker.js");
     this.worker.port.addEventListener("message", function(e) {
-        if(e.data["action"]=="ready") {
+        if(e.data["eventType"]=="ready") {
             context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node}});
             callback();
         }
-        context.fireEvent(e.data["action"], e.data["data"]);
+        context.fireEvent(e.data["eventType"], e.data["data"]);
     }, false);
     this.worker.port.addEventListener("error", function(e){
         console.error("Worker Error", e);
@@ -26,7 +26,7 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
         this.worker.port.postMessage(message);
     };
 };
-fjs.api.SharedWorkerDataProvider.extend(fjs.api.ClientDataProviderBase);
+fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
  * @returns {boolean}

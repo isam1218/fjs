@@ -65,6 +65,8 @@
          * @type {string}
          */
         this.serverHost = this.config.SERVER.serverURL;
+
+        this.type = this.config.CLIENT.type;
         /**
          * @type {Array}
          * @private
@@ -220,7 +222,11 @@
                         context.onSync(e.data);
                         break;
                     case 'node':
-                        context.fireEvent("node", e.data.nodeId);
+                        context.fireEvent('node', e);
+                        break;
+                    case 'ticket':
+                        context.fireEvent('ticket', e);
+                        context.startSync(context.syncFeeds);
                         break;
                 }
                 if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
@@ -261,13 +267,13 @@
             this.tabsSyncronizer = new fjs.fdp.TabsSynchronizer();
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.transport.close();
-                context.transport = fjs.fdp.transport.TransportFactory.getTransport(context.ticket, context.node, context.serverHost);
+                context.transport = fjs.fdp.transport.TransportFactory.getTransport(context.ticket, context.node, context.serverHost, context.type);
                 addTransportEvents(context.transport);
                 clearTimeout(context.versionsTimeoutId);
                 context.startSync(context.syncFeeds);
             });
         }
-        this.transport = fjs.fdp.transport.TransportFactory.getTransport(context.ticket, context.node, context.serverHost);
+        this.transport = fjs.fdp.transport.TransportFactory.getTransport(context.ticket, context.node, context.serverHost, context.type);
         addTransportEvents(this.transport);
         this.initDataBase(callback);
     };
@@ -319,6 +325,9 @@
              */
             var count = this.suspendFeeds.length;
             for(var i=0; i<this.suspendFeeds.length; i++) {
+                if(this.syncFeeds.indexOf(this.suspendFeeds[i])<0) {
+                    this.syncFeeds.push(this.suspendFeeds[i]);
+                }
                 this.fireEvent(null, {eventType:sm.eventTypes.SYNC_START});
                 this.getFeedData(this.suspendFeeds[i], function(data){
                     if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
@@ -859,5 +868,9 @@
         this.node = null;
         this.getAuthTicket();
         this.status = sm.states.NOT_INITIALIZED;
+    }
+
+    fjs.fdp.SyncManager.prototype.SFLogin = function(loginData) {
+        this.transport.send({type:'SFLogin', data:loginData});
     }
 })();

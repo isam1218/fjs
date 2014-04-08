@@ -20,36 +20,39 @@ self.addEventListener("connect", function (e) {
     ports.push(port);
     port.addEventListener("message", function (e) {
         handleMessage(e.data, function(data){
-            port.postMessage({"action":"sync", "data":data});
+            port.postMessage({"eventType":"sync", "data":data});
         });
     }, false);
     port.start();
-    port.postMessage({action:"ready"})
+    port.postMessage({eventType:"ready"});
 });
 
-function handleMessage(data, callback) {
-    switch(data.action) {
+function handleMessage(message, callback) {
+    switch(message.action) {
         case "init":
             if(!dataManager) {
-
-                var authHandler = {
-                    requestAuth:function() {
-                        postToPage({"action":"requestAuth"});
-                    }
-                    , setNode:function(node){
-                        postToPage({"action":"setNode", "data":{"node":node}});
-                    }
-                };
-                dataManager = new fjs.fdp.DataManager(data.data.ticket, data.data.node, self, authHandler, function(){});
+                dataManager = new fjs.fdp.DataManager(message.data.ticket, message.data.node, fjs.fdp.CONFIG, function(){});
+                dataManager.addEventListener("", function(e){
+                    postToPage(e);
+                });
             }
             break;
         case "registerSync":
-            dataManager.addListener(data.data.feedName, callback);
+            dataManager.addFeedListener(message.data.feedName, callback);
+            break;
+        case "unregisterSync":
+            dataManager.removeFeedListener(message.data.feedName, callback);
             break;
         case "action":
-            dataManager.sendAction(data.data.feedName, data.data.actionName, data.data.data);
+            dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.data);
             break;
         case "logout":
             dataManager.logout();
+            break;
+        case "SFLogin":
+            dataManager.SFLogin(message.data);
+            break;
+        default:
+            console.error("Unknown action: " + message.action);
     }
 }

@@ -46,6 +46,9 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
         context.sm.addEventListener("node", function(e){
            context.fireEvent("node", e);
         });
+        context.sm.addEventListener("ticket", function(e){
+            context.fireEvent("ticket", e);
+        });
         context.sm.addEventListener("requestError", function(e){
             context.fireEvent("requestError", e);
         });
@@ -145,16 +148,21 @@ fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
 };
 
 fjs.fdp.DataManager.prototype.fireEvent = function (eventType, eventData) {
-    var _listeners = this.listeners[eventType];
+    var _listeners = this.listeners[eventType], i;
+    eventData.eventType = eventType;
     if(_listeners) {
-        for (var i = 0; i < _listeners.length; i++) {
+        for (i = 0; i < _listeners.length; i++) {
             _listeners[i](eventData);
         }
     }
     var _listeners2 = this.listeners[""];
     if(_listeners2) {
-        for (var i = 0; i < _listeners2.length; i++) {
+        for (i = 0; i < _listeners2.length; i++) {
             _listeners2[i](eventData);
         }
     }
 };
+
+fjs.fdp.DataManager.prototype.SFLogin = function(loginData) {
+    this.sm.SFLogin(loginData);
+}

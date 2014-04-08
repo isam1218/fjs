@@ -5,14 +5,14 @@ namespace("fjs.api");
  * @param {string} node
  * @param {Function} callback
  * @constructor
- * @extends fjs.api.ClientDataProviderBase
+ * @extends fjs.api.DataProviderBase
  */
 fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     var context =this;
-    fjs.api.ClientDataProviderBase.call(this, ticket, node);
+    fjs.api.DataProviderBase.call(this, ticket, node);
     this.worker = new Worker("js/lib/fdp_worker.js");
     this.worker.addEventListener("message", function(e) {
-        context.fireEvent(e.data["action"], e.data["data"]);
+        context.fireEvent(e.data["eventType"], e.data["data"]);
     }, false);
     this.worker.addEventListener("error", function(e){
         console.error("Worker Error", e);
@@ -24,7 +24,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
 
     setTimeout(function(){callback()},0);
 };
-fjs.api.WebWorkerDataProvider.extend(fjs.api.ClientDataProviderBase);
+fjs.api.WebWorkerDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
  * @returns {boolean}

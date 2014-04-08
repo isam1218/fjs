@@ -1,3 +1,4 @@
+namespace("fjs.ajax");
 /**
  * Ajax provider interface
  * @interface

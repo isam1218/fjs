@@ -21,7 +21,7 @@ fjs.utils.Cookies = {
      * Saves property to cookies
      * @param {string} name - cookie name
      * @param {string} value - cookie value
-     * @param {{expires:(number|Date)}} options
+     * @param {{expires:(number|Date)}=} options
      */
     set: function(name, value, options) {
         options = options || {};

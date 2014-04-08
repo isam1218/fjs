@@ -4,17 +4,6 @@
 fjs.api.IDataProvider = function() {
 
 };
-/**
- * @param {string} eventType
- * @param {Function} listener
- */
-fjs.api.IDataProvider.prototype.addListener = function(eventType, listener){};
-
-/**
- * @param {string} eventType
- * @param {Function} listener
- */
-fjs.api.IDataProvider.prototype.removeListener = function(eventType, listener){};
 
 /**
  * @param {string} feedName

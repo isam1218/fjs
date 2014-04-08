@@ -16,7 +16,7 @@ fjs.api.FDPProviderFactory = function() {
  * @param ticket
  * @param node
  * @param callback
- * @returns {fjs.api.ClientDataProviderBase|undefined}
+ * @returns {fjs.api.DataProviderBase|undefined}
  */
 fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callback) {
     for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {

@@ -161,13 +161,14 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
         _changes.entry = null;
     }
     else {
+        if(_changes.type == 'delete') return _changes;
         var changes = this.feedFields[feedName];
         if(changes) {
             for (var key in changes) {
                 if(changes.hasOwnProperty(key)) {
                     _changes.entry[key] = changes[key];
                     if(this.items[xpid]) {
-                        this.items[xpid][key] = _changes.entry[key]
+                        this.items[xpid][key] = _changes.entry[key];
                     }
                 }
             }
