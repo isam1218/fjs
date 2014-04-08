@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://c.na1.visual.force.com/support/api/30.0/interaction.js"></script>
+    <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
+
+    <script type="text/javascript" src="js/salesforce_api/sf_api.js"></script>
+
+    <script type="text/javascript" src="js/build_number.js"></script>
+
+    <script type="text/javascript" src="js/lib/fjs.core.debug.js"></script>
+    <script type="text/javascript" src="js/lib/fjs.fdp.api.debug.js"></script>
+    <script type="text/javascript" src="properties.js"></script>
+    <script type="text/javascript" src="js/model/feedModel.js"></script>
+    <script type="text/javascript" src="js/model/dataManager.js"></script>
+</head>
+<body>
+    <script>
+        var dm = new fjs.model.DataManager(function(){
+           dm.getModel('me').addEventListener("push", function(e){
+              console.log(e) ;
+           });
+        });
+    </script>
+</body>
+</html>

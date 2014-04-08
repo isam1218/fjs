@@ -1,25 +1,30 @@
 namespace("fjs.model");
-
-fjs.model.FeedModel = function(feedName) {
+/**
+ * @param feedName
+ * @param dataManager
+ * @constructor
+ * @extends fjs.EventsSource
+ */
+fjs.model.FeedModel = function(feedName, dataManager) {
+    fjs.EventsSource.call(this);
     this.feedName = feedName;
     this.items = {};
-    this.fdp = new fjs.fdp.SyncManager();
+    this.dataManager = dataManager;
     this.listeners = {
         "start":[]
         , "push":[]
         , "delete":[]
         , "complete": []
     };
+    this.init();
 };
+
+fjs.model.FeedModel.extend(fjs.EventsSource);
 
 fjs.model.FeedModel.EVENT_TYPE_START = "start";
 fjs.model.FeedModel.EVENT_TYPE_PUSH = "push";
 fjs.model.FeedModel.EVENT_TYPE_DELETE = "delete";
 fjs.model.FeedModel.EVENT_TYPE_COMPLETE = "complete";
-
-fjs.model.FeedModel.prototype.prepareEntry = function(data) {
-    data.entry.xpid = data.xpid;
-};
 
 fjs.model.FeedModel.prototype.getEntryByXpid = function(xpid) {
     return this.items[xpid];
@@ -27,28 +32,30 @@ fjs.model.FeedModel.prototype.getEntryByXpid = function(xpid) {
 
 fjs.model.FeedModel.prototype.init = function() {
     var context = this;
-    this.fdp.addListener(this.feedName, function(data){
-        switch (data.eventType) {
-            case fjs.model.FeedModel.EVENT_TYPE_START:
-                context.onSyncStart(data);
-                break;
-            case fjs.model.FeedModel.EVENT_TYPE_PUSH:
-                context.onEntryChange(data);
-                break;
-            case fjs.model.FeedModel.EVENT_TYPE_DELETE:
-                context.onEntryDeletion(data);
-                break;
-            case fjs.model.FeedModel.EVENT_TYPE_COMPLETE:
-                context.onSyncComplete(data);
-                break;
+    this.dataManager.addEventListener(this.feedName, function(data){
+        context.onSyncStart();
+        for(var key in data.changes) {
+            if(data.changes.hasOwnProperty(key)) {
+                var change = data.changes[key];
+                if('change' == change.type) {
+                    context.onEntryChange(change.entry);
+                }
+                else if('delete' == change.type) {
+                    context.onEntryDeletion(change);
+                }
+                else {
+                    console.error("Unknown change type:", change.type);
+                }
+            }
         }
+        context.onSyncComplete();
     });
 };
 
+fjs.model.FeedModel.prototype.prepareEntry = function(data) {
+};
+
 fjs.model.FeedModel.prototype.onSyncStart = function(data) {
-    if(data.syncType == "F") {
-        this.items = {};
-    }
     this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_START, data);
 };
 
@@ -67,25 +74,12 @@ fjs.model.FeedModel.prototype.onSyncComplete = function(data) {
     this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_COMPLETE, data);
 };
 
-fjs.model.FeedModel.prototype.addListener = function(eventType, callback) {
-    this.listeners[eventType].push(callback);
+fjs.model.FeedModel.prototype.addEventListener = function(eventType, callback) {
+    this.superClass.addEventListener.call(this, eventType, callback);
     if(eventType==fjs.model.FeedModel.EVENT_TYPE_PUSH) {
        for(var i in this.items) {
-           callback({eventType:fjs.model.FeedModel.EVENT_TYPE_PUSH, xpid:i, entry:this.items[i]});
+           if(this.items.hasOwnProperty(i))
+                callback({eventType:fjs.model.FeedModel.EVENT_TYPE_PUSH, xpid:i, entry:this.items[i]});
        }
-    }
-};
-
-fjs.model.FeedModel.prototype.removeListener = function(eventType, callback) {
-    var i =this.listeners[eventType].indexOf(callback);
-    if(i>-1) {
-        this.listeners[eventType].splice(i, 1);
-    }
-};
-
-fjs.model.FeedModel.prototype.fireEvent = function(eventType, data) {
-    var listeners = this.listeners[eventType];
-    for(var i=0; i<listeners.length; i++) {
-        listeners[i](data);
     }
 };

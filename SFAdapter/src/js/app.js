@@ -5,7 +5,7 @@ fjs.app.SFAdapter = function () {
     this.currentLocationId = null;
     this.currentDeviceStatus = false;
     this.currentDeviceAutoAnsver = false;
-    this.syncManager = new fjs.fdp.SyncManager();
+
     this.feedModels = {};
     this.sfApi = new SFApi();
     this.apiInitialized = false;
@@ -110,7 +110,6 @@ fjs.app.SFAdapter.prototype.init = function() {
     this.feedModels[fjs.app.SFAdapter.LOCATION_STATUS_FEED_NAME].addListener("complete", function() {
         context.checkDevice ();
     });
-    this.syncManager.init();
 };
 
 fjs.app.SFAdapter.prototype.getModel = function(feedName) {

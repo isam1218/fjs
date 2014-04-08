@@ -54,8 +54,8 @@ var http = require('http');
 var fs = require('fs');
 
 var options = {
-    key: fs.readFileSync('C:/Users/ddyachenko/Desktop/ssl/cakey.pem')
-    , cert: fs.readFileSync('C:/Users/ddyachenko/Desktop/ssl/cacert.pem')
+    key: fs.readFileSync('../ssl/cakey.pem')
+    , cert: fs.readFileSync('../ssl/cacert.pem')
 };
 app.use(express.static(__dirname));
 

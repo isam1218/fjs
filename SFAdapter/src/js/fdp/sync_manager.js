@@ -265,7 +265,7 @@ fjs.fdp.SyncManager.prototype.requestVersions = function(feedsVersions) {
         this.ajax.send("POST", this.serverHost+"/v1/versions", data, function(xhr, data, isOk) {
             context.checkConnection(xhr);
             var feeds = {};
-            var st = new fjs.TimeSync();
+            var st = new fjs.utils.TimeSync();
             if(isOk) {
                 var params = data.split(";");
                 var feedsCount = 0;
