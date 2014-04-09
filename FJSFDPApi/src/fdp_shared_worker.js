@@ -1,6 +1,6 @@
 importScripts('fjs.core.debug.js');
 importScripts('fjs.fdp.debug.js');
-importScripts('properties.js');
+importScripts('../../properties.js');
 
 var connections = 0;
 var ports = [];
@@ -43,8 +43,8 @@ function handleMessage(message, callback) {
         case "unregisterSync":
             dataManager.removeFeedListener(message.data.feedName, callback);
             break;
-        case "action":
-            dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.data);
+        case "fdp_action":
+            dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.params);
             break;
         case "logout":
             dataManager.logout();
