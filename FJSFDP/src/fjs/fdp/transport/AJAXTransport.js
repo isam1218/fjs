@@ -74,6 +74,12 @@
          */
         this.closed = false;
 
+        /**
+         * @type {number}
+         * @private
+         */
+        this.versionsCacheFailedCount = 0;
+
     };
     fjs.fdp.transport.AJAXTransport.extend(fjs.fdp.transport.FDPTransport);
 
@@ -140,7 +146,7 @@
                   }
               }
               else {
-                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed'});
+                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed', status:request.status});
               }
           });
     };
@@ -225,7 +231,7 @@
                     }
                     else {
                         callback(false);
-                        context.fireEvent('error', {type:'requestError', requestType:'clientRegistry', message:'clientRegistry request failed'})
+                        context.fireEvent('error', {type:'requestError', requestType:'clientRegistry', message:'clientRegistry request failed', status:request.status})
                     }
                 }
             }
@@ -240,6 +246,7 @@
         var url = this.url+this.VERSIONSCACHE_PATH;
         this._currentRequest = this._currentVersioncache = this.sendRequest(url, null, function(request, data, isOk) {
             if(isOk) {
+                context._clientRegistryFailedCount = 0;
                 var feeds = context.parseVersionsResponse(data);
                 if(feeds) {
                     context.syncRequest(feeds);
@@ -257,7 +264,16 @@
                     });
                 }
                 else if(!request["aborted"]) {
-                    context.requestVersionscache();
+                    if (context._clientRegistryFailedCount < 5) {
+                        context.requestVersionscache();
+                        context._clientRegistryFailedCount++;
+                    }
+                    else if (context._clientRegistryFailedCount >= 5) {
+                        setTimeout(function () {
+                            context.requestVersionscache()
+                        }, 5000);
+                    }
+                    context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
                 }
             }
         });
@@ -275,6 +291,9 @@
                 data = fjs.utils.JSON.parse(data);
                 context.fireEvent('message', {type: 'sync', data:data});
                 context.requestVersionscache();
+            }
+            else if(!xhr["aborted"]) {
+                context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
             }
         });
     };
@@ -340,6 +359,9 @@
                         }
                     });
                 }
+                else if(!xhr["aborted"]) {
+                    context.fireEvent('error', {type: 'requestError', requestType: 'versionsRequest', message: 'Versions request error', status:request.status});
+                }
             }
         });
     };
@@ -361,7 +383,9 @@
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             if(!isOK) {
-                context.fireEvent('error', {type:'requestError', requestType:'actionRequest', message:'Action request error'});
+                if(!xhr["aborted"]) {
+                    context.fireEvent('error', {type: 'requestError', requestType: 'actionRequest', message: 'Action request error', status:request.status});
+                }
             }
         });
     };

@@ -100,6 +100,8 @@
          * @private
          */
         this.tabsSyncronizer = null;
+
+        this.suspendLoginData = null;
     };
 
     fjs.fdp.SyncManager.extend(fjs.EventsSource);
@@ -346,7 +348,14 @@
 
             this.suspendFeeds = [];
         }
+        if(this.suspendLoginData) {
+            var _suspendLoginData = this.suspendLoginData;
+            this.db.clear(function(){
+                context.transport.send({type:'SFLogin', data:_suspendLoginData});
 
+            });
+            this.suspendLoginData=null;
+        }
         this.status = sm.states.READY;
         callback();
     };
@@ -871,9 +880,20 @@
         this.node = null;
         this.getAuthTicket();
         this.status = sm.states.NOT_INITIALIZED;
-    }
+    };
 
     fjs.fdp.SyncManager.prototype.SFLogin = function(loginData) {
-        this.transport.send({type:'SFLogin', data:loginData});
+        var context = this;
+        if(this.status == sm.states.READY && this.db) {
+            this.db.clear(function(){
+                context.transport.send({type:'SFLogin', data:loginData});
+            });
+        }
+        else if(!this.db) {
+            this.transport.send({type:'SFLogin', data:loginData});
+        }
+        else {
+            this.suspendLoginData = loginData;
+        }
     }
 })();

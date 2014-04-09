@@ -1513,6 +1513,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
          */
         this.closed = false;
 
+        /**
+         * @type {number}
+         * @private
+         */
+        this.versionsCacheFailedCount = 0;
+
     };
     fjs.fdp.transport.AJAXTransport.extend(fjs.fdp.transport.FDPTransport);
 
@@ -1579,7 +1585,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                   }
               }
               else {
-                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed'});
+                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed', status:request.status});
               }
           });
     };
@@ -1664,7 +1670,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                     }
                     else {
                         callback(false);
-                        context.fireEvent('error', {type:'requestError', requestType:'clientRegistry', message:'clientRegistry request failed'})
+                        context.fireEvent('error', {type:'requestError', requestType:'clientRegistry', message:'clientRegistry request failed', status:request.status})
                     }
                 }
             }
@@ -1679,6 +1685,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         var url = this.url+this.VERSIONSCACHE_PATH;
         this._currentRequest = this._currentVersioncache = this.sendRequest(url, null, function(request, data, isOk) {
             if(isOk) {
+                context._clientRegistryFailedCount = 0;
                 var feeds = context.parseVersionsResponse(data);
                 if(feeds) {
                     context.syncRequest(feeds);
@@ -1696,7 +1703,16 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                     });
                 }
                 else if(!request["aborted"]) {
-                    context.requestVersionscache();
+                    if (context._clientRegistryFailedCount < 5) {
+                        context.requestVersionscache();
+                        context._clientRegistryFailedCount++;
+                    }
+                    else if (context._clientRegistryFailedCount >= 5) {
+                        setTimeout(function () {
+                            context.requestVersionscache()
+                        }, 5000);
+                    }
+                    context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
                 }
             }
         });
@@ -1714,6 +1730,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                 data = fjs.utils.JSON.parse(data);
                 context.fireEvent('message', {type: 'sync', data:data});
                 context.requestVersionscache();
+            }
+            else if(!xhr["aborted"]) {
+                context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
             }
         });
     };
@@ -1779,6 +1798,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                         }
                     });
                 }
+                else if(!xhr["aborted"]) {
+                    context.fireEvent('error', {type: 'requestError', requestType: 'versionsRequest', message: 'Versions request error', status:request.status});
+                }
             }
         });
     };
@@ -1800,7 +1822,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             if(!isOK) {
-                context.fireEvent('error', {type:'requestError', requestType:'actionRequest', message:'Action request error'});
+                if(!xhr["aborted"]) {
+                    context.fireEvent('error', {type: 'requestError', requestType: 'actionRequest', message: 'Action request error', status:request.status});
+                }
             }
         });
     };
@@ -2233,6 +2257,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
          * @private
          */
         this.tabsSyncronizer = null;
+
+        this.suspendLoginData = null;
     };
 
     fjs.fdp.SyncManager.extend(fjs.EventsSource);
@@ -2479,7 +2505,14 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
 
             this.suspendFeeds = [];
         }
+        if(this.suspendLoginData) {
+            var _suspendLoginData = this.suspendLoginData;
+            this.db.clear(function(){
+                context.transport.send({type:'SFLogin', data:_suspendLoginData});
 
+            });
+            this.suspendLoginData=null;
+        }
         this.status = sm.states.READY;
         callback();
     };
@@ -3004,10 +3037,21 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.node = null;
         this.getAuthTicket();
         this.status = sm.states.NOT_INITIALIZED;
-    }
+    };
 
     fjs.fdp.SyncManager.prototype.SFLogin = function(loginData) {
-        this.transport.send({type:'SFLogin', data:loginData});
+        var context = this;
+        if(this.status == sm.states.READY && this.db) {
+            this.db.clear(function(){
+                context.transport.send({type:'SFLogin', data:loginData});
+            });
+        }
+        else if(!this.db) {
+            this.transport.send({type:'SFLogin', data:loginData});
+        }
+        else {
+            this.suspendLoginData = loginData;
+        }
     }
 })();
 namespace("fjs.fdp");
