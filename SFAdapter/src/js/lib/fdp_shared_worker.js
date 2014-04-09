@@ -42,11 +42,13 @@ function handleMessage(message, callback) {
             break;
         case "unregisterSync":
             dataManager.removeFeedListener(message.data.feedName, callback);
+            break;
         case "action":
             dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.data);
             break;
         case "logout":
             dataManager.logout();
+            break;
         case "SFLogin":
             dataManager.SFLogin(message.data);
             break;

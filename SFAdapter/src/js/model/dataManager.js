@@ -5,23 +5,35 @@ namespace("fjs.model");
  * @extends fjs.EventsSource
  */
 fjs.model.DataManager = function(sf) {
-
     fjs.EventsSource.call(this);
 
-    var context = this;
-
     this.feeds = {};
-
     this.ticket = null;
-
     this.node = null;
 
     this.sf = sf;
+    this.phoneMap = {};
 
     this.state = -1;
     this.suspendFeeds = [];
 
     var providerFactory = new fjs.api.FDPProviderFactory();
+    var context = this;
+
+    this.checkDevice = function() {
+        context.sf.setPhoneApi(true, function (obj) {
+            var res = obj && obj.result && JSON.parse(obj.result);
+            var phone = res.number;
+            if (phone) {
+                var calleeInfo = {};
+                calleeInfo.id = res.objectId;
+                calleeInfo.type = res.object;
+                context.phoneMap[phone] = calleeInfo;
+                context.sendAction('me', "callTo", {'phoneNumber': phone});
+            }
+        });
+    };
+    this.checkDevice();
 
     this._getAuthInfo(function(data){
         if(data) {

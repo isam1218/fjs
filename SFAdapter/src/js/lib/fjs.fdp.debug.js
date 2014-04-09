@@ -1148,7 +1148,7 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
                 if(changes.hasOwnProperty(key)) {
                     _changes.entry[key] = changes[key];
                     if(this.items[xpid]) {
-                        this.items[xpid][key] = _changes.entry[key]
+                        this.items[xpid][key] = _changes.entry[key];
                     }
                 }
             }

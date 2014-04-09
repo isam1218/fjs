@@ -11,7 +11,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     $scope.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
     $scope.fields = [];
     $scope.callLog = localStorage.getItem($scope.call.htCallId) && JSON.parse(localStorage.getItem($scope.call.htCallId));
-    $scope.autoAnswer = $scope.call != null && $scope.call.incoming; //&& !SFApp.currentDeviceAutoAnsver;
     $scope.who=[];
     $scope.what=[];
     $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
@@ -21,11 +20,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     if($scope.isRing || ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
         selectCall();
     }
-
-    var locationFeedModel = dataManager.getModel("location_status");
-    locationFeedModel.addEventListener("complete", function(data){
-        $scope.autoAnswer = $scope.call != null && $scope.call.incoming; //&& !SFApp.currentDeviceAutoAnsver;
-    });
 
     var onDurationTimeout = function() {
         var date = new Date();
@@ -135,10 +129,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             $scope.callLog.date = getCurrentDate();
             $scope.callLog.subject = "Call";
         }
-        //choose record from click-to-dial
 
-/*        if(SFApp.phoneMap[$scope.call.phone] && !$scope.callLog.whatId && !$scope.callLog.whoId) {
-            var calleeInfo = SFApp.phoneMap[$scope.call.phone];
+        //choose record from click-to-dial
+        if(dataManager.phoneMap[$scope.call.phone] && !$scope.callLog.whatId && !$scope.callLog.whoId) {
+            var calleeInfo = dataManager.phoneMap[$scope.call.phone];
             if(calleeInfo.type == "Contact") {
                 $scope.callLog.whoId = calleeInfo.id;
                 initWhatId(0);
@@ -155,9 +149,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                     }
                 }
             }
-            delete SFApp.phoneMap[$scope.call.phone];
+            delete dataManager.phoneMap[$scope.call.phone];
         }//the first
-        else if(!SFApp.phoneMap[$scope.call.phone]&& !$scope.callLog.whatId && !$scope.callLog.whoId){
+        else if(!dataManager.phoneMap[$scope.call.phone]&& !$scope.callLog.whatId && !$scope.callLog.whoId){
             if($scope.who && $scope.who[0]) {
                 $scope.callLog.whoId = $scope.who[0]["_id"];
                 if(!isWhoIsLeadByIndex(0)) {
@@ -169,7 +163,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                     initWhatId(0);
                 }
             }
-        } else */if($scope.callLog.whoId && $scope.who){
+        } else if($scope.callLog.whoId && $scope.who){
             var hasWhoId = false;
             for(var i = 0; i < $scope.who.length; i++) {
                 if( $scope.who[i]["_id"] == $scope.callLog.whoId) {
@@ -201,7 +195,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             }
             if(!hasWhoId) {
                 initWhatId(0);
-
             }
         }
     }
@@ -315,10 +308,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
 
     $scope.$watch("call.phone", function() {
         getCallLogInfo();
-    });
-
-    $scope.$watch("SFApp.currentDeviceAutoAnsver", function() {
-        $scope.autoAnswer = $scope.call != null && $scope.call.incoming; //&& !SFApp.currentDeviceAutoAnsver;
     });
 
     function getCurrentDate() {

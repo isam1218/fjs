@@ -33,10 +33,15 @@ function handleMessage(data, callback) {
             break;
         case "unregisterSync":
             dataManager.removeFeedListener(data.data.feedName, callback);
+            break;
         case "action":
             dataManager.sendAction(data.data.feedName, data.data.actionName, data.data.data);
             break;
         case "logout":
             dataManager.logout();
+            break;
+        case "SFLogin":
+            dataManager.SFLogin(message.data);
+            break;
     }
 }
