@@ -18,24 +18,24 @@ var postToPage = function(message) {
 };
 
 //and we handle this messages
-function handleMessage(data, callback) {
-    switch(data.action) {
+function handleMessage(message, callback) {
+    switch(message.action) {
         case "init":
             if(!dataManager) {
-                dataManager = new fjs.fdp.DataManager(data.data.ticket, data.data.node, self, authHandler, function(){});
+                dataManager = new fjs.fdp.DataManager(message.data.ticket, message.data.node, self, authHandler, function(){});
                 dataManager.addEventListener("", function(e){
                     postToPage(e);
                 });
             }
             break;
         case "registerSync":
-            dataManager.addFeedListener(data.data.feedName, callback);
+            dataManager.addFeedListener(message.data.feedName, callback);
             break;
         case "unregisterSync":
-            dataManager.removeFeedListener(data.data.feedName, callback);
+            dataManager.removeFeedListener(message.data.feedName, callback);
             break;
-        case "action":
-            dataManager.sendAction(data.data.feedName, data.data.actionName, data.data.data);
+        case "fdp_action":
+            dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.params);
             break;
         case "logout":
             dataManager.logout();

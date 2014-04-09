@@ -2557,24 +2557,25 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
     fjs.fdp.SyncManager.prototype.lazySyncProcessItems = function(items, feedName, sourceId) {
         var entriesForSave = [];
         for (var j = 0; j < items.length; j++) {
-            var etype = (items[j]["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
-            var xpid = items[j].xpid = items[j].xpid ? items[j].xpid : (sourceId ? sourceId + "_" + items[j]["xef001id"] : items[j]["xef001id"]);
-            delete items[j]["xef001type"];
-            var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
+            var entry = items[j];
+            var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
+            var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
+            delete entry["xef001type"];
+            var event = {eventType: etype, feed:feedName, xpid: xpid, entry: entry};
             if(this.db) {
                 switch (etype) {
                     case sm.eventTypes.ENTRY_CHANGE:
-                        entriesForSave.push(entry.entry);
+                        entriesForSave.push(event.entry);
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
-                        this.db.deleteByKey(feedName, entry.xpid, null);
+                        this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
                         console.error("Incorrect item change type: " + etype+" for Lazy sync");
                         break;
                 }
             }
-            this.fireEvent(feedName, entry);
+            this.fireEvent(feedName, event);
         }
         if(this.db && entriesForSave.length>0) {
             this.db.insertArray(feedName, entriesForSave, null);
@@ -2584,13 +2585,14 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
     fjs.fdp.SyncManager.prototype.fullSyncProcessItems = function(items, feedName, sourceId) {
         var context = this, entriesForSave=[];
             for (var j = 0; j < items.length; j++) {
-                var etype = (items[j]["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
+                var entry = items[j];
+                var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
                 if(etype===sm.eventTypes.ENTRY_CHANGE) {
-                    var xpid = items[j].xpid = items[j].xpid ? items[j].xpid : (sourceId ? sourceId + "_" + items[j]["xef001id"] : items[j]["xef001id"]);
-                    delete items[j]["xef001type"];
-                    var entry = {eventType: etype, feed: feedName, xpid: xpid, entry: items[j]};
+                    var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
+                    delete entry["xef001type"];
+                    var event = {eventType: etype, feed: feedName, xpid: xpid, entry: entry};
                     entriesForSave.push(entry);
-                    this.fireEvent(feedName, entry);
+                    this.fireEvent(feedName, event);
                 }
                 else {
                     console.error("Incorrect item change type: " + etype+" for Full sync");
@@ -2606,25 +2608,26 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
     fjs.fdp.SyncManager.prototype.keepSyncProcessItems = function(items, feedName, sourceId) {
         var entriesForSave = [], idsForKeep=[], idsForPush=[], context=this;
         for (var j = 0; j < items.length; j++) {
-            var etype = (items[j]["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
-            var xpid = items[j].xpid = items[j].xpid ? items[j].xpid : (sourceId ? sourceId + "_" + items[j]["xef001id"] : items[j]["xef001id"]);
-            delete items[j]["xef001type"];
-            var entry = {eventType: etype, feed:feedName, xpid: xpid, entry: items[j]};
+            var entry = items[j];
+            var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE);
+            var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
+            delete entry["xef001type"];
+            var event = {eventType: etype, feed:feedName, xpid: xpid, entry: entry};
             if(this.db) {
                 switch (etype) {
                     case sm.eventTypes.ENTRY_CHANGE:
-                        entriesForSave.push(entry.entry);
-                        idsForPush.push(entry.entry.xpid);
+                        entriesForSave.push(event.entry);
+                        idsForPush.push(event.entry.xpid);
                         break;
                     case sm.eventTypes.ENTRY_KEEP:
-                        idsForKeep.push(entry.entry.xpid);
+                        idsForKeep.push(event.entry.xpid);
                         break;
                     default:
                         console.error("Incorrect item change type: " + etype+" for Keep sync");
                         break;
                 }
             }
-            this.fireEvent(feedName, entry);
+            this.fireEvent(feedName, event);
         }
         if(this.db && entriesForSave.length > 0) {
             this.db.selectByIndex(feedName, {'source':sourceId}, function(item){

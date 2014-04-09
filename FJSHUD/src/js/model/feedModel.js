@@ -17,7 +17,7 @@ fjs.hud.FeedModel = function(feedName, dataManager) {
      *
      * @type {fjs.hud.DataManager}
      */
-    this.fdp = dataManager;
+    this.dataManager = dataManager;
     this.listeners = {
         "start":[]
         , "change":[]
@@ -34,7 +34,7 @@ fjs.hud.FeedModel = function(feedName, dataManager) {
  */
 fjs.hud.FeedModel.prototype.init = function() {
     var context = this;
-    this.fdp.addListener(this.feedName, function(data){
+    this.dataManager.addListener(this.feedName, function(data){
         context.onSyncStart({feed:data["feed"], eventType:"start"});
         var changes = data["changes"];
         for(var key in changes) {

@@ -2,8 +2,10 @@ namespace("fjs.controllers");
 fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var context = this;
+    /**
+     * @type {fjs.model.MeModel}
+     */
     var me = dataManager.getModel('me');
-    var keyToXpid = {};
 
     this.sfApi = sfApi;
 
@@ -29,21 +31,9 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     $scope.phone = true;
     $scope.isLocationRegistered = true;
 
-    me.addEventListener(fjs.controllers.WarningsController.PUSH_LISTENER, function(data){
-        if(data.eventType==fjs.controllers.WarningsController.PUSH_LISTENER) {
-            keyToXpid[data.entry.propertyKey] = data.entry.propertyValue;
-        }
-    });
-
-    me.addEventListener(fjs.controllers.WarningsController.DELETE_LISTENER, function(data){
-        if(data.eventType==fjs.controllers.WarningsController.DELETE_LISTENER) {
-            delete  keyToXpid[data.propertyKey];
-        }
-    });
-
     me.addEventListener(fjs.controllers.WarningsController.COMPLETE_LISTENER, function(){
-        $scope.name = "User: " + keyToXpid["display_name"];
-        $scope.extension = "Extension: x" + keyToXpid["primary_extension"];
+        $scope.name = "User: " + me.getProperty("display_name");
+        $scope.extension = "Extension: x" + me.getProperty("primary_extension");
         context.safeApply($scope);
     });
 

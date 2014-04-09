@@ -65,13 +65,13 @@ fjs.ui.ConferencesWidgetController = function($scope, dataManager) {
 
     });
     $scope.unpin = function() {
-        //dataManager.runApp("conferences");
+        //fdp.runApp("conferences");
     };
     $scope.isMyConference = function(conference){
         return conference.isEditEnabled();
     };
     $scope.openConferenceDetail = function(conferenceId) {
-        //dataManager.runApp("conferences");
+        //fdp.runApp("conferences");
     };
     $scope.hideNote = false;
     $scope.isFindFreeAndJoinDisabled = !conferencesModel.getFreeConferenceRoomToJoin();

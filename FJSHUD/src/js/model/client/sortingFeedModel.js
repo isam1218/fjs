@@ -10,5 +10,5 @@ fjs.hud.SortingFeedModel = function(dataManager) {
 fjs.hud.SortingFeedModel.extend(fjs.hud.ClientFeedModel);
 fjs.hud.SortingFeedModel.prototype.actionSort = function(key, value) {
     var entry = {'xpid': key, 'value': value};
-    this.fdp.sendAction("sortings", "sort", {'xpid':key, 'entry':entry});
+    this.dataManager.sendAction("sortings", "sort", {'xpid':key, 'entry':entry});
 };

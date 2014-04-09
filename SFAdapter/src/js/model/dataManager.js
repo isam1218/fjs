@@ -90,10 +90,15 @@ fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME = "SF_Email";
 fjs.model.DataManager.prototype.getModel = function(feedName) {
     if (!this.feeds[feedName]) {
         switch (feedName) {
+            case 'me':
+                this.feeds[feedName] = new fjs.model.MeModel(this);
+                break;
             case 'mycalls':
                this.feeds[feedName] = new fjs.model.MyCallsFeedModel(this);
+                break;
             default:
                this.feeds[feedName] = new fjs.model.FeedModel(feedName, this);
+                break;
         }
     }
     return this.feeds[feedName];

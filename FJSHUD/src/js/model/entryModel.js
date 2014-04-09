@@ -18,7 +18,7 @@ fjs.hud.EntryModel.prototype.fill = function(obj) {
 
 fjs.hud.EntryModel.prototype.clear = function() {
     for(var i in this) {
-        if(this.hasOwnProperty(i) && !(this[i] instanceof fjs.fdp.EntryModel)) {
+        if(this.hasOwnProperty(i) && !(this[i] instanceof fjs.fdp.model.EntryModel)) {
             this[i] = null;
         }
     }

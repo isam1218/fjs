@@ -41,7 +41,7 @@ fjs.hud.MeFeedModel.prototype.onEntryChange = function(data) {
 fjs.hud.MeFeedModel.prototype.getMyAvatarUrl = function(width, height) {
     var myPid = this.getMyPid();
     if(myPid) {
-        return fjs.fdp.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="+myPid+"&w="+width+"&h="+height+"&Authorization=" + this.fdp.ticket+"&node="+this.fdp.node;
+        return fjs.fdp.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="+myPid+"&w="+width+"&h="+height+"&Authorization=" + this.dataManager.ticket+"&node="+this.dataManager.node;
     }
     else {
         return "img/Generic-Avatar-Small.png";

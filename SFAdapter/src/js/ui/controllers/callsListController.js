@@ -1,77 +1,23 @@
 namespace("fjs.controllers");
 
 fjs.controllers.CallsListController = function($scope, dataManager) {
-    var callsFeedModel = dataManager.getModel("mycalls");
+    var callsFeedModel = dataManager.getModel("mycalls"), context =this;
 
-    function getIndexByXpid (xpid) {
-        if($scope.calls) {
-            for(var i =0; i < $scope.calls.length; i++) {
-                if($scope.calls[i].xpid == xpid)
-                    return i;
-            }
-        }
-        return -1;
-    }
+    fjs.controllers.CommonController.call(this, $scope);
 
-    callsFeedModel.addEventListener("push", function(data){
-        console.log("Data push ", data);
-            var index = getIndexByXpid(data.xpid);
-            if(index < 0) {
-                $scope.calls.push(data);
-            }
-            else {
-                applyModelItem(index, data);
-            }
-            $scope.$apply();
-    });
-
-    callsFeedModel.addEventListener("changepid", function(data){
-        console.log("Data changepid ", data);
-            console.log("Sync Changepid", data);
-            var index = getIndexByXpid(data.oldPid);
-            if(index < 0) {
-                $scope.calls.push(data.entry);
-            }
-            else {
-                applyModelItem(index, data.entry);
-            }
-            $scope.$apply();
-    });
-
-    callsFeedModel.addEventListener("delete", function(data){
-        console.log("Data delete ", data);
-            console.log("Sync Delete", data);
-            var index = getIndexByXpid(data.xpid);
-            if(index > -1) {
-                $scope.calls.splice(index, 1);
-                $scope.$apply();
-        }
-    });
-
-    var applyModelItem = function(index, entry) {
-        var _entry = $scope.calls[index];
-        if(_entry) {
-            for(var key in entry) {
-                if(entry.hasOwnProperty(key)) {
-                    _entry[key] = entry[key];
-                }
-            }
-        }
-    };
-
-    $scope.calls=[];
+    $scope.calls = callsFeedModel.order;
 
     callsFeedModel.addEventListener("complete", function(){
         var oldId = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID);
         var oldMode = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE);
         if(oldId) {
-            var index = getIndexByXpid(oldId);
-            if(index >= 0) {
+            var oldCall = callsFeedModel.items[oldId];
+            if(oldCall) {
                 if(oldMode == "true") {
-                    selectCall($scope.calls[index], oldId);
+                    selectCall(oldCall, oldId);
                 }
                 else {
-                    deselectCall($scope.calls[index]);
+                    deselectCall(oldCall);
                 }
             }
             else if($scope.calls.length > 0){
@@ -81,6 +27,7 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
         else if($scope.calls.length > 0){
            selectCall($scope.calls[0], oldId);
         }
+        context.safeApply($scope);
     });
 
     $scope.$on('toggleCall', function(event, entry) {
@@ -111,15 +58,18 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
     };
 
     var selectCall = function(entry, oldId) {
-        var oldSelectedIndex = getIndexByXpid(oldId);
-        if(oldSelectedIndex >= 0) {
-            $scope.calls[oldSelectedIndex].selected = false;
+        var oldCall = callsFeedModel.items[oldId];
+        if(oldCall) {
+            oldCall.selected = false;
         }
         entry.selected = true;
         localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID, entry.xpid);
         localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE, true);
     }
 };
+
+fjs.controllers.CallsListController.extend(fjs.controllers.CommonController);
+
 
 fjs.controllers.CallsListController.SELECTED_CALL_ID = "selected_call_id";
 fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE= "selected_call_id_mode";

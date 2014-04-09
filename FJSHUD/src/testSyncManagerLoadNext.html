@@ -29,7 +29,7 @@
     var db = dbFactory.getDB();
     var ajax = new fjs.ajax.XHRAjax();
     var sm = new fjs.fdp.SyncManager(db, ajax);
-    var contactsProxy = new fjs.fdp.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails']);
+    var contactsProxy = new fjs.fdp.model.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails']);
     var i = 0;
 //    sm.addListener("streamevent", function(e){
 //        if(e["eventType"]==fjs.fdp.SyncManager.eventTypes.FEED_COMPLETE){
