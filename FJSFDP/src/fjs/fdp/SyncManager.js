@@ -223,12 +223,15 @@
                     case 'sync':
                         context.onSync(e.data);
                         break;
-                    case 'node':
+
                         context.fireEvent('node', e);
                         break;
                     case 'ticket':
                         context.fireEvent('ticket', e);
                         context.startSync(context.syncFeeds);
+                        break;
+                    default:
+                        context.fireEvent(e.type, e);
                         break;
                 }
                 if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
@@ -237,12 +240,8 @@
             });
             transport.addEventListener('error', function(e){
                 switch(e.type) {
-                    case 'requestError':
-                        context.fireEvent("requestError", e);
-                        break;
-                    case 'authError':
-                        context.fireEvent("authError", e);
-                        break;
+                    default:
+                        context.fireEvent(e.type, e);
                 }
                 if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
                     fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);

@@ -41,20 +41,19 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
      * @private
      */
     this.sm = new fjs.fdp.SyncManager(this.config);
+
+    var proxyEventListener = function(e){
+        context.fireEvent(e.type, e);
+    };
+
     this.sm.init(this.ticket, this.node, function(){
         callback();
-        context.sm.addEventListener("node", function(e){
-           context.fireEvent("node", e);
-        });
-        context.sm.addEventListener("ticket", function(e){
-            context.fireEvent("ticket", e);
-        });
-        context.sm.addEventListener("requestError", function(e){
-            context.fireEvent("requestError", e);
-        });
-        context.sm.addEventListener("authError", function(e){
-            context.fireEvent("authError", e);
-        });
+        context.sm.addEventListener("node", proxyEventListener);
+        context.sm.addEventListener("ticket", proxyEventListener);
+        context.sm.addEventListener("requestError", proxyEventListener);
+        context.sm.addEventListener("authError", proxyEventListener);
+        context.sm.addEventListener("networkProblem", proxyEventListener);
+        context.sm.addEventListener("connectionEstablished", proxyEventListener);
     });
     /**
      * @type {{}}

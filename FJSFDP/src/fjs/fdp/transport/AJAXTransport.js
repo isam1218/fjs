@@ -80,6 +80,8 @@
          */
         this.versionsCacheFailedCount = 0;
 
+        this.isNetworkProblem = false;
+
     };
     fjs.fdp.transport.AJAXTransport.extend(fjs.fdp.transport.FDPTransport);
 
@@ -91,6 +93,22 @@
      * @abstract
      */
     fjs.fdp.transport.AJAXTransport.prototype.sendRequest = function (url, data, callback) {
+
+    };
+
+    fjs.fdp.transport.AJAXTransport.prototype.handleRequestErrors = function(request, isOk) {
+        if(!isOk && request.status==0 && !request["aborted"]) {
+            this.fireEvent('error', {type:'networkProblem'});
+            this.isNetworkProblem = true;
+            return;
+        }
+        else if(!isOk) {
+            this.fireEvent('error', {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status});
+        }
+        if(this.isNetworkProblem) {
+            this.fireEvent('message', {type:'connectionEstablished'});
+            this.isNetworkProblem = false;
+        }
     };
 
     /**
@@ -145,9 +163,10 @@
                       context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
                   }
               }
-              else {
-                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed', status:request.status});
+              else if(xhr.status == 403 || xhr.status == 401) {
+                  context.fireEvent('error', {type:'authError', message:"Wrong auth data"});
               }
+              context.handleRequestErrors(xhr, isOk);
           });
     };
 
@@ -166,6 +185,7 @@
                 }
                 context.fireEvent('message', {type: 'sync', data: syncData});
             }
+            context.handleRequestErrors(xhr, isOk);
         });
     };
 
@@ -199,6 +219,8 @@
         return result;
     };
 
+
+
     /**
      * ClientRegistry request
      * @param callback
@@ -231,10 +253,10 @@
                     }
                     else {
                         callback(false);
-                        context.fireEvent('error', {type:'requestError', requestType:'clientRegistry', message:'clientRegistry request failed', status:request.status})
                     }
                 }
             }
+            context.handleRequestErrors(request, isOk);
         });
     };
     /**
@@ -273,9 +295,9 @@
                             context.requestVersionscache()
                         }, 5000);
                     }
-                    context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
                 }
             }
+            context.handleRequestErrors(request, isOk);
         });
     };
 
@@ -292,9 +314,7 @@
                 context.fireEvent('message', {type: 'sync', data:data});
                 context.requestVersionscache();
             }
-            else if(!xhr["aborted"]) {
-                context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
-            }
+            context.handleRequestErrors(xhr, isOK);
         });
     };
 
@@ -359,10 +379,8 @@
                         }
                     });
                 }
-                else if(!xhr["aborted"]) {
-                    context.fireEvent('error', {type: 'requestError', requestType: 'versionsRequest', message: 'Versions request error', status:request.status});
-                }
             }
+            context.handleRequestErrors(xhr, isOk);
         });
     };
     /**
@@ -382,11 +400,7 @@
             }
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
-            if(!isOK) {
-                if(!xhr["aborted"]) {
-                    context.fireEvent('error', {type: 'requestError', requestType: 'actionRequest', message: 'Action request error', status:request.status});
-                }
-            }
+            context.handleRequestErrors(xhr, isOK);
         });
     };
 

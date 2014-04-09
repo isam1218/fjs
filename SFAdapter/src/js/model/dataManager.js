@@ -68,6 +68,12 @@ fjs.model.DataManager = function(sf) {
             context.dataProvider.addEventListener("requestError", function(e) {
                 console.error(e);
             });
+            context.dataProvider.addEventListener("networkProblem", function(e) {
+                console.error(e);
+            });
+            context.dataProvider.addEventListener("connectionEstablished", function(e) {
+                console.error(e);
+            });
             context.dataProvider.addEventListener("node", function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
             });

@@ -1519,6 +1519,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
          */
         this.versionsCacheFailedCount = 0;
 
+        this.isNetworkProblem = false;
+
     };
     fjs.fdp.transport.AJAXTransport.extend(fjs.fdp.transport.FDPTransport);
 
@@ -1530,6 +1532,22 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
      * @abstract
      */
     fjs.fdp.transport.AJAXTransport.prototype.sendRequest = function (url, data, callback) {
+
+    };
+
+    fjs.fdp.transport.AJAXTransport.prototype.handleRequestErrors = function(request, isOk) {
+        if(!isOk && request.status==0 && !request["aborted"]) {
+            this.fireEvent('error', {type:'networkProblem'});
+            this.isNetworkProblem = true;
+            return;
+        }
+        else if(!isOk) {
+            this.fireEvent('error', {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status});
+        }
+        if(this.isNetworkProblem) {
+            this.fireEvent('message', {type:'connectionEstablished'});
+            this.isNetworkProblem = false;
+        }
     };
 
     /**
@@ -1584,9 +1602,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                       context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
                   }
               }
-              else {
-                  context.fireEvent('error', {type:'requestError', requestType:'sfLogin', message:'SF login request failed', status:request.status});
+              else if(xhr.status == 403 || xhr.status == 401) {
+                  context.fireEvent('error', {type:'authError', message:"Wrong auth data"});
               }
+              context.handleRequestErrors(xhr, isOk);
           });
     };
 
@@ -1605,6 +1624,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                 }
                 context.fireEvent('message', {type: 'sync', data: syncData});
             }
+            context.handleRequestErrors(xhr, isOk);
         });
     };
 
@@ -1638,6 +1658,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         return result;
     };
 
+
+
     /**
      * ClientRegistry request
      * @param callback
@@ -1670,10 +1692,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                     }
                     else {
                         callback(false);
-                        context.fireEvent('error', {type:'requestError', requestType:'clientRegistry', message:'clientRegistry request failed', status:request.status})
                     }
                 }
             }
+            context.handleRequestErrors(request, isOk);
         });
     };
     /**
@@ -1712,9 +1734,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                             context.requestVersionscache()
                         }, 5000);
                     }
-                    context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
                 }
             }
+            context.handleRequestErrors(request, isOk);
         });
     };
 
@@ -1731,9 +1753,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                 context.fireEvent('message', {type: 'sync', data:data});
                 context.requestVersionscache();
             }
-            else if(!xhr["aborted"]) {
-                context.fireEvent('error', {type: 'requestError', requestType: 'syncRequest', message: 'Sync request error', status:request.status});
-            }
+            context.handleRequestErrors(xhr, isOK);
         });
     };
 
@@ -1798,10 +1818,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                         }
                     });
                 }
-                else if(!xhr["aborted"]) {
-                    context.fireEvent('error', {type: 'requestError', requestType: 'versionsRequest', message: 'Versions request error', status:request.status});
-                }
             }
+            context.handleRequestErrors(xhr, isOk);
         });
     };
     /**
@@ -1821,11 +1839,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
             }
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
-            if(!isOK) {
-                if(!xhr["aborted"]) {
-                    context.fireEvent('error', {type: 'requestError', requestType: 'actionRequest', message: 'Action request error', status:request.status});
-                }
-            }
+            context.handleRequestErrors(xhr, isOK);
         });
     };
 
@@ -2380,12 +2394,15 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                     case 'sync':
                         context.onSync(e.data);
                         break;
-                    case 'node':
+
                         context.fireEvent('node', e);
                         break;
                     case 'ticket':
                         context.fireEvent('ticket', e);
                         context.startSync(context.syncFeeds);
+                        break;
+                    default:
+                        context.fireEvent(e.type, e);
                         break;
                 }
                 if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
@@ -2394,12 +2411,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
             });
             transport.addEventListener('error', function(e){
                 switch(e.type) {
-                    case 'requestError':
-                        context.fireEvent("requestError", e);
-                        break;
-                    case 'authError':
-                        context.fireEvent("authError", e);
-                        break;
+                    default:
+                        context.fireEvent(e.type, e);
                 }
                 if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
                     fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
@@ -3097,20 +3110,19 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
      * @private
      */
     this.sm = new fjs.fdp.SyncManager(this.config);
+
+    var proxyEventListener = function(e){
+        context.fireEvent(e.type, e);
+    };
+
     this.sm.init(this.ticket, this.node, function(){
         callback();
-        context.sm.addEventListener("node", function(e){
-           context.fireEvent("node", e);
-        });
-        context.sm.addEventListener("ticket", function(e){
-            context.fireEvent("ticket", e);
-        });
-        context.sm.addEventListener("requestError", function(e){
-            context.fireEvent("requestError", e);
-        });
-        context.sm.addEventListener("authError", function(e){
-            context.fireEvent("authError", e);
-        });
+        context.sm.addEventListener("node", proxyEventListener);
+        context.sm.addEventListener("ticket", proxyEventListener);
+        context.sm.addEventListener("requestError", proxyEventListener);
+        context.sm.addEventListener("authError", proxyEventListener);
+        context.sm.addEventListener("networkProblem", proxyEventListener);
+        context.sm.addEventListener("connectionEstablished", proxyEventListener);
     });
     /**
      * @type {{}}
