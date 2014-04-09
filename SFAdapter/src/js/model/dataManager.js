@@ -40,14 +40,9 @@ fjs.model.DataManager = function(sf) {
              if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
                  context.dataProvider = providerFactory.getProvider(null, null, function() {
+                     //context.dataProvider.sendMessage({action:"logout"});
                      context.dataProvider.sendMessage({action: "SFLogin", data: data});
                      context.state = 1;
-                     if(context.suspendFeeds.length>0) {
-                        for(var i=0; i<context.suspendFeeds.length; i++) {
-                            context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
-                        }
-                         context.suspendFeeds=[];
-                     }
                  });
             }
             else {
@@ -64,17 +59,26 @@ fjs.model.DataManager = function(sf) {
             context.dataProvider.addEventListener("sync", function(data) {
                 context.fireEvent(data.feed, data);
             });
-            context.dataProvider.addEventListener("authError", function() {
+            context.dataProvider.addEventListener("authError", function(e) {
                 context._getAuthInfo(function(data){
                     context.dataProvider.sendMessage({action: "SFLogin", data: data});
                 });
 
+            });
+            context.dataProvider.addEventListener("requestError", function(e) {
+                console.error(e);
             });
             context.dataProvider.addEventListener("node", function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
             });
             context.dataProvider.addEventListener("ticket", function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
+                if(context.suspendFeeds.length>0) {
+                    for(var i=0; i<context.suspendFeeds.length; i++) {
+                        context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
+                    }
+                    context.suspendFeeds=[];
+                }
             });
         }
     });
