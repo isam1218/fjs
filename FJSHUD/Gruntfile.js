@@ -14,8 +14,8 @@ module.exports = function(grunt) {
                     , 'src/db/WebSQLProvider.js'
                     , 'src/db/LocalStorageDBProvider.js'
                     , 'src/db/DBFactory.js'
-                    , 'src/models/entryModel.js'
-                    , 'src/models/proxyModel.js'
+                    , 'src/models/EntryModel.js'
+                    , 'src/models/ProxyModel.js'
                     , 'src/sync/*.js'],
                 dest: 'bin/fjs.fdp.debug.js'
             }

@@ -13,13 +13,13 @@ fjs.hud.VoicemailMessageFeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.VoicemailMessageEntryModel(obj, this);
 };
 fjs.hud.VoicemailMessageFeedModel.prototype.actionJoinMe = function(confId) {
-    this.actionJoinContact(confId, this.fdp.getModel("me").getMyPid());
+    this.actionJoinContact(confId, this.dataManager.getModel("me").getMyPid());
 };
 fjs.hud.VoicemailMessageFeedModel.prototype.actionMarkAsRead = function(messageId) {
     //this.fdp.sendAction("voicemailbox", "markAsRead", {"a.messageId":messageId});
 };
 fjs.hud.VoicemailMessageFeedModel.prototype.actionCallback = function(messageId){
-    this.fdp.sendAction("voicemailbox", "callback", {"a.messageId":messageId});
+    this.dataManager.sendAction("voicemailbox", "callback", {"a.messageId":messageId});
 };
 /**
  *
@@ -27,12 +27,12 @@ fjs.hud.VoicemailMessageFeedModel.prototype.actionCallback = function(messageId)
  * @param read {boolean}
  */
 fjs.hud.VoicemailMessageFeedModel.prototype.actionSetReadStatusAll = function(ids, read) {
-    this.fdp.sendAction("voicemailbox", "setReadStatusAll", {"a.ids": ids, "a.read":read});
+    this.dataManager.sendAction("voicemailbox", "setReadStatusAll", {"a.ids": ids, "a.read":read});
 };
 /**
  *
  * @param ids {string}
  */
 fjs.hud.VoicemailMessageFeedModel.prototype.actionRemoveReadMessages = function(ids) {
-    this.fdp.sendAction("voicemailbox", "removeReadMessages", {"a.messages": ids});
+    this.dataManager.sendAction("voicemailbox", "removeReadMessages", {"a.messages": ids});
 };

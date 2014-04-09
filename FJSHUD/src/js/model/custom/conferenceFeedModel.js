@@ -84,10 +84,10 @@ fjs.hud.ConferenceFeedModel.prototype.createEntry = function(obj) {
     return new fjs.hud.ConferenceEntryModel(obj, this);
 };
 fjs.hud.ConferenceFeedModel.prototype.actionJoinMe = function(confId) {
-    this.actionJoinContact(confId, this.fdp.getModel("me").getMyPid());
+    this.actionJoinContact(confId, this.dataManager.getModel("me").getMyPid());
 };
 fjs.hud.ConferenceFeedModel.prototype.actionJoinContact = function(confId, contactId) {
-    this.fdp.sendAction("conferences", "joinContact", {"a.conferenceId":confId, "a.contactId":contactId});
+    this.dataManager.sendAction("conferences", "joinContact", {"a.conferenceId":confId, "a.contactId":contactId});
 };
 fjs.hud.ConferenceFeedModel.prototype.getFreeConferenceRoomToJoin = function() {
     var candidate = undefined;

@@ -9,6 +9,7 @@ fjs.model.FeedModel = function(feedName, dataManager) {
     fjs.EventsSource.call(this);
     this.feedName = feedName;
     this.items = {};
+    this.order = [];
     this.dataManager = dataManager;
     this.listeners = {
         "start":[]
@@ -38,7 +39,7 @@ fjs.model.FeedModel.prototype.init = function() {
             if(data.changes.hasOwnProperty(key)) {
                 var change = data.changes[key];
                 if('change' == change.type) {
-                    context.onEntryChange(change.entry);
+                    context.onEntryChange(change);
                 }
                 else if('delete' == change.type) {
                     context.onEntryDeletion(change);
@@ -59,15 +60,28 @@ fjs.model.FeedModel.prototype.onSyncStart = function(data) {
     this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_START, data);
 };
 
-fjs.model.FeedModel.prototype.onEntryDeletion = function(data) {
-    delete this.items[data.xpid];
-    this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_DELETE, data);
+fjs.model.FeedModel.prototype.onEntryDeletion = function(event) {
+    var item = this.items[event.xpid];
+    var index = this.order.indexOf(item);
+    if(index>-1){
+        this.order.splice(index, 1);
+    }
+    delete this.items[event.xpid];
+    this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_DELETE, event);
 };
 
-fjs.model.FeedModel.prototype.onEntryChange = function(data) {
-    this.prepareEntry(data);
-    this.items[data.xpid] = data.entry;
-    this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_PUSH, data);
+fjs.model.FeedModel.prototype.onEntryChange = function(event) {
+    var entry = this.items[event.xpid];
+    if(!entry) {
+        entry = this.items[event.xpid] = new fjs.model.EntryModel(event.entry);
+        this.order.push(entry);
+    }
+    else {
+        entry.fill(event.entry);
+    }
+    this.prepareEntry(entry);
+
+    this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_PUSH, entry);
 };
 
 fjs.model.FeedModel.prototype.onSyncComplete = function(data) {
@@ -75,7 +89,7 @@ fjs.model.FeedModel.prototype.onSyncComplete = function(data) {
 };
 
 fjs.model.FeedModel.prototype.addEventListener = function(eventType, callback) {
-    this.superClass.addEventListener.call(this, eventType, callback);
+    fjs.EventsSource.prototype.addEventListener.call(this, eventType, callback);
     if(eventType==fjs.model.FeedModel.EVENT_TYPE_PUSH) {
        for(var i in this.items) {
            if(this.items.hasOwnProperty(i))

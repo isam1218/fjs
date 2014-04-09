@@ -33,7 +33,7 @@ fjs.hud.DataManager = function() {
 
     this.listeners = {};
     /**
-     * @type {fjs.api.ClientDataProviderBase}
+     * @type {fjs.api.DataProviderBase}
      */
     this.dataProvider =null;
 

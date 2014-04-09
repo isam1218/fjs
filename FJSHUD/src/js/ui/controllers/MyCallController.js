@@ -3,7 +3,7 @@ namespace("fjs.ui");
 fjs.ui.MyCallController = function($scope, $timeout, $filter) {
     fjs.ui.Controller.call(this, $scope);
     var durationTimer = null;
-    var timeSync = null;//new fjs.TimeSync();
+    var timeSync = null;//new fjs.utils.TimeSync();
     var dataProvider = new fjs.hud.DataManager();
     var onDurationTimeout = function() {
         var date = new Date();

@@ -13,7 +13,7 @@ fjs.hud.ConferenceMemberEntryModel = function(obj, conferenceMemberFeed) {
      * @type {ConferenceMemberFeedModel}
      */
     this.conferenceMemberFeed = conferenceMemberFeed;
-    this.contactsModel = this.conferenceMemberFeed.dataManager.getModel("contacts");
+    this.contactsModel = this.conferenceMemberFeed.fdp.getModel("contacts");
 };
 fjs.hud.ConferenceMemberEntryModel.extend(fjs.hud.EntryModel);
 /**

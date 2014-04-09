@@ -7,6 +7,7 @@
       <w>mousewheel</w>
       <w>onload</w>
       <w>onmessage</w>
+      <w>softphone</w>
     </words>
   </dictionary>
 </component>
