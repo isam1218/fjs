@@ -68,6 +68,7 @@ fjs.model.DataManager = function(sf) {
                 context._getAuthInfo(function(data){
                     context.dataProvider.sendMessage({action: "SFLogin", data: data});
                 });
+
             });
             context.dataProvider.addEventListener("node", function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);

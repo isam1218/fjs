@@ -3,6 +3,13 @@ namespace("fjs.controllers");
 fjs.controllers.NewCallController = function($scope, $element, dataManager) {
     $scope.phone ="";
 
+    var dialpadPlate = document.getElementById("plate");
+    dialpadPlate.onclick = function(e) {
+        $scope.$apply(function() {
+            $scope.closeDialpad();
+        });
+    };
+
     $scope.actionCall = function(phone) {
         dataManager.sendAction("me", "callTo", {"phoneNumber":phone});
         $scope.phone = "";
@@ -15,14 +22,14 @@ fjs.controllers.NewCallController = function($scope, $element, dataManager) {
         }
         else {
             $scope.dialogPath = "templates/dialpad.html";
-            document.getElementById("plate").style.display = "block";
+            dialpadPlate.style.display = "block";
             focusPhoneInput();
         }
     };
 
     $scope.closeDialpad = function() {
          $scope.dialogPath=null;
-         document.getElementById("plate").style.display = "none";
+        dialpadPlate.style.display = "none";
     };
 
     $scope.$on('onDilapadKey', function(event, key) {

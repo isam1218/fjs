@@ -376,7 +376,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     });
 
     $scope.$on('transfer', function(event, number) {
-        fdp.sendAction(fjs.app.SFAdapter.MY_CALLS_FEED_NAME, "transferTo", {"a.mycallId":$scope.call.xpid,"a.toNumber":number});
+        dataManager.sendAction('mycalls', "transferTo", {"mycallId":$scope.call.xpid, "toNumber":number });
         $scope.transferDialogPath=null;
         $scope.isTransferDialogClass="";
     });
