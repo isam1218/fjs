@@ -8,7 +8,7 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
 
     $scope.calls = callsFeedModel.order;
 
-    callsFeedModel.addEventListener("complete", function(){
+    this.completeCallsListener = function(){
         var oldId = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID);
         var oldMode = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE);
         if(oldId) {
@@ -26,10 +26,12 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             }
         }
         else if($scope.calls.length > 0){
-           selectCall($scope.calls[0], oldId);
+            selectCall($scope.calls[0], oldId);
         }
         context.safeApply($scope);
-    });
+    };
+
+    callsFeedModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeCallsListener);
 
     $scope.$on('toggleCall', function(event, entry) {
         var oldId = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID);
@@ -66,7 +68,11 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
         entry.selected = true;
         localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID, entry.xpid);
         localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE, true);
-    }
+    };
+
+    $scope.$on("$destroy", function() {
+        callsFeedModel.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.completeCallsListener);
+    });
 };
 
 fjs.controllers.CallsListController.extend(fjs.controllers.CommonController);

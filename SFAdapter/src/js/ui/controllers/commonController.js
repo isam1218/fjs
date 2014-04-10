@@ -12,3 +12,7 @@ fjs.controllers.CommonController.prototype.safeApply = function($scope, fn) {
         $scope.$apply(fn);
     }
 };
+
+fjs.controllers.CommonController.COMPLETE_LISTENER = "complete";
+fjs.controllers.CommonController.PUSH_LISTENER = "push";
+fjs.controllers.CommonController.DELETE_LISTENER = "delete";

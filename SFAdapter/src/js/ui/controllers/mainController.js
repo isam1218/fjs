@@ -31,12 +31,6 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     $scope.phone = true;
     $scope.isLocationRegistered = true;
 
-    me.addEventListener(fjs.controllers.WarningsController.COMPLETE_LISTENER, function(){
-        $scope.name = "User: " + me.getProperty("display_name");
-        $scope.extension = "Extension: x" + me.getProperty("primary_extension");
-        context.safeApply($scope);
-    });
-
     var checkShowWarning = function() {
         $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered;
         if($scope.loggined && $scope.connection && $scope.isLocationRegistered) {
@@ -44,29 +38,50 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         }
     };
 
-    checkShowWarning();
+    //Listeners
+    this.completeMeListener = function(){
+        $scope.name = "User: " + me.getProperty("display_name");
+        $scope.extension = "Extension: x" + me.getProperty("primary_extension");
+        context.safeApply($scope);
+    };
 
-    dataManager.addWarningListener("Authorization", function(data) {
+    this.authorizationWarningListener = function(data) {
         $scope.loggined = data;
         checkShowWarning();
         context.safeApply($scope);
-    });
+    };
 
-    dataManager.addWarningListener("Connection", function(data) {
+    this.connectionWarningListener = function(data) {
         // Add timeout, task #36371 SFA: Warning icon shows up every time I click on anything on Salesforce
         setTimeout(function() {
             $scope.connection = data;
             checkShowWarning();
         }, 1000);
         context.safeApply($scope);
-    });
+    };
+
+    me.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeMeListener);
+
+    dataManager.addWarningListener(fjs.controllers.MainController.AUTHORIZATION_LISTENER, this.authorizationWarningListener);
+    dataManager.addWarningListener(fjs.controllers.MainController.CONNECTION_LISTENER, this.connectionWarningListener);
 
     $scope.$on('onLocationStatus', function(event, key) {
         $scope.isLocationRegistered = key;
         checkShowWarning();
         context.safeApply($scope);
     });
+
+    $scope.$on("$destroy", function() {
+        context.me.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.completeMeListener);
+        dataManager.removeWarningListener(fjs.controllers.CommonController.AUTHORIZATION_LISTENER, context.authorizationWarningListener);
+        dataManager.removeWarningListener(fjs.controllers.CommonController.CONNECTION_LISTENER, context.connectionWarningListener);
+    });
+
+    checkShowWarning();
 };
+
+fjs.controllers.MainController.CONNECTION_LISTENER = "Connection";
+fjs.controllers.MainController.AUTHORIZATION_LISTENER = "Authorization";
 
 fjs.controllers.MainController.extend(fjs.controllers.CommonController);
 

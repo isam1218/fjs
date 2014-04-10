@@ -1,35 +1,48 @@
 namespace("fjs.controllers");
 fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     fjs.controllers.CommonController(this);
-    var me = dataManager.getModel('me');
-    var locations = dataManager.getModel('locations');
+    this.me = dataManager.getModel('me');
+    this.locations = dataManager.getModel('locations');
     var keyToXpid = {};
     var context = this;
 
-    me.addEventListener(fjs.controllers.WarningsController.COMPLETE_LISTENER, function(){
+    this.deleteMeListener = function(data){
+        delete keyToXpid[data.propertyKey];
+    };
+
+    this.pushMeListener = function(data){
+        keyToXpid[data.propertyKey] = data.propertyValue;
+    };
+
+    this.completeMeListener = function(){
         $scope.name = keyToXpid["display_name"];
         $scope.fdp_version = keyToXpid["fdp_version"];
         $scope.my_jid = keyToXpid["my_jid"];
         $scope.license = keyToXpid["license"];
         $scope.extension = keyToXpid["primary_extension"];
         $scope.locationId =  keyToXpid["current_location"];
-        if(locations.items && locations.items[$scope.locationId]) {
-            $scope.location =  locations.items[$scope.locationId].shortName;
+        if(context.locations.items && context.locations.items[$scope.locationId]) {
+            $scope.location =  context.locations.items[$scope.locationId].shortName;
         }
-        var location = locations.items[$scope.locationId];
+        var location = context.locations.items[$scope.locationId];
         if(location){
             setLocationStatus(location);
         }
         context.safeApply($scope);
-    });
+    };
 
-    locations.addEventListener(fjs.controllers.WarningsController.COMPLETE_LISTENER, function(){
-        if(locations.items && locations.items[$scope.locationId]) {
-            $scope.location =  locations.items[$scope.locationId].shortName;
+    this.locationListener = function(){
+        if(context.locations.items && context.locations.items[$scope.locationId]) {
+            $scope.location =  context.locations.items[$scope.locationId].shortName;
             setLocationStatus(location);
-           context.safeApply($scope);
+            context.safeApply($scope);
         }
-    });
+    };
+
+    this.me.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeMeListener);
+    this.me.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, this.pushMeListener);
+    this.me.addEventListener(fjs.controllers.CommonController.DELETE_LISTENER, this.deleteMeListener);
+    this.locations.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.locationListener);
 
     var setLocationStatus =  function(location) {
         if(location && location.locationType == fjs.controllers.WarningsController.CARRIER_TYPE) {
@@ -47,14 +60,6 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
             }
         }
     };
-
-    me.addEventListener(fjs.controllers.WarningsController.PUSH_LISTENER, function(data){
-         keyToXpid[data.propertyKey] = data.propertyValue;
-    });
-
-    me.addEventListener(fjs.controllers.WarningsController.DELETE_LISTENER, function(data){
-         delete keyToXpid[data.propertyKey];
-    });
 
     $scope.sendFeedback = function(msg) {
         var description = "";
@@ -82,16 +87,21 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     $scope.close = function() {
         $scope.showWarnings();
     };
+
+    $scope.$on("$destroy", function() {
+        context.me.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.completeMeListener);
+        context.me.removeEventListener(fjs.controllers.CommonController.PUSH_LISTENER, context.pushMeListener);
+        context.me.removeEventListener(fjs.controllers.CommonController.DELETE_LISTENER, context.deleteMeListener);
+        context.locations.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.locationListener);
+    });
 };
 
 fjs.controllers.WarningsController.extend(fjs.controllers.CommonController);
 
 fjs.controllers.WarningsController.REGISTERED = "Registered";
 fjs.controllers.WarningsController.UNREGISTERED = "Unregistered";
+
 fjs.controllers.WarningsController.CARRIER_TYPE = "m";
 fjs.controllers.WarningsController.ON_LOCATION_STATUS = "onLocationStatus";
 
-fjs.controllers.WarningsController.COMPLETE_LISTENER = "complete";
-fjs.controllers.WarningsController.PUSH_LISTENER = "push";
-fjs.controllers.WarningsController.DELETE_LISTENER = "delete";
 

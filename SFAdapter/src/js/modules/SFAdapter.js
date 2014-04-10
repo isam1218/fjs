@@ -8,6 +8,5 @@ ng_app.controller("CallsListController", fjs.controllers.CallsListController);
 ng_app.controller("CallController", fjs.controllers.CallController);
 ng_app.controller("DialpadController", fjs.controllers.DialpadController);
 ng_app.controller("TransferDialog", fjs.controllers.TransferDialog);
-ng_app.controller("CallLogController", fjs.controllers.CallLogController);
 ng_app.controller("WarningsController", fjs.controllers.WarningsController);
 ng_app.controller("MainController", fjs.controllers.MainController);
