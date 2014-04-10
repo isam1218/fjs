@@ -140,7 +140,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     fjs.api.DataProviderBase.call(this, ticket, node);
     this.worker = new Worker("js/lib/fdp_worker.js");
     this.worker.addEventListener("message", function(e) {
-        context.fireEvent(e.data["eventType"], e.data["data"]);
+        context.fireEvent(e.data["eventType"], e.data["data"] || e.data);
     }, false);
     this.worker.addEventListener("error", function(e){
         console.error("Worker Error", e);
@@ -183,7 +183,7 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
             context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node}});
             callback();
         }
-        context.fireEvent(e.data["eventType"], e.data["data"]);
+        context.fireEvent(e.data["eventType"], e.data["data"] || e.data);
     }, false);
     this.worker.port.addEventListener("error", function(e){
         console.error("Worker Error", e);
