@@ -17,9 +17,9 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
             $scope.location =  locations.items[$scope.locationId].shortName;
         }
         var location = locations.items[$scope.locationId];
-        if(location)
-        setLocationStatus(location);
-
+        if(location){
+            setLocationStatus(location);
+        }
         context.safeApply($scope);
     });
 
@@ -30,8 +30,6 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
            context.safeApply($scope);
         }
     });
-
-
 
     var setLocationStatus =  function(location) {
         if(location && location.locationType == fjs.controllers.WarningsController.CARRIER_TYPE) {
@@ -51,15 +49,11 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     };
 
     me.addEventListener(fjs.controllers.WarningsController.PUSH_LISTENER, function(data){
-        if(data.eventType==fjs.controllers.WarningsController.PUSH_LISTENER) {
-            keyToXpid[data.entry.propertyKey] = data.entry.propertyValue;
-        }
+         keyToXpid[data.propertyKey] = data.propertyValue;
     });
 
     me.addEventListener(fjs.controllers.WarningsController.DELETE_LISTENER, function(data){
-        if(data.eventType==fjs.controllers.WarningsController.DELETE_LISTENER) {
-           delete  keyToXpid[data.propertyKey];
-        }
+         delete keyToXpid[data.propertyKey];
     });
 
     $scope.sendFeedback = function(msg) {

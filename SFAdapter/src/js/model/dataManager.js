@@ -16,9 +16,13 @@ fjs.model.DataManager = function(sf) {
 
     this.state = -1;
     this.suspendFeeds = [];
+    this.warningListeners = {};
 
     var providerFactory = new fjs.api.FDPProviderFactory();
     var context = this;
+
+    this.authErrorCount = 0;
+    this.MAX_AUTH_ERROR_COUNT = 3;
 
     this.checkDevice = function() {
         context.sf.setPhoneApi(true, function (obj) {
@@ -37,10 +41,9 @@ fjs.model.DataManager = function(sf) {
 
     this._getAuthInfo(function(data){
         if(data) {
-             if(context._authInfoChanged(data) || !context._getAccessInfo()) {
+            if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
                  context.dataProvider = providerFactory.getProvider(null, null, function() {
-                     //context.dataProvider.sendMessage({action:"logout"});
                      context.dataProvider.sendMessage({action: "SFLogin", data: data});
                      context.state = 1;
                  });
@@ -60,25 +63,33 @@ fjs.model.DataManager = function(sf) {
                 context.fireEvent(data.feed, data);
             });
             context.dataProvider.addEventListener("authError", function(e) {
-                context._getAuthInfo(function(data){
-                    context.dataProvider.sendMessage({action: "SFLogin", data: data});
-                });
-
+                if(context.authErrorCount < context.MAX_AUTH_ERROR_COUNT) {
+                    context._getAuthInfo(function(data){
+                        context.dataProvider.sendMessage({action: "SFLogin", data: data});
+                    });
+                    context.authErrorCount++;
+                }
+                else {
+                    context.fireWarningEvent("Authorization", false);
+                }
             });
             context.dataProvider.addEventListener("requestError", function(e) {
                 console.error(e);
             });
             context.dataProvider.addEventListener("networkProblem", function(e) {
                 console.error(e);
+                context.fireWarningEvent("Connection", false);
             });
             context.dataProvider.addEventListener("connectionEstablished", function(e) {
                 console.error(e);
+                context.fireWarningEvent("Connection", true);
             });
             context.dataProvider.addEventListener("node", function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
             });
             context.dataProvider.addEventListener("ticket", function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
+                context.fireWarningEvent("Authorization", true);
                 if(context.suspendFeeds.length>0) {
                     for(var i=0; i<context.suspendFeeds.length; i++) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
@@ -192,9 +203,29 @@ fjs.model.DataManager.prototype.addEventListener = function(feedName, handler) {
     this.superClass.addEventListener.call(this, feedName, handler);
 };
 
-fjs.model.DataManager.prototype.removeEventListener = function(feedName, handler) {
-    this.superClass.removeEventListener.call(this, feedName, handler);
-    if(!this.listeners[feedName] || this.listeners[feedName].length == 0) {
-            this.dataProvider.removeSyncForFeed(feedName);
+fjs.model.DataManager.prototype.addWarningListener = function(eventType, callback) {
+    if(this.warningListeners[eventType]) {
+        this.warningListeners[eventType].push(callback);
+    }
+    else {
+        var events = [];
+        events.push(callback);
+        this.warningListeners[eventType] = events;
+    }
+};
+
+fjs.model.DataManager.prototype.removeWarningListener = function(eventType, callback) {
+    var i =this.warningListeners[eventType].indexOf(callback);
+    if(i > -1) {
+        this.warningListeners[eventType].splice(i, 1);
+    }
+};
+
+fjs.model.DataManager.prototype.fireWarningEvent = function(eventType, data) {
+    var listeners = this.warningListeners[eventType];
+    if(listeners) {
+        for(var i=0; i<listeners.length; i++) {
+            listeners[i](data);
+        }
     }
 };

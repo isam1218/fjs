@@ -46,20 +46,20 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
 
     checkShowWarning();
 
-//    SFApp.syncManager.addEventListener("Authorization", function(data) {
-//        $scope.loggined = data;
-//        checkShowWarning();
-//        context.safeApply($scope);
-//    });
-//
-//    SFApp.syncManager.addEventListener("Connection", function(data) {
-//        // Add timeout, task #36371 SFA: Warning icon shows up every time I click on anything on Salesforce
-//        setTimeout(function() {
-//            $scope.connection = data;
-//            checkShowWarning();
-//        }, 1000);
-//        context.safeApply($scope);
-//    });
+    dataManager.addWarningListener("Authorization", function(data) {
+        $scope.loggined = data;
+        checkShowWarning();
+        context.safeApply($scope);
+    });
+
+    dataManager.addWarningListener("Connection", function(data) {
+        // Add timeout, task #36371 SFA: Warning icon shows up every time I click on anything on Salesforce
+        setTimeout(function() {
+            $scope.connection = data;
+            checkShowWarning();
+        }, 1000);
+        context.safeApply($scope);
+    });
 
     $scope.$on('onLocationStatus', function(event, key) {
         $scope.isLocationRegistered = key;

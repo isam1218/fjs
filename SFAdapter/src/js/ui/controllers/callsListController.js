@@ -1,7 +1,8 @@
 namespace("fjs.controllers");
 
 fjs.controllers.CallsListController = function($scope, dataManager) {
-    var callsFeedModel = dataManager.getModel("mycalls"), context =this;
+    var callsFeedModel = dataManager.getModel("mycalls");
+    var context =this;
 
     fjs.controllers.CommonController.call(this, $scope);
 
@@ -69,7 +70,6 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
 };
 
 fjs.controllers.CallsListController.extend(fjs.controllers.CommonController);
-
 
 fjs.controllers.CallsListController.SELECTED_CALL_ID = "selected_call_id";
 fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE= "selected_call_id_mode";
