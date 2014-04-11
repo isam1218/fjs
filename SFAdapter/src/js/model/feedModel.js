@@ -25,6 +25,7 @@ fjs.model.FeedModel.extend(fjs.EventsSource);
 fjs.model.FeedModel.EVENT_TYPE_START = "start";
 fjs.model.FeedModel.EVENT_TYPE_PUSH = "push";
 fjs.model.FeedModel.EVENT_TYPE_DELETE = "delete";
+fjs.model.FeedModel.EVENT_TYPE_CHANGE= "change";
 fjs.model.FeedModel.EVENT_TYPE_COMPLETE = "complete";
 
 fjs.model.FeedModel.prototype.getEntryByXpid = function(xpid) {
@@ -38,10 +39,10 @@ fjs.model.FeedModel.prototype.init = function() {
         for(var key in data.changes) {
             if(data.changes.hasOwnProperty(key)) {
                 var change = data.changes[key];
-                if('change' == change.type) {
+                if(fjs.model.FeedModel.EVENT_TYPE_CHANGE == change.type) {
                     context.onEntryChange(change);
                 }
-                else if('delete' == change.type) {
+                else if(fjs.model.FeedModel.EVENT_TYPE_DELETE == change.type) {
                     context.onEntryDeletion(change);
                 }
                 else {

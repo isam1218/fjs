@@ -5,23 +5,28 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     var callLogInfoTimeout = null;
     var timeSync = new fjs.utils.TimeSync();
     var lastPhone = null;
+
     $scope.templatePath = "templates/call_item.html";
     $scope.callLogPath = "templates/call_log.html";
     $scope.transferDialogPath = null;
+
     $scope.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
+
     $scope.fields = [];
     $scope.callLog = localStorage.getItem($scope.call.htCallId) && JSON.parse(localStorage.getItem($scope.call.htCallId));
     $scope.who=[];
     $scope.what=[];
+
     $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
     $scope.isRing=($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE);
-    $scope.predicate = 'Name';
-    var controller = this;
+
+    var context = this;
+
     if($scope.isRing || ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
         selectCall();
     }
 
-    var onDurationTimeout = function() {
+    function onDurationTimeout () {
         var date = new Date();
         var time =  date.getTime()-  timeSync.getDefault() + (new Date(1).getTimezoneOffset() * 1000 * 60);
         var timeDur = time - $scope.call.created;
@@ -33,61 +38,59 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             $scope.holdDuration = $filter('date')(new Date(timeHoldDur), 'HH:mm:ss ');
         }
         durationTimer = $timeout(onDurationTimeout, fjs.controllers.CallController.CALL_DURATION_DELAY_IN_SEC);
-    };
-
+    }
     onDurationTimeout();
 
-    var getCallLogInfo = function() {
-        lastPhone = $scope.call.phone;
-        var context = this;
-        var callback = function(data){
-            var results={};
-            var lastResult = null;
-            var resultsCount = 0;
-            if(data && data.result) {
-                var result = JSON.parse(data.result);
-                $scope.what = [];
-                $scope.who = [];
-                $scope.fields = [];
-                for(var i in result) {
-                    if(result.hasOwnProperty(i) && i!="screenPopUrl") {
-                        resultsCount++;
-                        var _result = lastResult = result[i];
-                        if(!results[_result.object]) {
-                            results[_result.object] = []
-                        }
-                        _result._id = i;
-                        if(_result.object == "Contact" || _result.object == "Lead") {
-                            $scope.who.push(_result);
-                        }
-                        else {
-                            if(_result.object == "Case") {
-                                _result.Name = _result.CaseNumber;
-                            }
-                            $scope.what.push(_result);
-                        }
-                        results[_result.object].push(_result);
+    function callInfoCallback(data){
+        var results={};
+        var lastResult = null;
+        var resultsCount = 0;
+        if(data && data.result) {
+            var result = JSON.parse(data.result);
+            $scope.what = [];
+            $scope.who = [];
+            $scope.fields = [];
+            for(var i in result) {
+                if(result.hasOwnProperty(i) && i!="screenPopUrl") {
+                    resultsCount++;
+                    var _result = lastResult = result[i];
+                    if(!results[_result.object]) {
+                        results[_result.object] = []
                     }
+                    _result._id = i;
+                    if(_result.object == "Contact" || _result.object == "Lead") {
+                        $scope.who.push(_result);
+                    }
+                    else {
+                        if(_result.object == "Case") {
+                            _result.Name = _result.CaseNumber;
+                        }
+                        $scope.what.push(_result);
+                    }
+                    results[_result.object].push(_result);
                 }
             }
-            initCallLogFields(resultsCount, lastResult, results);
-            createCallLog();
-            localStorage.setItem($scope.call.htCallId, JSON.stringify($scope.callLog));
-             controller.safeApply($scope);
-        };
+        }
+        initCallLogFields(resultsCount, lastResult, results);
+        createCallLog();
+        localStorage.setItem($scope.call.htCallId, JSON.stringify($scope.callLog));
+        context.safeApply($scope);
+    }
+
+    function getCallLogInfo() {
+        lastPhone = $scope.call.phone;
         var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, '');
-        if(rawPhone.length > 10)
-        {
+        if(rawPhone.length > 10){
             rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
         }
         if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-            sfApi.getPhoneInfo(rawPhone, ($scope.call.incoming ? "inbound" : "outbound"), ($scope.call.state == 0), callback);
+            sfApi.getPhoneInfo(rawPhone, ($scope.call.incoming ? "inbound" : "outbound"), ($scope.call.state == 0), callInfoCallback);
         }
         else {
             createCallLog();
         }
         startGetCallLogInfo();
-    };
+    }
 
     function initCallLogFields(resultsCount, lastResult, results) {
         if(resultsCount==1) {
@@ -150,8 +153,8 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 }
             }
             delete dataManager.phoneMap[$scope.call.phone];
-        }//the first
-        else if(!dataManager.phoneMap[$scope.call.phone]&& !$scope.callLog.whatId && !$scope.callLog.whoId){
+        }//the first time
+        else if(!dataManager.phoneMap[$scope.call.phone] && !$scope.callLog.whatId && !$scope.callLog.whoId){
             if($scope.who && $scope.who[0]) {
                 $scope.callLog.whoId = $scope.who[0]["_id"];
                 if(!isWhoIsLeadByIndex(0)) {
@@ -225,40 +228,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         }
     }
 
-    function resetWhoId() {
-        if(hasWho()) {
-            var hasWhoId = false;
-            for(var i = 0; i < $scope.who.length; i++) {
-                if( $scope.who[i]["_id"]  == $scope.callLog.whoId) {
-                    hasWhoId = true;
-                    break;
-                }
-            }
-            if(!hasWhoId) {
-                $scope.callLog.whoId = null;
-            }
-        }
-    }
-
-    function resetWhatId() {
-        if(hasWhat()) {
-            var hasWhatId = false;
-            for(var i = 0; i < $scope.what.length; i++) {
-                if( $scope.what[i]["_id"]  == $scope.callLog.whatId) {
-                    hasWhatId = true;
-                    break;
-                }
-            }
-            if(!hasWhatId) {
-                $scope.callLog.whatId = null;
-            }
-        }
-    }
-
-    function hasWhat() {
-        return $scope.callLog != null && $scope.what != null && $scope.callLog.whatId != null;
-    }
-
     function hasWho() {
         return $scope.callLog != null && $scope.who != null && $scope.callLog.whoId != null;
     }
@@ -274,13 +243,13 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     var callLogSaveTimeout = null;
+
     function onCallLogChanged() {
-        if(callLogSaveTimeout!=null) {
+        if(callLogSaveTimeout != null) {
             clearTimeout(callLogSaveTimeout);
             callLogSaveTimeout = null;
         }
         callLogSaveTimeout = setTimeout(function() {
-            console.log($scope.callLog);
             localStorage.setItem($scope.call.htCallId,JSON.stringify($scope.callLog));
         },fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC);
     }
@@ -328,12 +297,12 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     $scope.hold = function() {
-        dataManager.sendAction('mycalls', "transferToHold", {"mycallId":$scope.call.xpid });
+        dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferToHold", {"mycallId":$scope.call.xpid });
         return false;
     };
 
     $scope.accept = function() {
-        dataManager.sendAction('mycalls', "answer", {"mycallId":$scope.call.xpid });
+        dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "answer", {"mycallId":$scope.call.xpid });
         return false;
     };
 
@@ -344,12 +313,12 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     };
 
     $scope.end = function() {
-        dataManager.sendAction('mycalls', "hangup", {"mycallId":$scope.call.xpid });
+        dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "hangup", {"mycallId":$scope.call.xpid });
         return false;
     };
 
     $scope.unhold = function() {
-        dataManager.sendAction('mycalls', "transferFromHold", {"mycallId":$scope.call.xpid });
+        dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferFromHold", {"mycallId":$scope.call.xpid });
         return false;
     };
 
@@ -376,7 +345,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     });
 
     $scope.$on('transfer', function(event, number) {
-        dataManager.sendAction('mycalls', "transferTo", {"mycallId":$scope.call.xpid, "toNumber":number });
+        dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferTo", {"mycallId":$scope.call.xpid, "toNumber":number });
         $scope.transferDialogPath=null;
         $scope.isTransferDialogClass="";
     });
@@ -386,7 +355,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             $timeout.cancel(durationTimer);
         }
         stopGetCallInfo();
-        console.log("Destroy call");
         if(localStorage.getItem($scope.call.htCallId)) {
             localStorage.removeItem($scope.call.htCallId);
             if($scope.callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
