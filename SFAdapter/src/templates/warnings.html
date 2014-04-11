@@ -20,7 +20,7 @@
         <form> <!--ng-submit="actionCall(phone)">-->
             <textarea class="warning-textarea" ng-model="msg" type="text" placeholder="You can write some comment for support."></textarea>
         </form>
-        <button class="warning-screen-button" ng-click="close()">Close</button>
-        <button class="warning-screen-button" ng-click="sendFeedback(msg)">Send Feedback</button>
+        <button class="warning-screen-button" ng-class="{'big-button': !isConnected}" ng-click="close()">Close</button>
+        <button class="warning-screen-button" ng-class="{'hidden': !isConnected}" ng-click="sendFeedback(msg)">Send Feedback</button>
     </div>
 </div>

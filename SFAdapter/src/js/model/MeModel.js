@@ -28,3 +28,5 @@ fjs.model.MeModel.prototype.onEntryDeletion = function(data) {
 fjs.model.MeModel.prototype.getProperty = function(key) {
     return this.property2key[key];
 };
+
+fjs.model.MeModel.NAME = "me";

@@ -5,13 +5,15 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     /**
      * @type {fjs.model.MeModel}
      */
-    var me = dataManager.getModel('me');
+    var me = dataManager.getModel(fjs.model.MeModel.NAME);
 
     this.sfApi = sfApi;
 
     this.SOFTPHONE_WIDTH = 200;
     this.SOFTPHONE_HEIGHT = 200;
     this.FRAME_RESIZE_NAME = "resizeFrame";
+
+    $scope.isConnected = true;
 
     this.initResizeFrame();
 
@@ -48,6 +50,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     this.authorizationWarningListener = function(data) {
         $scope.loggined = data;
         checkShowWarning();
+        $scope.isConnected = ($scope.connection && $scope.loggined);
         context.safeApply($scope);
     };
 
@@ -56,8 +59,9 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         setTimeout(function() {
             $scope.connection = data;
             checkShowWarning();
+            $scope.isConnected = ($scope.connection && $scope.loggined);
+            context.safeApply($scope);
         }, 1000);
-        context.safeApply($scope);
     };
 
     me.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeMeListener);

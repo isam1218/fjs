@@ -1,7 +1,7 @@
 namespace("fjs.controllers");
 
 fjs.controllers.CallsListController = function($scope, dataManager) {
-    var callsFeedModel = dataManager.getModel("mycalls");
+    var callsFeedModel = dataManager.getModel(fjs.model.MyCallsFeedModel.NAME);
     var context =this;
 
     fjs.controllers.CommonController.call(this, $scope);

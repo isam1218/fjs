@@ -58,6 +58,10 @@
     position: relative;
 }
 
+.big-button {
+    width: 192px;
+}
+
 .warning-footer {
     background:#d0dbe8;
     height:75px;

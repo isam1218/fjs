@@ -1,6 +1,5 @@
 namespace("fjs.model");
 /**
- *
  * @constructor
  * @extends fjs.EventsSource
  */
@@ -26,6 +25,9 @@ fjs.model.DataManager = function(sf) {
 
     this.checkDevice = function() {
         context.sf.setPhoneApi(true, function (obj) {
+            /**
+             * @type {{number:string, objectId:string, object:string}}
+             */
             var res = obj && obj.result && JSON.parse(obj.result);
             var phone = res.number;
             if (phone) {
@@ -33,7 +35,7 @@ fjs.model.DataManager = function(sf) {
                 calleeInfo.id = res.objectId;
                 calleeInfo.type = res.object;
                 context.phoneMap[phone] = calleeInfo;
-                context.sendAction('me', "callTo", {'phoneNumber': phone});
+                context.sendAction(fjs.model.MeModel.NAME, "callTo", {'phoneNumber': phone});
             }
         });
     };
@@ -59,10 +61,10 @@ fjs.model.DataManager = function(sf) {
                      }
                  });
             }
-            context.dataProvider.addEventListener("sync", function(data) {
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_SYNC, function(data) {
                 context.fireEvent(data.feed, data);
             });
-            context.dataProvider.addEventListener("authError", function(e) {
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_AUTH_ERROR, function(e) {
                 if(context.authErrorCount < context.MAX_AUTH_ERROR_COUNT) {
                     context._getAuthInfo(function(data){
                         context.dataProvider.sendMessage({action: "SFLogin", data: data});
@@ -70,26 +72,26 @@ fjs.model.DataManager = function(sf) {
                     context.authErrorCount++;
                 }
                 else {
-                    context.fireWarningEvent("Authorization", false);
+                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, false);
                 }
             });
-            context.dataProvider.addEventListener("requestError", function(e) {
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_REQUEST_ERROR, function(e) {
                 console.error(e);
             });
-            context.dataProvider.addEventListener("networkProblem", function(e) {
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_NETWORK_PROBLEM, function(e) {
                 console.error(e);
-                context.fireWarningEvent("Connection", false);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, false);
             });
-            context.dataProvider.addEventListener("connectionEstablished", function(e) {
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, function(e) {
                 console.error(e);
-                context.fireWarningEvent("Connection", true);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
             });
-            context.dataProvider.addEventListener("node", function(e) {
-                fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
+                fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.nodeId);
             });
-            context.dataProvider.addEventListener("ticket", function(e) {
-                fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
-                context.fireWarningEvent("Authorization", true);
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_TICKET, function(e) {
+                fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.ticket);
+                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, true);
                 if(context.suspendFeeds.length>0) {
                     for(var i=0; i<context.suspendFeeds.length; i++) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
@@ -102,6 +104,17 @@ fjs.model.DataManager = function(sf) {
 };
 fjs.model.DataManager.extend(fjs.EventsSource);
 
+fjs.model.DataManager.AUTHORIZATION_STATE = "Authorization";
+fjs.model.DataManager.CONNECTION_STATE = "Connection";
+
+fjs.model.DataManager.EV_SYNC = "sync";
+fjs.model.DataManager.EV_AUTH_ERROR = "authError";
+fjs.model.DataManager.EV_REQUEST_ERROR = "requestError";
+fjs.model.DataManager.EV_NETWORK_PROBLEM = "networkProblem";
+fjs.model.DataManager.EV_CONNECTION_ESTABLISHED = "connectionEstablished";
+fjs.model.DataManager.EV_TICKET = "ticket";
+fjs.model.DataManager.EV_NODE = "node";
+
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";
 fjs.model.DataManager.CLIENT_ID_COOKIE_NAME = "SF_Client_id";
@@ -112,10 +125,10 @@ fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME = "SF_Email";
 fjs.model.DataManager.prototype.getModel = function(feedName) {
     if (!this.feeds[feedName]) {
         switch (feedName) {
-            case 'me':
+            case fjs.model.MeModel.NAME:
                 this.feeds[feedName] = new fjs.model.MeModel(this);
                 break;
-            case 'mycalls':
+            case fjs.model.MyCallsFeedModel.NAME:
                this.feeds[feedName] = new fjs.model.MyCallsFeedModel(this);
                 break;
             default:
@@ -138,7 +151,6 @@ fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
 };
 
 /**
- *
  * @param userData
  * @returns {boolean}
  * @private

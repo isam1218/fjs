@@ -1,7 +1,7 @@
 namespace("fjs.controllers");
 fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     fjs.controllers.CommonController(this);
-    this.me = dataManager.getModel('me');
+    this.me = dataManager.getModel(fjs.model.MeModel.NAME);
     this.locations = dataManager.getModel('locations');
     var keyToXpid = {};
     var context = this;
@@ -33,8 +33,9 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
 
     this.locationListener = function(){
         if(context.locations.items && context.locations.items[$scope.locationId]) {
-            $scope.location =  context.locations.items[$scope.locationId].shortName;
-            setLocationStatus(location);
+            var loc = context.locations.items[$scope.locationId];
+            $scope.location = loc.shortName;
+            setLocationStatus(loc);
             context.safeApply($scope);
         }
     };
@@ -80,7 +81,7 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
         data["date"] = (new Date()).getTime();
         data["email"] = "";
         data["taskId"] = "-1_-1";
-        dataManager.sendAction('me', "feedback", data);
+        dataManager.sendAction(fjs.model.MeModel.NAME, "feedback", data);
         $scope.close();
     };
 
@@ -103,5 +104,3 @@ fjs.controllers.WarningsController.UNREGISTERED = "Unregistered";
 
 fjs.controllers.WarningsController.CARRIER_TYPE = "m";
 fjs.controllers.WarningsController.ON_LOCATION_STATUS = "onLocationStatus";
-
-

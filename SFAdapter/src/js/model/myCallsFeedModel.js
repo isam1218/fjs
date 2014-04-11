@@ -1,7 +1,7 @@
 namespace("fjs.model");
 
 fjs.model.MyCallsFeedModel = function(dataManager) {
-    fjs.model.FeedModel.call(this, 'mycalls', dataManager);
+    fjs.model.FeedModel.call(this, fjs.model.MyCallsFeedModel.NAME, dataManager);
     this.htCallIdToXpid = {};
     this.listeners["changepid"]= [];
     this.changes = {};
@@ -21,14 +21,12 @@ fjs.model.MyCallsFeedModel.prototype.htCallIdByXpid = function(xpid) {
      }
 };
 
-
 fjs.model.MyCallsFeedModel.prototype.onEntryDeletion = function(event) {
         var htCallId = this.htCallIdByXpid(event.xpid);
         if(!this.changes[htCallId]) {
             this.changes[htCallId]={};
         }
         this.changes[htCallId].delete = event;
-
 };
 
 fjs.model.MyCallsFeedModel.prototype.onEntryChange = function(event) {
@@ -92,4 +90,6 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
     this.changes={};
     this.fireEvent("complete", event);
 };
+
+fjs.model.MyCallsFeedModel.NAME = "mycalls";
 

@@ -11,7 +11,7 @@ fjs.controllers.NewCallController = function($scope, $element, dataManager) {
     };
 
     $scope.actionCall = function(phone) {
-        dataManager.sendAction("me", "callTo", {"phoneNumber":phone});
+        dataManager.sendAction(fjs.model.MeModel.NAME, "callTo", {"phoneNumber":phone});
         $scope.phone = "";
         $scope.closeDialpad();
     };
