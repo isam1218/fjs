@@ -49,7 +49,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             var result = JSON.parse(data.result);
             $scope.what = [];
             $scope.who = [];
-            $scope.fields = [];
             for(var i in result) {
                 if(result.hasOwnProperty(i) && i!="screenPopUrl") {
                     resultsCount++;
@@ -70,8 +69,8 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                     results[_result.object].push(_result);
                 }
             }
+            initCallLogFields(resultsCount, lastResult, results);
         }
-        initCallLogFields(resultsCount, lastResult, results);
         createCallLog();
         localStorage.setItem($scope.call.htCallId, JSON.stringify($scope.callLog));
         context.safeApply($scope);
@@ -93,6 +92,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     function initCallLogFields(resultsCount, lastResult, results) {
+        $scope.fields = [];
         if(resultsCount==1) {
             for(var i in lastResult) {
                 if(lastResult.hasOwnProperty(i)) {
@@ -255,14 +255,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     $scope.$watch("callLog.note", function() {
-        if($scope.callLog && $scope.callLog.note != null && $scope.callLog.note != undefined) {
-            if($scope.callLog.note != "") {
-                $scope.callLog.subject = "Call: " + $scope.callLog.note.substr(0, 240) + " ...";
-            }
-            else {
-                $scope.callLog.subject = "Call";
-            }
-        }
         onCallLogChanged();
     }, true);
 
@@ -354,18 +346,30 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
+        if (callLogSaveTimeout) {
+            $timeout.cancel(callLogSaveTimeout);
+        }
         stopGetCallInfo();
         if(localStorage.getItem($scope.call.htCallId)) {
             localStorage.removeItem($scope.call.htCallId);
             if($scope.callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                console.log("Save callLog", $scope.callLog);
-                sfApi.addCallLog($scope.callLog.subject, $scope.callLog.whoId, $scope.callLog.whatId, $scope.callLog.note,  ($scope.call.incoming ? "inbound" : "outbound"), Math.round($scope.call.duration/1000), $scope.callLog.date,
+                initCallLogSubject();
+                sfApi.addCallLog($scope.callLog.subject, $scope.callLog.whoId, $scope.callLog.whatId, $scope.callLog.note, ($scope.call.incoming ? "inbound" : "outbound"), Math.round($scope.call.duration/1000), $scope.callLog.date,
                     function(response){
                         console.error(response);
                     });
             }
         }
     });
+
+    function initCallLogSubject() {
+        if($scope.callLog.note != "") {
+            $scope.callLog.subject = "Call: " + $scope.callLog.note.substr(0, 240) + " ...";
+        }
+        else {
+            $scope.callLog.subject = "Call";
+        }
+    }
 
     $scope.$watch("call.selected", function() {
         if($scope.call.selected) {
