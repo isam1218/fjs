@@ -3233,4 +3233,4 @@ fjs.fdp.DataManager.prototype.fireEvent = function (eventType, eventData) {
 
 fjs.fdp.DataManager.prototype.SFLogin = function(loginData) {
     this.sm.SFLogin(loginData);
-}
+};

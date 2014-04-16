@@ -352,13 +352,13 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         stopGetCallInfo();
         if(localStorage.getItem($scope.call.htCallId)) {
             localStorage.removeItem($scope.call.htCallId);
-            if($scope.callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                initCallLogSubject();
-                sfApi.addCallLog($scope.callLog.subject, $scope.callLog.whoId, $scope.callLog.whatId, $scope.callLog.note, ($scope.call.incoming ? "inbound" : "outbound"), Math.round($scope.call.duration/1000), $scope.callLog.date,
-                    function(response){
-                        console.error(response);
-                    });
-            }
+        }
+        if($scope.callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+            initCallLogSubject();
+            sfApi.addCallLog($scope.callLog.subject, $scope.callLog.whoId, $scope.callLog.whatId, $scope.callLog.note, ($scope.call.incoming ? "inbound" : "outbound"), Math.round($scope.call.duration/1000), $scope.callLog.date,
+                function(response){
+                    console.error(response);
+                });
         }
     });
 
