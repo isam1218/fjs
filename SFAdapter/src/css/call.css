@@ -41,6 +41,8 @@
 , .call-item-inner.state0.incoming-false .call-item-buttons-block .call-item-accept-button
 , .call-item-inner.type0 .call-item-buttons-block .call-item-transfer-btn
 ,.call-item-inner.type0 .call-item-buttons-block .call-item-hold-btn
+, .call-item-inner.type2 .call-item-buttons-block .call-item-transfer-btn
+,.call-item-inner.type2 .call-item-buttons-block .call-item-hold-btn
 {
     display:none;
 }
@@ -61,6 +63,7 @@
 
 .call-item-inner.state0 .call-item-buttons-block .call-item-end-btn
 ,.call-item-inner.state2.type0 .call-item-buttons-block .call-item-end-btn
+,.call-item-inner.state2.type2 .call-item-buttons-block .call-item-end-btn
 {
     width: 93px;
     position: relative;
