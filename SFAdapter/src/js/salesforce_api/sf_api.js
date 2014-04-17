@@ -92,9 +92,6 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
         args += "&" + commentFieldName + "=" + encodeURIComponent(note);
         if(duration && date && callType) {
             sforce.interaction.saveLog('Task',args, function(result) {
-                if (result.result) {
-                //    sforce.interaction.refreshPage(callback);
-                }
                 callback(result);
             });
         }

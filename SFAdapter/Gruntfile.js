@@ -17,7 +17,7 @@ module.exports = function(grunt) {
                     , 'src/js/ui/controllers/callsListController.js'
                     , 'src/js/ui/controllers/mainController.js'
                     , 'src/js/ui/controllers/newCallController.js'
-                    , 'src/js/ui/controllers/transferController.js'
+                    , 'src/js/ui/controllers/transferDialog.js'
                     , 'src/js/ui/controllers/warningsController.js'
                     , 'src/js/ui/module.js'],
                 dest: 'src/js/bin/fjs.sf.debug.js'

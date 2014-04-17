@@ -301,7 +301,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     $scope.transfer = function() {
         $scope.transferDialogPath = "templates/transfer_dialog.html";
         $scope.isTransferDialogClass = "call-item-transfer-opened";
-        $scope.callLogPath=null;
+        if($scope.callLogPath) {
+          closeCallLog();
+        }
     };
 
     $scope.end = function() {
@@ -314,16 +316,28 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         return false;
     };
 
+    function closeCallLog() {
+        $scope.callLogPath = null;
+        $scope.triangle = fjs.controllers.CallController.CLOSED_TRIANGLE;
+    }
+
+    function closeTransfer() {
+        $scope.transferDialogPath=null;
+        $scope.isTransferDialogClass="";
+    }
+
+    function openCallLog() {
+        $scope.callLogPath = "templates/call_log.html";
+        $scope.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
+    }
+
     $scope.toggleCallLog = function() {
         if($scope.callLogPath) {
-            $scope.callLogPath = null;
-            $scope.triangle = fjs.controllers.CallController.CLOSED_TRIANGLE;
+            closeCallLog();
         }
         else {
-            $scope.callLogPath = "templates/call_log.html";
-            $scope.transferDialogPath=null;
-            $scope.isTransferDialogClass="";
-            $scope.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
+            openCallLog();
+            closeTransfer();
         }
     };
 
@@ -332,14 +346,16 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     };
 
     $scope.$on('closeDialog', function(event, key) {
-        $scope.transferDialogPath=null;
-        $scope.isTransferDialogClass="";
+        closeTransfer();
+        openCallLog();
     });
 
     $scope.$on('transfer', function(event, number) {
-        dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferTo", {"mycallId":$scope.call.xpid, "toNumber":number });
-        $scope.transferDialogPath=null;
-        $scope.isTransferDialogClass="";
+        if(number && number != "") {
+            dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferTo", {"mycallId":$scope.call.xpid, "toNumber":number });
+        }
+        closeTransfer();
+        openCallLog();
     });
 
     $scope.$on("$destroy", function() {
