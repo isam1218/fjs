@@ -52,6 +52,9 @@ var path = require('path');
 var https = require('https');
 var http = require('http');
 var fs = require('fs');
+var utils = require('util');
+
+utils.isArray([])
 
 var options = {
     key: fs.readFileSync('../ssl/cakey.pem')

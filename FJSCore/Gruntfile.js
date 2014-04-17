@@ -20,7 +20,6 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../FJSFDP/lib/'}
-                    , {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../FJSHUD/bin/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../FJSHUD/src/js/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.core.debug.js'], dest: '../SFAdapter/src/js/lib/'}
                 ]

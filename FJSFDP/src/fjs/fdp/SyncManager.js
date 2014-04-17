@@ -417,7 +417,7 @@
         if(this.db) {
             this.db.selectByIndex("versions", {"feedName":feedName}, function(item) {
                 versionsArr.push(item.source+"@"+item.version);
-            }, function() {
+            }, function(items) {
                 context.versions[feedName] = data[feedName] = versionsArr.join(",");
                 callback(data[feedName]);
             });
@@ -436,6 +436,7 @@
             var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
             var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
             delete entry["xef001type"];
+            entry.source = sourceId;
             var event = {eventType: etype, feed:feedName, xpid: xpid, entry: entry};
             if(this.db) {
                 switch (etype) {
@@ -462,6 +463,7 @@
             for (var j = 0; j < items.length; j++) {
                 var entry = items[j];
                 var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
+                entry.source = sourceId;
                 if(etype===sm.eventTypes.ENTRY_CHANGE) {
                     var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
                     delete entry["xef001type"];
@@ -487,6 +489,7 @@
             var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE);
             var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
             delete entry["xef001type"];
+            entry.source = sourceId;
             var event = {eventType: etype, feed:feedName, xpid: xpid, entry: entry};
             if(this.db) {
                 switch (etype) {

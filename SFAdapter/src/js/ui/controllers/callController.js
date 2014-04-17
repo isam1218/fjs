@@ -49,7 +49,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             var result = JSON.parse(data.result);
             $scope.what = [];
             $scope.who = [];
-            $scope.fields = [];
             for(var i in result) {
                 if(result.hasOwnProperty(i) && i!="screenPopUrl") {
                     resultsCount++;
@@ -70,8 +69,8 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                     results[_result.object].push(_result);
                 }
             }
+            initCallLogFields(resultsCount, lastResult, results);
         }
-        initCallLogFields(resultsCount, lastResult, results);
         createCallLog();
         localStorage.setItem($scope.call.htCallId, JSON.stringify($scope.callLog));
         context.safeApply($scope);
@@ -93,6 +92,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     function initCallLogFields(resultsCount, lastResult, results) {
+        $scope.fields = [];
         if(resultsCount==1) {
             for(var i in lastResult) {
                 if(lastResult.hasOwnProperty(i)) {

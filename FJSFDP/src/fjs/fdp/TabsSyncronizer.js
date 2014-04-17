@@ -26,7 +26,7 @@
          * @type {number}
          * @private
          */
-       this.MASTER_ACTIVITY_TIMEOUT = 500;
+       this.MASTER_ACTIVITY_TIMEOUT = 1000;
         /**
          * LocalStorage key for main tab id
          * @type {string}
@@ -101,6 +101,6 @@
      * @returns {boolean|Object|*}
      */
     fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization = function() {
-        return typeof window != 'undefined' && window.document !== undefined || (self && self["web_worker"]);
+        return typeof window !== 'undefined' && window.document !== undefined || (self && self["web_worker"]);
     };
 })();

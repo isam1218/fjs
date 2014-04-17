@@ -35,7 +35,12 @@ var namespace = function(ns_name) {
     }
     return ns;
 };
-(function(){
+namespace("fjs.utils");
+fjs.utils.Array = function(){};
+fjs.utils.Array.isArray = function(obj) {
+    return Array.isArray(obj) ||
+        (typeof obj === 'object' && obj+"" === '[object Array]');
+};(function(){
     namespace("fjs.utils");
     var _ieV = null;
     function getIEVersion() {

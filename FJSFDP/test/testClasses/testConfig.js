@@ -4,7 +4,7 @@ var CONFIG = {
         , loginURL: "http://localhost:99/oauth/authorize"
     }, providers: ['simple', 'sharedWorker', 'webWorker']
     , DB: {
-        name: "testDB", version: 20
+        name: "testDB", version: 21
         /**
          * @type {Array}
          */
