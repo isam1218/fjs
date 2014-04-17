@@ -67,7 +67,7 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
     if(whoId == null && whoId== null) {
         status = "Not Started";
     }
-    var args = "Subject=" + subject
+    var args = "Subject=" + encodeURIComponent(subject)
                + "&CallType=" + callType
                + "&CallDurationInSeconds=" + duration
                + "&Status=" + status

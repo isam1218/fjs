@@ -255,14 +255,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     $scope.$watch("callLog.note", function() {
-        if($scope.callLog && $scope.callLog.note != null && $scope.callLog.note != undefined) {
-            if($scope.callLog.note != "") {
-                $scope.callLog.subject = "Call: " + $scope.callLog.note.substr(0, 240) + " ...";
-            }
-            else {
-                $scope.callLog.subject = "Call";
-            }
-        }
         onCallLogChanged();
     }, true);
 
@@ -354,18 +346,30 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
+        if (callLogSaveTimeout) {
+            $timeout.cancel(callLogSaveTimeout);
+        }
         stopGetCallInfo();
         if(localStorage.getItem($scope.call.htCallId)) {
             localStorage.removeItem($scope.call.htCallId);
-            if($scope.callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                console.log("Save callLog", $scope.callLog);
-                sfApi.addCallLog($scope.callLog.subject, $scope.callLog.whoId, $scope.callLog.whatId, $scope.callLog.note,  ($scope.call.incoming ? "inbound" : "outbound"), Math.round($scope.call.duration/1000), $scope.callLog.date,
-                    function(response){
-                        console.error(response);
-                    });
-            }
+        }
+        if($scope.callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+            initCallLogSubject();
+            sfApi.addCallLog($scope.callLog.subject, $scope.callLog.whoId, $scope.callLog.whatId, $scope.callLog.note, ($scope.call.incoming ? "inbound" : "outbound"), Math.round($scope.call.duration/1000), $scope.callLog.date,
+                function(response){
+                    console.error(response);
+                });
         }
     });
+
+    function initCallLogSubject() {
+        if($scope.callLog.note != "") {
+            $scope.callLog.subject = "Call: " + $scope.callLog.note.substr(0, 240) + " ...";
+        }
+        else {
+            $scope.callLog.subject = "Call";
+        }
+    }
 
     $scope.$watch("call.selected", function() {
         if($scope.call.selected) {
