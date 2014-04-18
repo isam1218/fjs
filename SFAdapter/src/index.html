@@ -34,7 +34,7 @@
             <div class="line">{{extension}}</div>
         </div>
         <ul>
-            <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.selected}"
+            <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.isOpened}"
                 data-xpid="{{ call.xpid }}" ng-repeat="call in calls" ng-controller="CallController">
                 <ng-include src="templatePath"></ng-include>
             </li>

@@ -1618,9 +1618,10 @@ fjs.fdp.model.ClientFeedProxyModel.extend(fjs.fdp.model.ProxyModel);
 fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType, entry) {
     var syncData = {};
     entry.xef001type = syncType;
-    syncData[this.feedName] = {
+    syncData[this.clientFeedName] = {
         "": {
             "items":[entry]
+            , xef001type: "L"
         }
     };
     return syncData;
@@ -1639,11 +1640,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
  * @param {Object} data Request parameters ({'key':'value',...})
  */
 fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data) {
-    if(feedName == this.clientFeedName) {
+
+    if(actionName==='push' || actionName==='delete') {
         this.sm.onClientSync(fjs.utils.JSON.stringify(this.createSyncData(actionName, data)));
     }
     else {
-        this.superClass.sendAction.apply(this, arguments);
+        this.superClass.sendAction.call(this, this.feedName, actionName, data);
     }
 };
 (function() {

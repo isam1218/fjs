@@ -91,5 +91,5 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
     this.fireEvent("complete", event);
 };
 
-fjs.model.MyCallsFeedModel.NAME = "mycalls";
+fjs.model.MyCallsFeedModel.NAME = "mycallsclient";
 

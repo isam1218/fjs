@@ -5,7 +5,7 @@ namespace("fjs.model");
  * @extends fjs.model.FeedModel
  */
 fjs.model.MeModel = function(dataManager) {
-    fjs.model.FeedModel.call(this, 'me', dataManager);
+    fjs.model.FeedModel.call(this, fjs.model.MeModel.NAME, dataManager);
     this.property2key = {};
     this.propertyKey2Xpid = {};
 };

@@ -22,8 +22,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
 
     var context = this;
 
-    if($scope.isRing || ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
-        selectCall();
+    if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
+        ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
+        $scope.$emit("selectCall", $scope.call);
     }
 
     function onDurationTimeout () {
@@ -277,18 +278,8 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     $scope.showDetails = function() {
-        toggleCall();
-    };
-
-    function toggleCall() {
         $scope.$emit("toggleCall", $scope.call);
-        $scope.call.isOpend = !$scope.call.isOpend;
-    }
-
-    function selectCall() {
-        $scope.call.isOpend = true;
-        $scope.$emit("selectCall", $scope.call);
-    }
+    };
 
     $scope.hold = function() {
         dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferToHold", {"mycallId":$scope.call.xpid });

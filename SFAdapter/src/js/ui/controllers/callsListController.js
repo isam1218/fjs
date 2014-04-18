@@ -1,78 +1,53 @@
 namespace("fjs.controllers");
 
 fjs.controllers.CallsListController = function($scope, dataManager) {
-    var callsFeedModel = dataManager.getModel("mycallsclient");
-    var context =this;
+    this.callsFeedModel = dataManager.getModel("mycallsclient");
+    var context = this;
 
     fjs.controllers.CommonController.call(this, $scope);
-
-    $scope.calls = callsFeedModel.order;
-
-    this.completeCallsListener = function(){
-        var oldId = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID);
-        var oldMode = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE);
-        if(oldId) {
-            var oldCall = callsFeedModel.items[oldId];
-            if(oldCall) {
-                if(oldMode == "true") {
-                    selectCall(oldCall, oldId);
-                }
-                else {
-                    deselectCall(oldCall);
-                }
-            }
-            else if($scope.calls.length > 0){
-                selectCall($scope.calls[0], oldId);
-            }
-        }
-        else if($scope.calls.length > 0){
-            selectCall($scope.calls[0], oldId);
-        }
-        context.safeApply($scope);
-    };
-
-    callsFeedModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeCallsListener);
+    $scope.calls = this.callsFeedModel.order;
 
     $scope.$on('toggleCall', function(event, entry) {
-        var oldId = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID);
-        var oldMode = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE);
-        if(entry.xpid == oldId) {
-            if(oldMode == "true") {
-                deselectCall(entry);
-            }
-            else {
-                selectCall(entry, oldId);
-            }
+        if(entry.mycallsclient_isOpened) {
+            deselectCall(entry);
         }
         else {
-            selectCall(entry, oldId);
+            selectCall(entry);
         }
     });
 
     $scope.$on('selectCall', function(event, entry) {
-        var oldId = localStorage.getItem(fjs.controllers.CallsListController.SELECTED_CALL_ID);
-        selectCall(entry, oldId);
+        selectCall(entry);
     });
+
+    var deselectOldCall = function(newCallXpid) {
+        for(var i = 0; i < $scope.calls.length; i++) {
+            var xpid = $scope.calls[i].xpid;
+            var entry = context.callsFeedModel.items[xpid];
+            if(entry.xpid != newCallXpid && entry.mycallsclient_isOpened) {
+                deselectCall(entry);
+            }
+        }
+    };
 
     var deselectCall = function(entry) {
-        entry.selected = false;
-        localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID, entry.xpid);
-        localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE, false);
-    };
-
-    var selectCall = function(entry, oldId) {
-        var oldCall = callsFeedModel.items[oldId];
-        if(oldCall) {
-            oldCall.selected = false;
+        if(entry.mycallsclient_isOpened) {
+            var _entry = {};
+            entry.mycallsclient_isOpened = _entry.isOpened = false;
+            _entry.xpid = entry.xpid;
+            dataManager.sendAction("mycallsclient", "push", _entry);
         }
-        entry.selected = true;
-        localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID, entry.xpid);
-        localStorage.setItem(fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE, true);
     };
 
-    $scope.$on("$destroy", function() {
-        callsFeedModel.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.completeCallsListener);
-    });
+    var selectCall = function(entry) {
+        if(!entry.mycallsclient_isOpened) {
+            var _entry = {};
+            entry.mycallsclient_isOpened = _entry.isOpened = true;
+            _entry.xpid = entry.xpid;
+            dataManager.sendAction("mycallsclient", "push", _entry);
+        }
+        deselectOldCall(entry.xpid);
+    };
 };
 
 fjs.controllers.CallsListController.extend(fjs.controllers.CommonController);
