@@ -8,6 +8,7 @@ namespace("fjs.fdp.model");
 fjs.fdp.model.ClientFeedProxyModel = function(feeds) {
     fjs.fdp.model.ProxyModel.call(this, feeds);
     var context = this;
+    this.clientFeedName = feeds[feeds.length-1];
 
     var onSyncEvent = function(data) {
         context.onSyncEvent(data);
@@ -19,7 +20,7 @@ fjs.fdp.model.ClientFeedProxyModel = function(feeds) {
      */
     this.attach = function() {
         for(var i = 0; i<this.feeds.length; i++) {
-            this.sm.addFeedListener(this.feeds[i], onSyncEvent, true);
+            this.sm.addFeedListener(this.feeds[i], onSyncEvent, this.feeds[i]== this.clientFeedName);
         }
     };
     /**
@@ -29,7 +30,7 @@ fjs.fdp.model.ClientFeedProxyModel = function(feeds) {
      */
     this.detach = function() {
         for(var i = 0; i<this.feeds.length; i++) {
-            this.sm.removeFeedListener(this.feeds[i], onSyncEvent, true);
+            this.sm.removeFeedListener(this.feeds[i], onSyncEvent, this.feeds[i]== this.clientFeedName);
         }
     };
 };
@@ -52,6 +53,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType,
     };
     return syncData;
 };
+fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
+    if(this.changes) {
+        this.fireEvent({feed:this.clientFeedName, changes:this.changes});
+    }
+    this.changes= null;
+};
 
 /**
  * Sends action to FDP server
@@ -60,5 +67,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType,
  * @param {Object} data Request parameters ({'key':'value',...})
  */
 fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data) {
-    this.sm.onClientSync(fjs.utils.JSON.stringify(this.createSyncData(actionName, data)));
+    if(feedName == this.clientFeedName) {
+        this.sm.onClientSync(fjs.utils.JSON.stringify(this.createSyncData(actionName, data)));
+    }
+    else {
+        this.superClass.sendAction.apply(this, arguments);
+    }
 };

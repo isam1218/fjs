@@ -314,12 +314,16 @@ fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
         case eventTypes.FEED_COMPLETE:
             break;
         case eventTypes.SYNC_COMPLETE:
-            if(this.changes) {
-                this.fireEvent({feed:this.feedName, changes:this.changes});
-            }
-            this.changes= null;
+            this.onSyncComplete(event);
             break;
     }
+};
+
+fjs.fdp.model.ProxyModel.prototype.onSyncComplete = function(e) {
+    if(this.changes) {
+        this.fireEvent({feed:this.feedName, changes:this.changes});
+    }
+    this.changes= null;
 };
 
 /**

@@ -639,7 +639,7 @@
                     this.suspendClientFeeds.push(feedName);
                 }
             }
-            if(this.suspendFeeds.indexOf(feedName)<0) {
+            else if(this.suspendFeeds.indexOf(feedName)<0) {
                 this.suspendFeeds.push(feedName);
             }
         }
