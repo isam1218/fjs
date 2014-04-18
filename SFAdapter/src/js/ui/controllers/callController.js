@@ -282,9 +282,11 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
 
     function toggleCall() {
         $scope.$emit("toggleCall", $scope.call);
+        $scope.call.isOpend = !$scope.call.isOpend;
     }
 
     function selectCall() {
+        $scope.call.isOpend = true;
         $scope.$emit("selectCall", $scope.call);
     }
 
@@ -361,9 +363,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
-        }
-        if (callLogSaveTimeout) {
-            $timeout.cancel(callLogSaveTimeout);
         }
         stopGetCallInfo();
         if(localStorage.getItem($scope.call.htCallId)) {

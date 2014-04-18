@@ -1,7 +1,7 @@
 namespace("fjs.model");
 
 fjs.model.MyCallsFeedModel = function(dataManager) {
-    fjs.model.FeedModel.call(this, fjs.model.MyCallsFeedModel.NAME, dataManager);
+    fjs.model.FeedModel.call(this, "mycallsclient", dataManager);
     this.htCallIdToXpid = {};
     this.listeners["changepid"]= [];
     this.changes = {};

@@ -128,7 +128,7 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
             case fjs.model.MeModel.NAME:
                 this.feeds[feedName] = new fjs.model.MeModel(this);
                 break;
-            case fjs.model.MyCallsFeedModel.NAME:
+            case "mycallsclient":
                this.feeds[feedName] = new fjs.model.MyCallsFeedModel(this);
                 break;
             default:
