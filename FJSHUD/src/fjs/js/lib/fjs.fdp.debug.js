@@ -1648,6 +1648,14 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.superClass.sendAction.call(this, this.feedName, actionName, data);
     }
 };
+
+fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
+    if(event.feed == this.feedName) {
+        delete this.items[event.xpid];
+        this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid});
+    }
+    this.fillDeletion(event.xpid, event.feed);
+};
 (function() {
     namespace("fjs.fdp.transport");
     /**
@@ -2765,22 +2773,30 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
             /**
              * Load data from localDB
              */
-            var count = this.suspendFeeds.length;
-            for(var i=0; i<this.suspendFeeds.length; i++) {
-                if(this.syncFeeds.indexOf(this.suspendFeeds[i])<0) {
-                    this.syncFeeds.push(this.suspendFeeds[i]);
+            this.fireEvent(null, {eventType:sm.eventTypes.SYNC_START});
+            fjs.utils.Core.asyncForIn(this.suspendFeeds, function(key, value, next){
+                if(context.syncFeeds.indexOf(value)<0) {
+                    context.syncFeeds.push(value);
                 }
-                this.fireEvent(null, {eventType:sm.eventTypes.SYNC_START});
-                this.getFeedData(this.suspendFeeds[i], function(data){
-                    if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
-                        --count;
-                        if(count === 0) {
-                            context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
-                        }
-                    }
+                context.getFeedData(value, function(data){
                     context.fireEvent(data.feed, data);
+                    if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                        next();
+                    }
                 });
-            }
+            }, function(){
+                fjs.utils.Core.asyncForIn(context.suspendClientFeeds, function(key, value, next){
+                    context.getFeedData(value, function(data){
+                        context.fireEvent(data.feed, data);
+                        if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                            next();
+                        }
+                    });
+                }, function(){
+                    context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                });
+            });
+
             /**
              * Start synchronization
              */

@@ -76,3 +76,11 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.superClass.sendAction.call(this, this.feedName, actionName, data);
     }
 };
+
+fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
+    if(event.feed == this.feedName) {
+        delete this.items[event.xpid];
+        this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid});
+    }
+    this.fillDeletion(event.xpid, event.feed);
+};
