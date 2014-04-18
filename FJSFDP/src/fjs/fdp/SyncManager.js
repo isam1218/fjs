@@ -219,11 +219,13 @@
          */
         function addTransportEvents(transport) {
             transport.addEventListener('message', function(e){
+                if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
+                }
                 switch(e.type) {
                     case 'sync':
                         context.onSync(e.data);
                         break;
-
                         context.fireEvent('node', e);
                         break;
                     case 'ticket':
@@ -233,9 +235,6 @@
                     default:
                         context.fireEvent(e.type, e);
                         break;
-                }
-                if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
-                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
                 }
             });
             transport.addEventListener('error', function(e){
@@ -367,16 +366,13 @@
         var data = {};
         var  context=this;
         if(feeds) {
-            var _count = 0;
-            for(var i=0; i<feeds.length; i++) {
-                _count++;
-                this.getVersions(feeds[i], data, function(){
-                    _count--;
-                    if(_count===0) {
-                        context.transport.send({'type':'synchronize', data:{versions:data}});
-                    }
+            fjs.utils.Core.asyncForIn(feeds, function(key, value, next){
+                context.getVersions(value, data, function() {
+                    next();
                 });
-            }
+            }, function(){
+                context.transport.send({'type': 'synchronize', data: {versions: data}});
+            });
         }
         else {
             new Error ("You must set feeds names array");
@@ -392,7 +388,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined) {
+        if(this.db && version !== undefined && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -414,18 +410,20 @@
                 callback(data[feedName] = context.versions[feedName]);
             },0);
         }
-        if(this.db) {
-            this.db.selectByIndex("versions", {"feedName":feedName}, function(item) {
-                versionsArr.push(item.source+"@"+item.version);
-            }, function(items) {
-                context.versions[feedName] = data[feedName] = versionsArr.join(",");
-                callback(data[feedName]);
-            });
-        }
         else {
-            setTimeout(function(){
-                callback(data[feedName] = "");
-            },0);
+            if (this.db) {
+                this.db.selectByIndex("versions", {"feedName": feedName}, function (item) {
+                    versionsArr.push(item.source + "@" + item.version);
+                }, function (items) {
+                    context.versions[feedName] = data[feedName] = versionsArr.join(",");
+                    callback(data[feedName]);
+                });
+            }
+            else {
+                setTimeout(function () {
+                    callback(context.versions[feedName] = data[feedName] = "");
+                }, 0);
+            }
         }
     };
 
@@ -444,6 +442,7 @@
                         entriesForSave.push(event.entry);
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
+                        if((!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
@@ -453,7 +452,7 @@
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length>0) {
+        if(this.db && entriesForSave.length>0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertArray(feedName, entriesForSave, null);
         }
     };
@@ -475,7 +474,7 @@
                     console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
-            if(this.db) {
+            if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
                 this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
                     context.db.insertArray(feedName, entriesForSave, null);
                 });
@@ -507,7 +506,7 @@
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length > 0) {
+        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.selectByIndex(feedName, {'source':sourceId}, function(item){
                 if(idsForKeep.indexOf(item.xpid)<0 && idsForPush.indexOf(item.xpid)<0) {
                     context.db.deleteByKey(feedName, item.xpid, null);
@@ -709,7 +708,6 @@
         this.fireEvent(feedName, data, listener);
         if(this.db) {
             this.db.selectAll(feedName, function(item){
-
                     var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                     context.fireEvent(feedName, data, listener);
                 }
@@ -849,7 +847,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
-        if(this.db) {
+        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedSourceFilter": feedName+"_"+source+"_"+"filter", "feedName":feedName, "source":source, filter: filter, "version":version});
             var feedHVersions = this.historyversions[feedName];
             if(feedHVersions){
@@ -868,7 +866,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveEmptyHistoryVersions = function(feedName, filter) {
-        if(this.db) {
+        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedName":feedName, filter: filter, "version":"-1"});
             delete this.historyversions[feedName];
         }

@@ -986,7 +986,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
  */
 fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, callback) {
     tableName = this.getLSTableName(tableName);
-    if(key!=null) {
+    if(key!=null && this.dbData[tableName]) {
         delete this.dbData[tableName][key];
         self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
@@ -1008,18 +1008,26 @@ fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCall
     tableName = this.getLSTableName(tableName);
     var arr = [];
     var items = this.dbData[tableName];
+    var count=0;
     for(var key in items) {
         if(items.hasOwnProperty(key)) {
-            (function(k) {
+            count++;
+            (function(k, count) {
                 setTimeout(function(){
-                        var item = items[k];
-                        arr.push(item);
-                        itemCallback(item);
+                    var item = items[k];
+                    arr.push(item);
+                    itemCallback(item);
+                    --count;
+                    if(count === 0) {
+                        setTimeout(function(){allCallback(arr)}, 0);
+                    }
                 },0);
-            })(key);
+            })(key, count);
         }
     }
-    setTimeout(function(){allCallback(arr)}, 0);
+    if(count === 0) {
+        setTimeout(function(){allCallback(arr)}, 0);
+    }
 };
 
 /**
@@ -1030,7 +1038,7 @@ fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCall
  * @param {function(Array)} allCallback
  */
 fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
-    var arr = [], indexes = [], indexKeys=[], _tableName = this.getLSTableName(tableName), ids=[], index, indexKey, context = this;
+    var arr = [], indexes = [], indexKeys=[], _tableName = this.getLSTableName(tableName), ids=[], index, indexKey, context = this, count=0;
     if(rule) {
         for (var key in rule) {
             if(rule.hasOwnProperty(key))
@@ -1049,21 +1057,29 @@ fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule
             indexKey = rule[index];
         }
         ids = this.indexes[_tableName] && this.indexes[_tableName][index] && this.indexes[_tableName][index][indexKey];
-        if(ids) {
+        if(ids && ids.length>0) {
             for (var i = 0; i < ids.length; i++) {
-                (function(ind) {
+                count++;
+                (function(ind, count) {
                     setTimeout(function(){
-                            var item = context.dbData[_tableName][ids[ind]];
-                            arr.push(item);
-                            itemCallback(item);
-
+                        var item = context.dbData[_tableName][ids[ind]];
+                        arr.push(item);
+                        itemCallback(item);
+                        --count;
+                        if(count == 0) {
+                            setTimeout(function () {
+                                allCallback(arr)
+                            }, 0);
+                        }
                     },0);
-                })(i);
+                })(i, count);
             }
         }
-        setTimeout(function () {
-            allCallback(arr)
-        }, 0);
+        else {
+            setTimeout(function () {
+                allCallback(arr);
+            }, 0);
+        }
     }
     else {
         this.selectAll(tableName,itemCallback,allCallback);
@@ -2404,7 +2420,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
      * @returns {boolean|Object|*}
      */
     fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization = function() {
-        return typeof window != 'undefined' && window.document !== undefined || (self && self["web_worker"]);
+        return typeof window !== 'undefined' && window.document !== undefined || (self && self["web_worker"]);
     };
 })();(function(){
     namespace("fjs.fdp");
@@ -2627,11 +2643,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
          */
         function addTransportEvents(transport) {
             transport.addEventListener('message', function(e){
+                if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
+                }
                 switch(e.type) {
                     case 'sync':
                         context.onSync(e.data);
                         break;
-
                         context.fireEvent('node', e);
                         break;
                     case 'ticket':
@@ -2641,9 +2659,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                     default:
                         context.fireEvent(e.type, e);
                         break;
-                }
-                if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
-                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
                 }
             });
             transport.addEventListener('error', function(e){
@@ -2775,16 +2790,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         var data = {};
         var  context=this;
         if(feeds) {
-            var _count = 0;
-            for(var i=0; i<feeds.length; i++) {
-                _count++;
-                this.getVersions(feeds[i], data, function(){
-                    _count--;
-                    if(_count===0) {
-                        context.transport.send({'type':'synchronize', data:{versions:data}});
-                    }
+            fjs.utils.Core.asyncForIn(feeds, function(key, value, next){
+                context.getVersions(value, data, function() {
+                    next();
                 });
-            }
+            }, function(){
+                context.transport.send({'type': 'synchronize', data: {versions: data}});
+            });
         }
         else {
             new Error ("You must set feeds names array");
@@ -2800,7 +2812,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined) {
+        if(this.db && version !== undefined && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -2822,18 +2834,20 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                 callback(data[feedName] = context.versions[feedName]);
             },0);
         }
-        if(this.db) {
-            this.db.selectByIndex("versions", {"feedName":feedName}, function(item) {
-                versionsArr.push(item.source+"@"+item.version);
-            }, function(items) {
-                context.versions[feedName] = data[feedName] = versionsArr.join(",");
-                callback(data[feedName]);
-            });
-        }
         else {
-            setTimeout(function(){
-                callback(data[feedName] = "");
-            },0);
+            if (this.db) {
+                this.db.selectByIndex("versions", {"feedName": feedName}, function (item) {
+                    versionsArr.push(item.source + "@" + item.version);
+                }, function (items) {
+                    context.versions[feedName] = data[feedName] = versionsArr.join(",");
+                    callback(data[feedName]);
+                });
+            }
+            else {
+                setTimeout(function () {
+                    callback(context.versions[feedName] = data[feedName] = "");
+                }, 0);
+            }
         }
     };
 
@@ -2852,6 +2866,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                         entriesForSave.push(event.entry);
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
+                        if((!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
@@ -2861,7 +2876,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length>0) {
+        if(this.db && entriesForSave.length>0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertArray(feedName, entriesForSave, null);
         }
     };
@@ -2883,7 +2898,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
                     console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
-            if(this.db) {
+            if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
                 this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
                     context.db.insertArray(feedName, entriesForSave, null);
                 });
@@ -2915,7 +2930,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length > 0) {
+        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.selectByIndex(feedName, {'source':sourceId}, function(item){
                 if(idsForKeep.indexOf(item.xpid)<0 && idsForPush.indexOf(item.xpid)<0) {
                     context.db.deleteByKey(feedName, item.xpid, null);
@@ -3117,7 +3132,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.fireEvent(feedName, data, listener);
         if(this.db) {
             this.db.selectAll(feedName, function(item){
-
                     var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                     context.fireEvent(feedName, data, listener);
                 }
@@ -3257,7 +3271,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
-        if(this.db) {
+        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedSourceFilter": feedName+"_"+source+"_"+"filter", "feedName":feedName, "source":source, filter: filter, "version":version});
             var feedHVersions = this.historyversions[feedName];
             if(feedHVersions){
@@ -3276,7 +3290,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveEmptyHistoryVersions = function(feedName, filter) {
-        if(this.db) {
+        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedName":feedName, filter: filter, "version":"-1"});
             delete this.historyversions[feedName];
         }

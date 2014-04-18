@@ -202,7 +202,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
  */
 fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, callback) {
     tableName = this.getLSTableName(tableName);
-    if(key!=null) {
+    if(key!=null && this.dbData[tableName]) {
         delete this.dbData[tableName][key];
         self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
@@ -224,18 +224,26 @@ fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCall
     tableName = this.getLSTableName(tableName);
     var arr = [];
     var items = this.dbData[tableName];
+    var count=0;
     for(var key in items) {
         if(items.hasOwnProperty(key)) {
-            (function(k) {
+            count++;
+            (function(k, count) {
                 setTimeout(function(){
-                        var item = items[k];
-                        arr.push(item);
-                        itemCallback(item);
+                    var item = items[k];
+                    arr.push(item);
+                    itemCallback(item);
+                    --count;
+                    if(count === 0) {
+                        setTimeout(function(){allCallback(arr)}, 0);
+                    }
                 },0);
-            })(key);
+            })(key, count);
         }
     }
-    setTimeout(function(){allCallback(arr)}, 0);
+    if(count === 0) {
+        setTimeout(function(){allCallback(arr)}, 0);
+    }
 };
 
 /**
@@ -246,7 +254,7 @@ fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCall
  * @param {function(Array)} allCallback
  */
 fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
-    var arr = [], indexes = [], indexKeys=[], _tableName = this.getLSTableName(tableName), ids=[], index, indexKey, context = this;
+    var arr = [], indexes = [], indexKeys=[], _tableName = this.getLSTableName(tableName), ids=[], index, indexKey, context = this, count=0;
     if(rule) {
         for (var key in rule) {
             if(rule.hasOwnProperty(key))
@@ -265,21 +273,29 @@ fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule
             indexKey = rule[index];
         }
         ids = this.indexes[_tableName] && this.indexes[_tableName][index] && this.indexes[_tableName][index][indexKey];
-        if(ids) {
+        if(ids && ids.length>0) {
             for (var i = 0; i < ids.length; i++) {
-                (function(ind) {
+                count++;
+                (function(ind, count) {
                     setTimeout(function(){
-                            var item = context.dbData[_tableName][ids[ind]];
-                            arr.push(item);
-                            itemCallback(item);
-
+                        var item = context.dbData[_tableName][ids[ind]];
+                        arr.push(item);
+                        itemCallback(item);
+                        --count;
+                        if(count == 0) {
+                            setTimeout(function () {
+                                allCallback(arr)
+                            }, 0);
+                        }
                     },0);
-                })(i);
+                })(i, count);
             }
         }
-        setTimeout(function () {
-            allCallback(arr)
-        }, 0);
+        else {
+            setTimeout(function () {
+                allCallback(arr);
+            }, 0);
+        }
     }
     else {
         this.selectAll(tableName,itemCallback,allCallback);

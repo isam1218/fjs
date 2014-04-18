@@ -26,7 +26,7 @@
          * @type {number}
          * @private
          */
-       this.MASTER_ACTIVITY_TIMEOUT = 1000;
+       this.MASTER_ACTIVITY_TIMEOUT = 500;
         /**
          * LocalStorage key for main tab id
          * @type {string}

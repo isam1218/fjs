@@ -87,10 +87,10 @@ fjs.model.DataManager = function(sf) {
                 context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
-                fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.nodeId);
+                fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_TICKET, function(e) {
-                fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.ticket);
+                fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
                 context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, true);
                 if(context.suspendFeeds.length>0) {
                     for(var i=0; i<context.suspendFeeds.length; i++) {

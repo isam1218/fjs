@@ -7,14 +7,14 @@ serverURL: "https://dev4.fon9.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
 //       serverURL: "https://huc-qa.fonality.com:8080"
     }
-    , providers: ['simple', 'sharedWorker']
+    , providers: ['sharedWorker', 'simple']
     , DB: {
         name: "SFA"
         , version: 1
         /**
          * @type {Array}
          */
-        , dbProviders:['localStorage', 'indexedDB', 'webSQL']
+        , dbProviders:['indexedDB', 'webSQL', 'localStorage']
         , tables: [
             {name:"versions", key:"feedSource", indexes:["source", "feedName"]}
             , {name:"historyversions", key:"feedSourceFilter", indexes:["source", "feedName", "filter",["feedName", "filter"]]}
