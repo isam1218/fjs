@@ -179,7 +179,7 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
     this.sf.getLoginInfo(function(response) {
         var data = null;
         /**
-         * @type {{admLogin:string, admPassword:string, email:string, hudLogin:string}}
+         * @type {{admLogin:string, admPassword:string, email:string, hudLogin:string, serverUrl:string}}
          */
         var res = null;
         if (response) {
@@ -198,6 +198,7 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
             if (res.hudLogin) {
                 data.hud = res.hudLogin;
             }
+            fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
         }
         callback(data);
     });
