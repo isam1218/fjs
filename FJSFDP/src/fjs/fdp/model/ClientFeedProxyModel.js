@@ -82,5 +82,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
         delete this.items[event.xpid];
         this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid});
     }
-    this.fillDeletion(event.xpid, event.feed);
+    if(event.feed == this.feedName || this.items[event.xpid]) {
+        this.fillDeletion(event.xpid, event.feed);
+    }
 };
