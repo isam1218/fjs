@@ -8,70 +8,49 @@
     <link href="css/warnings.css" rel="stylesheet" type="text/css"/>
 
     <script type="text/javascript" src="js/lib/angular.js"></script>
-
     <script src="https://c.na1.visual.force.com/support/api/30.0/interaction.js"></script>
-    <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
-
-    <script type="text/javascript" src="js/build_number.js"></script>
+ <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
 
     <script type="text/javascript" src="js/lib/fjs.core.debug.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.api.debug.js"></script>
     <script type="text/javascript" src="properties.js"></script>
 
-    <script type="text/javascript" src="js/salesforce_api/sf_api.js"></script>
-    <script type="text/javascript" src="js/salesforce_api/module.js"></script>
+    <script type="text/javascript" src="js/bin/fjs.sf.min.js"></script>
 
-    <script type="text/javascript" src="js/model/entryModel.js"></script>
-    <script type="text/javascript" src="js/model/feedModel.js"></script>
-    <script type="text/javascript" src="js/model/meModel.js"></script>
-    <script type="text/javascript" src="js/model/myCallsFeedModel.js"></script>
-    <script type="text/javascript" src="js/model/dataManager.js"></script>
-    <script type="text/javascript" src="js/model/module.js"></script>
-
-    <script type="text/javascript" src="js/ui/controllers/commonController.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/newCallController.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/callsListController.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/callController.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/dialpadController.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/transferDialog.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/mainController.js"></script>
-    <script type="text/javascript" src="js/ui/controllers/warningsController.js"></script>
-
-    <script type="text/javascript" src="js/ui/module.js"></script>
 </head>
 <body ng-controller="MainController">
-<header>
-    <div class="title">
-        Fonality CRMLink
+    <header>
+        <div class="title">
+            Fonality CRMLink
+        </div>
+        <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="showWarnings()"></div>
+    </header>
+    <div ng-class="{'hidden':isWarningsShown==false}">
+        <ng-include src="warningsTemplatePath"></ng-include>
     </div>
-    <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="showWarnings()"></div>
-</header>
-<div ng-class="{'hidden':isWarningsShown==false}">
-    <ng-include src="warningsTemplatePath"></ng-include>
-</div>
-<div class="content" ng-class="{'hidden':isWarningsShown==true}" ng-controller="CallsListController">
-    <div class="user-info" ng-class="{'hidden':calls.length > 0}">
-        <div class="line">{{name}}</div>
-        <div class="line">{{extension}}</div>
+    <div class="content" ng-class="{'hidden':isWarningsShown==true}" ng-controller="CallsListController">
+        <div class="user-info" ng-class="{'hidden':calls.length > 0}">
+            <div class="line">{{name}}</div>
+            <div class="line">{{extension}}</div>
+        </div>
+        <ul>
+            <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.isOpened}"
+                data-xpid="{{ call.xpid }}" ng-repeat="call in calls" ng-controller="CallController">
+                <ng-include src="templatePath"></ng-include>
+            </li>
+        </ul>
     </div>
-    <ul>
-        <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.mycallsclient_isOpened}"
-            data-xpid="{{ call.xpid }}" ng-repeat="call in calls" ng-controller="CallController">
-            <ng-include src="templatePath"></ng-include>
-        </li>
-    </ul>
-</div>
-<footer ng-class = "{'hidden':isWarningsShown==true}" ng-controller="NewCallController" id="NewCallController">
-    <div class="new-call-dialpad-holder" id="dialpad_holder">
-        <ng-include src="dialogPath"></ng-include>
-    </div>
-    <form ng-submit="actionCall(phone)">
-        <input class="new-call-input" ng-model="phone" type="text" placeholder="Phone number" id="inputPhone"/>
-    </form>
-    <button class="new-call-button" ng-click="actionCall(phone)">Call</button>
-    <button class="new-call-dialpad" ng-click="showDialpad()">&#9000;</button>
-</footer>
-<iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
-<div class="plate" id="plate"></div>
+    <footer ng-class = "{'hidden':isWarningsShown==true}" ng-controller="NewCallController" id="NewCallController">
+        <div class="new-call-dialpad-holder" id="dialpad_holder">
+            <ng-include src="dialogPath"></ng-include>
+        </div>
+        <form ng-submit="actionCall(phone)">
+            <input class="new-call-input" ng-model="phone" type="text" placeholder="Phone number" id="inputPhone"/>
+        </form>
+        <button class="new-call-button" ng-click="actionCall(phone)">Call</button>
+        <button class="new-call-dialpad" ng-click="showDialpad()">&#9000;</button>
+    </footer>
+    <iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
+    <div class="plate" id="plate"></div>
 </body>
 </html>
