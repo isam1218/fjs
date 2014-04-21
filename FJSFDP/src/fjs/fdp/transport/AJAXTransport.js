@@ -80,7 +80,7 @@
          */
         this.versionsCacheFailedCount = 0;
 
-        this.isNetworkProblem = false;
+        this.isNetworkProblem = true;
 
     };
     fjs.fdp.transport.AJAXTransport.extend(fjs.fdp.transport.FDPTransport);
