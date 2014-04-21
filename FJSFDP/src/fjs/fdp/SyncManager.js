@@ -300,7 +300,10 @@
             /**
              * Open DB
              */
-            this.db.open(this.config.DB.name, this.config.DB.version, function(){
+            this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
+                if(!dbProvider) {
+                    context.db = null;
+                }
                 context.finishInitialization(callback);
             });
         }
@@ -344,15 +347,15 @@
                     });
                 }, function(){
                     context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                    context.startSync(context.suspendFeeds);
+                    context.suspendFeeds = [];
                 });
             });
 
             /**
              * Start synchronization
              */
-            this.startSync(this.suspendFeeds);
 
-            this.suspendFeeds = [];
         }
         if(this.suspendLoginData) {
             var _suspendLoginData = this.suspendLoginData;
@@ -605,8 +608,8 @@
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
         if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
-           this.onSync(message);
-           fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
+            fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
+            this.onSync(message);
         }
         else {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);

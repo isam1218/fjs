@@ -184,7 +184,7 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
  * @private
  */
 fjs.fdp.model.ProxyModel.prototype.fieldPass = function(feedName, fieldName) {
-    return fieldName!='xef001id' && feedName!='xef001iver' && feedName!='xpid';
+    return fieldName!='xef001id' && fieldName!='xef001iver' && fieldName!='xef001type' && fieldName!='xpid' && fieldName!='source';
 };
 /**
  * Collects field names from joined feeds, then to remove them if joined feed entry deleted

@@ -466,10 +466,16 @@ fjs.db.WebSQLProvider.check = function() {
  * @param {function(fjs.db.IDBProvider)} callback - Handler function to execute when database was ready
  */
 fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
-    var dbSize = 5 * 1024 * 1024, context = this;
+    var dbSize = 5*1023*1023, context = this;
 
-    var db = this.db = self.openDatabase(name,"" ,name , dbSize, function(){
-    });
+    try {
+        var db = this.db = self.openDatabase(name, "", name, dbSize);
+    }
+    catch(e) {
+        console.error(e);
+        callback(null);
+        return;
+    }
     if(db.version==='') {
         for(var i in context.tables) {
             if(context.tables.hasOwnProperty(i)) {
@@ -1417,7 +1423,7 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
  * @private
  */
 fjs.fdp.model.ProxyModel.prototype.fieldPass = function(feedName, fieldName) {
-    return fieldName!='xef001id' && feedName!='xef001iver' && feedName!='xpid';
+    return fieldName!='xef001id' && fieldName!='xef001iver' && fieldName!='xef001type' && fieldName!='xpid' && fieldName!='source';
 };
 /**
  * Collects field names from joined feeds, then to remove them if joined feed entry deleted
@@ -2752,7 +2758,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
             /**
              * Open DB
              */
-            this.db.open(this.config.DB.name, this.config.DB.version, function(){
+            this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
+                if(!dbProvider) {
+                    context.db = null;
+                }
                 context.finishInitialization(callback);
             });
         }
@@ -2796,15 +2805,15 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
                     });
                 }, function(){
                     context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                    context.startSync(context.suspendFeeds);
+                    context.suspendFeeds = [];
                 });
             });
 
             /**
              * Start synchronization
              */
-            this.startSync(this.suspendFeeds);
 
-            this.suspendFeeds = [];
         }
         if(this.suspendLoginData) {
             var _suspendLoginData = this.suspendLoginData;
@@ -3057,8 +3066,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
         if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
-           this.onSync(message);
-           fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
+            fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
+            this.onSync(message);
         }
         else {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
