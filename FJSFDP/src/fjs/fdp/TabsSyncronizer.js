@@ -70,7 +70,7 @@
             context.timeoutId = setTimeout(context._masterIteration, context.MASTER_ACTIVITY_TIMEOUT);
         };
 
-        window.addEventListener('storage', function(e) {
+        self.addEventListener('storage', function(e) {
             if(e.key == context.TABS_SYNCRONIZE_KEY) {
                 var lsvals = e.newValue.split("|");
                 if(lsvals[0]!=context.tabId) {

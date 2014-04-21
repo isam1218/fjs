@@ -35,6 +35,7 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             var _entry = {};
             entry.mycallsclient_isOpened = _entry.isOpened = false;
             _entry.xpid = entry.xpid;
+            console.log("!!!!!!Deselect call : " + _entry.xpid);
             dataManager.sendAction("mycallsclient", "push", _entry);
         }
     };
@@ -44,6 +45,7 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             var _entry = {};
             entry.mycallsclient_isOpened = _entry.isOpened = true;
             _entry.xpid = entry.xpid;
+            console.log("!!!!!!Select call : " + _entry.xpid);
             dataManager.sendAction("mycallsclient", "push", _entry);
         }
         deselectOldCall(entry.xpid);

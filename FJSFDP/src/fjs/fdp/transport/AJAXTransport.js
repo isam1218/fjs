@@ -103,7 +103,9 @@
             return;
         }
         else if(!isOk) {
-            this.fireEvent('error', {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status});
+            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status}
+            this.fireEvent('error', event);
+            console.error(event);
         }
         if(this.isNetworkProblem) {
             this.fireEvent('message', {type:'connectionEstablished'});

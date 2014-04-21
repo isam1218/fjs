@@ -1354,7 +1354,7 @@ fjs.fdp.model.ProxyModel.prototype.createChange = function(xpid) {
 /**
  * Creates changes object with all existed items.
  * @returns {Object | null}
- * @private
+ * @protected
  */
 fjs.fdp.model.ProxyModel.prototype.createFullChange = function() {
     var _changes = {}, entriesCount=0;
@@ -1664,6 +1664,21 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
         this.fillDeletion(event.xpid, event.feed);
     }
 };
+
+fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
+    var index = this.listeners.indexOf(listener);
+    if(index<0) {
+        this.listeners.push(listener);
+        var changes = this.createFullChange();
+        if(changes) {
+            listener({feed: this.clientFeedName, changes:changes});
+        }
+    }
+    if(!this._attached) {
+        this.attach();
+        this._attached = true;
+    }
+};
 (function() {
     namespace("fjs.fdp.transport");
     /**
@@ -1829,7 +1844,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
             return;
         }
         else if(!isOk) {
-            this.fireEvent('error', {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status});
+            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status}
+            this.fireEvent('error', event);
+            console.error(event);
         }
         if(this.isNetworkProblem) {
             this.fireEvent('message', {type:'connectionEstablished'});
@@ -2173,7 +2190,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
         data["t"] = this.type;
         data["alt"] = 'j';
         var headers = {Authorization: "auth="+this.ticket, node: this.node || ""};
-        return this.ajax.send('post', url, headers, data, callback);
+        var xhr = this.ajax.send('post', url, headers, data, callback);
+        xhr.url = url;
+        return xhr;
     };
 })();(function() {
     namespace("fjs.fdp");
@@ -2210,7 +2229,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
         data["t"] = this.type;
         data["alt"] = 'j';
         var headers = {Authorization: "auth="+this.ticket, node:this.node};
-        return this.ajax.send('post', url, headers, data, function(request, responseText, isOK){
+        var xdr = this.ajax.send('post', url, headers, data, function(request, responseText, isOK){
             if(!isOK) {
                 context.iframeAjax.send('post', url, headers, data, callback);
             }
@@ -2218,6 +2237,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
                 callback.apply(this, arguments);
             }
         });
+        xdr.url = url;
+        return url;
     };
 })();(function() {
     namespace("fjs.fdp.transport");
@@ -2423,7 +2444,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
             context.timeoutId = setTimeout(context._masterIteration, context.MASTER_ACTIVITY_TIMEOUT);
         };
 
-        window.addEventListener('storage', function(e) {
+        self.addEventListener('storage', function(e) {
             if(e.key == context.TABS_SYNCRONIZE_KEY) {
                 var lsvals = e.newValue.split("|");
                 if(lsvals[0]!=context.tabId) {
@@ -3065,12 +3086,14 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
      * @param {Object} message sync object (changes object)
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
-            this.onSync(message);
         }
-        else {
+        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
+        }
+        else if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+            this.onSync(message);
         }
     };
 

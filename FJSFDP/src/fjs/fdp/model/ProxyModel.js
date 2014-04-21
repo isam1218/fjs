@@ -115,7 +115,7 @@ fjs.fdp.model.ProxyModel.prototype.createChange = function(xpid) {
 /**
  * Creates changes object with all existed items.
  * @returns {Object | null}
- * @private
+ * @protected
  */
 fjs.fdp.model.ProxyModel.prototype.createFullChange = function() {
     var _changes = {}, entriesCount=0;

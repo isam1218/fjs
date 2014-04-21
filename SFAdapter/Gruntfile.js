@@ -11,7 +11,12 @@ module.exports = function(grunt) {
                 src: [ 'src/js/build_number.js'
                     ,'src/js/salesforce_api/sf_api.js'
                     , 'src/js/salesforce_api/module.js'
-                    , 'src/js/model/*.js'
+                    , 'src/js/model/entryModel.js'
+                    , 'src/js/model/feedModel.js'
+                    , 'src/js/model/MeModel.js'
+                    , 'src/js/model/myCallsFeedModel.js'
+                    , 'src/js/model/dataManager.js'
+                    , 'src/js/model/module.js'
                     , 'src/js/ui/controllers/commonController.js'
                     , 'src/js/ui/controllers/callController.js'
                     , 'src/js/ui/controllers/callsListController.js'
@@ -56,5 +61,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-zip');
 
-    grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
+    grunt.registerTask('build', ['concat']);
 };

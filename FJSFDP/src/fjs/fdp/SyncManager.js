@@ -607,12 +607,14 @@
      * @param {Object} message sync object (changes object)
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
-            this.onSync(message);
         }
-        else {
+        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
+        }
+        else if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+            this.onSync(message);
         }
     };
 
