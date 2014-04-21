@@ -18,7 +18,7 @@
     <script type="text/javascript" src="js/bin/fjs.sf.min.js"></script>
 
 </head>
-<body ng-controller="MainController">
+    <body ng-controller="MainController">
     <header>
         <div class="title">
             Fonality CRMLink
@@ -34,7 +34,7 @@
             <div class="line">{{extension}}</div>
         </div>
         <ul>
-            <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.isOpened}"
+            <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.mycallsclient_isOpened}"
                 data-xpid="{{ call.xpid }}" ng-repeat="call in calls" ng-controller="CallController">
                 <ng-include src="templatePath"></ng-include>
             </li>
@@ -52,5 +52,5 @@
     </footer>
     <iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
     <div class="plate" id="plate"></div>
-</body>
+    </body>
 </html>
