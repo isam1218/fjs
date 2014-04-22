@@ -68,7 +68,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
  * @param {Object} data Request parameters ({'key':'value',...})
  */
 fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data) {
-
     if(actionName==='push' || actionName==='delete') {
         this.sm.onClientSync(fjs.utils.JSON.stringify(this.createSyncData(actionName, data)));
     }

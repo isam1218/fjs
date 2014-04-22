@@ -94,6 +94,8 @@
          */
         this.versionsTimeoutId = null;
 
+        this.feeds = [];
+
         /**
          *
          * @type {fjs.fdp.TabsSynchronizer}
@@ -613,7 +615,7 @@
         else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
         }
-        else if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
             this.onSync(message);
         }
     };
@@ -643,6 +645,10 @@
     fjs.fdp.SyncManager.prototype.addFeedListener = function(feedName, listener, isClient) {
 
         var context = this;
+
+        if(this.feeds.indexOf(feedName)<0) {
+            this.feeds.push(feedName);
+        }
 
         this.superClass.addEventListener.apply(this, arguments);
 
@@ -698,9 +704,12 @@
      * @param {boolean=} isClient
      */
     fjs.fdp.SyncManager.prototype.removeFeedListener = function(feedName, listener, isClient) {
+        var index;
+        if(index = (this.feeds.indexOf(feedName)>=0)) {
+            this.feeds.splice(index, 1);
+        }
         this.superClass.removeEventListener.apply(this, arguments);
         if(!isClient) {
-            var index;
             if ((index = this.syncFeeds.indexOf(feedName)) > -1) {
                 this.syncFeeds.splice(index, 1);
             }
@@ -753,7 +762,7 @@
         else {
             for(var _feedName in this.listeners) {
                 if(this.listeners.hasOwnProperty(_feedName)) {
-                    if(this.syncFeeds.indexOf(_feedName)>-1) {
+                    if(this.feeds.indexOf(_feedName)>-1) {
                         this.superClass.fireEvent.call(this, _feedName, data);
                     }
                 }

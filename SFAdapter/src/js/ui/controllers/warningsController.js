@@ -3,30 +3,20 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     fjs.controllers.CommonController(this);
     this.me = dataManager.getModel(fjs.model.MeModel.NAME);
     this.locations = dataManager.getModel('locations');
-    var keyToXpid = {};
     var context = this;
 
-    this.deleteMeListener = function(data){
-        delete keyToXpid[data.propertyKey];
-    };
-
-    this.pushMeListener = function(data){
-        keyToXpid[data.propertyKey] = data.propertyValue;
-    };
-
     this.completeMeListener = function(){
-        $scope.name = keyToXpid["display_name"];
-        $scope.fdp_version = keyToXpid["fdp_version"];
-        $scope.my_jid = keyToXpid["my_jid"];
-        $scope.license = keyToXpid["license"];
-        $scope.extension = keyToXpid["primary_extension"];
-        $scope.locationId =  keyToXpid["current_location"];
+        $scope.name = context.me.getProperty("display_name");
+        $scope.fdp_version = context.me.getProperty("fdp_version");
+        $scope.my_jid = context.me.getProperty("my_jid");
+        $scope.extension = context.me.getProperty("primary_extension");
+        $scope.locationId = context.me.getProperty("current_location");
         if(context.locations.items && context.locations.items[$scope.locationId]) {
             $scope.location =  context.locations.items[$scope.locationId].shortName;
-        }
-        var location = context.locations.items[$scope.locationId];
-        if(location){
-            setLocationStatus(location);
+            var location = context.locations.items[$scope.locationId];
+            if(location){
+                setLocationStatus(location);
+            }
         }
         context.safeApply($scope);
     };
@@ -41,8 +31,6 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     };
 
     this.me.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeMeListener);
-    this.me.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, this.pushMeListener);
-    this.me.addEventListener(fjs.controllers.CommonController.DELETE_LISTENER, this.deleteMeListener);
     this.locations.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.locationListener);
 
     var setLocationStatus =  function(location) {
@@ -86,13 +74,11 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     };
 
     $scope.close = function() {
-        $scope.showWarnings();
+        $scope.hideWarnings();
     };
 
     $scope.$on("$destroy", function() {
-        context.me.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.completeMeListener);
         context.me.removeEventListener(fjs.controllers.CommonController.PUSH_LISTENER, context.pushMeListener);
-        context.me.removeEventListener(fjs.controllers.CommonController.DELETE_LISTENER, context.deleteMeListener);
         context.locations.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.locationListener);
     });
 };

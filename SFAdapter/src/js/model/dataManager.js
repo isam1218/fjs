@@ -148,7 +148,9 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
 */
 
 fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
-    this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
+    if(this.dataProvider) {
+        this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
+    }
 };
 
 /**

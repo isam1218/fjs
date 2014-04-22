@@ -1646,7 +1646,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
  * @param {Object} data Request parameters ({'key':'value',...})
  */
 fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data) {
-
     if(actionName==='push' || actionName==='delete') {
         this.sm.onClientSync(fjs.utils.JSON.stringify(this.createSyncData(actionName, data)));
     }
@@ -2573,6 +2572,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
          */
         this.versionsTimeoutId = null;
 
+        this.feeds = [];
+
         /**
          *
          * @type {fjs.fdp.TabsSynchronizer}
@@ -3092,7 +3093,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
         }
-        else if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
             this.onSync(message);
         }
     };
@@ -3122,6 +3123,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
     fjs.fdp.SyncManager.prototype.addFeedListener = function(feedName, listener, isClient) {
 
         var context = this;
+
+        if(this.feeds.indexOf(feedName)<0) {
+            this.feeds.push(feedName);
+        }
 
         this.superClass.addEventListener.apply(this, arguments);
 
@@ -3177,9 +3182,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
      * @param {boolean=} isClient
      */
     fjs.fdp.SyncManager.prototype.removeFeedListener = function(feedName, listener, isClient) {
+        var index;
+        if(index = (this.feeds.indexOf(feedName)>=0)) {
+            this.feeds.splice(index, 1);
+        }
         this.superClass.removeEventListener.apply(this, arguments);
         if(!isClient) {
-            var index;
             if ((index = this.syncFeeds.indexOf(feedName)) > -1) {
                 this.syncFeeds.splice(index, 1);
             }
@@ -3232,7 +3240,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         else {
             for(var _feedName in this.listeners) {
                 if(this.listeners.hasOwnProperty(_feedName)) {
-                    if(this.syncFeeds.indexOf(_feedName)>-1) {
+                    if(this.feeds.indexOf(_feedName)>-1) {
                         this.superClass.fireEvent.call(this, _feedName, data);
                     }
                 }
@@ -3500,6 +3508,8 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
             return new fjs.fdp.model.ClientFeedProxyModel(['sortings']);
         case 'mycallsclient':
             return new fjs.fdp.model.ClientFeedProxyModel(['mycalls', 'mycalldetails', 'mycallsclient']);
+        case 'clientsettings':
+            return new fjs.fdp.model.ClientFeedProxyModel(['clientsettings']);
         default :
             return new fjs.fdp.model.ProxyModel([feedName]);
     }

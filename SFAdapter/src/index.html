@@ -23,7 +23,7 @@
         <div class="title">
             Fonality CRMLink
         </div>
-        <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="showWarnings()"></div>
+        <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="toggleWarnings()"></div>
     </header>
     <div ng-class="{'hidden':isWarningsShown==false}">
         <ng-include src="warningsTemplatePath"></ng-include>
