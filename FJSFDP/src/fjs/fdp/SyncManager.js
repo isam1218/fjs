@@ -300,7 +300,10 @@
             /**
              * Open DB
              */
-            this.db.open(this.config.DB.name, this.config.DB.version, function(){
+            this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
+                if(!dbProvider) {
+                    context.db = null;
+                }
                 context.finishInitialization(callback);
             });
         }
@@ -344,15 +347,15 @@
                     });
                 }, function(){
                     context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                    context.startSync(context.suspendFeeds);
+                    context.suspendFeeds = [];
                 });
             });
 
             /**
              * Start synchronization
              */
-            this.startSync(this.suspendFeeds);
 
-            this.suspendFeeds = [];
         }
         if(this.suspendLoginData) {
             var _suspendLoginData = this.suspendLoginData;
@@ -604,12 +607,14 @@
      * @param {Object} message sync object (changes object)
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
-           this.onSync(message);
-           fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
+        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
-        else {
+        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
+        }
+        else if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+            this.onSync(message);
         }
     };
 

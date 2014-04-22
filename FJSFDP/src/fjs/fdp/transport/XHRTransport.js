@@ -31,6 +31,8 @@
         data["t"] = this.type;
         data["alt"] = 'j';
         var headers = {Authorization: "auth="+this.ticket, node: this.node || ""};
-        return this.ajax.send('post', url, headers, data, callback);
+        var xhr = this.ajax.send('post', url, headers, data, callback);
+        xhr.url = url;
+        return xhr;
     };
 })();

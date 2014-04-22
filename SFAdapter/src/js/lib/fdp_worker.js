@@ -1,7 +1,6 @@
 //we load scripts of libs
 importScripts('fjs.core.debug.js');
 importScripts('fjs.fdp.debug.js');
-importScripts('properties.js');
 
 var dataManager = null;
 self.web_worker = true;
@@ -22,7 +21,7 @@ function handleMessage(message, callback) {
     switch(message.action) {
         case "init":
             if(!dataManager) {
-                dataManager = new fjs.fdp.DataManager(message.data.ticket, message.data.node, self, authHandler, function(){});
+                dataManager = new fjs.fdp.DataManager(message.data.ticket, message.data.node, message.data.config, function(){});
                 dataManager.addEventListener("", function(e){
                     postToPage(e);
                 });

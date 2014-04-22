@@ -33,7 +33,7 @@
         data["t"] = this.type;
         data["alt"] = 'j';
         var headers = {Authorization: "auth="+this.ticket, node:this.node};
-        return this.ajax.send('post', url, headers, data, function(request, responseText, isOK){
+        var xdr = this.ajax.send('post', url, headers, data, function(request, responseText, isOK){
             if(!isOK) {
                 context.iframeAjax.send('post', url, headers, data, callback);
             }
@@ -41,5 +41,7 @@
                 callback.apply(this, arguments);
             }
         });
+        xdr.url = url;
+        return url;
     };
 })();

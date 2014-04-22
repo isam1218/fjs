@@ -180,10 +180,10 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
     this.worker = new SharedWorker("js/lib/fdp_shared_worker.js");
     this.worker.port.addEventListener("message", function(e) {
         if(e.data["eventType"]=="ready") {
-            context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node}});
+            context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node, config:fjs.fdp.CONFIG}});
             callback();
         }
-        context.fireEvent(e.data["eventType"], e.data["data"] || e.data);
+        context.fireEvent(e.data["eventType"], e.data);
     }, false);
     this.worker.port.addEventListener("error", function(e){
         console.error("Worker Error", e);

@@ -86,3 +86,18 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
         this.fillDeletion(event.xpid, event.feed);
     }
 };
+
+fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
+    var index = this.listeners.indexOf(listener);
+    if(index<0) {
+        this.listeners.push(listener);
+        var changes = this.createFullChange();
+        if(changes) {
+            listener({feed: this.clientFeedName, changes:changes});
+        }
+    }
+    if(!this._attached) {
+        this.attach();
+        this._attached = true;
+    }
+};
