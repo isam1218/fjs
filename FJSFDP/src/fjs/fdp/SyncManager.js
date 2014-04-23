@@ -361,10 +361,15 @@
         }
         if(this.suspendLoginData) {
             var _suspendLoginData = this.suspendLoginData;
-            this.db.clear(function(){
-                context.transport.send({type:'SFLogin', data:_suspendLoginData});
+            if(this.db) {
+                this.db.clear(function () {
+                    context.transport.send({type: 'SFLogin', data: _suspendLoginData});
 
-            });
+                });
+            }
+            else {
+                context.transport.send({type: 'SFLogin', data: _suspendLoginData});
+            }
             this.suspendLoginData=null;
         }
         this.status = sm.states.READY;
