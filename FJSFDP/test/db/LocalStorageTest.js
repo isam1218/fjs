@@ -1,6 +1,6 @@
 
 
-ddescribe("LocalStorageTest", function() {
+describe("LocalStorageTest", function() {
     var dbName = CONFIG.DB.name;
     var dbVersion = CONFIG.DB.version;
 

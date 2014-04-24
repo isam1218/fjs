@@ -1,5 +1,4 @@
 describe("syncManager", function () {
-
     var sm;
     it("initialization", function(){
         var doneFlag = false;
