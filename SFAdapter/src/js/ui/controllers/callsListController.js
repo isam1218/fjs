@@ -28,10 +28,10 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
 
     var deselectOldCall = function(newCallXpid) {
         for(var i = 0; i < $scope.calls.length; i++) {
-            var xpid = $scope.calls[i].xpid;
-            var entry = context.callsFeedModel.items[xpid];
-            if(entry.xpid != newCallXpid && entry.mycallsclient_isOpened) {
-                deselectCall(entry);
+            var call = $scope.calls[i];
+            var xpid = call.xpid;
+            if(xpid != newCallXpid && call.mycallsclient_isOpened) {
+                deselectCall(call);
             }
         }
     };

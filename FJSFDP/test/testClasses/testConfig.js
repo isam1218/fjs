@@ -20,4 +20,7 @@ var CONFIG = {
             , {name: "testModel", key: "xpid", indexes: ["source"]}
         ]
     }
+    , CLIENT: {
+        type:'test'
+    }
 };

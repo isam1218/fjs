@@ -18,7 +18,7 @@ describe("XHRTransport.js", function () {
         runs(function () {
             expect(true).toBe(doneFlag);
             expect('authError').toBe(errorType);
-            transport.close()
+            transport.close();
         });
     });
 

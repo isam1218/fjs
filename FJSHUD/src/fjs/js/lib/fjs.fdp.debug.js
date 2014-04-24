@@ -872,7 +872,7 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  * @param {function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
-    var tableName;
+    var tableName, context = this; ;
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
@@ -901,7 +901,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
         this.createTables();
         self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
     }
-    setTimeout(callback, 0);
+    setTimeout(function(){callback(context)}, 0);
 };
 
 /**
@@ -2499,7 +2499,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         fjs.EventsSource.call(this);
 
         this.db = new fjs.db.DBFactory(config).getDB();
-
+        this.syncs = [];
         /**
          * Current SyncManager state
          * @type {fjs.fdp.SyncManager.states|number}
@@ -2692,70 +2692,71 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         this.ticket = ticket;
         this.node = node;
 
-
-
-        /**
-         * @param {fjs.fdp.transport.FDPTransport} transport
-         */
-        function addTransportEvents(transport) {
-            transport.addEventListener('message', function(e){
-                if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
-                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
-                }
-                switch(e.type) {
-                    case 'sync':
-                        context.onSync(e.data);
-                        break;
-                        context.fireEvent('node', e);
-                        break;
-                    case 'ticket':
-                        context.fireEvent('ticket', e);
-                        context.startSync(context.syncFeeds);
-                        break;
-                    default:
-                        context.fireEvent(e.type, e);
-                        break;
-                }
-            });
-            transport.addEventListener('error', function(e){
-                switch(e.type) {
-                    default:
-                        context.fireEvent(e.type, e);
-                }
-                if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
-                    fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
-                }
-            });
-        }
-
         if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
-            this.onStorage = function(e) {
-                if(e.key.indexOf('lsp_')>-1) {
-                    var eventType = e.key.replace('lsp_', '');
-                    if(new fjs.fdp.TabsSynchronizer().isMaster) {
-                        var obj = fjs.utils.JSON.parse(e.newValue);
-                        if(eventType == "clientSync") {
-                            context.onClientSync(obj);
-                        }
-                        else {
-                            context.transport.send({type:eventType, data:obj});
-                        }
-                    }
-                }
-            };
-            window.addEventListener('storage', this.onStorage, false);
+            window.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.fdp.TabsSynchronizer();
             this.tabsSyncronizer.addEventListener('master_changed', function(){
-                context.transport.close();
-                context.transport = fjs.fdp.transport.TransportFactory.getTransport(context.ticket, context.node, context.serverHost, context.type);
-                addTransportEvents(context.transport);
-                clearTimeout(context.versionsTimeoutId);
-                context.startSync(context.syncFeeds);
+                context.onMasterChanged();
             });
         }
-        this.transport = fjs.fdp.transport.TransportFactory.getTransport(context.ticket, context.node, context.serverHost, context.type);
-        addTransportEvents(this.transport);
+        this.transport = fjs.fdp.transport.TransportFactory.getTransport(this.ticket, this.node, this.serverHost, this.type);
+        this.addTransportEvents();
         this.initDataBase(callback);
+    };
+
+    fjs.fdp.SyncManager.prototype.onMasterChanged = function() {
+        this.transport.close();
+        this.transport = fjs.fdp.transport.TransportFactory.getTransport(this.ticket, this.node, this.serverHost, this.type);
+        this.addTransportEvents();
+        clearTimeout(this.versionsTimeoutId);
+        this.startSync(this.syncFeeds);
+    };
+
+    fjs.fdp.SyncManager.prototype.onStorage = function(e) {
+        if(e.key.indexOf('lsp_')>-1) {
+            var eventType = e.key.replace('lsp_', '');
+            if(new fjs.fdp.TabsSynchronizer().isMaster) {
+                var obj = fjs.utils.JSON.parse(e.newValue);
+                if(eventType == "clientSync") {
+                    this.onClientSync(obj);
+                }
+                else {
+                    this.transport.send({type:eventType, data:obj});
+                }
+            }
+        }
+    };
+
+    fjs.fdp.SyncManager.prototype.addTransportEvents = function() {
+        var context = this;
+        this.transport.addEventListener('message', function(e){
+            if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+                fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
+            }
+            switch(e.type) {
+                case 'sync':
+                    context.onSync(e.data);
+                    break;
+                    context.fireEvent('node', e);
+                    break;
+                case 'ticket':
+                    context.fireEvent('ticket', e);
+                    context.startSync(context.syncFeeds);
+                    break;
+                default:
+                    context.fireEvent(e.type, e);
+                    break;
+            }
+        });
+        this.transport.addEventListener('error', function(e){
+            if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+                fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
+            }
+            switch(e.type) {
+                default:
+                    context.fireEvent(e.type, e);
+            }
+        });
     };
 
     /**
@@ -2792,6 +2793,20 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         }
     };
 
+    fjs.fdp.SyncManager.prototype.getDataForFeeds = function (feeds, callback) {
+        var context = this;
+        fjs.utils.Core.asyncForIn(feeds, function(key, value, next){
+            context.getFeedData(value, function(data){
+                context.fireEvent(data.feed, data);
+                if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
+                    next();
+                }
+            });
+        }, function(){
+            callback();
+        });
+    };
+
     /**
      * @param {Function} callback
      * @private
@@ -2802,51 +2817,57 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
          */
         var context = this;
 
-        if(this.suspendFeeds.length > 0) {
-            /**
-             * Load data from localDB
-             */
-            this.fireEvent(null, {eventType:sm.eventTypes.SYNC_START});
-            fjs.utils.Core.asyncForIn(this.suspendFeeds, function(key, value, next){
-                if(context.syncFeeds.indexOf(value)<0) {
-                    context.syncFeeds.push(value);
-                }
-                context.getFeedData(value, function(data){
-                    context.fireEvent(data.feed, data);
-                    if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
-                        next();
-                    }
-                });
-            }, function(){
-                fjs.utils.Core.asyncForIn(context.suspendClientFeeds, function(key, value, next){
-                    context.getFeedData(value, function(data){
-                        context.fireEvent(data.feed, data);
-                        if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
-                            next();
-                        }
-                    });
-                }, function(){
-                    context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
-                    context.startSync(context.suspendFeeds);
-                    context.suspendFeeds = [];
-                });
-            });
-
-            /**
-             * Start synchronization
-             */
-
+        function endOfInit () {
+            if(context.suspendFeeds.length>0) {
+                context.startSync(context.suspendFeeds);
+            }
+            context.suspendFeeds = [];
+            context.suspendClientFeeds = [];
+            context.status = sm.states.READY;
+            callback();
         }
+
         if(this.suspendLoginData) {
             var _suspendLoginData = this.suspendLoginData;
-            this.db.clear(function(){
-                context.transport.send({type:'SFLogin', data:_suspendLoginData});
-
-            });
+            if(this.db) {
+                this.db.clear(function () {
+                    context.transport.send({type: 'SFLogin', data: _suspendLoginData});
+                    endOfInit();
+                });
+            }
+            else {
+                context.transport.send({type: 'SFLogin', data: _suspendLoginData});
+                endOfInit();
+            }
             this.suspendLoginData=null;
         }
-        this.status = sm.states.READY;
-        callback();
+        else {
+            if (this.suspendFeeds.length > 0) {
+                this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
+                this.getDataForFeeds(this.suspendFeeds, function () {
+                    if (context.suspendClientFeeds.length > 0) {
+                        context.getDataForFeeds(context.suspendClientFeeds, function () {
+                            context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                            endOfInit();
+                        });
+                    }
+                    else {
+                        context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                        endOfInit();
+                    }
+                });
+            }
+            else if (this.suspendClientFeeds.length > 0) {
+                this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
+                this.getDataForFeeds(this.suspendClientFeeds, function () {
+                    context.fireEvent(null, {eventType:sm.eventTypes.SYNC_COMPLETE});
+                    endOfInit();
+                });
+            }
+            else {
+                endOfInit();
+            }
+        }
     };
 
     /**
@@ -3060,15 +3081,23 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
 
         var _data = fjs.utils.JSON.parse(data);
-
-        this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
-        for (var feedName in _data) {
-            if (_data.hasOwnProperty(feedName)) {
-                var feedData = _data[feedName];
-                this.processFeedData(feedName, feedData);
+        this.syncs.push(_data);
+        if(this.syncs.length==1) {
+            this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
+            for(var i=0; i <this.syncs.length; i++) {
+                for (var feedName in this.syncs[i]) {
+                    if (this.syncs[i].hasOwnProperty(feedName)) {
+                        var feedData = this.syncs[i][feedName];
+                        this.processFeedData(feedName, feedData);
+                    }
+                }
             }
+            this.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
+            this.syncs = [];
         }
-        this.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
+        else {
+            console.error("!!!!Double onSync!!", this.syncs[0],  _data);
+        }
     };
 
     /**
@@ -3136,14 +3165,19 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
                     this.suspendClientFeeds.push(feedName);
                 }
             }
-            else if(this.suspendFeeds.indexOf(feedName)<0) {
-                this.suspendFeeds.push(feedName);
+            else {
+                if(this.suspendFeeds.indexOf(feedName)<0) {
+                    this.suspendFeeds.push(feedName);
+                }
+                if(this.syncFeeds.indexOf(feedName)<0) {
+                    this.syncFeeds.push(feedName);
+                }
             }
         }
         else if(this.syncFeeds.indexOf(feedName)<0) {
             if(!isClient) {
                 this.syncFeeds.push(feedName);
-                if (this.versionsFeeds.indexOf(feedName) < 0) {
+                if (this.versionsFeeds.indexOf(feedName)<0) {
                     this.versionsFeeds.push(feedName);
                 }
                 if (this.versionsTimeoutId != null) {

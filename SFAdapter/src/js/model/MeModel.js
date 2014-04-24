@@ -13,14 +13,19 @@ fjs.model.MeModel = function(dataManager) {
 fjs.model.MeModel.extend(fjs.model.FeedModel);
 
 fjs.model.MeModel.prototype.onEntryChange = function(data) {
-    if(data.entry.propertyKey) {
-        this.propertyKey2Xpid[data.xpid] = data.entry.propertyKey;
-        this.property2key[data.entry.propertyKey] = data.entry.propertyValue;
+    if(data.entry) {
+        if (data.entry.propertyKey) {
+            this.propertyKey2Xpid[data.xpid] = data.entry.propertyKey;
+            this.property2key[data.entry.propertyKey] = data.entry.propertyValue;
+        }
+        else {
+            this.property2key[this.propertyKey2Xpid[data.xpid]] = data.entry.propertyValue;
+        }
+        this.superClass.onEntryChange.call(this, data);
     }
     else {
-        this.property2key[this.propertyKey2Xpid[data.xpid]] = data.entry.propertyValue;
+        debugger;
     }
-    this.superClass.onEntryChange.call(this, data);
 };
 
 fjs.model.MeModel.prototype.onEntryDeletion = function(data) {
