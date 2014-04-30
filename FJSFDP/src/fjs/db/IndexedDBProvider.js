@@ -31,7 +31,7 @@ fjs.db.IndexedDBProvider = function() {
      */
     this.db = null;
     /**
-     * @type {*}
+     * @type {Object}
      * @private
      */
     this.tables = {};

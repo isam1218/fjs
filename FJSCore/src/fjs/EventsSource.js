@@ -54,8 +54,11 @@ fjs.EventsSource.prototype.removeEventListener = function (eventType, handler) {
 fjs.EventsSource.prototype.fireEvent = function (eventType, eventData) {
     var _listeners = this.listeners[eventType];
     if(_listeners) {
-        for (var i = 0; i < _listeners.length; i++) {
-            _listeners[i](eventData);
+        var clonedListeners = _listeners.slice(0);
+        for (var i = 0; i < clonedListeners.length; i++) {
+            if(_listeners.indexOf(clonedListeners[i])>-1) {
+                clonedListeners[i](eventData);
+            }
         }
     }
 };

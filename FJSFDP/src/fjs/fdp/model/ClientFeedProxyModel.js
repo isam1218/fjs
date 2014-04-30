@@ -2,11 +2,12 @@ namespace("fjs.fdp.model");
 /**
  * Proxy model for client feeds
  * @param {Array.<string>} feeds List of joined feeds
+ * @param {fjs.fdp.SyncManager} syncManager SynchronizationManager
  * @constructor
  * @extends fjs.fdp.model.ProxyModel
  */
-fjs.fdp.model.ClientFeedProxyModel = function(feeds) {
-    fjs.fdp.model.ProxyModel.call(this, feeds);
+fjs.fdp.model.ClientFeedProxyModel = function(feeds, syncManager) {
+    fjs.fdp.model.ProxyModel.call(this, feeds, syncManager);
     var context = this;
     this.clientFeedName = feeds[feeds.length-1];
 
@@ -54,7 +55,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType,
     };
     return syncData;
 };
-fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
+fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.clientFeedName, changes:this.changes});
     }
@@ -66,10 +67,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
  * @param {string} feedName Feed name
  * @param {string} actionName Action name ('push' or 'delete')
  * @param {Object} data Request parameters ({'key':'value',...})
+ * @param {boolean} notBroadcast
  */
-fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data) {
+fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data, notBroadcast) {
     if(actionName==='push' || actionName==='delete') {
-        this.sm.onClientSync(fjs.utils.JSON.stringify(this.createSyncData(actionName, data)));
+        var syncData = this.createSyncData(actionName, data);
+        this.sm.onClientSync(fjs.utils.JSON.stringify(syncData), notBroadcast);
     }
     else {
         this.superClass.sendAction.call(this, this.feedName, actionName, data);
@@ -79,11 +82,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
 fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
     if(event.feed == this.feedName) {
         delete this.items[event.xpid];
-        this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid});
+        this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid}, true);
     }
-    if(event.feed == this.feedName || this.items[event.xpid]) {
-        this.fillDeletion(event.xpid, event.feed);
-    }
+    this.fillDeletion(event.xpid, event.feed);
 };
 
 fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
@@ -94,9 +95,27 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         if(changes) {
             listener({feed: this.clientFeedName, changes:changes});
         }
+        if(!this._attached) {
+            this.attach();
+            this._attached = true;
+        }
     }
-    if(!this._attached) {
-        this.attach();
-        this._attached = true;
+    else {
+        console.warn("Trying to add duplicated listener");
+    }
+};
+
+fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, entry) {
+    if(feedName != this.feedName) {
+        if(!this.feedFields[feedName]) {
+            this.feedFields[feedName] = {};
+        }
+        for(var key in entry) {
+            if(entry.hasOwnProperty(key)) {
+                if(this.fieldPass(feedName, key, false)) {
+                    this.feedFields[feedName][key] = null;
+                }
+            }
+        }
     }
 };

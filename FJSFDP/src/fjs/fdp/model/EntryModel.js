@@ -30,7 +30,11 @@ fjs.fdp.model.EntryModel.prototype.fill = function(obj) {
             }
         }
     }
-    if(changesCount)
-    return changes;
+    if(changesCount) {
+        if(!changes['xpid']) {
+            changes['xpid'] = this.xpid;
+        }
+        return changes;
+    }
     else return null;
 };

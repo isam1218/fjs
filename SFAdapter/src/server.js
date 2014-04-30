@@ -52,9 +52,7 @@ var path = require('path');
 var https = require('https');
 var http = require('http');
 var fs = require('fs');
-var utils = require('util');
 
-utils.isArray([])
 
 var options = {
     key: fs.readFileSync('../ssl/cakey.pem')
@@ -65,6 +63,8 @@ app.use(express.static(__dirname));
 var server = https.createServer(options, app)
 
 server.listen(98);
+console.log("https started on 98");
 
 app.listen(99);
+console.log("http started on 99");
 

@@ -48,11 +48,26 @@ fjs.utils.JSON.check = function(str) {
 };
     /**
      * Serializes object to json string
-     * @param {Object} obj
+     * @param {*} obj
      * @returns {string}
      */
 fjs.utils.JSON.stringify = function(obj) {
     if(typeof (obj) == 'string') return obj;
     return JSON.stringify(obj);
+};
+    /**
+     * Checks if object has no fields.
+     * @param {Object} obj
+     * @returns {boolean}
+     */
+fjs.utils.JSON.isEmpty = function(obj) {
+    var hasFields = false;
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key)) {
+            hasFields = true;
+            break;
+        }
+    }
+    return !hasFields;
 };
 })();

@@ -111,7 +111,7 @@ fjs.utils.DOM.addEventListener = function(element, eventName, callback) {
         }
     }
     if(eventName == 'DOMMouseScroll') {
-        element.onmousewheel = callback;
+        element['onmousewheel'] = callback;
     }
 };
 
@@ -136,14 +136,14 @@ fjs.utils.DOM.removeEventListener = function(element, eventName, callback) {
         }
     }
     if(eventName == 'DOMMouseScroll') {
-        element.onmousewheel = null;
+        element['onmousewheel'] = null;
     }
 };
 /**
  * Creates an event of the type specified. The returned object should be first initialized and can then be passed to .dispatchEvent.
  * @param {string} eventTypeInterface - Is a string that represents the type of event to be created. Possible event types include "UIEvents", "MouseEvents", "MutationEvents", and "HTMLEvents"
  * @param {string} eventType - Type of event
- * @param {Object} eventObj - Event options
+ * @param {Object|Event} eventObj - Event options
  * @returns {Event}
  */
 fjs.utils.DOM.createEvent = function(eventTypeInterface, eventType, eventObj) {
@@ -157,7 +157,7 @@ fjs.utils.DOM.createEvent = function(eventTypeInterface, eventType, eventObj) {
                     false,false,false,false,0,null);
                 break;
             case "UIEvents":
-                e.initUIEvent(eventType, true, true);
+                e.initUIEvent(eventType, true, true, window, 1);
                 break;
             case "HTMLEvents":
                 e.initEvent(eventType, false, true);

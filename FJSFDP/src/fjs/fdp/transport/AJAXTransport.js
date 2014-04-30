@@ -5,6 +5,7 @@
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
      * @param {string} url FDP server URL
+     * @param {string} type - Client type
      * @constructor
      * @extends fjs.fdp.transport.FDPTransport
      * @abstract
@@ -103,7 +104,7 @@
             return;
         }
         else if(!isOk) {
-            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status}
+            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status};
             this.fireEvent('error', event);
             console.error(event);
         }

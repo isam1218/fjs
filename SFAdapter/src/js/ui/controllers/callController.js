@@ -383,6 +383,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                     console.error(response);
                 });
         }
+        clearTimeout(callLogSaveTimeout);
     });
 
     function initCallLogSubject() {

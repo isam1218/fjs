@@ -5,6 +5,7 @@
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
      * @param {string} url FDP server URL
+     * @param {string} type Client type
      * @param {string} iframeUrl Crossdomain page url
      * @constructor
      * @extends fjs.fdp.transport.AJAXTransport

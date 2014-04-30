@@ -448,7 +448,7 @@
             if (this.db) {
                 this.db.selectByIndex("versions", {"feedName": feedName}, function (item) {
                     versionsArr.push(item.source + "@" + item.version);
-                }, function (items) {
+                }, function () {
                     context.versions[feedName] = data[feedName] = versionsArr.join(",");
                     callback(data[feedName]);
                 });
@@ -636,12 +636,13 @@
     /**
      * Handler function to execute when client feed data has hanged.
      * @param {Object} message sync object (changes object)
+     * @param {boolean} notBroadcast
      */
-    fjs.fdp.SyncManager.prototype.onClientSync = function(message) {
+    fjs.fdp.SyncManager.prototype.onClientSync = function(message, notBroadcast) {
         if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
-        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
+        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && !notBroadcast) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
         }
         if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {

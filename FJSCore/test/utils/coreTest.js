@@ -1,4 +1,4 @@
-ddescribe("coreTest", function () {
+describe("coreTest", function () {
     it("test1", function () {
         var map ={a:1, b:2, c:3, d:4}, doneFlag, resultStr="";
         runs(function(){

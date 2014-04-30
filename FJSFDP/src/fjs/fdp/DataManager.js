@@ -98,21 +98,21 @@ fjs.fdp.DataManager.prototype.removeFeedListener = function(feedName, listener) 
 fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
     switch(feedName) {
         case 'contacts':
-            return new fjs.fdp.model.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails', 'fdpImage', 'contactpermissions']);
+            return new fjs.fdp.model.ProxyModel(['contacts', 'contactstatus', 'calls', 'calldetails', 'fdpImage', 'contactpermissions'], this.sm);
         case 'locations':
-            return new fjs.fdp.model.ProxyModel(['locations', 'location_status']);
+            return new fjs.fdp.model.ProxyModel(['locations', 'location_status'], this.sm);
         case 'mycalls':
-            return new fjs.fdp.model.ProxyModel(['mycalls', 'mycalldetails']);
+            return new fjs.fdp.model.ProxyModel(['mycalls', 'mycalldetails'], this.sm);
         case 'conferences':
-            return new fjs.fdp.model.ProxyModel(['conferences', 'conferencestatus', 'conferencepermissions']);
+            return new fjs.fdp.model.ProxyModel(['conferences', 'conferencestatus', 'conferencepermissions'], this.sm);
         case 'sortings':
-            return new fjs.fdp.model.ClientFeedProxyModel(['sortings']);
+            return new fjs.fdp.model.ClientFeedProxyModel(['sortings'], this.sm);
         case 'mycallsclient':
-            return new fjs.fdp.model.ClientFeedProxyModel(['mycalls', 'mycalldetails', 'mycallsclient']);
+            return new fjs.fdp.model.ClientFeedProxyModel(['mycalls', 'mycalldetails', 'mycallsclient'], this.sm);
         case 'clientsettings':
-            return new fjs.fdp.model.ClientFeedProxyModel(['clientsettings']);
+            return new fjs.fdp.model.ClientFeedProxyModel(['clientsettings'], this.sm);
         default :
-            return new fjs.fdp.model.ProxyModel([feedName]);
+            return new fjs.fdp.model.ProxyModel([feedName], this.sm);
     }
 };
 
