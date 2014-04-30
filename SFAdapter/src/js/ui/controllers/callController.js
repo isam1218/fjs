@@ -16,27 +16,21 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
     $scope.isRing=($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE);
 
-   // callsFeedModel.addEventListener("complete", function(){
-            if(!$scope.call.mycallsclient_callLog){
-                console.log("!!!!!!!!! ");
-                $scope.call.mycallsclient_callLog = {};
-                $scope.call.mycallsclient_callLog.date = getCurrentDate();
-                $scope.call.mycallsclient_callLog.subject = "Call";
-                $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
-                $scope.call.mycallsclient_callLog.isOpened = true;
-                $scope.call.mycallsclient_callLog.note = "";
-                $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
-                $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
-            }
-            else {
-                console.log("!!!!!!!!! ", $scope.call.mycallsclient_callLog);
-            }
+    if(!$scope.call.mycallsclient_callLog){
+       $scope.call.mycallsclient_callLog = {};
+       $scope.call.mycallsclient_callLog.date = getCurrentDate();
+       $scope.call.mycallsclient_callLog.subject = "Call";
+       $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
+       $scope.call.mycallsclient_callLog.isOpened = true;
+       $scope.call.mycallsclient_callLog.note = "";
+       $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
+       $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
+    }
 
-            if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
-                ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
-                $scope.$emit("selectCall", $scope.call);
-            }
-   // });
+    if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
+       ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
+       $scope.$emit("selectCall", $scope.call);
+    }
 
     function onDurationTimeout () {
         var date = new Date();
@@ -57,7 +51,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         var results={};
         var lastResult = null;
         var resultsCount = 0;
-        console.log("!!!!!!!!!  callInfoCallback", data.result);
         if(data && data.result) {
             var result = JSON.parse(data.result);
             $scope.call.mycallsclient_callLog.what = [];
