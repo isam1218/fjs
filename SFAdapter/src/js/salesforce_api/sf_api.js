@@ -81,7 +81,7 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
     {
         args += "&WhatId=" + whatId;
     }
-    SFApi.prototype.getCalllogConmmentField( function(data){
+    SFApi.prototype.getCalllogCommentField( function(data){
         var commentFieldName = "Description";
         if(data && data.result) {
             if(data.result != null && data.result != "")
@@ -115,6 +115,7 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
  *  error - undefined if the API call was successful, error message otherwise.
  */
 SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
+    console.log("!!!!!!!!!  getPhoneInfo");
     if(isRinging) {
         var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
         sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
@@ -182,7 +183,7 @@ SFApi.prototype.getLoginInfo = function (callback) {
  * @param callback - JavaScript method called upon completion of the method.
  * @result This method is asynchronous so it returns its response in an string object in the callback method. This object is string with field name or null.
  */
-SFApi.prototype.getCalllogConmmentField = function (callback) {
+SFApi.prototype.getCalllogCommentField = function (callback) {
     sforce.interaction.runApex(SFApi.PREFIX + SFApi.FON_LOGIN_CLASS_NAME, "getCalllogFieldName", null, callback);
 };
 

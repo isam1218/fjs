@@ -27,7 +27,7 @@
         </div>
         <div class="call-item-log">
             <div class="call-item-log-title" ng-click="toggleCallLog()">
-                <div class="call-item-log-title-arrow" ng-bind-html-unsafe="triangle"></div>
+                <div class="call-item-log-title-arrow" ng-bind-html-unsafe="call.mycallsclient_callLog.triangle"></div>
                 <div class="call-item-log-title-caption">Current Call Log</div>
             </div>
             <ng-include class="call-item-log-body" src="callLogPath"></ng-include>

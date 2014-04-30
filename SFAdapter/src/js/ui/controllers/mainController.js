@@ -5,7 +5,6 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
-    this.sfApi = sfApi;
     this.SOFTPHONE_WIDTH = 200;
     this.SOFTPHONE_HEIGHT = 200;
     this.FRAME_RESIZE_NAME = "resizeFrame";
@@ -31,10 +30,17 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     $scope.isLocationRegistered = true;
 
     var initResizeFrame = function() {
-        context.sfApi.setSoftphoneHeight(context.SOFTPHONE_HEIGHT, function(res) {
-        });
-        context.sfApi.setSoftphoneWidth(context.SOFTPHONE_WIDTH, function(res) {
-        });
+        var messageH = {};
+        messageH.action = "setSoftphoneHeight";
+        messageH.data = {};
+        messageH.data.height = context.SOFTPHONE_HEIGHT;
+        sfApi.sendAction(messageH);
+
+        var messageW = {};
+        messageW.action = "setSoftphoneWidth";
+        messageW.data = {};
+        messageW.data.height = context.SOFTPHONE_WIDTH;
+        sfApi.sendAction(messageW);
 
         var frameHtml = document.getElementById(context.FRAME_RESIZE_NAME);
         var oldHeight = frameHtml.clientHeight;
@@ -52,9 +58,14 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
             timerResize=setTimeout( function(){
                 var height = frameHtml.clientHeight;
                 if(height!=oldHeight) {
-                    context.sfApi.setSoftphoneHeight(frameHtml.clientHeight, function(res){
+                    var message = {};
+                    message.action = "setSoftphoneHeight";
+                    message.data = {};
+                    message.data.height = frameHtml.clientHeight;
+                    message.callback = function(res){
                         timerResize = null;
-                    });
+                    };
+                    sfApi.sendAction(message);
                 }
                 oldHeight = height;
             }, 100);

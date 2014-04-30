@@ -1,11 +1,13 @@
 <div ng-class="{'hidden':!call.mycallsclient_callLog.isOpened}" >
     <div ng-class="{'hidden':call.mycallsclient_callLog.who.length <= 1}">
         <label>Name</label>
-        <select ng-model="call.mycallsclient_callLog.whoId" ng-options="item._id as (item.object + ': ' + item.Name) for item in call.mycallsclient_callLog.who | orderBy:'object + Name'"></select>
+        <select ng-model="call.mycallsclient_callLog.whoId" ng-options="item._id as (item.object + ': ' + item.Name) for item in call.mycallsclient_callLog.who | orderBy:'object + Name'"
+                ng-change="whoChange()"></select>
     </div>
     <div ng-class="{'hidden':(call.mycallsclient_callLog.what.length <= 1 || call.mycallsclient_callLog.whatId == null)}">
         <label>RelatedTo</label>
-        <select ng-model="call.mycallsclient_callLog.whatId" ng-options="item._id as (item.object + ': ' + item.Name) for item in call.mycallsclient_callLog.what | orderBy:'object + Name'"></select>
+        <select ng-model="call.mycallsclient_callLog.whatId" ng-options="item._id as (item.object + ': ' + item.Name) for item in call.mycallsclient_callLog.what | orderBy:'object + Name'"
+                ng-change="whatChange()"></select>
     </div>
-    <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note"></textarea>
+    <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note" ng-change="noteChange()"></textarea>
 </div>

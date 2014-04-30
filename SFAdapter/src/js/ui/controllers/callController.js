@@ -6,43 +6,37 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     var callLogInfoTimeout = null;
     var timeSync = new fjs.utils.TimeSync();
     var lastPhone = null;
-
-    var sfApiProvider = new SFApiProviderFactory();
+    var context = this;
+    var callLogSaveTimeout = null;
 
     $scope.templatePath = "templates/call_item.html";
     $scope.callLogPath = "templates/call_log.html";
     $scope.transferDialogPath = null;
 
-    $scope.triangle = ($scope.call.mycallsclient_callLog && !$scope.call.mycallsclient_callLog.isOpened) ? fjs.controllers.CallController.CLOSED_TRIANGLE : fjs.controllers.CallController.OPENED_TRIANGLE;
     $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
     $scope.isRing=($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE);
 
-    var context = this;
-
-    if(!$scope.call.mycallsclient_callLog){
-        $scope.call.mycallsclient_callLog = {};
-        $scope.call.mycallsclient_callLog.date = getCurrentDate();
-        $scope.call.mycallsclient_callLog.subject = "Call";
-        $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
-        $scope.call.mycallsclient_callLog.isOpened = true;
-        $scope.call.mycallsclient_callLog.note = "";
-        $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
-    }
-
-    callsFeedModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, function(entry) {
-        if($scope.call.xpid == entry.xpid) {
-            if($scope.call.mycallsclient_callLog) {
-                $scope.triangle = ($scope.call.mycallsclient_callLog && !$scope.call.mycallsclient_callLog.isOpened)
-                    ? fjs.controllers.CallController.CLOSED_TRIANGLE : fjs.controllers.CallController.OPENED_TRIANGLE;
+   // callsFeedModel.addEventListener("complete", function(){
+            if(!$scope.call.mycallsclient_callLog){
+                console.log("!!!!!!!!! ");
+                $scope.call.mycallsclient_callLog = {};
+                $scope.call.mycallsclient_callLog.date = getCurrentDate();
+                $scope.call.mycallsclient_callLog.subject = "Call";
+                $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
+                $scope.call.mycallsclient_callLog.isOpened = true;
+                $scope.call.mycallsclient_callLog.note = "";
+                $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
+                $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
             }
-            context.safeApply($scope);
-        }
-    });
+            else {
+                console.log("!!!!!!!!! ", $scope.call.mycallsclient_callLog);
+            }
 
-    if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
-        ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
-        $scope.$emit("selectCall", $scope.call);
-    }
+            if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
+                ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
+                $scope.$emit("selectCall", $scope.call);
+            }
+   // });
 
     function onDurationTimeout () {
         var date = new Date();
@@ -63,6 +57,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         var results={};
         var lastResult = null;
         var resultsCount = 0;
+        console.log("!!!!!!!!!  callInfoCallback", data.result);
         if(data && data.result) {
             var result = JSON.parse(data.result);
             $scope.call.mycallsclient_callLog.what = [];
@@ -90,6 +85,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             initCallLogFields(resultsCount, lastResult, results);
         }
         createCallLog();
+        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         context.safeApply($scope);
     }
 
@@ -108,10 +104,11 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
                 message.data.isRinging = ($scope.call.state == 0);
                 message.callback = callInfoCallback;
-                sfApiProvider.sendAction(message);
+                sfApi.sendAction(message);
             }
             else {
                 createCallLog();
+                dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
             }
             startGetCallLogInfo();
         }
@@ -139,7 +136,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 }
             }
         }
-        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
     }
 
     function sortFieldName(a, b) {
@@ -220,14 +216,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 initWhatId(0);
             }
         }
-        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
     }
 
-    $scope.$watch("call.mycallsclient_callLog.whatId", function() {
-        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
-    });
-
-    $scope.$watch("call.mycallsclient_callLog.whoId", function() {
+    $scope.whoChange = function() {
         if(hasWho()) {
             for(var i = 0; i < $scope.call.mycallsclient_callLog.who.length; i++) {
                 if( $scope.call.mycallsclient_callLog.who[i]["_id"]  == $scope.call.mycallsclient_callLog.whoId) {
@@ -243,7 +234,11 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             }
             dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         }
-    }, true);
+    };
+
+    $scope.whatChange = function() {
+        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
+    };
 
     function isWhoIdIsLead() {
         if(hasWho()) {
@@ -262,15 +257,12 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     function initWhatId(index) {
         if($scope.call.mycallsclient_callLog.whatId == null && $scope.call.mycallsclient_callLog.what != null && $scope.call.mycallsclient_callLog.what[index] != null) {
             $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.what[index]["_id"];
-            dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         }
     }
 
     function isWhoIsLeadByIndex(index) {
         return ($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.who[index]["object"]  == "Lead");
     }
-
-    var callLogSaveTimeout = null;
 
     function onCallLogChanged() {
         if(callLogSaveTimeout != null) {
@@ -282,9 +274,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         },fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC);
     }
 
-    $scope.$watch("call.mycallsclient_callLog.note", function() {
+    $scope.noteChange = function() {
         onCallLogChanged();
-    }, true);
+    };
 
     $scope.$watch("call.state", function() {
         $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
@@ -337,14 +329,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     };
 
     function closeCallLog() {
-        $scope.triangle = fjs.controllers.CallController.CLOSED_TRIANGLE;
         $scope.call.mycallsclient_callLog.isOpened = false;
+        $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.CLOSED_TRIANGLE;
         dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
     }
 
     function openCallLog() {
-        $scope.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
         $scope.call.mycallsclient_callLog.isOpened = true;
+        $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
         dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
     }
 
@@ -368,7 +360,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         message.action = "openUser";
         message.data = {};
         message.data.id = id;
-        sfApiProvider.sendAction(message);
+        sfApi.sendAction(message);
     };
 
     $scope.$on('closeDialog', function(event, key) {
@@ -404,7 +396,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             message.callback =  function(response){
                 console.error(response);
             };
-            sfApiProvider.sendAction(message);
+            sfApi.sendAction(message);
         }
     });
 
@@ -417,8 +409,8 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         }
     }
 
-    $scope.$watch("call.selected", function() {
-        if($scope.call.selected) {
+    $scope.$watch("call.mycallsclient_isOpened", function() {
+        if($scope.call.mycallsclient_isOpened) {
             if(!callLogInfoTimeout) {
                 startGetCallLogInfo();
             }
