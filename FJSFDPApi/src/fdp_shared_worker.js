@@ -1,7 +1,6 @@
 importScripts('fjs.core.debug.js');
 importScripts('fjs.fdp.debug.js');
 
-
 var connections = 0;
 var ports = [];
 var dataManager = null;

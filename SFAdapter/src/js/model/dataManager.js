@@ -9,13 +9,13 @@ fjs.model.DataManager = function(sf) {
     this.feeds = {};
     this.ticket = null;
     this.node = null;
-
-    this.sf = sf;
     this.phoneMap = {};
 
     this.state = -1;
     this.suspendFeeds = [];
     this.warningListeners = {};
+
+    this.sf = sf;
 
     var providerFactory = new fjs.api.FDPProviderFactory();
     var context = this;
@@ -23,21 +23,28 @@ fjs.model.DataManager = function(sf) {
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
 
+    var onClickToDial = function(obj) {
+        /**
+         * @type {{number:string, objectId:string, object:string}}
+         */
+        var res = obj && obj.result && JSON.parse(obj.result);
+        var phone = res.number;
+        if (phone) {
+            var calleeInfo = {};
+            calleeInfo.id = res.objectId;
+            calleeInfo.type = res.object;
+            context.phoneMap[phone] = calleeInfo;
+            context.sendAction(fjs.model.MeModel.NAME, "callTo", {'phoneNumber': phone});
+        }
+    };
+
     this.checkDevice = function() {
-        context.sf.setPhoneApi(true, function (obj) {
-            /**
-             * @type {{number:string, objectId:string, object:string}}
-             */
-            var res = obj && obj.result && JSON.parse(obj.result);
-            var phone = res.number;
-            if (phone) {
-                var calleeInfo = {};
-                calleeInfo.id = res.objectId;
-                calleeInfo.type = res.object;
-                context.phoneMap[phone] = calleeInfo;
-                context.sendAction(fjs.model.MeModel.NAME, "callTo", {'phoneNumber': phone});
-            }
-        });
+        var message = {};
+        message.action = "setPhoneApi";
+        message.data = {};
+        message.data.isReg = true;
+        message.callback = onClickToDial;
+        sf.sendAction(message);
     };
     this.checkDevice();
 
@@ -178,8 +185,9 @@ fjs.model.DataManager.prototype._getAccessInfo = function() {
 };
 
 fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
-
-    this.sf.getLoginInfo(function(response) {
+    var message = {};
+    message.action = "getLoginInfo";
+    message.callback = function(response) {
         var data = null;
         /**
          * @type {{admLogin:string, admPassword:string, email:string, hudLogin:string, serverUrl:string}}
@@ -204,7 +212,8 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
             fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
         }
         callback(data);
-    });
+    };
+    this.sf.sendAction(message);
 };
 
 fjs.model.DataManager.prototype.addEventListener = function(feedName, handler) {
