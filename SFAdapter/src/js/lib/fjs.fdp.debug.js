@@ -31,7 +31,7 @@ fjs.db.IndexedDBProvider = function() {
      */
     this.db = null;
     /**
-     * @type {*}
+     * @type {Object}
      * @private
      */
     this.tables = {};
@@ -872,7 +872,7 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  * @param {function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
-    var tableName, context = this; ;
+    var tableName, context = this;
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
@@ -1599,7 +1599,7 @@ fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
     }
 };
 
-fjs.fdp.model.ProxyModel.prototype.onSyncComplete = function(e) {
+fjs.fdp.model.ProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.feedName, changes:this.changes});
     }
@@ -1674,7 +1674,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType,
     };
     return syncData;
 };
-fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
+fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.clientFeedName, changes:this.changes});
     }
@@ -1686,7 +1686,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function(event) {
  * @param {string} feedName Feed name
  * @param {string} actionName Action name ('push' or 'delete')
  * @param {Object} data Request parameters ({'key':'value',...})
- * @paran {boolean} notBroadcast
+ * @param {boolean} notBroadcast
  */
 fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data, notBroadcast) {
     if(actionName==='push' || actionName==='delete') {
@@ -1805,6 +1805,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
      * @param {string} url FDP server URL
+     * @param {string} type - Client type
      * @constructor
      * @extends fjs.fdp.transport.FDPTransport
      * @abstract
@@ -1903,7 +1904,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
             return;
         }
         else if(!isOk) {
-            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status}
+            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status};
             this.fireEvent('error', event);
             console.error(event);
         }
@@ -2223,6 +2224,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
      * @param {string} url FDP server URL
+     * @param {string} type Client type
      * @constructor
      * @extends fjs.fdp.transport.AJAXTransport
      */
@@ -2260,6 +2262,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
      * @param {string} url FDP server URL
+     * @param {string} type Client type
      * @constructor
      * @extends fjs.fdp.transport.AJAXTransport
      */
@@ -2306,6 +2309,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
      * @param {string} ticket Auth ticket
      * @param {string} node Node ID
      * @param {string} url FDP server URL
+     * @param {string} type Client type
      * @param {string} iframeUrl Crossdomain page url
      * @constructor
      * @extends fjs.fdp.transport.AJAXTransport
@@ -2986,7 +2990,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
             if (this.db) {
                 this.db.selectByIndex("versions", {"feedName": feedName}, function (item) {
                     versionsArr.push(item.source + "@" + item.version);
-                }, function (items) {
+                }, function () {
                     context.versions[feedName] = data[feedName] = versionsArr.join(",");
                     callback(data[feedName]);
                 });

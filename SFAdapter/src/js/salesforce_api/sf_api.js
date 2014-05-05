@@ -115,6 +115,7 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
  *  error - undefined if the API call was successful, error message otherwise.
  */
 SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
+    console.log("!!!!!!!!!  getPhoneInfo");
     if(isRinging) {
         var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
         sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
@@ -173,6 +174,7 @@ SFApi.prototype.setSoftphoneWidth = function (width, callback) {
  *  hudLogin - HUD user login.
  */
 SFApi.prototype.getLoginInfo = function (callback) {
+    console.log("!!!!!!!!!  getLoginInfo");
     sforce.interaction.runApex(SFApi.PREFIX + SFApi.FON_LOGIN_CLASS_NAME, "getLoginInfo", null, callback);
 };
 
