@@ -576,8 +576,8 @@ fjs.db.WebSQLProvider.prototype.insertOne = function(tableName, item, callback) 
         var query = "INSERT OR REPLACE INTO "
             + tableName + "("
             + table.key + ", "
-            + (table.indexes ? table.indexes.join(", ") : "")
-            + ", data) VALUES ('"
+            + (table.indexes && table.indexes.length ? (table.indexes.join(", ") + ", ") : "")
+            + "data) VALUES ('"
             + item[table.key] +"', '";
         if(table.indexes) {
             for(var i=0; i<table.indexes.length; i++) {
@@ -606,8 +606,8 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
         var _query = "INSERT OR REPLACE INTO "
             + tableName + "("
             + table.key + ", "
-            + (table.indexes ? table.indexes.join(", ") : "")
-            + ", data) VALUES ('";
+            + (table.indexes && table.indexes.length ? (table.indexes.join(", ") + ", ") : "")
+            + "data) VALUES ('";
         for(var j = 0; j<items.length; j++) {
             var item = items[j];
             var query = _query + item[table.key] +"', '";
@@ -622,7 +622,9 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
                 if(callback && count==0) {
                     callback();
                 }
-            }, function(e){throw (new Error(e))});
+            }, function(e){
+                throw (new Error(e))
+            });
         }
     });
 };
@@ -746,9 +748,21 @@ fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback)
  * @param {Function} callback Handler function to execute when all tables removed.
  */
 fjs.db.WebSQLProvider.prototype.clear = function(callback) {
+    var _query = "DELETE FROM ", count= 0, context = this;
+
     this.db.transaction(function(tx){
-        var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
-        tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
+        for(var tableName in context.tables) {
+            count++;
+            var query = _query + tableName;
+            tx.executeSql(query, [],  function() {
+                count--;
+                if(callback && count==0) {
+                    callback();
+                }
+            }, function(e){
+                throw (new Error(e))
+            });
+        }
     });
 };
 
@@ -1738,7 +1752,28 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
         }
     }
 };
-(function() {
+fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
+    /**
+     * @type {fjs.fdp.model.EntryModel}
+     */
+    var item = this.items[event.xpid];
+    var _entry = this.prepareEntry(event.entry, event.feed, event.xpid);
+    if(!item) {
+        if(event.feed==this.clientFeedName && this.clientFeedName!=this.feedName) {
+            return;
+        }
+        var _change = this.fillChange(event.xpid, _entry, event.feed);
+        if(_change.type != 'delete') {
+            this.items[event.xpid] = new fjs.fdp.model.EntryModel(_entry);
+        }
+    }
+    else {
+        var changes = item.fill(_entry);
+        if(changes)
+            this.fillChange(event.xpid, changes, event.feed);
+    }
+    this.keepEntries[event.xpid] = event;
+};(function() {
     namespace("fjs.fdp.transport");
     /**
      * Transport to communicate with FDP server <br>

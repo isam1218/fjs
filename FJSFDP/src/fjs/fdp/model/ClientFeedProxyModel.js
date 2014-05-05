@@ -119,3 +119,25 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
         }
     }
 };
+fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
+    /**
+     * @type {fjs.fdp.model.EntryModel}
+     */
+    var item = this.items[event.xpid];
+    var _entry = this.prepareEntry(event.entry, event.feed, event.xpid);
+    if(!item) {
+        if(event.feed==this.clientFeedName && this.clientFeedName!=this.feedName) {
+            return;
+        }
+        var _change = this.fillChange(event.xpid, _entry, event.feed);
+        if(_change.type != 'delete') {
+            this.items[event.xpid] = new fjs.fdp.model.EntryModel(_entry);
+        }
+    }
+    else {
+        var changes = item.fill(_entry);
+        if(changes)
+            this.fillChange(event.xpid, changes, event.feed);
+    }
+    this.keepEntries[event.xpid] = event;
+};
