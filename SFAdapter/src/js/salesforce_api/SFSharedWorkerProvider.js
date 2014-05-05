@@ -1,8 +1,8 @@
 /**
  * Created by ddyachenko on 23.04.2014.
  */
-
-SFSharedWorkerProvider = function() {
+namespace("fjs.sf");
+fjs.sf.SFSharedWorkerProvider = function() {
     var context =this;
     this.worker = new SharedWorker("sf_shared_worker.js");
     this.worker.port.addEventListener("message", function(e) {
@@ -28,6 +28,6 @@ SFSharedWorkerProvider = function() {
 /**
  * @returns {boolean}
 */
-SFSharedWorkerProvider.check = function() {
+fjs.sf.SFSharedWorkerProvider.check = function() {
     return  !!self.SharedWorker;
 };

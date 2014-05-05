@@ -1,17 +1,18 @@
 /**
  * Created by ddyachenko on 23.04.2014.
  */
+namespace("fjs.sf");
 
-var SFApiProviderFactory = function() {
-    if (!SFApiProviderFactory.__instance){
-        SFApiProviderFactory.__instance = this;
-        this.sfProvider = new SFSimpleProvider();
+fjs.sf.SFApiProviderFactory = function() {
+    if (!fjs.sf.SFApiProviderFactory.__instance){
+        fjs.sf.SFApiProviderFactory.__instance = this;
+        this.sfProvider = new fjs.sf.SFSimpleProvider();
     }
     else {
-        return SFApiProviderFactory.__instance;
+        return fjs.sf.SFApiProviderFactory.__instance;
     }
 };
 
-SFApiProviderFactory.prototype.sendAction = function(actionName, data, callback) {
+fjs.sf.SFApiProviderFactory.prototype.sendAction = function(actionName, data, callback) {
     this.sfProvider.sendAction(actionName, data, callback);
 };
