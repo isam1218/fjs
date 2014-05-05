@@ -142,8 +142,8 @@ fjs.db.WebSQLProvider.prototype.insertOne = function(tableName, item, callback) 
         var query = "INSERT OR REPLACE INTO "
             + tableName + "("
             + table.key + ", "
-            + (table.indexes ? table.indexes.join(", ") : "")
-            + ", data) VALUES ('"
+            + (table.indexes && table.indexes.length ? (table.indexes.join(", ") + ", ") : "")
+            + "data) VALUES ('"
             + item[table.key] +"', '";
         if(table.indexes) {
             for(var i=0; i<table.indexes.length; i++) {
@@ -172,8 +172,8 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
         var _query = "INSERT OR REPLACE INTO "
             + tableName + "("
             + table.key + ", "
-            + (table.indexes ? table.indexes.join(", ") : "")
-            + ", data) VALUES ('";
+            + (table.indexes && table.indexes.length ? (table.indexes.join(", ") + ", ") : "")
+            + "data) VALUES ('";
         for(var j = 0; j<items.length; j++) {
             var item = items[j];
             var query = _query + item[table.key] +"', '";
@@ -188,7 +188,9 @@ fjs.db.WebSQLProvider.prototype.insertArray = function(tableName, items, callbac
                 if(callback && count==0) {
                     callback();
                 }
-            }, function(e){throw (new Error(e))});
+            }, function(e){
+                throw (new Error(e))
+            });
         }
     });
 };
@@ -312,9 +314,21 @@ fjs.db.WebSQLProvider.prototype.selectByKey = function(tableName, key, callback)
  * @param {Function} callback Handler function to execute when all tables removed.
  */
 fjs.db.WebSQLProvider.prototype.clear = function(callback) {
+    var _query = "DELETE FROM ", count= 0, context = this;
+
     this.db.transaction(function(tx){
-        var query = "SELECT 'drop table ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT GLOB '_*'";
-        tx.executeSql(query, [],  callback, function(e){throw (new Error(e))});
+        for(var tableName in context.tables) {
+            count++;
+            var query = _query + tableName;
+            tx.executeSql(query, [],  function() {
+                count--;
+                if(callback && count==0) {
+                    callback();
+                }
+            }, function(e){
+                throw (new Error(e))
+            });
+        }
     });
 };
 

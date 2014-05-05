@@ -32,5 +32,5 @@ fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
  * @returns {boolean}
  */
 fjs.api.SharedWorkerDataProvider.check = function() {
-    return  !!window.SharedWorker;
+    return  !!self.SharedWorker;
 };
