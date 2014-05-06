@@ -1,21 +1,21 @@
 /**
  * Created by ddyachenko on 23.04.2014.
  */
+namespace("fjs.sf");
 
-SFSimpleProvider = function() {
-    if (!SFSimpleProvider.__instance){
-        var tabSync = new fjs.fdp.TabsSynchronizer();
-        this.isMaster = tabSync.isMaster;
+fjs.sf.SFSimpleProvider = function() {
+    if (!fjs.sf.SFSimpleProvider.__instance){
+        //this.isMaster =(new fjs.fdp.TabsSynchronizer()).isMaster;
         this.api = new SFApi();
-        SFSimpleProvider.__instance = this;
+        fjs.sf.SFSimpleProvider.__instance = this;
     }
     else {
-        return SFSimpleProvider.__instance;
+        return fjs.sf.SFSimpleProvider.__instance;
     }
 };
 
-SFSimpleProvider.prototype.sendAction = function(message) {
-    if(this.isMaster) {
+fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
+  //  if(this.isMaster) {
         switch (message.action) {
             case "enableCalls":
                 this.api.enableCalls(message.data.isReg, message.callback);
@@ -30,10 +30,10 @@ SFSimpleProvider.prototype.sendAction = function(message) {
             case "getCalllogCommentField":
                 this.api.getCalllogCommentField(message.callback);
                 break;
-        }
-    }
+ //       }
+  //  }
 
-    switch (message.action) {
+ //   switch (message.action) {
         case "getLoginInfo":
             this.api.getLoginInfo(message.callback);
             break;

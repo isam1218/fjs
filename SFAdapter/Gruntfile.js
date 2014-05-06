@@ -10,6 +10,9 @@ module.exports = function(grunt) {
             dist: {
                 src: [ 'src/js/build_number.js'
                     ,'src/js/salesforce_api/sf_api.js'
+                    ,'src/js/salesforce_api/SFSimpleProvider.js'
+                    ,'src/js/salesforce_api/SFSharedWorkerProvider.js'
+                    ,'src/js/salesforce_api/SFApiProviderFactory.js'
                     , 'src/js/salesforce_api/module.js'
                     , 'src/js/model/feedModel.js'
                     , 'src/js/model/entryModel.js'

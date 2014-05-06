@@ -4,4 +4,5 @@ var fjs = {
     , app: {}
     , model: {}
     , controllers: {}
+    , sf: {}
 };
