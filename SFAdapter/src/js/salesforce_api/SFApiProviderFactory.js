@@ -4,15 +4,17 @@
 namespace("fjs.sf");
 
 fjs.sf.SFApiProviderFactory = function() {
-    if (!fjs.sf.SFApiProviderFactory.__instance){
-        fjs.sf.SFApiProviderFactory.__instance = this;
-        this.sfProvider = new fjs.sf.SFSimpleProvider();
-    }
-    else {
-        return fjs.sf.SFApiProviderFactory.__instance;
-    }
+    this._providers = {
+        'sharedWorker': fjs.sf.SFSharedWorkerProvider
+        , 'simple': fjs.sf.SFSimpleProvider
+    };
 };
 
-fjs.sf.SFApiProviderFactory.prototype.sendAction = function(actionName, data, callback) {
-    this.sfProvider.sendAction(actionName, data, callback);
+fjs.api.FDPProviderFactory.prototype.getProvider = function() {
+    for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
+        var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
+        if(provider.check()) {
+            return new provider();
+        }
+    }
 };

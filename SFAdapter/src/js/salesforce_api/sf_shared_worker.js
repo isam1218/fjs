@@ -35,7 +35,6 @@ function handleMessage(message, callback) {
             sfApi.enableCalls(message.data.isReg, function(e){
                 postToPage({type:'enableCalls', data:e});
             });
-
             break;
         case "addCallLog":
             sfApi.addCallLog(message.data.subject, message.data.whoId, message.data.whatId, message.data.note, message.data.callType,

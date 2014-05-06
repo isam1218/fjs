@@ -2,6 +2,9 @@ namespace("fjs.controllers");
 fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var context = this;
+    var sfApiProvider = sfApi.getProvider();
+
+
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);

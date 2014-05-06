@@ -8,6 +8,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     var lastPhone = null;
     var context = this;
     var callLogSaveTimeout = null;
+    var sfApiProvider = sfApi.getProvider();
 
     $scope.templatePath = "templates/call_item.html";
     $scope.callLogPath = "templates/call_log.html";
@@ -97,7 +98,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
                 message.data.isRinging = ($scope.call.state == 0);
                 message.callback = callInfoCallback;
-                sfApi.sendAction(message);
+                sfApiProvider.sendAction(message);
             }
             else {
                 createCallLog();
@@ -353,7 +354,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         message.action = "openUser";
         message.data = {};
         message.data.id = id;
-        sfApi.sendAction(message);
+        sfApiProvider.sendAction(message);
     };
 
     $scope.$on('closeDialog', function(event, key) {
@@ -389,7 +390,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             message.callback =  function(response){
                 console.error(response);
             };
-            sfApi.sendAction(message);
+            sfApiProvider.sendAction(message);
         }
         clearTimeout(callLogSaveTimeout);
     });

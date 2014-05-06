@@ -15,7 +15,7 @@ fjs.sf.SFSimpleProvider = function() {
 };
 
 fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
-  //  if(this.isMaster) {
+    if(this.isMaster) {
         switch (message.action) {
             case "enableCalls":
                 this.api.enableCalls(message.data.isReg, message.callback);
@@ -30,10 +30,9 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
             case "getCalllogCommentField":
                 this.api.getCalllogCommentField(message.callback);
                 break;
- //       }
-  //  }
-
- //   switch (message.action) {
+        }
+    }
+    switch (message.action) {
         case "getLoginInfo":
             this.api.getLoginInfo(message.callback);
             break;
@@ -47,5 +46,9 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
             this.api.setPhoneApi(message.data.isPhoneReg, message.callback);
             break;
     }
+};
+
+fjs.sf.SFSimpleProvider.check = function() {
+    return true;
 };
 
