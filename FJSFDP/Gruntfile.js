@@ -33,26 +33,34 @@ module.exports = function(grunt) {
                 dest: 'bin/fjs.fdp.debug.js'
             }
         }
+        , 'closure-compiler': {
+            frontend: {
+                closurePath: '../tools/closure',
+                js: 'bin/fjs.fdp.debug.js',
+                jsOutputFile: 'bin/fjs.fdp.min.js',
+                options: {
+                    compilation_level: 'SIMPLE_OPTIMIZATIONS',
+                    language_in: 'ECMASCRIPT5_STRICT'
+                }
+            }
+        }
         , 'copy': {
             main: {
                 files: [
                     {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/src/fjs/js/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../SFAdapter/src/js/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/bin/'}
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.min.js'], dest: '../FJSHUD/src/fjs/js/lib/'}
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.min.js'], dest: '../SFAdapter/src/js/lib/'}
+                    , {expand: true, cwd: 'bin/', src: ['fjs.fdp.min.js'], dest: '../FJSHUD/bin/'}
                 ]
             }
         }
-
-//        , 'karma': {
-//            unit: {
-//                configFile: 'karma.conf.js'
-//            }
-//        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    //grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-closure-compiler');
 
-    grunt.registerTask('build', ['concat', 'copy']);
+    grunt.registerTask('build', ['concat', 'closure-compiler', 'copy']);
 };
