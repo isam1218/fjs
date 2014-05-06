@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 
         , 'closure-compiler': {
             frontend: {
-                closurePath: 'libs/compiler-latest',
+                closurePath: '../tools/closure',
                 js: 'src/js/bin/fjs.sf.debug.js',
                 jsOutputFile: 'src/js/bin/fjs.sf.min.js',
                 options: {
@@ -52,11 +52,30 @@ module.exports = function(grunt) {
                     , 'src/js/build_number.js'
                     , 'src/js/lib/*.js'
                     , 'src/index.html'
+                    , 'src/debug.html'
                     , 'src/css/*.css'
                     , 'src/templates/*.html'
                     , 'src/img/*.gif'
                     , 'src/img/*.png'
-                    , 'src/properties.js']
+                    , 'src/properties.js'
+                    , 'src/js/salesforce_api/sf_api.js'
+                    , 'src/js/salesforce_api/module.js'
+                    , 'src/js/model/feedModel.js'
+                    , 'src/js/model/entryModel.js'
+                    , 'src/js/model/MeModel.js'
+                    , 'src/js/model/myCallsFeedModel.js'
+                    , 'src/js/model/dataManager.js'
+                    , 'src/js/model/module.js'
+                    , 'src/js/ui/controllers/commonController.js'
+                    , 'src/js/ui/controllers/callController.js'
+                    , 'src/js/ui/controllers/callsListController.js'
+                    , 'src/js/ui/controllers/mainController.js'
+                    , 'src/js/ui/controllers/newCallController.js'
+                    , 'src/js/ui/controllers/transferDialog.js'
+                    , 'src/js/ui/controllers/warningsController.js'
+                    , 'src/js/ui/controllers/dialpadController.js'
+                    , 'src/js/ui/module.js'
+                ]
                 , dest: 'SFAdapter.zip'
             }
         }
