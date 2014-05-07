@@ -5,13 +5,16 @@ namespace("fjs.sf");
 
 fjs.sf.SFSimpleProvider = function() {
     if (!fjs.sf.SFSimpleProvider.__instance){
-        //this.isMaster =(new fjs.fdp.TabsSynchronizer()).isMaster;
+        var tabsSynchronizer = new fjs.fdp.TabsSynchronizer();
+        var context = this;
+        this.isMaster =tabsSynchronizer.isMaster;
+        tabsSynchronizer.addEventListener("master_changed", function() {
+            context.isMaster = tabsSynchronizer.isMaster;
+        });
         this.api = new SFApi();
         fjs.sf.SFSimpleProvider.__instance = this;
     }
-    else {
-        return fjs.sf.SFSimpleProvider.__instance;
-    }
+    return fjs.sf.SFSimpleProvider.__instance;
 };
 
 fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
@@ -44,6 +47,9 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
             break;
         case "setPhoneApi":
             this.api.setPhoneApi(message.data.isPhoneReg, message.callback);
+            break;
+        case "openUser":
+            this.api.openUser(message.data.id, message.callback);
             break;
     }
 };

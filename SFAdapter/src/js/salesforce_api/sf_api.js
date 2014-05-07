@@ -174,7 +174,6 @@ SFApi.prototype.setSoftphoneWidth = function (width, callback) {
  *  hudLogin - HUD user login.
  */
 SFApi.prototype.getLoginInfo = function (callback) {
-    console.log("!!!!!!!!!  getLoginInfo");
     sforce.interaction.runApex(SFApi.PREFIX + SFApi.FON_LOGIN_CLASS_NAME, "getLoginInfo", null, callback);
 };
 

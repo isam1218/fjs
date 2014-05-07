@@ -15,10 +15,10 @@ fjs.model.DataManager = function(sf) {
     this.suspendFeeds = [];
     this.warningListeners = {};
 
-    this.sf = sf;
+    this.sf = sf.getProvider();
 
-    var providerFactory = new fjs.api.FDPProviderFactory();
     var context = this;
+    var providerFactory = new fjs.api.FDPProviderFactory();
 
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
@@ -44,7 +44,7 @@ fjs.model.DataManager = function(sf) {
         message.data = {};
         message.data.isReg = true;
         message.callback = onClickToDial;
-        sf.sendAction(message);
+        context.sf.sendAction(message);
     };
     this.checkDevice();
 

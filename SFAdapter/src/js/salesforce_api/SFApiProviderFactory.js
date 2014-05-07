@@ -5,16 +5,17 @@ namespace("fjs.sf");
 
 fjs.sf.SFApiProviderFactory = function() {
     this._providers = {
-        'sharedWorker': fjs.sf.SFSharedWorkerProvider
+          'sharedWorker': fjs.sf.SFSharedWorkerProvider
         , 'simple': fjs.sf.SFSimpleProvider
     };
 };
 
-fjs.api.FDPProviderFactory.prototype.getProvider = function() {
-    for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
-        var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
-        if(provider.check()) {
-            return new provider();
-        }
-    }
+fjs.sf.SFApiProviderFactory.prototype.getProvider = function() {
+    return new fjs.sf.SFSimpleProvider();
+//    for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
+//        var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
+//        if(provider.check()) {
+//            return new provider();
+//        }
+//    }
 };

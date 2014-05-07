@@ -3,26 +3,41 @@
  */
 namespace("fjs.sf");
 fjs.sf.SFSharedWorkerProvider = function() {
-    var context =this;
-    this.worker = new SharedWorker("sf_shared_worker.js");
-    this.worker.port.addEventListener("message", function(e) {
-        if(e.data["eventType"]=="ready") {
-            context.sendMessage({action:'init'});
-        }
-        context.fireEvent(e.data["eventType"], e.data);
-        // get id from message, get listener, call callback
-    }, false);
+    if (!fjs.sf.SFSharedWorkerProvider.__instance) {
+        var context = this;
+        this.callbacks = {};
+        this.worker = new SharedWorker("js/salesforce_api/sf_shared_worker.js");
+        this.worker.port.addEventListener("message", function (e) {
+            console.log(e);
+            if (e.data["eventType"] == "ready") {
+                context.sendAction({action: 'init'});
+            }
+            else {
+                var callback = context.callbacks.get(e.id);
+                callback(e.data);
+                delete  context.callbacks[e.id];
+            }
+        }, false);
 
-    this.worker.port.addEventListener("error", function(e){
-        console.error("Worker Error", e);
-    });
+        this.worker.port.addEventListener("error", function (e) {
+            console.error("Worker Error", e);
+        });
+        this.worker.port.start();
+        this.worker.port.postMessage("ping'");
 
-    this.worker.port.start();
+        this.sendAction = function(message) {
+            if(message) {
+                var id = fjs.utils.GUID.create();
+                context.callbacks[id] = message.callback;
+                message.id = id;
+                message.callback = null;
+            }
+            context.worker.port.postMessage(message);
+        };
 
-    this.sendMessage = function(message) {
-        // put, add id to message
-        this.worker.port.postMessage(message);
-    };
+        fjs.sf.SFSharedWorkerProvider.__instance = this;
+    }
+    return fjs.sf.SFSharedWorkerProvider.__instance;
 };
 
 /**

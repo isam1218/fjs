@@ -4,7 +4,6 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     var context = this;
     var sfApiProvider = sfApi.getProvider();
 
-
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
@@ -37,13 +36,13 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         messageH.action = "setSoftphoneHeight";
         messageH.data = {};
         messageH.data.height = context.SOFTPHONE_HEIGHT;
-        sfApi.sendAction(messageH);
+        sfApiProvider.sendAction(messageH);
 
         var messageW = {};
         messageW.action = "setSoftphoneWidth";
         messageW.data = {};
         messageW.data.height = context.SOFTPHONE_WIDTH;
-        sfApi.sendAction(messageW);
+        sfApiProvider.sendAction(messageW);
 
         var frameHtml = document.getElementById(context.FRAME_RESIZE_NAME);
         var oldHeight = frameHtml.clientHeight;
@@ -68,7 +67,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
                     message.callback = function(res){
                         timerResize = null;
                     };
-                    sfApi.sendAction(message);
+                    sfApiProvider.sendAction(message);
                 }
                 oldHeight = height;
             }, 100);
