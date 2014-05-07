@@ -15,6 +15,7 @@ module.exports = function(grunt) {
                     , 'src/providers/WebWorkerDataProvider.js'
                     , 'src/providers/SharedWorkerDataProvider.js'
                     , 'src/FDPProviderFactory.js'
+                    , 'src/TabsSyncronizer.js'
                 ],
                 dest: 'bin/fjs.fdp.api.debug.js'
             }
