@@ -86,14 +86,14 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
-            for(tableName in this.dbInfo.tables) {
-                if(this.dbInfo.tables.hasOwnProperty(tableName)) {
-                    self.localStorage.removeItem(tableName);
-                }
+            for(var i=0; i<this.dbInfo.tables.length; i++) {
+                var tableName = this.dbInfo.tables[i];
+                self.localStorage.removeItem(tableName);
             }
             this.dbInfo.tables = null;
             this.dbInfo.version = version;
             this.createTables();
+            self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
         }
         else {
             for(var k=0; k<this.dbInfo.tables.length; k++) {

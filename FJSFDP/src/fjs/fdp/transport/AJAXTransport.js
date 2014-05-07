@@ -153,7 +153,7 @@
 
     fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
         var context = this;
-        this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
+        this._currentRequest = this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
               if(isOk) {
                   var _data = fjs.utils.JSON.parse(data);
                   var ticket = _data["Auth"];
@@ -175,7 +175,7 @@
 
     fjs.fdp.transport.AJAXTransport.prototype.loadNext = function(message) {
         var _data = message.data, context = this;
-        this.sendRequest(this.url+"/v1/history/"+_data.feedName, _data.data, function(xhr, data, isOk) {
+        this._currentRequest = this.sendRequest(this.url+"/v1/history/"+_data.feedName, _data.data, function(xhr, data, isOk) {
             if(isOk) {
                 data = fjs.utils.JSON.parse(data);
                 var syncData = {};
@@ -364,7 +364,7 @@
 
         var url = this.url+this.VERSIONS_PATH;
 
-        this._currentRequest = this.sendRequest(url, versions, function(xhr, data, isOk) {
+        this._currentVersioncache = this._currentRequest = this.sendRequest(url, versions, function(xhr, data, isOk) {
             if(isOk) {
                 var feeds = context.parseVersionsResponse(data);
                 if(feeds) {
