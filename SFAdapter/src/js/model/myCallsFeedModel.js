@@ -45,7 +45,6 @@ fjs.model.MyCallsFeedModel.prototype.onEntryChange = function(event) {
 };
 
 fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
-        console.log('!!!OnCallsSyncStart!!!');
         for(var i in this.changes) {
            if(this.changes.hasOwnProperty(i)) {
                var change = this.changes[i];
@@ -72,7 +71,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     }
                     delete this.items[_event.xpid];
                     this.fireEvent("delete", _event);
-                   console.log('!!!!delete ', _event.xpid);
+                    console.log('!!!!delete ', _event.xpid);
                 }
                else if(change.push && change.delete) {
                     var _dataDel = change.delete;
@@ -87,7 +86,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     _entry.oldPid = _dataDel.xpid;
                     _dataPush.eventType="changepid";
                     this.fireEvent("changepid", _entry);
-                   console.log('!!!!changepid ', "from:", _entry.oldPid, "to:", _dataPush.xpid );
+                    console.log('!!!!changepid ', "from:", _entry.oldPid, "to:", _dataPush.xpid);
                 }
            }
         }

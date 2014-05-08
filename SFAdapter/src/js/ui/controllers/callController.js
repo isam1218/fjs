@@ -117,10 +117,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         }
         else {
             var i = 0;
-            if ($scope.call.mycallsclient_callLog.fields.length != fields.length) {
+            if($scope.call.mycallsclient_callLog.fields && $scope.call.mycallsclient_callLog.fields.length != fields.length) {
                 changed = true;
             }
-            else {
+            else if($scope.call.mycallsclient_callLog.fields) {
                 for (i = 0; i < $scope.call.mycallsclient_callLog.fields.length; i++) {
                     var j = 0;
                     var count = 0;
@@ -134,6 +134,8 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                         break;
                     }
                 }
+            } else {
+                changed = true;
             }
         }
         return changed;
@@ -264,7 +266,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.who) {
             for(var i = 0; i < $scope.call.mycallsclient_callLog.who.length; i++) {
                 if( $scope.call.mycallsclient_callLog.who[i]["_id"]  == $scope.call.mycallsclient_callLog.whoId) {
-                    if(isWhoIsLeadByIndex(i)) {
+                    if(($scope.call.mycallsclient_callLog.who[i] && $scope.call.mycallsclient_callLog.who[i]["object"]  == "Lead")) {
                         $scope.call.mycallsclient_callLog.whatId = null;
                     }
                     else {
@@ -487,6 +489,6 @@ fjs.controllers.CallController.TALCKING_CALL_TYPE = 2;
 fjs.controllers.CallController.OPENED_TRIANGLE = "&#9660;";
 fjs.controllers.CallController.CLOSED_TRIANGLE = "&#9658;";
 fjs.controllers.CallController.SORT_FIELD_NAME = "Name";
-fjs.controllers.CallController.CALL_GET_INFO_DELAY_IN_SEC = 5000;
+fjs.controllers.CallController.CALL_GET_INFO_DELAY_IN_SEC = 3000;
 fjs.controllers.CallController.CALL_DURATION_DELAY_IN_SEC = 1000;
-fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC = 3000;
+fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC = 500;
