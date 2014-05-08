@@ -16,6 +16,12 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
         }
     });
 
+    this.completeCallsListener = function(){
+        context.safeApply($scope);
+    };
+
+    this.callsFeedModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeCallsListener);
+
     $scope.$on('selectCall', function(event, entry) {
         selectCall(entry);
     });
