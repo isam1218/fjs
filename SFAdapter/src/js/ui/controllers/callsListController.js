@@ -37,7 +37,6 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             _entry.xpid = entry.xpid;
             if(_entry.xpid) {
                 dataManager.sendAction("mycallsclient", "push", _entry);
-                context.safeApply($scope);
             }
         }
     };
@@ -49,7 +48,6 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             _entry.xpid = entry.xpid;
             if(_entry.xpid) {
                 dataManager.sendAction("mycallsclient", "push", _entry);
-                context.safeApply($scope);
             }
         }
         deselectOldCall(entry.xpid);

@@ -33,19 +33,20 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     };
     tabsSynchronizer.addEventListener("master_changed", masterListener);
 
-    if(!$scope.call.mycallsclient_callLog){
-       $scope.call.mycallsclient_callLog = {};
-       $scope.call.mycallsclient_callLog.date = getCurrentDate();
-       $scope.call.mycallsclient_callLog.subject = "Call";
-       $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
-       $scope.call.mycallsclient_callLog.isOpened = true;
-       $scope.call.mycallsclient_callLog.note = "";
-       $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
-       $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
+    if(!$scope.call.mycallsclient_callLog) {
+        $scope.call.mycallsclient_callLog = {};
+        $scope.call.mycallsclient_callLog.date = getCurrentDate();
+        $scope.call.mycallsclient_callLog.subject = "Call";
+        $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
+        $scope.call.mycallsclient_callLog.isOpened = true;
+        $scope.call.mycallsclient_callLog.note = "";
+        $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
+        $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
     }
 
     if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
-       ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE)) {
+       ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE &&
+          ($scope.call.mycallsclient_isOpened || $scope.call.mycallsclient_isOpened == undefined))) {
        $scope.$emit("selectCall", $scope.call);
     }
 
