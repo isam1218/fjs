@@ -142,6 +142,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     function getCallLogInfo() {
+        stopGetCallInfo();
         lastPhone = $scope.call.phone;
         if(lastPhone) {
             var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, '');
