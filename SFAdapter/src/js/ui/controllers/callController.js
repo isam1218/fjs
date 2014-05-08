@@ -45,9 +45,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     }
 
     if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
-       ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE &&
-          ($scope.call.mycallsclient_isOpened || $scope.call.mycallsclient_isOpened == undefined))) {
-       $scope.$emit("selectCall", $scope.call);
+        ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE &&
+            ($scope.call.mycallsclient_isOpened || $scope.call.mycallsclient_isOpened == undefined))) {
+        $scope.$emit("selectCall", $scope.call);
     }
 
     function onDurationTimeout () {
@@ -113,7 +113,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     function isCallLogChanged(){
         var changed = false;
         if(whatId != $scope.call.mycallsclient_callLog.whatId ||whoId != $scope.call.mycallsclient_callLog.whoId) {
-           changed = true;
+            changed = true;
         }
         else {
             var i = 0;
@@ -359,7 +359,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         $scope.transferDialogPath = "templates/transfer_dialog.html";
         $scope.isTransferDialogClass = "call-item-transfer-opened";
         if($scope.callLogPath) {
-          closeCallLog();
+            closeCallLog();
         }
     };
 

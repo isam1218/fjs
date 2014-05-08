@@ -2308,7 +2308,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @type {fjs.ajax.XHRAjax}
          */
         this.ajax = new fjs.ajax.XDRAjax();
-        this.iframeAjax = new fjs.ajax.IFrameAjax();
+        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/CrossDomain");
     };
     fjs.fdp.transport.XDRTransport.extend(fjs.fdp.transport.AJAXTransport);
 
@@ -2441,7 +2441,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @static
      */
     fjs.fdp.transport.TransportFactory.getTransport = function(ticket, node, url, type) {
-        return new fjs.fdp.transport.IFrameTransport(ticket, node, url, type, "https://huc-qa.fonality.com:8080/v1/CrossDomain");
         var is_main;
         if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
