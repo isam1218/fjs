@@ -890,14 +890,14 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
-            for(tableName in this.dbInfo.tables) {
-                if(this.dbInfo.tables.hasOwnProperty(tableName)) {
-                    self.localStorage.removeItem(tableName);
-                }
+            for(var i=0; i<this.dbInfo.tables.length; i++) {
+                var tableName = this.dbInfo.tables[i];
+                self.localStorage.removeItem(tableName);
             }
             this.dbInfo.tables = null;
             this.dbInfo.version = version;
             this.createTables();
+            self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
         }
         else {
             for(var k=0; k<this.dbInfo.tables.length; k++) {
@@ -1988,7 +1988,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 
     fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
         var context = this;
-        this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
+        this._currentRequest = this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
               if(isOk) {
                   var _data = fjs.utils.JSON.parse(data);
                   var ticket = _data["Auth"];
@@ -2010,7 +2010,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 
     fjs.fdp.transport.AJAXTransport.prototype.loadNext = function(message) {
         var _data = message.data, context = this;
-        this.sendRequest(this.url+"/v1/history/"+_data.feedName, _data.data, function(xhr, data, isOk) {
+        this._currentRequest = this.sendRequest(this.url+"/v1/history/"+_data.feedName, _data.data, function(xhr, data, isOk) {
             if(isOk) {
                 data = fjs.utils.JSON.parse(data);
                 var syncData = {};
@@ -2199,7 +2199,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 
         var url = this.url+this.VERSIONS_PATH;
 
-        this._currentRequest = this.sendRequest(url, versions, function(xhr, data, isOk) {
+        this._currentVersioncache = this._currentRequest = this.sendRequest(url, versions, function(xhr, data, isOk) {
             if(isOk) {
                 var feeds = context.parseVersionsResponse(data);
                 if(feeds) {
@@ -2372,7 +2372,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         data["t"] = this.type;
         data["alt"] = 'j';
         var headers = {Authorization: "auth="+this.ticket, node:this.node};
-        return this.ajax.send('post', url, headers, data, callback)
+        return this.ajax.send('post', url, headers, data, callback);
     };
 })();(function(){
     namespace("fjs.fdp.transport");
@@ -2441,6 +2441,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @static
      */
     fjs.fdp.transport.TransportFactory.getTransport = function(ticket, node, url, type) {
+        return new fjs.fdp.transport.IFrameTransport(ticket, node, url, type, "https://huc-qa.fonality.com:8080/v1/CrossDomain");
         var is_main;
         if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
@@ -2463,6 +2464,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @returns {fjs.fdp.transport.FDPTransport}
      */
     fjs.fdp.transport.TransportFactory._getBrowserSpecifiedTransport = function(ticket, node, url, type) {
+
         if(fjs.utils.Browser.isIE() && fjs.utils.Browser.getIEVersion() < 10) {
             return new fjs.fdp.transport.XDRTransport(ticket, node, url, type);
         }

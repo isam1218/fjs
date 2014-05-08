@@ -848,11 +848,15 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
           */
         this.crdmnFrame = document.getElementById('crdmnFrame');
 
+         this.compatibility = true;
+
         if(!this.crdmnFrame) {
             this.status = _a.states.INITIALIZATION;
             this.crdmnFrame = document.createElement('iframe');
             this.crdmnFrame.name = this.crdmnFrame.id = 'crdmnFrame';
             this.crdmnFrame.src = this.host;
+            this.crdmnFrame.style.width = 0;
+            this.crdmnFrame.style.height = 0;
             this.crdmnFrame.onload = function() {
                 context.status = _a.states.READY;
                 for(var i=0; i<context.suspendRequestes.length; i++) {
@@ -884,6 +888,16 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
         'READY':1
     };
 
+    fjs.ajax.IFrameAjax.prototype.getParamData = function(data) {
+        var paramStrings = [], i;
+        for (i in data) {
+            if (data.hasOwnProperty(i)) {
+                paramStrings.push(i + '=' + data[i]);
+            }
+        }
+        return paramStrings.join('&');
+    };
+
     /**
      * Sends ajax request
      * @param {string} method - Request method (POST or GET)
@@ -895,22 +909,46 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
      * @return {fjs.ajax.IFrameRequest}
      */
     fjs.ajax.IFrameAjax.prototype.send = function(method, url, headers, data, callback, request) {
-        if(!request) {
-            request = new fjs.ajax.IFrameRequest(new fjs.utils.Increment().get('IFrameAjaxRequest'));
-            request.method = method;
-            request.postData = data;
-            request.url = url;
-            request.headers = headers;
-            this.listeners[request.id] = callback;
-        }
-        if(this.status!=_a.states.READY) {
-            this.suspendRequestes.push(request);
+        if(this.compatibility) {
+            if (!request) {
+                request = new fjs.ajax.IFrameRequest(new fjs.utils.Increment().get('IFrameAjaxRequest'));
+                request.method = method;
+                request.data = this.getParamData(data);
+                request.url = url;
+                var ticket = headers['Authorization'];
+                if(ticket) {
+                    ticket = ticket.replace('auth=', '') ;
+                }
+                request.authTicket = ticket;
+                request.node = headers['node'];
+                this.listeners[request.id] = callback;
+            }
+            if (this.status != _a.states.READY) {
+                this.suspendRequestes.push(request);
+            }
+            else {
+                this.crdmnFrame.contentWindow.postMessage(JSON.stringify(request), '*');
+                this.requests[request.id] = request;
+            }
         }
         else {
-            var message = {type:"send", data:request};
-            this.crdmnFrame.contentWindow.postMessage(JSON.stringify(message), '*');
-            this.requests[request.id] = request;
+            if (!request) {
+                request = new fjs.ajax.IFrameRequest(new fjs.utils.Increment().get('IFrameAjaxRequest'));
+                request.method = method;
+                request.postData = data;
+                request.url = url;
+                request.headers = headers;
+                this.listeners[request.id] = callback;
+            }
+            if (this.status != _a.states.READY) {
+                this.suspendRequestes.push(request);
+            }
+            else {
+                var message = {type: "send", data: request};
+                this.crdmnFrame.contentWindow.postMessage(JSON.stringify(message), '*');
+                this.requests[request.id] = request;
 
+            }
         }
         return request;
     };
@@ -919,8 +957,10 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
      * @param {fjs.ajax.IFrameRequest} request Request for abort
      */
     fjs.ajax.IFrameAjax.prototype.abort = function(request) {
-        var message = {type:'abort', data:request};
-        this.crdmnFrame.contentWindow.postMessage(fjs.utils.JSON.stringify(message), '*');
+        if(!this.compatibility) {
+            var message = {type: 'abort', data: request};
+            this.crdmnFrame.contentWindow.postMessage(fjs.utils.JSON.stringify(message), '*');
+        }
         request['aborted'] = true;
         request.status = 0;
         if(this.listeners[request.id]) {
@@ -935,29 +975,59 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
      * @private
      */
     fjs.ajax.IFrameAjax.prototype.onResponse = function(e) {
+        if(!fjs.utils.JSON.check(e.data)) {
+            return;
+        }
         var message = fjs.utils.JSON.parse(e.data);
-        if(message && message.type == 'IFrameAjaxRequest') {
-            var request = message.data;
-            var id = request.id;
-            /**
-             * @type {fjs.ajax.IFrameRequest}
-             */
-            var _request = this.requests[id];
-            if(_request) {
-                _request.status = request.status;
-                _request.responseText = request.responseText;
-                var listener = this.listeners[id];
-                if (listener) {
-                    if (!request.error) {
-                        listener(_request, _request.responseText, true);
+        if(this.compatibility) {
+            if (message) {
+                var request = message;
+                var id = request.id;
+                /**
+                 * @type {fjs.ajax.IFrameRequest}
+                 */
+                var _request = this.requests[id];
+                if (_request) {
+                    _request.status = request.status;
+                    _request.responseText = request.response;
+                    var listener = this.listeners[id];
+                    if (listener) {
+                        if (!request.error) {
+                            listener(_request, _request.responseText, true);
+                        }
+                        else {
+                            listener(_request, _request.responseText, false);
+                        }
+                        delete this.listeners[id];
                     }
-                    else {
-                        listener(_request, _request.responseText, false);
-                    }
-                    delete this.listeners[id];
                 }
+                delete this.requests[id];
             }
-            delete this.requests[id];
+        }
+        else {
+            if (message && message.type == 'IFrameAjaxRequest') {
+                var request = message.data;
+                var id = request.id;
+                /**
+                 * @type {fjs.ajax.IFrameRequest}
+                 */
+                var _request = this.requests[id];
+                if (_request) {
+                    _request.status = request.status;
+                    _request.responseText = request.responseText;
+                    var listener = this.listeners[id];
+                    if (listener) {
+                        if (!request.error) {
+                            listener(_request, _request.responseText, true);
+                        }
+                        else {
+                            listener(_request, _request.responseText, false);
+                        }
+                        delete this.listeners[id];
+                    }
+                }
+                delete this.requests[id];
+            }
         }
     }
 })();(function() {
