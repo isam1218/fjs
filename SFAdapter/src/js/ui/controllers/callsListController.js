@@ -16,12 +16,6 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
         }
     });
 
-    this.completeCallsListener = function(){
-        context.safeApply($scope);
-    };
-
-    this.callsFeedModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeCallsListener);
-
     $scope.$on('selectCall', function(event, entry) {
         selectCall(entry);
     });
@@ -43,9 +37,7 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             _entry.xpid = entry.xpid;
             if(_entry.xpid) {
                 dataManager.sendAction("mycallsclient", "push", _entry);
-            }
-            else {
-                debugger;
+                context.safeApply($scope);
             }
         }
     };
@@ -57,9 +49,7 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             _entry.xpid = entry.xpid;
             if(_entry.xpid) {
                 dataManager.sendAction("mycallsclient", "push", _entry);
-            }
-            else {
-                debugger;
+                context.safeApply($scope);
             }
         }
         deselectOldCall(entry.xpid);
