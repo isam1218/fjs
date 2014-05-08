@@ -70,7 +70,7 @@ namespace("fjs.api");
 fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
     var context = this;
     fjs.api.DataProviderBase.call(this, ticket, node);
-    var SYNCHRONIZATION_URL = "js/lib/fjs.fdp.min.js";
+    var SYNCHRONIZATION_URL = "js/lib/fjs.fdp.debug.js";
     var script = document.createElement('script');
     /**
      * @type {fjs.fdp.DataManager}

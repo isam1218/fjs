@@ -2441,6 +2441,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @static
      */
     fjs.fdp.transport.TransportFactory.getTransport = function(ticket, node, url, type) {
+        return new fjs.fdp.transport.IFrameTransport(ticket, node, url, type, "https://huc-qa.fonality.com:8080/v1/CrossDomain");
         var is_main;
         if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
@@ -2463,6 +2464,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @returns {fjs.fdp.transport.FDPTransport}
      */
     fjs.fdp.transport.TransportFactory._getBrowserSpecifiedTransport = function(ticket, node, url, type) {
+
         if(fjs.utils.Browser.isIE() && fjs.utils.Browser.getIEVersion() < 10) {
             return new fjs.fdp.transport.XDRTransport(ticket, node, url, type);
         }

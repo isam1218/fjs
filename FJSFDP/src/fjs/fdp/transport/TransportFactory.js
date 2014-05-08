@@ -38,6 +38,7 @@
      * @returns {fjs.fdp.transport.FDPTransport}
      */
     fjs.fdp.transport.TransportFactory._getBrowserSpecifiedTransport = function(ticket, node, url, type) {
+
         if(fjs.utils.Browser.isIE() && fjs.utils.Browser.getIEVersion() < 10) {
             return new fjs.fdp.transport.XDRTransport(ticket, node, url, type);
         }

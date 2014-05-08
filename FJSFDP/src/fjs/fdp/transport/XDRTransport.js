@@ -16,7 +16,7 @@
          * @type {fjs.ajax.XHRAjax}
          */
         this.ajax = new fjs.ajax.XDRAjax();
-        this.iframeAjax = new fjs.ajax.IFrameAjax();
+        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/CrossDomain");
     };
     fjs.fdp.transport.XDRTransport.extend(fjs.fdp.transport.AJAXTransport);
 
