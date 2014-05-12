@@ -2072,7 +2072,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         var url = this.url+this.CLIENT_REGISRY_PATH;
         this._currentRequest = this.sendRequest(url, {}, function(request, data, isOk) {
             if(isOk) {
-                this._clientRegistryFailedCount = 0;
+                context._clientRegistryFailedCount = 0;
                 var _data = context.parseClientRegistryResponse(data), node = _data["node"];
                 if(node) {
                     context.fireEvent('message', {type:'node', data:{nodeId:(context.node = node)}});
@@ -2085,8 +2085,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
                 else {
-                    if(this._clientRegistryFailedCount < 10) {
-                        this._clientRegistryFailedCount++;
+                    if(context._clientRegistryFailedCount < 10) {
+                        context._clientRegistryFailedCount++;
                         context.requestClientRegistry(callback);
                     }
                     else {
@@ -2308,7 +2308,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @type {fjs.ajax.XHRAjax}
          */
         this.ajax = new fjs.ajax.XDRAjax();
-        this.iframeAjax = new fjs.ajax.IFrameAjax();
+        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/CrossDomain");
     };
     fjs.fdp.transport.XDRTransport.extend(fjs.fdp.transport.AJAXTransport);
 
@@ -2441,9 +2441,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @static
      */
     fjs.fdp.transport.TransportFactory.getTransport = function(ticket, node, url, type) {
-        return new fjs.fdp.transport.IFrameTransport(ticket, node, url, type, "https://huc-qa.fonality.com:8080/v1/CrossDomain");
         var is_main;
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
+        if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
         }
         else {
@@ -2472,109 +2471,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
         }
     };
-})();(function(){
-    /**
-     * Manager is responsible for assign general tab (Synchronization tab)
-     * <br>
-     * <b>Singleton</b>
-     * @constructor
-     * @extends fjs.EventsSource
-     */
-    fjs.fdp.TabsSynchronizer = function() {
-       if (!this.constructor.__instance)
-           this.constructor.__instance = this;
-       else return this.constructor.__instance;
-
-       var context = this;
-
-       fjs.EventsSource.call(this);
-
-        /**
-        * Time after which main tab may be change if previous tab silent or die
-        * @type {number}
-        * @private
-        */
-       this.CHANGE_TAB_TIMEOUT = 2000;
-        /**
-         * Interval that which the main tab says that he is alive
-         * @type {number}
-         * @private
-         */
-       this.MASTER_ACTIVITY_TIMEOUT = 500;
-        /**
-         * LocalStorage key for main tab id
-         * @type {string}
-         * @private
-         */
-       this.TABS_SYNCRONIZE_KEY = 'tabs_sync_maintab';
-        /**
-         * Tab ID
-         * @type {string}
-         */
-       this.tabId = Date.now()+'_'+fjs.utils.GUID.create();
-        /**
-         * Timeout Id
-         * @type {null}
-         * @private
-         */
-       this.timeoutId  = null;
-        /**
-         * Is main tab flag
-         * @type {boolean}
-         */
-       this.isMaster = false;
-
-        /**
-         * runs master iteration
-         * @private
-         */
-        this._runMaster = function() {
-            context._masterIteration();
-        };
-
-        /**
-         * @private
-         */
-        this._masterIteration = function() {
-            localStorage[context.TABS_SYNCRONIZE_KEY] = context.tabId+"|"+Date.now();
-            if(!context.isMaster) {
-                context.fireEvent('master_changed', (context.isMaster = true));
-            }
-            clearTimeout(context.timeoutId);
-            context.timeoutId = setTimeout(context._masterIteration, context.MASTER_ACTIVITY_TIMEOUT);
-        };
-
-        self.addEventListener('storage', function(e) {
-            if(e.key == context.TABS_SYNCRONIZE_KEY) {
-                var lsvals = e.newValue.split("|");
-                if(lsvals[0]!=context.tabId) {
-                    if(context.tabId > lsvals[0]) {
-                        if (context.isMaster) {
-                            context.fireEvent('master_changed', (context.isMaster = false));
-                        }
-                        clearTimeout(context.timeoutId);
-                        context.timeoutId = setTimeout(context._runMaster, context.CHANGE_TAB_TIMEOUT);
-                    }
-                }
-            }
-        }, false);
-
-        var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
-        if(!lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT){
-            this._runMaster();
-        }
-        else {
-            this.timeoutId = setTimeout(this._runMaster, this.CHANGE_TAB_TIMEOUT);
-        }
-
-   };
-   fjs.fdp.TabsSynchronizer.extend(fjs.EventsSource);
-
-    /**
-     * Check if is necessary use local storage synchronization.
-     * @returns {boolean|Object|*}
-     */
-    fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization = function() {
+    fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization = function() {
         return typeof window !== 'undefined' && window.document !== undefined || (self && self["web_worker"]);
     };
 })();(function(){
@@ -2793,7 +2690,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         this.ticket = ticket;
         this.node = node;
 
-        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
+        if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
             window.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.fdp.TabsSynchronizer();
             this.tabsSyncronizer.addEventListener('master_changed', function(){
@@ -2831,7 +2728,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.SyncManager.prototype.addTransportEvents = function() {
         var context = this;
         this.transport.addEventListener('message', function(e){
-            if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
                 fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
             }
             switch(e.type) {
@@ -2850,7 +2747,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
         });
         this.transport.addEventListener('error', function(e){
-            if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
                 fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
             }
             switch(e.type) {
@@ -3001,7 +2898,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && version !== undefined && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -3055,7 +2952,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                         entriesForSave.push(event.entry);
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
-                        if((!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
+                        if((!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
@@ -3065,7 +2962,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length>0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && entriesForSave.length>0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertArray(feedName, entriesForSave, null);
         }
     };
@@ -3087,7 +2984,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
-            if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+            if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
                 this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
                     context.db.insertArray(feedName, entriesForSave, null);
                 });
@@ -3119,7 +3016,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.selectByIndex(feedName, {'source':sourceId}, function(item){
                 if(idsForKeep.indexOf(item.xpid)<0 && idsForPush.indexOf(item.xpid)<0) {
                     context.db.deleteByKey(feedName, item.xpid, null);
@@ -3218,13 +3115,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @param {boolean} notBroadcast
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message, notBroadcast) {
-        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
-        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && !notBroadcast) {
+        else if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && !notBroadcast) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
         }
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
             this.onSync(message);
         }
     };
@@ -3483,7 +3380,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
-        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedSourceFilter": feedName+"_"+source+"_"+"filter", "feedName":feedName, "source":source, filter: filter, "version":version});
             var feedHVersions = this.historyversions[feedName];
             if(feedHVersions){

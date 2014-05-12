@@ -1,5 +1,5 @@
-importScripts('fjs.core.debug.js');
-importScripts('fjs.fdp.debug.js');
+importScripts('fjs.core.min.js');
+importScripts('fjs.fdp.min.js');
 
 var connections = 0;
 var ports = [];

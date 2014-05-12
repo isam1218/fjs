@@ -1071,12 +1071,22 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
         };
         for(var key in headers) {
             if(headers.hasOwnProperty(key)) {
-                url += (/\?/.test(url) ? '&' : '?') + key + "=" + headers[key];
+                url += (/\?/.test(url) ? '&' : '?') + key + "=" + encodeURIComponent(headers[key]);
             }
         }
         xdr.open(method, url);
-        xdr.send(data);
+        xdr.send(this.getParamData(data));
         return xdr;
+    };
+
+    fjs.ajax.XDRAjax.prototype.getParamData = function(data) {
+        var paramStrings = [], i;
+        for (i in data) {
+            if (data.hasOwnProperty(i)) {
+                paramStrings.push(i + '=' + data[i]);
+            }
+        }
+        return paramStrings.join('&');
     };
     /**
      * Aborts request

@@ -70,7 +70,7 @@ namespace("fjs.api");
 fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
     var context = this;
     fjs.api.DataProviderBase.call(this, ticket, node);
-    var SYNCHRONIZATION_URL = "js/lib/fjs.fdp.debug.js";
+    var SYNCHRONIZATION_URL = "js/lib/fjs.fdp.min.js";
     var script = document.createElement('script');
     /**
      * @type {fjs.fdp.DataManager}
@@ -280,7 +280,7 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
          * Is main tab flag
          * @type {boolean}
          */
-       this.isMaster = false;
+       this.isMaster = this._checkMaster();
 
         /**
          * runs master iteration
@@ -317,22 +317,17 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
             }
         }, false);
 
-        var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
-        if(!lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT){
+        if(this._checkMaster()){
             this._runMaster();
         }
         else {
             this.timeoutId = setTimeout(this._runMaster, this.CHANGE_TAB_TIMEOUT);
         }
-
    };
    fjs.fdp.TabsSynchronizer.extend(fjs.EventsSource);
 
-    /**
-     * Check if is necessary use local storage synchronization.
-     * @returns {boolean|Object|*}
-     */
-    fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization = function() {
-        return typeof window !== 'undefined' && window.document !== undefined || (self && self["web_worker"]);
-    };
+   fjs.fdp.TabsSynchronizer.prototype._checkMaster = function() {
+        var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
+        return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
+   };
 })();

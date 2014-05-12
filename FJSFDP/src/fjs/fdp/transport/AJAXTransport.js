@@ -237,7 +237,7 @@
         var url = this.url+this.CLIENT_REGISRY_PATH;
         this._currentRequest = this.sendRequest(url, {}, function(request, data, isOk) {
             if(isOk) {
-                this._clientRegistryFailedCount = 0;
+                context._clientRegistryFailedCount = 0;
                 var _data = context.parseClientRegistryResponse(data), node = _data["node"];
                 if(node) {
                     context.fireEvent('message', {type:'node', data:{nodeId:(context.node = node)}});
@@ -250,8 +250,8 @@
                     context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
                 else {
-                    if(this._clientRegistryFailedCount < 10) {
-                        this._clientRegistryFailedCount++;
+                    if(context._clientRegistryFailedCount < 10) {
+                        context._clientRegistryFailedCount++;
                         context.requestClientRegistry(callback);
                     }
                     else {

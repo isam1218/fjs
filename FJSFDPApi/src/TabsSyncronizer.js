@@ -50,7 +50,7 @@
          * Is main tab flag
          * @type {boolean}
          */
-       this.isMaster = false;
+       this.isMaster = this._checkMaster();
 
         /**
          * runs master iteration
@@ -87,22 +87,17 @@
             }
         }, false);
 
-        var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
-        if(!lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT){
+        if(this._checkMaster()){
             this._runMaster();
         }
         else {
             this.timeoutId = setTimeout(this._runMaster, this.CHANGE_TAB_TIMEOUT);
         }
-
    };
    fjs.fdp.TabsSynchronizer.extend(fjs.EventsSource);
 
-    /**
-     * Check if is necessary use local storage synchronization.
-     * @returns {boolean|Object|*}
-     */
-    fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization = function() {
-        return typeof window !== 'undefined' && window.document !== undefined || (self && self["web_worker"]);
-    };
+   fjs.fdp.TabsSynchronizer.prototype._checkMaster = function() {
+        var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
+        return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
+   };
 })();

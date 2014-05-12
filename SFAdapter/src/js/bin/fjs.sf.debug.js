@@ -174,7 +174,6 @@ SFApi.prototype.setSoftphoneWidth = function (width, callback) {
  *  hudLogin - HUD user login.
  */
 SFApi.prototype.getLoginInfo = function (callback) {
-    console.log("!!!!!!!!!  getLoginInfo");
     sforce.interaction.runApex(SFApi.PREFIX + SFApi.FON_LOGIN_CLASS_NAME, "getLoginInfo", null, callback);
 };
 
@@ -198,17 +197,20 @@ namespace("fjs.sf");
 
 fjs.sf.SFSimpleProvider = function() {
     if (!fjs.sf.SFSimpleProvider.__instance){
-        //this.isMaster =(new fjs.fdp.TabsSynchronizer()).isMaster;
+        var tabsSynchronizer = new fjs.fdp.TabsSynchronizer();
+        var context = this;
+        this.isMaster =tabsSynchronizer.isMaster;
+        tabsSynchronizer.addEventListener("master_changed", function() {
+            context.isMaster = tabsSynchronizer.isMaster;
+        });
         this.api = new SFApi();
         fjs.sf.SFSimpleProvider.__instance = this;
     }
-    else {
-        return fjs.sf.SFSimpleProvider.__instance;
-    }
+    return fjs.sf.SFSimpleProvider.__instance;
 };
 
 fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
-  //  if(this.isMaster) {
+    if(this.isMaster) {
         switch (message.action) {
             case "enableCalls":
                 this.api.enableCalls(message.data.isReg, message.callback);
@@ -223,10 +225,9 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
             case "getCalllogCommentField":
                 this.api.getCalllogCommentField(message.callback);
                 break;
- //       }
-  //  }
-
- //   switch (message.action) {
+        }
+    }
+    switch (message.action) {
         case "getLoginInfo":
             this.api.getLoginInfo(message.callback);
             break;
@@ -239,7 +240,14 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
         case "setPhoneApi":
             this.api.setPhoneApi(message.data.isPhoneReg, message.callback);
             break;
+        case "openUser":
+            this.api.openUser(message.data.id, message.callback);
+            break;
     }
+};
+
+fjs.sf.SFSimpleProvider.check = function() {
+    return true;
 };
 
 /**
@@ -247,26 +255,41 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
  */
 namespace("fjs.sf");
 fjs.sf.SFSharedWorkerProvider = function() {
-    var context =this;
-    this.worker = new SharedWorker("sf_shared_worker.js");
-    this.worker.port.addEventListener("message", function(e) {
-        if(e.data["eventType"]=="ready") {
-            context.sendMessage({action:'init'});
-        }
-        context.fireEvent(e.data["eventType"], e.data);
-        // get id from message, get listener, call callback
-    }, false);
+    if (!fjs.sf.SFSharedWorkerProvider.__instance) {
+        var context = this;
+        this.callbacks = {};
+        this.worker = new SharedWorker("js/salesforce_api/sf_shared_worker.js");
+        this.worker.port.addEventListener("message", function (e) {
+            console.log(e);
+            if (e.data["eventType"] == "ready") {
+                context.sendAction({action: 'init'});
+            }
+            else {
+                var callback = context.callbacks.get(e.id);
+                callback(e.data);
+                delete  context.callbacks[e.id];
+            }
+        }, false);
 
-    this.worker.port.addEventListener("error", function(e){
-        console.error("Worker Error", e);
-    });
+        this.worker.port.addEventListener("error", function (e) {
+            console.error("Worker Error", e);
+        });
+        this.worker.port.start();
+        this.worker.port.postMessage("ping'");
 
-    this.worker.port.start();
+        this.sendAction = function(message) {
+            if(message) {
+                var id = fjs.utils.GUID.create();
+                context.callbacks[id] = message.callback;
+                message.id = id;
+                message.callback = null;
+            }
+            context.worker.port.postMessage(message);
+        };
 
-    this.sendMessage = function(message) {
-        // put, add id to message
-        this.worker.port.postMessage(message);
-    };
+        fjs.sf.SFSharedWorkerProvider.__instance = this;
+    }
+    return fjs.sf.SFSharedWorkerProvider.__instance;
 };
 
 /**
@@ -281,17 +304,20 @@ fjs.sf.SFSharedWorkerProvider.check = function() {
 namespace("fjs.sf");
 
 fjs.sf.SFApiProviderFactory = function() {
-    if (!fjs.sf.SFApiProviderFactory.__instance){
-        fjs.sf.SFApiProviderFactory.__instance = this;
-        this.sfProvider = new fjs.sf.SFSimpleProvider();
-    }
-    else {
-        return fjs.sf.SFApiProviderFactory.__instance;
-    }
+    this._providers = {
+          'sharedWorker': fjs.sf.SFSharedWorkerProvider
+        , 'simple': fjs.sf.SFSimpleProvider
+    };
 };
 
-fjs.sf.SFApiProviderFactory.prototype.sendAction = function(actionName, data, callback) {
-    this.sfProvider.sendAction(actionName, data, callback);
+fjs.sf.SFApiProviderFactory.prototype.getProvider = function() {
+    return new fjs.sf.SFSimpleProvider();
+//    for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
+//        var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
+//        if(provider.check()) {
+//            return new provider();
+//        }
+//    }
 };var sfa_model = angular.module('SF_API', []);
 
 sfa_model.service('SFApi', fjs.sf.SFApiProviderFactory);namespace("fjs.model");
@@ -570,10 +596,10 @@ fjs.model.DataManager = function(sf) {
     this.suspendFeeds = [];
     this.warningListeners = {};
 
-    this.sf = sf;
+    this.sf = sf.getProvider();
 
-    var providerFactory = new fjs.api.FDPProviderFactory();
     var context = this;
+    var providerFactory = new fjs.api.FDPProviderFactory();
 
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
@@ -599,7 +625,7 @@ fjs.model.DataManager = function(sf) {
         message.data = {};
         message.data.isReg = true;
         message.callback = onClickToDial;
-        sf.sendAction(message);
+        context.sf.sendAction(message);
     };
     this.checkDevice();
 
@@ -841,6 +867,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     var lastPhone = null;
     var context = this;
     var callLogSaveTimeout = null;
+    var sfApiProvider = sfApi.getProvider();
 
     $scope.templatePath = "templates/call_item.html";
     $scope.callLogPath = "templates/call_log.html";
@@ -930,7 +957,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
                 message.data.isRinging = ($scope.call.state == 0);
                 message.callback = callInfoCallback;
-                sfApi.sendAction(message);
+                sfApiProvider.sendAction(message);
             }
             else {
                 createCallLog();
@@ -1186,7 +1213,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         message.action = "openUser";
         message.data = {};
         message.data.id = id;
-        sfApi.sendAction(message);
+        sfApiProvider.sendAction(message);
     };
 
     $scope.$on('closeDialog', function(event, key) {
@@ -1222,7 +1249,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             message.callback =  function(response){
                 console.error(response);
             };
-            sfApi.sendAction(message);
+            sfApiProvider.sendAction(message);
         }
         clearTimeout(callLogSaveTimeout);
     });
@@ -1348,6 +1375,8 @@ namespace("fjs.controllers");
 fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var context = this;
+    var sfApiProvider = sfApi.getProvider();
+
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
@@ -1380,13 +1409,13 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         messageH.action = "setSoftphoneHeight";
         messageH.data = {};
         messageH.data.height = context.SOFTPHONE_HEIGHT;
-        sfApi.sendAction(messageH);
+        sfApiProvider.sendAction(messageH);
 
         var messageW = {};
         messageW.action = "setSoftphoneWidth";
         messageW.data = {};
         messageW.data.height = context.SOFTPHONE_WIDTH;
-        sfApi.sendAction(messageW);
+        sfApiProvider.sendAction(messageW);
 
         var frameHtml = document.getElementById(context.FRAME_RESIZE_NAME);
         var oldHeight = frameHtml.clientHeight;
@@ -1411,7 +1440,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
                     message.callback = function(res){
                         timerResize = null;
                     };
-                    sfApi.sendAction(message);
+                    sfApiProvider.sendAction(message);
                 }
                 oldHeight = height;
             }, 100);

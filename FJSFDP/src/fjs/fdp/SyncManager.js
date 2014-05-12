@@ -214,7 +214,7 @@
         this.ticket = ticket;
         this.node = node;
 
-        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
+        if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
             window.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.fdp.TabsSynchronizer();
             this.tabsSyncronizer.addEventListener('master_changed', function(){
@@ -252,7 +252,7 @@
     fjs.fdp.SyncManager.prototype.addTransportEvents = function() {
         var context = this;
         this.transport.addEventListener('message', function(e){
-            if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
                 fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
             }
             switch(e.type) {
@@ -271,7 +271,7 @@
             }
         });
         this.transport.addEventListener('error', function(e){
-            if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
                 fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
             }
             switch(e.type) {
@@ -422,7 +422,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && version !== undefined && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -476,7 +476,7 @@
                         entriesForSave.push(event.entry);
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
-                        if((!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
+                        if((!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
@@ -486,7 +486,7 @@
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length>0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && entriesForSave.length>0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertArray(feedName, entriesForSave, null);
         }
     };
@@ -508,7 +508,7 @@
                     console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
-            if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+            if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
                 this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
                     context.db.insertArray(feedName, entriesForSave, null);
                 });
@@ -540,7 +540,7 @@
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.selectByIndex(feedName, {'source':sourceId}, function(item){
                 if(idsForKeep.indexOf(item.xpid)<0 && idsForPush.indexOf(item.xpid)<0) {
                     context.db.deleteByKey(feedName, item.xpid, null);
@@ -639,13 +639,13 @@
      * @param {boolean} notBroadcast
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message, notBroadcast) {
-        if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
-        else if(fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() && !notBroadcast) {
+        else if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && !notBroadcast) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
         }
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
             this.onSync(message);
         }
     };
@@ -904,7 +904,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
-        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedSourceFilter": feedName+"_"+source+"_"+"filter", "feedName":feedName, "source":source, filter: filter, "version":version});
             var feedHVersions = this.historyversions[feedName];
             if(feedHVersions){

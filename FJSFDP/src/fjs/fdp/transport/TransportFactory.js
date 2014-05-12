@@ -17,7 +17,7 @@
      */
     fjs.fdp.transport.TransportFactory.getTransport = function(ticket, node, url, type) {
         var is_main;
-        if(!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization()) {
+        if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
         }
         else {
@@ -45,5 +45,8 @@
         else {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
         }
+    };
+    fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization = function() {
+        return typeof window !== 'undefined' && window.document !== undefined || (self && self["web_worker"]);
     };
 })();
