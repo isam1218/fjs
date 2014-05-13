@@ -4,8 +4,17 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         'pkg': grunt.file.readJSON('package.json'),
-
-        'concat': {
+        'karma': {
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+            , continuous: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS']
+            }
+        }
+        , 'concat': {
             options: {
                 separator: ''
             },
@@ -25,10 +34,8 @@ module.exports = function(grunt) {
                     , 'src/fjs/fdp/transport/IframeTransport.js'
                     , 'src/fjs/fdp/transport/LocalStorageTransport.js'
                     , 'src/fjs/fdp/transport/TransportFactory.js'
-                    , 'src/fjs/fdp/TabsSyncronizer.js'
                     , 'src/fjs/fdp/SyncManager.js'
                     , 'src/fjs/fdp/DataManager.js'
-
                 ],
                 dest: 'bin/fjs.fdp.debug.js'
             }
@@ -45,7 +52,12 @@ module.exports = function(grunt) {
             }
         }
         , 'copy': {
-            main: {
+            dev: {
+                files: [
+                    {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../SFAdapter/src/js/lib/'}
+                ]
+            }
+            , main: {
                 files: [
                     {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../FJSHUD/src/fjs/js/lib/'}
                     , {expand: true, cwd: 'bin/', src: ['fjs.fdp.debug.js'], dest: '../SFAdapter/src/js/lib/'}
@@ -58,9 +70,12 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-closure-compiler');
 
-    grunt.registerTask('build', ['concat', 'closure-compiler', 'copy']);
+    grunt.registerTask('devbuild', ['concat', 'copy:dev']);
+    grunt.registerTask('build', ['karma:continuous', 'concat', 'closure-compiler', 'copy:main']);
+    grunt.registerTask('jenkins-build', ['karma:continuous', 'concat', 'closure-compiler', 'copy:main']);
 };

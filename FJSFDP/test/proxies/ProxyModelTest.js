@@ -1,4 +1,4 @@
-ddescribe("ProxyModelTest", function () {
+describe("ProxyModelTest", function () {
     var proxyModel1, doneFlag, data;
     it("addListener", function(){
         var callbackCalled = false, attachCalled = false;

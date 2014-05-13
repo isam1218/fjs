@@ -115,7 +115,6 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
  *  error - undefined if the API call was successful, error message otherwise.
  */
 SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
-    console.log("!!!!!!!!!  getPhoneInfo");
     if(isRinging) {
         var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
         sforce.interaction.searchAndScreenPop(phone, params, callType, callback);

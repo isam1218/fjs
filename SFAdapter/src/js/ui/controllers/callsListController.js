@@ -41,11 +41,9 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             var _entry = {};
             entry.mycallsclient_isOpened = _entry.isOpened = false;
             _entry.xpid = entry.xpid;
+            _entry.callLog = entry.mycallsclient_callLog;
             if(_entry.xpid) {
                 dataManager.sendAction("mycallsclient", "push", _entry);
-            }
-            else {
-                debugger;
             }
         }
     };
@@ -55,11 +53,9 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
             var _entry = {};
             entry.mycallsclient_isOpened = _entry.isOpened = true;
             _entry.xpid = entry.xpid;
+            _entry.callLog = entry.mycallsclient_callLog;
             if(_entry.xpid) {
                 dataManager.sendAction("mycallsclient", "push", _entry);
-            }
-            else {
-                debugger;
             }
         }
         deselectOldCall(entry.xpid);

@@ -1,4 +1,4 @@
-ddescribe("eventSource", function() {
+describe("eventSource", function() {
     it("AddEventListener", function () {
         var eventSource = new fjs.EventsSource();
         eventSource.addEventListener('event1', function(){});
@@ -68,6 +68,5 @@ ddescribe("eventSource", function() {
         eventSource.fireEvent('event1', null);
         expect(1).toBe(listener1CallsCount);
         expect(1).toBe(listener2CallsCount);
-
     });
 });

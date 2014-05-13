@@ -12,7 +12,11 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     fjs.api.DataProviderBase.call(this, ticket, node);
     this.worker = new Worker("js/lib/fdp_worker.js");
     this.worker.addEventListener("message", function(e) {
-        context.fireEvent(e.data["eventType"], e.data["data"] || e.data);
+        if(e.data["eventType"]=="ready") {
+            context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node, config:fjs.fdp.CONFIG}});
+            callback();
+        }
+        context.fireEvent(e.data["eventType"], e.data);
     }, false);
     this.worker.addEventListener("error", function(e){
         console.error("Worker Error", e);
@@ -20,9 +24,6 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
     this.sendMessage = function(message) {
         context.worker.postMessage(message);
     };
-    this.sendMessage({action:'init', data:{ticket:this.ticket, node:this.node}});
-
-    setTimeout(function(){callback()},0);
 };
 fjs.api.WebWorkerDataProvider.extend(fjs.api.DataProviderBase);
 

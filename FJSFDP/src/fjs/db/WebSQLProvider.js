@@ -51,7 +51,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
                 var table = context.tables[i];
 
                 context.createTable(i, table.key, table.indexes);
-                console.log(i+" table created");
+                fjs.utils.Console.log(i+" table created");
             }
         }
         callback(this);

@@ -16,7 +16,7 @@
          * @type {fjs.ajax.XHRAjax}
          */
         this.ajax = new fjs.ajax.XDRAjax();
-        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/CrossDomain");
+        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/v1/CrossDomain");
     };
     fjs.fdp.transport.XDRTransport.extend(fjs.fdp.transport.AJAXTransport);
 
@@ -31,9 +31,10 @@
         if(this.closed) {
             return null;
         }
+        data = data || {};
         data["t"] = this.type;
         data["alt"] = 'j';
-        var headers = {Authorization: "auth="+this.ticket, node:this.node};
+        var headers = {Authorization: this.ticket, node:this.node};
         var xdr = this.ajax.send('post', url, headers, data, function(request, responseText, isOK){
             if(!isOK) {
                 context.iframeAjax.send('post', url, headers, data, callback);
@@ -43,6 +44,6 @@
             }
         });
         xdr.url = url;
-        return url;
+        return xdr;
     };
 })();

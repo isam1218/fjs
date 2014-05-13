@@ -21,9 +21,7 @@ module.exports = function(config) {
       , 'test/testClasses/testAjaxTransport.js'
       , 'test/testClasses/testAuthTicketsGenerator.js'
       , 'test/testClasses/testModel.js'
-      , 'test/models/EntryModelTest.js'
-      , 'test/syncManager/syncManager.js'
-      , 'test/transports/*.js'
+      , 'test/models/*.js'
       , 'test/db/*.js'
       , 'test/proxies/*.js'
     ],

@@ -111,6 +111,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
         this.createTables();
         self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
     }
+    if(callback)
     setTimeout(function(){callback(context)}, 0);
 };
 
@@ -173,6 +174,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, ca
     this.createIndexes(tableName, [item]);
     this.dbData[_tableName][item[this.tables[tableName].key]] = item;
     self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -191,6 +193,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
             this.dbData[_tableName][item[this.tables[tableName].key]] = item;
         }
     self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -211,6 +214,7 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
         this.indexes[tableName] = {};
         self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -327,6 +331,7 @@ fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
             delete this.indexes[_tableName];
         }
     }
+    if(callback)
     setTimeout(callback, 0);
 };
 

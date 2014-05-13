@@ -37,6 +37,17 @@
             _xdr.status = 200;
             callback(_xdr, _xdr.responseText, true);
         };
+        xdr.onprogress = function(e){
+            e = e || window.event;
+            fjs.utils.Console.log(e);
+        };
+
+        xdr.ontimeout = function() {
+            fjs.utils.Console.error('timeout');
+        };
+
+        xdr.timeout = 3*60*1000;
+
         for(var key in headers) {
             if(headers.hasOwnProperty(key)) {
                 url += (/\?/.test(url) ? '&' : '?') + key + "=" + encodeURIComponent(headers[key]);

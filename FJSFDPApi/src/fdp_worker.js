@@ -1,6 +1,8 @@
 //we load scripts of libs
 importScripts('fjs.core.debug.js');
+importScripts('TabsSyncronizer.js');
 importScripts('fjs.fdp.debug.js');
+
 
 var dataManager = null;
 self.web_worker = true;
@@ -42,5 +44,8 @@ function handleMessage(message, callback) {
         case "SFLogin":
             dataManager.SFLogin(message.data);
             break;
+        default:
+            console.error("Unknown action: " + message.action);
     }
 }
+self.postMessage({eventType:"ready"});

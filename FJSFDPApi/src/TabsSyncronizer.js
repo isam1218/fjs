@@ -1,6 +1,6 @@
 (function(){
 
-    namespace('fjs.fdp');
+    namespace('fjs.api');
     /**
      * Manager is responsible for assign general tab (Synchronization tab)
      * <br>
@@ -8,7 +8,7 @@
      * @constructor
      * @extends fjs.EventsSource
      */
-    fjs.fdp.TabsSynchronizer = function() {
+    fjs.api.TabsSynchronizer = function() {
        if (!this.constructor.__instance)
            this.constructor.__instance = this;
        else return this.constructor.__instance;
@@ -94,9 +94,9 @@
             this.timeoutId = setTimeout(this._runMaster, this.CHANGE_TAB_TIMEOUT);
         }
    };
-   fjs.fdp.TabsSynchronizer.extend(fjs.EventsSource);
+   fjs.api.TabsSynchronizer.extend(fjs.EventsSource);
 
-   fjs.fdp.TabsSynchronizer.prototype._checkMaster = function() {
+   fjs.api.TabsSynchronizer.prototype._checkMaster = function() {
         var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
         return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
    };

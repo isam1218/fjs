@@ -21,7 +21,7 @@
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
         }
         else {
-            is_main = new fjs.fdp.TabsSynchronizer().isMaster;
+            is_main = new fjs.api.TabsSynchronizer().isMaster;
         }
         if(is_main!=null) {
             if(!is_main) {

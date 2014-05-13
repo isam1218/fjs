@@ -197,6 +197,51 @@ fjs.utils.Array.isArray = function(obj) {
         }
     }();
 })();(function(){
+    namespace("fjs.utils");
+    fjs.utils.Console = function() {
+
+    };
+    fjs.utils.Console.log = function() {
+        if(console) {
+            console.log(arguments);
+        }
+    };
+    fjs.utils.Console.error = function() {
+        if(console) {
+            console.error(arguments);
+        }
+    };
+    fjs.utils.Console.debug = function() {
+        if(console) {
+            if(console.debug) {
+                console.debug(arguments);
+            }
+            else {
+                console.log(arguments);
+            }
+        }
+    };
+    fjs.utils.Console.warn = function() {
+        if(console) {
+            if(console.warn) {
+                console.warn(arguments);
+            }
+            else {
+                console.log(arguments);
+            }
+        }
+    };
+    fjs.utils.Console.info = function() {
+        if(console) {
+            if(console.info) {
+                console.info(arguments);
+            }
+            else {
+                console.log(arguments);
+            }
+        }
+    };
+})();(function(){
 namespace('fjs.utils');
 /**
  * Utils static class for reading, writing and deleting cookies.
@@ -306,7 +351,7 @@ fjs.utils.Cookies = {
             }
             next();
         }
-    }
+    };
 })();namespace("fjs.utils");
 /**
  * Static class to facilitate work with DOM objects.
@@ -794,6 +839,7 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
          */
         this.headers = null;
     };
+    fjs.ajax.IFrameRequest.prototype.abort = function(){};
 
     var _a =
     /**
@@ -1069,6 +1115,17 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
             _xdr.status = 200;
             callback(_xdr, _xdr.responseText, true);
         };
+        xdr.onprogress = function(e){
+            e = e || window.event;
+            fjs.utils.Console.log(e);
+        };
+
+        xdr.ontimeout = function() {
+            fjs.utils.Console.error('timeout');
+        };
+
+        xdr.timeout = 3*60*1000;
+
         for(var key in headers) {
             if(headers.hasOwnProperty(key)) {
                 url += (/\?/.test(url) ? '&' : '?') + key + "=" + encodeURIComponent(headers[key]);

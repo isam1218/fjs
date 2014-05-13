@@ -1,1 +1,1 @@
-console.log('Build number: ' + 12345678);
+fjs.utils.Console.log('Build number: ' + 1234567890);

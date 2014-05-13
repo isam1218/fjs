@@ -1,4 +1,4 @@
-ddescribe("EntryModelTest", function () {
+describe("EntryModelTest", function () {
     it("constructor", function () {
         var entryModel = new fjs.fdp.model.EntryModel({field1:1, field2:"2"});
         expect(1).toBe(entryModel.field1);

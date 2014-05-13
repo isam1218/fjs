@@ -89,4 +89,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-zip');
 
     grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
+    grunt.registerTask('jenkins-build', ['concat', 'closure-compiler', 'zip']);
 };

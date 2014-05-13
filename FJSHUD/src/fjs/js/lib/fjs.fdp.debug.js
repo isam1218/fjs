@@ -915,6 +915,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
         this.createTables();
         self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
     }
+    if(callback)
     setTimeout(function(){callback(context)}, 0);
 };
 
@@ -977,6 +978,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, ca
     this.createIndexes(tableName, [item]);
     this.dbData[_tableName][item[this.tables[tableName].key]] = item;
     self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -995,6 +997,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
             this.dbData[_tableName][item[this.tables[tableName].key]] = item;
         }
     self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -1015,6 +1018,7 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
         this.indexes[tableName] = {};
         self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -1131,6 +1135,7 @@ fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
             delete this.indexes[_tableName];
         }
     }
+    if(callback)
     setTimeout(callback, 0);
 };
 
@@ -2308,7 +2313,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @type {fjs.ajax.XHRAjax}
          */
         this.ajax = new fjs.ajax.XDRAjax();
-        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/CrossDomain");
+        this.iframeAjax = new fjs.ajax.IFrameAjax(url+"/v1/CrossDomain");
     };
     fjs.fdp.transport.XDRTransport.extend(fjs.fdp.transport.AJAXTransport);
 
@@ -2323,9 +2328,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         if(this.closed) {
             return null;
         }
+        data = data || {};
         data["t"] = this.type;
         data["alt"] = 'j';
-        var headers = {Authorization: "auth="+this.ticket, node:this.node};
+        var headers = {Authorization: this.ticket, node:this.node};
         var xdr = this.ajax.send('post', url, headers, data, function(request, responseText, isOK){
             if(!isOK) {
                 context.iframeAjax.send('post', url, headers, data, callback);
@@ -2335,7 +2341,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
         });
         xdr.url = url;
-        return url;
+        return xdr;
     };
 })();(function() {
     namespace("fjs.fdp.transport");
@@ -2446,7 +2452,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             return new fjs.fdp.transport.XHRTransport(ticket, node, url, type);
         }
         else {
-            is_main = new fjs.fdp.TabsSynchronizer().isMaster;
+            is_main = new fjs.api.TabsSynchronizer().isMaster;
         }
         if(is_main!=null) {
             if(!is_main) {
@@ -2574,7 +2580,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 
         /**
          *
-         * @type {fjs.fdp.TabsSynchronizer}
+         * @type {fjs.api.TabsSynchronizer}
          * @private
          */
         this.tabsSyncronizer = null;
@@ -2691,8 +2697,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         this.node = node;
 
         if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
-            window.addEventListener('storage', function(e){context.onStorage(e)}, false);
-            this.tabsSyncronizer = new fjs.fdp.TabsSynchronizer();
+            self.addEventListener('storage', function(e){context.onStorage(e)}, false);
+            this.tabsSyncronizer = new fjs.api.TabsSynchronizer();
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.onMasterChanged();
             });
@@ -2713,7 +2719,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.SyncManager.prototype.onStorage = function(e) {
         if(e.key.indexOf('lsp_')>-1) {
             var eventType = e.key.replace('lsp_', '');
-            if(new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(new fjs.api.TabsSynchronizer().isMaster) {
                 var obj = fjs.utils.JSON.parse(e.newValue);
                 if(eventType == "clientSync") {
                     this.onClientSync(obj);
@@ -2728,7 +2734,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.SyncManager.prototype.addTransportEvents = function() {
         var context = this;
         this.transport.addEventListener('message', function(e){
-            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.api.TabsSynchronizer().isMaster) {
                 fjs.fdp.transport.LocalStorageTransport.masterSend('message', e);
             }
             switch(e.type) {
@@ -2747,7 +2753,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
         });
         this.transport.addEventListener('error', function(e){
-            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.api.TabsSynchronizer().isMaster) {
                 fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
             }
             switch(e.type) {
@@ -2898,7 +2904,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && version !== undefined && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -2952,7 +2958,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                         entriesForSave.push(event.entry);
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
-                        if((!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster))
+                        if((!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster))
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
@@ -2962,7 +2968,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length>0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && entriesForSave.length>0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.insertArray(feedName, entriesForSave, null);
         }
     };
@@ -2984,7 +2990,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
-            if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+            if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
                 this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
                     context.db.insertArray(feedName, entriesForSave, null);
                 });
@@ -3016,7 +3022,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             }
             this.fireEvent(feedName, event);
         }
-        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && entriesForSave.length > 0 && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.selectByIndex(feedName, {'source':sourceId}, function(item){
                 if(idsForKeep.indexOf(item.xpid)<0 && idsForPush.indexOf(item.xpid)<0) {
                     context.db.deleteByKey(feedName, item.xpid, null);
@@ -3115,13 +3121,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @param {boolean} notBroadcast
      */
     fjs.fdp.SyncManager.prototype.onClientSync = function(message, notBroadcast) {
-        if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.api.TabsSynchronizer().isMaster) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
         else if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && !notBroadcast) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
         }
-        if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster) {
+        if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster) {
             this.onSync(message);
         }
     };
@@ -3380,7 +3386,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveHistoryVersions = function(feedName, source, filter, version) {
-        if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedSourceFilter": feedName+"_"+source+"_"+"filter", "feedName":feedName, "source":source, filter: filter, "version":version});
             var feedHVersions = this.historyversions[feedName];
             if(feedHVersions){
@@ -3399,7 +3405,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveEmptyHistoryVersions = function(feedName, filter) {
-        if(this.db && (!fjs.fdp.TabsSynchronizer.useLocalStorageSyncronization() || new fjs.fdp.TabsSynchronizer().isMaster)) {
+        if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.insertOne("historyversions", {"feedName":feedName, filter: filter, "version":"-1"});
             delete this.historyversions[feedName];
         }

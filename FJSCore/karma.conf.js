@@ -20,9 +20,9 @@ module.exports = function(config) {
 
 
     // list of files to exclude
-    exclude: [
-      
-    ],
+      exclude: [
+          'test/ajax/*Test.js'
+      ],
 
 
     // test results reporter to use

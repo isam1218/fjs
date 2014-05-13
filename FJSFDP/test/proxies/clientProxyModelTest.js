@@ -1,4 +1,4 @@
-ddescribe("ClientProxyModelTest", function () {
+describe("ClientProxyModelTest", function () {
     it("createSyncData", function () {
         var testProxy1 = {
             feedName: 'test'
@@ -515,16 +515,7 @@ ddescribe("ClientProxyModelTest", function () {
         expect('4').toBe(sync.changes['0_3'].entry.f2);
         expect('0_3').toBe(sync.changes['0_3'].entry.xpid);
         expect(undefined).toBe(sync.changes['1_1']);
-        expect('change').toBe(sync.changes['1_2'].type);
-        expect(undefined).toBe(sync.changes['1_2'].entry.f1);
-        expect(undefined).toBe(sync.changes['1_2'].entry.f2);
-        expect('1_2').toBe(sync.changes['1_2'].entry.xpid);
-        expect(undefined).toBe(sync.changes['1_2'].entry.source);
-        expect(undefined).toBe(sync.changes['1_2'].entry.xef001id);
-        expect(undefined).toBe(sync.changes['1_2'].entry.xef001iver);
-        expect(3).toBe(sync.changes['1_2'].entry.test2_f1);
-        expect('4').toBe(sync.changes['1_2'].entry.test2_f2);
-        expect(undefined).toBe(sync.changes['1_2'].entry.test2_xpid);
+        expect(undefined).toBe(sync.changes['1_2']);
     });
 });
 

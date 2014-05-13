@@ -5,7 +5,7 @@ namespace("fjs.sf");
 
 fjs.sf.SFSimpleProvider = function() {
     if (!fjs.sf.SFSimpleProvider.__instance){
-        var tabsSynchronizer = new fjs.fdp.TabsSynchronizer();
+        var tabsSynchronizer = new fjs.api.TabsSynchronizer();
         var context = this;
         this.isMaster =tabsSynchronizer.isMaster;
         tabsSynchronizer.addEventListener("master_changed", function() {
