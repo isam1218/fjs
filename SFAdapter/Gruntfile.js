@@ -85,16 +85,8 @@ module.exports = function(grunt) {
         ,'copy': {
             main: {
                 files: [
-                    {expand: true, cwd: 'bin/', src: ['SFAdapter-'+getBuildNumber()+'.zip'], dest: '../../build_'+getCurrentTime()+'_'+getBuildNumber()}
+                    {expand: true, cwd: 'bin/', src: ['SFAdapter-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/SFAdapter/build_'+getCurrentTime()+'_'+getBuildNumber()}
                 ]
-            }
-        }
-        , shell: {
-            prebuild: {
-                command: 'prebuild.sh'
-            },
-            postbuild: {
-                command: 'postbuild.sh'
             }
         }
     });
@@ -125,7 +117,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-shell');
 
     grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
     grunt.registerTask('jenkins-build', ['concat', 'closure-compiler', 'zip', 'copy']);
