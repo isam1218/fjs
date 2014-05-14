@@ -1,4 +1,4 @@
-console.log('Build number: ' + 1234567890);/**
+fjs.utils.Console.log('Build number: ' + 1234567890);/**
  * Created with JetBrains WebStorm.
  * User: ddyachenko
  * Date: 19.08.13
@@ -538,7 +538,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                    }
                    this.prepareEntry(_entry);
                    this.fireEvent("push", _entry);
-                   console.log('!!!!push ', _event.xpid, _event.entry);
+                   fjs.utils.Console.log('!!!!push ', _event.xpid, _event.entry);
                 }
                else if(!change.push && change.delete) {
                     var _event = change.delete;
@@ -549,7 +549,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     }
                     delete this.items[_event.xpid];
                     this.fireEvent("delete", _event);
-                    console.log('!!!!delete ', _event.xpid);
+                   fjs.utils.Console.log('!!!!delete ', _event.xpid);
                 }
                else if(change.push && change.delete) {
                     var _dataDel = change.delete;
@@ -564,14 +564,14 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     _entry.oldPid = _dataDel.xpid;
                     _dataPush.eventType="changepid";
                     this.fireEvent("changepid", _entry);
-                    console.log('!!!!changepid ', "from:", _entry.oldPid, "to:", _dataPush.xpid);
+                   fjs.utils.Console.log('!!!!changepid ', "from:", _entry.oldPid, "to:", _dataPush.xpid);
                 }
            }
         }
 
     this.changes={};
     this.fireEvent("complete", event);
-    console.log('!!!OnCallsSyncEnd!!!');
+    fjs.utils.Console.log('!!!OnCallsSyncEnd!!!');
 
 };
 
