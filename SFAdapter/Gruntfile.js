@@ -25,7 +25,6 @@ module.exports = function(grunt) {
         return buildNumber;
     }
 
-    // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         'concat': {
