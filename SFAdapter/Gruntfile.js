@@ -1,8 +1,32 @@
 module.exports = function(grunt) {
+
+    var currentTime = getCurrentTime()
+        , buildNumber;
+
+    grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
+
+    function getCurrentTime() {
+        if(!currentTime) {
+            var date = new Date();
+            var values = [ date.getDate(), date.getMonth() + 1, date.getHours(), date.getMinutes()];
+            for (var i = 0; i < values.length; i++) {
+                values[i] = values[i].toString().replace(/^([0-9])$/, '0$1');
+            }
+            currentTime = date.getFullYear()+values[1]+values[0]+"_"+values[2]+values[3];
+        }
+        return currentTime;
+    }
+
+    function getBuildNumber() {
+        if(!buildNumber) {
+            buildNumber = grunt.file.read('hud-buildid/count.txt');
+        }
+        return buildNumber;
+    }
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
         'concat': {
             options: {
                 separator: ''
@@ -91,27 +115,7 @@ module.exports = function(grunt) {
         }
     });
 
-    var currentTime, buildNumber;
 
-    function getCurrentTime() {
-        if(!currentTime) {
-            var date = new Date();
-            var values = [ date.getDate(), date.getMonth() + 1, date.getHours(), date.getMinutes()];
-            for (var i = 0; i < values.length; i++) {
-                values[i] = values[i].toString().replace(/^([0-9])$/, '0$1');
-            }
-            currentTime = date.getFullYear()+values[1]+values[0]+"_"+values[2]+values[3];
-            grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
-        }
-        return currentTime;
-    }
-
-    function getBuildNumber() {
-        if(!buildNumber) {
-           buildNumber = grunt.file.read('hud-buildid/count.txt');
-        }
-        return buildNumber;
-    }
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-closure-compiler');
