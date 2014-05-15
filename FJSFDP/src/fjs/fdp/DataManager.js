@@ -131,7 +131,7 @@ fjs.fdp.DataManager.prototype.logout = function() {
 fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) {
     var /** @type (fjs.fdp.model.ProxyModel) */ proxy = this.proxies[feedName];
     if(!proxy)  {
-        console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
+        fjs.utils.Console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
         return;
     }
     proxy.sendAction(feedName, actionName, data);
@@ -145,7 +145,7 @@ fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) 
  */
 fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
     if(!this.proxies[feedName]) {
-        console.error("You don't listen this feed");
+        fjs.utils.Console.error("You don't listen this feed");
     }
     this.sm.loadNext(feedName, filter, count);
 };

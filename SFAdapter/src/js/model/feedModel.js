@@ -46,7 +46,7 @@ fjs.model.FeedModel.prototype.init = function() {
                     context.onEntryDeletion(change);
                 }
                 else {
-                    console.error("Unknown change type:", change.type);
+                    fjs.utils.Console.error("Unknown change type:", change.type);
                 }
             }
         }

@@ -71,7 +71,7 @@ fjs.fdp.model.ProxyModel.prototype.addListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to add duplicated listener");
+        fjs.utils.Console.warn("Trying to add duplicated listener");
     }
 };
 
@@ -89,7 +89,7 @@ fjs.fdp.model.ProxyModel.prototype.removeListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to remove unexisted listener");
+        fjs.utils.Console.warn("Trying to remove unexisted listener");
     }
 };
 
@@ -161,7 +161,7 @@ fjs.fdp.model.ProxyModel.prototype.fillChange = function(xpid, changes, feedName
         }
     }
     else {
-        console.error('Change for deleted entry');
+        fjs.utils.Console.error('Change for deleted entry');
     }
     return _changes;
 };
@@ -193,7 +193,7 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
                 }
             }
             else {
-                console.error('Trying to remove unexisted element:', xpid);
+                fjs.utils.Console.error('Trying to remove unexisted element:', xpid);
             }
             if(fjs.utils.JSON.isEmpty(_changes.entry)) {
                 delete this.changes[xpid];

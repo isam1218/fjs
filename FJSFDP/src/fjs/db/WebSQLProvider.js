@@ -38,7 +38,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
         var db = this.db = self.openDatabase(name, "", name, dbSize);
     }
     catch(e) {
-        console.error(e);
+        fjs.utils.Console.error(e);
         callback(null);
         return;
     }

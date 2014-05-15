@@ -19,7 +19,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
         context.fireEvent(e.data["eventType"], e.data);
     }, false);
     this.worker.addEventListener("error", function(e){
-        console.error("Worker Error", e);
+        fjs.utils.Console.error("Worker Error", e);
     });
     this.sendMessage = function(message) {
         context.worker.postMessage(message);

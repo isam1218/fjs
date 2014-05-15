@@ -101,7 +101,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to add duplicated listener");
+        fjs.utils.Console.warn("Trying to add duplicated listener");
     }
 };
 

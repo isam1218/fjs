@@ -472,7 +472,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
         var db = this.db = self.openDatabase(name, "", name, dbSize);
     }
     catch(e) {
-        console.error(e);
+        fjs.utils.Console.error(e);
         callback(null);
         return;
     }
@@ -1333,7 +1333,7 @@ fjs.fdp.model.ProxyModel.prototype.addListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to add duplicated listener");
+        fjs.utils.Console.warn("Trying to add duplicated listener");
     }
 };
 
@@ -1351,7 +1351,7 @@ fjs.fdp.model.ProxyModel.prototype.removeListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to remove unexisted listener");
+        fjs.utils.Console.warn("Trying to remove unexisted listener");
     }
 };
 
@@ -1423,7 +1423,7 @@ fjs.fdp.model.ProxyModel.prototype.fillChange = function(xpid, changes, feedName
         }
     }
     else {
-        console.error('Change for deleted entry');
+        fjs.utils.Console.error('Change for deleted entry');
     }
     return _changes;
 };
@@ -1455,7 +1455,7 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
                 }
             }
             else {
-                console.error('Trying to remove unexisted element:', xpid);
+                fjs.utils.Console.error('Trying to remove unexisted element:', xpid);
             }
             if(fjs.utils.JSON.isEmpty(_changes.entry)) {
                 delete this.changes[xpid];
@@ -1739,7 +1739,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to add duplicated listener");
+        fjs.utils.Console.warn("Trying to add duplicated listener");
     }
 };
 
@@ -1946,7 +1946,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         else if(!isOk) {
             var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status};
             this.fireEvent('error', event);
-            console.error(event);
+            fjs.utils.Console.error(event);
         }
         if(this.isNetworkProblem) {
             this.fireEvent('message', {type:'connectionEstablished'});
@@ -2963,7 +2963,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
-                        console.error("Incorrect item change type: " + etype+" for Lazy sync");
+                        fjs.utils.Console.error("Incorrect item change type: " + etype+" for Lazy sync");
                         break;
                 }
             }
@@ -2988,7 +2988,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     this.fireEvent(feedName, event);
                 }
                 else {
-                    console.error("Incorrect item change type: " + etype+" for Full sync");
+                    fjs.utils.Console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
             if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
@@ -3017,7 +3017,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                         idsForKeep.push(event.entry.xpid);
                         break;
                     default:
-                        console.error("Incorrect item change type: " + etype+" for Keep sync");
+                        fjs.utils.Console.error("Incorrect item change type: " + etype+" for Keep sync");
                         break;
                 }
             }
@@ -3072,7 +3072,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                 this.keepSyncProcessItems(items, feedName, sourceId);
                 break;
             default:
-                console.error("Unknown sync type: "+type);
+                fjs.utils.Console.error("Unknown sync type: "+type);
                 break;
         }
         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName, sourceId:sourceId, syncType: type});
@@ -3570,7 +3570,7 @@ fjs.fdp.DataManager.prototype.logout = function() {
 fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) {
     var /** @type (fjs.fdp.model.ProxyModel) */ proxy = this.proxies[feedName];
     if(!proxy)  {
-        console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
+        fjs.utils.Console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
         return;
     }
     proxy.sendAction(feedName, actionName, data);
@@ -3584,7 +3584,7 @@ fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) 
  */
 fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
     if(!this.proxies[feedName]) {
-        console.error("You don't listen this feed");
+        fjs.utils.Console.error("You don't listen this feed");
     }
     this.sm.loadNext(feedName, filter, count);
 };

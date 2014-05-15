@@ -62,7 +62,7 @@ fjs.api.SimpleClientDataProvider.prototype.sendMessage = function(message) {
             this.dataManager.SFLogin(message.data);
             break;
         default:
-            console.error("Unknown action: " + message.action);
+            fjs.utils.Console.error("Unknown action: " + message.action);
     }
 };
 

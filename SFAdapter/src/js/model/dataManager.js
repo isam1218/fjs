@@ -84,14 +84,14 @@ fjs.model.DataManager = function(sf) {
                 }
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_REQUEST_ERROR, function(e) {
-                console.error(e);
+                fjs.utils.Console.error(e);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NETWORK_PROBLEM, function(e) {
-                console.error(e);
+                fjs.utils.Console.error(e);
                 context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, false);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, function(e) {
-                console.error(e);
+                fjs.utils.Console.info(e);
                 context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
@@ -195,7 +195,7 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
         var res = null;
         if (response) {
             if (response.error) {
-                console.error("SF response error", response.error);
+                fjs.utils.Console.error("SF response error", response.error);
                 callback(null);
             }
             else {

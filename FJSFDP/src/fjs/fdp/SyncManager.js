@@ -481,7 +481,7 @@
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
-                        console.error("Incorrect item change type: " + etype+" for Lazy sync");
+                        fjs.utils.Console.error("Incorrect item change type: " + etype+" for Lazy sync");
                         break;
                 }
             }
@@ -506,7 +506,7 @@
                     this.fireEvent(feedName, event);
                 }
                 else {
-                    console.error("Incorrect item change type: " + etype+" for Full sync");
+                    fjs.utils.Console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
             if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
@@ -535,7 +535,7 @@
                         idsForKeep.push(event.entry.xpid);
                         break;
                     default:
-                        console.error("Incorrect item change type: " + etype+" for Keep sync");
+                        fjs.utils.Console.error("Incorrect item change type: " + etype+" for Keep sync");
                         break;
                 }
             }
@@ -590,7 +590,7 @@
                 this.keepSyncProcessItems(items, feedName, sourceId);
                 break;
             default:
-                console.error("Unknown sync type: "+type);
+                fjs.utils.Console.error("Unknown sync type: "+type);
                 break;
         }
         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName, sourceId:sourceId, syncType: type});

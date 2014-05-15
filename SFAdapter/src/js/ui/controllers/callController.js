@@ -441,7 +441,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             message.data.duration = Math.round($scope.call.duration/1000);
             message.data.date = $scope.call.mycallsclient_callLog.date;
             message.callback =  function(response){
-                console.error(response);
+                fjs.utils.Console.error(response);
             };
             sfApiProvider.sendAction(message);
         }

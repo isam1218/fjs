@@ -8,7 +8,7 @@ fjs.sf.SFSharedWorkerProvider = function() {
         this.callbacks = {};
         this.worker = new SharedWorker("js/salesforce_api/sf_shared_worker.js");
         this.worker.port.addEventListener("message", function (e) {
-            console.log(e);
+            fjs.utils.Console.log(e);
             if (e.data["eventType"] == "ready") {
                 context.sendAction({action: 'init'});
             }
@@ -20,7 +20,7 @@ fjs.sf.SFSharedWorkerProvider = function() {
         }, false);
 
         this.worker.port.addEventListener("error", function (e) {
-            console.error("Worker Error", e);
+            fjs.utils.Console.error("Worker Error", e);
         });
         this.worker.port.start();
         this.worker.port.postMessage("ping'");

@@ -106,7 +106,7 @@
         else if(!isOk) {
             var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status};
             this.fireEvent('error', event);
-            console.error(event);
+            fjs.utils.Console.error(event);
         }
         if(this.isNetworkProblem) {
             this.fireEvent('message', {type:'connectionEstablished'});

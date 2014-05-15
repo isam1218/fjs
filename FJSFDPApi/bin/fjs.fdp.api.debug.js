@@ -122,7 +122,7 @@ fjs.api.SimpleClientDataProvider.prototype.sendMessage = function(message) {
             this.dataManager.SFLogin(message.data);
             break;
         default:
-            console.error("Unknown action: " + message.action);
+            fjs.utils.Console.error("Unknown action: " + message.action);
     }
 };
 
@@ -147,7 +147,7 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
         context.fireEvent(e.data["eventType"], e.data);
     }, false);
     this.worker.addEventListener("error", function(e){
-        console.error("Worker Error", e);
+        fjs.utils.Console.error("Worker Error", e);
     });
     this.sendMessage = function(message) {
         context.worker.postMessage(message);
@@ -187,7 +187,7 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
         context.fireEvent(e.data["eventType"], e.data);
     }, false);
     this.worker.port.addEventListener("error", function(e){
-        console.error("Worker Error", e);
+        fjs.utils.Console.error("Worker Error", e);
     });
     this.worker.port.start();
     this.sendMessage = function(message) {
