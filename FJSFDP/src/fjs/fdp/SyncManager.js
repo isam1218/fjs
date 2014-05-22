@@ -216,8 +216,26 @@
         this.node = node;
 
         if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
-            self.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.api.TabsSynchronizer();
+            if(fjs.utils.Browser.isIE11()) {
+                this.tabsSyncronizer.addEventListener('lsp_clientSync', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_message', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_error', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_action', function (e) {
+                    context.onStorage(e)
+                });
+            }
+            else {
+                self.addEventListener('storage', function (e) {
+                    context.onStorage(e)
+                }, false);
+            }
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.onMasterChanged();
             });
@@ -309,6 +327,9 @@
                     context.db = null;
                 }
                 context.finishInitialization(callback);
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                    context.db.deleteByKey('tabsync', null);
+                };
             });
         }
         else {

@@ -283,6 +283,14 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
          */
        this.isMaster = this._checkMaster();
 
+       this.lastValues = {};
+
+       this.lastMasterValue = null;
+
+       this.hasChange = false;
+
+       this.cookiesSynchronizationRuned = false;
+
         /**
          * runs master iteration
          * @private
@@ -291,19 +299,41 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
             context._masterIteration();
         };
 
+        this.db = null;
+
+
+
         /**
          * @private
          */
         this._masterIteration = function() {
-            localStorage[context.TABS_SYNCRONIZE_KEY] = context.tabId+"|"+Date.now();
+            if(fjs.utils.Browser.isIE11()) {
+                fjs.utils.Cookies.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
+            }
+            else {
+                localStorage.setItem(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
+            }
             if(!context.isMaster) {
                 context.fireEvent('master_changed', (context.isMaster = true));
             }
+            //console.log("me is master");
             clearTimeout(context.timeoutId);
             context.timeoutId = setTimeout(context._masterIteration, context.MASTER_ACTIVITY_TIMEOUT);
         };
 
-        self.addEventListener('storage', function(e) {
+        if(fjs.utils.Browser.isIE11()) {
+            setInterval(function(){
+                var syncVal = fjs.utils.Cookies.get(context.TABS_SYNCRONIZE_KEY);
+                if(syncVal && syncVal!=context.lastMasterValue) {
+                    context.onStorage({key: context.TABS_SYNCRONIZE_KEY, newValue: syncVal});
+                    context.lastMasterValue = syncVal;
+                }
+            }, 0);
+        }
+        else {
+            self.addEventListener('storage', context.onStorage, false);
+        }
+        this.onStorage = function(e) {
             if(e.key == context.TABS_SYNCRONIZE_KEY) {
                 var lsvals = e.newValue.split("|");
                 if(lsvals[0]!=context.tabId) {
@@ -316,7 +346,7 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
                     }
                 }
             }
-        }, false);
+        };
 
         if(this._checkMaster()){
             this._runMaster();
@@ -328,7 +358,83 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
    fjs.api.TabsSynchronizer.extend(fjs.EventsSource);
 
    fjs.api.TabsSynchronizer.prototype._checkMaster = function() {
-        var lsvals = localStorage[this.TABS_SYNCRONIZE_KEY];
-        return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
+       var lsvals;
+       if(fjs.utils.Browser.isIE11()) {
+           lsvals = fjs.utils.Cookies.get(this.TABS_SYNCRONIZE_KEY);
+       }
+       else {
+           lsvals = localStorage.getItem(this.TABS_SYNCRONIZE_KEY);
+       }
+       return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
    };
+
+    fjs.api.TabsSynchronizer.prototype.addEventListener = function(eventType, handler) {
+        var context = this;
+        if(eventType!='master_changed') {
+            if(!this.lastValues[eventType])
+                this.lastValues[eventType] = [];
+            if(!this.cookiesSynchronizationRuned) {
+                this.db = new fjs.db.DBFactory().getDB();
+                    setInterval(function(){
+                    for(var key in context.lastValues) {
+                        var _lastValues = context.lastValues[key];
+                        if(context.db.state == 1) {
+                            (function(_lastValues) {
+                                    context.db.selectByIndex('tabsync', {eventType: key}, function (item) {
+                                    }, function (items){
+                                        if(items) {
+                                            items.sort(function(a,b){
+                                                if(a.order>b.order) return 1;
+                                                else if(a.order<b.order) return -1;
+                                                return 0;
+                                            });
+                                            for (var i = 0; i < items.length; i++) {
+                                                var item = items[i], tkey = item.key;
+                                                var keyarr = tkey.split('|');
+
+                                                if (_lastValues.indexOf(tkey) < 0 && keyarr[1] != context.tabId) {
+                                                    context.fireEvent(item.eventType, {key: item.eventType, newValue: item.val});
+                                                    _lastValues.push(tkey);
+                                                    (function (key) {
+                                                        setTimeout(function () {
+                                                            var index = _lastValues.indexOf(key);
+                                                            if (index >= 0) {
+                                                                _lastValues.splice(index, 1);
+                                                            }
+                                                        }, 10000);
+                                                    })(tkey);
+                                                }
+                                            }
+                                        }
+                                    });
+                                })(_lastValues);
+                            }
+                        }
+                },1000);
+            }
+        }
+        this.superClass.addEventListener.call(this, eventType, handler);
+    };
+
+    fjs.api.TabsSynchronizer.prototype.removeEventListener = function(eventType, handler) {
+        delete this.lastValues[eventType];
+        this.superClass.removeEventListener.call(this, eventType, handler);
+    };
+
+    fjs.api.TabsSynchronizer.prototype.generateDataKey = function(eventType) {
+        var inc = new fjs.utils.Increment();
+        return eventType + "|" + this.tabId + "|" + inc.get("tabsyncKeys");
+    };
+
+    fjs.api.TabsSynchronizer.prototype.setSyncValue = function(key, value) {
+            //console.log('syncData', fjs.utils.JSON.parse(value), value);
+            if(this.db && this.db.state == 1) {
+                var genKey = this.generateDataKey(key), context = this;
+                var inc = new fjs.utils.Increment();
+                this.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:Date.now()+""+inc});
+                (function(){setTimeout(function(key){
+                    context.db.deleteByKey("tabsync", key);
+                },10000)})(genKey);
+            }
+    };
 })();

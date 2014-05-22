@@ -15,6 +15,7 @@ fjs.db.LocalStorageDbProvider = function() {
     this.tables = {};
     this.dbData = {};
     this.indexes = {};
+    this.state = -1;
 };
 
 /**
@@ -83,6 +84,7 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
     var tableName, context = this;
+    this.state = 0;
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
@@ -111,8 +113,9 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
         this.createTables();
         self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
     }
+    this.state = 1;
     if(callback)
-    setTimeout(function(){callback(context)}, 0);
+    setTimeout(function(){callback(context);}, 0);
 };
 
 /**

@@ -35,6 +35,9 @@ fjs.db.IndexedDBProvider = function() {
      * @private
      */
     this.tables = {};
+
+    this.state = -1;
+
 };
 
 /**
@@ -51,6 +54,7 @@ fjs.db.IndexedDBProvider.check= function() {
 * @param {function(IDBDatabase)} callback - Handler function to execute when database was ready
 */
 fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
+    this.state = 0;
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
         new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
@@ -61,6 +65,7 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     request.onsuccess = function() {
         context.db = request.result;
         context.db.onerror = onError;
+        context.state = 1;
         if(callback) {
             callback(context.db);
         }

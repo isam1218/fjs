@@ -35,6 +35,9 @@ fjs.db.IndexedDBProvider = function() {
      * @private
      */
     this.tables = {};
+
+    this.state = -1;
+
 };
 
 /**
@@ -51,6 +54,7 @@ fjs.db.IndexedDBProvider.check= function() {
 * @param {function(IDBDatabase)} callback - Handler function to execute when database was ready
 */
 fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
+    this.state = 0;
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
         new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
@@ -61,6 +65,7 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     request.onsuccess = function() {
         context.db = request.result;
         context.db.onerror = onError;
+        context.state = 1;
         if(callback) {
             callback(context.db);
         }
@@ -819,6 +824,7 @@ fjs.db.LocalStorageDbProvider = function() {
     this.tables = {};
     this.dbData = {};
     this.indexes = {};
+    this.state = -1;
 };
 
 /**
@@ -887,6 +893,7 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
     var tableName, context = this;
+    this.state = 0;
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
@@ -915,8 +922,9 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
         this.createTables();
         self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
     }
+    this.state = 1;
     if(callback)
-    setTimeout(function(){callback(context)}, 0);
+    setTimeout(function(){callback(context);}, 0);
 };
 
 /**
@@ -1192,6 +1200,9 @@ namespace('fjs.db');
  * @constructor
  */
 fjs.db.DBFactory = function(config) {
+    if (!this.constructor.__instance)
+        this.constructor.__instance = this;
+    else return this.constructor.__instance;
 
     this.config = config;
     /**
@@ -1203,6 +1214,8 @@ fjs.db.DBFactory = function(config) {
         , 'webSQL': fjs.db.WebSQLProvider
         , 'localStorage': fjs.db.LocalStorageDbProvider
     };
+
+    this.currentDB = null;
 };
 
 /**
@@ -1217,7 +1230,10 @@ fjs.db.DBFactory.prototype.getDB = function() {
     var dbs = this.config.DB.dbProviders;
     for(var i=0; i<dbs.length; i++) {
         if(this._dbRegister[dbs[i]].check()) {
-            return new this._dbRegister[dbs[i]]();
+            if(!this.currentDB) {
+                this.currentDB = new this._dbRegister[dbs[i]]();
+            }
+            return this.currentDB;
         }
     }
 };
@@ -2389,13 +2405,25 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.transport.LocalStorageTransport = function() {
         var context = this;
         fjs.fdp.transport.FDPTransport.call(this);
+
+        this.tabsSynchronizer = new fjs.api.TabsSynchronizer();
+
         this.onStorage = function(e) {
             if(e.key.indexOf('lsp_')>-1) {
                 var eventType = e.key.replace('lsp_', '');
                 context.fireEvent(eventType, fjs.utils.JSON.parse(e.newValue));
             }
         };
-        window.addEventListener('storage', this.onStorage, false);
+
+        if(fjs.utils.Browser.isIE11()) {
+            this.tabsSynchronizer.addEventListener('lsp_message', this.onStorage);
+            this.tabsSynchronizer.addEventListener('lsp_error', this.onStorage);
+            this.tabsSynchronizer.addEventListener('lsp_clientSync', this.onStorage);
+            this.tabsSynchronizer.addEventListener('lsp_action', this.onStorage);
+        }
+        else {
+            window.addEventListener('storage', this.onStorage, false);
+        }
     };
     fjs.fdp.transport.LocalStorageTransport.extend(fjs.fdp.transport.FDPTransport);
 
@@ -2417,7 +2445,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @abstract
      */
     fjs.fdp.transport.LocalStorageTransport.prototype.send = function (message) {
-        localStorage['lsp_'+message.type] = fjs.utils.JSON.stringify(message.data);
+        if(fjs.utils.Browser.isIE11()) {
+            this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
+        }
+        localStorage.setItem('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
     };
 
     /**
@@ -2425,9 +2456,16 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      */
     fjs.fdp.transport.LocalStorageTransport.prototype.close = function() {
         window.removeEventListener('storage', this.onStorage, false);
+        this.tabsSynchronizer.removeEventListener('lsp_message', this.onStorage);
+        this.tabsSynchronizer.removeEventListener('lsp_error', this.onStorage);
+        this.tabsSynchronizer.removeEventListener('lsp_clientSync', this.onStorage);
+        this.tabsSynchronizer.removeEventListener('lsp_action', this.onStorage);
     };
     fjs.fdp.transport.LocalStorageTransport.masterSend = function(messageType, messageData) {
-        localStorage['lsp_'+messageType] = fjs.utils.JSON.stringify(messageData);
+        if(fjs.utils.Browser.isIE11()) {
+            new fjs.api.TabsSynchronizer().setSyncValue('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
+        }
+        localStorage.setItem('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
     };
 })();(function(){
 
@@ -2698,8 +2736,26 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         this.node = node;
 
         if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
-            self.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.api.TabsSynchronizer();
+            if(fjs.utils.Browser.isIE11()) {
+                this.tabsSyncronizer.addEventListener('lsp_clientSync', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_message', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_error', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_action', function (e) {
+                    context.onStorage(e)
+                });
+            }
+            else {
+                self.addEventListener('storage', function (e) {
+                    context.onStorage(e)
+                }, false);
+            }
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.onMasterChanged();
             });
@@ -2791,6 +2847,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     context.db = null;
                 }
                 context.finishInitialization(callback);
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                    context.db.deleteByKey('tabsync', null);
+                };
             });
         }
         else {
