@@ -108,8 +108,9 @@
             this.crdmnFrame = document.createElement('iframe');
             this.crdmnFrame.name = this.crdmnFrame.id = 'crdmnFrame';
             this.crdmnFrame.src = this.host;
-            this.crdmnFrame.style.width = 0;
-            this.crdmnFrame.style.height = 0;
+            this.crdmnFrame.style.width = '0';
+            this.crdmnFrame.style.height = '0';
+            this.crdmnFrame.style.visibility = 'hidden';
             this.crdmnFrame.onload = function() {
                 context.status = _a.states.READY;
                 for(var i=0; i<context.suspendRequestes.length; i++) {
