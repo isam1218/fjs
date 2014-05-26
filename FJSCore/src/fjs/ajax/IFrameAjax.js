@@ -111,6 +111,8 @@
             this.crdmnFrame.style.width = '0';
             this.crdmnFrame.style.height = '0';
             this.crdmnFrame.style.visibility = 'hidden';
+            this.crdmnFrame.style.position = 'absolute';
+            this.crdmnFrame.style.zIndex = '-1';
             this.crdmnFrame.onload = function() {
                 context.status = _a.states.READY;
                 for(var i=0; i<context.suspendRequestes.length; i++) {
