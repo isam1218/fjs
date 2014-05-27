@@ -5,20 +5,15 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     var sfApiProvider = sfApi.getProvider();
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
-    this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
+    this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
     this.SOFTPHONE_WIDTH = 200;
     this.SOFTPHONE_HEIGHT = 200;
     this.FRAME_RESIZE_NAME = "resizeFrame";
 
     function onClientSettingsPush(entry) {
-        if(entry.xpid = fjs.controllers.MainController.IS_WARNING_SHOWN) {
-            if(entry.value) {
-                $scope.isWarningsShown = true;
-            }
-            else {
-                $scope.isWarningsShown = false;
-            }
+        if(context.clientSettingsModel.items[fjs.controllers.MainController.IS_WARNING_SHOWN]) {
+            $scope.isWarningsShown = context.clientSettingsModel.items[fjs.controllers.MainController.IS_WARNING_SHOWN].value;
             context.safeApply($scope);
         }
     }

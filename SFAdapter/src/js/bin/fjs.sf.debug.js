@@ -1,4 +1,4 @@
-fjs.utils.Console.log('Build number: ' + 1234567890);/**
+fjs.utils.Console.log('Build number: ' + 1234567893);/**
  * Created with JetBrains WebStorm.
  * User: ddyachenko
  * Date: 19.08.13
@@ -96,7 +96,7 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
             });
         }
         else {
-            console.error('Wrong arguments for adding call log.')
+            fjs.utils.Console.error('Wrong arguments for adding call log.')
         }
     })
 };
@@ -259,7 +259,7 @@ fjs.sf.SFSharedWorkerProvider = function() {
         this.callbacks = {};
         this.worker = new SharedWorker("js/salesforce_api/sf_shared_worker.js");
         this.worker.port.addEventListener("message", function (e) {
-            console.log(e);
+            fjs.utils.Console.log(e);
             if (e.data["eventType"] == "ready") {
                 context.sendAction({action: 'init'});
             }
@@ -271,7 +271,7 @@ fjs.sf.SFSharedWorkerProvider = function() {
         }, false);
 
         this.worker.port.addEventListener("error", function (e) {
-            console.error("Worker Error", e);
+            fjs.utils.Console.error("Worker Error", e);
         });
         this.worker.port.start();
         this.worker.port.postMessage("ping'");
@@ -311,12 +311,6 @@ fjs.sf.SFApiProviderFactory = function() {
 
 fjs.sf.SFApiProviderFactory.prototype.getProvider = function() {
     return new fjs.sf.SFSimpleProvider();
-//    for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
-//        var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
-//        if(provider.check()) {
-//            return new provider();
-//        }
-//    }
 };var sfa_model = angular.module('SF_API', []);
 
 sfa_model.service('SFApi', fjs.sf.SFApiProviderFactory);namespace("fjs.model");
@@ -367,7 +361,7 @@ fjs.model.FeedModel.prototype.init = function() {
                     context.onEntryDeletion(change);
                 }
                 else {
-                    console.error("Unknown change type:", change.type);
+                    fjs.utils.Console.error("Unknown change type:", change.type);
                 }
             }
         }
@@ -483,6 +477,7 @@ fjs.model.MyCallsFeedModel = function(dataManager) {
     this.htCallIdToXpid = {};
     this.listeners["changepid"]= [];
     this.changes = {};
+    this.clientSettingsModel = this.dataManager.getModel('clientsettings');
 };
 
 fjs.model.MyCallsFeedModel.extend(fjs.model.FeedModel);
@@ -530,7 +525,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                    var _event = change.push;
                    var _entry = this.items[_event.xpid];
                    if(!_entry) {
-                       _entry = this.items[_event.xpid] = new fjs.model.EntryModel(_event.entry);
+                       _entry = this.items[_event.xpid] = new fjs.model.MyCallEntryModel(_event.entry);
                        this.order.push(_entry);
                    }
                    else {
@@ -538,17 +533,20 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                    }
                    this.prepareEntry(_entry);
                    this.fireEvent("push", _entry);
+                   if((!this.clientSettingsModel.items["openedCall"] || (this.clientSettingsModel.items["openedCall"].value!= null &&  !this.items[this.clientSettingsModel.items["openedCall"].value])) && (_entry.state == 2 || _entry.state == 0)) {
+                       this.dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  _entry.xpid});
+                   }
                    fjs.utils.Console.log('!!!!push ', _event.xpid, _event.entry);
                 }
                else if(!change.push && change.delete) {
                     var _event = change.delete;
-                    var _item = this.items[_event.xpid];
-                    var _index = this.order.indexOf(_item);
+                   var _item = this.items[_event.xpid];
+                   var _index = this.order.indexOf(_item);
                    if(_index>-1) {
                         this.order.splice(_index, 1);
-                    }
-                    delete this.items[_event.xpid];
-                    this.fireEvent("delete", _event);
+                   }
+                   delete this.items[_event.xpid];
+                   this.fireEvent("delete", _event);
                    fjs.utils.Console.log('!!!!delete ', _event.xpid);
                 }
                else if(change.push && change.delete) {
@@ -556,6 +554,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     var _dataPush = change.push;
 
                     var _entry = this.items[_dataDel.xpid];
+
                     _entry.fill(_dataPush.entry);
 
                     delete this.items[_dataDel.xpid];
@@ -577,6 +576,189 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
 
 fjs.model.MyCallsFeedModel.NAME = "mycallsclient";
 
+namespace("fjs.model");
+
+fjs.model.MyCallEntryModel = function(obj) {
+    function getCurrentDate() {
+        var d = new Date();
+        return d.getFullYear()+"-"+ (d.getMonth()+1) +"-"+d.getDate();
+    }
+    this._who = [];
+    this._what = [];
+    this.mycallsclient_callLog = {
+        'date': getCurrentDate(),
+        'subject': "Call",
+        'xpid':this.xpid,
+        'note': '',
+        'callType': (this.incoming ? "inbound" : "outbound"),
+        'isOpened':true,
+        'tranferOpened':false,
+        'whatId':null,
+        'whoId':null,
+        'what': {},
+        'who': {}
+    };
+    fjs.model.EntryModel.call(this, obj);
+};
+
+fjs.model.MyCallEntryModel.extend(fjs.model.EntryModel);
+
+fjs.model.MyCallEntryModel.HOLD_CALL_TYPE = 3;
+fjs.model.MyCallEntryModel.RING_CALL_TYPE = 0;
+
+fjs.model.MyCallEntryModel.prototype.onHold = function() {
+    return this.state == fjs.model.MyCallEntryModel.HOLD_CALL_TYPE;
+};
+
+fjs.model.MyCallEntryModel.prototype.isRing = function() {
+    return this.state == fjs.model.MyCallEntryModel.RING_CALL_TYPE;
+};
+
+fjs.model.MyCallEntryModel.prototype.hasWhos = function() {
+    for(var key in this.mycallsclient_callLog.who) {
+        if(this.mycallsclient_callLog.who[key]) return true;
+    }
+    return false;
+};
+
+fjs.model.MyCallEntryModel.prototype.hasWhats = function() {
+    for(var key in this.mycallsclient_callLog.what) {
+        if(this.mycallsclient_callLog.what[key]) return true;
+    }
+    return false;
+};
+
+fjs.model.MyCallEntryModel.prototype.callLogItemUpdate = function() {
+
+};
+
+fjs.model.MyCallEntryModel.prototype.findCallLogTargetById = function(type, id) {
+    var arr;
+    if(type == 'Contact' || type == 'Lead') {
+       arr = this.mycallsclient_callLog.who[type];
+    }
+    else {
+        arr = this.mycallsclient_callLog.what[type];
+    }
+    if(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i]._id == id) {
+                return arr[i];
+            }
+        }
+    }
+};
+
+fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSettingsModel) {
+    var whoLength = this._who.length,
+        whatLength = this._what.length,
+        _whatId = this.mycallsclient_callLog.whatId,
+        _whoId = this.mycallsclient_callLog.whoId,
+        _changed = false;
+
+    this._who = [];
+    this._what = [];
+    var phoneMap = clientSettingsModel.items['phoneMap'] && clientSettingsModel.items['phoneMap'].phones || {};
+
+    if(data && data.result) {
+        var result = fjs.utils.JSON.parse(data.result);
+        for(var i in result) {
+            if (result.hasOwnProperty(i) && i != "screenPopUrl") {
+                var _result = result[i];
+                _result._id = i;
+                if(_result.object == "Contact" || _result.object == "Lead") {
+                    if(!this.mycallsclient_callLog.who[_result.object]) {
+                        this.mycallsclient_callLog.who[_result.object] = [];
+                    }
+                    var item = this.findCallLogTargetById(_result.object, i);
+                    if(!item) {
+                        this.mycallsclient_callLog.who[_result.object].push(_result);
+                    }
+                    else if(item.Name!=_result.Name) {
+                         item.Name = _result.Name;
+                         _changed = true;
+                    }
+                    this._who.push(_result);
+                }
+                else {
+                    if(_result.object == "Case") {
+                        _result.Name = _result.CaseNumber;
+                    }
+                    if(!this.mycallsclient_callLog.what[_result.object]) {
+                        this.mycallsclient_callLog.what[_result.object] = [];
+                    }
+                    var item = this.findCallLogTargetById(_result.object, i);
+                    if(!item) {
+                        this.mycallsclient_callLog.what[_result.object].push(_result);
+                    }
+                    else if(item.Name!=_result.Name) {
+                        item.Name = _result.Name;
+                        _changed = true;
+                    }
+                    this._what.push(_result);
+                }
+            }
+        }
+    }
+    if(phoneMap[this.phone]) {
+        var calleeInfo = phoneMap[this.phone];
+        if(calleeInfo.type == "Contact") {
+            this.mycallsclient_callLog.whoId = calleeInfo.id;
+            this.mycallsclient_callLog.whatId = (this._what[0] && this._what[0]._id) || null;
+        }
+        else if(calleeInfo.type == "Lead") {
+            this.mycallsclient_callLog.whoId = calleeInfo.id;
+            this.mycallsclient_callLog.whatId = null;
+        }
+        else  {
+            this.mycallsclient_callLog.whatId = calleeInfo.id;
+            if(this.mycallsclient_callLog.who["Contact"]) {
+                this.mycallsclient_callLog.whoId = this.mycallsclient_callLog.who["Contact"][0]._id || null;
+            }
+        }
+        clientSettingsModel.deletePhone(this.phone);
+    }
+    else if(!phoneMap[this.phone] && !this.mycallsclient_callLog.whatId && !this.mycallsclient_callLog.whoId){
+        if(this.mycallsclient_callLog.who["Contact"]) {
+            this.mycallsclient_callLog.whoId = this.mycallsclient_callLog.who["Contact"][0]._id;
+            this.mycallsclient_callLog.whatId = (this._what[0] && this._what[0]._id) || null;
+        }
+        else if(this.mycallsclient_callLog.who["Lead"]) {
+            this.mycallsclient_callLog.whoId = this.mycallsclient_callLog.who["Lead"][0]._id;
+            this.mycallsclient_callLog.whatId = null;
+        }
+        else {
+            this.mycallsclient_callLog.whoId = null;
+            this.mycallsclient_callLog.whatId = (this._what[0] && this._what[0]._id) || null;
+        }
+    }
+
+    return _changed || this._what.length!= whatLength || this._who.length!= whoLength || _whatId!=this.mycallsclient_callLog.whatId || _whoId != this.mycallsclient_callLog.whoId;
+};
+namespace('fjs.model');
+
+fjs.model.ClientSettingsFeedModel = function(dataManager) {
+    fjs.model.FeedModel.call(this, "clientsettings", dataManager);
+};
+fjs.model.ClientSettingsFeedModel.extend(fjs.model.FeedModel);
+fjs.model.ClientSettingsFeedModel.prototype.savePhone = function(phone, calleeInfo) {
+    if(this.items['phoneMap']) {
+        this.items['phoneMap'].phones[phone] = calleeInfo;
+        this.dataManager.sendAction("clientsettings", "push", this.items["phoneMap"]);
+    }
+    else {
+        var phoneMapObj = {xpid: 'phoneMap', phones:{}};
+        phoneMapObj.phones[phone] = calleeInfo;
+        this.dataManager.sendAction("clientsettings", "push", phoneMapObj);
+    }
+};
+
+fjs.model.ClientSettingsFeedModel.prototype.deletePhone = function(phone) {
+    if(this.items['phoneMap']) {
+        delete this.items['phoneMap'].phones[phone];
+        this.dataManager.sendAction("clientsettings", "push", this.items["phoneMap"]);
+    }
+}
 namespace("fjs.model");
 /**
  * @constructor
@@ -612,10 +794,13 @@ fjs.model.DataManager = function(sf) {
             var calleeInfo = {};
             calleeInfo.id = res.objectId;
             calleeInfo.type = res.object;
-            context.phoneMap[phone] = calleeInfo;
+            var clientSettingsModel = context.getModel('clientsettings');
+            clientSettingsModel.savePhone(phone, calleeInfo);
             context.sendAction(fjs.model.MeModel.NAME, "callTo", {'phoneNumber': phone});
         }
     };
+
+
 
     this.checkDevice = function() {
         var message = {};
@@ -663,14 +848,14 @@ fjs.model.DataManager = function(sf) {
                 }
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_REQUEST_ERROR, function(e) {
-                console.error(e);
+                fjs.utils.Console.error(e);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NETWORK_PROBLEM, function(e) {
-                console.error(e);
+                fjs.utils.Console.error(e);
                 context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, false);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, function(e) {
-                console.error(e);
+                fjs.utils.Console.info(e);
                 context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
@@ -717,6 +902,9 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
                 break;
             case "mycallsclient":
                this.feeds[feedName] = new fjs.model.MyCallsFeedModel(this);
+               break;
+            case "clientsettings":
+                this.feeds[feedName] = new fjs.model.ClientSettingsFeedModel(this);
                 break;
             default:
                this.feeds[feedName] = new fjs.model.FeedModel(feedName, this);
@@ -774,7 +962,7 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
         var res = null;
         if (response) {
             if (response.error) {
-                console.error("SF response error", response.error);
+                fjs.utils.Console.error("SF response error", response.error);
                 callback(null);
             }
             else {
@@ -855,8 +1043,11 @@ fjs.controllers.CommonController.prototype.safeApply = function($scope, fn) {
 fjs.controllers.CommonController.COMPLETE_LISTENER = "complete";
 fjs.controllers.CommonController.PUSH_LISTENER = "push";
 fjs.controllers.CommonController.DELETE_LISTENER = "delete";
+/**
+ * 123
+ */
 namespace("fjs.controllers");
-fjs.controllers.CallController = function($scope, $element, $timeout, $filter, dataManager, sfApi) {
+fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $sce, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var callsFeedModel = dataManager.getModel("mycallsclient");
     var durationTimer = null;
@@ -866,144 +1057,53 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     var context = this;
     var callLogSaveTimeout = null;
     var sfApiProvider = sfApi.getProvider();
-    var whatId;
-    var whoId;
-    var fields = [];
-    var what = [];
-    var who = [];
+    var clientSettingsModel = dataManager.getModel('clientsettings');
 
-    $scope.templatePath = "templates/call_item.html";
-    $scope.callLogPath = "templates/call_log.html";
-    $scope.transferDialogPath = null;
-
-    $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
-    $scope.isRing=($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE);
+    $scope.getTriangle = function() {
+        return $sce.trustAsHtml($scope.call.mycallsclient_callLog.isOpened ? fjs.controllers.CallController.OPENED_TRIANGLE : fjs.controllers.CallController.CLOSED_TRIANGLE);
+    };
 
     var tabsSynchronizer = new fjs.api.TabsSynchronizer();
     var masterListener = function() {
-        if(tabsSynchronizer.isMaster){
+        if(tabsSynchronizer.isMaster) {
             startGetCallLogInfo();
         }
         else {
             stopGetCallInfo();
         }
     };
+
     tabsSynchronizer.addEventListener("master_changed", masterListener);
 
-    if(!$scope.call.mycallsclient_callLog) {
-        $scope.call.mycallsclient_callLog = {};
-        $scope.call.mycallsclient_callLog.date = getCurrentDate();
-        $scope.call.mycallsclient_callLog.subject = "Call";
-        $scope.call.mycallsclient_callLog.xpid = $scope.call.xpid;
-        $scope.call.mycallsclient_callLog.isOpened = true;
-        $scope.call.mycallsclient_callLog.note = "";
-        $scope.call.mycallsclient_callLog.callType = ($scope.call.incoming ? "inbound" : "outbound");
-        $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
-    }
-
-    if($scope.call.mycallsclient_isOpened == undefined && $scope.isRing ||
-        ($scope.call.type == fjs.controllers.CallController.CONFERENCE_CALL_TYPE && $scope.call.state == fjs.controllers.CallController.TALCKING_CALL_TYPE &&
-            ($scope.call.mycallsclient_isOpened || $scope.call.mycallsclient_isOpened == undefined))) {
-        $scope.$emit("selectCall", $scope.call);
-    }
-
-    function onDurationTimeout () {
+    var onDurationTimeout = function() {
         var date = new Date();
         var time =  date.getTime()-  timeSync.getDefault() + (new Date(1).getTimezoneOffset() * 1000 * 60);
         var timeDur = time - $scope.call.created;
         var timeHoldDur = time - $scope.call.holdStart;
 
-        $scope.duration = $filter('date')(new Date(timeDur), 'HH:mm:ss ');
-        $scope.call.duration = date.getTime()- ($scope.call.created + timeSync.getDefault());
-        if($scope.onHold)   {
-            $scope.holdDuration = $filter('date')(new Date(timeHoldDur), 'HH:mm:ss ');
+        $scope.call.duration = $filter('date')(new Date(timeDur), 'HH:mm:ss ');
+        if($scope.call.onHold()) {
+            $scope.call.holdDuration = $filter('date')(new Date(timeHoldDur), 'HH:mm:ss ');
         }
         durationTimer = $timeout(onDurationTimeout, fjs.controllers.CallController.CALL_DURATION_DELAY_IN_SEC);
-    }
+    };
     onDurationTimeout();
 
-    function callInfoCallback(data){
-        var results={};
-        var lastResult = null;
-        var resultsCount = 0;
-        what = [];
-        who = [];
-        whatId = null;
-        whoId = null;
-        fields = [];
-        if(data && data.result) {
-            var result = JSON.parse(data.result);
-            for(var i in result) {
-                if(result.hasOwnProperty(i) && i!="screenPopUrl") {
-                    resultsCount++;
-                    var _result = lastResult = result[i];
-                    if(!results[_result.object]) {
-                        results[_result.object] = []
-                    }
-                    _result._id = i;
-                    if(_result.object == "Contact" || _result.object == "Lead") {
-                        who.push(_result);
-                    }
-                    else {
-                        if(_result.object == "Case") {
-                            _result.Name = _result.CaseNumber;
-                        }
-                        what.push(_result);
-                    }
-                    results[_result.object].push(_result);
-                }
-            };
-            initCallLogFields(resultsCount, lastResult, results, fields);
-        }
-        createCallLog();
-        if(isCallLogChanged()){
-            $scope.call.mycallsclient_callLog.fields = fields;
-            $scope.call.mycallsclient_callLog.whatId = whatId;
-            $scope.call.mycallsclient_callLog.whoId = whoId;
-            $scope.call.mycallsclient_callLog.who = who;
-            $scope.call.mycallsclient_callLog.what = what;
-            dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
-        }
-        context.safeApply($scope);
-    }
-
-    function isCallLogChanged(){
-        var changed = false;
-        if(whatId != $scope.call.mycallsclient_callLog.whatId ||whoId != $scope.call.mycallsclient_callLog.whoId) {
-            changed = true;
-        }
-        else {
-            var i = 0;
-            if($scope.call.mycallsclient_callLog.fields && $scope.call.mycallsclient_callLog.fields.length != fields.length) {
-                changed = true;
-            }
-            else if($scope.call.mycallsclient_callLog.fields) {
-                for (i = 0; i < $scope.call.mycallsclient_callLog.fields.length; i++) {
-                    var j = 0;
-                    var count = 0;
-                    for (j = 0; j < fields.length; j++) {
-                        if (fields[j]["id"] != $scope.call.mycallsclient_callLog.fields[i]["id"]) {
-                            count++;
-                        }
-                    }
-                    if (count == fields.length) {
-                        changed = true;
-                        break;
-                    }
-                }
-            } else {
-                changed = true;
+    function callInfoCallback(data) {
+        if(context) {
+            if ($scope.call.fillCallLogData(data, clientSettingsModel)) {
+                saveCallLogChanges();
+                context.safeApply($scope);
             }
         }
-        return changed;
     }
 
     function getCallLogInfo() {
         stopGetCallInfo();
         lastPhone = $scope.call.phone;
         if(lastPhone) {
-            var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, '');
-            if(rawPhone.length > 10){
+            var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, ''); //TODO check other symbols (+, *)
+            if(rawPhone.length > 10) {
                 rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
             }
             if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
@@ -1016,192 +1116,74 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
                 message.callback = callInfoCallback;
                 sfApiProvider.sendAction(message);
             }
-            else {
-                createCallLog();
-                dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
-            }
             startGetCallLogInfo();
         }
     }
 
-    function initCallLogFields(resultsCount, lastResult, results) {
-        if(resultsCount==1) {
-            for(var i in lastResult) {
-                if(lastResult.hasOwnProperty(i)) {
-                    if(i!="object" && i!="_id") {
-                        fields.push({title:i, value:lastResult[i], id:lastResult["_id"]});
-                    }
-                }
-            }
-        }
-        else {
-            for(var i in results) {
-                var _result = results[i];
-                _result.sort(sortFieldName);
-                fields.push({title:i+" ("+_result.length+")", value:_result[0][fjs.controllers.CallController.SORT_FIELD_NAME], id:_result[0]["_id"]});
-                for(var j=1; j < _result.length; j++) {
-                    fields.push({ title:"", value:_result[j][fjs.controllers.CallController.SORT_FIELD_NAME], id:_result[j]["_id"]});
-                }
-            }
-        }
-    }
+    $scope.showWhatSelect = function() {
+        return $scope.call.hasWhats() && !$scope.call.findCallLogTargetById('Lead', $scope.call.mycallsclient_callLog.whoId);
+    };
 
-    function sortFieldName(a, b) {
-        if(a[fjs.controllers.CallController.SORT_FIELD_NAME] && a[fjs.controllers.CallController.SORT_FIELD_NAME]) {
-            var str1 = a[fjs.controllers.CallController.SORT_FIELD_NAME].toLowerCase();
-            var str2 = b[fjs.controllers.CallController.SORT_FIELD_NAME].toLowerCase();
-            if (str1 < str2) return -1;
-            if (str1 > str2) return 1;
+    $scope.getWhatArray = function() {
+        var arr = [];
+        for(var type in $scope.call.mycallsclient_callLog.what) {
+            arr = arr.concat($scope.call.mycallsclient_callLog.what[type]);
         }
-        return 0;
-    }
+        return arr;
+    };
 
-    function createCallLog() {
-        //choose record from click-to-dial
-        if(dataManager.phoneMap[$scope.call.phone]) {
-            var calleeInfo = dataManager.phoneMap[$scope.call.phone];
-            if(calleeInfo.type == "Contact") {
-                whoId = calleeInfo.id;
-                initWhatId(0, what, whatId);
-            }
-            else if(calleeInfo.type == "Lead") {
-                whoId = calleeInfo.id;
-            }
-            else if(who){
-                whatId = calleeInfo.id;
-                for(var i = 0; i < who.length; i++) {
-                    if(who[i].object == "Contact") {
-                        whoId = who[i]._id;
-                        break;
-                    }
-                }
-            }
-            delete dataManager.phoneMap[$scope.call.phone];
-        }//the first time
-        else if(!dataManager.phoneMap[$scope.call.phone] && !$scope.call.mycallsclient_callLog.whatId && !$scope.call.mycallsclient_callLog.whoId){
-            if(who && who[0]) {
-                whoId = who[0]["_id"];
-                if(!isWhoIsLeadByIndex(0)) {
-                    initWhatId(0);
-                }
-            }
-            else {
-                if(!isWhoIdIsLead()) {
-                    initWhatId(0);
-                }
-            }
-        } else if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.whoId && who){
-            var hasWhoId = false;
-            for(var i = 0; i < who.length; i++) {
-                if(who[i]["_id"] == $scope.call.mycallsclient_callLog.whoId) {
-                    whoId = $scope.call.mycallsclient_callLog.whoId;
-                    whatId =  $scope.call.mycallsclient_callLog.whatId;
-                    hasWhoId = true;
-                    break;
-                }
-            }
-            if(!hasWhoId) {
-                if($scope.call.mycallsclient_callLog.who && who[0]) {
-                    whoId = who[0]["_id"];
-                }
-            }
+    $scope.getWhoArray = function() {
+        var arr = [];
+        for(var type in $scope.call.mycallsclient_callLog.who) {
+            arr = arr.concat($scope.call.mycallsclient_callLog.who[type]);
         }
-        else if($scope.call.mycallsclient_callLog && whatId && what){
-            var hasWhatId = false;
-            for(var i = 0; i < what.length; i++) {
-                if(what[i]["_id"] == whatId) {
-                    hasWhatId = true;
-                    break;
-                }
-            }
-            if(!hasWhoId) {
-                initWhatId(0);
-            }
-        }
-    }
+        return arr;
+    };
 
     $scope.whoChange = function() {
-        if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.who) {
-            for(var i = 0; i < $scope.call.mycallsclient_callLog.who.length; i++) {
-                if( $scope.call.mycallsclient_callLog.who[i]["_id"]  == $scope.call.mycallsclient_callLog.whoId) {
-                    if(($scope.call.mycallsclient_callLog.who[i] && $scope.call.mycallsclient_callLog.who[i]["object"]  == "Lead")) {
-                        $scope.call.mycallsclient_callLog.whatId = null;
+        if($scope.call.mycallsclient_callLog.who["Lead"] && $scope.call.mycallsclient_callLog.who["Lead"].indexOf($scope.call.mycallsclient_callLog.whoId)>-1) {
+            $scope.call.mycallsclient_callLog.pervWhatId = $scope.call.mycallsclient_callLog.whatId;
+            $scope.call.mycallsclient_callLog.whatId = null;
+
+        }
+        else if($scope.call.mycallsclient_callLog.whatId == null) {
+            if($scope.call.mycallsclient_callLog.pervWhatId) {
+                $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.pervWhatId;
+            }
+            else {
+                for(var key in $scope.call.mycallsclient_callLog.what) {
+                    if($scope.call.mycallsclient_callLog.what[key]) {
+                        $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.what[key][0];
                     }
-                    else {
-                        if($scope.call.mycallsclient_callLog.whatId == null && $scope.call.mycallsclient_callLog.what != null && $scope.call.mycallsclient_callLog.what[0] != null) {
-                            $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.what[0]["_id"];
-                        }
-                    }
-                    break;
                 }
             }
-            dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         }
+        saveCallLogChanges()
     };
 
     $scope.whatChange = function() {
-        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
+        saveCallLogChanges();
     };
 
-    function isWhoIdIsLead() {
-        if(hasWho()) {
-            for(var i = 0; i < who.length; i++) {
-                if(who[i]["_id"] == whoId) {
-                    return isWhoIsLeadByIndex(i);
-                }
-            }
-        }
-    }
-
-    function hasWho() {
-        return $scope.call.mycallsclient_callLog != null && who != null && whoId != null;
-    }
-
-    function initWhatId(index) {
-        if(whatId == null && what != null && what[index] != null) {
-            whatId = what[index]["_id"];
-        }
-    }
-
-    function isWhoIsLeadByIndex(index) {
-        return (who[index] && who[index]["object"]  == "Lead");
-    }
-
-    function onCallLogChanged() {
+    function saveCallLogChanges() {
         if(callLogSaveTimeout != null) {
             clearTimeout(callLogSaveTimeout);
             callLogSaveTimeout = null;
         }
         callLogSaveTimeout = setTimeout(function() {
+
             dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         },fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC);
     }
 
     $scope.noteChange = function() {
-        onCallLogChanged();
+        saveCallLogChanges();
     };
 
-    $scope.$watch("call.state", function() {
-        $scope.onHold=($scope.call.state == fjs.controllers.CallController.HOLD_CALL_TYPE);
-        if(!$scope.onHold) {
-            var date =  new Date(0).getTime() + (new Date(0).getTimezoneOffset() * 1000 * 60);
-            $scope.holdDuration = $filter('date')(date, 'HH:mm:ss ');
-        }
-        $scope.isRing=($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE);
-    }, true);
 
     $scope.$watch("call.phone", function() {
         getCallLogInfo();
     });
-
-    function getCurrentDate() {
-        var d = new Date();
-        return d.getFullYear()+"-"+ (d.getMonth()+1) +"-"+d.getDate();
-    }
-
-    $scope.showDetails = function() {
-        $scope.$emit("toggleCall", $scope.call);
-    };
 
     $scope.hold = function() {
         dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferToHold", {"mycallId":$scope.call.xpid });
@@ -1214,11 +1196,9 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
     };
 
     $scope.transfer = function() {
-        $scope.transferDialogPath = "templates/transfer_dialog.html";
-        $scope.isTransferDialogClass = "call-item-transfer-opened";
-        if($scope.callLogPath) {
-            closeCallLog();
-        }
+        $scope.call.mycallsclient_callLog.tranferOpened = true;
+        $scope.call.mycallsclient_callLog.isOpened = false;
+        saveCallLogChanges();
     };
 
     $scope.end = function() {
@@ -1233,19 +1213,13 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
 
     function closeCallLog() {
         $scope.call.mycallsclient_callLog.isOpened = false;
-        $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.CLOSED_TRIANGLE;
-        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
+        saveCallLogChanges();
     }
 
     function openCallLog() {
         $scope.call.mycallsclient_callLog.isOpened = true;
-        $scope.call.mycallsclient_callLog.triangle = fjs.controllers.CallController.OPENED_TRIANGLE;
-        dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
-    }
-
-    function closeTransfer() {
-        $scope.transferDialogPath=null;
-        $scope.isTransferDialogClass="";
+        $scope.call.mycallsclient_callLog.tranferOpened = false;
+        saveCallLogChanges();
     }
 
     $scope.toggleCallLog = function() {
@@ -1254,7 +1228,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         }
         else {
             openCallLog();
-            closeTransfer();
         }
     };
 
@@ -1266,16 +1239,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         sfApiProvider.sendAction(message);
     };
 
-    $scope.$on('closeDialog', function(event, key) {
-        closeTransfer();
+    $scope.closeTransferDialog = function() {
         openCallLog();
-    });
+    };
 
     $scope.$on('transfer', function(event, number) {
-        if(number && number != "") {
+        if(number) {
             dataManager.sendAction(fjs.model.MyCallsFeedModel.NAME, "transferTo", {"mycallId":$scope.call.xpid, "toNumber":number });
         }
-        closeTransfer();
         openCallLog();
     });
 
@@ -1295,13 +1266,15 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
             message.data.whatId = $scope.call.mycallsclient_callLog.whatId;
             message.data.note = $scope.call.mycallsclient_callLog.note;
             message.data.callType =  ($scope.call.incoming ? "inbound" : "outbound");
-            message.data.duration = Math.round($scope.call.duration/1000);
+            message.data.duration = Math.round((new Date().getTime()- ($scope.call.created + timeSync.getDefault()))/1000);
             message.data.date = $scope.call.mycallsclient_callLog.date;
-            message.callback =  function(response){
-                console.error(response);
+            message.callback =  function(response) {
+                fjs.utils.Console.error(response);
             };
             sfApiProvider.sendAction(message);
+
         }
+        context = null;
         clearTimeout(callLogSaveTimeout);
     });
 
@@ -1314,16 +1287,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, d
         }
     }
 
-    $scope.$watch("call.mycallsclient_isOpened", function() {
-        if($scope.call.mycallsclient_isOpened) {
-            if(!callLogInfoTimeout) {
-                startGetCallLogInfo();
-            }
-        }
-        else {
-            stopGetCallInfo();
-        }
-    });
 
     function stopGetCallInfo() {
         if(callLogInfoTimeout) {
@@ -1357,61 +1320,33 @@ fjs.controllers.CallsListController = function($scope, dataManager) {
     var context = this;
 
     fjs.controllers.CommonController.call(this, $scope);
+
+    var clientSettingsModel = dataManager.getModel('clientsettings');
+
     $scope.calls = this.callsFeedModel.order;
 
-    $scope.$on('toggleCall', function(event, entry) {
-        if(entry.mycallsclient_isOpened) {
-            deselectCall(entry);
+    $scope.selectedCallId = clientSettingsModel.items['openedCall'] && clientSettingsModel.items['openedCall'].value;
+
+    $scope.selectCall = function(callId) {
+        if($scope.selectedCallId!=callId) {
+            $scope.selectedCallId = callId;
         }
         else {
-            selectCall(entry);
+            $scope.selectedCallId = null;
         }
-    });
+        dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  $scope.selectedCallId});
+    };
 
-    this.completeCallsListener = function(){
+    this.clientSettingsListener = function() {
+        $scope.selectedCallId = clientSettingsModel.items['openedCall'] && clientSettingsModel.items['openedCall'].value;
         context.safeApply($scope);
     };
 
+    this.completeCallsListener = function() {
+        context.safeApply($scope);
+    };
+    clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.clientSettingsListener);
     this.callsFeedModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeCallsListener);
-
-    $scope.$on('selectCall', function(event, entry) {
-        selectCall(entry);
-    });
-
-    var deselectOldCall = function(newCallXpid) {
-        for(var i = 0; i < $scope.calls.length; i++) {
-            var call = $scope.calls[i];
-            var xpid = call.xpid;
-            if(xpid != newCallXpid && call.mycallsclient_isOpened) {
-                deselectCall(call);
-            }
-        }
-    };
-
-    var deselectCall = function(entry) {
-        if(entry.mycallsclient_isOpened) {
-            var _entry = {};
-            entry.mycallsclient_isOpened = _entry.isOpened = false;
-            _entry.xpid = entry.xpid;
-            _entry.callLog = entry.mycallsclient_callLog;
-            if(_entry.xpid) {
-                dataManager.sendAction("mycallsclient", "push", _entry);
-            }
-        }
-    };
-
-    var selectCall = function(entry) {
-        if(!entry.mycallsclient_isOpened) {
-            var _entry = {};
-            entry.mycallsclient_isOpened = _entry.isOpened = true;
-            _entry.xpid = entry.xpid;
-            _entry.callLog = entry.mycallsclient_callLog;
-            if(_entry.xpid) {
-                dataManager.sendAction("mycallsclient", "push", _entry);
-            }
-        }
-        deselectOldCall(entry.xpid);
-    };
 };
 
 fjs.controllers.CallsListController.extend(fjs.controllers.CommonController);
@@ -1425,20 +1360,15 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     var sfApiProvider = sfApi.getProvider();
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
-    this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
+    this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
     this.SOFTPHONE_WIDTH = 200;
     this.SOFTPHONE_HEIGHT = 200;
     this.FRAME_RESIZE_NAME = "resizeFrame";
 
     function onClientSettingsPush(entry) {
-        if(entry.xpid = fjs.controllers.MainController.IS_WARNING_SHOWN) {
-            if(entry.value) {
-                $scope.isWarningsShown = true;
-            }
-            else {
-                $scope.isWarningsShown = false;
-            }
+        if(context.clientSettingsModel.items[fjs.controllers.MainController.IS_WARNING_SHOWN]) {
+            $scope.isWarningsShown = context.clientSettingsModel.items[fjs.controllers.MainController.IS_WARNING_SHOWN].value;
             context.safeApply($scope);
         }
     }
@@ -1635,10 +1565,6 @@ fjs.controllers.TransferDialog = function($scope) {
         input.focus();
     });
 
-    $scope.closeDialog = function() {
-        $scope.$emit("closeDialog");
-    };
-
     $scope.transfer = function() {
         $scope.$emit("transfer", $scope.transfer_phone);
     };
@@ -1745,7 +1671,7 @@ var ng_app = angular.module('SFAdapter', ['SFA_model', 'SF_API']);
 
 ng_app.controller("NewCallController", ['$scope', '$element', 'DataManager', fjs.controllers.NewCallController]);
 ng_app.controller("CallsListController", ['$scope', 'DataManager', fjs.controllers.CallsListController]);
-ng_app.controller("CallController", ['$scope', '$element', '$timeout', '$filter', 'DataManager', 'SFApi', fjs.controllers.CallController]);
+ng_app.controller("CallController", ['$scope', '$element', '$timeout', '$filter', '$sce', 'DataManager', 'SFApi', fjs.controllers.CallController]);
 ng_app.controller("DialpadController", ['$scope', fjs.controllers.DialpadController]);
 ng_app.controller("TransferDialog", ['$scope', fjs.controllers.TransferDialog]);
 ng_app.controller("WarningsController", ['$scope', '$element', 'DataManager', fjs.controllers.WarningsController]);

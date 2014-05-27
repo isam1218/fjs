@@ -22,6 +22,8 @@ fjs.model.DataManager = function(sf) {
 
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
+    this.tabSynchronizer = new fjs.api.TabsSynchronizer();
+    this.checkLoginTimeoutId = null;
 
     var onClickToDial = function(obj) {
         /**
@@ -33,10 +35,13 @@ fjs.model.DataManager = function(sf) {
             var calleeInfo = {};
             calleeInfo.id = res.objectId;
             calleeInfo.type = res.object;
-            context.phoneMap[phone] = calleeInfo;
+            var clientSettingsModel = context.getModel('clientsettings');
+            clientSettingsModel.savePhone(phone, calleeInfo);
             context.sendAction(fjs.model.MeModel.NAME, "callTo", {'phoneNumber': phone});
         }
     };
+
+
 
     this.checkDevice = function() {
         var message = {};
@@ -46,7 +51,42 @@ fjs.model.DataManager = function(sf) {
         message.callback = onClickToDial;
         context.sf.sendAction(message);
     };
+
     this.checkDevice();
+
+
+
+
+
+    var stopCheckLoginInfo = function() {
+        clearInterval(context.checkLoginTimeoutId);
+    }
+
+    var runCheckLoginInfo = function() {
+        if(context.checkLoginTimeoutId!=null) {
+            clearInterval(context.checkLoginTimeoutId);
+        }
+        context.checkLoginTimeoutId = setInterval(function () {
+            context._getAuthInfo(function(data){
+                if(data && context._authInfoChanged(data) && context.dataProvider && context.state) {
+                    context.dataProvider.sendMessage({action: "SFLogin", data: data});
+                }
+            });
+        }, 10000);
+    }
+
+    if(this.tabSynchronizer.isMaster) {
+        runCheckLoginInfo();
+    }
+
+    this.tabSynchronizer.addEventListener('master_changed', function() {
+        if(context.tabSynchronizer.isMaster) {
+            runCheckLoginInfo();
+        }
+        else {
+            stopCheckLoginInfo();
+        }
+    });
 
     this._getAuthInfo(function(data){
         if(data) {
@@ -138,6 +178,9 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
                 break;
             case "mycallsclient":
                this.feeds[feedName] = new fjs.model.MyCallsFeedModel(this);
+               break;
+            case "clientsettings":
+                this.feeds[feedName] = new fjs.model.ClientSettingsFeedModel(this);
                 break;
             default:
                this.feeds[feedName] = new fjs.model.FeedModel(feedName, this);

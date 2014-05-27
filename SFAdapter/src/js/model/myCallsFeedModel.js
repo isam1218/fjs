@@ -5,6 +5,7 @@ fjs.model.MyCallsFeedModel = function(dataManager) {
     this.htCallIdToXpid = {};
     this.listeners["changepid"]= [];
     this.changes = {};
+    this.clientSettingsModel = this.dataManager.getModel('clientsettings');
 };
 
 fjs.model.MyCallsFeedModel.extend(fjs.model.FeedModel);
@@ -52,7 +53,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                    var _event = change.push;
                    var _entry = this.items[_event.xpid];
                    if(!_entry) {
-                       _entry = this.items[_event.xpid] = new fjs.model.EntryModel(_event.entry);
+                       _entry = this.items[_event.xpid] = new fjs.model.MyCallEntryModel(_event.entry);
                        this.order.push(_entry);
                    }
                    else {
@@ -60,17 +61,20 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                    }
                    this.prepareEntry(_entry);
                    this.fireEvent("push", _entry);
+                   if((!this.clientSettingsModel.items["openedCall"] || (this.clientSettingsModel.items["openedCall"].value!= null &&  !this.items[this.clientSettingsModel.items["openedCall"].value])) && (_entry.state == 2 || _entry.state == 0)) {
+                       this.dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  _entry.xpid});
+                   }
                    fjs.utils.Console.log('!!!!push ', _event.xpid, _event.entry);
                 }
                else if(!change.push && change.delete) {
                     var _event = change.delete;
-                    var _item = this.items[_event.xpid];
-                    var _index = this.order.indexOf(_item);
+                   var _item = this.items[_event.xpid];
+                   var _index = this.order.indexOf(_item);
                    if(_index>-1) {
                         this.order.splice(_index, 1);
-                    }
-                    delete this.items[_event.xpid];
-                    this.fireEvent("delete", _event);
+                   }
+                   delete this.items[_event.xpid];
+                   this.fireEvent("delete", _event);
                    fjs.utils.Console.log('!!!!delete ', _event.xpid);
                 }
                else if(change.push && change.delete) {
@@ -78,6 +82,7 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     var _dataPush = change.push;
 
                     var _entry = this.items[_dataDel.xpid];
+
                     _entry.fill(_dataPush.entry);
 
                     delete this.items[_dataDel.xpid];

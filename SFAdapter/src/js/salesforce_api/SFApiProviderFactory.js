@@ -12,10 +12,4 @@ fjs.sf.SFApiProviderFactory = function() {
 
 fjs.sf.SFApiProviderFactory.prototype.getProvider = function() {
     return new fjs.sf.SFSimpleProvider();
-//    for(var i=0; i<fjs.fdp.CONFIG.providers.length; i++) {
-//        var provider = this._providers[fjs.fdp.CONFIG.providers[i]];
-//        if(provider.check()) {
-//            return new provider();
-//        }
-//    }
 };
