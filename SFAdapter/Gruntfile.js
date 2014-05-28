@@ -37,8 +37,8 @@ module.exports = function(grunt) {
                     , 'src/js/salesforce_api/SFSharedWorkerProvider.js'
                     , 'src/js/salesforce_api/SFApiProviderFactory.js'
                     , 'src/js/salesforce_api/module.js'
-                    , 'src/js/model/feedModel.js'
                     , 'src/js/model/entryModel.js'
+                    , 'src/js/model/feedModel.js'
                     , 'src/js/model/MeModel.js'
                     , 'src/js/model/myCallsFeedModel.js'
                     , 'src/js/model/myCallEntryModel.js'
@@ -139,5 +139,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-    grunt.registerTask('jenkins-build', ['concat', 'closure-compiler', 'zip', 'copy']);
+    grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
