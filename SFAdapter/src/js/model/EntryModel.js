@@ -14,4 +14,4 @@ fjs.model.EntryModel.prototype.fill = function(obj) {
                 this[i] = obj[i];
             }
         }
-};
+}; 
