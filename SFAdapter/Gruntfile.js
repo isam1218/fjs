@@ -3,8 +3,8 @@ module.exports = function(grunt) {
     var currentTime = getCurrentTime()
         , buildNumber;
 
-   // grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
-   // grunt.file.write('buildtimestamp.txt', currentTime);
+   grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
+   grunt.file.write('buildtimestamp.txt', currentTime);
 
     function getCurrentTime() {
         if(!currentTime) {
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 
     function getBuildNumber() {
         if(!buildNumber) {
-            buildNumber = 123456781;//grunt.file.read('hud-buildid/count.txt');
+            buildNumber = grunt.file.read('hud-buildid/count.txt');
         }
         return buildNumber;
     }
@@ -32,8 +32,7 @@ module.exports = function(grunt) {
                 separator: ''
             },
             dist: {
-                src: [ 'src/js/build_number.js'
-                    , 'src/js/salesforce_api/sf_api.js'
+                src: [ 'src/js/salesforce_api/sf_api.js'
                     , 'src/js/salesforce_api/SFSimpleProvider.js'
                     , 'src/js/salesforce_api/SFSharedWorkerProvider.js'
                     , 'src/js/salesforce_api/SFApiProviderFactory.js'
@@ -110,6 +109,19 @@ module.exports = function(grunt) {
                 , dest: 'bin/SFAdapter-'+getBuildNumber()+'.zip'
             }
         }
+        , 'string-replace':{
+            kit: {
+                files: {
+                    'src/js/build_number.js':'src/js/build_number.js'
+                },
+                options: {
+                    replacements: [{
+                        pattern: /manual/gm,
+                        replacement: getBuildNumber()
+                    }]
+                }
+            }
+        }
         ,'copy': {
             main: {
                 files: [
@@ -120,7 +132,7 @@ module.exports = function(grunt) {
     });
 
 
-
+    grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-zip');
