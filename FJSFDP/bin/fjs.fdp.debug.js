@@ -2448,7 +2448,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         if(fjs.utils.Browser.isIE11()) {
             this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
         }
-        localStorage.setItem('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
+        else {
+            localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
+        }
     };
 
     /**
@@ -2560,6 +2562,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @type {fjs.fdp.transport.FDPTransport}
          */
         this.transport = null;
+        this.syncTimeoutId = null;
 
         /**
          * @dict
@@ -3144,7 +3147,11 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
 
-        var _data = fjs.utils.JSON.parse(data);
+        var _data = fjs.utils.JSON.parse(data), context = this;
+        if(this.syncTimeoutId !=null) {
+            clearTimeout(this.syncTimeoutId);
+            this.syncTimeoutId = null;
+        }
         this.syncs.push(_data);
         if(this.syncs.length==1) {
             this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
@@ -3156,8 +3163,11 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     }
                 }
             }
-            this.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
-            this.syncs = [];
+            context.syncs = [];
+            this.syncTimeoutId = setTimeout(function(){
+                context.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
+                context.syncTimeoutId = null;
+            },100);
         }
         else {
             fjs.utils.Console.log("!!!!Double onSync!!", this.syncs[0],  _data);

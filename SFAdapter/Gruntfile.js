@@ -3,8 +3,8 @@ module.exports = function(grunt) {
     var currentTime = getCurrentTime()
         , buildNumber;
 
-    grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
-    grunt.file.write('buildtimestamp.txt', currentTime);
+   // grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
+   // grunt.file.write('buildtimestamp.txt', currentTime);
 
     function getCurrentTime() {
         if(!currentTime) {
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 
     function getBuildNumber() {
         if(!buildNumber) {
-            buildNumber = grunt.file.read('hud-buildid/count.txt');
+            buildNumber = 123456781;//grunt.file.read('hud-buildid/count.txt');
         }
         return buildNumber;
     }
@@ -42,6 +42,8 @@ module.exports = function(grunt) {
                     , 'src/js/model/entryModel.js'
                     , 'src/js/model/MeModel.js'
                     , 'src/js/model/myCallsFeedModel.js'
+                    , 'src/js/model/myCallEntryModel.js'
+                    , 'src/js/model/clientSettingsFeedModel.js'
                     , 'src/js/model/dataManager.js'
                     , 'src/js/model/module.js'
                     , 'src/js/ui/controllers/commonController.js'
@@ -90,7 +92,9 @@ module.exports = function(grunt) {
                     , 'src/js/model/feedModel.js'
                     , 'src/js/model/entryModel.js'
                     , 'src/js/model/MeModel.js'
+                    , 'src/js/model/myCallEntryModel.js'
                     , 'src/js/model/myCallsFeedModel.js'
+                    , 'src/js/model/clientSettingsFeedModel.js'
                     , 'src/js/model/dataManager.js'
                     , 'src/js/model/module.js'
                     , 'src/js/ui/controllers/commonController.js'

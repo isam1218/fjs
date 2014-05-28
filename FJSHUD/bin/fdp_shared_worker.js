@@ -52,6 +52,6 @@ function handleMessage(message, callback) {
             dataManager.SFLogin(message.data);
             break;
         default:
-            console.error("Unknown action: " + message.action);
+            fjs.utils.Console.error("Unknown action: " + message.action);
     }
 }

@@ -50,7 +50,9 @@
         if(fjs.utils.Browser.isIE11()) {
             this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
         }
-        localStorage.setItem('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
+        else {
+            localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
+        }
     };
 
     /**
