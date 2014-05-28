@@ -50,10 +50,6 @@ fjs.model.MyCallEntryModel.prototype.hasWhats = function() {
     return false;
 };
 
-fjs.model.MyCallEntryModel.prototype.callLogItemUpdate = function() {
-
-};
-
 fjs.model.MyCallEntryModel.prototype.findCallLogTargetById = function(type, id) {
     var arr;
     if(type == 'Contact' || type == 'Lead') {
@@ -94,12 +90,15 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
                     }
                     var item = this.findCallLogTargetById(_result.object, i);
                     if(!item) {
-                        this.mycallsclient_callLog.who[_result.object].push(_result);
+                        item = _result;
+                        this.mycallsclient_callLog.who[_result.object].push(item);
                     }
                     else if(item.Name!=_result.Name) {
                          item.Name = _result.Name;
                          _changed = true;
                     }
+                    item.new = true;
+
                     this._who.push(_result);
                 }
                 else {
@@ -111,17 +110,52 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
                     }
                     var item = this.findCallLogTargetById(_result.object, i);
                     if(!item) {
-                        this.mycallsclient_callLog.what[_result.object].push(_result);
+                        item = _result;
+                        this.mycallsclient_callLog.what[_result.object].push(item);
                     }
                     else if(item.Name!=_result.Name) {
                         item.Name = _result.Name;
                         _changed = true;
                     }
+                    item.new = true;
                     this._what.push(_result);
                 }
             }
         }
     }
+
+    for(var _type in this.mycallsclient_callLog.who) {
+        var _items = this.mycallsclient_callLog.who[_type].slice(0);
+        for(var i=0; i<_items.length; i++) {
+            var _item = _items[i];
+            if(_item.new) {
+                _item.new = false;
+            }
+            else {
+                var index = this.mycallsclient_callLog.who[_type].indexOf(_item);
+                if(index>-1) {
+                    this.mycallsclient_callLog.who[_type].splice(index, 1);
+                }
+            }
+        }
+    }
+
+    for(var _type in this.mycallsclient_callLog.what) {
+        var _items = this.mycallsclient_callLog.what[_type].slice(0);
+        for(var i=0; i<_items.length; i++) {
+            var _item = _items[i];
+            if(_item.new) {
+                _item.new = false;
+            }
+            else {
+                var index = this.mycallsclient_callLog.what[_type].indexOf(_item);
+                if(index>-1) {
+                    this.mycallsclient_callLog.what[_type].splice(index, 1);
+                }
+            }
+        }
+    }
+
     if(phoneMap[this.phone]) {
         var calleeInfo = phoneMap[this.phone];
         if(calleeInfo.type == "Contact") {

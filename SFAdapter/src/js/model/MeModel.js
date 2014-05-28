@@ -39,7 +39,7 @@ fjs.model.MeModel.prototype.onEntryDeletion = function(data) {
 };
 
 fjs.model.MeModel.prototype.getProperty = function(key) {
-    return this.property2key[key].propertyValue;
+    return this.property2key[key] && this.property2key[key].propertyValue;
 };
 
 fjs.model.MeModel.NAME = "me";

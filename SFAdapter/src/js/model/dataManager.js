@@ -88,7 +88,7 @@ fjs.model.DataManager = function(sf) {
         }
     });
 
-    this._getAuthInfo(function(data){
+    this._getAuthInfo(function(data) {
         if(data) {
             if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
@@ -169,6 +169,7 @@ fjs.model.DataManager.CLIENT_ID_COOKIE_NAME = "SF_Client_id";
 fjs.model.DataManager.SERVER_URL_COOKIE_NAME = "SF_ServerUrl";
 fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME = "SF_Login";
 fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME = "SF_Email";
+fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME = "SF_ADM_Login";
 
 fjs.model.DataManager.prototype.getModel = function(feedName) {
     if (!this.feeds[feedName]) {
@@ -212,6 +213,10 @@ fjs.model.DataManager.prototype._authInfoChanged = function(userData) {
     var authInfoChanged = false;
     if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) != userData.hud) {
         fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
+        authInfoChanged = true;
+    }
+    if(fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) != userData.login) {
+        fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login);
         authInfoChanged = true;
     }
     if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) != userData.email) {
