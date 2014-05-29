@@ -108,7 +108,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
 
     this.meListener = function(entry){
         var name = context.meModel.getProperty("display_name");
-        $scope.name = name ? ("User: " + name) : "Loading...";
+        $scope.name = name ? ("User: " + name) : "";
         var ext = context.meModel.getProperty("primary_extension");
         $scope.extension = ext ? ("Extension: x" + ext) : "";
         context.safeApply($scope);

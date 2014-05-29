@@ -82,6 +82,7 @@ module.exports = function(grunt) {
                     , 'src/templates/*.html'
                     , 'src/img/*.gif'
                     , 'src/img/*.png'
+                    , 'src/fonts/*'
                     , 'src/properties.js'
                     , 'src/js/salesforce_api/sf_api.js'
                     , 'src/js/salesforce_api/module.js'
