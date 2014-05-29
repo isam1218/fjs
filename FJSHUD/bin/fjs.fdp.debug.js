@@ -1960,7 +1960,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             return;
         }
         else if(!isOk) {
-            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status};
+            var event = {type:'requestError', requestUrl:request.url, message: (request.responseText || 'Request failed'), status:request.status};
             this.fireEvent('error', event);
             fjs.utils.Console.error(event);
         }
@@ -2023,7 +2023,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                   }
               }
               else if(xhr.status == 403 || xhr.status == 401) {
-                  context.fireEvent('error', {type:'authError', message:"Wrong auth data"});
+                  context.fireEvent('error', {type:'authError', message:(data ? data.replace('Error=', '') : "Wrong auth data")});
               }
               context.handleRequestErrors(xhr, isOk);
           });

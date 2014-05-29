@@ -115,7 +115,14 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     this.authorizationWarningListener = function(data) {
-        $scope.loggined = data;
+        if(data.eventType == fjs.model.DataManager.EV_TICKET) {
+            $scope.loggined = true;
+            $scope.authErrorMessage = "";
+        }
+        else if(data.eventType == fjs.model.DataManager.EV_AUTH_ERROR) {
+            $scope.loggined = false;
+            $scope.authErrorMessage = data.message;
+        }
         checkShowWarning();
         $scope.isConnected = ($scope.connection && $scope.loggined);
         context.safeApply($scope);

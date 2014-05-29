@@ -120,7 +120,7 @@ fjs.model.DataManager = function(sf) {
                     context.authErrorCount++;
                 }
                 else {
-                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, false);
+                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, e);
                 }
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_REQUEST_ERROR, function(e) {
@@ -139,7 +139,7 @@ fjs.model.DataManager = function(sf) {
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_TICKET, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
-                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, true);
+                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, e);
                 if(context.suspendFeeds.length>0) {
                     for(var i=0; i<context.suspendFeeds.length; i++) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
