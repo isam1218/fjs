@@ -115,10 +115,10 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
  *  error - undefined if the API call was successful, error message otherwise.
  */
 SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
-    if(isRinging) {
-        var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
-        sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
-    }
+//    if(isRinging) {
+//        var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
+//        sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
+//    }
     sforce.interaction.searchAndGetScreenPopUrl(phone, '', callType, callback);
 };
 
@@ -133,6 +133,11 @@ SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
  */
 SFApi.prototype.openUser = function (id, callback) {
     sforce.interaction.screenPop('/' + id, true, callback);
+};
+
+SFApi.prototype.openCreateContactDialog = function(phone) {
+    var url = "/003/e?acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
+    sforce.interaction.screenPop(url, true, function(){});
 };
 
 /**

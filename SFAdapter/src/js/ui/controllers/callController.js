@@ -186,6 +186,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         }
     };
 
+    $scope.createContact = function() {
+        new SFApi().openCreateContactDialog($scope.call.phone);
+    };
+
     $scope.openSFLink = function(id) {
         var message = {};
         message.action = "openUser";

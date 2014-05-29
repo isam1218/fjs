@@ -64,6 +64,7 @@
                                 <label><span ng-if="index==0">{{ typeName }}({{elements.length}})</span></label><span ng-click="openSFLink(element._id)" class="underlined">{{ element.Name }}</span>
                             </div>
                         </div>
+                        <div ng-if="!call.hasWhos() && !call.hasWhats()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
                     </div>
                     <div class="call-item-buttons-block ">
                         <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept

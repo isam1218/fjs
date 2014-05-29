@@ -88,6 +88,11 @@ footer > button {
     font-family:'Glyphicons Halflings';
 }
 
+.add-contact-row {
+    font-family:'Glyphicons Halflings';
+    color:#595;
+}
+
 header {
     background-color:#8b9db1;
     color:white;
