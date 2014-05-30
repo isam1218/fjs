@@ -29,4 +29,4 @@ GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
 echo -e "GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/SFAdapter/hud-buildid/count.txt`
-TRIGGER_JOB_NAME=`echo $JOB_NAME`" > $WORKSPACE/SFAdapter/inject.properties
+TRIGGER_JOB_NAME=`echo $JOB_NAME`" > $WORKSPACE/inject.properties
