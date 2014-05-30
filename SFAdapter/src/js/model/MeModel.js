@@ -18,7 +18,7 @@ fjs.model.MeModel.prototype.onEntryChange = function(data) {
             this.propertyKey2Xpid[data.xpid] = data.entry.propertyKey;
             this.property2key[data.entry.propertyKey] = data.entry;
         }
-        else {
+        else { 
             this.property2key[this.propertyKey2Xpid[data.xpid]] = data.entry;
         }
         this.superClass.onEntryChange.call(this, data);
