@@ -2,7 +2,6 @@
 # PREBUILD SCRIPT 
 git status
 git config --global http.sslVerify false
-cd $WORKSPACE/SFAdapter
 # delete files/folders created by previous build
 for i in count.txt inject.properties build_tag *server_build_*; do
 if [[ -f $i ]]; then rm -rf $i; fi; done
@@ -23,7 +22,7 @@ popd
 
 
 # set GIT_TAG BUILD_NUMBER and TRIGGER_JOB_NAME envars
-cp -rf $WORKSPACE/SFAdapter/hud-buildid/count.txt $WORKSPACE/SFAdapter/count.txt
+cp -rf $WORKSPACE/SFAdapter/hud-buildid/count.txt $WORKSPACE/count.txt
 CURRENT=`cat count.txt`
 RSTAMP=`date +%Y%m%d_%H%M`
 GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
