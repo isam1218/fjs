@@ -3,10 +3,9 @@ module.exports = function(grunt) {
     var currentTime = getCurrentTime()
         , buildNumber;
 
-   grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
-   grunt.file.write('buildtimestamp.txt', currentTime);
+   grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
-    function getCurrentTime() {
+   function getCurrentTime() {
         if(!currentTime) {
             var date = new Date();
             var values = [ date.getDate(), date.getMonth() + 1, date.getHours(), date.getMinutes()];
@@ -20,7 +19,7 @@ module.exports = function(grunt) {
 
     function getBuildNumber() {
         if(!buildNumber) {
-            buildNumber = grunt.file.read('hud-buildid/count.txt');
+            buildNumber = grunt.file.read('../hud-buildid/count.txt');
         }
         return buildNumber;
     }
