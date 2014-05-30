@@ -3,6 +3,8 @@
 git status
 git config --global http.sslVerify false
 
+cd $WORKSPACE/SFAdapter
+
 # delete files/folders created by previous build
 for i in count.txt inject.properties build_tag *server_build_*; do
 if [[ -f $i ]]; then rm -rf $i; fi; done
