@@ -6,8 +6,8 @@ git config --global http.sslVerify false
 # $GIT_PREVIOUS_COMMIT is the commit that was most recent during last build
 git log `git rev-parse HEAD` ^$GIT_PREVIOUS_COMMIT > changelog && grep -o 'HUD-[0-9]\{1,9\}' changelog | sort | uniq > issue_keys
 # print issue keys on one line and strip last 3 characters
-for i in `cat issue_keys`; do echo -n "issue = $i or "; done | sed 's/...$//g' > issue_keys
-ISSUE_KEYS=`cat issue_keys`
+for i in `cat issue_keys`; do echo -n "issue = $i or "; done | sed 's/...$//g' > update_keys
+ISSUE_KEYS=`cat update_keys`
 
 # delete files/folders created by previous build
 for i in count.txt inject.properties build_tag *server_build_*; do
