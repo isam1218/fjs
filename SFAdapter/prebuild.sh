@@ -34,7 +34,7 @@ cp -rf $WORKSPACE/hud-buildid/count.txt $WORKSPACE/count.txt
 CURRENT=`cat count.txt`
 RSTAMP=`date +%Y%m%d_%H%M`
 GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
-echo -e "ISSUE_KEYS=$ISSUE_KEYS
+echo -e "ISSUE_KEYS="$ISSUE_KEYS"
 GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/hud-buildid/count.txt`
