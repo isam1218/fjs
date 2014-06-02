@@ -3,8 +3,8 @@
 git config --global http.sslVerify false
 
 # gather workspace repo changelist
-pushd $WORKSPACE
-HEAD_COMMIT=`pushd $WORKSPACE && git rev-parse HEAD && popd`
+
+
 
 # delete files/folders created by previous build
 for i in count.txt inject.properties build_tag *server_build_*; do
@@ -30,7 +30,7 @@ cp -rf $WORKSPACE/hud-buildid/count.txt $WORKSPACE/count.txt
 CURRENT=`cat count.txt`
 RSTAMP=`date +%Y%m%d_%H%M`
 GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
-echo -e "HEAD_COMMIT=$HEAD_COMMIT
+echo -e "HEAD_COMMIT=`git rev-parse HEAD`
 GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/hud-buildid/count.txt`
