@@ -2,6 +2,14 @@
 # PREBUILD SCRIPT 
 git config --global http.sslVerify false
 
+# Retrieve the JIRA ISSUE KEYS that were referenced in commits since last build 
+# $GIT_PREVIOUS_COMMIT is the commit that was most recent during last build
+git log `git rev-parse HEAD` ^$GIT_PREVIOUS_COMMIT > changelog
+grep -o 'HUD-[0-9]\{1,9\}' changelog | sort | uniq > issue_keys
+# print issue keys on one line and strip last 3 characters
+for i in `cat issue_keys`; do echo -n "issue = $i or "; done | sed 's/...$//g' > issue_keys
+ISSUE_KEYS=`cat issue_keys`
+
 # delete files/folders created by previous build
 for i in count.txt inject.properties build_tag *server_build_*; do
 if [[ -f $i ]]; then rm -rf $i; fi; done
@@ -26,7 +34,8 @@ cp -rf $WORKSPACE/hud-buildid/count.txt $WORKSPACE/count.txt
 CURRENT=`cat count.txt`
 RSTAMP=`date +%Y%m%d_%H%M`
 GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
-echo -e "GIT_TAG=$GIT_TAG
+echo -e "ISSUE_KEYS=$ISSUE_KEYS
+GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/hud-buildid/count.txt`
 TRIGGER_JOB_NAME=`echo $JOB_NAME`" > $WORKSPACE/inject.properties
