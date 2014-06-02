@@ -2,6 +2,12 @@
 # PREBUILD SCRIPT 
 git config --global http.sslVerify false
 
+# delete files/folders created by previous build
+for i in count.txt inject.properties build_tag *server_build_* update_keys issue_keys changelog; do
+if [[ -f $i ]]; then rm -rf $i; fi; done
+for i in hud-buildid *server_build_*; do
+if [[ -d $i ]]; then rm -rf $i; fi; done
+
 # Retrieve the JIRA ISSUE KEYS that were referenced in commits since last build 
 # $GIT_PREVIOUS_COMMIT is the commit that was most recent during last build
 git log `git rev-parse HEAD` ^$GIT_PREVIOUS_COMMIT > changelog && grep -o 'HUD-[0-9]\{1,9\}' changelog | sort | uniq > issue_keys
@@ -9,11 +15,6 @@ git log `git rev-parse HEAD` ^$GIT_PREVIOUS_COMMIT > changelog && grep -o 'HUD-[
 for i in `cat issue_keys`; do echo -n "issue = $i or "; done | sed 's/...$//g' > update_keys
 ISSUE_KEYS=`cat update_keys`
 
-# delete files/folders created by previous build
-for i in count.txt inject.properties build_tag *server_build_*; do
-if [[ -f $i ]]; then rm -rf $i; fi; done
-for i in hud-buildid *server_build_*; do
-if [[ -d $i ]]; then rm -rf $i; fi; done
 
 # retrieve latest build-number and set the new one - commit back to git
 git clone  https://hud_sync:_baYoUB*1121188821@bitbucket.org/fonality/hud-buildid.git
