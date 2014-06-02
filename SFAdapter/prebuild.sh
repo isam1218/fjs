@@ -1,7 +1,6 @@
 #!/bin/bash
 # PREBUILD SCRIPT 
 git config --global http.sslVerify false
-[[ -f inject.properties ]] || touch inject.properties
 # gather workspace repo changelist
 
 
