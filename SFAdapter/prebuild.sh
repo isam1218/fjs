@@ -31,7 +31,7 @@ GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/hud-buildid/count.txt`
 TRIGGER_JOB_NAME=`echo $JOB_NAME`" > $WORKSPACE/inject.properties
-echo $HEAD_COMMIT > `echo $GIT_BRANCH`_track
-git add `echo $GIT_BRANCH`_track
+echo $HEAD_COMMIT > trackcommit
+git add trackcommit
 git commit -m "updating tracking commit"
 git push origin $GIT_BRANCH
