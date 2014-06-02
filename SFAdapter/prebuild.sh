@@ -26,12 +26,11 @@ cp -rf $WORKSPACE/hud-buildid/count.txt $WORKSPACE/count.txt
 CURRENT=`cat count.txt`
 RSTAMP=`date +%Y%m%d_%H%M`
 GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
-echo -e "HEAD_COMMIT=`git rev-parse HEAD`
-GIT_TAG=$GIT_TAG
+echo -e "GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/hud-buildid/count.txt`
 TRIGGER_JOB_NAME=`echo $JOB_NAME`" > $WORKSPACE/inject.properties
-echo $HEAD_COMMIT > trackcommit
+git rev-parse HEAD > trackcommit
 git add trackcommit
 git commit -m "updating tracking commit"
 git push origin $GIT_BRANCH
