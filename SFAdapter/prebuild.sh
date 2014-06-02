@@ -1,9 +1,6 @@
 #!/bin/bash
 # PREBUILD SCRIPT 
 git config --global http.sslVerify false
-# gather workspace repo changelist
-
-
 
 # delete files/folders created by previous build
 for i in count.txt inject.properties build_tag *server_build_*; do
@@ -30,6 +27,7 @@ CURRENT=`cat count.txt`
 RSTAMP=`date +%Y%m%d_%H%M`
 GIT_TAG=server_build_`echo $RSTAMP`_`echo $CURRENT`
 echo -e "HEAD_COMMIT=`git rev-parse HEAD`
+BRANCH=`echo $GIT_BRANCH`
 GIT_TAG=$GIT_TAG
 BUILD_TIMESTAMP=$RSTAMP
 BUILD_NUMBER=`cat $WORKSPACE/hud-buildid/count.txt`
