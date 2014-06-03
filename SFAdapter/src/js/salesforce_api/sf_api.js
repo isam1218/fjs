@@ -92,11 +92,11 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
         if(note) args += "&" + commentFieldName + "=" + encodeURIComponent(note);
         if(duration && date && callType) {
             sforce.interaction.saveLog('Task',args, function(result) {
-                callback(result); 
+                callback(result);
             });
         }
         else {
-            fjs.utils.Console.error('Wrong arguments for adding call log.');
+            fjs.utils.Console.error('Wrong arguments for adding call log.'); 
         }
     })
 };
