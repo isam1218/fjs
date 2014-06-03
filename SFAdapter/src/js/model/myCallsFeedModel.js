@@ -89,7 +89,8 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     this.prepareEntry(_entry);
                     this.items[_dataPush.xpid] = _entry;
                     _entry.oldPid = _dataDel.xpid;
-                    _dataPush.eventType="changepid";
+                    _entry.pidChanged = true;
+                   _dataPush.eventType="changepid";
                     this.fireEvent("changepid", _entry);
                    fjs.utils.Console.log('!!!!changepid ', "from:", _entry.oldPid, "to:", _dataPush.xpid);
                 }

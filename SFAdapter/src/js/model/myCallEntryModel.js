@@ -74,6 +74,11 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
         _whoId = this.mycallsclient_callLog.whoId,
         _changed = false;
 
+    if(this.pidChanged) {
+        _changed = true;
+        this.pidChanged = false;
+    }
+
     this._who = [];
     this._what = [];
     var phoneMap = clientSettingsModel.items['phoneMap'] && clientSettingsModel.items['phoneMap'].phones || {};
