@@ -301,14 +301,6 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
 
         this.db = null;
 
-        window.onfocus = function(){
-            console.log("focus");
-        }
-
-        window.onblur = function(){
-            console.log("blur");
-        }
-
         /**
          * @private
          */
@@ -397,8 +389,8 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
                                         for (var i = 0; i < items.length; i++) {
                                             var item = items[i], tkey = item.key;
                                             var keyarr = tkey.split('|');
-
                                             if (_lastValues.indexOf(tkey) < 0 && keyarr[1] != context.tabId) {
+                                                console.log("read", tkey);
                                                 context.fireEvent(item.eventType, {key: item.eventType, newValue: item.val});
                                                 _lastValues.push(tkey);
                                                 (function (key) {
@@ -424,7 +416,13 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
 
     fjs.api.TabsSynchronizer.prototype.removeEventListener = function(eventType, handler) {
         if(fjs.utils.Browser.isIE11()) {
-            delete this.lastValues[eventType];
+            var index = this.lastValues[eventType].indexOf(handler);
+            if(index>-1) {
+                this.lastValues[eventType].splice(index, 1);
+            }
+            if(this.lastValues[eventType].length = 0) {
+                delete this.lastValues[eventType];
+            }
         }
         this.superClass.removeEventListener.call(this, eventType, handler);
     };
@@ -439,10 +437,14 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
         if(this.db && this.db.state == 1) {
             var genKey = this.generateDataKey(key), context = this;
             var inc = new fjs.utils.Increment();
-            this.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:Date.now()+""+inc});
-            (function(key){setTimeout(function(){
-                context.db.deleteByKey("tabsync", key);
-            },10000)})(genKey);
+            (function(genKey){
+                console.log("write", genKey);
+                context.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:Date.now()+""+inc.get('tabsSync')}, function(){
+                    setTimeout(function(){
+                        context.db.deleteByKey("tabsync", genKey);
+                    },5000);
+                });
+            })(genKey);
         }
     };
 })();
