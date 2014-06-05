@@ -96,7 +96,7 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
             });
         }
         else {
-            fjs.utils.Console.error('Wrong arguments for adding call log.'); 
+            fjs.utils.Console.error('Wrong arguments for adding call log.');
         }
     })
 };

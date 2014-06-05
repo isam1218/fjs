@@ -33,6 +33,9 @@
     <script type="text/javascript" src="js/model/myCallEntryModel.js"></script>
     <script type="text/javascript" src="js/model/clientSettingsFeedModel.js"></script>
     <script type="text/javascript" src="js/model/dataManager.js"></script>
+    <script type="text/javascript" src="js/model/filters/whoFilter.js"></script>
+    <script type="text/javascript" src="js/model/filters/whatFilter.js"></script>
+    <script type="text/javascript" src="js/model/filters/sortRelatedFields.js"></script>
     <script type="text/javascript" src="js/model/module.js"></script>
 
     <script type="text/javascript" src="js/ui/controllers/commonController.js"></script>
@@ -80,17 +83,10 @@
                         <div class="call-info-row" ng-if="onHold()">
                             <label>Hold Duration</label><span>{{call.holdDuration}}</span>
                         </div>
-                        <div ng-repeat="(typeName, elements) in call.mycallsclient_callLog.who">
-                            <div class="call-info-row" ng-repeat="(index, element) in elements | orderBy: 'Name'">
-                                <label><span ng-if="index==0">{{ typeName }}({{elements.length}})</span></label><span ng-click="openSFLink(element._id)" class="underlined">{{ element.Name }}</span>
-                            </div>
+                        <div class="call-info-row" ng-repeat="element in call.mycallsclient_callLog.related">
+                                <label>{{element.title}}</span></label><span ng-click="openSFLink(element._id)" class="underlined">{{ element.Name }}</span>
                         </div>
-                        <div ng-repeat="(typeName, elements) in call.mycallsclient_callLog.what">
-                            <div class="call-info-row" ng-repeat="(index, element) in elements | orderBy: 'Name'">
-                                <label><span ng-if="index==0">{{ typeName }}({{elements.length}})</span></label><span ng-click="openSFLink(element._id)" class="underlined">{{ element.Name }}</span>
-                            </div>
-                        </div>
-                        <div ng-if="!call.hasWhos() && !call.hasWhats()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
+                        <div ng-if="call.mycallsclient_callLog.related.length == 0" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
                     </div>
                     <div class="call-item-buttons-block ">
                         <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept
@@ -106,24 +102,14 @@
                             <div class="call-item-log-title-caption">Current Call Log</div>
                         </div>
                         <div class="call-item-log-body" src="callLogPath" ng-if="call.mycallsclient_callLog.isOpened">
-                            <div ng-if="call.hasWhos()">
+                            <div ng-if="call.getWho()">
                                 <label>Name</label>
-                                <select ng-model="call.mycallsclient_callLog.whoId" ng-change="whoChange($event)">
-                                    <optgroup label="{{typeName}}" ng-repeat="(typeName, elements) in call.mycallsclient_callLog.who">
-                                        <option value="{{element._id}}" ng-selected ="element._id==call.mycallsclient_callLog.whoId" ng-repeat="element in elements | orderBy: 'Name'">
-                                            {{element.Name}}
-                                        </option>
-                                    </optgroup>
+                                <select ng-model="call.mycallsclient_callLog.whoId" ng-change="whoChange($event)" ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhoFilter">
                                 </select>
                             </div>
                             <div ng-if="showWhatSelect()">
                                 <label>RelatedTo</label>
-                                <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)">
-                                        <optgroup label="{{typeName}}" ng-repeat="(typeName, elements) in call.mycallsclient_callLog.what">
-                                                <option value="{{element._id}}" ng-selected ="element._id==call.mycallsclient_callLog.whatId" ng-repeat="element in elements | orderBy: 'Name'">
-                                                    {{element.Name}}
-                                                </option>
-                                        </optgroup>
+                                <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)" ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
                                 </select>
                             </div>
                             <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note"

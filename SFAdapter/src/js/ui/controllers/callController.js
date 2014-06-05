@@ -76,41 +76,23 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     }
 
     $scope.showWhatSelect = function() {
-        return $scope.call.hasWhats() && !$scope.call.findCallLogTargetById('Lead', $scope.call.mycallsclient_callLog.whoId);
-    };
-
-    $scope.getWhatArray = function() {
-        var arr = [];
-        for(var type in $scope.call.mycallsclient_callLog.what) {
-            arr = arr.concat($scope.call.mycallsclient_callLog.what[type]);
-        }
-        return arr;
-    };
-
-    $scope.getWhoArray = function() {
-        var arr = [];
-        for(var type in $scope.call.mycallsclient_callLog.who) {
-            arr = arr.concat($scope.call.mycallsclient_callLog.who[type]);
-        }
-        return arr;
+        var who = $scope.call.findCallLogTargetById($scope.call.mycallsclient_callLog.whoId);
+        return $scope.call.getWhat() && (!who || who.object!='Lead');
     };
 
     $scope.whoChange = function() {
-        if($scope.call.mycallsclient_callLog.who["Lead"] && $scope.call.mycallsclient_callLog.who["Lead"].indexOf($scope.call.mycallsclient_callLog.whoId)>-1) {
+        var who = $scope.call.findCallLogTargetById($scope.call.mycallsclient_callLog.whoId);
+        if(who && who.object == 'Lead') {
             $scope.call.mycallsclient_callLog.pervWhatId = $scope.call.mycallsclient_callLog.whatId;
             $scope.call.mycallsclient_callLog.whatId = null;
-
         }
         else if($scope.call.mycallsclient_callLog.whatId == null) {
             if($scope.call.mycallsclient_callLog.pervWhatId) {
                 $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.pervWhatId;
             }
             else {
-                for(var key in $scope.call.mycallsclient_callLog.what) {
-                    if($scope.call.mycallsclient_callLog.what[key]) {
-                        $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.what[key][0];
-                    }
-                }
+                var what = $scope.call.getWhat();
+                $scope.call.mycallsclient_callLog.whatId = what && what._id;
             }
         }
         saveCallLogChanges()
