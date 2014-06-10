@@ -144,7 +144,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
         if(!who) {
             who = this.getWho();
             this.mycallsclient_callLog.whoId = who && who._id;
-            if(!what && who.object!='Lead') {
+            if(!what && (!who || who.object!='Lead')) {
                 what = this.getWhat();
                 this.mycallsclient_callLog.whatId = what && what._id;
             }
