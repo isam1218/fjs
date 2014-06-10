@@ -158,6 +158,11 @@
                                         for (var i = 0; i < items.length; i++) {
                                             var item = items[i], tkey = item.key;
                                             var keyarr = tkey.split('|');
+                                            var now = Date.now();
+                                            if(now - item.date > 10000) {
+                                                context.db.deleteByKey("tabsync", item.key);
+                                                continue;
+                                            }
                                             if (_lastValues.indexOf(tkey) < 0 && keyarr[1] != context.tabId) {
                                                 console.log("read", tkey);
                                                 context.fireEvent(item.eventType, {key: item.eventType, newValue: item.val});
@@ -185,12 +190,14 @@
 
     fjs.api.TabsSynchronizer.prototype.removeEventListener = function(eventType, handler) {
         if(fjs.utils.Browser.isIE11()) {
-            var index = this.lastValues[eventType].indexOf(handler);
-            if(index>-1) {
-                this.lastValues[eventType].splice(index, 1);
-            }
-            if(this.lastValues[eventType].length = 0) {
-                delete this.lastValues[eventType];
+            if(this.lastValues[eventType]) {
+                var index = this.lastValues[eventType].indexOf(handler);
+                if (index > -1) {
+                    this.lastValues[eventType].splice(index, 1);
+                }
+                if (this.lastValues[eventType].length = 0) {
+                    delete this.lastValues[eventType];
+                }
             }
         }
         this.superClass.removeEventListener.call(this, eventType, handler);
@@ -202,13 +209,12 @@
     };
 
     fjs.api.TabsSynchronizer.prototype.setSyncValue = function(key, value) {
-        //console.log('syncData', fjs.utils.JSON.parse(value), value);
         if(this.db && this.db.state == 1) {
             var genKey = this.generateDataKey(key), context = this;
             var inc = new fjs.utils.Increment();
             (function(genKey){
-                console.log("write", genKey);
-                context.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:Date.now()+""+inc.get('tabsSync')}, function(){
+                var now = Date.now();
+                context.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:now+""+inc.get('tabsSync'), date:now}, function(){
                     setTimeout(function(){
                         context.db.deleteByKey("tabsync", genKey);
                     },5000);
