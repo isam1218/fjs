@@ -21,4 +21,4 @@ fjs.model.ClientSettingsFeedModel.prototype.deletePhone = function(phone) {
         delete this.items['phoneMap'].phones[phone];
         this.dataManager.sendAction("clientsettings", "push", this.items["phoneMap"]);
     }
-}
+};

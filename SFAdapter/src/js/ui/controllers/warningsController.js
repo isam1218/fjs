@@ -78,7 +78,7 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     };
 
     $scope.$on("$destroy", function() {
-        context.me.removeEventListener(fjs.controllers.CommonController.PUSH_LISTENER, context.pushMeListener);
+        context.me.removeEventListener(fjs.controllers.CommonController.PUSH_LISTENER, context.completeMeListener);
         context.locations.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.locationListener);
     });
 };

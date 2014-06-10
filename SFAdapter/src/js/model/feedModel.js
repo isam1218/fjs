@@ -8,6 +8,9 @@ namespace("fjs.model");
 fjs.model.FeedModel = function(feedName, dataManager) {
     fjs.EventsSource.call(this);
     this.feedName = feedName;
+    /**
+     * @type {Object}
+     */
     this.items = {};
     this.order = [];
     this.dataManager = dataManager;

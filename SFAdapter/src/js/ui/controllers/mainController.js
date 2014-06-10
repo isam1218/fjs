@@ -36,7 +36,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         var messageW = {};
         messageW.action = "setSoftphoneWidth";
         messageW.data = {};
-        messageW.data.height = context.SOFTPHONE_WIDTH;
+        messageW.data.width = context.SOFTPHONE_WIDTH;
         sfApiProvider.sendAction(messageW);
 
         var frameHtml = document.getElementById(context.FRAME_RESIZE_NAME);

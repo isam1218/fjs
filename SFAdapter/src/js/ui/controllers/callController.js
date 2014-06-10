@@ -4,7 +4,6 @@
 namespace("fjs.controllers");
 fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $sce, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
-    var callsFeedModel = dataManager.getModel("mycallsclient");
     var durationTimer = null;
     var callLogInfoTimeout = null;
     var timeSync = new fjs.utils.TimeSync();
@@ -74,6 +73,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             startGetCallLogInfo();
         }
     }
+
+    $scope.showAddButton = function() {
+        return $scope.call.mycallsclient_callLog.related.length == 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE;
+    };
 
     $scope.showWhatSelect = function() {
         var who = $scope.call.findCallLogTargetById($scope.call.mycallsclient_callLog.whoId);

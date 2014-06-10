@@ -81,7 +81,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
                 var _result = result[i];
                 _result._id = i;
                 if(_result.object == "Case") {
-                    _result.Name = _result.CaseNumber;
+                    _result.Name = _result["CaseNumber"];
                 }
                 var item = this.findCallLogTargetById(i);
                 if (!item) {
@@ -97,7 +97,6 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
             }
         }
     }
-    for(var i=0; i<this.mycallsclient_callLog.related.length; i++) {
         var _items = this.mycallsclient_callLog.related.slice(0);
         for(var i=0; i<_items.length; i++) {
             var _item = _items[i];
@@ -115,7 +114,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
                 }
             }
         }
-    }
+
 
     fjs.model.filter.SortRelatedFields()(this.mycallsclient_callLog.related);
 

@@ -57,7 +57,7 @@
                           <div class="call-info-row" ng-repeat="element in call.mycallsclient_callLog.related">
                               <label>{{element.title}}</span></label><span ng-click="openSFLink(element._id)" class="underlined">{{ element.Name }}</span>
                           </div>
-                          <div ng-if="call.mycallsclient_callLog.related.length == 0" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
+                          <div ng-if="showAddButton()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
                       </div>
                       <div class="call-item-buttons-block ">
                           <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept
