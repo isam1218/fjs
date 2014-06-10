@@ -102,6 +102,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered;
         if($scope.loggined && $scope.connection && $scope.isLocationRegistered) {
             $scope.isWarningsShown = false;
+            dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
         }
         context.safeApply($scope);
     };
