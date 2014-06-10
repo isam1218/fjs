@@ -75,6 +75,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         }
     }
 
+    $scope.showAddButton = function() {
+        return $scope.call.mycallsclient_callLog.related.length == 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE;
+    };
+
     $scope.showWhatSelect = function() {
         var who = $scope.call.findCallLogTargetById($scope.call.mycallsclient_callLog.whoId);
         return $scope.call.getWhat() && (!who || who.object!='Lead');
