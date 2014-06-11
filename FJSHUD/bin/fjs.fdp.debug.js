@@ -35,6 +35,9 @@ fjs.db.IndexedDBProvider = function() {
      * @private
      */
     this.tables = {};
+
+    this.state = -1;
+
 };
 
 /**
@@ -51,6 +54,7 @@ fjs.db.IndexedDBProvider.check= function() {
 * @param {function(IDBDatabase)} callback - Handler function to execute when database was ready
 */
 fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
+    this.state = 0;
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
         new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
@@ -61,6 +65,7 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     request.onsuccess = function() {
         context.db = request.result;
         context.db.onerror = onError;
+        context.state = 1;
         if(callback) {
             callback(context.db);
         }
@@ -472,7 +477,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
         var db = this.db = self.openDatabase(name, "", name, dbSize);
     }
     catch(e) {
-        console.error(e);
+        fjs.utils.Console.error(e);
         callback(null);
         return;
     }
@@ -485,7 +490,7 @@ fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
                 var table = context.tables[i];
 
                 context.createTable(i, table.key, table.indexes);
-                console.log(i+" table created");
+                fjs.utils.Console.log(i+" table created");
             }
         }
         callback(this);
@@ -819,6 +824,7 @@ fjs.db.LocalStorageDbProvider = function() {
     this.tables = {};
     this.dbData = {};
     this.indexes = {};
+    this.state = -1;
 };
 
 /**
@@ -887,6 +893,7 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
     var tableName, context = this;
+    this.state = 0;
     this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
     if(this.dbInfo) {
         if(version>this.dbInfo.version) {
@@ -915,8 +922,9 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
         this.createTables();
         self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
     }
+    this.state = 1;
     if(callback)
-    setTimeout(function(){callback(context)}, 0);
+    setTimeout(function(){callback(context);}, 0);
 };
 
 /**
@@ -1192,6 +1200,9 @@ namespace('fjs.db');
  * @constructor
  */
 fjs.db.DBFactory = function(config) {
+    if (!this.constructor.__instance)
+        this.constructor.__instance = this;
+    else return this.constructor.__instance;
 
     this.config = config;
     /**
@@ -1203,6 +1214,8 @@ fjs.db.DBFactory = function(config) {
         , 'webSQL': fjs.db.WebSQLProvider
         , 'localStorage': fjs.db.LocalStorageDbProvider
     };
+
+    this.currentDB = null;
 };
 
 /**
@@ -1217,7 +1230,10 @@ fjs.db.DBFactory.prototype.getDB = function() {
     var dbs = this.config.DB.dbProviders;
     for(var i=0; i<dbs.length; i++) {
         if(this._dbRegister[dbs[i]].check()) {
-            return new this._dbRegister[dbs[i]]();
+            if(!this.currentDB) {
+                this.currentDB = new this._dbRegister[dbs[i]]();
+            }
+            return this.currentDB;
         }
     }
 };
@@ -1333,7 +1349,7 @@ fjs.fdp.model.ProxyModel.prototype.addListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to add duplicated listener");
+        fjs.utils.Console.warn("Trying to add duplicated listener");
     }
 };
 
@@ -1351,7 +1367,7 @@ fjs.fdp.model.ProxyModel.prototype.removeListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to remove unexisted listener");
+        fjs.utils.Console.warn("Trying to remove unexisted listener");
     }
 };
 
@@ -1423,7 +1439,7 @@ fjs.fdp.model.ProxyModel.prototype.fillChange = function(xpid, changes, feedName
         }
     }
     else {
-        console.error('Change for deleted entry');
+        fjs.utils.Console.error('Change for deleted entry');
     }
     return _changes;
 };
@@ -1455,7 +1471,7 @@ fjs.fdp.model.ProxyModel.prototype.fillDeletion= function(xpid, feedName) {
                 }
             }
             else {
-                console.error('Trying to remove unexisted element:', xpid);
+                fjs.utils.Console.error('Trying to remove unexisted element:', xpid);
             }
             if(fjs.utils.JSON.isEmpty(_changes.entry)) {
                 delete this.changes[xpid];
@@ -1739,7 +1755,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
         }
     }
     else {
-        console.warn("Trying to add duplicated listener");
+        fjs.utils.Console.warn("Trying to add duplicated listener");
     }
 };
 
@@ -1944,9 +1960,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             return;
         }
         else if(!isOk) {
-            var event = {type:'requestError', requestUrl:request.url, message:'Request failed', status:request.status};
+            var event = {type:'requestError', requestUrl:request.url, message: (request.responseText || 'Request failed'), status:request.status};
             this.fireEvent('error', event);
-            console.error(event);
+            fjs.utils.Console.error(event);
         }
         if(this.isNetworkProblem) {
             this.fireEvent('message', {type:'connectionEstablished'});
@@ -2007,7 +2023,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                   }
               }
               else if(xhr.status == 403 || xhr.status == 401) {
-                  context.fireEvent('error', {type:'authError', message:"Wrong auth data"});
+                  context.fireEvent('error', {type:'authError', message:(data ? data.replace('Error=', '') : "Wrong auth data")});
               }
               context.handleRequestErrors(xhr, isOk);
           });
@@ -2389,13 +2405,25 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.transport.LocalStorageTransport = function() {
         var context = this;
         fjs.fdp.transport.FDPTransport.call(this);
+
+        this.tabsSynchronizer = new fjs.api.TabsSynchronizer();
+
         this.onStorage = function(e) {
             if(e.key.indexOf('lsp_')>-1) {
                 var eventType = e.key.replace('lsp_', '');
                 context.fireEvent(eventType, fjs.utils.JSON.parse(e.newValue));
             }
         };
-        window.addEventListener('storage', this.onStorage, false);
+
+        if(fjs.utils.Browser.isIE11()) {
+            this.tabsSynchronizer.addEventListener('lsp_message', this.onStorage);
+            this.tabsSynchronizer.addEventListener('lsp_error', this.onStorage);
+            this.tabsSynchronizer.addEventListener('lsp_clientSync', this.onStorage);
+            this.tabsSynchronizer.addEventListener('lsp_action', this.onStorage);
+        }
+        else {
+            window.addEventListener('storage', this.onStorage, false);
+        }
     };
     fjs.fdp.transport.LocalStorageTransport.extend(fjs.fdp.transport.FDPTransport);
 
@@ -2417,7 +2445,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @abstract
      */
     fjs.fdp.transport.LocalStorageTransport.prototype.send = function (message) {
-        localStorage['lsp_'+message.type] = fjs.utils.JSON.stringify(message.data);
+        if(fjs.utils.Browser.isIE11()) {
+            this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
+        }
+        else {
+            localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
+        }
     };
 
     /**
@@ -2425,9 +2458,16 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      */
     fjs.fdp.transport.LocalStorageTransport.prototype.close = function() {
         window.removeEventListener('storage', this.onStorage, false);
+        this.tabsSynchronizer.removeEventListener('lsp_message', this.onStorage);
+        this.tabsSynchronizer.removeEventListener('lsp_error', this.onStorage);
+        this.tabsSynchronizer.removeEventListener('lsp_clientSync', this.onStorage);
+        this.tabsSynchronizer.removeEventListener('lsp_action', this.onStorage);
     };
     fjs.fdp.transport.LocalStorageTransport.masterSend = function(messageType, messageData) {
-        localStorage['lsp_'+messageType] = fjs.utils.JSON.stringify(messageData);
+        if(fjs.utils.Browser.isIE11()) {
+            new fjs.api.TabsSynchronizer().setSyncValue('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
+        }
+        localStorage.setItem('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
     };
 })();(function(){
 
@@ -2483,6 +2523,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 })();(function(){
     namespace("fjs.fdp");
     /**
+     * 123
      * <p>
      *     Synchronization manager. Main logic of synchronization with FDP server.
      * <p>
@@ -2521,6 +2562,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @type {fjs.fdp.transport.FDPTransport}
          */
         this.transport = null;
+        this.syncTimeoutId = null;
 
         /**
          * @dict
@@ -2697,8 +2739,26 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         this.node = node;
 
         if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
-            self.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.api.TabsSynchronizer();
+            if(fjs.utils.Browser.isIE11()) {
+                this.tabsSyncronizer.addEventListener('lsp_clientSync', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_message', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_error', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_action', function (e) {
+                    context.onStorage(e)
+                });
+            }
+            else {
+                self.addEventListener('storage', function (e) {
+                    context.onStorage(e)
+                }, false);
+            }
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.onMasterChanged();
             });
@@ -2790,6 +2850,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     context.db = null;
                 }
                 context.finishInitialization(callback);
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                    context.db.deleteByKey('tabsync', null);
+                };
             });
         }
         else {
@@ -2962,7 +3025,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                         this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
-                        console.error("Incorrect item change type: " + etype+" for Lazy sync");
+                        fjs.utils.Console.error("Incorrect item change type: " + etype+" for Lazy sync");
                         break;
                 }
             }
@@ -2987,7 +3050,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     this.fireEvent(feedName, event);
                 }
                 else {
-                    console.error("Incorrect item change type: " + etype+" for Full sync");
+                    fjs.utils.Console.error("Incorrect item change type: " + etype+" for Full sync");
                 }
             }
             if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
@@ -3016,7 +3079,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                         idsForKeep.push(event.entry.xpid);
                         break;
                     default:
-                        console.error("Incorrect item change type: " + etype+" for Keep sync");
+                        fjs.utils.Console.error("Incorrect item change type: " + etype+" for Keep sync");
                         break;
                 }
             }
@@ -3071,7 +3134,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                 this.keepSyncProcessItems(items, feedName, sourceId);
                 break;
             default:
-                console.error("Unknown sync type: "+type);
+                fjs.utils.Console.error("Unknown sync type: "+type);
                 break;
         }
         this.fireEvent(feedName, {eventType: sm.eventTypes.SOURCE_COMPLETE, feed:feedName, sourceId:sourceId, syncType: type});
@@ -3084,7 +3147,11 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
 
-        var _data = fjs.utils.JSON.parse(data);
+        var _data = fjs.utils.JSON.parse(data), context = this;
+        if(this.syncTimeoutId !=null) {
+            clearTimeout(this.syncTimeoutId);
+            this.syncTimeoutId = null;
+        }
         this.syncs.push(_data);
         if(this.syncs.length==1) {
             this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
@@ -3096,11 +3163,14 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     }
                 }
             }
-            this.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
-            this.syncs = [];
+            context.syncs = [];
+            this.syncTimeoutId = setTimeout(function(){
+                context.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
+                context.syncTimeoutId = null;
+            },100);
         }
         else {
-            console.log("!!!!Double onSync!!", this.syncs[0],  _data);
+            fjs.utils.Console.log("!!!!Double onSync!!", this.syncs[0],  _data);
         }
     };
 
@@ -3569,7 +3639,7 @@ fjs.fdp.DataManager.prototype.logout = function() {
 fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) {
     var /** @type (fjs.fdp.model.ProxyModel) */ proxy = this.proxies[feedName];
     if(!proxy)  {
-        console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
+        fjs.utils.Console.warn("DataManager: sendAction: no proxy model for feed: " + feedName);
         return;
     }
     proxy.sendAction(feedName, actionName, data);
@@ -3583,7 +3653,7 @@ fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) 
  */
 fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
     if(!this.proxies[feedName]) {
-        console.error("You don't listen this feed");
+        fjs.utils.Console.error("You don't listen this feed");
     }
     this.sm.loadNext(feedName, filter, count);
 };

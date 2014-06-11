@@ -22,6 +22,8 @@ fjs.model.DataManager = function(sf) {
 
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
+    this.tabSynchronizer = new fjs.api.TabsSynchronizer();
+    this.checkLoginTimeoutId = null;
 
     var onClickToDial = function(obj) {
         /**
@@ -33,10 +35,13 @@ fjs.model.DataManager = function(sf) {
             var calleeInfo = {};
             calleeInfo.id = res.objectId;
             calleeInfo.type = res.object;
-            context.phoneMap[phone] = calleeInfo;
+            var clientSettingsModel = context.getModel('clientsettings');
+            clientSettingsModel.savePhone(phone, calleeInfo);
             context.sendAction(fjs.model.MeModel.NAME, "callTo", {'phoneNumber': phone});
         }
     };
+
+
 
     this.checkDevice = function() {
         var message = {};
@@ -46,9 +51,45 @@ fjs.model.DataManager = function(sf) {
         message.callback = onClickToDial;
         context.sf.sendAction(message);
     };
+
     this.checkDevice();
 
-    this._getAuthInfo(function(data){
+
+
+
+
+    var stopCheckLoginInfo = function() {
+        clearInterval(context.checkLoginTimeoutId);
+    };
+
+    var runCheckLoginInfo = function() {
+        if(context.checkLoginTimeoutId!=null) {
+            clearInterval(context.checkLoginTimeoutId);
+        }
+        context.checkLoginTimeoutId = setInterval(function () {
+            context._getAuthInfo(function(data){
+                if(data && context._authInfoChanged(data) && context.dataProvider && context.state) {
+                    fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
+                    context.dataProvider.sendMessage({action: "SFLogin", data: data});
+                }
+            });
+        }, 10000);
+    };
+
+    if(this.tabSynchronizer.isMaster) {
+        runCheckLoginInfo();
+    }
+
+    this.tabSynchronizer.addEventListener('master_changed', function() {
+        if(context.tabSynchronizer.isMaster) {
+            runCheckLoginInfo();
+        }
+        else {
+            stopCheckLoginInfo();
+        }
+    });
+
+    this._getAuthInfo(function(data) {
         if(data) {
             if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
@@ -80,7 +121,7 @@ fjs.model.DataManager = function(sf) {
                     context.authErrorCount++;
                 }
                 else {
-                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, false);
+                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, e);
                 }
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_REQUEST_ERROR, function(e) {
@@ -99,7 +140,7 @@ fjs.model.DataManager = function(sf) {
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_TICKET, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
-                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, true);
+                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, e);
                 if(context.suspendFeeds.length>0) {
                     for(var i=0; i<context.suspendFeeds.length; i++) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
@@ -129,6 +170,7 @@ fjs.model.DataManager.CLIENT_ID_COOKIE_NAME = "SF_Client_id";
 fjs.model.DataManager.SERVER_URL_COOKIE_NAME = "SF_ServerUrl";
 fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME = "SF_Login";
 fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME = "SF_Email";
+fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME = "SF_ADM_Login";
 
 fjs.model.DataManager.prototype.getModel = function(feedName) {
     if (!this.feeds[feedName]) {
@@ -138,6 +180,9 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
                 break;
             case "mycallsclient":
                this.feeds[feedName] = new fjs.model.MyCallsFeedModel(this);
+               break;
+            case "clientsettings":
+                this.feeds[feedName] = new fjs.model.ClientSettingsFeedModel(this);
                 break;
             default:
                this.feeds[feedName] = new fjs.model.FeedModel(feedName, this);
@@ -167,12 +212,22 @@ fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
  */
 fjs.model.DataManager.prototype._authInfoChanged = function(userData) {
     var authInfoChanged = false;
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) != userData.hud) {
-        fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
+    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) != userData.hud+"") {
+        if(this.tabSynchronizer.isMaster) {
+            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
+        }
         authInfoChanged = true;
     }
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) != userData.email) {
-        fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email);
+    if(fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) != userData.login+"") {
+        if(this.tabSynchronizer.isMaster) {
+            fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login + "");
+        }
+        authInfoChanged = true;
+    }
+    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) != userData.email+"") {
+        if(this.tabSynchronizer.isMaster) {
+            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email);
+        }
         authInfoChanged = true;
     }
     return authInfoChanged;

@@ -10,6 +10,13 @@ body, html {
     background-color: #f9f9f9;
 }
 
+@font-face {
+    font-family: 'Glyphicons Halflings';
+
+    src: url('../fonts/glyphicons-halflings-regular.eot');
+    src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
 input {
     font-size: 12px;
     font-family: Arial;
@@ -75,9 +82,15 @@ footer > button {
     width: 45px;
 }
 .new-call-dialpad {
-    font-size: 21px;
+    font-size: 18px;
     line-height: 18px;
-    padding: 0;
+    padding: 0 0 2px 1px;
+    font-family:'Glyphicons Halflings';
+}
+
+.add-contact-row {
+    font-family:'Glyphicons Halflings';
+    color:#595;
 }
 
 header {
@@ -150,4 +163,23 @@ header {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.loading-screen {
+    position:absolute;
+    top:30px;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: #f9f9f9;
+    z-index:110;
+}
+.loading-image {
+    width:64px;
+    height:64px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:-32px;
+    margin-left:-32px;
+    background-image:url(../img/ajax-loader.gif);
 }

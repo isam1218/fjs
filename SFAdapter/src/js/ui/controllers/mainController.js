@@ -5,20 +5,15 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     var sfApiProvider = sfApi.getProvider();
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
-    this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.PUSH_LISTENER, onClientSettingsPush);
+    this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
     this.SOFTPHONE_WIDTH = 200;
     this.SOFTPHONE_HEIGHT = 200;
     this.FRAME_RESIZE_NAME = "resizeFrame";
 
     function onClientSettingsPush(entry) {
-        if(entry.xpid = fjs.controllers.MainController.IS_WARNING_SHOWN) {
-            if(entry.value) {
-                $scope.isWarningsShown = true;
-            }
-            else {
-                $scope.isWarningsShown = false;
-            }
+        if(context.clientSettingsModel.items[fjs.controllers.MainController.IS_WARNING_SHOWN]) {
+            $scope.isWarningsShown = context.clientSettingsModel.items[fjs.controllers.MainController.IS_WARNING_SHOWN].value;
             context.safeApply($scope);
         }
     }
@@ -41,7 +36,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         var messageW = {};
         messageW.action = "setSoftphoneWidth";
         messageW.data = {};
-        messageW.data.height = context.SOFTPHONE_WIDTH;
+        messageW.data.width = context.SOFTPHONE_WIDTH;
         sfApiProvider.sendAction(messageW);
 
         var frameHtml = document.getElementById(context.FRAME_RESIZE_NAME);
@@ -107,6 +102,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered;
         if($scope.loggined && $scope.connection && $scope.isLocationRegistered) {
             $scope.isWarningsShown = false;
+            dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
         }
         context.safeApply($scope);
     };
@@ -120,7 +116,14 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     this.authorizationWarningListener = function(data) {
-        $scope.loggined = data;
+        if(data.eventType == fjs.model.DataManager.EV_TICKET) {
+            $scope.loggined = true;
+            $scope.authErrorMessage = "";
+        }
+        else if(data.eventType == fjs.model.DataManager.EV_AUTH_ERROR) {
+            $scope.loggined = false;
+            $scope.authErrorMessage = data.message;
+        }
         checkShowWarning();
         $scope.isConnected = ($scope.connection && $scope.loggined);
         context.safeApply($scope);

@@ -9,10 +9,6 @@ fjs.controllers.TransferDialog = function($scope) {
         input.focus();
     });
 
-    $scope.closeDialog = function() {
-        $scope.$emit("closeDialog");
-    };
-
     $scope.transfer = function() {
         $scope.$emit("transfer", $scope.transfer_phone);
     };

@@ -203,41 +203,71 @@ fjs.utils.Array.isArray = function(obj) {
     };
     fjs.utils.Console.log = function() {
         if(console) {
-            console.log(arguments);
+            if(console.log.apply) {
+                console.log.apply(console, arguments);
+            }
+            else {
+                var log = Function.prototype.bind.call(console.log, console);
+                log.apply(console, arguments);
+            }
         }
     };
     fjs.utils.Console.error = function() {
         if(console) {
-            console.error(arguments);
+            if(console.error.apply) {
+                console.error.apply(console, arguments);
+            }
+            else {
+                var log = Function.prototype.bind.call(console.error, console);
+                log.apply(console, arguments);
+            }
         }
     };
     fjs.utils.Console.debug = function() {
         if(console) {
             if(console.debug) {
-                console.debug(arguments);
+                if(console.debug.apply) {
+                    console.debug.apply(console, arguments);
+                }
+                else {
+                    var log = Function.prototype.bind.call(console.debug, console);
+                    log.apply(console, arguments);
+                }
             }
             else {
-                console.log(arguments);
+                fjs.utils.Console.log.apply(fjs.utils.Console, arguments);
             }
         }
     };
     fjs.utils.Console.warn = function() {
         if(console) {
             if(console.warn) {
-                console.warn(arguments);
+                if(console.warn.apply) {
+                    console.warn.apply(console, arguments);
+                }
+                else {
+                    var log = Function.prototype.bind.call(console.warn, console);
+                    log.apply(console, arguments);
+                }
             }
             else {
-                console.log(arguments);
+                fjs.utils.Console.log.apply(fjs.utils.Console, arguments);
             }
         }
     };
     fjs.utils.Console.info = function() {
         if(console) {
             if(console.info) {
-                console.info(arguments);
+                if(console.info.apply) {
+                    console.info.apply(console, arguments);
+                }
+                else {
+                    var log = Function.prototype.bind.call(console.info, console);
+                    log.apply(console, arguments);
+                }
             }
             else {
-                console.log(arguments);
+                fjs.utils.Console.log.apply(fjs.utils.Console, arguments);
             }
         }
     };
@@ -901,8 +931,11 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
             this.crdmnFrame = document.createElement('iframe');
             this.crdmnFrame.name = this.crdmnFrame.id = 'crdmnFrame';
             this.crdmnFrame.src = this.host;
-            this.crdmnFrame.style.width = 0;
-            this.crdmnFrame.style.height = 0;
+            this.crdmnFrame.style.width = '0';
+            this.crdmnFrame.style.height = '0';
+            this.crdmnFrame.style.visibility = 'hidden';
+            this.crdmnFrame.style.position = 'absolute';
+            this.crdmnFrame.style.zIndex = '-1';
             this.crdmnFrame.onload = function() {
                 context.status = _a.states.READY;
                 for(var i=0; i<context.suspendRequestes.length; i++) {

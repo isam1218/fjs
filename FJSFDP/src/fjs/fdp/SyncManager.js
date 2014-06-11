@@ -40,6 +40,7 @@
          * @type {fjs.fdp.transport.FDPTransport}
          */
         this.transport = null;
+        this.syncTimeoutId = null;
 
         /**
          * @dict
@@ -216,8 +217,26 @@
         this.node = node;
 
         if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization()) {
-            self.addEventListener('storage', function(e){context.onStorage(e)}, false);
             this.tabsSyncronizer = new fjs.api.TabsSynchronizer();
+            if(fjs.utils.Browser.isIE11()) {
+                this.tabsSyncronizer.addEventListener('lsp_clientSync', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_message', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_error', function (e) {
+                    context.onStorage(e)
+                });
+                this.tabsSyncronizer.addEventListener('lsp_action', function (e) {
+                    context.onStorage(e)
+                });
+            }
+            else {
+                self.addEventListener('storage', function (e) {
+                    context.onStorage(e)
+                }, false);
+            }
             this.tabsSyncronizer.addEventListener('master_changed', function(){
                 context.onMasterChanged();
             });
@@ -309,6 +328,9 @@
                     context.db = null;
                 }
                 context.finishInitialization(callback);
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                    context.db.deleteByKey('tabsync', null);
+                };
             });
         }
         else {
@@ -603,7 +625,11 @@
      */
     fjs.fdp.SyncManager.prototype.onSync = function (data) {
 
-        var _data = fjs.utils.JSON.parse(data);
+        var _data = fjs.utils.JSON.parse(data), context = this;
+        if(this.syncTimeoutId !=null) {
+            clearTimeout(this.syncTimeoutId);
+            this.syncTimeoutId = null;
+        }
         this.syncs.push(_data);
         if(this.syncs.length==1) {
             this.fireEvent(null, {eventType: sm.eventTypes.SYNC_START});
@@ -615,8 +641,11 @@
                     }
                 }
             }
-            this.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
-            this.syncs = [];
+            context.syncs = [];
+            this.syncTimeoutId = setTimeout(function(){
+                context.fireEvent(null, {eventType: sm.eventTypes.SYNC_COMPLETE});
+                context.syncTimeoutId = null;
+            },100);
         }
         else {
             fjs.utils.Console.log("!!!!Double onSync!!", this.syncs[0],  _data);

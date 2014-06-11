@@ -3,10 +3,9 @@ module.exports = function(grunt) {
     var currentTime = getCurrentTime()
         , buildNumber;
 
-    grunt.file.write('hud-buildid/buildtimestamp.txt', currentTime);
-    grunt.file.write('buildtimestamp.txt', currentTime);
+   grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
-    function getCurrentTime() {
+   function getCurrentTime() {
         if(!currentTime) {
             var date = new Date();
             var values = [ date.getDate(), date.getMonth() + 1, date.getHours(), date.getMinutes()];
@@ -20,7 +19,7 @@ module.exports = function(grunt) {
 
     function getBuildNumber() {
         if(!buildNumber) {
-            buildNumber = grunt.file.read('hud-buildid/count.txt');
+            buildNumber = grunt.file.read('../hud-buildid/count.txt');
         }
         return buildNumber;
     }
@@ -32,16 +31,20 @@ module.exports = function(grunt) {
                 separator: ''
             },
             dist: {
-                src: [ 'src/js/build_number.js'
-                    , 'src/js/salesforce_api/sf_api.js'
+                src: [ 'src/js/salesforce_api/sf_api.js'
                     , 'src/js/salesforce_api/SFSimpleProvider.js'
                     , 'src/js/salesforce_api/SFSharedWorkerProvider.js'
                     , 'src/js/salesforce_api/SFApiProviderFactory.js'
                     , 'src/js/salesforce_api/module.js'
-                    , 'src/js/model/feedModel.js'
                     , 'src/js/model/entryModel.js'
+                    , 'src/js/model/feedModel.js'
                     , 'src/js/model/MeModel.js'
                     , 'src/js/model/myCallsFeedModel.js'
+                    , 'src/js/model/myCallEntryModel.js'
+                    , 'src/js/model/clientSettingsFeedModel.js'
+                    , 'src/js/model/filters/whatFilter.js'
+                    , 'src/js/model/filters/whoFilter.js'
+                    , 'src/js/model/filters/sortRelatedFields.js'
                     , 'src/js/model/dataManager.js'
                     , 'src/js/model/module.js'
                     , 'src/js/ui/controllers/commonController.js'
@@ -81,6 +84,7 @@ module.exports = function(grunt) {
                     , 'src/templates/*.html'
                     , 'src/img/*.gif'
                     , 'src/img/*.png'
+                    , 'src/fonts/*'
                     , 'src/properties.js'
                     , 'src/js/salesforce_api/sf_api.js'
                     , 'src/js/salesforce_api/module.js'
@@ -90,7 +94,12 @@ module.exports = function(grunt) {
                     , 'src/js/model/feedModel.js'
                     , 'src/js/model/entryModel.js'
                     , 'src/js/model/MeModel.js'
+                    , 'src/js/model/myCallEntryModel.js'
                     , 'src/js/model/myCallsFeedModel.js'
+                    , 'src/js/model/clientSettingsFeedModel.js'
+                    , 'src/js/model/filters/whatFilter.js'
+                    , 'src/js/model/filters/whoFilter.js'
+                    , 'src/js/model/filters/sortRelatedFields.js'
                     , 'src/js/model/dataManager.js'
                     , 'src/js/model/module.js'
                     , 'src/js/ui/controllers/commonController.js'
@@ -106,6 +115,19 @@ module.exports = function(grunt) {
                 , dest: 'bin/SFAdapter-'+getBuildNumber()+'.zip'
             }
         }
+        , 'string-replace':{
+            kit: {
+                files: {
+                    'src/js/build_number.js':'src/js/build_number.js'
+                },
+                options: {
+                    replacements: [{
+                        pattern: /manual/gm,
+                        replacement: getBuildNumber()
+                    }]
+                }
+            }
+        }
         ,'copy': {
             main: {
                 files: [
@@ -116,12 +138,12 @@ module.exports = function(grunt) {
     });
 
 
-
+    grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-    grunt.registerTask('jenkins-build', ['concat', 'closure-compiler', 'zip', 'copy']);
+    grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
