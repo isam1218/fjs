@@ -83,6 +83,10 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
     };
 
+    $scope.showLoadingPanel = function()  {
+        return !$scope.name && !$scope.isWarningsShown && $scope.loggined && $scope.connection;
+    };
+
     $scope.hideWarnings = function() {
         $scope.isWarningsShown = false;
         context.safeApply($scope);
