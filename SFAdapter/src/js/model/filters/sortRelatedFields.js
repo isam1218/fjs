@@ -8,8 +8,8 @@ fjs.model.filter.SortRelatedFields = function() {
             if(a.object> b.object) return 1;
             else if(a.object < b.object) return -1;
             else {
-                if(a.Name > b.Name) return 1;
-                else if (a.Name < b.Name) return -1;
+                if(a.Name.toLowerCase() > b.Name.toLowerCase()) return 1;
+                else if (a.Name.toLowerCase() < b.Name.toLowerCase()) return -1;
             }
             return 0;
         });
