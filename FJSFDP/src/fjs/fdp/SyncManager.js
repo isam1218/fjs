@@ -172,8 +172,10 @@
         /**
          * Entry should be keeped
          */
-        'ENTRY_KEEP': 'keep'
-    };
+        'ENTRY_KEEP': 'keep',
+
+        'CLEAR': 'clear'
+};
 
     /**
      * <b>Enumerator</b> <br/>
@@ -284,6 +286,9 @@
                 case 'ticket':
                     context.fireEvent('ticket', e);
                     context.startSync(context.syncFeeds);
+                    break;
+                case sm.eventTypes.CLEAR:
+                    context.fireEvent(null, {eventType: sm.eventTypes.CLEAR});
                     break;
                 default:
                     context.fireEvent(e.type, e);
@@ -973,6 +978,15 @@
         var context = this;
         if(this.status == sm.states.READY && this.db) {
             this.db.clear(function(){
+                context.fireEvent(null, {eventType: sm.eventTypes.CLEAR});
+                for(var key in context.versions) {
+                    if(context.versions.hasOwnProperty(key)) {
+                        context.versions[key] = '';
+                    }
+                }
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.api.TabsSynchronizer().isMaster) {
+                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type: sm.eventTypes.CLEAR});
+                }
                 context.transport.send({type:'SFLogin', data:loginData});
             });
         }
