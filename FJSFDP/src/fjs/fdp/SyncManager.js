@@ -262,7 +262,7 @@
             if(new fjs.api.TabsSynchronizer().isMaster) {
                 var obj = fjs.utils.JSON.parse(e.newValue);
                 if(eventType == "clientSync") {
-                    this.onClientSync(obj);
+                    this.onClientSync(obj.data);
                 }
                 else {
                     this.transport.send({type:eventType, data:obj});
@@ -678,7 +678,7 @@
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
         else if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && !notBroadcast) {
-            fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
+            fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', {type:"clientSync", data:message});
         }
         if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster) {
             this.onSync(message);
