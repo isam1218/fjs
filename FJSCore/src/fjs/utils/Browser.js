@@ -135,7 +135,7 @@
     * @return {boolean}
     */
     fjs.utils.Browser.isSafari = function() {
-        if(/safari/i.test(navigator.userAgent)) {
+        if(/safari/i.test(navigator.userAgent) && !/chrom(e|ium)/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
