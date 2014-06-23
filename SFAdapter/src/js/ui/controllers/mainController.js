@@ -8,7 +8,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
     this.SOFTPHONE_WIDTH = 200;
-    this.SOFTPHONE_HEIGHT = 200;
+    this.SOFTPHONE_HEIGHT = 250;
     this.FRAME_RESIZE_NAME = "resizeFrame";
 
     function onClientSettingsPush(entry) {
@@ -25,6 +25,8 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     $scope.connection = true;
     $scope.phone = true;
     $scope.isLocationRegistered = true;
+    $scope.fdpConfigured = true;
+    $scope.fdpErrorMessage = "";
 
     var initResizeFrame = function() {
         var messageH = {};
@@ -84,7 +86,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     $scope.showLoadingPanel = function()  {
-        return !$scope.name && !$scope.isWarningsShown && $scope.loggined && $scope.connection;
+        return !$scope.name && !$scope.isWarningsShown && $scope.loggined && $scope.connection && $scope.fdpConfigured;
     };
 
     $scope.hideWarnings = function() {
@@ -103,8 +105,8 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     var checkShowWarning = function() {
-        $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered;
-        if($scope.loggined && $scope.connection && $scope.isLocationRegistered) {
+        $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered || !$scope.fdpConfigured;
+        if($scope.loggined && $scope.connection && $scope.isLocationRegistered && $scope.fdpConfigured) {
             $scope.isWarningsShown = false;
             dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
         }
@@ -134,11 +136,27 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     this.connectionWarningListener = function(data) {
+
         // Add timeout, task #36371 SFA: Warning icon shows up every time I click on anything on Salesforce
         setTimeout(function() {
-            $scope.connection = data;
+            if(data.eventType == fjs.model.DataManager.EV_FDP_CONFIG_ERROR) {
+                $scope.fdpConfigured = false;
+                $scope.fdpErrorMessage = data.message;
+            }
+            else if(data.eventType == fjs.model.DataManager.EV_FDP_CONFIG) {
+                $scope.fdpConfigured = true;
+                $scope.fdpErrorMessage = data.message;
+            }
+
+
+            if(data.eventType == fjs.model.DataManager.EV_CONNECTION_ESTABLISHED || data.eventType == fjs.model.DataManager.EV_NETWORK_PROBLEM) {
+                $scope.connection = data.connected;
+                $scope.isConnected = ($scope.connection && $scope.loggined);
+                if($scope.fdpConfigured) {
+                    $scope.fdpErrorMessage = data.message;
+                }
+            }
             checkShowWarning();
-            $scope.isConnected = ($scope.connection && $scope.loggined);
             context.safeApply($scope);
         }, 1000);
     };

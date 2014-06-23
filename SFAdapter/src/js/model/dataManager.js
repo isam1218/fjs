@@ -90,6 +90,7 @@ fjs.model.DataManager = function(sf) {
     });
 
     this._getAuthInfo(function(data) {
+
         if(data) {
             if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
@@ -129,11 +130,11 @@ fjs.model.DataManager = function(sf) {
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NETWORK_PROBLEM, function(e) {
                 fjs.utils.Console.error(e);
-                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, false);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_NETWORK_PROBLEM,  connected:false, message:"Network problem"});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, function(e) {
                 fjs.utils.Console.info(e);
-                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, connected:true, message:""});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
@@ -163,6 +164,8 @@ fjs.model.DataManager.EV_NETWORK_PROBLEM = "networkProblem";
 fjs.model.DataManager.EV_CONNECTION_ESTABLISHED = "connectionEstablished";
 fjs.model.DataManager.EV_TICKET = "ticket";
 fjs.model.DataManager.EV_NODE = "node";
+fjs.model.DataManager.EV_FDP_CONFIG_ERROR = "fdpConfigError";
+fjs.model.DataManager.EV_FDP_CONFIG = "fdpConfig";
 
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";
@@ -240,7 +243,7 @@ fjs.model.DataManager.prototype._getAccessInfo = function() {
 };
 
 fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
-    var message = {};
+    var message = {}, context = this;
     message.action = "getLoginInfo";
     message.callback = function(response) {
         var data = null;
@@ -264,7 +267,13 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
             if (res.hudLogin) {
                 data.hud = res.hudLogin;
             }
-            fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
+            if(res.serverUrl) {
+                fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType: fjs.model.DataManager.EV_FDP_CONFIG, message:""});
+            }
+            else {
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType: fjs.model.DataManager.EV_FDP_CONFIG_ERROR, message:"Server URL was not specified"});
+            }
         }
         callback(data);
     };

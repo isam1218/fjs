@@ -13,7 +13,7 @@
             <label>Authorization</label><div class="icon passed-{{loggined}}"></div>&nbsp;<span title="{{authErrorMessage}}">{{authErrorMessage}}</span>
         </div>
         <div class="warning-row">
-            <label>FDP access</label><div class="icon passed-{{connection}}"></div>
+            <label>FDP access</label><div class="icon passed-{{connection && fdpConfigured}}"></div>&nbsp;<span title="{{fdpErrorMessage}}">{{fdpErrorMessage}}</span>
         </div>
     </div>
     <div class="warning-footer">
