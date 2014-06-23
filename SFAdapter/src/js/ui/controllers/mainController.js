@@ -1,5 +1,5 @@
 namespace("fjs.controllers");
-fjs.controllers.MainController = function($scope, dataManager, sfApi) {
+fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var context = this;
     var sfApiProvider = sfApi.getProvider();
@@ -8,7 +8,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
     this.meModel = dataManager.getModel(fjs.model.MeModel.NAME);
     this.SOFTPHONE_WIDTH = 200;
-    this.SOFTPHONE_HEIGHT = 250;
+    this.SOFTPHONE_HEIGHT = 200;
     this.FRAME_RESIZE_NAME = "resizeFrame";
 
     function onClientSettingsPush(entry) {
@@ -50,6 +50,10 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         };
 
         function onResize() {
+            var browser = fjs.utils.Browser;
+            if(frameHtml.clientHeight!=oldHeight && (browser.isIE() || browser.isSafari())) {
+                $element[0].style.visibility = 'hidden';
+            }
             if(timerResize!=null) {
                 clearTimeout(timerResize);
                 timerResize = null;
@@ -66,10 +70,12 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
                     };
                     sfApiProvider.sendAction(message);
                 }
+                if(browser.isIE() || browser.isSafari()) {
+                    $element[0].style.visibility = 'visible';
+                }
                 oldHeight = height;
             }, 100);
         }
-
         setTimeout(function(){
             frame.onresize = function(){
                 onResize();

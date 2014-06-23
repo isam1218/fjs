@@ -8,4 +8,4 @@ ng_app.controller("CallController", ['$scope', '$element', '$timeout', '$filter'
 ng_app.controller("DialpadController", ['$scope', fjs.controllers.DialpadController]);
 ng_app.controller("TransferDialog", ['$scope', fjs.controllers.TransferDialog]);
 ng_app.controller("WarningsController", ['$scope', '$element', 'DataManager', fjs.controllers.WarningsController]);
-ng_app.controller("MainController", ['$scope', 'DataManager', 'SFApi', fjs.controllers.MainController]);
+ng_app.controller("MainController", ['$scope', '$element', 'DataManager', 'SFApi', fjs.controllers.MainController]);
