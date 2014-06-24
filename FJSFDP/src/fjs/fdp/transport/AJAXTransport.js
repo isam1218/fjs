@@ -245,7 +245,7 @@
                 }
             }
             else {
-                if(request.status == 403) {
+                if(request.status == 403 || request.status == 401) {
                     callback(false);
                     context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
@@ -295,7 +295,7 @@
                     }
                     else if (context._clientRegistryFailedCount >= 5) {
                         setTimeout(function () {
-                            context.requestVersionscache()
+                            context.requestVersionscache();
                         }, 5000);
                     }
                 }
@@ -315,6 +315,9 @@
             if(isOK) {
                 data = fjs.utils.JSON.parse(data);
                 context.fireEvent('message', {type: 'sync', data:data});
+                context.requestVersionscache();
+            }
+            else {
                 context.requestVersionscache();
             }
             context.handleRequestErrors(xhr, isOK);
@@ -404,6 +407,18 @@
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             context.handleRequestErrors(xhr, isOK);
+            if(isOK) {
+
+            }
+            else {
+                if(xhr.status == 401 || xhr.status == 403) {
+                    context.requestClientRegistry(function(isOK) {
+                        if(isOK) {
+                            context.sendAction(feedName, actionName, parameters);
+                        }
+                    });
+                }
+            }
         });
     };
 

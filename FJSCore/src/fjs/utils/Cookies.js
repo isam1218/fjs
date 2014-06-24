@@ -26,7 +26,7 @@ fjs.utils.Cookies = {
     set: function(name, value, options) {
         options = options || {};
 
-        var expires = options.expires;
+        var expires = 31536000;//options.expires;
 
         if (typeof expires == 'number' && expires) {
             var d = new Date();
