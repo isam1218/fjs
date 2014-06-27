@@ -77,7 +77,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
     if(data && data.result) {
         var result = fjs.utils.JSON.parse(data.result);
         for(var i in result) {
-            if (result.hasOwnProperty(i) && i != "screenPopUrl") {
+            if (result.hasOwnProperty(i) && i != "screenPopUrl" && result[i].object != 'CaseComment') {
                 var _result = result[i];
                 _result._id = i;
                 if(_result.object == "Case") {

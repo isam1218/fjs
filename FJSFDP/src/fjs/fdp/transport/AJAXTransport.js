@@ -154,11 +154,10 @@
     fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
         var context = this;
         this._currentRequest = this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
-              if(isOk) {
-                  var _data = fjs.utils.JSON.parse(data);
-                  if(_data && _data["Auth"] && _data["node"]) {
-                      var ticket = _data["Auth"];
-                      var node = _data["node"];
+            try  {
+            if(isOk) {
+                  var _data = fjs.utils.JSON.parse(data), ticket, node;
+                  if(_data && (ticket = _data["Auth"]) && (node = _data["node"])) {
                           context.fireEvent('message', {type: 'node', data: {nodeId: (context.node = node)}});
                           context.fireEvent('message', {type: 'ticket', data: {ticket: (context.ticket = ticket)}});
                   }
@@ -170,6 +169,9 @@
                   context.fireEvent('error', {type:'authError', message:(data ? data.replace('Error=', '') : "Wrong auth data")});
               }
               context.handleRequestErrors(xhr, isOk);
+            } catch (e) {
+                context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
+            }
           });
     };
 
