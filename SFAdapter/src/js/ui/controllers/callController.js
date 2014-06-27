@@ -256,4 +256,4 @@ fjs.controllers.CallController.CLOSED_TRIANGLE = "&#9658;";
 fjs.controllers.CallController.SORT_FIELD_NAME = "Name";
 fjs.controllers.CallController.CALL_GET_INFO_DELAY_IN_SEC = 3000;
 fjs.controllers.CallController.CALL_DURATION_DELAY_IN_SEC = 1000;
-fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC = 500;
+fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC = 1000;
