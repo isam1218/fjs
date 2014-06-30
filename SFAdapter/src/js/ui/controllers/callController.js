@@ -12,9 +12,17 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     var callLogSaveTimeout = null;
     var sfApiProvider = sfApi.getProvider();
     var clientSettingsModel = dataManager.getModel('clientsettings');
+    var meModel = dataManager.getModel('me');
+    var locationModel = dataManager.getModel('locations');
 
     $scope.getTriangle = function() {
         return $sce.trustAsHtml($scope.call.mycallsclient_callLog.isOpened ? fjs.controllers.CallController.OPENED_TRIANGLE : fjs.controllers.CallController.CLOSED_TRIANGLE);
+    };
+
+    $scope.isAutoAnswer = function() {
+        var _currentLocationId = meModel.getProperty('current_location');
+        var _currentLocation = locationModel.getEntryByXpid(_currentLocationId);
+        return $scope.call.incoming && _currentLocation && _currentLocation.location_status_autoAnswer;
     };
 
     var tabsSynchronizer = new fjs.api.TabsSynchronizer();

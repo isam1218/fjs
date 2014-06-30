@@ -59,9 +59,8 @@
                           </div>
                           <div ng-if="showAddButton()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
                       </div>
-                      <div class="call-item-buttons-block ">
-                          <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept
-                          </button>
+                      <div class="call-item-buttons-block">
+                          <button class="call-item-accept-button" ng-disabled="!isAutoAnswer()" ng-click="accept()">Accept</button>
                           <button class="call-item-hold-btn" ng-click="hold()">Hold</button>
                           <button class="call-item-unhold-btn" ng-click="unhold()">Retrieve</button>
                           <button class="call-item-end-btn" ng-click="end()">End</button>
