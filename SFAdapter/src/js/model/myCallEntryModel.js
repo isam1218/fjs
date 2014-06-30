@@ -158,3 +158,28 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
     }
     return _changed || _whatId!=this.mycallsclient_callLog.whatId || _whoId != this.mycallsclient_callLog.whoId;
 };
+
+fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
+    scope = scope || this;
+    if(obj)
+        for(var i in obj) {
+            if(obj.hasOwnProperty(i)) {
+                var field = obj[i];
+                if(typeof(field)!='object') {
+                    if(i!='note' || !document.hasFocus()) {
+                        scope[i] = field;
+                    }
+                }
+                else if(Array.isArray(field)) {
+                    scope[i] = [];
+                    this.fill(field, scope[i]);
+                }
+                else {
+                    if(!scope[i]) {
+                        scope[i] = {};
+                    }
+                    this.fill(field, scope[i]);
+                }
+            }
+        }
+};
