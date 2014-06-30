@@ -82,7 +82,7 @@
                                   <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)" ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
                                   </select>
                               </div>
-                              <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note"
+                              <label>Comments</label><textarea maxlength="255" ng-keypress="noteKeyPress()" ng-model="call.mycallsclient_callLog.note"
                                                                ng-change="noteChange()"></textarea>
                           </div>
                       </div>

@@ -82,6 +82,13 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         }
     }
 
+    $scope.noteKeyPress = function() {
+        $scope.call._blockChangeNote = true;
+        setTimeout(function(){
+            delete $scope.call._blockChangeNote;
+        }, 500);
+    };
+
     $scope.showAddButton = function() {
         return $scope.call.mycallsclient_callLog.related.length == 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE;
     };
