@@ -166,7 +166,7 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
             if(obj.hasOwnProperty(i)) {
                 var field = obj[i];
                 if(typeof(field)!='object') {
-                    if(i!='note' || !document.hasFocus()) {
+                    if(i!='note' || !document.hasFocus() || !scope[i] ) {
                         scope[i] = field;
                     }
                 }
