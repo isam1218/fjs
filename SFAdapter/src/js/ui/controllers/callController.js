@@ -151,8 +151,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     };
 
     $scope.transfer = function() {
-        $scope.call.mycallsclient_callLog.tranferOpened = true;
-        $scope.call.mycallsclient_callLog.isOpened = false;
+        if(!$scope.call.mycallsclient_callLog.tranferOpened) {
+            $scope.call.mycallsclient_callLog.tranferOpened = true;
+            $scope.call.mycallsclient_callLog.isOpened = false;
+        }
+        else {
+            $scope.call.mycallsclient_callLog.tranferOpened = false;
+            $scope.call.mycallsclient_callLog.isOpened = true;
+        }
         saveCallLogChanges();
     };
 
