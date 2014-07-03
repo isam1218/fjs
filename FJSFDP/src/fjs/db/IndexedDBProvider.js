@@ -57,10 +57,12 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     this.state = 0;
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
-        new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
+        fjs.utils.Console.error("Error: can't open indexedDB ("+name+", "+version+")", event);
+        callback(null);
     };
     var onError = function(event) {
-        new Error("Database error: " + event.target.errorCode);
+        fjs.utils.Console.error("Database error: " + event.target.errorCode, event);
+        callback(null);
     };
     request.onsuccess = function() {
         context.db = request.result;

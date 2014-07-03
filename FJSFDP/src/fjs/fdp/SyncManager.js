@@ -21,7 +21,8 @@
 
         fjs.EventsSource.call(this);
 
-        this.db = new fjs.db.DBFactory(config).getDB();
+        this.dbFactory = new fjs.db.DBFactory(config);
+        this.db = this.dbFactory.getDB();
         this.syncs = [];
         /**
          * Current SyncManager state
@@ -79,6 +80,8 @@
          * @private
          */
         this.suspendFeeds=[];
+        this.suspendActions = [];
+        this.suspendClientSyncs = [];
 
         /**
          *
@@ -313,35 +316,32 @@
     fjs.fdp.SyncManager.prototype.initDataBase = function(callback) {
         if(this.db) {
             /**
-             * @type {fjs.fdp.SyncManager}
-             */
-            var context = this;
-
-            /**
-             * Declare tables from config
-             */
-            for(var i=0; i<this.config.DB.tables.length; i++) {
-
-                var table = this.config.DB.tables[i];
-                this.db.declareTable(table.name, table.key, table.indexes);
-            }
-            /**
              * Open DB
              */
-            this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
-                if(!dbProvider) {
-                    context.db = null;
-                }
-                context.finishInitialization(callback);
-                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
-                    context.db.deleteByKey('tabsync', null);
-                };
-            });
+            this.openDB(callback);
         }
         else {
             this.finishInitialization(callback);
         }
     };
+
+    fjs.fdp.SyncManager.prototype.openDB = function(callback) {
+        var context = this;
+        for(var i=0; i<this.config.DB.tables.length; i++) {
+            var table = this.config.DB.tables[i];
+            this.db.declareTable(table.name, table.key, table.indexes);
+        }
+        this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
+            if(!dbProvider) {
+                context.db = context.dbFactory.getDB(context.db);
+                context.openDB(callback);
+            }
+            context.finishInitialization(callback);
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                context.db.deleteByKey('tabsync', null);
+            };
+        });
+    }
 
     fjs.fdp.SyncManager.prototype.getDataForFeeds = function (feeds, callback) {
         var context = this;
@@ -371,6 +371,20 @@
             if(context.suspendFeeds.length>0) {
                 context.startSync(context.suspendFeeds);
             }
+            context.suspendFeeds = [];
+            if(context.suspendClientSyncs.length>0) {
+                for(var j=0; j<context.suspendClientSyncs.length; j++) {
+                    context.onSync(context.suspendClientSyncs[j]);
+                }
+            }
+            context.suspendClientSyncs = [];
+            if(context.suspendActions.length>0) {
+                for(var i=0; i<context.suspendActions.length; i++) {
+                    context.transport.send(context.suspendActions[i]);
+                }
+            }
+
+            context.suspendActions = [];
             context.suspendFeeds = [];
             context.suspendClientFeeds = [];
             context.status = sm.states.READY;
@@ -665,7 +679,13 @@
      */
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data) {
         data["action"] = actionName;
-        this.transport.send({type:"action", data:{feedName:feedName, actionName:actionName, parameters: data}});
+        var message = {type: "action", data: {feedName: feedName, actionName: actionName, parameters: data}};
+        if(this.status!=sm.states.READY) {
+               this.suspendActions.push(message);
+        }
+        else {
+            this.transport.send(message);
+        }
     };
 
     /**
@@ -681,7 +701,12 @@
             fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', {type:"clientSync", data:message});
         }
         if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster) {
-            this.onSync(message);
+            if(this.status!=1) {
+                this.suspendClientSyncs.push(message);
+            }
+            else {
+                this.onSync(message);
+            }
         }
     };
 

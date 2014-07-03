@@ -37,23 +37,18 @@ function handleMessage(message, callback) {
             }
             break;
         case "registerSync":
-            if(dataManager)
                 dataManager.addFeedListener(message.data.feedName, callback);
             break;
         case "unregisterSync":
-            if(dataManager)
                 dataManager.removeFeedListener(message.data.feedName, callback);
             break;
         case "fdp_action":
-            if(dataManager)
                 dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.params);
             break;
         case "logout":
-            if(dataManager)
                 dataManager.logout();
             break;
         case "SFLogin":
-            if(dataManager)
                 dataManager.SFLogin(message.data);
             break;
         default:

@@ -57,10 +57,12 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     this.state = 0;
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
-        new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
+        fjs.utils.Console.error("Error: can't open indexedDB ("+name+", "+version+")", event);
+        callback(null);
     };
     var onError = function(event) {
-        new Error("Database error: " + event.target.errorCode);
+        fjs.utils.Console.error("Database error: " + event.target.errorCode, event);
+        callback(null);
     };
     request.onsuccess = function() {
         context.db = request.result;
@@ -471,7 +473,7 @@ fjs.db.WebSQLProvider.check = function() {
  * @param {function(fjs.db.IDBProvider)} callback - Handler function to execute when database was ready
  */
 fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
-    var dbSize = 5*1023*1023, context = this;
+    var dbSize = 4*1024*1024, context = this;
 
     try {
         var db = this.db = self.openDatabase(name, "", name, dbSize);
@@ -892,39 +894,51 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  * @param {function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
-    var tableName, context = this;
-    this.state = 0;
-    this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
-    if(this.dbInfo) {
-        if(version>this.dbInfo.version) {
-            for(var i=0; i<this.dbInfo.tables.length; i++) {
-                var tableName = this.dbInfo.tables[i];
-                self.localStorage.removeItem(tableName);
+    try {
+        var tableName, context = this;
+        this.state = 0;
+        this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_" + name));
+        if (this.dbInfo) {
+            if (version > this.dbInfo.version) {
+                for (var i = 0; i < this.dbInfo.tables.length; i++) {
+                    tableName = this.dbInfo.tables[i];
+                    self.localStorage.removeItem(tableName);
+                }
+                this.dbInfo.tables = null;
+                this.dbInfo.version = version;
+                this.createTables();
+                self.localStorage.setItem("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
             }
-            this.dbInfo.tables = null;
-            this.dbInfo.version = version;
-            this.createTables();
-            self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
+            else {
+                for (var k = 0; k < this.dbInfo.tables.length; k++) {
+                    tableName = this.dbInfo.tables[k];
+                    var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(self.localStorage.getItem(tableName)) || {};
+                    this.createIndexes(this.getRealTableName(tableName), tableData);
+                }
+            }
         }
         else {
-            for(var k=0; k<this.dbInfo.tables.length; k++) {
-                tableName = this.dbInfo.tables[k];
-                   var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(self.localStorage.getItem(tableName)) || {};
-                   this.createIndexes(this.getRealTableName(tableName), tableData);
-            }
+            this.dbInfo = {
+                name: name,
+                version: version
+            };
+            this.createTables();
+            self.localStorage.setItem("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
+        }
+        this.state = 1;
+        if (callback)
+            setTimeout(function () {
+                callback(context);
+            }, 0);
+    }
+    catch (e) {
+        fjs.utils.Console.error("Error: can't create localStorage DB", e);
+        if(callback) {
+            setTimeout(function () {
+                callback(null);
+            }, 0);
         }
     }
-    else {
-        this.dbInfo = {
-            name: name,
-            version:version
-        };
-        this.createTables();
-        self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
-    }
-    this.state = 1;
-    if(callback)
-    setTimeout(function(){callback(context);}, 0);
 };
 
 /**
@@ -1216,26 +1230,30 @@ fjs.db.DBFactory = function(config) {
     };
 
     this.currentDB = null;
+    this.currentDBIndex = -1;
 };
 
 /**
  * Selects and returns the most appropriate database provider.
+ * @param {fjs.db.IDBProvider} oldDB
  * @returns {fjs.db.IDBProvider|undefined}
  */
-fjs.db.DBFactory.prototype.getDB = function() {
+fjs.db.DBFactory.prototype.getDB = function(oldDB) {
     /**
      * priority of databases
      * @type {Array}
      */
-    var dbs = this.config.DB.dbProviders;
-    for(var i=0; i<dbs.length; i++) {
-        if(this._dbRegister[dbs[i]].check()) {
-            if(!this.currentDB) {
+    if(!this.currentDB || oldDB) {
+        var dbs = this.config.DB.dbProviders;
+        for(var i=this.currentDBIndex+1; i<dbs.length; i++) {
+            if (this._dbRegister[dbs[i]].check()) {
                 this.currentDB = new this._dbRegister[dbs[i]]();
+                this.currentDBIndex = i;
+                break;
             }
-            return this.currentDB;
         }
     }
+    return this.currentDB;
 };
 namespace("fjs.fdp.model");
 /**
@@ -1599,6 +1617,16 @@ fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
     this.keepEntries = {};
 };
 
+fjs.fdp.model.ProxyModel.prototype.clear = function() {
+    this.changes = {};
+    for(var xpid in this.items) {
+        if(this.items.hasOwnProperty(xpid)) {
+            this.changes[xpid] = {type:'delete', entry:null, xpid:xpid};
+            delete this.items[xpid];
+        }
+    }
+    this.onSyncComplete();
+};
 
 /**
  * Handler of SyncManager events
@@ -1608,6 +1636,9 @@ fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
 fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
     var eventTypes = fjs.fdp.SyncManager.eventTypes;
     switch(event.eventType) {
+        case eventTypes.CLEAR:
+            this.clear();
+            break;
         case eventTypes.SYNC_START:
             break;
         case eventTypes.FEED_START:
@@ -2010,13 +2041,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
         var context = this;
         this._currentRequest = this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
-              if(isOk) {
-                  var _data = fjs.utils.JSON.parse(data);
-                  var ticket = _data["Auth"];
-                  var node = _data["node"];
-                  if(ticket && node) {
-                      context.fireEvent('message', {type:'node', data:{nodeId:(context.node = node)}});
-                      context.fireEvent('message', {type:'ticket', data:{ticket:(context.ticket = ticket)}});
+            try  {
+            if(isOk) {
+                  var _data = fjs.utils.JSON.parse(data), ticket, node;
+                  if(_data && (ticket = _data["Auth"]) && (node = _data["node"])) {
+                          context.fireEvent('message', {type: 'node', data: {nodeId: (context.node = node)}});
+                          context.fireEvent('message', {type: 'ticket', data: {ticket: (context.ticket = ticket)}});
                   }
                   else {
                       context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
@@ -2026,6 +2056,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                   context.fireEvent('error', {type:'authError', message:(data ? data.replace('Error=', '') : "Wrong auth data")});
               }
               context.handleRequestErrors(xhr, isOk);
+            } catch (e) {
+                context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
+            }
           });
     };
 
@@ -2101,7 +2134,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                 }
             }
             else {
-                if(request.status == 403) {
+                if(request.status == 403 || request.status == 401) {
                     callback(false);
                     context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
@@ -2151,7 +2184,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     }
                     else if (context._clientRegistryFailedCount >= 5) {
                         setTimeout(function () {
-                            context.requestVersionscache()
+                            context.requestVersionscache();
                         }, 5000);
                     }
                 }
@@ -2171,6 +2204,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             if(isOK) {
                 data = fjs.utils.JSON.parse(data);
                 context.fireEvent('message', {type: 'sync', data:data});
+                context.requestVersionscache();
+            }
+            else {
                 context.requestVersionscache();
             }
             context.handleRequestErrors(xhr, isOK);
@@ -2260,6 +2296,18 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             context.handleRequestErrors(xhr, isOK);
+            if(isOK) {
+
+            }
+            else {
+                if(xhr.status == 401 || xhr.status == 403) {
+                    context.requestClientRegistry(function(isOK) {
+                        if(isOK) {
+                            context.sendAction(feedName, actionName, parameters);
+                        }
+                    });
+                }
+            }
         });
     };
 
@@ -2449,6 +2497,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
         }
         else {
+            message.data.t = Date.now();
             localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
         }
     };
@@ -2467,6 +2516,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         if(fjs.utils.Browser.isIE11()) {
             new fjs.api.TabsSynchronizer().setSyncValue('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
         }
+        messageData.t = Date.now();
         localStorage.setItem('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
     };
 })();(function(){
@@ -2543,7 +2593,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 
         fjs.EventsSource.call(this);
 
-        this.db = new fjs.db.DBFactory(config).getDB();
+        this.dbFactory = new fjs.db.DBFactory(config);
+        this.db = this.dbFactory.getDB();
         this.syncs = [];
         /**
          * Current SyncManager state
@@ -2601,6 +2652,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @private
          */
         this.suspendFeeds=[];
+        this.suspendActions = [];
+        this.suspendClientSyncs = [];
 
         /**
          *
@@ -2694,8 +2747,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         /**
          * Entry should be keeped
          */
-        'ENTRY_KEEP': 'keep'
-    };
+        'ENTRY_KEEP': 'keep',
+
+        'CLEAR': 'clear'
+};
 
     /**
      * <b>Enumerator</b> <br/>
@@ -2782,7 +2837,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             if(new fjs.api.TabsSynchronizer().isMaster) {
                 var obj = fjs.utils.JSON.parse(e.newValue);
                 if(eventType == "clientSync") {
-                    this.onClientSync(obj);
+                    this.onClientSync(obj.data);
                 }
                 else {
                     this.transport.send({type:eventType, data:obj});
@@ -2807,6 +2862,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     context.fireEvent('ticket', e);
                     context.startSync(context.syncFeeds);
                     break;
+                case sm.eventTypes.CLEAR:
+                    context.fireEvent(null, {eventType: sm.eventTypes.CLEAR});
+                    break;
                 default:
                     context.fireEvent(e.type, e);
                     break;
@@ -2830,35 +2888,32 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.SyncManager.prototype.initDataBase = function(callback) {
         if(this.db) {
             /**
-             * @type {fjs.fdp.SyncManager}
-             */
-            var context = this;
-
-            /**
-             * Declare tables from config
-             */
-            for(var i=0; i<this.config.DB.tables.length; i++) {
-
-                var table = this.config.DB.tables[i];
-                this.db.declareTable(table.name, table.key, table.indexes);
-            }
-            /**
              * Open DB
              */
-            this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
-                if(!dbProvider) {
-                    context.db = null;
-                }
-                context.finishInitialization(callback);
-                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
-                    context.db.deleteByKey('tabsync', null);
-                };
-            });
+            this.openDB(callback);
         }
         else {
             this.finishInitialization(callback);
         }
     };
+
+    fjs.fdp.SyncManager.prototype.openDB = function(callback) {
+        var context = this;
+        for(var i=0; i<this.config.DB.tables.length; i++) {
+            var table = this.config.DB.tables[i];
+            this.db.declareTable(table.name, table.key, table.indexes);
+        }
+        this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
+            if(!dbProvider) {
+                context.db = context.dbFactory.getDB(context.db);
+                context.openDB(callback);
+            }
+            context.finishInitialization(callback);
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                context.db.deleteByKey('tabsync', null);
+            };
+        });
+    }
 
     fjs.fdp.SyncManager.prototype.getDataForFeeds = function (feeds, callback) {
         var context = this;
@@ -2888,6 +2943,20 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             if(context.suspendFeeds.length>0) {
                 context.startSync(context.suspendFeeds);
             }
+            context.suspendFeeds = [];
+            if(context.suspendClientSyncs.length>0) {
+                for(var j=0; j<context.suspendClientSyncs.length; j++) {
+                    context.onSync(context.suspendClientSyncs[j]);
+                }
+            }
+            context.suspendClientSyncs = [];
+            if(context.suspendActions.length>0) {
+                for(var i=0; i<context.suspendActions.length; i++) {
+                    context.transport.send(context.suspendActions[i]);
+                }
+            }
+
+            context.suspendActions = [];
             context.suspendFeeds = [];
             context.suspendClientFeeds = [];
             context.status = sm.states.READY;
@@ -3182,7 +3251,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      */
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data) {
         data["action"] = actionName;
-        this.transport.send({type:"action", data:{feedName:feedName, actionName:actionName, parameters: data}});
+        var message = {type: "action", data: {feedName: feedName, actionName: actionName, parameters: data}};
+        if(this.status!=sm.states.READY) {
+               this.suspendActions.push(message);
+        }
+        else {
+            this.transport.send(message);
+        }
     };
 
     /**
@@ -3195,10 +3270,15 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
         else if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && !notBroadcast) {
-            fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
+            fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', {type:"clientSync", data:message});
         }
         if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster) {
-            this.onSync(message);
+            if(this.status!=1) {
+                this.suspendClientSyncs.push(message);
+            }
+            else {
+                this.onSync(message);
+            }
         }
     };
 
@@ -3495,6 +3575,15 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         var context = this;
         if(this.status == sm.states.READY && this.db) {
             this.db.clear(function(){
+                context.fireEvent(null, {eventType: sm.eventTypes.CLEAR});
+                for(var key in context.versions) {
+                    if(context.versions.hasOwnProperty(key)) {
+                        context.versions[key] = '';
+                    }
+                }
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.api.TabsSynchronizer().isMaster) {
+                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type: sm.eventTypes.CLEAR});
+                }
                 context.transport.send({type:'SFLogin', data:loginData});
             });
         }

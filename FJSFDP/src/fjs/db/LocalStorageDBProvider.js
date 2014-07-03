@@ -83,39 +83,51 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  * @param {function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
-    var tableName, context = this;
-    this.state = 0;
-    this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
-    if(this.dbInfo) {
-        if(version>this.dbInfo.version) {
-            for(var i=0; i<this.dbInfo.tables.length; i++) {
-                var tableName = this.dbInfo.tables[i];
-                self.localStorage.removeItem(tableName);
+    try {
+        var tableName, context = this;
+        this.state = 0;
+        this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_" + name));
+        if (this.dbInfo) {
+            if (version > this.dbInfo.version) {
+                for (var i = 0; i < this.dbInfo.tables.length; i++) {
+                    tableName = this.dbInfo.tables[i];
+                    self.localStorage.removeItem(tableName);
+                }
+                this.dbInfo.tables = null;
+                this.dbInfo.version = version;
+                this.createTables();
+                self.localStorage.setItem("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
             }
-            this.dbInfo.tables = null;
-            this.dbInfo.version = version;
-            this.createTables();
-            self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
+            else {
+                for (var k = 0; k < this.dbInfo.tables.length; k++) {
+                    tableName = this.dbInfo.tables[k];
+                    var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(self.localStorage.getItem(tableName)) || {};
+                    this.createIndexes(this.getRealTableName(tableName), tableData);
+                }
+            }
         }
         else {
-            for(var k=0; k<this.dbInfo.tables.length; k++) {
-                tableName = this.dbInfo.tables[k];
-                   var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(self.localStorage.getItem(tableName)) || {};
-                   this.createIndexes(this.getRealTableName(tableName), tableData);
-            }
+            this.dbInfo = {
+                name: name,
+                version: version
+            };
+            this.createTables();
+            self.localStorage.setItem("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
+        }
+        this.state = 1;
+        if (callback)
+            setTimeout(function () {
+                callback(context);
+            }, 0);
+    }
+    catch (e) {
+        fjs.utils.Console.error("Error: can't create localStorage DB", e);
+        if(callback) {
+            setTimeout(function () {
+                callback(null);
+            }, 0);
         }
     }
-    else {
-        this.dbInfo = {
-            name: name,
-            version:version
-        };
-        this.createTables();
-        self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
-    }
-    this.state = 1;
-    if(callback)
-    setTimeout(function(){callback(context);}, 0);
 };
 
 /**

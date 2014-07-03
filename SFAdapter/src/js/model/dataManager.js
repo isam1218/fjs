@@ -13,6 +13,7 @@ fjs.model.DataManager = function(sf) {
 
     this.state = -1;
     this.suspendFeeds = [];
+    this.suspendActions = [];
     this.warningListeners = {};
 
     this.sf = sf.getProvider();
@@ -108,6 +109,12 @@ fjs.model.DataManager = function(sf) {
                          }
                          context.suspendFeeds=[];
                      }
+                     if(context.suspendActions.length>0) {
+                         for(var j=0; j<context.suspendActions.length; j++) {
+                             context.dataProvider.sendMessage(context.suspendActions[j]);
+                         }
+                         context.suspendActions=[];
+                     }
                  });
             }
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_SYNC, function(data) {
@@ -147,6 +154,12 @@ fjs.model.DataManager = function(sf) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
                     }
                     context.suspendFeeds=[];
+                }
+                if(context.suspendActions.length>0) {
+                    for(var j=0; j<context.suspendActions.length; j++) {
+                        context.dataProvider.sendMessage(context.suspendActions[j]);
+                    }
+                    context.suspendActions=[];
                 }
             });
         }
@@ -203,8 +216,12 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
 */
 
 fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
-    if(this.dataProvider) {
-        this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
+    var message = {"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}};
+    if(this.state==1) {
+        this.dataProvider.sendMessage(message);
+    }
+    else {
+        this.suspendActions.push(message);
     }
 };
 
