@@ -82,11 +82,20 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         }
     }
 
+    var _blockChangeNoteTM =null;
+
     $scope.noteKeyPress = function() {
+
         $scope.call._blockChangeNote = true;
-        setTimeout(function(){
+
+        if(_blockChangeNoteTM!=null) {
+            clearTimeout(_blockChangeNoteTM);
+            _blockChangeNoteTM = null;
+        }
+        _blockChangeNoteTM = setTimeout(function(){
             delete $scope.call._blockChangeNote;
-        }, 500);
+            _blockChangeNoteTM = null;
+        }, 1000);
     };
 
     $scope.showAddButton = function() {
