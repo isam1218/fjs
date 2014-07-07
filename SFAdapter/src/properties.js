@@ -3,7 +3,7 @@ fjs.fdp.CONFIG = {
     SERVER: {
        serverURL: "https://huc-qa.fonality.com:8080"
     }
-    , providers: ['simple','sharedWorker']
+    , providers: ['sharedWorker', 'simple']
     , DB: {
         name: "SFA"
         , version: 25
@@ -11,7 +11,7 @@ fjs.fdp.CONFIG = {
         /**
          * @type {Array}
          */
-        , dbProviders:['webSQL', 'indexedDB', 'localStorage']
+        , dbProviders:['indexedDB', 'webSQL', 'localStorage']
         , tables: [
             {name:"versions", key:"feedSource", indexes:["source", "feedName"]}
             , {name:"historyversions", key:"feedSourceFilter", indexes:["source", "feedName", "filter",["feedName", "filter"]]}

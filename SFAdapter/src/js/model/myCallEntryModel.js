@@ -165,7 +165,7 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
         for(var i in obj) {
             if(obj.hasOwnProperty(i)) {
                 var field = obj[i];
-                if(typeof(field)!='object') {
+                if(typeof(field)!='object' || field==null) {
                     if(i!='note' || !this._blockChangeNote) {
                         scope[i] = field;
                     }
@@ -174,7 +174,7 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
                     scope[i] = [];
                     this.fill(field, scope[i]);
                 }
-                else {
+                else  {
                     if(!scope[i]) {
                         scope[i] = {};
                     }

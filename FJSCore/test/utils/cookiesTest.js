@@ -11,6 +11,6 @@ describe("cookies", function () {
         fjs.utils.Cookies.set('testF1', 'test');
         expect('test').toBe(fjs.utils.Cookies.get('testF1'));
         fjs.utils.Cookies.remove('testF1');
-        expect(undefined).toBe(fjs.utils.Cookies.get('testF1'));
+        expect(false).toBe(!!fjs.utils.Cookies.get('testF1'));
     })
 });
