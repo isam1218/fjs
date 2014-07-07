@@ -62,7 +62,6 @@ fjs.utils.Cookies = {
     }
     , check: function() {
         fjs.utils.Cookies.set('testCookie', 'testValue');
-        debugger;
         var val = fjs.utils.Cookies.get('testCookie');
         fjs.utils.Cookies.remove('testCookie');
         return !!val;

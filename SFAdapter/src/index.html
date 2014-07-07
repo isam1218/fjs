@@ -56,7 +56,7 @@
                           <div class="call-info-row">
                               <label>Duration</label><span>{{call.duration}}</span>
                           </div>
-                          <div class="call-info-row" ng-if="onHold()">
+                          <div class="call-info-row" ng-if="call.onHold()">
                               <label>Hold Duration</label><span>{{call.holdDuration}}</span>
                           </div>
                           <div class="call-info-row" ng-repeat="element in call.mycallsclient_callLog.related">
