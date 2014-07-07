@@ -15,6 +15,11 @@
 
 
     <script type="text/javascript" src="js/lib/fjs.core.debug.js"></script>
+    <script>
+        if(!fjs.utils.Cookies.check() && fjs.utils.Browser.isSafari()) {
+            location.href = "cookiesHack.html#"+encodeURIComponent(location.href);
+        }
+    </script>
     <script type="text/javascript" src="js/build_number.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.api.debug.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.debug.js"></script>

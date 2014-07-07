@@ -28,6 +28,9 @@
         if(this.closed) {
             return null;
         }
+        if(fjs.utils.Browser.isSafari()) {
+            url += (/\?/.test(url) ? '&safariNoCaсhe=' : '?safariNoCaсhe=') + Date.now();
+        }
         data = data || {};
         data["t"] = this.type;
         data["alt"] = 'j';

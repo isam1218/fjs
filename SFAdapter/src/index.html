@@ -13,6 +13,11 @@
  <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
 
     <script type="text/javascript" src="js/lib/fjs.core.min.js"></script>
+    <script>
+        if(!fjs.utils.Cookies.check() && fjs.utils.Browser.isSafari()) {
+            location.href = "cookiesHack.html#"+encodeURIComponent(location.href);
+        }
+    </script>
     <script type="text/javascript" src="js/build_number.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.api.min.js"></script>
     <script type="text/javascript" src="properties.js"></script>

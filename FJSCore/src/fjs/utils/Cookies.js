@@ -60,5 +60,12 @@ fjs.utils.Cookies = {
     remove: function(name) {
         fjs.utils.Cookies.set(name, '', { expires: -1 });
     }
+    , check: function() {
+        fjs.utils.Cookies.set('testCookie', 'testValue');
+        debugger;
+        var val = fjs.utils.Cookies.get('testCookie');
+        fjs.utils.Cookies.remove('testCookie');
+        return !!val;
+    }
 };
 })();
