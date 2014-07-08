@@ -64,9 +64,12 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         stopGetCallInfo();
         lastPhone = $scope.call.phone;
         if(lastPhone) {
-            var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, ''); //TODO check other symbols (+, *)
+            var rawPhone =  phone = phone.replace(/[^0-9]/g, '');
             if(rawPhone.length > 10) {
                 rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
+            }
+            if(rawPhone.length == 10) {
+                rawPhone += '+or+' + rawPhone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
             }
             if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
                 var message = {};
