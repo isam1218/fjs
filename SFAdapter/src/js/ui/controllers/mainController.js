@@ -3,6 +3,8 @@ fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) 
     fjs.controllers.CommonController(this);
     var context = this;
     var sfApiProvider = sfApi.getProvider();
+    var browserWarningClosed = false;
+
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
@@ -85,13 +87,32 @@ fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) 
 
     initResizeFrame();
 
+    $scope.showBrowserWarning = function() {
+        if(!browserWarningClosed) {
+            return !fjs.utils.Cookies.check() || !fjs.utils.LocalStorage.check();
+        }
+        return false;
+    };
+
+    $scope.getBrowserWarningLink = function() {
+        return 'http://www.fonality.com/crmlink/' + fjs.utils.Browser.getBrowserName();
+    };
+
+    $scope.getBrowserWarningMessage = function() {
+        return 'Click here for ' + fjs.utils.Browser.getBrowserName() + ' instructions.';
+    };
+
+    $scope.closeBrowserWarning = function() {
+        browserWarningClosed = true;
+    };
+
     $scope.showWarnings = function() {
         $scope.isWarningsShown = true;
         context.safeApply($scope);
         dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
     };
 
-    $scope.showLoadingPanel = function()  {
+    $scope.showLoadingPanel = function() {
         return !$scope.name && !$scope.isWarningsShown && $scope.loggined && $scope.connection && $scope.fdpConfigured;
     };
 

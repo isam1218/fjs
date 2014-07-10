@@ -15,11 +15,6 @@
 
 
     <script type="text/javascript" src="js/lib/fjs.core.debug.js"></script>
-    <script>
-        if(!fjs.utils.Cookies.check() && fjs.utils.Browser.isSafari()) {
-            location.href = "cookiesHack.html#"+encodeURIComponent(location.href);
-        }
-    </script>
     <script type="text/javascript" src="js/build_number.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.api.debug.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.debug.js"></script>
@@ -154,6 +149,16 @@
 <div class="plate" id="plate"></div>
 <div class="loading-screen" ng-if="showLoadingPanel()" >
     <div class="loading-image"></div>
+</div>
+<div class="browser_issues" ng-if="showBrowserWarning()">
+    <div class="close_browser_warning" ng-click="closeBrowserWarning()">Close X</div>
+    <b>Browser error</b>
+    <p>
+        Fonality CRM Link for Salesforce supports the use of up to 5 browser windows at the same time,
+        but your browser settings currently prevent this from working properly.
+        For instructions on how to fix this, click the button below.
+    </p>
+    <a target="_blank" href="{{getBrowserWarningLink()}}">{{getBrowserWarningMessage()}}</a>
 </div>
 </body>
 </html>

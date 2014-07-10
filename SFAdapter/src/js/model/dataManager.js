@@ -16,10 +16,14 @@ fjs.model.DataManager = function(sf) {
     this.suspendActions = [];
     this.warningListeners = {};
 
+    this.loginInfo = {};
+
     this.sf = sf.getProvider();
 
     var context = this;
     var providerFactory = new fjs.api.FDPProviderFactory();
+
+
 
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
@@ -91,7 +95,6 @@ fjs.model.DataManager = function(sf) {
     });
 
     this._getAuthInfo(function(data) {
-
         if(data) {
             if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
@@ -232,22 +235,28 @@ fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
  */
 fjs.model.DataManager.prototype._authInfoChanged = function(userData) {
     var authInfoChanged = false;
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) != userData.hud+"") {
+    var _hud = fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) || this.loginInfo.hud;
+    if(_hud != userData.hud+"") {
         if(this.tabSynchronizer.isMaster) {
             fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
         }
+        this.loginInfo.hud = userData.hud+"";
         authInfoChanged = true;
     }
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) != userData.login+"") {
+    var _login = fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) || this.loginInfo.login;
+    if(_login != userData.login+"") {
         if(this.tabSynchronizer.isMaster) {
-            fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login + "");
+            fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login+"");
         }
+        this.loginInfo.login = userData.login+"";
         authInfoChanged = true;
     }
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) != userData.email+"") {
+    var _email = fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) || this.loginInfo.email;
+    if(_email != userData.email+"") {
         if(this.tabSynchronizer.isMaster) {
-            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email);
+            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email+"");
         }
+        this.loginInfo.email = userData.email+"";
         authInfoChanged = true;
     }
     return authInfoChanged;

@@ -81,3 +81,22 @@
     position: absolute;
     cursor: pointer;
 }
+
+.browser_issues {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    padding: 5px 10px;
+    z-index: 1000;
+    border:1px solid #ddd;
+}
+
+.close_browser_warning {
+    float: right;
+    color: red;
+    cursor: pointer;
+    text-decoration: underline;
+}

@@ -68,8 +68,19 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             if(rawPhone.length > 10) {
                 rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
             }
-            if(rawPhone.length == 10) {
-                rawPhone += '+or+' + rawPhone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+            var formattedPhone = null;
+            if(rawPhone.length>4) {
+                formattedPhone = rawPhone.split("").reverse().join("");
+                if(rawPhone>7 && rawPhone <=10) {
+                    formattedPhone = formattedPhone.replace(/(\d{4})(\d{3})(\d{3}|\d{2}|\d{1})/, "$1-$2-$3");
+                }
+                if(rawPhone>4 && rawPhone <=7) {
+                    formattedPhone = formattedPhone.replace(/(\d{4})(\d{3}|\d{2}|\d{1})/, "$1-$2");
+                }
+                formattedPhone = formattedPhone.split("").reverse().join("");
+            }
+            if(formattedPhone) {
+                rawPhone += ' or ' + formattedPhone;
             }
             if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
                 var message = {};
@@ -138,7 +149,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             callLogSaveTimeout = null;
         }
         callLogSaveTimeout = setTimeout(function() {
-
             dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         },fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC);
     }
