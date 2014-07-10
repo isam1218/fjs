@@ -4,7 +4,7 @@ fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) 
     var context = this;
     var sfApiProvider = sfApi.getProvider();
     var browserWarningClosed = false;
-
+    var _hasBrowserWarning = null;
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
@@ -88,10 +88,19 @@ fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) 
     initResizeFrame();
 
     $scope.showBrowserWarning = function() {
-        if(!browserWarningClosed) {
-            return !fjs.utils.Cookies.check() || !fjs.utils.LocalStorage.check();
+        if(_hasBrowserWarning===null) {
+            var isDB = true;
+            if(fjs.utils.Browser.isSafari()) {
+                try {
+                    window.openDatabase('test', '', 'test', 1024);
+                }
+                catch(e) {
+                    isDB = false;
+                }
+            }
+            _hasBrowserWarning = !fjs.utils.Cookies.check() || !fjs.utils.LocalStorage.check() || !isDB;
         }
-        return false;
+        return _hasBrowserWarning && !browserWarningClosed;
     };
 
     $scope.getBrowserWarningLink = function() {
