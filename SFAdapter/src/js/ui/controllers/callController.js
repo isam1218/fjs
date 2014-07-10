@@ -71,10 +71,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             var formattedPhone = null;
             if(rawPhone.length>4) {
                 formattedPhone = rawPhone.split("").reverse().join("");
-                if(rawPhone>7 && rawPhone <=10) {
+                if(formattedPhone.length>7 && formattedPhone.length <=10) {
                     formattedPhone = formattedPhone.replace(/(\d{4})(\d{3})(\d{3}|\d{2}|\d{1})/, "$1-$2-$3");
                 }
-                if(rawPhone>4 && rawPhone <=7) {
+                if(formattedPhone.length>4 && formattedPhone.length <=7) {
                     formattedPhone = formattedPhone.replace(/(\d{4})(\d{3}|\d{2}|\d{1})/, "$1-$2");
                 }
                 formattedPhone = formattedPhone.split("").reverse().join("");
