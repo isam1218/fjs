@@ -59,7 +59,7 @@ fjs.utils.LocalStorage.set = function(key, value) {
  */
 fjs.utils.LocalStorage.remove = function(key) {
     if(fjs.utils.LocalStorage.check()) {
-        self.localStorage.removeItem(key, value);
+        self.localStorage.removeItem(key);
     }
 };
 
