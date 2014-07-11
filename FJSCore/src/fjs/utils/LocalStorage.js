@@ -40,7 +40,7 @@ fjs.utils.LocalStorage.check = function() {
  */
 fjs.utils.LocalStorage.get = function(key) {
     if(fjs.utils.LocalStorage.check()) {
-        self.localStorage.getItem(key);
+       return self.localStorage.getItem(key);
     }
 };
 
