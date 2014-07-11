@@ -15,7 +15,7 @@
         fjs.fdp.transport.FDPTransport.call(this, ticket, node, url);
         /**
          * Ajax provider
-         * @type {fjs.ajax.IAjaxProvider}
+         * @type {fjs.ajax.AjaxProviderBase}
          * @protected
          */
         this.ajax = null;

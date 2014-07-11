@@ -1,7 +1,6 @@
 (function(){
     namespace("fjs.fdp");
     /**
-     * 123
      * <p>
      *     Synchronization manager. Main logic of synchronization with FDP server.
      * <p>
@@ -127,7 +126,7 @@
         /**
          * SyncManager is in the process of initialization;
          */
-         'INITIALIZATION':0,
+        'INITIALIZATION':0,
         /**
          * SyncManager initialized and ready to work.
          */
@@ -178,7 +177,7 @@
         'ENTRY_KEEP': 'keep',
 
         'CLEAR': 'clear'
-};
+    };
 
     /**
      * <b>Enumerator</b> <br/>
@@ -519,7 +518,7 @@
                         break;
                     case sm.eventTypes.ENTRY_DELETION:
                         if((!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster))
-                        this.db.deleteByKey(feedName, event.xpid, null);
+                            this.db.deleteByKey(feedName, event.xpid, null);
                         break;
                     default:
                         fjs.utils.Console.error("Incorrect item change type: " + etype+" for Lazy sync");
@@ -535,26 +534,26 @@
 
     fjs.fdp.SyncManager.prototype.fullSyncProcessItems = function(items, feedName, sourceId) {
         var context = this, entriesForSave=[];
-            for (var j = 0; j < items.length; j++) {
-                var entry = items[j];
-                var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
-                entry.source = sourceId;
-                if(etype===sm.eventTypes.ENTRY_CHANGE) {
-                    var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
-                    delete entry["xef001type"];
-                    var event = {eventType: etype, feed: feedName, xpid: xpid, entry: entry};
-                    entriesForSave.push(entry);
-                    this.fireEvent(feedName, event);
-                }
-                else {
-                    fjs.utils.Console.error("Incorrect item change type: " + etype+" for Full sync");
-                }
+        for (var j = 0; j < items.length; j++) {
+            var entry = items[j];
+            var etype = (entry["xef001type"] || sm.eventTypes.ENTRY_CHANGE) ;
+            entry.source = sourceId;
+            if(etype===sm.eventTypes.ENTRY_CHANGE) {
+                var xpid = entry.xpid = entry.xpid ? entry.xpid : (sourceId ? sourceId + "_" + entry["xef001id"] : entry["xef001id"]);
+                delete entry["xef001type"];
+                var event = {eventType: etype, feed: feedName, xpid: xpid, entry: entry};
+                entriesForSave.push(entry);
+                this.fireEvent(feedName, event);
             }
-            if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
-                this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
-                    context.db.insertArray(feedName, entriesForSave, null);
-                });
+            else {
+                fjs.utils.Console.error("Incorrect item change type: " + etype+" for Full sync");
             }
+        }
+        if(this.db && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
+            this.db.deleteByIndex(feedName, {'source': sourceId}, function () {
+                context.db.insertArray(feedName, entriesForSave, null);
+            });
+        }
     };
 
     fjs.fdp.SyncManager.prototype.keepSyncProcessItems = function(items, feedName, sourceId) {
@@ -588,7 +587,7 @@
                     context.db.deleteByKey(feedName, item.xpid, null);
                 }
             },  function(){
-                    context.db.insertArray(feedName, entriesForSave, null);
+                context.db.insertArray(feedName, entriesForSave, null);
             });
         }
     };
@@ -597,7 +596,7 @@
 
         var isSource = function(sourceId) {
             return sourceId != 'full'
-       };
+        };
 
         this.fireEvent(feedName, {eventType: sm.eventTypes.FEED_START, feed:feedName});
 
@@ -681,7 +680,7 @@
         data["action"] = actionName;
         var message = {type: "action", data: {feedName: feedName, actionName: actionName, parameters: data}};
         if(this.status!=sm.states.READY) {
-               this.suspendActions.push(message);
+            this.suspendActions.push(message);
         }
         else {
             this.transport.send(message);

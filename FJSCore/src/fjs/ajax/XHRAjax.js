@@ -6,15 +6,16 @@
   * Represents AJAX requests based on <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHTTPRequest</a> <br>
   * <b>Singleton</b>
   * @constructor
-  * @implements {fjs.ajax.IAjaxProvider.<XMLHttpRequest>}
+  * @extends {fjs.ajax.AjaxProviderBase.<XMLHttpRequest>}
   */
   fjs.ajax.XHRAjax = function() {
         //Singleton
         if (!this.constructor.__instance)
             this.constructor.__instance = this;
         else return this.constructor.__instance;
-    };
-
+        fjs.ajax.AjaxProviderBase.call(this);
+  };
+    fjs.ajax.XHRAjax.extend(fjs.ajax.AjaxProviderBase);
 
 
     /**
@@ -72,21 +73,6 @@
         return xmlhttp;
     };
 
-    /**
-     * Prepares request data
-     * @param {Object} data
-     * @return {string}
-     * @private
-     */
-    fjs.ajax.XHRAjax.prototype.getParamData = function(data) {
-        var paramStrings = [], i;
-        for (i in data) {
-            if (data.hasOwnProperty(i)) {
-                paramStrings.push(i + '=' + data[i]);
-            }
-        }
-        return paramStrings.join('&');
-    };
 
     /**
      * Sends ajax request
@@ -94,7 +80,7 @@
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(XMLHttpRequest, string, boolean)} callback
+     * @param {function(XMLHttpRequest, string, boolean)} callback - Response handler
      * @return {XMLHttpRequest}
      */
     fjs.ajax.XHRAjax.prototype.send = function(method, url, headers, data, callback) {
@@ -138,7 +124,7 @@
 
     /**
      * Aborts request
-     * @param {XMLHttpRequest} xhr
+     * @param {XMLHttpRequest} xhr - request
      */
     fjs.ajax.XHRAjax.prototype.abort = function(xhr) {
         if (xhr && xhr.readyState !== _a.states.REQUEST_COMPLETED) {

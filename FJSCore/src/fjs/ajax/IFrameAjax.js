@@ -57,7 +57,7 @@
      * <b>Singleton</b>
      * @param {string} host Cross domain iframe url
      * @constructor
-     * @implements {fjs.ajax.IAjaxProvider.<fjs.ajax.IFrameRequest>}
+     * @extends {fjs.ajax.AjaxProviderBase.<fjs.ajax.IFrameRequest>}
      */
      fjs.ajax.IFrameAjax = function(host) {
         //Singleton
@@ -65,6 +65,9 @@
             this.constructor.__instance = this;
         else return this.constructor.__instance;
         var context = this;
+
+         fjs.ajax.AjaxProviderBase.call(this);
+
         /**
          * Cross domain iframe url
          * @type {string}
@@ -133,6 +136,7 @@
             context.status = _a.states.READY;
         }
     };
+    fjs.ajax.IFrameAjax.extend(fjs.ajax.AjaxProviderBase);
 
     /**
      * @enum {number}
@@ -144,24 +148,14 @@
         'READY':1
     };
 
-    fjs.ajax.IFrameAjax.prototype.getParamData = function(data) {
-        var paramStrings = [], i;
-        for (i in data) {
-            if (data.hasOwnProperty(i)) {
-                paramStrings.push(i + '=' + data[i]);
-            }
-        }
-        return paramStrings.join('&');
-    };
-
     /**
      * Sends ajax request
      * @param {string} method - Request method (POST or GET)
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(fjs.ajax.IFrameRequest, string, boolean)} callback Request handler function
-     * @param {fjs.ajax.IFrameRequest=} request Internal parameter. Should be null for external call.
+     * @param {function(fjs.ajax.IFrameRequest, string, boolean)} callback - Request handler function
+     * @param {fjs.ajax.IFrameRequest=} request - Internal parameter. Should be null for external call.
      * @return {fjs.ajax.IFrameRequest}
      */
     fjs.ajax.IFrameAjax.prototype.send = function(method, url, headers, data, callback, request) {
@@ -210,7 +204,7 @@
     };
     /**
      * Aborts request
-     * @param {fjs.ajax.IFrameRequest} request Request for abort
+     * @param {fjs.ajax.IFrameRequest} request - Request for abort
      */
     fjs.ajax.IFrameAjax.prototype.abort = function(request) {
         if(!this.compatibility) {
@@ -227,7 +221,8 @@
     };
 
     /**
-     * @param {MessageEvent} e Post message event
+     * 'Response' event handler
+     * @param {MessageEvent} e - Post message event
      * @private
      */
     fjs.ajax.IFrameAjax.prototype.onResponse = function(e) {

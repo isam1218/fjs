@@ -1,9 +1,10 @@
 namespace("fjs.api");
 
 /**
- * @param {string} ticket
- * @param {string} node
- * @param {Function} callback
+ * Data provider works in the WebWorker
+ * @param {string} ticket - Auth ticket
+ * @param {string} node - node Id
+ * @param {Function} callback - Data provider ready event handler
  * @constructor
  * @extends fjs.api.DataProviderBase
  */
@@ -28,13 +29,16 @@ fjs.api.WebWorkerDataProvider = function(ticket, node, callback) {
 fjs.api.WebWorkerDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
+ * Checks provider availability. Returns true if you can use this provider.
  * @returns {boolean}
  */
 fjs.api.WebWorkerDataProvider.check = function() {
    return  !!window.Worker;
 };
 /**
- * @param {{action:string, data:*}} message
+ * Sends message to synchronization module (FJSFDP)
+ * @param {{action:string, data:*}} message - Message
+ * @protected
  */
 fjs.api.WebWorkerDataProvider.prototype.sendMessage = function(message) {
     this.worker.postMessage(message);

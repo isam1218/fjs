@@ -5,22 +5,36 @@ namespace("fjs.db");
  */
 fjs.db.LocalStorageDbProvider = function() {
     /**
-     *
      * @type {{name:string, version:number, tables:Object}}
+     * @private
      */
     this.dbInfo = null;
     /**
      * @type {Object}
+     * @private
      */
     this.tables = {};
+    /**
+     * @type {Object}
+     * @private
+     */
     this.dbData = {};
+    /**
+     * @type {Object}
+     * @private
+     */
     this.indexes = {};
+    /**
+     * Data base state
+     * @type {number}
+     */
     this.state = -1;
 };
 
 /**
- * @param {string} tableName
- * @param {Array|Object} items
+ * Creates table indexes
+ * @param {string} tableName - table name
+ * @param {Array|Object} items - indexes
  * @private
  */
 fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, items) {
@@ -74,13 +88,11 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
     }
 };
 
-
-
 /**
  * Opens connection to storage
- * @param {string} name
- * @param {number} version
- * @param {function} callback
+ * @param {string} name - database name
+ * @param {number} version - database version
+ * @param {function} callback - database ready event handler
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
     var ls = fjs.utils.LocalStorage;
@@ -140,16 +152,19 @@ fjs.db.LocalStorageDbProvider.check = function() {
 };
 
 /**
- * Creates table (protected)
- * @param {string} name
- * @param {string} key
- * @param {Array} indexes
+ * Creates table
+ * @param {string} name - table name
+ * @param {string} key - table primary key
+ * @param {Array} indexes - table indexes
  * @protected
  */
 fjs.db.LocalStorageDbProvider.prototype.createTable = function(name, key, indexes) {
 
 };
-
+/**
+ * Creates list of tables
+ * @private
+ */
 fjs.db.LocalStorageDbProvider.prototype.createTables = function() {
     if(this.tables) {
         this.dbInfo.tables = [];
@@ -161,19 +176,31 @@ fjs.db.LocalStorageDbProvider.prototype.createTables = function() {
     }
 };
 
+/**
+ * Converts table name to special format to use in localStorage
+ * @param {string} tableName - table name
+ * @returns {string}
+ * @private
+ */
 fjs.db.LocalStorageDbProvider.prototype.getLSTableName = function(tableName) {
     return "DB_"+this.dbInfo.name+"_"+tableName;
 };
 
+/**
+ * Converts table name from special format
+ * @param {string} tableName - table name
+ * @returns {string}
+ * @private
+ */
 fjs.db.LocalStorageDbProvider.prototype.getRealTableName = function(tableName) {
     return tableName.replace("DB_"+this.dbInfo.name+"_", "");
 };
 
 /**
  * Declare table for creation (table will be created after only after Db version change)
- * @param {string} name
- * @param {string} key
- * @param {Array} indexes
+ * @param {string} name - table name
+ * @param {string} key - primary key
+ * @param {Array} indexes - table indexes
  */
 fjs.db.LocalStorageDbProvider.prototype.declareTable = function(name, key, indexes) {
     this.tables[name] = {name:name, key:key, indexes:indexes};
@@ -181,9 +208,9 @@ fjs.db.LocalStorageDbProvider.prototype.declareTable = function(name, key, index
 
 /**
  * Inserts one row
- * @param {string} tableName
- * @param {*} item
- * @param {Function} callback
+ * @param {string} tableName - table name
+ * @param {*} item - item to insert
+ * @param {Function=} callback - handler function to execute when row added
  */
 fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, callback) {
     var _tableName = this.getLSTableName(tableName);
@@ -196,9 +223,9 @@ fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, ca
 
 /**
  * Inserts array of rows
- * @param {string} tableName
- * @param {Array} items
- * @param {Function} callback
+ * @param {string} tableName - table name
+ * @param {Array} items - array of items to insert
+ * @param {Function} callback - handler function to execute when all rows added
  */
 fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items, callback) {
     var _tableName = this.getLSTableName(tableName);
@@ -215,9 +242,9 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
 
 /**
  * Deletes row by primary key
- * @param {string} tableName
- * @param {string} key
- * @param {Function} callback
+ * @param {string} tableName - table name
+ * @param {string} key - primary key
+ * @param {Function} callback - handler function to execute when row deleted
  */
 fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, callback) {
     tableName = this.getLSTableName(tableName);
@@ -235,10 +262,10 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
 };
 
 /**
- * Returns all rows from table
- * @param {string} tableName
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
+ * Selects all rows from table
+ * @param {string} tableName - table name
+ * @param {Function} itemCallback - handler function to execute when one row selected
+ * @param {function(Array)} allCallback - handler function to execute when all rows selected
  */
 fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCallback, allCallback) {
     tableName = this.getLSTableName(tableName);
@@ -267,11 +294,11 @@ fjs.db.LocalStorageDbProvider.prototype.selectAll = function(tableName, itemCall
 };
 
 /**
- * Returns rows by index
- * @param {string} tableName
- * @param {*} rule Map key->value
- * @param {Function} itemCallback
- * @param {function(Array)} allCallback
+ * Selects rows by index
+ * @param {string} tableName - table name
+ * @param {*} rules - map key->value
+ * @param {Function} itemCallback - handler function to execute when one row selected
+ * @param {function(Array)} allCallback - handler function to execute when all rows selected
  */
 fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule, itemCallback, allCallback) {
     var arr = [], indexes = [], indexKeys=[], _tableName = this.getLSTableName(tableName), ids=[], index, indexKey, context = this, count=0;
@@ -323,10 +350,10 @@ fjs.db.LocalStorageDbProvider.prototype.selectByIndex = function(tableName, rule
 };
 
 /**
- * Returns row by primary key
- * @param {string} tableName
- * @param {string} key
- * @param {Function} callback
+ * Selects row by primary key
+ * @param {string} tableName - table name
+ * @param {string} key - primary key
+ * @param {Function} callback - handler function to execute when one row selected
  */
 fjs.db.LocalStorageDbProvider.prototype.selectByKey = function(tableName, key, callback) {
     tableName = this.getLSTableName(tableName);
@@ -336,7 +363,7 @@ fjs.db.LocalStorageDbProvider.prototype.selectByKey = function(tableName, key, c
 
 /**
  * Clears database (drops all tables)
- * @param {Function} callback
+ * @param {Function} callback - handler function to execute when all tables removed
  */
 fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
     for(var tableName in this.tables) {
@@ -353,9 +380,9 @@ fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
 
 /**
  * Deletes row by index
- * @param {string} tableName
- * @param {*} rules
- * @param {Function} callback
+ * @param {string} tableName - table name
+ * @param {*} rules - map key->value
+ * @param {Function} callback - handler function to execute when rows deleted
  */
 fjs.db.LocalStorageDbProvider.prototype.deleteByIndex = function(tableName, rules, callback) {
     var arr = [], indexes = [], indexKeys=[], _tableName = this.getLSTableName(tableName), ids=[], index, indexKey;

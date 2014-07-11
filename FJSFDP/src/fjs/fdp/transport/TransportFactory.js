@@ -1,17 +1,18 @@
 (function(){
 
     /**
-     *
+     * FDP Transports factory
      * @constructor
      */
     fjs.fdp.transport.TransportFactory = function() {
 
     };
     /**
-     * @param {string} ticket
-     * @param {string} node
-     * @param {string} url
-     * @param {string } type
+     * Creates most appropriate transport.
+     * @param {string} ticket - Auth ticket
+     * @param {string} node - Node Id
+     * @param {string} url - FDP Server URL
+     * @param {string} type - Client type (web | salesforce)
      * @returns {fjs.fdp.transport.FDPTransport}
      * @static
      */
@@ -34,8 +35,12 @@
         return this._getBrowserSpecifiedTransport(ticket, node, url, type);
     };
     /**
-     * @private
+     * @param {string} ticket - Auth ticket
+     * @param {string} node - Node Id
+     * @param {string} url - FDP Server URL
+     * @param {string} type - Client type (web | salesforce)
      * @returns {fjs.fdp.transport.FDPTransport}
+     * @private
      */
     fjs.fdp.transport.TransportFactory._getBrowserSpecifiedTransport = function(ticket, node, url, type) {
 

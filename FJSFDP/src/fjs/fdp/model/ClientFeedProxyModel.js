@@ -39,8 +39,8 @@ fjs.fdp.model.ClientFeedProxyModel.extend(fjs.fdp.model.ProxyModel);
 
 /**
  * Creates simulated FDP sync object
- * @param {string} syncType
- * @param {Object} entry
+ * @param {string} syncType synchronization type ('full'|'lazy'|'keep')
+ * @param {fjs.fdp.model.EntryModel} entry model item.
  * @returns {Object}
  * @private
  */
@@ -55,6 +55,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType,
     };
     return syncData;
 };
+/**
+ * Sync iteration ends.
+ * @private
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.clientFeedName, changes:this.changes});
@@ -64,10 +68,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function() {
 
 /**
  * Sends action to FDP server
- * @param {string} feedName Feed name
- * @param {string} actionName Action name ('push' or 'delete')
- * @param {Object} data Request parameters ({'key':'value',...})
- * @param {boolean} notBroadcast
+ * @param {string} feedName - Feed name
+ * @param {string} actionName - Action name ('push' or 'delete')
+ * @param {Object} data - Request parameters ({'key':'value',...})
+ * @param {boolean} notBroadcast - broadcast action to all tabs
  */
 fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, actionName, data, notBroadcast) {
     if(actionName==='push' || actionName==='delete') {
@@ -78,7 +82,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.superClass.sendAction.call(this, this.feedName, actionName, data);
     }
 };
-
+/**
+ * Handler of that entry has deleted
+ * @param {Object} event - Event object
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
     if(event.feed == this.feedName) {
         delete this.items[event.xpid];
@@ -87,6 +94,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
     this.fillDeletion(event.xpid, event.feed);
 };
 
+/**
+ * Adds event handler function to feed changes
+ * @param {Function} listener - handler function
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
     var index = this.listeners.indexOf(listener);
     if(index<0) {
@@ -105,6 +116,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
     }
 };
 
+/**
+ * Collects field names from joined feeds, then to remove them if joined feed entry deleted
+ * @param {string} feedName - Feed name
+ * @param {Object} entry FDP - Feed entry
+ * @protected
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, entry) {
     if(feedName != this.feedName) {
         if(!this.feedFields[feedName]) {
@@ -119,6 +136,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
         }
     }
 };
+
+/**
+ * Handler of that entry has changed
+ * @param {Object} event - Event object
+ * @protected
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     /**
      * @type {fjs.fdp.model.EntryModel}

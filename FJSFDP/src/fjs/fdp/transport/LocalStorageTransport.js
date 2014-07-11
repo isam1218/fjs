@@ -70,8 +70,8 @@
 
     /**
      * Broadcasts message to all tabs using localStorage transport.
-     * @param {string} messageType
-     * @param {*} messageData
+     * @param {string} messageType - type of message
+     * @param {*} messageData - message object
      * @static
      */
     fjs.fdp.transport.LocalStorageTransport.masterSend = function(messageType, messageData) {

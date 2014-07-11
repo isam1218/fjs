@@ -7,7 +7,7 @@ fjs.utils.LocalStorage = function() {
 };
 
 /**
- * @type {boolean || null}
+ * @type {boolean | null}
  * @private
  */
 fjs.utils.LocalStorage._enabled = null;
@@ -36,17 +36,20 @@ fjs.utils.LocalStorage.check = function() {
 };
 
 /**
- * @param {string} key
+ * Safely gets localStorage value
+ * @param {string} key - localStorage item key
+ * @returns {string}
  */
 fjs.utils.LocalStorage.get = function(key) {
     if(fjs.utils.LocalStorage.check()) {
-        self.localStorage.getItem(key);
+        return self.localStorage.getItem(key);
     }
 };
 
 /**
- * @param {string} key
- * @param {string} value
+ * Safely sets localStorage value
+ * @param {string} key - item key
+ * @param {string} value - item value
  */
 fjs.utils.LocalStorage.set = function(key, value) {
     if(fjs.utils.LocalStorage.check()) {
@@ -55,7 +58,8 @@ fjs.utils.LocalStorage.set = function(key, value) {
 };
 
 /**
- * @param {string} key
+ * Safely removes localStorage value
+ * @param {string} key - localStorage item key
  */
 fjs.utils.LocalStorage.remove = function(key) {
     if(fjs.utils.LocalStorage.check()) {

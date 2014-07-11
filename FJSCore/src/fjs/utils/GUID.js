@@ -7,9 +7,9 @@
     fjs.utils.GUID = {};
 
     function _s4() {
-        var now = new Date();
-        var seed = now.getSeconds();
-        return ((1 + Math.random()) * parseInt('10000', 16)).toString(16).substring(1, 5);
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
     }
 
     /**

@@ -15,8 +15,8 @@ fjs.utils.URL.getOrigin = function() {
     return window.location.origin ||  (location.protocol+"//"+location.host + (/:/.test(location.host) ? '' : (location.port ? ":" + location.port : "")));
 };
 /**
- * Returns the file extension or "" by URL
- * @param {string} url URL string
+ * Returns the file extension or '' by URL
+ * @param {string} url - URL string
  * @returns {string}
  */
 fjs.utils.URL.getFileExtension = function(url) {
@@ -27,8 +27,8 @@ fjs.utils.URL.getFileExtension = function(url) {
 };
 
 /**
- * Returns the file name or "" by URL
- * @param {string} url URL string
+ * Returns the file name or '' by URL
+ * @param {string} url - URL string
  * @returns {string}
  */
 fjs.utils.URL.getFileName = function(url) {

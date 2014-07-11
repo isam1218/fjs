@@ -1,9 +1,10 @@
 namespace("fjs.api");
 
 /**
- * @param {string} ticket
- * @param {string} node
- * @param {Function} callback
+ * Data provider works directly in the page.
+ * @param {string} ticket - Auth ticket
+ * @param {string} node - node Id
+ * @param {Function} callback - Data provider ready event handler
  * @constructor
  * @extends fjs.api.DataProviderBase
  */
@@ -35,6 +36,7 @@ fjs.api.SimpleClientDataProvider = function(ticket, node, callback) {
 fjs.api.SimpleClientDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
+ * Checks provider availability. Returns true if you can use this provider.
  * @returns {boolean}
  */
 fjs.api.SimpleClientDataProvider.check = function() {
@@ -42,7 +44,9 @@ fjs.api.SimpleClientDataProvider.check = function() {
 };
 
 /**
- * @param {{action:string, data:*}} message
+ * Sends message to synchronization module (FJSFDP)
+ * @param {{action:string, data:*}} message - Message
+ * @protected
  */
 fjs.api.SimpleClientDataProvider.prototype.sendMessage = function(message) {
     switch (message.action) {

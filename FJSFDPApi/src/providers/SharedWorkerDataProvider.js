@@ -1,9 +1,10 @@
 namespace("fjs.api");
 
 /**
- * @param {string} ticket
- * @param {string} node
- * @param {Function} callback
+ * Data provider works in the SharedWorker
+ * @param {string} ticket - Auth ticket
+ * @param {string} node - node Id
+ * @param {Function} callback - Data provider ready event handler
  * @constructor
  * @extends fjs.api.DataProviderBase
  */
@@ -29,6 +30,7 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, callback) {
 fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
 
 /**
+ * Checks provider availability. Returns true if you can use this provider.
  * @returns {boolean}
  */
 fjs.api.SharedWorkerDataProvider.check = function() {

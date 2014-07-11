@@ -6,14 +6,16 @@
      * It has significant restrictions, general that you cant get error code from failed request.<br>
      * <b>Singleton</b>
      * @constructor
-     * @implements {fjs.ajax.IAjaxProvider.<XDomainRequest>}
+     * @extends {fjs.ajax.AjaxProviderBase.<XDomainRequest>}
      */
     fjs.ajax.XDRAjax = function() {
         //Singleton
         if (!this.constructor.__instance)
             this.constructor.__instance = this;
         else return this.constructor.__instance;
+        fjs.ajax.AjaxProviderBase.call(this);
     };
+    fjs.ajax.XDRAjax.extend(fjs.ajax.AjaxProviderBase);
 
     /**
      * Sends ajax request
@@ -58,15 +60,6 @@
         return xdr;
     };
 
-    fjs.ajax.XDRAjax.prototype.getParamData = function(data) {
-        var paramStrings = [], i;
-        for (i in data) {
-            if (data.hasOwnProperty(i)) {
-                paramStrings.push(i + '=' + data[i]);
-            }
-        }
-        return paramStrings.join('&');
-    };
     /**
      * Aborts request
      * @param {XDomainRequest} xdr - Request to abort

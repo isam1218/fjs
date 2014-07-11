@@ -136,7 +136,7 @@ fjs.db.IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
 /**
  * Declares multiple indexes for IE <br>
  * Workaround to fix IE issue with multiple indexes
- * @param {Array} indexes
+ * @param {Array} indexes Table indexes
  * @private
  */
 fjs.db.IndexedDBProvider.prototype.IEDeclareMultipleIndexes = function(indexes) {
@@ -151,8 +151,8 @@ fjs.db.IndexedDBProvider.prototype.IEDeclareMultipleIndexes = function(indexes) 
 /**
  * Creates multiples indexes for IE
  * Workaround to fix IE issue with multiple indexes
- * @param {string} tableName
- * @param item
+ * @param {string} tableName - table name
+ * @param {object} item
  * @private
  */
 fjs.db.IndexedDBProvider.prototype.IEApplyMultipleIndexesForItem = function(tableName, item) {

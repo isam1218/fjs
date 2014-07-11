@@ -1,5 +1,9 @@
 namespace("fjs.api");
-
+/**
+ * Provider factory decides which provider to create.
+ * It analyze browser capabilities and selects the most suitable provider (SharedWorkerProvider, WebWorkerProvider, SimpleProvider...).
+ * @constructor
+ */
 fjs.api.FDPProviderFactory = function() {
     /**
      * register of providers
@@ -13,9 +17,10 @@ fjs.api.FDPProviderFactory = function() {
     }
 };
 /**
- * @param ticket
- * @param node
- * @param callback
+ * Returns most suitable provider
+ * @param {string} ticket - authorization ticket
+ * @param {string?} node - node ID
+ * @param {Function} callback - method to execute when API and FJSFDP fully initialized
  * @returns {fjs.api.DataProviderBase|undefined}
  */
 fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callback) {

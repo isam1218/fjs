@@ -2,7 +2,7 @@ namespace("fjs.fdp.model");
 /**
  * Wrapper class for data entries received form FDP server. <br>
  * It sets the basic structure of entry model, and provides a mechanism for update entry.
- * @param {Object} obj
+ * @param {Object} obj - source object to create entry
  * @constructor
  */
 fjs.fdp.model.EntryModel = function(obj) {
@@ -14,7 +14,7 @@ fjs.fdp.model.EntryModel = function(obj) {
 /**
  * Fills entry model with new parameters, returns map of changes or null if no changes
  * @param {Object} obj - input fdp changes
- * @returns {Object|null} Map of changes
+ * @returns {Object|null} - map of changes
  */
 fjs.fdp.model.EntryModel.prototype.fill = function(obj) {
     var changes = {};

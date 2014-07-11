@@ -29,131 +29,128 @@
      * @static
      */
     fjs.utils.Browser = function(){};
+
     /**
-    * Returns Internet explorer major version
-    * @return {number}
-    */
+     * Returns Internet explorer major version
+     * @return {number}
+     */
     fjs.utils.Browser.getIEVersion = getIEVersion;
+
     /**
-    * Returns true if browser is Internet Explorer
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE = function() {
-        if(getIEVersion() != -1) {
-            return function(){return true; }
-        }
-        else {
-            return function(){return false; }
-        }
-    }();
+        var res = getIEVersion() != -1;
+        fjs.utils.Browser.isIE = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE();
+    };
     /**
-    * Returns true if browser is Internet Explorer 7
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 7
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE7 =  function() {
-        if(getIEVersion() == 7) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+
+        var res = getIEVersion() == 7;
+        fjs.utils.Browser.isIE7 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE7();
+    };
     /**
-    * Returns true if browser is Internet Explorer 8
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 8
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE8 = function() {
-        if(getIEVersion() == 8) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 8;
+        fjs.utils.Browser.isIE8 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE8();
+    };
     /**
-    * Returns true if browser is Internet Explorer 9
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 9
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE9 = function() {
-        if(getIEVersion() == 9) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 9;
+        fjs.utils.Browser.isIE9 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE9();
+    };
     /**
-    * Returns true if browser is Internet Explorer 10
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 10
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE10 = function() {
-        if(getIEVersion() == 10) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 10;
+        fjs.utils.Browser.isIE10 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE10();
+    };
     /**
-    * Returns true if browser is Internet Explorer 11
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 11
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE11 = function() {
-        if(getIEVersion() == 11) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 11;
+        fjs.utils.Browser.isIE11 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE11();
+    };
     /**
-    * Returns true if browser is Chrome or Chromium
-    * @return {boolean}
-    */
+     * Returns true if browser is Chrome or Chromium
+     * @return {boolean}
+     */
     fjs.utils.Browser.isChrome = function() {
-        if(/chrom(e|ium)/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /chrom(e|ium)/i.test(navigator.userAgent);
+        fjs.utils.Browser.isChrome = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isChrome();
+    };
     /**
-    * Returns true if browser is Firefox
-    * @return {boolean}
-    */
+     * Returns true if browser is Firefox
+     * @return {boolean}
+     */
     fjs.utils.Browser.isFirefox = function() {
-        if(/firefox/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /firefox/i.test(navigator.userAgent);
+        fjs.utils.Browser.isFirefox = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isFirefox();
+    };
     /**
-    * Returns true if browser is Safari
-    * @return {boolean}
-    */
+     * Returns true if browser is Safari
+     * @return {boolean}
+     */
     fjs.utils.Browser.isSafari = function() {
-        if(/safari/i.test(navigator.userAgent) && !/chrom(e|ium)/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /safari/i.test(navigator.userAgent) && !/chrom(e|ium)/i.test(navigator.userAgent);
+        fjs.utils.Browser.isSafari = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isSafari();
+    };
     /**
-    * Returns true if browser is Opera
-    * @return {boolean}
-    */
+     * Returns true if browser is Opera
+     * @return {boolean}
+     */
     fjs.utils.Browser.isOpera = function() {
-        if(/Opera/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /opera/i.test(navigator.userAgent);
+        fjs.utils.Browser.isOpera = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isOpera();
+    };
+    /**
+     * Returns browser name ['ie'|'firefox'|'chrome'|'safari'|'opera']
+     * @returns {string}
+     */
     fjs.utils.Browser.getBrowserName = function() {
         if(fjs.utils.Browser.isIE()) return "ie";
         else  if(fjs.utils.Browser.isFirefox()) return "firefox";

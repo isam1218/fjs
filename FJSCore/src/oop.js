@@ -23,7 +23,7 @@ Function.prototype.extend = function(superClass) {
 /**
  * Creates and returns namespace
  * @param {string} ns_name namespace string
- * @returns {*|{}}
+ * @returns {Object}
  */
 var namespace = function(ns_name) {
     var parts = ns_name.split(".");
