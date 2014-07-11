@@ -78,7 +78,7 @@
                 fjs.utils.Cookies.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
             }
             else {
-                localStorage.setItem(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
+                fjs.utils.LocalStorage.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
             }
             if(!context.isMaster) {
                 context.fireEvent('master_changed', (context.isMaster = true));
@@ -130,7 +130,7 @@
             lsvals = fjs.utils.Cookies.get(this.TABS_SYNCRONIZE_KEY);
         }
         else {
-            lsvals = localStorage.getItem(this.TABS_SYNCRONIZE_KEY);
+            lsvals = fjs.utils.LocalStorage.get(this.TABS_SYNCRONIZE_KEY);
         }
         return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
     };

@@ -83,25 +83,26 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  * @param {function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
+    var ls = fjs.utils.LocalStorage;
     try {
         var tableName, context = this;
         this.state = 0;
-        this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_" + name));
+        this.dbInfo = fjs.utils.JSON.parse(ls.get("DB_" + name));
         if (this.dbInfo) {
             if (version > this.dbInfo.version) {
                 for (var i = 0; i < this.dbInfo.tables.length; i++) {
                     tableName = this.dbInfo.tables[i];
-                    self.localStorage.removeItem(tableName);
+                    ls.remove(tableName);
                 }
                 this.dbInfo.tables = null;
                 this.dbInfo.version = version;
                 this.createTables();
-                self.localStorage.setItem("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
+                ls.set("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
             }
             else {
                 for (var k = 0; k < this.dbInfo.tables.length; k++) {
                     tableName = this.dbInfo.tables[k];
-                    var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(self.localStorage.getItem(tableName)) || {};
+                    var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(ls.get(tableName)) || {};
                     this.createIndexes(this.getRealTableName(tableName), tableData);
                 }
             }
@@ -112,7 +113,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
                 version: version
             };
             this.createTables();
-            self.localStorage.setItem("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
+            ls.set("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
         }
         this.state = 1;
         if (callback)
@@ -135,7 +136,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
  * @returns {boolean}
  */
 fjs.db.LocalStorageDbProvider.check = function() {
-    return !!self.localStorage;
+    return fjs.utils.LocalStorage.check();
 };
 
 /**
@@ -188,7 +189,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, ca
     var _tableName = this.getLSTableName(tableName);
     this.createIndexes(tableName, [item]);
     this.dbData[_tableName][item[this.tables[tableName].key]] = item;
-    self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    fjs.utils.LocalStorage.set(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
     if(callback)
     setTimeout(callback, 0);
 };
@@ -207,7 +208,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
             var item = items[i];
             this.dbData[_tableName][item[this.tables[tableName].key]] = item;
         }
-    self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    fjs.utils.LocalStorage.set(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
     if(callback)
     setTimeout(callback, 0);
 };
@@ -222,12 +223,12 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
     tableName = this.getLSTableName(tableName);
     if(key!=null && this.dbData[tableName]) {
         delete this.dbData[tableName][key];
-        self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
+        fjs.utils.LocalStorage.set(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
     else {
         this.dbData[tableName] = {};
         this.indexes[tableName] = {};
-        self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
+        fjs.utils.LocalStorage.set(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
     if(callback)
     setTimeout(callback, 0);
@@ -341,7 +342,7 @@ fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
     for(var tableName in this.tables) {
         if(this.tables.hasOwnProperty(tableName)) {
             var _tableName = this.getLSTableName(tableName);
-            self.localStorage.removeItem(_tableName);
+            fjs.utils.LocalStorage.remove(_tableName);
             delete this.dbData[_tableName];
             delete this.indexes[_tableName];
         }
@@ -366,7 +367,7 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByIndex = function(tableName, rule
             }
         }
         this.indexes[_tableName] = {};
-        self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+        fjs.utils.LocalStorage.set(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
     }
     else {
         for (var key in rules) {

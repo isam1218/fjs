@@ -1,6 +1,7 @@
 (function(){
     namespace("fjs.fdp.transport");
     /**
+     * This transport receives data form other tab via localStorage
      * @constructor
      * @extends fjs.fdp.transport.FDPTransport
      */
@@ -52,12 +53,12 @@
         }
         else {
             message.data.t = Date.now();
-            localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
+            fjs.utils.LocalStorage.set('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
         }
     };
 
     /**
-     *
+     * Closes (destroy) this transport
      */
     fjs.fdp.transport.LocalStorageTransport.prototype.close = function() {
         window.removeEventListener('storage', this.onStorage, false);
@@ -66,11 +67,18 @@
         this.tabsSynchronizer.removeEventListener('lsp_clientSync', this.onStorage);
         this.tabsSynchronizer.removeEventListener('lsp_action', this.onStorage);
     };
+
+    /**
+     * Broadcasts message to all tabs using localStorage transport.
+     * @param {string} messageType
+     * @param {*} messageData
+     * @static
+     */
     fjs.fdp.transport.LocalStorageTransport.masterSend = function(messageType, messageData) {
         if(fjs.utils.Browser.isIE11()) {
             new fjs.api.TabsSynchronizer().setSyncValue('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
         }
         messageData.t = Date.now();
-        localStorage.setItem('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
+        fjs.utils.LocalStorage.set('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
     };
 })();
