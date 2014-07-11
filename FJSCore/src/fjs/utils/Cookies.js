@@ -26,7 +26,7 @@ fjs.utils.Cookies = {
     set: function(name, value, options) {
         options = options || {};
 
-        var expires = options.expires;
+        var expires = 31536000;//options.expires;
 
         if (typeof expires == 'number' && expires) {
             var d = new Date();
@@ -59,6 +59,12 @@ fjs.utils.Cookies = {
      */
     remove: function(name) {
         fjs.utils.Cookies.set(name, '', { expires: -1 });
+    }
+    , check: function() {
+        fjs.utils.Cookies.set('testCookie', 'testValue');
+        var val = fjs.utils.Cookies.get('testCookie');
+        fjs.utils.Cookies.remove('testCookie');
+        return !!val;
     }
 };
 })();

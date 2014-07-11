@@ -80,6 +80,8 @@ module.exports = function(grunt) {
                     , 'src/js/lib/*.js'
                     , 'src/index.html'
                     , 'src/debug.html'
+                    , 'src/cookiesHack.html'
+                    , 'src/cookiesHack2.html'
                     , 'src/css/*.css'
                     , 'src/templates/*.html'
                     , 'src/img/*.gif'

@@ -80,7 +80,7 @@
                         <div class="call-info-row">
                             <label>Duration</label><span>{{call.duration}}</span>
                         </div>
-                        <div class="call-info-row" ng-if="onHold()">
+                        <div class="call-info-row" ng-if="call.onHold()">
                             <label>Hold Duration</label><span>{{call.holdDuration}}</span>
                         </div>
                         <div class="call-info-row" ng-repeat="element in call.mycallsclient_callLog.related">
@@ -89,7 +89,7 @@
                         <div ng-if="showAddButton()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
                     </div>
                     <div class="call-item-buttons-block ">
-                        <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept
+                        <button class="call-item-accept-button" ng-disabled="!isAutoAnswer()" ng-click="accept()">Accept
                         </button>
                         <button class="call-item-hold-btn" ng-click="hold()">Hold</button>
                         <button class="call-item-unhold-btn" ng-click="unhold()">Retrieve</button>
@@ -112,7 +112,7 @@
                                 <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)" ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
                                 </select>
                             </div>
-                            <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note"
+                            <label>Comments</label><textarea maxlength="255" ng-keypress="noteKeyPress()" ng-model="call.mycallsclient_callLog.note"
                                                              ng-change="noteChange()"></textarea>
                         </div>
                     </div>
@@ -147,8 +147,18 @@
 </footer>
 <iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
 <div class="plate" id="plate"></div>
-<div class="loading-screen" ng-if="!name && !isWarningsShown" >
+<div class="loading-screen" ng-if="showLoadingPanel()" >
     <div class="loading-image"></div>
+</div>
+<div class="browser_issues" ng-if="showBrowserWarning()">
+    <div class="close_browser_warning" ng-click="closeBrowserWarning()">Close X</div>
+    <b>Browser error</b>
+    <p>
+        Fonality CRM Link for Salesforce supports the use of up to 5 browser windows at the same time,
+        but your browser settings currently prevent this from working properly.
+        For instructions on how to fix this, click the button below.
+    </p>
+    <a target="_blank" href="{{getBrowserWarningLink()}}">{{getBrowserWarningMessage()}}</a>
 </div>
 </body>
 </html>

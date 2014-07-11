@@ -32,7 +32,7 @@ fjs.db.WebSQLProvider.check = function() {
  * @param {function(fjs.db.IDBProvider)} callback - Handler function to execute when database was ready
  */
 fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
-    var dbSize = 5*1023*1023, context = this;
+    var dbSize = 4*1024*1024, context = this;
 
     try {
         var db = this.db = self.openDatabase(name, "", name, dbSize);

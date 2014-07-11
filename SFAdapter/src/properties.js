@@ -3,10 +3,11 @@ fjs.fdp.CONFIG = {
     SERVER: {
        serverURL: "https://huc-qa.fonality.com:8080"
     }
-    , providers: ['sharedWorker','simple']
+    , providers: ['sharedWorker', 'simple']
     , DB: {
         name: "SFA"
-        , version: 24
+        , version: 25
+        , size:5*1023*1023
         /**
          * @type {Array}
          */

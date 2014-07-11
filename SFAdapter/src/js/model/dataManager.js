@@ -13,12 +13,17 @@ fjs.model.DataManager = function(sf) {
 
     this.state = -1;
     this.suspendFeeds = [];
+    this.suspendActions = [];
     this.warningListeners = {};
+
+    this.loginInfo = {};
 
     this.sf = sf.getProvider();
 
     var context = this;
     var providerFactory = new fjs.api.FDPProviderFactory();
+
+
 
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
@@ -107,6 +112,12 @@ fjs.model.DataManager = function(sf) {
                          }
                          context.suspendFeeds=[];
                      }
+                     if(context.suspendActions.length>0) {
+                         for(var j=0; j<context.suspendActions.length; j++) {
+                             context.dataProvider.sendMessage(context.suspendActions[j]);
+                         }
+                         context.suspendActions=[];
+                     }
                  });
             }
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_SYNC, function(data) {
@@ -129,11 +140,11 @@ fjs.model.DataManager = function(sf) {
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NETWORK_PROBLEM, function(e) {
                 fjs.utils.Console.error(e);
-                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, false);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_NETWORK_PROBLEM,  connected:false, message:"Network problem"});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, function(e) {
                 fjs.utils.Console.info(e);
-                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, connected:true, message:""});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
@@ -146,6 +157,12 @@ fjs.model.DataManager = function(sf) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
                     }
                     context.suspendFeeds=[];
+                }
+                if(context.suspendActions.length>0) {
+                    for(var j=0; j<context.suspendActions.length; j++) {
+                        context.dataProvider.sendMessage(context.suspendActions[j]);
+                    }
+                    context.suspendActions=[];
                 }
             });
         }
@@ -163,6 +180,8 @@ fjs.model.DataManager.EV_NETWORK_PROBLEM = "networkProblem";
 fjs.model.DataManager.EV_CONNECTION_ESTABLISHED = "connectionEstablished";
 fjs.model.DataManager.EV_TICKET = "ticket";
 fjs.model.DataManager.EV_NODE = "node";
+fjs.model.DataManager.EV_FDP_CONFIG_ERROR = "fdpConfigError";
+fjs.model.DataManager.EV_FDP_CONFIG = "fdpConfig";
 
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";
@@ -200,8 +219,12 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
 */
 
 fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
-    if(this.dataProvider) {
-        this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
+    var message = {"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}};
+    if(this.state==1) {
+        this.dataProvider.sendMessage(message);
+    }
+    else {
+        this.suspendActions.push(message);
     }
 };
 
@@ -212,22 +235,28 @@ fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
  */
 fjs.model.DataManager.prototype._authInfoChanged = function(userData) {
     var authInfoChanged = false;
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) != userData.hud+"") {
+    var _hud = fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) || this.loginInfo.hud;
+    if(_hud != userData.hud+"") {
         if(this.tabSynchronizer.isMaster) {
             fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
         }
+        this.loginInfo.hud = userData.hud+"";
         authInfoChanged = true;
     }
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) != userData.login+"") {
+    var _login = fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) || this.loginInfo.login;
+    if(_login != userData.login+"") {
         if(this.tabSynchronizer.isMaster) {
-            fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login + "");
+            fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login+"");
         }
+        this.loginInfo.login = userData.login+"";
         authInfoChanged = true;
     }
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) != userData.email+"") {
+    var _email = fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) || this.loginInfo.email;
+    if(_email != userData.email+"") {
         if(this.tabSynchronizer.isMaster) {
-            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email);
+            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email+"");
         }
+        this.loginInfo.email = userData.email+"";
         authInfoChanged = true;
     }
     return authInfoChanged;
@@ -240,7 +269,7 @@ fjs.model.DataManager.prototype._getAccessInfo = function() {
 };
 
 fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
-    var message = {};
+    var message = {}, context = this;
     message.action = "getLoginInfo";
     message.callback = function(response) {
         var data = null;
@@ -264,7 +293,13 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
             if (res.hudLogin) {
                 data.hud = res.hudLogin;
             }
-            fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
+            if(res.serverUrl) {
+                fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType: fjs.model.DataManager.EV_FDP_CONFIG, message:""});
+            }
+            else {
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType: fjs.model.DataManager.EV_FDP_CONFIG_ERROR, message:"Server URL was not specified"});
+            }
         }
         callback(data);
     };

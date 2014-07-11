@@ -68,7 +68,10 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                    }
                    this.prepareEntry(_entry);
                    this.fireEvent("push", _entry);
-                   if((!this.clientSettingsModel.items["openedCall"] || (this.clientSettingsModel.items["openedCall"].value!= null &&  !this.items[this.clientSettingsModel.items["openedCall"].value])) && (_entry.state == 2 || _entry.state == 0)) {
+                   if((!this.clientSettingsModel.items["openedCall"]
+                       || (this.clientSettingsModel.items["openedCall"].value!= null
+                           &&  !this.items[this.clientSettingsModel.items["openedCall"].value]))
+                       && (_entry.state == 2 || _entry.state == 0)) {
                        this.dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  _entry.xpid});
                    }
                    fjs.utils.Console.log('!!!!push ', _event.xpid, _event.entry);
@@ -89,12 +92,14 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     var _dataPush = change.push;
 
                     _entry = this.items[_dataDel.xpid];
-
                     _entry.fill(_dataPush.entry);
-
                     delete this.items[_dataDel.xpid];
                     this.prepareEntry(_entry);
                     this.items[_dataPush.xpid] = _entry;
+                    var openedCallId = this.clientSettingsModel.getEntryByXpid('openedCall');
+                    if(openedCallId && openedCallId.value == _dataDel.xpid) {
+                        this.dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  _dataPush.xpid});
+                    }
                     _entry.oldPid = _dataDel.xpid;
                     _entry.pidChanged = true;
                    _dataPush.eventType="changepid";

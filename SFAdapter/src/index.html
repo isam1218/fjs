@@ -10,9 +10,10 @@
 
     <script type="text/javascript" src="js/lib/angular.js"></script>
     <script src="https://c.na1.visual.force.com/support/api/30.0/interaction.js"></script>
- <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
+    <!--   <script src="https://na9.salesforce.com:443/support/api/30.0/interaction.js"></script>-->
 
     <script type="text/javascript" src="js/lib/fjs.core.min.js"></script>
+
     <script type="text/javascript" src="js/build_number.js"></script>
     <script type="text/javascript" src="js/lib/fjs.fdp.api.min.js"></script>
     <script type="text/javascript" src="properties.js"></script>
@@ -20,106 +21,124 @@
     <script type="text/javascript" src="js/bin/fjs.sf.min.js"></script>
 
 </head>
-  <body ng-controller="MainController">
-  <header>
-      <div class="title">
-          Fonality CRMLink
-      </div>
-      <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="toggleWarnings()"></div>
-  </header>
-  <div ng-class="{'hidden':isWarningsShown==false}">
-      <ng-include src="warningsTemplatePath"></ng-include>
-  </div>
-  <div class="content" ng-class="{'hidden':isWarningsShown==true}" ng-controller="CallsListController">
-      <div class="user-info" ng-class="{'hidden':calls.length > 0}">
-          <div class="line">{{name}}</div>
-          <div class="line">{{extension}}</div>
-      </div>
-      <ul>
-          <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.xpid==selectedCallId}"
-              data-xpid="{{ call.xpid }}" ng-repeat="call in calls | orderBy: 'created'" ng-controller="CallController">
-              <div class="call-item-inner state{{ call.state }} incoming-{{ call.incoming }} type{{ call.type }}">
-                  <div class="call-item-head" ng-click="selectCall(call.xpid)">
-                      <div class="call-state-ico"></div>
-                      <div class="call-title">{{ call.displayName }}</div>
-                  </div>
-                  <div class="call-item-details {{ isTransferDialogClass }}">
-                      <div class="call-item-info-area">
-                          <div class="call-info-row">
-                              <label>Phone</label><span>{{ call.phone }}</span>
-                          </div>
-                          <div class="call-info-row">
-                              <label>Duration</label><span>{{call.duration}}</span>
-                          </div>
-                          <div class="call-info-row" ng-if="onHold()">
-                              <label>Hold Duration</label><span>{{call.holdDuration}}</span>
-                          </div>
-                          <div class="call-info-row" ng-repeat="element in call.mycallsclient_callLog.related">
-                              <label>{{element.title}}</span></label><span ng-click="openSFLink(element._id)" class="underlined">{{ element.Name }}</span>
-                          </div>
-                          <div ng-if="showAddButton()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span ng-click="createContact()" class="underlined">Create contact</span></div>
-                      </div>
-                      <div class="call-item-buttons-block ">
-                          <button class="call-item-accept-button" ng-disabled="autoAnswer" ng-click="accept()">Accept
-                          </button>
-                          <button class="call-item-hold-btn" ng-click="hold()">Hold</button>
-                          <button class="call-item-unhold-btn" ng-click="unhold()">Retrieve</button>
-                          <button class="call-item-end-btn" ng-click="end()">End</button>
-                          <button class="call-item-transfer-btn" ng-click="transfer()">Transfer</button>
-                      </div>
-                      <div class="call-item-log">
-                          <div class="call-item-log-title" ng-click="toggleCallLog()">
-                              <div class="call-item-log-title-arrow" ng-bind-html="getTriangle()"></div>
-                              <div class="call-item-log-title-caption">Current Call Log</div>
-                          </div>
-                          <div class="call-item-log-body" src="callLogPath" ng-if="call.mycallsclient_callLog.isOpened">
-                              <div ng-if="call.getWho()">
-                                  <label>Name</label>
-                                  <select ng-model="call.mycallsclient_callLog.whoId" ng-change="whoChange($event)" ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhoFilter">
-                                  </select>
-                              </div>
-                              <div ng-if="showWhatSelect()">
-                                  <label>RelatedTo</label>
-                                  <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)" ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
-                                  </select>
-                              </div>
-                              <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note"
-                                                               ng-change="noteChange()"></textarea>
-                          </div>
-                      </div>
-                      <div class="call-item-transfer" ng-if="call.mycallsclient_callLog.tranferOpened">
-                          <div ng-controller="TransferDialog">
-                              <form ng-submit="transfer()">
-                                  <input class="call-item-transfer-input" type="text" ng-model="transfer_phone" placeholder="Phone number" id="inputTransfer" />
-                                  <button class="transfer-btn" ng-click="transfer()">Xfer</button>
-                              </form>
-                              <div>
-                                  <ng-include src="dialpadPath"></ng-include>
-                              </div>
-                              <div>
-                                  <button class="cancel-transfer-btn" ng-click="closeTransferDialog()">Cancel</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </li>
-      </ul>
-  </div>
-  <footer ng-if="!isWarningsShown" ng-controller="NewCallController" id="NewCallController">
-      <div class="new-call-dialpad-holder" id="dialpad_holder">
-          <ng-include src="dialogPath"></ng-include>
-      </div>
-      <form ng-submit="actionCall(phone)">
-          <input class="new-call-input" ng-model="phone" type="text" placeholder="Phone number" id="inputPhone"/>
-      </form>
-      <button class="new-call-button" ng-click="actionCall(phone)">Call</button>
-      <button class="new-call-dialpad" ng-click="showDialpad()">&#xe011;</button>
-  </footer>
-  <iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
-  <div class="plate" id="plate"></div>
-  <div class="loading-screen" ng-if="!name && !isWarningsShown" >
-      <div class="loading-image"></div>
-  </div>
-    </body>
+<body ng-controller="MainController">
+<header>
+    <div class="title">
+        Fonality CRMLink
+    </div>
+    <div class="warning-button" ng-class="{'hidden':isWarningsButtonShown==false}" ng-click="toggleWarnings()"></div>
+</header>
+<div ng-class="{'hidden':isWarningsShown==false}">
+    <ng-include src="warningsTemplatePath"></ng-include>
+</div>
+<div class="content" ng-class="{'hidden':isWarningsShown==true}" ng-controller="CallsListController">
+    <div class="user-info" ng-class="{'hidden':calls.length > 0}">
+        <div class="line">{{name}}</div>
+        <div class="line">{{extension}}</div>
+    </div>
+    <ul>
+        <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.xpid==selectedCallId}"
+            data-xpid="{{ call.xpid }}" ng-repeat="call in calls | orderBy: 'created'" ng-controller="CallController">
+            <div class="call-item-inner state{{ call.state }} incoming-{{ call.incoming }} type{{ call.type }}">
+                <div class="call-item-head" ng-click="selectCall(call.xpid)">
+                    <div class="call-state-ico"></div>
+                    <div class="call-title">{{ call.displayName }}</div>
+                </div>
+                <div class="call-item-details {{ isTransferDialogClass }}">
+                    <div class="call-item-info-area">
+                        <div class="call-info-row">
+                            <label>Phone</label><span>{{ call.phone }}</span>
+                        </div>
+                        <div class="call-info-row">
+                            <label>Duration</label><span>{{call.duration}}</span>
+                        </div>
+                        <div class="call-info-row" ng-if="call.onHold()">
+                            <label>Hold Duration</label><span>{{call.holdDuration}}</span>
+                        </div>
+                        <div class="call-info-row" ng-repeat="element in call.mycallsclient_callLog.related">
+                            <label>{{element.title}}</span></label><span ng-click="openSFLink(element._id)"
+                                                                         class="underlined">{{ element.Name }}</span>
+                        </div>
+                        <div ng-if="showAddButton()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span
+                                ng-click="createContact()" class="underlined">Create contact</span></div>
+                    </div>
+                    <div class="call-item-buttons-block">
+                        <button class="call-item-accept-button" ng-disabled="!isAutoAnswer()" ng-click="accept()">
+                            Accept
+                        </button>
+                        <button class="call-item-hold-btn" ng-click="hold()">Hold</button>
+                        <button class="call-item-unhold-btn" ng-click="unhold()">Retrieve</button>
+                        <button class="call-item-end-btn" ng-click="end()">End</button>
+                        <button class="call-item-transfer-btn" ng-click="transfer()">Transfer</button>
+                    </div>
+                    <div class="call-item-log">
+                        <div class="call-item-log-title" ng-click="toggleCallLog()">
+                            <div class="call-item-log-title-arrow" ng-bind-html="getTriangle()"></div>
+                            <div class="call-item-log-title-caption">Current Call Log</div>
+                        </div>
+                        <div class="call-item-log-body" src="callLogPath" ng-if="call.mycallsclient_callLog.isOpened">
+                            <div ng-if="call.getWho()">
+                                <label>Name</label>
+                                <select ng-model="call.mycallsclient_callLog.whoId" ng-change="whoChange($event)"
+                                        ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhoFilter">
+                                </select>
+                            </div>
+                            <div ng-if="showWhatSelect()">
+                                <label>RelatedTo</label>
+                                <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)"
+                                        ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
+                                </select>
+                            </div>
+                            <label>Comments</label><textarea maxlength="255" ng-keypress="noteKeyPress()"
+                                                             ng-model="call.mycallsclient_callLog.note"
+                                                             ng-change="noteChange()"></textarea>
+                        </div>
+                    </div>
+                    <div class="call-item-transfer" ng-if="call.mycallsclient_callLog.tranferOpened">
+                        <div ng-controller="TransferDialog">
+                            <form ng-submit="transfer()">
+                                <input class="call-item-transfer-input" type="text" ng-model="transfer_phone"
+                                       placeholder="Phone number" id="inputTransfer"/>
+                                <button class="transfer-btn" ng-click="transfer()">Xfer</button>
+                            </form>
+                            <div>
+                                <ng-include src="dialpadPath"></ng-include>
+                            </div>
+                            <div>
+                                <button class="cancel-transfer-btn" ng-click="closeTransferDialog()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<footer ng-if="!isWarningsShown" ng-controller="NewCallController" id="NewCallController">
+    <div class="new-call-dialpad-holder" id="dialpad_holder">
+        <ng-include src="dialogPath"></ng-include>
+    </div>
+    <form ng-submit="actionCall(phone)">
+        <input class="new-call-input" ng-model="phone" type="text" placeholder="Phone number" id="inputPhone"/>
+    </form>
+    <button class="new-call-button" ng-click="actionCall(phone)">Call</button>
+    <button class="new-call-dialpad" ng-click="showDialpad()">&#xe011;</button>
+</footer>
+<iframe name="frame" id="resizeFrame" height="100%" width="100%" class="frame-content"></iframe>
+<div class="plate" id="plate"></div>
+<div class="loading-screen" ng-if="showLoadingPanel()">
+    <div class="loading-image"></div>
+</div>
+<div class="browser_issues" ng-if="showBrowserWarning()">
+    <div class="close_browser_warning" ng-click="closeBrowserWarning()">Close X</div>
+    <b>Browser error</b>
+    <p>
+        Fonality CRM Link for Salesforce supports the use of up to 5 browser windows at the same time,
+        but your browser settings currently prevent this from working properly.
+        For instructions on how to fix this, click the button below.
+    </p>
+    <a target="_blank" href="{{getBrowserWarningLink()}}">{{getBrowserWarningMessage()}}</a>
+</div>
+
+</body>
 </html>

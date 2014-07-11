@@ -51,6 +51,7 @@
             this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
         }
         else {
+            message.data.t = Date.now();
             localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
         }
     };
@@ -69,6 +70,7 @@
         if(fjs.utils.Browser.isIE11()) {
             new fjs.api.TabsSynchronizer().setSyncValue('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
         }
+        messageData.t = Date.now();
         localStorage.setItem('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
     };
 })();

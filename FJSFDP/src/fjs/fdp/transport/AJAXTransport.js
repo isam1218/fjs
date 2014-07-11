@@ -154,13 +154,12 @@
     fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
         var context = this;
         this._currentRequest = this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
-              if(isOk) {
-                  var _data = fjs.utils.JSON.parse(data);
-                  var ticket = _data["Auth"];
-                  var node = _data["node"];
-                  if(ticket && node) {
-                      context.fireEvent('message', {type:'node', data:{nodeId:(context.node = node)}});
-                      context.fireEvent('message', {type:'ticket', data:{ticket:(context.ticket = ticket)}});
+            try  {
+            if(isOk) {
+                  var _data = fjs.utils.JSON.parse(data), ticket, node;
+                  if(_data && (ticket = _data["Auth"]) && (node = _data["node"])) {
+                          context.fireEvent('message', {type: 'node', data: {nodeId: (context.node = node)}});
+                          context.fireEvent('message', {type: 'ticket', data: {ticket: (context.ticket = ticket)}});
                   }
                   else {
                       context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
@@ -170,6 +169,9 @@
                   context.fireEvent('error', {type:'authError', message:(data ? data.replace('Error=', '') : "Wrong auth data")});
               }
               context.handleRequestErrors(xhr, isOk);
+            } catch (e) {
+                context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
+            }
           });
     };
 
@@ -245,7 +247,7 @@
                 }
             }
             else {
-                if(request.status == 403) {
+                if(request.status == 403 || request.status == 401) {
                     callback(false);
                     context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
@@ -295,7 +297,7 @@
                     }
                     else if (context._clientRegistryFailedCount >= 5) {
                         setTimeout(function () {
-                            context.requestVersionscache()
+                            context.requestVersionscache();
                         }, 5000);
                     }
                 }
@@ -315,6 +317,9 @@
             if(isOK) {
                 data = fjs.utils.JSON.parse(data);
                 context.fireEvent('message', {type: 'sync', data:data});
+                context.requestVersionscache();
+            }
+            else {
                 context.requestVersionscache();
             }
             context.handleRequestErrors(xhr, isOK);
@@ -404,6 +409,18 @@
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             context.handleRequestErrors(xhr, isOK);
+            if(isOK) {
+
+            }
+            else {
+                if(xhr.status == 401 || xhr.status == 403) {
+                    context.requestClientRegistry(function(isOK) {
+                        if(isOK) {
+                            context.sendAction(feedName, actionName, parameters);
+                        }
+                    });
+                }
+            }
         });
     };
 

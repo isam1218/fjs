@@ -177,7 +177,7 @@ fjs.utils.Array.isArray = function(obj) {
     * @return {boolean}
     */
     fjs.utils.Browser.isSafari = function() {
-        if(/safari/i.test(navigator.userAgent)) {
+        if(/safari/i.test(navigator.userAgent) && !/chrom(e|ium)/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
@@ -299,7 +299,7 @@ fjs.utils.Cookies = {
     set: function(name, value, options) {
         options = options || {};
 
-        var expires = options.expires;
+        var expires = 31536000;//options.expires;
 
         if (typeof expires == 'number' && expires) {
             var d = new Date();

@@ -77,7 +77,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
     if(data && data.result) {
         var result = fjs.utils.JSON.parse(data.result);
         for(var i in result) {
-            if (result.hasOwnProperty(i) && i != "screenPopUrl") {
+            if (result.hasOwnProperty(i) && i != "screenPopUrl" && result[i].object != 'CaseComment') {
                 var _result = result[i];
                 _result._id = i;
                 if(_result.object == "Case") {
@@ -157,4 +157,29 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
         clientSettingsModel.deletePhone(this.phone);
     }
     return _changed || _whatId!=this.mycallsclient_callLog.whatId || _whoId != this.mycallsclient_callLog.whoId;
+};
+
+fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
+    scope = scope || this;
+    if(obj)
+        for(var i in obj) {
+            if(obj.hasOwnProperty(i)) {
+                var field = obj[i];
+                if(typeof(field)!='object' || field==null) {
+                    if(i!='note' || !this._blockChangeNote) {
+                        scope[i] = field;
+                    }
+                }
+                else if(Array.isArray(field)) {
+                    scope[i] = [];
+                    this.fill(field, scope[i]);
+                }
+                else  {
+                    if(!scope[i]) {
+                        scope[i] = {};
+                    }
+                    this.fill(field, scope[i]);
+                }
+            }
+        }
 };

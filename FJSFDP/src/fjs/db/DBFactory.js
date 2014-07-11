@@ -21,24 +21,28 @@ fjs.db.DBFactory = function(config) {
     };
 
     this.currentDB = null;
+    this.currentDBIndex = -1;
 };
 
 /**
  * Selects and returns the most appropriate database provider.
+ * @param {fjs.db.IDBProvider} oldDB
  * @returns {fjs.db.IDBProvider|undefined}
  */
-fjs.db.DBFactory.prototype.getDB = function() {
+fjs.db.DBFactory.prototype.getDB = function(oldDB) {
     /**
      * priority of databases
      * @type {Array}
      */
-    var dbs = this.config.DB.dbProviders;
-    for(var i=0; i<dbs.length; i++) {
-        if(this._dbRegister[dbs[i]].check()) {
-            if(!this.currentDB) {
+    if(!this.currentDB || oldDB) {
+        var dbs = this.config.DB.dbProviders;
+        for(var i=this.currentDBIndex+1; i<dbs.length; i++) {
+            if (this._dbRegister[dbs[i]].check()) {
                 this.currentDB = new this._dbRegister[dbs[i]]();
+                this.currentDBIndex = i;
+                break;
             }
-            return this.currentDB;
         }
     }
+    return this.currentDB;
 };

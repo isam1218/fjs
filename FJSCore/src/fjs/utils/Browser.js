@@ -135,7 +135,7 @@
     * @return {boolean}
     */
     fjs.utils.Browser.isSafari = function() {
-        if(/safari/i.test(navigator.userAgent)) {
+        if(/safari/i.test(navigator.userAgent) && !/chrom(e|ium)/i.test(navigator.userAgent)) {
             return function(){return true;}
         }
         else {
@@ -154,4 +154,12 @@
             return function(){return false;}
         }
     }();
+    fjs.utils.Browser.getBrowserName = function() {
+        if(fjs.utils.Browser.isIE()) return "ie";
+        else  if(fjs.utils.Browser.isFirefox()) return "firefox";
+        else if(fjs.utils.Browser.isChrome()) return "chrome";
+        else if(fjs.utils.Browser.isSafari()) return "safari";
+        else if(fjs.utils.Browser.isOpera()) return "opera";
+        else return "";
+    };
 })();

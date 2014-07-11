@@ -12,9 +12,17 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     var callLogSaveTimeout = null;
     var sfApiProvider = sfApi.getProvider();
     var clientSettingsModel = dataManager.getModel('clientsettings');
+    var meModel = dataManager.getModel('me');
+    var locationModel = dataManager.getModel('locations');
 
     $scope.getTriangle = function() {
         return $sce.trustAsHtml($scope.call.mycallsclient_callLog.isOpened ? fjs.controllers.CallController.OPENED_TRIANGLE : fjs.controllers.CallController.CLOSED_TRIANGLE);
+    };
+
+    $scope.isAutoAnswer = function() {
+        var _currentLocationId = meModel.getProperty('current_location');
+        var _currentLocation = locationModel.getEntryByXpid(_currentLocationId);
+        return $scope.call.incoming && _currentLocation && _currentLocation.location_status_autoAnswer;
     };
 
     var tabsSynchronizer = new fjs.api.TabsSynchronizer();
@@ -56,9 +64,23 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         stopGetCallInfo();
         lastPhone = $scope.call.phone;
         if(lastPhone) {
-            var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, ''); //TODO check other symbols (+, *)
+            var rawPhone =  $scope.call.phone.replace(/[^0-9]/g, '');
             if(rawPhone.length > 10) {
                 rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
+            }
+            var formattedPhone = null;
+            if(rawPhone.length>4) {
+                formattedPhone = rawPhone.split("").reverse().join("");
+                if(formattedPhone.length>7 && formattedPhone.length <=10) {
+                    formattedPhone = formattedPhone.replace(/(\d{4})(\d{3})(\d{3}|\d{2}|\d{1})/, "$1-$2-$3");
+                }
+                if(formattedPhone.length>4 && formattedPhone.length <=7) {
+                    formattedPhone = formattedPhone.replace(/(\d{4})(\d{3}|\d{2}|\d{1})/, "$1-$2");
+                }
+                formattedPhone = formattedPhone.split("").reverse().join("");
+            }
+            if(formattedPhone) {
+                rawPhone += ' or ' + formattedPhone;
             }
             if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
                 var message = {};
@@ -73,6 +95,22 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             startGetCallLogInfo();
         }
     }
+
+    var _blockChangeNoteTM =null;
+
+    $scope.noteKeyPress = function() {
+
+        $scope.call._blockChangeNote = true;
+
+        if(_blockChangeNoteTM!=null) {
+            clearTimeout(_blockChangeNoteTM);
+            _blockChangeNoteTM = null;
+        }
+        _blockChangeNoteTM = setTimeout(function(){
+            delete $scope.call._blockChangeNote;
+            _blockChangeNoteTM = null;
+        }, 1000);
+    };
 
     $scope.showAddButton = function() {
         return $scope.call.mycallsclient_callLog.related.length == 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE;
@@ -111,7 +149,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             callLogSaveTimeout = null;
         }
         callLogSaveTimeout = setTimeout(function() {
-
             dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         },fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC);
     }
@@ -136,8 +173,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     };
 
     $scope.transfer = function() {
-        $scope.call.mycallsclient_callLog.tranferOpened = true;
-        $scope.call.mycallsclient_callLog.isOpened = false;
+        if(!$scope.call.mycallsclient_callLog.tranferOpened) {
+            $scope.call.mycallsclient_callLog.tranferOpened = true;
+            $scope.call.mycallsclient_callLog.isOpened = false;
+        }
+        else {
+            $scope.call.mycallsclient_callLog.tranferOpened = false;
+            $scope.call.mycallsclient_callLog.isOpened = true;
+        }
         saveCallLogChanges();
     };
 

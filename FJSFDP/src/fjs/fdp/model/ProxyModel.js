@@ -321,6 +321,16 @@ fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
     this.keepEntries = {};
 };
 
+fjs.fdp.model.ProxyModel.prototype.clear = function() {
+    this.changes = {};
+    for(var xpid in this.items) {
+        if(this.items.hasOwnProperty(xpid)) {
+            this.changes[xpid] = {type:'delete', entry:null, xpid:xpid};
+            delete this.items[xpid];
+        }
+    }
+    this.onSyncComplete();
+};
 
 /**
  * Handler of SyncManager events
@@ -330,6 +340,9 @@ fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
 fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
     var eventTypes = fjs.fdp.SyncManager.eventTypes;
     switch(event.eventType) {
+        case eventTypes.CLEAR:
+            this.clear();
+            break;
         case eventTypes.SYNC_START:
             break;
         case eventTypes.FEED_START:

@@ -37,19 +37,24 @@ function handleMessage(message, callback) {
             }
             break;
         case "registerSync":
-            dataManager.addFeedListener(message.data.feedName, callback);
+            if(dataManager)
+                dataManager.addFeedListener(message.data.feedName, callback);
             break;
         case "unregisterSync":
-            dataManager.removeFeedListener(message.data.feedName, callback);
+            if(dataManager)
+                dataManager.removeFeedListener(message.data.feedName, callback);
             break;
         case "fdp_action":
-            dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.params);
+            if(dataManager)
+                dataManager.sendAction(message.data.feedName, message.data.actionName, message.data.params);
             break;
         case "logout":
-            dataManager.logout();
+            if(dataManager)
+                dataManager.logout();
             break;
         case "SFLogin":
-            dataManager.SFLogin(message.data);
+            if(dataManager)
+                dataManager.SFLogin(message.data);
             break;
         default:
             fjs.utils.Console.error("Unknown action: " + message.action);
