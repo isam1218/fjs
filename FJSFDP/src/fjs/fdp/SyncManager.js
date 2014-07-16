@@ -1,7 +1,6 @@
 (function(){
     namespace("fjs.fdp");
     /**
-     * 123
      * <p>
      *     Synchronization manager. Main logic of synchronization with FDP server.
      * <p>

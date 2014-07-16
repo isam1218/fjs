@@ -60,6 +60,10 @@ fjs.utils.Cookies = {
     remove: function(name) {
         fjs.utils.Cookies.set(name, '', { expires: -1 });
     }
+    /**
+     * Checks if browser cookies is enabled
+     * @returns {boolean}
+     */
     , check: function() {
         fjs.utils.Cookies.set('testCookie', 'testValue');
         var val = fjs.utils.Cookies.get('testCookie');

@@ -32,5 +32,5 @@ fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
  * @returns {boolean}
  */
 fjs.api.SharedWorkerDataProvider.check = function() {
-    return  !!self.SharedWorker && !fjs.utils.Browser.isSafari() && fjs.utils.Cookies.check();
+    return  !!self.SharedWorker && !fjs.utils.Browser.isSafari();// && fjs.utils.Cookies.check();
 };

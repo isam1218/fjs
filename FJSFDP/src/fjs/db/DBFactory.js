@@ -26,7 +26,7 @@ fjs.db.DBFactory = function(config) {
 
 /**
  * Selects and returns the most appropriate database provider.
- * @param {fjs.db.IDBProvider} oldDB
+ * @param {fjs.db.IDBProvider?} oldDB Previous database if it failed.
  * @returns {fjs.db.IDBProvider|undefined}
  */
 fjs.db.DBFactory.prototype.getDB = function(oldDB) {

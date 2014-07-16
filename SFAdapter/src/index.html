@@ -59,8 +59,6 @@
                             <label>{{element.title}}</span></label><span ng-click="openSFLink(element._id)"
                                                                          class="underlined">{{ element.Name }}</span>
                         </div>
-                        <div ng-if="showAddButton()" class="call-info-row"><label class="add-contact-row">&#x2b;</label><span
-                                ng-click="createContact()" class="underlined">Create contact</span></div>
                     </div>
                     <div class="call-item-buttons-block">
                         <button class="call-item-accept-button" ng-disabled="!isAutoAnswer()" ng-click="accept()">

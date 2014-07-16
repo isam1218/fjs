@@ -94,7 +94,7 @@
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(XMLHttpRequest, string, boolean)} callback
+     * @param {function(XMLHttpRequest, string, boolean)} callback - response handler
      * @return {XMLHttpRequest}
      */
     fjs.ajax.XHRAjax.prototype.send = function(method, url, headers, data, callback) {
@@ -138,7 +138,7 @@
 
     /**
      * Aborts request
-     * @param {XMLHttpRequest} xhr
+     * @param {XMLHttpRequest} xhr - Request to abort
      */
     fjs.ajax.XHRAjax.prototype.abort = function(xhr) {
         if (xhr && xhr.readyState !== _a.states.REQUEST_COMPLETED) {

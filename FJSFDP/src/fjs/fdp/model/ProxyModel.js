@@ -299,7 +299,8 @@ fjs.fdp.model.ProxyModel.prototype.onEntryDeletion = function(event) {
     this.fillDeletion(event.xpid, event.feed);
 };
 /**
- * @param {Object} event
+ * Keep entry event.
+ * @param {Object} event keep entry event object
  */
 fjs.fdp.model.ProxyModel.prototype.onEntryKeep = function(event) {
     this.keepEntries[event.xpid] = event;
@@ -307,7 +308,9 @@ fjs.fdp.model.ProxyModel.prototype.onEntryKeep = function(event) {
 
 
 /**
- * @param {Object} event
+ * Source complete event.
+ * @param {Object} event source complete event object
+ * @protected
  */
 fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
     if(event.syncType==fjs.fdp.SyncManager.syncTypes.FULL || event.syncType==fjs.fdp.SyncManager.syncTypes.KEEP) {
@@ -321,6 +324,9 @@ fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
     this.keepEntries = {};
 };
 
+/**
+ * Clears all data for feed
+ */
 fjs.fdp.model.ProxyModel.prototype.clear = function() {
     this.changes = {};
     for(var xpid in this.items) {
@@ -334,7 +340,7 @@ fjs.fdp.model.ProxyModel.prototype.clear = function() {
 
 /**
  * Handler of SyncManager events
- * @param event Event object
+ * @param {Object} event Event object
  * @protected
  */
 fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
@@ -368,7 +374,10 @@ fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
             break;
     }
 };
-
+/**
+ * Sync iteration ends.
+ * @private
+ */
 fjs.fdp.model.ProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.feedName, changes:this.changes});

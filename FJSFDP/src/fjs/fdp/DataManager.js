@@ -139,8 +139,8 @@ fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) 
 
 /**
  * Loads more items for feeds with dynamic loading
- * @param {string} feedName
- * @param filter Filter to load only specified data
+ * @param {string} feedName FeedName
+ * @param {Object} filter Filter to load only specified data
  * @param {number} count Count of items
  */
 fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
@@ -150,6 +150,11 @@ fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
     this.sm.loadNext(feedName, filter, count);
 };
 
+/**
+ * Broadcasts message to listeners.
+ * @param {string} eventType event type
+ * @param {*} eventData event message object
+ */
 fjs.fdp.DataManager.prototype.fireEvent = function (eventType, eventData) {
     var _listeners = this.listeners[eventType], i;
     eventData.eventType = eventType;
@@ -165,7 +170,10 @@ fjs.fdp.DataManager.prototype.fireEvent = function (eventType, eventData) {
         }
     }
 };
-
+/**
+ * Authenticates user by salesforce user data
+ * @param {Object} loginData user info data
+ */
 fjs.fdp.DataManager.prototype.SFLogin = function(loginData) {
     this.sm.SFLogin(loginData);
 };

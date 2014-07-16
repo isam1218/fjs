@@ -21,7 +21,7 @@
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(XDomainRequest, string, boolean)} callback Request handler function
+     * @param {function(XDomainRequest, string, boolean)} callback Response handler function
      * @return {XDomainRequest}
      */
     fjs.ajax.XDRAjax.prototype.send = function(method, url, headers, data, callback) {

@@ -1,8 +1,14 @@
 (function(){
     namespace("fjs.utils");
+    /**
+     * Utils class for console. Resolves browser specific console problems.
+     * @constructor
+     */
     fjs.utils.Console = function() {
-
     };
+    /**
+     * Writes log message to console
+     */
     fjs.utils.Console.log = function() {
         if(console) {
             if(console.log.apply) {
@@ -14,6 +20,9 @@
             }
         }
     };
+    /**
+     * Writes error message to console
+     */
     fjs.utils.Console.error = function() {
         if(console) {
             if(console.error.apply) {
@@ -25,6 +34,9 @@
             }
         }
     };
+    /**
+     * Writes debug message to console
+     */
     fjs.utils.Console.debug = function() {
         if(console) {
             if(console.debug) {
@@ -41,6 +53,9 @@
             }
         }
     };
+    /**
+     * Writes warning message to console
+     */
     fjs.utils.Console.warn = function() {
         if(console) {
             if(console.warn) {
@@ -57,6 +72,9 @@
             }
         }
     };
+    /**
+     * Writes info message to console
+     */
     fjs.utils.Console.info = function() {
         if(console) {
             if(console.info) {

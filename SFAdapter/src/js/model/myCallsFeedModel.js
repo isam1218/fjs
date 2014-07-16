@@ -64,6 +64,15 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                        this.order.push(_entry);
                    }
                    else {
+                       if(_entry.state == 0 && _event.entry.state == 2 && document.hasFocus()) {
+                           var message = {};
+                           message.action = "getPhoneInfoAndOpenPopup";
+                           message.data = {};
+                           message.data.phone = _entry.phone;
+                           message.data.callType = (_entry.incoming ? "inbound" : "outbound");
+                           message.callback = function(){};
+                           this.dataManager.sf.sendAction(message);
+                       }
                        _entry.fill(_event.entry)
                    }
                    this.prepareEntry(_entry);
@@ -92,6 +101,15 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     var _dataPush = change.push;
 
                     _entry = this.items[_dataDel.xpid];
+                   if(_entry.state == 0 && _dataPush.entry.state == 2 && document.hasFocus()) {
+                       var message = {};
+                       message.action = "getPhoneInfoAndOpenPopup";
+                       message.data = {};
+                       message.data.phone = _entry.phone;
+                       message.data.callType = (_entry.incoming ? "inbound" : "outbound");
+                       message.callback = function(){};
+                       this.dataManager.sf.sendAction(message);
+                   }
                     _entry.fill(_dataPush.entry);
                     delete this.items[_dataDel.xpid];
                     this.prepareEntry(_entry);

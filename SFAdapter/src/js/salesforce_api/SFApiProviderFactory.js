@@ -5,8 +5,7 @@ namespace("fjs.sf");
 
 fjs.sf.SFApiProviderFactory = function() {
     this._providers = {
-          'sharedWorker': fjs.sf.SFSharedWorkerProvider
-        , 'simple': fjs.sf.SFSimpleProvider
+        'simple': fjs.sf.SFSimpleProvider
     };
 };
 
