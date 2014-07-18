@@ -81,7 +81,7 @@
                                         ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhoFilter">
                                 </select>
                             </div>
-                            <div ng-if="showWhatSelect()">
+                            <div ng-if="call.showRelated()">
                                 <label>RelatedTo</label>
                                 <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)"
                                         ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
@@ -127,6 +127,8 @@
 <div class="loading-screen" ng-if="showLoadingPanel()">
     <div class="loading-image"></div>
 </div>
+<div ng-include="dialogTemplate"></div>
+<div class="dialog_bg"  ng-click="closeDialog();" ng-if="dialogTemplate"></div>
 <div class="browser_issues" ng-if="showBrowserWarning()">
     <div class="close_browser_warning" ng-click="closeBrowserWarning()">Close X</div>
     <b>Browser error</b>

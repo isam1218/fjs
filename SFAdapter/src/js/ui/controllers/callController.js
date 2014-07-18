@@ -52,16 +52,15 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     onDurationTimeout();
 
     function callInfoCallback(data) {
-        if(context) {
             if ($scope.call.fillCallLogData(data, clientSettingsModel)) {
                 saveCallLogChanges();
-                context.safeApply($scope);
+                if(context) {
+                    context.safeApply($scope);
+                }
             }
-        }
     }
 
-    function getCallLogInfo() {
-        stopGetCallInfo();
+    function getCallLogInfo(callback) {
         lastPhone = $scope.call.phone;
         if(lastPhone) {
             var rawPhone =  $scope.call.phone.replace(/[^0-9]/g, '');
@@ -89,10 +88,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
                 message.data.phone = rawPhone;
                 message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
                 message.data.isRinging = ($scope.call.state == 0);
-                message.callback = callInfoCallback;
+                message.callback = function(data){
+                    callInfoCallback(data);
+                    if(callback) {
+                        callback(data);
+                    }
+                };
                 sfApiProvider.sendAction(message);
             }
-            startGetCallLogInfo();
         }
     }
 
@@ -114,11 +117,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
 
     $scope.showAddButton = function() {
         return $scope.call.mycallsclient_callLog.related.length == 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE;
-    };
-
-    $scope.showWhatSelect = function() {
-        var who = $scope.call.findCallLogTargetById($scope.call.mycallsclient_callLog.whoId);
-        return $scope.call.getWhat() && (!who || who.object!='Lead');
     };
 
     $scope.whoChange = function() {
@@ -237,14 +235,22 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         openCallLog();
     });
 
+    var findShowSaveCallLogDialog = function(_scope) {
+        _scope = _scope || $scope;
+        if(_scope.showSaveCallLogDialog) {
+            return _scope.showSaveCallLogDialog;
+        }
+        else {
+            return findShowSaveCallLogDialog(_scope.$parent);
+        }
+    }
+
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
         tabsSynchronizer.removeEventListener("master_changed", masterListener);
-        stopGetCallInfo();
-        if($scope.call.mycallsclient_callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-            initCallLogSubject();
+        if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
             var message = {};
             message.action = "addCallLog";
             message.data = {};
@@ -259,32 +265,16 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
                 fjs.utils.Console.error(response);
             };
             sfApiProvider.sendAction(message);
-
+        }
+        else if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+            var showSaveCallLogDialog = findShowSaveCallLogDialog();
+            getCallLogInfo(function(){
+                showSaveCallLogDialog($scope.call);
+            });
         }
         context = null;
         clearTimeout(callLogSaveTimeout);
     });
-
-    function initCallLogSubject() {
-        if($scope.call.mycallsclient_callLog.note && $scope.call.mycallsclient_callLog.note != "") {
-            $scope.call.mycallsclient_callLog.subject = "Call: " + $scope.call.mycallsclient_callLog.note.substr(0, 240) + " ...";
-        }
-        else {
-            $scope.call.mycallsclient_callLog.subject = "Call";
-        }
-    }
-
-
-    function stopGetCallInfo() {
-        if(callLogInfoTimeout) {
-            $timeout.cancel(callLogInfoTimeout);
-            callLogInfoTimeout = null;
-        }
-    }
-
-    function startGetCallLogInfo() {
-        callLogInfoTimeout = $timeout(getCallLogInfo, fjs.controllers.CallController.CALL_GET_INFO_DELAY_IN_SEC);
-    }
 };
 
 fjs.controllers.CallController.extend(fjs.controllers.CommonController);

@@ -169,6 +169,9 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
                     if(i!='note' || !this._blockChangeNote) {
                         scope[i] = field;
                     }
+                    if(i=='note' && field) {
+                        scope['subject'] = "Call: " + (field.length>240 ? field.substr(0, 240) + " ..." : field);
+                    }
                 }
                 else if(Array.isArray(field)) {
                     scope[i] = [];
@@ -182,4 +185,9 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
                 }
             }
         }
+};
+
+fjs.model.MyCallEntryModel.prototype.showRelated = function() {
+    var who = this.findCallLogTargetById(this.mycallsclient_callLog.whoId);
+    return this.getWhat() && (!who || who.object!='Lead');
 };

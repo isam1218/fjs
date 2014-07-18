@@ -1,0 +1,19 @@
+<div class="dialog save_call_log_dialog">
+    <b style="margin-bottom: 10px; display: block;">Save Call Log confirmation </b>
+    <div ng-if="dialogModel.getWho()">
+        <label>Name:</label>
+        <select ng-model="dialogModel.mycallsclient_callLog.whoId" ng-change="whoChange($event)"
+                ng-options="item._id as item.Name group by item.object for item in dialogModel.mycallsclient_callLog.related | WhoFilter">
+        </select>
+    </div>
+    <div ng-if="dialogModel.showRelated()">
+        <label>RelatedTo:</label>
+        <select ng-model="dialogModel.mycallsclient_callLog.whatId" ng-change="whatChange($event)"
+                ng-options="item._id as item.Name group by item.object for item in dialogModel.mycallsclient_callLog.related | WhatFilter">
+        </select>
+    </div>
+    <div>
+        <button ng-click="saveCallLog(dialogModel); closeDialog();">Save</button>
+        <button ng-click="closeDialog();">Cancel</button>
+    </div>
+</div>

@@ -78,7 +78,7 @@ fjs.model.DataManager = function(sf) {
                     context.dataProvider.sendMessage({action: "SFLogin", data: data});
                 }
             });
-        }, 10000);
+        }, 900000);
     };
 
     if(this.tabSynchronizer.isMaster) {
