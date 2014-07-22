@@ -63,9 +63,14 @@ fjs.model.MyCallEntryModel.prototype.getRelatedItemType = function(item) {
 };
 
 fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSettingsModel) {
+
     var _whatId = this.mycallsclient_callLog.whatId,
         _whoId = this.mycallsclient_callLog.whoId,
         _changed = false;
+
+   if(!this.mycallsclient_callLog._notNew) {
+       this.mycallsclient_callLog._notNew = _changed = true;
+   }
 
     if(this.pidChanged) {
         _changed = true;
@@ -73,6 +78,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
     }
 
     var phoneMap = clientSettingsModel.items['phoneMap'] && clientSettingsModel.items['phoneMap'].phones || {};
+
 
     if(data && data.result) {
         var result = fjs.utils.JSON.parse(data.result);

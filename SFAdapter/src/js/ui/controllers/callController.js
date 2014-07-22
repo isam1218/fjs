@@ -26,16 +26,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     };
 
     var tabsSynchronizer = new fjs.api.TabsSynchronizer();
-    var masterListener = function() {
-        if(tabsSynchronizer.isMaster) {
-            startGetCallLogInfo();
-        }
-        else {
-            stopGetCallInfo();
-        }
-    };
-
-    tabsSynchronizer.addEventListener("master_changed", masterListener);
 
     var onDurationTimeout = function() {
         var date = new Date();
@@ -62,7 +52,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
 
     function getCallLogInfo(callback) {
         lastPhone = $scope.call.phone;
-        if(lastPhone) {
+        if(lastPhone && !$scope.call.mycallsclient_callLog._notNew) {
             var rawPhone =  $scope.call.phone.replace(/[^0-9]/g, '');
             if(rawPhone.length > 10) {
                 rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
@@ -154,7 +144,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     $scope.noteChange = function() {
         saveCallLogChanges();
     };
-
 
     $scope.$watch("call.phone", function() {
         getCallLogInfo();
@@ -249,7 +238,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        tabsSynchronizer.removeEventListener("master_changed", masterListener);
         if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
             var message = {};
             message.action = "addCallLog";
