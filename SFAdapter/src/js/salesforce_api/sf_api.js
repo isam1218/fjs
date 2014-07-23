@@ -64,7 +64,7 @@ SFApi.prototype.setPhoneApi = function(isPhoneReg, onCallCallback) {
  */
 SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, duration, date, callback) {
     var status  = "Completed";
-    if(whoId == null && whoId== null) {
+    if(whoId == null && whatId == null) {
         status = "Not Started";
     }
     var args = "Subject=" + encodeURIComponent(subject)
