@@ -52,7 +52,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
 
     function getCallLogInfo(callback) {
         lastPhone = $scope.call.phone;
-        if(lastPhone && (!$scope.call.mycallsclient_callLog._notNew||callback)) {
+        if(lastPhone && (!$scope.call.mycallsclient_callLog._notNew || callback)) {
             var rawPhone =  $scope.call.phone.replace(/[^0-9]/g, '');
             if(rawPhone.length > 10) {
                 rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
@@ -145,7 +145,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         saveCallLogChanges();
     };
 
-    $scope.$watch("call.phone", function() {
+    $scope.$watch("call.phone", function(newPhone, oldPhone) {
+        if(newPhone!=oldPhone) {
+            $scope.call.mycallsclient_callLog._notNew = false;
+        }
         getCallLogInfo();
     });
 
