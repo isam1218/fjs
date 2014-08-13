@@ -199,3 +199,50 @@ fjs.utils.DOM.dispatchEvent = function(element, event) {
         element.fireEvent('on'+event.type, event);
     }
 };
+
+fjs.utils.DOM.doGetCaretPosition = function (input) {
+
+    // Initialize
+    var iCaretPos = 0;
+
+    // IE Support
+    if (document.selection) {
+
+        // Set focus on the element
+        input.focus ();
+
+        // To get cursor position, get empty selection range
+        var oSel = document.selection.createRange ();
+
+        // Move selection start to 0 position
+        oSel.moveStart ('character', -input.value.length);
+
+        // The caret position is selection length
+        iCaretPos = oSel.text.length;
+    }
+
+    // Firefox support
+    else if (input.selectionStart || input.selectionStart == '0')
+        iCaretPos = input.selectionStart;
+
+    // Return results
+    return (iCaretPos);
+};
+
+fjs.utils.DOM.setCursor = function(elem,caretPos) {
+    if(elem != null) {
+        if(elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+        }
+        else {
+            if(elem.selectionStart) {
+                elem.focus();
+                elem.setSelectionRange(caretPos, caretPos);
+            }
+            else
+                elem.focus();
+        }
+    }
+};

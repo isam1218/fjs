@@ -79,7 +79,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.sm.onClientSync(fjs.utils.JSON.stringify(syncData), notBroadcast);
     }
     else {
-        this.superClass.sendAction.call(this, this.feedName, actionName, data);
+        fjs.fdp.model.ProxyModel.prototype.sendAction.call(this, this.feedName, actionName, data);
     }
 };
 /**

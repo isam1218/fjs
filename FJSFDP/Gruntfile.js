@@ -27,6 +27,7 @@ module.exports = function(grunt) {
                     , 'src/fjs/fdp/model/ProxyModel.js'
                     , 'src/fjs/fdp/model/contactsProxyModel.js'
                     , 'src/fjs/fdp/model/ClientFeedProxyModel.js'
+                    , 'src/fjs/fdp/model/MyCallsClientProxyModel.js'
                     , 'src/fjs/fdp/transport/FDPTransport.js'
                     , 'src/fjs/fdp/transport/AJAXTransport.js'
                     , 'src/fjs/fdp/transport/XHRTransport.js'

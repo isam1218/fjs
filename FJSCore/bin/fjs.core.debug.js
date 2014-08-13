@@ -36,7 +36,17 @@ var namespace = function(ns_name) {
     return ns;
 };
 namespace("fjs.utils");
+/**
+ * Utils static class to simplify work with Array.
+ * @constructor
+ */
 fjs.utils.Array = function(){};
+/**
+ * Checks if object is Array
+ * @param {*} obj
+ * @returns {boolean}
+ * @static
+ */
 fjs.utils.Array.isArray = function(obj) {
     return Array.isArray(obj) ||
         (typeof obj === 'object' && obj+"" === '[object Array]');
@@ -71,136 +81,147 @@ fjs.utils.Array.isArray = function(obj) {
      * @static
      */
     fjs.utils.Browser = function(){};
+
     /**
     * Returns Internet explorer major version
     * @return {number}
     */
     fjs.utils.Browser.getIEVersion = getIEVersion;
+
     /**
     * Returns true if browser is Internet Explorer
     * @return {boolean}
     */
     fjs.utils.Browser.isIE = function() {
-        if(getIEVersion() != -1) {
-            return function(){return true; }
-        }
-        else {
-            return function(){return false; }
-        }
-    }();
+        var res = getIEVersion() != -1;
+        fjs.utils.Browser.isIE = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE();
+    };
     /**
-    * Returns true if browser is Internet Explorer 7
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 7
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE7 =  function() {
-        if(getIEVersion() == 7) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+
+        var res = getIEVersion() == 7;
+        fjs.utils.Browser.isIE7 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE7();
+    };
     /**
-    * Returns true if browser is Internet Explorer 8
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 8
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE8 = function() {
-        if(getIEVersion() == 8) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 8;
+        fjs.utils.Browser.isIE8 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE8();
+    };
     /**
-    * Returns true if browser is Internet Explorer 9
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 9
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE9 = function() {
-        if(getIEVersion() == 9) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 9;
+        fjs.utils.Browser.isIE9 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE9();
+    };
     /**
-    * Returns true if browser is Internet Explorer 10
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 10
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE10 = function() {
-        if(getIEVersion() == 10) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 10;
+        fjs.utils.Browser.isIE10 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE10();
+    };
     /**
-    * Returns true if browser is Internet Explorer 11
-    * @return {boolean}
-    */
+     * Returns true if browser is Internet Explorer 11
+     * @return {boolean}
+     */
     fjs.utils.Browser.isIE11 = function() {
-        if(getIEVersion() == 11) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = getIEVersion() == 11;
+        fjs.utils.Browser.isIE11 = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isIE11();
+    };
     /**
-    * Returns true if browser is Chrome or Chromium
-    * @return {boolean}
-    */
+     * Returns true if browser is Chrome or Chromium
+     * @return {boolean}
+     */
     fjs.utils.Browser.isChrome = function() {
-        if(/chrom(e|ium)/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /chrom(e|ium)/i.test(navigator.userAgent);
+        fjs.utils.Browser.isChrome = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isChrome();
+    };
     /**
-    * Returns true if browser is Firefox
-    * @return {boolean}
-    */
+     * Returns true if browser is Firefox
+     * @return {boolean}
+     */
     fjs.utils.Browser.isFirefox = function() {
-        if(/firefox/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /firefox/i.test(navigator.userAgent);
+        fjs.utils.Browser.isFirefox = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isFirefox();
+    };
     /**
-    * Returns true if browser is Safari
-    * @return {boolean}
-    */
+     * Returns true if browser is Safari
+     * @return {boolean}
+     */
     fjs.utils.Browser.isSafari = function() {
-        if(/safari/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /safari/i.test(navigator.userAgent) && !/chrom(e|ium)/i.test(navigator.userAgent);
+        fjs.utils.Browser.isSafari = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isSafari();
+    };
     /**
-    * Returns true if browser is Opera
-    * @return {boolean}
-    */
+     * Returns true if browser is Opera
+     * @return {boolean}
+     */
     fjs.utils.Browser.isOpera = function() {
-        if(/Opera/i.test(navigator.userAgent)) {
-            return function(){return true;}
-        }
-        else {
-            return function(){return false;}
-        }
-    }();
+        var res = /opera/i.test(navigator.userAgent);
+        fjs.utils.Browser.isOpera = function() {
+            return res;
+        };
+        return fjs.utils.Browser.isOpera();
+    };
+    /**
+     * Returns browser name ['ie'|'firefox'|'chrome'|'safari'|'opera']
+     * @returns {string}
+     */
+    fjs.utils.Browser.getBrowserName = function() {
+        if(fjs.utils.Browser.isIE()) return "ie";
+        else  if(fjs.utils.Browser.isFirefox()) return "firefox";
+        else if(fjs.utils.Browser.isChrome()) return "chrome";
+        else if(fjs.utils.Browser.isSafari()) return "safari";
+        else if(fjs.utils.Browser.isOpera()) return "opera";
+        else return "";
+    };
 })();(function(){
     namespace("fjs.utils");
+    /**
+     * Utils class for console. Resolves browser specific console problems.
+     * @constructor
+     */
     fjs.utils.Console = function() {
-
     };
+    /**
+     * Writes log message to console
+     */
     fjs.utils.Console.log = function() {
         if(console) {
             if(console.log.apply) {
@@ -212,6 +233,9 @@ fjs.utils.Array.isArray = function(obj) {
             }
         }
     };
+    /**
+     * Writes error message to console
+     */
     fjs.utils.Console.error = function() {
         if(console) {
             if(console.error.apply) {
@@ -223,6 +247,9 @@ fjs.utils.Array.isArray = function(obj) {
             }
         }
     };
+    /**
+     * Writes debug message to console
+     */
     fjs.utils.Console.debug = function() {
         if(console) {
             if(console.debug) {
@@ -239,6 +266,9 @@ fjs.utils.Array.isArray = function(obj) {
             }
         }
     };
+    /**
+     * Writes warning message to console
+     */
     fjs.utils.Console.warn = function() {
         if(console) {
             if(console.warn) {
@@ -255,6 +285,9 @@ fjs.utils.Array.isArray = function(obj) {
             }
         }
     };
+    /**
+     * Writes info message to console
+     */
     fjs.utils.Console.info = function() {
         if(console) {
             if(console.info) {
@@ -299,7 +332,7 @@ fjs.utils.Cookies = {
     set: function(name, value, options) {
         options = options || {};
 
-        var expires = options.expires;
+        var expires = 31536000;//options.expires;
 
         if (typeof expires == 'number' && expires) {
             var d = new Date();
@@ -332,6 +365,16 @@ fjs.utils.Cookies = {
      */
     remove: function(name) {
         fjs.utils.Cookies.set(name, '', { expires: -1 });
+    }
+    /**
+     * Checks if browser cookies is enabled
+     * @returns {boolean}
+     */
+    , check: function() {
+        fjs.utils.Cookies.set('testCookie', 'testValue');
+        var val = fjs.utils.Cookies.get('testCookie');
+        fjs.utils.Cookies.remove('testCookie');
+        return !!val;
     }
 };
 })();(function(){
@@ -582,6 +625,53 @@ fjs.utils.DOM.dispatchEvent = function(element, event) {
     else {
         element.fireEvent('on'+event.type, event);
     }
+};
+
+fjs.utils.DOM.doGetCaretPosition = function (input) {
+
+    // Initialize
+    var iCaretPos = 0;
+
+    // IE Support
+    if (document.selection) {
+
+        // Set focus on the element
+        input.focus ();
+
+        // To get cursor position, get empty selection range
+        var oSel = document.selection.createRange ();
+
+        // Move selection start to 0 position
+        oSel.moveStart ('character', -input.value.length);
+
+        // The caret position is selection length
+        iCaretPos = oSel.text.length;
+    }
+
+    // Firefox support
+    else if (input.selectionStart || input.selectionStart == '0')
+        iCaretPos = input.selectionStart;
+
+    // Return results
+    return (iCaretPos);
+};
+
+fjs.utils.DOM.setCursor = function(elem,caretPos) {
+    if(elem != null) {
+        if(elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+        }
+        else {
+            if(elem.selectionStart) {
+                elem.focus();
+                elem.setSelectionRange(caretPos, caretPos);
+            }
+            else
+                elem.focus();
+        }
+    }
 };(function () {
     /**
      * Simulates generation Globally Unique Identifier (<a href='http://en.wikipedia.org/wiki/Globally_unique_identifier'>GUID</a>)
@@ -720,6 +810,71 @@ fjs.utils.JSON.isEmpty = function(obj) {
     return !hasFields;
 };
 })();
+/**
+ * Utils static class to simplify work with LocalStorage.
+ * @constructor
+ */
+fjs.utils.LocalStorage = function() {
+
+};
+
+/**
+ * @type {boolean || null}
+ * @private
+ */
+fjs.utils.LocalStorage._enabled = null;
+
+/**
+ * Checks if localStorage exist and enabled.
+ * @returns {boolean}
+ */
+fjs.utils.LocalStorage.check = function() {
+    if(fjs.utils.LocalStorage._enabled!==null) {
+        return fjs.utils.LocalStorage._enabled;
+    }
+    try {
+        if(typeof self.localStorage === "undefined")
+            return fjs.utils.LocalStorage._enabled = false;
+
+        var test = 'test', val = null;
+        localStorage.setItem(test, test);
+        val = localStorage.getItem(test);
+        localStorage.removeItem(test);
+        fjs.utils.LocalStorage._enabled = !!val;
+    } catch(e) {
+        fjs.utils.LocalStorage._enabled = false;
+    }
+    return fjs.utils.LocalStorage._enabled;
+};
+
+/**
+ * @param {string} key
+ */
+fjs.utils.LocalStorage.get = function(key) {
+    if(fjs.utils.LocalStorage.check()) {
+       return self.localStorage.getItem(key);
+    }
+};
+
+/**
+ * @param {string} key
+ * @param {string} value
+ */
+fjs.utils.LocalStorage.set = function(key, value) {
+    if(fjs.utils.LocalStorage.check()) {
+        self.localStorage.setItem(key, value);
+    }
+};
+
+/**
+ * @param {string} key
+ */
+fjs.utils.LocalStorage.remove = function(key) {
+    if(fjs.utils.LocalStorage.check()) {
+        self.localStorage.removeItem(key);
+    }
+};
+
 namespace("fjs.utils");
 /**
  * Helper static class to facilitate work with URL-strings and location
@@ -827,7 +982,6 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
     /**
      * Wrapper class for XMLHTTPRequest to work via iframe. <br>
      * Inner class only for internal usage.<br>
-     * THIS LINE IS TEST UPDATE TO TEST REVIEW cycle for this code.
      * @param {string} id Request id. ID for synchronization requests between page and iframe.
      * @constructor
      * @inner
@@ -1132,7 +1286,7 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(XDomainRequest, string, boolean)} callback Request handler function
+     * @param {function(XDomainRequest, string, boolean)} callback Response handler function
      * @return {XDomainRequest}
      */
     fjs.ajax.XDRAjax.prototype.send = function(method, url, headers, data, callback) {
@@ -1284,7 +1438,7 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(XMLHttpRequest, string, boolean)} callback
+     * @param {function(XMLHttpRequest, string, boolean)} callback - response handler
      * @return {XMLHttpRequest}
      */
     fjs.ajax.XHRAjax.prototype.send = function(method, url, headers, data, callback) {
@@ -1328,7 +1482,7 @@ fjs.ajax.IAjaxProvider.prototype.send = function(method, url, headers, data, cal
 
     /**
      * Aborts request
-     * @param {XMLHttpRequest} xhr
+     * @param {XMLHttpRequest} xhr - Request to abort
      */
     fjs.ajax.XHRAjax.prototype.abort = function(xhr) {
         if (xhr && xhr.readyState !== _a.states.REQUEST_COMPLETED) {

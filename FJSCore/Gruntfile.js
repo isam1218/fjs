@@ -66,6 +66,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-closure-compiler');
 
     grunt.registerTask('devbuild', ['concat', 'copy:dev']);
-    grunt.registerTask('build', ['karma:continuous', 'concat', 'closure-compiler', 'copy:main']);
+    grunt.registerTask('build', ['concat', 'closure-compiler', 'copy:main']);
     grunt.registerTask('jenkins-build', ['karma:continuous', 'concat', 'closure-compiler', 'copy:main']);
 };

@@ -108,7 +108,7 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
         case 'sortings':
             return new fjs.fdp.model.ClientFeedProxyModel(['sortings'], this.sm);
         case 'mycallsclient':
-            return new fjs.fdp.model.ClientFeedProxyModel(['mycalls', 'mycalldetails', 'mycallsclient'], this.sm);
+            return new fjs.fdp.model.MyCallsClientProxyModel(['mycalls', 'mycalldetails', 'mycallsclient'], this.sm);
         case 'clientsettings':
             return new fjs.fdp.model.ClientFeedProxyModel(['clientsettings'], this.sm);
         default :
