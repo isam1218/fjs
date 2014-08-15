@@ -53,29 +53,11 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     function getCallLogInfo(callback) {
         lastPhone = $scope.call.phone;
         if(lastPhone && (!$scope.call.mycallsclient_callLog._notNew || callback)) {
-            var rawPhone =  $scope.call.phone.replace(/[^0-9]/g, '');
-            if(rawPhone.length > 10) {
-                rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
-            }
-            var formattedPhone = null;
-            if(rawPhone.length>4) {
-                formattedPhone = rawPhone.split("").reverse().join("");
-                if(formattedPhone.length>7 && formattedPhone.length <=10) {
-                    formattedPhone = formattedPhone.replace(/(\d{4})(\d{3})(\d{3}|\d{2}|\d{1})/, "$1-$2-$3");
-                }
-                if(formattedPhone.length>4 && formattedPhone.length <=7) {
-                    formattedPhone = formattedPhone.replace(/(\d{4})(\d{3}|\d{2}|\d{1})/, "$1-$2");
-                }
-                formattedPhone = formattedPhone.split("").reverse().join("");
-            }
-            if(formattedPhone) {
-                rawPhone += ' or ' + formattedPhone;
-            }
             if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
                 var message = {};
                 message.action = "getPhoneInfo";
                 message.data = {};
-                message.data.phone = rawPhone;
+                message.data.phone = $scope.call.getFormattedPhone();
                 message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
                 message.data.isRinging = ($scope.call.state == 0);
                 message.callback = function(data){

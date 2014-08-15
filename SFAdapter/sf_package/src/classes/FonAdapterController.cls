@@ -4,6 +4,7 @@ public with sharing class FonAdapterController {
     final static String DESCRIPTION_FIELD_NAME = 'Description';
   
     public string nameFile{get;set;}
+    public string contentTypeFile{get;set;}
     public Blob contentFile{get;set;}
     String[] filelines = new String[]{};
     List<HudAccount__c> accstoupload; 
@@ -139,10 +140,30 @@ public with sharing class FonAdapterController {
       boolean isError = false;
       boolean isWarnings = false;
       if(contentFile == null) {
-          createError('Empty file or no file is choosen.'); 
+          createError('Empty file or no file is chosen.'); 
           isError = true;
       }
+      
+      if(!isError) {
+          string contentType = contentTypeFile.toLowerCase();
+      
+          if(contentType!='text/plain' 
+              && contentType!='text/comma-separated-values'
+              && contentType!='text/csv'
+              && contentType!='application/csv'
+              && contentType!='application/excel'
+              && contentType!='application/vnd.ms-excel'
+              && contentType!='application/vnd.msexcel'
+              && contentType!='application/octet-stream') {
+                  createError('Wrong file type: '+contentType); 
+                  isError = true;    
+          }
+      }
+      
       if(!isError){
+      
+          
+      
           nameFile=contentFile.toString();
           filelines = nameFile.split('\n');
           if(0 >= nameFile.length()){
@@ -165,12 +186,12 @@ public with sharing class FonAdapterController {
                            isWarnings = true;
                       }
                       if(!accountIds.contains(inputvalues[0]) && !accountLogins.contains(inputvalues[1])) {
-                          checkDuplicateLogin(inputvalues[1]);
+                          checkDuplicateLogin(inputvalues[1], inputvalues[0]);
                           if(!updateOldAccount(inputvalues[0], inputvalues[1], (i + 1), isWarnings)) { 
                               try {
                                    HudAccount__c a = new HudAccount__c();
                                    a.UserId__c = inputvalues[0];
-                                   a.UserHudLogin__c = inputvalues[1];   
+                                   a.UserHudLogin__c = inputvalues[1];  
                                    accstoupload.add(a);
                                    accountIds.add(inputvalues[0]);  
                                    accountLogins.add(inputvalues[1]);  
@@ -192,11 +213,10 @@ public with sharing class FonAdapterController {
                   }
               }
               try {
-                  if(0 < accstoupload.size()) {
-                      insert accstoupload;
+                  if(accstoupload.size()>0) {
+                    insert accstoupload;
                   }
-              }
-              catch(DmlException ex) {
+              } catch (Exception e) {
                   for(Integer j=0; j<accstoupload.size(); j++) { 
                       try {
                             insert accstoupload[j];
@@ -257,35 +277,46 @@ public with sharing class FonAdapterController {
    
     private boolean updateOldAccount(final String userId, final String login, final Integer line, boolean isWarnings) {
         try {
-            final HudAccount__c account = [select id, UserId__c, UserHudLogin__c  from HudAccount__c Where UserId__c =: userId Limit 1];  
-            if(null != account) {
-                account.UserHudLogin__c = login;
-                try {
-                    update account;
-                    ApexPages.Message errormsg = new ApexPages.Message(ApexPages.severity.INFO, 'Change HUD login for user id = ' + account.UserId__c + ' , old HUD account is ' + 
-                        account.UserHudLogin__c + ', new HUD account is ' + login);    
-                    ApexPages.addMessage(errormsg);
+            final list<HudAccount__c> accounts = [select id, UserId__c, UserHudLogin__c  from HudAccount__c Where UserId__c =: userId Limit 1];  
+            if(accounts != null && accounts.size()>0) {
+                HudAccount__c account = accounts[0];
+                if(account.UserHudLogin__c != login) {
+                    try {        
+                            ApexPages.Message errormsg = new ApexPages.Message(ApexPages.severity.INFO, 'Change HUD login for user id = ' + account.UserId__c + ' , old HUD account is ' + 
+                            account.UserHudLogin__c + ', new HUD account is ' + login);    
+                            ApexPages.addMessage(errormsg);
+                            account.UserHudLogin__c = login;
+                            update account;
+                            return true;
+                    } catch (DmlException e) {
+                       createWarning('Can not upload account from line ' + line);
+                       isWarnings = true;
+                    }
+                }
+                else {
                     return true;
-                } catch (DmlException e) {
-                   createWarning('Can not upload account from line ' + line);
-                   isWarnings = true;
                 }
             }
         }
         catch(QueryException ex) {
+             createWarning('Cant update account with user id: ' + userId + ' and HUD login: ' + login + ', Line ' + line + ', Ex: ' + ex); 
         }
         return false;
     }  
     
-    private void checkDuplicateLogin(final String login) {
-          final List<HudAccount__c> accounts = [select UserId__c, UserHudLogin__c  from HudAccount__c Where UserHudLogin__c =: login Limit 100];  
-          final List<String> logins = new List<String>();
-          if(null != accounts && accounts.size() != 0) {
-              for(Integer i = 0 ; i < accounts.size(); i++) {
-                  logins.add(accounts.get(i).UserId__c);
+    private void checkDuplicateLogin(final String login, final String userId) {
+          list<HudAccount__c> accounts = [select UserId__c, UserHudLogin__c  from HudAccount__c Where UserHudLogin__c =: login Limit 1];   
+          
+          if(null != accounts && accounts.size()>0) {
+              HudAccount__c account = accounts[0];
+              ApexPages.Message errormsg = null;
+              if(account.UserId__c == userId) {
+                  errormsg = new ApexPages.Message(ApexPages.severity.INFO, 'Login = ' + login + ' is added again');
+              }
+              else {
+                  errormsg = new ApexPages.Message(ApexPages.severity.INFO, 'Login = ' + login + ' is used by more than one SF users. Previous user id: ' + 
+                      account.UserId__c);  
               } 
-              ApexPages.Message errormsg = new ApexPages.Message(ApexPages.severity.INFO, 'Login = ' + login + ' is used by more than one SF users. Previous user ids: ' + 
-                  logins);   
               ApexPages.addMessage(errormsg);     
           }
     }
@@ -294,7 +325,7 @@ public with sharing class FonAdapterController {
         String tmpLabel = null;  
         try {
             List<AdminCredentials__c> clist = [select id, CommentsLabel__c from AdminCredentials__c LIMIT 500] ;
-            if(clist.size() > 0) {
+            if(clist.size() > 0 && Schema.sObjectType.AdminCredentials__c.isDeletable()) {
                 delete clist ;
                 tmpLabel = clist[0].CommentsLabel__c;
             }
@@ -317,7 +348,7 @@ public with sharing class FonAdapterController {
         Boolean isDeleted = false;
         try {
             HudAccount__c account = [select id, UserHudLogin__c from HudAccount__c where id =: userId Limit 1];  
-            if(null != account) {
+            if(null != account && Schema.sObjectType.HudAccount__c.isDeletable()) {
                delete account;
             }
         }
