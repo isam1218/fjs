@@ -52,7 +52,7 @@ fjs.model.MyCallsFeedModel.prototype.onEntryChange = function(event) {
 };
 
 fjs.model.MyCallsFeedModel.prototype.getPhoneInfoAndOpenPopup = function(entry, changes) {
-    if(entry.state == 0 && entry.incoming && changes.state == 2 && document.hasFocus()) {
+    if(entry.type!=7 && entry.state == 0 && entry.incoming && changes.state == 2 && document.hasFocus()) {
         var message = {}, context=this;
         message.action = "getPhoneInfoAndOpenPopup";
         message.data = {};
