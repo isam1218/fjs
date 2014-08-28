@@ -122,9 +122,9 @@ SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
     sforce.interaction.searchAndGetScreenPopUrl(phone, '', callType, callback);
 };
 
-SFApi.prototype.getPhoneInfoAndOpenPopup = function(phone, callType, callback){
+SFApi.prototype.getPhoneInfoAndOpenPopup = function(phoneSearch, phone,  callType, callback){
     var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
-    sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
+    sforce.interaction.searchAndScreenPop(phoneSearch, params, callType, callback);
 };
 
 /**

@@ -56,7 +56,8 @@ fjs.model.MyCallsFeedModel.prototype.getPhoneInfoAndOpenPopup = function(entry, 
         var message = {}, context=this;
         message.action = "getPhoneInfoAndOpenPopup";
         message.data = {};
-        message.data.phone = entry.getFormattedPhone();
+        message.data.phoneSearch = entry.getFormattedPhone();
+        message.data.phone = entry.phone;
         message.data.callType = "inbound";
         message.callback = function(){
             if(entry.fillCallLogData(data, context.dataManager.getModel('clientsettings'))) {

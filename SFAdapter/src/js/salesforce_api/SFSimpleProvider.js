@@ -52,7 +52,7 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
             this.api.openUser(message.data.id, message.callback);
             break;
         case "getPhoneInfoAndOpenPopup":
-            this.api.getPhoneInfoAndOpenPopup(message.data.phone, message.data.callType, message.callback);
+            this.api.getPhoneInfoAndOpenPopup(message.data.phoneSearch, message.data.phone, message.data.callType, message.callback);
             break;
     }
 };
