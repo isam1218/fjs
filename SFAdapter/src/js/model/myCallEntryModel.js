@@ -203,6 +203,9 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
                     if(i=='note' && field) {
                         scope['subject'] = "Call: " + (field.length>240 ? field.substr(0, 240) + " ..." : field);
                     }
+                    else if(i=='note' && field=='') {
+                        scope['subject'] = "Call";
+                    }
                 }
                 else if(Array.isArray(field)) {
                     scope[i] = [];
