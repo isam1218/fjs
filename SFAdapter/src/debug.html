@@ -35,6 +35,7 @@
     <script type="text/javascript" src="js/model/filters/whoFilter.js"></script>
     <script type="text/javascript" src="js/model/filters/whatFilter.js"></script>
     <script type="text/javascript" src="js/model/filters/sortRelatedFields.js"></script>
+    <script type="text/javascript" src="js/model/filters/hasCallInfoFilter.js"></script>
     <script type="text/javascript" src="js/model/module.js"></script>
 
     <script type="text/javascript" src="js/ui/controllers/commonController.js"></script>
@@ -65,7 +66,7 @@
     </div>
     <ul>
         <li class="call-item {{ call.openedClass }}" ng-class="{'call-item-selected':call.xpid==selectedCallId}"
-            data-xpid="{{ call.xpid }}" ng-repeat="call in calls | orderBy: 'created'" ng-controller="CallController">
+            data-xpid="{{ call.xpid }}" ng-repeat="call in calls | orderBy: 'created' | HasCallInfoFilter" ng-controller="CallController">
             <div class="call-item-inner state{{ call.state }} incoming-{{ call.incoming }} type{{ call.type }}">
                 <div class="call-item-head" ng-click="selectCall(call.xpid)">
                     <div class="call-state-ico"></div>
