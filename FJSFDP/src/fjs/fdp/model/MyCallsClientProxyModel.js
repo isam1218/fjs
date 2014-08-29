@@ -48,9 +48,11 @@ fjs.fdp.model.MyCallsClientProxyModel.prototype.onEntryChange = function(event) 
 fjs.fdp.model.MyCallsClientProxyModel.prototype.onEntryDeletion = function(event) {
     if(event.feed == this.feedName) {
         var delItem = this.items[event.xpid];
-        this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid}, true);
-        this.callLogByHTCallId[delItem.htCallId] = delItem['mycallsclient_callLog'];
-        delete this.items[event.xpid];
+        this.sendAction(this.clientFeedName, 'delete', {xpid: event.xpid}, true);
+        if(delItem) {
+            this.callLogByHTCallId[delItem.htCallId] = delItem['mycallsclient_callLog'];
+            delete this.items[event.xpid];
+        }
     }
     this.fillDeletion(event.xpid, event.feed);
 };
