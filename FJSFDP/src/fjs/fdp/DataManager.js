@@ -26,6 +26,7 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
      * @type {string}
      */
     this.ticket = authTicket;
+
     /**
      * Node ID
      * @type {string}

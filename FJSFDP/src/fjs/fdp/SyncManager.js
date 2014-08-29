@@ -23,6 +23,8 @@
         this.dbFactory = new fjs.db.DBFactory(config);
         this.db = this.dbFactory.getDB();
         this.syncs = [];
+
+        this.runtimefeeds=['mycalldetails', 'mycalls'];
         /**
          * Current SyncManager state
          * @type {fjs.fdp.SyncManager.states|number}
@@ -463,7 +465,7 @@
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
+        if(this.db && version !== undefined && this.runtimefeeds.indexOf(feedName) < 0 &&  (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -486,7 +488,7 @@
             },0);
         }
         else {
-            if (this.db) {
+            if (this.db && this.runtimefeeds.indexOf(feedName) < 0) {
                 this.db.selectByIndex("versions", {"feedName": feedName}, function (item) {
                     versionsArr.push(item.source + "@" + item.version);
                 }, function () {
@@ -822,7 +824,7 @@
     fjs.fdp.SyncManager.prototype.getFeedData = function(feedName, listener) {
         var context = this, data = {eventType:sm.eventTypes.FEED_START , syncType: "F", feed:feedName};
         this.fireEvent(feedName, data, listener);
-        if(this.db) {
+        if(this.db ) {
             this.db.selectAll(feedName, function(item){
                     var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                     context.fireEvent(feedName, data, listener);
