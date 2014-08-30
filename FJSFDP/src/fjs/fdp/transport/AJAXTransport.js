@@ -363,6 +363,7 @@
 
         this._currentVersioncache = this._currentRequest = this.sendRequest(url, versions, function(xhr, data, isOk) {
             if(isOk) {
+                context.versionsCacheFailedCount = 0;
                 var feeds = context.parseVersionsResponse(data);
                 if(feeds) {
                     context.syncRequest(feeds);
@@ -380,11 +381,11 @@
                     });
                 }
                 else if(!xhr["aborted"]) {
-                    if (context._clientRegistryFailedCount < 5) {
+                    if (context.versionsCacheFailedCount < 5) {
                         context.requestVersions(versions);
-                        context._clientRegistryFailedCount++;
+                        context.versionsCacheFailedCount++;
                     }
-                    else if (context._clientRegistryFailedCount >= 5) {
+                    else if (context.versionsCacheFailedCount >= 5) {
                         setTimeout(function () {
                                 context.requestVersions(versions);
                         }, 5000);

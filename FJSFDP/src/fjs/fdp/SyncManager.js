@@ -345,7 +345,7 @@
                 context.db.deleteByKey('tabsync', null);
             };
         });
-    }
+    };
 
     fjs.fdp.SyncManager.prototype.getDataForFeeds = function (feeds, callback) {
         var context = this;
