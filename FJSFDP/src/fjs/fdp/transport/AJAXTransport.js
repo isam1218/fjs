@@ -291,15 +291,7 @@
                     });
                 }
                 else if(!request["aborted"]) {
-                    if (context._clientRegistryFailedCount < 5) {
-                        context.requestVersionscache();
-                        context._clientRegistryFailedCount++;
-                    }
-                    else if (context._clientRegistryFailedCount >= 5) {
-                        setTimeout(function () {
-                            context.requestVersionscache();
-                        }, 5000);
-                    }
+                    context.fireEvent('error', {type:'versionscacheFail'});
                 }
             }
             context.handleRequestErrors(request, isOk);
@@ -386,6 +378,20 @@
                             context.requestVersions(versions);
                         }
                     });
+                }
+                else if(!xhr["aborted"]) {
+                    if (context._clientRegistryFailedCount < 5) {
+                        context.requestVersions(versions);
+                        context._clientRegistryFailedCount++;
+                    }
+                    else if (context._clientRegistryFailedCount >= 5) {
+                        setTimeout(function () {
+                                context.requestVersions(versions);
+                        }, 5000);
+                    }
+                }
+                else {
+                    console.error('aborted');
                 }
             }
             context.handleRequestErrors(xhr, isOk);

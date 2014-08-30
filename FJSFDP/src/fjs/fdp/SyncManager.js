@@ -304,6 +304,9 @@
                 fjs.fdp.transport.LocalStorageTransport.masterSend('error', e);
             }
             switch(e.type) {
+                case 'versionscacheFail':
+                    context.startSync(context.syncFeeds);
+                    break;
                 default:
                     context.fireEvent(e.type, e);
             }
