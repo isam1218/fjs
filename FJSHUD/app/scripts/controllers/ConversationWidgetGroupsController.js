@@ -26,4 +26,4 @@ fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams, dataM
 };
 
 fjs.core.inherits(fjs.ui.ConversationWidgetGroupsController, fjs.ui.ConversationWidgetController)
-fjs.core._extends(fjs.ui.ConversationWidgetGroupsController, fjs.ui.GroupsTab);
+fjs.core.extend(fjs.ui.ConversationWidgetGroupsController, fjs.ui.GroupsTab);

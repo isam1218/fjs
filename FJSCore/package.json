@@ -1,6 +1,6 @@
 {
   "name": "fjs.core",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "description": "Low-level logic. Wrappers, helpers, and utils to facilitate the work with browser native code. OOP functionality.",
   "keywords": [
     "fjs.core"

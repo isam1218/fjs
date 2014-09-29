@@ -10,7 +10,7 @@ fjs.core.namespace("fjs.api");
 fjs.api.SharedWorkerDataProvider = function(ticket, node, config, callback) {
     var context =this;
     fjs.api.DataProviderBase.call(this, ticket, node, config);
-    this.worker = new SharedWorker("../bower_components/FJSAPI/src/fdp_shared_worker.js");
+    this.worker = new SharedWorker("../bower_components/FJSAPI/src/fjs/fdp_shared_worker.js");
     this.worker.port.addEventListener("message", function(e) {
         if(e.data["eventType"]=="ready") {
             context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node, config:context.config}});

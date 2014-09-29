@@ -1,7 +1,7 @@
-importScripts('fjs.core.debug.js');
-importScripts('fjs.model.debug.js');
-importScripts('fjs.db.debug.js');
-importScripts('fjs.fdp.debug.js');
+importScripts('../../../FJSCore/dist/fjs.core.debug.js');
+importScripts('../../../FJSModel/dist/fjs.model.debug.js');
+importScripts('../../../FJSDB/dist/fjs.db.debug.js');
+importScripts('../../../FJSFDP/dist/fjs.fdp.debug.js');
 
 var connections = 0;
 var ports = [];

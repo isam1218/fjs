@@ -8,7 +8,7 @@ fjs.CONFIG = {
         , loginURL: "https://huc-qa.fonality.com:5501"
     }
     , CLIENT: {type:'web'}
-    , providers: ['sharedWorker', 'simple']
+    , providers: ['simple', 'sharedWorker']
     , DB: {
         name: "HUD"
         , version: 15
