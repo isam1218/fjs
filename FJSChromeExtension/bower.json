@@ -1,0 +1,11 @@
+{
+  "name": "fjschromeextension",
+  "version": "0.0.1",
+  "dependencies": {
+      "FJSCore":"../FJSCore",
+      "FJSModel":"../FJSMode    l",
+      "FJSDB":"../FJSDB",
+      "FJSFDP":"../FJSFDP"
+  },
+  "devDependencies": {}
+}
