@@ -1,0 +1,31 @@
+{
+  "name": "FJSModel",
+  "version": "0.0.14",
+  "authors": [
+    "Fonality"
+  ],
+  "description": "Models base logic",
+  "main": "fjs.model.min.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "fjs",
+    "model"
+  ],
+  "license": "Fonality License",
+  "homepage": "http://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "coverage",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "FJSCore": "../FJSCore"
+  }
+}
