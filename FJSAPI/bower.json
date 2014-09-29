@@ -1,0 +1,31 @@
+{
+  "name": "FJSAPI",
+  "version": "0.0.24",
+  "authors": [
+    "Fonality"
+  ],
+  "description": "fjs api",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "fjs",
+    "api"
+  ],
+  "license": "Fonality License",
+  "homepage": "https://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+        "FJSCore": "../FJSCore",
+        "FJSFDP":"../FJSFDP",
+        "FJSPlugin": "../FJSPlugin"
+  }
+}
