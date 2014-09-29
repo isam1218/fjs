@@ -1,0 +1,107 @@
+.XButton {
+  position: relative;
+  display: inline-block;
+  height: 28px;
+  margin: 0;
+  padding: 0 10px;
+  text-align: center;
+  line-height: 26px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: #fefefe linear-gradient(#fefefe, #ebebeb);
+  color: #333;
+  text-shadow: 0 1px 0 #fff;
+  vertical-align: top;
+}
+.XButton:hover {
+  background: #fefefe linear-gradient(#fefefe, #dddddd);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0 #fff;
+}
+.XButton.XButtonGreen {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+}
+.XButton.XButtonGreen:hover,
+.XButton.XButtonBlue:hover,
+.XButton.XButtonRed:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.XButton.XButtonBlue {
+  background: #0077f1 linear-gradient(#0077f1, #006fe1);
+  color: #e8e8e8;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(155, 155, 155, 0.3);
+}
+.XButton.XButtonRed {
+  background: #d72800 linear-gradient(#d72800, #b72200);
+  color: #e8e8e8;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(155, 155, 155, 0.3);
+}
+.XButtonMedium.disabled-true span,
+.XButtonMedium.disabled-true:hover span {
+  height: 26px;
+  background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #fefefe;
+  color: #999;
+  text-shadow: 0 1px 0px #fff;
+  cursor: auto;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  transition: none;
+  box-shadow: none;
+}
+.XButton:disabled span,
+.XButtonNormal:disabled span,
+.XButtonNormal.disabled-true span {
+  height: 26px;
+  background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #fefefe;
+  color: #999;
+  text-shadow: 0 1px 0px #fff;
+  transition: border .3s;
+  cursor: auto;
+}
+.XButtonBlue.disabled-true span,
+.XButtonBlue.disabled span {
+  opacity: 0.5;
+  cursor: auto;
+}
+.XIcon24-MuteOff {
+  background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-MuteOn {
+  background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
+  width: 24px;
+  height: 24px;
+}
+/**
+DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
+*/
+.XIcon24-Speaker-Off {
+  background: url(../img/XIconSet-24x24.png) no-repeat -48px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-Speaker-On {
+  background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-SoundSliderThumb {
+  background: url(../img/XIconSet-24x24.png) no-repeat -96px 0px;
+  width: 24px;
+  height: 24px;
+}

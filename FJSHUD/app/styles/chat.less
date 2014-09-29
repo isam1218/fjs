@@ -1,0 +1,135 @@
+.WidgetTabContent.TabChat {
+  position: absolute;
+  top: 45px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.ChatInputBox {
+  position: relative;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  min-height: 35px;
+  padding-top:16px;
+}
+.ChatInputBoxBorder
+{
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  right: 10px;
+  height: 0px;
+  border-top: solid 1px #ccc;
+  border-bottom: solid 1px #fff;
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+input.text.ChatInputBoxInput,
+.text.ChatInputBoxInput[contenteditable]
+{
+  margin:0 0 0 10px;
+  height:auto;
+  min-height:
+  16px;
+  max-height:200px;
+  width:365px;
+  font-size:13px;
+  line-height:16px;
+  padding:5px;
+  overflow:auto;
+  background-color: #fff;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.XButton.ChatInputBoxSend
+{
+  margin: 0px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 65px;
+}
+
+.ListMessageChatWidget
+{
+  background-color: #fff;
+  width: 100%;
+  border-bottom: none;
+}
+.ListMessageChatWidget .AvatarSmall
+{
+  left: 15px;
+}
+.ChatMessageItem
+{
+  position:relative;
+  left:10px;
+  border-bottom: solid 1px #DEE1E5;
+  width:100%;
+  min-height:26px;
+  .time
+  {
+    position: absolute;
+    top: 4px;
+    left : -50px;
+    width: 45px;
+    text-align: right;
+    height: 20px;
+    font-size: 9px;
+    color: #999;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .Link
+  {
+    color: black;
+    text-decoration:underline;
+    cursor: pointer;
+  }
+}
+.GroupMessagesList
+{
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.ListMessageChatWidget {
+  position:relative;
+  margin-bottom:5px;
+}
+
+.ListMessageChatWidget .ListMessageContent
+, .ChatItemTypeRoot-false.ListMessageChatWidget
+{
+  min-height: 22px;
+}
+.ChatItemTypeRoot-true.ListMessageChatWidget {
+  min-height: 52px;
+}
+
+.ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageLeft
+, .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageHeader {
+  display:none;
+}
+.ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem .time {
+  top:7px;
+}
+
+.ListMessageChatWidget.ChatItemTypeRoot-false .ChatMessageItem {
+  margin-left:54px;
+  margin-right:4px;
+  width:auto;
+}
+.ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem {
+  margin-left:4px;
+  margin-right:4px;
+  width:auto;
+}
+
+
+
+
+
+

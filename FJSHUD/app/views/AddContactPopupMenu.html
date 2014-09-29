@@ -1,0 +1,33 @@
+
+<div class="ExpandedToolBarHolder" data-ng-class="{'WidgetTabEditMode':searchInput}">
+    <div class="ExpandedToolBar">
+        <div class="Cover" data-ng-click="close()"></div>
+        <div class="MenuWindowTitle">Add team member</div>
+        <div class="SearchInputBox Add" data-ng-class="{'InSearch':searchInput}">
+            <div class="SearchInputBoxInputHolder">
+                <input class="SearchInputBoxInput" type="text" data-ng-model="searchInput" placeholder="Add someone" x-webkit-speech="">
+            </div>
+            <div class="SearchInputBoxStateButton" data-ng-click="clearSearch()">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
+        </div>
+        <div class="SearchResults">
+                <div class="ListRow ListRowSmallest" data-ng-click="addContact(contact)" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in contactsForAdd | ContactsWithoutMe | filter:filterContactFn(searchInput) | orderBy:'displayName'">
+                    <div class="AvatarSmall Avatar"><img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(40,40)}}">
+                    </div>
+                    <div class="ListRowContent">
+                        <div class="ListRowTitle">
+                            <div class="name">{{ contact.displayName }}</div>
+                        </div>
+                        <div class="ListRowStatus">
+                            <span class="ListRowDesc">
+                                #{{ contact.primaryExtension}}
+                            </span>
+                            <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

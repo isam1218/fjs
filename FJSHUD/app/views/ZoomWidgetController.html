@@ -1,0 +1,63 @@
+<div class="Widget WidgetZoom" unpin="/zoom" id="widget-zoom">
+    <div class="WidgetHeader">
+        <div class="Avatar AvatarApp">
+            <div class="TopBarItemAppIcon Zoom"></div>
+        </div>
+        <div class="WidgetHeaderTitle">
+            Video Collaboration
+        </div>
+    </div>
+    <div class="WidgetBody" data-ng-if="bodyDisplay">
+        <div class="ListSection">
+            <div class="ListSectionHeaderTitle">Topic</div>
+            <div class="widget-zoom-topic">
+                <textarea data-ng-model="topic">
+                </textarea>
+            </div>
+        </div>
+        <div class="ListSection widget-zoom-join">
+            <div class="ListSectionHeaderTitle">Join</div>
+            <div class="SearchInputBox">
+                <div class="SearchInputBoxInputHolder">
+                    <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="Meeting ID" />
+                </div>
+            </div>
+            <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Join conference</button>
+        </div>
+        <div class="ListSection">
+            <div class="ListSectionHeaderTitle">Members</div>
+            <div data-ng-include="addContactsMenu"></div>
+            <div class="widget-zoom-buttons">
+                <button data-ng-click="startMeeting(topic)" class="XButton XButtonBlue XButtonWide" >Start conference</button>
+            </div>
+        </div>
+        <div class="widget-zoom-contacts">
+                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
+                        <div class="AvatarSmall Avatar">
+                                <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(40,40)}}"/>
+                        </div>
+                        <div class="ListRowContent">
+                            <div class="ListRowTitle">
+                                <div class="name">{{contact.getDisplayName()}}</div>
+                                <div class="link">#{{contact.primaryExtension }}</div>
+                            </div>
+                            <div class="ListRowStatus">
+                                <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                                <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.xmpp}}"></div>
+                                <div class="ListRowDesc">{{contact.xmpp}}</div>
+                            </div>
+                        </div>
+                        <button data-ng-click="deleteContact(contact)" class="ListRowItemDel XButton XButtonRed">Delete</button>
+                    </div>
+        </div>
+    </div>
+    <div class="WidgetBody WidgetBodyStarted"  data-ng-if="bodyStartedDisplay">
+        <p><h2>Video meeting has been created</h2></p>
+        <p>Your meeting will begin in 30 seconds. If your meeting doesn't begin automatically, please use this <a target="_blank" data-ng-href="{{startUrl}}">link</a></p>
+        <p>Link to join: <br/><a target="_blank" data-ng-href="{{joinUrl}}">{{joinUrl}}</a></p>
+    </div>
+    <div class="WidgetBody WidgetBodyStarted"  data-ng-if="bodyErrorDisplay">
+        <p><h2>Video meeting hasn't been created</h2></p>
+        <p>Please check Zoom service availability.</p>
+    </div>
+</div>

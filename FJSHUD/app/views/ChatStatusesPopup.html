@@ -1,0 +1,18 @@
+<div class="MenuWindow SelectMenuBox LocationsMenu" data-ng-controller="ChatStatusController" data-ng-style="currentPopup.position">
+    <div class="SelectBoxMenu">
+        <div class="SelectBoxText">
+            <span class="InnerIco MenuItemIcon XIcon-ChatStatus-{{ getCurrentChatStatus() }}"></span>&nbsp;<span>{{ getCurrentChatStatus() }}</span>
+        </div>
+        <div class="SelectBoxArrow"></div>
+    </div>
+    <div class="MenuContent">
+        <div class="MenuSection">
+            <div class="MenuItem" data-ng-class="{'selected':(meData.chat_status.propertyValue ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
+                <div class="SelectedIcon"></div>
+                <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.title }}" >
+                </div>
+                <div class="MenuItemText">{{ cstatus.title }}</div>
+            </div>
+        </div>
+    </div>
+</div>

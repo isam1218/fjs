@@ -1,0 +1,138 @@
+<div class="Widget Conversation" unpin="{{'/contact/'+contact.xpid+'/callog'}}" draggable="true">
+    <div class="WidgetHeader" context-menu="contact">
+        <div class="Avatar AvatarNormal" avatar-menu="contact"> <!-- on click - open avatar menu-->
+            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH"
+                 data-ng-src="{{contact.getAvatarUrl(32,32);}}">
+
+            <div class="AvatarForeground AvatarInteractable"></div>
+        </div>
+        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.getDisplayName()}}
+            ({{contact.primaryExtension}})
+        </div>
+        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.getDisplayName()}}</div>
+        <div class="WidgetHeaderStatus WithIcons">
+            <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus"
+                 data-ng-class="contact.getQueueStatus()"></div>
+            <div class="WidgetHeaderStatusItem Icon XIcon-ChatStatus-{{contact.getChatStatus()}}"></div>
+            <div class="WidgetHeaderStatusItem ChatStatus">{{contact.getCustomXmppStatus()}}</div>
+        </div>
+        <div class="WidgetHeaderInfo">
+            <div class="WidgetHeaderInfoRow">
+                <label>Email:</label><a ng-href="{{'mailto://'+contact.email}}">{{contact.email}}</a>
+            </div>
+            <div class="WidgetHeaderInfoRow">
+                <label>Ext:</label><a href="javascript:" ng-click="callPhone(contact.primaryExtension)">{{contact.primaryExtension}}</a>
+            </div>
+            <div class="WidgetHeaderInfoRow">
+                <label>Phone:</label><a href="javascript:" ng-click="callPhone(contact.phoneBusiness)">{{contact.phoneBusiness}}</a>
+            </div>
+            <div class="WidgetHeaderInfoRow">
+                <label>Mobile:</label><a href="javascript:" ng-click="callPhone(contact.phoneMobile)">{{contact.phoneMobile}}</a>
+            </div>
+        </div>
+        <div class="WidgetHeaderCallStatus" ng-class="{'HasCall':contact.hasCall()}">
+            <div ng-if="contact.hasCall()">
+                <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">
+                    <img class="AvatarImgPH" data-ng-src="{{contact.getCallAvatarUrl(28, 28)}}"/>
+
+                    <div class="AvatarForeground AvatarInteractable"></div>
+                </div>
+                <div class="CallLineTop">
+                    <div class="CallerName">{{contact.calls_displayName}}</div>
+                    <div class="CallDuration">{{duration}}</div>
+                </div>
+            </div>
+            <div class="CallerPhone"></div>
+            <div ng-if="!contact.hasCall()">
+                <div class="NoCallText">No active call</div>
+                <div class="NoCallIcon"></div>
+            </div>
+        </div>
+    </div>
+    <div class="WidgetBody">
+        <div class="WidgetTabBar">
+            <a href="#/contact/{{contactId}}" class="WidgetTabBarButton Ready ">
+                <div class="inner">Chat</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/contact/{{contactId}}/voicemails" class="WidgetTabBarButton Ready">
+                <div class="inner">Voicemails</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/contact/{{contactId}}/groups" class="WidgetTabBarButton Ready ">
+                <div class="inner">Groups</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/contact/{{contactId}}/calllog" class="WidgetTabBarButton Ready fj-selected-item">
+                <div class="inner">Call Log</div>
+                <div class="arrow"></div>
+            </a>
+        </div>
+        <div class="fj-content WidgetTabContent">
+            <div class="fj-stream">
+                <div class="ToolBar">
+                    <div class="SearchInputBox">
+                        <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search"></div>
+                        <div class="SearchInputBoxStateButton">
+                            <div class="SearchInputBoxStateButtonIcon"></div>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+                <div class="fj-hbox ListLineContent Header Calllog">
+                    <div class="fj-hbox-cell ListLineContentCell Avatar"></div>
+                    <div class="fj-hbox-space ListLineContentCell Name2"><span>Name</span>
+                        <div class="DirectionArrow None"></div>
+                    </div>
+                    <div class="fj-hbox-cell ListLineContentCell Phone"><span>Phone</span>
+                        <div class="DirectionArrow None"></div>
+                    </div>
+                    <div class="fj-hbox-cell ListLineContentCell Duration2"><span>Duration</span>
+                        <div class="DirectionArrow None"></div>
+                    </div>
+                    <div class="fj-hbox-cell ListLineContentCell Date"><span>Date</span>
+                        <div class="DirectionArrow Down"></div>
+                    </div>
+                    <div class="fj-hbox-cell ListLineContentCell Type"><span class="fj-visibility-true">Type</span>
+                        <div class="DirectionArrow None"></div>
+                    </div>
+                </div>
+                <div class="ListView WithRecentBar">
+
+                            <div class="InlineList">
+                                <div class="fj-scroll-content" >
+                                    <div class="ListRowFirst ListLineWide">
+                                        <div class="fj-hbox ListLineWideContent ListLineWideContentTop">
+                                            <div class="fj-hbox-cell ListLineWideContentCell Avatar">
+                                                <div class="Avatar CallSmallAvatar CallSmallAvatar_Office">
+                                                    <img class="AvatarImgPH" src="img/Generic-Avatar-Small.png">
+                                                    <div class="AvatarInteractable AvatarForeground"></div>
+                                                </div>
+                                            </div>
+                                            <div class="fj-hbox-space ListLineWideContentCell Name">Alexandr Vovchuk
+                                                --Secondary
+                                            </div>
+                                            <div class="fj-hbox-cell ListLineWideContentCell Phone  SmallFont-false">
+                                                <span>
+                                                    <a class="Link">
+                                                        <span class="PhonePrefix"></span>
+                                                        <span class="Phone10">7088</span>
+                                                    </a>
+                                                </span>
+                                                <span class="fj-visibility-false">Unknown</span>
+                                            </div>
+                                            <div class="fj-hbox-cell ListLineWideContentCell Duration">00:10</div>
+                                            <div class="fj-hbox-cell ListLineWideContentCell Date">August 21, 05:15 pm
+                                            </div>
+                                            <div class="fj-hbox-cell ListLineWideContentCell Type">
+                                                <div class="Icon XIcon-CallLog-Missed"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

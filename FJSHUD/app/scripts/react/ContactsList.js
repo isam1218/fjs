@@ -1,0 +1,52 @@
+fjs.core.namespace("fjs.hud.react");
+fjs.hud.react.ContactsList = React.createClass({
+    displayName: "ContactsList",
+    render: function() {
+        var scope = this.props.scope;
+        var keys = Object.keys(scope.contacts), contacts=[];
+
+        for(var i=0; i<keys.length; i++) {
+            if(!scope.query || scope.contacts[keys[i]].pass(scope.query)) {
+                contacts.push(scope.contacts[keys[i]]);
+            }
+        }
+        var _contacts = contacts.sort(function(a, b){
+            if(a[scope.sortField]>b[scope.sortField]) {
+                return scope.sortReverce ? -1 : 1;
+            }
+            else if(a[scope.sortField]<b[scope.sortField]) {
+                return scope.sortReverce ? 1 : -1;
+            }
+            else {
+                return 0;
+            }
+        })
+
+        var contactsList = _contacts.map(function(contact, index, array) {
+            var oncontextMenu, onavatarClick;
+            (function() {
+                oncontextMenu = function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    scope.showMenu({key:"contextMenu", x:e.clientX, y:e.clientY, model: contact});
+                    return false;
+                };
+            })(contact);
+
+            var _listRowStatusText = React.DOM.div({className:'ListRowStatusText'}, contact.contactstatus_xmppCustom || contact.contactstatus_xmpp || 'offline');
+            var _listRowStatusIconQueue = React.DOM.div({className:'ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-'+contact.contactstatus_queueStatus});
+            var _listRowStatusIconChat = React.DOM.div({className:'ListRowStatusIcon XIcon-ChatStatus-'+contact.getChatStatus()});
+            var _listRowStatus = React.DOM.div({className:'ListRowStatus'}, _listRowStatusIconChat, _listRowStatusIconQueue, _listRowStatusText);
+            var _listRowTitleName = React.DOM.div({className:'name'}, React.DOM.b(null, contact.getDisplayName()), React.DOM.span({className:'details'}, '#'+contact.primaryExtension));
+            var _listRowTitle = React.DOM.div({className:'ListRowTitle'}, _listRowTitleName);
+            var _listRowContent = React.DOM.div({className:'ListRowContent'}, _listRowTitle, _listRowStatus);
+
+            var _imgAvatar = React.DOM.img({className:'AvatarImgPH', src:contact.getAvatarUrl(28,28), onClick:oncontextMenu});
+            var _avatarForground = React.DOM.div({className:'AvatarForeground AvatarInteractable'});
+            var _avatarHolder = React.DOM.div({className: 'Avatar AvatarNormal', onClick:oncontextMenu}, _imgAvatar, _avatarForground);
+
+            return React.DOM.a({href:"#/contact/"+contact.xpid, className: "ListRowFirst ListRow ListRow-Contact", onContextMenu:oncontextMenu}, _avatarHolder, _listRowContent);
+        });
+        return React.DOM.div({className:"LeftBarTabContentList"}, contactsList);
+    }
+});

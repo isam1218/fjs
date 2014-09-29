@@ -1,0 +1,62 @@
+.SelectBox {
+  display: inline-block;
+  border-radius: 2px;
+  background-image: linear-gradient(#fefefe, #ebebeb);
+  border: 1px solid rgba(0,0,0,0.2);
+  vertical-align: middle;
+  padding:0 25px 0 10px;
+  height:26px;
+  line-height: 26px;
+  font-weight: bold;
+  font-size: 11px;
+  position:relative;
+  cursor:pointer;
+}
+
+.SelectBox:hover {
+  background: #fefefe linear-gradient(#fefefe, #ddd);
+  border: 1px solid rgba(0,0,0,0.3);
+  color: #222;
+  text-shadow : 0 1px 0 #fff;
+}
+
+.SelectBoxText {
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SelectBoxText .InnerIco {
+  color: #719d24;
+}
+
+.SelectBoxArrow {
+  top: 12px;
+  border:4px solid;
+  border-color: #555 transparent transparent transparent;
+  width: 0;
+  height: 0;
+  position:absolute;
+  right: 8px;
+}
+
+.SelectBoxMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right:0;
+  height: 30px;
+  cursor: pointer;
+}
+
+.SelectBoxMenu .SelectBoxText {
+  top: 5px;
+  color: #719d24;
+  font-weight: bold;
+  text-align: center;
+  position:relative;
+}
+
+.SelectMenuBox .MenuContent {
+  margin-top: 30px;
+}

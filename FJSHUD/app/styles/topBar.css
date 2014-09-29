@@ -1,0 +1,148 @@
+.TopBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 96px;
+  border-radius: 0 0 10px 10px;
+}
+.TopBar:hover {
+  z-index: 2;
+  background-color: #f3f3f3;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
+}
+.TopBarLogo {
+  position: absolute;
+  background-image: url("../img/FonalityLogo.png");
+  width: 150px;
+  height: 45px;
+  top: 24px;
+  left: 20px;
+}
+.TopBarIcons {
+  position: absolute;
+  top: 4px;
+  left: 320px;
+  width: 500px;
+  bottom: 0;
+  text-align: center;
+}
+.TopBarItemApp {
+  position: relative;
+  display: inline-block;
+  height: 96px;
+  width: 50px;
+  cursor: pointer;
+  vertical-align: top;
+}
+.TopBarItemAppIcon {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  background: url("../img/XApp-Icons.png") no-repeat 0 0;
+}
+.TopBarItemAppIcon.Home {
+  background-position: 0 0;
+}
+.TopBarItemAppIcon.Contacts {
+  background-position: -40px 0;
+  top: 13px;
+}
+.TopBarItemAppIcon.Workgroups {
+  background-position: -80px 0;
+}
+.TopBarItemAppIcon.Departments {
+  background-position: -120px 0;
+}
+.TopBarItemAppIcon.Favorites {
+  background-position: -160px 0;
+}
+.TopBarItemAppIcon.CallLog {
+  background-position: -200px 0;
+}
+.TopBarItemAppIcon.Share {
+  background-position: -640px 0;
+}
+.TopBarItemAppIcon.CallCenter {
+  background-position: -280px 0;
+}
+.TopBarItemAppIcon.CallRecords {
+  background-position: -320px 0;
+}
+.TopBarItemAppIcon.Voicemails {
+  background-position: -360px 0;
+}
+.TopBarItemAppIcon.Conferences {
+  background-position: -400px 0;
+}
+.TopBarItemAppIcon.Box {
+  background-position: -440px -1px;
+}
+.TopBarItemAppIcon.Zoom {
+  background-position: -480px 0;
+}
+.TopBarItemMe .TopBarItemAppIcon {
+  background-image: none;
+}
+.TopBarItemAppName {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  font-family: "Chalkduster", "wchalkduster", "Comic Sans MS";
+  text-align: center;
+  font-size: 5px;
+  color: #ccc;
+  overflow: hidden;
+}
+.TopBarItemApp:hover .TopBarItemAppName {
+  opacity: 1;
+  left: -100px;
+  right: -100px;
+  top: 70px;
+  background-color: #f3f3f3;
+  color: #999;
+  font-size: 12px;
+}
+.TopBarMeStatus {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  bottom: 0px;
+}
+.TopBarMeStatus-row {
+  margin: 5px;
+  height: 50px;
+  vertical-align: top;
+  display: inline-block;
+  position: relative;
+}
+.TopBarMeStatus-row .SelectBox {
+  width: 80px;
+  margin-bottom: 5px;
+}
+.TopBarMeStatus-row .AvatarNormal,
+.TopBarMeStatus-row .AvatarNormal img {
+  width: 59px;
+  height: 59px;
+}
+.TopBarMeStatus-row .XButtonToggle {
+  height: 26px;
+  margin-bottom: 5px;
+  padding: 0 3px;
+}
+.TopBarBottomLine {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 0;
+  border-top: solid 1px #bbb;
+  border-bottom: solid 1px #fff;
+}
+.TopBar:hover .TopBarBottomLine {
+  display: none;
+}

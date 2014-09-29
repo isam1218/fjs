@@ -1,0 +1,330 @@
+.LeftSideBar {
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  width: 298px;
+  bottom: 10px;
+  background-color: #fff;
+  border:1px solid #bbb;
+  border-top:none;
+  border-radius:0 0 4px 4px;
+
+  .ToolBar {
+    left: 0;
+    right: 0;
+    top:0;
+    background-color: #ffffff;
+  }
+  .SearchInputBox {
+    top: 0;
+    height: 30px;
+    border-width: 3px;
+    border-radius:6px;
+    position:relative;
+    left:0;
+    right:0;
+    margin: 4px 10px;
+    input {
+      height:20px;
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+      color: #2c8ed6;
+      font-weight: bold;
+    }
+
+
+  }
+
+  .SearchPanel {
+    position: absolute;
+    top: -5px;
+    left: 3px;
+    right: 3px;
+    padding: 5px 0;
+    z-index: 1000;
+    .SearchResults {
+      max-height: 500px;
+      overflow: auto;
+    }
+    .NoSearchResults {
+      padding:10px;
+      margin:0 10px;
+      border:1px solid #729C00;
+      border-radius: 4px;
+      background-color: white;
+      .XButton {
+        float:none;
+        width:auto;
+        display:block;
+      }
+    }
+    .ListRow:focus {
+      background-color: #cae9fd;
+      outline: none;
+    }
+    .ListRow {
+      height:auto;
+      .Avatar {
+        margin:0;
+        border-radius: 0;
+      }
+      .ListRowContent {
+        left:32px;
+        height:32px;
+        .ListRowTitle {
+          top:3px;
+          font-weight: normal;
+          left:2px;
+          height:13px;
+          line-height:13px;
+          b {
+            color: #2c8ed6;
+          }
+        }
+        .ListRowDesc {
+          line-height: 22px;
+          span, b {
+            vertical-align: top;
+          }
+          b {
+            line-height: 20px;
+            color: #2c8ed6;
+          }
+        }
+        .ListRowStatusIcon.Small {
+          margin-left:-3px;
+          margin-rigth:-3px;
+        }
+      }
+      .ListRowContent.WithActions-4 {
+        .ListRowLeftArea {
+          width:133px;
+        }
+      }
+      .ListRowContent.WithActions-3 {
+        .ListRowLeftArea {
+          width: 164px;
+        }
+      }
+      .ListRowContent.WithActions-2 {
+        .ListRowLeftArea {
+          width: 195px;
+        }
+      }
+      .ListRowContent.WithActions-1 {
+        .ListRowLeftArea {
+          width: 226px;
+        }
+      }
+      .ListRowContent.WithActions-0 {
+        .ListRowLeftArea {
+          width: 256px;
+        }
+      }
+      .ListRowLeftArea, .ListRowButtons {
+        height:32px;
+        overflow: hidden;
+      }
+      .ListRowButtons {
+        z-index:100;
+      }
+
+      .SearchPhoneNumbers {
+        border-top: solid 1px #dee1e5;
+        padding:5px;
+        background-color:#fff;
+        position:relative;
+        margin-top: -3px;
+        button:focus {
+          background-color: #cae9fd;
+        }
+        button {
+          display:block;
+          border:none;
+          background:none;
+          width:100%;
+          text-decoration: none;
+          outline: none;
+          text-align: left;
+          label {
+            width:70px;
+            text-align: right;
+            display:inline-block;
+            margin-right: 3px;
+          }
+        }
+      }
+    }
+  }
+
+  .SearchPanel.InSearch {
+    border: solid 1px #bbb;
+    background-color: #eee;
+    border-radius: 6px;
+    box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
+  }
+
+
+  .ListLineContent.Header {
+    left: 0;
+    right: 0;
+    top: 75px;
+    height: 28px;
+
+    .ListLineContentCell {
+      display: inline-block;
+      font-size: 9px;
+      position: relative;
+    }
+
+  }
+  .ListLineContentCell.Name {
+    left: 2px;
+    width: 30px;
+  }
+
+  .ListLineContentCell.Extension {
+    margin-left: -3px;
+  }
+
+  .ListLineContentCell.CallStatus {
+    left: 75px;
+  }
+
+  .ListLineContentCell.HudStatus {
+    left: 80px;
+  }
+
+  .DirectionArrow {
+    position: absolute;
+    left: 50%;
+    margin-left: -6px;
+  }
+
+}
+
+.LeftSideBarHead {
+  height:16px;
+  width:300px;
+  background: url("../img/SideBar2.png") no-repeat;
+  margin-top:-16px;
+  margin-left:-1px; ;
+}
+
+.LeftBarNewCall {
+  padding:0 10px 10px 10px;
+}
+
+.InputNewCall {
+  border: 1px solid #729c00;
+  color: #729c00;
+  width:193px;
+}
+
+.left-phone-search {
+  position:absolute;
+  top:-10px;
+  left:-10px;
+  right:-10px;
+  border:1px solid transparent;
+  padding-bottom: 5px;
+  max-height:85%;
+  overflow-y: auto;
+}
+
+.left-phone-search.hasresults {
+  border:1px solid #777;
+  background-color:white;
+  border-radius: 6px;
+  box-shadow: 0 0 3px #555;
+}
+
+.left-phone-search .SearchInputBox {
+  height: 26px;
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  margin: 10px 20px 10px 20px;
+}
+
+.XButton.ButtonFillWidth {
+  width:100%;
+}
+.XButton.ButtonFillWidth span {
+  width:auto;
+}
+
+.CallButtonPlaceholder {
+  position:relative;
+}
+.CallButtonPlaceholder .XButton.ButtonFillWidth span {
+  left:20px;
+  right:20px;
+}
+
+
+
+.WidgetTabBar.LeftSideWidgetTabs {
+  top:40px;
+}
+.LeftBarTabContentList {
+  position:absolute;
+  left:0;
+  right:0;
+  top:120px;
+  bottom:5px;
+  overflow: hidden;
+}
+
+.LeftBarTabContentList:hover {
+  overflow-y: auto;
+}
+
+.ToolBar .XButton {
+  width: 90px;
+}
+
+.LeftSideBarSection {
+  position:absolute;
+  left:0;
+  right:0;
+  top:46px;
+  bottom:5px;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+.LeftSideBarResentsSection {
+  -webkit-box-flex: 1;
+  position:relative;
+  overflow: auto;
+  .ListRowStatusText {
+    line-height: 10px;
+  }
+  .marquee {
+    position: absolute;
+    bottom: 8px;
+    font-size: 10px;
+    left: 40px;
+    right: 47px;
+    color:#777;
+  }
+}
+.LeftBarPhoneCalls {
+  -webkit-box-flex: 0;
+  position:relative;
+  width:298px;
+}
+.EventsBaloon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: red;
+  line-height: 5px;
+  color: #fff;
+  font-size: 10px;
+}
+

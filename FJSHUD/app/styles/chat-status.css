@@ -1,0 +1,32 @@
+.XIcon-ChatStatus-Available,
+.XIcon-ChatStatus-available {
+  background: url("../img/XStatus.png") no-repeat 0 0;
+}
+.XIcon-ChatStatus-Away,
+.XIcon-ChatStatus-away {
+  background: url("../img/XStatus.png") no-repeat -24px 0;
+}
+.XIcon-ChatStatus-Busy,
+.XIcon-ChatStatus-dnd {
+  background: url("../img/XStatus.png") no-repeat -48px 0;
+}
+.XIcon-ChatStatus-Offline,
+.XIcon-ChatStatus-offline {
+  background: url("../img/XStatus.png") no-repeat -72px 0;
+}
+.XIcon-ChatStatus-Available.Small,
+.XIcon-ChatStatus-available.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat 0 0;
+}
+.XIcon-ChatStatus-Away.Small,
+.XIcon-ChatStatus-away.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -20px 0;
+}
+.XIcon-ChatStatus-Busy.Small,
+.XIcon-ChatStatus-dnd.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -40px 0;
+}
+.XIcon-ChatStatus-Offline.Small,
+.XIcon-ChatStatus-offline.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -60px 0;
+}

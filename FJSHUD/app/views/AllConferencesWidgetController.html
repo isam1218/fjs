@@ -1,0 +1,107 @@
+<div class="fj-widget-area Widget" unpin="/conferences/all" draggable="true">
+    <div class="WidgetHeader">
+
+        <div class="Avatar AvatarApp">
+            <div class="TopBarItemAppIcon Conferences"></div>
+        </div>
+        <div class="WidgetHeaderTitle Single">Conferencing</div>
+        <div class="WidgetStat">
+            <div class="WidgetStatEntry c00">
+                <div class="Label">Occupied:</div>
+                <div class="Value">{{occupiedConferences.length}}</div>
+            </div>
+            <div class="WidgetStatEntry c01">
+                <div class="Label">Rooms:</div>
+                <div class="Value">{{conferences.length}}</div>
+            </div>
+            <div class="fj-hbox WidgetStatEntry c10">
+                <div class="Label">Talking:</div>
+                <div class="Value">{{talkingMembers.length}}</div>
+            </div>
+            <div class="fj-hbox WidgetStatEntry c11">
+                <div class="Label">Total:</div>
+                <div class="Value">{{conferenceMembers.length}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="WidgetBody">
+        <div class="WidgetTabBar">
+            <a href="#/conferences/my" class="WidgetTabBarButton Ready">
+                <div class="inner">My Rooms</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/conferences/all" class="WidgetTabBarButton Ready fj-selected-item">
+                <div class="inner">All Rooms</div>
+                <div class="arrow"></div>
+            </a>
+        </div>
+        <div class="fj-content WidgetTabContent">
+            <div class="ToolBar">
+                <div class="SelectBox XButton" data-ng-click="showSortMenu($event)">
+                    <div class="SelectBoxText"> Sort by {{sortedBy}}</div>
+                    <div class="SelectBoxArrow"></div>
+                </div>
+                <button class="XButtonWide XButton XButtonNormal disabled-{{isFindFreeAndJoinDisabled}}" data-ng-click="findFreeAndJoin()">Find Free Room &amp; Join</button>
+                <div class="SearchInputBox">
+                    <div class="SearchInputBoxInputHolder">
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="text" x-webkit-speech="" placeholder="Search">
+                    </div>
+                    <div class="SearchInputBoxStateButton">
+                        <div class="SearchInputBoxStateButtonIcon"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ListView WithToolBar">
+                <div class="InlineList">
+                    <div class="ListViewTopNote" data-ng-hide="hideNote">
+                        <span>You may have limited control over some rooms in this list, such as adding or removing other users.</span>
+                        <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
+                    </div>
+                    <a href="#/conference/pid={{conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences | SortConference:getSortMode() | filter:filterConferenceFn(query)">
+                        <div class="Avatar AvatarNormal">
+                            <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
+                                                                                data-ng-src="{{ conference.getAvatar(0, 19, 19) }}">
+                            </div>
+                            <div class="GroupAvatarItem GroupAvatarItem_1">
+                                <img class="GroupAvatarItemImg"
+                                     data-ng-src="{{ conference.getAvatar(1, 19, 19) }}">
+                            </div>
+                            <div class="GroupAvatarItem GroupAvatarItem_2">
+                                <img class="GroupAvatarItemImg"
+                                     data-ng-src="{{ conference.getAvatar(2, 19, 19) }}">
+                            </div>
+                            <div class="GroupAvatarItem GroupAvatarItem_3">
+                                <img class="GroupAvatarItemImg" data-ng-src="{{ conference.getAvatar(3, 19, 19) }}">
+                            </div>
+                            <div class="AvatarInteractable"></div>
+                        </div>
+                        <div class="ListRowContent">
+                            <div class="ListRowTitle">
+                                <div class="name">{{conference.name}}</div>
+                                <span class="link">at {{conference.getServerName()}}</span>
+                            </div>
+                            <div data-ng-if="conference.members.length == 0" class="ListRowStatus">
+                                <div class="ListRowStatusIcon XIcon-ChatStatus-Offline">
+                                </div>
+                                <div class="ListRowStatusText">Free room</div>
+                            </div>
+                            <div data-ng-if="conference.members.length > 0" class="ListRowStatus">
+                                <div class="ListRowStatusIcon XIcon-ChatStatus-Available">
+                                </div>
+                                <div  class="ListRowStatusText">{{conference.members.length}} member(s) on a call</div>
+                            </div>                        </div>
+                        <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
+                            <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
+                                <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
+                                    <img class="AvatarImgPH" data-ng-src="{{member.getContact().getAvatarUrl(28, 28)}}">
+                                    <div class="AvatarInteractable"></div>
+                                </div>
+                                <div class="first-name">{{member.displayName}}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

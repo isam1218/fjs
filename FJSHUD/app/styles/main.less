@@ -1,0 +1,196 @@
+body, html {
+  position : relative;
+  height : 100%;
+  width : 100%;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  color: #555;
+  background: #ccc url(../img/bg.png);
+  box-shadow: 0 4px 5px rgba(255,255,255,0.3) inset;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+textarea {
+  background-color: #FFFFFF;
+  appearance: textfield;
+  user-select: text;
+  resize: none;
+  outline: none;
+  padding: 5px;
+  font-size: 11px;
+  border-radius: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0 0 1px #ddd inset;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  position: relative;
+}
+
+input[type="text"], input[type="email"], input[type="search"], input[type="tel"] {
+  /*padding:5px;*/
+  /*height:16px;*/
+  border-radius:2px;
+  outline: none;
+}
+
+.text[contenteditable] {
+  height: 26px;
+  line-height: 24px;
+  padding-left: 12px;
+  font-size: 12px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0px 0px 1px #DDD inset;
+  -webkit-box-shadow: 0px 0px 1px #DDD inset;
+  user-select: text;
+  -webkit-user-select: text;
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  background-color: #eee;
+  height: 7px;
+  width: 4px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+.PopupMenu {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
+  z-index: 200;
+}
+.PopupMenuRow {
+  display:block;
+  padding:2px 20px;
+  background-color: #fff;
+}
+.PopupMenuRow:hover {
+  background-color: #b3d4fc;
+}
+
+.ContextMenu.SelectMenuBox {
+  width:140px;
+  min-width:140px;
+  .MenuContent {
+    margin: 0px;
+    .MenuItem:hover {
+      background-color: #b3d4fc;
+    }
+    .MenuItem {
+      padding:0 5px;
+      height: 32px;
+      .SelectedIcon {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+}
+
+
+.LeftBarMeCustomStatusSection {
+  textarea {
+    width:100%;
+  }
+}
+
+.LocationSelector {
+  .SelectBox {
+    width:150px;
+  }
+}
+
+.Widget.Contacts {
+  .ListRow-Contact {
+    .details {
+      float:right;
+    }
+  }
+  .ListLineContent.Header {
+    height:23px;
+    .ListLineContentCell {
+      padding:0 5px;
+    }
+    .Up {
+      .DirectionArrow {
+        //bottom:3px;
+      }
+    }
+    .Down {
+
+    }
+    .DirectionArrow {
+      position:absolute;
+      left:50%;
+      margin-left: -6px;
+    }
+  }
+  .LeftBarTabContentList {
+    top:125px;
+  }
+}
+
+.ChatMessageIco {
+  display: none;
+  width: 20px;
+  height: 20px;
+  margin-bottom: -6px;
+  margin-right:3px;
+}
+.ChatMessageIco.call {
+    display:inline-block;
+
+  }
+.ChatMessageIco.call.Incoming {
+
+      background-image: url(../img/XIcon-CallLog-Incoming.png);
+    }
+.ChatMessageIco.call.Outbound {
+      background-image: url(../img/XIcon-CallLog-Outbound.png);
+    }
+.ChatMessageIco.call.Missed {
+      background-image: url(../img/XIcon-CallLog-Missed.png);
+    }
+.ChatMessageIco.voicemail {
+    display:inline-block;
+  background-image: url(../img/XIcon-Voicemail.png);
+  }
+
+
+
+@import "loading";
+@import "menu";
+@import "queue-status";
+@import "search";
+@import "select-box";
+@import "table";
+@import "tabs";
+@import "toolbar";
+@import "topBar";
+@import "widget";
+@import "avatar";
+@import "button";
+@import "chat-status";
+@import "dialog";
+@import "expandedToolbar";
+@import "list-section";
+@import "listMessge";
+@import "listRow";
+@import "media";
+@import "leftBar";
+@import "mycalls";
+@import "chat";
+@import "slider";
+

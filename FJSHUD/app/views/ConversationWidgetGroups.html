@@ -1,0 +1,192 @@
+<div class="Widget Conversation" unpin="{{'/contact/'+contact.xpid+'/groups'}}" draggable="true">
+    <div class="WidgetHeader" context-menu="contact">
+        <div class="Avatar AvatarNormal" avatar-menu="contact"> <!-- on click - open avatar menu-->
+            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH"
+                 data-ng-src="{{contact.getAvatarUrl(32,32);}}">
+
+            <div class="AvatarForeground AvatarInteractable"></div>
+        </div>
+        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.getDisplayName()}}
+            ({{contact.primaryExtension}})
+        </div>
+        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.getDisplayName()}}</div>
+        <div class="WidgetHeaderStatus WithIcons">
+            <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus"
+                 data-ng-class="contact.getQueueStatus()"></div>
+            <div class="WidgetHeaderStatusItem Icon XIcon-ChatStatus-{{contact.getChatStatus()}}"></div>
+            <div class="WidgetHeaderStatusItem ChatStatus">{{contact.getCustomXmppStatus()}}</div>
+        </div>
+        <div class="WidgetHeaderInfo">
+            <div class="WidgetHeaderInfoRow">
+                <label>Email:</label><a ng-href="{{'mailto://'+contact.email}}">{{contact.email}}</a>
+            </div>
+            <div class="WidgetHeaderInfoRow">
+                <label>Ext:</label><a href="javascript:" ng-click="callPhone(contact.primaryExtension)">{{contact.primaryExtension}}</a>
+            </div>
+            <div class="WidgetHeaderInfoRow">
+                <label>Phone:</label><a href="javascript:" ng-click="callPhone(contact.phoneBusiness)">{{contact.phoneBusiness}}</a>
+            </div>
+            <div class="WidgetHeaderInfoRow">
+                <label>Mobile:</label><a href="javascript:" ng-click="callPhone(contact.phoneMobile)">{{contact.phoneMobile}}</a>
+            </div>
+        </div>
+        <div class="WidgetHeaderCallStatus" ng-class="{'HasCall':contact.hasCall()}">
+            <div ng-if="contact.hasCall()">
+                <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">
+                    <img class="AvatarImgPH" data-ng-src="{{contact.getCallAvatarUrl(28, 28)}}"/>
+
+                    <div class="AvatarForeground AvatarInteractable"></div>
+                </div>
+                <div class="CallLineTop">
+                    <div class="CallerName">{{contact.calls_displayName}}</div>
+                    <div class="CallDuration">{{duration}}</div>
+                </div>
+            </div>
+            <div class="CallerPhone"></div>
+            <div ng-if="!contact.hasCall()">
+                <div class="NoCallText">No active call</div>
+                <div class="NoCallIcon"></div>
+            </div>
+        </div>
+    </div>
+    <div class="WidgetBody">
+        <div class="WidgetTabBar">
+            <a href="#/contact/{{contactId}}" class="WidgetTabBarButton Ready ">
+                <div class="inner">Chat</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/contact/{{contactId}}/voicemails" class="WidgetTabBarButton Ready">
+                <div class="inner">Voicemails</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/contact/{{contactId}}/groups" class="WidgetTabBarButton Ready fj-selected-item">
+                <div class="inner">Groups</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/contact/{{contactId}}/calllog" class="WidgetTabBarButton Ready">
+                <div class="inner">Call Log</div>
+                <div class="arrow"></div>
+            </a>
+        </div>
+        <div class="fj-content WidgetTabContent">
+            <div class="fj-stream">
+                <div class="ToolBar">
+                    <div class="SearchInputBox">
+                        <div class="SearchInputBoxInputHolder">
+                            <input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search"></div>
+                        <div class="SearchInputBoxStateButton">
+                            <div class="SearchInputBoxStateButtonIcon"></div>
+                        </div>
+                    </div>
+                    <div class="XButton XButtonNormal"><span>New</span></div>
+                </div>
+                <div class="ListView WithToolBar">
+                            <div data-fj-local-id="departments-title" style="display: block;">
+                                <div class="ListSection">
+                                    <div class="ListSectionHeader">
+                                        <div class="ListSectionHeaderTitle">DEPARTMENT</div>
+                                        <div class="ListSectionHeaderRight"></div>
+                                    </div>
+                                    <div class="ListSectionBody">Contact is a member of this department</div>
+                                </div>
+                                <div class="InlineList">
+                                    <div class="fj-scroll-content">
+                                        <div class="ListRowFirst ListRowLast ListRow">
+                                            <div class="AvatarNormal Avatar">
+                                                <div class="AvatarImgPH GroupAvatarShowDefault-false"><img class="default-avatar" src="">
+                                                    <div class="GroupAvatarItem GroupAvatarItem_0"><img
+                                                            class="GroupAvatarItemImg"
+                                                            src="img/Generic-Avatar-Small.png">
+                                                    </div>
+                                                    <div class="GroupAvatarItem GroupAvatarItem_1"><img
+                                                            class="GroupAvatarItemImg"
+                                                            src="img/Generic-Avatar-Small.png">
+                                                    </div>
+                                                    <div class="GroupAvatarItem GroupAvatarItem_2"><img
+                                                            class="GroupAvatarItemImg"
+                                                            src="img/Generic-Avatar-Small.png">
+                                                    </div>
+                                                    <div class="GroupAvatarItem GroupAvatarItem_3"><img
+                                                            class="GroupAvatarItemImg"
+                                                            src="img/Generic-Avatar-Small.png">
+                                                    </div>
+                                                </div>
+                                                <div class="AvatarForeground AvatarInteractable"></div>
+                                            </div>
+                                            <div class="ListRowContent">
+                                                <div class="fj-hbox">
+                                                    <div class="fj-hbox-space ListRowLeftArea">
+                                                        <div class="fj-hbox ListRowTitle">
+                                                            <div class="fj-hbox-space name">Secondary phones</div>
+                                                            <div class="fj-hbox-cell link"><span
+                                                                    class="fj-visibility-true">#7904</span><span
+                                                                    class="fj-visibility-false">owner: unknown</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fj-hbox ListRowStatus">
+                                                            <div class="fj-hbox-cell ListRowStatusIcon XIcon-ChatStatus-Offline">
+                                                                <div class="status-icon-inner"></div>
+                                                            </div>
+                                                            <div class="fj-hbox-space ListRowStatusText">13 member(s)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fj-hbox-cell ListRowCallArea fj-visibility-false">
+                                                        <div class="Avatar CallSmallAvatar CallSmallAvatar_Office"><img
+                                                                class="AvatarImgPH"
+                                                                src="img/Generic-Avatar-Small.png">
+
+                                                            <div class="AvatarForeground AvatarInteractable"></div>
+                                                        </div>
+                                                        <div class="fj-hbox CallLineTop">
+                                                            <div class="fj-hbox-space CallerName"></div>
+                                                            <div class="fj-hbox-cell CallDuration duration"
+                                                                 data-fj-local-id="duration" data-duration="0"></div>
+                                                        </div>
+                                                        <div class="CallerPhone"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-fj-local-id="teams-title" style="display: none;">
+                                <div class="ListSection">
+                                    <div class="ListSectionHeader">
+                                        <div class="ListSectionHeaderTitle">OUR TEAMS</div>
+                                        <div class="ListSectionHeaderRight"></div>
+                                    </div>
+                                    <div class="ListSectionBody">We are both in these teams</div>
+                                </div>
+                                <div data-fj-local-id="teams" data-controller-id="id1038" class="InlineList ListIsEmpty"
+                                     data-template-id="InlineListTemplate" data-event="mousedown mouseover mouseup">
+                                    <div class="fj-scroll-content" data-fj-local-id="fj-content"></div>
+                                    <div data-controller-id="id1046" class="ListEmpty" data-template-id="empty-data"
+                                         data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic"></div>
+                                </div>
+                            </div>
+                            <div data-fj-local-id="others-title" style="display: none;">
+                                <div class="ListSection">
+                                    <div class="ListSectionHeader">
+                                        <div class="ListSectionHeaderTitle">OTHERS</div>
+                                        <div class="ListSectionHeaderRight"></div>
+                                    </div>
+                                    <div class="ListSectionBody">Other teams of Nina Fursova --Secondary</div>
+                                </div>
+                                <div data-fj-local-id="others" data-controller-id="id1039"
+                                     class="InlineList ListIsEmpty" data-template-id="InlineListTemplate"
+                                     data-event="mousedown mouseover mouseup">
+                                    <div class="fj-scroll-content" data-fj-local-id="fj-content"></div>
+                                    <div data-controller-id="id1047" class="ListEmpty" data-template-id="empty-data"
+                                         data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic"></div>
+                                </div>
+                            </div>
+                            <div class="ListSection" data-fj-local-id="no-groups" style="display: none;">Nina Fursova
+                                --Secondary is not a member of any group
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
