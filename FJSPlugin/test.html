@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/FJSCore/dist/fjs.core.debug.js"></script>
+    <script src="bower_components/FJSModel/dist/fjs.model.debug.js"></script>
+    <script src="src/fjs/plugin/PluginManager.js"></script>
+    <script src="src/fjs/plugin/phone/Api.js"></script>
+  </head>
+  <body>
+    <script>
+//      var pm = new fjs.plugin.PluginManager({SERVER: {serverURL: "https://huc-qa.fonality.com:8080"}}, "14b9a0309b05141e97dc71a69255062e7e950969821ed481", "fdp2");
+//      pm.addEventListener("PluginError", function(e){console.error(e)});
+//      pm.addEventListener("PluginLoaded", function(e){console.log(e)});
+//      pm.addEventListener("SessionStatusChanged", function(e){console.log(e)});
+
+      var phone = new fjs.plugin.phone.API({SERVER: {serverURL: "https://huc-qa.fonality.com:8080"}}, "3e5ab90413d6207db848d9d8ffdf43b5e514f5317385dac2", "fdp1");
+      phone.addEventListener("SessionStatusChanged", function(e){console.log(e)});
+      phone.addEventListener("AccountStatusChanged", function(e){console.log(e)});
+      phone.addEventListener("CallStateChanged", function(e){console.log(e)});
+    </script>
+  </body>
+</html>

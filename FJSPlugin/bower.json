@@ -1,0 +1,26 @@
+{
+  "name": "FJSPlugin",
+  "version": "0.0.2",
+  "authors": [
+    "Fonality"
+  ],
+  "description": "Fonality plugin api",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "license": "Fonality License",
+  "homepage": "http://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+    "dependencies": {
+        "FJSCore": "../FJSCore",
+        "FJSModel": "../FJSModel"
+    }
+}
