@@ -1,0 +1,30 @@
+{
+  "name": "FJSDB",
+  "version": "0.0.9",
+  "authors": [
+    "Fonality"
+  ],
+  "description": "Client storages functionality",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "main": "dist/fjs.db.min.js",
+  "keywords": [
+    "fjs",
+    "db"
+  ],
+  "license": "Fonality License",
+  "homepage": "http://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "coverage",
+    "test",
+    "tests"
+  ],"dependencies": {
+        "FJSCore":"../FJSCore"
+    }
+}
