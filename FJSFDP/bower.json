@@ -1,0 +1,32 @@
+{
+  "name": "FJSFDP",
+  "version": "0.0.19",
+  "authors": [
+    "Fonality"
+  ],
+  "description": "Synchronization logic",
+  "main": "dist/fjs.fdp.min.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "fjs"
+  ],
+  "license": "Fonality License",
+  "homepage": "http://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "FJSCore": "../FJSCore",
+    "FJSModel":"../FJSModel",
+    "FJSDB":"../FJSDB",
+    "FJSTabs":"../FJSTabs"
+  }
+}
