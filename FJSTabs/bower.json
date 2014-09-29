@@ -1,0 +1,32 @@
+{
+  "name": "FJSTabs",
+  "version": "0.0.8",
+  "authors": [
+    "Fonality"
+  ],
+  "main": "dist/fjs.tabs.min.js",
+  "description": "tabs synchronization logic",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "fjs",
+    "tabs"
+  ],
+  "license": "Fonality License",
+  "homepage": "http://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+      "FJSCore": "../FJSCore",
+      "FJSModel": "../FJSModel",
+      "FJSDB": "../FJSDB"
+  }
+}
