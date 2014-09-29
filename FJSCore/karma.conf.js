@@ -1,33 +1,58 @@
 // Karma configuration
-// Generated on Wed Dec 18 2013 17:30:46 GMT+0700 (N. Central Asia Standard Time)
+// Generated on Tue Jul 29 2014 15:32:58 GMT+0700 (N. Central Asia Standard Time)
 
 module.exports = function(config) {
   config.set({
 
-    // base path, that will be used to resolve files and exclude
+    // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
 
     // frameworks to use
-    frameworks: ['jasmine'],
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    frameworks: ['jasmine', 'requirejs'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'bin/fjs.core.debug.js'
-      , 'test/**/*Test.js'
+      'src/fjs/core/Core.js',
+      'src/fjs/utils/_namespace.js',
+      'src/fjs/utils/Array.js',
+      'src/fjs/utils/Browser.js',
+      'src/fjs/utils/Console.js',
+      'src/fjs/utils/Cookies.js',
+      'src/fjs/utils/GUID.js',
+      'src/fjs/utils/Increment.js',
+      'src/fjs/utils/JSON.js',
+      'src/fjs/utils/LocalStorage.js',
+      'src/fjs/utils/URL.js',
+      'src/fjs/ajax/_namespace.js',
+      'src/fjs/ajax/AjaxProviderBase.js',
+      'src/fjs/ajax/IFrameRequest.js',
+      'src/fjs/ajax/IFrameAjax.js',
+      'src/fjs/ajax/XDRAjax.js',
+      'src/fjs/ajax/XHRAjax.js',
+      'test-main.js',
+      {pattern: 'test/**/*Test.js', included: false}
     ],
 
 
     // list of files to exclude
-      exclude: [
-          'test/ajax/*Test.js'
-      ],
+    exclude: [
+    ],
+
+
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+        'src/fjs/**/*.js': ['coverage']
+    },
 
 
     // test results reporter to use
-    // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['progress', 'coverage'],
 
 
     // web server port
@@ -44,26 +69,16 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
-    // Start these browsers, currently available:
-    // - Chrome
-    // - ChromeCanary
-    // - Firefox
-    // - Opera (has to be installed with `npm install karma-opera-launcher`)
-    // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
-    // - PhantomJS
-    // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome', 'Firefox', 'IE', 'PhantomJS'],
-
-
-    // If browser does not capture in given timeout [ms], kill it
-    captureTimeout: 60000,
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Chrome', 'Firefox', 'PhantomJS', 'IE'],
 
 
     // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
+    // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
   });
 };

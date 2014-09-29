@@ -1,7 +1,5 @@
 (function() {
-  namespace('fjs.ajax');
-
-  var _a =
+  var _XHRAjax =
   /**
   * Represents AJAX requests based on <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHTTPRequest</a> <br>
   * <b>Singleton</b>
@@ -15,14 +13,13 @@
         else return this.constructor.__instance;
         fjs.ajax.AjaxProviderBase.call(this);
   };
-    fjs.ajax.XHRAjax.extend(fjs.ajax.AjaxProviderBase);
-
+  fjs.core.inherits(_XHRAjax, fjs.ajax.AjaxProviderBase);
 
     /**
      * XHR States
      * @enum {number}
      */
-    fjs.ajax.XHRAjax.states = {
+    _XHRAjax.states = {
         /**
          * request not initialized
          */
@@ -50,7 +47,7 @@
      * @return {XMLHttpRequest}
      * @private
      */
-    fjs.ajax.XHRAjax.prototype.getXmlHttp = function() {
+    _XHRAjax.prototype.getXmlHttp = function() {
         /**
          * @type {XMLHttpRequest}
          */
@@ -83,24 +80,24 @@
      * @param {function(XMLHttpRequest, string, boolean)} callback - Response handler
      * @return {XMLHttpRequest}
      */
-    fjs.ajax.XHRAjax.prototype.send = function(method, url, headers, data, callback) {
+    _XHRAjax.prototype.send = function(method, url, headers, data, callback) {
 
-        var xmlhttp = this.getXmlHttp(), key;
+        var xmlhttp = this.getXmlHttp();
 
         xmlhttp.open(method, url);
 
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
         if (headers) {
-            for (key in headers) {
-                if (headers.hasOwnProperty(key)) {
-                    xmlhttp.setRequestHeader(key, headers[key]);
-                }
+            var keys = Object.keys(headers);
+            for (var i=0; i<keys.length; i++) {
+                var key = keys[i];
+                xmlhttp.setRequestHeader(key, headers[key]);
             }
         }
 
         xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState !== _a.states.REQUEST_COMPLETED) return;
+            if (xmlhttp.readyState !== _XHRAjax.states.REQUEST_COMPLETED) return;
 
             if (callback) {
                 try {
@@ -112,7 +109,8 @@
                     }
                 }
                 catch (e) {
-                    callback({"status":0, responseText:"", aborted:true}, "", false);
+
+                    callback(/**@type XMLHttpRequest*/{"status":0, responseText:"", aborted:true}, "", false);
                 }
             }
         };
@@ -126,8 +124,8 @@
      * Aborts request
      * @param {XMLHttpRequest} xhr - request
      */
-    fjs.ajax.XHRAjax.prototype.abort = function(xhr) {
-        if (xhr && xhr.readyState !== _a.states.REQUEST_COMPLETED) {
+    _XHRAjax.prototype.abort = function(xhr) {
+        if (xhr && xhr.readyState !== _XHRAjax.states.REQUEST_COMPLETED) {
             xhr['aborted'] = true;
             xhr.abort();
         }

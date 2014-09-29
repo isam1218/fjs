@@ -1,43 +1,44 @@
-namespace("fjs.ajax");
-/**
- * Ajax provider base class
- * @constructor
- * @abstract
- * @template T
- */
-fjs.ajax.AjaxProviderBase = function() {};
+(function() {
+  var _AjaxProviderBase =
+  /**
+   * Ajax provider base class
+   * @constructor
+   * @abstract
+   * @template T
+   */
+  fjs.ajax.AjaxProviderBase = function() {};
 
-/**
- * Aborts request
- * @param {T} transport - Ajax transport
- */
-fjs.ajax.AjaxProviderBase.prototype.abort = function(transport) {};
+  /**
+   * Aborts request
+   * @param {T} transport - Ajax transport
+   */
+  _AjaxProviderBase.prototype.abort = function(transport) {};
 
-/**
- * Sends ajax request
- * @param {string} method - Request method
- * @param {string} url - Request URL
- * @param {Object} headers - Request headers
- * @param {Object} data - Request data
- * @param {function(T, string, boolean)} callback - Response handler
- * @return {T}
- */
-fjs.ajax.AjaxProviderBase.prototype.send = function(method, url, headers, data, callback) {};
+  /**
+   * Sends ajax request
+   * @param {string} method - Request method
+   * @param {string} url - Request URL
+   * @param {Object} headers - Request headers
+   * @param {Object} data - Request data
+   * @param {function(T, string, boolean)} callback - Response handler
+   * @return {T}
+   */
+  _AjaxProviderBase.prototype.send = function(method, url, headers, data, callback) {};
 
 
-/**
- * Prepares request data
- * @param {Object} data - Not formatted request data
- * @returns {string}
- * @protected
- */
-fjs.ajax.AjaxProviderBase.prototype.getParamData = function(data) {
-    var paramStrings = [], i;
-    for (i in data) {
-        if (data.hasOwnProperty(i)) {
-            paramStrings.push(i + '=' + data[i]);
-        }
-    }
-    return paramStrings.join('&');
-};
+  /**
+   * Prepares request data
+   * @param {Object} data - Not formatted request data
+   * @returns {string}
+   * @protected
+   */
+  _AjaxProviderBase.prototype.getParamData = function(data) {
+      var paramStrings = [], keys = Object.keys(data);
+      for (var i=0; i<keys.length; i++) {
+          var key = keys[i];
+          paramStrings.push(key + '=' + data[key]);
+      }
+      return paramStrings.join('&');
+  };
+})();
 

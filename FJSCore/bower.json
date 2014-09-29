@@ -1,0 +1,23 @@
+{
+  "name": "FJSCore",
+  "version": "0.0.19",
+  "authors": [
+    "Fonality"
+  ],
+  "description": "Low-level logic. Wrappers, helpers, and utils to facilitate the work with browser native code. OOP functionality.",
+  "main": "dist/fjs.core.min.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "license": "Fonality License",
+  "homepage": "http://fonality.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "coverage",
+    "test"
+  ]
+}

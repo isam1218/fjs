@@ -1,15 +1,15 @@
-(function(){
-    namespace("fjs.utils");
+(function() {
+    var _Console =
     /**
      * Utils class for console. Resolves browser specific console problems.
      * @constructor
      */
-    fjs.utils.Console = function() {
-    };
+    fjs.utils.Console = function() {};
+
     /**
      * Writes log message to console
      */
-    fjs.utils.Console.log = function() {
+    _Console.log = function() {
         if(console) {
             if(console.log.apply) {
                 console.log.apply(console, arguments);
@@ -23,7 +23,7 @@
     /**
      * Writes error message to console
      */
-    fjs.utils.Console.error = function() {
+    _Console.error = function() {
         if(console) {
             if(console.error.apply) {
                 console.error.apply(console, arguments);
@@ -37,7 +37,7 @@
     /**
      * Writes debug message to console
      */
-    fjs.utils.Console.debug = function() {
+    _Console.debug = function() {
         if(console) {
             if(console.debug) {
                 if(console.debug.apply) {
@@ -49,14 +49,14 @@
                 }
             }
             else {
-                fjs.utils.Console.log.apply(fjs.utils.Console, arguments);
+              _Console.log.apply(fjs.utils.Console, arguments);
             }
         }
     };
     /**
      * Writes warning message to console
      */
-    fjs.utils.Console.warn = function() {
+    _Console.warn = function() {
         if(console) {
             if(console.warn) {
                 if(console.warn.apply) {
@@ -68,14 +68,14 @@
                 }
             }
             else {
-                fjs.utils.Console.log.apply(fjs.utils.Console, arguments);
+              _Console.error.apply(fjs.utils.Console, arguments);
             }
         }
     };
     /**
      * Writes info message to console
      */
-    fjs.utils.Console.info = function() {
+    _Console.info = function() {
         if(console) {
             if(console.info) {
                 if(console.info.apply) {
@@ -87,7 +87,7 @@
                 }
             }
             else {
-                fjs.utils.Console.log.apply(fjs.utils.Console, arguments);
+              _Console.log.apply(fjs.utils.Console, arguments);
             }
         }
     };

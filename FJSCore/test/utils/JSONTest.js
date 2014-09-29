@@ -21,4 +21,13 @@ describe("JSONUtils", function() {
         var str2 = fjs.utils.JSON.stringify({a:{e:null},b:[],c:"123"});
         expect('{"a":{"e":null},"b":[],"c":"123"}').toBe(str2);
     });
+    it("isEmpty", function(){
+        expect(true).toBe(fjs.utils.JSON.isEmpty({}));
+        expect(true).toBe(fjs.utils.JSON.isEmpty(new Object()));
+        var obj1 = {a:1};
+        expect(false).toBe(fjs.utils.JSON.isEmpty(obj1));
+        delete obj1.a;
+        expect(true).toBe(fjs.utils.JSON.isEmpty(obj1));
+        expect(false).toBe(fjs.utils.JSON.isEmpty({q:2}));
+    });
 });

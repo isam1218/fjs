@@ -1,4 +1,5 @@
 (function(){
+    var _Increment =
     /**
      * Class to operate with incremental values. <br>
      * <b>Singleton</b>
@@ -20,7 +21,7 @@
      * @param {string} key Key of incremental value
      * @returns {number}
      */
-    fjs.utils.Increment.prototype.get = function(key) {
+    _Increment.prototype.get = function(key) {
         if(!this.counters[key]) {
             this.counters[key] = 0;
         }
@@ -30,7 +31,7 @@
      * Resets the incremental value (Sets incremental value to 0)
      * @param {string} key Key of incremental value
      */
-    fjs.utils.Increment.prototype.clear = function(key) {
+    _Increment.prototype.clear = function(key) {
         this.counters[key] = 0;
     };
 })();

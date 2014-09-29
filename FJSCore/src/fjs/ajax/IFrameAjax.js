@@ -1,54 +1,5 @@
 (function() {
-    namespace('fjs.ajax');
-
-    /**
-     * Wrapper class for XMLHTTPRequest to work via iframe. <br>
-     * Inner class only for internal usage.<br>
-     * THIS LINE IS TEST UPDATE TO TEST REVIEW cycle for this code.
-     * @param {string} id Request id. ID for synchronization requests between page and iframe.
-     * @constructor
-     * @inner
-     */
-    fjs.ajax.IFrameRequest = function(id) {
-        /**
-         * Request id
-         * @type {string}
-         */
-        this.id = id;
-        /**
-         * Request status
-         * @type {number}
-         */
-        this.status = 0;
-        /**
-         * Response text
-         * @type {string}
-         */
-        this.responseText = "";
-        /**
-         * Request method {'get'/'post'}
-         * @type {string}
-         */
-        this.method = null;
-        /**
-         * Request url
-         * @type {string}
-         */
-        this.url = null;
-        /**
-         * Request data (map key:value)
-         * @type {Object}
-         */
-        this.postData = null;
-        /**
-         * Request headers (map key:value)
-         * @type {Object}
-         */
-        this.headers = null;
-    };
-    fjs.ajax.IFrameRequest.prototype.abort = function(){};
-
-    var _a =
+    var _IFrameAjax =
     /**
      * Represents a cross-domain AJAX request via iframe.<br>
      * Old IE browsers don't allow to make cross-domain requests.<br>
@@ -78,7 +29,7 @@
          * @type {HTMLElement}
          * @private
          */
-        this.status = _a.states.NOT_INITIALIZED;
+        this.status = _IFrameAjax.states.NOT_INITIALIZED;
 
          /**
           * @type {Array.<Object>}
@@ -107,7 +58,7 @@
          this.compatibility = true;
 
         if(!this.crdmnFrame) {
-            this.status = _a.states.INITIALIZATION;
+            this.status = _IFrameAjax.states.INITIALIZATION;
             this.crdmnFrame = document.createElement('iframe');
             this.crdmnFrame.name = this.crdmnFrame.id = 'crdmnFrame';
             this.crdmnFrame.src = this.host;
@@ -117,7 +68,7 @@
             this.crdmnFrame.style.position = 'absolute';
             this.crdmnFrame.style.zIndex = '-1';
             this.crdmnFrame.onload = function() {
-                context.status = _a.states.READY;
+                context.status = _IFrameAjax.states.READY;
                 for(var i=0; i<context.suspendRequestes.length; i++) {
                     context.send(null, null, null, null, null, context.suspendRequestes[i]);
                 }
@@ -133,16 +84,16 @@
             }
         }
         else {
-            context.status = _a.states.READY;
+            context.status = _IFrameAjax.states.READY;
         }
     };
-    fjs.ajax.IFrameAjax.extend(fjs.ajax.AjaxProviderBase);
+    fjs.core.inherits(_IFrameAjax, fjs.ajax.AjaxProviderBase);
 
     /**
      * @enum {number}
      * @private
      */
-    fjs.ajax.IFrameAjax.states = {
+    _IFrameAjax.states = {
         'NOT_INITIALIZED':-1,
         'INITIALIZATION':0,
         'READY':1
@@ -158,7 +109,7 @@
      * @param {fjs.ajax.IFrameRequest=} request - Internal parameter. Should be null for external call.
      * @return {fjs.ajax.IFrameRequest}
      */
-    fjs.ajax.IFrameAjax.prototype.send = function(method, url, headers, data, callback, request) {
+    _IFrameAjax.prototype.send = function(method, url, headers, data, callback, request) {
         if(this.compatibility) {
             if (!request) {
                 request = new fjs.ajax.IFrameRequest(new fjs.utils.Increment().get('IFrameAjaxRequest'));
@@ -173,7 +124,7 @@
                 request.node = headers['node'];
                 this.listeners[request.id] = callback;
             }
-            if (this.status != _a.states.READY) {
+            if (this.status != _IFrameAjax.states.READY) {
                 this.suspendRequestes.push(request);
             }
             else {
@@ -190,7 +141,7 @@
                 request.headers = headers;
                 this.listeners[request.id] = callback;
             }
-            if (this.status != _a.states.READY) {
+            if (this.status != _IFrameAjax.states.READY) {
                 this.suspendRequestes.push(request);
             }
             else {
@@ -206,7 +157,7 @@
      * Aborts request
      * @param {fjs.ajax.IFrameRequest} request - Request for abort
      */
-    fjs.ajax.IFrameAjax.prototype.abort = function(request) {
+    _IFrameAjax.prototype.abort = function(request) {
         if(!this.compatibility) {
             var message = {type: 'abort', data: request};
             this.crdmnFrame.contentWindow.postMessage(fjs.utils.JSON.stringify(message), '*');
@@ -225,23 +176,23 @@
      * @param {MessageEvent} e - Post message event
      * @private
      */
-    fjs.ajax.IFrameAjax.prototype.onResponse = function(e) {
+    _IFrameAjax.prototype.onResponse = function(e) {
         if(!fjs.utils.JSON.check(e.data)) {
             return;
         }
-        var message = fjs.utils.JSON.parse(e.data);
+        var message = fjs.utils.JSON.parse(e.data), request, id, listener, _request;
         if(this.compatibility) {
             if (message) {
-                var request = message;
-                var id = request.id;
+                request = message;
+                id = request.id;
                 /**
                  * @type {fjs.ajax.IFrameRequest}
                  */
-                var _request = this.requests[id];
+                _request = this.requests[id];
                 if (_request) {
                     _request.status = request.status;
                     _request.responseText = request.response;
-                    var listener = this.listeners[id];
+                    listener = this.listeners[id];
                     if (listener) {
                         if (!request.error) {
                             listener(_request, _request.responseText, true);
@@ -256,17 +207,17 @@
             }
         }
         else {
-            if (message && message.type == 'IFrameAjaxRequest') {
-                var request = message.data;
-                var id = request.id;
+            if (message && (message.type == 'IFrameAjaxRequest')) {
+                request = message.data;
+                id = request.id;
                 /**
                  * @type {fjs.ajax.IFrameRequest}
                  */
-                var _request = this.requests[id];
+                _request = this.requests[id];
                 if (_request) {
                     _request.status = request.status;
                     _request.responseText = request.responseText;
-                    var listener = this.listeners[id];
+                    listener = this.listeners[id];
                     if (listener) {
                         if (!request.error) {
                             listener(_request, _request.responseText, true);

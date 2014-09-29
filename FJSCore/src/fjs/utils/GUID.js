@@ -1,5 +1,6 @@
 (function () {
-    /**
+  var _GUID =
+  /**
      * Simulates generation Globally Unique Identifier (<a href='http://en.wikipedia.org/wiki/Globally_unique_identifier'>GUID</a>)
      * @class
      * @static
@@ -16,13 +17,13 @@
      * Empty GUID ('00000000-0000-0000-0000-000000000000')
      * @const {String}
      */
-    fjs.utils.GUID.empty = "00000000-0000-0000-0000-000000000000";
+    _GUID.empty = "00000000-0000-0000-0000-000000000000";
 
     /**
      * Generates Unique Identifier ('GUID')
      * @returns {string}
      */
-    fjs.utils.GUID.create = function () {
+    _GUID.create = function () {
         return (_s4() + _s4() + "-" + _s4() + "-" + _s4() + "-" + _s4() + "-" + _s4() + _s4() + _s4()).toUpperCase();
     }
 
