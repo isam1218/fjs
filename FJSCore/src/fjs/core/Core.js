@@ -45,6 +45,11 @@
             }
             next();
        }
+       /**
+       * Function of inheritance
+       * @param {Function} ctor - 'Class' constructor
+       * @param {Function} superCtor - Parent 'class' constructor
+       */
        , inherits:function(ctor, superCtor) {
            ctor.super_ = superCtor;
            ctor.prototype = Object.create(superCtor.prototype, {
@@ -56,7 +61,11 @@
                }
            });
        }
-
+      /**
+       * Extends constructor
+       * @param ctor - Extendable constructor
+       * @param superCtor - Extending constructor
+       */
         , extend: function(ctor, superCtor) {
             var keys = Object.keys(superCtor.prototype);
             var i = keys.length;
@@ -69,6 +78,12 @@
             }
             ctor.exts_[superCtor.prototype['__class_name']] = superCtor.prototype;
         }
+
+      /**
+       * Creates and returns namespace
+       * @param {string} ns_name - Namespace name
+       * @returns {Object}
+       */
         , namespace: function(ns_name) {
             var parts = ns_name.split(".");
             var ns = self[parts[0]] = self[parts[0]] || {};

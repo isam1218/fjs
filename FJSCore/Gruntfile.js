@@ -148,6 +148,5 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-  grunt.registerTask('docs', ['jsdoc']);
   grunt.registerTask('default', ['karma', 'version', 'concat', 'string-replace', 'clean', 'shell:clear', 'closure-compiler']);
 };

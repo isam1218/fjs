@@ -7,6 +7,10 @@
 
   var _PluginManager =
   /**
+   * Fonality Plugin manager
+   * @param config
+   * @param authTicket
+   * @param node_id
    * @constructor
    */
   fjs.plugin.PluginManager = function(config, authTicket, node_id) {
@@ -54,17 +58,27 @@
     return document.getElementById("fonalityPhone");
   };
 
+  /**
+   * @param e
+   * @private
+   */
   _PluginManager.prototype.onError = function(e) {
     this.fireEvent("PluginError", e);
   };
 
-
+  /**
+   * @param instanceId
+   * @private
+   */
   _PluginManager.prototype.init = function(instanceId) {
     this.instanseId = instanceId || "unknown";
     this.pluginObject = this._createObject();
     this.pluginObject.onerorr = this.onError;
   };
 
+  /**
+   * @private
+   */
   _PluginManager.prototype.login = function() {
     if(!this.pluginLoaded) {
       return;
@@ -72,7 +86,9 @@
     this.session.authorize(this.loginData.authTicket, this.loginData.node_id, this.loginData.server);
   };
 
-
+  /**
+   * @private
+   */
   _PluginManager.prototype._onLoaded = function() {
     this.pluginLoaded = true;
     this.pluginVersion = this.pluginObject.version;
@@ -85,7 +101,10 @@
       this.login();
     }
   };
-
+  /**
+   * @param session
+   * @private
+   */
   _PluginManager.prototype.attachPluginEvents = function(session) {
     var context = this;
     if(session.addEventListener) {
@@ -99,7 +118,10 @@
       });
     }
   };
-
+  /**
+   * @param session
+   * @private
+   */
   _PluginManager.prototype._onSessionStatusChanged = function(session) {
     if(session.status == _PluginManager.SES_STATUS_UNAUTHORIZED) {
       if (this.tryAuthorizeCount < 5) {
@@ -116,24 +138,41 @@
     }
   };
 
-
+  /**
+   * Returns true if plugin is ready
+   * @returns {boolean}
+   */
   _PluginManager.prototype.isReady = function() {
     var status = this.getSessionStatus();
     return (status == _PluginManager.SES_STATUS_READY || status  == _PluginManager.SES_STATUS_NOTPERMITTED);
   };
-
+  /**
+   * Returns true if plugin is not permitted
+   * @returns {boolean}
+   */
   _PluginManager.prototype.isNotPermitted = function() {
     return this.getSessionStatus() == _PluginManager.SES_STATUS_NOTPERMITTED;
   };
-
+  /**
+   * Returns session object
+   * @returns {fjs.plugin.PluginManager.session}
+   */
   _PluginManager.prototype.getSession = function() {
     return this.session;
   };
 
+  /**
+   * Returns session status
+   * @returns {*}
+   */
   _PluginManager.prototype.getSessionStatus = function() {
     return this.session ? this.session.status : _PluginManager.SES_STATUS_UNAUTHORIZED;
   };
 
+  /**
+   * Checks if plugin inatalled
+   * @returns {boolean}
+   */
   _PluginManager.check = function() {
     try {
       if (window.ActiveXObject) {

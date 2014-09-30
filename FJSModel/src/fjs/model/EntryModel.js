@@ -1,14 +1,16 @@
 (function() {
   var _EntryModel =
   /**
-   * @param {Object} obj
+   * Entry model base
+   * @param {Object} obj - data object
    * @constructor
    */
   fjs.model.EntryModel = function (obj) {
     this.fill(obj);
   };
   /**
-   * @param {Object} obj
+   * Fills model from data object
+   * @param {Object} obj - data object
    */
   _EntryModel.prototype.fill = function (obj) {
     if (obj) {
@@ -20,8 +22,9 @@
     }
   };
   /**
-   * @param {string} key
-   * @param {*} value
+   * Assigns data field to model.
+   * @param {string} key - field name
+   * @param {*} value - field value
    */
   _EntryModel.prototype.applyField = function (key, value) {
     if (this.fieldPass(key, value)) {
@@ -29,8 +32,9 @@
     }
   };
   /**
-   * @param {string} key
-   * @param {*} value
+   * Checks if field can be assigned
+   * @param {string} key - field name
+   * @param {*} value - field value
    * @returns {boolean}
    */
   _EntryModel.prototype.fieldPass = function (key, value) {

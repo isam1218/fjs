@@ -1,9 +1,13 @@
 (function() {
-    var _EntryChange =
-    /**
-     *
-     * @type {Function}
-     */
+  var _EntryChange =
+  /**
+   * Change event data wrapper
+   * @param {string} feedName - Feed name
+   * @param {string} xpid - entry id
+   * @param {fjs.fdp.model.EntryModel} entry - entry model
+   * @param {string} type - Change type ('change' or 'delete')
+   * @constructor
+   */
     fjs.fdp.model.EntryChange = function (feedName, xpid, entry, type) {
         this.xpid = xpid;
         /**
@@ -18,6 +22,12 @@
     _EntryChange.CHANGE_TYPE_CHANGE = 'change';
     _EntryChange.CHANGE_TYPE_DELETE = 'delete';
 
+  /**
+   * Accepts data changes for entry and creates changes set
+   * @param {fjs.fdp.model.EntryModel} item - Entry model
+   * @param {Object} changes Data object with changes
+   * @param {string} feedName - Feed name
+   */
   _EntryChange.prototype.fillChange = function (item, changes, feedName) {
         var _changes = this.prepareChange(changes, feedName);
         if (this.type != _EntryChange.CHANGE_TYPE_DELETE) {
@@ -32,6 +42,11 @@
         }
     };
 
+  /**
+   * Accepts deletion
+   * @param {fjs.fdp.model.EntryModel} item - Entry model
+   * @param {string} feedName - Feed name
+   */
   _EntryChange.prototype.fillDeletion= function(item, feedName) {
         if(feedName==this.feedName) {
             this.type = _EntryChange.CHANGE_TYPE_DELETE;
@@ -52,7 +67,13 @@
             }
         }
     };
-
+  /**
+   * Adds prefixes to fields names for joined feeds
+   * @param {Object} changes - Data set of changes
+   * @param {string} feedName - Feed name
+   * @returns {Object}
+   * @private
+   */
   _EntryChange.prototype.prepareChange = function(changes, feedName) {
         if(!changes.xpid) {
             changes.xpid = this.xpid;
@@ -69,6 +90,10 @@
             return changes;
         }
     };
+  /**
+   * Creates JSON object for change.
+   * @returns {{xpid: *, type: *, entry: *}}
+   */
   _EntryChange.prototype.getJSON = function() {
         return {
             xpid:this.xpid

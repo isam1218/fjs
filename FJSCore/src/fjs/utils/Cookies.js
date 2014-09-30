@@ -9,7 +9,7 @@
         /**
          * Returns cookie value by name
          * @param {string} name - cookie name
-         * @return {string} cookie value
+         * @return {string} - cookie value
          */
         get: function(name) {
             var matches = document.cookie.match(new RegExp(

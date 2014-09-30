@@ -44,7 +44,7 @@ _IndexedDBProvider.check= function() {
 };
 /**
 * Opens connection to storage
-* @param {Object} config Database config
+* @param {Object} config - Database config
 * @param {function(fjs.db.DBProviderBase)} callback - Handler function to execute when database was ready
 */
 _IndexedDBProvider.prototype.open = function(config, callback) {
@@ -95,9 +95,9 @@ _IndexedDBProvider.prototype.open = function(config, callback) {
 
 /**
  * Creates table
- * @param {string} name Table name
- * @param {string} key Primary key
- * @param {Array} indexes Table indexes
+ * @param {string} name - Table name
+ * @param {string} key - Primary key
+ * @param {Array} indexes - Table indexes
  * @protected
  */
 _IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
@@ -125,7 +125,7 @@ _IndexedDBProvider.prototype.createTable = function(name, key, indexes) {
 /**
  * Declares multiple indexes for IE <br>
  * Workaround to fix IE issue with multiple indexes
- * @param {Array} indexes Table indexes
+ * @param {Array} indexes - Table indexes
  * @private
  */
 _IndexedDBProvider.prototype.IEDeclareMultipleIndexes = function(indexes) {
@@ -163,7 +163,7 @@ _IndexedDBProvider.prototype.IEApplyMultipleIndexesForItem = function(tableName,
 };
 /**
  * @param {string} tableName
- * @param item
+ * @param (Object) item
  * @private
  */
 _IndexedDBProvider.prototype.IEClearMultipleIndexesForItem = function(tableName, item) {

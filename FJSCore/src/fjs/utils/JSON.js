@@ -9,7 +9,7 @@
     fjs.utils.JSON = function() {};
     /**
      * Deserializes json string to object
-     * @param {string} str
+     * @param {string} str - String to be parsed
      * @returns {Object}
      */
     _JSON.parse = function(str) {

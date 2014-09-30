@@ -8,8 +8,9 @@
 
     /**
      * Writes log message to console
+     * @param {...*} message
      */
-    _Console.log = function() {
+    _Console.log = function(message) {
         if(console) {
             if(console.log.apply) {
                 console.log.apply(console, arguments);
@@ -20,10 +21,12 @@
             }
         }
     };
+
     /**
      * Writes error message to console
+     * @param {...*} message
      */
-    _Console.error = function() {
+    _Console.error = function(message) {
         if(console) {
             if(console.error.apply) {
                 console.error.apply(console, arguments);
@@ -34,10 +37,12 @@
             }
         }
     };
+
     /**
      * Writes debug message to console
+     * @param {...*} message
      */
-    _Console.debug = function() {
+    _Console.debug = function(message) {
         if(console) {
             if(console.debug) {
                 if(console.debug.apply) {
@@ -53,10 +58,12 @@
             }
         }
     };
+
     /**
      * Writes warning message to console
+     * @param {...*} message
      */
-    _Console.warn = function() {
+    _Console.warn = function(message) {
         if(console) {
             if(console.warn) {
                 if(console.warn.apply) {
@@ -72,10 +79,12 @@
             }
         }
     };
+
     /**
      * Writes info message to console
+     * @param {...*} message
      */
-    _Console.info = function() {
+    _Console.info = function(message) {
         if(console) {
             if(console.info) {
                 if(console.info.apply) {

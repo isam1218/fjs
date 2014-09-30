@@ -68,20 +68,20 @@ _WebSQLProvider.prototype.open = function(config, callback) {
         this.tables[table.name] = {'name':table.name, 'key':table.key, 'indexes':_indexes};
     }
     var _dbVersion = db.version;
-    if(_dbVersion!==config.version) {
+    if(_dbVersion!=config.version) {
       db.changeVersion(db.version, config.version, function() {
-        //if(_dbVersion!=='') {
-        //  context.clear(function () {
-        //    context.createTables(function () {
-        //      callback(context);
-        //    });
-        //  });
-        //}
-        //else {
+        if(_dbVersion!=='') {
+          context.clear(function () {
+            context.createTables(function () {
+              callback(context);
+            });
+          });
+        }
+        else {
           context.createTables(function () {
             callback(context);
           });
-        //}
+        }
       });
     }
     else {

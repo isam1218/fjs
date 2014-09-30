@@ -1,9 +1,9 @@
 (function(){
   var _EntryModel =
   /**
-   *
-   * @param obj
-   * @param xpid
+   * FDP Entry model
+   * @param {Object} obj - Object of changed data
+   * @param {string} xpid - Entry id
    * @constructor
    */
 fjs.fdp.model.EntryModel = function(obj, xpid) {
@@ -12,6 +12,11 @@ fjs.fdp.model.EntryModel = function(obj, xpid) {
 };
 fjs.core.inherits(_EntryModel, fjs.model.EntryModel);
 
+  /**
+   * Fills model from data object and returns only changed fields
+   * @param {Object} obj - data object
+   * @return {Object|null}
+   */
   _EntryModel.prototype.fill = function(obj) {
     var changes = {};
     if(obj) {

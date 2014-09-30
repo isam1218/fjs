@@ -87,7 +87,11 @@
             clearTimeout(context.timeoutId);
             context.timeoutId = setTimeout(context._masterIteration, context.MASTER_ACTIVITY_TIMEOUT);
         };
-
+      /**
+       * onstorage event handler
+       * @param e
+       * @private
+       */
         this.onStorage = function(e) {
             if(e.key == context.TABS_SYNCRONIZE_KEY) {
                 var lsvals = e.newValue.split("|");
@@ -125,6 +129,11 @@
     };
     fjs.core.inherits(fjs.tabs.TabsSynchronizer, fjs.model.EventsSource);
 
+  /**
+   * Checks if this tab is master
+   * @returns {boolean}
+   * @private
+   */
     fjs.tabs.TabsSynchronizer.prototype._checkMaster = function() {
         var lsvals;
         if(fjs.utils.Browser.isIE11()) {
@@ -136,6 +145,11 @@
         return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
     };
 
+  /**
+   * Adds Event listener
+   * @param {string} eventType - Event type ('master_changed' or any sync event from other tab)
+   * @param {Function} handler - Handler function
+   */
   _TabsSynchronizer.prototype.addEventListener = function(eventType, handler) {
         var context = this;
         if(fjs.utils.Browser.isIE11() && eventType!='master_changed') {
@@ -189,6 +203,11 @@
     _TabsSynchronizer.super_.prototype.addEventListener.call(this, eventType, handler);
     };
 
+  /**
+   * Removes event listener
+   * @param eventType - Event type
+   * @param handler - Handler function
+   */
   _TabsSynchronizer.prototype.removeEventListener = function(eventType, handler) {
         if(fjs.utils.Browser.isIE11()) {
             if(this.lastValues[eventType]) {
@@ -204,11 +223,23 @@
     _TabsSynchronizer.super_.prototype.removeEventListener.call(this, eventType, handler);
     };
 
+  /**
+   * Creates unique key for entry in the local storage
+   * @param eventType - Event type
+   * @returns {string}
+   * @private
+   */
   _TabsSynchronizer.prototype.generateDataKey = function(eventType) {
         var inc = new fjs.utils.Increment();
         return eventType + "|" + this.tabId + "|" + inc.get("tabsyncKeys");
     };
 
+  /**
+   * Sets value ('message') to DB (IE 11 workaround)
+   * @param {string} key
+   * @param {*} value
+   * @private
+   */
   _TabsSynchronizer.prototype.setSyncValue = function(key, value) {
         if(this.db && this.db.state == 1) {
             var genKey = this.generateDataKey(key), context = this;

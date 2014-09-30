@@ -18,7 +18,7 @@
     };
     /**
      * Creates incremental value by string key (starts from 1)
-     * @param {string} key Key of incremental value
+     * @param {string} key - Key of incremental value
      * @returns {number}
      */
     _Increment.prototype.get = function(key) {
@@ -29,7 +29,7 @@
     };
     /**
      * Resets the incremental value (Sets incremental value to 0)
-     * @param {string} key Key of incremental value
+     * @param {string} key - Key of incremental value
      */
     _Increment.prototype.clear = function(key) {
         this.counters[key] = 0;

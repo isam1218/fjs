@@ -1,4 +1,5 @@
 /**
+ * Model change event object
  * @param {string} eventType
  * @param {string=} xpid
  * @param {fjs.model.EntryModel=} entry

@@ -23,7 +23,7 @@
      * @param {string} url - Request URL
      * @param {Object} headers - Request (HTTP) headers
      * @param {Object} data - Request data
-     * @param {function(XDomainRequest, string, boolean)} callback Response handler function
+     * @param {function(XDomainRequest, string, boolean)} callback - Response handler function
      * @return {XDomainRequest}
      */
     _XDRAjax.prototype.send = function(method, url, headers, data, callback) {

@@ -34,8 +34,8 @@ _EventsSource.prototype.addEventListener = function (eventType, handler) {
 
 /**
  * Removes event listener
- * @param {string} eventType Event type
- * @param {Function} handler Method to execute when event happens
+ * @param {string} eventType - Event type
+ * @param {Function} handler - Method to execute when event happens
  */
 _EventsSource.prototype.removeEventListener = function (eventType, handler) {
     var _listeners = this.listeners[eventType], index;
@@ -49,8 +49,8 @@ _EventsSource.prototype.removeEventListener = function (eventType, handler) {
 
 /**
  * Sends event to listeners
- * @param {string} eventType Event type
- * @param {Object} eventData Event object
+ * @param {string} eventType - Event type
+ * @param {*} eventData - Event object
  * @protected
  */
 _EventsSource.prototype.fireEvent = function (eventType, eventData) {

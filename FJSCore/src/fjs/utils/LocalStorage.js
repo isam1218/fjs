@@ -5,9 +5,7 @@
      * Utils static class to simplify work with LocalStorage.
      * @constructor
      */
-    fjs.utils.LocalStorage = function() {
-
-    };
+    fjs.utils.LocalStorage = function() {};
 
     /**
      * @type {boolean | null}

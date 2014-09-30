@@ -62,36 +62,55 @@
 
   _API.WAVE_MAPPER_NAME = "Wave mapper";
 
+  /**
+   * Returns true is plugin is ready
+   * @return {boolean}
+   */
   _API.prototype.isReady = function() {
     return this.pluginManager.isReady();
   };
 
+  /**
+   * Returns phone object
+   * @return {*}
+   */
   _API.prototype.getPhone = function() {
     if(this.isReady()) {
       return this.pluginManager.getSession().phone;
     }
   };
 
+  /**
+   * Returns plugin sound manager object
+   * @return {*}
+   */
   _API.prototype.getSoundManager = function() {
     if(this.isReady()) {
       return this.pluginManager.getSession().soundManager;
     }
   };
-
+  /**
+   * Registers phone on asterisk
+   * @param {boolean} force
+   */
   _API.prototype.register = function(force) {
     if (this.isReady() && !this.pluginManager.isNotPermitted() && (!this.isRegistered() || force) && !this.isRegistering()) {
       this.tryRegistringCount = 0;
       this.getPhone().register(true);
     }
   };
-
+  /**
+   * Unregisters phone on asterisk
+    */
   _API.prototype.unregister = function() {
     if (this.isReady() && this.isRegistered()) {
       this.tryRegistringCount = 0;
       this.getPhone().register(false);
     }
   };
-
+  /**
+   * @private
+   */
   _API.prototype.attachPluginEvents = function() {
     var context = this;
     if(this.getPhone().addEventListener) {
@@ -119,7 +138,10 @@
       });
     }
   };
-
+  /**
+   * @param {*} phone - phone object
+   * @private
+   */
   _API.prototype.onPhoneStatusChanged = function(phone) {
     if (phone) {
       if (phone.status == _API.REG_STATUS_ONLINE) {
@@ -135,7 +157,14 @@
       this.fireEvent("AccountStatusChanged", {status:phone.status});
     }
   };
-
+  /**
+   *
+   * @param {Number} val
+   * @param {Number} min
+   * @param {Number} max
+   * @return {Number}
+   * @private
+   */
   _API.prototype.validateDoubleValue = function(val, min , max) {
     val = parseFloat(val);
     if (!isNaN(val)) {
@@ -145,7 +174,10 @@
     return val || min;
   };
 
-
+  /**
+   * Returns current speaker volume
+   * @return {Number}
+   */
   _API.prototype.getSpeakerVolume = function() {
     if(this.isReady()) {
       return this.getSoundManager().speaker;
@@ -153,6 +185,10 @@
     return 0;
   };
 
+  /**
+   * Sets speaker volume
+   * @param {Number} val - number from 0 to 1
+   */
   _API.prototype.setSpeakerVolume = function(val) {
     if(this.isReady() && this.getSoundManager().speaker != val) {
       val = this.validateDoubleValue(val, 0, 1);
@@ -161,6 +197,10 @@
     }
   };
 
+  /**
+   * Returns current mic volume
+   * @return {Number}
+   */
   _API.prototype.getMicrophoneVolume = function() {
     if(this.isReady()) {
       return this.getSoundManager().microphone;
@@ -168,6 +208,10 @@
     return 0;
   };
 
+  /**
+   * Sets microphone volume
+   * @param {Number} val - number from 0 to 1
+   */
   _API.prototype.setMicrophoneVolume = function(val) {
     if(this.isReady() && this.getSoundManager().microphone != val) {
       val = this.validateDoubleValue(val, 0, 1);
@@ -176,11 +220,20 @@
     }
   };
 
+  /**
+   * Returns echo cancellation value
+   * @returns {Number}
+   */
   _API.prototype.getEACTailLength = function() {
     if(this.isReady()) {
       return this.getSoundManager().AECTailLength;
     }
   };
+
+  /**
+   * Sets echo cancellation value
+   * @param {Number} val
+   */
   _API.prototype.setEACTailLength = function(val) {
     if(this.isReady() && val != this.getSoundManager().AECTailLength) {
       val = this.validateDoubleValue(val, 0, 500);
@@ -189,12 +242,21 @@
     }
   };
 
+  /**
+   * Retruns current input device id
+   * @returns {number}
+   */
   _API.prototype.getInputDeviceId = function() {
     if(this.isReady()) {
       return this.getSoundManager().inpdefid >= 0 ? this.getSoundManager().inpdefid : this.getSoundManager().getSystemInputDevice();
     }
   };
 
+
+  /**
+   * Sets current input device id
+   * @param {number} devId
+   */
   _API.prototype.setInputDeviceId = function(devId) {
     var devices = this.getDevices();
     if(this.isReady() && this.getSoundManager().inpdefid != devId && devices.length>devId) {
@@ -210,12 +272,20 @@
   };
 
 
+  /**
+   * Retruns current output device id
+   * @returns {number}
+   */
   _API.prototype.getOutputDeviceId = function() {
     if(this.isReady()) {
       return this.getSoundManager().outdefid>=0 ? this.getSoundManager().outdefid : this.getSoundManager().getSystemOutputDevice();
     }
   };
 
+  /**
+   * Sets current output device id
+   * @returns {number}
+   */
   _API.prototype.setOutputDeviceId = function(devId) {
     var devices = this.getDevices();
     if(this.isReady() && this.getSoundManager().outdefid != devId) {
@@ -230,12 +300,20 @@
     }
   };
 
+  /**
+   * Retruns current ring device id
+   * @returns {number}
+   */
   _API.prototype.getRingDeviceId = function() {
     if(this.isReady()) {
       return this.getSoundManager().ringdefid>=0 ? this.getSoundManager().ringdefid : this.getSoundManager().getSystemOutputDevice();
     }
   };
 
+  /**
+   * Sets current ring device id
+   * @param {number} devId
+   */
   _API.prototype.setRingDeviceId = function(devId) {
     var devices = this.getDevices();
     if(this.isReady() && this.getSoundManager().ringdefid != devId) {
@@ -250,13 +328,20 @@
     }
   };
 
-
+  /**
+   * Returns list of devices
+   * @returns {Array}
+   */
   _API.prototype.getDevices = function() {
     if(this.isReady()) {
       return this.getSoundManager().devs;
     }
   };
 
+  /**
+   * Returns list of output devices
+   * @returns {Array}
+   */
   _API.prototype.getOutputDevices = function() {
     if(this.isReady()) {
       var devs = this.getSoundManager().devs;
@@ -270,6 +355,10 @@
     }
   };
 
+  /**
+   * Returns list of input devices
+   * @returns {Array}
+   */
   _API.prototype.getInputDevices = function() {
     if(this.isReady()) {
       var devs = this.getSoundManager().devs;
@@ -283,6 +372,10 @@
     }
   };
 
+  /**
+   * Returns list of codecs
+   * @returns {Array}
+   */
   _API.prototype.getCodecs = function() {
     var res=[];
     if(this.isReady()) {
@@ -300,6 +393,11 @@
     return res;
   };
 
+
+  /**
+   * Sets default codecs priority
+   * @private
+   */
   _API.prototype.setDefaultCodecsPriority = function() {
     if(this.isReady()) {
       var arr=[];
@@ -315,6 +413,13 @@
     }
   };
 
+
+  /**
+   *
+   * @param codecName
+   * @param priority
+   * @private
+   */
   _API.prototype.setCodecPriority = function(codecName, priority) {
     if(this.isReady()) {
       var codecs = this.getCodecs();
@@ -329,10 +434,17 @@
     }
   };
 
+  /**
+   * Returns phone status
+   * @returns {number}
+   */
   _API.prototype.getPhoneStatus = function() {
     return this.getPhone() ? this.getPhone().status : 0;
   };
 
+  /**
+   * @private
+   */
   _API.prototype.soundDevicesChanged = function() {
 
     if(this.isReady() && this.devicesChanged) {
@@ -394,7 +506,10 @@
     }
   };
 
-
+  /**
+   * @param {Object} call - call object
+   * @private
+   */
   _API.prototype.onCallStateChanged = function(call) {
     //console.log(call.remote_contact+":"+call.status);
     if(!call.sip_id) {
@@ -448,12 +563,27 @@
     this.fireEvent("CallStateChanged", callInfo);
   };
 
+  /**
+   * Returns true if phone registered
+   * @returns {boolean}
+   */
   _API.prototype.isRegistered = function() {
     return this.getPhoneStatus() == _API.REG_STATUS_ONLINE;
   };
+
+  /**
+   * Returns true if phone is in registering state
+   * @returns {boolean}
+   */
   _API.prototype.isRegistering = function() {
     return this.getPhoneStatus() == _API.REG_STATUS_REGISTERING;
   };
+
+  /**
+   * Makes a call
+   * @param {string} phoneNumber
+   * @returns {boolean}
+   */
   _API.prototype.call = function(phoneNumber) {
     if (this.isRegistered() && phoneNumber) {
       this.getPhone().makeCall(phoneNumber);
@@ -463,6 +593,8 @@
 
   /**
    * Accept an incoming call.
+   * @param {string} sipId
+   * @returns {boolean}
    */
   _API.prototype.accept = function(sipId) {
     var call = this.SIPCalls[sipId];
@@ -474,10 +606,9 @@
 
   /**
    * Transfer the call to another number.
-   *
-   * @param {int}
-   *            phoneNumber The number to transfer the call to.
-   * @returns api
+   * @param {string} sipId
+   * @param {string} phoneNumber The number to transfer the call to.
+   * @returns {boolean}
    */
   _API.prototype.transfer = function(sipId, phoneNumber) {
     var call = this.SIPCalls[sipId];
@@ -487,6 +618,11 @@
     }
   };
 
+  /**
+   * Accepts an incoming call and puts it to hold
+   * @param {string} sipId
+   * @returns {boolean}
+   */
   _API.prototype.answerToHold = function(sipId) {
     var call = this.SIPCalls[sipId];
     if(call) {
@@ -498,7 +634,8 @@
 
   /**
    * End the phone call.
-   *
+   * @param {string} sipId
+   * @returns {boolean}
    */
   _API.prototype.end = function(sipId) {
     var call = this.SIPCalls[sipId];
@@ -510,7 +647,9 @@
 
   /**
    * Returns current codec name for call.
-   *
+   * @param {string} sipId
+   * @returns {boolean}
+   * @private
    */
   _API.prototype.getCodecName = function(sipId) {
     var call = this.SIPCalls[sipId];
@@ -523,7 +662,8 @@
 
   /**
    * Place the call on hold.
-   *
+   * @param {string} sipId
+   * @returns {boolean}
    */
   _API.prototype.hold = function(sipId) {
     var call = this.SIPCalls[sipId];
@@ -536,7 +676,8 @@
 
   /**
    * Take the call off hold.
-   *
+   * @param {string} sipId
+   * @returns {boolean}
    */
   _API.prototype.unhold = function(sipId) {
     var call = this.SIPCalls[sipId];
@@ -548,8 +689,8 @@
   };
 
   /**
-   * Take the call off hold.
-   *
+   * Place all active calls except one on hold.
+   * @param {Object} call - Call object
    */
   _API.prototype.putActiveCallsOnHold = function(call) {
     for (var sipId in this.SIPCalls) {
@@ -559,6 +700,10 @@
     }
   };
 
+  /**
+   * Returns true if call exist
+   * @returns {boolean}
+   */
   _API.prototype.hasCall = function() {
     for (var sipId in this.SIPCalls) {
       return true;
@@ -566,23 +711,39 @@
     return false;
   };
 
+  /**
+   * Mute microphone
+   * @returns {boolean}
+   */
   _API.prototype.mute = function() {
     this.savedMicValue = this.getMicrophoneVolume();
     this.setMicrophoneVolume(0);
     return true;
   };
 
+  /**
+   * Unmute mickrophone
+   * @returns {boolean}
+   */
   _API.prototype.unmute = function() {
     this.setMicrophoneVolume(this.savedMicValue || 0.8);
     return true;
   };
 
+  /**
+   * Mute speaker
+   * @returns {boolean}
+   */
   _API.prototype.speakerOff = function() {
     this.savedSpeakerValue = this.getSpeakerVolume()
     this.setSpeakerVolume(0);
     return true;
   };
 
+  /**
+   * Mute speaker
+   * @returns {boolean}
+   */
   _API.prototype.speakerOn = function() {
     this.setSpeakerVolume(this.savedSpeakerValue || 0.8);
     return true;
@@ -590,6 +751,9 @@
 
   /**
    * Send dtmf message.
+   * @param {string} sipId
+   * @param {string} message
+   * @returns {boolean}
    */
   _API.prototype.sendDtmf = function(sipId, message) {
     var call = this.SIPCalls[sipId];
@@ -598,11 +762,19 @@
       return true;
     }
   };
+  /**
+   * Starts play DTMF tone
+   * @param {string} _char
+   */
   _API.prototype.playDtmfTone = function(_char) {
     if(this.isReady() && this.pluginManager.getSession().getDTMFToneGenerator()) {
       this.pluginManager.getSession().getDTMFToneGenerator().play(_char);
     }
   };
+  /**
+   * Ends play DTMF tone
+   * @param {string} _char
+   */
   _API.prototype.stopDtmfTone = function() {
     if(this.isReady() &&this.pluginManager.getSession().getDTMFToneGenerator()) {
       this.pluginManager.getSession().getDTMFToneGenerator().stop();

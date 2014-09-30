@@ -1,7 +1,8 @@
 (function () {
   var _FeedModel =
   /**
-   * @param {string} feedName
+   * Base feed model
+   * @param {string} feedName - Feed name
    * @constructor
    * @extends fjs.model.EventsSource
    */
@@ -13,7 +14,7 @@
        * @type {Object}
        */
       this.items = {};
-      this.listeners = {};
+
       this.xpidListeners = new fjs.model.EventsSource();
     };
 
@@ -25,6 +26,7 @@
   _FeedModel.EVENT_TYPE_COMPLETE = "complete";
 
   /**
+   * Returns entry model by id
    * @param {string} xpid
    * @returns {fjs.model.EntryModel}
    */
@@ -33,6 +35,7 @@
   };
 
   /**
+   * Starting of changes
    * @param {fjs.model.ModelEvent} event
    */
   _FeedModel.prototype.onSyncStart = function (event) {
@@ -40,6 +43,7 @@
   };
 
   /**
+   * Entry is removed
    * @param {fjs.model.ModelEvent} event
    */
   _FeedModel.prototype.onEntryDeletion = function (event) {
@@ -52,6 +56,7 @@
   };
 
   /**
+   * New entry or entry is changed
    * @param {fjs.model.ModelEvent} event
    */
   _FeedModel.prototype.onEntryChange = function (event) {
@@ -68,6 +73,7 @@
   };
 
   /**
+   * End of changes
    * @param {fjs.model.ModelEvent} event
    */
   _FeedModel.prototype.onSyncComplete = function (event) {
@@ -75,8 +81,9 @@
   };
 
   /**
-   * @param {string} eventType
-   * @param {Function} listener
+   * Adds event listener
+   * @param {string} eventType - event type ("start"|"push"|"delete"|"complete")
+   * @param {Function} listener - event listener function
    */
   _FeedModel.prototype.addEventListener = function (eventType, listener) {
     _FeedModel.super_.prototype.addEventListener.call(this, eventType, listener);
@@ -95,6 +102,11 @@
     }
   };
 
+  /**
+   * Adds listener on changes of specified entry
+   * @param {string} xpid - entry id
+   * @param {Function} listener - event listener function
+   */
   _FeedModel.prototype.addXpidListener = function (xpid, listener) {
     this.xpidListeners.addEventListener(xpid, listener);
     if (this.items[xpid]) {
@@ -102,10 +114,20 @@
     }
   };
 
+  /**
+   * Removes listener from events of specified entry
+   * @param {string} xpid - entry id
+   * @param {Function} listener - event listener function
+   */
   _FeedModel.prototype.removeXpidListener = function (xpid, listener) {
     this.xpidListeners.removeEventListener(xpid, listener);
   };
 
+  /**
+   * Sends event to listeners
+   * @param {string} eventType - Event type
+   * @param {*} data - Event object
+   */
   _FeedModel.prototype.fireEvent = function (eventType, data) {
     _FeedModel.super_.prototype.fireEvent.call(this, eventType, data);
     if (data.xpid) {
@@ -113,11 +135,17 @@
     }
   };
 
+  /**
+   * Creates new entry model from data object
+   * @param {Object} obj - data object
+   * @returns {fjs.model.EntryModel}
+   */
   _FeedModel.prototype.createEntry = function (obj) {
     return new fjs.model.EntryModel(obj);
   };
 
   /**
+   * Returns number of entries
    * @returns {Number}
    */
   _FeedModel.prototype.getItemsCount = function () {

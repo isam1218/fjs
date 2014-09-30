@@ -8,7 +8,7 @@
 
     /**
      * Checks if object is Array
-     * @param {*} obj
+     * @param {*} obj - Object to be checked
      * @returns {boolean}
      * @static
      */

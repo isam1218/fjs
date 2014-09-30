@@ -55,7 +55,7 @@
           */
         this.crdmnFrame = document.getElementById('crdmnFrame');
 
-         this.compatibility = true;
+        this.compatibility = true;
 
         if(!this.crdmnFrame) {
             this.status = _IFrameAjax.states.INITIALIZATION;

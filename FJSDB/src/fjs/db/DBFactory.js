@@ -61,5 +61,4 @@ _DBFactory.prototype.getDB = function(callback) {
         setTimeout(function(){callback(context.currentDB)},0);
     }
 };
-
 })();

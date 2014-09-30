@@ -122,7 +122,7 @@
 
     /**
      * Aborts request
-     * @param {XMLHttpRequest} xhr - request
+     * @param {XMLHttpRequest} xhr - Request
      */
     _XHRAjax.prototype.abort = function(xhr) {
         if (xhr && xhr.readyState !== _XHRAjax.states.REQUEST_COMPLETED) {

@@ -6,7 +6,7 @@
    * @abstract
    * @template T
    */
-  fjs.ajax.AjaxProviderBase = function() {};
+  fjs.ajax.AjaxProviderBase = function () {};
 
   /**
    * Aborts request
