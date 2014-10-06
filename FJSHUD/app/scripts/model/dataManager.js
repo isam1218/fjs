@@ -54,6 +54,9 @@
 //            case "locations":
 //                this.feeds[feedName] = new fjs.fdp.LocationsFeedModel(this);
 //                break;
+                case "calllog":
+                    this.feeds[feedName] = new fjs.hud.CalllogFeedModel(this);
+                    break;
                 case "contacts":
                     this.feeds[feedName] = new fjs.hud.ContactsFeedModel(this);
                     break;
