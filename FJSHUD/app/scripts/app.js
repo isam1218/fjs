@@ -26,6 +26,7 @@ hud_web.config(function ($routeProvider) {
         when('/settings/account', {templateUrl: 'views/SettingsAccount.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
         when('/contacts', {templateUrl: 'views/ContactsWidget.html',   controller:['$scope',  'DataManager', fjs.ui.ContactsWidget]}).
         when('/calllog', {templateUrl: 'views/CallsRecordings.html',   controller:['$scope',  'DataManager', fjs.ui.CallsRecordingsController]}).
+        when('/calllog/voicemails', {templateUrl: 'views/VoiceRecordings.html',   controller:['$scope',  'DataManager', fjs.ui.CallsRecordingsController]}).
         when('/conferences', {templateUrl: 'views/MyConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/conferences/my', {templateUrl: 'views/MyConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/conferences/all', {templateUrl: 'views/AllConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
@@ -58,6 +59,7 @@ hud_web.controller("ResentItemController", ['$scope', '$element',  fjs.ui.Resent
 hud_web.controller("ChatController", ['$scope', 'DataManager',  fjs.ui.ChatController]);
 hud_web.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.ContextMenuController]);
 hud_web.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.ChatStatusController]);
+hud_web.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);
 //hud_web.controller("ContactController", fjs.ui.ContactController);
