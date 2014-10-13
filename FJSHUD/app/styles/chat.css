@@ -13,6 +13,8 @@
   right: 0px;
   min-height: 35px;
   padding-top: 16px;
+  display: flex;
+  flex-direction: row;
 }
 .ChatInputBoxBorder {
   position: absolute;
@@ -26,7 +28,7 @@
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 input.text.ChatInputBoxInput,
 .text.ChatInputBoxInput[contenteditable] {
-  margin: 0 0 0 10px;
+  margin: 0 10px;
   height: auto;
   min-height: 16px;
   max-height: 200px;
@@ -36,13 +38,13 @@ input.text.ChatInputBoxInput,
   padding: 5px;
   overflow: auto;
   background-color: #fff;
+  flex: 1;
 }
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .XButton.ChatInputBoxSend {
   margin: 0px;
-  position: absolute;
-  right: 15px;
-  top: 15px;
+  position: relative;
+  margin-right: 10px;
   width: 65px;
 }
 .ListMessageChatWidget {

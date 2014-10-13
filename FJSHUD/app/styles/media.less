@@ -1,35 +1,22 @@
-@media screen and (max-width: 830px) {
-  .Widget {
-    left: auto;
-    right:10px;
-  }
-  .LeftSideBar {
-    left: auto;
-    right:520px;
-  }
-  .TopBarIcons {
-    left: auto;
-    right:10px;
-  }
-}
 @media screen and (max-width: 700px) {
+  .MainContent {
+    flex-direction: column;
+  }
   .TopBarLogo {
     display:none;
   }
-}
-
-@media screen and (max-width: 550px) {
-  .Widget {
-    left: 10px;
-    width:auto;
-    right:10px;
-  }
   .TopBarIcons {
     left: 10px;
   }
-
   .LeftSideBar {
-    left: -270px;
-    z-index:5;
+	height: 100px;
+    width: auto !important;
+  }
+  .WidgetWrapper {
+	width: 100%;
+	margin-top: 10px;
+  }
+  .Widget {
+    left: 0;
   }
 }
