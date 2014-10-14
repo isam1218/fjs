@@ -1,22 +1,50 @@
 @media screen and (max-width: 700px) {
-  .MainContent {
-    flex-direction: column;
+  .TopBar {
+    height: 50px;
   }
   .TopBarLogo {
     display:none;
   }
   .TopBarIcons {
     left: 10px;
+	top: -8px;
   }
-  .LeftSideBar {
-	height: 100px;
-    width: auto !important;
+  .TopBarItemAppName {
+    display: none;
   }
-  .WidgetWrapper {
-	width: 100%;
-	margin-top: 10px;
+  .TopBarMeStatus-row {
+    .AvatarNormal, .AvatarNormal img {
+	  width: 29px;
+	  height: 29px;
+	}
+    .XButtonToggle {
+      display: inline-block;
+	  padding: 0;
+	}	
+	.SelectBox {
+	  display: inline-block;
+	  width: 60px;
+	}
+	.PopupMenu {
+	  top: 30px !important;
+	}
   }
-  .Widget {
-    left: 0;
+  
+  .MainWrapper {
+    flex-direction: column;
+  }
+  .MainPanel {
+    .WidgetHeader {
+	  display: none;
+	}
+    .WidgetBody {
+	  top: 0px !important;
+    }
+  }
+  .StackablePanels {
+    padding: 10px 0 0 0;
+    flex: 1;
+    width: 100%;
+	height: 50%;
   }
 }

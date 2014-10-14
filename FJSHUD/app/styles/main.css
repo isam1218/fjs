@@ -40,19 +40,43 @@ input[type="tel"] {
   border-radius: 2px;
   outline: none;
 }
-.MainApp {
+#App {
   position: relative;
+  min-height: 300px;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.MainContent {
+#App.stacked {
+  min-height: 600px;
+}
+.MainWrapper {
   position: relative;
   padding: 0 10px 10px 10px;
   flex: 1;
   display: flex;
   flex-direction: row;
+}
+.MainPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.StackablePanels {
+  width: 50%;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.StackablePanels .Stackable {
+  position: relative;
+  flex: 1;
+  border-radius: 4px;
+  background-image: url(../img/XTile-Widget.png);
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
+  border: solid 1px #ccc;
+  overflow: auto;
 }
 .text[contenteditable] {
   height: 26px;
@@ -665,13 +689,12 @@ input[type="tel"] {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 40%;
+  width: 50%;
   text-align: right;
 }
 .TopBarMeStatus-row {
   text-align: left;
   margin: .5%;
-  max-width: 40%;
   height: 50px;
   vertical-align: top;
   display: inline-block;
@@ -679,8 +702,8 @@ input[type="tel"] {
 }
 .TopBarMeStatus-row .SelectBox {
   width: 120px;
-  max-width: 100%;
   margin-bottom: 5px;
+  display: block;
 }
 .TopBarMeStatus-row .AvatarNormal,
 .TopBarMeStatus-row .AvatarNormal img {
@@ -691,6 +714,7 @@ input[type="tel"] {
   height: 26px;
   margin-bottom: 5px;
   padding: 0 3px;
+  display: block;
 }
 .TopBarBottomLine {
   position: absolute;
@@ -706,14 +730,14 @@ input[type="tel"] {
 }
 .WidgetWrapper {
   position: relative;
-  min-height: 300px;
+  margin-top: 10px;
   flex: 1;
 }
 .Widget {
   position: absolute;
   top: 0;
-  left: 10px;
-  right: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
   border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
@@ -2292,35 +2316,64 @@ input.text.DialogFieldInput {
   overflow: hidden;
 }
 @media screen and (max-width: 700px) {
-  .MainContent {
-    flex-direction: column;
+  .TopBar {
+    height: 50px;
   }
   .TopBarLogo {
     display: none;
   }
   .TopBarIcons {
     left: 10px;
+    top: -8px;
   }
-  .LeftSideBar {
-    height: 100px;
-    width: auto !important;
+  .TopBarItemAppName {
+    display: none;
   }
-  .WidgetWrapper {
+  .TopBarMeStatus-row .AvatarNormal,
+  .TopBarMeStatus-row .AvatarNormal img {
+    width: 29px;
+    height: 29px;
+  }
+  .TopBarMeStatus-row .XButtonToggle {
+    display: inline-block;
+    padding: 0;
+  }
+  .TopBarMeStatus-row .SelectBox {
+    display: inline-block;
+    width: 60px;
+  }
+  .TopBarMeStatus-row .PopupMenu {
+    top: 30px !important;
+  }
+  .MainWrapper {
+    flex-direction: column;
+  }
+  .MainPanel .WidgetHeader {
+    display: none;
+  }
+  .MainPanel .WidgetBody {
+    top: 0px !important;
+  }
+  .StackablePanels {
+    padding: 10px 0 0 0;
+    flex: 1;
     width: 100%;
-    margin-top: 10px;
-  }
-  .Widget {
-    left: 0;
+    height: 50%;
   }
 }
 .LeftSideBar {
   position: relative;
-  width: 30%;
-  min-height: 100px;
+  width: 100%;
+  min-height: 80px;
   border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
   border: solid 1px #ccc;
+  transition: 0.5s;
+}
+.LeftSideBar:hover {
+  min-height: 160px;
+  transition: 0.5s;
 }
 .LeftSideBar .ToolBar {
   left: 0;

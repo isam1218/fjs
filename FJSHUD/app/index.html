@@ -22,7 +22,7 @@
 
     <!-- Add your site or application content here -->
 	
-	<div class="MainApp">
+	<div id="App" ng-class="stackables.length > 0 ? 'stacked' : ''">
 		<div class="TopBar">
 			<div class="TopBarLogo">
 			</div>
@@ -44,7 +44,7 @@
 							<span class="InnerIco">@</span>&nbsp;<span>{{getCurrentLocationTitle()}}</span>
 						</div>
 						<div class="SelectBoxArrow"></div>
-					</div><br/>
+					</div>
 					<div class="SelectBox" data-ng-click="showChatStatusPopup($event)">
 						<div class="SelectBoxText">
 							<div class="MenuItemIcon" data-ng-class="'XIcon-ChatStatus-'+getCurrentChatStatus()"></div>&nbsp;<span style="vertical-align: top;">{{getCurrentChatStatus()}}</span>
@@ -66,7 +66,7 @@
 							</div>
 						</div>
 					</div>
-					<br/>
+					
 					<div class="XButton XButtonToggle Off">
 						<span></span>
 						<div class="XButtonToggleIcon XIcon24-Speaker-On"></div>
@@ -97,173 +97,179 @@
 				</div>
 			</div>
 		</div>
-		<div class="MainContent">
-			<div class="LeftSideBar">
-				<div class="ToolBar">
-					<div class="SearchPanel" data-ng-class="{'InSearch':!!searchValue}" data-ng-controller="SearchInputController">
-						<div class="SearchInputBox" >
-							<div class="SearchInputBoxInputHolder">
-								<input class="SearchInputBoxInput"
-									   type="text" x-webkit-speech=""
-									   ng-keydown="onKeyDown($event)"
-									   data-ng-model="searchValue"
-									   placeholder="Search or Start call"
-									   autofocus="true" />
-							</div>
-							<div class="SearchInputBoxStateButton" data-ng-click="searchValue = ''">
-								<div class="SearchInputBoxStateButtonIcon">
+		<div class="MainWrapper">
+			<div class="MainPanel">
+				<div class="LeftSideBar">
+					<div class="ToolBar">
+						<div class="SearchPanel" data-ng-class="{'InSearch':!!searchValue}" data-ng-controller="SearchInputController">
+							<div class="SearchInputBox" >
+								<div class="SearchInputBoxInputHolder">
+									<input class="SearchInputBoxInput"
+										   type="text" x-webkit-speech=""
+										   ng-keydown="onKeyDown($event)"
+										   data-ng-model="searchValue"
+										   placeholder="Search or Start call"
+										   autofocus="true" />
+								</div>
+								<div class="SearchInputBoxStateButton" data-ng-click="searchValue = ''">
+									<div class="SearchInputBoxStateButtonIcon">
 
+									</div>
+								</div>
+							</div>
+							<div class="SearchResults" >
+							   <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue))">
+									<div class="Avatar AvatarSmall">
+										<img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}" />
+									</div>
+									<div class="ListRowButtons">
+										<div class="ListRowActionButton {{action.className}}" title="{{action.title}}" data-ng-click="action.makeAction(contact)"  data-ng-repeat="action in _actions = contact.getActions(5)">
+										</div>
+									</div>
+									<div class="ListRowContent WithActions-{{_actions.length}}">
+										<div class="ListRowLeftArea">
+											<div class="ListRowTitle" ng-bind-html="contact.getFoundDisplayName(searchValue)"></div>
+											<div class="link ListRowDesc">
+												<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.contactstatus_xmpp || 'offline'}}"></div>
+												<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}"></div>
+												<span ng-bind-html="contact.getFoundExtension(searchValue)"></span>
+											</div>
+										</div>
+									</div>
+									<div ng-if="contact.getPhones().length>1 && contact.xpid == openedContact" class="SearchPhoneNumbers">
+										<button data-ng-repeat="phone in contact.getPhones()" ng-keydown="onKeyDownButton($event, phone.number)">
+											<label>{{phone.title}}:</label>{{phone.number}}
+										</button>
+									</div>
+								</a>
+							</div>
+							<div class="NoSearchResults" ng-if="searchValue && filtredContacts.length == 0">
+								<div data-ng-click="callToNumber()" class="XButton XButtonGreen" >
+									<span>Call to the number</span>
+								</div>
+								<div data-ng-click="createContact($event)" class="XButton XButtonNormal">
+									<span>Create new contact</span>
 								</div>
 							</div>
 						</div>
-						<div class="SearchResults" >
-						   <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue))">
-								<div class="Avatar AvatarSmall">
-									<img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}" />
-								</div>
-								<div class="ListRowButtons">
-									<div class="ListRowActionButton {{action.className}}" title="{{action.title}}" data-ng-click="action.makeAction(contact)"  data-ng-repeat="action in _actions = contact.getActions(5)">
-									</div>
-								</div>
-								<div class="ListRowContent WithActions-{{_actions.length}}">
-									<div class="ListRowLeftArea">
-										<div class="ListRowTitle" ng-bind-html="contact.getFoundDisplayName(searchValue)"></div>
-										<div class="link ListRowDesc">
-											<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.contactstatus_xmpp || 'offline'}}"></div>
-											<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}"></div>
-											<span ng-bind-html="contact.getFoundExtension(searchValue)"></span>
+					</div>
+					<div class="LeftSideBarSection">
+							<div class="LeftBarPhoneCalls" data-ng-controller="LeftBarCallsController">
+								<div class="PhoneCallsPanel">
+									<div class="fj-phone-section-content">
+										<div data-ng-controller="MyCallController" class="MyCallBlock AvatarHoverArea {{ call.getCallType() }} " data-ng-class="{'IsHold-true': call.state == 3}" data-ng-repeat="call in calls">
+											<div class="MyCallHolder" ng-click="toogleCall(call.xpid)">
+												<div class="MyCallBlockCallIconHolder">
+													<div class="MyCallBlock_CallIcon Category-{{ call.getCallType() }}">
+														<div class="MyCallBlock_CallIconInner" data-ng-class="{'IsMute-true': call.mute}"></div>
+													</div>
+												</div>
+												<div class="fj-hbox-space MyCallBlockCallLineHolder">
+													<div class="fj-hbox MyCallBlock_CallLineTop">
+														<div class="fj-hbox-space MyCallBlock_CallerName">{{ call.displayName }}</div>
+														<div class="fj-hbox-cell MyCallBlock_Rec {{call.record}}"></div>
+													</div>
+													<div class="fj-hbox MyCallBlock_CallLineBottom">
+														<div class="fj-hbox-space MyCallBlock_CallInfo"><span>{{call.incoming && "Inbound" || "Outbound"}}</span>
+															<span ng-if="call.state == 3" >&nbsp; on hold &nbsp;</span>
+															<span ng-if="call.state == 2">&nbsp; on call &nbsp;</span><span
+																class="MyCallBlock_Duration" >{{duration}}</span>
+															<span
+																class="MyCallBlock_HoldInfo_Timer" ng-if="call.state == 3">&nbsp;/&nbsp;{{holdDuration}}</span></div>
+														<div ng-if="call.mute" class="fj-hbox-cell MyCallBlock_MutedText">
+															Muted
+														</div>
+													</div>
+												</div>
+												<div class="fj-hbox-cell MyCallBlockButtonsHolder">
+													<div class="fj-hbox MyCallBlock_Buttons" ng-if="call.state!=0 || call.incoming">
+															<div data-ng-click="hangup($event)" class="XButton XButtonNormal"  ng-if="call.state==0">
+																<span>Decline</span></div>
+															<div data-ng-click="hangup($event)" data-event="click" class="XButton XButtonNormal" ng-if="call.state!=0">
+																<span>End</span></div>
+
+															<div data-ng-click="_accept($event)" ng-if="call.state==0" class="XButton XButtonNormal">
+																<span>Accept</span></div>
+															<div data-ng-click="hold($event)" ng-if="call.state==2" class="XButton XButtonNormal disabled-{{!!call.mycalldetails_conferenceId}}">
+																<span>Hold</span></div>
+															<div data-ng-click="unhold($event)" ng-if="call.state==3" class="XButton XButtonNormal">
+																<span>Talk</span></div>
+													</div>
+													<div class="fj-hbox MyCallBlock_Buttons" ng-if="(call.state==0 && !call.incoming)">
+														<div class="fj-hbox-space">
+															<div class="XButton XButtonNormal" data-ng-click="hangup($event)">
+																<span>Cancel</span></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="CurentCall-ButtonsBlock" ng-if="openedCallId == call.xpid">
+												<div class="XButton XButtonNormal">
+													<span>Transfer</span>
+												</div>
+												<div class="XButton XButtonNormal" data-ng-click="park($event)">
+													<span>Park</span></div>
+												<div class="XButton XButtonNormal Mute" data-ng-click="mute($event)">
+													<span>Mute</span>
+												</div>
+												<!--<div class="SelectBox" >
+													<div class="SelectBoxText">
+														Barge
+													</div>
+													<div class="SelectBoxArrow"></div>
+												</div>-->
+
+												<div class="XButton XButtonNormal RecordButton Off" data-ng-click="record($event)">
+													<span>REC </span>
+													<div class="XIcon24-Record"></div>
+												</div>
+												<div class="XButton XButtonNormal">
+													<span>Move</span>
+												</div>
+												<div class="XButton XButtonNormal">
+													<span>#</span>
+												</div>
+												</div>
 										</div>
 									</div>
 								</div>
-								<div ng-if="contact.getPhones().length>1 && contact.xpid == openedContact" class="SearchPhoneNumbers">
-									<button data-ng-repeat="phone in contact.getPhones()" ng-keydown="onKeyDownButton($event, phone.number)">
-										<label>{{phone.title}}:</label>{{phone.number}}
-									</button>
+							</div>
+						<div class="LeftSideBarResentsSection" data-ng-controller="ResentsListController">
+							<a href="#/{{resent.key}}" context-menu="resent.getAssociatedEntry()" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="resent in resents | ResentsSortFilter">
+								<div class="Avatar AvatarSmall" avatar-menu="resent.getAssociatedEntry()">
+									<img class="AvatarImgPH" data-ng-src="{{resent.getAssociatedEntry().getAvatarUrl(28,28)}}">
+									<div class="AvatarInteractable"></div>
+									<div ng-if="resent.events" class="EventsBaloon">{{resent.getEventsCount()}}</div>
+								</div>
+								<div class="ListRowContent">
+									<div data-ng-if="contact.hasCall" class="ListRowCallArea">
+										<div class="Avatar AvatarSmall CallAvatar CallAvatar_{{resent.getAssociatedEntry().getCallType()}}">
+											<img class="AvatarImgPH" data-ng-src="{{resent.getAssociatedEntry().getCallAvatarUrl(28, 28)}}">
+											<div class="AvatarInteractable"></div>
+										</div>
+									</div>
+									<div class="ListRowLeftArea">
+										<div class="ListRowTitle"> {{ resent.getAssociatedEntry().getDisplayName()}}</div>
+										<div class="link ListRowDesc">#{{ resent.getAssociatedEntry().primaryExtension }}</div>
+									</div>
+									<div class="ListRowStatus">
+										<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{resent.getAssociatedEntry().getChatStatus()}}"></div>
+										<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{resent.getAssociatedEntry().contactstatus_queueStatus}}"></div>
+										<div class="ListRowStatusText">{{resent.getAssociatedEntry().contactstatus_xmppCustom || resent.getAssociatedEntry().contactstatus_xmpp || 'offline'}}</div>
+									</div>
+									<div class="marquee">{{resent.message}}</div>
 								</div>
 							</a>
 						</div>
-						<div class="NoSearchResults" ng-if="searchValue && filtredContacts.length == 0">
-							<div data-ng-click="callToNumber()" class="XButton XButtonGreen" >
-								<span>Call to the number</span>
-							</div>
-							<div data-ng-click="createContact($event)" class="XButton XButtonNormal">
-								<span>Create new contact</span>
-							</div>
-						</div>
 					</div>
 				</div>
-				<div class="LeftSideBarSection">
-						<div class="LeftBarPhoneCalls" data-ng-controller="LeftBarCallsController">
-							<div class="PhoneCallsPanel">
-								<div class="fj-phone-section-content">
-									<div data-ng-controller="MyCallController" class="MyCallBlock AvatarHoverArea {{ call.getCallType() }} " data-ng-class="{'IsHold-true': call.state == 3}" data-ng-repeat="call in calls">
-										<div class="MyCallHolder" ng-click="toogleCall(call.xpid)">
-											<div class="MyCallBlockCallIconHolder">
-												<div class="MyCallBlock_CallIcon Category-{{ call.getCallType() }}">
-													<div class="MyCallBlock_CallIconInner" data-ng-class="{'IsMute-true': call.mute}"></div>
-												</div>
-											</div>
-											<div class="fj-hbox-space MyCallBlockCallLineHolder">
-												<div class="fj-hbox MyCallBlock_CallLineTop">
-													<div class="fj-hbox-space MyCallBlock_CallerName">{{ call.displayName }}</div>
-													<div class="fj-hbox-cell MyCallBlock_Rec {{call.record}}"></div>
-												</div>
-												<div class="fj-hbox MyCallBlock_CallLineBottom">
-													<div class="fj-hbox-space MyCallBlock_CallInfo"><span>{{call.incoming && "Inbound" || "Outbound"}}</span>
-														<span ng-if="call.state == 3" >&nbsp; on hold &nbsp;</span>
-														<span ng-if="call.state == 2">&nbsp; on call &nbsp;</span><span
-															class="MyCallBlock_Duration" >{{duration}}</span>
-														<span
-															class="MyCallBlock_HoldInfo_Timer" ng-if="call.state == 3">&nbsp;/&nbsp;{{holdDuration}}</span></div>
-													<div ng-if="call.mute" class="fj-hbox-cell MyCallBlock_MutedText">
-														Muted
-													</div>
-												</div>
-											</div>
-											<div class="fj-hbox-cell MyCallBlockButtonsHolder">
-												<div class="fj-hbox MyCallBlock_Buttons" ng-if="call.state!=0 || call.incoming">
-														<div data-ng-click="hangup($event)" class="XButton XButtonNormal"  ng-if="call.state==0">
-															<span>Decline</span></div>
-														<div data-ng-click="hangup($event)" data-event="click" class="XButton XButtonNormal" ng-if="call.state!=0">
-															<span>End</span></div>
 
-														<div data-ng-click="_accept($event)" ng-if="call.state==0" class="XButton XButtonNormal">
-															<span>Accept</span></div>
-														<div data-ng-click="hold($event)" ng-if="call.state==2" class="XButton XButtonNormal disabled-{{!!call.mycalldetails_conferenceId}}">
-															<span>Hold</span></div>
-														<div data-ng-click="unhold($event)" ng-if="call.state==3" class="XButton XButtonNormal">
-															<span>Talk</span></div>
-												</div>
-												<div class="fj-hbox MyCallBlock_Buttons" ng-if="(call.state==0 && !call.incoming)">
-													<div class="fj-hbox-space">
-														<div class="XButton XButtonNormal" data-ng-click="hangup($event)">
-															<span>Cancel</span></div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="CurentCall-ButtonsBlock" ng-if="openedCallId == call.xpid">
-											<div class="XButton XButtonNormal">
-												<span>Transfer</span>
-											</div>
-											<div class="XButton XButtonNormal" data-ng-click="park($event)">
-												<span>Park</span></div>
-											<div class="XButton XButtonNormal Mute" data-ng-click="mute($event)">
-												<span>Mute</span>
-											</div>
-											<!--<div class="SelectBox" >
-												<div class="SelectBoxText">
-													Barge
-												</div>
-												<div class="SelectBoxArrow"></div>
-											</div>-->
-
-											<div class="XButton XButtonNormal RecordButton Off" data-ng-click="record($event)">
-												<span>REC </span>
-												<div class="XIcon24-Record"></div>
-											</div>
-											<div class="XButton XButtonNormal">
-												<span>Move</span>
-											</div>
-											<div class="XButton XButtonNormal">
-												<span>#</span>
-											</div>
-											</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					<div class="LeftSideBarResentsSection" data-ng-controller="ResentsListController">
-						<a href="#/{{resent.key}}" context-menu="resent.getAssociatedEntry()" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="resent in resents | ResentsSortFilter">
-							<div class="Avatar AvatarSmall" avatar-menu="resent.getAssociatedEntry()">
-								<img class="AvatarImgPH" data-ng-src="{{resent.getAssociatedEntry().getAvatarUrl(28,28)}}">
-								<div class="AvatarInteractable"></div>
-								<div ng-if="resent.events" class="EventsBaloon">{{resent.getEventsCount()}}</div>
-							</div>
-							<div class="ListRowContent">
-								<div data-ng-if="contact.hasCall" class="ListRowCallArea">
-									<div class="Avatar AvatarSmall CallAvatar CallAvatar_{{resent.getAssociatedEntry().getCallType()}}">
-										<img class="AvatarImgPH" data-ng-src="{{resent.getAssociatedEntry().getCallAvatarUrl(28, 28)}}">
-										<div class="AvatarInteractable"></div>
-									</div>
-								</div>
-								<div class="ListRowLeftArea">
-									<div class="ListRowTitle"> {{ resent.getAssociatedEntry().getDisplayName()}}</div>
-									<div class="link ListRowDesc">#{{ resent.getAssociatedEntry().primaryExtension }}</div>
-								</div>
-								<div class="ListRowStatus">
-									<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{resent.getAssociatedEntry().getChatStatus()}}"></div>
-									<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{resent.getAssociatedEntry().contactstatus_queueStatus}}"></div>
-									<div class="ListRowStatusText">{{resent.getAssociatedEntry().contactstatus_xmppCustom || resent.getAssociatedEntry().contactstatus_xmpp || 'offline'}}</div>
-								</div>
-								<div class="marquee">{{resent.message}}</div>
-							</div>
-						</a>
-					</div>
-				</div>
+				<ng-view class="WidgetWrapper"></ng-view>
 			</div>
-
-			<ng-view class="WidgetWrapper"></ng-view>
+			
+			<div class="StackablePanels" ng-if="stackables.length > 0">
+				<div class="Stackable" ng-repeat="stack in stackables" ng-include="'views/ConversationWidgetChat.html'"></div>
+			</div>
 		</div>
 	</div>
 

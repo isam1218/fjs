@@ -1,11 +1,17 @@
 .LeftSideBar {
   position: relative;
-  width: 30%;
-  min-height: 100px;
+  width: 100%;
+  min-height: 80px;
   border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
   box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
   border: solid 1px #ccc;
+  transition: 0.5s;
+  
+  &:hover {
+    min-height: 160px;
+	transition: 0.5s;
+  }
 
   .ToolBar {
     left: 0;
@@ -28,8 +34,6 @@
       color: #2c8ed6;
       font-weight: bold;
     }
-
-
   }
 
   .SearchPanel {
