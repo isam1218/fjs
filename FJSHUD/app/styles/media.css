@@ -28,7 +28,7 @@
   .TopBarMeStatus-row .PopupMenu {
     top: 30px !important;
   }
-  .MainWrapper {
+  .PanelWrapper {
     flex-direction: column;
   }
   .MainPanel .WidgetHeader {

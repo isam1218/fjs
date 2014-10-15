@@ -97,7 +97,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="MainWrapper">
+		<div class="PanelWrapper">
 			<div class="MainPanel">
 				<div class="LeftSideBar">
 					<div class="ToolBar">
@@ -268,7 +268,7 @@
 			</div>
 			
 			<div class="StackablePanels" ng-if="stackables.length > 0">
-				<div class="Stackable" ng-repeat="stack in stackables" ng-include="'views/ConversationWidgetChat.html'"></div>
+				<div class="Stackable" ng-repeat="stack in stackables" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ContactWidgetChatController" ng-init="contactId = stack"></div>
 			</div>
 		</div>
 	</div>

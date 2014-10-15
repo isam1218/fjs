@@ -51,7 +51,7 @@ input[type="tel"] {
 #App.stacked {
   min-height: 600px;
 }
-.MainWrapper {
+.PanelWrapper {
   position: relative;
   padding: 0 10px 10px 10px;
   flex: 1;
@@ -2345,7 +2345,7 @@ input.text.DialogFieldInput {
   .TopBarMeStatus-row .PopupMenu {
     top: 30px !important;
   }
-  .MainWrapper {
+  .PanelWrapper {
     flex-direction: column;
   }
   .MainPanel .WidgetHeader {

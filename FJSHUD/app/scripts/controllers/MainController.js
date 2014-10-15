@@ -7,7 +7,7 @@ fjs.ui.MainController = function($scope, dataProvider) {
     $scope.currentPopup.url = null;
     $scope.currentPopup.x = 0;
     $scope.currentPopup.y = 0;
-	$scope.stackables = [1, 2];
+	$scope.stackables = ['1000015ad_1131231', '1000015ad_1463411'];
 
     var _contextMenuWrap = document.getElementById('_contextMenuWrap');
 
