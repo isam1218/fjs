@@ -1,9 +1,15 @@
+.WidgetWrapper {
+  position: relative;
+  margin-top: 10px;
+  flex: 1;
+}
+
 .Widget {
   position: absolute;
-  top: 60px;
-  left: 320px;
-  width: 500px;
-  bottom: 10px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
   box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
@@ -348,9 +354,8 @@
     .WidgetHeaderCallStatus {
       left: 9px;
       bottom: 0px;
-      width: auto;
+      width: 50%;
       height: 36px;
-      right:200px;
       top:auto;
       .Avatar {
         top:1px;
@@ -358,7 +363,7 @@
       }
       .NoCallIcon {
         top: 5px;
-        left: 80px;
+        left: 25px;
       }
       .NoCallText {
         line-height:11px;

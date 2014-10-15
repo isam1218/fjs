@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 body,
 html {
   position: relative;
@@ -36,6 +39,44 @@ input[type="tel"] {
   /*height:16px;*/
   border-radius: 2px;
   outline: none;
+}
+#App {
+  position: relative;
+  min-height: 300px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#App.stacked {
+  min-height: 600px;
+}
+.MainWrapper {
+  position: relative;
+  padding: 0 10px 10px 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.MainPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.StackablePanels {
+  width: 50%;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.StackablePanels .Stackable {
+  position: relative;
+  flex: 1;
+  border-radius: 4px;
+  background-image: url(../img/XTile-Widget.png);
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
+  border: solid 1px #ccc;
+  overflow: auto;
 }
 .text[contenteditable] {
   height: 26px;
@@ -539,15 +580,13 @@ input[type="tel"] {
   margin: 5px;
 }
 .TopBar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 96px;
+  position: relative;
+  width: 100%;
+  height: 100px;
   border-radius: 0 0 10px 10px;
 }
 .TopBar:hover {
-  z-index: 2;
+  z-index: 1000;
   background-color: #f3f3f3;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
 }
@@ -562,10 +601,9 @@ input[type="tel"] {
 .TopBarIcons {
   position: absolute;
   top: 4px;
-  left: 320px;
+  left: 200px;
   width: 500px;
   bottom: 0;
-  text-align: center;
 }
 .TopBarItemApp {
   position: relative;
@@ -649,20 +687,23 @@ input[type="tel"] {
 }
 .TopBarMeStatus {
   position: absolute;
-  top: 5px;
+  top: 10px;
   right: 10px;
-  bottom: 0px;
+  width: 50%;
+  text-align: right;
 }
 .TopBarMeStatus-row {
-  margin: 5px;
+  text-align: left;
+  margin: .5%;
   height: 50px;
   vertical-align: top;
   display: inline-block;
   position: relative;
 }
 .TopBarMeStatus-row .SelectBox {
-  width: 80px;
+  width: 120px;
   margin-bottom: 5px;
+  display: block;
 }
 .TopBarMeStatus-row .AvatarNormal,
 .TopBarMeStatus-row .AvatarNormal img {
@@ -673,6 +714,7 @@ input[type="tel"] {
   height: 26px;
   margin-bottom: 5px;
   padding: 0 3px;
+  display: block;
 }
 .TopBarBottomLine {
   position: absolute;
@@ -686,12 +728,17 @@ input[type="tel"] {
 .TopBar:hover .TopBarBottomLine {
   display: none;
 }
+.WidgetWrapper {
+  position: relative;
+  margin-top: 10px;
+  flex: 1;
+}
 .Widget {
   position: absolute;
-  top: 60px;
-  left: 320px;
-  width: 500px;
-  bottom: 10px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
@@ -997,9 +1044,8 @@ input[type="tel"] {
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
   left: 9px;
   bottom: 0px;
-  width: auto;
+  width: 50%;
   height: 36px;
-  right: 200px;
   top: auto;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .Avatar {
@@ -1008,7 +1054,7 @@ input[type="tel"] {
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .NoCallIcon {
   top: 5px;
-  left: 80px;
+  left: 25px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .NoCallText {
   line-height: 11px;
@@ -2269,55 +2315,70 @@ input.text.DialogFieldInput {
   white-space: nowrap;
   overflow: hidden;
 }
-@media screen and (max-width: 830px) {
-  .Widget {
-    left: auto;
-    right: 10px;
-  }
-  .LeftSideBar {
-    left: auto;
-    right: 520px;
-  }
-  .TopBarIcons {
-    left: auto;
-    right: 10px;
-  }
-}
 @media screen and (max-width: 700px) {
+  .TopBar {
+    height: 50px;
+  }
   .TopBarLogo {
     display: none;
   }
-}
-@media screen and (max-width: 550px) {
-  .Widget {
-    left: 10px;
-    width: auto;
-    right: 10px;
-  }
   .TopBarIcons {
     left: 10px;
+    top: -8px;
   }
-  .LeftSideBar {
-    left: -270px;
-    z-index: 5;
+  .TopBarItemAppName {
+    display: none;
+  }
+  .TopBarMeStatus-row .AvatarNormal,
+  .TopBarMeStatus-row .AvatarNormal img {
+    width: 29px;
+    height: 29px;
+  }
+  .TopBarMeStatus-row .XButtonToggle {
+    display: inline-block;
+    padding: 0;
+  }
+  .TopBarMeStatus-row .SelectBox {
+    display: inline-block;
+    width: 60px;
+  }
+  .TopBarMeStatus-row .PopupMenu {
+    top: 30px !important;
+  }
+  .MainWrapper {
+    flex-direction: column;
+  }
+  .MainPanel .WidgetHeader {
+    display: none;
+  }
+  .MainPanel .WidgetBody {
+    top: 0px !important;
+  }
+  .StackablePanels {
+    padding: 10px 0 0 0;
+    flex: 1;
+    width: 100%;
+    height: 50%;
   }
 }
 .LeftSideBar {
-  position: absolute;
-  top: 100px;
-  left: 10px;
-  width: 298px;
-  bottom: 10px;
-  background-color: #fff;
-  border: 1px solid #bbb;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
+  position: relative;
+  width: 100%;
+  min-height: 80px;
+  border-radius: 4px;
+  background-image: url(../img/XTile-Widget.png);
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
+  border: solid 1px #ccc;
+  transition: 0.5s;
+}
+.LeftSideBar:hover {
+  min-height: 160px;
+  transition: 0.5s;
 }
 .LeftSideBar .ToolBar {
   left: 0;
   right: 0;
   top: 0;
-  background-color: #ffffff;
 }
 .LeftSideBar .SearchInputBox {
   top: 0;
@@ -2343,7 +2404,7 @@ input.text.DialogFieldInput {
   left: 3px;
   right: 3px;
   padding: 5px 0;
-  z-index: 1000;
+  z-index: 100;
 }
 .LeftSideBar .SearchPanel .SearchResults {
   max-height: 500px;
@@ -2890,6 +2951,8 @@ input.text.DialogFieldInput {
   right: 0px;
   min-height: 35px;
   padding-top: 16px;
+  display: flex;
+  flex-direction: row;
 }
 .ChatInputBoxBorder {
   position: absolute;
@@ -2903,7 +2966,7 @@ input.text.DialogFieldInput {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 input.text.ChatInputBoxInput,
 .text.ChatInputBoxInput[contenteditable] {
-  margin: 0 0 0 10px;
+  margin: 0 10px;
   height: auto;
   min-height: 16px;
   max-height: 200px;
@@ -2913,13 +2976,13 @@ input.text.ChatInputBoxInput,
   padding: 5px;
   overflow: auto;
   background-color: #fff;
+  flex: 1;
 }
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .XButton.ChatInputBoxSend {
   margin: 0px;
-  position: absolute;
-  right: 15px;
-  top: 15px;
+  position: relative;
+  margin-right: 10px;
   width: 65px;
 }
 .ListMessageChatWidget {
