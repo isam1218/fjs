@@ -1,4 +1,4 @@
-<div class="Widget Calllog" id="WidgetCallLog" unpin="#/calllog" draggable="true">
+<div class="Widget Calllog" id="WidgetCallLog" unpin="/calllog" draggable="true">
     <div class="WidgetHeader">
         <div class="Avatar AvatarApp">
             <div class="TopBarItemAppIcon CallLog"></div>
@@ -27,6 +27,74 @@
                 </div>
             </div>
         </div>
+        <div class="ListLineContent Header LeftContactsColumns">
+            <div class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>Name</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+            <div data-ng-click="sort('displayName')"
+                 class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>Phone</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+            <div data-ng-click="sort('primaryExtension')"
+                 class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>Duration</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+            <div data-ng-click="sort('startedAt')"
+                 class="ListLineContentCell Date Down">
+                <span>Date</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+            <div data-ng-click="sort('xmpp')"
+                 class="ListLineContentCell HudStatus {{(sortField == 'xmpp' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>Type</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+        </div>
+
+        <div class="LeftBarTabContentList">
+            <a href="#/contact/{{contact.xpid}}" context-menu="contact"
+               data-ng-repeat="call in calls"
+               class="ListRowFirst ListRow ListRow-Contact">
+
+                <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
+                    <img class="AvatarImgPH" data-fj-local-id="avatarImg"
+                         ng-src="{{ call.getCallAvatarUrl(28,28)}}">
+
+                    <div class="AvatarInteractable AvatarForeground"></div>
+                </div>
+                <div class="ListRowContent">
+                    <div class="ListRowTitle">
+                        <div class="name">
+                            <b>{{ call.displayName}}</b>
+                            <span class="details">#{{ call.phone }}</span>
+                        </div>
+                    </div>
+
+                    <div class="ListRowStatus">
+                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{call.status}}">
+                            <div class="status-icon-inner"></div>
+                        </div>
+                        <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{call.status}}">
+                            <div class="status-icon-inner"></div>
+                        </div>
+                        <div class="ListRowStatusText">{{contact.contactstatus_xmppCustom || contact.contactstatus_xmpp || 'offline'}}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
     </div>
+
+
+</div>
 
 </div>

@@ -17,6 +17,14 @@
             </a>
         </div>
         <div class="ToolBar">
+            <div class="SelectBox XButton" data-ng-click="showSortMenu($event)">
+                <div class="SelectBoxText"> Sort by {{sortedBy}}</div>
+                <div class="SelectBoxArrow"></div>
+            </div>
+            <div class="SelectBox XButton" data-ng-click="showActionMenu($event)">
+                <div class="SelectBoxText"> Actions </div>
+                <div class="SelectBoxArrow"></div>
+            </div>
             <div class="SearchInputBox">
                 <div class="SearchInputBoxInputHolder">
                     <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech=""
