@@ -6,8 +6,24 @@ fjs.core.namespace("fjs.hud");
  */
 fjs.hud.MyCallsFeedModel = function(dataManager) {
     fjs.hud.FeedModel.call(this, "mycalls", dataManager);
+
+
 };
 fjs.core.inherits(fjs.hud.MyCallsFeedModel, fjs.hud.FeedModel);
+
+
+//fjs.hud.MyCallsFeedModel.prototype.onEntryChange = function(data) {
+//    var isNew = !this.items[data["xpid"]];
+//    fjs.hud.MyCallsFeedModel.super_.prototype.onEntryChange.call(this, data);
+//    if(isNew){
+//        var conference = this.items[data["xpid"]];
+//        for(var memberId in this.conferenceMembersModel.items){
+//            if(this.conferenceMembersModel.items.hasOwnProperty(memberId) && (this.conferenceMembersModel.items[memberId]["fdpConferenceId"] == data["xpid"])){
+//                conference.addMember(memberId, data.entry);
+//            }
+//        }
+//    }
+//};
 
 fjs.hud.MyCallsFeedModel.prototype.createEntry = function(obj) {
     if(obj.contactId) {

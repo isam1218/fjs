@@ -59,7 +59,7 @@ hud_web.controller("ResentItemController", ['$scope', '$element',  fjs.ui.Resent
 hud_web.controller("ChatController", ['$scope', 'DataManager',  fjs.ui.ChatController]);
 hud_web.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.ContextMenuController]);
 hud_web.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.ChatStatusController]);
-hud_web.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
+//hud_web.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);
 //hud_web.controller("ContactController", fjs.ui.ContactController);
