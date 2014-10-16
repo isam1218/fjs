@@ -13,6 +13,36 @@ fjs.hud.CalllogEntryModel = function(obj) {
 };
 fjs.core.inherits(fjs.hud.CalllogEntryModel, fjs.hud.EntryModel);
 
+fjs.hud.CalllogEntryModel.prototype.getCallDuration = function() {
+    var callduration = new Date(this.duration);
+    var secs = callduration.getSeconds()+"";
+    var minutes = callduration.getMinutes()+"";
+    return (minutes.length == 1 ? '0'+minutes : minutes) + ':'
+        + (secs.length == 1 ? '0'+secs : secs);
+
+};
+
+fjs.hud.CalllogEntryModel.prototype.getCalltime = function() {
+    var date = new Date(this.startedAt);
+    var time = date.toLocaleTimeString();
+
+    if((Date.now()-this.startedAt)<86400000) {
+        return 'Today' + ' @ ' + time;
+    }
+    else if((Date.now()-this.startedAt)<(86400000*2)){
+        return 'Yesterday' + ' @ ' + time;
+    }
+    else {
+        var monthes = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month  = date.getMonth();
+        return monthes[month] +" "+ date.getDay() + ' @ ' + time;
+    }
+};
+
+fjs.hud.CalllogEntryModel.prototype.getPhoneNumber = function() {
+    return this.phone;
+};
+
 fjs.hud.CalllogEntryModel.prototype.isExternal = function() {
     return !this.primaryExtension;
 };
@@ -178,19 +208,18 @@ fjs.hud.CalllogEntryModel.prototype.getPhone = function() {
 };
 
 fjs.hud.CalllogEntryModel.prototype.getCallType = function() {
-    if(this.calls_type==null)
+    if(this.type==null)
     {
         return "None";
     }
-    switch(this.calls_type)
+    switch(this.type)
     {
         case 5:
-        case 11:
-            return "External";
-        case 3:
-            return "Queue";
+            return "Outbound";
+        case 4:
+            return "Incoming";
         default:
-            return "Office";
+            return "None";
     }
 };
 

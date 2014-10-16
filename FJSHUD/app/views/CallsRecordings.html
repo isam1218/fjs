@@ -29,6 +29,11 @@
         </div>
         <div class="ListLineContent Header LeftContactsColumns">
             <div class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>Sort:</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+            <div class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
                 <span>Name</span>
 
                 <div class="DirectionArrow"></div>
@@ -72,21 +77,19 @@
                 </div>
                 <div class="ListRowContent">
                     <div class="ListRowTitle">
-                        <div class="name">
-                            <b>{{ call.displayName}}</b>
-                            <span class="details">#{{ call.phone }}</span>
+                        <div class="ListRow">
+                            <b>{{ call.getDisplayName()}}</b>
+                            <span>{{ call.getPhoneNumber() }}</span>
+                            <span>{{ call.getCallDuration() }}</span>
+                            <span>{{ call.getCalltime() }}</span>
                         </div>
                     </div>
 
                     <div class="ListRowStatus">
-                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{call.status}}">
+                        <div class="ListRowStatusIcon XIcon-CallLog-{{call.getCallType()}}">
                             <div class="status-icon-inner"></div>
                         </div>
-                        <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{call.status}}">
-                            <div class="status-icon-inner"></div>
-                        </div>
-                        <div class="ListRowStatusText">{{contact.contactstatus_xmppCustom || contact.contactstatus_xmpp || 'offline'}}
-                        </div>
+                    </div>
                     </div>
                 </div>
             </a>

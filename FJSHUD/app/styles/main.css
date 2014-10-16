@@ -3141,3 +3141,11 @@ input.text.ChatInputBoxInput,
   left: 4px;
   box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
 }
+.XIcon-CallLog-Incoming,
+.XIcon-CallLog-incoming {
+  background: url("../img/XIcon-CallLog-Incoming.png") no-repeat 0 0;
+}
+.XIcon-CallLog-Outbound,
+.XIcon-CallLog-outbound {
+  background: url("../img/XIcon-CallLog-Outbound.png") no-repeat 0 0;
+}
