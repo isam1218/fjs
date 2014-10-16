@@ -73,7 +73,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   display: flex;
   flex-direction: column;
 	
-  & .Stackable {
+  .Stackable {
     position: relative;
     flex: 1;
     border-radius: 4px;
@@ -81,6 +81,15 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
     box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
     border: solid 1px #ccc;
 	overflow: auto;
+	
+	.close {
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  color: red;
+	  cursor: pointer;
+	  z-index: 5;
+	}
   }
 }
 

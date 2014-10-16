@@ -78,6 +78,14 @@ input[type="tel"] {
   border: solid 1px #ccc;
   overflow: auto;
 }
+.StackablePanels .Stackable .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  cursor: pointer;
+  z-index: 5;
+}
 .text[contenteditable] {
   height: 26px;
   line-height: 24px;

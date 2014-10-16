@@ -1,13 +1,13 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.MainController = function($scope, dataProvider) {
+fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
     fjs.ui.Controller.call(this, $scope);
+	$rootScope.stackables = [];
 
     $scope.currentPopup = {};
     $scope.currentPopup.url = null;
     $scope.currentPopup.x = 0;
     $scope.currentPopup.y = 0;
-	$scope.stackables = ['1000015ad_1131231', '1000015ad_1463411'];
 
     var _contextMenuWrap = document.getElementById('_contextMenuWrap');
 
@@ -54,6 +54,16 @@ fjs.ui.MainController = function($scope, dataProvider) {
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
     };
+	
+	// add another chat panel
+	$scope.loadChat = function(contact) {
+		var xpid = contact.xpid;
+		
+		if ($rootScope.stackables.indexOf(xpid) == -1) {
+			$rootScope.stackables.push(xpid);
+			$scope.$apply();
+		}
+	};
 
     $scope.logout = function() {
         dataProvider.logout();

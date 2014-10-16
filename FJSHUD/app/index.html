@@ -268,7 +268,10 @@
 			</div>
 			
 			<div class="StackablePanels" ng-if="stackables.length > 0">
-				<div class="Stackable" ng-repeat="stack in stackables" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ContactWidgetChatController" ng-init="contactId = stack"></div>
+				<div class="Stackable" ng-repeat="stack in stackables" ng-controller="ContactWidgetChatController">
+					<div class="close" ng-click="removeChat(stack)">[x]</div>
+					<div ng-include="'views/ConversationWidgetChat.html'"></div>
+				</div>
 			</div>
 		</div>
 	</div>

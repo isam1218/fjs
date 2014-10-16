@@ -39,7 +39,7 @@ hud_web.config(function ($routeProvider) {
         otherwise({redirectTo: '/contacts'});
   });
 
-hud_web.controller("MainController", ['$scope', 'DataManager', fjs.ui.MainController]);
+hud_web.controller("MainController", ['$rootScope', '$scope', 'DataManager', fjs.ui.MainController]);
 hud_web.controller("TopBarMeStatusController", ['$scope', 'DataManager', fjs.ui.TopBarMeStatusController]);
 //hud_web.controller("MeWidgetController", fjs.ui.MeWidgetController);
 hud_web.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);
@@ -59,6 +59,7 @@ hud_web.controller("ResentItemController", ['$scope', '$element',  fjs.ui.Resent
 hud_web.controller("ChatController", ['$scope', 'DataManager',  fjs.ui.ChatController]);
 hud_web.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.ContextMenuController]);
 hud_web.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.ChatStatusController]);
+hud_web.controller("ContactWidgetChatController", ['$rootScope', '$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ContactWidgetChatController]);
 //hud_web.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);
