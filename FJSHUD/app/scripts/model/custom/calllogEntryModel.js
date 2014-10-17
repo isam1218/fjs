@@ -27,15 +27,15 @@ fjs.hud.CalllogEntryModel.prototype.getCalltime = function() {
     var time = date.toLocaleTimeString();
 
     if((Date.now()-this.startedAt)<86400000) {
-        return 'Today' + ' @ ' + time;
+        return 'Today, ' + time;
     }
     else if((Date.now()-this.startedAt)<(86400000*2)){
-        return 'Yesterday' + ' @ ' + time;
+        return 'Yesterday, ' + time;
     }
     else {
         var monthes = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month  = date.getMonth();
-        return monthes[month] +" "+ date.getDay() + ' @ ' + time;
+        return monthes[month] +" "+ date.getDay() + ', ' + time;
     }
 };
 
@@ -143,6 +143,10 @@ fjs.hud.CalllogEntryModel.prototype.getActions = function(count) {
         console.timeEnd('getActions');
         return _actions;
     }
+};
+
+fjs.hud.CalllogEntryModel.prototype.getLocation = function() {
+    return "Office";
 };
 
 fjs.hud.CalllogEntryModel.prototype.getDisplayName = function() {

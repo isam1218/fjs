@@ -1,4 +1,4 @@
-<div class="Widget Calllog" id="WidgetCallLog" unpin="/calllog" draggable="true">
+<div class="Widget Contacts" id="WidgetCallLog" unpin="/calllog" draggable="true">
     <div class="WidgetHeader">
         <div class="Avatar AvatarApp">
             <div class="TopBarItemAppIcon CallLog"></div>
@@ -27,77 +27,69 @@
                 </div>
             </div>
         </div>
+
+
         <div class="ListLineContent Header LeftContactsColumns">
-            <div class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-                <span>Sort:</span>
-
-                <div class="DirectionArrow"></div>
-            </div>
-            <div class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-                <span>Name</span>
-
-                <div class="DirectionArrow"></div>
+            <div class="ListLineContentCell">
+                Sort:
             </div>
             <div data-ng-click="sort('displayName')"
-                 class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-                <span>Phone</span>
+                 class="ListLineContentCell Name Up">
+                <span>NAME</span>
 
                 <div class="DirectionArrow"></div>
             </div>
-            <div data-ng-click="sort('primaryExtension')"
-                 class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-                <span>Duration</span>
+            <div data-ng-click="sort('phone')"
+                 class="ListLineContentCell Phone {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>PHONE</span>
+
+                <div class="DirectionArrow"></div>
+            </div>
+            <div data-ng-click="sort('duration')"
+                 class="ListLineContentCell Duration {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>DURATION</span>
 
                 <div class="DirectionArrow"></div>
             </div>
             <div data-ng-click="sort('startedAt')"
-                 class="ListLineContentCell Date Down">
-                <span>Date</span>
+                 class="ListLineContentCell StartedAt {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>DATE</span>
 
                 <div class="DirectionArrow"></div>
             </div>
-            <div data-ng-click="sort('xmpp')"
-                 class="ListLineContentCell HudStatus {{(sortField == 'xmpp' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-                <span>Type</span>
+            <div data-ng-click="sort('type')"
+                 class="ListLineContentCell CallType {{(sortField == 'type' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                <span>TYPE</span>
 
                 <div class="DirectionArrow"></div>
             </div>
         </div>
-
         <div class="LeftBarTabContentList">
-            <a href="#/contact/{{contact.xpid}}" context-menu="contact"
-               data-ng-repeat="call in calls"
-               class="ListRowFirst ListRow ListRow-Contact">
-
-                <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
+            <a href="#"
+               class="ListRow Table AvatarHoverArea"
+               data-ng-repeat="call in calls | ResentsSortFilter">
+                <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ call.getLocation() }}">
                     <img class="AvatarImgPH" data-fj-local-id="avatarImg"
                          ng-src="{{ call.getCallAvatarUrl(28,28)}}">
 
-                    <div class="AvatarInteractable AvatarForeground"></div>
+                    <div class="AvatarInteractable"></div>
+                    <!--<div ng-if="resent.events" class="EventsBaloon">{{resent.getEventsCount()}}</div>-->
                 </div>
                 <div class="ListRowContent">
-                    <div class="ListRowTitle">
-                        <div class="ListRow">
-                            <b>{{ call.getDisplayName()}}</b>
-                            <span>{{ call.getPhoneNumber() }}</span>
-                            <span>{{ call.getCallDuration() }}</span>
-                            <span>{{ call.getCalltime() }}</span>
-                        </div>
-                    </div>
 
-                    <div class="ListRowStatus">
-                        <div class="ListRowStatusIcon XIcon-CallLog-{{call.getCallType()}}">
-                            <div class="status-icon-inner"></div>
-                        </div>
+                    <div class="ListRowLeftAreaWide">
+                        <div class="ListRowTitle"> {{ call.getDisplayName()}}</div>
+                        <div class="Link ListRowDesc">#{{ call.getPhoneNumber() }}</div>
+                        <div class="ListRowDesc"> on {{ call.getCalltime() }}</div>
+                        <div class="ListRowDesc"> for {{ call.getCallDuration() }}</div>
                     </div>
+                    <div class="ListRowStatus">
+                        <div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.getCallType() }}"></div>
                     </div>
                 </div>
             </a>
         </div>
-
     </div>
 
-
 </div>
 
-</div>
