@@ -8,7 +8,7 @@ fjs.core.namespace("fjs.hud");
  */
 fjs.hud.CalllogEntryModel = function(obj) {
 
-    fjs.hud.EntryModel.call(this, obj, 'contacts');
+    fjs.hud.EntryModel.call(this, obj, 'calllog');
     this._phones = null;
 };
 fjs.core.inherits(fjs.hud.CalllogEntryModel, fjs.hud.EntryModel);
@@ -56,7 +56,7 @@ fjs.hud.CalllogEntryModel.prototype.pass = function(query) {
         return false;
     }
     var re = new RegExp('(^|\\s)(' + query + ')(\\S)*(\\s|$)', 'i');
-    return re.test(this["primaryExtension"])||re.test(this["displayName"])||re.test(this["firstName"])||re.test(this["lastName"])||re.test(this["phoneMobile"])||re.test(this["phoneMobile"]);
+    return re.test(this["phone"])||re.test(this["displayName"])||re.test(this["duration"])||re.test(this["startedAt"])||re.test(this["type"]);
 };
 fjs.hud.CalllogEntryModel.prototype.getChatName = function() {
     var dm = new fjs.hud.DataManager();

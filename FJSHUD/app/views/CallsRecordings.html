@@ -34,31 +34,31 @@
                 Sort:
             </div>
             <div data-ng-click="sort('displayName')"
-                 class="ListLineContentCell Name Up">
+                 class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
                 <span>NAME</span>
 
                 <div class="DirectionArrow"></div>
             </div>
             <div data-ng-click="sort('phone')"
-                 class="ListLineContentCell Phone {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                 class="ListLineContentCell Phone {{(sortField == 'phone' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
                 <span>PHONE</span>
 
                 <div class="DirectionArrow"></div>
             </div>
             <div data-ng-click="sort('duration')"
-                 class="ListLineContentCell Duration {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                 class="ListLineContentCell Duration {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
                 <span>DURATION</span>
 
                 <div class="DirectionArrow"></div>
             </div>
             <div data-ng-click="sort('startedAt')"
-                 class="ListLineContentCell StartedAt {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                 class="ListLineContentCell StartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
                 <span>DATE</span>
 
                 <div class="DirectionArrow"></div>
             </div>
             <div data-ng-click="sort('type')"
-                 class="ListLineContentCell CallType {{(sortField == 'type' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+                 class="ListLineContentCell CallType {{(sortField == 'type' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
                 <span>TYPE</span>
 
                 <div class="DirectionArrow"></div>
