@@ -5,7 +5,7 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
     var contactsModel = dataManager.getModel("contacts");
     document.title= "Contacts";
     $scope.query = "";
-    $scope.sortField = "displayName";
+    $scope.sortField = "recent";
     $scope.sortReverce = false;
     $scope.contacts = contactsModel.items;
 

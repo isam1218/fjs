@@ -485,8 +485,6 @@ input[type="tel"] {
 }
 .ListLineContentCell.Name {
   width: 24px;
-  margin-left: 4px;
-  border-right: solid 1px #fff;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

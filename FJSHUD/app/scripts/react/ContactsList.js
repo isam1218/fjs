@@ -7,6 +7,10 @@ fjs.hud.react.ContactsList = React.createClass({
 
         for(var i=0; i<keys.length; i++) {
             if(!scope.query || scope.contacts[keys[i]].pass(scope.query)) {
+				// add missing field
+				if (scope.contacts[keys[i]][scope.sortField] === undefined)
+					scope.contacts[keys[i]][scope.sortField] = "";
+				
                 contacts.push(scope.contacts[keys[i]]);
             }
         }
