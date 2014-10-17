@@ -118,7 +118,7 @@
 								</div>
 							</div>
 							<div class="SearchResults" >
-							   <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue))">
+							   <a href="" ng-click="loadChat(contact)" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue))">
 									<div class="Avatar AvatarSmall">
 										<img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}" />
 									</div>
@@ -268,9 +268,13 @@
 			</div>
 			
 			<div class="StackablePanels" ng-if="stackables.length > 0">
-				<div class="Stackable" ng-repeat="stack in stackables" ng-controller="ContactWidgetChatController">
-					<div class="close" ng-click="removeChat(stack)">[x]</div>
-					<div ng-include="'views/ConversationWidgetChat.html'"></div>
+				<div class="Stackable" ng-repeat="stack in stackables">
+					<div class="close" ng-click="removeChat(stack.id)">[x]</div>
+					
+					<div ng-if="stack.tab == 'chat'" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ContactWidgetChatController"></div>
+					<div ng-if="stack.tab == 'voicemails'" ng-include="'views/ConversationWidgetVoicemails.html'" ng-controller="ConversationWidgetVoicemailsController"></div>
+					<div ng-if="stack.tab == 'groups'" ng-include="'views/ConversationWidgetGroups.html'" ng-controller="ContactWidgetGroupsController"></div>
+					<div ng-if="stack.tab == 'calllog'" ng-include="'views/ConversationWidgetCallLog.html'" ng-controller="ConversationWidgetCallLogController"></div>
 				</div>
 			</div>
 		</div>

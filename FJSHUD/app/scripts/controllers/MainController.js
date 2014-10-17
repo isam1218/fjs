@@ -59,9 +59,34 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 	$scope.loadChat = function(contact) {
 		var xpid = contact.xpid;
 		
-		if ($rootScope.stackables.indexOf(xpid) == -1) {
-			$rootScope.stackables.push(xpid);
-			$scope.$apply();
+		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+			if ($rootScope.stackables[i].id == xpid)
+				return;
+		}
+		
+		$rootScope.stackables.push({id: xpid, tab: 'chat'});
+		$scope.$safeApply();
+	};
+	
+	// remove chat panel
+	$scope.removeChat = function(xpid) {
+		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+			if ($rootScope.stackables[i].id == xpid) {
+				$rootScope.stackables.splice(i, 1);
+				$scope.$safeApply();
+				break;
+			}
+		}
+	};
+	
+	// switch tab within panel
+	$rootScope.switchTab = function(xpid, tab) {
+		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+			if ($rootScope.stackables[i].id == xpid) {
+				$rootScope.stackables[i].tab = tab;
+				$scope.$safeApply();
+				break;
+			}
 		}
 	};
 

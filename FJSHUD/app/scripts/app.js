@@ -59,7 +59,13 @@ hud_web.controller("ResentItemController", ['$scope', '$element',  fjs.ui.Resent
 hud_web.controller("ChatController", ['$scope', 'DataManager',  fjs.ui.ChatController]);
 hud_web.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.ContextMenuController]);
 hud_web.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.ChatStatusController]);
-hud_web.controller("ContactWidgetChatController", ['$rootScope', '$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ContactWidgetChatController]);
+
+// chat panel controllers:
+hud_web.controller("ContactWidgetChatController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ContactWidgetChatController]);
+hud_web.controller("ConversationWidgetVoicemailsController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetVoicemailsController]);
+hud_web.controller("ContactWidgetGroupsController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ContactWidgetGroupsController]);
+hud_web.controller("ConversationWidgetCallLogController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetCallLogController]);
+
 //hud_web.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);

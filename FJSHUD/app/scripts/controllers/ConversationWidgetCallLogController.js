@@ -7,8 +7,14 @@ fjs.ui.ConversationWidgetCallLogController = function($scope, $routeParams, $tim
     fjs.ui.Controller.call(this,  $scope, $routeParams.contactId, dataManager);
     var contactModel = dataManager.getModel("contacts"), durationTimer;
     $scope.contactId = $routeParams.contactId;
-
     $scope.contact = contactModel.items[$routeParams.contactId];
+	
+	// override data, where "stack" comes from ng-repeat
+    if (typeof $scope.stack !== "undefined") {
+		$scope.contactId = $scope.stack.id;
+		$scope.contact = contactModel.items[$scope.stack.id];
+	}
+	
     var update = function(data) {
         if(data.xpid == $scope.contactId) {
             if(!$scope.contact) {

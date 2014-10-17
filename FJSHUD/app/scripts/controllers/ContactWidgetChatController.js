@@ -1,6 +1,6 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.ContactWidgetChatController = function($rootScope, $scope, $routeParams, $timeout, $filter, dataManager) {
+fjs.ui.ContactWidgetChatController = function($scope, $routeParams, $timeout, $filter, dataManager) {
     fjs.ui.Controller.call(this,  $scope, $routeParams.contactId, dataManager);
     var contactModel = dataManager.getModel("contacts"), durationTimer;
     $scope.contactId = $routeParams.contactId;
@@ -8,8 +8,8 @@ fjs.ui.ContactWidgetChatController = function($rootScope, $scope, $routeParams, 
 	
 	// override data, where "stack" comes from ng-repeat
     if (typeof $scope.stack !== "undefined") {
-		$scope.contactId = $scope.stack;
-		$scope.contact = contactModel.items[$scope.stack];
+		$scope.contactId = $scope.stack.id;
+		$scope.contact = contactModel.items[$scope.stack.id];
 	}
 
     var update = function(data) {
@@ -81,16 +81,6 @@ fjs.ui.ContactWidgetChatController = function($rootScope, $scope, $routeParams, 
             $scope.sendMessage();
         }
     };
-	
-	// remove chat panel
-	$scope.removeChat = function(xpid) {
-		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
-			if ($rootScope.stackables[i] == xpid) {
-				$rootScope.stackables.splice(i, 1);
-				break;
-			}
-		}
-	};
 };
 
 fjs.core.inherits(fjs.ui.ContactWidgetChatController, fjs.ui.ConversationWidgetController);
