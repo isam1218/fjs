@@ -67,13 +67,12 @@
         <div class="LeftBarTabContentList">
             <a href="#"
                class="ListRow Table AvatarHoverArea"
-               data-ng-repeat="call in calls | ResentsSortFilter">
+               data-ng-repeat="call in calls | SortCalllog | orderBy:sortField:sortReverse">
                 <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ call.getLocation() }}">
                     <img class="AvatarImgPH" data-fj-local-id="avatarImg"
                          ng-src="{{ call.getCallAvatarUrl(28,28)}}">
 
                     <div class="AvatarInteractable"></div>
-                    <!--<div ng-if="resent.events" class="EventsBaloon">{{resent.getEventsCount()}}</div>-->
                 </div>
                 <div class="ListRowContent">
 
@@ -81,7 +80,7 @@
                         <div class="ListRowTitle"> {{ call.getDisplayName()}}</div>
                         <div class="Link ListRowDesc">#{{ call.getPhoneNumber() }}</div>
                         <div class="ListRowDesc"> on {{ call.getCalltime() }}</div>
-                        <div class="ListRowDesc"> for {{ call.getCallDuration() }}</div>
+                        <div class="ListRowDesc"> for {{ call.duration | Duration }}</div>
                     </div>
                     <div class="ListRowStatus">
                         <div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.getCallType() }}"></div>
