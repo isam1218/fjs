@@ -1,6 +1,9 @@
+#!/bin/bash
+echo FJSCore Install
 cd ../FJSCore
 npm install
 grunt
+echo FJSModel Install
 cd ../FJSModel
 npm install
 grunt
