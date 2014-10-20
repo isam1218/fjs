@@ -1,7 +1,8 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.MainController = function($scope, dataProvider) {
+fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
     fjs.ui.Controller.call(this, $scope);
+	$rootScope.stackables = [];
 
     $scope.currentPopup = {};
     $scope.currentPopup.url = null;
@@ -53,6 +54,41 @@ fjs.ui.MainController = function($scope, dataProvider) {
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
     };
+	
+	// add another chat panel
+	$scope.loadChat = function(contact) {
+		var xpid = contact.xpid;
+		
+		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+			if ($rootScope.stackables[i].id == xpid)
+				return;
+		}
+		
+		$rootScope.stackables.push({id: xpid, tab: 'chat'});
+		$scope.$safeApply();
+	};
+	
+	// remove chat panel
+	$scope.removeChat = function(xpid) {
+		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+			if ($rootScope.stackables[i].id == xpid) {
+				$rootScope.stackables.splice(i, 1);
+				$scope.$safeApply();
+				break;
+			}
+		}
+	};
+	
+	// switch tab within panel
+	$rootScope.switchTab = function(xpid, tab) {
+		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+			if ($rootScope.stackables[i].id == xpid) {
+				$rootScope.stackables[i].tab = tab;
+				$scope.$safeApply();
+				break;
+			}
+		}
+	};
 
     $scope.logout = function() {
         dataProvider.logout();

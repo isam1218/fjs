@@ -11,7 +11,7 @@
                 <div class="inner">Contacts</div>
                 <div class="arrow"></div>
             </a>
-            <a href="#/groups" class="WidgetTabBarButton Ready">
+            <a href="#/contacts/groups" class="WidgetTabBarButton Ready">
                 <div class="inner">Groups</div>
                 <div class="arrow"></div>
             </a>
@@ -36,6 +36,11 @@
         <div class="ListLineContentCell" >
             Sort:
         </div>
+		<!--
+        <div data-ng-click="sort('recent')" class="ListLineContentCell Recent {{(sortField == 'recent' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>RECENT</span>
+            <div class="DirectionArrow"></div>
+        </div>
         <div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
             <span>NAME</span>
             <div class="DirectionArrow"></div>
@@ -44,11 +49,12 @@
             <span>EXTENSION</span>
             <div class="DirectionArrow"></div>
         </div>
-        <div data-ng-click="sort('startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'startedAt' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+		-->
+        <div data-ng-click="sort('calls_startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'calls_startedAt' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
             <span>CALL STATUS</span>
             <div class="DirectionArrow"></div>
         </div>
-        <div data-ng-click="sort('xmpp')"  class="ListLineContentCell HudStatus {{(sortField == 'xmpp' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+        <div data-ng-click="sort('contactstatus_xmpp')"  class="ListLineContentCell HudStatus {{(sortField == 'contactstatus_xmpp' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
             <span>HUD STATUS</span>
             <div class="DirectionArrow"></div>
         </div>
