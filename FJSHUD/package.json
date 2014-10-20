@@ -1,7 +1,6 @@
 {
   "name": "fjshud",
   "version": "0.0.0",
-  "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
@@ -30,9 +29,10 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma": "^0.12.21",
     "grunt-karma": "^0.8.3",
-    "express":"^4.8.3",
-    "grunt-closure-compiler":">=0.0.2",
-    "grunt-string-replace": "~0.2.7"
+    "express": "^4.8.3",
+    "grunt-closure-compiler": ">=0.0.2",
+    "grunt-string-replace": "~0.2.7",
+    "grunt-zip": "^0.16.2"
   },
   "engines": {
     "node": ">=0.10.0"
