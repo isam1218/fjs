@@ -55,7 +55,7 @@ hud_web.controller("MyCallController", ['$scope', '$timeout', '$filter', 'DataMa
 hud_web.controller("EditContactDialog", ['$scope', '$filter', fjs.ui.EditContactDialog]);
 hud_web.controller("TopNavigationController", ['$scope', 'DataManager', fjs.ui.TopNavigationController]);
 hud_web.controller("SearchInputController", ['$scope', '$element', 'DataManager',  fjs.ui.SearchInputController]);
-hud_web.controller("ResentsListController", ['$scope', 'DataManager',  fjs.ui.ResentsListController]);
+hud_web.controller("ResentsListController", ['$scope', '$rootScope', 'DataManager',  fjs.ui.ResentsListController]);
 hud_web.controller("ResentItemController", ['$scope', '$element',  fjs.ui.ResentItemController]);
 hud_web.controller("ChatController", ['$scope', 'DataManager',  fjs.ui.ChatController]);
 hud_web.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.ContextMenuController]);

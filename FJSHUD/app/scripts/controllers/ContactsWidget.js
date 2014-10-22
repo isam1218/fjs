@@ -20,8 +20,6 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
     };
     var timeoutId = null;
 
-
-
     $scope.createContact= function(e) {
         e.stopPropagation();
         $scope.$emit("showPopup", {key:"EditContactDialog"});
@@ -36,6 +34,22 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
             return true;
         };
     };
+	
+	// attach recent activity to contacts
+	$scope.$on("updateRecent", function(event, recents) {
+		for (c in $scope.contacts) {
+			for (r in recents) {
+				if (r.replace('contact_', '') == $scope.contacts[c].xpid) {
+					$scope.contacts[c].timestamp = recents[r].timestamp;
+					$scope.contacts[c].events = recents[r].events ? recents[r].events.length : 0;
+					break;
+				}
+			}
+		}
+		
+		$scope.sortField = 'events';
+		$scope.sortReverce = true;
+	});
 
     $scope.$on("$destroy", function() {
 

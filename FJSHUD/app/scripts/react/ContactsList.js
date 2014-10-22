@@ -52,10 +52,13 @@ fjs.hud.react.ContactsList = React.createClass({
             var _listRowTitleName = React.DOM.div({className:'name'}, React.DOM.b(null, contact.getDisplayName()), React.DOM.span({className:'details'}, '#'+contact.primaryExtension));
             var _listRowTitle = React.DOM.div({className:'ListRowTitle'}, _listRowTitleName);
             var _listRowContent = React.DOM.div({className:'ListRowContent', onClick:onLoadChat}, _listRowTitle, _listRowStatus);
+			
+			// attach message notification bubble
+			var _avatarEvents = contact.events ? React.DOM.div({className:'EventsBaloon'}, contact.events) : '';
 
             var _imgAvatar = React.DOM.img({className:'AvatarImgPH', src:contact.getAvatarUrl(28,28), onClick:oncontextMenu});
             var _avatarForground = React.DOM.div({className:'AvatarForeground AvatarInteractable'});
-            var _avatarHolder = React.DOM.div({className: 'Avatar AvatarNormal', onClick:oncontextMenu}, _imgAvatar, _avatarForground);
+            var _avatarHolder = React.DOM.div({className: 'Avatar AvatarNormal', onClick:oncontextMenu}, _imgAvatar, _avatarForground, _avatarEvents);
 
             return React.DOM.a({className: "ListRowFirst ListRow ListRow-Contact", onContextMenu:oncontextMenu}, _avatarHolder, _listRowContent);
 			// href:"#/contact/"+contact.xpid
