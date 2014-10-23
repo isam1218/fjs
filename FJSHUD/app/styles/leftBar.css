@@ -154,9 +154,6 @@
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
 }
 .LeftSideBar .ListLineContent.Header {
-  left: 0;
-  right: 0;
-  top: 75px;
   height: 28px;
 }
 .LeftSideBar .ListLineContent.Header .ListLineContentCell {
@@ -238,11 +235,11 @@
   top: 40px;
 }
 .LeftBarTabContentList {
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
-  top: 120px;
   bottom: 5px;
+  flex: 1;
   overflow: hidden;
 }
 .LeftBarTabContentList:hover {
@@ -291,4 +288,10 @@
   line-height: 5px;
   color: #fff;
   font-size: 10px;
+}
+#ContactsList {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }

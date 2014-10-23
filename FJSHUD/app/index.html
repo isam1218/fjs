@@ -269,12 +269,12 @@
 			
 			<div class="StackablePanels" ng-if="stackables.length > 0">
 				<div class="Stackable" ng-repeat="stack in stackables">
-					<div class="close" ng-click="removeChat(stack.id)">[x]</div>
+					<div class="close" ng-click="removeChat(stack.id)">x</div>
 					
-					<div ng-if="stack.tab == 'chat'" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ContactWidgetChatController"></div>
-					<div ng-if="stack.tab == 'voicemails'" ng-include="'views/ConversationWidgetVoicemails.html'" ng-controller="ConversationWidgetVoicemailsController"></div>
-					<div ng-if="stack.tab == 'groups'" ng-include="'views/ConversationWidgetGroups.html'" ng-controller="ContactWidgetGroupsController"></div>
-					<div ng-if="stack.tab == 'calllog'" ng-include="'views/ConversationWidgetCallLog.html'" ng-controller="ConversationWidgetCallLogController"></div>
+					<div class="panel" ng-if="stack.tab == 'chat'" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ContactWidgetChatController"></div>
+					<div class="panel" ng-if="stack.tab == 'voicemails'" ng-include="'views/ConversationWidgetVoicemails.html'" ng-controller="ConversationWidgetVoicemailsController"></div>
+					<div class="panel" ng-if="stack.tab == 'groups'" ng-include="'views/ConversationWidgetGroups.html'" ng-controller="ContactWidgetGroupsController"></div>
+					<div class="panel" ng-if="stack.tab == 'calllog'" ng-include="'views/ConversationWidgetCallLog.html'" ng-controller="ConversationWidgetCallLogController"></div>
 				</div>
 			</div>
 		</div>

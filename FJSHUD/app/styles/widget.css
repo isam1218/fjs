@@ -14,31 +14,28 @@
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
   border: solid 1px #ccc;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+.Widget .WidgetTabContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .WidgetHeader {
-  position: absolute;
-  height: 60px;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  overflow: hidden;
+  position: relative;
 }
 .WidgetHeader .Avatar {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  position: relative;
+  margin: .7em 0 0 .7em;
 }
 .WidgetBody {
-  position: absolute;
-  top: 60px;
+  position: relative;
   left: 0;
   right: 0;
-  bottom: 0;
-}
-.WidgetBody .ListLineContent.Header {
-  top: 98px;
-  left: 5px;
-  right: 5px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .WidgetBody .ListLineContent.Header .ListLineContentCell {
   display: inline-block;
@@ -51,7 +48,7 @@
   right: 210px;
   height: 25px;
   line-height: 25px;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: bold;
   color: #999;
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.9), -1px -1px 1px rgba(0, 0, 0, 0.01);
@@ -71,15 +68,13 @@
   height: 24px;
   line-height: 24px;
   text-align: left;
-  font-size: 12px;
+  font-size: .75em;
   color: #555;
   user-select: none;
   -webkit-user-select: none;
 }
 .WidgetHeaderCallStatus {
-  position: absolute;
-  right: 2px;
-  top: 0px;
+  position: relative;
   width: 200px;
   height: 50px;
   border-radius: 4px;
@@ -186,15 +181,11 @@
   font-weight: bold;
 }
 .Widget .ListView {
-  position: absolute;
-  bottom: 5px;
+  position: relative;
   left: 0;
   right: 0;
-  top: 50px;
+  flex: 1;
   overflow-y: auto;
-}
-.Widget .ListView.WithToolBar {
-  top: 100px;
 }
 .Widget .SearchInputBox {
   left: 2px;
@@ -202,6 +193,12 @@
   width: 160px;
 }
 /********************WidgetMe************************************/
+.WidgetMe .SettingsPanel,
+.WidgetMe .SettingsTabContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 .WidgetMe .WidgetHeader {
   height: 170px;
   padding: 0 10px;
@@ -220,9 +217,6 @@
   position: relative;
   top: 0;
   left: 0;
-}
-.WidgetMe .WidgetBody {
-  top: 160px;
 }
 .MeInfoBlock {
   display: inline-block;
@@ -305,18 +299,21 @@
   background: url("../img/XIconSet-24x24.png") -24px -24px;
 }
 /*************************************Conversation*********************************/
+.Widget.Conversation {
+  min-height: 300px;
+}
+.Widget.Conversation.shrink {
+  font-size: .9em;
+}
 .Widget.Conversation .WidgetHeader {
-  height: 95px;
   top: 0;
   right: 0;
   left: 0;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
-  left: 9px;
-  bottom: 0px;
+  margin-left: .7em;
   width: 50%;
-  height: 36px;
-  top: auto;
+  height: 2.25em;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .Avatar {
   top: 1px;
@@ -327,7 +324,7 @@
   left: 25px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .NoCallText {
-  line-height: 11px;
+  line-height: .6em;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .CallLineTop {
   top: 3px;
@@ -345,32 +342,28 @@
   border-radius: 18px 4px 4px 18px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderInfo {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  float: right;
   background-color: #fff;
   border: 1px solid #bbb;
-  height: 83px;
   width: 180px;
   border-radius: 4px;
+  font-size: .8em;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderInfo .WidgetHeaderInfoRow {
-  padding: 2px 5px;
+  padding: .1em 5px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderInfo .WidgetHeaderInfoRow label {
   display: inline-block;
   width: 40px;
   text-align: right;
   margin-right: 3px;
-  font-size: 10px;
+  font-size: .8em;
   color: #555;
-}
-.Widget.Conversation .WidgetBody {
-  top: 95px;
 }
 .Widget.Conversation .WidgetBody .ChatView {
   -webkit-box-orient: vertical;
   display: -webkit-box;
+  flex: 1;
 }
 .Widget.Conversation .WidgetBody .ChatView .ListViewContent {
   -webkit-box-flex: 1;
