@@ -87,6 +87,9 @@
                 case "streamevent":
                     this.feeds[feedName] = new fjs.hud.StreamEventFeedModel(this);
                     break;
+                 case "queues":
+                    this.feeds[feedName] = new fjs.hud.QueueFeedModel(this);
+                    break;
                 default:
                     this.feeds[feedName] = new fjs.hud.FeedModel(feedName, this);
             }
