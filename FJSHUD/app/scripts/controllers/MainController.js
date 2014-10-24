@@ -55,8 +55,19 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
         $scope.currentPopup.model = data.model;
     };
 	
+	// open app in new pop-up window
+	$scope.launchApp = function() {
+		parent = window.open('index.html', "HUDweb", "scrollbars=yes, status=no, titlebar=no, toolbar=no, location=no, menubar=no, width=500, height=600");
+		
+		parent.focus();
+	};
+	
 	// add another chat panel
 	$scope.loadChat = function(contact) {
+		// resize window on first chat load
+		if ($rootScope.stackables.length == 0 && document.body.clientWidth < 700)
+			window.resizeTo(800, window.outerHeight);
+	
 		var xpid = contact.xpid;
 		
 		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
@@ -77,6 +88,10 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 				break;
 			}
 		}
+		
+		// resize window on last chat removal
+		if ($rootScope.stackables.length == 0 && document.body.clientWidth > 500)
+			window.resizeTo(500, window.outerHeight);
 	};
 	
 	// switch tab within panel
