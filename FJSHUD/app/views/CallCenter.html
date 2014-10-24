@@ -31,6 +31,35 @@
         </div>
       </div>
     </div>
+    <div class="ListLineContent Header LeftContactsColumns">
+      <div class="ListLineContentCell">
+        Sort:
+      </div>
+      <div data-ng-click="sort('name')"
+           class="ListLineContentCell Name {{(sortField == 'name' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <span>NAME</span>
+
+        <div class="DirectionArrow"></div>
+      </div>
+      <div data-ng-click="sort('complete')"
+           class="ListLineContentCell Complete {{(sortField == 'complete' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <span>COMPLETED</span>
+
+        <div class="DirectionArrow"></div>
+      </div>
+      <div data-ng-click="sort('abandon')"
+           class="ListLineContentCell Abandon {{(sortField == 'abandon' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <span>ABANDONED</span>
+
+        <div class="DirectionArrow"></div>
+      </div>
+     <div data-ng-click="sort('sla')"
+           class="ListLineContentCell Abandon {{(sortField == 'sla' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <span>SLA</span>
+
+        <div class="DirectionArrow"></div>
+      </div>
+    </div>
     <div class="LeftBarTabContentList">
       <a href="#"
          class="ListRow Table AvatarHoverArea"
@@ -46,12 +75,12 @@
           <div class="ListRowLeftAreaExtraWide">
             <div class="ListRowTitle"> {{ queue.name}}</div>
             <div class="ListRowDesc"> {{ queue.description }}</div>
-            <div class="ListRowDesc"> abandoned: {{ queuestats[queue.xpid].abandone }}</div>
-            <div class="ListRowDesc"> abandoned %: {{ queuestats[queue.xpid].abandonPercent }}</div>
             <div class="ListRowDesc"> completed: {{ queuestats[queue.xpid].completed }}</div>
             <div class="ListRowDesc"> completed %: {{ queuestats[queue.xpid].completedPercent }}</div>
-            <div class="ListRowDesc"> completed SLA: {{ queuestats[queue.xpid].completedSla }}</div>
-            <div class="ListRowDesc"> completed SLA %: {{ queuestats[queue.xpid].completedSlaPercent }}</div>
+            <!--<div class="ListRowDesc"> completed SLA: {{ queuestats[queue.xpid].completedSla }}</div>-->
+            <div class="ListRowDesc"> SLA %: {{ queuestats[queue.xpid].completedSlaPercent }}</div>
+            <!--<div class="ListRowDesc"> abandoned: {{ queuestats[queue.xpid].abandone }}</div>-->
+            <div class="ListRowDesc"> abandoned %: {{ queuestats[queue.xpid].abandonPercent }}</div>
           </div>
         </div>
       </a>
