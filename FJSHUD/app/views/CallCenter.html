@@ -35,7 +35,7 @@
       <a href="#"
          class="ListRow Table AvatarHoverArea"
          data-ng-repeat="queue in queues | SortCalllog | orderBy:'name'">
-        <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ queue.getLocation() }}">
+        <div class="Avatar AvatarSmall CallAvatar }}">
           <img class="AvatarImgPH" data-fj-local-id="avatarImg"
                ng-src="{{ queue.getAvatarUrl(28,28)}}">
 
@@ -43,13 +43,15 @@
         </div>
         <div class="ListRowContent">
 
-          <div class="ListRowLeftAreaWide">
+          <div class="ListRowLeftAreaExtraWide">
             <div class="ListRowTitle"> {{ queue.name}}</div>
-            <div class="Link ListRowDesc"> {{ call.description }}</div>
-
-          </div>
-          <div class="ListRowStatus">
-            <div class="ListRowStatusIcon Small XIcon-CallLog-{{ queue.getCallType() }}"></div>
+            <div class="ListRowDesc"> {{ queue.description }}</div>
+            <div class="ListRowDesc"> abandoned: {{ queuestats[queue.xpid].abandone }}</div>
+            <div class="ListRowDesc"> abandoned %: {{ queuestats[queue.xpid].abandonPercent }}</div>
+            <div class="ListRowDesc"> completed: {{ queuestats[queue.xpid].completed }}</div>
+            <div class="ListRowDesc"> completed %: {{ queuestats[queue.xpid].completedPercent }}</div>
+            <div class="ListRowDesc"> completed SLA: {{ queuestats[queue.xpid].completedSla }}</div>
+            <div class="ListRowDesc"> completed SLA %: {{ queuestats[queue.xpid].completedSlaPercent }}</div>
           </div>
         </div>
       </a>
