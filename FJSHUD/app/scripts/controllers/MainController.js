@@ -64,19 +64,25 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 	
 	// add another chat panel
 	$scope.loadChat = function(contact) {
-		// resize window on first chat load
-		if ($rootScope.stackables.length == 0 && document.body.clientWidth < 700)
-			window.resizeTo(800, window.outerHeight);
-	
 		var xpid = contact.xpid;
-		
-		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
-			if ($rootScope.stackables[i].id == xpid)
-				return;
+			
+		if (window.location.href.indexOf('popup.html') != -1) {
+			// popup opens chat in same window
+			window.location.hash = '#/contact/' + xpid;
 		}
-		
-		$rootScope.stackables.push({id: xpid, tab: 'chat'});
-		$scope.$safeApply();
+		else {
+			// resize window on first chat load
+			if ($rootScope.stackables.length == 0 && document.body.clientWidth < 700)
+				window.resizeTo(800, window.outerHeight);
+			
+			for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
+				if ($rootScope.stackables[i].id == xpid)
+					return;
+			}
+			
+			$rootScope.stackables.push({id: xpid, tab: 'chat'});
+			$scope.$safeApply();
+		}
 	};
 	
 	// remove chat panel
