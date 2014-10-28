@@ -78,6 +78,9 @@ input[type="tel"] {
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
   border: solid 1px #ccc;
 }
+.StackablePanels .Stackable.shrink {
+  font-size: .95em;
+}
 .StackablePanels .Stackable .close {
   position: absolute;
   top: -5px;
@@ -90,6 +93,7 @@ input[type="tel"] {
   border-radius: 15px;
   width: 15px;
   height: 15px;
+  font-size: 12px;
   line-height: 12px;
   text-align: center;
   cursor: pointer;
@@ -787,11 +791,8 @@ input[type="tel"] {
 }
 .WidgetHeaderTitle {
   position: absolute;
-  left: 60px;
-  top: 6px;
-  right: 210px;
-  height: 25px;
-  line-height: 25px;
+  left: 3.7em;
+  top: .7em;
   font-size: 1em;
   font-weight: bold;
   color: #999;
@@ -803,14 +804,12 @@ input[type="tel"] {
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 0;
+  width: 40%;
 }
 .WidgetHeaderStatus {
   position: absolute;
-  left: 60px;
-  top: 28px;
-  right: 10px;
-  height: 24px;
-  line-height: 24px;
+  left: 4.7em;
+  top: 2.5em;
   text-align: left;
   font-size: .75em;
   color: #555;
@@ -820,7 +819,6 @@ input[type="tel"] {
 .WidgetHeaderCallStatus {
   position: relative;
   width: 200px;
-  height: 50px;
   border-radius: 4px;
   -webkit-border-radius: 4px;
   background-color: #fff;
@@ -852,14 +850,10 @@ input[type="tel"] {
 }
 .WidgetHeaderCallStatus .NoCallText {
   text-align: center;
-  margin-top: 12px;
   color: #999;
 }
 .WidgetHeaderCallStatus .NoCallIcon {
-  position: absolute;
-  top: 24px;
-  left: 88px;
-  height: 24px;
+  height: 16px;
   width: 24px;
   background: url("../img/XIconSet-24x24.png?v=1383213555647") no-repeat -24px -72px;
 }
@@ -879,9 +873,6 @@ input[type="tel"] {
 }
 .WidgetHeaderStatusItem.CallStatus {
   max-width: 100px;
-}
-.WidgetHeaderStatus.WithIcons {
-  left: 55px;
 }
 .WidgetSectionTitle {
   height: 32px;
@@ -1046,29 +1037,26 @@ input[type="tel"] {
 .Widget.Conversation {
   min-height: 300px;
 }
-.Widget.Conversation.shrink {
-  font-size: .9em;
-}
 .Widget.Conversation .WidgetHeader {
   top: 0;
   right: 0;
   left: 0;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
-  margin-left: .7em;
-  width: 50%;
-  height: 2.25em;
+  margin: .05em 0 .25em .7em;
+  width: 45%;
+  max-width: 300px;
+}
+.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div {
+  text-align: center;
+}
+.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div {
+  display: inline-block;
+  margin-bottom: 1px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .Avatar {
   top: 1px;
   left: 1px;
-}
-.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .NoCallIcon {
-  top: 5px;
-  left: 25px;
-}
-.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .NoCallText {
-  line-height: .6em;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .CallLineTop {
   top: 3px;
@@ -1088,8 +1076,10 @@ input[type="tel"] {
 .Widget.Conversation .WidgetHeader .WidgetHeaderInfo {
   float: right;
   background-color: #fff;
-  border: 1px solid #bbb;
-  width: 180px;
+  border-left: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  width: 45%;
+  max-width: 200px;
   border-radius: 4px;
   font-size: .8em;
 }
@@ -1113,6 +1103,7 @@ input[type="tel"] {
   -webkit-box-flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-top: 5px;
 }
 .Widget.Conversation .WidgetBody .ChatView .ChatInputBox {
   -webkit-box-flex: 0;
@@ -1159,8 +1150,8 @@ input[type="tel"] {
 }
 .AvatarNormal,
 .AvatarNormal img {
-  width: 38px;
-  height: 38px;
+  width: 2.45em;
+  height: 2.45em;
 }
 .AvatarBig,
 .AvatarBig img {
@@ -1169,8 +1160,8 @@ input[type="tel"] {
 }
 .AvatarSmall,
 .AvatarSmall img {
-  width: 30px;
-  height: 30px;
+  width: 1.9em;
+  height: 1.9em;
 }
 .AvatarApp {
   width: 40px;
@@ -1681,9 +1672,6 @@ input.text.DialogFieldInput {
   width: 100%;
   border-bottom: none;
 }
-.ListMessageChatWidget .AvatarSmall {
-  left: 15px;
-}
 .ListMessageChatWidget .ListMessageContent,
 .ChatItemTypeRoot-false.ListMessageChatWidget {
   min-height: 22px;
@@ -1796,6 +1784,7 @@ input.text.DialogFieldInput {
   width: 50px;
   min-height: 50px;
   float: left;
+  text-align: center;
 }
 .ListMessage .Avatar {
   position: absolute;
@@ -1851,7 +1840,7 @@ input.text.DialogFieldInput {
   color: #e27100;
 }
 .ListMessage.Voicemail .ListMessageHeader .ListMessageHeaderPrefix {
-  font-size: 11px;
+  font-size: .7em;
   font-style: normal;
   color: #333;
 }
@@ -1884,7 +1873,7 @@ input.text.DialogFieldInput {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 11px;
+  font-size: .7em;
   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
   color: #009cff;
   font-weight: bold;
@@ -1928,7 +1917,7 @@ input.text.DialogFieldInput {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 11px;
+  font-size: .7em;
   color: #666;
   float: right;
 }
@@ -1937,7 +1926,7 @@ input.text.DialogFieldInput {
   margin: 5px;
   white-space: normal;
   color: #222;
-  font-size: 13px;
+  font-size: .8em;
   word-wrap: break-word;
 }
 .Widget .ListMessageText {
@@ -2329,8 +2318,8 @@ input.text.DialogFieldInput {
   overflow: hidden;
 }
 @media screen and (max-width: 700px) {
-  body {
-    font-size: .9em;
+  #App {
+    font-size: .95em;
   }
   .TopBar {
     height: 50px;
@@ -2987,8 +2976,8 @@ input.text.ChatInputBoxInput,
   min-height: 16px;
   max-height: 200px;
   width: 365px;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: .95em;
+  line-height: 1.1em;
   padding: 5px;
   overflow: auto;
   background-color: #fff;
@@ -3006,15 +2995,14 @@ input.text.ChatInputBoxInput,
   width: 100%;
   border-bottom: none;
 }
-.ListMessageChatWidget .AvatarSmall {
-  left: 15px;
-}
 .ChatMessageItem {
   position: relative;
   left: 10px;
-  border-bottom: solid 1px #DEE1E5;
   width: 100%;
   min-height: 26px;
+}
+.ChatMessageItem:not(:last-child) {
+  border-bottom: solid 1px #DEE1E5;
 }
 .ChatMessageItem .time {
   position: absolute;
@@ -3023,7 +3011,7 @@ input.text.ChatInputBoxInput,
   width: 45px;
   text-align: right;
   height: 20px;
-  font-size: 9px;
+  font-size: .55em;
   color: #999;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3047,7 +3035,7 @@ input.text.ChatInputBoxInput,
   min-height: 22px;
 }
 .ChatItemTypeRoot-true.ListMessageChatWidget {
-  min-height: 52px;
+  min-height: 3.2em;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageLeft,
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageHeader {

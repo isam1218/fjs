@@ -30,8 +30,8 @@ input.text.ChatInputBoxInput,
   min-height: 16px;
   max-height: 200px;
   width: 365px;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: .95em;
+  line-height: 1.1em;
   padding: 5px;
   overflow: auto;
   background-color: #fff;
@@ -49,15 +49,14 @@ input.text.ChatInputBoxInput,
   width: 100%;
   border-bottom: none;
 }
-.ListMessageChatWidget .AvatarSmall {
-  left: 15px;
-}
 .ChatMessageItem {
   position: relative;
   left: 10px;
-  border-bottom: solid 1px #DEE1E5;
   width: 100%;
   min-height: 26px;
+}
+.ChatMessageItem:not(:last-child) {
+  border-bottom: solid 1px #DEE1E5;
 }
 .ChatMessageItem .time {
   position: absolute;
@@ -66,7 +65,7 @@ input.text.ChatInputBoxInput,
   width: 45px;
   text-align: right;
   height: 20px;
-  font-size: 9px;
+  font-size: .55em;
   color: #999;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -90,7 +89,7 @@ input.text.ChatInputBoxInput,
   min-height: 22px;
 }
 .ChatItemTypeRoot-true.ListMessageChatWidget {
-  min-height: 52px;
+  min-height: 3.2em;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageLeft,
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageHeader {

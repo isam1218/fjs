@@ -268,7 +268,7 @@
 			</div>
 
 			<div class="StackablePanels" ng-if="stackables.length > 0">
-				<div class="Stackable" ng-repeat="stack in stackables">
+				<div class="Stackable" ng-class="stackables.length > 1 ? 'shrink' : ''" ng-repeat="stack in stackables">
 					<div class="close" ng-click="removeChat(stack.id)">x</div>
 
 					<div class="panel" ng-if="stack.tab == 'chat'" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ContactWidgetChatController"></div>

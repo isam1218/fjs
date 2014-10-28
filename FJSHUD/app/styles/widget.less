@@ -51,11 +51,8 @@
 
 .WidgetHeaderTitle {
   position: absolute;
-  left: 60px;
-  top: 6px;
-  right: 210px;
-  height: 25px;
-  line-height: 25px;
+  left: 3.7em;
+  top: .7em;
   font-size: 1em;
   font-weight: bold;
   color: #999;
@@ -67,15 +64,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin:0;
+  width: 40%;
 }
 .WidgetHeaderStatus
 {
   position : absolute;
-  left : 60px;
-  top : 28px;
-  right : 10px;
-  height : 24px;
-  line-height : 24px;
+  left : 4.7em;
+  top : 2.5em;
   text-align : left;
   font-size : .75em;
   color : #555;
@@ -86,16 +81,12 @@
 {
   position : relative;
   width : 200px;
-  height : 50px;
   border-radius : 4px;
   -webkit-border-radius : 4px;
   background-color : #fff;
   border : solid 1px #ccc;
   box-shadow : 1px 1px 0px rgba(0,0,0,0.05);
   -webkit-box-shadow : 1px 1px 0px rgba(0,0,0,0.05);
-}
-.WidgetHeaderCallStatus:hover
-{
 }
 .WidgetHeaderCallStatus .CallAvatar
 {
@@ -127,15 +118,11 @@
 .WidgetHeaderCallStatus .NoCallText
 {
   text-align : center;
-  margin-top : 12px;
   color : #999;
 }
 .WidgetHeaderCallStatus .NoCallIcon
 {
-  position : absolute;
-  top : 24px;
-  left : 88px;
-  height : 24px;
+  height : 16px;
   width : 24px;
   background : url("../img/XIconSet-24x24.png?v=1383213555647") no-repeat -24px -72px;
 }
@@ -159,10 +146,6 @@
 .WidgetHeaderStatusItem.CallStatus
 {
   max-width : 100px;
-}
-.WidgetHeaderStatus.WithIcons
-{
-  left : 55px;
 }
 .WidgetSectionTitle {
   height: 32px;
@@ -346,10 +329,6 @@
 /*************************************Conversation*********************************/
 .Widget.Conversation {
   min-height: 300px;
-  
-  &.shrink {
-    font-size: .9em;
-  }
 
   .WidgetHeader {
     top:0;
@@ -357,20 +336,22 @@
     left:0;
 
     .WidgetHeaderCallStatus {
-      margin-left: .7em;
-      width: 50%;
-      height: 2.25em;
+      margin: .05em 0 .25em .7em;
+      width: 45%;
+	  max-width: 300px;
+	  
+	  div {
+		text-align: center;
+		
+		& > div {
+		  display: inline-block;
+		  margin-bottom: 1px;
+		}
+	  }
 	  
       .Avatar {
         top:1px;
         left: 1px;
-      }
-      .NoCallIcon {
-        top: 5px;
-        left: 25px;
-      }
-      .NoCallText {
-        line-height: .6em;
       }
       .CallLineTop {
         top:3px;
@@ -392,8 +373,10 @@
     .WidgetHeaderInfo {
       float: right;
       background-color: #fff;
-      border:1px solid #bbb;
-      width: 180px;
+      border-left: 1px solid #bbb;
+      border-bottom: 1px solid #bbb;
+      width: 45%;
+	  max-width: 200px;
       border-radius: 4px;
 	  font-size: .8em;
 	  
@@ -421,6 +404,7 @@
         -webkit-box-flex: 1;
         overflow-y: auto;
         overflow-x: hidden;
+		margin-top: 5px;
       }
       .ChatInputBox {
         -webkit-box-flex: 0;
