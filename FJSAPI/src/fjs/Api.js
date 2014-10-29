@@ -160,9 +160,10 @@ fjs.API.prototype.sendAction = function(feedName, action, data) {
     }
 };
 fjs.API.prototype.logout = function() {
-    this.ticket = null;
-    this.node = null;
-    this.instanceId = null;
+    //this.ticket = null;
+    //this.node = null;
+    //this.instanceId = null;
+	
     fjs.utils.Cookies.remove("Authorization");
     fjs.utils.Cookies.remove("node");
     this.dataProvider.logout();
