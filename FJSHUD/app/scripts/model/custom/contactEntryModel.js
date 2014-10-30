@@ -10,6 +10,9 @@ fjs.hud.ContactEntryModel = function(obj) {
 
     fjs.hud.EntryModel.call(this, obj, 'contacts');
     this._phones = null;
+	
+	this.events = 0;
+	this.timestamp = 0;
 };
 fjs.core.inherits(fjs.hud.ContactEntryModel, fjs.hud.EntryModel);
 

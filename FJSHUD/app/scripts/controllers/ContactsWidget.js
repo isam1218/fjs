@@ -5,8 +5,8 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
     var contactsModel = dataManager.getModel("contacts");
     document.title= "Contacts";
     $scope.query = "";
-    $scope.sortField = "displayName";
-    $scope.sortReverce = false;
+    $scope.sortField = "timestamp";
+    $scope.sortReverce = true;
     $scope.contacts = contactsModel.items;
 
     $scope.sort = function(field) {
@@ -47,8 +47,7 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
 			}
 		}
 		
-		$scope.sortField = 'events';
-		$scope.sortReverce = true;
+		$scope.$safeApply();
 	});
 
     $scope.$on("$destroy", function() {

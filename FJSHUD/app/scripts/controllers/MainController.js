@@ -65,6 +65,7 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 	// add another chat panel
 	$scope.loadChat = function(contact) {
 		var xpid = contact.xpid;
+		contact.events = 0;
 			
 		if (window.location.href.indexOf('popup.html') != -1) {
 			// popup opens chat in same window
