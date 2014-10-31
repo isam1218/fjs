@@ -28,9 +28,9 @@
 			</div>
 
 			<div class="TopBarIcons" data-ng-controller="TopNavigationController">
-				<a href="{{icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons">
-					<div class="TopBarItemAppIcon {{ icon.key }}"></div>
-					<div class="TopBarItemAppName">{{ icon.title }}</div>
+				<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in ::appIcons">
+					<div class="TopBarItemAppIcon {{ ::icon.key }}"></div>
+					<div class="TopBarItemAppName">{{ ::icon.title }}</div>
 				</a>
 			</div>
 
