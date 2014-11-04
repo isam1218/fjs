@@ -34,12 +34,6 @@
   .PanelWrapper {
     flex-direction: column;
   }
-  .MainPanel .WidgetHeader {
-    display: none;
-  }
-  .MainPanel .WidgetBody {
-    top: 0px !important;
-  }
   .StackablePanels {
     padding: 10px 0 0 0;
     flex: 1;

@@ -40,6 +40,7 @@ hud_web.config(function ($routeProvider) {
         when('/contact/:contactId/voicemails', {templateUrl: 'views/ConversationWidgetVoicemails.html', controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetVoicemailsController]}).
         when('/contact/:contactId/calllog', {templateUrl: 'views/ConversationWidgetCallLog.html', controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetCallLogController]}).
         when('/zoom', {templateUrl: 'views/ZoomWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]}).
+        when('/search', {templateUrl: 'views/SearchWidget.html',   controller:['$scope', 'DataManager', fjs.ui.SearchWidgetController]}).
         otherwise({redirectTo: '/contacts'});
   });
 

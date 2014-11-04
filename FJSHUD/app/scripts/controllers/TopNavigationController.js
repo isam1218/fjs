@@ -18,6 +18,7 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
         , {title:"Call Center", url:"#/callcenter", key:"CallCenter"}
         , {title:"Video Collaboration", url:"#/zoom", key:"Zoom"}
         , {title:"Box", url:"#/box", key:"Box"}
+        , {title:"Search", url:"#/search", key:"Search"}
     ];
 
 

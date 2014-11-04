@@ -1,0 +1,68 @@
+<div class="Widget Search" id="WidgetSearch" unpin="/search" draggable="true">
+    <div class="WidgetHeader">
+        <div class="Avatar AvatarApp">
+            <div class="TopBarItemAppIcon Search"></div>
+        </div>
+        <div class="WidgetHeaderTitle">Search</div>
+    </div>
+    <div class="WidgetBody">
+		<div class="SearchPanel" data-ng-class="{'InSearch':!!searchValue}">
+			<div class="SearchInputBox" >
+				<div class="SearchInputBoxInputHolder">
+					<input class="SearchInputBoxInput"
+						   type="text" x-webkit-speech=""
+						   ng-keydown="onKeyDown($event)"
+						   data-ng-model="searchValue"
+						   placeholder="Search or Start call"
+						   autofocus="true" />
+				</div>
+				<div class="SearchInputBoxStateButton" data-ng-click="searchValue = ''">
+					<div class="SearchInputBoxStateButtonIcon">
+
+					</div>
+				</div>
+			</div>
+			<div class="SearchResults" ng-if="searchValue != ''">
+			   <a href="" ng-click="loadChat(contact)" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue)) track by contact.xpid">
+					<div class="Avatar AvatarSmall">
+						<img class="AvatarImgPH" data-ng-src="{{ ::contact.getAvatarUrl(28,28) }}" />
+					</div>
+					<div class="ListRowButtons">
+						<div class="ListRowActionButton {{action.className}}" title="{{action.title}}" data-ng-click="action.makeAction(contact)"  data-ng-repeat="action in _actions = contact.getActions(5)">
+						</div>
+					</div>
+					<div class="ListRowContent WithActions-{{_actions.length}}">
+						<div class="ListRowLeftArea">
+							<div class="ListRowTitle" ng-bind-html="::contact.getFoundDisplayName(searchValue)"></div>
+							<div class="link ListRowDesc">
+								<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.contactstatus_xmpp || 'offline'}}"></div>
+								<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}"></div>
+								<span ng-bind-html="::contact.getFoundExtension(searchValue)"></span>
+							</div>
+						</div>
+					</div>
+					<div ng-if="contact.getPhones().length>1 && contact.xpid == openedContact" class="SearchPhoneNumbers">
+						<button data-ng-repeat="phone in contact.getPhones()" ng-keydown="onKeyDownButton($event, phone.number)">
+							<label>{{phone.title}}:</label>{{phone.number}}
+						</button>
+					</div>
+				</a>
+				<a href="" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="conference in conferences | ContactsWithoutMe | filter: {name: searchValue} track by conference.xpid">
+					<div class="Avatar AvatarSmall">
+					</div>
+					<div class="ListRowContent">
+						<div class="ListRowTitle">{{ ::conference.name }}</div>
+					</div>
+				</a>
+				<a href="" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="queue in queues | ContactsWithoutMe | filter: {name: searchValue} track by queue.xpid">
+					<div class="Avatar AvatarSmall">
+					</div>
+					<div class="ListRowContent">
+						<div class="ListRowTitle">{{ ::queue.name }}</div>
+					</div>
+				</a>
+			</div>
+		</div>
+    </div>
+</div>
+

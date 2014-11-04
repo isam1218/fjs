@@ -423,6 +423,18 @@ input[type="tel"] {
 .InSearch .SearchInputBoxStateButtonIcon {
   background: url("../img/XIconSet-24x24.png") no-repeat -191px -24px;
 }
+#WidgetSearch .SearchPanel {
+  display: flex;
+  flex-direction: column;
+}
+#WidgetSearch .SearchInputBox {
+  position: relative;
+  top: 0;
+}
+#WidgetSearch .SearchResults {
+  flex: 1;
+  overflow-y: auto;
+}
 .SelectBox {
   display: inline-block;
   border-radius: 2px;
@@ -679,6 +691,9 @@ input[type="tel"] {
 .TopBarItemAppIcon.Zoom {
   background-position: -480px 0;
 }
+.TopBarItemAppIcon.Search {
+  background-position: -560px 0;
+}
 .TopBarItemMe .TopBarItemAppIcon {
   background-image: none;
 }
@@ -748,7 +763,6 @@ input[type="tel"] {
 }
 .WidgetWrapper {
   position: relative;
-  margin-top: 10px;
   flex: 1;
 }
 .Widget {
@@ -2352,12 +2366,6 @@ input.text.DialogFieldInput {
   }
   .PanelWrapper {
     flex-direction: column;
-  }
-  .MainPanel .WidgetHeader {
-    display: none;
-  }
-  .MainPanel .WidgetBody {
-    top: 0px !important;
   }
   .StackablePanels {
     padding: 10px 0 0 0;
