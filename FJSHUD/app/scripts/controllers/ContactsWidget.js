@@ -8,6 +8,11 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
     $scope.sortField = "timestamp";
     $scope.sortReverce = true;
     $scope.contacts = contactsModel.items;
+	
+	// update contacts asap
+	contactsModel.addEventListener("complete", function() {
+		$scope.$safeApply();
+	});
 
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
