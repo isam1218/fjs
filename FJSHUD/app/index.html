@@ -22,7 +22,7 @@
 
     <!-- Add your site or application content here -->
 
-	<div id="App" ng-class="stackables.length > 0 ? 'stacked' : ''">
+	<div id="App" ng-class="stackables.length > 0 ? 'stacked' : ''" data-ng-controller="ResentsListController">
 		<div class="TopBar">
 			<div class="TopBarLogo" ng-click="launchApp()">
 			</div>
@@ -33,9 +33,7 @@
 					<div class="TopBarItemAppName">{{ ::icon.title }}</div>
 				</a>
 			</div>
-
-
-
+			
 			<div class="TopBarMeStatus" data-ng-controller="TopBarMeStatusController">
 
 				<div class="TopBarMeStatus-row">
