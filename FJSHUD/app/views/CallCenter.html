@@ -91,7 +91,7 @@
           <div class="QueueBlockStat">
             <div class="QueueBlockStatInner">
               <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>0</span></div>
+                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].waiting }}</span></div>
                 <div class="QueueBlockStatBlockTitle">Waiting</div>
               </div>
               <div class="QueueBlockStatBlock">
@@ -103,7 +103,7 @@
                 <div class="QueueBlockStatBlockTitle">Avg Talk</div>
               </div>
               <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>0</span></div>
+                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].completed }}</span></div>
                 <div class="QueueBlockStatBlockTitle">Total</div>
               </div>
               <div class="QueueBlockStatBlock Red">
@@ -112,7 +112,7 @@
                 <div class="QueueBlockStatBlockTitle">Aband</div>
               </div>
               <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>0</span></div>
+                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].active }}</span></div>
                 <div class="QueueBlockStatBlockTitle">Active</div>
               </div>
             </div>
