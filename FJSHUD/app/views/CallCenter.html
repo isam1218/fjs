@@ -61,42 +61,73 @@
       </div>
     </div>
     <div class="LeftBarTabContentList">
-      <a href="#"
-         class="ListRow Table AvatarHoverArea"
-         data-ng-repeat="queue in queues | SortCalllog | orderBy:'name'">
-        <div class="Avatar AvatarNormal">
-          <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
-                                                              data-ng-src="{{ queue.getAvatar(0, 19, 19) }}">
-          </div>
-          <div class="GroupAvatarItem GroupAvatarItem_1">
-            <img class="GroupAvatarItemImg"
-                 data-ng-src="{{ queue.getAvatar(1, 19, 19) }}">
-          </div>
-          <div class="GroupAvatarItem GroupAvatarItem_2">
-            <img class="GroupAvatarItemImg"
-                 data-ng-src="{{ queue.getAvatar(2, 19, 19) }}">
-          </div>
-          <div class="GroupAvatarItem GroupAvatarItem_3">
-            <img class="GroupAvatarItemImg" data-ng-src="{{ queue.getAvatar(3, 19, 19) }}">
-          </div>
-          <div class="AvatarInteractable"></div>
-        </div>
-        <div class="ListRowContent">
+      <div class="ListViewTopSpace"></div>
+      <div class="QueueBlockHolder AvatarHoverArea QueueDetailsEnabled-true" data-ng-repeat="queue in queues | SortCalllog | orderBy:'name'">
 
-          <div class="ListRowLeftAreaExtraWide">
-            <div class="ListRowTitle"> {{ queue.name}}</div>
-            <div class="ListRowDesc"> {{ queue.description }}</div>
-            <div class="ListRowDesc"> completed: {{ queuestats[queue.xpid].completed }}</div>
-            <div class="ListRowDesc"> completed %: {{ queuestats[queue.xpid].completedPercent }}</div>
-            <!--<div class="ListRowDesc"> completed SLA: {{ queuestats[queue.xpid].completedSla }}</div>-->
-            <div class="ListRowDesc"> SLA %: {{ queuestats[queue.xpid].completedSlaPercent }}</div>
-            <!--<div class="ListRowDesc"> abandoned: {{ queuestats[queue.xpid].abandone }}</div>-->
-            <div class="ListRowDesc"> abandoned %: {{ queuestats[queue.xpid].abandonPercent }}</div>
+        <div class="QueueBlock">
+          <div class="Avatar AvatarNormal QueueBlockAvatar">
+            <div class="AvatarImgPH GroupAvatarShowDefault-false">
+
+              <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
+                                                                  data-ng-src="{{ queue.getAvatar(0, 19, 19) }}">
+              </div>
+              <div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg"
+                                                                  data-ng-src="{{ queue.getAvatar(1, 19, 19) }}">
+              </div>
+              <div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg"
+                                                                  data-ng-src="{{ queue.getAvatar(2, 19, 19) }}">
+              </div>
+              <div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg"
+                                                                  data-ng-src="{{ queue.getAvatar(3, 19, 19) }}">
+              </div>
+            </div>
+            <div class="AvatarForeground AvatarInteractable"></div>
+          </div>
+          <div class="QueueBlockTitle SortField"> {{ queue.name}} - {{ queue.description }}</div>
+          <div class="QueueBlockStatus QueueBlockAgentsStatLine">Agents:<span>2</span> / <span>5</span> /
+            <span>7</span></div>
+          <div class="QueueBlockStat">
+            <div class="QueueBlockStatInner">
+              <div class="QueueBlockStatBlock">
+                <div class="QueueBlockStatBlockValue"><span>0</span></div>
+                <div class="QueueBlockStatBlockTitle">Waiting</div>
+              </div>
+              <div class="QueueBlockStatBlock">
+                <div class="QueueBlockStatBlockValue"></div>
+                <div class="QueueBlockStatBlockTitle">Avg Wait</div>
+              </div>
+              <div class="QueueBlockStatBlock">
+                <div class="QueueBlockStatBlockValue"></div>
+                <div class="QueueBlockStatBlockTitle">Avg Talk</div>
+              </div>
+              <div class="QueueBlockStatBlock ">
+                <div class="QueueBlockStatBlockValue"></div>
+                <div class="QueueBlockStatBlockTitle">Total</div>
+              </div>
+              <div class="QueueBlockStatBlock  Red">
+                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].abandonPercent }}</span>%
+                </div>
+                <div class="QueueBlockStatBlockTitle">Aband</div>
+              </div>
+              <div class="QueueBlockStatBlock ">
+                <div class="QueueBlockStatBlockValue"></div>
+                <div class="QueueBlockStatBlockTitle">Active</div>
+              </div>
+            </div>
           </div>
         </div>
-      </a>
+      </div>
     </div>
-
   </div>
 </div>
 
+<!--<div class="ListRowLeftAreaExtraWide">-->
+  <!--<div class="ListRowTitle"> {{ queue.name}}</div>-->
+  <!--<div class="ListRowDesc"> {{ queue.description }}</div>-->
+  <!--<div class="ListRowDesc"> completed: {{ queuestats[queue.xpid].completed }}</div>-->
+  <!--<div class="ListRowDesc"> completed %: {{ queuestats[queue.xpid].completedPercent }}</div>-->
+  <!--&lt;!&ndash;<div class="ListRowDesc"> completed SLA: {{ queuestats[queue.xpid].completedSla }}</div>&ndash;&gt;-->
+  <!--<div class="ListRowDesc"> SLA %: {{ queuestats[queue.xpid].completedSlaPercent }}</div>-->
+  <!--&lt;!&ndash;<div class="ListRowDesc"> abandoned: {{ queuestats[queue.xpid].abandone }}</div>&ndash;&gt;-->
+  <!--<div class="ListRowDesc"> abandoned %: {{ queuestats[queue.xpid].abandonPercent }}</div>-->
+<!--</div>-->

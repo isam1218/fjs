@@ -12,7 +12,7 @@ fjs.hud.QueueEntryModel = function (obj) {
 };
 fjs.core.inherits(fjs.hud.QueueEntryModel, fjs.hud.EntryModel);
 
-fjs.hud.QueueEntryModel.prototype.getAvatarUrl = function (width, height) {
+fjs.hud.QueueEntryModel.prototype.getAvatar = function (idx, width, height) {
   if (this.fdpImage_xef001iver) {
     var dm = new fjs.hud.DataManager();
     return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + this.xpid + "&w=" + width + "&h=" + height + "&Authorization=" + dm.api.ticket + "&node=" + dm.api.node + "&v=" + this.fdpImage_xef001iver;
