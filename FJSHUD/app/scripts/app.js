@@ -44,6 +44,7 @@ hud_web.config(function ($routeProvider) {
         otherwise({redirectTo: '/contacts'});
   });
 
+hud_web.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hud_web.controller("MainController", ['$rootScope', '$scope', 'DataManager', fjs.ui.MainController]);
 hud_web.controller("TopBarMeStatusController", ['$scope', 'DataManager', fjs.ui.TopBarMeStatusController]);
 //hud_web.controller("MeWidgetController", fjs.ui.MeWidgetController);
