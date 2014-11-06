@@ -1164,8 +1164,8 @@ input[type="tel"] {
 }
 .AvatarNormal,
 .AvatarNormal img {
-  width: 2.45em;
-  height: 2.45em;
+  width: 2.50em;
+  height: 2.50em;
 }
 .AvatarBig,
 .AvatarBig img {
@@ -3200,6 +3200,7 @@ input.text.ChatInputBoxInput,
   text-overflow: ellipsis;
   text-shadow: #fff 0 1px 0;
   cursor: pointer;
+  font-size: 12px;
   font-weight: bold;
   color: #888;
 }
@@ -3233,7 +3234,7 @@ input.text.ChatInputBoxInput,
   color: #888;
 }
 .QueueBlockStatBlock {
-  width: 33.3%;
+  width: 30%;
   display: inline-block;
   text-align: center;
   color: #888;
