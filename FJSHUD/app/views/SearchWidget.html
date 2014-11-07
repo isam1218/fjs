@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<div class="SearchResults" ng-if="searchValue != ''">
-			   <a href="" ng-click="loadChat(contact)" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue)) track by contact.xpid">
+			   <a href="" ng-click="loadPanel(contact)" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue)) track by contact.xpid">
 					<div class="Avatar AvatarSmall">
 						<img class="AvatarImgPH" data-ng-src="{{ ::contact.getAvatarUrl(28,28) }}" />
 					</div>

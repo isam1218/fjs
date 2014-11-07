@@ -6,6 +6,9 @@ fjs.ui.ContactWidgetChatController = function($scope, $routeParams, $timeout, $f
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactModel.items[$routeParams.contactId];
 	
+	$scope.tabs = ['Chat', 'Voicemails', 'Groups', 'Call Log'];
+	$scope.selected = 'Chat';
+	
 	// override data, where "stack" comes from ng-repeat
     if (typeof $scope.stack !== "undefined") {
 		$scope.contactId = $scope.stack.id;

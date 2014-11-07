@@ -13,7 +13,7 @@ fjs.directive.Unpin = function() {
             sendMessage({"action":"runApp", "url":$attrs.unpin});
 			*/
 			
-			window.open('popup.html#' + $attrs.unpin, $attrs.unpin, "scrollbars=yes, status=no, titlebar=no, toolbar=no, location=no, menubar=no, width=500, height=600");
+			window.open('popup.html#' + $attrs.unpin, $attrs.unpin, "scrollbars=yes, status=no, titlebar=no, toolbar=no, location=no, menubar=no, width=400, height=600");
         };
 
     }

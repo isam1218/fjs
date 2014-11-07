@@ -56,13 +56,14 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
     };
 	
 	// add another chat panel
-	$scope.loadChat = function(contact) {
-		var xpid = contact.xpid;
-		contact.events = 0;
+	$scope.loadPanel = function(panel) {
+		var xpid = panel.xpid;
+		var feed = panel.feedName.replace(/s$/g,"");
+		panel.events = 0;
 			
 		if (window.location.href.indexOf('popup.html') != -1) {
 			// popup opens chat in same window
-			window.location.hash = '#/contact/' + xpid;
+			window.location.hash = '#/' + panel.feedName + '/' + xpid;
 		}
 		else {
 			// resize window on first chat load
@@ -74,13 +75,13 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 					return;
 			}
 			
-			$rootScope.stackables.push({id: xpid, tab: 'chat'});
+			$rootScope.stackables.push({id: xpid, tab: feed});
 			$scope.$safeApply();
 		}
 	};
 	
 	// remove chat panel
-	$scope.removeChat = function(xpid) {
+	$scope.removePanel = function(xpid) {
 		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
 			if ($rootScope.stackables[i].id == xpid) {
 				$rootScope.stackables.splice(i, 1);
@@ -92,17 +93,6 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 		// resize window on last chat removal
 		if ($rootScope.stackables.length == 0 && document.body.clientWidth > 400)
 			window.resizeTo(400, window.outerHeight);
-	};
-	
-	// switch tab within panel
-	$rootScope.switchTab = function(xpid, tab) {
-		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
-			if ($rootScope.stackables[i].id == xpid) {
-				$rootScope.stackables[i].tab = tab;
-				$scope.$safeApply();
-				break;
-			}
-		}
 	};
 
     $scope.logout = function() {
