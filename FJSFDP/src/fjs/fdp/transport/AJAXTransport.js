@@ -215,7 +215,9 @@
                 }
             }
         }
-        return result;
+		
+		// if empty, return original data
+        return Object.keys(result).length > 0 ? result : JSON.parse(dataArr[0]);
     };
 
 

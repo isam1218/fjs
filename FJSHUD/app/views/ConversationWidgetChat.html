@@ -1,115 +1,38 @@
-<div class="Widget Conversation" unpin="{{'/contact/'+contact.xpid}}" draggable="true">
-    <div class="WidgetHeader" context-menu="contact">
-        <div class="Avatar AvatarNormal" avatar-menu="contact"> <!-- on click - open avatar menu-->
-            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH"
-                 data-ng-src="{{contact.getAvatarUrl(32,32);}}">
-            <div class="AvatarForeground AvatarInteractable"></div>
+<div class="ToolBar">
+    <div class="SearchInputBox DirectionalySearchInputBox">
+        <div class="SearchInputBoxInputHolder">
+            <input class="SearchInputBoxInput" type="text" placeholder="not implemented">
         </div>
-        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.getDisplayName()}} ({{contact.primaryExtension}})</div>
-        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.getDisplayName()}}</div>
-        <div class="WidgetHeaderStatus WithIcons">
-            <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus"
-                 data-ng-class="contact.getQueueStatus()"></div>
-            <div class="WidgetHeaderStatusItem Icon XIcon-ChatStatus-{{contact.getChatStatus()}}"></div>
-            <div class="WidgetHeaderStatusItem ChatStatus">{{contact.getCustomXmppStatus()}}</div>
-        </div>
-        <div class="WidgetHeaderInfo">
-            <div class="WidgetHeaderInfoRow">
-                <label>Email:</label><a ng-href="{{'mailto://'+contact.email}}">{{contact.email}}</a>
-            </div>
-            <div class="WidgetHeaderInfoRow">
-                <label>Ext:</label><a href="javascript:" ng-click="callPhone(contact.primaryExtension)">{{contact.primaryExtension}}</a>
-            </div>
-            <div class="WidgetHeaderInfoRow">
-                <label>Phone:</label><a href="javascript:" ng-click="callPhone(contact.phoneBusiness)">{{contact.phoneBusiness}}</a>
-            </div>
-            <div class="WidgetHeaderInfoRow">
-                <label>Mobile:</label><a href="javascript:" ng-click="callPhone(contact.phoneMobile)">{{contact.phoneMobile}}</a>
-            </div>
-        </div>
-        <div class="WidgetHeaderCallStatus" ng-class="{'HasCall':contact.hasCall()}">
-            <div ng-if="contact.hasCall()">
-                <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">
-                    <img class="AvatarImgPH" data-ng-src="{{contact.getCallAvatarUrl(28, 28)}}" />
-                    <div class="AvatarForeground AvatarInteractable"></div>
-                </div>
-                <div class="CallLineTop">
-                    <div class="CallerName">{{contact.calls_displayName}}</div>
-                    <div class="CallDuration">{{duration}}</div>
-                </div>
-            </div>
-            <div class="CallerPhone"></div>
-            <div ng-if="!contact.hasCall()">
-                <div class="NoCallIcon"></div>
-                <div class="NoCallText">No active call</div>
-            </div>
+        <div class="SearchInputBoxStateButton">
+            <div class="SearchInputBoxStateButtonIcon"></div>
         </div>
     </div>
-    <div class="WidgetBody">
-        <div class="WidgetTabBar">
-            <!--<a href="#/contact/{{contactId}}" class="WidgetTabBarButton Ready fj-selected-item">-->
-            <a href="" class="WidgetTabBarButton Ready fj-selected-item">
-                <div class="inner">Chat</div>
-                <div class="arrow"></div>
-            </a>
-            <!--<a href="#/contact/{{contactId}}/voicemails" class="WidgetTabBarButton Ready">-->
-            <a href="" ng-click="switchTab(contactId, 'voicemails')" class="WidgetTabBarButton Ready">
-                <div class="inner">Voicemails</div>
-                <div class="arrow"></div>
-            </a>
-            <!--<a href="#/contact/{{contactId}}/groups" class="WidgetTabBarButton Ready">-->
-			<a href="" ng-click="switchTab(contactId, 'groups')" class="WidgetTabBarButton Ready">
-                <div class="inner">Groups</div>
-                <div class="arrow"></div>
-            </a>
-            <!--<a href="#/contact/{{contactId}}/calllog" class="WidgetTabBarButton Ready">-->
-            <a href="" ng-click="switchTab(contactId, 'calllog')" class="WidgetTabBarButton Ready">
-                <div class="inner">Call Log</div>
-                <div class="arrow"></div>
-            </a>
-        </div>
-        <div class="ToolBar">
-            <div class="SearchInputBox DirectionalySearchInputBox">
-                <div class="SearchInputBoxInputHolder">
-                    <input class="SearchInputBoxInput" type="text" placeholder="not implemented">
-                </div>
-                <div class="SearchInputBoxStateButton">
-                    <div class="SearchInputBoxStateButtonIcon"></div>
-                </div>
-            </div>
-            <div class="XButton XButtonNormal" ng-click="fileShare()"><span>File Share</span></div>
-        </div>
-        <div class="ListView ChatView WithToolBar" ng-controller="ChatController">
-            <div class="ListViewContent" id="ListViewContent">
-                    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages | ChatFilter : (contact && 'contacts:'+contact.xpid)">
-                        <div class="ListMessageLeft">
-                            <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
-                                <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.getFrom().getAvatarUrl(28,28)}}">
-                                <div class="AvatarInteractable AvatarForeground"></div>
-                            </div>
-                        </div>
-                        <div class="ListMessageContent AttachmentsHolder">
-                            <div class="ListMessageHeader ChatOutbound">
-                                <div class="ListMessageHeaderPrefix">...from</div>
-                                <div class="ListMessageHeaderName">{{message.getFrom().getChatName()}}</div>
-                                <div class="time">{{message.getDate()}}</div>
-                            </div>
-                            <div class="ListMessageContent ChatMessageItem AttachmentsHolder">
-                                <div class="time">{{message.getTime()}}</div>
-                                <div class="ListMessageText"><div class="ChatMessageIco {{message.type}} {{message.callType}}"></div>{{message.message}}</div>
-                            </div>
-                        </div>
-                        </div>
-            </div>
-            <div class="ChatInputBox">
-                <div class="ChatInputBoxBorder"></div>
-                <div class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatInputOnKeyPress($event)" id="ChatInputBox_{{contact.xpid}}"   title="You can use shift+enter to set a line break"></div>
-                <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
-            </div>
-        </div>
-    <div>
-
-    </div>
-
+    <div class="XButton XButtonNormal" ng-click="fileShare()"><span>File Share</span></div>
 </div>
+		
+<div class="ListViewContent" id="ListViewContent">
+        <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages | ChatFilter : (contact && 'contacts:'+contact.xpid)">
+            <div class="ListMessageLeft">
+                <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
+                    <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.getFrom().getAvatarUrl(28,28)}}">
+                    <div class="AvatarInteractable AvatarForeground"></div>
+                </div>
+            </div>
+            <div class="ListMessageContent AttachmentsHolder">
+                <div class="ListMessageHeader ChatOutbound">
+                    <div class="ListMessageHeaderPrefix">...from</div>
+                    <div class="ListMessageHeaderName">{{message.getFrom().getChatName()}}</div>
+                    <div class="time">{{message.getDate()}}</div>
+                </div>
+                <div class="ListMessageContent ChatMessageItem AttachmentsHolder">
+                    <div class="time">{{message.getTime()}}</div>
+                    <div class="ListMessageText"><div class="ChatMessageIco {{message.type}} {{message.callType}}"></div>{{message.message}}</div>
+                </div>
+            </div>
+            </div>
+</div>
+<div class="ChatInputBox">
+    <div class="ChatInputBoxBorder"></div>
+    <div class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatInputOnKeyPress($event)" id="ChatInputBox_{{contact.xpid}}"   title="You can use shift+enter to set a line break"></div>
+    <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
 </div>

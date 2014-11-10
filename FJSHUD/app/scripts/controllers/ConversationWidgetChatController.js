@@ -1,6 +1,6 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.ChatController = function($scope, dataManager) {
+fjs.ui.ConversationWidgetChatController = function($scope, dataManager) {
     fjs.ui.Controller.call(this, $scope);
     $scope.model = dataManager.getModel('streamevent');
     $scope.messages = $scope.model.items;
@@ -22,4 +22,4 @@ fjs.ui.ChatController = function($scope, dataManager) {
     });
 
 };
-fjs.core.inherits(fjs.ui.ChatController, fjs.ui.Controller);
+fjs.core.inherits(fjs.ui.ConversationWidgetChatController, fjs.ui.Controller);
