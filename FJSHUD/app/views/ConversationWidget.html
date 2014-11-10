@@ -52,45 +52,12 @@
 				<div class="arrow"></div>
 			</a>
         </div>
-        <div class="ToolBar">
-            <div class="SearchInputBox DirectionalySearchInputBox">
-                <div class="SearchInputBoxInputHolder">
-                    <input class="SearchInputBoxInput" type="text" placeholder="not implemented">
-                </div>
-                <div class="SearchInputBoxStateButton">
-                    <div class="SearchInputBoxStateButtonIcon"></div>
-                </div>
-            </div>
-            <div class="XButton XButtonNormal" ng-click="fileShare()"><span>File Share</span></div>
-        </div>
-        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-controller="ChatController">
-            <div class="ListViewContent" id="ListViewContent">
-                    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages | ChatFilter : (contact && 'contacts:'+contact.xpid)">
-                        <div class="ListMessageLeft">
-                            <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
-                                <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.getFrom().getAvatarUrl(28,28)}}">
-                                <div class="AvatarInteractable AvatarForeground"></div>
-                            </div>
-                        </div>
-                        <div class="ListMessageContent AttachmentsHolder">
-                            <div class="ListMessageHeader ChatOutbound">
-                                <div class="ListMessageHeaderPrefix">...from</div>
-                                <div class="ListMessageHeaderName">{{message.getFrom().getChatName()}}</div>
-                                <div class="time">{{message.getDate()}}</div>
-                            </div>
-                            <div class="ListMessageContent ChatMessageItem AttachmentsHolder">
-                                <div class="time">{{message.getTime()}}</div>
-                                <div class="ListMessageText"><div class="ChatMessageIco {{message.type}} {{message.callType}}"></div>{{message.message}}</div>
-                            </div>
-                        </div>
-                        </div>
-            </div>
-            <div class="ChatInputBox">
-                <div class="ChatInputBoxBorder"></div>
-                <div class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatInputOnKeyPress($event)" id="ChatInputBox_{{contact.xpid}}"   title="You can use shift+enter to set a line break"></div>
-                <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
-            </div>
-        </div>
+		
+		<!-- ng-views -->
+        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/ConversationWidgetChat.html'" ng-controller="ConversationWidgetChatController"></div>
+        <div ng-if="selected == 'Voicemails'" class="fj-content WidgetTabContent" ng-include="'views/ConversationWidgetVoicemails.html'" ng-controller="ConversationWidgetChatController"></div>
+        <div ng-if="selected == 'Groups'" class="fj-content WidgetTabContent" ng-include="'views/ConversationWidgetGroups.html'" ng-controller="ConversationWidgetChatController"></div>
+        <div ng-if="selected == 'Call Log'" class="fj-content WidgetTabContent" ng-include="'views/ConversationWidgetCallLog.html'" ng-controller="ConversationWidgetChatController"></div>
     <div>
 
     </div>

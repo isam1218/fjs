@@ -36,7 +36,7 @@ hud_web.config(function ($routeProvider) {
         when('/conferences/all', {templateUrl: 'views/AllConferencesWidgetController.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/conference/:conferenceId', {templateUrl: 'views/ConferenceWidget.html', controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]}).
         when('/test', {templateUrl: 'views/TestWidget.html', controller: ['$scope', fjs.ui.TestWidget]}).
-        when('/contact/:contactId', {templateUrl: 'views/ConversationWidget.html', controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ContactWidgetChatController]}).
+        when('/contact/:contactId', {templateUrl: 'views/ConversationWidget.html', controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetController]}).
         when('/zoom', {templateUrl: 'views/ZoomWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]}).
         when('/search', {templateUrl: 'views/SearchWidget.html',   controller:['$scope', 'DataManager', fjs.ui.SearchWidgetController]}).
         otherwise({redirectTo: '/contacts'});
@@ -60,12 +60,12 @@ hud_web.controller("TopNavigationController", ['$scope', 'DataManager', fjs.ui.T
 hud_web.controller("SearchInputController", ['$scope', '$element', 'DataManager',  fjs.ui.SearchInputController]);
 hud_web.controller("ResentsListController", ['$scope', '$rootScope', 'DataManager',  fjs.ui.ResentsListController]);
 hud_web.controller("ResentItemController", ['$scope', '$element',  fjs.ui.ResentItemController]);
-hud_web.controller("ChatController", ['$scope', 'DataManager',  fjs.ui.ChatController]);
 hud_web.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.ContextMenuController]);
 hud_web.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.ChatStatusController]);
 
 // chat panel controllers:
-hud_web.controller("ContactWidgetChatController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ContactWidgetChatController]);
+hud_web.controller("ConversationWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetController]);
+hud_web.controller("ConversationWidgetChatController", ['$scope', 'DataManager',  fjs.ui.ConversationWidgetChatController]);
 hud_web.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hud_web.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 

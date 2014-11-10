@@ -269,7 +269,7 @@
 				<div class="Stackable" ng-class="stackables.length > 1 ? 'shrink' : ''" ng-repeat="stack in stackables">
 					<div class="close" ng-click="removePanel(stack.id)">x</div>
 
-					<div class="panel" ng-if="stack.tab == 'contact'" ng-include="'views/ConversationWidget.html'" ng-controller="ContactWidgetChatController"></div>
+					<div class="panel" ng-if="stack.tab == 'contact'" ng-include="'views/ConversationWidget.html'" ng-controller="ConversationWidgetController"></div>
 					<div class="panel" ng-if="stack.tab == 'conference'" ng-include="'views/ConferenceWidget.html'" ng-controller="ConferencesWidgetController"></div>
 					<div class="panel" ng-if="stack.tab == 'queue'" ng-include="'views/QueueWidget.html'" ng-controller="CallCenterController"></div>
 				</div>
@@ -409,13 +409,10 @@
     <script src="scripts/controllers/VoicemailTab.js"></script>
     <script src="scripts/controllers/EditContactDialog.js"></script>
     <script src="scripts/controllers/ConversationWidgetController.js"></script>
+    <script src="scripts/controllers/ConversationWidgetChatController.js"></script>
     <script src="scripts/controllers/ConversationWidgetGroupsController.js"></script>
     <script src="scripts/controllers/ConversationWidgetVoicemailsController.js"></script>
     <script src="scripts/controllers/ConversationWidgetQueuesController.js"></script>
-    <script src="scripts/controllers/ConversationWidgetVoicemailsController.js"></script>
-    <script src="scripts/controllers/ConversationWidgetGroupsController.js"></script>
-    <script src="scripts/controllers/ContactWidgetChatController.js"></script>
-    <script src="scripts/controllers/ContactWidgetGroupsController.js"></script>
     <script src="scripts/controllers/ConversationWidgetCallLogController.js"></script>
     <script src="scripts/controllers/TestWidgetController.js"></script>
     <script src="scripts/controllers/SearchInputController.js"></script>
@@ -423,7 +420,6 @@
     <script src="scripts/controllers/MyCallController.js"></script>
     <script src="scripts/controllers/RecentsListController.js"></script>
     <script src="scripts/controllers/RecentItemController.js"></script>
-    <script src="scripts/controllers/ChatController.js"></script>
     <script src="scripts/controllers/contextMenuController.js"></script>
     <script src="scripts/controllers/ChatStatusController.js"></script>
     <script src="scripts/controllers/CallsRecordingsController.js"></script>
