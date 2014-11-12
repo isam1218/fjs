@@ -702,7 +702,7 @@
      */
     fjs.fdp.SyncManager.prototype.getAuthTicket = function() {
         var context = this;
-        if(this.state == sm.states.READY && this.db) {
+        if(this.status == sm.states.READY && this.db) {
             this.db.clear(function(){
                 context.fireEvent("authError", {type:'authError', message:'Auth ticket wrong or expired'});
             });
@@ -767,7 +767,7 @@
                 listener(data);
             });
         }
-        else if(this.syncFeeds.indexOf(feedName) >= 0 && this.states==sm.READY) {
+        else if(this.syncFeeds.indexOf(feedName) >= 0 && this.status==sm.READY) {
             this.fireEvent(feedName, {eventType:sm.eventTypes.SYNC_START, feed:feedName}, listener);
             this.getFeedData(feedName, function(data){
                 if(data.eventType == sm.eventTypes.FEED_COMPLETE) {
