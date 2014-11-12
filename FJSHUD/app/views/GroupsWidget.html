@@ -1,9 +1,9 @@
-<div class="Widget Groups" id="WidgetGroups" unpin="#/contacts/groups" draggable="true">
+<div class="Widget Contacts Groups" id="WidgetGroups" unpin="/contacts/groups" draggable="true">
     <div class="WidgetHeader">
         <div class="Avatar AvatarApp">
             <div class="TopBarItemAppIcon Contacts"></div>
         </div>
-        <div class="WidgetHeaderTitle" >Contacts</div>
+        <div class="WidgetHeaderTitle" >Groups</div>
     </div>
     <div class="WidgetBody">
         <div class="WidgetTabBar">
@@ -15,7 +15,7 @@
                 <div class="inner">Groups</div>
                 <div class="arrow"></div>
             </a>
-            <a href="#/external" class="WidgetTabBarButton Ready  ">
+            <a href="#/external" class="WidgetTabBarButton Ready">
                 <div class="inner">External</div>
                 <div class="arrow"></div>
             </a>
@@ -32,6 +32,43 @@
         <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
         </button>
     </div>
+	
+	<div class="LeftBarTabContentList">
+		<h4>My Department</h4>
+		<a href="" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(mine)">
+            <div class="Avatar AvatarNormal">
+                <img class="AvatarImgPH" />
+                <div class="AvatarForeground AvatarInteractable"></div>
+            </div>
+            <div class="ListRowContent">
+                <div class="ListRowTitle">
+                    <div class="name">
+                        <b>{{ ::mine.name }}</b>
+                        <span class="details">{{ ::mine.memberIds.length }}</span>
+                    </div>
+                </div>
+                <div class="ListRowStatus">#{{ ::mine.extension }}</div>
+			</div>
+		</a>
+		
+		
+		<h4>All Other Departments</h4>
+		<a href="" data-ng-repeat="group in groups" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
+            <div class="Avatar AvatarNormal">
+                <img class="AvatarImgPH" />
+                <div class="AvatarForeground AvatarInteractable"></div>
+            </div>
+            <div class="ListRowContent">
+                <div class="ListRowTitle">
+                    <div class="name">
+                        <b>{{ ::group.name }}</b>
+                        <span class="details">{{ ::group.memberIds.length }}</span>
+                    </div>
+                </div>
+                <div class="ListRowStatus">#{{ ::group.extension }}</div>
+			</div>
+		</a>
+	</div>
 
     </div>
 </div>

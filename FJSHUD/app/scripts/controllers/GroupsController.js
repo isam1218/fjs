@@ -1,12 +1,13 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.GroupsController = function($scope, dataManager) {
+fjs.ui.GroupsController = function($scope, $rootScope, dataManager) {
     fjs.ui.Controller.call(this, $scope);
     var groupsModel = dataManager.getModel("groups");
     $scope.query = "";
     $scope.sortField = "name";
     $scope.sortReverce = false;
     $scope.groups = groupsModel.items;
+	$scope.mine = null;
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
             $scope.sortField = field;
@@ -22,7 +23,15 @@ fjs.ui.GroupsController = function($scope, dataManager) {
             clearTimeout(timeoutId);
         }
         timeoutId = setTimeout(function(){
-            $scope.$safeApply()
+			// find my department
+			for (var group in $scope.groups) {
+				if ($scope.groups[group].memberIds.indexOf($rootScope.myPid) != -1) {
+					$scope.mine = $scope.groups[group];
+					break;
+				}
+			}
+			
+            $scope.$safeApply();
         }, 50);
     }
     groupsModel.addEventListener("complete", update);
