@@ -10,10 +10,10 @@ fjs.hud.GroupsFeedModel = function(dataManager) {
     var context = this;
     this.favoriteGroupXpid = '400000000_1';
 
-    this.groupContactsModel.addListener("push", function(data){
+    this.groupContactsModel.addEventListener("push", function(data){
         context.pushGroupContact(data);
     });
-    this.groupContactsModel.addListener("delete", function(data){
+    this.groupContactsModel.addEventListener("delete", function(data){
         context.deleteGroupContact(data);
     });
 };

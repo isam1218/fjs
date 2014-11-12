@@ -3,6 +3,7 @@ fjs.core.namespace("fjs.ui");
 fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
     fjs.ui.Controller.call(this, $scope);
 	$rootScope.stackables = [];
+	$rootScope.myPid = null;
 
     $scope.currentPopup = {};
     $scope.currentPopup.url = null;
@@ -17,6 +18,8 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
                 meModel.removeEventListener("complete", onLoaded);
                 var loading = document.getElementById("fj-loading");
                 loading.style.display = "none";
+				
+				$rootScope.myPid = meModel.getMyPid();
             });
         }
     };

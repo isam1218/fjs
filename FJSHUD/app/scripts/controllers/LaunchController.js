@@ -27,7 +27,7 @@ fjs.ui.LaunchController = function($rootScope, $scope, dataProvider) {
 	};
 
     $scope.logout = function() {
-		app.close();
+		if (app) app.close();
         dataProvider.logout();
     };
 };

@@ -25,7 +25,7 @@ hud_web.config(function ($routeProvider) {
         when('/settings/weblauncer', {templateUrl: 'views/SettingsWebLauncer.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
         when('/settings/account', {templateUrl: 'views/SettingsAccount.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
         when('/contacts', {templateUrl: 'views/ContactsWidget.html',   controller:['$scope',  'DataManager', fjs.ui.ContactsWidget]}).
-        when('/contacts/groups', {templateUrl: 'views/GroupsWidget.html',   controller:['$scope',  'DataManager', fjs.ui.GroupsController]}).
+        when('/contacts/groups', {templateUrl: 'views/GroupsWidget.html',   controller:['$scope',  '$rootScope', 'DataManager', fjs.ui.GroupsController]}).
         when('/callcenter', {templateUrl: 'views/CallCenter.html',   controller:['$scope',  'DataManager', fjs.ui.CallCenterController]}).
         when('/callcenter/allqueues', {templateUrl: 'views/CallCenter.html',   controller:['$scope',  'DataManager', fjs.ui.CallCenterController]}).
         when('/callcenter/mystatus', {templateUrl: 'views/CallCenter.html',   controller:['$scope',  'DataManager', fjs.ui.CallCenterController]}).
