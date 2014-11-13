@@ -2,6 +2,9 @@ fjs.core.namespace("fjs.ui");
 
 fjs.ui.CallCenterController = function ($scope, dataManager) {
   fjs.ui.Controller.call(this, $scope);
+  $scope.dataManager = dataManager;
+  $scope.memberIds = [];
+
   $scope.queuemodel = dataManager.getModel("queues");
   $scope.queues = $scope.queuemodel.items;
 
@@ -24,5 +27,22 @@ fjs.ui.CallCenterController = function ($scope, dataManager) {
     $scope.$safeApply();
   });
 
+
+  $scope.queueMembersModel = dataManager.getModel("queue_members");
+
+  $scope.queueMembersModel.addEventListener('complete', function (data) {
+    $scope.$safeApply();
+  });
+
+  $scope.queueMembersModel.addEventListener("push", function (data) {
+    if (!$scope.memberIds[data.entry.queueId]) {
+      $scope.memberIds[data.entry.queueId] = [];
+    }
+    $scope.memberIds[data.entry.queueId].push(data.entry.xpid);
+
+ //   $scope.$safeApply();
+  });
 };
 fjs.core.inherits(fjs.ui.CallCenterController, fjs.ui.Controller)
+
+

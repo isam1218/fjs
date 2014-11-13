@@ -6,18 +6,22 @@ fjs.core.namespace("fjs.hud");
  * @extends fjs.hud.EntryModel
  * @extends fjs.fdp.QueueEntryModel
  */
-fjs.hud.QueueEntryModel = function (obj) {
-
+fjs.hud.QueueEntryModel = function (obj, dm) {
+  this.dataManager = dm;
   fjs.hud.EntryModel.call(this, obj, 'queues');
+
 };
 fjs.core.inherits(fjs.hud.QueueEntryModel, fjs.hud.EntryModel);
 
-fjs.hud.QueueEntryModel.prototype.getAvatar = function (idx, width, height) {
-  if (this.fdpImage_xef001iver) {
-    var dm = new fjs.hud.DataManager();
-    return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + this.xpid + "&w=" + width + "&h=" + height + "&Authorization=" + dm.api.ticket + "&node=" + dm.api.node + "&v=" + this.fdpImage_xef001iver;
-  }
-  else {
+fjs.hud.QueueEntryModel.prototype.getAvatar = function (memberIds, index, width, height) {
+  if (memberIds && memberIds[index]) {
+    var xpid = memberIds[index];
+    var dm = this.dataManager;
+
+    return fjs.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="+xpid+"&w="+width+"&h="+height+"&Authorization=" + dm.api.ticket+"&node=" + dm.api.node;
+
+//    return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=" + width + "&h=" + height + "&Authorization=" + dm.api.ticket + "&node=" + dm.api.node + "&v=" + this.fdpImage_xef001iver;
+  } else {
     switch (width) {
       case 14:
         return "img/Generic-Avatar-14.png";
@@ -28,5 +32,3 @@ fjs.hud.QueueEntryModel.prototype.getAvatar = function (idx, width, height) {
     }
   }
 };
-
-
