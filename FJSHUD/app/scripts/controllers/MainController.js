@@ -20,6 +20,12 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
                 loading.style.display = "none";
 				
 				$rootScope.myPid = meModel.getMyPid();
+				
+				// ask to turn on notifications
+				Notification.requestPermission(function(status) {
+					if (Notification.permission !== status)
+						Notification.permission = status;
+				});
             });
         }
     };
