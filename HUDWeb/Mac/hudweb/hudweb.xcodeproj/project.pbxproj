@@ -1,0 +1,436 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		45DCCD381A1EC6FA00B0108D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCCD371A1EC6FA00B0108D /* AppDelegate.m */; };
+		45DCCD3A1A1EC6FA00B0108D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCCD391A1EC6FA00B0108D /* main.m */; };
+		45DCCD3D1A1EC6FB00B0108D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCCD3C1A1EC6FB00B0108D /* ViewController.m */; };
+		45DCCD401A1EC6FC00B0108D /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCCD3F1A1EC6FC00B0108D /* Document.m */; };
+		45DCCD451A1EC6FD00B0108D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45DCCD441A1EC6FD00B0108D /* Images.xcassets */; };
+		45DCCD481A1EC6FD00B0108D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45DCCD461A1EC6FD00B0108D /* Main.storyboard */; };
+		45DCCD541A1EC70000B0108D /* hudwebTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCCD531A1EC70000B0108D /* hudwebTests.m */; };
+		45DCCD5E1A1EDB8100B0108D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DCCD5D1A1EDB8100B0108D /* WebKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45DCCD4E1A1EC6FF00B0108D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45DCCD291A1EC6F700B0108D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45DCCD301A1EC6F800B0108D;
+			remoteInfo = hudweb;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		45DCCD311A1EC6F900B0108D /* HUD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HUD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		45DCCD351A1EC6F900B0108D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		45DCCD361A1EC6FA00B0108D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		45DCCD371A1EC6FA00B0108D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		45DCCD391A1EC6FA00B0108D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		45DCCD3B1A1EC6FB00B0108D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		45DCCD3C1A1EC6FB00B0108D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		45DCCD3E1A1EC6FB00B0108D /* Document.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
+		45DCCD3F1A1EC6FC00B0108D /* Document.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
+		45DCCD441A1EC6FD00B0108D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		45DCCD471A1EC6FD00B0108D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		45DCCD4D1A1EC6FF00B0108D /* hudwebTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = hudwebTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		45DCCD521A1EC6FF00B0108D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		45DCCD531A1EC70000B0108D /* hudwebTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = hudwebTests.m; sourceTree = "<group>"; };
+		45DCCD5D1A1EDB8100B0108D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		45DCCD2E1A1EC6F800B0108D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45DCCD5E1A1EDB8100B0108D /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45DCCD4A1A1EC6FF00B0108D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		45DCCD281A1EC6F700B0108D = {
+			isa = PBXGroup;
+			children = (
+				45DCCD5D1A1EDB8100B0108D /* WebKit.framework */,
+				45DCCD331A1EC6F900B0108D /* hudweb */,
+				45DCCD501A1EC6FF00B0108D /* hudwebTests */,
+				45DCCD321A1EC6F900B0108D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		45DCCD321A1EC6F900B0108D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45DCCD311A1EC6F900B0108D /* HUD.app */,
+				45DCCD4D1A1EC6FF00B0108D /* hudwebTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45DCCD331A1EC6F900B0108D /* hudweb */ = {
+			isa = PBXGroup;
+			children = (
+				45DCCD361A1EC6FA00B0108D /* AppDelegate.h */,
+				45DCCD371A1EC6FA00B0108D /* AppDelegate.m */,
+				45DCCD3B1A1EC6FB00B0108D /* ViewController.h */,
+				45DCCD3C1A1EC6FB00B0108D /* ViewController.m */,
+				45DCCD3E1A1EC6FB00B0108D /* Document.h */,
+				45DCCD3F1A1EC6FC00B0108D /* Document.m */,
+				45DCCD441A1EC6FD00B0108D /* Images.xcassets */,
+				45DCCD461A1EC6FD00B0108D /* Main.storyboard */,
+				45DCCD341A1EC6F900B0108D /* Supporting Files */,
+			);
+			path = hudweb;
+			sourceTree = "<group>";
+		};
+		45DCCD341A1EC6F900B0108D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45DCCD351A1EC6F900B0108D /* Info.plist */,
+				45DCCD391A1EC6FA00B0108D /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		45DCCD501A1EC6FF00B0108D /* hudwebTests */ = {
+			isa = PBXGroup;
+			children = (
+				45DCCD531A1EC70000B0108D /* hudwebTests.m */,
+				45DCCD511A1EC6FF00B0108D /* Supporting Files */,
+			);
+			path = hudwebTests;
+			sourceTree = "<group>";
+		};
+		45DCCD511A1EC6FF00B0108D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45DCCD521A1EC6FF00B0108D /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		45DCCD301A1EC6F800B0108D /* HUD */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45DCCD571A1EC70000B0108D /* Build configuration list for PBXNativeTarget "HUD" */;
+			buildPhases = (
+				45DCCD2D1A1EC6F800B0108D /* Sources */,
+				45DCCD2E1A1EC6F800B0108D /* Frameworks */,
+				45DCCD2F1A1EC6F800B0108D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HUD;
+			productName = hudweb;
+			productReference = 45DCCD311A1EC6F900B0108D /* HUD.app */;
+			productType = "com.apple.product-type.application";
+		};
+		45DCCD4C1A1EC6FF00B0108D /* hudwebTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45DCCD5A1A1EC70000B0108D /* Build configuration list for PBXNativeTarget "hudwebTests" */;
+			buildPhases = (
+				45DCCD491A1EC6FF00B0108D /* Sources */,
+				45DCCD4A1A1EC6FF00B0108D /* Frameworks */,
+				45DCCD4B1A1EC6FF00B0108D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				45DCCD4F1A1EC6FF00B0108D /* PBXTargetDependency */,
+			);
+			name = hudwebTests;
+			productName = hudwebTests;
+			productReference = 45DCCD4D1A1EC6FF00B0108D /* hudwebTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		45DCCD291A1EC6F700B0108D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Chip Wiley";
+				TargetAttributes = {
+					45DCCD301A1EC6F800B0108D = {
+						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 85HWQG9869;
+					};
+					45DCCD4C1A1EC6FF00B0108D = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 45DCCD301A1EC6F800B0108D;
+					};
+				};
+			};
+			buildConfigurationList = 45DCCD2C1A1EC6F700B0108D /* Build configuration list for PBXProject "hudweb" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 45DCCD281A1EC6F700B0108D;
+			productRefGroup = 45DCCD321A1EC6F900B0108D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				45DCCD301A1EC6F800B0108D /* HUD */,
+				45DCCD4C1A1EC6FF00B0108D /* hudwebTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		45DCCD2F1A1EC6F800B0108D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45DCCD451A1EC6FD00B0108D /* Images.xcassets in Resources */,
+				45DCCD481A1EC6FD00B0108D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45DCCD4B1A1EC6FF00B0108D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		45DCCD2D1A1EC6F800B0108D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45DCCD401A1EC6FC00B0108D /* Document.m in Sources */,
+				45DCCD3D1A1EC6FB00B0108D /* ViewController.m in Sources */,
+				45DCCD3A1A1EC6FA00B0108D /* main.m in Sources */,
+				45DCCD381A1EC6FA00B0108D /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45DCCD491A1EC6FF00B0108D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45DCCD541A1EC70000B0108D /* hudwebTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		45DCCD4F1A1EC6FF00B0108D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45DCCD301A1EC6F800B0108D /* HUD */;
+			targetProxy = 45DCCD4E1A1EC6FF00B0108D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		45DCCD461A1EC6FD00B0108D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45DCCD471A1EC6FD00B0108D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		45DCCD551A1EC70000B0108D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		45DCCD561A1EC70000B0108D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		45DCCD581A1EC70000B0108D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = hudweb/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7385f8cf-d9c8-4130-849b-5f769d670d24";
+			};
+			name = Debug;
+		};
+		45DCCD591A1EC70000B0108D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = hudweb/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7385f8cf-d9c8-4130-849b-5f769d670d24";
+			};
+			name = Release;
+		};
+		45DCCD5B1A1EC70000B0108D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = hudwebTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hudweb.app/Contents/MacOS/hudweb";
+			};
+			name = Debug;
+		};
+		45DCCD5C1A1EC70000B0108D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = hudwebTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hudweb.app/Contents/MacOS/hudweb";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		45DCCD2C1A1EC6F700B0108D /* Build configuration list for PBXProject "hudweb" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45DCCD551A1EC70000B0108D /* Debug */,
+				45DCCD561A1EC70000B0108D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45DCCD571A1EC70000B0108D /* Build configuration list for PBXNativeTarget "HUD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45DCCD581A1EC70000B0108D /* Debug */,
+				45DCCD591A1EC70000B0108D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45DCCD5A1A1EC70000B0108D /* Build configuration list for PBXNativeTarget "hudwebTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45DCCD5B1A1EC70000B0108D /* Debug */,
+				45DCCD5C1A1EC70000B0108D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 45DCCD291A1EC6F700B0108D /* Project object */;
+}
