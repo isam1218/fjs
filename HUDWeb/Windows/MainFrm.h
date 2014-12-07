@@ -15,7 +15,7 @@ private:
 	CBrowserView* pView = NULL;
 
 public:
-	DECLARE_FRAME_WND_CLASS(_T("TabBrowser_MainFrame"), IDR_MAINFRAME)
+	DECLARE_FRAME_WND_CLASS(_T("HUD_MainFrame"), IDR_MAINFRAME)
 
 	CString m_strHomePage;
 
@@ -134,7 +134,7 @@ public:
 		bool bRet = GetHomePage();
 		if(!bRet)
 		{
-			ATLTRACE(_T("TabBrowser: Can't get home page from the registry - using blank page\n"));
+			ATLTRACE(_T("HUD: Can't get home page from the registry - using blank page\n"));
 			m_strHomePage.LoadString(IDS_BLANK_URL);
 		}
 
@@ -186,7 +186,7 @@ public:
 	{
 	
 		//OpenPage(m_strHomePage);
-		OpenPage(L"http://hudweb.fonality.com");
+		OpenPage(L"https://huc-dev.fonality.com/repository/hudweb/app/");
 		return 0;
 	}
 };

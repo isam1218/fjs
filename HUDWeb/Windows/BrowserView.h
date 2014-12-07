@@ -17,7 +17,7 @@ class CBrowserView : public CWindowImpl<CBrowserView, CAxWindow>,
 		public IDispEventSimpleImpl<_nDispatchID, CBrowserView, &DIID_DWebBrowserEvents2>
 {
 public:
-	DECLARE_WND_SUPERCLASS(_T("TabBrowser_TabPageWindow"), CAxWindow::GetWndClassName())
+	DECLARE_WND_SUPERCLASS(_T("HUD_BrowserViewWindow"), CAxWindow::GetWndClassName())
 
 	// IDispatch events function info
 	static _ATL_FUNC_INFO DocumentComplete2_Info;
