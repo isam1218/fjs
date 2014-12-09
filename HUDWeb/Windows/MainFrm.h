@@ -76,17 +76,19 @@ public:
 	
 		CString strURL = lpstrURL;
 
-		CComPtr<IWebBrowser2> spWebBrowser;
-		HRESULT hRet = pView->QueryControl(IID_IWebBrowser2, (void**)&spWebBrowser);
+		CComPtr<IWebBrowser2> webBrowser;
+		HRESULT hRet = pView->QueryControl(IID_IWebBrowser2, (void**)&webBrowser);
 	
 		ATLASSERT(SUCCEEDED(hRet));
 
-		ATLASSERT(spWebBrowser != NULL);
-		hRet = spWebBrowser->Navigate(strURL.AllocSysString(), NULL, NULL, NULL, NULL);
+		ATLASSERT(webBrowser != NULL);
+		hRet = webBrowser->Navigate(strURL.AllocSysString(), NULL, NULL, NULL, NULL);
 
 		ATLASSERT(SUCCEEDED(hRet));
 
-		pView->SetFocusToHTML();
+
+
+//		pView->SetFocusToHTML();
 
 	}
 

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <exdispid.h>
+#include "HUDUIHandler.h"
 
 const int _nDispatchID = 1;
 
@@ -12,10 +13,13 @@ const int _nDispatchID = 1;
 #define WM_BROWSERDOCUMENTCOMPLETE   (WM_APP + 1)
 #define WM_BROWSERSTATUSTEXTCHANGE   (WM_APP + 2)
 
-
 class CBrowserView : public CWindowImpl<CBrowserView, CAxWindow>, 
 		public IDispEventSimpleImpl<_nDispatchID, CBrowserView, &DIID_DWebBrowserEvents2>
 {
+private:
+
+	CComPtr<CComObject<HUDUIHandler>> uiHandler;
+
 public:
 	DECLARE_WND_SUPERCLASS(_T("HUD_BrowserViewWindow"), CAxWindow::GetWndClassName())
 
@@ -31,6 +35,14 @@ public:
 
 	CBrowserView() : m_bCanGoBack(false), m_bCanGoForward(false)
 	{
+
+		HRESULT hRet = CComObject<HUDUIHandler>::CreateInstance(&uiHandler);
+
+		ATLASSERT(SUCCEEDED(hRet));
+	}
+
+	virtual ~CBrowserView() {
+
 	}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -49,6 +61,7 @@ public:
 
 	virtual void OnFinalMessage(HWND /*hWnd*/)
 	{
+
 		delete this;
 	}
 
@@ -88,8 +101,39 @@ public:
   #pragma warning(default:4867)
 #endif
 
-	void __stdcall OnEventDocumentComplete(IDispatch* /*pDisp*/, VARIANT* URL)
+	void __stdcall OnEventDocumentComplete(IDispatch* iid, VARIANT* URL)
 	{
+		if (iid != NULL) {
+			CComPtr<IWebBrowser2> webBrowser;
+
+			HRESULT hRet = iid->QueryInterface(IID_IWebBrowser2, (void**)&webBrowser);
+
+			CComPtr<IDispatch> iid_doc;
+
+			hRet = webBrowser->get_Document(&iid_doc);
+
+			CComPtr<IHTMLDocument2> doc;
+
+			hRet = iid_doc->QueryInterface(IID_IHTMLDocument2, (void**)&doc);
+
+			ATLASSERT(SUCCEEDED(hRet));
+
+			CComPtr<ICustomDoc> customDoc;
+
+			hRet = doc->QueryInterface(IID_ICustomDoc, (void**)&customDoc);
+
+			ATLASSERT(SUCCEEDED(hRet));
+
+	/*		CComPtr<CComObject<HUDUIHandler>> uiHandler;
+			
+			hRet = CComObject<HUDUIHandler>::CreateInstance(&uiHandler);
+
+			ATLASSERT(SUCCEEDED(hRet));*/
+			
+			customDoc->SetUIHandler(uiHandler);
+		}
+
+
 		// Send message to the main frame
 		ATLASSERT(V_VT(URL) == VT_BSTR);
 		USES_CONVERSION;
