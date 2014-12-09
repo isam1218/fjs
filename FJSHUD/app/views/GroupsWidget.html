@@ -1,5 +1,5 @@
-<div class="Widget Contacts Groups" id="WidgetGroups" unpin="/contacts/groups" draggable="true">
-    <div class="WidgetHeader">
+<div class="Widget Contacts Groups" id="WidgetGroups">
+    <div class="WidgetHeader" unpin="/contacts/groups" draggable="true">
         <div class="Avatar AvatarApp">
             <div class="TopBarItemAppIcon Contacts"></div>
         </div>
@@ -37,8 +37,19 @@
 		<h4>My Department</h4>
 		<a href="" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(mine)">
             <div class="Avatar AvatarNormal">
-                <img class="AvatarImgPH" />
-                <div class="AvatarForeground AvatarInteractable"></div>
+                <div class="GroupAvatarItem GroupAvatarItem_0">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(0, 19, 19) }}">
+                </div>
+                <div class="GroupAvatarItem GroupAvatarItem_1">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(1, 19, 19) }}">
+                </div>
+                <div class="GroupAvatarItem GroupAvatarItem_2">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(2, 19, 19) }}">
+                </div>
+                <div class="GroupAvatarItem GroupAvatarItem_3">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(3, 19, 19) }}">
+                </div>
+                <div class="AvatarInteractable"></div>
             </div>
             <div class="ListRowContent">
                 <div class="ListRowTitle">
@@ -55,8 +66,19 @@
 		<h4>All Other Departments</h4>
 		<a href="" data-ng-repeat="group in groups" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
             <div class="Avatar AvatarNormal">
-                <img class="AvatarImgPH" />
-                <div class="AvatarForeground AvatarInteractable"></div>
+                <div class="GroupAvatarItem GroupAvatarItem_0">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(0, 19, 19) }}">
+                </div>
+                <div class="GroupAvatarItem GroupAvatarItem_1">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(1, 19, 19) }}">
+                </div>
+                <div class="GroupAvatarItem GroupAvatarItem_2">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(2, 19, 19) }}">
+                </div>
+                <div class="GroupAvatarItem GroupAvatarItem_3">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(3, 19, 19) }}">
+                </div>
+                <div class="AvatarInteractable"></div>
             </div>
             <div class="ListRowContent">
                 <div class="ListRowTitle">
