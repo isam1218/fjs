@@ -32,6 +32,19 @@
         <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
         </button>
     </div>
+    <div class="ListLineContent Header LeftContactsColumns">
+        <div class="ListLineContentCell" >
+            Sort:
+        </div>
+        <div data-ng-click="sort('name')" class="ListLineContentCell Recent {{(sortField == 'name' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>NAME</span>
+            <div class="DirectionArrow"></div>
+        </div>
+        <div data-ng-click="sort('memberIds.length')"  class="ListLineContentCell HudStatus {{(sortField == 'memberIds.length' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>MEMBERS</span>
+            <div class="DirectionArrow"></div>
+        </div>
+    </div>
 	
 	<div class="LeftBarTabContentList">
 		<h4>My Department</h4>
@@ -62,9 +75,8 @@
 			</div>
 		</a>
 		
-		
 		<h4>All Other Departments</h4>
-		<a href="" data-ng-repeat="group in groups" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
+		<a href="" data-ng-repeat="group in groups | Object2Array | filter: {name: query} | orderBy:sortField:sortReverce track by group.xpid" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
             <div class="Avatar AvatarNormal">
                 <div class="GroupAvatarItem GroupAvatarItem_0">
 					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(0, 19, 19) }}">

@@ -176,9 +176,6 @@ input[type="tel"] {
 .Widget.Contacts .ListRow-Contact .details {
   float: right;
 }
-.Widget.Contacts .ListLineContent.Header {
-  height: 23px;
-}
 .Widget.Contacts .ListLineContent.Header .ListLineContentCell {
   padding: 0 5px;
 }
@@ -2623,6 +2620,11 @@ input.text.DialogFieldInput {
   bottom: 5px;
   flex: 1;
   overflow: hidden;
+}
+.LeftBarTabContentList h4 {
+  color: #0093f0;
+  margin-left: 5px;
+  font-size: .9em;
 }
 .LeftBarTabContentList:hover {
   overflow-y: auto;

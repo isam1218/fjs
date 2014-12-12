@@ -237,6 +237,11 @@
   flex: 1;
   overflow: hidden;
 }
+.LeftBarTabContentList h4 {
+  color: #0093f0;
+  margin-left: 5px;
+  font-size: .9em;
+}
 .LeftBarTabContentList:hover {
   overflow-y: auto;
 }
