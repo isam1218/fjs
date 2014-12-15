@@ -29,7 +29,7 @@
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
+        <button class="XButton XButtonNormal" data-ng-click="overlay = true">New
         </button>
     </div>
     <div class="ListLineContent Header LeftContactsColumns">
@@ -98,3 +98,72 @@
     </div>
 </div>
 
+<div ng-show="overlay" class="Overlay">
+	<div ng-click="overlay = false" class="Background"></div>
+	<div class="Foreground">
+		<div ng-click="overlay = false" class="Close">x</div>
+		
+		<div class="Header">
+			<h2>Add a New Contact</h2>
+		</div>
+		
+		<div class="Section">
+			<div>
+				<h4>Contact Information</h4>
+				<em>Want to know who is calling you?</em>
+			</div>
+			<div>
+				<label>First Name</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<label>Last Name</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<label>Display Name</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<h4>Visibility</h4>
+				<input type="checkbox" /> Add to favorites group
+			</div>
+		</div>
+		
+		<div class="Section">
+			<div>
+				<h4>Phones</h4>
+				<em>Add contact phone to make calls</em>
+			</div>
+			<div>
+				<label>Business phone</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<label>Mobile phone</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<h4>Messaging</h4>
+				<em>Want to chat and e-mail this person?</em>
+			</div>
+			<div>
+				<label>E-mail</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<label>GoogleTalk (JID)</label>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<label>IMS</label>
+				<input type="text" class="XInputText" />
+			</div>
+		</div>
+		
+		<div class="Footer">
+			<input type="button" class="XButton" value="Cancel" ng-click="overlay = false" />
+			<input type="button" class="XButton" value="Add Contact" />
+		</div>
+	</div>
+</div>

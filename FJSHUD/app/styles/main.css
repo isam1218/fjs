@@ -1304,6 +1304,13 @@ input[type="tel"] {
   opacity: 0.5;
   cursor: auto;
 }
+.XInputText {
+  border-radius: 3px;
+  padding: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0px 0px 1px #DDD inset;
+}
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
   width: 24px;
@@ -3399,6 +3406,10 @@ input.text.ChatInputBoxInput,
   min-width: 300px;
   min-height: 300px;
   padding: 1em;
+  overflow-y: hidden;
+}
+.Overlay .Foreground:hover {
+  overflow-y: auto;
 }
 .Overlay .Foreground .Close {
   position: absolute;
@@ -3421,10 +3432,21 @@ input.text.ChatInputBoxInput,
 .Overlay .Foreground .Section > div {
   margin-bottom: .5em;
 }
+.Overlay .Foreground .Section > div > * {
+  vertical-align: top;
+}
 .Overlay .Foreground .Section h4 {
   margin: .75em 0 .25em 0;
   color: #0093f0;
   font-variant: small-caps;
+}
+.Overlay .Foreground .Section em {
+  font-size: .8em;
+  display: block;
+}
+.Overlay .Foreground .Section label {
+  display: inline-block;
+  width: 38%;
 }
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
