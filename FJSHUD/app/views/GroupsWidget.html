@@ -29,7 +29,7 @@
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
+        <button class="XButton XButtonNormal" data-ng-click="overlay = true">New
         </button>
     </div>
     <div class="ListLineContent Header LeftContactsColumns">
@@ -107,3 +107,43 @@
     </div>
 </div>
 
+<div ng-show="overlay" class="Overlay">
+	<div ng-click="overlay = false" class="Background"></div>
+	<div class="Foreground">
+		<div ng-click="overlay = false" class="Close">x</div>
+		
+		<div class="Header">
+			<h2>Build the Team</h2>
+		</div>
+		
+		<div class="Section">
+			<div>
+				<h4>Name</h4>
+				<input type="text" />
+			</div>
+			<div>
+				<h4>Security</h4>
+				<input type="checkbox" /> Visible to entire company
+			</div>
+			<div>
+				<h4>Description</h4>
+				<textarea placeholder="Team description used for search and provides useful information to the team members."></textarea>
+			</div>
+		</div>
+		
+		<div class="Section">
+			<div>
+				<h4>Members</h4>
+				<input type="text" placeholder="Add Someone" />
+			</div>
+			
+			<div class="Members">
+			</div>
+		</div>
+		
+		<div class="Footer">
+			<input type="button" class="XButton" value="Cancel" ng-click="overlay = false" />
+			<input type="button" class="XButton" value="Create Team" />
+		</div>
+	</div>
+</div>
