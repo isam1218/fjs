@@ -1,3 +1,29 @@
+#!/bin/sh
+cd ../FJSCore
+rm -rf bower_components
+
+cd ../FJSModel
+rm -rf bower_components
+
+cd ../FJSDB
+rm -rf bower_components
+
+cd ../FJSTabs
+rm -rf bower_components
+
+cd ../FJSFDP
+rm -rf bower_components
+
+cd ../FJSPlugin
+rm -rf bower_components
+
+cd ../FJSAPI
+rm -rf bower_components
+
+cd ../FJSHUD
+rm -rf bower_components
+
+
 cd ../FJSCore
 npm install
 grunt

@@ -59,7 +59,11 @@ var options = {
     , cert: fs.readFileSync('ssl/cacert.pem')
 };
 app.use(express.static(__dirname));
-
+app.use(
+  function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
+);
 var server = https.createServer(options, app)
 
 server.listen(98);

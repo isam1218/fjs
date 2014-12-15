@@ -103,6 +103,7 @@ public:
 
 	void __stdcall OnEventDocumentComplete(IDispatch* iid, VARIANT* URL)
 	{
+#if 0
 		if (iid != NULL) {
 			CComPtr<IWebBrowser2> webBrowser;
 
@@ -132,7 +133,7 @@ public:
 			
 			customDoc->SetUIHandler(uiHandler);
 		}
-
+#endif
 
 		// Send message to the main frame
 		ATLASSERT(V_VT(URL) == VT_BSTR);
