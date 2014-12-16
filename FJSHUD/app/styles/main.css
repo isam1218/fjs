@@ -183,8 +183,7 @@ input[type="tel"] {
 .Widget.Contacts .details {
   float: right;
 }
-.ListLineContent.Header {
-  height: 23px;
+.ListLineContent.Header .ListLineContentCell {
   padding: 0 5px;
 }
 .ListLineContent.Header .DirectionArrow {
@@ -536,7 +535,6 @@ input[type="tel"] {
 }
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  padding-top: 4px;
   font-size: 11px;
 }
 .DirectionArrow {
@@ -1412,6 +1410,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 3px;
   -foz-border-radius: 3px;
   outline: none;
+  padding-left: 12px;
 }
 .Dialog {
   position: relative;
