@@ -4,6 +4,8 @@
 //
 #define IDR_MAINFRAME                   128
 #define IDS_OPEN_ERROR                  129
+#define IDR_CJSOBJECT                   130
+
 #define ID_LINKS_FIRST                  31000
 #define ID_LINKS_MICROSOFT              31000
 #define ID_LINKS_MSDN                   31001
