@@ -185,8 +185,6 @@ input[type="tel"] {
 }
 .ListLineContent.Header {
   height: 23px;
-}
-.ListLineContent.Header .ListLineContentCell {
   padding: 0 5px;
 }
 .ListLineContent.Header .DirectionArrow {
@@ -1326,6 +1324,13 @@ input[type="tel"] {
   opacity: 0.5;
   cursor: auto;
 }
+.XInputText {
+  border-radius: 3px;
+  padding: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0px 0px 1px #DDD inset;
+}
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
   width: 24px;
@@ -2102,7 +2107,7 @@ input.text.DialogFieldInput {
   left: 50px;
   right: 0;
   border-left: solid 1px #DEE1E5;
-  height: 50px;
+  height: 3em;
 }
 .ListRowStatusIcon {
   position: relative;
@@ -2131,13 +2136,17 @@ input.text.DialogFieldInput {
   left: 5px;
   right: 5px;
   height: 20px;
-  line-height: 20px;
-  font-size: 12px;
+  line-height: 1.75em;
+  font-size: .75em;
   text-overflow: ellipsis;
   overflow: hidden;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
+}
+.ListRowTitle .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ListRowStatus {
   position: absolute;
@@ -2662,9 +2671,14 @@ input.text.DialogFieldInput {
   position: relative;
   left: 0;
   right: 0;
-  bottom: 5px;
+  margin-bottom: 5px;
   flex: 1;
   overflow: hidden;
+}
+.LeftBarTabContentList h4 {
+  color: #0093f0;
+  margin-left: 5px;
+  font-size: .9em;
 }
 .LeftBarTabContentList:hover {
   overflow-y: auto;
@@ -3410,4 +3424,88 @@ input.text.ChatInputBoxInput,
 .QueueBlockStatLineSlider.Blue {
   background-color: #226dd2;
   border-color: #226dd2;
+}
+.Overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.Overlay .Background {
+  background-color: black;
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.Overlay .Foreground {
+  background-color: #fafafa;
+  box-shadow: 0 0 50px #333;
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 90%;
+  height: 80%;
+  min-width: 300px;
+  min-height: 300px;
+  padding: 1em;
+  overflow-y: hidden;
+}
+.Overlay .Foreground:hover {
+  overflow-y: auto;
+}
+.Overlay .Foreground .Close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  height: 1em;
+  width: 1em;
+  text-align: center;
+  line-height: .75em;
+}
+.Overlay .Foreground .Section {
+  display: inline-block;
+  min-width: 48%;
+  max-width: 300px;
+  vertical-align: top;
+  font-size: .9em;
+}
+.Overlay .Foreground .Section > div {
+  margin-bottom: .5em;
+}
+.Overlay .Foreground .Section > div > * {
+  vertical-align: top;
+}
+.Overlay .Foreground .Section h4 {
+  margin: .75em 0 .25em 0;
+  color: #0093f0;
+  font-variant: small-caps;
+}
+.Overlay .Foreground .Section em {
+  font-size: .8em;
+  display: block;
+}
+.Overlay .Foreground .Section label {
+  display: inline-block;
+  width: 38%;
+}
+.Overlay .Foreground .Header {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+}
+.Overlay .Foreground .Header h2 {
+  margin: 0;
+  font-size: 1.25em;
+}
+.Overlay .Foreground .Footer {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+  margin-top: .5em;
+  text-align: right;
 }
