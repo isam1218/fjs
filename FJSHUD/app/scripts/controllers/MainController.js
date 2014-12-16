@@ -18,14 +18,16 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
                 meModel.removeEventListener("complete", onLoaded);
                 var loading = document.getElementById("fj-loading");
                 loading.style.display = "none";
-				
+
 				$rootScope.myPid = meModel.getMyPid();
-				
+
 				// ask to turn on notifications
-				Notification.requestPermission(function(status) {
-					if (Notification.permission !== status)
-						Notification.permission = status;
-				});
+              if (Notification) {
+                Notification.requestPermission(function (status) {
+                  if (Notification.permission !== status)
+                    Notification.permission = status;
+                });
+              }
             });
         }
     };
@@ -63,13 +65,13 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
     };
-	
+
 	// add another chat panel
 	$scope.loadPanel = function(panel) {
 		var xpid = panel.xpid;
 		var feed = panel.feedName.replace(/s$/g,"");
 		panel.events = 0;
-			
+
 		if (window.location.href.indexOf('popup.html') != -1) {
 			// popup opens chat in same window
 			window.location.hash = '#/' + panel.feedName + '/' + xpid;
@@ -78,17 +80,17 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 			// resize window on first chat load
 			if ($rootScope.stackables.length == 0 && document.body.clientWidth < 700)
 				window.resizeTo(800, window.outerHeight);
-			
+
 			for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
 				if ($rootScope.stackables[i].id == xpid)
 					return;
 			}
-			
+
 			$rootScope.stackables.push({id: xpid, tab: feed});
 			$scope.$safeApply();
 		}
 	};
-	
+
 	// remove chat panel
 	$scope.removePanel = function(xpid) {
 		for (var i = $rootScope.stackables.length-1; i >= 0; i--) {
@@ -98,7 +100,7 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
 				break;
 			}
 		}
-		
+
 		// resize window on last chat removal
 		if ($rootScope.stackables.length == 0 && document.body.clientWidth > 400)
 			window.resizeTo(400, window.outerHeight);

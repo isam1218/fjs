@@ -156,8 +156,9 @@
             if(!this.lastValues[eventType])
                 this.lastValues[eventType] = [];
             if(!this.cookiesSynchronizationRuned) {
-                this.db = new fjs.db.DBFactory().getDB();
-                setInterval(function(){
+                this.db = new fjs.db.DBFactory().getDB(
+                function(db){
+                    context.db = db;
                     for(var key in context.lastValues) {
                         var _lastValues = context.lastValues[key];
                         if(context.db.state == 1) {
@@ -197,7 +198,7 @@
                             })(_lastValues);
                         }
                     }
-                },1000);
+                });
             }
         }
     _TabsSynchronizer.super_.prototype.addEventListener.call(this, eventType, handler);

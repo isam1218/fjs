@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 #include <mshtmhst.h>
+#include "CJSObject.h"
 
 class HUDUIHandler : 
 	public IDispatchImpl<IDocHostUIHandler, &IID_IDocHostUIHandler>,
@@ -9,12 +10,15 @@ class HUDUIHandler :
 	public CComObjectRootEx<CComMultiThreadModel>
 {
 private:
+	CComPtr<CComObject<CCJSObject>> js;
 
 public:
 
 	HUDUIHandler() 
 	{
+		HRESULT hRet = CComObject<CCJSObject>::CreateInstance(&js);
 
+		ATLASSERT(SUCCEEDED(hRet));
 	};
 
 
@@ -128,7 +132,7 @@ public:
 		/* [annotation][out] */
 		_Outptr_result_maybenull_  IDispatch **ppDispatch)
 	{
-		*ppDispatch = (IDispatch*)this;
+		*ppDispatch = (IDispatch*)js;
 
 		return S_OK;
 	}
