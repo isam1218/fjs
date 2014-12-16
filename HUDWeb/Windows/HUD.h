@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Tue Dec 16 09:11:33 2014
+/* at Tue Dec 16 14:08:09 2014
  */
 /* Compiler settings for HUD.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
