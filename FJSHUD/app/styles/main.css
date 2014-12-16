@@ -16,6 +16,13 @@ html {
   user-select: none;
   overflow-x: hidden;
 }
+p {
+  font-size: 11px;
+}
+option {
+  text-align: center;
+  padding-left: 20px;
+}
 textarea {
   background-color: #FFFFFF;
   appearance: textfield;
@@ -173,16 +180,16 @@ input[type="tel"] {
 .LocationSelector .SelectBox {
   width: 150px;
 }
-.Widget.Contacts .ListRow-Contact .details {
+.Widget.Contacts .details {
   float: right;
 }
-.Widget.Contacts .ListLineContent.Header {
+.ListLineContent.Header {
   height: 23px;
 }
-.Widget.Contacts .ListLineContent.Header .ListLineContentCell {
+.ListLineContent.Header .ListLineContentCell {
   padding: 0 5px;
 }
-.Widget.Contacts .ListLineContent.Header .DirectionArrow {
+.ListLineContent.Header .DirectionArrow {
   position: absolute;
   left: 50%;
   margin-left: -6px;
@@ -209,6 +216,9 @@ input[type="tel"] {
 .ChatMessageIco.voicemail {
   display: inline-block;
   background-image: url(../img/XIcon-Voicemail.png);
+}
+.HeaderLabel {
+  font-size: 1em;
 }
 .fj-loading {
   position: absolute;
@@ -265,6 +275,9 @@ input[type="tel"] {
   text-overflow: clip;
   white-space: nowrap;
   z-index: 1;
+}
+.MenuSection {
+  font-size: .7em;
 }
 .MenuItem {
   position: relative;
@@ -459,6 +472,11 @@ input[type="tel"] {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.SelectBoxSettings {
+  width: 195px;
+  text-align: center;
+  padding: 0 0 0 20px;
 }
 .SelectBoxText .InnerIco {
   color: #719d24;
@@ -972,7 +990,7 @@ input[type="tel"] {
   vertical-align: top;
 }
 .MeInfoBlock-column {
-  width: 175px;
+  width: 125px;
   display: inline-block;
   vertical-align: top;
 }
@@ -1127,6 +1145,7 @@ input[type="tel"] {
 .SettingsTabContent .fj-viewcontent .lblSelect {
   display: inline-block;
   width: 150px;
+  font-size: 12;
 }
 /**************************************Popoup************************************/
 .popupWindow .Widget {
@@ -1380,6 +1399,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 90%;
   max-width: 1000px;
 }
+.DialogSettingInput {
+  width: 40%;
+  border: solid 1px #C7C7C7;
+  -webkit-user-select: text;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -foz-border-radius: 3px;
+  outline: none;
+}
 .Dialog {
   position: relative;
   width: 836px;
@@ -1545,6 +1573,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   white-space: nowrap;
 }
+.Dialog-settings-row {
+  margin-top: 10px;
+}
 input.text.DialogFieldInput {
   position: absolute;
   left: 160px;
@@ -1615,8 +1646,8 @@ input.text.DialogFieldInput {
   color: #0093f0;
   font-size: 11px;
   font-weight: bold;
-  height: 29px;
-  line-height: 29px;
+  line-height: 18px;
+  margin-top: 10px;
   width: auto;
   text-transform: uppercase;
   margin-left: 10px;
@@ -2053,6 +2084,17 @@ input.text.DialogFieldInput {
   position: absolute;
   right: 0;
   top: 0;
+}
+.ListPage {
+  border: 1px solid #999;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  padding-top: 7px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  font-size: .7em;
 }
 .ListRowContent {
   position: absolute;

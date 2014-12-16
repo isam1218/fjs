@@ -1,7 +1,9 @@
+//out: main.css
+//main: main.less
 * {
   box-sizing: border-box;
 }
-
+//1em;
 body, html {
   position : relative;
   height : 100%;
@@ -16,6 +18,15 @@ body, html {
   user-select: none;
   overflow-x: hidden;
 }
+p {
+  font-size: 11px;
+}
+option{
+  text-align:center;
+  padding-left:20px;
+}
+
+
 
 textarea {
   background-color: #FFFFFF;
@@ -117,6 +128,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   }
 }
 
+
 .text[contenteditable] {
   height: 26px;
   line-height: 24px;
@@ -194,7 +206,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
 }
 
 .Widget.Contacts {
-  .ListRow-Contact {
+
     .details {
       float:right;
     }
@@ -218,7 +230,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
       margin-left: -6px;
     }
   }
-}
+
 
 .ChatMessageIco {
   display: none;
@@ -245,7 +257,9 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
     display:inline-block;
   background-image: url(../img/XIcon-Voicemail.png);
   }
-
+.HeaderLabel{
+  font-size:1em;
+}
 
 
 @import "loading";
@@ -273,4 +287,3 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
 @import "slider";
 @import "calllog-status";
 @import "queue";
-
