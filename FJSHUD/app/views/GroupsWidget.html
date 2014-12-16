@@ -29,8 +29,21 @@
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
+        <button class="XButton XButtonNormal" data-ng-click="overlay = true">New
         </button>
+    </div>
+    <div class="ListLineContent Header LeftContactsColumns">
+        <div class="ListLineContentCell" >
+            Sort:
+        </div>
+        <div data-ng-click="sort('name')" class="ListLineContentCell Recent {{(sortField == 'name' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>NAME</span>
+            <div class="DirectionArrow"></div>
+        </div>
+        <div data-ng-click="sort('memberIds.length')"  class="ListLineContentCell HudStatus {{(sortField == 'memberIds.length' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+            <span>MEMBERS</span>
+            <div class="DirectionArrow"></div>
+        </div>
     </div>
 	
 	<div class="LeftBarTabContentList">
@@ -62,9 +75,8 @@
 			</div>
 		</a>
 		
-		
 		<h4>All Other Departments</h4>
-		<a href="" data-ng-repeat="group in groups" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
+		<a href="" data-ng-repeat="group in groups | Object2Array | filter: {name: query} | orderBy:sortField:sortReverce track by group.xpid" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
             <div class="Avatar AvatarNormal">
                 <div class="GroupAvatarItem GroupAvatarItem_0">
 					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(0, 19, 19) }}">
@@ -95,3 +107,43 @@
     </div>
 </div>
 
+<div ng-show="overlay" class="Overlay">
+	<div ng-click="overlay = false" class="Background"></div>
+	<div class="Foreground">
+		<div ng-click="overlay = false" class="Close">x</div>
+		
+		<div class="Header">
+			<h2>Build the Team</h2>
+		</div>
+		
+		<div class="Section">
+			<div>
+				<h4>Name</h4>
+				<input type="text" class="XInputText" />
+			</div>
+			<div>
+				<h4>Security</h4>
+				<input type="checkbox" /> Visible to entire company
+			</div>
+			<div>
+				<h4>Description</h4>
+				<textarea placeholder="Team description used for search and provides useful information to the team members."></textarea>
+			</div>
+		</div>
+		
+		<div class="Section">
+			<div>
+				<h4>Members</h4>
+				<input type="text" class="XInputText" placeholder="Add Someone" />
+			</div>
+			
+			<div class="Members">
+			</div>
+		</div>
+		
+		<div class="Footer">
+			<input type="button" class="XButton" value="Cancel" ng-click="overlay = false" />
+			<input type="button" class="XButton" value="Create Team" />
+		</div>
+	</div>
+</div>

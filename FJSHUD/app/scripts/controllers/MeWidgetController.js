@@ -29,8 +29,16 @@ fjs.ui.MeWidgetController = function($scope, dataManager) {
          }
     };
     /**
+    * used to determine what tab is selected in the me widget controller
+    *
+    */
+    $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
+    $scope.selected = 'General'
+
+    /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
+
     $scope.meData = meModel.itemsByKey;
     $scope.chatStatuses = [{"title":"Available", "key":"available"}, {"title":"Away", "key":"away"}, {"title":"Busy", "key":"dnd"}];
     $scope.setChatStatus = function(chatStatus){

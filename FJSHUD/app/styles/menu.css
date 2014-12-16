@@ -25,6 +25,9 @@
   white-space: nowrap;
   z-index: 1;
 }
+.MenuSection {
+  font-size: .7em;
+}
 .MenuItem {
   position: relative;
   height: 26px;

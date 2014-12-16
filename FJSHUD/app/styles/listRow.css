@@ -24,13 +24,24 @@
   right: 0;
   top: 0;
 }
+.ListPage {
+  border: 1px solid #999;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  padding-top: 7px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  font-size: .7em;
+}
 .ListRowContent {
   position: absolute;
   top: 0;
   left: 50px;
   right: 0;
   border-left: solid 1px #DEE1E5;
-  height: 50px;
+  height: 3em;
 }
 .ListRowStatusIcon {
   position: relative;
@@ -59,13 +70,17 @@
   left: 5px;
   right: 5px;
   height: 20px;
-  line-height: 20px;
-  font-size: 12px;
+  line-height: 1.75em;
+  font-size: .75em;
   text-overflow: ellipsis;
   overflow: hidden;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
+}
+.ListRowTitle .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ListRowStatus {
   position: absolute;

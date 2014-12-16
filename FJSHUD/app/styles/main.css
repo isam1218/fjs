@@ -16,6 +16,13 @@ html {
   user-select: none;
   overflow-x: hidden;
 }
+p {
+  font-size: 11px;
+}
+option {
+  text-align: center;
+  padding-left: 20px;
+}
 textarea {
   background-color: #FFFFFF;
   appearance: textfield;
@@ -173,16 +180,14 @@ input[type="tel"] {
 .LocationSelector .SelectBox {
   width: 150px;
 }
-.Widget.Contacts .ListRow-Contact .details {
+.Widget.Contacts .details {
   float: right;
 }
-.Widget.Contacts .ListLineContent.Header {
+.ListLineContent.Header {
   height: 23px;
-}
-.Widget.Contacts .ListLineContent.Header .ListLineContentCell {
   padding: 0 5px;
 }
-.Widget.Contacts .ListLineContent.Header .DirectionArrow {
+.ListLineContent.Header .DirectionArrow {
   position: absolute;
   left: 50%;
   margin-left: -6px;
@@ -209,6 +214,9 @@ input[type="tel"] {
 .ChatMessageIco.voicemail {
   display: inline-block;
   background-image: url(../img/XIcon-Voicemail.png);
+}
+.HeaderLabel {
+  font-size: 1em;
 }
 .fj-loading {
   position: absolute;
@@ -265,6 +273,9 @@ input[type="tel"] {
   text-overflow: clip;
   white-space: nowrap;
   z-index: 1;
+}
+.MenuSection {
+  font-size: .7em;
 }
 .MenuItem {
   position: relative;
@@ -459,6 +470,11 @@ input[type="tel"] {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.SelectBoxSettings {
+  width: 195px;
+  text-align: center;
+  padding: 0 0 0 20px;
 }
 .SelectBoxText .InnerIco {
   color: #719d24;
@@ -972,7 +988,7 @@ input[type="tel"] {
   vertical-align: top;
 }
 .MeInfoBlock-column {
-  width: 175px;
+  width: 125px;
   display: inline-block;
   vertical-align: top;
 }
@@ -1127,6 +1143,7 @@ input[type="tel"] {
 .SettingsTabContent .fj-viewcontent .lblSelect {
   display: inline-block;
   width: 150px;
+  font-size: 12;
 }
 /**************************************Popoup************************************/
 .popupWindow .Widget {
@@ -1307,6 +1324,13 @@ input[type="tel"] {
   opacity: 0.5;
   cursor: auto;
 }
+.XInputText {
+  border-radius: 3px;
+  padding: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0px 0px 1px #DDD inset;
+}
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
   width: 24px;
@@ -1379,6 +1403,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .DialogAlign {
   width: 90%;
   max-width: 1000px;
+}
+.DialogSettingInput {
+  width: 40%;
+  border: solid 1px #C7C7C7;
+  -webkit-user-select: text;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -foz-border-radius: 3px;
+  outline: none;
 }
 .Dialog {
   position: relative;
@@ -1545,6 +1578,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   white-space: nowrap;
 }
+.Dialog-settings-row {
+  margin-top: 10px;
+}
 input.text.DialogFieldInput {
   position: absolute;
   left: 160px;
@@ -1615,8 +1651,8 @@ input.text.DialogFieldInput {
   color: #0093f0;
   font-size: 11px;
   font-weight: bold;
-  height: 29px;
-  line-height: 29px;
+  line-height: 18px;
+  margin-top: 10px;
   width: auto;
   text-transform: uppercase;
   margin-left: 10px;
@@ -2054,13 +2090,24 @@ input.text.DialogFieldInput {
   right: 0;
   top: 0;
 }
+.ListPage {
+  border: 1px solid #999;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  padding-top: 7px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  font-size: .7em;
+}
 .ListRowContent {
   position: absolute;
   top: 0;
   left: 50px;
   right: 0;
   border-left: solid 1px #DEE1E5;
-  height: 50px;
+  height: 3em;
 }
 .ListRowStatusIcon {
   position: relative;
@@ -2089,13 +2136,17 @@ input.text.DialogFieldInput {
   left: 5px;
   right: 5px;
   height: 20px;
-  line-height: 20px;
-  font-size: 12px;
+  line-height: 1.75em;
+  font-size: .75em;
   text-overflow: ellipsis;
   overflow: hidden;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
+}
+.ListRowTitle .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ListRowStatus {
   position: absolute;
@@ -2620,9 +2671,14 @@ input.text.DialogFieldInput {
   position: relative;
   left: 0;
   right: 0;
-  bottom: 5px;
+  margin-bottom: 5px;
   flex: 1;
   overflow: hidden;
+}
+.LeftBarTabContentList h4 {
+  color: #0093f0;
+  margin-left: 5px;
+  font-size: .9em;
 }
 .LeftBarTabContentList:hover {
   overflow-y: auto;
@@ -3368,4 +3424,88 @@ input.text.ChatInputBoxInput,
 .QueueBlockStatLineSlider.Blue {
   background-color: #226dd2;
   border-color: #226dd2;
+}
+.Overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.Overlay .Background {
+  background-color: black;
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.Overlay .Foreground {
+  background-color: #fafafa;
+  box-shadow: 0 0 50px #333;
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 90%;
+  height: 80%;
+  min-width: 300px;
+  min-height: 300px;
+  padding: 1em;
+  overflow-y: hidden;
+}
+.Overlay .Foreground:hover {
+  overflow-y: auto;
+}
+.Overlay .Foreground .Close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  height: 1em;
+  width: 1em;
+  text-align: center;
+  line-height: .75em;
+}
+.Overlay .Foreground .Section {
+  display: inline-block;
+  min-width: 48%;
+  max-width: 300px;
+  vertical-align: top;
+  font-size: .9em;
+}
+.Overlay .Foreground .Section > div {
+  margin-bottom: .5em;
+}
+.Overlay .Foreground .Section > div > * {
+  vertical-align: top;
+}
+.Overlay .Foreground .Section h4 {
+  margin: .75em 0 .25em 0;
+  color: #0093f0;
+  font-variant: small-caps;
+}
+.Overlay .Foreground .Section em {
+  font-size: .8em;
+  display: block;
+}
+.Overlay .Foreground .Section label {
+  display: inline-block;
+  width: 38%;
+}
+.Overlay .Foreground .Header {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+}
+.Overlay .Foreground .Header h2 {
+  margin: 0;
+  font-size: 1.25em;
+}
+.Overlay .Foreground .Footer {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+  margin-top: .5em;
+  text-align: right;
 }
