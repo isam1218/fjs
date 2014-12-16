@@ -2064,7 +2064,7 @@ input.text.DialogFieldInput {
   left: 50px;
   right: 0;
   border-left: solid 1px #DEE1E5;
-  height: 50px;
+  height: 3em;
 }
 .ListRowStatusIcon {
   position: relative;
@@ -2093,13 +2093,17 @@ input.text.DialogFieldInput {
   left: 5px;
   right: 5px;
   height: 20px;
-  line-height: 20px;
-  font-size: 12px;
+  line-height: 1.75em;
+  font-size: .75em;
   text-overflow: ellipsis;
   overflow: hidden;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
+}
+.ListRowTitle .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ListRowStatus {
   position: absolute;
@@ -2624,7 +2628,7 @@ input.text.DialogFieldInput {
   position: relative;
   left: 0;
   right: 0;
-  bottom: 5px;
+  margin-bottom: 5px;
   flex: 1;
   overflow: hidden;
 }
