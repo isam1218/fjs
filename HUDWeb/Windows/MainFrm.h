@@ -189,6 +189,7 @@ public:
 	
 		//OpenPage(m_strHomePage);
 		OpenPage(L"https://huc-dev.fonality.com/repository/hudweb/app/");
+		//OpenPage(L"http://localhost:99/app/");
 		return 0;
 	}
 };

@@ -1,6 +1,6 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.ContactsWidget = function($scope, dataManager) {
+fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     fjs.ui.Controller.call(this, $scope);
     var contactsModel = dataManager.getModel("contacts");
     document.title= "Contacts";
@@ -8,6 +8,10 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
     $scope.sortField = "timestamp";
     $scope.sortReverce = true;
     $scope.contacts = contactsModel.items;
+	
+	// turn "externals" on
+	if ($location.path().indexOf('external') != -1)
+		$scope.external = true;
 	
 	// update contacts asap
 	contactsModel.addEventListener("complete", function() {
@@ -39,6 +43,14 @@ fjs.ui.ContactsWidget = function($scope, dataManager) {
             return true;
         };
     };
+	
+	// custom filter to find externals
+	$scope.filterIsExternal = function() {
+		return function(contact) {
+			if ((!$scope.external && !contact.isExternal()) || ($scope.external && contact.isExternal()))
+				return true;
+		};
+	};
 	
 	// attach recent activity to contacts
 	$scope.$on("updateRecent", function(event, recents) {

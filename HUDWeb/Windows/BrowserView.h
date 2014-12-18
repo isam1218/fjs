@@ -6,6 +6,8 @@
 
 #include <exdispid.h>
 #include "HUDUIHandler.h"
+#include "HUD.h"
+#include "CJSObject.h"
 
 const int _nDispatchID = 1;
 
@@ -19,6 +21,7 @@ class CBrowserView : public CWindowImpl<CBrowserView, CAxWindow>,
 private:
 
 	CComPtr<CComObject<HUDUIHandler>> uiHandler;
+
 
 public:
 	DECLARE_WND_SUPERCLASS(_T("HUD_BrowserViewWindow"), CAxWindow::GetWndClassName())
@@ -39,6 +42,7 @@ public:
 		HRESULT hRet = CComObject<HUDUIHandler>::CreateInstance(&uiHandler);
 
 		ATLASSERT(SUCCEEDED(hRet));
+
 	}
 
 	virtual ~CBrowserView() {
@@ -103,6 +107,7 @@ public:
 
 	void __stdcall OnEventDocumentComplete(IDispatch* iid, VARIANT* URL)
 	{
+#if 0
 		if (iid != NULL) {
 			CComPtr<IWebBrowser2> webBrowser;
 
@@ -132,7 +137,7 @@ public:
 			
 			customDoc->SetUIHandler(uiHandler);
 		}
-
+#endif
 
 		// Send message to the main frame
 		ATLASSERT(V_VT(URL) == VT_BSTR);

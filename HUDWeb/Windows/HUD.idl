@@ -1,0 +1,40 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(D7A6B40B-86F4-4972-8354-E2BC8FABDE1A),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICJSObject : IDispatch{
+};
+[
+	uuid(125729C5-95A7-4DED-ACE3-3CB4717DC3DF),
+	version(1.0),
+]
+library ATLProject1Lib
+{
+	importlib("stdole2.tlb");
+
+	[
+		uuid(A7E94570-0593-4DFB-A71B-5B8D8617259C)
+	]
+	dispinterface _ICJSObjectEvents
+	{
+	properties:
+	methods:
+		[id(1), helpstring("Show Notification")] HRESULT ShowNotification([in] BSTR message);
+
+	};
+	[
+		uuid(B60AE83F-856E-4DB6-930E-CE3DB1D4E45F)
+	]
+	coclass CJSObject
+	{
+		[default] interface ICJSObject;
+		[default, source] dispinterface _ICJSObjectEvents;
+	};
+};
+

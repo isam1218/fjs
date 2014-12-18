@@ -16,8 +16,8 @@
 
     WebView *webView = (WebView*)self.view;
     
-    NSString *urlText = @"http://localhost:9900/app/";
- //   NSString *urlText = @"https://huc-dev.fonality.com/repository/hudweb/2.0/app/";
+ //   NSString *urlText = @"http://localhost:9900/app/";
+    NSString *urlText = @"https://huc-dev.fonality.com/repository/hudweb/2.0/app/";
  //   NSString *urlText = @"http://hudweb.fonality.com";
     [[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlText]]];
 }

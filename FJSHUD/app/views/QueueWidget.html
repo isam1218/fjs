@@ -6,6 +6,81 @@
     <div class="WidgetHeaderTitle">Queue</div>
   </div>
   <div class="WidgetBody">
-	placeholder
+    <div class="WidgetBody">
+      <div class="WidgetTabBar">
+        <a href="#/callcenter" class="WidgetTabBarButton Ready fj-selected-item">
+          <div class="inner">Agents</div>
+          <div class="arrow"></div>
+        </a>
+        <a href="#/callcenter/stats" class="WidgetTabBarButton Ready">
+          <div class="inner">Stats</div>
+          <div class="arrow"></div>
+        </a>
+       <a href="#/callcenter/calls" class="WidgetTabBarButton Ready">
+          <div class="inner">Calls</div>
+          <div class="arrow"></div>
+        </a>
+       <a href="#/callcenter/log" class="WidgetTabBarButton Ready">
+          <div class="inner">Call Log</div>
+          <div class="arrow"></div>
+        </a>
+      </div>
+
+      <div class="ListLineContent Header LeftContactsColumns">
+        <!--<div class="ListLineContentCell">-->
+          <!--Sort:-->
+        <!--</div>-->
+        <!--<div data-ng-click="sort('displayName')"-->
+             <!--class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
+          <!--<span>AGENT</span>-->
+
+          <!--<div class="DirectionArrow"></div>-->
+        <!--</div>-->
+        <!--<div data-ng-click="sort('phone')"-->
+             <!--class="ListLineContentCell Phone {{(sortField == 'phone' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
+          <!--<span>STATS</span>-->
+
+          <!--<div class="DirectionArrow"></div>-->
+        <!--</div>-->
+        <!--<div data-ng-click="sort('duration')"-->
+             <!--class="ListLineContentCell Duration {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
+          <!--<span>CALL</span>-->
+
+          <!--<div class="DirectionArrow"></div>-->
+        <!--</div>-->
+        <!--<div data-ng-click="sort('startedAt')"-->
+             <!--class="ListLineContentCell StartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
+          <!--<span>CALL LOG</span>-->
+
+          <!--<div class="DirectionArrow"></div>-->
+        <!--</div>-->
+
+      </div>
+      <div class="LeftBarTabContentList">
+        <a href="#"
+           class="ListRow Table AvatarHoverArea"
+           data-ng-repeat="call in calls | SortCalllog | orderBy:sortField:sortReverse">
+          <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ call.getLocation() }}">
+            <img class="AvatarImgPH" data-fj-local-id="avatarImg"
+                 ng-src="{{ call.getCallAvatarUrl(28,28)}}">
+
+            <div class="AvatarInteractable"></div>
+          </div>
+          <div class="ListRowContent">
+
+            <div class="ListRowLeftAreaWide">
+              <div class="ListRowTitle"> {{ call.getDisplayName()}}</div>
+              <div class="Link ListRowDesc">#{{ call.getPhoneNumber() }}</div>
+              <div class="ListRowDesc"> on {{ call.getCalltime() }}</div>
+              <div class="ListRowDesc"> for {{ call.duration | Duration }}</div>
+            </div>
+            <div class="ListRowStatus">
+              <div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.getCallType() }}"></div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </div>

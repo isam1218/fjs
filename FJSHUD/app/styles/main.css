@@ -539,7 +539,6 @@ input[type="tel"] {
 }
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  padding-top: 4px;
   font-size: 11px;
 }
 .DirectionArrow {

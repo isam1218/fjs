@@ -7,7 +7,7 @@
     </div>
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-            <a href="#/contacts" class="WidgetTabBarButton Ready fj-selected-item">
+            <a href="#/contacts" class="WidgetTabBarButton Ready" ng-class="!external ? 'fj-selected-item' : ''">
                 <div class="inner">Contacts</div>
                 <div class="arrow"></div>
             </a>
@@ -15,7 +15,7 @@
                 <div class="inner">Groups</div>
                 <div class="arrow"></div>
             </a>
-            <a href="#/external" class="WidgetTabBarButton Ready  ">
+            <a href="#/contacts/external" class="WidgetTabBarButton Ready" ng-class="external ? 'fj-selected-item' : ''">
                 <div class="inner">External</div>
                 <div class="arrow"></div>
             </a>
@@ -63,7 +63,7 @@
     <!--<div id="ContactsList" contacts-list></div>-->
 		
 	<div class="LeftBarTabContentList">
-        <a href="" context-menu="contact" data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn(query) | orderBy:sortField:sortReverce track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(contact)">
+        <a href="" context-menu="contact" data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn(query) | filter:filterIsExternal() | orderBy:sortField:sortReverce track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(contact)">
             <div class="Avatar AvatarNormal" avatar-menu="contact">
                 <img class="AvatarImgPH" data-ng-src="{{::contact.getAvatarUrl(28,28)}}">
                 <div class="AvatarForeground AvatarInteractable"></div>
