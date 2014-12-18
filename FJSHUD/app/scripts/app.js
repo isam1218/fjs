@@ -21,7 +21,7 @@ var hud_web = angular
   ]);
 hud_web.config(function ($routeProvider) {
     $routeProvider.
-        when('/settings', {templateUrl: 'views/MeWidgetController.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
+        when('/settings', {templateUrl: 'views/MeWidgetController.html',   controller:['$scope', 'DataManager','$http', fjs.ui.MeWidgetController]}).
         when('/settings/weblauncer', {templateUrl: 'views/SettingsWebLauncer.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
         when('/settings/account', {templateUrl: 'views/SettingsAccount.html',   controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]}).
         when('/contacts', {templateUrl: 'views/ContactsWidget.html',   controller:['$scope',  'DataManager', fjs.ui.ContactsWidget]}).
@@ -69,7 +69,7 @@ hud_web.controller("ConversationWidgetChatController", ['$scope', 'DataManager',
 hud_web.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hud_web.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 
-hud_web.controller("MeWidgetController",['$scope','DataManager',fjs.ui.MeWidgetController]);
+hud_web.controller("MeWidgetController",['$scope','DataManager','$http',fjs.ui.MeWidgetController]);
 //hud_web.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hud_web.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);

@@ -1,45 +1,54 @@
 <div class="SettingsPanel DialogContentMainBlock_List">
-  <div class="SettingsTabContent fj-content fj-stream hud-settings-form" fjtype="v" data-fj-local-id="tabPanel" data-controller-id="id8552" data-event="mousedown mouseover mouseup" data-template-id="settings-general-tab">
-    <div class="fj-scrollable ListView WithoutToolBar" data-fj-local-id="SettingsListView">
-      <div class="fj-viewport" style="overflow: hidden;">
-        <div class="fj-viewcontent">
+  <div class="SettingsTabContent fj-content fj-stream hud-settings-form" >
+    <div class="fj-scrollable ListView WithoutToolBar fj-viewcontent" >
           <div class="ListSection">
-            <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Interface</div>
-            </div>
+            <div class="ListSectionHeaderTitle">Interface</div>
             <div class="ListSectionBody">Application tuning</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
               <div class="lblSelect"><p>Language:</p></div>
-              <select class="fj-hbox SelectBox SelectBoxSettings">
-                <option value="United States">English (United States) </option>
-              </select>
-              </div>
+              <select class="fj-hbox SelectBox SelectBoxSettings"
+              ng-model="languageSelect"
+              ng-options="language.label for language in languages"
+              ng-change="update_settings('hudw_lang','update',languageSelect)"
+              ></select>
+            </div>
             <div class="Dialog-settings-row checkbox-label" style="display:inline">
-                <input name="autoclear" type="checkbox" value="true" data-fj-local-id="autoclear"> Autoclear search
+                <input
+                ng-model=searchAuoClear
+                ng-click="update_settings('hudmw_searchautoclear','update',searchAutoClear)"
+                name="autoclear" type="checkbox" value="true" > Autoclear search
             </div>
             <div class="Dialog-settings-row">
               <div class="lblSelect"><p>Autoclear after:</p></div>
-              <select class="fj-hbox SelectBox SelectBoxSettings">
-                <option value="30">30 Seconds</option>
+              <select class="fj-hbox SelectBox SelectBoxSettings" ng-model='autoClearSelected'
+              ng-options="autoClearOption.label for autoClearOption in autoClearSettingOptions"
+              ng-change="update_settings('hudmw_searchautoclear','update',autoClearSelected)"
+              >
               </select>
             </div>
             <div class="Dialog-settings-row">
               <div class="lblSelect">Avatar hover menu delay: </div>
-              <select class="fj-hbox SelectBox SelectBoxSettings">
-                <option value="30">1.0 Seconds</option>
+              <select class="fj-hbox SelectBox SelectBoxSettings"
+                ng-model="hoverDelaySelected"
+                ng-options="hoverDelay.label for hoverDelay in hoverDelayOptions"
+                ng-change="update_settings('hudmw_searchautocleardelay','update',hoverDelaySelected)"
+              >
               </select>
             </div>
             <div class="Dialog-settings-row">
               <label>
-                <input name="boxing" type="checkbox" value="true" data-fj-local-id="boxing">Enable Box
+                <input
+                ng-model="enableBox"
+                ng-change="update_settings('hudmw_box_enabled','update',enableBox)"
+                name="boxing" type="checkbox" value="true" >Enable Box
               </label>
             </div>
             <div class="Dialog-settings-row AppsReset">
               <div class="lblSelect"></div>
-              <div data-event="click" data-fj-local-id="resetAppsOrder" event="c" class="XButton XButtonNormal XButtonWide ">
+              <div ng-click="reset_app_menu()"event="c" class="XButton XButtonNormal XButtonWide ">
                 <span>Reset App Menu Order</span>
               </div>
             </div>
@@ -47,20 +56,29 @@
           <div class="ListSection">
             <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle">Sounds</div>
-              <div class="ListSectionHeaderRight"></div>
             </div>
             <div class="ListSectionBody">Sound settings for chat and notifications</div>
           </div>
           <div class="ListPage">
-            <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <label><input type="checkbox" checked="checked" data-fj-local-id="sound_enable">Enable chat sound</label>
+              <label><input
+                ng-model="enableSound"
+                ng-change="update_settings('hudmw_chat_sounds','update',enableSound)"
+                type="checkbox" checked="checked" >Enable chat sound</label>
             </div>
             <div class="Dialog-settings-row">
-              <label><input name="chat_sound_received" type="checkbox" value="true" data-fj-local-id="chat_sound_received">On message received</label>
+              <label><input
+                ng-disabled="!enableSound"
+                ng-model="soundOnChatMsgReceived"
+                ng-change="update_settings('hudmw_chat_sound_received','update',soundOnChatMsgReceived)"
+                name="chat_sound_received" type="checkbox" value="true">On message received</label>
             </div>
             <div class="Dialog-settings-row">
-              <label><input name="chat_sound_sent" type="checkbox" value="true" data-fj-local-id="chat_sound_sent">On sent message</label>
+              <label><input
+                ng-disabled="!enableSound"
+                ng-model="soundOnSentMsg"
+                ng-change="update_settings('hudmw_chat_sound_sent','update',soundOnSentMsg)"
+                name="chat_sound_sent" type="checkbox" value="true">On sent message</label>
             </div>
           </div>
           <div class="ListSection">
@@ -73,12 +91,17 @@
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
               <div class="lblSelect">Call log size:</div>
-              <select class="fj-hbox SelectBox SelectBoxSettings">
-                <option value="50">50 items</option>
-              </select>
+              <select
+              ng-model="callLogSizeSelected"
+              ng-options="callLogSize.label for callLogSize in callLogSizeOptions"
+              ng-change="update_settings('recent_call_history_length','update',callLogSizeSelected)"
+              class="fj-hbox SelectBox SelectBoxSettings"></select>
             </div>
             <div class="Dialog-settings-row">
-              <label><input name="busy_ring_back" type="checkbox" value="true" data-fj-local-id="busy_ring_back">Busy ring back</label>
+              <label><input
+                ng-model="enableBusyRingBack"
+                ng-change="update_settings('busy_ring_back','update',enableBusyRingBack)"
+                name="busy_ring_back" type="checkbox" value="true">Busy ring back</label>
             </div>
           </div>
           <div class="ListSection">
@@ -87,39 +110,39 @@
             </div>
             <div class="ListSectionBody">Auto away settings</div>
           </div>
-          <div class="ListPage" style="margin-top:10px">
-            <div class="ListPageHeader"></div>
+          <div class="ListPage">
             <div class="Dialog-settings-row" >
               <div class="lblSelect">Auto away after:</div>
-              <select class="fj-hbox SelectBox SelectBoxSettings">
-                <option value="4">4 minutes</option>
+              <select
+                ng-model="autoAwaySelected"
+                ng-options="autoAway.label for autoAway in autoAwayOptions"
+                ng-change="update_settings('hudmw_auto_away_timeout','update',autoAwaySelected)"
+
+                class="fj-hbox SelectBox SelectBoxSettings">
               </select>
             </div>
             <div class="Dialog-settings-row">
-              <label><input name="autoaway" type="checkbox" value="true" data-fj-local-id="autoaway">Enable Auto away</label>
+              <label><input
+                ng-model="enableAutoAway"
+                ng-change="update_settings('auto_away_timeout','update',autoAwaySelected)"
+                name="autoaway" type="checkbox" value="true">Enable Auto away</label>
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle">Dashboard</div>
-              <div class="ListSectionHeaderRight"></div>
             </div>
             <div class="ListSectionBody">Dashboard settings</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <label><input name="use-column-layout" type="checkbox" value="true" data-fj-local-id="use-column-layout">Use column layout</label>
+              <label><input
+                ng-model="useColumnLayout"
+                ng-change="update_settings('use_column_layout','update',useColumnLayout)"
+                name="use-column-layout" type="checkbox" value="true" >Use column layout</label>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id8553" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
-        <div class="fj-ui-scrollerFr-decoration"></div>
-        <div class="fj-ui-scroller" data-fj-local-id="scroller" style="height: 89.32490518331227px; top: 0px;">
-          <div class="fj-ui-scroller-decoration"></div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

@@ -71,6 +71,10 @@ input[type="tel"] {
   display: flex;
   flex-direction: column;
 }
+.col1 {
+  width: 180px;
+  display: inline-block;
+}
 .StackablePanels {
   width: 50%;
   padding-left: 10px;
@@ -183,8 +187,7 @@ input[type="tel"] {
 .Widget.Contacts .details {
   float: right;
 }
-.ListLineContent.Header {
-  height: 23px;
+.ListLineContent.Header .ListLineContentCell {
   padding: 0 5px;
 }
 .ListLineContent.Header .DirectionArrow {
@@ -1404,6 +1407,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 90%;
   max-width: 1000px;
 }
+.DialogSettingWLInput {
+  width: 98%;
+}
 .DialogSettingInput {
   width: 40%;
   border: solid 1px #C7C7C7;
@@ -1412,6 +1418,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 3px;
   -foz-border-radius: 3px;
   outline: none;
+  padding-left: 12px;
 }
 .Dialog {
   position: relative;
