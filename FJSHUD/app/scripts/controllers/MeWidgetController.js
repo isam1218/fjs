@@ -6,7 +6,7 @@
  * @param dataManager
  * @constructor
  */
-fjs.ui.MeWidgetController = function($scope, dataManager, $http) {
+fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) {
     var context = this;
 
     fjs.ui.Controller.call(this, $scope);
@@ -115,7 +115,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http) {
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected = $scope.autoAwayOptions[1];
 
-    $scope.update_settings = function(type,action,model){
+    $scope.update_settings = myHttpService.updateSettings; /*function(type,action,model){
         var params = {
           'a.name':type,
           't':'web',
@@ -128,9 +128,20 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http) {
             params['a.value']=model;
           }
         }
-        var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings?Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node;
-        $http.post(requestURL,params);
-    };
+        //?Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node
+        var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings";
+        $http({
+          method:'POST',
+          url:requestURL,
+          data:$.param(params),
+          headers:{'Content-Type':'application/x-www-form-urlencoded',
+          'Authorization':'auth='+dataManager.api.ticket,
+          'node':dataManager.api.node,
+          }
+        }).success(function(){})
+
+        //.post(requestURL,params);
+    };*/
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');

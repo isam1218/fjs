@@ -25,7 +25,7 @@
               <div class="lblSelect"><p>Autoclear after:</p></div>
               <select class="fj-hbox SelectBox SelectBoxSettings" ng-model='autoClearSelected'
               ng-options="autoClearOption.label for autoClearOption in autoClearSettingOptions"
-              ng-change="update_settings('hudmw_searchautoclear','update',autoClearSelected)"
+              ng-change="update_settings('hudmw_searchautocleardelay','update',autoClearSelected)"
               >
               </select>
             </div>
@@ -34,7 +34,7 @@
               <select class="fj-hbox SelectBox SelectBoxSettings"
                 ng-model="hoverDelaySelected"
                 ng-options="hoverDelay.label for hoverDelay in hoverDelayOptions"
-                ng-change="update_settings('hudmw_searchautocleardelay','update',hoverDelaySelected)"
+                ng-change="update_settings('avatar_hover_delay','update',hoverDelaySelected)"
               >
               </select>
             </div>
