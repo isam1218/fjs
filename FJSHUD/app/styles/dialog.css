@@ -11,6 +11,9 @@
   width: 90%;
   max-width: 1000px;
 }
+.DialogSettingWLInput {
+  width: 98%;
+}
 .DialogSettingInput {
   width: 40%;
   border: solid 1px #C7C7C7;

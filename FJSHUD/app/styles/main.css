@@ -71,6 +71,10 @@ input[type="tel"] {
   display: flex;
   flex-direction: column;
 }
+.col1 {
+  width: 180px;
+  display: inline-block;
+}
 .StackablePanels {
   width: 50%;
   padding-left: 10px;
@@ -1401,6 +1405,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .DialogAlign {
   width: 90%;
   max-width: 1000px;
+}
+.DialogSettingWLInput {
+  width: 98%;
 }
 .DialogSettingInput {
   width: 40%;
