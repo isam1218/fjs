@@ -16,7 +16,9 @@ fjs.api.SharedWorkerDataProvider = function(ticket, node, config, callback) {
             context.sendMessage({action:'init', data:{ticket:context.ticket, node:context.node, config:context.config}});
             callback();
         }
-        context.fireEvent(e.data["eventType"], e.data);
+		
+		// e.data.data = shared worker response
+        context.fireEvent(e.data["eventType"], e.data.data ? e.data.data : e.data);
     }, false);
     this.worker.port.addEventListener("error", function(e){
         fjs.utils.Console.error("Worker Error", e);
