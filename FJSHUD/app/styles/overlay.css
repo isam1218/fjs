@@ -26,10 +26,8 @@
   min-width: 300px;
   min-height: 300px;
   padding: 1em;
-  overflow-y: hidden;
-}
-.Overlay .Foreground:hover {
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 .Overlay .Foreground .Close {
   position: absolute;
@@ -41,6 +39,10 @@
   width: 1em;
   text-align: center;
   line-height: .75em;
+}
+.Overlay .Foreground .Sections {
+  flex: 1;
+  overflow-y: auto;
 }
 .Overlay .Foreground .Section {
   display: inline-block;
@@ -71,6 +73,7 @@
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
   padding-bottom: 1em;
+  margin-bottom: .5em;
 }
 .Overlay .Foreground .Header h2 {
   margin: 0;

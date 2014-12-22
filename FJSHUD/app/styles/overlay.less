@@ -27,11 +27,8 @@
 	min-width: 300px;
 	min-height: 300px;
 	padding: 1em;
-	overflow-y: hidden;
-	
-	&:hover {
-	  overflow-y: auto;
-	}
+	display: flex;
+	flex-direction: column;
 	
 	.Close {
 	  position: absolute;
@@ -43,6 +40,11 @@
 	  width: 1em;
 	  text-align: center;
 	  line-height: .75em;
+	}
+	
+	.Sections {
+	  flex: 1;
+	  overflow-y: auto;
 	}
 	
 	.Section {
@@ -80,6 +82,7 @@
 	.Header {
 	  border-bottom: 1px solid #ccc;
 	  padding-bottom: 1em;
+	  margin-bottom: .5em;
 	  
 	  h2 {
 	    margin: 0;
