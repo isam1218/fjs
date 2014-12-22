@@ -5,7 +5,7 @@
   width: 100%;
   height: 100%;
   z-index: 100;
-
+  
   .Background {
     background-color: black;
 	opacity: .5;
@@ -15,7 +15,7 @@
 	width: 100%;
 	height: 100%;
   }
-
+  
   .Foreground {
 	background-color: #fafafa;
 	box-shadow: 0 0 50px #333;
@@ -27,12 +27,9 @@
 	min-width: 300px;
 	min-height: 300px;
 	padding: 1em;
-	overflow-y: hidden;
-
-	&:hover {
-	  overflow-y: auto;
-	}
-
+	display: flex;
+	flex-direction: column;
+	
 	.Close {
 	  position: absolute;
 	  top: 5px;
@@ -44,49 +41,55 @@
 	  text-align: center;
 	  line-height: .75em;
 	}
-
+	
+	.Sections {
+	  flex: 1;
+	  overflow-y: auto;
+	}
+	
 	.Section {
 	  display: inline-block;
 	  min-width: 48%;
 	  max-width: 300px;
 	  vertical-align: top;
 	  font-size: .9em;
-
+	  
 	  & > div {
 		margin-bottom: .5em;
 	  }
-
+	  
 	  & > div > * {
 		vertical-align: top;
 	  }
-
+	  
 	  h4 {
 	    margin: .75em 0 .25em 0;
 		color: #0093f0;
 		font-variant: small-caps;
 	  }
-
+	  
 	  em {
 		font-size: .8em;
 		display: block;
 	  }
-
+	  
 	  label {
 		display: inline-block;
 		width: 38%;
 	  }
 	}
-
+	
 	.Header {
 	  border-bottom: 1px solid #ccc;
 	  padding-bottom: 1em;
-
+	  margin-bottom: .5em;
+	  
 	  h2 {
 	    margin: 0;
 		font-size: 1.25em;
 	  }
 	}
-
+	
 	.Footer {
 	  border-top: 1px solid #ccc;
 	  padding-top: 1em;

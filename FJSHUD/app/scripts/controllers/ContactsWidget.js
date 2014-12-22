@@ -66,6 +66,17 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 		
 		$scope.$safeApply();
 	});
+	
+	// add new contact pop-up
+	$scope.showOverlay = function() {
+		$scope.add = {};
+		$scope.overlay = true;
+	};
+	
+	$scope.addContact = function() {
+        dataManager.sendAction('contacts', 'addContact', $scope.add);
+		$scope.overlay = false;
+	};
 
     $scope.$on("$destroy", function() {
 
