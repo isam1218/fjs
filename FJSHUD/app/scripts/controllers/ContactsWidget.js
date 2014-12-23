@@ -70,10 +70,22 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 	// add new contact pop-up
 	$scope.showOverlay = function() {
 		$scope.add = {};
+		$scope.addError = null;
 		$scope.overlay = true;
 	};
 	
 	$scope.addContact = function() {
+		// validate
+		if (!$scope.add.firstName && !$scope.add.lastName) {
+			$scope.addError = 'Contact name is not specified.';
+			return;
+		}
+		else if ($scope.add.email && $scope.add.email.indexOf('@') == -1) {
+			$scope.addError = 'E-mail is incorrect.';
+			return;
+		}
+		
+		// save
         dataManager.sendAction('contacts', 'addContact', $scope.add);
 		$scope.overlay = false;
 	};
