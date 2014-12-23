@@ -1,3 +1,7 @@
+.ContactsPanel {
+  position: relative;
+  flex: 1;
+}
 .LeftSideBar {
   position: relative;
   width: 100%;

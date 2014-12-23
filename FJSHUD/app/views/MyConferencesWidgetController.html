@@ -56,7 +56,7 @@
                         <span>You may have limited control over some rooms in this list, such as adding or removing other users.</span>
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a href="" ng-click="loadPanel(conference)" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences | SortConference:getSortMode() | filter:isMyConference | filter:query">
+                    <a href="#/conference/{{::conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences | SortConference:getSortMode() | filter:isMyConference | filter:query">
                         <div class="Avatar AvatarNormal">
                                 <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
                                                                                     data-ng-src="{{ conference.getAvatar(0, 19, 19) }}">

@@ -1,9 +1,15 @@
 <div class="Widget Contacts" id="WidgetContacts">
-    <div class="WidgetHeader" unpin="/contacts" draggable="true">
-        <div class="Avatar AvatarApp">
-            <div class="TopBarItemAppIcon Contacts"></div>
+    <div class="ToolBar" unpin="/contacts" draggable="true">
+        <div class="SearchInputBox">
+            <div class="SearchInputBoxInputHolder">
+                <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech="" data-ng-model="query" placeholder="Search">
+            </div>
+            <div class="SearchInputBoxStateButton">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
         </div>
-        <div class="WidgetHeaderTitle" >Contacts</div>
+        <button class="XButton XButtonNormal" data-ng-click="showOverlay()">New
+        </button>
     </div>
     <div class="WidgetBody">
         <div class="WidgetTabBar">
@@ -20,18 +26,6 @@
                 <div class="arrow"></div>
             </a>
         </div>
-    <div class="ToolBar">
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech="" data-ng-model="query" placeholder="Search">
-            </div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
-        </div>
-        <button class="XButton XButtonNormal" data-ng-click="showOverlay()">New
-        </button>
-    </div>
     <div class="ListLineContent Header LeftContactsColumns">
         <div class="ListLineContentCell" >
             Sort:
@@ -63,7 +57,7 @@
     <!--<div id="ContactsList" contacts-list></div>-->
 		
 	<div class="LeftBarTabContentList">
-        <a href="" context-menu="contact" data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn(query) | filter:filterIsExternal() | orderBy:sortField:sortReverce track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(contact)">
+        <a href="#contact/{{::contact.xpid}}" context-menu="contact" data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn(query) | filter:filterIsExternal() | orderBy:sortField:sortReverce track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
             <div class="Avatar AvatarNormal" avatar-menu="contact">
                 <img class="AvatarImgPH" data-ng-src="{{::contact.getAvatarUrl(28,28)}}">
                 <div class="AvatarForeground AvatarInteractable"></div>
