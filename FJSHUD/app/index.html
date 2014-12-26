@@ -34,63 +34,22 @@
 			</div>
 
 			<div class="TopBarMeStatus" data-ng-controller="TopBarMeStatusController">
-
-				<div class="TopBarMeStatus-row">
-					<div class="SelectBox" data-ng-click="showLocationsPopup($event)">
-						<div class="SelectBoxText">
-							<span class="InnerIco">@</span>&nbsp;<span>{{getCurrentLocationTitle()}}</span>
-						</div>
-						<div class="SelectBoxArrow"></div>
+				<div class="SelectBox" data-ng-click="showLocationsPopup($event)">
+					<div class="SelectBoxText">
+						<span class="InnerIco">@</span>&nbsp;<span>{{getCurrentLocationTitle()}}</span>
 					</div>
-					<div class="SelectBox" data-ng-click="showChatStatusPopup($event)">
-						<div class="SelectBoxText">
-							<div class="MenuItemIcon" data-ng-class="'XIcon-ChatStatus-'+getCurrentChatStatus()"></div>&nbsp;<span style="vertical-align: top;">{{getCurrentChatStatus()}}</span>
-						</div>
-						<div class="SelectBoxArrow"></div>
+					<div class="SelectBoxArrow"></div>
+				</div>
+				<div class="SelectBox" data-ng-click="showChatStatusPopup($event)">
+					<div class="SelectBoxText">
+						<div class="MenuItemIcon" data-ng-class="'XIcon-ChatStatus-'+getCurrentChatStatus()"></div>&nbsp;<span style="vertical-align: top;">{{getCurrentChatStatus()}}</span>
 					</div>
+					<div class="SelectBoxArrow"></div>
 				</div>
 
-				<div class="TopBarMeStatus-row">
-					<div class="XButton XButtonToggle Off">
-						<span></span>
-						<div class="XButtonToggleIcon XIcon24-MuteOff"></div>
-						<div class="PopupSlider">
-							<div class="PopupSliderFadeLine">
-
-							</div>
-							<div class="PopupSliderFader">
-
-							</div>
-						</div>
-					</div>
-
-					<div class="XButton XButtonToggle Off">
-						<span></span>
-						<div class="XButtonToggleIcon XIcon24-Speaker-On"></div>
-						<div class="PopupSlider">
-							<div class="PopupSliderFadeLine">
-
-							</div>
-							<div class="PopupSliderFader">
-
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="TopBarMeStatus-row">
-					<div class="Avatar AvatarNormal" ng-click="toogleMenu()">
-						<img class="AvatarImgPH" ng-src="{{getMeAvatarUrl()}}" />
-					</div>
-					<div class="PopupMenu" style="right:0;top:60px;" ng-show="menuIsOpen" ng-click="toogleMenu()">
-						<a href="#/settings" class="PopupMenuRow">
-							<div class="MenuItemText">Settings</div>
-						</a>
-						<a href="#" data-ng-click="logout($event)" class="PopupMenuRow">
-							<div class="MenuItemText">Logout</div>
-						</a>
-					</div>
+				<div class="XButton Logout" ng-click="logout($event)">
+					<div class="logout-ico"></div>
+					<span>Sign out</span>
 				</div>
 			</div>
 		</div>

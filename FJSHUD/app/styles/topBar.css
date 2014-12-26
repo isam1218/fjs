@@ -2,27 +2,25 @@
   position: relative;
   width: 100%;
   height: 100px;
-  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid white;
+  box-shadow: 0 -1px 1px #cccccc inset;
 }
 .TopBar:hover {
   z-index: 1000;
   background-color: #f3f3f3;
+  border-radius: 0 0 10px 10px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
 }
 .TopBarLogo {
-  position: absolute;
-  background-image: url("../img/FonalityLogo.png");
-  width: 150px;
-  height: 45px;
-  top: 24px;
-  left: 20px;
+  background: url("../img/FonalityLogo.png") no-repeat;
+  margin: 5px 0 0 10px;
+  flex: 1;
+  min-width: 250px;
 }
 .TopBarIcons {
-  position: absolute;
-  top: 4px;
-  left: 200px;
-  width: 500px;
-  bottom: 0;
+  flex: 1;
 }
 .TopBarItemApp {
   position: relative;
@@ -108,44 +106,21 @@
   font-size: 12px;
 }
 .TopBarMeStatus {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 33%;
+  flex: 1;
+  margin: 5px 10px 0 0;
   text-align: right;
 }
-.TopBarMeStatus-row {
-  text-align: left;
-  margin: .5%;
-  vertical-align: top;
-  display: inline-block;
-  position: relative;
-}
-.TopBarMeStatus-row .SelectBox {
+.TopBarMeStatus > div {
+  float: right;
+  clear: both;
   width: 120px;
-  margin-bottom: 5px;
-  display: block;
+  margin-bottom: 3px;
 }
-.TopBarMeStatus-row .AvatarNormal,
-.TopBarMeStatus-row .AvatarNormal img {
-  width: 59px;
-  height: 59px;
-}
-.TopBarMeStatus-row .XButtonToggle {
-  height: 26px;
-  margin-bottom: 5px;
-  padding: 0 3px;
-  display: block;
-}
-.TopBarBottomLine {
+.TopBarMeStatus .Logout .logout-ico {
+  background: url("../img/XIconSet-24x24.png") no-repeat -336px -24px;
+  width: 24px;
+  height: 24px;
   position: absolute;
   left: 0;
-  bottom: 0;
-  right: 0;
-  height: 0;
-  border-top: solid 1px #bbb;
-  border-bottom: solid 1px #fff;
-}
-.TopBar:hover .TopBarBottomLine {
-  display: none;
+  top: 1px;
 }
