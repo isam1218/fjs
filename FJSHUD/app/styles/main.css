@@ -600,11 +600,12 @@ input[type="tel"] {
 .TopBarLogo {
   background: url("../img/FonalityLogo.png") no-repeat;
   margin: 5px 0 0 10px;
-  flex: 1;
+  flex: .6;
   min-width: 250px;
 }
 .TopBarIcons {
   flex: 1;
+  min-width: 400px;
 }
 .TopBarItemApp {
   position: relative;
@@ -694,11 +695,8 @@ input[type="tel"] {
   margin: 5px 10px 0 0;
   text-align: right;
 }
-.TopBarMeStatus > div {
-  float: right;
-  clear: both;
-  width: 120px;
-  margin-bottom: 3px;
+.TopBarMeStatus .Logout {
+  padding-left: 24px;
 }
 .TopBarMeStatus .Logout .logout-ico {
   background: url("../img/XIconSet-24x24.png") no-repeat -336px -24px;
@@ -711,10 +709,14 @@ input[type="tel"] {
 .WidgetPanel {
   position: relative;
   flex: 1;
-  margin-top: -40px;
+  margin: -40px 0 0 10px;
+  min-width: 400px;
 }
 .WidgetPanel .Widget {
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   box-shadow: 1px 0 10px gray;
 }
 .Widget {
@@ -2374,7 +2376,7 @@ input.text.DialogFieldInput {
 }
 .ContactsPanel {
   position: relative;
-  flex: 1;
+  flex: .6;
   min-width: 250px;
 }
 .ContactsPanel .RoundedTop {
