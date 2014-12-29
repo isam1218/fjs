@@ -8,10 +8,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     $scope.sortField = "timestamp";
     $scope.sortReverce = true;
     $scope.contacts = contactsModel.items;
-	
-	// turn "externals" on
-	if ($location.path().indexOf('external') != -1)
-		$scope.external = true;
+	$scope.external = false;
 	
 	// update contacts asap
 	contactsModel.addEventListener("complete", function() {
@@ -45,9 +42,9 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     };
 	
 	// custom filter to find externals
-	$scope.filterIsExternal = function() {
+	$scope.filterIsExternal = function(external) {
 		return function(contact) {
-			if ((!$scope.external && !contact.isExternal()) || ($scope.external && contact.isExternal()))
+			if ((!external && !contact.isExternal()) || (external && contact.isExternal()))
 				return true;
 		};
 	};
@@ -66,13 +63,6 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 		
 		$scope.$safeApply();
 	});
-	
-	// add new contact pop-up
-	$scope.showOverlay = function() {
-		$scope.add = {};
-		$scope.addError = null;
-		$scope.overlay = true;
-	};
 	
 	$scope.addContact = function() {
 		// validate

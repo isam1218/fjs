@@ -54,7 +54,13 @@
 			</div>
 		</div>
 		<div class="PanelWrapper">
-			<div class="ContactsPanel" ng-include="'views/ContactsWidget.html'" ng-controller="ContactsWidget"></div>
+			<div class="ContactsPanel">	
+				<div class="RoundedTop"></div>
+				
+				<div ng-if="groups == false" ng-include="'views/ContactsWidget.html'" ng-controller="ContactsWidget"></div>
+				<div ng-if="groups == true" ng-include="'views/GroupsWidget.html'" ng-controller="GroupsController"></div>
+			</div>
+			
 			<ng-view class="WidgetPanel"></ng-view>			
 			<div class="DockPanel"></div>
 		</div>

@@ -1,25 +1,4 @@
 <div class="Widget Contacts Groups" id="WidgetGroups">
-    <div class="WidgetHeader" unpin="/contacts/groups" draggable="true">
-        <div class="Avatar AvatarApp">
-            <div class="TopBarItemAppIcon Contacts"></div>
-        </div>
-        <div class="WidgetHeaderTitle" >Groups</div>
-    </div>
-    <div class="WidgetBody">
-        <div class="WidgetTabBar">
-            <a href="#/contacts" class="WidgetTabBarButton Ready">
-                <div class="inner">Contacts</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/contacts/groups" class="WidgetTabBarButton Ready fj-selected-item">
-                <div class="inner">Groups</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/contacts/external" class="WidgetTabBarButton Ready">
-                <div class="inner">External</div>
-                <div class="arrow"></div>
-            </a>
-        </div>
     <div class="ToolBar">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
@@ -32,6 +11,21 @@
         <button class="XButton XButtonNormal" data-ng-click="overlay = true">New
         </button>
     </div>
+    <div class="WidgetBody">
+        <div class="WidgetTabBar">
+            <a href="" ng-click="showGroups(false)" class="WidgetTabBarButton Ready">
+                <div class="inner">All</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="" ng-click="showGroups(false)" class="WidgetTabBarButton Ready">
+                <div class="inner">External</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="" class="WidgetTabBarButton Ready fj-selected-item">
+                <div class="inner">Groups</div>
+                <div class="arrow"></div>
+            </a>
+        </div>
     <div class="ListLineContent Header LeftContactsColumns">
         <div class="ListLineContentCell" >
             Sort:
