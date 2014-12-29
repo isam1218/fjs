@@ -1,7 +1,17 @@
 // out: widget.css
-.WidgetWrapper {
+.WidgetPanel {
   position: relative;
   flex: 1;
+  margin: -40px 0 0 10px;
+  min-width: 400px;
+  
+  .Widget {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+	box-shadow: 1px 0 10px gray;
+  }
 }
 
 .Widget {
@@ -10,9 +20,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
-  box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
   border: solid 1px #ccc;
   z-index: 1;
   display: flex;
@@ -205,6 +213,65 @@
   left: 2px;
   top: 4px;
   width: 160px;
+}.WidgetTabBar {
+  position: relative;
+  margin: 0;
+  left: 0;
+  right: 0;
+  height: 2.1em;
+  border-bottom: solid 1px #729c00;
+  border-top: solid 1px #e0e0e0;
+  vertical-align: bottom;
+  background: #fefefe linear-gradient(#fefefe, #eee);
+  user-select: none;
+}
+
+.WidgetTabBarButton {
+  position: relative;
+  display: inline-block;
+  margin-top: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.WidgetTabBarButton .inner {
+  position: relative;
+  margin-left: 9px;
+  margin-right: 9px;
+  display: inline-block;
+  height: 33px;
+  line-height: 3em;
+  font-size: .75em;
+  color: #888;
+  text-shadow: 0 1px 0 #FFF;
+  cursor: pointer;
+}
+
+.WidgetTabBarButton:hover .inner {
+  color: #729c00;
+
+}
+
+.WidgetTabBarButton.fj-selected-item .inner {
+  color: #729c00;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  font-weight: bold;
+}
+
+.WidgetTabBarButton .arrow {
+  display: none;
+  position: absolute;
+  top: 1.1em;
+  left: 50%;
+  margin-left: -7px;
+  width: 0;
+  height: 0;
+  border: solid 7px;
+  border-color: transparent transparent #729c00 transparent;
+}
+
+.WidgetTabBarButton.fj-selected-item .arrow {
+  display: block;
 }
 
 /********************WidgetMe************************************/

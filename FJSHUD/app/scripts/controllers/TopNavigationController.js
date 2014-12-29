@@ -12,13 +12,13 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
     });
 
     $scope.appIcons = [
-        {title:"Contacts", url:"#/contacts", key:"Contacts"}
-        , {title:"Conferencing", url:"#/conferences", key:"Conferences"}
+        {title:"Me", url:"#/settings", key:"Me"}
         , {title:"Calls and Recordings", url:"#/calllog", key:"CallLog"}
+        , {title:"Conferencing", url:"#/conferences", key:"Conferences"}
         , {title:"Call Center", url:"#/callcenter", key:"CallCenter"}
+        , {title:"Search", url:"#/search", key:"Search"}
         , {title:"Video Collaboration", url:"#/zoom", key:"Zoom"}
         , {title:"Box", url:"#/box", key:"Box"}
-        , {title:"Search", url:"#/search", key:"Search"}
     ];
 
 

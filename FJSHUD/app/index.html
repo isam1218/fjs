@@ -15,16 +15,63 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body data-ng-controller="LaunchController">
+  <body  data-ng-controller="MainController" data-ng-click="onBodyClick()">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-  
-	<input type="button" value="Launch HUDweb" ng-click="launchApp()" />
-	<input type="button" value="Load in Tab" onclick="window.location='app.html'" />
-	<input type="button" value="Logout" ng-click="logout()" />
+
+	<div id="App" data-ng-controller="ResentsListController">
+		<div class="TopBar">
+			<div class="TopBarLogo"></div>
+
+			<div class="TopBarIcons" data-ng-controller="TopNavigationController">
+				<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in ::appIcons">
+					<div class="TopBarItemAppIcon {{ ::icon.key }}"></div>
+					<div class="TopBarItemAppName">{{ ::icon.title }}</div>
+				</a>
+			</div>
+
+			<div class="TopBarMeStatus" data-ng-controller="TopBarMeStatusController">
+				<!--<div class="SelectBox" data-ng-click="showLocationsPopup($event)">
+					<div class="SelectBoxText">
+						<span class="InnerIco">@</span>&nbsp;<span>{{getCurrentLocationTitle()}}</span>
+					</div>
+					<div class="SelectBoxArrow"></div>
+				</div>-->
+				<div class="SelectBox" data-ng-click="showChatStatusPopup($event)">
+					<div class="SelectBoxText">
+						<div class="MenuItemIcon" data-ng-class="'XIcon-ChatStatus-'+getCurrentChatStatus()"></div>&nbsp;<span style="vertical-align: top;">{{getCurrentChatStatus()}}</span>
+					</div>
+					<div class="SelectBoxArrow"></div>
+				</div>
+
+				<div class="XButton Logout" ng-click="logout($event)">
+					<div class="logout-ico"></div>
+					<span>Sign out</span>
+				</div>
+			</div>
+		</div>
+		<div class="PanelWrapper">
+			<div class="ContactsPanel" ng-include="'views/ContactsWidget.html'" ng-controller="ContactsWidget"></div>
+			<ng-view class="WidgetPanel"></ng-view>			
+			<div class="DockPanel"></div>
+		</div>
+	</div>
+
+    <div ng-include="currentPopup.url">
+    </div>
+    <div id="_contextMenuWrap"></div>
+
+    <div  id="fj-loading" class="fj-loading">
+        <div class="fji-box">
+            <div class="fji-label">Loading...</div>
+            <div class="loading-amination">
+                <img src="img/ajax-loader.gif">
+            </div>
+        </div>
+    </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
@@ -127,11 +174,47 @@
     <!--UI-->
 
     <script src="scripts/controllers/base/Controller.js"></script>
-    <script src="scripts/controllers/LaunchController.js"></script>
+    <script src="scripts/controllers/base/SortableController.js"></script>
+    <script src="scripts/controllers/base/SortMenuController.js"></script>
+    <script src="scripts/controllers/base/ActionMenuController.js"></script>
+
+    <script src="scripts/controllers/MainController.js"></script>
+    <script src="scripts/controllers/TopNavigationController.js"></script>
+    <script src="scripts/controllers/TopBarMeStatusController.js"></script>
+    <script src="scripts/controllers/MeWidgetController.js"></script>
+    <script src="scripts/controllers/LocationsController.js"></script>
+    <script src="scripts/controllers/base/AddContactMenuController.js"></script>
+    <script src="scripts/controllers/ZoomWidgetController.js"></script>
+    <script src="scripts/controllers/ContactsWidget.js"></script>
+    <script src="scripts/controllers/GroupsController.js"></script>
+    <script src="scripts/controllers/ConferencesWidgetController.js"></script>
+    <script src="scripts/controllers/LeftBarContactsController.js"></script>
+    <script src="scripts/controllers/GroupsTab.js"></script>
+    <script src="scripts/controllers/VoicemailTab.js"></script>
+    <script src="scripts/controllers/EditContactDialog.js"></script>
+    <script src="scripts/controllers/ConversationWidgetController.js"></script>
+    <script src="scripts/controllers/ConversationWidgetChatController.js"></script>
+    <script src="scripts/controllers/ConversationWidgetGroupsController.js"></script>
+    <script src="scripts/controllers/ConversationWidgetVoicemailsController.js"></script>
+    <script src="scripts/controllers/ConversationWidgetQueuesController.js"></script>
+    <script src="scripts/controllers/ConversationWidgetCallLogController.js"></script>
+    <script src="scripts/controllers/TestWidgetController.js"></script>
+    <script src="scripts/controllers/SearchInputController.js"></script>
+    <script src="scripts/controllers/SearchWidgetController.js"></script>
+    <script src="scripts/controllers/MyCallController.js"></script>
+    <script src="scripts/controllers/RecentsListController.js"></script>
+    <script src="scripts/controllers/RecentItemController.js"></script>
+    <script src="scripts/controllers/contextMenuController.js"></script>
+    <script src="scripts/controllers/ChatStatusController.js"></script>
+    <script src="scripts/controllers/CallsRecordingsController.js"></script>
+    <script src="scripts/controllers/CallCenterController.js"></script>
+    <script src="scripts/services/httpService.js"></script>
+    <script src="scripts/controllers/LeftBarController.js"></script>
+    <script src="scripts/controllers/LeftBarCallsController.js"></script>
 
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>
-
+    <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
     <!-- endbuild -->
 </body>
 </html>

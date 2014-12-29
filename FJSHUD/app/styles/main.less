@@ -1,9 +1,7 @@
-//out: main.css
-//main: main.less
 * {
   box-sizing: border-box;
 }
-//1em;
+
 body, html {
   position : relative;
   height : 100%;
@@ -25,8 +23,6 @@ option{
   text-align:center;
   padding-left:20px;
 }
-
-
 
 textarea {
   background-color: #FFFFFF;
@@ -73,64 +69,15 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   flex-direction: row;
 }
 
-.MainPanel {
+.DockPanel {
+  position: relative;
   flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .col1{
   width:180px;
   display:inline-block;
 
-}
-.StackablePanels {
-  width: 50%;
-  padding-left: 10px;
-  display: flex;
-  flex-direction: column;
-
-  .Stackable {
-    &.shrink {
-      font-size: .95em;
-    }
-
-    position: relative;
-    flex: 1;
-    border-radius: 4px;
-    background-image: url(../img/XTile-Widget.png);
-    box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
-    border: solid 1px #ccc;
-
-	.close {
-	  position: absolute;
-	  top: -5px;
-	  right: -5px;
-	  color: white;
-	  background-color: black;
-	  font-weight: bold;
-	  border: 1px solid white;
-	  box-shadow: 0 0 10px gray;
-	  border-radius: 15px;
-	  width: 15px;
-	  height: 15px;
-	  font-size: 12px;
-	  line-height: 12px;
-	  text-align: center;
-	  cursor: pointer;
-	  z-index: 5;
-	}
-
-	.panel {
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 4;
-		overflow: auto;
-	}
-  }
 }
 
 
@@ -265,30 +212,53 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   font-size:1em;
 }
 
+.fj-loading
+{
+  position: absolute;
+  left:0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  background: #ccc url(../img/bg.png);
+  z-index: 1000;
+  .fji-label
+  {
+    position: relative;
+    font-size: 40px;
+    line-height: 60px;
+    height: 60px;
+    text-align:center;
+    color: #333;
+    font-weight:bold;
+    text-shadow: 0 2px 0 #fff;
+  }
+  .fji-box
+  {
+    position: relative;
+    margin: auto;
+    margin-top:200px;
+    height: 100px;
+    width: 30%;
+  }
+  .loading-amination {
+    text-align: center;
+  }
+}
 
-@import "loading";
-@import "menu";
-@import "queue-status";
 @import "search";
-@import "select-box";
 @import "table";
-@import "tabs";
 @import "toolbar";
 @import "topBar";
 @import "widget";
 @import "avatar";
-@import "button";
-@import "chat-status";
+@import "buttons";
+@import "icons";
 @import "dialog";
-@import "expandedToolbar";
 @import "list-section";
 @import "listMessge";
 @import "listRow";
 @import "media";
 @import "leftBar";
-@import "mycalls";
 @import "chat";
-@import "slider";
-@import "calllog-status";
 @import "queue";
 @import "overlay";

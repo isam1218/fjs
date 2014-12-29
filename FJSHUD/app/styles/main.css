@@ -66,58 +66,13 @@ input[type="tel"] {
   display: flex;
   flex-direction: row;
 }
-.MainPanel {
+.DockPanel {
+  position: relative;
   flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 .col1 {
   width: 180px;
   display: inline-block;
-}
-.StackablePanels {
-  width: 50%;
-  padding-left: 10px;
-  display: flex;
-  flex-direction: column;
-}
-.StackablePanels .Stackable {
-  position: relative;
-  flex: 1;
-  border-radius: 4px;
-  background-image: url(../img/XTile-Widget.png);
-  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
-  border: solid 1px #ccc;
-}
-.StackablePanels .Stackable.shrink {
-  font-size: .95em;
-}
-.StackablePanels .Stackable .close {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  color: white;
-  background-color: black;
-  font-weight: bold;
-  border: 1px solid white;
-  box-shadow: 0 0 10px gray;
-  border-radius: 15px;
-  width: 15px;
-  height: 15px;
-  font-size: 12px;
-  line-height: 12px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 5;
-}
-.StackablePanels .Stackable .panel {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4;
-  overflow: auto;
 }
 .text[contenteditable] {
   height: 26px;
@@ -250,139 +205,6 @@ input[type="tel"] {
 .fj-loading .loading-amination {
   text-align: center;
 }
-.MenuWindow {
-  position: absolute;
-  z-index: 1000;
-  border-radius: 4px;
-  min-width: 195px;
-  max-width: 500px;
-  background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
-  border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
-}
-.MenuWindowTitle {
-  position: relative;
-  color: #729c00;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 10px;
-  margin-right: 10px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-bottom: solid 1px #999;
-  overflow: hidden;
-  text-overflow: clip;
-  white-space: nowrap;
-  z-index: 1;
-}
-.MenuSection {
-  font-size: .7em;
-}
-.MenuItem {
-  position: relative;
-  height: 26px;
-  line-height: 26px;
-  outline: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #555450;
-  text-shadow: 0 1px 0 white;
-  cursor: pointer;
-  display: block;
-  border-radius: 1px;
-}
-.MenuItem:hover {
-  background-color: #729C00;
-  color: white;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-}
-.MenuItemIcon {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-}
-.MenuItemText {
-  line-height: 26px;
-  text-align: left;
-  outline: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-}
-.MenuItem .SelectedIcon {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-}
-.MenuItem.selected .SelectedIcon {
-  background: url(../img/XIconSet-24x24.png) no-repeat -144px -48px;
-}
-.MenuItemTextStatus {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 11px;
-  margin-right: 5px;
-}
-.MenuContent {
-  position: relative;
-  margin: 10px;
-}
-/********LocationsMenu******/
-.LocationsMenu .MenuItemText {
-  width: 200px;
-}
-.XIcon-QueueStatus {
-  width: 24px;
-  height: 24px;
-}
-.XIcon-QueueStatus.LoggedIn,
-.XIcon-QueueStatus-login {
-  background: url("../img/XStatus.png") no-repeat 0px -24px;
-}
-.XIcon-QueueStatus.LoggedOut,
-.XIcon-QueueStatus-logout {
-  background: url("../img/XStatus.png") no-repeat -24px -24px;
-}
-.XIcon-QueueStatus.LockedIn,
-.XIcon-QueueStatus-logout-permanent {
-  background: url("../img/XStatus.png") no-repeat -48px -24px;
-}
-.XIcon-QueueStatus.LockedOut {
-  background: url("../img/XStatus.png") no-repeat -72px -24px;
-}
-.XIcon-QueueStatus.NotAgent,
-.XIcon-QueueStatus-disabled,
-.XIcon-QueueStatus- {
-  background: url("../img/XStatus.png") no-repeat -96px -24px;
-}
-.XIcon-QueueStatus.Small {
-  width: 20px;
-  height: 20px;
-}
-.XIcon-QueueStatus.LoggedIn.Small,
-.XIcon-QueueStatus-login.Small {
-  background: url("../img/XStatus-20x20.png") no-repeat 0 -20px;
-}
-.XIcon-QueueStatus.LoggedOut.Small,
-.XIcon-QueueStatus-logout.Small {
-  background: url("../img/XStatus-20x20.png") no-repeat -20px -20px;
-}
-.XIcon-QueueStatus.LockedIn.Small,
-.XIcon-QueueStatus-logout-permanent.Small {
-  background: url("../img/XStatus-20x20.png") no-repeat -40px -20px;
-}
-.XIcon-QueueStatus.LockedOut.Small {
-  background: url("../img/XStatus-20x20.png") no-repeat -60px -20px;
-}
-.XIcon-QueueStatus.NotAgent.Small,
-.XIcon-QueueStatus-disabled.Small,
-.XIcon-QueueStatus-.Small {
-  background: url("../img/XStatus-20x20.png") no-repeat -80px -20px;
-}
 .SearchInputBox {
   position: absolute;
   margin: 0;
@@ -449,66 +271,6 @@ input[type="tel"] {
   flex: 1;
   overflow-y: auto;
 }
-.SelectBox {
-  display: inline-block;
-  border-radius: 2px;
-  background-image: linear-gradient(#fefefe, #ebebeb);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  vertical-align: middle;
-  padding: 0 25px 0 10px;
-  height: 26px;
-  line-height: 26px;
-  font-weight: bold;
-  font-size: 11px;
-  position: relative;
-  cursor: pointer;
-}
-.SelectBox:hover {
-  background: #fefefe linear-gradient(#fefefe, #dddddd);
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  color: #222;
-  text-shadow: 0 1px 0 #fff;
-}
-.SelectBoxText {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.SelectBoxSettings {
-  width: 195px;
-  text-align: center;
-  padding: 0 0 0 20px;
-}
-.SelectBoxText .InnerIco {
-  color: #719d24;
-}
-.SelectBoxArrow {
-  top: 12px;
-  border: 4px solid;
-  border-color: #555 transparent transparent transparent;
-  width: 0;
-  height: 0;
-  position: absolute;
-  right: 8px;
-}
-.SelectBoxMenu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 30px;
-  cursor: pointer;
-}
-.SelectBoxMenu .SelectBoxText {
-  top: 5px;
-  color: #719d24;
-  font-weight: bold;
-  text-align: center;
-  position: relative;
-}
-.SelectMenuBox .MenuContent {
-  margin-top: 30px;
-}
 .ListLineContent {
   position: relative;
   width: 100%;
@@ -565,59 +327,6 @@ input[type="tel"] {
 .ListLineContentCell.Down span {
   color: #729C00;
 }
-.WidgetTabBar {
-  position: relative;
-  margin: 0;
-  left: 0;
-  right: 0;
-  height: 2.1em;
-  border-bottom: solid 1px #729c00;
-  border-top: solid 1px #e0e0e0;
-  vertical-align: bottom;
-  background: #fefefe linear-gradient(#fefefe, #eeeeee);
-  user-select: none;
-}
-.WidgetTabBarButton {
-  position: relative;
-  display: inline-block;
-  margin-top: 0;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.WidgetTabBarButton .inner {
-  position: relative;
-  margin-left: 9px;
-  margin-right: 9px;
-  display: inline-block;
-  height: 33px;
-  line-height: 3em;
-  font-size: .75em;
-  color: #888;
-  text-shadow: 0 1px 0 #FFF;
-  cursor: pointer;
-}
-.WidgetTabBarButton:hover .inner {
-  color: #729c00;
-}
-.WidgetTabBarButton.fj-selected-item .inner {
-  color: #729c00;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-  font-weight: bold;
-}
-.WidgetTabBarButton .arrow {
-  display: none;
-  position: absolute;
-  top: 1.1em;
-  left: 50%;
-  margin-left: -7px;
-  width: 0;
-  height: 0;
-  border: solid 7px;
-  border-color: transparent transparent #729c00 transparent;
-}
-.WidgetTabBarButton.fj-selected-item .arrow {
-  display: block;
-}
 .ToolBar {
   position: relative;
   padding: 0 5px;
@@ -631,27 +340,26 @@ input[type="tel"] {
   position: relative;
   width: 100%;
   height: 100px;
-  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid white;
+  box-shadow: 0 -1px 1px #cccccc inset;
 }
 .TopBar:hover {
   z-index: 1000;
   background-color: #f3f3f3;
+  border-radius: 0 0 10px 10px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
 }
 .TopBarLogo {
-  position: absolute;
-  background-image: url("../img/FonalityLogo.png");
-  width: 150px;
-  height: 45px;
-  top: 24px;
-  left: 20px;
+  background: url("../img/FonalityLogo.png") no-repeat;
+  margin: 5px 0 0 10px;
+  flex: .6;
+  min-width: 250px;
 }
 .TopBarIcons {
-  position: absolute;
-  top: 4px;
-  left: 200px;
-  width: 500px;
-  bottom: 0;
+  flex: 1;
+  min-width: 400px;
 }
 .TopBarItemApp {
   position: relative;
@@ -737,50 +445,33 @@ input[type="tel"] {
   font-size: 12px;
 }
 .TopBarMeStatus {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 33%;
+  flex: 1;
+  margin: 5px 10px 0 0;
   text-align: right;
 }
-.TopBarMeStatus-row {
-  text-align: left;
-  margin: .5%;
-  vertical-align: top;
-  display: inline-block;
-  position: relative;
+.TopBarMeStatus .Logout {
+  padding-left: 24px;
 }
-.TopBarMeStatus-row .SelectBox {
-  width: 120px;
-  margin-bottom: 5px;
-  display: block;
-}
-.TopBarMeStatus-row .AvatarNormal,
-.TopBarMeStatus-row .AvatarNormal img {
-  width: 59px;
-  height: 59px;
-}
-.TopBarMeStatus-row .XButtonToggle {
-  height: 26px;
-  margin-bottom: 5px;
-  padding: 0 3px;
-  display: block;
-}
-.TopBarBottomLine {
+.TopBarMeStatus .Logout .logout-ico {
+  background: url("../img/XIconSet-24x24.png") no-repeat -336px -24px;
+  width: 24px;
+  height: 24px;
   position: absolute;
   left: 0;
-  bottom: 0;
-  right: 0;
-  height: 0;
-  border-top: solid 1px #bbb;
-  border-bottom: solid 1px #fff;
+  top: 1px;
 }
-.TopBar:hover .TopBarBottomLine {
-  display: none;
-}
-.WidgetWrapper {
+.WidgetPanel {
   position: relative;
   flex: 1;
+  margin: -40px 0 0 10px;
+  min-width: 400px;
+}
+.WidgetPanel .Widget {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 1px 0 10px gray;
 }
 .Widget {
   position: absolute;
@@ -788,9 +479,7 @@ input[type="tel"] {
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 4px;
   background-image: url(../img/XTile-Widget.png);
-  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
   border: solid 1px #ccc;
   z-index: 1;
   display: flex;
@@ -957,6 +646,59 @@ input[type="tel"] {
   left: 2px;
   top: 4px;
   width: 160px;
+}
+.WidgetTabBar {
+  position: relative;
+  margin: 0;
+  left: 0;
+  right: 0;
+  height: 2.1em;
+  border-bottom: solid 1px #729c00;
+  border-top: solid 1px #e0e0e0;
+  vertical-align: bottom;
+  background: #fefefe linear-gradient(#fefefe, #eeeeee);
+  user-select: none;
+}
+.WidgetTabBarButton {
+  position: relative;
+  display: inline-block;
+  margin-top: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.WidgetTabBarButton .inner {
+  position: relative;
+  margin-left: 9px;
+  margin-right: 9px;
+  display: inline-block;
+  height: 33px;
+  line-height: 3em;
+  font-size: .75em;
+  color: #888;
+  text-shadow: 0 1px 0 #FFF;
+  cursor: pointer;
+}
+.WidgetTabBarButton:hover .inner {
+  color: #729c00;
+}
+.WidgetTabBarButton.fj-selected-item .inner {
+  color: #729c00;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+.WidgetTabBarButton .arrow {
+  display: none;
+  position: absolute;
+  top: 1.1em;
+  left: 50%;
+  margin-left: -7px;
+  width: 0;
+  height: 0;
+  border: solid 7px;
+  border-color: transparent transparent #729c00 transparent;
+}
+.WidgetTabBarButton.fj-selected-item .arrow {
+  display: block;
 }
 /********************WidgetMe************************************/
 .WidgetMe .SettingsPanel,
@@ -1361,6 +1103,157 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 24px;
   height: 24px;
 }
+.SelectBox {
+  display: inline-block;
+  border-radius: 2px;
+  background-image: linear-gradient(#fefefe, #ebebeb);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  vertical-align: middle;
+  padding: 0 25px 0 10px;
+  height: 26px;
+  line-height: 26px;
+  font-weight: bold;
+  font-size: 11px;
+  position: relative;
+  cursor: pointer;
+}
+.SelectBox:hover {
+  background: #fefefe linear-gradient(#fefefe, #dddddd);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0 #fff;
+}
+.SelectBoxText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.SelectBoxSettings {
+  width: 195px;
+  text-align: center;
+  padding: 0 0 0 20px;
+}
+.SelectBoxText .InnerIco {
+  color: #719d24;
+}
+.SelectBoxArrow {
+  top: 12px;
+  border: 4px solid;
+  border-color: #555 transparent transparent transparent;
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 8px;
+}
+.SelectBoxMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  cursor: pointer;
+}
+.SelectBoxMenu .SelectBoxText {
+  top: 5px;
+  color: #719d24;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+}
+.SelectMenuBox .MenuContent {
+  margin-top: 30px;
+}
+.MediaPlayerSlider {
+  position: absolute;
+  top: 22px;
+  height: 10px;
+  left: 30px;
+  right: 30px;
+}
+.MediaPlayerSliderBg {
+  position: absolute;
+  top: -1px;
+  height: 10px;
+  left: 6px;
+  right: 16px;
+  border-top: solid 1px #959595;
+}
+.MediaPlayerSliderBgLeft {
+  background-image: url("img/XPlayer.png");
+  position: absolute;
+  bottom: 0px;
+  height: 20px;
+  width: 30px;
+  left: 0px;
+  right: 4px;
+  background-position: -40px -150px;
+}
+.MediaPlayerSliderBgRight {
+  background-image: url("img/XPlayer.png");
+  background-position: -50px -150px;
+  position: absolute;
+  bottom: 0px;
+  height: 20px;
+  width: 30px;
+  right: 0px;
+}
+.MediaPlayerSliderInner {
+  position: absolute;
+  top: 0px;
+  height: 10px;
+  left: 0px;
+  right: 20px;
+}
+.MediaPlayerSliderThumb {
+  position: absolute;
+  top: 0px;
+  height: 16px;
+  border-radius: 20px;
+  /** sample, fill from controller */
+}
+.MediaPlayerSliderThumbIco {
+  top: -10px;
+  height: 20px;
+  right: 0px;
+  background-image: url("img/XPlayer.png");
+  background-position: 0px -150px;
+  position: absolute;
+  width: 20px;
+  left: 0px;
+}
+.MediaPlayerSliderIndicator {
+  display: none;
+}
+.PopupSlider {
+  display: none;
+  position: absolute;
+  top: 26px;
+  left: 0;
+  width: 28px;
+  z-index: 100;
+  height: 100px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+}
+.PopupSlider .PopupSliderFadeLine {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  background-color: #bbb;
+  left: 12px;
+  right: 12px;
+}
+.PopupSlider .PopupSliderFader {
+  position: absolute;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  background-color: #999;
+  border-radius: 20px;
+  left: 4px;
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
+}
 .XIcon-ChatStatus-Available,
 .XIcon-ChatStatus-available {
   background: url("../img/XStatus.png") no-repeat 0 0;
@@ -1392,6 +1285,62 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .XIcon-ChatStatus-Offline.Small,
 .XIcon-ChatStatus-offline.Small {
   background: url("../img/XStatus-20x20.png") no-repeat -60px 0;
+}
+.XIcon-QueueStatus {
+  width: 24px;
+  height: 24px;
+}
+.XIcon-QueueStatus.LoggedIn,
+.XIcon-QueueStatus-login {
+  background: url("../img/XStatus.png") no-repeat 0px -24px;
+}
+.XIcon-QueueStatus.LoggedOut,
+.XIcon-QueueStatus-logout {
+  background: url("../img/XStatus.png") no-repeat -24px -24px;
+}
+.XIcon-QueueStatus.LockedIn,
+.XIcon-QueueStatus-logout-permanent {
+  background: url("../img/XStatus.png") no-repeat -48px -24px;
+}
+.XIcon-QueueStatus.LockedOut {
+  background: url("../img/XStatus.png") no-repeat -72px -24px;
+}
+.XIcon-QueueStatus.NotAgent,
+.XIcon-QueueStatus-disabled,
+.XIcon-QueueStatus- {
+  background: url("../img/XStatus.png") no-repeat -96px -24px;
+}
+.XIcon-QueueStatus.Small {
+  width: 20px;
+  height: 20px;
+}
+.XIcon-QueueStatus.LoggedIn.Small,
+.XIcon-QueueStatus-login.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat 0 -20px;
+}
+.XIcon-QueueStatus.LoggedOut.Small,
+.XIcon-QueueStatus-logout.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -20px -20px;
+}
+.XIcon-QueueStatus.LockedIn.Small,
+.XIcon-QueueStatus-logout-permanent.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -40px -20px;
+}
+.XIcon-QueueStatus.LockedOut.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -60px -20px;
+}
+.XIcon-QueueStatus.NotAgent.Small,
+.XIcon-QueueStatus-disabled.Small,
+.XIcon-QueueStatus-.Small {
+  background: url("../img/XStatus-20x20.png") no-repeat -80px -20px;
+}
+.XIcon-CallLog-Incoming,
+.XIcon-CallLog-incoming {
+  background: url("../img/XIcon-CallLog-Incoming.png") no-repeat 0 0;
+}
+.XIcon-CallLog-Outbound,
+.XIcon-CallLog-outbound {
+  background: url("../img/XIcon-CallLog-Outbound.png") no-repeat 0 0;
 }
 .DialogHolder {
   position: absolute;
@@ -1592,61 +1541,6 @@ input.text.DialogFieldInput {
   left: 160px;
   top: 3px;
   width: 200px;
-}
-.ExpandedToolBar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  height: 50px;
-  border-bottom: solid 1px #ccc;
-}
-.WidgetTabEditMode .ExpandedToolBar {
-  height: 330px;
-  top: -46px;
-  left: -6px;
-  right: -6px;
-  border-radius: 6px;
-  background-image: url("../img/XTile-Widget.png");
-  border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1;
-}
-.ExpandedToolBarHolder {
-  position: relative;
-  height: 55px;
-}
-.ExpandedToolBar .Cover {
-  display: none;
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-.ExpandedToolBarHolder.WidgetTabEditMode .Cover {
-  display: block;
-}
-.ExpandedToolBar .MenuWindowTitle {
-  display: none;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-.WidgetTabEditMode .ExpandedToolBar .MenuWindowTitle {
-  display: block;
-}
-.ExpandedToolBarHolder .ExpandedToolBar .SearchInputBox {
-  left: 0;
-  top: 5px;
-  width: 160px;
-}
-.ExpandedToolBar .SearchResults {
-  position: absolute;
-  overflow-y: auto;
-  top: 85px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
 }
 .ListSection {
   position: relative;
@@ -2435,12 +2329,26 @@ input.text.DialogFieldInput {
   .PanelWrapper {
     flex-direction: column;
   }
-  .StackablePanels {
-    padding: 10px 0 0 0;
-    flex: 1;
-    width: 100%;
-    height: 50%;
+  .DockPanel {
+    display: none;
   }
+}
+.ContactsPanel {
+  position: relative;
+  flex: .6;
+  min-width: 250px;
+}
+.ContactsPanel .RoundedTop {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  box-shadow: 0px 1px 1px #ccc inset;
 }
 .LeftSideBar {
   position: relative;
@@ -2739,287 +2647,6 @@ input.text.DialogFieldInput {
   display: flex;
   flex-direction: column;
 }
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.LeftSideBarSectionTop.Head {
-  height: 30px;
-  top: -16px;
-  background: url("../img/SideBar2.png") no-repeat;
-}
-.LeftSideBarSectionNewCall {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  height: 50px;
-}
-.LeftSideBarSectionNewCall .XButton {
-  width: 100px;
-  left: 212px;
-  position: absolute;
-  top: 5px;
-}
-.InputNewCall {
-  position: absolute;
-  left: 10px;
-  top: 11px;
-  width: 195px;
-  height: 25px;
-  border: 1px solid #c2c2c2;
-  border-radius: 2px;
-}
-.PhoneInputBox {
-  position: absolute;
-  left: 10px;
-  top: 11px;
-  width: 195px;
-  height: 25px;
-  border: 1px solid #c2c2c2;
-  border-radius: 2px;
-}
-.PhoneInputBox .InputNewCall {
-  position: absolute;
-  height: 21px;
-  left: 4px;
-  top: 0px;
-  right: 4px;
-  border: none;
-  width: auto;
-}
-.LeftBarPhoneCalls {
-  margin: 0;
-  position: relative;
-}
-.LeftBarPhoneCalls.fj-scrollable .fj-viewport {
-  position: relative;
-}
-.LeftSideBarSectionBottom.Phone {
-  height: 50px;
-}
-.XButtonCall {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  right: 0px;
-}
-.XButton.XButtonCall span {
-  width: 65px;
-}
-.PhoneCallsPanel {
-  position: relative;
-  width: 298px;
-}
-.PhoneCallsPanelEmpty {
-  display: none;
-}
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/* See the fj.fdp.mycalls.MycallEntryModel#getCallCategory() */
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.MyCallBlock {
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5), inset 0 -1px 2px rgba(0, 0, 0, 0.2);
-  /*Fail safe for unknown call type*/
-  color: #000000;
-}
-.MyCallHolder {
-  height: 44px;
-  background-image: linear-gradient(#fefefe, #ebebeb);
-}
-.MyCallBlock.IsHold-true {
-  color: #000000;
-  /*	background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb); */
-}
-.MyCallBlockButtonsHolder {
-  position: absolute;
-  right: 6px;
-  top: 8px;
-}
-.MyCallBlock.External .MyCallHolder {
-  /*	color: #729c00; */
-  background-image: linear-gradient(#f3f8e6, #ecf2da);
-}
-.MyCallBlock.Office .MyCallHolder,
-.MyCallBlock.None .MyCallHolder {
-  /*	color: #009cff; */
-  background-image: linear-gradient(#e4f1f8, #dfebf1);
-}
-.MyCallBlock.Queue .MyCallHolder {
-  /*	color: #e27100; */
-  background-image: linear-gradient(#fff1dd, #f8e7cd);
-}
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.MyCallBlock_Avatar {
-  position: absolute;
-  margin: 0px;
-  left: 6px;
-  top: 6px;
-}
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.MyCallBlock_CallLineTop {
-  position: absolute;
-  top: 7px;
-  left: 42px;
-  width: 159px;
-}
-.MyCallBlock_Duration {
-  position: relative;
-  text-shadow: 0px 1px 0px #fff;
-}
-.MyCallBlock_CallerName {
-  position: relative;
-  font-size: 12px;
-  line-height: 15px;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px #eee;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.MyCallBlock_CallerName .fj-hbox-space-inner {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.MyCallBlock_CallInfo {
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.MyCallBlock_CallInfo .fj-hbox-space-inner {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.MyCallBlock_CallLineBottom {
-  position: absolute;
-  top: 20px;
-  left: 42px;
-  width: 159px;
-  height: 22px;
-  font-size: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.MyCallBlock_MutedText {
-  width: 35px;
-  color: #E53D3D;
-}
-.IsHold-true .MyCallBlock_CallLineTop,
-.IsHold-true .MyCallBlock_CallLineBottom {
-  width: 207px;
-}
-.MyCallBlock_CallerNumber {
-  position: relative;
-  font-size: 11px;
-  line-height: 15px;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px #fff;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.MyCallBlock_Rec {
-  position: relative;
-  background: url("../img/XIconSet-24x24.png") no-repeat -152px -4px;
-  width: 36px;
-  height: 19px;
-  display: none;
-}
-.MyCallBlock_Rec.true {
-  display: block;
-}
-.MyCallBlock_Mute {
-  position: relative;
-  background: url("../img/XIconSet-24x24.png") no-repeat -120px -26px;
-  width: 48px;
-  height: 19px;
-  display: none;
-}
-.MyCallBlock_Mute.true {
-  display: block;
-}
-.MyCallBlock_Location {
-  font-size: 11px;
-  line-height: 15px;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px #fff;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  display: block;
-}
-/** IFY stop here */
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.MyCallBlock_HoldInfo {
-  position: absolute;
-  left: 10px;
-  top: 57px;
-  width: 67px;
-  height: 26px;
-  display: none;
-  color: red;
-  font-size: 9px;
-  font-weight: bold;
-  z-index: 1;
-  border: dotted 1px #999;
-  border-right: none;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.MyCallBlock_HoldInfo.true {
-  display: block;
-}
-.MyCallBlock_HoldInfo_Label {
-  position: absolute;
-  text-align: center;
-  top: 2px;
-  left: 0px;
-  right: 0px;
-}
-.MyCallBlock_HoldInfo_Timer {
-  color: #bbb;
-}
-.MyCallBlock_CallIcon {
-  height: 40px;
-  width: 40px;
-  margin: 2px;
-  background: url("../img/XActionSet-40x40.png") no-repeat -200px -240px;
-}
-.MyCallBlock_CallIcon.Category-External,
-.MyCallBlock_CallIcon.Category-ExternalRing {
-  background: url("../img/XActionSet-40x40.png") no-repeat -160px -240px;
-}
-.MyCallBlock_CallIcon.Category-Queue,
-.MyCallBlock_CallIcon.Category-QueueRing {
-  background: url("../img/XActionSet-40x40.png") no-repeat -120px -240px;
-}
-.MyCallBlock_CallIconInner {
-  height: 40px;
-  width: 40px;
-  background: url("../img/XActionSet-40x40.png") no-repeat -80px -240px;
-}
-.MyCallBlock_CallIconInner.IsMute-true {
-  background: url("../img/XActionSet-40x40.png") no-repeat -40px -240px;
-}
-.IsHold-true .MyCallBlock_CallIconInner {
-  background: url("../img/XActionSet-40x40.png") no-repeat 0px -240px;
-}
-.CurentCall-ButtonsBlock {
-  padding: 5px;
-}
-.CurentCall-ButtonsBlock .XButton {
-  margin: 2px;
-  width: 68px;
-}
-.CurentCall-ButtonsBlock .SelectBox {
-  margin: 2px;
-  width: 53px;
-  height: 28px;
-}
 .WidgetTabContent.TabChat {
   position: absolute;
   top: 45px;
@@ -3129,105 +2756,6 @@ input.text.ChatInputBoxInput,
   margin-left: 4px;
   margin-right: 4px;
   width: auto;
-}
-.MediaPlayerSlider {
-  position: absolute;
-  top: 22px;
-  height: 10px;
-  left: 30px;
-  right: 30px;
-}
-.MediaPlayerSliderBg {
-  position: absolute;
-  top: -1px;
-  height: 10px;
-  left: 6px;
-  right: 16px;
-  border-top: solid 1px #959595;
-}
-.MediaPlayerSliderBgLeft {
-  background-image: url("img/XPlayer.png");
-  position: absolute;
-  bottom: 0px;
-  height: 20px;
-  width: 30px;
-  left: 0px;
-  right: 4px;
-  background-position: -40px -150px;
-}
-.MediaPlayerSliderBgRight {
-  background-image: url("img/XPlayer.png");
-  background-position: -50px -150px;
-  position: absolute;
-  bottom: 0px;
-  height: 20px;
-  width: 30px;
-  right: 0px;
-}
-.MediaPlayerSliderInner {
-  position: absolute;
-  top: 0px;
-  height: 10px;
-  left: 0px;
-  right: 20px;
-}
-.MediaPlayerSliderThumb {
-  position: absolute;
-  top: 0px;
-  height: 16px;
-  border-radius: 20px;
-  /** sample, fill from controller */
-}
-.MediaPlayerSliderThumbIco {
-  top: -10px;
-  height: 20px;
-  right: 0px;
-  background-image: url("img/XPlayer.png");
-  background-position: 0px -150px;
-  position: absolute;
-  width: 20px;
-  left: 0px;
-}
-.MediaPlayerSliderIndicator {
-  display: none;
-}
-.PopupSlider {
-  display: none;
-  position: absolute;
-  top: 26px;
-  left: 0;
-  width: 28px;
-  z-index: 100;
-  height: 100px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0 0 4px 4px;
-}
-.PopupSlider .PopupSliderFadeLine {
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  background-color: #bbb;
-  left: 12px;
-  right: 12px;
-}
-.PopupSlider .PopupSliderFader {
-  position: absolute;
-  top: 30px;
-  width: 20px;
-  height: 20px;
-  background-color: #999;
-  border-radius: 20px;
-  left: 4px;
-  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
-}
-.XIcon-CallLog-Incoming,
-.XIcon-CallLog-incoming {
-  background: url("../img/XIcon-CallLog-Incoming.png") no-repeat 0 0;
-}
-.XIcon-CallLog-Outbound,
-.XIcon-CallLog-outbound {
-  background: url("../img/XIcon-CallLog-Outbound.png") no-repeat 0 0;
 }
 .QueueBlockHolder {
   position: relative;
@@ -3525,4 +3053,89 @@ input.text.ChatInputBoxInput,
   padding: .25em .5em;
   font-size: 0.9em;
   border-radius: .5em;
+}
+.MenuWindow {
+  position: absolute;
+  z-index: 1000;
+  border-radius: 4px;
+  min-width: 195px;
+  max-width: 500px;
+  background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
+  border: solid 1px #aaa;
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+}
+.MenuWindowTitle {
+  position: relative;
+  color: #729c00;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-bottom: solid 1px #999;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  z-index: 1;
+}
+.MenuSection {
+  font-size: .7em;
+}
+.MenuItem {
+  position: relative;
+  height: 26px;
+  line-height: 26px;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #555450;
+  text-shadow: 0 1px 0 white;
+  cursor: pointer;
+  display: block;
+  border-radius: 1px;
+}
+.MenuItem:hover {
+  background-color: #729C00;
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+.MenuItemIcon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+.MenuItemText {
+  line-height: 26px;
+  text-align: left;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+.MenuItem .SelectedIcon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+.MenuItem.selected .SelectedIcon {
+  background: url(../img/XIconSet-24x24.png) no-repeat -144px -48px;
+}
+.MenuItemTextStatus {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 11px;
+  margin-right: 5px;
+}
+.MenuContent {
+  position: relative;
+  margin: 10px;
+}
+/********LocationsMenu******/
+.LocationsMenu .MenuItemText {
+  width: 200px;
 }
