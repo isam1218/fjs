@@ -120,3 +120,172 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 24px;
   height: 24px;
 }
+
+.SelectBox {
+  display: inline-block;
+  border-radius: 2px;
+  background-image: linear-gradient(#fefefe, #ebebeb);
+  border: 1px solid rgba(0,0,0,0.2);
+  vertical-align: middle;
+  padding:0 25px 0 10px;
+  height:26px;
+  line-height: 26px;
+  font-weight: bold;
+  font-size: 11px;
+  position:relative;
+  cursor:pointer;
+}
+
+.SelectBox:hover {
+  background: #fefefe linear-gradient(#fefefe, #ddd);
+  border: 1px solid rgba(0,0,0,0.3);
+  color: #222;
+  text-shadow : 0 1px 0 #fff;
+}
+
+.SelectBoxText {
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.SelectBoxSettings{
+  width:195px;
+  text-align:center;
+  padding: 0 0 0 20px;
+}
+
+.SelectBoxText .InnerIco {
+  color: #719d24;
+}
+
+.SelectBoxArrow {
+  top: 12px;
+  border:4px solid;
+  border-color: #555 transparent transparent transparent;
+  width: 0;
+  height: 0;
+  position:absolute;
+  right: 8px;
+}
+
+.SelectBoxMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right:0;
+  height: 30px;
+  cursor: pointer;
+}
+
+.SelectBoxMenu .SelectBoxText {
+  top: 5px;
+  color: #719d24;
+  font-weight: bold;
+  text-align: center;
+  position:relative;
+}
+
+.SelectMenuBox .MenuContent {
+  margin-top: 30px;
+}
+
+.MediaPlayerSlider
+{
+  position: absolute;
+  top: 22px;
+  height: 10px;
+  left: 30px;
+  right: 30px;
+}
+.MediaPlayerSliderBg {
+  position: absolute;
+  top: -1px;
+  height: 10px;
+  left: 6px;
+  right: 16px;
+  border-top: solid 1px #959595;
+}
+.MediaPlayerSliderBgLeft
+{
+  background-image: url("img/XPlayer.png");
+  position: absolute;
+  bottom: 0px;
+  height: 20px;
+  width: 30px;
+  left: 0px;
+  right: 4px;
+  background-position: -40px -150px;
+}
+
+.MediaPlayerSliderBgRight
+{
+  background-image: url("img/XPlayer.png");
+  background-position: -50px -150px;
+  position: absolute;
+  bottom: 0px;
+  height: 20px;
+  width: 30px;
+  right: 0px;
+}
+.MediaPlayerSliderInner
+{
+  position: absolute;
+  top: 0px;
+  height: 10px;
+  left: 0px;
+  right: 20px;
+}
+.MediaPlayerSliderThumb
+{
+  position: absolute;
+  top: 0px;
+  height: 16px;
+  border-radius: 20px;
+  /** sample, fill from controller */
+}
+.MediaPlayerSliderThumbIco
+{
+  top: -10px;
+  height: 20px;
+  right: 0px;
+  background-image: url("img/XPlayer.png");
+  background-position: 0px -150px;
+  position: absolute;
+  width: 20px;
+  left: 0px;
+}
+.MediaPlayerSliderIndicator{
+  display: none;
+}
+
+.PopupSlider {
+  display:none;
+  position:absolute;
+  top:26px;
+  left:0;
+  width:28px;
+  z-index: 100;
+  height:100px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  .PopupSliderFadeLine {
+    position:absolute;
+    top:5px;
+    bottom: 5px;
+    background-color: #bbb;
+    left:12px;
+    right:12px;
+  }
+  .PopupSliderFader {
+    position:absolute;
+    top:30px;
+    width:20px;
+    height:20px;
+    background-color: #999;
+    border-radius: 20px;
+    left:4px;
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
+
+  }
+}

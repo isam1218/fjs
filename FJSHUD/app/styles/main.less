@@ -1,9 +1,7 @@
-//out: main.css
-//main: main.less
 * {
   box-sizing: border-box;
 }
-//1em;
+
 body, html {
   position : relative;
   height : 100%;
@@ -25,8 +23,6 @@ option{
   text-align:center;
   padding-left:20px;
 }
-
-
 
 textarea {
   background-color: #FFFFFF;
@@ -216,30 +212,53 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   font-size:1em;
 }
 
+.fj-loading
+{
+  position: absolute;
+  left:0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  background: #ccc url(../img/bg.png);
+  z-index: 1000;
+  .fji-label
+  {
+    position: relative;
+    font-size: 40px;
+    line-height: 60px;
+    height: 60px;
+    text-align:center;
+    color: #333;
+    font-weight:bold;
+    text-shadow: 0 2px 0 #fff;
+  }
+  .fji-box
+  {
+    position: relative;
+    margin: auto;
+    margin-top:200px;
+    height: 100px;
+    width: 30%;
+  }
+  .loading-amination {
+    text-align: center;
+  }
+}
 
-@import "loading";
-@import "menu";
-@import "queue-status";
 @import "search";
-@import "select-box";
 @import "table";
-@import "tabs";
 @import "toolbar";
 @import "topBar";
 @import "widget";
 @import "avatar";
-@import "button";
-@import "chat-status";
+@import "buttons";
+@import "icons";
 @import "dialog";
-@import "expandedToolbar";
 @import "list-section";
 @import "listMessge";
 @import "listRow";
 @import "media";
 @import "leftBar";
-@import "mycalls";
 @import "chat";
-@import "slider";
-@import "calllog-status";
 @import "queue";
 @import "overlay";
