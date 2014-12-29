@@ -1,3 +1,106 @@
+.Avatar {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
+  display: inline-block;
+  position: relative;
+  border: 1px solid #739D03;
+  line-height: 0px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.AvatarInteractable {
+  right: 1px;
+  bottom: 1px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 0;
+  border-bottom: 8px solid #739D03;
+  position: absolute;
+  display: none;
+}
+
+.Avatar:hover .AvatarInteractable, .AvatarHoverArea:hover .AvatarInteractable {
+  display: block;
+}
+
+.AvatarNormal, .AvatarNormal img {
+  width: 2.50em;
+  height: 2.50em;
+}
+.AvatarBig,  .AvatarBig img {
+  width:90px;
+  height:90px;
+}
+.AvatarSmall, .AvatarSmall img {
+  width: 1.9em;
+  height: 1.9em;
+}
+
+.AvatarApp {
+  width:40px;
+  height:40px;
+  border:none;
+}
+.AvatarApp .TopBarItemAppIcon {
+  top:0;
+  left:0;
+}
+
+.AvatarNormal .GroupAvatarItem {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 1.18em;
+  height: 1.18em;
+}
+
+.AvatarNormal .GroupAvatarItemImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.CallAvatar {
+  border-radius:20px;
+  border: 2px solid #666;
+}
+
+.CallAvatar .AvatarInteractable {
+  right:0;
+  bottom:0;
+}
+
+.CallAvatar_Office {
+  border: 2px solid #009cff;
+}
+
+.CallAvatar_Office .AvatarInteractable {
+  border-bottom: 14px solid #009cff;
+  border-left: 14px solid transparent;
+}
+
+.CallAvatar_External {
+  border: 2px solid #729c00;
+}
+
+.CallAvatar_External  .AvatarInteractable {
+  border-bottom: 14px solid #729c00;
+  border-left: 14px solid transparent;
+}
+
+.CallAvatar_Queue {
+  border: 2px solid #e27100;
+}
+
+.CallAvatar_Queue .AvatarInteractable {
+  border-bottom: 14px solid #e27100;
+  border-left: 14px solid transparent;
+}
+
 .XIcon-ChatStatus-Available
 , .XIcon-ChatStatus-available
 {

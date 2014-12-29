@@ -1,4 +1,48 @@
-//out: dialog.css
+
+.WidgetMe {
+  .SettingsPanel, .SettingsTabContent {
+    flex: 1;
+	display: flex;
+	flex-direction: column;
+  }
+}
+
+.WidgetMe .WidgetHeader {
+  height: 170px;
+  padding:0 10px;
+}
+.WidgetMe .WidgetHeaderTitle {
+  color: #333;
+  font-size: 20px;
+  line-height: 35px;
+  left: 0px;
+  right: 15px;
+  top: 0;
+  height: 35px;
+  position:relative;
+}
+.WidgetMe .Avatar.AvatarBig{
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.MeInfoBlock {
+  display:inline-block;
+  margin-left:5px;
+  vertical-align: top;
+}
+.MeInfoBlock-column {
+  width:125px;
+  display:inline-block;
+  vertical-align: top;
+}
+.MeInfoTitle {
+  color: #999;
+  font-weight: bold;
+  font-size: 9px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
 
 .DialogHolder {
   position: absolute;
