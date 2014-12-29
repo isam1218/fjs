@@ -19,33 +19,6 @@ body, html {
 p {
   font-size: 11px;
 }
-option{
-  text-align:center;
-  padding-left:20px;
-}
-
-textarea {
-  background-color: #FFFFFF;
-  appearance: textfield;
-  user-select: text;
-  resize: none;
-  outline: none;
-  padding: 5px;
-  font-size: 11px;
-  border-radius: 3px;
-  color: #333;
-  border: solid 1px #C7C7C7;
-  box-shadow: 0 0 1px #ddd inset;
-  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
-  position: relative;
-}
-
-input[type="text"], input[type="email"], input[type="search"], input[type="tel"] {
-  /*padding:5px;*/
-  /*height:16px;*/
-  border-radius:2px;
-  outline: none;
-}
 
 #App {
   position: relative;
@@ -79,7 +52,6 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   display:inline-block;
 
 }
-
 
 .text[contenteditable] {
   height: 26px;
@@ -144,7 +116,6 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   }
 }
 
-
 .LeftBarMeCustomStatusSection {
   textarea {
     width:100%;
@@ -157,57 +128,6 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   }
 }
 
-.Widget.Contacts {
-
-    .details {
-      float:right;
-    }
-  }
-  .ListLineContent.Header {
-    .ListLineContentCell {
-      padding:0 5px;
-    }
-    .Up {
-      .DirectionArrow {
-        //bottom:3px;
-      }
-    }
-    .Down {
-
-    }
-    .DirectionArrow {
-      position:absolute;
-      left:50%;
-      margin-left: -6px;
-    }
-  }
-
-
-.ChatMessageIco {
-  display: none;
-  width: 20px;
-  height: 20px;
-  margin-bottom: -6px;
-  margin-right:3px;
-}
-.ChatMessageIco.call {
-    display:inline-block;
-
-  }
-.ChatMessageIco.call.Incoming {
-
-      background-image: url(../img/XIcon-CallLog-Incoming.png);
-    }
-.ChatMessageIco.call.Outbound {
-      background-image: url(../img/XIcon-CallLog-Outbound.png);
-    }
-.ChatMessageIco.call.Missed {
-      background-image: url(../img/XIcon-CallLog-Missed.png);
-    }
-.ChatMessageIco.voicemail {
-    display:inline-block;
-  background-image: url(../img/XIcon-Voicemail.png);
-  }
 .HeaderLabel{
   font-size:1em;
 }
@@ -245,20 +165,19 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   }
 }
 
-@import "search";
-@import "table";
-@import "toolbar";
 @import "topBar";
+@import "leftBar";
+@import "dock";
 @import "widget";
-@import "avatar";
+  @import "settings";
+  @import "calls";
+  @import "conference";
+  @import "queue";
+  @import "search";
+  @import "video";
+  @import "conversation";
+@import "tables";
 @import "buttons";
 @import "icons";
-@import "dialog";
-@import "list-section";
-@import "listMessge";
-@import "listRow";
+@import "popups";
 @import "media";
-@import "leftBar";
-@import "chat";
-@import "queue";
-@import "overlay";

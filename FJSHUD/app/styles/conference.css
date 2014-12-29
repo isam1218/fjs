@@ -1,0 +1,58 @@
+.ListViewTopNote {
+  position: relative;
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #FFE;
+  border: solid 1px #EEE;
+  border-radius: 3px;
+}
+.ListViewTopNote span {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 40px;
+}
+.ListViewTopNoteClose {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") -24px -24px;
+}
+.ListRow-Conference-Members {
+  margin-left: 50px;
+  min-height: 68px;
+  height: auto;
+  position: relative;
+  border-left: solid 1px #DEE1E5;
+}
+.conferences-room-item-member {
+  width: 62px;
+  display: inline-block;
+  position: relative;
+  height: 60px;
+  border: solid 1px #EEE;
+  border-radius: 3px;
+  margin-left: 6px;
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+  background-color: #FAFAFA;
+}
+.ListRow .conferences-room-item-member .Avatar {
+  position: absolute;
+  margin: 0;
+  left: 15px;
+  top: 8px;
+}
+.conferences-room-item-member .first-name {
+  position: absolute;
+  top: 45px;
+  left: 5px;
+  right: 5px;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
