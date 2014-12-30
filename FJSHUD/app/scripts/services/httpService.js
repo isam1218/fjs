@@ -4,8 +4,9 @@ fjs.hud.httpService = function($http,dataManager){
     var worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
     worker.port.addEventListener("message",function(event){
       
-      switch(event.action){
-      
+      switch(event.data.action){
+        case "sync_completed":
+            break;
       }
 
       console.log(event.data);

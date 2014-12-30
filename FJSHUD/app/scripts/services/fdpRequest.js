@@ -1,13 +1,5 @@
 
-httpRequest = function(url){
-	this.url = url;
-	this.headers = {
-		/*"Access-Control-Allow-Origin":"*",
-		"Access-Control-Allow-Headers":"X-Requested-With",
-		"Access-Control-Allow-Methods":"POST,GET,OPTIONS",*/
-    "Authorization":"auth=e222e6059aa653d34e884b41dc013812511a9ca9f29f6be6",
-    "node":"afdp37_1",
-  };
+httpRequest = function(){
 	/**
          * Versions servlet URL
          * @const {string}

@@ -36,18 +36,22 @@ onmessage = function(event){
 };
 
 
-function sync_request(){
+function sync_request(f){
 
 	var newFeeds = '';
-		for (i = 0; i < feeds.length; i++)
-			newFeeds += '&' + feeds[i] + '=';
+		for (i = 0; i < f.length; i++)
+			newFeeds += '&' + f[i] + '=';
 	
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
 		if(xmlhttp.status && xmlhttp.status == 200){
+			var sync_response = {
+				"action": "sync_completed",
+				"data": xmlhttp.responseText,
+			}
+			ports[0].postMessage(sync_response);
 		}
-		//ports[0].postMessage(xmlhttp.responseText);
 	});
 }
 
@@ -61,7 +65,16 @@ function do_version_check(){
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.VERSIONS_PATH +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
 		if(xmlhttp.status && xmlhttp.status == 200){
-			sync_request();
+			//var response = xmlhttp.responseText.split(';');
+			var changedFeeds = [];
+            var params = xmlhttp.responseText.split(";");
+           for(var i = 2; i < params.length-1; i++)
+                changedFeeds.push(params[i]);
+
+            if (changedFeeds.length > 0)
+               	sync_request(changedFeeds);
+			
+			//sync_request(changedFeeds);
 		}
 	});
 }	
