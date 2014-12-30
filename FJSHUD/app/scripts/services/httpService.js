@@ -1,5 +1,32 @@
 fjs.hud.httpService = function($http,dataManager){
 
+  if(SharedWorker != 'undefined'){
+    var worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
+    worker.port.addEventListener("message",function(event){
+      
+      switch(event.action){
+      
+      }
+
+      console.log(event.data);
+    },false);
+
+    worker.port.start();
+    var node = dataManager.api.node;
+    var auth = dataManager.api.ticket;
+
+    var events = {
+      "action":"authorized",
+      "data":{
+        "node":node,
+        "auth":"auth="+auth,
+      }
+
+    };
+
+    worker.port.postMessage(events);
+  }
+
   this.updateSettings = function(type,action,model){
     var params = {
       'a.name':type,
