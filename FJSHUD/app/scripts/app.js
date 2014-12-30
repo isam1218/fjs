@@ -85,6 +85,10 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/ConversationWidget.html', 
 			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetController]
 		})
+        .when('/group/:groupId', {
+			templateUrl: 'views/GroupSingleWidget.html', 
+			controller: ['$scope', fjs.ui.TestWidget]
+		})
         .when('/zoom', {
 			templateUrl: 'views/ZoomWidgetController.html',   
 			controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]

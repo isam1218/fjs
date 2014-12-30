@@ -46,6 +46,9 @@
   .PanelWrapper {
     flex-direction: column;
   }
+  .PanelWrapper .WidgetPanel {
+    margin: 0px;
+  }
   .DockPanel {
     display: none;
   }
