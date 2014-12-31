@@ -10,7 +10,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     var context = this;
 
     fjs.ui.Controller.call(this, $scope);
-
+    var settings = {};
     var meModel = dataManager.getModel("me");
     var locationsModel = dataManager.getModel("locations");
 
@@ -34,6 +34,9 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     */
     $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
     $scope.selected = 'General'
+
+    
+
 
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
@@ -115,34 +118,8 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected = $scope.autoAwayOptions[1];
 
-    $scope.update_settings = myHttpService.updateSettings; /*function(type,action,model){
-        var params = {
-          'a.name':type,
-          't':'web',
-          'action':action
-        }
-        if(model){
-          if(model.value){
-            params['a.value']=model.value;
-          }else{
-            params['a.value']=model;
-          }
-        }
-        //?Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node
-        var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings";
-        $http({
-          method:'POST',
-          url:requestURL,
-          data:$.param(params),
-          headers:{'Content-Type':'application/x-www-form-urlencoded',
-          'Authorization':'auth='+dataManager.api.ticket,
-          'node':dataManager.api.node,
-          }
-        }).success(function(){})
-
-        //.post(requestURL,params);
-    };*/
-
+    $scope.update_settings = myHttpService.updateSettings; 
+    
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
         $scope.update_settings('HUDw_AppModel_conferences','delete');
@@ -152,6 +129,51 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.update_settings('HUDw_AppModel_box','delete');
     }
 
+    update_settings = function(){
+        
+        language = $scope.languages.filter(function(item){
+            return (item.value== settings['hudw_lang']);
+        })
+        autoAwayOption = $scope.autoAwayOptions.filter(function(item){
+            return (item.value == settings['hudmw_auto_awawy_timeout']);
+        });
+
+        $scope.autoAwaySelected = autoAwayOption;
+
+        $scope.languageSelect = language;
+        console.log(language);
+
+        $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
+        $scope.enableBox=settings['hudmw_box_enabled'] == "true";
+        $scope.enableSound=settings[''];
+        $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
+        $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
+        $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
+        $scope.enableAutoAway = false;
+        $scope.useColumnLayout = settings['use_column_layout'] == 'true';
+
+
+        $scope.$apply();
+    }
+
+    $scope.$on('sync_completed',function(event,data){
+        var data_obj;
+        if(JSON != undefined){
+            if(data){
+                settings_obj = data['settings'];
+                if(settings_obj != undefined){
+                    items = settings_obj[0].items;
+                    for(i= 0; i < items.length; i++){
+                        key = items[i].key;
+                        value = items[i].value;
+                        settings[key] = value;
+                    }
+                }
+                update_settings();
+            }
+        }
+        console.log("sync_completed");
+    });
 };
 
 fjs.core.inherits(fjs.ui.MeWidgetController, fjs.ui.Controller)

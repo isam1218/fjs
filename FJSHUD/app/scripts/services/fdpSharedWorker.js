@@ -5,18 +5,17 @@ importScripts("/app/properties.js")
 
 var ports = [];
 
+var connection = 0;
 var node = undefined;
 var auth = undefined;
 
-var feeds = ['me','contacts','settings'];
+var feeds = ['me','settings'];
 
 onconnect = function(event){
 	var port = event.ports[0];
 	ports.push(port);
 	port.start();
-
 	port.addEventListener("message",onmessage);
-
 }
 
 onmessage = function(event){
@@ -25,10 +24,10 @@ onmessage = function(event){
 			case 'authorized':
 				node = event.data.data.node;
 				auth = event.data.data.auth;
-				console.log("setting authorization" + node + auth);	
+				ports[0].postMessage({"action":"init"})
+				break;	
 			case 'sync':
-				console.log("sync_ing")
-				setInterval(do_version_check, 1000);
+				setInterval(do_version_check, 5000);
 				break;
 		}
 
@@ -70,8 +69,8 @@ function do_version_check(){
             var params = xmlhttp.responseText.split(";");
            for(var i = 2; i < params.length-1; i++)
                 changedFeeds.push(params[i]);
-
-            if (changedFeeds.length > 0)
+			
+			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
 			
 			//sync_request(changedFeeds);

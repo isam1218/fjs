@@ -1,15 +1,21 @@
-fjs.hud.httpService = function($http,dataManager){
+fjs.hud.httpService = function($http,dataManager,$rootScope){
 
   if(SharedWorker != 'undefined'){
     var worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
     worker.port.addEventListener("message",function(event){
       
       switch(event.data.action){
-        case "sync_completed":
+        case "init":
+            worker.port.postMessage({"action":"sync"});
             break;
-      }
+        case "sync_completed":
+            if(event.data.data){
+              synced_data = JSON.parse(event.data.data);
+              $rootScope.$broadcast('sync_completed',synced_data);
+            }
+            break;
 
-      console.log(event.data);
+      }
     },false);
 
     worker.port.start();
@@ -27,6 +33,8 @@ fjs.hud.httpService = function($http,dataManager){
 
     worker.port.postMessage(events);
   }
+
+  //this.login = function(type)
 
   this.updateSettings = function(type,action,model){
     var params = {
@@ -54,5 +62,7 @@ fjs.hud.httpService = function($http,dataManager){
     });
   //.post(requestURL,params);
   };
+
+
 
 }
