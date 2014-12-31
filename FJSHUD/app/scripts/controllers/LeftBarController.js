@@ -3,18 +3,17 @@
  */fjs.core.namespace("fjs.ui");
 
 fjs.ui.LeftBarController = function($scope) {
-    fjs.ui.Controller.call(this, $scope);
-    $scope.tabs = [
-        {"key": "all", "title": "All", "url":"views/LeftBarTabAllContacts.html"}
-        , {"key": "favorites", "title": "Favorites", "url":"views/LeftBarTabFavorites.html"}
-        , {"key": "external", "title": "External", "url":"views/LeftBarTabExternalContacts.html"}
-        , {"key": "groups", "title": "Groups", "url":"views/LeftBarTabGroups.html"}
-    ];
-
-    $scope.currentTab = $scope.tabs[0];
-
-    $scope.selectTab = function(tab) {
-        $scope.currentTab = tab;
-    }
+	$scope.query = '';
+    $scope.tab = 'all';
+	$scope.overlay = '';
+	
+	$scope.showOverlay = function(show) {
+		if (!show)
+			$scope.overlay = '';
+		else if ($scope.tab != 'groups')
+			$scope.overlay = 'contacts';
+		else
+			$scope.overlay = 'groups';
+	};
 };
 fjs.core.inherits(fjs.ui.LeftBarController, fjs.ui.Controller)

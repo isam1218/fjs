@@ -5,10 +5,11 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     var contactsModel = dataManager.getModel("contacts");
     document.title= "Contacts";
     $scope.query = "";
-    $scope.sortField = "timestamp";
-    $scope.sortReverce = true;
+    $scope.sortField = "displayName";
+    $scope.sortReverce = false;
     $scope.contacts = contactsModel.items;
 	$scope.external = false;
+	$scope.add = {};
 	
 	// update contacts asap
 	contactsModel.addEventListener("complete", function() {
@@ -32,10 +33,10 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
         return false;
     };
 
-    $scope.filterContactFn = function(searchInput) {
+    $scope.filterContactFn = function() {
         return function(contact){
-            if(searchInput) {
-                return contact.pass(searchInput);
+            if($scope.$parent.query) {
+                return contact.pass($scope.$parent.query);
             }
             return true;
         };
@@ -48,21 +49,6 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 				return true;
 		};
 	};
-	
-	// attach recent activity to contacts
-	$scope.$on("updateRecent", function(event, recents) {
-		for (c in $scope.contacts) {
-			for (r in recents) {
-				if (r.replace('contact_', '') == $scope.contacts[c].xpid) {
-					$scope.contacts[c].timestamp = recents[r].timestamp;
-					$scope.contacts[c].events = recents[r].events ? recents[r].events.length : 0;
-					break;
-				}
-			}
-		}
-		
-		$scope.$safeApply();
-	});
 	
 	$scope.addContact = function() {
 		// validate
@@ -77,7 +63,8 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 		
 		// save
         dataManager.sendAction('contacts', 'addContact', $scope.add);
-		$scope.overlay = false;
+		$scope.$parent.showOverlay(false);
+		$scope.add = {};
 	};
 
     $scope.$on("$destroy", function() {

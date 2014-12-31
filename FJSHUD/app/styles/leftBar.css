@@ -10,12 +10,16 @@
 .Widget.Contacts .details {
   float: right;
 }
-.ContactsPanel {
+.LeftBar {
   position: relative;
   flex: .6;
   min-width: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
 }
-.ContactsPanel .RoundedTop {
+.LeftBar .RoundedTop {
   position: absolute;
   top: -15px;
   left: 0;
@@ -27,178 +31,40 @@
   border-top-right-radius: 50%;
   box-shadow: 0px 1px 1px #ccc inset;
 }
-.LeftSideBar {
-  position: relative;
-  width: 100%;
-  min-height: 40px;
-  border-radius: 4px;
-  background-image: url(../img/XTile-Widget.png);
-  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
-  border: solid 1px #ccc;
+.LeftBar .Contacts,
+.LeftBar .Groups {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
-.LeftSideBar .ToolBar {
-  left: 0;
-  right: 0;
-  top: 0;
+.LeftBar .Contacts .ContactList,
+.LeftBar .Groups .ContactList {
+  flex: 1;
+  overflow-y: auto;
 }
-.LeftSideBar .SearchInputBox {
-  top: 0;
-  height: 30px;
-  border-width: 3px;
-  border-radius: 6px;
-  position: relative;
-  left: 0;
-  right: 0;
-  margin: 4px 10px;
+.LeftBar .Notifications {
+  background-color: #ccc;
+  min-height: 25px;
+  transition: .25s;
 }
-.LeftSideBar .SearchInputBox input {
-  height: 20px;
+.LeftBar .Notifications:hover {
+  min-height: 50px;
 }
-.LeftSideBar .SearchInputBox ::-webkit-input-placeholder {
-  /* WebKit browsers */
-  color: #2c8ed6;
-  font-weight: bold;
-}
-.LeftSideBar .SearchPanel {
-  position: absolute;
-  top: -5px;
-  left: 3px;
-  right: 3px;
-  padding: 5px 0;
-  z-index: 100;
-}
-.LeftSideBar .SearchPanel .SearchResults {
-  max-height: 500px;
-  overflow: auto;
-}
-.LeftSideBar .SearchPanel .NoSearchResults {
-  padding: 10px;
-  margin: 0 10px;
-  border: 1px solid #729C00;
-  border-radius: 4px;
-  background-color: white;
-}
-.LeftSideBar .SearchPanel .NoSearchResults .XButton {
-  float: none;
-  width: auto;
-  display: block;
-}
-.LeftSideBar .SearchPanel .ListRow:focus {
-  background-color: #cae9fd;
-  outline: none;
-}
-.LeftSideBar .SearchPanel .ListRow {
-  height: auto;
-}
-.LeftSideBar .SearchPanel .ListRow .Avatar {
-  margin: 0;
-  border-radius: 0;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent {
-  left: 32px;
-  height: 32px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowTitle {
-  top: 3px;
-  font-weight: normal;
-  left: 2px;
-  height: 13px;
-  line-height: 13px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowTitle b {
-  color: #2c8ed6;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowDesc {
-  line-height: 22px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowDesc span,
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowDesc b {
-  vertical-align: top;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowDesc b {
-  line-height: 20px;
-  color: #2c8ed6;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent .ListRowStatusIcon.Small {
-  margin-left: -3px;
-  margin-rigth: -3px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent.WithActions-4 .ListRowLeftArea {
-  width: 133px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent.WithActions-3 .ListRowLeftArea {
-  width: 164px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent.WithActions-2 .ListRowLeftArea {
-  width: 195px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent.WithActions-1 .ListRowLeftArea {
-  width: 226px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowContent.WithActions-0 .ListRowLeftArea {
-  width: 256px;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowLeftArea,
-.LeftSideBar .SearchPanel .ListRow .ListRowButtons {
-  height: 32px;
-  overflow: hidden;
-}
-.LeftSideBar .SearchPanel .ListRow .ListRowButtons {
-  z-index: 100;
-}
-.LeftSideBar .SearchPanel .ListRow .SearchPhoneNumbers {
-  border-top: solid 1px #dee1e5;
-  padding: 5px;
-  background-color: #fff;
-  position: relative;
-  margin-top: -3px;
-}
-.LeftSideBar .SearchPanel .ListRow .SearchPhoneNumbers button:focus {
-  background-color: #cae9fd;
-}
-.LeftSideBar .SearchPanel .ListRow .SearchPhoneNumbers button {
-  display: block;
-  border: none;
-  background: none;
-  width: 100%;
-  text-decoration: none;
-  outline: none;
-  text-align: left;
-}
-.LeftSideBar .SearchPanel .ListRow .SearchPhoneNumbers button label {
-  width: 70px;
-  text-align: right;
-  display: inline-block;
-  margin-right: 3px;
-}
-.LeftSideBar .SearchPanel.InSearch {
+.SearchPanel.InSearch {
   border: solid 1px #bbb;
   background-color: #eee;
   border-radius: 6px;
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
 }
-.LeftSideBar .ListLineContent.Header {
+.ListLineContent.Header {
   height: 28px;
 }
-.LeftSideBar .ListLineContent.Header .ListLineContentCell {
+.ListLineContent.Header .ListLineContentCell {
   display: inline-block;
   font-size: 9px;
   position: relative;
 }
-.LeftSideBar .ListLineContentCell.Name {
-  left: 2px;
-  width: 30px;
-}
-.LeftSideBar .ListLineContentCell.Extension {
-  margin-left: -3px;
-}
-.LeftSideBar .ListLineContentCell.CallStatus {
-  left: 75px;
-}
-.LeftSideBar .ListLineContentCell.HudStatus {
-  left: 80px;
-}
-.LeftSideBar .DirectionArrow {
+.DirectionArrow {
   position: absolute;
   left: 50%;
   margin-left: -6px;
