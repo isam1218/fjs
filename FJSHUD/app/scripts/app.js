@@ -97,7 +97,7 @@ hudweb.config(function ($routeProvider) {
 });
 
 
-hudweb.service('HttpService',['$http','DataManager',fjs.hud.httpService]);
+hudweb.service('HttpService',['$http','DataManager','$rootScope',fjs.hud.httpService]);
 
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
