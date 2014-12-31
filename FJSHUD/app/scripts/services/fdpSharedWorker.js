@@ -1,42 +1,40 @@
 var fjs = {};
-importScripts("fdpRequest.js")
-importScripts("/app/properties.js")
-
+importScripts("fdpRequest.js");
+importScripts("/app/properties.js");
 
 var ports = [];
+var synced = false;
 
-var connection = 0;
 var node = undefined;
 var auth = undefined;
 
-var feeds = ['me','settings'];
+var feeds = ['me', 'settings', 'groups', 'contacts'];
 
 onconnect = function(event){
 	var port = event.ports[0];
 	ports.push(port);
 	port.start();
-	port.addEventListener("message",onmessage);
+	port.addEventListener("message",
+        function(event) { onmessage(event, port); } );
 }
 
-onmessage = function(event){
+onmessage = function(event, port){
 	if(event.data.action){
 		switch(event.data.action){
 			case 'authorized':
 				node = event.data.data.node;
 				auth = event.data.data.auth;
-				ports[0].postMessage({"action":"init"})
+				ports[0].postMessage({"action":"init"});
 				break;	
 			case 'sync':
-				setInterval(do_version_check, 5000);
+				do_version_check();
 				break;
 		}
 
 	}
 };
 
-
-function sync_request(f){
-
+function sync_request(f){			
 	var newFeeds = '';
 		for (i = 0; i < f.length; i++)
 			newFeeds += '&' + f[i] + '=';
@@ -49,8 +47,15 @@ function sync_request(f){
 				"action": "sync_completed",
 				"data": xmlhttp.responseText,
 			}
-			ports[0].postMessage(sync_response);
+			
+			for (i = 0; i < ports.length; i++)
+				ports[i].postMessage(sync_response);
+				
+			synced = true;
 		}
+		
+		// again, again!
+		do_version_check();
 	});
 }
 
@@ -62,22 +67,21 @@ function do_version_check(){
 			
 	var request = new httpRequest();
 	var header = construct_request_header();
-	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.VERSIONS_PATH +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
+	request.makeRequest(fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
 		if(xmlhttp.status && xmlhttp.status == 200){
-			//var response = xmlhttp.responseText.split(';');
 			var changedFeeds = [];
             var params = xmlhttp.responseText.split(";");
-           for(var i = 2; i < params.length-1; i++)
-                changedFeeds.push(params[i]);
 			
+            for(var i = 2; i < params.length-1; i++)
+				changedFeeds.push(params[i]);
+				
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
-			
-			//sync_request(changedFeeds);
+            else
+                do_version_check();
 		}
 	});
 }	
-
 
 function construct_request_header(){
 	var header = {
@@ -87,9 +91,3 @@ function construct_request_header(){
 
   	return header;
 }
-
-
-
-
-
-

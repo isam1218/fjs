@@ -3,7 +3,6 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
   if(SharedWorker != 'undefined'){
     var worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
     worker.port.addEventListener("message",function(event){
-      
       switch(event.data.action){
         case "init":
             worker.port.postMessage({"action":"sync"});
@@ -11,7 +10,10 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
         case "sync_completed":
             if(event.data.data){
               synced_data = JSON.parse(event.data.data);
-              $rootScope.$broadcast('sync_completed',synced_data);
+			  
+			  // broadcast to each controller
+			  for (feed in synced_data)
+				$rootScope.$broadcast(feed+'_synced', synced_data[feed]);
             }
             break;
 

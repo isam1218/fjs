@@ -33,7 +33,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     *
     */
     $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
-    $scope.selected = 'General'
+    $scope.selected = 'General';
 
     
 
@@ -156,13 +156,11 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.$apply();
     }
 
-    $scope.$on('sync_completed',function(event,data){
-        var data_obj;
+    $scope.$on('settings_synced',function(event,data){
         if(JSON != undefined){
             if(data){
-                settings_obj = data['settings'];
-                if(settings_obj != undefined){
-                    items = settings_obj[0].items;
+                if(data != undefined){
+                    items = data[0].items;
                     for(i= 0; i < items.length; i++){
                         key = items[i].key;
                         value = items[i].value;
@@ -172,7 +170,6 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
                 update_settings();
             }
         }
-        console.log("sync_completed");
     });
 };
 
