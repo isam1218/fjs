@@ -10,6 +10,7 @@ var auth = undefined;
 
 var feeds = ['me', 'settings', 'groups', 'contacts'];
 
+var data_obj = {};
 onconnect = function(event){
 	var port = event.ports[0];
 	ports.push(port);
@@ -29,10 +30,24 @@ onmessage = function(event, port){
 			case 'sync':
 				do_version_check();
 				break;
+			case 'feed_request':
+				get_feed_data(event.data.feed);
+				break;
 		}
 
 	}
 };
+
+function get_feed_data(feed){
+
+	for(i = 0; i < ports.length;i++){
+		ports[i].postMessage({
+			"action":"feed_request",
+			"feed":feed,
+			"data":data_obj[feed]
+		});
+	}
+}
 
 function sync_request(f){			
 	var newFeeds = '';
@@ -46,6 +61,11 @@ function sync_request(f){
 			var sync_response = {
 				"action": "sync_completed",
 				"data": xmlhttp.responseText,
+			}
+			
+			synced_data = JSON.parse(xmlhttp.responseText);
+			for (feed in synced_data){
+				data_obj[feed] = synced_data[feed];
 			}
 			
 			for (i = 0; i < ports.length; i++)
