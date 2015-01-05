@@ -1,4 +1,56 @@
-fjs.hud.httpService = function($http,dataManager){
+fjs.hud.httpService = function($http,dataManager,$rootScope){
+  /**
+    shared worker 
+  
+  */
+  var worker = undefined;
+
+  if(SharedWorker != 'undefined'){
+    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
+    worker.port.addEventListener("message",function(event){
+      switch(event.data.action){
+        case "init":
+            worker.port.postMessage({"action":"sync"});
+            break;
+        case "sync_completed":
+            if(event.data.data){
+              synced_data = JSON.parse(event.data.data);
+			  
+			     for (feed in synced_data)
+				    $rootScope.$broadcast(feed+'_synced', synced_data[feed]);
+            }
+            break;
+        case "feed_request":
+            $rootScope.$broadcast(event.data.feed +'_synced',event.data.data);
+            break;
+
+      }
+    },false);
+
+    worker.port.start();
+    var node = dataManager.api.node;
+    var auth = dataManager.api.ticket;
+
+    var events = {
+      "action":"authorized",
+      "data":{
+        "node":node,
+        "auth":"auth="+auth,
+      }
+
+    };
+
+    worker.port.postMessage(events);
+  }
+
+  //this.login = function(type)
+  this.getFeed = function(feed){
+      worker.port.postMessage({
+        "action": "feed_request",
+        "feed":feed
+      })
+  }
+
 
   this.updateSettings = function(type,action,model){
     var params = {
@@ -26,5 +78,7 @@ fjs.hud.httpService = function($http,dataManager){
     });
   //.post(requestURL,params);
   };
+
+
 
 }

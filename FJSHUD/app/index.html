@@ -22,7 +22,7 @@
 
     <!-- Add your site or application content here -->
 
-	<div id="App" data-ng-controller="ResentsListController">
+	<div id="App">
 		<div class="TopBar">
 			<div class="TopBarLogo"></div>
 
@@ -54,8 +54,59 @@
 			</div>
 		</div>
 		<div class="PanelWrapper">
-			<div class="ContactsPanel" ng-include="'views/ContactsWidget.html'" ng-controller="ContactsWidget"></div>
-			<ng-view class="WidgetPanel"></ng-view>			
+			<div class="LeftBar" ng-controller="LeftBarController">	
+				<div class="RoundedTop"></div>
+				
+				<div class="Toolbar">
+					<input type="search" placeholder="Search" ng-model="query" />
+					<input type="button" value="New" class="XButton" ng-click="showOverlay(true)" />
+					
+					<div class="WidgetTabBar">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'all'" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
+							<div class="inner">All</div>
+							<div class="arrow"></div>
+						</a>
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'favorites'" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
+							<div class="inner">Favorites</div>
+							<div class="arrow"></div>
+						</a>
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'recent'" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
+							<div class="inner">Recent</div>
+							<div class="arrow"></div>
+						</a>
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'external'" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
+							<div class="inner">External</div>
+							<div class="arrow"></div>
+						</a>
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
+							<div class="inner">Groups</div>
+							<div class="arrow"></div>
+						</a>
+					</div>
+				</div>
+				
+				<div class="Contacts" 
+					ng-if="tab == 'all'" 
+					ng-include="'views/ContactsWidget.html'" 
+					ng-controller="ContactsWidget">
+				</div>
+				<div class="Contacts" 
+					ng-if="tab == 'external'" 
+					ng-include="'views/ContactsWidget.html'" 
+					ng-controller="ContactsWidget" 
+					ng-init="external = true">
+				</div>
+				<div class="Groups" 
+					ng-if="tab == 'groups'" 
+					ng-include="'views/GroupsWidget.html'" 
+					ng-controller="GroupsController">
+				</div>
+				
+				<div class="Notifications"></div>
+			</div>
+			
+			<ng-view class="WidgetPanel"></ng-view>	
+			
 			<div class="DockPanel"></div>
 		</div>
 	</div>

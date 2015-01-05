@@ -12,6 +12,14 @@
   position: relative;
   border-bottom: solid 1px #999;
 }
+.ListLineContent.Header .ListLineContentCell {
+  padding: 0 5px;
+}
+.ListLineContent.Header .DirectionArrow {
+  position: absolute;
+  left: 50%;
+  margin-left: -6px;
+}
 .ListLineContentCell {
   position: relative;
   height: 24px;
@@ -19,12 +27,6 @@
   white-space: nowrap;
   text-overflow: clip;
   overflow: hidden;
-}
-.ListLineContentCell.Name {
-  width: 24px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .ListLineContent.Header .ListLineContentCell {
   color: #666;

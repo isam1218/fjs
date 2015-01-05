@@ -14,10 +14,14 @@
     }
 }
 
-.ContactsPanel {
+.LeftBar {
   position: relative;
   flex: .6;
   min-width: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
   
   .RoundedTop {
     position: absolute;
@@ -31,161 +35,28 @@
 	border-top-right-radius: 50%;
 	box-shadow: 0px 1px 1px #ccc inset;
   }
+  
+  .Contacts, .Groups {
+    flex: 1;
+	display: flex;
+	flex-direction: column;
+	
+	.ContactList {
+	  flex: 1;
+	  overflow-y: auto;
+	}
+  }
+  
+  .Notifications {
+    background-color: #ccc;
+	min-height: 25px;
+	transition: .25s;
+	
+	&:hover {
+	  min-height: 50px;
+	}
+  }
 }
-
-.LeftSideBar {
-  position: relative;
-  width: 100%;
-  min-height: 40px;
-  border-radius: 4px;
-  background-image: url(../img/XTile-Widget.png);
-  box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
-  border: solid 1px #ccc;
-
-  .ToolBar {
-    left: 0;
-    right: 0;
-    top:0;
-  }
-  .SearchInputBox {
-    top: 0;
-    height: 30px;
-    border-width: 3px;
-    border-radius:6px;
-    position:relative;
-    left:0;
-    right:0;
-    margin: 4px 10px;
-    input {
-      height:20px;
-    }
-    ::-webkit-input-placeholder { /* WebKit browsers */
-      color: #2c8ed6;
-      font-weight: bold;
-    }
-  }
-
-  .SearchPanel {
-    position: absolute;
-    top: -5px;
-    left: 3px;
-    right: 3px;
-    padding: 5px 0;
-    z-index: 100;
-    .SearchResults {
-      max-height: 500px;
-      overflow: auto;
-    }
-    .NoSearchResults {
-      padding:10px;
-      margin:0 10px;
-      border:1px solid #729C00;
-      border-radius: 4px;
-      background-color: white;
-      .XButton {
-        float:none;
-        width:auto;
-        display:block;
-      }
-    }
-    .ListRow:focus {
-      background-color: #cae9fd;
-      outline: none;
-    }
-    .ListRow {
-      height:auto;
-      .Avatar {
-        margin:0;
-        border-radius: 0;
-      }
-      .ListRowContent {
-        left:32px;
-        height:32px;
-        .ListRowTitle {
-          top:3px;
-          font-weight: normal;
-          left:2px;
-          height:13px;
-          line-height:13px;
-          b {
-            color: #2c8ed6;
-          }
-        }
-        .ListRowDesc {
-          line-height: 22px;
-          span, b {
-            vertical-align: top;
-          }
-          b {
-            line-height: 20px;
-            color: #2c8ed6;
-          }
-        }
-        .ListRowStatusIcon.Small {
-          margin-left:-3px;
-          margin-rigth:-3px;
-        }
-      }
-      .ListRowContent.WithActions-4 {
-        .ListRowLeftArea {
-          width:133px;
-        }
-      }
-      .ListRowContent.WithActions-3 {
-        .ListRowLeftArea {
-          width: 164px;
-        }
-      }
-      .ListRowContent.WithActions-2 {
-        .ListRowLeftArea {
-          width: 195px;
-        }
-      }
-      .ListRowContent.WithActions-1 {
-        .ListRowLeftArea {
-          width: 226px;
-        }
-      }
-      .ListRowContent.WithActions-0 {
-        .ListRowLeftArea {
-          width: 256px;
-        }
-      }
-      .ListRowLeftArea, .ListRowButtons {
-        height:32px;
-        overflow: hidden;
-      }
-      .ListRowButtons {
-        z-index:100;
-      }
-
-      .SearchPhoneNumbers {
-        border-top: solid 1px #dee1e5;
-        padding:5px;
-        background-color:#fff;
-        position:relative;
-        margin-top: -3px;
-        button:focus {
-          background-color: #cae9fd;
-        }
-        button {
-          display:block;
-          border:none;
-          background:none;
-          width:100%;
-          text-decoration: none;
-          outline: none;
-          text-align: left;
-          label {
-            width:70px;
-            text-align: right;
-            display:inline-block;
-            margin-right: 3px;
-          }
-        }
-      }
-    }
-  }
 
   .SearchPanel.InSearch {
     border: solid 1px #bbb;
@@ -205,30 +76,12 @@
     }
 
   }
-  .ListLineContentCell.Name {
-    left: 2px;
-    width: 30px;
-  }
-
-  .ListLineContentCell.Extension {
-    margin-left: -3px;
-  }
-
-  .ListLineContentCell.CallStatus {
-    left: 75px;
-  }
-
-  .ListLineContentCell.HudStatus {
-    left: 80px;
-  }
 
   .DirectionArrow {
     position: absolute;
     left: 50%;
     margin-left: -6px;
   }
-
-}
 
 .LeftSideBarHead {
   height:16px;

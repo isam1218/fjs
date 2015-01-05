@@ -10,7 +10,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     var context = this;
 
     fjs.ui.Controller.call(this, $scope);
-
+    var settings = {};
     var meModel = dataManager.getModel("me");
     var locationsModel = dataManager.getModel("locations");
 
@@ -33,7 +33,11 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     *
     */
     $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
-    $scope.selected = 'General'
+    $scope.selected = 'General';
+    myHttpService.getFeed('settings');
+
+    
+
 
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
@@ -69,7 +73,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:3,value: '0_1',label: 'English(Australia)',},
     {id:4,value: '0_4',label: 'Espanol',},
     {id:5,value: '0_9',label: 'Francais',}];
-    $scope.languageSelect = $scope.languages[1];
+    $scope.languageSelect;// = $scope.languages[1];
 
     $scope.autoClearSettingOptions = [{id:1,value:30,label:'30 seconds'},
     {id:2,value:25,label:'25 Seconds'},
@@ -77,24 +81,24 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:4,value:15,label:'15 Seconds'},
     {id:5,value:10,label:'10 Seconds'},
     {id:6,value:5,label:'5 Seconds'}];
-    $scope.autoClearSelected = $scope.autoClearSettingOptions[1];
+    $scope.autoClearSelected; //= $scope.autoClearSettingOptions[1];
 
     $scope.hoverDelayOptions = [{id:1,value:1.2,label:'1.2'},
-    {id:2,value:1.0,label:'1.0'},
+    {id:2,value:1,label:'1.0'},
     {id:3,value:0.7, label:'0.7'},
     {id:4,value:0.5, label:'0.5'},
     {id:5,value:0.2, label:'0.2'},
     {id:6,value:0.0, label:'0.0'}];
-    $scope.hoverDelaySelected = $scope.hoverDelayOptions[1];
+    $scope.hoverDelaySelected;// = $scope.hoverDelayOptions[1];
 
-    $scope.searchAutoClear = true;
-    $scope.enableBox=false;
-    $scope.enableSound=false;
-    $scope.soundOnChatMsgReceived=true;
-    $scope.soundOnSentMsg=true;
-    $scope.enableBusyRingBack = false;
-    $scope.enableAutoAway = false;
-    $scope.useColumnLayout = false;
+    $scope.searchAutoClear;
+    $scope.enableBox;
+    $scope.enableSound;
+    $scope.soundOnChatMsgReceived;
+    $scope.soundOnSentMsg;
+    $scope.enableBusyRingBack;
+    $scope.enableAutoAway;
+    $scope.useColumnLayout;
 
     $scope.callLogSizeOptions = [{id:1,value:10,label:'10 items'},
     {id:2,value:20,label:'20 items'},
@@ -102,7 +106,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:4,value:40,label:'40 items'},
     {id:5,value:50,label:'50 items'},
     {id:6,value:60,label:'60 items'}];
-    $scope.callLogSizeSelected = $scope.callLogSizeOptions[1];
+    $scope.callLogSizeSelected;// = $scope.callLogSizeOptions[1];
 
     $scope.autoAwayOptions = [{id:1,value:30000,label:'30 Seconds'},
     {id:2,value:60000,label:'1 minute'},
@@ -113,36 +117,10 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:7,value:900000,label:'15 minutes'},
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
-    $scope.autoAwaySelected = $scope.autoAwayOptions[1];
+    $scope.autoAwaySelected;// = $scope.autoAwayOptions[1];
 
-    $scope.update_settings = myHttpService.updateSettings; /*function(type,action,model){
-        var params = {
-          'a.name':type,
-          't':'web',
-          'action':action
-        }
-        if(model){
-          if(model.value){
-            params['a.value']=model.value;
-          }else{
-            params['a.value']=model;
-          }
-        }
-        //?Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node
-        var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings";
-        $http({
-          method:'POST',
-          url:requestURL,
-          data:$.param(params),
-          headers:{'Content-Type':'application/x-www-form-urlencoded',
-          'Authorization':'auth='+dataManager.api.ticket,
-          'node':dataManager.api.node,
-          }
-        }).success(function(){})
-
-        //.post(requestURL,params);
-    };*/
-
+    $scope.update_settings = myHttpService.updateSettings; 
+    
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
         $scope.update_settings('HUDw_AppModel_conferences','delete');
@@ -152,6 +130,71 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.update_settings('HUDw_AppModel_box','delete');
     }
 
+    update_settings = function(){
+        
+        language = $scope.languages.filter(function(item){
+            return (item.value== settings['hudw_lang']);
+        })
+        autoAwayOption = $scope.autoAwayOptions.filter(function(item){
+            return (item.value == settings['hudmw_auto_away_timeout']);
+        });
+
+        autoClearOption = $scope.autoClearSettingOptions.filter(function(item){
+            return (item.value == settings['hudmw_searchautocleardelay']);
+        });
+
+        hoverDelaySelected = $scope.hoverDelayOptions.filter(function(item){
+            return (item.value == settings['avatar_hover_delay'])
+        });
+
+        $scope.hoverDelaySelected = hoverDelaySelected[0];
+        $scope.autoClearSelected = autoClearOption[0];
+        $scope.autoAwaySelected = autoAwayOption[0];
+        $scope.languageSelect = language[0];
+        console.log(language);
+
+        $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
+        $scope.enableBox=settings['hudmw_box_enabled'] == "true";
+        $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
+        $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
+        $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
+        $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
+        $scope.enableAutoAway = false;
+        $scope.useColumnLayout = settings['use_column_layout'] == 'true';
+
+        callLogSelected = $scope.callLogSizeOptions.filter(function(item){
+            return (item.value==settings['recent_call_history_length']);
+        });
+        $scope.callLogSizeSelected = callLogSelected[0];
+
+
+        $scope.$apply();
+    }
+
+//<<<<<<< Updated upstream
+    $scope.$on('settings_synced',function(event,data){
+        if(JSON != undefined){
+            if(data){
+                if(data != undefined){
+                    items = data[0].items;
+/*    $scope.$on('settings_feed',function(event,data){
+        var data_obj;
+        if(JSON != undefined){
+            if(data){
+                settings_obj = data;
+                if(settings_obj != undefined){
+                    items = settings_obj[0].items;
+*/
+                   for(i= 0; i < items.length; i++){
+                        key = items[i].key;
+                        value = items[i].value;
+                        settings[key] = value;
+                    }
+                }
+                update_settings();
+            }
+        }
+    });
 };
 
 fjs.core.inherits(fjs.ui.MeWidgetController, fjs.ui.Controller)

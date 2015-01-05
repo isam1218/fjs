@@ -85,6 +85,10 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/ConversationWidget.html', 
 			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetController]
 		})
+        .when('/group/:groupId', {
+			templateUrl: 'views/GroupSingleWidget.html', 
+			controller: ['$scope', fjs.ui.TestWidget]
+		})
         .when('/zoom', {
 			templateUrl: 'views/ZoomWidgetController.html',   
 			controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]
@@ -97,12 +101,13 @@ hudweb.config(function ($routeProvider) {
 });
 
 
-hudweb.service('HttpService',['$http','DataManager',fjs.hud.httpService]);
+hudweb.service('HttpService',['$http','DataManager','$rootScope',fjs.hud.httpService]);
 
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', fjs.ui.MainController]);
 hudweb.controller("ContactsWidget", ['$scope', '$location', 'DataManager', fjs.ui.ContactsWidget]);
+hudweb.controller("GroupsController", ['$scope', '$rootScope', 'DataManager', fjs.ui.GroupsController]);
 hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', fjs.ui.TopBarMeStatusController]);
 //hudweb.controller("MeWidgetController", fjs.ui.MeWidgetController);
 hudweb.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);

@@ -1,148 +1,112 @@
-<div class="Widget Contacts Groups" id="WidgetGroups">
-    <div class="WidgetHeader" unpin="/contacts/groups" draggable="true">
-        <div class="Avatar AvatarApp">
-            <div class="TopBarItemAppIcon Contacts"></div>
-        </div>
-        <div class="WidgetHeaderTitle" >Groups</div>
+<div class="ListLineContent Header LeftContactsColumns">
+    <div data-ng-click="sort('name')" class="ListLineContentCell Recent {{(sortField == 'name' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+        <span>NAME</span>
+        <div class="DirectionArrow"></div>
     </div>
-    <div class="WidgetBody">
-        <div class="WidgetTabBar">
-            <a href="#/contacts" class="WidgetTabBarButton Ready">
-                <div class="inner">Contacts</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/contacts/groups" class="WidgetTabBarButton Ready fj-selected-item">
-                <div class="inner">Groups</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/contacts/external" class="WidgetTabBarButton Ready">
-                <div class="inner">External</div>
-                <div class="arrow"></div>
-            </a>
-        </div>
-    <div class="ToolBar">
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech="" data-ng-model="query" placeholder="Search">
-            </div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
-        </div>
-        <button class="XButton XButtonNormal" data-ng-click="overlay = true">New
-        </button>
-    </div>
-    <div class="ListLineContent Header LeftContactsColumns">
-        <div class="ListLineContentCell" >
-            Sort:
-        </div>
-        <div data-ng-click="sort('name')" class="ListLineContentCell Recent {{(sortField == 'name' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-            <span>NAME</span>
-            <div class="DirectionArrow"></div>
-        </div>
-        <div data-ng-click="sort('memberIds.length')"  class="ListLineContentCell HudStatus {{(sortField == 'memberIds.length' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-            <span>MEMBERS</span>
-            <div class="DirectionArrow"></div>
-        </div>
-    </div>
-	
-	<div class="LeftBarTabContentList">
-		<h4>My Department</h4>
-		<a href="" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(mine)">
-            <div class="Avatar AvatarNormal">
-                <div class="GroupAvatarItem GroupAvatarItem_0">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(0, 19, 19) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_1">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(1, 19, 19) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_2">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(2, 19, 19) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_3">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(3, 19, 19) }}">
-                </div>
-                <div class="AvatarInteractable"></div>
-            </div>
-            <div class="ListRowContent">
-                <div class="ListRowTitle">
-                    <div class="name">
-                        <b>{{ ::mine.name }}</b>
-                        <span class="details">{{ ::mine.memberIds.length }}</span>
-                    </div>
-                </div>
-                <div class="ListRowStatus">#{{ ::mine.extension }}</div>
-			</div>
-		</a>
-		
-		<h4>All Other Departments</h4>
-		<a href="" data-ng-repeat="group in groups | Object2Array | filter: {name: query} | orderBy:sortField:sortReverce track by group.xpid" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact" ng-click="loadPanel(group)">
-            <div class="Avatar AvatarNormal">
-                <div class="GroupAvatarItem GroupAvatarItem_0">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(0, 19, 19) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_1">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(1, 19, 19) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_2">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(2, 19, 19) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_3">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(3, 19, 19) }}">
-                </div>
-                <div class="AvatarInteractable"></div>
-            </div>
-            <div class="ListRowContent">
-                <div class="ListRowTitle">
-                    <div class="name">
-                        <b>{{ ::group.name }}</b>
-                        <span class="details">{{ ::group.memberIds.length }}</span>
-                    </div>
-                </div>
-                <div class="ListRowStatus">#{{ ::group.extension }}</div>
-			</div>
-		</a>
-	</div>
-
+    <div data-ng-click="sort('memberIds.length')"  class="ListLineContentCell HudStatus {{(sortField == 'memberIds.length' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+        <span>MEMBERS</span>
+        <div class="DirectionArrow"></div>
     </div>
 </div>
 
-<div ng-show="overlay" class="Overlay">
-	<div ng-click="overlay = false" class="Background"></div>
+<div class="ContactList">
+	<h4>My Department</h4>
+	<a href="#/group/{{::mine.xpid}}" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
+        <div class="Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(0, 19, 19) }}">
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(1, 19, 19) }}">
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(2, 19, 19) }}">
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(3, 19, 19) }}">
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <b>{{ ::mine.name }}</b>
+                    <span class="details">{{ ::mine.memberIds.length }}</span>
+                </div>
+            </div>
+            <div class="ListRowStatus">#{{ ::mine.extension }}</div>
+		</div>
+	</a>
+	
+	<h4>All Other Departments</h4>
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | Object2Array | filter: {name: $parent.$parent.query} | orderBy:sortField:sortReverce track by group.xpid" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact">
+        <div class="Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(0, 19, 19) }}">
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(1, 19, 19) }}">
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(2, 19, 19) }}">
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(3, 19, 19) }}">
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <b>{{ ::group.name }}</b>
+                    <span class="details">{{ ::group.memberIds.length }}</span>
+                </div>
+            </div>
+            <div class="ListRowStatus">#{{ ::group.extension }}</div>
+		</div>
+	</a>
+</div>
+
+</div>
+
+<div ng-show="$parent.overlay == 'groups'" class="Overlay">
+	<div ng-click="showOverlay(false)" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="overlay = false" class="Close">x</div>
+		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
 			<h2>Build the Team</h2>
 		</div>
 		
-		<div class="Section">
-			<div>
-				<h4>Name</h4>
-				<input type="text" class="XInputText" />
-			</div>
-			<div>
-				<h4>Security</h4>
-				<input type="checkbox" /> Visible to entire company
-			</div>
-			<div>
-				<h4>Description</h4>
-				<textarea placeholder="Team description used for search and provides useful information to the team members."></textarea>
-			</div>
-		</div>
-		
-		<div class="Section">
-			<div>
-				<h4>Members</h4>
-				<input type="text" class="XInputText" placeholder="Add Someone" />
+		<div class="Sections">
+			<div class="Section">
+				<div>
+					<h4>Name</h4>
+					<input type="text" class="XInputText" />
+				</div>
+				<div>
+					<h4>Security</h4>
+					<input type="checkbox" /> Visible to entire company
+				</div>
+				<div>
+					<h4>Description</h4>
+					<textarea placeholder="Team description used for search and provides useful information to the team members."></textarea>
+				</div>
 			</div>
 			
-			<div class="Members">
+			<div class="Section">
+				<div>
+					<h4>Members</h4>
+					<input type="text" class="XInputText" placeholder="Add Someone" />
+				</div>
+				
+				<div class="Members">
+				</div>
 			</div>
 		</div>
 		
 		<div class="Footer">
-			<input type="button" class="XButton" value="Cancel" ng-click="overlay = false" />
+			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
 			<input type="button" class="XButton" value="Create Team" />
 		</div>
 	</div>
