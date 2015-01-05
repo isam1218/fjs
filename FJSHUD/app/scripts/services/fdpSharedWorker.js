@@ -29,6 +29,7 @@ onmessage = function(event, port){
 				break;	
 			case 'sync':
 				do_version_check();
+				setInterval(do_version_check,5000);
 				break;
 			case 'feed_request':
 				get_feed_data(event.data.feed);
@@ -39,7 +40,6 @@ onmessage = function(event, port){
 };
 
 function get_feed_data(feed){
-
 	for(i = 0; i < ports.length;i++){
 		ports[i].postMessage({
 			"action":"feed_request",

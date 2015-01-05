@@ -28,6 +28,12 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
              return "Loading...";
          }
     };
+
+    $scope.pbxtraVersion;
+    $scope.hudserverVersion;
+    $scope.fdpVersion;
+    /* */
+    //$scope.fon
     /**
     * used to determine what tab is selected in the me widget controller
     *
@@ -120,7 +126,9 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     $scope.autoAwaySelected;// = $scope.autoAwayOptions[1];
 
     $scope.update_settings = myHttpService.updateSettings; 
-    
+    $scope.micVol = .6;
+    $scope.spkVol = .6;
+
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
         $scope.update_settings('HUDw_AppModel_conferences','delete');
@@ -151,7 +159,6 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.autoClearSelected = autoClearOption[0];
         $scope.autoAwaySelected = autoAwayOption[0];
         $scope.languageSelect = language[0];
-        console.log(language);
 
         $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
         $scope.enableBox=settings['hudmw_box_enabled'] == "true";
@@ -161,31 +168,34 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
         $scope.enableAutoAway = false;
         $scope.useColumnLayout = settings['use_column_layout'] == 'true';
-
+        console.log(settings);
         callLogSelected = $scope.callLogSizeOptions.filter(function(item){
             return (item.value==settings['recent_call_history_length']);
         });
+
+        $scope.micVol = parseFloat(settings['hudmw_webphone_mic']);
+        $scope.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
         $scope.callLogSizeSelected = callLogSelected[0];
 
+        if(meModel.itemsByKey.fon_core){
+            $scope.pbxtraVersion = meModel.itemsByKey["fon_core"].propertyValue;
+        }    
+        if(meModel.itemsByKey.server_version){
+            $scope.hudserverVersion = meModel.itemsByKey["server_version"].propertyValue;
+        }   
+        if(meModel.itemsByKey.fdp_version){
+            $scope.fdpVersion = meModel.itemsByKey["fdp_version"].propertyValue;
+        }
 
         $scope.$apply();
     }
 
-//<<<<<<< Updated upstream
     $scope.$on('settings_synced',function(event,data){
         if(JSON != undefined){
             if(data){
                 if(data != undefined){
                     items = data[0].items;
-/*    $scope.$on('settings_feed',function(event,data){
-        var data_obj;
-        if(JSON != undefined){
-            if(data){
-                settings_obj = data;
-                if(settings_obj != undefined){
-                    items = settings_obj[0].items;
-*/
-                   for(i= 0; i < items.length; i++){
+                  for(i= 0; i < items.length; i++){
                         key = items[i].key;
                         value = items[i].value;
                         settings[key] = value;
