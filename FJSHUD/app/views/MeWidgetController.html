@@ -46,14 +46,14 @@
               </div>
 
 
-              <div ng-if="selected == 'General'" ng-hide="selected != 'General'" class="fj-content WidgetTabContent" ng-include="'views/settings/Settings.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'Web Launcher'" class="fj-content WidgetTabContent ng-hide" ng-include="'views/settings/SettingsWebLauncer.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'Queues'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsQueues.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'Account'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAccount.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'Alerts'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAlerts.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'CP'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsCP.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'About'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAbout.html'" ng-controller="MeWidgetController"></div>
-              <div ng-if="selected == 'Phone'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsPhone.html'" ng-controller="MeWidgetController"></div>
+              <div ng-show="selected == 'General'" class="fj-content WidgetTabContent" ng-include="'views/settings/Settings.html'" ></div>
+             <div ng-show="selected == 'Web Launcher'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
+              <div ng-show="selected == 'Queues'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsQueues.html'"></div>
+              <div ng-show="selected == 'Account'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAccount.html'"></div>
+              <div ng-show="selected == 'Alerts'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAlerts.html'"></div>
+              <div ng-show="selected == 'CP'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsCP.html'"></div>
+              <div ng-show="selected == 'About'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAbout.html'"></div>
+              <div ng-show="selected == 'Phone'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsPhone.html'" ></div>
 
           </div>
 </div>

@@ -963,13 +963,18 @@ p {
   white-space: nowrap;
 }
 .Dialog-settings-row {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 input.text.DialogFieldInput {
   position: absolute;
   left: 160px;
   top: 3px;
   width: 200px;
+}
+.inputBlock {
+  float: none;
+  width: 90px;
+  display: inline-block;
 }
 .ListViewTopNote {
   position: relative;
@@ -1053,8 +1058,8 @@ input.text.DialogFieldInput {
   -webkit-transition: all 0.1s linear;
 }
 .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -1681,7 +1686,7 @@ input.text.ChatInputBoxInput,
   padding-top: 7px;
   padding-bottom: 20px;
   padding-left: 10px;
-  font-size: .7em;
+  font-size: .8em;
 }
 .ListRowContent {
   position: absolute;
@@ -2887,7 +2892,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

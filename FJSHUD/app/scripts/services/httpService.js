@@ -51,6 +51,10 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
       })
   }
 
+  this.isFirstSync = function(){
+    return;
+  }
+
 
   this.updateSettings = function(type,action,model){
     var params = {
