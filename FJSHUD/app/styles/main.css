@@ -933,7 +933,7 @@ p {
   white-space: nowrap;
 }
 .Dialog-settings-row {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 input.text.DialogFieldInput {
   position: absolute;
@@ -941,7 +941,7 @@ input.text.DialogFieldInput {
   top: 3px;
   width: 200px;
 }
-.queueSummaryLabel {
+.inputBlock {
   float: none;
   width: 90px;
   display: inline-block;
@@ -1656,7 +1656,7 @@ input.text.ChatInputBoxInput,
   padding-top: 7px;
   padding-bottom: 20px;
   padding-left: 10px;
-  font-size: .7em;
+  font-size: .8em;
 }
 .ListRowContent {
   position: absolute;

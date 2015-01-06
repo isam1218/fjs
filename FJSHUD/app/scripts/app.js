@@ -16,7 +16,8 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'ngTouch',
     'HUD_model',
-    'HUD_Dir'
+    'HUD_Dir',
+    'flow'
 ]);
 
 hudweb.config(function ($routeProvider) {
