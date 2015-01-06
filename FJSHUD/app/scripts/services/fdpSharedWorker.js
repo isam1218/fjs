@@ -8,7 +8,7 @@ var synced = false;
 var node = undefined;
 var auth = undefined;
 
-var feeds = ['me', 'settings', 'groups', 'contacts','queues'];
+var feeds = ['me', 'settings', 'groups', 'contacts','queues','quickinbox'];
 
 var data_obj = {};
 onconnect = function(event){
@@ -29,7 +29,6 @@ onmessage = function(event, port){
 				break;	
 			case 'sync':
 				do_version_check();
-				setInterval(do_version_check,5000);
 				break;
 			case 'feed_request':
 				get_feed_data(event.data.feed);

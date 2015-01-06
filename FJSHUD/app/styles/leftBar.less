@@ -36,6 +36,20 @@
 	box-shadow: 0px 1px 1px #ccc inset;
   }
   
+  .Search {
+    color: #729c00;
+	border: 1px solid #729c00;
+	border-radius: 2px;
+	padding: .5em;
+	margin: .5em;
+  }
+  
+  .New {
+    margin: .5em;
+	height: 2.8em;
+	padding: 0 20px;
+  }
+  
   .Contacts, .Groups {
     flex: 1;
 	display: flex;
@@ -47,14 +61,36 @@
 	}
   }
   
-  .Notifications {
-    background-color: #ccc;
+  .Notifications > div:first-child {
+    background-color: gray;
+	color: white;
+	padding: .25em;
+	font-size: .9em;
 	min-height: 25px;
 	transition: .25s;
 	
 	&:hover {
 	  min-height: 50px;
 	}
+	
+	& > * {
+	  display: inline-block;
+	  vertical-align: middle;
+	}
+	
+	.XButton {
+	  float: right;
+	}
+	
+	.Icon {
+	  width: 24px;
+	  height: 24px;
+	  background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+	}
+  }
+  
+  .Phone {
+    padding: .5em;
   }
 }
 
@@ -88,7 +124,7 @@
   width:300px;
   background: url("../img/SideBar2.png") no-repeat;
   margin-top:-16px;
-  margin-left:-1px; ;
+  margin-left:-1px;
 }
 
 .LeftBarNewCall {
