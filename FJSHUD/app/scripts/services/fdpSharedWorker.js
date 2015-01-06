@@ -8,7 +8,7 @@ var synced = false;
 var node = undefined;
 var auth = undefined;
 
-var feeds = ['me', 'settings', 'groups', 'contacts'];
+var feeds = ['me', 'settings', 'groups', 'contacts','queues'];
 
 var data_obj = {};
 onconnect = function(event){
