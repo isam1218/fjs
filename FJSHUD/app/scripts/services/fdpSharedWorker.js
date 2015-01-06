@@ -8,7 +8,7 @@ var synced = false;
 var node = undefined;
 var auth = undefined;
 
-var feeds = ['me', 'settings', 'groups', 'contacts'];
+var feeds = ['me', 'settings', 'groups', 'contacts', 'quickinbox'];
 
 var data_obj = {};
 onconnect = function(event){
@@ -39,7 +39,6 @@ onmessage = function(event, port){
 };
 
 function get_feed_data(feed){
-
 	for(i = 0; i < ports.length;i++){
 		ports[i].postMessage({
 			"action":"feed_request",

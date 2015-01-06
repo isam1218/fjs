@@ -16,7 +16,8 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'ngTouch',
     'HUD_model',
-    'HUD_Dir'
+    'HUD_Dir',
+    'flow'
 ]);
 
 hudweb.config(function ($routeProvider) {
@@ -114,7 +115,7 @@ hudweb.controller("LocationsController", ['$scope', '$element', 'DataManager', f
 hudweb.controller("SortMenuController", ['$scope', '$element', fjs.ui.SortMenuController]);
 hudweb.controller("ActionMenuController", ['$scope', '$element', fjs.ui.ActionMenuController]);
 //hudweb.controller("LeftBarController", fjs.ui.LeftBarController);
-hudweb.controller("LeftBarController", ['$scope', '$filter', 'DataManager', fjs.ui.LeftBarController]);
+hudweb.controller("LeftBarController", ['$scope', 'HttpService', fjs.ui.LeftBarController]);
 hudweb.controller("LeftBarContactsController", ['$scope', 'DataManager', fjs.ui.LeftBarContactsController]);
 hudweb.controller("LeftBarCallsController", ['$scope', 'DataManager', fjs.ui.LeftBarCallsController]);
 //hudweb.controller("GroupsController", fjs.ui.GroupsController);

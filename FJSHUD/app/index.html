@@ -58,8 +58,8 @@
 				<div class="RoundedTop"></div>
 				
 				<div class="Toolbar">
-					<input type="search" placeholder="Search" ng-model="query" />
-					<input type="button" value="New" class="XButton" ng-click="showOverlay(true)" />
+					<input type="search" class="Search" placeholder="Search" ng-model="query" />
+					<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
 					
 					<div class="WidgetTabBar">
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'all'" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
@@ -102,7 +102,12 @@
 					ng-controller="GroupsController">
 				</div>
 				
-				<div class="Notifications"></div>
+				<div class="Notifications" ng-include="'views/Notifications.html'"></div>
+				
+				<div class="Phone">
+					<input type="text" placeholder="Phone number" />
+					<input type="button" value="New Call" class="XButton" />
+				</div>
 			</div>
 			
 			<ng-view class="WidgetPanel"></ng-view>	
@@ -134,6 +139,8 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+
     <script src="../bower_components/json3/lib/json3.js"></script>
     <script src="../bower_components/angular-resource/angular-resource.js"></script>
     <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
