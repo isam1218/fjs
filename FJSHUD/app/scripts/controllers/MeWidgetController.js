@@ -40,6 +40,8 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     */
     $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
     $scope.selected = 'General';
+
+    $scope.meModel = meModel.itemsByKey;
     myHttpService.getFeed('settings');
 
     
@@ -124,7 +126,10 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected;// = $scope.autoAwayOptions[1];
-
+    if(meModel.itemsByKey.my_jid){
+            $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
+            $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
+        }
     $scope.update_settings = myHttpService.updateSettings; 
     $scope.micVol = .6;
     $scope.spkVol = .6;
@@ -137,9 +142,14 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.update_settings('HUDw_AppModel_zoom','delete');
         $scope.update_settings('HUDw_AppModel_box','delete');
     }
-
+    $scope.displayFor="none";
+    $scope.alertDuration="all";
     update_settings = function(){
-        
+        $scope.meModel = meModel.itemsByKey;
+        if(meModel.itemsByKey.my_jid){
+            $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
+            $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
+        }
         language = $scope.languages.filter(function(item){
             return (item.value== settings['hudw_lang']);
         })
