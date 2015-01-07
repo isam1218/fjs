@@ -52,8 +52,13 @@ function format_array(feed) {
     var arr = [];
 	
 	for (key in feed) {
-		if (feed[key].items.length > 0)
+		if (feed[key].items.length > 0) {
+			// create xpid for each record
+			for (i = 0; i < feed[key].items.length; i++)
+				feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
+				
 			arr = arr.concat(feed[key].items);
+		}
 	}
 	
 	return arr;
