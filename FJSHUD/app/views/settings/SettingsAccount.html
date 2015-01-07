@@ -12,11 +12,13 @@
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
-              <label class="inputBlock">Login:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" value="5770_vovchuk">
+              <div class="Dialog-settings-row">
+              <label class="queueBlock">Login:</label>
+              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.login">
+              </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Server: </label>
-              <input class="text DialogSettingInput" readonly="true" value="s5770.pbxtra.fonality.com">
+              <label class="queueBlock">Server: </label>
+              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.server">
             </div>
           </div>
           <div class="ListSection">
@@ -29,53 +31,57 @@
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <div class="file-input" flow-init flow-files-submitted="$flow.upload()"> 
-                <label class="inputBlock">Avatar:</label>
-                <img src="/test"/>
-                <span class="btn" flow-btn>Upload</span>
+              <div class="file-input Dialog-settings-row" flow-init flow-files-submitted="$flow.upload()"
+                
+              > 
+                <label class="queueBlock">Avatar:</label>
+                  <img src="https://huc-dev.fonality.com/repository/fj.hud/1.3/img/Generic-Avatar-Small.png?ver=1418381374907&amp;w=40&amp;h=40%22" style="min-height:38px; min-width:40px"/>
+                <span class="ImgBtnUpload" flow-btn flow-drop flow-drag-enter="style={border: '4px solid green'}" flow-drag-leave="style={}"
+                ng-style="style">Upload</span>
+
               </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">First Name:</label>
+              <label class="queueBlock">First Name:</label>
               <input class="text DialogSettingInput" readonly="true" value="Alexandr">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Last Name:</label>
+              <label class="queueBlock">Last Name:</label>
               <input class="text DialogSettingInput" readonly="true" value="Vovchuk --Primary">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Display Name:</label>
-              <input class="text DialogSettingInput" readonly="true" value="Alexandr Vovchuk --Primary">
+              <label class="queueBlock">Display Name:</label>
+              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.display_name.propertyValue">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Email:</label>
+              <label class="queueBlock">Email:</label>
               <input class="text DialogSettingInput" readonly="true" type="email" value="a.vovchuk@gmail.com">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Mobile:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" value="98-923-240-1984">
+              <label class="queueBlock">Mobile:</label>
+              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.mobile.propertyValue">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Voicemail:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" value="7085">
+              <label class="queueBlock">Voicemail:</label>
+              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_vm_box.propertyValue">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Business Phone:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" value="">
+              <label class="queueBlock">Business Phone:</label>
+              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.business_phone.propertyValue">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">Extension:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" value="#7085">
+              <label class="queueBlock">Extension:</label>
+              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_extension.propertyValue">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">IMS:</label>
+              <label class="queueBlock">IMS:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" value="a.vovchuk@gmail.com">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">JID:</label>
-              <input class="text DialogSettingInput" type="text" readonly="true" value="5770_vovchuk@s5770.pbxtra.fonality.com">
+              <label class="queueBlock">JID:</label>
+              <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.my_jid.propertyValue">
             </div>
             <div class="Dialog-settings-row">
-              <label class="inputBlock">My Department:</label>
+              <label class="queueBlock">My Department:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" value="Primary phones">
             </div>
           </div>
