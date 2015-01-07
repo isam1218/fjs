@@ -233,6 +233,7 @@
 }
 .Dialog-settings-row {
   margin: 10px 20px;
+  min-height: 30px;
 }
 .ListPageHeaderText {
   position: relative;
@@ -248,8 +249,18 @@ input.text.DialogFieldInput {
   top: 3px;
   width: 200px;
 }
-.inputBlock {
+.queueBlock {
   float: none;
   width: 90px;
   display: inline-block;
+}
+span.inputBlock {
+  width: 300px;
+  display: inline-block;
+}
+input.text {
+  line-height: 24px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border: solid 1px #c7c7c7;
 }
