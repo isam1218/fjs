@@ -324,9 +324,6 @@ p {
   overflow-y: auto;
 }
 .LeftBar .Notifications > div:first-child {
-  background-color: gray;
-  color: white;
-  padding: .25em;
   font-size: .9em;
   min-height: 25px;
   transition: .25s;
@@ -334,14 +331,20 @@ p {
 .LeftBar .Notifications > div:first-child:hover {
   min-height: 50px;
 }
-.LeftBar .Notifications > div:first-child > * {
+.LeftBar .Notifications > div:first-child .TitleBar {
+  width: 100%;
+  background-color: gray;
+  color: white;
+  padding: .25em;
+}
+.LeftBar .Notifications > div:first-child .TitleBar > * {
   display: inline-block;
   vertical-align: middle;
 }
-.LeftBar .Notifications > div:first-child .XButton {
+.LeftBar .Notifications > div:first-child .TitleBar .XButton {
   float: right;
 }
-.LeftBar .Notifications > div:first-child .Icon {
+.LeftBar .Notifications > div:first-child .TitleBar .Icon {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
@@ -1058,8 +1061,8 @@ input.text.DialogFieldInput {
   -webkit-transition: all 0.1s linear;
 }
 .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -1485,7 +1488,7 @@ input.text.ChatInputBoxInput,
 .ChatMessageItem .time {
   position: absolute;
   top: 4px;
-  left: -50px;
+  left: -65px;
   width: 45px;
   text-align: right;
   height: 20px;
@@ -1528,7 +1531,6 @@ input.text.ChatInputBoxInput,
   width: auto;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem {
-  margin-left: 4px;
   margin-right: 4px;
   width: auto;
 }
@@ -1686,7 +1688,7 @@ input.text.ChatInputBoxInput,
   padding-top: 7px;
   padding-bottom: 20px;
   padding-left: 10px;
-  font-size: .8em;
+  font-size: .7em;
 }
 .ListRowContent {
   position: absolute;
@@ -1996,7 +1998,6 @@ input.text.ChatInputBoxInput,
   width: auto;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem {
-  margin-left: 4px;
   margin-right: 4px;
   width: auto;
 }
@@ -2892,7 +2893,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

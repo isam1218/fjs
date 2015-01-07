@@ -74,7 +74,7 @@ function sync_request(f){
 		}
 		
 		// again, again!
-		do_version_check();
+		setTimeout('do_version_check();', 500);
 	});
 }
 
@@ -97,7 +97,7 @@ function do_version_check(){
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
             else
-                do_version_check();
+				setTimeout('do_version_check();', 500);
 		}
 	});
 }	

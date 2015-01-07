@@ -20,7 +20,7 @@
 <div class="ContactList">
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" context-menu="contact" data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn() | filter:filterIsExternal(external) | orderBy:sortField:sortReverce track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<a href="#contact/{{::contact.xpid}}" context-menu="contact" data-ng-repeat="contact in contacts | orderBy: sortField | filter: {displayName: $parent.$parent.query}" class="ListRowFirst ListRow ListRow-Contact">
 			<div class="Avatar AvatarNormal" avatar-menu="contact">
 				<img class="AvatarImgPH" data-ng-src="{{::contact.getAvatarUrl(28,28)}}">
 				<div class="AvatarForeground AvatarInteractable"></div>
@@ -29,7 +29,7 @@
 			<div class="ListRowContent">
 				<div class="ListRowTitle">
 					<div class="name">
-						<b>{{ ::contact.getDisplayName() }}</b>
+						<b>{{ ::contact.displayName }}</b>
 						<span class="details">#{{ ::contact.primaryExtension }}</span>
 					</div>
 				</div>
