@@ -7,7 +7,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverce = false;
-    $scope.contacts = contactsModel.items;
+    $scope.contacts = [];
 	$scope.external = false;
 	$scope.add = {};
 	
@@ -66,6 +66,10 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 		$scope.$parent.showOverlay(false);
 		$scope.add = {};
 	};
+	
+	$scope.$on('contacts_synced', function(event, data) {
+		$scope.contacts = data;
+	});
 
     $scope.$on("$destroy", function() {
 

@@ -201,18 +201,14 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     }
 
     $scope.$on('settings_synced',function(event,data){
-        if(JSON != undefined){
-            if(data){
-                if(data != undefined){
-                    items = data[0].items;
-                  for(i= 0; i < items.length; i++){
-                        key = items[i].key;
-                        value = items[i].value;
-                        settings[key] = value;
-                    }
-                }
-                update_settings();
+        if (data && data != undefined){
+			for(i = 0; i < data.length; i++){
+                key = data[i].key;
+                value = data[i].value;
+                settings[key] = value;
             }
+			
+			update_settings();
         }
     });
 };

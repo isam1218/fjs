@@ -1,7 +1,15 @@
 <div>
-	<div class="Icon"></div>
-	<div>Notifications</div>
-	<input type="button" value="Open" class="XButton" ng-click="$parent.overlay ='notifications'" />
+	<div class="TitleBar">
+		<div class="Icon"></div>
+		<div>Notifications</div>
+		<input type="button" value="Open" class="XButton" ng-click="$parent.overlay ='notifications'" />
+	</div>
+	
+	<div class="Messages">
+		<div class="Message" ng-repeat="message in notifications">
+			{{message.message}}
+		</div>
+	</div>
 </div>
 
 <div ng-show="$parent.overlay == 'notifications'" class="Overlay">
@@ -14,6 +22,11 @@
 		</div>
 		
 		<div class="Sections">
+			<div class="Messages">
+				<div class="Message" ng-repeat="message in notifications">
+					{{message.message}}
+				</div>
+			</div>
 		</div>
 		
 		<div class="Footer">

@@ -324,9 +324,6 @@ p {
   overflow-y: auto;
 }
 .LeftBar .Notifications > div:first-child {
-  background-color: gray;
-  color: white;
-  padding: .25em;
   font-size: .9em;
   min-height: 25px;
   transition: .25s;
@@ -334,14 +331,20 @@ p {
 .LeftBar .Notifications > div:first-child:hover {
   min-height: 50px;
 }
-.LeftBar .Notifications > div:first-child > * {
+.LeftBar .Notifications > div:first-child .TitleBar {
+  width: 100%;
+  background-color: gray;
+  color: white;
+  padding: .25em;
+}
+.LeftBar .Notifications > div:first-child .TitleBar > * {
   display: inline-block;
   vertical-align: middle;
 }
-.LeftBar .Notifications > div:first-child .XButton {
+.LeftBar .Notifications > div:first-child .TitleBar .XButton {
   float: right;
 }
-.LeftBar .Notifications > div:first-child .Icon {
+.LeftBar .Notifications > div:first-child .TitleBar .Icon {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
@@ -1504,7 +1507,7 @@ input.text.ChatInputBoxInput,
 .ChatMessageItem .time {
   position: absolute;
   top: 4px;
-  left: -50px;
+  left: -65px;
   width: 45px;
   text-align: right;
   height: 20px;
@@ -1547,7 +1550,6 @@ input.text.ChatInputBoxInput,
   width: auto;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem {
-  margin-left: 4px;
   margin-right: 4px;
   width: auto;
 }
@@ -2015,7 +2017,6 @@ input.text.ChatInputBoxInput,
   width: auto;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem {
-  margin-left: 4px;
   margin-right: 4px;
   width: auto;
 }

@@ -8,16 +8,16 @@ var synced = false;
 var node = undefined;
 var auth = undefined;
 
+var data_obj = {};
 var feeds = ['me', 'settings', 'groups', 'contacts','queues','quickinbox'];
 
-var data_obj = {};
 onconnect = function(event){
 	var port = event.ports[0];
 	ports.push(port);
 	port.start();
 	port.addEventListener("message",
         function(event) { onmessage(event, port); } );
-}
+};
 
 onmessage = function(event, port){
 	if(event.data.action){
@@ -48,23 +48,36 @@ function get_feed_data(feed){
 	}
 }
 
+function format_array(feed) {
+    var arr = [];
+	
+	for (key in feed) {
+		if (feed[key].items.length > 0)
+			arr = arr.concat(feed[key].items);
+	}
+	
+	return arr;
+}
+
 function sync_request(f){			
 	var newFeeds = '';
-		for (i = 0; i < f.length; i++)
-			newFeeds += '&' + f[i] + '=';
+	for (i = 0; i < f.length; i++)
+		newFeeds += '&' + f[i] + '=';
 	
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
-		if(xmlhttp.status && xmlhttp.status == 200){
-			var sync_response = {
-				"action": "sync_completed",
-				"data": xmlhttp.responseText,
+		if(xmlhttp.status && xmlhttp.status == 200){			
+			synced_data = JSON.parse(xmlhttp.responseText);
+			
+			for (feed in synced_data){
+				data_obj[feed] = format_array(synced_data[feed]);
+				synced_data[feed] = data_obj[feed];
 			}
 			
-			synced_data = JSON.parse(xmlhttp.responseText);
-			for (feed in synced_data){
-				data_obj[feed] = synced_data[feed];
+			var sync_response = {
+				"action": "sync_completed",
+				"data": synced_data,
 			}
 			
 			for (i = 0; i < ports.length; i++)
@@ -74,7 +87,7 @@ function sync_request(f){
 		}
 		
 		// again, again!
-		do_version_check();
+		setTimeout('do_version_check();', 500);
 	});
 }
 
@@ -97,7 +110,7 @@ function do_version_check(){
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
             else
-                do_version_check();
+				setTimeout('do_version_check();', 500);
 		}
 	});
 }	
