@@ -68,13 +68,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 	};
 	
 	$scope.$on('contacts_synced', function(event, data) {
-		$scope.contacts = [];
-		
-		for (obj in data) {
-			if (data[obj].items.length > 0) {
-				$scope.contacts = $scope.contacts.concat(data[obj].items);
-			}
-		}
+		$scope.contacts = data;
 	});
 
     $scope.$on("$destroy", function() {
