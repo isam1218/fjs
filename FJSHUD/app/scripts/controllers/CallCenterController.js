@@ -38,7 +38,7 @@ fjs.ui.CallCenterController = function ($scope, dataManager) {
     if (!$scope.memberIds[data.entry.queueId]) {
       $scope.memberIds[data.entry.queueId] = [];
     }
-    $scope.memberIds[data.entry.queueId].push(data.entry.xpid);
+    $scope.memberIds[data.entry.queueId].push(data.entry.contactId);
 
  //   $scope.$safeApply();
   });

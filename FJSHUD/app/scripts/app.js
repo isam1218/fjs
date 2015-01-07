@@ -23,79 +23,79 @@ var hudweb = angular.module('fjshudApp', [
 hudweb.config(function ($routeProvider) {
     $routeProvider
         .when('/settings', {
-			templateUrl: 'views/MeWidgetController.html',   
+			templateUrl: 'views/MeWidgetController.html',
 			controller:['$scope', 'DataManager','$http','HttpService', fjs.ui.MeWidgetController]
 		})
         .when('/settings/weblauncer', {
-			templateUrl: 'views/SettingsWebLauncer.html',   
+			templateUrl: 'views/SettingsWebLauncer.html',
 			controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]
 		})
         .when('/settings/account', {
-			templateUrl: 'views/SettingsAccount.html',   
+			templateUrl: 'views/SettingsAccount.html',
 			controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]
 		})
         .when('/callcenter', {
-			templateUrl: 'views/CallCenter.html',   
+			templateUrl: 'views/CallCenter.html',
 			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
 		})
         .when('/callcenter/allqueues', {
-			templateUrl: 'views/CallCenter.html',   
+			templateUrl: 'views/CallCenter.html',
 			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
 		})
         .when('/callcenter/mystatus', {
-			templateUrl: 'views/CallCenter.html',   
+			templateUrl: 'views/CallCenter.html',
 			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
 		})
-		.when('/queue/:queueId', {
+        .when('/queue/:queueId', {
 			templateUrl: 'views/QueueWidget.html',
-			controller: ['$scope', 'DataManager', fjs.ui.CallCenterController]
+			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]
 		})
         .when('/calllog', {
-			templateUrl: 'views/CallsRecordings.html',   
+			templateUrl: 'views/CallsRecordings.html',
 			controller:['$scope',  'DataManager', fjs.ui.CallsRecordingsController]
 		})
         .when('/calllog/voicemails', {
-			templateUrl: 'views/VoiceRecordings.html',   
+			templateUrl: 'views/VoiceRecordings.html',
 			controller:['$scope',  'DataManager', fjs.ui.CallsRecordingsController]
 		})
         .when('/conferences', {
-			templateUrl: 'views/MyConferencesWidgetController.html', 
+			templateUrl: 'views/MyConferencesWidgetController.html',
 			controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]
 		})
         .when('/conferences/my', {
-			templateUrl: 'views/MyConferencesWidgetController.html', 
+			templateUrl: 'views/MyConferencesWidgetController.html',
 			controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]
 		})
         .when('/conferences/all', {
-			templateUrl: 'views/AllConferencesWidgetController.html', 
+			templateUrl: 'views/AllConferencesWidgetController.html',
 			controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]
 		})
         .when('/conference/:conferenceId', {
-			templateUrl: 'views/ConferenceWidget.html', 
+			templateUrl: 'views/ConferenceWidget.html',
 			controller: ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]
 		})
         .when('/test', {
-			templateUrl: 'views/TestWidget.html', 
+			templateUrl: 'views/TestWidget.html',
 			controller: ['$scope', fjs.ui.TestWidget]
 		})
         .when('/contacts', {
-			templateUrl: 'views/ContactsWidget.html', 
+			templateUrl: 'views/ContactsWidget.html',
 			controller: ['$scope', '$location', 'DataManager', fjs.ui.ContactsWidget]
 		})
         .when('/contact/:contactId', {
-			templateUrl: 'views/ConversationWidget.html', 
+			templateUrl: 'views/ConversationWidget.html',
 			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.ConversationWidgetController]
 		})
         .when('/group/:groupId', {
-			templateUrl: 'views/GroupSingleWidget.html', 
+			templateUrl: 'views/GroupSingleWidget.html',
 			controller: ['$scope', fjs.ui.TestWidget]
 		})
         .when('/zoom', {
-			templateUrl: 'views/ZoomWidgetController.html',   
+			templateUrl: 'views/ZoomWidgetController.html',
 			controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]
 		})
         .when('/search', {
-			templateUrl: 'views/SearchWidget.html',   
+			templateUrl: 'views/SearchWidget.html',
 			controller:['$scope', 'DataManager', fjs.ui.SearchWidgetController]
 		})
         .otherwise({redirectTo: '/settings'});
@@ -133,6 +133,7 @@ hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$t
 hudweb.controller("ConversationWidgetChatController", ['$scope', 'DataManager',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
+hudweb.controller("QueueWidgetController", ['$scope', 'DataManager', fjs.ui.QueueWidgetController]);
 
 hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
