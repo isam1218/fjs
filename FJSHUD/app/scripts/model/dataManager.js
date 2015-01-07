@@ -90,6 +90,9 @@
                  case "queues":
                     this.feeds[feedName] = new fjs.hud.QueueFeedModel(this);
                     break;
+                 case "queue_members":
+                    this.feeds[feedName] = new fjs.hud.QueueMemberFeedModel(this);
+                    break;
                 default:
                     this.feeds[feedName] = new fjs.hud.FeedModel(feedName, this);
             }

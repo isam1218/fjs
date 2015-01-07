@@ -9,10 +9,18 @@ fjs.ui.QueueWidgetController = function($scope, $routeParams, $timeout, $filter,
   $scope.selected = 'Agents';
 
   $scope.queueMembersModel = dataManager.getModel("queue_members");
+  $scope.queueMembers = $scope.queueMembersModel.items;
   $scope.members = [];//$scope.queueMembersModel.items;
 
   $scope.queueMembersModel.addEventListener('complete', function (data) {
-    $scope.$safeApply();
+
+    //for (var i = 0; i < $scope.queueMembers.length; i++) {
+    //   var item =  $scope.queueMembersModel.items[i];
+    //   if (item.queueId === $scope.queueId) {
+    //      $scope.members.push(item);
+    //    }
+    //  }
+      $scope.$safeApply();
   });
 
   $scope.queueMembersModel.addEventListener("push", function (data) {

@@ -68,18 +68,16 @@
            data-ng-repeat="member in members | SortCalllog | orderBy:sortField:sortReverse">
           <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ member.getLocation() }}">
             <img class="AvatarImgPH" data-fj-local-id="avatarImg"
-                 ng-src="{{ member.getCallAvatarUrl(28,28)}}">
+                 ng-src="{{ member.getAvatar(28,28)}}">
 
             <div class="AvatarInteractable"></div>
           </div>
           <div class="ListRowContent">
 
             <div class="ListRowLeftAreaWide">
-              <div class="ListRowTitle"> {{ member.displayName}}</div>
-              <div class="Link ListRowDesc">#{{ member.extension }}</div>
-              <div class="ListRowDesc"> on {{ member.getCalltime() }}</div>
-              <div class="ListRowDesc"> for {{ member.duration | Duration }}</div>
-            </div>
+              <div class="ListRowTitle"> {{ member.getDisplayName()}}</div>
+              <div class="Link ListRowDesc">#{{ member.getExtension() }}</div>
+             </div>
             <div class="ListRowStatus">
               <div class="ListRowStatusIcon Small XIcon-CallLog-{{ member.getCallType() }}"></div>
             </div>
