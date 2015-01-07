@@ -23,9 +23,9 @@ fjs.hud.QueueMemberEntryModel.prototype.getExtension = function () {
 
 fjs.hud.QueueMemberEntryModel.prototype.getAvatar = function (width, height) {
   if(this.contactId) {
-    var contact = this.dataManager.getModel('contacts').items[this.contactId];
-    if(contact) {
-      return contact.getAvatarUrl(width, height);
+    this.contact = this.dataManager.getModel('contacts').items[this.contactId];
+    if(this.contact) {
+      return this.contact.getAvatarUrl(width, height);
     }
   } else {
     switch (width) {

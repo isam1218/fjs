@@ -6,25 +6,7 @@
     <div class="WidgetHeaderTitle">Queue</div>
   </div>
   <div class="WidgetBody">
-    <!--<div class="WidgetBody">-->
-      <!--<div class="WidgetTabBar">-->
-        <!--<a href="#/callcenter/agents" class="WidgetTabBarButton Ready fj-selected-item">-->
-          <!--<div class="inner">Agents</div>-->
-          <!--<div class="arrow"></div>-->
-        <!--</a>-->
-        <!--<a href="#/callcenter/stats" class="WidgetTabBarButton Ready">-->
-          <!--<div class="inner">Stats</div>-->
-          <!--<div class="arrow"></div>-->
-        <!--</a>-->
-       <!--<a href="#/callcenter/calls" class="WidgetTabBarButton Ready">-->
-          <!--<div class="inner">Calls</div>-->
-          <!--<div class="arrow"></div>-->
-        <!--</a>-->
-       <!--<a href="#/callcenter/log" class="WidgetTabBarButton Ready">-->
-          <!--<div class="inner">Call Log</div>-->
-          <!--<div class="arrow"></div>-->
-        <!--</a>-->
-      <!--</div>-->
+
     <div class="WidgetBody">
       <div class="WidgetTabBar">
         <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
@@ -33,37 +15,10 @@
         </a>
       </div>
       <div class="ListLineContent Header LeftContactsColumns">
-        <!--<div class="ListLineContentCell">-->
-          <!--Sort:-->
-        <!--</div>-->
-        <!--<div data-ng-click="sort('displayName')"-->
-             <!--class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
-          <!--<span>AGENT</span>-->
-
-          <!--<div class="DirectionArrow"></div>-->
-        <!--</div>-->
-        <!--<div data-ng-click="sort('phone')"-->
-             <!--class="ListLineContentCell Phone {{(sortField == 'phone' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
-          <!--<span>STATS</span>-->
-
-          <!--<div class="DirectionArrow"></div>-->
-        <!--</div>-->
-        <!--<div data-ng-click="sort('duration')"-->
-             <!--class="ListLineContentCell Duration {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
-          <!--<span>CALL</span>-->
-
-          <!--<div class="DirectionArrow"></div>-->
-        <!--</div>-->
-        <!--<div data-ng-click="sort('startedAt')"-->
-             <!--class="ListLineContentCell StartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">-->
-          <!--<span>CALL LOG</span>-->
-
-          <!--<div class="DirectionArrow"></div>-->
-        <!--</div>-->
 
       </div>
       <div class="LeftBarTabContentList">
-        <a href="#"
+        <a href="#contact/{{::member.contactId}}"
            class="ListRow Table AvatarHoverArea"
            data-ng-repeat="member in members | SortCalllog | orderBy:sortField:sortReverse">
           <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ member.getLocation() }}">
@@ -79,7 +34,13 @@
               <div class="Link ListRowDesc">#{{ member.getExtension() }}</div>
              </div>
             <div class="ListRowStatus">
-              <div class="ListRowStatusIcon Small XIcon-CallLog-{{ member.getCallType() }}"></div>
+              <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.contact.getChatStatus()}}">
+                <div class="status-icon-inner"></div>
+              </div>
+              <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.contact.contactstatus_queueStatus}}">
+                <div class="status-icon-inner"></div>
+              </div>
+              <div class="ListRowStatusText">{{member.contact.contactstatus_xmppCustom || member.contact.contactstatus_xmpp || 'offline'}}</div>
             </div>
           </div>
         </a>
