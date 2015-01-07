@@ -6,7 +6,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     document.title= "Contacts";
     $scope.query = "";
     $scope.sortField = "displayName";
-    $scope.sortReverce = false;
+    $scope.sortReverse = false;
     $scope.contacts = [];
 	$scope.external = false;
 	$scope.add = {};
@@ -19,10 +19,10 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
             $scope.sortField = field;
-            $scope.sortReverce = false;
+            $scope.sortReverse = false;
         }
         else {
-            $scope.sortReverce = !$scope.sortReverce;
+            $scope.sortReverse = !$scope.sortReverse;
         }
     };
     var timeoutId = null;
@@ -68,8 +68,13 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 	};
 	
 	$scope.$on('contacts_synced', function(event, data) {
+		console.error(data);
 		$scope.contacts = data;
 	});
+
+    $scope.getAvatarUrl = function(xpid) {
+        return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=28&h=28&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
+    };
 
     $scope.$on("$destroy", function() {
 
