@@ -15,3 +15,16 @@ fjs.hud.QueueMemberFeedModel.prototype.createEntry = function (obj) {
   return new fjs.hud.QueueMemberEntryModel(obj, this.dataManager);
 };
 
+fjs.hud.QueueMemberFeedModel.prototype.onEntryChange = function (data) {
+  var isNew = !this.items[data["xpid"]];
+
+  fjs.hud.QueueMemberFeedModel.super_.prototype.onEntryChange.call(this, data);
+
+  if (isNew) {
+    var member = this.items[data["xpid"]];
+
+    if(member.contactId) {
+      member.contact = this.dataManager.getModel('contacts').items[member.contactId];
+    }
+  }
+};
