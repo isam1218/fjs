@@ -1,0 +1,16 @@
+input.NewCall {
+  margin-top: 2px;
+  margin-left: 10px;
+  display: inline-block;
+  width: 305px;
+  height: 22px;
+  border: 1px solid #c2c2c2;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  padding: 2px 5px;
+}
+div.NewCall {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}

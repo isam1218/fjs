@@ -37,6 +37,16 @@
 
 
             <div class="WidgetBody">
+              <div class="WidgetSectionTitle">Place a call</div>
+              
+              <div class="NewCall">
+                <input class="NewCall" type="tel" placeholder="Phone number">
+                <div class="XButton XButtonNormal" ><span>#</span></div>
+                <div class="XButton XButtonGreen"><span>Call</span></div>
+              </div>
+              
+              <div class="WidgetSectionTitle">Recent calls</div>
+
               <div class="WidgetSectionTitle">Preferences</div>
               <div class="WidgetTabBar">
                 <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">

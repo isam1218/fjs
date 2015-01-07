@@ -998,6 +998,22 @@ input.text {
   -webkit-border-radius: 3px;
   border: solid 1px #c7c7c7;
 }
+input.NewCall {
+  margin-top: 2px;
+  margin-left: 10px;
+  display: inline-block;
+  width: 305px;
+  height: 22px;
+  border: 1px solid #c2c2c2;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  padding: 2px 5px;
+}
+div.NewCall {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
 .ListViewTopNote {
   position: relative;
   height: 50px;
@@ -1080,8 +1096,8 @@ input.text {
   -webkit-transition: all 0.1s linear;
 }
 .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -1257,6 +1273,31 @@ input.text {
 .QueueBlockStatLineSlider.Blue {
   background-color: #226dd2;
   border-color: #226dd2;
+}
+.QueueHeader {
+  background: #ddd;
+  width: 515px;
+}
+.QueueSetting {
+  display: inline-block;
+  test-align: center;
+}
+.QueueSettingCol1 {
+  width: 180px;
+  overflow: auto;
+  margin: auto;
+  text-align: center;
+}
+.QueueSettingHeader {
+  width: 155px;
+  background-color: #ddd;
+  text-align: center;
+  color: #0093f0;
+}
+.QueueSettingCheckBox {
+  width: 77px;
+  text-align: center;
+  font-size: .6em;
 }
 .SearchInputBox {
   position: absolute;
@@ -2927,7 +2968,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
