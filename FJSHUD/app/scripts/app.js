@@ -47,7 +47,7 @@ hudweb.config(function ($routeProvider) {
 			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
 		})
         .when('/queue/:queueId', {
-			templateUrl: 'views/QueueWidget.html',
+			templateUrl: 'views/queues/QueueWidget.html',
 			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]
 		})
         .when('/calllog', {
@@ -106,7 +106,7 @@ hudweb.service('HttpService',['$http','DataManager','$rootScope',fjs.hud.httpSer
 
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
-hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', fjs.ui.MainController]);
+hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
 hudweb.controller("ContactsWidget", ['$scope', '$location', 'DataManager', fjs.ui.ContactsWidget]);
 hudweb.controller("GroupsController", ['$scope', '$rootScope', 'DataManager', fjs.ui.GroupsController]);
 hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', fjs.ui.TopBarMeStatusController]);
@@ -133,7 +133,9 @@ hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$t
 hudweb.controller("ConversationWidgetChatController", ['$scope', 'DataManager',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
-hudweb.controller("QueueWidgetController", ['$scope', 'DataManager', fjs.ui.QueueWidgetController]);
+
+// Call Center and Queues
+hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
 
 hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
