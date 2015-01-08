@@ -1,6 +1,4 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
+fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService) {
     fjs.ui.Controller.call(this, $scope);
 	$rootScope.myPid = null;
 	$rootScope.groups = false;
@@ -75,5 +73,3 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider) {
         dataProvider.logout();
     };
 };
-
-fjs.core.inherits(fjs.ui.MainController, fjs.ui.Controller)

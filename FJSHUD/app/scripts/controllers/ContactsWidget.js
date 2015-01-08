@@ -10,11 +10,6 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
     $scope.contacts = [];
 	$scope.external = false;
 	$scope.add = {};
-	
-	// update contacts asap
-	contactsModel.addEventListener("complete", function() {
-		$scope.$safeApply();
-	});
 
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
@@ -32,20 +27,11 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
         $scope.$emit("showPopup", {key:"EditContactDialog"});
         return false;
     };
-
-    $scope.filterContactFn = function() {
-        return function(contact){
-            if($scope.$parent.query) {
-                return contact.pass($scope.$parent.query);
-            }
-            return true;
-        };
-    };
 	
 	// custom filter to find externals
-	$scope.filterIsExternal = function(external) {
+	$scope.filterIsExternal = function() {
 		return function(contact) {
-			if ((!external && !contact.isExternal()) || (external && contact.isExternal()))
+			if (!$scope.external || ($scope.external && contact.primaryExtension == ''))
 				return true;
 		};
 	};
@@ -68,7 +54,6 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 	};
 	
 	$scope.$on('contacts_synced', function(event, data) {
-		console.error(data);
 		$scope.contacts = data;
 	});
 
