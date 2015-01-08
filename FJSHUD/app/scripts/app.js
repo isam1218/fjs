@@ -47,7 +47,7 @@ hudweb.config(function ($routeProvider) {
 			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
 		})
         .when('/queue/:queueId', {
-			templateUrl: 'views/QueueWidget.html',
+			templateUrl: 'views/queues/QueueWidget.html',
 			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]
 		})
         .when('/calllog', {
@@ -133,7 +133,9 @@ hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$t
 hudweb.controller("ConversationWidgetChatController", ['$scope', 'DataManager',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
-hudweb.controller("QueueWidgetController", ['$scope', 'DataManager', fjs.ui.QueueWidgetController]);
+
+// Call Center and Queues
+hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
 
 hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
