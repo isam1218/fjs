@@ -178,7 +178,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
         $scope.enableAutoAway = false;
         $scope.useColumnLayout = settings['use_column_layout'] == 'true';
-        console.log(settings);
+		
         callLogSelected = $scope.callLogSizeOptions.filter(function(item){
             return (item.value==settings['recent_call_history_length']);
         });
