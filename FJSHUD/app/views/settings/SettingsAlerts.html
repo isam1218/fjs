@@ -31,18 +31,22 @@
       </div>
 	<div class="ListSectionBody">Configure call desktop alerts</div>
       <div class="ListPage">
-      	<div class="ListPageHeaderText">Type</div>
-      	<div class="Dialog-settings-row" ><input type="checkbox"> <label>Show alerts</label> </div>
-      	<div class="Dialog-settings-row"><input type="checkbox"> <label>Show when status is "Busy"</label> </div>
-      	
-      	<div class="ListPageHeaderText">Display for</div>
-      	<div class="Dialog-settings-row"><input type="radio" ng-model="displayFor" value="all"> <label>All my calls</label> </div>
-      	<div class="Dialog-settings-row"><input type="radio" ng-model="displayFor" value="only"> <label>Only for known numbers</label> </div>
-      	<div class="Dialog-settings-row"><input type="radio" ng-model="displayFor" value="none"> <label>Never display</label> </div>
-      	
-      	<div class="ListPageHeaderText">Duration</div>
-      	<div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="all"> <label>All my calls</label> </div>
-      	<div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="only"> <label>Only for known numbers</label> </div>
+        <div class="ListPageHeaderText">Type</div>
+        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowIncoming" ng-click="update_settings('alert_call_incoming','update',alertShowIncoming)" class="ng-pristine ng-untouched ng-valid"> 
+
+        <label>Incoming Calls</label> </div>
+        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowOutgoing" ng-click="update_settings('alert_call_outgoing','update',alertShowOutgoing)" class="ng-pristine ng-untouched ng-valid"> 
+
+        <label>Outgoing Calls</label> </div>
+        
+        <div class="ListPageHeaderText">Display for</div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="all" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" class="ng-valid ng-dirty ng-valid-parse ng-touched" name="45"> <label>All my calls</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="known" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" class="ng-pristine ng-untouched ng-valid" name="46"> <label>Only for known numbers</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" class="ng-pristine ng-untouched ng-valid" name="47"> <label>Never display</label> </div>
+        
+        <div class="ListPageHeaderText">Duration</div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="entire" class="ng-pristine ng-untouched ng-valid" name="48"> <label>All my calls</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="while_ringing" class="ng-pristine ng-untouched ng-valid" name="49"> <label>Only for known numbers</label> </div>
       </div>
        
      </div>
