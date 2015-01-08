@@ -9,7 +9,8 @@
 
     <div class="WidgetBody">
       <div class="WidgetTabBar">
-        <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+        <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready"
+           ng-class="selected == tab ? 'fj-selected-item' : ''">
           <div class="inner">{{ ::tab }}</div>
           <div class="arrow"></div>
         </a>
@@ -18,31 +19,36 @@
 
       </div>
       <div class="LeftBarTabContentList">
+        <div class="ListSection">
+          <div class="ListSectionHeader">
+            <div class="ListSectionHeaderTitle">Logged in</div>
+          </div>
+          <div class="ListSectionBody">Agents logged into the queue</div>
+        </div>
+
         <a href="#contact/{{::member.contactId}}"
            class="ListRow Table AvatarHoverArea"
-           data-ng-repeat="member in members | SortCalllog | orderBy:sortField:sortReverse">
-          <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ member.getLocation() }}">
-            <img class="AvatarImgPH" data-fj-local-id="avatarImg"
-                 ng-src="{{ member.contact.getAvatarUrl(28,28)}}">
+           data-ng-repeat="member in loggedInMembers | SortCalllog | orderBy:sortField:sortReverse">
 
-            <div class="AvatarInteractable"></div>
-          </div>
-          <div class="ListRowContent">
+          <div ng-include="'views/QueueMemberSection.html'"></div>
 
-            <div class="ListRowLeftAreaWide">
-              <div class="ListRowTitle"> {{ member.contact.getDisplayName()}}</div>
-              <div class="Link ListRowDesc">#{{ member.contact.primaryExtension }}</div>
-             </div>
-            <div class="ListRowStatus">
-              <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.contact.getChatStatus()}}">
-                <div class="status-icon-inner"></div>
-              </div>
-              <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.contact.contactstatus_queueStatus}}">
-                <div class="status-icon-inner"></div>
-              </div>
-              <div class="ListRowStatusText">{{member.contact.contactstatus_xmppCustom || member.contact.contactstatus_xmpp || 'offline'}}</div>
-            </div>
+        </a>
+
+        <div class="ListSection">
+          <div class="ListSectionHeader">
+            <div class="ListSectionHeaderTitle">Logged Out</div>
           </div>
+          <div class="ListSectionBody">Agents logged out of the queue</div>
+        </div>
+
+
+        <a href="#contact/{{::member.contactId}}"
+           class="ListRow Table AvatarHoverArea"
+           data-ng-repeat="member in loggedOutMembers | SortCalllog | orderBy:sortField:sortReverse">
+
+          <div ng-include="'views/QueueMemberSection.html'"></div>
+
+
         </a>
       </div>
     </div>
