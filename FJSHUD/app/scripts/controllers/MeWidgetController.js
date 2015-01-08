@@ -10,7 +10,11 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     var context = this;
 
     fjs.ui.Controller.call(this, $scope);
+    var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
+
     var settings = {};
+    var queues = [];
+
     var meModel = dataManager.getModel("me");
     var locationsModel = dataManager.getModel("locations");
 
@@ -42,8 +46,9 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     $scope.selected = 'General';
 
     $scope.meModel = meModel.itemsByKey;
-    myHttpService.getFeed('settings');
 
+    myHttpService.getFeed('settings');
+    
     
 
 
@@ -130,7 +135,22 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
             $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
             $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
         }
-    $scope.update_settings = myHttpService.updateSettings; 
+    $scope.update_settings = function(type,action,model){
+        
+        switch(type){
+            case 'auto_away_timeout':
+                if(model){
+                    myHttpService.updateSettings(type,action,$scope.autoAwaySelected); 
+                }else{
+                    myHttpService.updateSettings(type,action,MAX_AUTO_AWAY_TIMEOUT);
+                }
+            default:
+                myHttpService.updateSettings(type,action,model); 
+            
+        }
+
+    }
+
     $scope.micVol = .6;
     $scope.spkVol = .6;
 
@@ -144,59 +164,78 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     }
     $scope.displayFor="none";
     $scope.alertDuration="all";
+    
     update_settings = function(){
         $scope.meModel = meModel.itemsByKey;
         if(meModel.itemsByKey.my_jid){
             $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
             $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
         }
-        language = $scope.languages.filter(function(item){
-            return (item.value== settings['hudw_lang']);
-        })
-        autoAwayOption = $scope.autoAwayOptions.filter(function(item){
-            return (item.value == settings['hudmw_auto_away_timeout']);
-        });
+        if(settings){
+            if(settings.hudw_lang){
+                language = $scope.languages.filter(function(item){
+                return (item.value== settings['hudw_lang']);
+                })    
+                
+                $scope.languageSelect = language[0];
+            }
+            
+            if(settings.hudmw_auto_away_timeout){
+                autoAwayOption = $scope.autoAwayOptions.filter(function(item){
+                    return (item.value == settings['hudmw_auto_away_timeout']);
+                });   
+                $scope.autoAwaySelected = autoAwayOption[0];
+                
+            }
 
-        autoClearOption = $scope.autoClearSettingOptions.filter(function(item){
-            return (item.value == settings['hudmw_searchautocleardelay']);
-        });
+            if(settings.auto_away_timeout){
+                $scope.enableAutoAway = true;    
+            }else{
+                $scope.enableAutoAway = false;
+             //= settings['auto_away_timeout'] 
+            }
+            
 
-        hoverDelaySelected = $scope.hoverDelayOptions.filter(function(item){
-            return (item.value == settings['avatar_hover_delay'])
-        });
+            if(settings.hudmw_searchautocleardelay){
+                autoClearOption = $scope.autoClearSettingOptions.filter(function(item){
+                    return (item.value == settings['hudmw_searchautocleardelay']);
+                });
+                $scope.autoClearSelected = autoClearOption[0];
+            }
 
-        $scope.hoverDelaySelected = hoverDelaySelected[0];
-        $scope.autoClearSelected = autoClearOption[0];
-        $scope.autoAwaySelected = autoAwayOption[0];
-        $scope.languageSelect = language[0];
+            if(settings['avatar_hover_delay']){
+                hoverDelaySelected = $scope.hoverDelayOptions.filter(function(item){
+                    return (item.value == settings['avatar_hover_delay'])
+                });
+                $scope.hoverDelaySelected = hoverDelaySelected[0];
+            }
 
-        $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
-        $scope.enableBox=settings['hudmw_box_enabled'] == "true";
-        $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
-        $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
-        $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
-        $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
-        $scope.enableAutoAway = false;
-        $scope.useColumnLayout = settings['use_column_layout'] == 'true';
-		
-        callLogSelected = $scope.callLogSizeOptions.filter(function(item){
-            return (item.value==settings['recent_call_history_length']);
-        });
+            $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
+            $scope.enableBox=settings['hudmw_box_enabled'] == "true";
+            $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
+            $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
+            $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
+            $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
+            
+            $scope.useColumnLayout = settings['use_column_layout'] == 'true';
+            callLogSelected = $scope.callLogSizeOptions.filter(function(item){
+                return (item.value==settings['recent_call_history_length']);
+            });
 
-        $scope.micVol = parseFloat(settings['hudmw_webphone_mic']);
-        $scope.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
-        $scope.callLogSizeSelected = callLogSelected[0];
+            $scope.micVol = parseFloat(settings['hudmw_webphone_mic']);
+            $scope.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
+            $scope.callLogSizeSelected = callLogSelected[0];
 
-        if(meModel.itemsByKey.fon_core){
-            $scope.pbxtraVersion = meModel.itemsByKey["fon_core"].propertyValue;
-        }    
-        if(meModel.itemsByKey.server_version){
-            $scope.hudserverVersion = meModel.itemsByKey["server_version"].propertyValue;
-        }   
-        if(meModel.itemsByKey.fdp_version){
-            $scope.fdpVersion = meModel.itemsByKey["fdp_version"].propertyValue;
+            if(meModel.itemsByKey.fon_core){
+                $scope.pbxtraVersion = meModel.itemsByKey["fon_core"].propertyValue;
+            }    
+            if(meModel.itemsByKey.server_version){
+                $scope.hudserverVersion = meModel.itemsByKey["server_version"].propertyValue;
+            }   
+            if(meModel.itemsByKey.fdp_version){
+                $scope.fdpVersion = meModel.itemsByKey["fdp_version"].propertyValue;
+            }
         }
-
         $scope.$apply();
     }
 
@@ -207,10 +246,17 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
                 value = data[i].value;
                 settings[key] = value;
             }
-			
 			update_settings();
         }
     });
+
+    $scope.$on("queues_synced", function(event,data){
+        if(data && data != undefined){
+            $scope.queues = data;
+        }
+    });
+
+    //update_settings();
 };
 
 fjs.core.inherits(fjs.ui.MeWidgetController, fjs.ui.Controller)

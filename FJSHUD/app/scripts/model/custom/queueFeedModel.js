@@ -21,6 +21,8 @@ fjs.hud.QueueFeedModel.prototype.createEntry = function (obj) {
 //
 //  if (isNew) {
 //    var queue = this.items[data["xpid"]];
+//
+//    queue.stats = this.dataManager.getModel("queue_stat_calls").items[queue.xpid];
 //    //for (var queueId in this.queueMembersModel.items) {
 //    //  if (this.queueMembersModel.items.hasOwnProperty(queueId) && (this.queueMembersModel.items[queueId]["fdpQueueId"] == data["xpid"])) {
 //    //    queue.addMember(queueId, data.entry);

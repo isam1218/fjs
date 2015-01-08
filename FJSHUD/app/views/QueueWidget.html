@@ -23,15 +23,15 @@
            data-ng-repeat="member in members | SortCalllog | orderBy:sortField:sortReverse">
           <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ member.getLocation() }}">
             <img class="AvatarImgPH" data-fj-local-id="avatarImg"
-                 ng-src="{{ member.getAvatar(28,28)}}">
+                 ng-src="{{ member.contact.getAvatarUrl(28,28)}}">
 
             <div class="AvatarInteractable"></div>
           </div>
           <div class="ListRowContent">
 
             <div class="ListRowLeftAreaWide">
-              <div class="ListRowTitle"> {{ member.getDisplayName()}}</div>
-              <div class="Link ListRowDesc">#{{ member.getExtension() }}</div>
+              <div class="ListRowTitle"> {{ member.contact.getDisplayName()}}</div>
+              <div class="Link ListRowDesc">#{{ member.contact.primaryExtension }}</div>
              </div>
             <div class="ListRowStatus">
               <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.contact.getChatStatus()}}">
