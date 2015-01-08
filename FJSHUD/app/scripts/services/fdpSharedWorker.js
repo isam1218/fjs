@@ -9,7 +9,7 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = ['me', 'settings', 'groups', 'contacts','queues','quickinbox'];
+var feeds = ['me', 'settings', 'groups', 'contacts', 'contactstatus', 'queues', 'quickinbox', 'calls'];
 
 onconnect = function(event){
 	var port = event.ports[0];

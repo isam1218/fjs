@@ -163,6 +163,12 @@
   right: 0;
   border-left: solid 1px #DEE1E5;
   height: 3em;
+  
+  & > div {
+    display: inline-block;
+	vertical-align: top;
+	min-width: 22%;
+  }
 }
 
 .ListRowStatusIcon {
@@ -191,12 +197,8 @@
 }
 
 .ListRowTitle {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  height: 20px;
-  line-height: 1.75em;
+  padding: .5em;
+  width: 50%;
   font-size: .75em;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -207,20 +209,23 @@
   .name {
 	overflow: hidden;
 	text-overflow: ellipsis;
+	
+	& > * {
+	  display: block;
+	}
+	
+	span {
+	  color: gray;
+	}
   }
 }
 
 .ListRowStatus {
-  position: absolute;
-  top: 25px;
-  left: 5px;
-  right: 5px;
-  height: 24px;
-  line-height: 24px;
   color: #888;
   font-size: 12px;
   text-overflow: ellipsis;
   text-decoration: none;
+  text-align: center;
 }
 
 .ListRowCallArea {
