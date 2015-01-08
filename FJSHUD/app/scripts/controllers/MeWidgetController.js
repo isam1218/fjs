@@ -162,8 +162,6 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.update_settings('HUDw_AppModel_zoom','delete');
         $scope.update_settings('HUDw_AppModel_box','delete');
     }
-    $scope.displayFor="none";
-    $scope.alertDuration="all";
     
     update_settings = function(){
         $scope.meModel = meModel.itemsByKey;
@@ -210,6 +208,15 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
                 $scope.hoverDelaySelected = hoverDelaySelected[0];
             }
 
+            $scope.alertShow = settings['alert_show'] == "true";
+            $scope.alertShowVM = settings['alert_vm_show_new'] == "true";
+            $scope.alertShowIncoming = settings['alert_call_incoming'] == "true";
+            $scope.alertShowOutgoing = settings['alert_call_outgoing'] == "true";
+            $scope.alertOnAlways = settings['hudmw_show_alerts_always'] == "true";
+            $scope.alertOnBusy = settings['hudmw_show_alerts_in_busy_mode'] == "true";
+            $scope.alertDisplayFor = settings['alert_call_display_for'];
+            $scope.alertDuration = settings['alert_call_duration'];
+
             $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
             $scope.enableBox=settings['hudmw_box_enabled'] == "true";
             $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
@@ -248,6 +255,29 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
             }
 			update_settings();
         }
+    });
+
+     $scope.$on('contacts_synced', function(event, data) {
+        
+        if(data && data != undefined){
+
+            meUser = data.filter(function(item){
+                return item.xpid == meModel.itemsByKey['my_pid'].propertyValue;
+                //return item.displayName == $scope.meModel.display_name.propertyValue;
+            });
+            if(meUser.length >  0){
+                $scope.meModel.first_name=meUser[0].firstName;
+                $scope.meModel.last_name=meUser[0].lastName;
+                $scope.meModel.email = meUser[0].email;
+                $scope.meModel.ims = meUser[0].ims;
+            }
+        }
+    });
+
+    $scope.$on('groups_synced', function(event,data){
+        meGroup = data.filter(function(item){
+            return item.xpid == meModel.itemsByKey['my_pid'].propertyValue;
+        });
     });
 
     $scope.$on("queues_synced", function(event,data){
