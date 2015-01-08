@@ -1,0 +1,31 @@
+<div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ member.getLocation() }}">
+  <img class="AvatarImgPH" data-fj-local-id="avatarImg"
+       ng-src="{{ member.contact.getAvatarUrl(28,28)}}">
+
+  <div class="AvatarInteractable"></div>
+</div>
+<div class="ListRowContent">
+
+  <div class="ListRowLeftAreaWide">
+    <div class="ListRowTitle"> {{ member.contact.getDisplayName()}}</div>
+    <div
+      class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.contact.contactstatus_queueStatus}}">
+      <div class="status-icon-inner"></div>
+    </div>
+
+    <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.contact.getChatStatus()}}">
+      <div class="status-icon-inner"></div>
+    </div>
+
+    <div class="ListRowStatus ListRowStatusText">{{member.contact.contactstatus_xmppCustom ||
+      member.contact.contactstatus_xmpp || 'offline'}}
+    </div>
+  </div>
+  <div class="ListRowStatus">
+
+
+    <div class="Link ListRowDesc">#{{ member.contact.primaryExtension }}</div>
+
+  </div>
+</div>
+
