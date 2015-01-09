@@ -10,7 +10,7 @@ var auth = undefined;
 
 var data_obj = {};
 var feeds = ['me', 'settings', 'groups', 'contacts','queues',
-'quickinbox','queuepermissions','queue_stat_calls','queue_members_status','weblauncher'];
+'quickinbox','calls'];
 
 onconnect = function(event){
 	var port = event.ports[0];

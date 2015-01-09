@@ -1,6 +1,6 @@
 #!/bin/bash
-pushd `dirname $0` > /dev/null
-FJ_ROOT_DIR=`pwd -P`/..
+#pushd `dirname $0` > /dev/null
+FJ_ROOT_DIR=..
 components=( FJSCore FJSModel FJSDB FJSTabs FJSFDP FJSPlugin FJSAPI )
 for comp in "${components[@]}"
 do 

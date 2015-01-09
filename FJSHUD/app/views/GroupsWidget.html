@@ -1,9 +1,9 @@
 <div class="ListLineContent Header LeftContactsColumns">
-    <div data-ng-click="sort('name')" class="ListLineContentCell Recent {{(sortField == 'name' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+    <div data-ng-click="sort('name')" class="ListLineContentCell Recent {{(sortField == 'name' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
         <span>NAME</span>
         <div class="DirectionArrow"></div>
     </div>
-    <div data-ng-click="sort('memberIds.length')"  class="ListLineContentCell HudStatus {{(sortField == 'memberIds.length' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
+    <div data-ng-click="sort('members.length')"  class="ListLineContentCell HudStatus {{(sortField == 'members.length' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
         <span>MEMBERS</span>
         <div class="DirectionArrow"></div>
     </div>
@@ -14,16 +14,16 @@
 	<a href="#/group/{{::mine.xpid}}" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
         <div class="Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(0, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(1, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(2, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ mine.getAvatar(3, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="AvatarInteractable"></div>
         </div>
@@ -31,7 +31,7 @@
             <div class="ListRowTitle">
                 <div class="name">
                     <b>{{ ::mine.name }}</b>
-                    <span class="details">{{ ::mine.memberIds.length }}</span>
+                    <span class="details">{{ ::mine.members.length }}</span>
                 </div>
             </div>
             <div class="ListRowStatus">#{{ ::mine.extension }}</div>
@@ -39,19 +39,19 @@
 	</a>
 	
 	<h4>All Other Departments</h4>
-	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | Object2Array | filter: {name: $parent.$parent.query} | orderBy:sortField:sortReverce track by group.xpid" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | orderBy:sortField:sortReverse track by group.xpid" ng-if="group.extension && group != mine" class="ListRowFirst ListRow ListRow-Contact">
         <div class="Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(0, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(1, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(2, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ group.getAvatar(3, 19, 19) }}">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="AvatarInteractable"></div>
         </div>
@@ -59,7 +59,7 @@
             <div class="ListRowTitle">
                 <div class="name">
                     <b>{{ ::group.name }}</b>
-                    <span class="details">{{ ::group.memberIds.length }}</span>
+                    <span class="details">{{ ::group.members.length }}</span>
                 </div>
             </div>
             <div class="ListRowStatus">#{{ ::group.extension }}</div>

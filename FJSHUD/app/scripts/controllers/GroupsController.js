@@ -1,44 +1,45 @@
-fjs.core.namespace("fjs.ui");
-
 fjs.ui.GroupsController = function($scope, $rootScope, dataManager) {
-    fjs.ui.Controller.call(this, $scope);
-    var groupsModel = dataManager.getModel("groups");
     $scope.query = "";
     $scope.sortField = "name";
-    $scope.sortReverce = false;
-    $scope.groups = groupsModel.items;
+    $scope.sortReverse = false;
+    $scope.groups = [];
 	$scope.mine = null;
+	
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
             $scope.sortField = field;
-            $scope.sortReverce = false;
+            $scope.sortReverse = false;
         }
         else {
-            $scope.sortReverce = !$scope.sortReverce;
+            $scope.sortReverse = !$scope.sortReverse;
         }
     };
-    var timeoutId = null;
-    function update() {
-        if(!timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(function(){
-			// find my department
-			for (var group in $scope.groups) {
-				if ($scope.groups[group].memberIds.indexOf($rootScope.myPid) != -1) {
-					$scope.mine = $scope.groups[group];
-					break;
+	
+	// display avatar for group member
+    $scope.getAvatarUrl = function(group, index) {
+		var xpid = group.members[index];
+	
+        return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=14&h=14&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
+    };
+	
+	$scope.$on('groups_synced', function(event, data) {
+		$scope.groups = data;
+	});
+	
+	$scope.$on('groupcontacts_synced', function(event, data) {
+		// need to add members to each group
+		for (g in $scope.groups) {
+			$scope.groups[g].members = [];
+			
+			for (key in data) {
+				if (data[key].groupId == $scope.groups[g].xpid) {
+					$scope.groups[g].members.push(data[key].contactId);
+					
+					// mark as mine
+					if (data[key].contactId == $rootScope.myPid)
+						$scope.mine = $scope.groups[g];
 				}
 			}
-			
-            $scope.$safeApply();
-        }, 50);
-    }
-    groupsModel.addEventListener("complete", update);
-
-    $scope.$on("$destroy", function() {
-        clearTimeout(timeoutId);
-        groupsModel.removeEventListener("complete", update);
-    });
+		}
+	});
 };
-fjs.core.inherits(fjs.ui.GroupsController, fjs.ui.Controller)

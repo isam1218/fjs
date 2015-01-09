@@ -1,9 +1,6 @@
 fjs.core.namespace("fjs.ui");
 
 fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
-    fjs.ui.Controller.call(this, $scope);
-    var contactsModel = dataManager.getModel("contacts");
-    document.title= "Contacts";
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
@@ -28,11 +25,12 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
         return false;
     };
 	
-	// custom filter to find externals
-	$scope.filterIsExternal = function() {
+	// filter out self, check for external flag
+	$scope.customFilter = function() {
 		return function(contact) {
-			if (!$scope.external || ($scope.external && contact.primaryExtension == ''))
-				return true;
+			if (contact.xpid != $scope.myPid)
+				if (!$scope.external || ($scope.external && contact.primaryExtension == ''))
+					return true;
 		};
 	};
 	
@@ -55,6 +53,30 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 	
 	$scope.$on('contacts_synced', function(event, data) {
 		$scope.contacts = data;
+	});
+	
+	$scope.$on('contactstatus_synced', function(event, data) {
+		for (key in data) {
+			for (c in $scope.contacts) {
+				// set contact's status
+				if ($scope.contacts[c].xpid == data[key].xpid) {
+					$scope.contacts[c].hud_status = data[key].xmpp;
+					break;
+				}
+			}
+		}
+	});
+	
+	$scope.$on('calls_synced', function(event, data) {
+		for (key in data) {
+			for (c in $scope.contacts) {
+				// set contact's status
+				if ($scope.contacts[c].xpid == data[key].xpid) {
+					$scope.contacts[c].calls_startedAt = data[key].startedAt;
+					break;
+				}
+			}
+		}
 	});
 
     $scope.getAvatarUrl = function(xpid) {

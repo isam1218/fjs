@@ -11,7 +11,7 @@
         <span>CALL STATUS</span>
         <div class="DirectionArrow"></div>
     </div>
-    <div data-ng-click="sort('contactstatus_xmpp')"  class="ListLineContentCell HudStatus {{(sortField == 'contactstatus_xmpp' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+    <div data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
         <span>HUD STATUS</span>
         <div class="DirectionArrow"></div>
     </div>
@@ -20,33 +20,33 @@
 <div class="ContactList">
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" context-menu="contact" data-ng-repeat="contact in contacts | orderBy: sortField: sortReverse | filter: {displayName: $parent.$parent.query} | filter:filterIsExternal() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<a href="#contact/{{::contact.xpid}}" context-menu="contact" data-ng-repeat="contact in contacts | filter: {displayName: $parent.$parent.query} | filter:customFilter() | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
 			<div class="Avatar AvatarNormal" avatar-menu="contact">
 				<img class="AvatarImgPH" data-ng-src="{{::getAvatarUrl(contact.xpid)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 				<div class="AvatarForeground AvatarInteractable"></div>
-				<div ng-show="contact.events > 0" class="EventsBaloon">{{ contact.events }}</div>
 			</div>
 			<div class="ListRowContent">
 				<div class="ListRowTitle">
 					<div class="name">
-						<b>{{ ::contact.displayName }}</b>
-						<span class="details">#{{ ::contact.primaryExtension }}</span>
+						<strong>{{ ::contact.displayName }}</strong>
+						<span>#{{ ::contact.primaryExtension }}</span>
 					</div>
 				</div>
-				<!--<div class="CallStatus">
-					<div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
+				<div class="CallStatus">
+					<div ng-if="contact.calls_startedAt" class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
 						<img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{ contact.getCallAvatarUrl(28,28)}}">
 						<div class="AvatarInteractable AvatarForeground"></div>
 					</div>
-				</div>-->
+				</div>
 				<div class="ListRowStatus">
-					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.getChatStatus()}}">
+					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status}}">
 						<div class="status-icon-inner"></div>
 					</div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
 						<div class="status-icon-inner"></div>
 					</div>
-					<div class="ListRowStatusText">{{contact.contactstatus_xmppCustom || contact.contactstatus_xmpp || 'offline'}}</div>
+					<br/>
+					<div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
 				</div>
 			</div>
 		</a>

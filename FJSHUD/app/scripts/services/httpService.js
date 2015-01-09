@@ -16,8 +16,11 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
             if(event.data.data){
 				synced_data = event.data.data;
 			  
-			    for (feed in synced_data)
-					 $rootScope.$broadcast(feed+'_synced', synced_data[feed]);
+				// send data to other controllers
+			    for (feed in synced_data) {
+					if (synced_data[feed].length > 0)
+						$rootScope.$broadcast(feed+'_synced', synced_data[feed]);
+				}
             }
             break;
         case "feed_request":
