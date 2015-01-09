@@ -48,9 +48,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     $scope.meModel = meModel.itemsByKey;
 
     myHttpService.getFeed('settings');
-    
-    
-
+    myHttpService.getFeed('queues');
 
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
@@ -76,10 +74,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         return meModel.getMyAvatarUrl(90, 90);
     };
 
-    $scope.$on("$destroy", function() {
-        meModel.removeEventListener("complete", $scope.$safeApply);
-        locationsModel.removeEventListener("complete", $scope.$safeApply);
-    });
+    
     $scope.somechild = "views/testTemplate.html";
     $scope.languages = [{id:1,label: 'United States (English)',value: '0_5'},
     {id:2,value: '0_3',label: 'Chinese Simplied',},
@@ -232,7 +227,20 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
             $scope.micVol = parseFloat(settings['hudmw_webphone_mic']);
             $scope.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
             $scope.callLogSizeSelected = callLogSelected[0];
-
+            
+            if($scope.settings.queueWaitingThreshold){
+                $scope.settings.queueWaitingThreshold = parseInt($scope.settings.queueWaitingThreshold);
+            }
+            if($scope.settings.queueAvgWaitThreshold){
+                $scope.settings.queueAvgWaitThreshold = parseInt($scope.settings.queueAvgWaitThreshold);
+            }
+            if($scope.settings.queueAvgTalkThresholdThreshold){
+                $scope.settings.queueAvgTalkThresholdThreshold = parseInt($scope.settings.queueAvgTalkThresholdThreshold);
+            }
+            if($scope.settings.queueAbandonThreshold){
+                $scope.settings.queueAbandonThreshold = parseInt($scope.settings.queueAbandonThreshold);
+            }
+            
             if(meModel.itemsByKey.fon_core){
                 $scope.pbxtraVersion = meModel.itemsByKey["fon_core"].propertyValue;
             }    
@@ -250,6 +258,15 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         for(queue in $scope.queues){
             $scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[queue].xpid] == "true";
             $scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[queue].xpid] == "true";
+            $scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[queue].xpid] == "true";
+            $scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[queue].xpid] == "true";
+        }
+    }
+
+    $scope.update_queue_settings = function(type,isActive){
+        for(queue in $scope.queues){
+            $scope.settings[type +$scope.queues[queue].xpid] = isActive;
+            $scope.update_settings(type+$scope.queues[queue].xpid,'update',isActive);    
         }
     }
 
@@ -270,10 +287,8 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
      $scope.$on('contacts_synced', function(event, data) {
         
         if(data && data != undefined){
-
             meUser = data.filter(function(item){
                 return item.xpid == meModel.itemsByKey['my_pid'].propertyValue;
-                //return item.displayName == $scope.meModel.display_name.propertyValue;
             });
             if(meUser.length >  0){
                 $scope.meModel.first_name=meUser[0].firstName;
@@ -290,14 +305,23 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         });
     });
 
+    $scope.$on('weblaunchervariables_synced', function(event,data){
+        if(data){
+            $scope.weblaunchervariables = data;
+        }
+
+    });
+
+    $scope.$on("$destroy", function() {
+        meModel.removeEventListener("complete", $scope.$safeApply);
+        locationsModel.removeEventListener("complete", $scope.$safeApply);
+    });
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
         }
         update_queues();
     });
-
-    //update_settings();
 };
 
 fjs.core.inherits(fjs.ui.MeWidgetController, fjs.ui.Controller)
