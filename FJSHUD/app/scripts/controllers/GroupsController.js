@@ -29,9 +29,13 @@ fjs.ui.GroupsController = function($scope, $rootScope, dataManager, myHttpServic
 	
 	// display avatar for group member
     $scope.getAvatarUrl = function(group, index) {
-		var xpid = group.members[index];
-	
-        return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=14&h=14&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
+		if (group.members[index] !== undefined) {
+			var xpid = group.members[index];
+		
+			return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=14&h=14&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
+		}
+		else
+			return 'img/Generic-Avatar-14.png';
     };
 	
 	$scope.$on('groups_synced', function(event, data) {

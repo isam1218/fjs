@@ -86,15 +86,9 @@
 				</div>
 
 				<div class="Contacts"
-					ng-show="tab == 'all'"
+					ng-show="tab != 'groups'"
 					ng-include="'views/ContactsWidget.html'"
 					ng-controller="ContactsWidget">
-				</div>
-				<div class="Contacts"
-					ng-show="tab == 'external'"
-					ng-include="'views/ContactsWidget.html'"
-					ng-controller="ContactsWidget"
-					ng-init="external = true">
 				</div>
 				<div class="Groups"
 					ng-show="tab == 'groups'"
