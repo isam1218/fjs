@@ -1,9 +1,10 @@
-fjs.ui.GroupsController = function($scope, $rootScope, dataManager) {
+fjs.ui.GroupsController = function($scope, $rootScope, dataManager, myHttpService) {
     $scope.query = "";
     $scope.sortField = "name";
     $scope.sortReverse = false;
     $scope.groups = [];
 	$scope.mine = null;
+	$scope.add = {type:2};
 	
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
@@ -14,6 +15,17 @@ fjs.ui.GroupsController = function($scope, $rootScope, dataManager) {
             $scope.sortReverse = !$scope.sortReverse;
         }
     };
+	
+	$scope.addGroup = function() {
+		// TO DO: validation
+		
+		$scope.add.contactIds = $rootScope.myPid;
+		
+		// save
+		myHttpService.sendAction('groups', 'addWorkgroup', $scope.add);
+		$scope.$parent.showOverlay(false);
+		$scope.add = {type:2};
+	};
 	
 	// display avatar for group member
     $scope.getAvatarUrl = function(group, index) {
@@ -36,7 +48,7 @@ fjs.ui.GroupsController = function($scope, $rootScope, dataManager) {
 					$scope.groups[g].members.push(data[key].contactId);
 					
 					// mark as mine
-					if (data[key].contactId == $rootScope.myPid)
+					if (!$scope.mine && data[key].contactId == $rootScope.myPid)
 						$scope.mine = $scope.groups[g];
 				}
 			}

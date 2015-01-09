@@ -1,6 +1,4 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
+fjs.ui.ContactsWidget = function($scope, $location, dataManager, myHttpService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
@@ -46,7 +44,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 		}
 		
 		// save
-        dataManager.sendAction('contacts', 'addContact', $scope.add);
+        myHttpService.sendAction('contacts', 'addContact', $scope.add);
 		$scope.$parent.showOverlay(false);
 		$scope.add = {};
 	};
@@ -87,4 +85,3 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 
     });
 };
-fjs.core.inherits(fjs.ui.ContactsWidget, fjs.ui.Controller)

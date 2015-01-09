@@ -86,6 +86,26 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
   //.post(requestURL,params);
   };
 
-
+	// generic 'save' function
+	this.sendAction = function(feed, action, data) {
+		// format request object
+		var params = {
+			t: 'web',
+			action: action
+		};
+		for (key in data)
+			params['a.' + key] = data[key];
+	
+		return $http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/" + feed,
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+dataManager.api.ticket,
+				'node': dataManager.api.node,
+			}
+		});
+	};
 
 }

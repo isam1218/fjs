@@ -82,15 +82,15 @@
 			<div class="Section">
 				<div>
 					<h4>Name</h4>
-					<input type="text" class="XInputText" />
+					<input type="text" ng-model="add.name" class="XInputText" />
 				</div>
 				<div>
 					<h4>Security</h4>
-					<input type="checkbox" /> Visible to entire company
+					<input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" /> Visible to entire company
 				</div>
 				<div>
 					<h4>Description</h4>
-					<textarea placeholder="Team description used for search and provides useful information to the team members."></textarea>
+					<textarea ng-model="add.description" placeholder="Team description used for search and provides useful information to the team members."></textarea>
 				</div>
 			</div>
 			
@@ -107,7 +107,7 @@
 		
 		<div class="Footer">
 			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="Create Team" />
+			<input type="button" class="XButton" value="Create Team" ng-click="addGroup()" />
 		</div>
 	</div>
 </div>
