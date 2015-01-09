@@ -9,8 +9,7 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = ['me', 'settings', 'groups', 'contacts','queues',
-'quickinbox','calls'];
+var feeds = ['me', 'contacts', 'locations', 'settings', 'location_status', 'queue_members', 'queuemembercalls', 'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 'streamevent'];
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -30,7 +29,6 @@ onmessage = function(event, port){
 				break;	
 			case 'sync':
 				do_version_check();
-				setInterval(do_version_check,5000);
 				break;
 			case 'feed_request':
 				get_feed_data(event.data.feed);
@@ -94,7 +92,7 @@ function sync_request(f){
 		}
 		
 		// again, again!
-		setTimeout('do_version_check();', 3500);
+		setTimeout('do_version_check();', 1000);
 	});
 }
 
@@ -117,8 +115,10 @@ function do_version_check(){
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
             else
-				setTimeout('do_version_check();', 3500);
+				setTimeout('do_version_check();', 1000);
 		}
+		else
+			setTimeout('do_version_check();', 1000);
 	});
 }	
 
