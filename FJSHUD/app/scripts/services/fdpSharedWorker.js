@@ -9,7 +9,8 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = ['me', 'settings', 'groups', 'contacts','queues','quickinbox'];
+var feeds = ['me', 'settings', 'groups', 'contacts','queues',
+'quickinbox','queuepermissions','queue_stat_calls','queue_members_status','weblauncher'];
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -29,6 +30,7 @@ onmessage = function(event, port){
 				break;	
 			case 'sync':
 				do_version_check();
+				setInterval(do_version_check,5000);
 				break;
 			case 'feed_request':
 				get_feed_data(event.data.feed);
@@ -72,7 +74,7 @@ function sync_request(f){
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
-		if(xmlhttp.status && xmlhttp.status == 200){			
+		if(xmlhttp.status && xmlhttp.status == 200 && xmlhttp.readyState == 4){			
 			synced_data = JSON.parse(xmlhttp.responseText);
 			
 			for (feed in synced_data){
@@ -92,7 +94,7 @@ function sync_request(f){
 		}
 		
 		// again, again!
-		setTimeout('do_version_check();', 500);
+		setTimeout('do_version_check();', 3500);
 	});
 }
 
@@ -115,7 +117,7 @@ function do_version_check(){
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
             else
-				setTimeout('do_version_check();', 500);
+				setTimeout('do_version_check();', 3500);
 		}
 	});
 }	

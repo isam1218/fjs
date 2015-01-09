@@ -246,6 +246,13 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.$apply();
     }
 
+    update_queues = function(){
+        for(queue in $scope.queues){
+            $scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[queue].xpid] == "true";
+            $scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[queue].xpid] == "true";
+        }
+    }
+
     $scope.$on('settings_synced',function(event,data){
         if (data && data != undefined){
 			for(i = 0; i < data.length; i++){
@@ -253,7 +260,10 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
                 value = data[i].value;
                 settings[key] = value;
             }
-			update_settings();
+
+            $scope.settings = settings;
+			update_queues();
+            update_settings();
         }
     });
 
@@ -284,6 +294,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         if(data && data != undefined){
             $scope.queues = data;
         }
+        update_queues();
     });
 
     //update_settings();
