@@ -1,4 +1,4 @@
-fjs.ui.ContactsWidget = function($scope, $location, dataManager, myHttpService) {
+fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
@@ -22,7 +22,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager, myHttpService) 
 		
 		return function(contact) {
 			// remove self
-			if (contact.xpid != $scope.myPid) {
+			if (contact.xpid != $rootScope.myPid) {
 				// filter by tab
 				switch (tab) {
 					case 'all':
@@ -68,6 +68,7 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager, myHttpService) 
 	
 	$scope.$on('contacts_synced', function(event, data) {
 		$scope.contacts = data;
+		$rootScope.loaded = true;
 	});
 	
 	$scope.$on('contactstatus_synced', function(event, data) {

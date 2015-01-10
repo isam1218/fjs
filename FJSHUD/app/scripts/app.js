@@ -107,7 +107,7 @@ hudweb.service('HttpService',['$http','DataManager','$rootScope',fjs.hud.httpSer
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
-hudweb.controller("ContactsWidget", ['$scope', '$location', 'DataManager', 'HttpService', fjs.ui.ContactsWidget]);
+hudweb.controller("ContactsWidget", ['$scope', '$rootScope', 'DataManager', 'HttpService', fjs.ui.ContactsWidget]);
 hudweb.controller("GroupsController", ['$scope', '$rootScope', 'DataManager', 'HttpService', fjs.ui.GroupsController]);
 hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', fjs.ui.TopBarMeStatusController]);
 //hudweb.controller("MeWidgetController", fjs.ui.MeWidgetController);
