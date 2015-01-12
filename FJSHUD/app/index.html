@@ -58,8 +58,10 @@
 				<div class="RoundedTop"></div>
 
 				<div class="Toolbar">
-					<input type="search" class="Search" placeholder="Search" ng-model="query" />
-					<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+					<div class="ContactSearch">
+						<input type="search" class="Search" placeholder="Search" ng-model="query" />
+						<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+					</div>
 
 					<div class="WidgetTabBar">
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'all'" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
@@ -99,7 +101,7 @@
 				<div class="Notifications" ng-include="'views/Notifications.html'"></div>
 
 				<div class="Phone">
-					<input type="text" placeholder="Phone number" />
+					<input type="text" class="Number" placeholder="Phone number" />
 					<input type="button" value="New Call" class="XButton" />
 				</div>
 			</div>

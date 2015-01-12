@@ -300,14 +300,20 @@ p {
   border-top-right-radius: 50%;
   box-shadow: 0px 1px 1px #ccc inset;
 }
-.LeftBar .Search {
+.LeftBar .ContactSearch {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.LeftBar .ContactSearch .Search {
   color: #729c00;
   border: 1px solid #729c00;
   border-radius: 2px;
   padding: .5em;
   margin: .5em;
+  flex: 2;
 }
-.LeftBar .New {
+.LeftBar .ContactSearch .New {
   margin: .5em;
   height: 2.8em;
   padding: 0 20px;
@@ -351,6 +357,12 @@ p {
 }
 .LeftBar .Phone {
   padding: .5em;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.LeftBar .Phone .Number {
+  flex: 2;
 }
 .SearchPanel.InSearch {
   border: solid 1px #bbb;
@@ -1757,11 +1769,8 @@ input.text.ChatInputBoxInput,
   right: 0;
   border-left: solid 1px #DEE1E5;
   height: 3em;
-}
-.ListRowContent > div {
-  display: inline-block;
-  vertical-align: top;
-  min-width: 22%;
+  display: flex;
+  flex-direction: row;
 }
 .ListRowStatusIcon {
   position: relative;
@@ -1786,15 +1795,13 @@ input.text.ChatInputBoxInput,
 }
 .ListRowTitle {
   padding: .5em;
-  width: 50%;
+  flex: 2;
   font-size: .75em;
-  text-overflow: ellipsis;
-  overflow: hidden;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
 }
-.ListRowTitle .name {
+.ListRowTitle .name strong {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -1810,6 +1817,11 @@ input.text.ChatInputBoxInput,
   text-overflow: ellipsis;
   text-decoration: none;
   text-align: center;
+  flex: 1;
+}
+.CallStatus {
+  text-align: center;
+  flex: .8;
 }
 .ListRowCallArea {
   position: relative;
