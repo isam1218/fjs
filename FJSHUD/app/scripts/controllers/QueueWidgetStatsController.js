@@ -11,7 +11,8 @@ fjs.ui.QueueWidgetStatsController = function($scope, $routeParams, $timeout, $fi
   $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
   $scope.selected = 'Stats';
 
-  $scope.queuestatsmodel = dataManager.getModel("queue_stat_calls");
+  //queue_members_stat
+  $scope.queuestatsmodel = dataManager.getModel("queue_members_stat");
   $scope.queuestats = $scope.queuestatsmodel.items;
 
   $scope.queuestatsmodel.addEventListener('complete', function (data) {

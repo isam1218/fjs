@@ -16,6 +16,7 @@ fjs.ui.QueueWidgetController = function($scope, $routeParams, $timeout, $filter,
   $scope.loggedInMembers = [];
   $scope.loggedOutMembers = [];
 
+
   $scope.queueMembersModel.addEventListener('complete', function (data) {
 
       $scope.$safeApply();

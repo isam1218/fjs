@@ -7,6 +7,7 @@ fjs.ui.CallCenterController = function ($scope, dataManager) {
 
   $scope.queuemodel = dataManager.getModel("queues");
   $scope.queues = $scope.queuemodel.items;
+ // $scope.queueStatMembers = dataManager.getModel("queue_stat_members").items;
 
   $scope.queuemodel.addEventListener('complete', function (data) {
     $scope.$safeApply();

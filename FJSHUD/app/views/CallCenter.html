@@ -87,7 +87,23 @@
           </div>
           <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name}} - {{ queue.description }}</a>
           <div class="QueueBlockStatus QueueBlockAgentsStatLine">
-            Agents:<span>2</span> / <span>5</span> / <span>7</span></div>
+              <!--Agents:<span>{{queueStatMembers[queue.xpid].membersTalking}}</span> / <span>{{queueStatMembers[queue.xpid].membersCount}}</span> / <span>{{queueStatMembers[queue.xpid].membersLogged}}</span></div>-->
+              Agents:<span>?</span> / <span>?</span> / <span>?</span></div>
+
+          <!--"tta": 60,-->
+          <!--"resetTime": 1413326243803,-->
+          <!--"waiting": 0,-->
+          <!--"abandon": 1,-->
+          <!--"abandonPercent": 20,-->
+          <!--"completed": 4,-->
+          <!--"completedPercent": 80,-->
+          <!--"completedSla": 4,-->
+          <!--"completedSlaPercent": 100,-->
+          <!--"avgTalk": 1054,-->
+          <!--"esa": 14,-->
+          <!--"active": 0-->
+
+
           <div class="QueueBlockStat">
             <div class="QueueBlockStatInner">
               <div class="QueueBlockStatBlock">
@@ -95,11 +111,11 @@
                 <div class="QueueBlockStatBlockTitle">Waiting</div>
               </div>
               <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>0</span></div>
+                <div class="QueueBlockStatBlockValue"><span>??</span></div>
                 <div class="QueueBlockStatBlockTitle">Avg Wait</div>
               </div>
               <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>0</span></div>
+                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].avgTalk | Duration }}</span></div>
                 <div class="QueueBlockStatBlockTitle">Avg Talk</div>
               </div>
               <div class="QueueBlockStatBlock">
@@ -107,7 +123,7 @@
                 <div class="QueueBlockStatBlockTitle">Total</div>
               </div>
               <div class="QueueBlockStatBlock Red">
-                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].abandonPercent }}</span>%
+                <div class="QueueBlockStatBlockValue"><span>{{ queuestats[queue.xpid].abandon }}</span>%
                 </div>
                 <div class="QueueBlockStatBlockTitle">Aband</div>
               </div>
