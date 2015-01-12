@@ -53,8 +53,12 @@
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)"> <label>Never display</label> </div>
         
         <div class="ListPageHeaderText">Duration</div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="entire" class="ng-pristine ng-untouched ng-valid" name="48"> <label>All my calls</label> </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="while_ringing" class="ng-pristine ng-untouched ng-valid" name="49"> <label>Only for known numbers</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="entire"
+         ng-change="update_settings('alert_call_duration','update',alertDuration)"
+        > <label>All my calls</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="while_ringing"
+          ng-change="update_settings('alert_call_duration','update',alertDuration)"
+        > <label>Only for known numbers</label> </div>
       </div>
        
      </div>
@@ -80,46 +84,60 @@
           </div>
           <div class="QueueHeader" style="display:inline-block"> 
             <div class="QueueSetting QueueSettingCol1">Select All</div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+                ng-model="allQueueNotificationsLW"
+                ng-change = "update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW)"
+            ></div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+                ng-model="allQueueAlertsLW"
+                ng-change = "update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW)"
+                ng-disabled = "!allQueueNotificationsLW"
+           ></div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+                ng-model="allQueueNotificationsAB"
+                ng-change = "update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB)"
+                
+            ></div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+                ng-model="allQueueAlertsAB"
+                ng-change = "update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB)"
+                ng-disabled = "!allQueueNotificationsAB"
+           
+            ></div>
           </div>
           <div ng-repeat="queue in queues" class="QueueHeader" style="display:inline-block; background-color:white;">  
             <div class="QueueSetting QueueSettingCol1"> {{queue.name}} </div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"></div>
+            
+            <div class="QueueSetting QueueSettingCheckBox">
+              <input type="checkbox"
+                ng-model="settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
+                ng-change ="update_settings('HUDw_QueueNotificationsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsLW_'+queue.xpid])"
+              >
+            </div>
+            
+            <div class="QueueSetting QueueSettingCheckBox">
+              <input type="checkbox" 
+              ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"
+              ng-change ="update_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid])"
+              ng-disabled = "!settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
+              >
+            </div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+              ng-model = "settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
+              ng-change ="update_settings('HUDw_QueueNotificationsAb_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid])"
+              
+            ></div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+              ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"
+              ng-change ="update_settings('HUDw_QueueAlertsAb_' + queue.xpid,'update', settings['HUDw_QueueAlertsAb_'+queue.xpid])"
+              ng-disabled = "!settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
+           ></div>
          </div>
-
-
-
         </div>
-       <!-- <table> 
-            <tr> 
-              <td> </td> 
-              <td> <div style="text-align:center">Long Waiting Calls</div>
-                <div> <span>notifications</span> <span>Desktop Alerts</span></div></div>
-              </td>
-              <td> 
-                <div> Abandoned calls </div>
-                <div><span>Notifications</span> <span>Desktop Alerts</span></div> 
-              </td>
-            </tr>
-
-            <tr> 
-              <td>Select all </td> 
-              <td><div style="text-align:center"><span> <input type="checkbox"> <input type="checkbox"></span></div></td>
-              <td><span> <input type="checkbox"> <input type="checkbox"></span></td>
-            </tr>
-        </table>-->
       </div>
        
      </div>
-     
-
-      <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
+     <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
         <div class="fj-ui-scrollerFr-decoration"></div>
         <div class="fj-ui-scroller" data-fj-local-id="scroller">
           <div class="fj-ui-scroller-decoration"></div>

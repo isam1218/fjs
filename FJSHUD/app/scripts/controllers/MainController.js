@@ -1,7 +1,6 @@
 fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService) {
     fjs.ui.Controller.call(this, $scope);
 	$rootScope.myPid = null;
-	$rootScope.groups = false;
 
     $scope.currentPopup = {};
     $scope.currentPopup.url = null;
@@ -9,29 +8,6 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService
     $scope.currentPopup.y = 0;
 
     var _contextMenuWrap = document.getElementById('_contextMenuWrap');
-
-    var onLoaded = function() {
-        if(meModel.getItemsCount()>0) {
-            setTimeout(function(){
-                meModel.removeEventListener("complete", onLoaded);
-                var loading = document.getElementById("fj-loading");
-                loading.style.display = "none";
-
-				$rootScope.myPid = meModel.getMyPid();
-
-				// ask to turn on notifications
-              if (Notification) {
-                Notification.requestPermission(function (status) {
-                  if (Notification.permission !== status)
-                    Notification.permission = status;
-                });
-              }
-            });
-        }
-    };
-
-    var meModel = dataProvider.getModel("me");
-    meModel.addEventListener("complete", onLoaded);
 
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
@@ -63,11 +39,20 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService
         $scope.currentPopup.model = data.model;
     };
 	
-	// show contacts or groups tab
-	// TO DO: make this more generic to allow switching between all tabs
-	$rootScope.showGroups = function(groups) {
-		$rootScope.groups = groups;
-	};
+	var getMyPid = $scope.$on('me_synced', function(event, data) {
+		// find my pid
+		if (!$rootScope.myPid) {
+			for (key in data) {
+				if (data[key].propertyKey == 'my_pid') {
+					$rootScope.myPid = data[key].propertyValue;
+					break;
+				}
+			}
+		}
+		else
+			// remove watcher
+			getMyPid = null;
+	});
 
     $scope.logout = function() {
         dataProvider.logout();

@@ -88,38 +88,11 @@
                 <span class="col2 h2">Description</span>
               </div>
               <div >
-                <div class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%username%%</span>
-                  <span class="col2">Your username for accounts that require authentication</span>
+                <div ng-repeat="variable in weblaunchervariables" class="Dialog-settings-row"> 
+                  <span class="col1 fj-single-line">{{ variable.name }} </span>
+                  <span class="col2">{{ variable.description }}</span>
                 </div>
-                <div class="Dialog-settings-row" >
-                  <span class="col1 fj-single-line">%%duration%%</span>
-                  <span class="col2">The duration of your call in seconds</span>
-                </div>
-                <div  class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%caller_name%%</span>
-                  <span class="col2">Name of the party on the other end of the call</span>
-                </div>
-                <div class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%type%%</span>
-                  <span class="col2">Call type: either "inbound", "outbound" or "queue"</span>
-                </div>
-                <div class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%my_extension%%</span>
-                  <span class="col2">Your extension</span>
-                </div>
-                <div class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%caller_number%%</span>
-                  <span class="col2">Number of the party on the other end of the call</span>
-                </div>
-                <div class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%password%%</span>
-                  <span class="col2">Your password for accounts that require authentication</span>
-                </div>
-                <div class="Dialog-settings-row">
-                  <span class="col1 fj-single-line">%%caller_number_raw%%</span>
-                  <span class="col2">%%caller_number%% stripped for all non-numerical characters</span>
-                </div>
+                
               </div>
             </div>
           </div>

@@ -1,15 +1,10 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
-    fjs.ui.Controller.call(this, $scope);
-    var contactsModel = dataManager.getModel("contacts");
-    document.title= "Contacts";
+fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
     $scope.contacts = [];
-	$scope.external = false;
 	$scope.add = {};
+	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
@@ -20,20 +15,38 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
             $scope.sortReverse = !$scope.sortReverse;
         }
     };
-    var timeoutId = null;
-
-    $scope.createContact= function(e) {
-        e.stopPropagation();
-        $scope.$emit("showPopup", {key:"EditContactDialog"});
-        return false;
-    };
 	
-	// custom filter to find externals
-	$scope.filterIsExternal = function() {
+	// filter contacts down
+	$scope.customFilter = function() {
+		var tab = $scope.$parent.tab;
+		
 		return function(contact) {
-			if (!$scope.external || ($scope.external && contact.primaryExtension == ''))
-				return true;
+			// remove self
+			if (contact.xpid != $rootScope.myPid) {
+				// filter by tab
+				switch (tab) {
+					case 'all':
+						return true;
+						break;
+					case 'external':
+						if (contact.primaryExtension == '')
+							return true;
+						break;
+					case 'recent':
+						if ($scope.recents[contact.xpid] !== undefined)
+							return true;
+						break;
+					case 'favorites':
+						break;
+				}
+			}
 		};
+	};
+	
+	// record most recent contacts
+	$scope.storeRecent = function(xpid) {
+		$scope.recents[xpid] = 1;
+		localStorage.recents = JSON.stringify($scope.recents);
 	};
 	
 	$scope.addContact = function() {
@@ -48,13 +61,38 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 		}
 		
 		// save
-        dataManager.sendAction('contacts', 'addContact', $scope.add);
+        myHttpService.sendAction('contacts', 'addContact', $scope.add);
 		$scope.$parent.showOverlay(false);
 		$scope.add = {};
 	};
 	
 	$scope.$on('contacts_synced', function(event, data) {
 		$scope.contacts = data;
+		$rootScope.loaded = true;
+	});
+	
+	$scope.$on('contactstatus_synced', function(event, data) {
+		for (key in data) {
+			for (c in $scope.contacts) {
+				// set contact's status
+				if ($scope.contacts[c].xpid == data[key].xpid) {
+					$scope.contacts[c].hud_status = data[key].xmpp;
+					break;
+				}
+			}
+		}
+	});
+	
+	$scope.$on('calls_synced', function(event, data) {
+		for (key in data) {
+			for (c in $scope.contacts) {
+				// set contact's status
+				if ($scope.contacts[c].xpid == data[key].xpid) {
+					$scope.contacts[c].calls_startedAt = data[key].startedAt;
+					break;
+				}
+			}
+		}
 	});
 
     $scope.getAvatarUrl = function(xpid) {
@@ -65,4 +103,3 @@ fjs.ui.ContactsWidget = function($scope, $location, dataManager) {
 
     });
 };
-fjs.core.inherits(fjs.ui.ContactsWidget, fjs.ui.Controller)

@@ -16,8 +16,11 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
             if(event.data.data){
 				synced_data = event.data.data;
 			  
-			    for (feed in synced_data)
-					$rootScope.$broadcast(feed+'_synced', synced_data[feed]);
+				// send data to other controllers
+			    for (feed in synced_data) {
+					if (synced_data[feed].length > 0)
+						$rootScope.$broadcast(feed+'_synced', synced_data[feed]);
+				}
             }
             break;
         case "feed_request":
@@ -83,6 +86,26 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
   //.post(requestURL,params);
   };
 
-
+	// generic 'save' function
+	this.sendAction = function(feed, action, data) {
+		// format request object
+		var params = {
+			t: 'web',
+			action: action
+		};
+		for (key in data)
+			params['a.' + key] = data[key];
+	
+		return $http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/" + feed,
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+dataManager.api.ticket,
+				'node': dataManager.api.node,
+			}
+		});
+	};
 
 }

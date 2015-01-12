@@ -58,8 +58,10 @@
 				<div class="RoundedTop"></div>
 
 				<div class="Toolbar">
-					<input type="search" class="Search" placeholder="Search" ng-model="query" />
-					<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+					<div class="ContactSearch">
+						<input type="search" class="Search" placeholder="Search" ng-model="query" />
+						<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+					</div>
 
 					<div class="WidgetTabBar">
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'all'" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
@@ -86,15 +88,9 @@
 				</div>
 
 				<div class="Contacts"
-					ng-show="tab == 'all'"
+					ng-show="tab != 'groups'"
 					ng-include="'views/ContactsWidget.html'"
 					ng-controller="ContactsWidget">
-				</div>
-				<div class="Contacts"
-					ng-show="tab == 'external'"
-					ng-include="'views/ContactsWidget.html'"
-					ng-controller="ContactsWidget"
-					ng-init="external = true">
 				</div>
 				<div class="Groups"
 					ng-show="tab == 'groups'"
@@ -105,7 +101,7 @@
 				<div class="Notifications" ng-include="'views/Notifications.html'"></div>
 
 				<div class="Phone">
-					<input type="text" placeholder="Phone number" />
+					<input type="text" class="Number" placeholder="Phone number" />
 					<input type="button" value="New Call" class="XButton" />
 				</div>
 			</div>
@@ -120,7 +116,7 @@
     </div>
     <div id="_contextMenuWrap"></div>
 
-    <div  id="fj-loading" class="fj-loading">
+    <div id="fj-loading" class="fj-loading" ng-if="!loaded">
         <div class="fji-box">
             <div class="fji-label">Loading...</div>
             <div class="loading-amination">

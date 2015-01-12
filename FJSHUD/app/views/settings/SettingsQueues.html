@@ -8,16 +8,28 @@
       <div class="ListSectionBody">Highlight threshold. Set to 0 if stat is never highlighted. </div>
       <div class="ListPage">
         
-        <div><span class="queueBlock">Waiting</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px">   Calls</div>
+        <div><span class="queueBlock">Waiting</span><input type="number" min="0" style="width:50px"
+        ng-model="settings['queueWaitingThreshold']"
+        ng-change="update_settings('queueWaitingThreshold','update',settings['queueWaitingThreshold'])"
+        >   Calls</div>
         
         <br>
-        <div><span class="queueBlock">Avg Wait</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px">   minutes </div>
+        <div><span class="queueBlock">Avg Wait</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
+           ng-model="settings['queueAvgWaitThreshold']"
+          ng-change="update_settings('queueAvgWaitThreshold','update',settings['queueAvgWaitThreshold'])"
+        >   minutes </div>
         
         <br>
-        <div><span class="queueBlock">Avg Talk</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px">   minutes </div>
+        <div><span class="queueBlock">Avg Talk</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
+             ng-model="settings['queueAvgTalkThresholdThreshold']"
+          ng-change="update_settings('queueAvgTalkThresholdThreshold','update',settings['queueAvgTalkThresholdThreshold'])"
+        >   minutes </div>
         
         <br>
-        <div><span class="queueBlock">Abandoned</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px">   %</div>
+        <div><span class="queueBlock">Abandoned</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
+               ng-model="settings['queueAbandonThreshold']"
+          ng-change="update_settings('queueAbandonThreshold','update',settings['queueAbandonThreshold'])"
+        >   %</div>
       
       </div>
        

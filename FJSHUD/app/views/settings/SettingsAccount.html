@@ -42,11 +42,11 @@
               </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">First Name:</label>
-              <input class="text DialogSettingInput" readonly="true" value="Alexandr">
+              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.first_name">
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">Last Name:</label>
-              <input class="text DialogSettingInput" readonly="true" value="Vovchuk --Primary">
+              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.last_name">
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">Display Name:</label>
@@ -54,7 +54,7 @@
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">Email:</label>
-              <input class="text DialogSettingInput" readonly="true" type="email" value="a.vovchuk@gmail.com">
+              <input class="text DialogSettingInput" readonly="true" type="email" ng-model="meModel.email">
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">Mobile:</label>
@@ -74,7 +74,7 @@
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">IMS:</label>
-              <input class="text DialogSettingInput" type="text" readonly="true" value="a.vovchuk@gmail.com">
+              <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.ims">
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">JID:</label>
@@ -82,7 +82,7 @@
             </div>
             <div class="Dialog-settings-row">
               <label class="queueBlock">My Department:</label>
-              <input class="text DialogSettingInput" type="text" readonly="true" value="Primary phones">
+              <input class="text DialogSettingInput" type="text" readonly="true" ng-model="department">
             </div>
           </div>
         </div>

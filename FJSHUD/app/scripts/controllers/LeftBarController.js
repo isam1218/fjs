@@ -22,11 +22,7 @@ fjs.ui.LeftBarController = function($scope, myHttpService) {
 	myHttpService.getFeed('quickinbox');
 	
 	$scope.$on('quickinbox_synced', function(event,data){
-		for (obj in data) {
-			if (data[obj].items.length > 0) {
-				$scope.notifications = data[obj].items;
-			}
-		}
+		$scope.notifications = data;
 	});
 };
 fjs.core.inherits(fjs.ui.LeftBarController, fjs.ui.Controller)
