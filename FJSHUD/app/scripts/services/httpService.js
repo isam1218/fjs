@@ -86,6 +86,38 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
   //.post(requestURL,params);
   };
 
+  this.get_avatar = function(pid,width,height){
+    if(pid){
+      return fjs.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="
+      +pid
+      +"&w="+width+"&h="+height
+      +"&Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node;
+    
+    }else{
+      return "img/Generic-Avatar-Small.png";
+    }
+  }
+  
+  this.update_avatar = function(data){
+    var params = {
+      'Authorization': dataManager.api.ticket,
+      'node': dataManager.api.node,
+    }
+
+    var fd = new FormData();
+    
+    for(field in data){
+      fd.append(field,data[field]);
+    }
+    var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings?Authorization="+dataManager.api.ticket+"&node="+dataManager.api.node;
+    
+    $http.post(requestURL,fd,{
+      transformRequest:angular.identity,
+      headers:{
+        'Content-Type':undefined,
+      }
+    })
+  }
 	// generic 'save' function
 	this.sendAction = function(feed, action, data) {
 		// format request object
