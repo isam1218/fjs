@@ -12,8 +12,11 @@
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
               <div class="lblSelect">Web launcher profile</div>
-              <select class="fj-hbox SelectBox SelectBoxSettings">
-                <option value="">My Web Launcher</option>
+              <select class="fj-hbox SelectBox SelectBoxSettings"
+                  ng-model="currentWebLauncher"
+                  ng-options="profile.name for profile in weblauncher_profiles"
+                  ng-change="update_settings('hudmw_launcher_config_id','update','currentWebLauncher.id')"
+              >
               </select>
             </div>
             <div class="Dialog-settings-row">
@@ -32,18 +35,42 @@
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
               <span class="inputBlock">Launch the web page below during new calls</span>
-              <label><input name="out.silent" type="checkbox" value="true"> Silent</label>
-              <label><input name="out.auto" type="checkbox" value="true"> Auto-launch</label>
+              <label><input name="out.silent" type="checkbox"  ng-model="currentWebLauncher.outboundSilent"
+              ng-disabled="currentWebLauncher.id != 'user_default'"
+              ng-change="update_weblauncher_settings()"
+            
+              > Silent</label>
+              <label><input name="out.auto" type="checkbox" ng-model="currentWebLauncher.outboundAuto"
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+                ng-change="update_weblauncher_settings()"
+            
+              > Auto-launch</label>
             </div>
-            <input type="text" name="outbound" class="text DialogSettingWLInput" maxlength="255" >
+            <input type="text" name="outbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outbound"
+            ng-disabled="currentWebLauncher.id != 'user_default'"
+            ng-change="update_weblauncher_settings()"
+            
+            >
           </div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
               <span class="inputBlock">Launch the web page below after call hangs up</span>
-              <label><input name="out.hangup.silent" type="checkbox" value="true"> Silent</label>
-              <label><input name="out.hangup.auto" type="checkbox" value="true" > Auto-launch</label>
+              <label><input name="out.hangup.silent" type="checkbox" ng-model="currentWebLauncher.outboundHangupSilent"
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+                ng-change="update_weblauncher_settings()"
+            
+              > Silent</label>
+              <label><input name="out.hangup.auto" type="checkbox" ng-model="currentWebLauncher.outboundHangupAuto" 
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+                ng-change="update_weblauncher_settings()"
+            
+              > Auto-launch</label>
             </div>
-            <input type="text" name="outbound.hangup" class="text DialogSettingWLInput" maxlength="255">
+            <input type="text" name="outbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outboundHangup"
+            ng-disabled="currentWebLauncher.id != 'user_default'"
+            ng-change="update_weblauncher_settings()"
+            
+            >
           </div>
         </div>
         <div class="ListSection">
@@ -58,18 +85,37 @@
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
               <span class="inputBlock">Launch the web page below during new calls</span>
-              <label><input name="in.silent" type="checkbox" value="true" > Silent</label>
-              <label><input name="in.auto" type="checkbox" value="true"> Auto-launch</label>
+              <label><input name="in.silent" type="checkbox" ng-model="currentWebLauncher.inboundSilent"
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+                ng-change="update_weblauncher_settings()"
+              > Silent</label>
+              <label><input name="in.auto" type="checkbox" ng-model="currentWebLauncher.inboundAuto"
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+              > Auto-launch</label>
             </div>
-            <input type="text" name="inbound" class="text DialogSettingWLInput" maxlength="255">
+            <input type="text" name="inbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inbound"
+            ng-disabled="currentWebLauncher.id != 'user_default'"
+            ng-change="update_weblauncher_settings()"
+            >
           </div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
               <span class="inputBlock">Launch the web page below after call hangs up</span>
-              <label><input name="in.hangup.silent" type="checkbox" value="true"> Silent</label>
-              <label><input name="in.hangup.auto" type="checkbox" value="true" > Auto-launch</label>
+              <label><input name="in.hangup.silent" type="checkbox"  ng-model="currentWebLauncher.inboundHangupSilent"
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+                ng-change="update_weblauncher_settings()"
+              > Silent</label>
+              <label><input name="in.hangup.auto" type="checkbox" ng-model="currentWebLauncher.inboundHangupAuto" 
+                ng-disabled="currentWebLauncher.id != 'user_default'"
+                ng-change="update_weblauncher_settings()"
+            
+              > Auto-launch</label>
             </div>
-            <input type="text" name="inbound.hangup" class="text DialogSettingWLInput" maxlength="255">
+            <input type="text" name="inbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inboundHangup"
+            ng-disabled="currentWebLauncher.id != 'user_default'"
+            ng-change="update_weblauncher_settings()"
+            
+            >
           </div>
         </div>
         <div class="ListSection">
