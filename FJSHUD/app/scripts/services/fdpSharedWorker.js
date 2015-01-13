@@ -72,7 +72,7 @@ function sync_request(f){
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
-		if (xmlhttp.status && xmlhttp.status == 200 && xmlhttp.readyState == 4){			
+		if (xmlhttp.status && xmlhttp.status == 200){		
 			synced_data = JSON.parse(xmlhttp.responseText);
 			
 			for (feed in synced_data){

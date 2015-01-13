@@ -78,43 +78,26 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
             }
         }
         xmlhttp.onreadystatechange = function() {
-            //if (xmlhttp.readyState) 
+			// waaaaiiiiiit!
+            if (xmlhttp.readyState == 4) {
+				if (callback) {
+					try {
+						if (xmlhttp.status === 200) {
+							callback(xmlhttp, xmlhttp.responseText, true);
+						}
+						else {
+							callback(xmlhttp, xmlhttp.responseText, false);
+						}
+					}
+					catch (e) {
 
-            if (callback) {
-                try {
-                    if (xmlhttp.status === 200) {
-                        callback(xmlhttp, xmlhttp.responseText, true);
-                    }
-                    else {
-                        callback(xmlhttp, xmlhttp.responseText, false);
-                    }
-                }
-                catch (e) {
-
-                    callback(/**@type XMLHttpRequest*/{"status":0, responseText:"", aborted:true}, "", false);
-                }
-            }
+						callback(/**@type XMLHttpRequest*/{"status":0, responseText:"", aborted:true}, "", false);
+					}
+				}
+			}
         };
 
         xmlhttp.send(this.getParamData(data));
 
         return xmlhttp;
-
-
-  /*if(this.closed) {
-            return null;
-        }
-        if(fjs.utils.Browser.isSafari()) {
-            url += (/\?/.test(url) ? '&safariNoCaсhe=' : '?safariNoCaсhe=') + Date.now();
-        }
-        data = data || {};
-        data["t"] = this.type;
-        data["alt"] = 'j';
-        var headers = {Authorization: "auth="+this.ticket, node: this.node || ""};
-        var xhr = this.ajax.send('post', url, headers, data, callback);
-        xhr.url = url;
-        return xhr;
-
-	XMLHttpRequest
-	*/console.log(this.SYNC_PATH);
 }
