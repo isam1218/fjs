@@ -69,6 +69,7 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService)
 	$scope.$on('contacts_synced', function(event, data) {
 		$scope.contacts = data;
 		$rootScope.loaded = true;
+		$scope.$apply();
 	});
 	
 	$scope.$on('contactstatus_synced', function(event, data) {

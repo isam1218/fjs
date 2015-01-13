@@ -15,6 +15,8 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     var settings = {};
     var queues = [];
 
+    $scope.avatar ={};
+
     var meModel = dataManager.getModel("me");
     var locationsModel = dataManager.getModel("locations");
 
@@ -70,11 +72,14 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         return false;
     };
 
-    $scope.getMeAvatarUrl = function(){
-        return meModel.getMyAvatarUrl(90, 90);
+    $scope.getMeAvatarUrl = function(width,height){
+        var pid;  
+        if($scope.meModel["my_pid"]){
+            pid = $scope.meModel["my_pid"].propertyValue;
+        }
+        return myHttpService.get_avatar(pid,width,height);
     };
 
-    
     $scope.somechild = "views/testTemplate.html";
     $scope.languages = [{id:1,label: 'United States (English)',value: '0_5'},
     {id:2,value: '0_3',label: 'Chinese Simplied',},
@@ -284,6 +289,17 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         }
     });
 
+    $scope.change_avatar = function($file){
+        $scope.avatar = $file;
+        data = {
+            'action':'updateAvatar',
+            'a.attachment':$file.file,
+            'alt':"",
+            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
+            "a.taskId": "1_0"
+        }
+        myHttpService.update_avatar(data);
+    }
      $scope.$on('contacts_synced', function(event, data) {
         
         if(data && data != undefined){
@@ -311,6 +327,8 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         }
 
     });
+
+   
 
     $scope.$on("$destroy", function() {
         meModel.removeEventListener("complete", $scope.$safeApply);
