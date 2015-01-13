@@ -1,123 +1,199 @@
-fjs.hud.httpService = function($http,dataManager,$rootScope){
-  /**
-    shared worker 
-  
-  */
-  var worker = undefined;
+fjs.hud.httpService = function($http, $rootScope, $location){
+	/**
+		SHARED WORKER
+	*/
+	var worker = undefined;
+	
+	if (SharedWorker != 'undefined') {
+	    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
+	    worker.port.addEventListener("message", function(event) {
+	        switch (event.data.action) {
+	            case "init":
+	                worker.port.postMessage({
+	                    "action": "sync"
+	                });
+	                break;
+	            case "sync_completed":
+	                if (event.data.data) {
+	                    synced_data = event.data.data;
 
-  if(SharedWorker != 'undefined'){
-    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
-    worker.port.addEventListener("message",function(event){
-      switch(event.data.action){
-        case "init":
-            worker.port.postMessage({"action":"sync"});
-            break;
-        case "sync_completed":
-            if(event.data.data){
-				synced_data = event.data.data;
-			  
-				// send data to other controllers
-			    for (feed in synced_data) {
-					if (synced_data[feed].length > 0)
-						$rootScope.$broadcast(feed+'_synced', synced_data[feed]);
-				}
-            }
-            break;
-        case "feed_request":
-            $rootScope.$broadcast(event.data.feed +'_synced',event.data.data);
-            break;
+	                    // send data to other controllers
+	                    for (feed in synced_data) {
+	                        if (synced_data[feed].length > 0)
+	                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+	                    }
+	                }
+	                break;
+	            case "feed_request":
+	                $rootScope.$broadcast(event.data.feed + '_synced', event.data.data);
+	                break;
+				case "auth_failed":
+					delete localStorage.nodeID;
+					attemptLogin();
+					break;
+	        }
+	    }, false);
 
-      }
-    },false);
+	    worker.port.start();
+	}
 
-    worker.port.start();
-    var node = dataManager.api.node;
-    var auth = dataManager.api.ticket;
+	// send first message to shared worker
+	var authorizeWorker = function() {
+	    var events = {
+	        "action": "authorized",
+	        "data": {
+	            "node": nodeID,
+	            "auth": "auth=" + authTicket,
+	        }
 
-    var events = {
-      "action":"authorized",
-      "data":{
-        "node":node,
-        "auth":"auth="+auth,
-      }
+	    };
 
+	    worker.port.postMessage(events);
+	};
+	
+	/**
+		AUTHORIZATION
+	*/
+	var authTicket = '';
+	var nodeID = '';
+	
+	var attemptLogin = function() {
+        var authURL = fjs.CONFIG.SERVER.loginURL
+            + '/oauth/authorize'
+            + "?response_type=token"
+            + "&redirect_uri=" + encodeURIComponent(location.href)
+            + "&display=page"
+            + "&client_id=web.hud.fonality.com"
+            + "&lang=eng"
+            + "&revoke_token="; // + authTicket;
+			
+		location.href = authURL;
+	};
+	
+	// get authorization token
+	if (/access_token/ig.test(location.href)) {
+		authTicket = location.href.match(/access_token=([^&]+)/)[1];
+		localStorage.authTicket = authTicket;
+		$location.hash('');
+	}
+	else if (localStorage.authTicket === undefined)
+		attemptLogin();
+	else
+		authTicket = localStorage.authTicket;
+		
+	// get node id
+	if (localStorage.nodeID === undefined) {
+		$http.post(
+			fjs.CONFIG.SERVER.serverURL 
+			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
+			+ authTicket
+		)
+		.success(function(response) {
+			nodeID = response.match(/node=([^\n]+)/)[1];
+			localStorage.nodeID = nodeID;
+			
+			// start shared worker
+			authorizeWorker();
+		})
+		.error(function() {
+			attemptLogin();
+		});
+	}
+	else {
+		nodeID = localStorage.nodeID;
+		authorizeWorker();
+	}
+	
+	/**
+		SCOPE FUNCTIONS
+	*/
+	
+	this.logout = function() {
+        var authURL = fjs.CONFIG.SERVER.loginURL
+            + '/oauth/authorize'
+            + "?response_type=token"
+            + "&redirect_uri=" + encodeURIComponent(location.href)
+            + "&display=page"
+            + "&client_id=web.hud.fonality.com"
+            + "&lang=eng"
+            + "&revoke_token=" + authTicket;
+			
+		delete localStorage.authTicket;
+		delete localStorage.nodeID;
+			
+		location.href = authURL;
+	};
+	
+    this.getFeed = function(feed) {
+        worker.port.postMessage({
+            "action": "feed_request",
+            "feed": feed
+        })
     };
-
-    worker.port.postMessage(events);
-  }
-
-  //this.login = function(type)
-  this.getFeed = function(feed){
-      worker.port.postMessage({
-        "action": "feed_request",
-        "feed":feed
-      })
-  }
-
-  this.isFirstSync = function(){
-    return;
-  }
-
-
-  this.updateSettings = function(type,action,model){
-    var params = {
-      'a.name':type,
-      't':'web',
-      'action':action
-    }
-    if(model){
-      if(model.value){
-        params['a.value']=model.value;
-      }else{
-        params['a.value']=model;
-      }
-    }
-    //?Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node
-    var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings";
-    return $http({
-      method:'POST',
-      url:requestURL,
-      data:$.param(params),
-      headers:{'Content-Type':'application/x-www-form-urlencoded',
-      'Authorization':'auth='+dataManager.api.ticket,
-      'node':dataManager.api.node,
-    }
-    });
-  //.post(requestURL,params);
-  };
-
-  this.get_avatar = function(pid,width,height){
-    if(pid){
-      return fjs.CONFIG.SERVER.serverURL+"/v1/contact_image?pid="
-      +pid
-      +"&w="+width+"&h="+height
-      +"&Authorization=" + dataManager.api.ticket+"&node="+dataManager.api.node;
     
-    }else{
-      return "img/Generic-Avatar-Small.png";
-    }
-  }
+    this.isFirstSync = function() {
+        return;
+    };
+    
+    
+    this.updateSettings = function(type, action, model) {
+        var params = {
+            'a.name': type,
+            't': 'web',
+            'action': action
+        }
+        if (model) {
+            if (model.value) {
+                params['a.value'] = model.value;
+            } else {
+                params['a.value'] = model;
+            }
+        }
+    
+        var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings";
+        return $http({
+            method: 'POST',
+            url: requestURL,
+            data: $.param(params),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'auth=' + authTicket,
+                'node': nodeID,
+            }
+        });
+        //.post(requestURL,params);
+    };
+    
+    this.get_avatar = function(pid, width, height) {
+        if (pid) {
+            return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID;
+    
+        } else {
+            return "img/Generic-Avatar-Small.png";
+        }
+    };
+    
+    this.update_avatar = function(data) {
+        var params = {
+            'Authorization': authTicket,
+            'node': nodeID,
+        }
+    
+        var fd = new FormData();
+    
+        for (field in data) {
+            fd.append(field, data[field]);
+        }
+        var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
+    
+        $http.post(requestURL, fd, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined,
+            }
+        })
+    };
   
-  this.update_avatar = function(data){
-    var params = {
-      'Authorization': dataManager.api.ticket,
-      'node': dataManager.api.node,
-    }
-
-    var fd = new FormData();
-    
-    for(field in data){
-      fd.append(field,data[field]);
-    }
-    var requestURL = fjs.CONFIG.SERVER.serverURL+"/v1/settings?Authorization="+dataManager.api.ticket+"&node="+dataManager.api.node;
-    
-    $http.post(requestURL,fd,{
-      transformRequest:angular.identity,
-      headers:{
-        'Content-Type':undefined,
-      }
-    })
-  }
 	// generic 'save' function
 	this.sendAction = function(feed, action, data) {
 		// format request object
@@ -134,10 +210,9 @@ fjs.hud.httpService = function($http,dataManager,$rootScope){
 			data: $.param(params),
 			headers:{
 				'Content-Type': 'application/x-www-form-urlencoded',
-				'Authorization': 'auth='+dataManager.api.ticket,
-				'node': dataManager.api.node,
+				'Authorization': 'auth='+authTicket,
+				'node': nodeID,
 			}
 		});
 	};
-
 }
