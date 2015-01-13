@@ -259,6 +259,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         $scope.$apply();
     }
 
+
     update_queues = function(){
         for(queue in $scope.queues){
             $scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[queue].xpid] == "true";
@@ -274,7 +275,29 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
             $scope.update_settings(type+$scope.queues[queue].xpid,'update',isActive);    
         }
     }
+    $scope.currentWebLauncher = {};
 
+    $scope.update_weblauncher_settings = function(){
+        var data = {
+            "id":$scope.currentWebLauncher.id,
+            "launchWhenCallAnswered":$scope.currentWebLauncher.launchWhenCallAnswered,
+            "inHref":$scope.currentWebLauncher.inbound,
+            "inSilent":$scope.currentWebLauncher.inboundSilent,
+            "inAuto":$scope.currentWebLauncher.inboundAuto,
+            "inHHref":$scope.currentWebLauncher.inboundHangup,
+            "inHSilent":$scope.currentWebLauncher.inboundHangupSilent,
+            "inHAuto":$scope.currentWebLauncher.inboundHangupAuto,
+            "outHref":$scope.currentWebLauncher.outbound,
+            "outSilent":$scope.currentWebLauncher.outboundSilent,
+            "outAuto":$scope.currentWebLauncher.outboundAuto,
+            "outHHref":$scope.currentWebLauncher.outboundHangup,
+            "outHSilent":$scope.currentWebLauncher.outboundHangupSilent,
+            "outHAuto":$scope.currentWebLauncher.outboundHangupAuto,
+        }
+
+        myHttpService.sendAction("weblauncher","update",data);
+    }
+    
     $scope.$on('settings_synced',function(event,data){
         if (data && data != undefined){
 			for(i = 0; i < data.length; i++){
@@ -320,6 +343,21 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
             return item.xpid == meModel.itemsByKey['my_pid'].propertyValue;
         });
     });
+
+    $scope.$on('weblauncher_synced', function(event,data){
+        if(data){
+            $scope.weblaunchervariables = data;
+            activeWebLauncher = data.filter(function(item){
+                return item.id == settings['hudmw_launcher_config_id'];
+            })
+            if (activeWebLauncher.length > 0){
+                $scope.currentWebLauncher = activeWebLauncher[0];
+            };
+
+            $scope.weblauncher_profiles = data;
+        }
+    });
+
 
     $scope.$on('weblaunchervariables_synced', function(event,data){
         if(data){
