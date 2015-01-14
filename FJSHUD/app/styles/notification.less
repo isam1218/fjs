@@ -1,0 +1,86 @@
+.LeftBarNotificationMessageSection{
+
+	height:61px;
+	border-left:solid 1px #eee;
+	-webkit-box-flex: 1;
+
+	.NotificationDisplayName{
+		height: 20px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+		color: #009cff;
+		font-weight: bold;
+		font-size:.7em;
+	}
+
+	.NotificationTime{
+		font-size:.5em;
+		float:right;
+	}
+
+	.NotificationMessage{
+		width:100%;
+		white-space: nowrap;
+		font-size:.8em;
+		overflow:hidden;
+		text-overflow:ellipsis;
+	}
+
+	
+}
+
+.NotificationSection{
+	margin-top:5px;
+	border-bottom:solid 1px #eee;
+	-webkit-box-orient:horizontal;
+	display:-webkit-box;
+}
+
+.NotificationHeader{
+	float:right;
+}
+
+.NotificationDivider{
+	border-bottom:1px solid #888;
+	top:-2px;
+	display:block
+}
+	
+.LeftBarNotificationAvatarSection{
+	position:relative;
+	width:40px;
+	height:100%;
+	border-right:solid 1px #eee;
+	float:left;
+
+}
+
+.NotificationHeaderBackground{
+	right: 20px;
+	width: 51px;
+	height: 21px;
+	background: url("/app/img/XEvent.png?v=1418381374907") no-repeat 0px 0px;
+}
+.NotificationClose{
+		width: 50%;
+		height: 24px;
+		margin:0 auto;
+		background: url("/app/img/XIconSet-24x24.png?v=1418381374907") no-repeat -24px -24px;
+}
+
+.NotificationOverlay{
+	background-color: #fafafa;
+	box-shadow: 0 0 50px #333;
+	position: absolute;
+	top: 10%;
+	left: 25%;
+	width: 50%;
+	height: 80%;
+	min-width: 300px;
+	min-height: 300px;
+	padding: 1em;
+	display: flex;
+	flex-direction: column;
+}

@@ -98,7 +98,7 @@
 					ng-controller="GroupsController">
 				</div>
 
-				<div class="Notifications" ng-include="'views/Notifications.html'"></div>
+				<div class="Notifications" ng-include="'views/Notifications.html'" ng-controller="NotificationController"></div>
 
 				<div class="Phone">
 					<input type="text" class="Number" placeholder="Phone number" />
@@ -145,6 +145,7 @@
     <script src="../bower_components/angular-touch/angular-touch.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/react/react.min.js"></script>
+    <script src="../bower_components/ngReact/ngReact.min.js"></script>
 
     <script src="../bower_components/FJSCore/dist/fjs.core.debug.js"></script>
     <script src="scripts/dom.js"></script>
@@ -219,6 +220,7 @@
 
     <script src="scripts/react/ContextMenu.js"></script>
     <script src="scripts/react/ContactsList.js"></script>
+    <script src="scripts/react/NotificationList.js"></script>
 
     <script src="scripts/direcives/contextMenuDirective.js"></script>
     <script src="scripts/direcives/contextMenuDialogDirective.js"></script>
@@ -268,6 +270,7 @@
     <script src="scripts/controllers/LeftBarController.js"></script>
     <script src="scripts/controllers/LeftBarCallsController.js"></script>
     <script src="scripts/controllers/QueueWidgetController.js"></script>
+    <script src="scripts/controllers/NotificationController.js"></script>
 
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>

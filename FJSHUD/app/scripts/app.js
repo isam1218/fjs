@@ -17,7 +17,8 @@ var hudweb = angular.module('fjshudApp', [
     'ngTouch',
     'HUD_model',
     'HUD_Dir',
-    'flow'
+    'flow',
+    'react'
 ]);
 
 hudweb.config(function ($routeProvider) {
@@ -101,6 +102,7 @@ hudweb.config(function ($routeProvider) {
         .otherwise({redirectTo: '/settings'});
 });
 
+//hudweb.value("notification",fjs.hud.react.NotificationList);
 
 hudweb.service('HttpService',['$http','$rootScope','$location',fjs.hud.httpService]);
 
@@ -138,6 +140,8 @@ hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallC
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
 
 hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
+hudweb.controller("NotificationController",['$scope','HttpService',fjs.ui.NotificationController]);
+
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hudweb.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);

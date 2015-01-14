@@ -5,9 +5,27 @@
 		<input type="button" value="Open" class="XButton" ng-click="$parent.overlay ='notifications'" />
 	</div>
 	
-	<div class="Messages">
+	<div class="NotificationMessages">
+		<!--<react-component name="notification" props='notifications'/>-->
 		<div class="Message" ng-repeat="message in notifications">
-			{{message.message}}
+			<!--{{message.message}}-->
+			<!--<div class="top_bar"> 
+				<div class=""> </div>
+				<div class=""> </div>
+			</div>
+
+			<div class="LeftBarNotificationSection"> 
+				<div class="LeftBarNotificationAvatarSection"> 
+					
+				</div>
+				
+				<div class="LeftBarNotificationMessageSection"> 
+					<div class="NotificationDisplayName">{{ message.displayName}} </div> 
+					<div class="NotificationTime">{{  convertTime(message.time) }} </div>
+					<div class="NotificationMessage">{{ message.message }} </div>
+				
+				</div>
+			</div>-->
 		</div>
 	</div>
 </div>
@@ -22,9 +40,31 @@
 		</div>
 		
 		<div class="Sections">
-			<div class="Messages">
-				<div class="Message" ng-repeat="message in notifications">
-					{{message.message}}
+			<div class="NotificationMessages">
+				<div class="Messages" ng-repeat="message in notifications">
+					
+					<div class="NotificationHeader"> 
+							<div class="NotificationHeaderBackground"> 
+								<div class="NotificationClose"></div>
+							</div>
+							
+					</div>
+					<div class="NotificationDivider"><img /></div>
+					<div class="NotificationSection"> 
+						
+						<div class="LeftBarNotificationAvatarSection"> 
+							<img ng-src="{{getAvatar(message.senderId)}}"/>
+						</div>
+					
+						<div class="LeftBarNotificationMessageSection"> 
+							
+							<div class="NotificationDisplayName">{{ message.displayName}} </div> 
+							<div class="NotificationTime">{{  convertTime(message.time) }} </div>
+							<div class="NotificationMessage">{{ message.message }} </div>
+					
+						</div>
+				</div>
+
 				</div>
 			</div>
 		</div>
