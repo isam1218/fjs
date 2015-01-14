@@ -1,1 +1,217 @@
-.Overlay{position:fixed;left:0;top:0;width:100%;height:100%;z-index:100}.Overlay .Background{background-color:black;opacity:.5;position:absolute;top:0;left:0;width:100%;height:100%}.Overlay .Foreground{background-color:#fafafa;box-shadow:0 0 50px #333;position:absolute;top:10%;left:25%;width:50%;height:80%;min-width:300px;min-height:300px;padding:1em;display:flex;flex-direction:column}.Overlay .Foreground .Close{position:absolute;top:5px;right:5px;border:1px solid #ccc;cursor:pointer;height:1em;width:1em;text-align:center;line-height:.75em}.Overlay .Foreground .Sections{flex:1;overflow-y:auto}.Overlay .Foreground .Section{display:inline-block;min-width:48%;max-width:300px;vertical-align:top;font-size:.9em}.Overlay .Foreground .Section>div{margin-bottom:.5em}.Overlay .Foreground .Section>div>*{vertical-align:top}.Overlay .Foreground .Section h4{margin:.75em 0 .25em 0;color:#0093f0;font-variant:small-caps}.Overlay .Foreground .Section em{font-size:.8em;display:block}.Overlay .Foreground .Section label{display:inline-block;width:38%}.Overlay .Foreground .Header{border-bottom:1px solid #ccc;padding-bottom:1em;margin-bottom:.5em}.Overlay .Foreground .Header h2{margin:0;font-size:1.25em}.Overlay .Foreground .Footer{border-top:1px solid #ccc;padding-top:1em;text-align:right}.Overlay .Foreground .Footer .Error{float:left;color:red;border:1px solid red;padding:.25em .5em;font-size:.9em;border-radius:.5em}.MenuWindow{position:absolute;z-index:1000;border-radius:4px;min-width:195px;max-width:500px;background:#fff url("../img/XTile-Widget.png?v=1387535133370");border:solid 1px #aaa;box-shadow:white 0 -1px 15px inset,3px 3px 12px rgba(0,0,0,0.3)}.MenuWindowTitle{position:relative;color:#729c00;text-shadow:0 1px 0 rgba(255,255,255,0.5);font-size:12px;font-weight:bold;margin-left:10px;margin-right:10px;height:40px;line-height:40px;text-align:center;border-bottom:solid 1px #999;overflow:hidden;text-overflow:clip;white-space:nowrap;z-index:1}.MenuSection{font-size:.7em}.MenuItem{position:relative;height:26px;line-height:26px;outline:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#555450;text-shadow:0 1px 0 white;cursor:pointer;display:block;border-radius:1px}.MenuItem:hover{background-color:#729c00;color:white;text-shadow:0 -1px 0 rgba(0,0,0,0.3)}.MenuItemIcon{width:24px;height:24px;display:inline-block}.MenuItemText{line-height:26px;text-align:left;outline:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block}.MenuItem .SelectedIcon{display:inline-block;width:24px;height:24px}.MenuItem.selected .SelectedIcon{background:url(../img/XIconSet-24x24.png) no-repeat -144px -48px}.MenuItemTextStatus{display:inline-block;vertical-align:top;font-size:11px;margin-right:5px}.MenuContent{position:relative;margin:10px}.LocationsMenu .MenuItemText{width:200px}.popupWindow .Widget{top:0;left:0;right:0;bottom:0;min-width:400px}
+.Overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.Overlay .Background {
+  background-color: black;
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.Overlay .Foreground {
+  background-color: #fafafa;
+  box-shadow: 0 0 50px #333;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  width: 50%;
+  height: 80%;
+  min-width: 300px;
+  min-height: 300px;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+}
+.Overlay .Foreground .Close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  height: 1em;
+  width: 1em;
+  text-align: center;
+  line-height: .75em;
+}
+.Overlay .Foreground .Sections {
+  flex: 1;
+  overflow-y: auto;
+}
+.Overlay .Foreground .Section {
+  display: inline-block;
+  min-width: 48%;
+  max-width: 300px;
+  vertical-align: top;
+  font-size: .9em;
+}
+.Overlay .Foreground .Section > div {
+  margin-bottom: .5em;
+}
+.Overlay .Foreground .Section > div > * {
+  vertical-align: top;
+}
+.Overlay .Foreground .Section h4 {
+  margin: .75em 0 .25em 0;
+  color: #0093f0;
+  font-variant: small-caps;
+}
+.Overlay .Foreground .Section em {
+  font-size: .8em;
+  display: block;
+}
+.Overlay .Foreground .Section label {
+  display: inline-block;
+  width: 38%;
+}
+.Overlay .Foreground .Header {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+  margin-bottom: .5em;
+}
+.Overlay .Foreground .Header h2 {
+  margin: 0;
+  font-size: 1.25em;
+}
+.Overlay .Foreground .Footer {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+  text-align: right;
+}
+.Overlay .Foreground .Footer .Error {
+  float: left;
+  color: red;
+  border: 1px solid red;
+  padding: .25em .5em;
+  font-size: 0.9em;
+  border-radius: .5em;
+}
+.SearchContactOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  background-color: white;
+  box-shadow: 1px 0 10px gray;
+  border-radius: 5px;
+  z-index: 99;
+  padding: .5em;
+  font-size: .8em;
+}
+.SearchContactOverlay .Inset {
+  overflow-y: auto;
+  height: 300px;
+}
+.SearchContactOverlay .Inset .ListRowContent {
+  left: 36px !important;
+  display: block !important;
+  padding: .3em 0 0 .5em;
+}
+.SearchContactOverlay .Inset .ListRowContent .Name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+}
+.SearchContactOverlay .Inset .ListRowContent .Extension {
+  font-size: .9em;
+  color: gray;
+}
+.MenuWindow {
+  position: absolute;
+  z-index: 1000;
+  border-radius: 4px;
+  min-width: 195px;
+  max-width: 500px;
+  background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
+  border: solid 1px #aaa;
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+}
+.MenuWindowTitle {
+  position: relative;
+  color: #729c00;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-bottom: solid 1px #999;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  z-index: 1;
+}
+.MenuSection {
+  font-size: .7em;
+}
+.MenuItem {
+  position: relative;
+  height: 26px;
+  line-height: 26px;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #555450;
+  text-shadow: 0 1px 0 white;
+  cursor: pointer;
+  display: block;
+  border-radius: 1px;
+}
+.MenuItem:hover {
+  background-color: #729C00;
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+.MenuItemIcon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+.MenuItemText {
+  line-height: 26px;
+  text-align: left;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+.MenuItem .SelectedIcon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+.MenuItem.selected .SelectedIcon {
+  background: url(../img/XIconSet-24x24.png) no-repeat -144px -48px;
+}
+.MenuItemTextStatus {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 11px;
+  margin-right: 5px;
+}
+.MenuContent {
+  position: relative;
+  margin: 10px;
+}
+/********LocationsMenu******/
+.LocationsMenu .MenuItemText {
+  width: 200px;
+}
+.popupWindow .Widget {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 400px;
+}
