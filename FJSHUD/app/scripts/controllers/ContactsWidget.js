@@ -1,4 +1,4 @@
-fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService) {
+fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
@@ -116,7 +116,7 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService)
 	});
 
     $scope.getAvatarUrl = function(xpid) {
-        return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=28&h=28&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
+    	return myHttpService.get_avatar(xpid,28,28);
     };
 
     $scope.$on("$destroy", function() {

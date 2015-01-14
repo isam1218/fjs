@@ -63,7 +63,31 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 
 	$scope.test = {message:'test'};
 	$scope.$on('quickinbox_synced', function(event,data){
-		$scope.notifications = data;
+		
+		if(data){
+			data.sort(function(a,b){
+				return b.time - a.time;
+			});
+
+			if($scope.notifications && $scope.notifications.length > 0){
+				$scope.notifications.concat(data);
+			}else{
+				$scope.notifications = data;
+			}	
+		}
+
+		$scope.todaysNotifications = $scope.notifications.filter(function(item){
+			currentDate = new Date();
+			itemDate = new Date(item.time);
+
+			if(currentDate.getDate() == itemDate.getDate()){
+				if(currentDate.getMonth() == itemDate.getMonth()){
+					return true;
+				}
+			}
+			return false;
+		});
+		
 		$scope.$apply();
 	});
 }
