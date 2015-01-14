@@ -3,7 +3,7 @@
 	height:61px;
 	border-left:solid 1px #eee;
 	-webkit-box-flex: 1;
-
+	padding-left:10px;
 	.NotificationDisplayName{
 		height: 20px;
 		text-overflow: ellipsis;
@@ -17,7 +17,10 @@
 
 	.NotificationTime{
 		font-size:.5em;
+		color:black;
+		font-weight:normal;
 		float:right;
+		margin-right:10px;
 	}
 
 	.NotificationMessage{
@@ -29,6 +32,28 @@
 	}
 
 	
+}
+
+.NotificationSectionHeader{
+	display:inline-block;
+
+	.NotificationSectionHeaderImage{
+		background-image:url("/app/img/XApp-Icons.png?v=1418381374907") no-repeat -0px -0px;
+	}
+}
+
+.NotificationMessages{
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+	border-top:1px solid #ccc;
+	background-image:url("/app/img/XTile-Widget.png?v=1418381374907");
+}
+
+.NotificationType{
+	font-size:.6em;
+	font-style:italic;
+	font-color:#ccc;
+	border-bottom: 1px solid #888;
 }
 
 .NotificationSection{
@@ -43,7 +68,7 @@
 }
 
 .NotificationDivider{
-	border-bottom:1px solid #888;
+	border-bottom:1px solid #ccc;
 	top:-2px;
 	display:block
 }
@@ -68,6 +93,14 @@
 		height: 24px;
 		margin:0 auto;
 		background: url("/app/img/XIconSet-24x24.png?v=1418381374907") no-repeat -24px -24px;
+}
+
+.NotificationAvatar{
+	width:40px;
+	margin:0 auto;
+	border:1px solid #3c9c00;
+	border-radius:2px;
+	-webkit-border-radius:2px;
 }
 
 .NotificationOverlay{

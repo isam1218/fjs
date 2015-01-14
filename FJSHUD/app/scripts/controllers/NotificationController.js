@@ -14,12 +14,26 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 		return myHttpService.get_avatar(pid,40,40);
 	}
 
+	$scope.getMessage = function(message){
+
+		switch(message.type){
+
+			case "vm":
+				return "Voicemail from extension " + message.phone; 
+				break;
+			case "chat":
+				return message.message;
+				break;
+			default:
+				return message.message;
+
+		
+		}
+	}
 	$scope.convertTime = function(time){
 		var date = new Date(time);
 		var currentDate = new Date();
 		var Hour = date.getHours();
-		
-
 		if(date.getDate() == currentDate.getDate() && date.getFullYear() == currentDate.getFullYear()){
 
 			if(Hour > 12){
@@ -34,7 +48,6 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 		
 			}else{
 				return weekday[date.getDay()] + " " + (Hour).toString() + ":" + date.getMinutes() + " am";
-		
 			}
 		}
 	}
