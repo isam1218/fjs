@@ -93,6 +93,37 @@
   font-size: 0.9em;
   border-radius: .5em;
 }
+.SearchContactOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  background-color: white;
+  box-shadow: 1px 0 10px gray;
+  border-radius: 5px;
+  z-index: 99;
+  padding: .5em;
+  font-size: .8em;
+}
+.SearchContactOverlay .Inset {
+  overflow-y: auto;
+  height: 300px;
+}
+.SearchContactOverlay .Inset .ListRowContent {
+  left: 36px !important;
+  display: block !important;
+  padding: .3em 0 0 .5em;
+}
+.SearchContactOverlay .Inset .ListRowContent .Name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+}
+.SearchContactOverlay .Inset .ListRowContent .Extension {
+  font-size: .9em;
+  color: gray;
+}
 .MenuWindow {
   position: absolute;
   z-index: 1000;

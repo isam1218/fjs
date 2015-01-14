@@ -115,8 +115,8 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService)
 		}
 	});
 
-    $scope.getAvatarUrl = function(xpid) {
-        return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=28&h=28&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
+    $scope.getAvatarUrl = function(xpid, size) {
+        return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w="+size+"&h="+size+"&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
     };
 
     $scope.$on("$destroy", function() {
