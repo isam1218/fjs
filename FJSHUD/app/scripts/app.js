@@ -139,7 +139,7 @@ hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallC
 // Call Center and Queues
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
 
-hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
+hudweb.controller("MeWidgetController",['$scope','$http','HttpService',fjs.ui.MeWidgetController]);
 hudweb.controller("NotificationController",['$scope','HttpService',fjs.ui.NotificationController]);
 
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);

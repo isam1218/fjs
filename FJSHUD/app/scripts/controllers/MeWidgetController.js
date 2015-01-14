@@ -6,7 +6,7 @@
  * @param dataManager
  * @constructor
  */
-fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) {
+fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     var context = this;
 
     fjs.ui.Controller.call(this, $scope);
@@ -17,17 +17,15 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
 
     $scope.avatar ={};
 
-    var meModel = dataManager.getModel("me");
-    var locationsModel = dataManager.getModel("locations");
-
-    meModel.addEventListener("complete", $scope.$safeApply);
-    locationsModel.addEventListener("complete", $scope.$safeApply);
     $scope.getCurrentLocationTitle = function() {
         /**
          * @type {{name:string. phone:string}}
          */
         var currentLocation;
-         if(meModel.itemsByKey["current_location"] && (currentLocation = locationsModel.items[meModel.itemsByKey["current_location"].propertyValue])) {
+
+
+         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
+             currentLocation = $scope.locations[$scope.meModel["current_location"]];
              return currentLocation.name+" ("+currentLocation.phone+")";
          }
          else {
@@ -38,6 +36,8 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     $scope.pbxtraVersion;
     $scope.hudserverVersion;
     $scope.fdpVersion;
+    $scope.meModel={};
+    $scope.locations = {};
     /* */
     //$scope.fon
     /**
@@ -47,8 +47,6 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
     $scope.selected = 'General';
 
-    $scope.meModel = meModel.itemsByKey;
-
     myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
 
@@ -56,13 +54,13 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
 
-    $scope.meData = meModel.itemsByKey;
+   // $scope.meData = meModel.itemsByKey;
     $scope.chatStatuses = [{"title":"Available", "key":"available"}, {"title":"Away", "key":"away"}, {"title":"Busy", "key":"dnd"}];
     $scope.setChatStatus = function(chatStatus){
-        dataManager.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meData.chat_status.propertyValue = chatStatus,"customMessage":$scope.meData.chat_custom_status.propertyValue});
+        myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status = chatStatus,"customMessage":$scope.meModel.chat_custom_status});
     };
     $scope.setCustomStatus = function() {
-        dataManager.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meData.chat_status.propertyValue ,"customMessage":$scope.meData.chat_custom_status.propertyValue});
+        myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":$scope.meModel.chat_custom_status});
     };
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
@@ -75,7 +73,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     $scope.getMeAvatarUrl = function(width,height){
         var pid;  
         if($scope.meModel["my_pid"]){
-            pid = $scope.meModel["my_pid"].propertyValue;
+            pid = $scope.meModel["my_pid"];
         }
         return myHttpService.get_avatar(pid,width,height);
     };
@@ -131,7 +129,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected;// = $scope.autoAwayOptions[1];
-    if(meModel.itemsByKey.my_jid){
+    if($scope.meModel.my_jid){
             $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
             $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
         }
@@ -164,10 +162,10 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
     }
     
     update_settings = function(){
-        $scope.meModel = meModel.itemsByKey;
-        if(meModel.itemsByKey.my_jid){
-            $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
-            $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
+        //$scope.meModel = meModel.itemsByKey;
+        if($scope.meModel.my_jid){
+            $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
+            $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
         }
         if(settings){
             if(settings.hudw_lang){
@@ -246,14 +244,14 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
                 $scope.settings.queueAbandonThreshold = parseInt($scope.settings.queueAbandonThreshold);
             }
             
-            if(meModel.itemsByKey.fon_core){
-                $scope.pbxtraVersion = meModel.itemsByKey["fon_core"].propertyValue;
+            if($scope.meModel.fon_core){
+                $scope.pbxtraVersion = $scope.meModel["fon_core"];
             }    
-            if(meModel.itemsByKey.server_version){
-                $scope.hudserverVersion = meModel.itemsByKey["server_version"].propertyValue;
+            if($scope.meModel.server_version){
+                $scope.hudserverVersion = $scope.meModel["server_version"];
             }   
-            if(meModel.itemsByKey.fdp_version){
-                $scope.fdpVersion = meModel.itemsByKey["fdp_version"].propertyValue;
+            if($scope.meModel.fdp_version){
+                $scope.fdpVersion = $scope.meModel["fdp_version"];
             }
         }
         $scope.$apply();
@@ -327,7 +325,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
         
         if(data && data != undefined){
             meUser = data.filter(function(item){
-                return item.xpid == meModel.itemsByKey['my_pid'].propertyValue;
+                return item.xpid == $scope.meModel['my_pid'];
             });
             if(meUser.length >  0){
                 $scope.meModel.first_name=meUser[0].firstName;
@@ -340,7 +338,7 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
 
     $scope.$on('groups_synced', function(event,data){
         meGroup = data.filter(function(item){
-            return item.xpid == meModel.itemsByKey['my_pid'].propertyValue;
+            return item.xpid == $scope.meModel['my_pid'];
         });
     });
 
@@ -366,9 +364,30 @@ fjs.ui.MeWidgetController = function($scope, dataManager, $http, myHttpService) 
 
     });
 
-   
+    $scope.$on('me_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
 
-    $scope.$on("$destroy", function() {
+        $scope.$apply();
+    });
+
+    $scope.$on('locations_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(index in data){
+                $scope.locations[data[index].xpid] = data[index];
+            }
+        }
+
+        $scope.$apply();
+    });
+
+
+   $scope.$on("$destroy", function() {
         meModel.removeEventListener("complete", $scope.$safeApply);
         locationsModel.removeEventListener("complete", $scope.$safeApply);
     });
