@@ -76,6 +76,17 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 			}	
 		}
 
+		$scope.todaysNotifications = $scope.notifications.filter(function(item){
+			currentDate = new Date();
+			itemDate = new Date(item.time);
+
+			if(currentDate.getDate() == itemDate.getDate()){
+				if(currentDate.getMonth() == itemDate.getMonth()){
+					return true;
+				}
+			}
+			return false;
+		});
 		
 		$scope.$apply();
 	});

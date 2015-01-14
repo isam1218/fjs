@@ -25,15 +25,15 @@ hudweb.config(function ($routeProvider) {
     $routeProvider
         .when('/settings', {
 			templateUrl: 'views/MeWidgetController.html',
-			controller:['$scope', 'DataManager','$http','HttpService', fjs.ui.MeWidgetController]
+			controller:['$scope','$http','HttpService', fjs.ui.MeWidgetController]
 		})
         .when('/settings/weblauncer', {
 			templateUrl: 'views/SettingsWebLauncer.html',
-			controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]
+			controller:['$scope', fjs.ui.MeWidgetController]
 		})
         .when('/settings/account', {
 			templateUrl: 'views/SettingsAccount.html',
-			controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]
+			controller:['$scope', fjs.ui.MeWidgetController]
 		})
         .when('/callcenter', {
 			templateUrl: 'views/CallCenter.html',
