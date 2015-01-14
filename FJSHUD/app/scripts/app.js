@@ -17,22 +17,23 @@ var hudweb = angular.module('fjshudApp', [
     'ngTouch',
     'HUD_model',
     'HUD_Dir',
-    'flow'
+    'flow',
+    'react'
 ]);
 
 hudweb.config(function ($routeProvider) {
     $routeProvider
         .when('/settings', {
 			templateUrl: 'views/MeWidgetController.html',
-			controller:['$scope', 'DataManager','$http','HttpService', fjs.ui.MeWidgetController]
+			controller:['$scope','$http','HttpService', fjs.ui.MeWidgetController]
 		})
         .when('/settings/weblauncer', {
 			templateUrl: 'views/SettingsWebLauncer.html',
-			controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]
+			controller:['$scope', fjs.ui.MeWidgetController]
 		})
         .when('/settings/account', {
 			templateUrl: 'views/SettingsAccount.html',
-			controller:['$scope', 'DataManager', fjs.ui.MeWidgetController]
+			controller:['$scope', fjs.ui.MeWidgetController]
 		})
         .when('/callcenter', {
 			templateUrl: 'views/CallCenter.html',
@@ -101,6 +102,7 @@ hudweb.config(function ($routeProvider) {
         .otherwise({redirectTo: '/settings'});
 });
 
+//hudweb.value("notification",fjs.hud.react.NotificationList);
 
 hudweb.service('HttpService',['$http','$rootScope','$location',fjs.hud.httpService]);
 
@@ -137,7 +139,9 @@ hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallC
 // Call Center and Queues
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
 
-hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
+hudweb.controller("MeWidgetController",['$scope','$http','HttpService',fjs.ui.MeWidgetController]);
+hudweb.controller("NotificationController",['$scope','HttpService',fjs.ui.NotificationController]);
+
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hudweb.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);

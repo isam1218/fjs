@@ -9,7 +9,7 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = ['me', 'contacts', 'locations', 'settings', 'location_status', 'queue_members', 'queuemembercalls', 'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 'streamevent','calllog'];
+var feeds = ['me', 'contacts', 'locations', 'settings', 'location_status', 'queue_members', 'queuemembercalls', 'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 'streamevent','calllog','quickinbox'];
 
 onconnect = function(event){
 	var port = event.ports[0];

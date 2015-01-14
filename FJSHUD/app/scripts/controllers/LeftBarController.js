@@ -16,13 +16,6 @@ fjs.ui.LeftBarController = function($scope, myHttpService) {
 			$scope.overlay = 'groups';
 	};
 	
-	// notifications, TO DO: put in separate controller
-	$scope.notifications = [];
 	
-	myHttpService.getFeed('quickinbox');
-	
-	$scope.$on('quickinbox_synced', function(event,data){
-		$scope.notifications = data;
-	});
 };
 fjs.core.inherits(fjs.ui.LeftBarController, fjs.ui.Controller)
