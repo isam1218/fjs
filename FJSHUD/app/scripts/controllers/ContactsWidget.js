@@ -33,8 +33,11 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService)
 							return true;
 						break;
 					case 'recent':
-						if ($scope.recents[contact.xpid] !== undefined)
+						if ($scope.recents[contact.xpid] !== undefined) {
+							// attach timestamp to sort by
+							contact.timestamp = $scope.recents[contact.xpid];
 							return true;
+						}
 						break;
 					case 'favorites':
 						break;
@@ -43,9 +46,25 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, dataManager, myHttpService)
 		};
 	};
 	
+	$scope.customSort = function() {
+		// recent list doesn't have a sort field
+		if ($scope.$parent.tab == 'recent')
+			return 'timestamp';
+		else
+			return $scope.sortField;
+	};
+	
+	$scope.customReverse = function() {
+		// recent list is always reversed
+		if ($scope.$parent.tab == 'recent')
+			return true;
+		else
+			return $scope.sortReverse;
+	};
+	
 	// record most recent contacts
 	$scope.storeRecent = function(xpid) {
-		$scope.recents[xpid] = 1;
+		$scope.recents[xpid] = new Date().getTime();
 		localStorage.recents = JSON.stringify($scope.recents);
 	};
 	
