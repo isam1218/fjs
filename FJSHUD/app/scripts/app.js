@@ -17,7 +17,8 @@ var hudweb = angular.module('fjshudApp', [
     'ngTouch',
     'HUD_model',
     'HUD_Dir',
-    'flow'
+    'flow',
+    'react'
 ]);
 
 hudweb.config(function ($routeProvider) {
@@ -101,15 +102,16 @@ hudweb.config(function ($routeProvider) {
         .otherwise({redirectTo: '/settings'});
 });
 
+//hudweb.value("notification",fjs.hud.react.NotificationList);
 
-hudweb.service('HttpService',['$http','DataManager','$rootScope',fjs.hud.httpService]);
+hudweb.service('HttpService',['$http','$rootScope','$location',fjs.hud.httpService]);
 
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
 hudweb.controller("ContactsWidget", ['$scope', '$rootScope', 'DataManager', 'HttpService', fjs.ui.ContactsWidget]);
 hudweb.controller("GroupsController", ['$scope', '$rootScope', 'DataManager', 'HttpService', fjs.ui.GroupsController]);
-hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', fjs.ui.TopBarMeStatusController]);
+hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', 'HttpService', fjs.ui.TopBarMeStatusController]);
 //hudweb.controller("MeWidgetController", fjs.ui.MeWidgetController);
 hudweb.controller("LocationsController", ['$scope', '$element', 'DataManager', fjs.ui.LocationsController]);
 hudweb.controller("SortMenuController", ['$scope', '$element', fjs.ui.SortMenuController]);
@@ -139,6 +141,8 @@ hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout'
 hudweb.controller("QueueWidgetStatsController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetStatsController]);
 
 hudweb.controller("MeWidgetController",['$scope','DataManager','$http','HttpService',fjs.ui.MeWidgetController]);
+hudweb.controller("NotificationController",['$scope','HttpService',fjs.ui.NotificationController]);
+
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 
 //hudweb.controller("FavoriteContactsController", fjs.ui.FavoriteContactsController);

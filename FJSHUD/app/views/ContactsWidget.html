@@ -1,26 +1,28 @@
 <div class="ListLineContent Header LeftContactsColumns">
-    <div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>NAME</span>
-        <div class="DirectionArrow"></div>
-    </div>
-    <div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>EXTENSION</span>
-        <div class="DirectionArrow"></div>
-    </div>
-    <div data-ng-click="sort('calls_startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'calls_startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>CALL STATUS</span>
-        <div class="DirectionArrow"></div>
-    </div>
-    <div data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>HUD STATUS</span>
-        <div class="DirectionArrow"></div>
-    </div>
+	<div ng-show="$parent.tab != 'recent'">
+		<div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>NAME</span>
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>EXTENSION</span>
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('calls_startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'calls_startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>CALL STATUS</span>
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>HUD STATUS</span>
+			<div class="DirectionArrow"></div>
+		</div>
+	</div>
 </div>
 
 <div class="ContactList">
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecent(contact.xpid)" context-menu="contact" data-ng-repeat="contact in contacts | filter: {displayName: $parent.$parent.query} | filter:customFilter() | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecent(contact.xpid)" context-menu="contact" data-ng-repeat="contact in contacts | filter: {displayName: $parent.$parent.query} | filter: customFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
 			<div class="Avatar AvatarNormal" avatar-menu="contact">
 				<img class="AvatarImgPH" data-ng-src="{{::getAvatarUrl(contact.xpid)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 				<div class="AvatarForeground AvatarInteractable"></div>

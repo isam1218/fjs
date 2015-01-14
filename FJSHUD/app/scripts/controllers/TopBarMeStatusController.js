@@ -6,7 +6,7 @@
  * @param dataManager
  * @constructor
  */
-fjs.ui.TopBarMeStatusController = function($scope, dataManager) {
+fjs.ui.TopBarMeStatusController = function($scope, dataManager, myHttpService) {
     var context = this;
 
     fjs.ui.Controller.call(this, $scope);
@@ -71,7 +71,7 @@ fjs.ui.TopBarMeStatusController = function($scope, dataManager) {
     };
     $scope.logout = function($event) {
         $event.preventDefault();
-        dataManager.logout();
+        myHttpService.logout();
         return false;
     };
 

@@ -9,7 +9,7 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = ['me', 'contacts', 'locations', 'settings', 'location_status', 'queue_members', 'queuemembercalls', 'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 'streamevent','calllog'];
+var feeds = ['me', 'contacts', 'locations', 'settings', 'location_status', 'queue_members', 'queuemembercalls', 'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 'streamevent','calllog','quickinbox'];
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -72,7 +72,7 @@ function sync_request(f){
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
-		if(xmlhttp.status && xmlhttp.status == 200 && xmlhttp.readyState == 4){			
+		if (xmlhttp.status && xmlhttp.status == 200){		
 			synced_data = JSON.parse(xmlhttp.responseText);
 			
 			for (feed in synced_data){
@@ -105,7 +105,15 @@ function do_version_check(){
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
-		if(xmlhttp.status && xmlhttp.status == 200){
+		if (xmlhttp.status == 401) {
+			// authentication failed
+			for(i = 0; i < ports.length;i++){
+				ports[i].postMessage({
+					"action": "auth_failed"
+				});
+			}
+		}
+		else if (xmlhttp.status == 200){
 			var changedFeeds = [];
             var params = xmlhttp.responseText.split(";");
 			
