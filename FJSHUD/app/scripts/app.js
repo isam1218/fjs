@@ -81,7 +81,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/contacts', {
 			templateUrl: 'views/ContactsWidget.html',
-			controller: ['$scope', '$location', 'DataManager', fjs.ui.ContactsWidget]
+			controller: ['$scope', '$location', fjs.ui.ContactsWidget]
 		})
         .when('/contact/:contactId', {
 			templateUrl: 'views/ConversationWidget.html',
@@ -141,7 +141,7 @@ hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout'
 hudweb.controller("QueueWidgetStatsController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetStatsController]);
 
 hudweb.controller("MeWidgetController",['$scope','$http','HttpService',fjs.ui.MeWidgetController]);
-hudweb.controller("NotificationController",['$scope','HttpService',fjs.ui.NotificationController]);
+hudweb.controller("NotificationController",['$scope','HttpService','$location',fjs.ui.NotificationController]);
 
 //hudweb.controller("CallsRecordingsController", ['$scope', 'DataManager',  fjs.ui.CallsRecordingsController]);
 

@@ -17,6 +17,9 @@ onconnect = function(event){
 	port.start();
 	port.addEventListener("message",
         function(event) { onmessage(event, port); } );
+		
+	// force versioncache
+	synced = false;
 };
 
 onmessage = function(event, port){

@@ -2,7 +2,7 @@
 
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.NotificationController = function($scope, myHttpService){
+fjs.ui.NotificationController = function($scope, myHttpService,$location){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	// notifications, TO DO: put in separate controller
@@ -52,6 +52,46 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 		}
 	}
 
+	$scope.remove_notification = function(xpid){
+		for(i = 0; i < $scope.notifications.length; i++){
+			if($scope.notifications[i].xpid == xpid){
+				$scope.notifications.splice(i,1);
+				break;
+			}
+		}
+		for(i = 0; i < $scope.todaysNotifications.length; i++){
+			if($scope.todaysNotifications[i].xpid == xpid){
+				$scope.todaysNotifications.splice(i,1);
+				break;
+			}	
+		}
+		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
+		$scope.$apply();
+	}
+
+	$scope.get_away_notifications= function(){
+		away_notifications = $scope.notifications.filter(function(item){
+			return item.receivedStatus == "away"; 
+		});
+
+		return away_notifications;
+	}
+	
+	$scope.remove_all = function(){
+
+		$scope.notifications = [];
+		$scope.todaysNotifications = [];
+
+		myHttpService.sendAction('quickinbox','removeAll');
+			
+	}
+
+	$scope.go_to_notification_chat = function(xpid){
+		$location.path("/contact/" + xpid);
+		$scope.remove_notification(xpid);
+		$scope.showOverlay(false);
+	}
+
 	$scope.showOverlay = function(show) {
 		if (!show)
 			$scope.overlay = '';
@@ -61,7 +101,6 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 			$scope.overlay = 'groups';
 	};
 
-	$scope.test = {message:'test'};
 	$scope.$on('quickinbox_synced', function(event,data){
 		
 		if(data){
@@ -70,10 +109,18 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 			});
 
 			if($scope.notifications && $scope.notifications.length > 0){
-				$scope.notifications.concat(data);
+				for(notification in data){
+					for(i = 0; i < $scope.notifications.length;i++){
+						if($scope.notifications[i].xpid == data[notification].xpid){
+							$scope.notifications.splice(i,1,data[notification]);
+							break;	
+						}
+						$scope.notifications.push(data[notification]);
+					}
+				}
 			}else{
 				$scope.notifications = data;
-			}	
+			}
 		}
 
 		$scope.todaysNotifications = $scope.notifications.filter(function(item){

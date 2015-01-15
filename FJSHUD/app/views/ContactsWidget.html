@@ -23,14 +23,14 @@
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
 		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecent(contact.xpid)" context-menu="contact" data-ng-repeat="contact in contacts | filter: {displayName: $parent.$parent.query} | filter: customFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
-			<div class="Avatar AvatarNormal" avatar-menu="contact">
-				<img class="AvatarImgPH" data-ng-src="{{::getAvatarUrl(contact.xpid, 28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			<div class="Avatar AvatarNormal"> <!--avatar-menu="contact">-->
+				<img class="AvatarImgPH" data-ng-src="{{::getAvatarUrl(contact.xpid, 28)}}" onerror="this.src='img/Generic-Avatar-28.png'" ng-click="editContact(contact)" />
 				<div class="AvatarForeground AvatarInteractable"></div>
 			</div>
 			<div class="ListRowContent">
 				<div class="ListRowTitle">
 					<div class="name">
-						<strong>{{ ::contact.displayName }}</strong>
+						<strong>{{ contact.displayName }}</strong>
 						<span>#{{ ::contact.primaryExtension }}</span>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 					</div>
 				</div>
 				<div class="ListRowStatus">
-					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status}}">
+					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
 						<div class="status-icon-inner"></div>
 					</div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
@@ -61,7 +61,7 @@
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>Add a New Contact</h2>
+			<h2>{{ $parent.edit ? 'Edit Contact' : 'Add a New Contact' }}</h2>
 		</div>
 		
 		<div class="Sections">
@@ -122,8 +122,9 @@
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
+			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="$parent.edit" />
 			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="Add Contact" ng-click="addContact()" />
+			<input type="button" class="XButton" value="{{ $parent.edit ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
 		</div>
 	</div>
 </div>

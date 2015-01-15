@@ -67,8 +67,16 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
 		$scope.recents[xpid] = new Date().getTime();
 		localStorage.recents = JSON.stringify($scope.recents);
 	};
+
+    $scope.getAvatarUrl = function(xpid) {
+    	return myHttpService.get_avatar(xpid,28,28);
+    };
 	
-	$scope.addContact = function() {
+	/**
+		ADD/EDIT CONTACTS
+	*/
+	
+	$scope.saveContact = function() {
 		// validate
 		if (!$scope.add.firstName && !$scope.add.lastName) {
 			$scope.addError = 'Contact name is not specified.';
@@ -79,15 +87,71 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
 			return;
 		}
 		
-		// save
-        myHttpService.sendAction('contacts', 'addContact', $scope.add);
+		// save new contact
+		if (!$scope.$parent.edit)
+			myHttpService.sendAction('contacts', 'addContact', $scope.add);
+		else
+			myHttpService.sendAction('contacts', 'updateContact', $scope.add);
+			
 		$scope.$parent.showOverlay(false);
 		$scope.add = {};
 	};
 	
+	// TO DO: action should take place on a contextual menu
+	$scope.editContact = function(contact) {
+		// only edit externals
+		if (contact.primaryExtension == '') {
+			$scope.$parent.showOverlay(true, true);
+			
+			$scope.add.pid = contact.xpid;
+			$scope.add.displayName = contact.displayName;
+			$scope.add.firstName = contact.firstName;
+			$scope.add.lastName = contact.lastName;
+			$scope.add.business = contact.phoneBusiness;
+			$scope.add.mobile = contact.phoneMobile;
+			$scope.add.email = contact.email;
+			$scope.add.jid = contact.jid;
+			$scope.add.ims = contact.ims;
+		}
+	};
+	
+	$scope.delContact = function() {
+		myHttpService.sendAction('contacts', 'delete', {contactId: $scope.add.pid});
+		$scope.$parent.showOverlay(false);
+		$scope.add = {};
+	};
+	
+	/**
+		SYNCING
+	*/
+	
 	$scope.$on('contacts_synced', function(event, data) {
-		$scope.contacts = data;
-		$rootScope.loaded = true;
+		// initial sync
+		if ($scope.contacts.length < 1) {
+			$scope.contacts = data;
+			$rootScope.loaded = true;
+		}
+		else {
+			for (i = 0; i < data.length; i++) {	
+				for (c = 0; c < $scope.contacts.length; c++) {
+					// found contact
+					if ($scope.contacts[c].xpid == data[i].xpid) {
+						// update or delete
+						if (data[i].xef001type == 'delete')
+							$scope.contacts.splice(c, 1);
+						else
+							$scope.contacts[c] = data[i];
+							
+						break;
+					}
+					
+					// no match, so new record
+					if (c == $scope.contacts.length-1)
+						$scope.contacts.push(data[i]);
+				}
+			}
+		}
+		
 		$scope.$apply();
 	});
 	
@@ -114,10 +178,6 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
 			}
 		}
 	});
-
-    $scope.getAvatarUrl = function(xpid) {
-    	return myHttpService.get_avatar(xpid,28,28);
-    };
 
     $scope.$on("$destroy", function() {
 

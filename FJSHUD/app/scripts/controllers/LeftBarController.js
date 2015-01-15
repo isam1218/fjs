@@ -1,13 +1,12 @@
-/**
- * Created by vovchuk on 11/7/13.
- */fjs.core.namespace("fjs.ui");
-
 fjs.ui.LeftBarController = function($scope, myHttpService) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
+	$scope.edit = false;
 	
-	$scope.showOverlay = function(show) {
+	$scope.showOverlay = function(show, edit) {
+		$scope.edit = edit ? edit : false;
+			
 		if (!show)
 			$scope.overlay = '';
 		else if ($scope.tab != 'groups')
@@ -18,4 +17,3 @@ fjs.ui.LeftBarController = function($scope, myHttpService) {
 	
 	
 };
-fjs.core.inherits(fjs.ui.LeftBarController, fjs.ui.Controller)
