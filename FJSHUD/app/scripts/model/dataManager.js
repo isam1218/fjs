@@ -21,6 +21,7 @@
 
         this.config = fjs.CONFIG;
 
+		/*
         this.api = new fjs.API(this.config);
 
         this.actionsManager = new fjs.hud.ActionsManager(this);
@@ -34,6 +35,7 @@
         this.api.addEventListener("network", function (data) {
 
         });
+		*/
 
         this.actions = {};
     };
@@ -115,10 +117,12 @@
      * @param listener
      */
     fjs.hud.DataManager.prototype.addEventListener = function (feedName, listener) {
+		/*
         if(!this.listeners[feedName] || this.listeners[feedName].length == 0) {
             this.api.addSyncForFeed(feedName);
         }
         dm.super_.prototype.addEventListener.call(this, feedName, listener);
+		*/
     };
 
     /**
