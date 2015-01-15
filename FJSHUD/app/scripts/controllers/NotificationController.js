@@ -52,6 +52,32 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 		}
 	}
 
+	$scope.remove_notification = function(message){
+		for(i = 0; i < $scope.notifications.length; i++){
+			if($scope.notifications[i].xpid == message.xpid){
+				$scope.notifications.splice(i,1);
+				break;
+			}
+		}
+		for(i = 0; i < $scope.todaysNotifications.length; i++){
+			if($scope.todaysNotifications[i].xpid == message.xpid){
+				$scope.todaysNotifications.splice(i,1);
+				break;
+			}	
+		}
+		myHttpService.sendAction('quickinbox','remove',{'pid':message.xpid});
+		$scope.$apply();
+	}
+
+	$scope.remove_all = function(){
+
+		$scope.notifications = [];
+		$scope.todaysNotifications = [];
+
+		myHttpService.sendAction('quickinbox','removeAll');
+			
+	}
+
 	$scope.showOverlay = function(show) {
 		if (!show)
 			$scope.overlay = '';
@@ -72,7 +98,7 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 				$scope.notifications.concat(data);
 			}else{
 				$scope.notifications = data;
-			}	
+			}
 		}
 
 		$scope.todaysNotifications = $scope.notifications.filter(function(item){
