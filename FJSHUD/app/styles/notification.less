@@ -53,11 +53,27 @@
 
 
 .LeftBarNotifications{
-	display:none;
+	//display:none;
+	height:1px;
+	-webkit-transition: height 3s;
+	
+	/*display:block;
+	overflow-y:auto;
+	overflow-x: hidden;
+	height:600px;
+	*/
 }
 
-.LeftBarNotifications:hover{
-	display:block;
+
+
+.LeftBarNotificationSection:hover > .LeftBarNotifications{
+	//display:block;
+	visibility:visible;
+	overflow-y:auto;
+	overflow-x: hidden;
+	-webkit-transition: height 4s;
+	transition: 2s;
+	height:400px;
 }
 
 .NotificationType{

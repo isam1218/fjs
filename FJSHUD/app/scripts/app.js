@@ -81,7 +81,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/contacts', {
 			templateUrl: 'views/ContactsWidget.html',
-			controller: ['$scope', '$location', 'DataManager', fjs.ui.ContactsWidget]
+			controller: ['$scope', '$location', fjs.ui.ContactsWidget]
 		})
         .when('/contact/:contactId', {
 			templateUrl: 'views/ConversationWidget.html',

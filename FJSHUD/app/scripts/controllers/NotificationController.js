@@ -61,7 +61,6 @@ fjs.ui.NotificationController = function($scope, myHttpService){
 			$scope.overlay = 'groups';
 	};
 
-	$scope.test = {message:'test'};
 	$scope.$on('quickinbox_synced', function(event,data){
 		
 		if(data){

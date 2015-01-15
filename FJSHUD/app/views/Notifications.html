@@ -1,14 +1,15 @@
-<div>
+<div class="LeftBarNotificationSection">
 	<div class="TitleBar ">
 		<div class="Icon"></div>
-		<div>Notifications</div>
+		<div>Notifications  </div>
+		<div class="Event" ng-show="notifications.length > 0 " > {{ notifications.length + ' events' }} </div>
 		<input type="button" value="Open" class="XButton" ng-click="$parent.overlay ='notifications'" />
 	</div>
 	
 	<div class="NotificationMessages LeftBarNotifications">
 		<!--<react-component name="notification" props='notifications'/>-->
 			
-			<div class="Messages" ng-repeat="message in notifications">
+			<div class="Messages" ng-repeat="message in todaysNotifications">
 					
 					<div class="NotificationHeader"> 
 							<div class="NotificationHeaderBackground"> 
