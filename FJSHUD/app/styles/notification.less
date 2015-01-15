@@ -24,10 +24,13 @@
 
 	.NotificationMessage{
 		width:100%;
-		//white-space: nowrap;
-		font-size:.8em;
+		white-space: pre;
+		font-family: Arial,Tahoma,'Helvetica Neue',Helvetica,sans-serif;
 		//overflow:hidden;
-		text-overflow:ellipsis;
+		//text-overflow:ellipsis;
+		p{
+			font-size:.8em;
+		}
 	}
 
 	
@@ -35,9 +38,12 @@
 
 .NotificationSectionHeader{
 	display:inline-block;
-
+	text-align:center;
 	.NotificationSectionHeaderImage{
-		background-image:url("/app/img/XApp-Icons.png?v=1418381374907") no-repeat -0px -0px;
+		background:url("/app/img/XApp-Icons.png?v=1418381374907") no-repeat -0px -0px;
+	}
+	.NotificationHeaderTitle{
+		display:inline-block;
 	}
 }
 

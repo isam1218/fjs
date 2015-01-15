@@ -388,8 +388,8 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
 
 
    $scope.$on("$destroy", function() {
-        meModel.removeEventListener("complete", $scope.$safeApply);
-        locationsModel.removeEventListener("complete", $scope.$safeApply);
+      //  meModel.removeEventListener("complete", $scope.$safeApply);
+       // locationsModel.removeEventListener("complete", $scope.$safeApply);
     });
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
