@@ -33,6 +33,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     };
 
     var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
+    var Weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
     $scope.pbxtraVersion;
     $scope.hudserverVersion;
@@ -355,6 +356,12 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
         }
     }
 
+    formatDate = function(date){
+        if(date){
+
+        }
+    }
+
     $scope.formatDuration = function(calllog){
         var date = new Date(calllog.duration)
         var seconds = date.getSeconds();
@@ -395,8 +402,30 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     $scope.formatDate = function(calllog){
         var date = new Date(calllog.startedAt)
         var today = new Date();
+        var DateString = "";
+        hour = date.getHours();
+        ampm = " am";
+        dateString = date.getFullYear() + " " + Months[date.getMonth()] + " " + date.getDate();
+        minutes = date.getMinutes();
         
-        return date.getFullYear() + " " + Months[date.getMonth()] + " " + date.getDay() + " " + date.getHours() + ":" + date.getMinutes();  
+        if(hour > 12){
+            hour = hour - 12;
+            ampm = " pm";
+        }
+        if(minutes < 10){
+            minutes = "0" + date.getMinutes(); 
+        }
+        
+        if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+            if(date.getDate() == today.getDate()){
+                dateString = "today"
+            }else if(date.getDate() == today.getDate() - 1){
+                dateString = "yesterday"
+            }else if(parseInt(date.getDate()/7) == parseInt(today.getDate()/7)){
+                dateString = Weekday[date.getDay];
+            }
+        }
+        return  dateString + " " + hour + ":" + minutes + ampm;  
     }
 
     $scope.$on('groups_synced', function(event,data){
