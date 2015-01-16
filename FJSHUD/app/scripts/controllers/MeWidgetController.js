@@ -88,7 +88,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     {id:3,value: '0_1',label: 'English(Australia)',},
     {id:4,value: '0_4',label: 'Espanol',},
     {id:5,value: '0_9',label: 'Francais',}];
-    $scope.languageSelect;
+    $scope.languageSelect = $scope.languages[0];
 
     $scope.autoClearSettingOptions = [{id:1,value:30,label:'30 seconds'},
     {id:2,value:25,label:'25 Seconds'},
