@@ -32,20 +32,25 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 		var date = new Date(time);
 		var currentDate = new Date();
 		var Hour = date.getHours();
+		var minutes = date.getMinutes();
+		if(minutes < 10){
+			minutes = "0" + minutes;
+		}
+
 		if(date.getDate() == currentDate.getDate() && date.getFullYear() == currentDate.getFullYear()){
 
 			if(Hour > 12){
-				return "today" +  " " + (Hour - 12).toString() + ":" + date.getMinutes() + " pm" ;
+				return "today" +  " " + (Hour - 12).toString() + ":" + minutes + " pm" ;
 			}else{
-				return "today" +  " " + Hour.toString() + ":" + date.getMinutes() + " am" ;
+				return "today" +  " " + Hour.toString() + ":" + minutes + " am" ;
 			}
 
 		}else{
 			if(Hour > 12){
-				return weekday[date.getDay()] + " " + (Hour - 12).toString() + ":" + date.getMinutes() + " pm";
+				return weekday[date.getDay()] + " " + (Hour - 12).toString() + ":" + minutes + " pm";
 		
 			}else{
-				return weekday[date.getDay()] + " " + (Hour).toString() + ":" + date.getMinutes() + " am";
+				return weekday[date.getDay()] + " " + (Hour).toString() + ":" + minutes + " am";
 			}
 		}
 	}
@@ -64,7 +69,6 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 			}	
 		}
 		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
-		$scope.$apply();
 	}
 	$scope.get_new_notifications= function(){
 		new_notifications = $scope.notifications.filter(function(item){
@@ -136,12 +140,18 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 
 			if($scope.notifications && $scope.notifications.length > 0){
 				for(notification in data){
-					for(i = 0; i < $scope.notifications.length;i++){
-						if($scope.notifications[i].xpid == data[notification].xpid){
-							$scope.notifications.splice(i,1,data[notification]);
-							break;	
+					isNotificationAdded = false;
+					if(data[notification].xef001type != "delete"){
+						for(i = 0; i < $scope.notifications.length;i++){
+							if($scope.notifications[i].xpid == data[notification].xpid){
+								$scope.notifications.splice(i,1,data[notification]);
+								isNotificationAdded = true;
+								break;	
+							}
 						}
-						$scope.notifications.push(data[notification]);
+						if(!isNotificationAdded){
+							$scope.notifications.push(data[notification]);
+						}
 					}
 				}
 			}else{

@@ -48,10 +48,30 @@
               <div class="WidgetSectionTitle">Recent calls</div>
               <div class="RecentCallSection"> 
                   <div class="RecentCallColumnHeaders">  
-                    <div class="RecentCallsHeader RecentDate"> Date/Time</div>
-                    <div class="RecentCallsHeader RecentFromTo">From</div>
-                    <div class="RecentCallsHeader RecentFromTo">To</div>
-                    <div class="RecentCallsHeader RecentDur">Duration</div>
+                    <div class="RecentCallsHeader RecentDate" 
+                    ng-class="recentSelectSort == 'Date' ? 
+                    'recent-selected-column' :''"
+                    ng-click="sortCallLog('Date')"
+                    > 
+                      Date/Time<div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
+                    
+                    <div class="RecentCallsHeader RecentFromTo" 
+                    ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('From')"
+                    >From<div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
+                    
+                    <div class="RecentCallsHeader RecentFromTo" 
+                    ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('To')"
+                    >To<div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                    
+                    <div class="RecentCallsHeader RecentDur" 
+                    ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('Duration')"
+                 
+                    >Duration<div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
                   </div>
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
                   <div  class="RecentCallLogs"> 
