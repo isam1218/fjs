@@ -1,10 +1,16 @@
-fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
+fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, groupService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
     $scope.contacts = [];
 	$scope.add = {};
+	$scope.favorites = {};
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
+
+	// pull updates from service
+	groupService.then(function(data) {
+		$scope.favorites = data.favorites;
+	});
 
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
@@ -40,6 +46,8 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
 						}
 						break;
 					case 'favorites':
+						if ($scope.favorites[contact.xpid] !== undefined)
+							return true;
 						break;
 				}
 			}
@@ -119,6 +127,10 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService) {
 		myHttpService.sendAction('contacts', 'delete', {contactId: $scope.add.pid});
 		$scope.$parent.showOverlay(false);
 		$scope.add = {};
+	};
+	
+	$scope.addFavorite = function(xpid) {
+		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: xpid});
 	};
 	
 	/**

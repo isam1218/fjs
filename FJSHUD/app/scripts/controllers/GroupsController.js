@@ -1,10 +1,18 @@
-fjs.ui.GroupsController = function($scope, $rootScope, dataManager, myHttpService) {
+fjs.ui.GroupsController = function($scope, $rootScope, myHttpService, groupService) {
     $scope.query = "";
     $scope.sortField = "name";
     $scope.sortReverse = false;
     $scope.groups = [];
 	$scope.mine = null;
 	$scope.add = {type:2};
+
+	// pull updates from service
+	groupService.then(function(data) {
+		$scope.groups = data.groups;
+		$scope.mine = data.mine;
+		
+		$scope.$safeApply();
+	});
 	
     $scope.sort = function(field) {
         if($scope.sortField!=field) {
@@ -40,25 +48,4 @@ fjs.ui.GroupsController = function($scope, $rootScope, dataManager, myHttpServic
 
 		}
     };
-	
-	$scope.$on('groups_synced', function(event, data) {
-		$scope.groups = data;
-	});
-	
-	$scope.$on('groupcontacts_synced', function(event, data) {
-		// need to add members to each group
-		for (g in $scope.groups) {
-			$scope.groups[g].members = [];
-			
-			for (key in data) {
-				if (data[key].groupId == $scope.groups[g].xpid) {
-					$scope.groups[g].members.push(data[key].contactId);
-					
-					// mark as mine
-					if (!$scope.mine && data[key].contactId == $rootScope.myPid)
-						$scope.mine = $scope.groups[g];
-				}
-			}
-		}
-	});
 };

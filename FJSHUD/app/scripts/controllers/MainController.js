@@ -1,5 +1,4 @@
 fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService) {
-    fjs.ui.Controller.call(this, $scope);
 	$rootScope.myPid = null;
 
     $scope.currentPopup = {};
@@ -8,6 +7,23 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService
     $scope.currentPopup.y = 0;
 
     var _contextMenuWrap = document.getElementById('_contextMenuWrap');
+	
+	// prevents overlapping digest cycles
+    $scope.$safeApply = function(fn) {
+        var phase = $scope.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            if(fn && (typeof(fn) === 'function')) {
+                $scope.$apply(fn);
+            }
+            else {
+                $scope.$apply();
+            }
+        }
+    };
 
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
