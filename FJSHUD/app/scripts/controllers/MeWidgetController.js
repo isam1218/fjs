@@ -3,7 +3,6 @@
  */fjs.core.namespace("fjs.ui");
 /**
  * @param $scope
- * @param dataManager
  * @constructor
  */
 fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
@@ -33,6 +32,8 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
          }
     };
 
+    var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
+
     $scope.pbxtraVersion;
     $scope.hudserverVersion;
     $scope.fdpVersion;
@@ -53,8 +54,10 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
+     /*
 
-   // $scope.meData = meModel.itemsByKey;
+    May need to move the settings into its own seperate controller
+     */
     $scope.chatStatuses = [{"title":"Available", "key":"available"}, {"title":"Away", "key":"away"}, {"title":"Busy", "key":"dnd"}];
     $scope.setChatStatus = function(chatStatus){
         myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status = chatStatus,"customMessage":$scope.meModel.chat_custom_status});
@@ -84,7 +87,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     {id:3,value: '0_1',label: 'English(Australia)',},
     {id:4,value: '0_4',label: 'Espanol',},
     {id:5,value: '0_9',label: 'Francais',}];
-    $scope.languageSelect;// = $scope.languages[1];
+    $scope.languageSelect;
 
     $scope.autoClearSettingOptions = [{id:1,value:30,label:'30 seconds'},
     {id:2,value:25,label:'25 Seconds'},
@@ -92,15 +95,14 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     {id:4,value:15,label:'15 Seconds'},
     {id:5,value:10,label:'10 Seconds'},
     {id:6,value:5,label:'5 Seconds'}];
-    $scope.autoClearSelected; //= $scope.autoClearSettingOptions[1];
-
+    $scope.autoClearSelected; 
     $scope.hoverDelayOptions = [{id:1,value:1.2,label:'1.2'},
     {id:2,value:1,label:'1.0'},
     {id:3,value:0.7, label:'0.7'},
     {id:4,value:0.5, label:'0.5'},
     {id:5,value:0.2, label:'0.2'},
     {id:6,value:0.0, label:'0.0'}];
-    $scope.hoverDelaySelected;// = $scope.hoverDelayOptions[1];
+    $scope.hoverDelaySelected;
 
     $scope.searchAutoClear;
     $scope.enableBox;
@@ -117,7 +119,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     {id:4,value:40,label:'40 items'},
     {id:5,value:50,label:'50 items'},
     {id:6,value:60,label:'60 items'}];
-    $scope.callLogSizeSelected;// = $scope.callLogSizeOptions[1];
+    $scope.callLogSizeSelected;
 
     $scope.autoAwayOptions = [{id:1,value:30000,label:'30 Seconds'},
     {id:2,value:60000,label:'1 minute'},
@@ -128,7 +130,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     {id:7,value:900000,label:'15 minutes'},
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
-    $scope.autoAwaySelected;// = $scope.autoAwayOptions[1];
+    $scope.autoAwaySelected;
     if($scope.meModel.my_jid){
             $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
             $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
@@ -149,8 +151,8 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
 
     }
 
-    $scope.micVol = .6;
-    $scope.spkVol = .6;
+    $scope.micVol;
+    $scope.spkVol;
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
@@ -162,7 +164,6 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
     }
     
     update_settings = function(){
-        //$scope.meModel = meModel.itemsByKey;
         if($scope.meModel.my_jid){
             $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
             $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
@@ -188,7 +189,6 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
                 $scope.enableAutoAway = true;    
             }else{
                 $scope.enableAutoAway = false;
-             //= settings['auto_away_timeout'] 
             }
             
 
@@ -335,6 +335,69 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
             }
         }
     });
+    $scope.calllogs = [];
+    $scope.$on('calllog_synced',function(event,data){
+        if(data){
+            $scope.calllogs = data;
+        }
+    });
+
+    $scope.sortCallLog = function(sortType){
+        switch(sortType){
+            case "Date":
+                break;
+            case "From":
+                break;
+            case "To":
+                break;
+            case "Duration":
+                break;
+        }
+    }
+
+    $scope.formatDuration = function(calllog){
+        var date = new Date(calllog.duration)
+        var seconds = date.getSeconds();
+        var minutes;
+        if(seconds > 60){
+            minutes = parseInt(seconds/60) 
+            seconds = seconds - (60*minutes);
+        }
+
+        if(seconds < 10){
+            seconds = "0" + seconds;
+        }
+        if(minutes){
+            return minutes + ":" + seconds;
+        }else{
+            return "00:" + seconds;
+        }
+        
+    }
+
+    $scope.formatIncoming = function(calllog,type){
+        switch(type){
+            case "From":
+                if(calllog.incoming){
+                    return calllog.phone;
+                }else{
+                    return "You @ " + calllog.location;
+                }
+            case "To":
+                if(calllog.incoming){
+                    return "You @ " + calllog.location;
+                }else{
+                    return calllog.phone;
+                }
+        }
+    }
+
+    $scope.formatDate = function(calllog){
+        var date = new Date(calllog.startedAt)
+        var today = new Date();
+        
+        return date.getFullYear() + " " + Months[date.getMonth()] + " " + date.getDay() + " " + date.getHours() + ":" + date.getMinutes();  
+    }
 
     $scope.$on('groups_synced', function(event,data){
         meGroup = data.filter(function(item){
@@ -355,8 +418,6 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
             $scope.weblauncher_profiles = data;
         }
     });
-
-
     $scope.$on('weblaunchervariables_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
@@ -386,12 +447,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
         $scope.$apply();
     });
 
-
-   $scope.$on("$destroy", function() {
-      //  meModel.removeEventListener("complete", $scope.$safeApply);
-       // locationsModel.removeEventListener("complete", $scope.$safeApply);
-    });
-    $scope.$on("queues_synced", function(event,data){
+     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
         }

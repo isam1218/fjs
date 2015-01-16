@@ -46,7 +46,23 @@
               </div>
               
               <div class="WidgetSectionTitle">Recent calls</div>
+              <div class="RecentCallSection"> 
+                  <div class="RecentCallColumnHeaders">  
+                    <div class="RecentCallsHeader RecentDate"> Date/Time</div>
+                    <div class="RecentCallsHeader RecentFromTo">From</div>
+                    <div class="RecentCallsHeader RecentFromTo">To</div>
+                    <div class="RecentCallsHeader RecentDur">Duration</div>
+                  </div>
 
+                  <div  class="RecentCallLogs"> 
+                    <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
+                      <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
+                      <div class="RecentCallsHeader RecentFromTo">{{ formatIncoming(calllog,'From')}} </div>
+                      <div class="RecentCallsHeader RecentFromTo" >{{ formatIncoming(calllog,'To')}} </div>
+                      <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
+                    </div>
+                  </div>
+              </div>
               <div class="WidgetSectionTitle">Preferences</div>
               <div class="WidgetTabBar">
                 <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">

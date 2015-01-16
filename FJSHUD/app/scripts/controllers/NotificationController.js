@@ -5,7 +5,6 @@ fjs.core.namespace("fjs.ui");
 fjs.ui.NotificationController = function($scope, myHttpService,$location){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-	// notifications, TO DO: put in separate controller
 	$scope.notifications = [];
 	
 	myHttpService.getFeed('quickinbox');
@@ -13,7 +12,6 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
 	}
-
 	$scope.getMessage = function(message){
 
 		switch(message.type){
