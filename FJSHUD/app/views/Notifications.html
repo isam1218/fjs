@@ -45,9 +45,9 @@
 		<div class="Header NotificationSectionHeader">
 			<div class="NotificationSectionHeaderImage"></div>
 			<div class="NotificationHeaderTitle"> <h2>  Notifications </h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  New: {{todaysNotifications.length}} </h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  New: {{get_new_notifications().length}} </h2> </div>
 			<div class="NotificationHeaderTitle"> <h2>  Away: {{ get_away_notifications().length}}</h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  Old: </h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  Old:  {{ get_old_notifications().length}}</h2> </div>
 		
 		</div>
 		
@@ -84,7 +84,7 @@
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="Clear All" ng-click="remove_all()" />
+			<input type="button" class="XButton XButtonRed" value="Clear All" ng-click="remove_all()" />
 		</div>
 	</div>
 </div>

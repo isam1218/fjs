@@ -53,7 +53,7 @@
                     <div class="RecentCallsHeader RecentFromTo">To</div>
                     <div class="RecentCallsHeader RecentDur">Duration</div>
                   </div>
-
+                  <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
                   <div  class="RecentCallLogs"> 
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
                       <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
