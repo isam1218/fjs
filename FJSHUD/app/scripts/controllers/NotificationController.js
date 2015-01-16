@@ -5,7 +5,6 @@ fjs.core.namespace("fjs.ui");
 fjs.ui.NotificationController = function($scope, myHttpService,$location){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-	// notifications, TO DO: put in separate controller
 	$scope.notifications = [];
 	
 	myHttpService.getFeed('quickinbox');
@@ -13,7 +12,6 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
 	}
-
 	$scope.getMessage = function(message){
 
 		switch(message.type){
@@ -68,13 +66,41 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
 		$scope.$apply();
 	}
+	$scope.get_new_notifications= function(){
+		new_notifications = $scope.notifications.filter(function(item){
+			date = new Date(item.time);
+			today = new Date();
+			toReturn = false;
+			if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+				if(date.getDate() == today.getDate()){
+					if(item.receivedStatus != "away"){
+						toReturn = true;
+					}
+				}
+			}
+
+			return toReturn; 
+		});
+
+		return new_notifications;
+	}
+
 
 	$scope.get_away_notifications= function(){
 		away_notifications = $scope.notifications.filter(function(item){
 			return item.receivedStatus == "away"; 
 		});
-
 		return away_notifications;
+	}
+
+	$scope.get_old_notifications= function(){
+		old_notifications = $scope.notifications.filter(function(item){
+			date = new Date(item.time);
+			today = new Date();
+			return date.getDate() != today.getDate() && item.receivedStatus != "away"; 
+		});
+
+		return old_notifications;
 	}
 	
 	$scope.remove_all = function(){

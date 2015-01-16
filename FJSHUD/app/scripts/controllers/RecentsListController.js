@@ -1,6 +1,6 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.ResentsListController = function($scope, $rootScope, dataManager) {
+fjs.ui.RecentsListController = function($scope, $rootScope, dataManager) {
     fjs.ui.Controller.call(this, $scope);
     $scope.model = dataManager.getModel("widget_history");
     $scope.resents = $scope.model.items;
