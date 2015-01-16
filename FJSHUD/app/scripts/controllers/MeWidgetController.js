@@ -365,53 +365,64 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
                 break;
             case "From":
                  if($scope.isAscending){
-                    
-                    $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return a.phone.localeCompare(b.phone);
-                        }else if(a.incoming){
-                            return a.phone.localeCompare(b.location);
-                        }else{
-                            return a.location.localeCompare(b.phone);
-                        }
-                    }); 
-                    $scope.isAscending = false;   
-                }else{
                     $scope.calllogs.sort(function(a,b){
                         if(a.incoming && b.incoming){
                             return b.phone.localeCompare(b.phone);
                         }else if(a.incoming){
                             return b.phone.localeCompare(a.location);
-                        }else{
+                        }else if(b.incoming){
                             return b.location.localeCompare(a.phone);
+                        }else{
+                            return b.location.localeCompare(b.location)
                         }
                     });
+                   
+                    $scope.isAscending = false;   
+                }else{
+                     $scope.calllogs.sort(function(a,b){
+                        if(a.incoming && b.incoming){
+                            return a.phone.localeCompare(b.phone);
+                        }else if(a.incoming){
+                            return a.phone.localeCompare(b.location);
+                        }else if(b.incoming){
+                            return a.location.localeCompare(b.phone);
+                        }else{
+                            return a.location.localeCompare(b.location);
+                        }
+                    }); 
+                    
                     $scope.isAscending = true;
                 }
                 break;
             case "To":
                 if($scope.isAscending){
-                    
-                    $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return a.location.localeCompare(b.location);
-                        }else if(a.incoming){
-                            return a.location.localeCompare(b.phone);
-                        }else{
-                            return a.phone.localeCompare(b.location);
-                        }
-                    }); 
-                    $scope.isAscending = false;   
-                }else{
                     $scope.calllogs.sort(function(a,b){
                         if(a.incoming && b.incoming){
                             return b.location.localeCompare(b.location);
                         }else if(a.incoming){
                             return b.phone.localeCompare(a.location);
-                        }else{
+                        }else if(b.incoming){
                             return b.location.localeCompare(a.phone);
+                        }else{
+                            return b.phone.localeCompare(a.phone);
                         }
                     });
+                    
+                    $scope.isAscending = false;   
+                }else{
+
+                    $scope.calllogs.sort(function(a,b){
+                        if(a.incoming && b.incoming){
+                            return a.location.localeCompare(b.location);
+                        }else if(a.incoming){
+                            return a.location.localeCompare(b.phone);
+                        }else if(b.incoming){
+                            return a.phone.localeCompare(b.location);
+                        }else{
+                            return a.phone.localeCompare(b.phone);
+                        }
+                    }); 
+                    
                     $scope.isAscending = true;
                 }
                 break;
@@ -433,10 +444,7 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
         }
 
         $scope.recentSelectSort = sortType;
-
-        $scope.$apply();
-             
-    }
+  }
 
    
     $scope.formatDuration = function(calllog){
