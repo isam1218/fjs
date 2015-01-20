@@ -2,16 +2,15 @@
     <div class="WidgetHeader" context-menu="contact">
         <div class="Avatar AvatarNormal" avatar-menu="contact"> <!-- on click - open avatar menu-->
             <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH"
-                 data-ng-src="{{contact.getAvatarUrl(32,32);}}">
+                 data-ng-src="{{contact.getAvatar(32)}}">
             <div class="AvatarForeground AvatarInteractable"></div>
         </div>
-        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.getDisplayName()}} ({{contact.primaryExtension}})</div>
-        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.getDisplayName()}}</div>
+        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.displayName}} ({{contact.primaryExtension}})</div>
+        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.displayName}}</div>
         <div class="WidgetHeaderStatus WithIcons">
-            <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus"
-                 data-ng-class="contact.getQueueStatus()"></div>
-            <div class="WidgetHeaderStatusItem Icon XIcon-ChatStatus-{{contact.getChatStatus()}}"></div>
-            <div class="WidgetHeaderStatusItem ChatStatus">{{contact.getCustomXmppStatus()}}</div>
+            <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus" data-ng-class="contact.getQueueStatus()"></div>
+            <div class="WidgetHeaderStatusItem Icon XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
+            <div class="WidgetHeaderStatusItem ChatStatus">{{contact.hud_status || 'offline'}}</div>
         </div>
         <div class="WidgetHeaderInfo">
             <div class="WidgetHeaderInfoRow">
@@ -27,7 +26,7 @@
                 <label>Mobile:</label><a href="javascript:" ng-click="callPhone(contact.phoneMobile)">{{contact.phoneMobile}}</a>
             </div>
         </div>
-        <div class="WidgetHeaderCallStatus" ng-class="{'HasCall':contact.hasCall()}">
+        <div class="WidgetHeaderCallStatus">
             <div ng-if="contact.hasCall()">
                 <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">
                     <img class="AvatarImgPH" data-ng-src="{{contact.getCallAvatarUrl(28, 28)}}" />

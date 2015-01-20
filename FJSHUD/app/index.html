@@ -5,6 +5,10 @@
     <title>Fonality HUDWeb</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0">
+            <param name="onload" value="onloadphone" />
+            <param name="debug" value="1" />
+    </object>
       <link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
@@ -154,6 +158,7 @@
     <script src="../bower_components/FJSTabs/dist/fjs.tabs.debug.js"></script>
     <script src="../bower_components/FJSFDP/dist/fjs.fdp.debug.js"></script>
     <script src="../bower_components/FJSAPI/dist/fjs.api.debug.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -264,6 +269,7 @@
     <script src="scripts/controllers/contextMenuController.js"></script>
     <script src="scripts/controllers/ChatStatusController.js"></script>
     <script src="scripts/controllers/CallsRecordingsController.js"></script>
+    <script src="scripts/controllers/CallCenterController.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/controllers/LeftBarController.js"></script>
     <script src="scripts/controllers/LeftBarCallsController.js"></script>
@@ -273,9 +279,12 @@
     <script src="scripts/controllers/QueueWidgetStatsController.js"></script>
     <script src="scripts/controllers/NotificationController.js"></script>
 
+    <script src="scripts/services/httpService.js"></script>
+    <script src="scripts/services/groupService.js"></script>
+    <script src="scripts/services/contactService.js"></script>
+
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
     <!-- endbuild -->
 </body>
 </html>

@@ -1,6 +1,6 @@
 var fjs = {};
 importScripts("fdpRequest.js");
-importScripts("/app/properties.js");
+importScripts("../../properties.js");
 
 var ports = [];
 var synced = false;
