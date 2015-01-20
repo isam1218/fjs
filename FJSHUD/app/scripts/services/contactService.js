@@ -1,4 +1,4 @@
-fjs.hud.contactService = function($q, $rootScope) {
+fjs.hud.contactService = function($q, $rootScope, myHttpService) {
 	// required to deliver promises
 	var deferred = $q.defer();
 	
@@ -9,6 +9,13 @@ fjs.hud.contactService = function($q, $rootScope) {
 		if (contacts.length < 1) {
 			contacts = data;
 			$rootScope.loaded = true;
+			
+			// add avatar to each contact
+			for (c in contacts) {
+				contacts[c].getAvatar = function(size) {
+					return myHttpService.get_avatar(this.xpid, size, size); 
+				};
+			}
 		}
 		else {
 			for (i = 0; i < data.length; i++) {	

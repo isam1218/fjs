@@ -106,7 +106,7 @@ hudweb.config(function ($routeProvider) {
 
 hudweb.service('HttpService',['$http','$rootScope','$location',fjs.hud.httpService]);
 hudweb.factory('GroupService',['$q', '$rootScope',fjs.hud.groupService]);
-hudweb.factory('ContactService',['$q', '$rootScope',fjs.hud.contactService]);
+hudweb.factory('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
