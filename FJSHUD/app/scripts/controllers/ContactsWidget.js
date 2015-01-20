@@ -79,10 +79,6 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 		$scope.recents[xpid] = new Date().getTime();
 		localStorage.recents = JSON.stringify($scope.recents);
 	};
-
-    $scope.getAvatarUrl = function(xpid) {
-    	return myHttpService.get_avatar(xpid,28,28);
-    };
 	
 	/**
 		ADD/EDIT CONTACTS

@@ -1,4 +1,4 @@
-fjs.hud.httpService = function($http, $rootScope, $location){
+fjs.hud.httpService = function($http, $rootScope, $location, $q){
 	/**
 		SHARED WORKER
 	*/
@@ -131,11 +131,6 @@ fjs.hud.httpService = function($http, $rootScope, $location){
         })
     };
     
-    this.isFirstSync = function() {
-        return;
-    };
-    
-    
     this.updateSettings = function(type, action, model) {
         var params = {
             'a.name': type,
@@ -214,5 +209,37 @@ fjs.hud.httpService = function($http, $rootScope, $location){
 				'node': nodeID,
 			}
 		});
+	};
+	
+	// retrieve chat messages
+	this.getChat = function(xpid) {
+		var deferred = $q.defer();
+		
+		// format request object
+		var params = {
+			alt: 'j',
+			's.limit': 60,
+			'sh.filter': '{"type":"f.conversation","key":{"feedName":"contacts","xpid":"' + xpid + '"}}'
+		};
+	
+		$http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/history/streamevent",
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+authTicket,
+				'node': nodeID,
+			},
+			transformResponse: false
+		})
+		.then(function(response) {
+			// send items array back to controller
+			var data = JSON.parse(response.data);
+			for (i in data)
+				deferred.resolve(data[i].items);
+		});
+		
+		return deferred.promise;
 	};
 }
