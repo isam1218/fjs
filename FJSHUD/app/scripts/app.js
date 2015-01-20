@@ -18,7 +18,8 @@ var hudweb = angular.module('fjshudApp', [
     'HUD_model',
     'HUD_Dir',
     'flow',
-    'react'
+    'react',
+	'luegg.directives'
 ]);
 
 hudweb.config(function ($routeProvider) {
@@ -104,7 +105,7 @@ hudweb.config(function ($routeProvider) {
 
 //hudweb.value("notification",fjs.hud.react.NotificationList);
 
-hudweb.service('HttpService',['$http','$rootScope','$location',fjs.hud.httpService]);
+hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
 hudweb.factory('GroupService',['$q', '$rootScope',fjs.hud.groupService]);
 hudweb.factory('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
 
@@ -133,7 +134,7 @@ hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.Chat
 
 // chat panel controllers:
 hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', fjs.ui.ConversationWidgetController]);
-hudweb.controller("ConversationWidgetChatController", ['$scope', 'DataManager',  fjs.ui.ConversationWidgetChatController]);
+hudweb.controller("ConversationWidgetChatController", ['$scope', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 
