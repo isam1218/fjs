@@ -1,4 +1,4 @@
-fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, groupService) {
+fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactService, groupService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
@@ -8,6 +8,10 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, groupService
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
 	// pull updates from service
+	contactService.then(function(data) {
+		$scope.contacts = data;
+	});
+	
 	groupService.then(function(data) {
 		$scope.favorites = data.favorites;
 	});
@@ -132,64 +136,6 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, groupService
 	$scope.addFavorite = function(xpid) {
 		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: xpid});
 	};
-	
-	/**
-		SYNCING
-	*/
-	
-	$scope.$on('contacts_synced', function(event, data) {
-		// initial sync
-		if ($scope.contacts.length < 1) {
-			$scope.contacts = data;
-			$rootScope.loaded = true;
-		}
-		else {
-			for (i = 0; i < data.length; i++) {	
-				for (c = 0; c < $scope.contacts.length; c++) {
-					// found contact
-					if ($scope.contacts[c].xpid == data[i].xpid) {
-						// update or delete
-						if (data[i].xef001type == 'delete')
-							$scope.contacts.splice(c, 1);
-						else
-							$scope.contacts[c] = data[i];
-							
-						break;
-					}
-					
-					// no match, so new record
-					if (c == $scope.contacts.length-1)
-						$scope.contacts.push(data[i]);
-				}
-			}
-		}
-		
-		$scope.$apply();
-	});
-	
-	$scope.$on('contactstatus_synced', function(event, data) {
-		for (key in data) {
-			for (c in $scope.contacts) {
-				// set contact's status
-				if ($scope.contacts[c].xpid == data[key].xpid) {
-					$scope.contacts[c].hud_status = data[key].xmpp;
-					break;
-				}
-			}
-		}
-	});
-	
-	$scope.$on('calls_synced', function(event, data) {
-		for (key in data) {
-			for (c in $scope.contacts) {
-				// set contact's status
-				if ($scope.contacts[c].xpid == data[key].xpid) {
-					$scope.contacts[c].calls_startedAt = data[key].startedAt;
-					break;
-				}
-			}
-		}
-	});
 
     $scope.$on("$destroy", function() {
 

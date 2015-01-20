@@ -5,8 +5,8 @@
                  data-ng-src="{{contact.getAvatarUrl(32,32);}}">
             <div class="AvatarForeground AvatarInteractable"></div>
         </div>
-        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.getDisplayName()}} ({{contact.primaryExtension}})</div>
-        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.getDisplayName()}}</div>
+        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.displayName}} ({{contact.primaryExtension}})</div>
+        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.displayName}}</div>
         <div class="WidgetHeaderStatus WithIcons">
             <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus"
                  data-ng-class="contact.getQueueStatus()"></div>

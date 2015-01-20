@@ -1,41 +1,22 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.ConversationWidgetController = function($scope, $routeParams, $timeout, $filter, dataManager) {
-    fjs.ui.Controller.call(this,  $scope, $routeParams.contactId, dataManager);
-    var contactModel = dataManager.getModel("contacts"), durationTimer;
-    $scope.contactId = $routeParams.contactId;
-    $scope.contact = contactModel.items[$routeParams.contactId];
+fjs.ui.ConversationWidgetController = function($scope, $routeParams, $timeout, $filter, contactService) {
+    $scope.contactID = $routeParams.contactId;
+    $scope.contact = '';
+	
+	contactService.then(function(data) {
+		// find this contact
+		for (i in data) {
+			if (data[i].xpid == $scope.contactID)
+				$scope.contact = data[i];
+		}
+	});
 	
 	$scope.tabs = ['Chat', 'Voicemails', 'Groups', 'Call Log'];
 	$scope.selected = 'Chat';
-	
-	// override data, where "stack" comes from ng-repeat
-    if (typeof $scope.stack !== "undefined") {
-		$scope.contactId = $scope.stack.id;
-		$scope.contact = contactModel.items[$scope.stack.id];
-	}
-
-    var update = function(data) {
-        if(data.xpid == $scope.contactId) {
-            if(!$scope.contact) {
-                $scope.contact = contactModel.items[$scope.contactId];
-            }
-            updateFavicon();
-            $scope.$safeApply();
-        }
-    };
 
     $scope.fileShare = function() {
       alert('not implemented');
     };
-    var quickInboxModel = dataManager.getModel('quickinbox');
-    var qikeys = Object.keys(quickInboxModel.items);
-    for(var i=0; i<qikeys.length; i++) {
-        var qitem = quickInboxModel.items[qikeys[i]];
-        if (qitem.senderId == $scope.contactId) {
-            dataManager.sendAction('quickinbox', 'remove', {pid: qitem.xpid});
-        }
-    }
+	
     var onDurationTimeout = function() {
         if($scope.contact && $scope.contact.hasCall()) {
             var date = Date.now();
@@ -48,8 +29,6 @@ fjs.ui.ConversationWidgetController = function($scope, $routeParams, $timeout, $
 
     onDurationTimeout();
 
-    contactModel.addEventListener("push", update);
-
     function updateFavicon() {
         var link = document.getElementById("favicon");
         if(link) {
@@ -60,10 +39,7 @@ fjs.ui.ConversationWidgetController = function($scope, $routeParams, $timeout, $
 
 
     $scope.$on("$destroy", function() {
-        contactModel.removeEventListener("push", update);
-        if (durationTimer) {
-            $timeout.cancel(durationTimer);
-        }
+	
     });
 
     $scope.sendMessage = function() {
@@ -85,5 +61,3 @@ fjs.ui.ConversationWidgetController = function($scope, $routeParams, $timeout, $
         }
     };
 };
-
-fjs.core.inherits(fjs.ui.ConversationWidgetController, fjs.ui.Controller)

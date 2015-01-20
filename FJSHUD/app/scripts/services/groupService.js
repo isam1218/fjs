@@ -2,19 +2,24 @@ fjs.hud.groupService = function($q, $rootScope) {
 	// required to deliver promises
 	var deferred = $q.defer();
 	
-	// data to be sent back
-	var service = {};
-	service.groups = [];
-	service.favorites = {};
-	service.mine = null;
-	
-	// internal variables
+	var groups = [];
+	var favorites = {};
 	var favoriteID;
+	var mine = null;
+	
+	var formatData = function(data) {
+		// format data that controller needs
+		return {
+			groups: groups,
+			favorites: favorites,
+			mine: mine
+		};
+	};
 
 	$rootScope.$on('groups_synced', function(event, data) {
 		// initial sync
-		if (service.groups.length < 1) {
-			service.groups = data;
+		if (groups.length < 1) {
+			groups = data;
 			
 			// find favorites group
 			for (i = 0; i < data.length; i++) {
@@ -25,30 +30,30 @@ fjs.hud.groupService = function($q, $rootScope) {
 			}
 		}
 		
-		deferred.resolve(service);
+		deferred.resolve(formatData());
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {
 		// need to add members to each group
-		for (g in service.groups) {
-			service.groups[g].members = [];
+		for (g in groups) {
+			groups[g].members = [];
 			
 			for (key in data) {
-				if (data[key].groupId == service.groups[g].xpid) {
-					service.groups[g].members.push(data[key].contactId);
+				if (data[key].groupId == groups[g].xpid) {
+					groups[g].members.push(data[key].contactId);
 					
 					// add to favorites object
 					if (data[key].groupId == favoriteID)
-						service.favorites[data[key].contactId] = 1;
+						favorites[data[key].contactId] = 1;
 					
 					// mark as mine
-					if (!service.mine && data[key].contactId == $rootScope.myPid)
-						service.mine = service.groups[g];
+					if (!mine && data[key].contactId == $rootScope.myPid)
+						mine = groups[g];
 				}
 			}
 		}
 		
-		deferred.resolve(service);
+		deferred.resolve(formatData());
 	});
 	
 	return deferred.promise;
