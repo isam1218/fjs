@@ -20,6 +20,7 @@ hud_model.filter('ResentsSortFilter', fjs.hud.filter.ResentsSortFilter);
 
 hud_model.filter('ChatFilter', fjs.hud.filter.ChatFilter);
 
+hud_model.filter('highlight', fjs.hud.filter.HighlightText);
 
 hud_model.filter('ContactVoicemailsFilter', fjs.hud.filter.ContactVoicemails);
 

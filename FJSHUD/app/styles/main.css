@@ -19,12 +19,14 @@ html {
 p {
   font-size: 11px;
 }
+.highlighted {
+  background-color: yellow;
+}
 .HeaderTitle {
   color: #0093f0;
   font-size: 11px;
   font-weight: bold;
   line-height: 18px;
-  margin-top: 20px;
   width: auto;
   text-transform: uppercase;
   margin-left: 10px;
@@ -174,13 +176,64 @@ p {
   font-weight: bold;
   padding-top: 4px;
   padding-bottom: 10px;
-  height: 100px;
+  height: 75px;
   overflow-y: auto;
 }
 .RecentCallSection .RecentCallLogs .RecentCallRow {
   padding-top: 7px;
   padding-bottom: 7px;
   border-bottom: 1px solid #ccc;
+}
+.RecentCallSection .CallLogs {
+  font-weight: bold;
+  padding-top: 4px;
+  padding-bottom: 10px;
+  overflow-y: auto;
+}
+.RecentCallSection .CallLogs .RecentCallRow {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: 1px solid white;
+  width: 99%;
+  background-color: #eee;
+}
+.RecentCallSection .CallLogs .RecentCallRow:hover {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: 1px solid white;
+  width: 99%;
+  background-color: #ccc;
+}
+.RecentCallSection .CalllogAvatar {
+  width: 10%;
+}
+.RecentCallSection .CalllogAvatar .CalllogImage {
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border: 3px solid #0093f0;
+}
+.RecentCallSection .CalllogName {
+  width: 23%;
+  display: inline-flex;
+}
+.RecentCallSection .CalllogName .info {
+  color: #009cff;
+}
+.RecentCallSection .CalllogPhone {
+  width: 17%;
+  text-align: center;
+  display: inline-flex;
+}
+.RecentCallSection .CalllogDuration {
+  width: 14%;
+  display: inline-flex;
+}
+.RecentCallSection .CallLogDate {
+  width: 25%;
+  display: inline-flex;
+}
+.RecentCallSection .CallLogType {
+  width: 7%;
 }
 .RecentCallSection .RecentDate {
   width: 30%;
@@ -335,6 +388,7 @@ p {
   position: relative;
   padding: 0 5px;
   border-bottom: solid 1px #ccc;
+  height: 40px;
 }
 .ToolBar .XButton {
   float: right;
