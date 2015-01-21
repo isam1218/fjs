@@ -7,6 +7,8 @@ fjs.hud.contactService = function($q, $rootScope, myHttpService) {
 			if (contacts[i].xpid == xpid)
 				return contacts[i];
 		}
+		
+		return null;
 	};
 	
 	this.getContacts = function() {

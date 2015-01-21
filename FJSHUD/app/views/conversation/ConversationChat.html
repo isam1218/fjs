@@ -8,28 +8,29 @@
         </div>
     </div>
     <div class="XButton XButtonNormal" ng-click="fileShare()"><span>File Share</span></div>
+	<img src="img/XLoading.gif" class="Loading" ng-show="promise" />
 </div>
 		
 <div class="ListViewContent" id="ListViewContent" scroll-glue>
-        <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages">
-            <div class="ListMessageLeft">
-                <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
-                    <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
-                    <div class="AvatarInteractable AvatarForeground"></div>
-                </div>
-            </div>
-            <div class="ListMessageContent AttachmentsHolder">
-                <div class="ListMessageHeader ChatOutbound">
-                    <div class="ListMessageHeaderPrefix">...from</div>
-                    <div class="ListMessageHeaderName">{{message.displayName}}</div>
-                    <div class="time">{{message.created | date: 'MMMM d'}}</div>
-                </div>
-                <div class="ChatMessageItem AttachmentsHolder">
-                    <div class="time">{{message.created | date: 'h:mm a'}}</div>
-                    <div class="ListMessageText"><div class="ChatMessageIco {{message.type}} {{message.callType}}"></div>{{message.message}}</div>
-                </div>
+    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages">
+        <div class="ListMessageLeft">
+            <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
+                <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
+                <div class="AvatarInteractable AvatarForeground"></div>
             </div>
         </div>
+        <div class="ListMessageContent AttachmentsHolder">
+            <div class="ListMessageHeader ChatOutbound">
+                <div class="ListMessageHeaderPrefix">...from</div>
+                <div class="ListMessageHeaderName">{{message.displayName}}</div>
+                <div class="time">{{message.created | date: 'MMMM d'}}</div>
+            </div>
+            <div class="ChatMessageItem AttachmentsHolder">
+                <div class="time">{{message.created | date: 'h:mm a'}}</div>
+                <div class="ListMessageText"><div class="ChatMessageIco {{message.type}} {{message.callType}}"></div>{{message.message}}</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="ChatInputBox">
