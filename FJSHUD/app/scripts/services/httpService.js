@@ -37,6 +37,8 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 	    worker.port.start();
 	}
 
+	
+	
 	// send first message to shared worker
 	var authorizeWorker = function() {
 	    var events = {
@@ -48,6 +50,19 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 
 	    };
 
+	    /*var pluginApi = document.getElementById('phone');
+		var version=pluginApi.version;
+		var session = pluginApi.getSession('5549_7340');
+		session.authorize(authTicket,nodeID,'huc-dev.fonality.com');
+		var win = session.createFloatWindow;
+		var alert = session.alertAPI;
+		alert.initAlert('../../popup.html');
+		alert.setAlertSize(100,100);
+		alert.setLocation(100,100);
+
+		win.initWindow('../../popup.html');
+		win.setAlwaysOnTop(true);
+		*/
 	    worker.port.postMessage(events);
 	};
 	
@@ -212,14 +227,15 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 	};
 	
 	// retrieve chat messages
-	this.getChat = function(xpid) {
+	this.getChat = function(xpid, version) {
 		var deferred = $q.defer();
 		
 		// format request object
 		var params = {
 			alt: 'j',
 			's.limit': 60,
-			'sh.filter': '{"type":"f.conversation","key":{"feedName":"contacts","xpid":"' + xpid + '"}}'
+			'sh.filter': '{"type":"f.conversation","key":{"feedName":"contacts","xpid":"' + xpid + '"}}',
+			'sh.versions': '0:0@1100000000:' + (version ? version : 0) + '@d00000000:0'
 		};
 	
 		$http({
@@ -234,10 +250,10 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 			transformResponse: false
 		})
 		.then(function(response) {
-			// send items array back to controller
+			// send items back to controller
 			var data = JSON.parse(response.data);
 			for (i in data)
-				deferred.resolve(data[i].items);
+				deferred.resolve(data[i]);
 		});
 		
 		return deferred.promise;

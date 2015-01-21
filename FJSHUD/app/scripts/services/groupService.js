@@ -1,13 +1,10 @@
-fjs.hud.groupService = function($q, $rootScope) {
-	// required to deliver promises
-	var deferred = $q.defer();
-	
+fjs.hud.groupService = function($rootScope) {	
 	var groups = [];
 	var favorites = {};
 	var favoriteID;
 	var mine = null;
 	
-	var formatData = function(data) {
+	var formatData = function() {
 		// format data that controller needs
 		return {
 			groups: groups,
@@ -15,6 +12,10 @@ fjs.hud.groupService = function($q, $rootScope) {
 			mine: mine
 		};
 	};
+	
+	/**
+		SYNCING
+	*/
 
 	$rootScope.$on('groups_synced', function(event, data) {
 		// initial sync
@@ -30,17 +31,17 @@ fjs.hud.groupService = function($q, $rootScope) {
 			}
 		}
 		
-		deferred.resolve(formatData());
+		$rootScope.$broadcast('groups_updated', formatData());
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {
 		// need to add members to each group
-		for (g in groups) {
-			groups[g].members = [];
+		for (i = 0; i < groups.length; i++) {
+			groups[i].members = [];
 			
 			for (key in data) {
-				if (data[key].groupId == groups[g].xpid) {
-					groups[g].members.push(data[key].contactId);
+				if (data[key].groupId == groups[i].xpid) {
+					groups[i].members.push(data[key].contactId);
 					
 					// add to favorites object
 					if (data[key].groupId == favoriteID)
@@ -48,13 +49,11 @@ fjs.hud.groupService = function($q, $rootScope) {
 					
 					// mark as mine
 					if (!mine && data[key].contactId == $rootScope.myPid)
-						mine = groups[g];
+						mine = groups[i];
 				}
 			}
 		}
 		
-		deferred.resolve(formatData());
+		$rootScope.$broadcast('groups_updated', formatData());
 	});
-	
-	return deferred.promise;
 }

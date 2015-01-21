@@ -1,51 +1,81 @@
-<div class="ToolBar">
-    <div class="SearchInputBox">
-        <div class="SearchInputBoxInputHolder">
-            <input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search">
+
+    <div class="ToolBar" >
+        <div class="SearchInputBox">
+            <div class="SearchInputBoxInputHolder">
+                <input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search">
+            </div>
+            <div class="SearchInputBoxStateButton">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
         </div>
-        <div class="SearchInputBoxStateButton">
-            <div class="SearchInputBoxStateButtonIcon"></div>
+
+
+        <select class="XButton XButtonNormal XButtonDropDown XSortButton"> 
+                <option><span>Sort by Newest First</span></option>
+                <option><span>{{ TEST }}</span></option>
+        </select>
+        
+        <div class="XButton XButtonNormal XButtonDropDown disabled-false">
+            <span>Actions</span>
+
+            <div class="XButtonDropDownArrow"></div>
         </div>
     </div>
-    <div class="XButton XButtonNormal XButtonDropDown XSortButton">
-        <span>Sort by Newest First</span>
 
-        <div class="XButtonDropDownArrow"></div>
-    </div>
-    <div class="XButton XButtonNormal XButtonDropDown disabled-false">
-        <span>Actions</span>
 
-        <div class="XButtonDropDownArrow"></div>
-    </div>
-</div>
+    <!--<react-component name="Voicemailbox" props="data"></react-component>-->
+    
+    <div class="ListView fj-scrollable"> 
+        <div class="vmsection" ng-repeat="voicemail in voicemails | ContactVoicemailsFilter : contactId"> 
+            
+            <div class="vmavatarsection" > 
+                    <img class="vmavatar" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
+            </div>
 
-<div class="fj-scrollable ListView WithToolBar">
-        <div class="InlineList">
-            <div class="fj-scroll-content">
-                <div ng-repeat="voicemail in voicemails | ContactVoicemailsFilter : contact.xpid" class="fj-hbox ListMessage Read-true Voicemail">
-                    <div class="fj-hbox-cell ListMessageLeft">
-                        <div class="Avatar CallAvatar CallAvatar_Office">
-                            <img class="AvatarImgPH"
-                                src="{{voicemail.getContact().getAvatarUrl(40,40)}}">
-                            <div class="AvatarInteractable AvatarForeground"></div>
+            <div class="vminfo"> 
+                    <div class="displayName">Me to 
+                        <p class="vmdisplay">{{voicemail.displayName}} {{'<' + voicemail.phone + '>'}}</p>
+                        <div class="vmalternate">
+                            <div class="vmtime">{{ voicemail.date }} </div>
+                            <input style="float:right"class="vmcallbtn" type="button" value="Call"></input>
                         </div>
+                    </div> 
+                    <div class="footnote">
+                        <div class="vmfootnote">{{ formatDuration(voicemail.duration) }} </div>
+                        <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : "no transcription available" }}</div>
                     </div>
-                    <div class="fj-hbox-space ListMessageContent ClickArea" >
-                        <div class="fj-hbox ListMessageHeader">
-                            <div class="fj-hbox-cell ListMessageHeaderPrefix" ng-if="voicemail.isFromMe()">
-                                ME&nbsp;<span>...to</span></div>
-                            <div class="fj-hbox-cell ListMessageHeaderPrefix" ng-if="!voicemail.isFromMe()"><span>...from</span>
+                    
+            </div>
+        </div>
+    </div>
+    <!--<div class="fj-scrollable ListView WithToolBar">
+            <div class="InlineList">
+                <div class="fj-scroll-content">
+                    <div ng-repeat="voicemail in voicemails | ContactVoicemailsFilter : contact.xpid" class="fj-hbox ListMessage Read-true Voicemail">
+                        <div class="fj-hbox-cell ListMessageLeft">
+                            <div class="Avatar CallAvatar CallAvatar_Office">
+                                <img class="AvatarImgPH"
+                                    src="{{voicemail.getContact().getAvatarUrl(40,40)}}">
+                                <div class="AvatarInteractable AvatarForeground"></div>
                             </div>
-                            <div class="fj-hbox-space name ListMessageHeaderName">
-                                <span>{{voicemail.getContact().getDisplayName()}}</span><span>{{voicemail.getFormatedContactPhone()}}</span></div>
-                            <div class="fj-hbox-cell MessageDate time">{{voicemail.getDate()}}</div>
                         </div>
-                        <div class="ListMessageText" ><span
-                                class="ListMessageDuration">{{voicemail.getDuration()}}</span><span
-                                class="Transcription-{{voicemail.getTranscriptionStatus()}}">{{voicemail.getTranscription()}}</span>
+                        <div class="fj-hbox-space ListMessageContent ClickArea" >
+                            <div class="fj-hbox ListMessageHeader">
+                                <div class="fj-hbox-cell ListMessageHeaderPrefix" ng-if="voicemail.isFromMe()">
+                                    ME&nbsp;<span>...to</span></div>
+                                <div class="fj-hbox-cell ListMessageHeaderPrefix" ng-if="!voicemail.isFromMe()"><span>...from</span>
+                                </div>
+                                <div class="fj-hbox-space name ListMessageHeaderName">
+                                    <span>{{voicemail.getContact().getDisplayName()}}</span><span>{{voicemail.getFormatedContactPhone()}}</span></div>
+                                <div class="fj-hbox-cell MessageDate time">{{voicemail.getDate()}}</div>
+                            </div>
+                            <div class="ListMessageText" ><span
+                                    class="ListMessageDuration">{{voicemail.getDuration()}}</span><span
+                                    class="Transcription-{{voicemail.getTranscriptionStatus()}}">{{voicemail.getTranscription()}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-</div>
+    </div>-->
+

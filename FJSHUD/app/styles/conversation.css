@@ -72,6 +72,12 @@
 .Widget.Conversation .WidgetBody .ChatView .ChatInputBox {
   -webkit-box-flex: 0;
 }
+.Widget.Conversation .WidgetBody .ChatView .Loading {
+  position: absolute;
+  bottom: -30px;
+  left: .5em;
+  z-index: 50;
+}
 .SettingsTabContent .fj-viewcontent {
   padding: 10px;
 }

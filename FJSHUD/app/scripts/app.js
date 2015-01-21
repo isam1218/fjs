@@ -86,7 +86,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/contact/:contactId', {
 			templateUrl: 'views/ConversationWidget.html',
-			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', fjs.ui.ConversationWidgetController]
+			controller: ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]
 		})
         .when('/group/:groupId', {
 			templateUrl: 'views/GroupSingleWidget.html',
@@ -104,10 +104,14 @@ hudweb.config(function ($routeProvider) {
 });
 
 //hudweb.value("notification",fjs.hud.react.NotificationList);
+hudweb.value("Voicemailbox",fjs.hud.react.VoiceMailbox);
+
 
 hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
-hudweb.factory('GroupService',['$q', '$rootScope',fjs.hud.groupService]);
-hudweb.factory('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
+hudweb.service('GroupService',['$rootScope',fjs.hud.groupService]);
+hudweb.service('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
+hudweb.factory('VoicemailService',['$q','$rootScope',fjs.hud.VoicemailService]);
+hudweb.service('UtilService',[UtilService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
@@ -133,10 +137,15 @@ hudweb.controller("ContextMenuController", ['$scope', 'DataManager',  fjs.ui.Con
 hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.ChatStatusController]);
 
 // chat panel controllers:
-hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', fjs.ui.ConversationWidgetController]);
-hudweb.controller("ConversationWidgetChatController", ['$scope', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
+hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]);
+hudweb.controller("ConversationWidgetChatController", ['$scope', '$interval', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
+
+// Controllers registered for subpanels of conversation widget
+hudweb.controller("ConversationWidgetVoicemailsController",['$scope','$routeParams','$timeout','$filter', 'ContactService','VoicemailService','HttpService', fjs.ui.ConversationWidgetVoicemailsController ]);
+hudweb.controller("ConversationWidgetGroupsController",['$scope','$routeParams','$rootScope','HttpService','GroupService','UtilService', fjs.ui.ConversationWidgetGroupsController ]);
+
 
 // Call Center and Queues
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);

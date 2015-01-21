@@ -1,18 +1,35 @@
 fjs.hud.contactService = function($q, $rootScope, myHttpService) {
-	// required to deliver promises
-	var deferred = $q.defer();
-	
+	var deferred = $q.defer();	
 	var contacts = [];
+	
+	this.getContact = function(xpid) {
+		for (i = 0; i < contacts.length; i++) {
+			if (contacts[i].xpid == xpid)
+				return contacts[i];
+		}
+		
+		return null;
+	};
+	
+	this.getContacts = function() {
+		// waits until data is present before sending back
+		return deferred.promise;
+	};
+	
+	/**
+		SYNCING
+	*/
 
 	$rootScope.$on('contacts_synced', function(event, data) {
 		// initial sync
 		if (contacts.length < 1) {
 			contacts = data;
+			deferred.resolve(contacts);
 			$rootScope.loaded = true;
 			
 			// add avatar to each contact
-			for (c in contacts) {
-				contacts[c].getAvatar = function(size) {
+			for (i = 0; i < contacts.length; i++) {
+				contacts[i].getAvatar = function(size) {
 					return myHttpService.get_avatar(this.xpid, size, size); 
 				};
 			}
@@ -38,36 +55,34 @@ fjs.hud.contactService = function($q, $rootScope, myHttpService) {
 			}
 		}
 		
-		deferred.resolve(contacts);
+		$rootScope.$broadcast('contacts_updated', contacts);
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
 		for (key in data) {
-			for (c in contacts) {
+			for (i = 0; i < contacts.length; i++) {
 				// set contact's status
-				if (contacts[c].xpid == data[key].xpid) {
-					contacts[c].hud_status = data[key].xmpp;
+				if (contacts[i].xpid == data[key].xpid) {
+					contacts[i].hud_status = data[key].xmpp;
 					break;
 				}
 			}
 		}
 		
-		deferred.resolve(contacts);
+		$rootScope.$broadcast('contacts_updated', contacts);
 	});
 	
 	$rootScope.$on('calls_synced', function(event, data) {
 		for (key in data) {
-			for (c in contacts) {
+			for (i = 0; i < contacts.length; i++) {
 				// set contact's status
-				if (contacts[c].xpid == data[key].xpid) {
-					contacts[c].calls_startedAt = data[key].startedAt;
+				if (contacts[i].xpid == data[key].xpid) {
+					contacts[i].calls_startedAt = data[key].startedAt;
 					break;
 				}
 			}
 		}
 		
-		deferred.resolve(contacts);
+		$rootScope.$broadcast('contacts_updated', contacts);
 	});
-	
-	return deferred.promise;
 }

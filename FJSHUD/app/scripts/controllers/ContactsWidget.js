@@ -8,12 +8,14 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
 	// pull updates from service
-	contactService.then(function(data) {
+	$scope.$on('contacts_updated', function(event, data) {
 		$scope.contacts = data;
+		$scope.$safeApply();
 	});
 	
-	groupService.then(function(data) {
+	$scope.$on('groups_updated', function(event, data) {
 		$scope.favorites = data.favorites;
+		$scope.$safeApply();
 	});
 
     $scope.sort = function(field) {
