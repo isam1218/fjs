@@ -12,22 +12,19 @@
     <div class="RecentCallSection"> 
                   <div class="RecentCallColumnHeaders">  
                     <div class="RecentCallsHeader CalllogAvatar" 
-                    ng-class="recentSelectSort == 'Date' ? 
-                    'recent-selected-column' :''"
-                    ng-click="sortCallLog('Date')"
                     > 
                       <div class="RecentPointer"></div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
                     <div class="RecentCallsHeader CalllogName" 
-                    ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('From')"
+                    ng-class="recentSelectSort == 'Name' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('Name')"
                     ><div class="RecentPointer">Name</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
                     <div class="RecentCallsHeader CalllogPhone" 
-                    ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('To')"
+                    ng-class="recentSelectSort == 'Phone' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('Phone')"
                     ><div class="RecentPointer">Phone</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
                     
                     <div class="RecentCallsHeader CalllogDuration" 
@@ -45,9 +42,9 @@
                     </div>
 
                     <div class="RecentCallsHeader CallLogType" 
-                    ng-class="recentSelectSort == 'Date' ? 
+                    ng-class="recentSelectSort == 'Type' ? 
                     'recent-selected-column' :''"
-                    ng-click="sortCallLog('Date')"
+                    ng-click="sortCallLog('Type')"
                     > 
                       <div class="RecentPointer">Type </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>

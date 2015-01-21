@@ -12,6 +12,8 @@ fjs.ui.ConversationWidgetCallLogController = function($scope, $routeParams, $tim
         $scope.calllogs = data;
         $scope.$safeApply();
     });
+    $scope.recentSelectSort = "Date";
+    $scope.isAscending = false;
 	//converting contactid from hex to regular decimal format because the regular decimal format is used for the call log contact ids
     $scope.contactId = parseInt('0x' + $routeParams.contactId.split("_")[0]) + "_" + $routeParams.contactId.split("_")[1];
 
@@ -47,27 +49,108 @@ fjs.ui.ConversationWidgetCallLogController = function($scope, $routeParams, $tim
         }
     }
 
-    /*var onDurationTimeout = function() {
-        if($scope.contact && $scope.contact.hasCall()) {
-            var date = Date.now();
-            var time = date + (new Date(1).getTimezoneOffset() * 1000 * 60);
-            var timeDur = time - $scope.contact.calls_startedAt;
-            $scope.duration = $filter('date')(new Date(timeDur), 'HH:mm:ss ');
+     $scope.sortCallLog = function(sortType){
+        switch(sortType){
+            case "Date":
+                if($scope.isAscending){
+                    
+                    $scope.calllogs.sort(function(a,b){
+                        return a.startedAt - b.startedAt;
+                    }); 
+                    $scope.isAscending = false;   
+                }else{
+                    $scope.calllogs.sort(function(a,b){
+                        return b.startedAt - a.startedAt;
+                    });
+                    $scope.isAscending = true;
+                }
+                
+                break;
+            case "Phone":
+                 if($scope.isAscending){
+                    $scope.calllogs.sort(function(a,b){
+                        return b.phone.localeCompare(b.phone);
+                    });
+                   
+                    $scope.isAscending = false;   
+                }else{
+                     $scope.calllogs.sort(function(a,b){
+                     return a.phone.localeCompare(b.phone);
+                        
+                    }); 
+                    
+                    $scope.isAscending = true;
+                }
+                break;
+            case "Type":
+                if($scope.isAscending){
+                    $scope.calllogs.sort(function(a,b){
+                        if(a.incoming && b.incoming){
+                            return b.location.localeCompare(b.location);
+                        }else if(a.incoming){
+                            return b.phone.localeCompare(a.location);
+                        }else if(b.incoming){
+                            return b.location.localeCompare(a.phone);
+                        }else{
+                            return b.phone.localeCompare(a.phone);
+                        }
+                    });
+                    
+                    $scope.isAscending = false;   
+                }else{
+
+                    $scope.calllogs.sort(function(a,b){
+                        if(a.incoming && b.incoming){
+                            return a.location.localeCompare(b.location);
+                        }else if(a.incoming){
+                            return a.location.localeCompare(b.phone);
+                        }else if(b.incoming){
+                            return a.phone.localeCompare(b.location);
+                        }else{
+                            return a.phone.localeCompare(b.phone);
+                        }
+                    }); 
+                    
+                    $scope.isAscending = true;
+                }
+                break;
+
+            case "Duration":
+                if($scope.isAscending){
+                    
+                    $scope.calllogs.sort(function(a,b){
+                        return a.duration - b.duration;
+                    }); 
+                    $scope.isAscending = false;   
+                }else{
+                    $scope.calllogs.sort(function(a,b){
+                        return b.duration - a.duration;
+                    });
+                    $scope.isAscending = true;
+                }
+                break;
+            case "Name":
+                if($scope.isAscending){
+                    
+                    $scope.calllogs.sort(function(a,b){
+                        return b.displayName.localeCompare(a.displayName);
+                    }); 
+                    $scope.isAscending = false;   
+                }else{
+                    $scope.calllogs.sort(function(a,b){
+                        
+                        return a.displayName.localeCompare(b.displayName);
+                    });
+                    $scope.isAscending = true;
+                }
+                break;
+            
         }
-        durationTimer = $timeout(onDurationTimeout, 1000);
-    };*/
 
-    //onDurationTimeout();
+        $scope.recentSelectSort = sortType;
+  }
 
-    /*contactModel.addEventListener("push", update);
-
-    function updateFavicon() {
-        var link = document.getElementById("favicon");
-        if(link) {
-            link.href = $scope.contact.getAvatarUrl(32,32);
-            document.title= $scope.contact.displayName;
-        }
-    }*/
+   
 
 
     /*$scope.$on("$destroy", function() {
