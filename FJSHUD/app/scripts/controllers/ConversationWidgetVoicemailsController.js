@@ -9,7 +9,7 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
     $scope.voicemails;     
     //$scope.contact = contactModel.items[$routeParams.contactId];
 	httpService.getFeed('voicemailbox');
-    contactService.then(function(data) {
+    $scope.$on(function(event,data) {
         // find this contact
         for (i in data) {
             if (data[i].xpid == $scope.contactID)
@@ -64,17 +64,7 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
             $scope.$safeApply();
         }
     };
-    /*var onDurationTimeout = function() {
-        if($scope.contact && $scope.contact.hasCall()) {
-            var date = Date.now();
-            var time = date + (new Date(1).getTimezoneOffset() * 1000 * 60);
-            var timeDur = time - $scope.contact.calls_startedAt;
-            $scope.duration = $filter('date')(new Date(timeDur), 'HH:mm:ss ');
-        }
-        durationTimer = $timeout(onDurationTimeout, 1000);
-    };
-
-    */
+   
 
     $scope.$on("",function(){
 

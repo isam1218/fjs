@@ -8,7 +8,50 @@
         </div>
         <div></div>
     </div>
-    <div class="fj-hbox ListLineContent Header Calllog">
+
+    <div class="RecentCallSection"> 
+                  <div class="RecentCallColumnHeaders">  
+                    <div class="RecentCallsHeader RecentDate" 
+                    ng-class="recentSelectSort == 'Date' ? 
+                    'recent-selected-column' :''"
+                    ng-click="sortCallLog('Date')"
+                    > 
+                      <div class="RecentPointer">Date/Time </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
+                    
+                    <div class="RecentCallsHeader RecentFromTo" 
+                    ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('From')"
+                    ><div class="RecentPointer">From</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
+                    
+                    <div class="RecentCallsHeader RecentFromTo" 
+                    ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('To')"
+                    ><div class="RecentPointer">To</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                    
+                    <div class="RecentCallsHeader RecentDur" 
+                    ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('Duration')"
+                 
+                    ><div class="RecentPointer">Duration</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                  </div>
+                  <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
+                  <div  class="RecentCallLogs"> 
+                    <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
+                      <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
+                      <div class="RecentCallsHeader RecentFromTo">{{ formatIncoming(calllog,'From')}} </div>
+                      <div class="RecentCallsHeader RecentFromTo" >{{ formatIncoming(calllog,'To')}} </div>
+                      <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
+                    </div>
+                  </div>
+              </div>
+
+
+
+
+
+    <!--<div class="fj-hbox ListLineContent Header Calllog">
         <div class="fj-hbox-cell ListLineContentCell Avatar"></div>
         <div class="fj-hbox-space ListLineContentCell Name2"><span>Name</span>
             <div class="DirectionArrow None"></div>
@@ -60,5 +103,5 @@
                         </div>
                     </div>
                 </div>
-    </div>
+    </div>-->
 </div>
