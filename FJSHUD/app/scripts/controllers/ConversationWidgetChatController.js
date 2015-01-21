@@ -1,9 +1,14 @@
-fjs.ui.ConversationWidgetChatController = function($scope, contactService, myHttpService) {
+fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactService, myHttpService) {
+	var version = 0;
+	
+	$scope.promise = false;
     $scope.messages = [];
 	
 	// get initial messages from server
 	myHttpService.getChat($scope.contactID).then(function(data) {
-		$scope.messages = data;
+		version = data.h_ver;
+		
+		$scope.messages = data.items;		
 		$scope.addDetails();
 	});
 	
@@ -53,10 +58,33 @@ fjs.ui.ConversationWidgetChatController = function($scope, contactService, myHtt
 			this.sendMessage();
 			$event.preventDefault();
 		}
-	};
+	};	
+	
+	var chatLoop = $interval(function() {
+		var scrollbox = document.getElementById('ListViewContent');
+		
+		// check scroll position
+		if (!$scope.promise && $scope.messages.length > 0 && scrollbox.scrollTop == 0) {
+			$scope.promise = true;
+			
+			// ping server
+			myHttpService.getChat($scope.contactID, version).then(function(data) {
+				scrollbox.scrollTop = 100;
+				version = data.h_ver;
+			
+				$scope.promise = false;
+				$scope.messages = data.items.concat($scope.messages);				
+				$scope.addDetails();				
+				
+				// end of history
+				if (version == -1)
+					$interval.cancel(chatLoop);
+			});
+		}
+	}, 500);
 
     $scope.$on("$destroy", function() {
-	
+		$interval.cancel(chatLoop);
     });
 
 };

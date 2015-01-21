@@ -1,4 +1,4 @@
-fjs.ui.ConversationWidgetController = function($scope, $routeParams, $timeout, $filter, contactService) {
+fjs.ui.ConversationWidgetController = function($scope, $routeParams, contactService) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);	
 	
