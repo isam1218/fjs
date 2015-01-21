@@ -6,9 +6,9 @@ fjs.ui.ConversationWidgetChatController = function($scope, myHttpService) {
 		$scope.messages = data;
 		
 		// find name and avatar
-		for (m in $scope.messages) {
-			var xpid = $scope.messages[m].from.replace('contacts:', '');
-			$scope.messages[m].avatar = myHttpService.get_avatar(xpid, 28, 28);
+		for (i = 0; i < $scope.messages.length; i++) {
+			var xpid = $scope.messages[i].from.replace('contacts:', '');
+			$scope.messages[i].avatar = myHttpService.get_avatar(xpid, 28, 28);
 		}
 	});
 	
@@ -17,9 +17,9 @@ fjs.ui.ConversationWidgetChatController = function($scope, myHttpService) {
 		$scope.messages = $scope.messages.concat(data);
 		
 		// find name and avatar
-		for (m in $scope.messages) {
-			var xpid = $scope.messages[m].from.replace('contacts:', '');
-			$scope.messages[m].avatar = myHttpService.get_avatar(xpid, 28, 28);
+		for (i = 0; i < $scope.messages.length; i++) {
+			var xpid = $scope.messages[i].from.replace('contacts:', '');
+			$scope.messages[i].avatar = myHttpService.get_avatar(xpid, 28, 28);
 		}
 		
 		$scope.$safeApply();

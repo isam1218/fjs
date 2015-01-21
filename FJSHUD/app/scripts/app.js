@@ -106,8 +106,8 @@ hudweb.config(function ($routeProvider) {
 //hudweb.value("notification",fjs.hud.react.NotificationList);
 
 hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
-hudweb.factory('GroupService',['$q', '$rootScope',fjs.hud.groupService]);
-hudweb.factory('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
+hudweb.service('GroupService',['$rootScope',fjs.hud.groupService]);
+hudweb.service('ContactService',['$rootScope', 'HttpService',fjs.hud.contactService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);

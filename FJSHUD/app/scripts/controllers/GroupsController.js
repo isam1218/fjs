@@ -7,7 +7,7 @@ fjs.ui.GroupsController = function($scope, $rootScope, myHttpService, groupServi
 	$scope.add = {type:2};
 
 	// pull updates from service
-	groupService.then(function(data) {
+	$scope.$on('groups_updated', function(event, data) {
 		$scope.groups = data.groups;
 		$scope.mine = data.mine;
 		
