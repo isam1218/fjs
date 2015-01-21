@@ -11,19 +11,93 @@
  * @extends fjs.ui.ConversationWidgetController
  * @extends fjs.ui.GroupsTab
  */
-fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams, dataManager) {
-    fjs.ui.ConversationWidgetController.call(this, $scope, $routeParams.contactId, dataManager);
+fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootScope,myHttpService,groupService,utils) {
     var context = this;
+    $scope.contactGroups = [];
+    $scope.sharedGroups = [];
+    $scope.meModel = {};
+    $scope.contactId = $routeParams.contactId;
+    $scope.query = "";
+    $scope.add = {};
+    // pull updates from service
+    $scope.$on('groups_updated',function(event,data) {
+        $scope.groups = data.groups;
+        $scope.mine = data.mine;
+        $scope.$safeApply();
+       update_groups(); 
+    });
+
+    myHttpService.getFeed("me");
+    myHttpService.getFeed("groups");
+
+    myHttpService.getFeed("groupcontacts");
+    update_groups = function(){
+
+        for (i in $scope.groups){
+            isMember = false;
+            isShared = false;
+            members = $scope.groups[i].members;
+            if(members.length > 0){
+                for(j in members){
+                    if(members[j] == $scope.contactId){
+                        isMember = true;
+                    }
+
+                    if(members[j] == $scope.meModel.my_pid){
+                        isShared = true;
+                    }
+
+                }
+            }
+
+            if(isMember && isShared){
+                $scope.sharedGroups.push($scope.groups[i]);
+            }else if(isMember){
+               $scope.contactGroups.push($scope.groups[i]); 
+            }
+        }
+
+    }
+
+
+        
     var filterGroup = function(){
         return function(group){
             return group.hasContact(context.contactId) && !group.isFavorite();
         };
     };
-    fjs.ui.GroupsTab.call(this, $scope, $routeParams, dataManager, filterGroup);
-    $scope.contactId = $routeParams.contactId;
+    //fjs.ui.GroupsTab.call(this, $scope, $routeParams, dataManager, filterGroup);
     $scope.$on("$destroy", function() {
     });
+
+    $scope.$on('me_synced', function(event,data){
+        if(data){
+            for(medata in data){
+                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
+        $scope.$apply();
+    });
+
+    $scope.addGroup = function() {
+        // TO DO: validation
+        
+        $scope.add.contactIds = $rootScope.myPid;
+        
+        // save
+        myHttpService.sendAction('groups', 'addWorkgroup', $scope.add);
+        $scope.showOverlay(false);
+        $scope.add = {type:2};
+    };
+
+    $scope.showOverlay = function(show, edit) {
+        //$scope.edit = edit ? edit : false;
+        if (!show)
+            $scope.$parent.overlay = '';
+        else
+            $scope.$parent.overlay = 'groups';
+    };
 };
 
-fjs.core.inherits(fjs.ui.ConversationWidgetGroupsController, fjs.ui.ConversationWidgetController)
-fjs.core.extend(fjs.ui.ConversationWidgetGroupsController, fjs.ui.GroupsTab);
+//fjs.core.inherits(fjs.ui.ConversationWidgetGroupsController, fjs.ui.ConversationWidgetController)
+//fjs.core.extend(fjs.ui.ConversationWidgetGroupsController, fjs.ui.GroupsTab);

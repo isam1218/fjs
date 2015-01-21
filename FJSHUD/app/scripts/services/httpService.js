@@ -37,6 +37,8 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 	    worker.port.start();
 	}
 
+	
+	
 	// send first message to shared worker
 	var authorizeWorker = function() {
 	    var events = {
@@ -48,6 +50,19 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 
 	    };
 
+	    /*var pluginApi = document.getElementById('phone');
+		var version=pluginApi.version;
+		var session = pluginApi.getSession('5549_7340');
+		session.authorize(authTicket,nodeID,'huc-dev.fonality.com');
+		var win = session.createFloatWindow;
+		var alert = session.alertAPI;
+		alert.initAlert('../../popup.html');
+		alert.setAlertSize(100,100);
+		alert.setLocation(100,100);
+
+		win.initWindow('../../popup.html');
+		win.setAlwaysOnTop(true);
+		*/
 	    worker.port.postMessage(events);
 	};
 	

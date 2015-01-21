@@ -2,117 +2,118 @@
     <div class="ToolBar">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search"></div>
+                <input class="SearchInputBoxInput" ng-model="query" type="text" x-webkit-speech="" placeholder="Search"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <div class="XButton XButtonNormal"><span>New</span></div>
+        <div class="XButton XButtonNormal" ng-click="showOverlay(true)"><span>New</span></div>
     </div>
-    <div class="ListView WithToolBar">
-                <div data-fj-local-id="departments-title" style="display: block;">
-                    <div class="ListSection">
-                        <div class="ListSectionHeader">
-                            <div class="ListSectionHeaderTitle">DEPARTMENT</div>
-                            <div class="ListSectionHeaderRight"></div>
-                        </div>
-                        <div class="ListSectionBody">Contact is a member of this department</div>
-                    </div>
-                    <div class="InlineList">
-                        <div class="fj-scroll-content">
-                            <div class="ListRowFirst ListRowLast ListRow">
-                                <div class="AvatarNormal Avatar">
-                                    <div class="AvatarImgPH GroupAvatarShowDefault-false"><img class="default-avatar" src="">
-                                        <div class="GroupAvatarItem GroupAvatarItem_0"><img
-                                                class="GroupAvatarItemImg"
-                                                src="img/Generic-Avatar-Small.png">
-                                        </div>
-                                        <div class="GroupAvatarItem GroupAvatarItem_1"><img
-                                                class="GroupAvatarItemImg"
-                                                src="img/Generic-Avatar-Small.png">
-                                        </div>
-                                        <div class="GroupAvatarItem GroupAvatarItem_2"><img
-                                                class="GroupAvatarItemImg"
-                                                src="img/Generic-Avatar-Small.png">
-                                        </div>
-                                        <div class="GroupAvatarItem GroupAvatarItem_3"><img
-                                                class="GroupAvatarItemImg"
-                                                src="img/Generic-Avatar-Small.png">
-                                        </div>
-                                    </div>
-                                    <div class="AvatarForeground AvatarInteractable"></div>
-                                </div>
-                                <div class="ListRowContent">
-                                    <div class="fj-hbox">
-                                        <div class="fj-hbox-space ListRowLeftArea">
-                                            <div class="fj-hbox ListRowTitle">
-                                                <div class="fj-hbox-space name">Secondary phones</div>
-                                                <div class="fj-hbox-cell link"><span
-                                                        class="fj-visibility-true">#7904</span><span
-                                                        class="fj-visibility-false">owner: unknown</span>
-                                                </div>
-                                            </div>
-                                            <div class="fj-hbox ListRowStatus">
-                                                <div class="fj-hbox-cell ListRowStatusIcon XIcon-ChatStatus-Offline">
-                                                    <div class="status-icon-inner"></div>
-                                                </div>
-                                                <div class="fj-hbox-space ListRowStatusText">13 member(s)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="fj-hbox-cell ListRowCallArea fj-visibility-false">
-                                            <div class="Avatar CallSmallAvatar CallSmallAvatar_Office"><img
-                                                    class="AvatarImgPH"
-                                                    src="img/Generic-Avatar-Small.png">
+  
+    <div>. </div>
+    <div class="ContactList">
+    <div class="HeaderTitle">Department</div>
+    <div class="footnote"> Contact is a member of this department </div>
+    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRowFirst ListRow-Contact">
+        <div class="Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <b>{{ ::group.name }}</b>
+                    <span class="details">{{ ::group.members.length }}</span>
+                </div>
+            </div>
+            <div class="GroupRowStatus">#{{ ::group.extension }}</div>
+        </div>
+    </a>
+    
+    <div class="HeaderTitle">Our Teams</div>
+    <div class="footnote"> We are both in these teams </div>
+    <a href="#group/{{::group.xpid}}" data-ng-repeat="group in sharedGroups | filter: {name: query} | orderBy:sortField:sortReverse track by group.xpid" ng-if="group.extension && group != mine" class=" GroupRow ListRowFirst ListRow-Contact">
+        <div class="Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <b>{{ ::group.name }}</b>
+                    <span class="details">{{ ::group.members.length }}</span>
+                </div>
+            </div>
+            <div class="GroupRowStatus">#{{ ::group.extension }}</div>
+        </div>
+    </a>
+</div>
 
-                                                <div class="AvatarForeground AvatarInteractable"></div>
-                                            </div>
-                                            <div class="fj-hbox CallLineTop">
-                                                <div class="fj-hbox-space CallerName"></div>
-                                                <div class="fj-hbox-cell CallDuration duration"
-                                                     data-fj-local-id="duration" data-duration="0"></div>
-                                            </div>
-                                            <div class="CallerPhone"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+    <div ng-show="$parent.overlay == 'groups'" class="Overlay">
+    <div ng-click="showOverlay(false)" class="Background"></div>
+    <div class="Foreground">
+        <div ng-click="showOverlay(false)" class="Close">x</div>
+        
+        <div class="Header">
+            <h2>Build the Team</h2>
+        </div>
+        
+        <div class="Sections">
+            <div class="Section">
+                <div>
+                    <h4>Name</h4>
+                    <input type="text" ng-model="add.name" class="XInputText" />
                 </div>
-                <div data-fj-local-id="teams-title" style="display: none;">
-                    <div class="ListSection">
-                        <div class="ListSectionHeader">
-                            <div class="ListSectionHeaderTitle">OUR TEAMS</div>
-                            <div class="ListSectionHeaderRight"></div>
-                        </div>
-                        <div class="ListSectionBody">We are both in these teams</div>
-                    </div>
-                    <div data-fj-local-id="teams" data-controller-id="id1038" class="InlineList ListIsEmpty"
-                         data-template-id="InlineListTemplate" data-event="mousedown mouseover mouseup">
-                        <div class="fj-scroll-content" data-fj-local-id="fj-content"></div>
-                        <div data-controller-id="id1046" class="ListEmpty" data-template-id="empty-data"
-                             data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic"></div>
-                    </div>
+                <div>
+                    <h4>Security</h4>
+                    <input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" /> Visible to entire company
                 </div>
-                <div data-fj-local-id="others-title" style="display: none;">
-                    <div class="ListSection">
-                        <div class="ListSectionHeader">
-                            <div class="ListSectionHeaderTitle">OTHERS</div>
-                            <div class="ListSectionHeaderRight"></div>
-                        </div>
-                        <div class="ListSectionBody">Other teams of Nina Fursova --Secondary</div>
-                    </div>
-                    <div data-fj-local-id="others" data-controller-id="id1039"
-                         class="InlineList ListIsEmpty" data-template-id="InlineListTemplate"
-                         data-event="mousedown mouseover mouseup">
-                        <div class="fj-scroll-content" data-fj-local-id="fj-content"></div>
-                        <div data-controller-id="id1047" class="ListEmpty" data-template-id="empty-data"
-                             data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic"></div>
-                    </div>
+                <div>
+                    <h4>Description</h4>
+                    <textarea ng-model="add.description" placeholder="Team description used for search and provides useful information to the team members."></textarea>
                 </div>
-                <div class="ListSection" data-fj-local-id="no-groups" style="display: none;">Nina Fursova
-                    --Secondary is not a member of any group
+            </div>
+            
+            <div class="Section">
+                <div>
+                    <h4>Members</h4>
+                    <input type="text" class="XInputText" placeholder="Add Someone" />
                 </div>
+                
+                <div class="Members">
+                </div>
+            </div>
+        </div>
+        
+        <div class="Footer">
+            <input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
+            <input type="button" class="XButton" value="Create Team" ng-click="addGroup()" />
+        </div>
     </div>
+</div>
+
+
 </div>

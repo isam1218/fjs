@@ -104,10 +104,17 @@ hudweb.config(function ($routeProvider) {
 });
 
 //hudweb.value("notification",fjs.hud.react.NotificationList);
+hudweb.value("Voicemailbox",fjs.hud.react.VoiceMailbox);
+
 
 hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
 hudweb.service('GroupService',['$rootScope',fjs.hud.groupService]);
 hudweb.service('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
+hudweb.service('HttpService',['$http','$rootScope','$location',fjs.hud.httpService]);
+//hudweb.factory('GroupService',['$q', '$rootScope',fjs.hud.groupService]);
+//hudweb.factory('ContactService',['$q', '$rootScope',fjs.hud.contactService]);
+hudweb.factory('VoicemailService',['$q','$rootScope',fjs.hud.VoicemailService]);
+hudweb.service('UtilService',[UtilService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
@@ -137,6 +144,11 @@ hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$t
 hudweb.controller("ConversationWidgetChatController", ['$scope', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
+
+// Controllers registered for subpanels of conversation widget
+hudweb.controller("ConversationWidgetVoicemailsController",['$scope','$routeParams','$timeout','$filter', 'ContactService','VoicemailService','HttpService', fjs.ui.ConversationWidgetVoicemailsController ]);
+hudweb.controller("ConversationWidgetGroupsController",['$scope','$routeParams','$rootScope','HttpService','GroupService','UtilService', fjs.ui.ConversationWidgetGroupsController ]);
+
 
 // Call Center and Queues
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
