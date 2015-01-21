@@ -1,4 +1,5 @@
-fjs.hud.contactService = function($rootScope, myHttpService) {	
+fjs.hud.contactService = function($q, $rootScope, myHttpService) {
+	var deferred = $q.defer();	
 	var contacts = [];
 	
 	this.getContact = function(xpid) {
@@ -6,6 +7,11 @@ fjs.hud.contactService = function($rootScope, myHttpService) {
 			if (contacts[i].xpid == xpid)
 				return contacts[i];
 		}
+	};
+	
+	this.getContacts = function() {
+		// waits until data is present before sending back
+		return deferred.promise;
 	};
 	
 	/**
@@ -16,6 +22,7 @@ fjs.hud.contactService = function($rootScope, myHttpService) {
 		// initial sync
 		if (contacts.length < 1) {
 			contacts = data;
+			deferred.resolve(contacts);
 			$rootScope.loaded = true;
 			
 			// add avatar to each contact

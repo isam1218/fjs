@@ -107,7 +107,7 @@ hudweb.config(function ($routeProvider) {
 
 hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
 hudweb.service('GroupService',['$rootScope',fjs.hud.groupService]);
-hudweb.service('ContactService',['$rootScope', 'HttpService',fjs.hud.contactService]);
+hudweb.service('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
@@ -134,7 +134,7 @@ hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.Chat
 
 // chat panel controllers:
 hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', fjs.ui.ConversationWidgetController]);
-hudweb.controller("ConversationWidgetChatController", ['$scope', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
+hudweb.controller("ConversationWidgetChatController", ['$scope', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 
