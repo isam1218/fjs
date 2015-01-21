@@ -14,7 +14,7 @@ fjs.ui.ConversationWidgetController = function($scope, $routeParams, contactServ
 		$scope.$safeApply();
 	});
 	
-	$scope.tabs = ['Chat', 'Voicemails', 'Groups', 'Call Log'];
+	$scope.tabs = ['Chat', 'Voicemails', 'Groups','Queues', 'Call Log'];
 	$scope.selected = 'Chat';
 
     $scope.fileShare = function() {
