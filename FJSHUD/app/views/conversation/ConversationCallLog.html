@@ -11,38 +11,56 @@
 
     <div class="RecentCallSection"> 
                   <div class="RecentCallColumnHeaders">  
-                    <div class="RecentCallsHeader RecentDate" 
-                    ng-class="recentSelectSort == 'Date' ? 
-                    'recent-selected-column' :''"
-                    ng-click="sortCallLog('Date')"
+                    <div class="RecentCallsHeader CalllogAvatar" 
                     > 
-                      <div class="RecentPointer">Date/Time </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                      <div class="RecentPointer"></div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentFromTo" 
-                    ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('From')"
-                    ><div class="RecentPointer">From</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    <div class="RecentCallsHeader CalllogName" 
+                    ng-class="recentSelectSort == 'Name' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('Name')"
+                    ><div class="RecentPointer">Name</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentFromTo" 
-                    ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('To')"
-                    ><div class="RecentPointer">To</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                    <div class="RecentCallsHeader CalllogPhone" 
+                    ng-class="recentSelectSort == 'Phone' ? 'recent-selected-column' :''"
+                    ng-click="sortCallLog('Phone')"
+                    ><div class="RecentPointer">Phone</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
                     
-                    <div class="RecentCallsHeader RecentDur" 
+                    <div class="RecentCallsHeader CalllogDuration" 
                     ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''"
                     ng-click="sortCallLog('Duration')"
                  
                     ><div class="RecentPointer">Duration</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                    
+                    <div class="RecentCallsHeader CallLogDate" 
+                    ng-class="recentSelectSort == 'Date' ? 
+                    'recent-selected-column' :''"
+                    ng-click="sortCallLog('Date')"
+                    > 
+                      <div class="RecentPointer">Date </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
+
+                    <div class="RecentCallsHeader CallLogType" 
+                    ng-class="recentSelectSort == 'Type' ? 
+                    'recent-selected-column' :''"
+                    ng-click="sortCallLog('Type')"
+                    > 
+                      <div class="RecentPointer">Type </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
                   </div>
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
-                  <div  class="RecentCallLogs"> 
-                    <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
-                      <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
-                      <div class="RecentCallsHeader RecentFromTo">{{ formatIncoming(calllog,'From')}} </div>
-                      <div class="RecentCallsHeader RecentFromTo" >{{ formatIncoming(calllog,'To')}} </div>
-                      <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
+                  <div  class="CallLogs"> 
+                    <div ng-repeat="calllog in calllogs | filter:{contactId: contactId}" class="RecentCallRow"> 
+                      <div class="RecentCallsHeader CalllogAvatar">
+                      <img ng-src="{{ get_avatar(calllog.contactId )}}" class="CalllogImage" onerror="this.src='img/Generic-Avatar-28.png'"> </img>
+
+                      </div>
+                      <div class="RecentCallsHeader CalllogName"><div class="CallLogText"><div class="info">{{ calllog.displayName}}</div></div> </div>
+                      <div class="RecentCallsHeader CalllogPhone" ><div class="CallLogText"><a href="#">{{ calllog.phone}}</a></div></div>
+                      <div class="RecentCallsHeader CalllogDuration"><div class="CallLogText">{{ formatDuration(calllog.duration)}}</div></div>
+                       <div class="RecentCallsHeader CallLogDate"><div class="CallLogText">{{ formate_date(calllog.startedAt,false)}}</div></div>
+                      <div class="RecentCallsHeader CallLogType"><img ng-src="{{ getCalllogTypeImg(calllog) }}"></img></div>
                     </div>
                   </div>
               </div>

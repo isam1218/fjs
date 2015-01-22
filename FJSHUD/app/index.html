@@ -5,10 +5,6 @@
     <title>Fonality HUDWeb</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0">
-            <param name="onload" value="onloadphone" />
-            <param name="debug" value="1" />
-    </object>
       <link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
@@ -128,6 +124,11 @@
             </div>
         </div>
     </div>
+	
+    <!--<object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0">
+            <param name="onload" value="onloadphone" />
+            <param name="debug" value="1" />
+    </object>-->
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
@@ -207,6 +208,7 @@
     <script src="scripts/model/filters/resentsSortFilter.js"></script>
     <script src="scripts/model/filters/chatFilter.js"></script>
     <script src="scripts/model/filters/contactVoicemailsFilter.js"></script>
+    <script src="scripts/model/filters/highlightTextFilter.js"></script>
 
     <script src="scripts/model/actions/actionEntryModel.js"></script>
     <script src="scripts/model/actions/actionContactCallExtension.js"></script>

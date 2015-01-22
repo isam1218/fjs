@@ -1,13 +1,14 @@
 fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactService, myHttpService) {
 	var version = 0;
 	
-	$scope.promise = false;
+	$scope.loading = true;
     $scope.messages = [];
 	
 	// get initial messages from server
 	myHttpService.getChat($scope.contactID).then(function(data) {
 		version = data.h_ver;
 		
+		$scope.loading = false;
 		$scope.messages = data.items;		
 		$scope.addDetails();
 	});
@@ -64,17 +65,20 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 		var scrollbox = document.getElementById('ListViewContent');
 		
 		// check scroll position
-		if (!$scope.promise && $scope.messages.length > 0 && scrollbox.scrollTop == 0) {
-			$scope.promise = true;
+		if (!$scope.loading && $scope.messages.length > 0 && scrollbox.scrollTop == 0) {
+			$scope.loading = true;
 			
 			// ping server
 			myHttpService.getChat($scope.contactID, version).then(function(data) {
-				scrollbox.scrollTop = 100;
 				version = data.h_ver;
 			
-				$scope.promise = false;
+				$scope.loading = false;
 				$scope.messages = data.items.concat($scope.messages);				
-				$scope.addDetails();				
+				$scope.addDetails();
+
+				// bump scroll down
+				if (scrollbox.scrollTop == 0)
+					scrollbox.scrollTop = 100;
 				
 				// end of history
 				if (version == -1)

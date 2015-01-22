@@ -1,14 +1,14 @@
 <div class="ToolBar">
     <div class="SearchInputBox DirectionalySearchInputBox">
         <div class="SearchInputBoxInputHolder">
-            <input class="SearchInputBoxInput" type="text" placeholder="not implemented">
+            <input ng-model="query" class="SearchInputBoxInput" type="search" placeholder="Search" />
         </div>
         <div class="SearchInputBoxStateButton">
             <div class="SearchInputBoxStateButtonIcon"></div>
         </div>
     </div>
     <div class="XButton XButtonNormal" ng-click="fileShare()"><span>File Share</span></div>
-	<img src="img/XLoading.gif" class="Loading" ng-show="promise" />
+	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
 <div class="ListViewContent" id="ListViewContent" scroll-glue>
@@ -23,11 +23,11 @@
             <div class="ListMessageHeader ChatOutbound">
                 <div class="ListMessageHeaderPrefix">...from</div>
                 <div class="ListMessageHeaderName">{{message.displayName}}</div>
-                <div class="time">{{message.created | date: 'MMMM d'}}</div>
+                <div class="time">{{::message.created | date: 'MMMM d'}}</div>
             </div>
             <div class="ChatMessageItem AttachmentsHolder">
-                <div class="time">{{message.created | date: 'h:mm a'}}</div>
-                <div class="ListMessageText"><div class="ChatMessageIco {{message.type}} {{message.callType}}"></div>{{message.message}}</div>
+                <div class="time">{{::message.created | date: 'h:mm a'}}</div>
+                <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
             </div>
         </div>
     </div>
