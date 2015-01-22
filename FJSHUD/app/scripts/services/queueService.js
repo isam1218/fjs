@@ -44,4 +44,15 @@ fjs.hud.queueService = function($http, $rootScope, $location, $q){
 
 		$rootScope.$broadcast('queues_updated',formatData());
 	});
+
+	$rootScope.$on("queue_stat_calls_synced",function(event,data){
+		for(i = 0; i < queues.length; i++){
+			for(key in data){
+				if(data[key].xpid == queues[i].xpid){
+					queues[i].info = data[key];
+				}
+			}	 
+		}
+		$rootScope.$broadcast('queues_updated',formatData());
+	});
 }

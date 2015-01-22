@@ -11,14 +11,7 @@
     $scope.sort;
     $scope.queues = [];
     $scope.query = "";
-    $scope.sort_options = [{name:"Queue name", id:1},
-    {name:"Calls Waiting",id:2},
-    {name:"Average wait time",id:3},
-    {name:"Average talk time",id:4},
-    {name:"Totals calls(since last reset", id:5},
-    {name:"Abandoned calls",id:6},
-    {name:"Active calls", id:7}
-    ];
+    
 
 
     $scope.getAvatarUrl = function(queue, index) {
@@ -33,6 +26,73 @@
 
         }
     };
+
+    $scope.queueLoginAll = function(){
+        httpService.sendAction("contacts","agentLoginAll", {contactId:$scope.contactId});
+    }
+
+    $scope.queueLogoutAll = function(reasonId){
+        httpService.sendAction("contacts", "agentLogoutAll", {contactId:$scope.contactId,reason:reasonId});
+    }
+
+    $scope.sort_options = [{name:"Queue name", id:1,type:'name'},
+    {name:"Calls Waiting",id:2, type:'waiting'},
+    {name:"Average wait time",id:3, type:'avgwaiting'},
+    {name:"Average talk time",id:4, type:'avgtalk'},
+    {name:"Totals calls(since last reset", id:5, type:'total'},
+    {name:"Abandoned calls",id:6, type:'abandoned'},
+    {name:"Active calls", id:7, type:'active'}
+    ];
+
+    $scope.sortQueues = function(type){
+
+        switch(type){
+
+            case 'name':
+                $scope.queues.sort(function(a,b){
+                        return a.name.localeCompare(b.name);
+                }); 
+                break;
+            case 'waiting':
+                $scope.queues.sort(function(a,b){
+                    return a.info.waiting - b.info.waiting;
+                }); 
+            
+                break;
+            case 'avgwaiting':
+                $scope.queues.sort(function(a,b){
+                    return a.info.waiting - b.info.waiting;
+                }); 
+           
+                break;
+            case 'avgtalk':
+                $scope.queues.sort(function(a,b){
+                    return a.info.avgTalk - b.info.avgTalk;
+                }); 
+           
+                break;
+            case 'total':
+                $scope.queues.sort(function(a,b){
+                    return (a.info.waiting + a.info.abandoned + a.info.active) - (b.info.waiting + b.info.abandoned + b.info.active);
+                }); 
+           
+                break;
+            case 'abandoned':
+                $scope.queues.sort(function(a,b){
+                    return  a.info.abandoned  -  b.info.abandoned ;
+                }); 
+                break;
+            case 'active':
+                $scope.queues.sort(function(a,b){
+                    return  a.info.active  -  b.info.active ;
+                }); 
+            
+                break;
+        }
+
+        $scope.$safeApply();
+    }
+
 
     status = $scope.contact.hud_status;
     switch(status){
@@ -59,6 +119,7 @@
     httpService.getFeed('queues');
     httpService.getFeed('queue_members');
     httpService.getFeed('queue_members_status');
+    httpService.getFeed('queue_stat_calls');
     
     $scope.$on('queuelogoutreasons_synced',function(event,data){
     	$scope.log_out_reasons = [];

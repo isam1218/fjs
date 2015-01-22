@@ -10,15 +10,15 @@
         <select class="XButton XButtonNormal"
         class="fj-hbox SelectBox SelectBoxSettings" ng-model='sort'
         ng-options="sort_option.name for sort_option in sort_options"
-        ng-change=""
+        ng-change="sortQueues(sort.type)"
         ></select>
         <select class="XButton XButtonNormal" 
               class="fj-hbox SelectBox SelectBoxSettings" ng-model='log_out_option'
               ng-options="log_out_reason.name for log_out_reason in log_out_reasons"
-              ng-change=""
+              ng-change="queueLogoutAll(log_out_option.xpid)"
       
         ></select>
-        <div class="XButton XButtonNormal" ><span>Login All</span></div>
+        <div class="XButton XButtonNormal" ng-click="queueLoginAll()" ><span>Login All</span></div>
     </div>
 
 
