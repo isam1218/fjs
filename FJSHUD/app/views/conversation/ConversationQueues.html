@@ -27,16 +27,16 @@
     <a href="#/queue/{{::queue.xpid}}" data-ng-repeat="queue in queues | filter: {name: query}" class="GroupRow ListRowFirst ListRow-Contact">
         <div class="Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(queue, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_1">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(queue, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_2">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(queue, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="GroupAvatarItem GroupAvatarItem_3">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(queue, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
             <div class="AvatarInteractable"></div>
         </div>

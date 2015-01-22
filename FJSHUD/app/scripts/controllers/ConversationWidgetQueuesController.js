@@ -21,6 +21,19 @@
     ];
 
 
+    $scope.getAvatarUrl = function(queue, index) {
+        
+        if(queue.members){
+            if (queue.members[index] !== undefined) {
+                var xpid = queue.members[index];
+                return httpService.get_avatar(xpid,14,14);
+            }
+            else
+                return 'img/Generic-Avatar-14.png';
+
+        }
+    };
+
     status = $scope.contact.hud_status;
     switch(status){
             case 'offline':
