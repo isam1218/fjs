@@ -53,14 +53,19 @@
         </div>
 		
 		<!-- ng-views -->
-        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/conversation/ConversationChat.html'" ng-controller="ConversationWidgetChatController"></div>
+        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/conversation/ConversationChat.html'" 
+        ng-controller="ConversationWidgetChatController"></div>
+        
         <div ng-if="selected == 'Voicemails'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationVoicemails.html'"
         ng-controller="ConversationWidgetVoicemailsController" 
         ></div>
+        
         <div ng-if="selected == 'Groups'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationGroups.html'"
         ng-controller="ConversationWidgetGroupsController"
         ></div>
+        
         <div ng-if="selected == 'Queues'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationQueues.html'"
+        ng-controller="ConversationWidgetQueuesController"
         ></div>
 
         <div ng-if="selected == 'Call Log'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationCallLog.html'"

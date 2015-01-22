@@ -7,8 +7,54 @@
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <select class="XButton XButtonNormal"></select>
-        <div class="XButton XButtonNormal" ng-click="showOverlay(true)"><span>Logout All</span></div>
-        <div class="XButton XButtonNormal" ng-click="showOverlay(true)"><span>Login All</span></div>
+        <select class="XButton XButtonNormal"
+        class="fj-hbox SelectBox SelectBoxSettings" ng-model='sort'
+        ng-options="sort_option.name for sort_option in sort_options"
+        ng-change=""
+        ></select>
+        <select class="XButton XButtonNormal" 
+              class="fj-hbox SelectBox SelectBoxSettings" ng-model='log_out_option'
+              ng-options="log_out_reason.name for log_out_reason in log_out_reasons"
+              ng-change=""
+      
+        ></select>
+        <div class="XButton XButtonNormal" ><span>Login All</span></div>
     </div>
+
+
+    <div class="ContactList">
+    
+    <a href="#/queue/{{::queue.xpid}}" data-ng-repeat="queue in queues | filter: {name: query}" class="GroupRow ListRowFirst ListRow-Contact">
+        <div class="Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <b>{{ ::queue.name }}</b>
+                </div>
+                <div > 
+                    <div class="XIcon-QueueStatus QueueStatus" ng-class="chatStatus"></div>
+                    <div class=" XIcon-QueueStatus  QueueStatus" ng-class="queue.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' "></div>
+                    <div class="QueueStatus ListRowStatusText">{{queue.status.status == 'login' ?  'Logged in' : 'Logged Out'}}</div>
+                </div>
+            </div>
+            <!--<div class="GroupRowStatus">#{{ ::group.extension }}</div>-->
+        </div>
+    </a>
+    
+    </div>
+
 </div>

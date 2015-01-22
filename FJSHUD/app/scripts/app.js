@@ -103,13 +103,12 @@ hudweb.config(function ($routeProvider) {
         .otherwise({redirectTo: '/settings'});
 });
 
-//hudweb.value("notification",fjs.hud.react.NotificationList);
-hudweb.value("Voicemailbox",fjs.hud.react.VoiceMailbox);
-
 
 hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
 hudweb.service('GroupService',['$rootScope',fjs.hud.groupService]);
 hudweb.service('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
+hudweb.service('QueueService',['$q', '$rootScope', 'HttpService',fjs.hud.queueService]);
+
 hudweb.factory('VoicemailService',['$q','$rootScope',fjs.hud.VoicemailService]);
 hudweb.service('UtilService',[UtilService]);
 
@@ -146,6 +145,7 @@ hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallC
 hudweb.controller("ConversationWidgetVoicemailsController",['$scope','$routeParams','$timeout','$filter', 'ContactService','VoicemailService','HttpService', fjs.ui.ConversationWidgetVoicemailsController ]);
 hudweb.controller("ConversationWidgetGroupsController",['$scope','$routeParams','$rootScope','HttpService','GroupService','UtilService', fjs.ui.ConversationWidgetGroupsController ]);
 hudweb.controller("ConversationWidgetCalllogController",['$scope','$routeParams','$timeout','$filter','HttpService','UtilService','ContactService', fjs.ui.ConversationWidgetCallLogController ]);
+hudweb.controller("ConversationWidgetQueuesController",['$scope','$routeParams','$timeout','$filter','ContactService','HttpService', 'QueueService',fjs.ui.ConversationWidgetQueuesController ]);
 
 // Call Center and Queues
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
