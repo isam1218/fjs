@@ -5,11 +5,11 @@ fjs.ui.RecentsListController = function($scope, $rootScope, dataManager) {
     $scope.model = dataManager.getModel("widget_history");
     $scope.resents = $scope.model.items;
 	var notify;
-	
+
     var oncomplete = function() {
 		$rootScope.$broadcast("updateRecent", $scope.resents);
         $scope.$safeApply();
-		
+
 		// notification
 		if (!document.hasFocus() && notify == null) {
 			notify = new Notification("New Activity",  {
@@ -22,15 +22,15 @@ fjs.ui.RecentsListController = function($scope, $rootScope, dataManager) {
 				$rootScope.$broadcast("updateRecent", $scope.resents);
 				window.focus();
 			};
-			
+
 			setTimeout(function() {
 				notify.close();
 				notify = null;
 			}, 5000);
 		}
     };
-	
+
     $scope.model.addEventListener('complete', oncomplete);
 };
 
-fjs.core.inherits(fjs.ui.ResentsListController, fjs.ui.Controller);
+fjs.core.inherits(fjs.ui.RecentsListController, fjs.ui.Controller);

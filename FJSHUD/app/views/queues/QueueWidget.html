@@ -18,7 +18,7 @@
 
       <!-- ng-views -->
       <div ng-if="selected == 'Agents'" class="ListView WithToolBar" ng-include="'views/queues/QueueWidgetAgents.html'"
-           ng-controller="QueueWidgetController"></div>
+           ng-controller="QueueWidgetAgentsController"></div>
       <div ng-if="selected == 'Stats'" class="fj-content WidgetTabContent"
            ng-include="'views/queues/QueueWidgetStats.html'" ng-controller="QueueWidgetStatsController"></div>
       <div ng-if="selected == 'Calls'" class="fj-content WidgetTabContent"
