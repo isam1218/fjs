@@ -1,101 +1,58 @@
-fjs.hud.queueService = function($q, $rootScope, myHttpService) {
-  // required to deliver promises
-  var deferred = $q.defer();
+fjs.hud.queueService = function($http, $rootScope, $location, $q){
 
-  var queues = [];
-  var queueMembers = [];
-  var queueStatCalls = [];
-  var queueStatMembers = [];
+	var queues = [];
+	var formatData = function() {
+		// format data that controller needs
+		return {
+			queues: queues,
+		};
+	};
 
-  this.getQueues = function () {
-    return deferred.promise;
-  };
+	$rootScope.$on("queues_synced", function(event,data){
+		if(queues.length < 1){
+			queues = data;
+		}
 
-  $rootScope.$on('queues_synced', function(event, data) {
-    if(data && data != undefined) {
+		$rootScope.$broadcast('queues_updated',formatData());
+	});
 
-      // initial sync
-      if (queues.length < 1) {
-        queues = data;
-        deferred.resolve(queues);
-        $rootScope.loaded = true;
+	$rootScope.$on("queue_members_synced", function(event,data){
+		for(i = 0; i < queues.length; i++){
+			queues[i].members = [];
+			for(key in data){
+				if(data[key].queueId == queues[i].xpid){
+					queues[i].members.push(data[key]);
+				}
+			}
+		}
+		$rootScope.$broadcast('queues_updated',formatData());
+	});
 
-        // add avatar to each contact
-        for (var q in queues) {
-          queues[q].getAvatar = function (size) {
-            return myHttpService.get_avatar(this.xpid, size, size);
-          };
-        }
-      }
-      else {
-        for (var i = 0; i < data.length; i++) {
-          for (var q = 0; q < queues.length; q++) {
-            // found queues
-            if (queues[q].xpid == data[i].xpid) {
-              // update or delete
-              if (data[i].xef001type == 'delete')
-                queues.splice(q, 1);
-              else
-                queues[q] = data[i];
+	$rootScope.$on("queue_members_status_synced",function(event,data){
+		for(i = 0; i < queues.length; i++){
+			 
+			if(queues[i].members && queues[i].members.length > 0){
+				for(j = 0; j < queues[i].members.length; j++){
+					for (key in data){
+						if(data[key].xpid == queues[i].members[j].xpid){
+							queues[i].members[j].status = data[key];
+						}
+					}
+				}
+			}
+		}
 
-              break;
-            }
+		$rootScope.$broadcast('queues_updated',formatData());
+	});
 
-            // no match, so new record
-            if (q == queues.length - 1)
-              queues.push(data[i]);
-          }
-        }
-      }
-      $rootScope.$broadcast('queues_updated', queues);
-      //   deferred.resolve(queues);
-    }
-  });
-
-  $rootScope.$on('queue_members_synced', function(event, data) {
-    queueMembers = data;
-    for (var key in data) {
-      for (var q in queueMembers) {
-        if (queueMembers[q].xpid == data[key].xpid) {
-          queueMembers[q].hud_status = data[key].xmpp;
-          break;
-        }
-      }
-    }
-
-    //deferred.resolve(queueMembers);
-  });
-
-  $rootScope.$on('queue_stat_calls_synced', function(event, data) {
-    queueStatCalls = data;
-    for (var key in data) {
-      for (var q in queueStatCalls) {
-        // set queues status'
-        if (queueStatCalls[q].xpid == data[key].xpid) {
-          queueStatCalls[q].calls_startedAt = data[key].startedAt;
-          break;
-        }
-      }
-    }
-
-    //deferred.resolve(queues);
-  });
-
-  $rootScope.$on('queue_stat_members_synced', function(event, data) {
-    queueStatMembers = data;
-    for (var key in data) {
-      for (var q in queueStatMembers) {
-        // set queues status'
-        if (queueStatMembers[q].xpid == data[key].xpid) {
-          queueStatMembers[q].calls_startedAt = data[key].startedAt;
-          break;
-        }
-      }
-    }
-
-    //deferred.resolve(queues);
-  });
-
-
-};
-
+	$rootScope.$on("queue_stat_calls_synced",function(event,data){
+		for(i = 0; i < queues.length; i++){
+			for(key in data){
+				if(data[key].xpid == queues[i].xpid){
+					queues[i].info = data[key];
+				}
+			}	 
+		}
+		$rootScope.$broadcast('queues_updated',formatData());
+	});
+}

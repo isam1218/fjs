@@ -59,6 +59,19 @@ fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootS
 
     }
 
+     $scope.getAvatarUrl = function(group, index) {
+        
+        if(group.members){
+            if (group.members[index] !== undefined) {
+                var xpid = group.members[index];
+                return myHttpService.get_avatar(xpid,14,14);
+            }
+            else
+                return 'img/Generic-Avatar-14.png';
+
+        }
+    };
+
 
         
     var filterGroup = function(){
