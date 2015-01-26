@@ -62,15 +62,15 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/conferences', {
 			templateUrl: 'views/ConferenceRoomWidget.html',
-			controller: ['$scope', 'DataManager','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
+			controller: ['$scope','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
 		})
         .when('/conferences/my', {
 			templateUrl: 'views/ConferenceRoomWidget.html',
-			controller: ['$scope', 'DataManager','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
+			controller: ['$scope','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
 		})
         .when('/conferences/all', {
 			templateUrl: 'views/ConferenceRoomWidget.html',
-			controller: ['$scope', 'DataManager','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
+			controller: ['$scope','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
 		})
         .when('/conference/:conferenceId', {
 			templateUrl: 'views/ConferenceWidget.html',
@@ -138,7 +138,7 @@ hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.Chat
 // chat panel controllers:
 hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]);
 hudweb.controller("ConversationWidgetChatController", ['$scope', '$interval', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
-hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager','ConferenceService','HttpService','$location',fjs.ui.ConferencesWidgetController]);
+hudweb.controller("ConferencesWidgetController", ['$scope','ConferenceService','HttpService','$location',fjs.ui.ConferencesWidgetController]);
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 
 // Controllers registered for subpanels of conversation widget
