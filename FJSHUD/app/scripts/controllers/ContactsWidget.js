@@ -34,7 +34,7 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 		
 		return function(contact) {
 			// remove self
-			if (contact.xpid != $rootScope.myPid) {
+			if (true) {
 				// filter by tab
 				switch (tab) {
 					case 'all':
@@ -80,6 +80,13 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 	$scope.storeRecent = function(xpid) {
 		$scope.recents[xpid] = new Date().getTime();
 		localStorage.recents = JSON.stringify($scope.recents);
+	};
+	
+	$scope.getCallStatusAvatar = function(call) {
+		if (call && call.contactId)
+			return myHttpService.get_avatar(call.contactId, 28, 28);
+		else
+			return 'img/Generic-Avatar-28.png';
 	};
 	
 	/**
