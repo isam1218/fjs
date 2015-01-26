@@ -34,7 +34,7 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 		
 		return function(contact) {
 			// remove self
-			if (true) {
+			if (contact.xpid != $rootScope.myPid) {
 				// filter by tab
 				switch (tab) {
 					case 'all':
