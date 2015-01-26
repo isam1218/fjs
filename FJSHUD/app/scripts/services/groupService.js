@@ -42,8 +42,9 @@ fjs.hud.groupService = function($rootScope) {
 			
 				// add member to groups
 				if (data[key].groupId == groups[i].xpid) {
-					groups[i].members.push(data[key]);
-					
+					if(!doesMemberExist(groups[i],data[key])){
+						groups[i].members.push(data[key]);
+					}
 					// add to favorites object
 					if (data[key].groupId == favoriteID)
 						favorites[data[key].contactId] = 1;
@@ -74,4 +75,17 @@ fjs.hud.groupService = function($rootScope) {
 		
 		$rootScope.$broadcast('groups_updated', formatData());
 	});
+
+	doesMemberExist = function(group,contact){
+
+		if(group.members){
+			for(member in group.members){
+				if(group.members[member].xpid == contact.xpid){
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
 }
