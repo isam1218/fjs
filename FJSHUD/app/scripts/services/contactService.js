@@ -75,9 +75,10 @@ fjs.hud.contactService = function($q, $rootScope, myHttpService) {
 	$rootScope.$on('calls_synced', function(event, data) {
 		for (key in data) {
 			for (i = 0; i < contacts.length; i++) {
-				// set contact's status
+				// set contact's call status
 				if (contacts[i].xpid == data[key].xpid) {
-					contacts[i].calls_startedAt = data[key].startedAt;
+					contacts[i].call = data[key].xef001type == 'delete' ? null : contacts[i].call = data[key];
+					
 					break;
 				}
 			}
