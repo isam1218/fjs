@@ -1,5 +1,7 @@
 //out: voicemail.css
-
+.displayName{
+	font-size:12px;
+}
 .vmsection{
 	margin:10px 10px 10px 10px;
 	border: 1px solid #ccc;
@@ -15,6 +17,9 @@
 			position: absolute;
 			left: 5px;
 			top: 5px;
+			-webkit-border-radius: 30px;
+			color: #009cff;
+			border: solid;
 		}
 	}
 	.vminfo{
@@ -39,19 +44,28 @@
 }
 
 
-
+.vmduration{
+	background-color:#999;
+	color:#fff;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	padding:1px 1px 1px 1px;
+}
 .vmalternate{
 	display:inline-block;
 	float:right;
 	position:relative;
-
+	margin-top:3px;
 	.vmcallbtn{
   		visibility:hidden;
-  		position:relative;
+  		right:0;
+  		top:0;
+  		position:absolute;
 	}
 	.vmtime{
 		visibility:visible;
-		position:absolute;
+		position:relative;
+		font-size:11px;
 	}
 
 
@@ -59,16 +73,19 @@
 
 .vmalternate:hover{
 
-	.vmcallbtn:hover{
+	.vmcallbtn{
   		background: #3c9c00 linear-gradient(#3c9c00, #328400);
   		color: #e8e8e8;
   		border: 1px solid rgba(155,155,155,0.3);
   		text-shadow: none;
   		visibility:visible;
+  		height: 30px;
+		width: 60px;
+		border-radius: 2px;
 
 	}
 
-	.vmtime:hover{
+	.vmtime{
 		visibility:hidden;
 	}
 

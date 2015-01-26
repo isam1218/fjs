@@ -7,6 +7,15 @@
         <div class="WidgetHeaderTitle Single">Conference</div>
     </div>
     <div class="WidgetBody">
-		placeholder
+		<div class="WidgetTabBar">
+            <a href="#/conferences/my" class="WidgetTabBarButton Ready" ng-class="param == '/conferences/my' ? 'fj-selected-item': ''">
+                <div class="inner">Current Call</div>
+                <div class="arrow"></div>
+            </a>
+            <a href="#/conferences/all" class="WidgetTabBarButton Ready" ng-class="param == '/conferences/all' ? 'fj-selected-item': ''">
+                <div class="inner">Chat</div>
+                <div class="arrow"></div>
+            </a>
+        </div>
     </div>
 </div>

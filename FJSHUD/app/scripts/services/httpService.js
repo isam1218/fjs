@@ -15,6 +15,7 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 	                break;
 	            case "sync_completed":
 	                if (event.data.data) {
+
 	                    synced_data = event.data.data;
 
 	                    // send data to other controllers

@@ -1,15 +1,21 @@
 fjs.core.namespace("fjs.directive");
-fjs.directive.ContactSearch = function($document) {
+fjs.directive.ContactSearch = function($document, contactService) {
 	return {
 		restrict: 'A',
-		controller: 'ContactsWidget', // re-use contact controller
 		link: function(scope, element, attrs) {
+			var contacts = [];
+			
+			// pull updates from service
+			scope.$on('contacts_updated', function(event, data) {
+				contacts = data;
+			});
+	
 			var rect = element[0].getBoundingClientRect();
 			element.css('z-index', 100);
 			
 			// create overlay elements
 			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
-			overlay.css('width', rect.width + 'px');
+			//overlay.css('width', rect.width + 'px');
 			
 			var inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
@@ -21,10 +27,10 @@ fjs.directive.ContactSearch = function($document) {
 				
 				if (element.val().length > 0) {
 					// look for match
-					for (c in scope.contacts) {
-						if (scope.contacts[c].displayName !== undefined && scope.contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1) {
+					for (c in contacts) {
+						if (contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1) {
 							// add to div
-							var line = makeLine(scope.contacts[c]);
+							var line = makeLine(contacts[c]);
 							inset.append(line);
 						}
 					}
@@ -59,9 +65,16 @@ fjs.directive.ContactSearch = function($document) {
 			function makeLine(contact) {
 				var line = angular.element('<div class="ListRow"></div>');
 				
-				line.append('<div class="Avatar AvatarSmall"><img src="' + scope.getAvatarUrl(contact.xpid, 14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
+				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				
 				line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
+				
+				// send contact to parent scope
+				line.bind('click', function() {
+					scope.searchContact(contact);
+					element.val('');
+					overlay.remove();
+				});
 				
 				return line;
 			}

@@ -20,8 +20,6 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-
 	<div id="App">
 		<div class="TopBar">
 			<div class="TopBarLogo"></div>
@@ -53,14 +51,19 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="PanelWrapper">
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
 				<div class="Toolbar">
 					<div class="ContactSearch">
-						<input type="search" class="Search" placeholder="Search" ng-model="query" />
-						<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+						<div ng-show="tab != 'favorites'">
+							<input type="search" class="Search" placeholder="Search" ng-model="query" />
+							<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+						</div>
+						
+						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="Add Someone" contact-search ng-controller="ContactsWidget" />
 					</div>
 
 					<div class="WidgetTabBar">
@@ -285,6 +288,7 @@
     <script src="scripts/services/VoicemailService.js"></script>
     <script src="scripts/services/UtilService.js"></script>
     <script src="scripts/services/queueService.js"></script>
+    <script src="scripts/services/conferenceService.js"></script>
 
 
     <script src="properties.js"></script>

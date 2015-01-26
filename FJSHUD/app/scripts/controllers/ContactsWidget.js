@@ -131,8 +131,17 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 		$scope.add = {};
 	};
 	
-	$scope.addFavorite = function(xpid) {
-		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: xpid});
+	// add favorites action (via directive)
+	$scope.searchContact = function(contact) {
+		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.xpid});
+	};
+	
+	// TO DO: action should take place on a contextual menu
+	$scope.removeFavorite = function($event, contact) {
+		myHttpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: contact.xpid});
+		
+		$event.stopPropagation();
+        $event.preventDefault();
 	};
 
     $scope.$on("$destroy", function() {

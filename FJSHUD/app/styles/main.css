@@ -259,6 +259,10 @@ p {
   font-style: italic;
   font-color: #ccc;
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 30%;
 }
 .TopBar {
   position: relative;
@@ -599,6 +603,13 @@ p {
   left: 40px;
   right: 47px;
   color: #777;
+}
+.ListRowStatusText {
+  height: 24px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .LeftBarPhoneCalls {
   -webkit-box-flex: 0;
@@ -1817,6 +1828,22 @@ input.text.ChatInputBoxInput,
   border-style: solid;
   border-width: 6px;
 }
+.ListConferenceStatusText {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+}
+.ListConferenceStatusIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  max-width: 24px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
 .GroupRow {
   margin: 5px 5px 5px 5px;
   border: 1px solid #ccc;
@@ -1903,6 +1930,19 @@ input.text.ChatInputBoxInput,
   width: 100%;
   display: block;
 }
+.ListRow:hover .Remove {
+  display: block;
+}
+.ListRow .Remove {
+  position: absolute;
+  top: .25em;
+  left: .5em;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 5;
+  display: none;
+}
 .ListRow .Avatar {
   position: relative;
   margin: 5px;
@@ -1917,6 +1957,7 @@ input.text.ChatInputBoxInput,
   position: absolute;
   right: 0;
   top: 0;
+  margin-right: 10px;
 }
 .ListPage {
   border: 1px solid #999;
@@ -3046,6 +3087,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .XIcon-CallLog-outbound {
   background: url("../img/XIcon-CallLog-Outbound.png") no-repeat 0 0;
 }
+.QueueStatus {
+  display: inline-block;
+}
 .Overlay {
   position: fixed;
   left: 0;
@@ -3144,7 +3188,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 100%;
+  width: 100%;
   background-color: white;
   box-shadow: 1px 0 10px gray;
   border-radius: 5px;
@@ -3441,6 +3485,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: flex;
   flex-direction: column;
 }
+.displayName {
+  font-size: 12px;
+}
 .vmsection {
   margin: 10px 10px 10px 10px;
   border: 1px solid #ccc;
@@ -3458,6 +3505,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: absolute;
   left: 5px;
   top: 5px;
+  -webkit-border-radius: 30px;
+  color: #009cff;
+  border: solid;
 }
 .vmsection .vminfo {
   position: relative;
@@ -3475,26 +3525,40 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: inline-block;
   color: #009CFF;
 }
+.vmduration {
+  background-color: #999;
+  color: #fff;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  padding: 1px 1px 1px 1px;
+}
 .vmalternate {
   display: inline-block;
   float: right;
   position: relative;
+  margin-top: 3px;
 }
 .vmalternate .vmcallbtn {
   visibility: hidden;
-  position: relative;
+  right: 0;
+  top: 0;
+  position: absolute;
 }
 .vmalternate .vmtime {
   visibility: visible;
-  position: absolute;
+  position: relative;
+  font-size: 11px;
 }
-.vmalternate:hover .vmcallbtn:hover {
+.vmalternate:hover .vmcallbtn {
   background: #3c9c00 linear-gradient(#3c9c00, #328400);
   color: #e8e8e8;
   border: 1px solid rgba(155, 155, 155, 0.3);
   text-shadow: none;
   visibility: visible;
+  height: 30px;
+  width: 60px;
+  border-radius: 2px;
 }
-.vmalternate:hover .vmtime:hover {
+.vmalternate:hover .vmtime {
   visibility: hidden;
 }
