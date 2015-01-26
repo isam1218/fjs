@@ -51,12 +51,26 @@ fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootS
             }
 
             if(isMember && isShared){
-                $scope.sharedGroups.push($scope.groups[i]);
+                if(!isGroupIn($scope.groups[i],$scope.sharedGroups)){
+                     $scope.sharedGroups.push($scope.groups[i]);
+                }
             }else if(isMember){
-               $scope.contactGroups.push($scope.groups[i]); 
+                if(!isGroupIn($scope.groups[i],$scope.sharedGroups)){
+                    $scope.contactGroups.push($scope.groups[i]); 
+                }
             }
         }
 
+    }
+
+    isGroupIn = function(groupToInsert,groups){
+        groupExist = false;
+        for(group in groups){
+            if(groupToInsert.xpid == groups[group].xpid){
+                groupExist = true;
+            }
+        }
+        return groupExist;
     }
 
      $scope.getAvatarUrl = function(group, index) {
