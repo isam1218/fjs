@@ -600,6 +600,13 @@ p {
   right: 47px;
   color: #777;
 }
+.ListRowStatusText {
+  height: 24px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .LeftBarPhoneCalls {
   -webkit-box-flex: 0;
   position: relative;
@@ -1817,6 +1824,22 @@ input.text.ChatInputBoxInput,
   border-style: solid;
   border-width: 6px;
 }
+.ListConferenceStatusText {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+}
+.ListConferenceStatusIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  max-width: 24px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
 .GroupRow {
   margin: 5px 5px 5px 5px;
   border: 1px solid #ccc;
@@ -1903,6 +1926,19 @@ input.text.ChatInputBoxInput,
   width: 100%;
   display: block;
 }
+.ListRow:hover .Remove {
+  display: block;
+}
+.ListRow .Remove {
+  position: absolute;
+  top: .25em;
+  left: .5em;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 5;
+  display: none;
+}
 .ListRow .Avatar {
   position: relative;
   margin: 5px;
@@ -1917,6 +1953,7 @@ input.text.ChatInputBoxInput,
   position: absolute;
   right: 0;
   top: 0;
+  margin-right: 10px;
 }
 .ListPage {
   border: 1px solid #999;
@@ -3046,6 +3083,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .XIcon-CallLog-outbound {
   background: url("../img/XIcon-CallLog-Outbound.png") no-repeat 0 0;
 }
+.QueueStatus {
+  display: inline-block;
+}
 .Overlay {
   position: fixed;
   left: 0;
@@ -3144,7 +3184,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 100%;
+  width: 100%;
   background-color: white;
   box-shadow: 1px 0 10px gray;
   border-radius: 5px;

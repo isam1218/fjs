@@ -96,7 +96,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 100%;
+  width: 100%;
   background-color: white;
   box-shadow: 1px 0 10px gray;
   border-radius: 5px;

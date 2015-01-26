@@ -164,6 +164,21 @@
   background-color: #fff;
   width: 100%;
   display:block;
+  
+  &:hover .Remove {
+    display: block;
+  }
+  
+  .Remove {
+	position: absolute;
+	top: .25em;
+	left: .5em;
+	color: red;
+	font-weight: bold;
+	cursor: pointer;
+	z-index: 5;
+	display: none;
+  }
 }
 
 .ListRow .Avatar {
