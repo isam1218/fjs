@@ -14,6 +14,4 @@ fjs.ui.LeftBarController = function($scope, myHttpService) {
 		else
 			$scope.overlay = 'groups';
 	};
-	
-	
 };

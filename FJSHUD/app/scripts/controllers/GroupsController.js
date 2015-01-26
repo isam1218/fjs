@@ -37,14 +37,13 @@ fjs.ui.GroupsController = function($scope, $rootScope, myHttpService, groupServi
 	
 	// display avatar for group member
     $scope.getAvatarUrl = function(group, index) {
-		
-		if(group.members){
+		if (group.members) {
 			if (group.members[index] !== undefined) {
-				var xpid = group.members[index];
-				return myHttpService.get_avatar(xpid,40,40);
+				var xpid = group.members[index].contactId;
+				return myHttpService.get_avatar(xpid, 28, 28);
 			}
 			else
-				return 'img/Generic-Avatar-14.png';
+				return 'img/Generic-Avatar-28.png';
 
 		}
     };

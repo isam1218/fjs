@@ -1,1 +1,245 @@
-.ToolBar{position:relative;padding:0 5px;border-bottom:solid 1px #ccc;height:40px}.ToolBar .XButton{float:right;margin:5px}.Widget.Contacts .details{float:right}.LeftBar{position:relative;flex:.6;min-width:250px;background-color:white;border:1px solid #ccc;display:flex;flex-direction:column}.LeftBar .RoundedTop{position:absolute;top:-15px;left:0;width:100%;height:15px;background-color:white;border-top:1px solid #ccc;border-top-left-radius:50%;border-top-right-radius:50%;box-shadow:0 1px 1px #ccc inset}.LeftBar .ContactSearch{display:flex;flex-direction:row;width:100%}.LeftBar .ContactSearch .Search{color:#729c00;border:1px solid #729c00;border-radius:2px;padding:.5em;margin:.5em;flex:2}.LeftBar .ContactSearch .New{margin:.5em;height:2.8em;padding:0 20px}.LeftBar .Contacts,.LeftBar .Groups{flex:1;display:flex;flex-direction:column}.LeftBar .Contacts .ContactList,.LeftBar .Groups .ContactList{flex:1;overflow-y:auto}.LeftBar .Notifications>div:first-child{font-size:.9em;min-height:25px;transition:.25s}.LeftBar .Notifications>div:first-child:hover{min-height:50px}.LeftBar .Notifications>div:first-child .TitleBar{width:100%;background-color:gray;color:white;padding:.25em}.LeftBar .Notifications>div:first-child .TitleBar>*{display:inline-block;vertical-align:middle}.LeftBar .Notifications>div:first-child .TitleBar .XButton{float:right}.LeftBar .Notifications>div:first-child .TitleBar .Icon{width:24px;height:24px;background:url("../img/XIconSet-24x24.png") no-repeat -48px -72px}.LeftBar .Phone{padding:.5em;display:flex;flex-direction:row;width:100%}.LeftBar .Phone .Number{flex:2}.SearchPanel.InSearch{border:solid 1px #bbb;background-color:#eee;border-radius:6px;box-shadow:1px 0 10px rgba(0,0,0,0.3),0 5px 10px #fff inset}.ListLineContent.Header{height:28px}.ListLineContent.Header .ListLineContentCell{display:inline-block;font-size:9px;position:relative}.DirectionArrow{position:absolute;left:50%;margin-left:-6px}.LeftSideBarHead{height:16px;width:300px;background:url("../img/SideBar2.png") no-repeat;margin-top:-16px;margin-left:-1px}.LeftBarNewCall{padding:0 10px 10px 10px}.InputNewCall{border:1px solid #729c00;color:#729c00;width:193px}.left-phone-search{position:absolute;top:-10px;left:-10px;right:-10px;border:1px solid transparent;padding-bottom:5px;max-height:85%;overflow-y:auto}.left-phone-search.hasresults{border:1px solid #777;background-color:white;border-radius:6px;box-shadow:0 0 3px #555}.left-phone-search .SearchInputBox{height:26px;position:relative;left:auto;right:auto;top:auto;margin:10px 20px 10px 20px}.XButton.ButtonFillWidth{width:100%}.XButton.ButtonFillWidth span{width:auto}.CallButtonPlaceholder{position:relative}.CallButtonPlaceholder .XButton.ButtonFillWidth span{left:20px;right:20px}.WidgetTabBar.LeftSideWidgetTabs{top:40px}.LeftBarTabContentList{position:relative;left:0;right:0;margin-bottom:5px;flex:1;overflow:hidden}.LeftBarTabContentList h4{color:#0093f0;margin-left:5px;font-size:.9em}.LeftBarTabContentList:hover{overflow-y:auto}.ToolBar .XButton{width:90px}.LeftSideBarSection{position:absolute;left:0;right:0;top:46px;bottom:5px;-webkit-box-orient:vertical;display:-webkit-box}.LeftSideBarResentsSection{-webkit-box-flex:1;position:relative;overflow:auto}.LeftSideBarResentsSection .ListRowStatusText{line-height:10px}.LeftSideBarResentsSection .marquee{position:absolute;bottom:8px;font-size:10px;left:40px;right:47px;color:#777}.LeftBarPhoneCalls{-webkit-box-flex:0;position:relative;width:298px}.EventsBaloon{position:absolute;bottom:-2px;right:-2px;padding:4px;border-radius:5px;background-color:red;line-height:5px;color:#fff;font-size:10px}#ContactsList{position:relative;flex:1;display:flex;flex-direction:column}
+.ToolBar {
+  position: relative;
+  padding: 0 5px;
+  border-bottom: solid 1px #ccc;
+  height: 40px;
+}
+.ToolBar .XButton {
+  float: right;
+  margin: 5px;
+}
+.Widget.Contacts .details {
+  float: right;
+}
+.LeftBar {
+  position: relative;
+  flex: .6;
+  min-width: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}
+.LeftBar .RoundedTop {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  box-shadow: 0px 1px 1px #ccc inset;
+}
+.LeftBar .ContactSearch {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.LeftBar .ContactSearch .Search {
+  color: #729c00;
+  border: 1px solid #729c00;
+  border-radius: 2px;
+  padding: .5em;
+  margin: .5em;
+  flex: 2;
+}
+.LeftBar .ContactSearch .New {
+  margin: .5em;
+  height: 2.8em;
+  padding: 0 20px;
+}
+.LeftBar .Contacts,
+.LeftBar .Groups {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.LeftBar .Contacts .ContactList,
+.LeftBar .Groups .ContactList {
+  flex: 1;
+  overflow-y: auto;
+}
+.LeftBar .Notifications > div:first-child {
+  font-size: .9em;
+  min-height: 25px;
+  transition: .25s;
+}
+.LeftBar .Notifications > div:first-child:hover {
+  min-height: 50px;
+}
+.LeftBar .Notifications > div:first-child .TitleBar {
+  width: 100%;
+  background-color: gray;
+  color: white;
+  padding: .25em;
+}
+.LeftBar .Notifications > div:first-child .TitleBar > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+.LeftBar .Notifications > div:first-child .TitleBar .XButton {
+  float: right;
+}
+.LeftBar .Notifications > div:first-child .TitleBar .Icon {
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+}
+.LeftBar .Phone {
+  padding: .5em;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.LeftBar .Phone .Number {
+  flex: 2;
+}
+.SearchPanel.InSearch {
+  border: solid 1px #bbb;
+  background-color: #eee;
+  border-radius: 6px;
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
+}
+.ListLineContent.Header {
+  height: 28px;
+}
+.ListLineContent.Header .ListLineContentCell {
+  display: inline-block;
+  font-size: 9px;
+  position: relative;
+}
+.DirectionArrow {
+  position: absolute;
+  left: 50%;
+  margin-left: -6px;
+}
+.LeftSideBarHead {
+  height: 16px;
+  width: 300px;
+  background: url("../img/SideBar2.png") no-repeat;
+  margin-top: -16px;
+  margin-left: -1px;
+}
+.LeftBarNewCall {
+  padding: 0 10px 10px 10px;
+}
+.InputNewCall {
+  border: 1px solid #729c00;
+  color: #729c00;
+  width: 193px;
+}
+.left-phone-search {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  border: 1px solid transparent;
+  padding-bottom: 5px;
+  max-height: 85%;
+  overflow-y: auto;
+}
+.left-phone-search.hasresults {
+  border: 1px solid #777;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 0 3px #555;
+}
+.left-phone-search .SearchInputBox {
+  height: 26px;
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  margin: 10px 20px 10px 20px;
+}
+.XButton.ButtonFillWidth {
+  width: 100%;
+}
+.XButton.ButtonFillWidth span {
+  width: auto;
+}
+.CallButtonPlaceholder {
+  position: relative;
+}
+.CallButtonPlaceholder .XButton.ButtonFillWidth span {
+  left: 20px;
+  right: 20px;
+}
+.WidgetTabBar.LeftSideWidgetTabs {
+  top: 40px;
+}
+.LeftBarTabContentList {
+  position: relative;
+  left: 0;
+  right: 0;
+  margin-bottom: 5px;
+  flex: 1;
+  overflow: hidden;
+}
+.LeftBarTabContentList h4 {
+  color: #0093f0;
+  margin-left: 5px;
+  font-size: .9em;
+}
+.LeftBarTabContentList:hover {
+  overflow-y: auto;
+}
+.ToolBar .XButton {
+  width: 90px;
+}
+.LeftSideBarSection {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46px;
+  bottom: 5px;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+.LeftSideBarResentsSection {
+  -webkit-box-flex: 1;
+  position: relative;
+  overflow: auto;
+}
+.LeftSideBarResentsSection .ListRowStatusText {
+  line-height: 10px;
+}
+.LeftSideBarResentsSection .marquee {
+  position: absolute;
+  bottom: 8px;
+  font-size: 10px;
+  left: 40px;
+  right: 47px;
+  color: #777;
+}
+.ListRowStatusText {
+  height: 24px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.LeftBarPhoneCalls {
+  -webkit-box-flex: 0;
+  position: relative;
+  width: 298px;
+}
+.EventsBaloon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: red;
+  line-height: 5px;
+  color: #fff;
+  font-size: 10px;
+}
+#ContactsList {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
