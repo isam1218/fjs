@@ -64,6 +64,9 @@
   margin: 0;
   width: 40%;
 }
+.WidgetHeaderTitle.Full {
+  width: auto !important;
+}
 .WidgetHeaderStatus {
   position: absolute;
   left: 4.7em;
