@@ -43,7 +43,7 @@
     <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">Our Teams</div>
     <div class="footnote" ng-show=" sharedGroups.length > 0 "> We are both in these teams </div>
     <a href="#group/{{::group.xpid}}" data-ng-repeat="group in sharedGroups | filter: {name: query} | orderBy:sortField:sortReverse track by group.xpid" ng-if="group.extension" class=" GroupRow ListRowFirst ListRow-Contact">
-        <div class="Avatar AvatarNormal">
+        <div class="ConferenceAvatarSection Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
                 <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
