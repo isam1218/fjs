@@ -5,6 +5,9 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     var context = this;
      $scope.param = $route.path();
     $scope.warning = "";
+    $scope.ConversationType = 'conference';
+
+    $scope.chatDisplay = 'true';
     if($scope.param == "/conferences/all"){
        $scope.warning = "You may have limited control over some rooms in this list, such as adding or removing other users.";
     }else{
@@ -53,11 +56,8 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
         }
     };
     $scope.findMyFreeAndJoin = function(){
-       // var conference = conferencesModel.getMyFreeConferenceRoomToJoin();
-        /*if(conference){
-            conference.joinMe();
-        }*/
     };
+    
     $scope.filterConferenceFn = function(query) {
         return function(conference){
             return conference.pass(query);

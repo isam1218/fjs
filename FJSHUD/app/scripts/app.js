@@ -74,7 +74,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/conference/:conferenceId', {
 			templateUrl: 'views/ConferenceWidget.html',
-			controller: ['$scope','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
+			controller: ['$scope','ConferenceService','HttpService','$routeParams','UtilService', fjs.ui.ConferenceWidgetConversationController]
 		})
         .when('/test', {
 			templateUrl: 'views/TestWidget.html',
@@ -139,6 +139,8 @@ hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.Chat
 hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]);
 hudweb.controller("ConversationWidgetChatController", ['$scope', '$interval', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope','ConferenceService','HttpService','$location',fjs.ui.ConferencesWidgetController]);
+hudweb.controller("ConferenceWidgetConversationController", ['$scope','ConferenceService','HttpService','$routeParams','UtilService',fjs.ui.ConferenceWidgetConversationController]);
+
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 
 // Controllers registered for subpanels of conversation widget
