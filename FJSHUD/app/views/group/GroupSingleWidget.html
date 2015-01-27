@@ -1,0 +1,39 @@
+<div class="Widget Group">
+    <div class="WidgetHeader" context-menu="contact">
+        <div class="Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(0) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(1) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(2) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(3) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+		
+        <div class="WidgetHeaderTitle Full">Department "{{ ::group.name }}"</div>
+    </div>
+	
+    <div class="WidgetBody">
+        <div class="WidgetTabBar">
+			<a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+				<div class="inner">{{ ::tab }}</div>
+				<div class="arrow"></div>
+			</a>
+        </div>
+		
+		<!-- ng-views -->
+        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/group/GroupChat.html'"></div>
+        
+        <div ng-if="selected == 'Members'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupMembers.html'"></div>
+        
+        <div ng-if="selected == 'Voicemails'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupVoicemails.html'"></div>
+        
+        <div ng-if="selected == 'Page'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupPage.html'"></div>
+	</div>
+</div>

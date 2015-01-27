@@ -39,11 +39,11 @@ fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootS
             members = $scope.groups[i].members;
             if(members.length > 0){
                 for(j in members){
-                    if(members[j] == $scope.contactId){
+                    if(members[j].contactId == $scope.contactId){
                         isMember = true;
                     }
 
-                    if(members[j] == $scope.meModel.my_pid){
+                    if(members[j].contactId == $scope.meModel.my_pid){
                         isShared = true;
                     }
 
@@ -55,7 +55,7 @@ fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootS
                      $scope.sharedGroups.push($scope.groups[i]);
                 }
             }else if(isMember){
-                if(!isGroupIn($scope.groups[i],$scope.sharedGroups)){
+                if(!isGroupIn($scope.groups[i],$scope.contactGroups)){
                     $scope.contactGroups.push($scope.groups[i]); 
                 }
             }
