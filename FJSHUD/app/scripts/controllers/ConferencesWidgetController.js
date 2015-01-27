@@ -10,7 +10,7 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     }else{
        $scope.warning = "These are the rooms that you have advanced permissions to use, such as adding or removing other users.";
     }
-    httpService.getFeed("conference");
+    httpService.getFeed("conferences");
     httpService.getFeed("conferencestatus");
     httpService.getFeed("conferencemembers");
     httpService.getFeed("conferencepermissions");
