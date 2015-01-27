@@ -5,9 +5,8 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     var context = this;
      $scope.param = $route.path();
     $scope.warning = "";
-    $scope.ConversationType = 'conference';
 
-    $scope.chatDisplay = 'true';
+
     if($scope.param == "/conferences/all"){
        $scope.warning = "You may have limited control over some rooms in this list, such as adding or removing other users.";
     }else{
@@ -23,7 +22,6 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     this.selectedSortMode = undefined;
     this.sortMenuItems = {location:"Location", number: "Room Number", activity: "Activity"};
 
-   $scope.cTabSelected = "CurrentCall";
 
    
 
@@ -66,9 +64,9 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
 
     $scope.getAvatarUrl = function(conference, index) {
         
-        if(group.members){
-            if (group.members[index] !== undefined) {
-                var xpid = group.members[index];
+        if(conference.members){
+            if (conference.members[index] !== undefined) {
+                var xpid = conference.members[index].contactId;
                 return myHttpService.get_avatar(xpid,14,14);
             }
             else
