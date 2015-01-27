@@ -74,7 +74,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/conference/:conferenceId', {
 			templateUrl: 'views/ConferenceWidget.html',
-			controller: ['$scope', 'DataManager','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
+			controller: ['$scope','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
 		})
         .when('/test', {
 			templateUrl: 'views/TestWidget.html',

@@ -20,6 +20,8 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     this.selectedSortMode = undefined;
     this.sortMenuItems = {location:"Location", number: "Room Number", activity: "Activity"};
 
+   $scope.cTabSelected = "CurrentCall";
+
    
 
     $scope.getSortMode = function(){

@@ -1,4 +1,4 @@
-<div class="fj-widget-area Widget">
+<div class="fj-widget-area Widget Conversation">
     <div class="WidgetHeader">
 
         <div class="Avatar AvatarApp">
@@ -8,68 +8,22 @@
     </div>
     <div class="WidgetBody">
 		<div class="WidgetTabBar">
-            <a href="#" class="WidgetTabBarButton Ready" ng-class="param == '/conferences/my' ? 'fj-selected-item': ''">
+            <a  class="WidgetTabBarButton Ready" ng-click="cTabSelected='CurrentCall'" ng-class="cTabSelected == 'CurrentCall' ? 'fj-selected-item': ''">
                 <div class="inner">Current Call</div>
                 <div class="arrow"></div>
             </a>
-            <a href="" class="WidgetTabBarButton Ready" ng-class="param == '/conferences/all' ? 'fj-selected-item': ''">
+            <a class="WidgetTabBarButton Ready" ng-click="cTabSelected='chat'" ng-class="cTabSelected == 'chat' ? 'fj-selected-item': ''">
                 <div class="inner">Chat</div>
                 <div class="arrow"></div>
             </a>
         </div>
-        <div class="WidgetTabContent"> 
-            
-            <div>     
-                <div class="ListViewTopNote">
-                        <span style="font-size:12px;">You are not a member of this conference </span>
-                        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" value="Join"> </input> 
-                </div>
 
-            </div>
+    <div ng-if="cTabSelected=='chat'" class="ListView ChatView WithToolBar" ng-include="'views/conversation/ConversationChat.html'"></div>
 
-            <div class="ToolBar" style="height:60px"> 
-                <div class="ConferenceMembers"> 
-                    <div class="Conference-HeaderTitle">Conference Members</div>
-                    
-
-                    <div class="Add SearchInputBox" style="top:20px">
-                        <div class="SearchInputBoxInputHolder">
-                            <input class="SearchInputBoxInput" type="text" placeholder="Add someone"></div>
-                        <div class="SearchInputBoxStateButton">
-                            <div class="SearchInputBoxStateButtonIcon"></div>
-                        </div>
-                    </div>
-                </div>
-            
-            </div>
-            
-            <div class="ListView fj-scrollable"> 
-            <div class="vmsection"  > 
-            
-                <div class="vmavatarsection Avatar AvatarNormal" > 
-                    <img class="vmavatar " ng-src="getMeAvatarUrl(voicemail.contactId,50,50)" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
-                </div>
-
-                <div class="vminfo"> 
-                    <div class="displayName">
-                        <p class="vmdisplay ListDisplayName">
-                            <span> Johnson Cheung </span>
-                        </p>
-                        <div class="vmalternate">
-                            <div class="vmtime">duration</div>
-                        </div>
-                    </div> 
-                    <div class="footnote">
-                        <div class="XIconSetMic QueueStatus IconDisplay"></div>
-                        <div class="XIcon-QueueStatus- QueueStatus IconDisplay "></div>
-                        <div class="XIcon-ChatStatus-Available QueueStatus IconDisplay"></div>
-                    </div>
-                    
-                </div>
-        </div>
-    </div>
+    <div ng-if="cTabSelected=='CurrentCall'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
        
-        </div>
+        ></div>
+        
     </div>
 
    
