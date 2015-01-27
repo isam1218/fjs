@@ -1,8 +1,34 @@
-fjs.hud.groupService = function($rootScope) {	
+fjs.hud.groupService = function($q, $rootScope) {	
 	var groups = [];
 	var favorites = {};
 	var favoriteID;
 	var mine = null;
+	
+	this.getGroup = function(xpid) {
+		for (i = 0; i < groups.length; i++) {
+			if (groups[i].xpid == xpid)
+				return groups[i];
+		}
+		
+		return null;
+	};
+	
+	this.getGroups = function() {
+		// waits until data is present before sending back
+		return deferred.promise;
+	};
+
+	var doesMemberExist = function(group,contact){
+		if(group.members){
+			for(member in group.members){
+				if(group.members[member].xpid == contact.xpid){
+					return true;
+				}
+			}
+
+			return false;
+		}
+	};
 	
 	var formatData = function() {
 		// format data that controller needs
@@ -75,17 +101,4 @@ fjs.hud.groupService = function($rootScope) {
 		
 		$rootScope.$broadcast('groups_updated', formatData());
 	});
-
-	doesMemberExist = function(group,contact){
-
-		if(group.members){
-			for(member in group.members){
-				if(group.members[member].xpid == contact.xpid){
-					return true;
-				}
-			}
-
-			return false;
-		}
-	}
 }

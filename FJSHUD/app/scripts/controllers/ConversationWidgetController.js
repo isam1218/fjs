@@ -29,7 +29,6 @@ fjs.ui.ConversationWidgetController = function($scope, $routeParams, contactServ
         }
     }
 
-
     $scope.$on("$destroy", function() {
 	
     });

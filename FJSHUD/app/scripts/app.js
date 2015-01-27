@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name fjshudApp
- * @description
- * # fjshudApp
- *
- * Main module of the application.
- */
 var hudweb = angular.module('fjshudApp', [
     'ngAnimate',
     'ngCookies',
@@ -85,12 +77,12 @@ hudweb.config(function ($routeProvider) {
 			controller: ['$scope', '$location', fjs.ui.ContactsWidget]
 		})
         .when('/contact/:contactId', {
-			templateUrl: 'views/ConversationWidget.html',
+			templateUrl: 'views/conversation/ConversationWidget.html',
 			controller: ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]
 		})
         .when('/group/:groupId', {
-			templateUrl: 'views/GroupSingleWidget.html',
-			controller: ['$scope', fjs.ui.TestWidget]
+			templateUrl: 'views/group/GroupSingleWidget.html',
+			controller: ['$scope', '$routeParams', 'HttpService', 'GroupService', fjs.ui.GroupSingleController]
 		})
         .when('/zoom', {
 			templateUrl: 'views/ZoomWidgetController.html',
@@ -105,7 +97,7 @@ hudweb.config(function ($routeProvider) {
 
 
 hudweb.service('HttpService',['$http','$rootScope','$location','$q',fjs.hud.httpService]);
-hudweb.service('GroupService',['$rootScope',fjs.hud.groupService]);
+hudweb.service('GroupService',['$q', '$rootScope',fjs.hud.groupService]);
 hudweb.service('ContactService',['$q', '$rootScope', 'HttpService',fjs.hud.contactService]);
 hudweb.service('QueueService',['$q', '$rootScope', 'HttpService',fjs.hud.queueService]);
 hudweb.service('ConferenceService',['$q', '$rootScope', 'HttpService',fjs.hud.conferenceService])
