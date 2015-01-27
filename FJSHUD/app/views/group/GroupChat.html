@@ -1,1 +1,40 @@
-chat
+<div class="ToolBar">
+    <div class="SearchInputBox DirectionalySearchInputBox">
+        <div class="SearchInputBoxInputHolder">
+            <input ng-model="query" class="SearchInputBoxInput" type="search" placeholder="Search" />
+        </div>
+        <div class="SearchInputBoxStateButton">
+            <div class="SearchInputBoxStateButtonIcon"></div>
+        </div>
+    </div>
+    <div class="XButton XButtonNormal" ng-click="fileShare()"><span>File Share</span></div>
+	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
+</div>
+		
+<div class="ListViewContent" id="ListViewContent" scroll-glue>
+    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages">
+        <div class="ListMessageLeft">
+            <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
+                <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
+                <div class="AvatarInteractable AvatarForeground"></div>
+            </div>
+        </div>
+        <div class="ListMessageContent AttachmentsHolder">
+            <div class="ListMessageHeader ChatOutbound">
+                <div class="ListMessageHeaderPrefix">...from</div>
+                <div class="ListMessageHeaderName">{{message.displayName}}</div>
+                <div class="time">{{::message.created | date: 'MMMM d'}}</div>
+            </div>
+            <div class="ChatMessageItem AttachmentsHolder">
+                <div class="time">{{::message.created | date: 'h:mm a'}}</div>
+                <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ChatInputBox">
+    <div class="ChatInputBoxBorder"></div>
+    <textarea ng-model="message" class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break"></textarea>
+    <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
+</div>

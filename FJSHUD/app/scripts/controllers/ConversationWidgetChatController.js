@@ -5,7 +5,7 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
     $scope.messages = [];
 	
 	// get initial messages from server
-	myHttpService.getChat($scope.contactID).then(function(data) {
+	myHttpService.getChat('contacts', $scope.contactID).then(function(data) {
 		version = data.h_ver;
 		
 		$scope.loading = false;
@@ -69,7 +69,7 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 			$scope.loading = true;
 			
 			// ping server
-			myHttpService.getChat($scope.contactID, version).then(function(data) {
+			myHttpService.getChat('contacts', $scope.contactID, version).then(function(data) {
 				version = data.h_ver;
 			
 				$scope.loading = false;
@@ -90,5 +90,4 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
     $scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
     });
-
 };

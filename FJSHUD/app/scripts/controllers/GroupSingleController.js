@@ -1,6 +1,7 @@
 fjs.ui.GroupSingleController = function($scope, $routeParams, myHttpService, groupService) {
 	$scope.groupID = $routeParams.groupId;
-	$scope.group = groupService.getGroup($scope.groupID);	
+	$scope.group = groupService.getGroup($scope.groupID);
+	$scope.isMine = groupService.isMine($scope.groupID);
 	
 	$scope.$on('groups_updated', function(event, data) {
 		var groups = data.groups;
@@ -12,12 +13,13 @@ fjs.ui.GroupSingleController = function($scope, $routeParams, myHttpService, gro
 				break;
 			}
 		}
-		
+				
+		$scope.isMine = groupService.isMine($scope.groupID);		
 		$scope.$safeApply();
 	});
 	
 	$scope.tabs = ['Chat', 'Members', 'Voicemails', 'Page'];
-	$scope.selected = 'Chat';
+	$scope.selected = 'Members';
 	
 	// display avatar for group member
     $scope.getAvatarUrl = function(index) {
