@@ -10,19 +10,20 @@ fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
 			conferences: conferences,
 		};
 	};
+
+	this.getConference = function(conferenceId){
+		for(conference in conferences){
+			if(conferences[conference].xpid == conferenceId){
+				return conferences[conference];
+			}
+		}
+	}
 	
-/*
-contactId: "1000015ad_1384827"
-displayName: "Glenn User"
-fdpConferenceId: "1000015ad_1"
-muted: false
-phone: "7340"
-ring: false
-started: 1422039133224
-xef001id: "32"
-xef001iver: "105"
-xef001type: "push"
-xpid: "1000015ad_32"*/
+	this.getConferenceRecordings = function(conferenceId){
+		for(conference in conferences){
+
+		}
+	}
 
 	$rootScope.$on("conferences_synced",function(event,data){
 		if(conferences.length  < 1 && data){
@@ -70,7 +71,35 @@ xpid: "1000015ad_32"*/
 				}
 			}
 		}
-
 		$rootScope.$broadcast('conferences_updated', formatData());
 	});
+
+	$rootScope.$on("conferencerecording_synced",function(event,data){
+		
+		for(conference in conferences){
+			conferences[conference].callrecordings = []
+			
+			for(key in data){
+				if(data[key].conferenceId == conferences[conference].xpid){
+					if(!containsConferenceRecording(conferences[conference], data[key])){
+						conferences[conference].callrecordings.push(data[key]);
+					}
+				}
+			}
+		}
+		$rootScope.$broadcast('conferences_updated', formatData());
+	});
+
+	containsConferenceRecording = function(conference, callrecording){
+		callrecordings = conference.callrecordings;
+		exist = false;
+		for(callrecording in callrecordings){
+			if(callrecordings[callrecording].xpid == callrecording.xpid){
+				exist = true;
+				return exist;
+			}
+		}
+
+		return exist;
+	}
 }

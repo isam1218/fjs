@@ -3,39 +3,24 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 	
 	$scope.loading = true;
     $scope.messages = [];
+	$scope.conversationType = 'conversation';
+	$scope.enableChat = true;
+	$scope.enableFileShare = true;
 	
 	// get initial messages from server
-	myHttpService.getChat($scope.contactID).then(function(data) {
+	myHttpService.getChat('contacts', $scope.contactID).then(function(data) {
 		version = data.h_ver;
 		
 		$scope.loading = false;
 		$scope.messages = data.items;		
-		$scope.addDetails();
+		addDetails();
 	});
 	
 	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
 		$scope.messages = $scope.messages.concat(data);
-		$scope.addDetails();
+		addDetails();
 	});
-	
-	// apply name and avatar
-	$scope.addDetails = function() {
-		// wait for sync to catch up
-		contactService.getContacts().then(function(data) {
-			for (i = 0; i < $scope.messages.length; i++) {
-				for (key in data) {
-					if (data[key].xpid == $scope.messages[i].from.replace('contacts:', '')) {
-						$scope.messages[i].avatar = data[key].getAvatar(28);
-						$scope.messages[i].displayName = data[key].displayName;
-						break;
-					}
-				}
-			}
-			
-			$scope.$safeApply();
-		});
-	};
 	
 	$scope.sendMessage = function() {
 		if (this.message == '')
@@ -61,6 +46,24 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 		}
 	};	
 	
+	// apply name and avatar
+	var addDetails = function() {
+		// wait for sync to catch up
+		contactService.getContacts().then(function(data) {
+			for (i = 0; i < $scope.messages.length; i++) {
+				for (key in data) {
+					if (data[key].xpid == $scope.messages[i].from.replace('contacts:', '')) {
+						$scope.messages[i].avatar = data[key].getAvatar(28);
+						$scope.messages[i].displayName = data[key].displayName;
+						break;
+					}
+				}
+			}
+			
+			$scope.$safeApply();
+		});
+	};
+	
 	var chatLoop = $interval(function() {
 		var scrollbox = document.getElementById('ListViewContent');
 		
@@ -69,12 +72,12 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 			$scope.loading = true;
 			
 			// ping server
-			myHttpService.getChat($scope.contactID, version).then(function(data) {
+			myHttpService.getChat('contacts', $scope.contactID, version).then(function(data) {
 				version = data.h_ver;
 			
 				$scope.loading = false;
 				$scope.messages = data.items.concat($scope.messages);				
-				$scope.addDetails();
+				addDetails();
 
 				// bump scroll down
 				if (scrollbox.scrollTop == 0)
@@ -90,5 +93,4 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
     $scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
     });
-
 };

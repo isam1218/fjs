@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div class="fj-vbox-cell fj-expanded-true" ng-if="ConversationType == 'conference'  && !joined">
+<div class="fj-vbox-cell fj-expanded-true" ng-if="conversationType == 'conference'  && !joined">
     <div class="TabWarning" >
         <div class="TabWarningHeader">Join conference call to use chat.</div>
         <div class="TabWarningMessage">You can see only messages sent during conference call.</div>
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div class="ChatInputBox" ng-if="chatDisplay">
+<div class="ChatInputBox" ng-if="enableChat">
     <div class="ChatInputBoxBorder"></div>
     <textarea ng-model="message" class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break"></textarea>
     <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>

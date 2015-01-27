@@ -228,14 +228,14 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 	};
 	
 	// retrieve chat messages
-	this.getChat = function(xpid, version) {
+	this.getChat = function(feed, xpid, version) {
 		var deferred = $q.defer();
 		
 		// format request object
 		var params = {
 			alt: 'j',
 			's.limit': 60,
-			'sh.filter': '{"type":"f.conversation","key":{"feedName":"contacts","xpid":"' + xpid + '"}}',
+			'sh.filter': '{"type":"f.conversation","key":{"feedName":"' + feed + '","xpid":"' + xpid + '"}}',
 			'sh.versions': '0:0@1100000000:' + (version ? version : 0) + '@d00000000:0'
 		};
 	

@@ -1,4 +1,5 @@
 fjs.hud.groupService = function($q, $rootScope) {	
+	var deferred = $q.defer();
 	var groups = [];
 	var favorites = {};
 	var favoriteID;
@@ -16,6 +17,13 @@ fjs.hud.groupService = function($q, $rootScope) {
 	this.getGroups = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
+	};
+	
+	this.isMine = function(xpid) {
+		if (mine)
+			return (xpid == mine.xpid);
+		else
+			return false;
 	};
 
 	var doesMemberExist = function(group,contact){

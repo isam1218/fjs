@@ -16,7 +16,7 @@ var feeds = ['me', 'contacts', 'locations',
 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 
 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
 'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers'
-,'conferencepermissions','conferencestatus'];
+,'conferencepermissions','conferencestatus','callrecording'];
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -86,8 +86,27 @@ function sync_request(f){
 			synced_data = JSON.parse(xmlhttp.responseText);
 			
 			for (feed in synced_data){
-				data_obj[feed] = format_array(synced_data[feed]);
-				synced_data[feed] = data_obj[feed];
+				if(feed == "callrecording"){
+					conference_recordings = [];
+					call_recordings = [];
+					recordings = format_array(synced_data[feed]);
+					for(callrecording in recordings){
+						if(recordings[callrecording].conferenceId){
+							conference_recordings.push(recordings[callrecording]);
+						}else{
+							call_recordings.push(recordings[callrecording]);
+						}
+					}
+					data_obj['callerrecording'] = call_recordings;
+					data_obj['conferencerecording'] = conference_recordings;
+					synced_data[feed] = data_obj['callerrecording'];
+					synced_data['conferencerecording'] = data_obj['conferencerecording'];
+				
+				}else{
+					data_obj[feed] = format_array(synced_data[feed]);
+					synced_data[feed] = data_obj[feed];
+				}
+
 			}
 			
 			var sync_response = {

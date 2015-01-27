@@ -66,7 +66,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/conference/:conferenceId', {
 			templateUrl: 'views/ConferenceWidget.html',
-			controller: ['$scope','ConferenceService','HttpService','$location', fjs.ui.ConferencesWidgetController]
+			controller: ['$scope','ConferenceService','HttpService','$routeParams','UtilService', fjs.ui.ConferenceWidgetConversationController]
 		})
         .when('/test', {
 			templateUrl: 'views/TestWidget.html',
@@ -131,7 +131,9 @@ hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.Chat
 // chat panel controllers:
 hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]);
 hudweb.controller("ConversationWidgetChatController", ['$scope', '$interval', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
-hudweb.controller("ConferencesWidgetController", ['$scope', 'DataManager', fjs.ui.ConferencesWidgetController]);
+hudweb.controller("ConferencesWidgetController", ['$scope','ConferenceService','HttpService','$location',fjs.ui.ConferencesWidgetController]);
+hudweb.controller("ConferenceWidgetConversationController", ['$scope','ConferenceService','HttpService','$routeParams','UtilService',fjs.ui.ConferenceWidgetConversationController]);
+
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 
 // Controllers registered for subpanels of conversation widget
@@ -141,7 +143,7 @@ hudweb.controller("ConversationWidgetCalllogController",['$scope','$routeParams'
 hudweb.controller("ConversationWidgetQueuesController",['$scope','$routeParams','$timeout','$filter','ContactService','HttpService', 'QueueService',fjs.ui.ConversationWidgetQueuesController ]);
 
 // group tabs
-hudweb.controller("GroupSingleChatController", ['$scope', fjs.ui.GroupSingleChatController]);
+hudweb.controller("GroupSingleChatController", ['$scope', '$interval', 'ContactService', 'HttpService', fjs.ui.GroupSingleChatController]);
 hudweb.controller("GroupSingleMembersController", ['$scope', fjs.ui.GroupSingleMembersController]);
 hudweb.controller("GroupSingleVoicemailsController", ['$scope', fjs.ui.GroupSingleVoicemailsController]);
 hudweb.controller("GroupSinglePageController", ['$scope', fjs.ui.GroupSinglePageController]);
