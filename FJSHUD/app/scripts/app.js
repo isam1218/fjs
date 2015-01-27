@@ -139,6 +139,12 @@ hudweb.controller("ConversationWidgetGroupsController",['$scope','$routeParams',
 hudweb.controller("ConversationWidgetCalllogController",['$scope','$routeParams','$timeout','$filter','HttpService','UtilService','ContactService', fjs.ui.ConversationWidgetCallLogController ]);
 hudweb.controller("ConversationWidgetQueuesController",['$scope','$routeParams','$timeout','$filter','ContactService','HttpService', 'QueueService',fjs.ui.ConversationWidgetQueuesController ]);
 
+// group tabs
+hudweb.controller("GroupSingleChatController", ['$scope', fjs.ui.GroupSingleChatController]);
+hudweb.controller("GroupSingleMembersController", ['$scope', fjs.ui.GroupSingleMembersController]);
+hudweb.controller("GroupSingleVoicemailsController", ['$scope', fjs.ui.GroupSingleVoicemailsController]);
+hudweb.controller("GroupSinglePageController", ['$scope', fjs.ui.GroupSinglePageController]);
+
 // Call Center and Queues
 hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
 
