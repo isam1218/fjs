@@ -3,7 +3,9 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 	
 	$scope.loading = true;
     $scope.messages = [];
-	
+	$scope.ConversationType = 'conversation';
+	$scope.chatDisplay = true;
+	$scope.enableFileShare = true;
 	// get initial messages from server
 	myHttpService.getChat('contacts', $scope.contactID).then(function(data) {
 		version = data.h_ver;
