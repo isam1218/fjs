@@ -1,0 +1,51 @@
+ <div>     
+        <div class="ListViewTopNote">
+                        <span style="font-size:12px;">You are not a member of this conference </span>
+                        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" value="Join"> </input> 
+                </div>
+
+            </div>
+
+            <div class="ToolBar" style="height:60px"> 
+                <div class="ConferenceMembers"> 
+                    <div class="Conference-HeaderTitle">Conference Members</div>
+                    
+
+                    <div class="Add SearchInputBox" style="top:20px">
+                        <div class="SearchInputBoxInputHolder">
+                            <input class="SearchInputBoxInput" type="text" placeholder="Add someone"></div>
+                        <div class="SearchInputBoxStateButton">
+                            <div class="SearchInputBoxStateButtonIcon"></div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            
+         
+
+            <div class="ListView fj-scrollable"> 
+            <div class="vmsection" ng-repeat="member in members" > 
+            
+                <div class="vmavatarsection Avatar AvatarNormal" > 
+                    <img class="vmavatar " ng-src="getMeAvatarUrl(member.contactId)" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
+                </div>
+
+                <div class="vminfo"> 
+                    <div class="displayName">
+                        <p class="ListDisplayName">
+                            <span> {{ member.displayName }} </span>
+                        </p>
+                        <div class="vmalternate">
+                            <div class="vmtime">duration</div>
+                        </div>
+                    </div> 
+                    <div class="footnote">
+                        <div class="XIconSetMic QueueStatus IconDisplay"></div>
+                        <div class="XIcon-QueueStatus- QueueStatus IconDisplay "></div>
+                        <div class="XIcon-ChatStatus-Available QueueStatus IconDisplay"></div>
+                    </div>
+                    
+                </div>
+        </div>
+    </div>
