@@ -68,10 +68,6 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/ConferenceWidget.html',
 			controller: ['$scope','ConferenceService','HttpService','$routeParams','UtilService','ContactService', fjs.ui.ConferenceWidgetConversationController]
 		})
-        .when('/test', {
-			templateUrl: 'views/TestWidget.html',
-			controller: ['$scope', fjs.ui.TestWidget]
-		})
         .when('/contacts', {
 			templateUrl: 'views/ContactsWidget.html',
 			controller: ['$scope', '$location', fjs.ui.ContactsWidget]
@@ -109,7 +105,7 @@ hudweb.service('UtilService',[UtilService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
-hudweb.controller("ContactsWidget", ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', fjs.ui.ContactsWidget]);
+hudweb.controller("ContactsWidget", ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', fjs.ui.ContactsWidget]);
 hudweb.controller("GroupsController", ['$scope', '$rootScope', 'HttpService', 'GroupService', fjs.ui.GroupsController]);
 hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', 'HttpService', fjs.ui.TopBarMeStatusController]);
 //hudweb.controller("MeWidgetController", fjs.ui.MeWidgetController);

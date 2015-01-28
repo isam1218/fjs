@@ -1,10 +1,12 @@
-fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactService, groupService) {
+fjs.ui.ContactsWidget = function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
     $scope.contacts = [];
 	$scope.add = {};
 	$scope.favorites = {};
+	$scope.timeElapsed = 0;
+	$scope.onCall = null;
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
 	// pull updates from service
@@ -89,6 +91,30 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 			return 'img/Generic-Avatar-28.png';
 	};
 	
+	$scope.showCallStatus = function($event, contact) {
+		$scope.onCall = contact;
+		$scope.$parent.showOverlay('callstatus');
+		
+		updateTime();
+		
+		$event.stopPropagation();
+        $event.preventDefault();
+	};
+	
+	var updateTime = function() {
+		if ($scope.onCall.call) {
+			// format date
+			var date = new Date().getTime();
+			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.startedAt, 'mm:ss');
+		
+			// increment
+			if ($scope.$parent.overlay == 'callstatus')
+				$timeout(updateTime, 1000);
+		}
+		else
+			$scope.$parent.showOverlay(false);
+	};
+	
 	/**
 		ADD/EDIT CONTACTS
 	*/
@@ -118,7 +144,7 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 	$scope.editContact = function(contact) {
 		// only edit externals
 		if (contact.primaryExtension == '') {
-			$scope.$parent.showOverlay(true, true);
+			$scope.$parent.showOverlay('contacts', true);
 			
 			$scope.add.pid = contact.xpid;
 			$scope.add.displayName = contact.displayName;
@@ -152,6 +178,6 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, myHttpService, contactServi
 	};
 
     $scope.$on("$destroy", function() {
-
+		
     });
 };

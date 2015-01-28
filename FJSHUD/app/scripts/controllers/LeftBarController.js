@@ -9,9 +9,7 @@ fjs.ui.LeftBarController = function($scope, myHttpService) {
 			
 		if (!show)
 			$scope.overlay = '';
-		else if ($scope.tab != 'groups')
-			$scope.overlay = 'contacts';
 		else
-			$scope.overlay = 'groups';
+			$scope.overlay = show;
 	};
 };
