@@ -1,15 +1,5 @@
-fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
-
-
+fjs.hud.conferenceService = function($q, $rootScope, httpService) {
 	var conferences = [];
-
-	
-	var formatData = function() {
-		// format data that controller needs
-		return {
-			conferences: conferences,
-		};
-	};
 
 	this.getConference = function(conferenceId){
 		for(conference in conferences){
@@ -17,20 +7,50 @@ fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
 				return conferences[conference];
 			}
 		}
-	}
+	};
+	
+	this.getConferences = function() {
+		// wake shared worker
+		httpService.getFeed("conferences");
+		httpService.getFeed("conferencestatus");
+		httpService.getFeed("conferencemembers");
+		httpService.getFeed("conferencepermissions");
+		
+		return conferences;
+	};
 	
 	this.getConferenceRecordings = function(conferenceId){
 		for(conference in conferences){
 
 		}
-	}
+	};
+
+	var containsConferenceRecording = function(conference, callrecording){
+		callrecordings = conference.callrecordings;
+		exist = false;
+		for(callrecording in callrecordings){
+			if(callrecordings[callrecording].xpid == callrecording.xpid){
+				exist = true;
+				return exist;
+			}
+		}
+
+		return exist;
+	};
+	
+	/**
+		SYNCING
+	*/
 
 	$rootScope.$on("conferences_synced",function(event,data){
-		if(conferences.length  < 1 && data){
+		if (conferences.length  < 1 && data) {
 			conferences = data;
+			
+			// pull feed again in case shared worker got ahead of us
+			httpService.getFeed('server');
 		}
-		$rootScope.$broadcast('conferences_updated', formatData());
-
+		
+		$rootScope.$broadcast('conferences_updated', conferences);
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
@@ -43,7 +63,7 @@ fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', formatData());
+		$rootScope.$broadcast('conferences_updated', conferences);
 
 	});
 
@@ -57,7 +77,7 @@ fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', formatData());
+		$rootScope.$broadcast('conferences_updated', conferences);
 
 	});
 
@@ -71,7 +91,7 @@ fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', formatData());
+		$rootScope.$broadcast('conferences_updated', conferences);
 	});
 
 	$rootScope.$on("conferencerecording_synced",function(event,data){
@@ -87,19 +107,11 @@ fjs.hud.conferenceService = function($q, $rootScope, myHttpService) {
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', formatData());
+		$rootScope.$broadcast('conferences_updated', conferences);
 	});
-
-	containsConferenceRecording = function(conference, callrecording){
-		callrecordings = conference.callrecordings;
-		exist = false;
-		for(callrecording in callrecordings){
-			if(callrecordings[callrecording].xpid == callrecording.xpid){
-				exist = true;
-				return exist;
-			}
-		}
-
-		return exist;
-	}
+	
+	// TO DO: all of it
+	$rootScope.$on("conferencepermissions_synced", function(event, data) {
+		
+	});
 }

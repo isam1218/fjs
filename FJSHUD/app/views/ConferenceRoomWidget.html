@@ -7,19 +7,19 @@
         <div class="WidgetStat">
             <div class="WidgetStatEntry c00">
                 <div class="Label">Occupied:</div>
-                <div class="Value">{{occupiedConferences.length}}</div>
+                <div class="Value">{{ totals.occupied }}</div>
             </div>
             <div class="WidgetStatEntry c01">
                 <div class="Label">Rooms:</div>
-                <div class="Value">{{conferences.length}}</div>
+                <div class="Value">{{ conferences.length }}</div>
             </div>
             <div class="WidgetStatEntry c10">
                 <div class="Label">Talking:</div>
-                <div class="Value">{{talkingMembers.length}}</div>
+                <div class="Value">{{ totals.talking }}</div>
             </div>
             <div class="WidgetStatEntry c11">
                 <div class="Label">Total:</div>
-                <div class="Value">{{conferenceMembers.length}}</div>
+                <div class="Value">{{ totals.all }}</div>
             </div>
         </div>
     </div>
@@ -38,14 +38,15 @@
 		
         <div class="WidgetTabContent">
             <div class="ToolBar">
-                <div class="SelectBox XButton" data-ng-click="showSortMenu($event)">
-                    <div class="SelectBoxText"> Sort by {{sortedBy}}</div>
-                    <div class="SelectBoxArrow"></div>
-                </div>
-                <button class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findMyFreeAndJoin()">Find&nbsp;Free&nbsp;Room&nbsp;&amp;&nbsp;Join</button>
+                <select ng-model="sortBy" class="SelectBox XButton">
+                    <option value="location">Sort By Location</option>
+                    <option value="extensionNumber">Sort By Room Number</option>
+                    <option value="members.length">Sort By Activity</option>
+                </select>
+                <input type="button" value="Find Free Room & Join" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="text" x-webkit-speech="" placeholder="Search">
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="Search" />
                     </div>
                     <div class="SearchInputBoxStateButton">
                         <div class="SearchInputBoxStateButtonIcon"></div>
@@ -62,7 +63,7 @@
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
 					
-                    <a href="#/conference/{{::conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences track by conference.xpid">
+                    <a href="#/conference/{{::conference.xpid}}" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid">
                         <div class="ConferenceAvatarSection Avatar AvatarNormal">
                             <div class="GroupAvatarItem GroupAvatarItem_0">
 								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
@@ -81,8 +82,8 @@
                         </div>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
-                                <div class="name"> Room # {{conference.roomNumber}} ({{conference.extensionNumber}})</div>
-                                <span class="link" ng-if="conference.location">at {{conference.location}}</span>
+                                <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+                                <span class="link" ng-if="conference.location">at {{::conference.location}}</span>
 								
                                 <div data-ng-if="conference.members.length == 0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
