@@ -8,7 +8,7 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
     $scope.data = {};
     $scope.voicemails;     
     $scope.query = "";
-
+    $scope.meModel = {};
     $scope.sort_options = [{display_name:"Alphabetically", type:"name"},
     {display_name:"Newest First", type:"new"},
     {display_name:"Oldest First", type:"old"},
@@ -31,6 +31,7 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
 
     //$scope.contact = contactModel.items[$routeParams.contactId];
 	httpService.getFeed('voicemailbox');
+    httpService.getFeed('me');
     $scope.$on(function(event,data) {
         // find this contact
         for (i in data) {
@@ -48,8 +49,17 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
     };
 
     voicemailService.then(function(data){
-        $scope.voicemails = data;
-        $scope.data.voicemails = data;
+
+        voiceMails = [];
+
+
+        for(voicemail in data){
+                if(data[voicemail].contactId == $scope.contactId){
+                    voiceMails.push(data[voicemail]);
+                }
+        }   
+        $scope.voicemails = voiceMails;
+        $scope.data.voicemails = voiceMails;
     });
 
     //var voicemail = 
@@ -101,21 +111,23 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
     MarkReadVoiceMails = function(isRead){
         voicemailIds = "";
         for(voicemail in $scope.voicemails){
-            voicemail.readStatus = isRead;
+            $scope.voicemails[voicemail].readStatus = isRead;
             xpid = $scope.voicemails[voicemail].xpid;
             voicemailIds = voicemailIds.concat(xpid.toString() + ",");
         }
         httpService.sendAction("voicemailbox","setReadStatusAll",{'read':isRead, ids: voicemailIds});
+    	$scope.$safeApply();
     }
 
 
     DeleteReadVoiceMails = function(){
         voicemailIds = "";
         for(voicemail in $scope.voicemails){
-            if(voicemail.readStatus){
+            if($scope.voicemails[voicemail].readStatus){
                 xpid = $scope.voicemails[voicemail].xpid;
                 voicemailIds = voicemailIds.concat(xpid.toString() + ",");
-        
+        		$scope.voicemails.splice(voicemail,1);
+       
             }
         }
         httpService.sendAction("voicemailbox","removeReadMessages",{messages: voicemailIds});
@@ -163,8 +175,14 @@ fjs.ui.ConversationWidgetVoicemailsController = function($scope, $routeParams, $
     };
    
 
-    $scope.$on("",function(){
-
+    $scope.$on("me_synced",function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
+       $scope.$apply();
     });
 
 };

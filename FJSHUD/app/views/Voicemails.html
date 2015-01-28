@@ -37,10 +37,11 @@
             </div>
 
             <div class="vminfo"> 
-                    <div class="displayName">Me to 
+                    <div class="displayName"><span ng-if="voicemail.phone == meModel.primary_extension"><i> Me to</i> </span>  
+                    <span ng-if="voicemail.phone != meModel.primary_extension"> <i>from...</i> </span>  
                         <p class="vmdisplay">
-                            <b ng-if="!voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </b>
-                            <span ng-if="voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </span>
+                            <b ng-show="!voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </b>
+                            <span ng-show="voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </span>
                         </p>
                         <div class="vmalternate">
                             <div class="vmtime">{{ formate_date(voicemail.date) }} </div>

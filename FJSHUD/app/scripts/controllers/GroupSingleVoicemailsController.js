@@ -115,7 +115,7 @@ fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParams,voicemailS
     MarkReadVoiceMails = function(isRead){
         voicemailIds = "";
         for(voicemail in $scope.voicemails){
-            voicemail.readStatus = isRead;
+            $scope.voicemails[voicemail].readStatus = isRead;
             xpid = $scope.voicemails[voicemail].xpid;
             voicemailIds = voicemailIds.concat(xpid.toString() + ",");
         }
@@ -126,10 +126,10 @@ fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParams,voicemailS
     DeleteReadVoiceMails = function(){
         voicemailIds = "";
         for(voicemail in $scope.voicemails){
-            if(voicemail.readStatus){
+            if($scope.voicemails[voicemail].readStatus){
                 xpid = $scope.voicemails[voicemail].xpid;
                 voicemailIds = voicemailIds.concat(xpid.toString() + ",");
-        
+        		$scope.voicemails.splice(voicemail,1);
             }
         }
         httpService.sendAction("voicemailbox","removeReadMessages",{messages: voicemailIds});
