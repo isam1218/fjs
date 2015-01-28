@@ -1,1 +1,42 @@
-members
+<div class="ToolBar">
+        <div class="SearchInputBox">
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search"></div>
+            <div class="SearchInputBoxStateButton">
+                <div class="SearchInputBoxStateButtonIcon"></div>
+            </div>
+        </div>
+        <div></div>
+        <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
+                    ng-options="sort_option.display_name for sort_option in sort_options"
+                ng-change="sortBy(selectedSort.type)"
+        > 
+        </select>
+        
+</div>
+
+
+  <div class="ListView fj-scrollable"> 
+            <div class="vmsection" > 
+            
+                <div class="vmavatarsection Avatar AvatarNormal" > 
+                    <img class="vmavatar " ng-src="getMeAvatarUrl(member.contactId)" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
+                </div>
+
+                <div class="vminfo"> 
+                    <div class="displayName">
+                        <p class="ListDisplayName">
+                            <span> Glen User </span>
+                        </p>
+                        <div class="vmalternate">
+                            <div class="vmtime">#7340</div>
+                        </div>
+                    </div> 
+                    <div class="footnote">
+                        <div class="XIconSetMic QueueStatus IconDisplay"></div>
+                        <div class="XIcon-QueueStatus- QueueStatus IconDisplay "></div>
+                        <div class="XIcon-ChatStatus-Available QueueStatus IconDisplay"></div>
+                    </div>
+                    
+                </div>
+        </div>
+    </div>

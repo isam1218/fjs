@@ -35,10 +35,13 @@
             </a>
         </div>
 
-        <div ng-if="cTabSelected=='chat'" class="ListView ChatView WithToolBar" ng-include="'views/conversation/ConversationChat.html'"
+        <div ng-if="cTabSelected=='chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'"
+        ng-controller="ConferenceWidgetConversationController"
         ></div>
 
-        <div ng-if="cTabSelected=='CurrentCall'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"></div>
+        <div ng-if="cTabSelected=='CurrentCall'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
+        ng-controller="ConferenceWidgetConversationController"
+        ></div>
         <div ng-if="cTabSelected=='Recordings'" class="fj-content WidgetTabContent" ng-include="'views/conference/ConferenceRecordings.html'"></div>
         
     </div>

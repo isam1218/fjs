@@ -236,7 +236,7 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 			alt: 'j',
 			's.limit': 60,
 			'sh.filter': '{"type":"f.conversation","key":{"feedName":"' + feed + '","xpid":"' + xpid + '"}}',
-			'sh.versions': '0:0@1100000000:' + (version ? version : 0) + '@d00000000:0'
+			'sh.versions': '0:0@1100000000:' + (version ? version : 0) 
 		};
 	
 		$http({
