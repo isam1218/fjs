@@ -29,7 +29,7 @@ fjs.hud.groupService = function($q, $rootScope) {
 	var doesMemberExist = function(group,contact){
 		if(group.members){
 			for(member in group.members){
-				if(group.members[member].xpid == contact.xpid){
+				if(group.members[member].contactId  == contact.contactId){
 					return true;
 				}
 			}
