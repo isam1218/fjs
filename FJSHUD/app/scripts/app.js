@@ -102,7 +102,6 @@ hudweb.service('QueueService',['$q', '$rootScope', 'HttpService',fjs.hud.queueSe
 hudweb.service('ConferenceService',['$q', '$rootScope', 'HttpService',fjs.hud.conferenceService])
 hudweb.factory('VoicemailService',['$q','$rootScope',fjs.hud.VoicemailService]);
 hudweb.service('UtilService',[UtilService]);
-hudweb.service('QueueService',['$q', '$rootScope', 'HttpService',fjs.hud.queueService]);
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);

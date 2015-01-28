@@ -4,7 +4,7 @@ fjs.hud.queueService = function($http, $rootScope, $location, $q){
 	var formatData = function() {
 		// format data that controller needs
 		return {
-			queues: queues,
+			queues: queues
 		};
 	};
 
@@ -30,7 +30,7 @@ fjs.hud.queueService = function($http, $rootScope, $location, $q){
 
 	$rootScope.$on("queue_members_status_synced",function(event,data){
 		for(i = 0; i < queues.length; i++){
-			 
+
 			if(queues[i].members && queues[i].members.length > 0){
 				for(j = 0; j < queues[i].members.length; j++){
 					for (key in data){
@@ -51,8 +51,10 @@ fjs.hud.queueService = function($http, $rootScope, $location, $q){
 				if(data[key].xpid == queues[i].xpid){
 					queues[i].info = data[key];
 				}
-			}	 
+			}
 		}
 		$rootScope.$broadcast('queues_updated',formatData());
 	});
+
+
 }

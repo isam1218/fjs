@@ -3,14 +3,17 @@ fjs.ui.CallCenterController = function($scope, $rootScope, myHttpService, contac
   $scope.sortField = "displayName";
   $scope.sortReverse = false;
   $scope.queues = [];
-  $scope.add = {};
   $scope.contacts = {};
   $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
+  myHttpService.getFeed('queuelogoutreasons');
   myHttpService.getFeed('queues');
+  myHttpService.getFeed('queue_members');
+  myHttpService.getFeed('queue_members_status');
+  myHttpService.getFeed('queue_stat_calls');
 
   $scope.$on('queues_updated', function(event, data) {
-    $scope.queues = data;
+    $scope.queues = data.queues;
     $scope.$safeApply();
   });
 
@@ -48,7 +51,7 @@ fjs.ui.CallCenterController = function($scope, $rootScope, myHttpService, contac
               return true;
             }
             break;
-          case 'queeus':
+          case 'queues':
             if ($scope.queues[queue.xpid] !== undefined)
               return true;
             break;
@@ -86,4 +89,17 @@ fjs.ui.CallCenterController = function($scope, $rootScope, myHttpService, contac
   $scope.$on("$destroy", function() {
 
   });
+
+  $scope.getAvatarUrl = function(queue, index) {
+
+    if(queue.members){
+      if (queue.members[index] !== undefined) {
+        var xpid = queue.members[index].xpid;
+        return myHttpService.get_avatar(xpid,14,14);
+      }
+      else
+        return 'img/Generic-Avatar-14.png';
+
+    }
+  };
 };
