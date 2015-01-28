@@ -1,9 +1,12 @@
-fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParam) {
+fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParams,voicemailService,groupService,httpService,utilService) {
 	$scope.groupId = $routeParams.groupId;
     $scope.data = {};
     $scope.voicemails;     
     $scope.query = "";
-
+    $scope.meModel = {};
+    $scope.group = groupService.getGroup($scope.groupId);
+    $scope.members = $scope.group.members;
+        
     $scope.sort_options = [{display_name:"Alphabetically", type:"name"},
     {display_name:"Newest First", type:"new"},
     {display_name:"Oldest First", type:"old"},
@@ -42,11 +45,27 @@ fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParam) {
         return myHttpService.get_avatar(xpid,width,height);
     };
 
-    voicemailService.then(function(data){
-        $scope.voicemails = data;
-        $scope.data.voicemails = data;
-    });
+    
 
+    this.filterGroupVoiceMails = function(voicemails){
+       
+        return groupVoiceMails;
+    }
+
+    voicemailService.then(function(data){
+    	 groupVoiceMails = [];
+
+        for(index in $scope.members){
+
+            for(voicemail in data){
+                if(data[voicemail].contactId == $scope.members[index].contactId){
+                    groupVoiceMails.push(data[voicemail]);
+                }
+            }   
+        }
+        $scope.voicemails = groupVoiceMails;
+        $scope.data.voicemails = groupVoiceMails;
+    });
     //var voicemail = 
 	// override data, where "stack" comes from ng-repeat
     if (typeof $scope.stack !== "undefined") {
@@ -156,9 +175,32 @@ fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParam) {
             $scope.$safeApply();
         }
     };
+
+    $scope.$on('groups_updated', function(event, data) {
+            
+        $scope.group = groupService.getGroup($scope.groupId);
+        
+        $scope.members = $scope.group.members;
+        
+        if($scope.members){
+            for(member in $scope.members){
+                contact = contactService.getContact($scope.members[member].contactId);
+                $scope.members[member] = contact;
+                $scope.members[member].contactId = contact.xpid;
+            }
+        }
+        $scope.isMine = groupService.isMine($scope.groupId);        
+        $scope.$safeApply();
+    });
    
 
-    $scope.$on("",function(){
-
+    $scope.$on("me",function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
+       $scope.$apply();
     });
 };

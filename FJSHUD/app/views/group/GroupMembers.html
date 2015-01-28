@@ -14,35 +14,7 @@
         
 </div>
 
- <!--<a href="#/group/{{::group.xpid}}" data-ng-repeat="member in members | filter: {name: query}" class="GroupRow ListRowFirst ListRow-Contact">
-        <div class="Avatar AvatarNormal">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="AvatarInteractable"></div>
-        </div>
-        <div class="ListRowContent">
-            <div class="ListRowTitle">
-                <div class="name">
-                    <b>{{ ::group.name }}</b>
-                    <span class="details">{{ ::group.members.length }}</span>
-                </div>
-            </div>
-            <div class="GroupRowStatus">#{{ ::group.extension }}</div>
-        </div>
-    </a>-->
-
-
-  <div class="ListView fj-scrollable"> 
+ <div class="ListView fj-scrollable"> 
             <a  href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection" ng-repeat= "member in members | filter: {displayName:query}"> 
             
                 <div class="vmavatarsection Avatar AvatarNormal" > 
