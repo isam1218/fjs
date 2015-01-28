@@ -1,17 +1,8 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpService, $route) {
-    fjs.ui.Controller.call(this, $scope);
+fjs.ui.ConferencesWidgetController = function($scope, conferenceService, httpService) {
     var context = this;
-     $scope.param = $route.path();
     $scope.warning = "";
-
-
-    if($scope.param == "/conferences/all"){
-       $scope.warning = "You may have limited control over some rooms in this list, such as adding or removing other users.";
-    }else{
-       $scope.warning = "These are the rooms that you have advanced permissions to use, such as adding or removing other users.";
-    }
+	$scope.tab = 'my';
+	
     httpService.getFeed("conferences");
     httpService.getFeed("conferencestatus");
     httpService.getFeed("conferencemembers");
@@ -21,9 +12,6 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     this.defaultSortMode = "location";
     this.selectedSortMode = undefined;
     this.sortMenuItems = {location:"Location", number: "Room Number", activity: "Activity"};
-
-
-   
 
     $scope.getSortMode = function(){
         return context.selectedSortMode || context.defaultSortMode;
@@ -63,18 +51,17 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     };
 
     $scope.getAvatarUrl = function(conference, index) {
-        
-        if(conference.members){
+        if (conference.members) {
             if (conference.members[index] !== undefined) {
                 var xpid = conference.members[index].contactId;
-                return myHttpService.get_avatar(xpid,14,14);
+                return httpService.get_avatar(xpid,28,28);
             }
             else
-                return 'img/Generic-Avatar-14.png';
-
+                return 'img/Generic-Avatar-28.png';
         }
+        else
+            return 'img/Generic-Avatar-28.png';
     };
-
 
     $scope.$on("conferences_updated", function(event,data){
         $scope.conferences = data.conferences;
@@ -82,5 +69,3 @@ fjs.ui.ConferencesWidgetController = function($scope,conferenceService,httpServi
     });
 
 };
-
-fjs.core.inherits(fjs.ui.ConferencesWidgetController, fjs.ui.Controller)

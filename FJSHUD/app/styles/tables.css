@@ -48,6 +48,7 @@
   display: inline-block;
   height: 24px;
   line-height: 24px;
+  color: gray;
 }
 .ListConferenceStatusIcon {
   position: relative;
@@ -811,4 +812,9 @@
 .ListRow:hover .CallButton,
 .ListMessage:hover .CallButton {
   opacity: 1;
+}
+.ListDisplayName {
+  padding-left: 5px;
+  margin-top: 0px;
+  display: inline-block;
 }

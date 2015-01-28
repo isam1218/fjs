@@ -1,4 +1,4 @@
-<div class="fj-widget-area Widget">
+<div class="fj-widget-area Widget Conference">
     <div class="WidgetHeader">
         <div class="Avatar AvatarApp">
             <div class="TopBarItemAppIcon Conferences"></div>
@@ -23,17 +23,19 @@
             </div>
         </div>
     </div>
+	
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-            <a href="#/conferences/my" class="WidgetTabBarButton Ready" ng-class="param == '/conferences/my' ? 'fj-selected-item': ''">
+            <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'my' ? 'fj-selected-item': ''" ng-click="tab = 'my'">
                 <div class="inner">My Rooms</div>
                 <div class="arrow"></div>
             </a>
-            <a href="#/conferences/all" class="WidgetTabBarButton Ready" ng-class="param == '/conferences/all' ? 'fj-selected-item': ''">
+            <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'all' ? 'fj-selected-item': ''" ng-click="tab = 'all'">
                 <div class="inner">All Rooms</div>
                 <div class="arrow"></div>
             </a>
         </div>
+		
         <div class="WidgetTabContent">
             <div class="ToolBar">
                 <div class="SelectBox XButton" data-ng-click="showSortMenu($event)">
@@ -54,49 +56,49 @@
             <div class="ListView WithToolBar">
                 <div class="InlineList">
                     <div class="ListViewTopNote" data-ng-hide="hideNote">
-                        <span>{{ warning }}</span>
+                        <span ng-if="tab == 'all'">You may have limited control over some rooms in this list, such as adding or removing other users.</span>
+						<span ng-if="tab == 'my'">These are the rooms that you have advanced permissions to use, such as adding or removing other users.</span>
+						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <!--| SortConference:getSortMode() | filter:isMyConference | filter:query-->
-                    <a href="#/conference/{{::conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences">
+					
+                    <a href="#/conference/{{::conference.xpid}}" class="ListRow ListRow-Conference"  data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="conference in conferences track by conference.xpid">
                         <div class="ConferenceAvatarSection Avatar AvatarNormal">
-                                <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
-                                                                                    data-ng-src="{{ locagetAvatar(0, 19, 19) }}">
-                                </div>
-                                <div class="GroupAvatarItem GroupAvatarItem_1">
-                                    <img class="GroupAvatarItemImg"
-                                         data-ng-src="{{ getAvatar(1, 19, 19) }}">
-                                </div>
-                                <div class="GroupAvatarItem GroupAvatarItem_2">
-                                    <img class="GroupAvatarItemImg"
-                                         data-ng-src="{{ getAvatar(2, 19, 19) }}">
-                                </div>
-                                <div class="GroupAvatarItem GroupAvatarItem_3">
-                                    <img class="GroupAvatarItemImg" data-ng-src="{{ getAvatar(3, 19, 19) }}">
-                                </div>
-                                <div class="AvatarInteractable"></div>
-                            </div>
+                            <div class="GroupAvatarItem GroupAvatarItem_0">
+								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+                            <div class="GroupAvatarItem GroupAvatarItem_1">
+								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+                            <div class="GroupAvatarItem GroupAvatarItem_2">
+								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+							<div class="GroupAvatarItem GroupAvatarItem_3">
+								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+							
+                            <div class="AvatarInteractable"></div>
+                        </div>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
                                 <div class="name"> Room # {{conference.roomNumber}} ({{conference.extensionNumber}})</div>
                                 <span class="link" ng-if="conference.location">at {{conference.location}}</span>
+								
                                 <div data-ng-if="conference.members.length == 0">
-                                    <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline">
-                                </div>
-                                <div class="ListConferenceStatusText">Free room</div>
-                                </div>
-                            
-                                <div data-ng-if="conference.members.length > 0" class="ListRowStatus">
-                                    <div class="ListRowStatusIcon XIcon-ChatStatus-Available">
-                                </div>
-                                <div  class="ListRowStatusText">{{conference.members.length}} member(s) on a call</div>
-                            </div> 
+                                    <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
+									<div class="ListConferenceStatusText">Free room</div>
+                                </div>                            
+                                <div data-ng-if="conference.members.length > 0">
+                                    <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
+									<div class="ListConferenceStatusText">{{conference.members.length}} member(s) on a call</div>
+								</div> 
                             </div>
-                                                   </div>
+                        </div>
+						
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
                                 <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
-                                    <img class="AvatarImgPH" data-ng-src="{{member.getContact().getAvatarUrl(28, 28)}}">
+                                    <img class="AvatarImgPH" data-ng-src="{{getAvatarUrl(conference, $index)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
                                     <div class="AvatarInteractable"></div>
                                 </div>
                                 <div class="first-name">{{member.displayName}}</div>
