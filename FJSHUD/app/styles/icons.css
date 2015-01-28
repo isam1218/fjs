@@ -54,6 +54,17 @@
   width: 1.18em;
   height: 1.18em;
 }
+.GroupAvatarItemLrg {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 1.48em;
+  height: 1.48em;
+}
+.GroupAvatarItemLrg img {
+  width: 100%;
+  height: 100%;
+}
 .AvatarNormal .GroupAvatarItemImg {
   position: absolute;
   left: 0;
@@ -177,6 +188,13 @@
 .XIcon-CallLog-Outbound,
 .XIcon-CallLog-outbound {
   background: url("../img/XIcon-CallLog-Outbound.png") no-repeat 0 0;
+}
+.XIconSetMic {
+  background: url("../img/XIconSet-24x24.png") no-repeat 0px 0px;
+}
+.IconDisplay {
+  height: 24px;
+  width: 24px;
 }
 .QueueStatus {
   display: inline-block;
