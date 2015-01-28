@@ -30,7 +30,7 @@
     <!--<react-component name="Voicemailbox" props="data"></react-component>-->
     
     <div class="ListView fj-scrollable"> 
-        <div class="vmsection" ng-repeat="voicemail in voicemails | ContactVoicemailsFilter : contactId | filter: { displayName:query }"> 
+        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: { displayName:query }"> 
             
             <div class="vmavatarsection AvatarNormal" > 
                     <img class="vmavatar " ng-src="getMeAvatarUrl(voicemail.contactId,50,50)" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
