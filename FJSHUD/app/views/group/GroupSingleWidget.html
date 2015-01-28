@@ -1,6 +1,6 @@
 <div class="Widget Conversation Group">
     <div class="WidgetHeader" context-menu="contact">
-        <div class="Avatar AvatarNormal">
+        <div class="ConversationAvatarSection Avatar AvatarNormal" style="width:43px">
             <div class="GroupAvatarItem GroupAvatarItem_0">
 				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(0) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
             </div>
@@ -32,7 +32,7 @@
         
         <div ng-if="selected == 'Members'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupMembers.html'" ng-controller="GroupSingleMembersController"></div>
         
-        <div ng-if="selected == 'Voicemails'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupVoicemails.html'" ng-controller="GroupSingleVoicemailsController"></div>
+        <div ng-if="selected == 'Voicemails'" class="fj-content WidgetTabContent" ng-include="'views/Voicemails.html'" ng-controller="GroupSingleVoicemailsController"></div>
         
         <div ng-if="selected == 'Page'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupPage.html'" ng-controller="GroupSinglePageController"></div>
 	</div>

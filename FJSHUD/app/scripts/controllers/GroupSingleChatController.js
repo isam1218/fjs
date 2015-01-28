@@ -18,7 +18,12 @@ fjs.ui.GroupSingleChatController = function($scope, $interval, contactService, m
 	
 	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		$scope.messages = $scope.messages.concat(data);
+		for (key in data) {			
+			// only attach messages related to this group
+			if (data[key].to.replace('groups:', '') == $scope.groupID)
+				$scope.messages.push(data[key]);
+		}
+		
 		addDetails();
 	});
 	

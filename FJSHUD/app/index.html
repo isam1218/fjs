@@ -60,7 +60,7 @@
 					<div class="ContactSearch">
 						<div ng-show="tab != 'favorites'">
 							<input type="search" class="Search" placeholder="Search" ng-model="query" />
-							<input type="button" value="New" class="New XButton" ng-click="showOverlay(true)" />
+							<input type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay('groups') : showOverlay('contacts')" />
 						</div>
 						
 						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="Add Someone" contact-search ng-controller="ContactsWidget" />
@@ -273,7 +273,6 @@
     <script src="scripts/controllers/ConversationWidgetVoicemailsController.js"></script>
     <script src="scripts/controllers/ConversationWidgetQueuesController.js"></script>
     <script src="scripts/controllers/ConversationWidgetCallLogController.js"></script>
-    <script src="scripts/controllers/TestWidgetController.js"></script>
     <script src="scripts/controllers/SearchInputController.js"></script>
     <script src="scripts/controllers/SearchWidgetController.js"></script>
     <script src="scripts/controllers/MyCallController.js"></script>

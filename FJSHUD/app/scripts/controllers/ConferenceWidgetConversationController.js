@@ -1,20 +1,24 @@
 fjs.core.namespace("fjs.ui");
 
-fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceService,httpService, $routeParams,utilService) {
-	$scope.ConversationType = 'conference';
+fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceService,httpService, $routeParams,utilService,contactService) {
+	$scope.conversationType = 'conference';
 
-    $scope.chatDisplay = true;
+    $scope.enableChat = true;
     $scope.joined = false;
     $scope.cTabSelected = "CurrentCall";
 	$scope.conferenceId = $routeParams.conferenceId;
 	$scope.enableFileShare = false;
+	httpService.getFeed("me");
+	httpService.getFeed("conferencestatus")
 	httpService.getFeed("conferencemembers");
 	$scope.members = [];
+	$scope.meModel = {};
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
 
 	$scope.formate_date = function(time){
         return utilService.formatDate(time,true);
     }
+
 
     $scope.formatDuration = function(duration){
         var time =   duration/1000;
@@ -57,17 +61,25 @@ fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceServic
 		
 		$scope.loading = false;
 		$scope.messages = data.items;		
-		//$scope.addDetails();
+		$scope.addDetails();
 	});
 	
 	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		$scope.messages = $scope.messages.concat(data);
-		//$scope.addDetails();
+		conferenceMessages = [];
+		for(key in data){
+			message = data[key];
+			contactId = message.context.split(":")[1]
+			if( contactId == $scope.conferenceId ){
+				conferenceMessages.push(data[key]);
+			}
+		}
+		$scope.messages = $scope.messages.concat(conferenceMessages);
+		$scope.addDetails();
 	});
 	
 	// apply name and avatar
-	/*$scope.addDetails = function() {
+	$scope.addDetails = function() {
 		// wait for sync to catch up
 		contactService.getContacts().then(function(data) {
 			for (i = 0; i < $scope.messages.length; i++) {
@@ -82,7 +94,18 @@ fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceServic
 			
 			$scope.$safeApply();
 		});
-	};*/
+	};
+
+	$scope.joinConference = function(){
+
+		params = {
+			conferenceId: $scope.conferenceId,
+			contactId: $scope.meModel.my_pid,
+		}
+
+		httpService.sendAction("conferences","joinContact",params);
+
+	}
 
     $scope.sendMessage = function() {
 		if (this.message == '')
@@ -95,7 +118,7 @@ fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceServic
 			message: this.message,
 		};
 		
-		myHttpService.sendAction('streamevent', 'sendConversationEvent', data);
+		httpService.sendAction('streamevent', 'sendConversationEvent', data);
 		
 		this.message = '';
 	};
@@ -105,7 +128,7 @@ fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceServic
    		if($scope.conference){
    			if($scope.conference.status){
 				$scope.joined = $scope.conference.status.isMeJoined;
-    			$scope.chatDisplay = $scope.joined;
+    			$scope.enableChat = $scope.joined;
     			$scope.enableFileShare = $scope.joined;
     		}
 
@@ -115,8 +138,19 @@ fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceServic
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;
     		}
+    		$scope.$safeApply();
     	}
    	});
+
+   	$scope.$on('me_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
+		$scope.$apply();
+    });
 
 
 } 

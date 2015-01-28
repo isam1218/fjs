@@ -39,7 +39,7 @@
 				</div>
 				
 				<div class="CallStatus">
-					<div ng-if="contact.call.startedAt" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
+					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
 						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 						<div class="AvatarInteractable AvatarForeground"></div>
 					</div>
@@ -60,7 +60,7 @@
 	</div>
 </div>
 
-<div ng-show="$parent.overlay == 'contacts'" class="Overlay">
+<div ng-if="$parent.overlay == 'contacts'" class="Overlay">
 	<div ng-click="showOverlay(false)" class="Background"></div>
 	<div class="Foreground">
 		<div ng-click="showOverlay(false)" class="Close">x</div>
@@ -130,6 +130,76 @@
 			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="$parent.edit" />
 			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
 			<input type="button" class="XButton" value="{{ $parent.edit ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
+		</div>
+	</div>
+</div>
+
+<div ng-if="$parent.overlay == 'callstatus'" class="Overlay">
+	<div ng-click="showOverlay(false)" class="Background"></div>
+	<div class="Foreground">
+		<div ng-click="showOverlay(false)" class="Close">x</div>
+		
+		<div class="Header">
+			<h2>Call Management</h2>
+		</div>
+		
+		<div class="Sections">
+			<div class="Section">
+				<div>
+					<h4>Call Members</h4>
+					<em>These contacts are talking</em>
+				</div>
+				<div class="Contact">
+					<div class="Avatar AvatarNormal">
+						<img class="AvatarImgPH" data-ng-src="{{ onCall.getAvatar(28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					</div>
+					<div class="Name">
+						<strong>{{ onCall.displayName }}</strong>
+						<br/>
+						x{{ onCall.primaryExtension }}
+					</div>
+					
+					<div class="Time">{{ timeElapsed }}</div>
+					
+					<div class="Buttons">
+						<input type="button" class="XButton" value="Barge" />
+						<input type="button" class="XButton" value="Monitor" />
+						<input type="button" class="XButton" value="Whisper" />
+						<input type="button" class="XButton" value="Transfer" />
+					</div>
+				</div>
+				<div class="Contact">
+					<div class="Avatar AvatarNormal">
+						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(onCall.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					</div>
+					<div class="Name">
+						<strong>{{ onCall.call.displayName }}</strong>
+						<br/>
+						{{ onCall.call.phone }}
+					</div>
+					
+					<div class="Time">{{ timeElapsed }}</div>
+					
+					<div class="Buttons">
+						<input type="button" class="XButton" value="Barge" />
+						<input type="button" class="XButton" value="Monitor" />
+						<input type="button" class="XButton" value="Whisper" />
+						<input type="button" class="XButton" value="Transfer" />
+					</div>
+				</div>
+			</div>
+			
+			<div class="Section">
+				<div>
+					<h4>Barged By</h4>
+					<em>Contacts who barge the call</em>
+				</div>
+			</div>
+		</div>
+		
+		<div class="Footer">
+			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton" value="Conferencing" />
 		</div>
 	</div>
 </div>

@@ -70,6 +70,29 @@
   display: inline-block;
   width: 38%;
 }
+.Overlay .Foreground .Section .Contact {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: .5em;
+  width: 98%;
+  margin-bottom: 1em;
+  position: relative;
+}
+.Overlay .Foreground .Section .Contact .Time {
+  position: absolute;
+  top: .5em;
+  right: .5em;
+  color: gray;
+  font-size: .8em;
+}
+.Overlay .Foreground .Section .Contact .Name {
+  display: inline-block;
+  margin-left: .1em;
+  font-size: .9em;
+}
+.Overlay .Foreground .Section .Contact .Buttons {
+  margin: 2em 0 .5em 0;
+}
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
   padding-bottom: 1em;

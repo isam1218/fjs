@@ -66,11 +66,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/conference/:conferenceId', {
 			templateUrl: 'views/ConferenceWidget.html',
-			controller: ['$scope','ConferenceService','HttpService','$routeParams','UtilService', fjs.ui.ConferenceWidgetConversationController]
-		})
-        .when('/test', {
-			templateUrl: 'views/TestWidget.html',
-			controller: ['$scope', fjs.ui.TestWidget]
+			controller: ['$scope','ConferenceService','HttpService','$routeParams','UtilService','ContactService', fjs.ui.ConferenceWidgetConversationController]
 		})
         .when('/contacts', {
 			templateUrl: 'views/ContactsWidget.html',
@@ -92,6 +88,9 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/SearchWidget.html',
 			controller:['$scope', 'DataManager', fjs.ui.SearchWidgetController]
 		})
+		.when('/box',{
+			templateUrl: 'views/BoxWidget.html'
+		})
         .otherwise({redirectTo: '/settings'});
 });
 
@@ -107,7 +106,7 @@ hudweb.service('QueueService',['$q', '$rootScope', 'HttpService',fjs.hud.queueSe
 
 hudweb.controller("LaunchController", ['$rootScope', '$scope', 'DataManager', fjs.ui.LaunchController]);
 hudweb.controller("MainController", ['$rootScope', '$scope', 'DataManager', 'HttpService', fjs.ui.MainController]);
-hudweb.controller("ContactsWidget", ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', fjs.ui.ContactsWidget]);
+hudweb.controller("ContactsWidget", ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', fjs.ui.ContactsWidget]);
 hudweb.controller("GroupsController", ['$scope', '$rootScope', 'HttpService', 'GroupService', fjs.ui.GroupsController]);
 hudweb.controller("TopBarMeStatusController", ['$scope', 'DataManager', 'HttpService', fjs.ui.TopBarMeStatusController]);
 //hudweb.controller("MeWidgetController", fjs.ui.MeWidgetController);
@@ -132,7 +131,7 @@ hudweb.controller("ChatStatusController", ['$scope', 'DataManager',  fjs.ui.Chat
 hudweb.controller("ConversationWidgetController", ['$scope', '$routeParams', 'ContactService', fjs.ui.ConversationWidgetController]);
 hudweb.controller("ConversationWidgetChatController", ['$scope', '$interval', 'ContactService', 'HttpService',  fjs.ui.ConversationWidgetChatController]);
 hudweb.controller("ConferencesWidgetController", ['$scope','ConferenceService','HttpService','$location',fjs.ui.ConferencesWidgetController]);
-hudweb.controller("ConferenceWidgetConversationController", ['$scope','ConferenceService','HttpService','$routeParams','UtilService',fjs.ui.ConferenceWidgetConversationController]);
+hudweb.controller("ConferenceWidgetConversationController", ['$scope','ConferenceService','HttpService','$routeParams','UtilService','ContactService',fjs.ui.ConferenceWidgetConversationController]);
 
 hudweb.controller("CallCenterController", ['$scope', 'DataManager', fjs.ui.CallCenterController]);
 

@@ -1,7 +1,7 @@
  <div>     
         <div class="ListViewTopNote">
-                        <span style="font-size:12px;">You are not a member of this conference </span>
-                        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" value="Join"> </input> 
+                        <span style="font-size:12px;">{{ joined ? 'you are on a call' : 'You are not a member of this conference' }}</span>
+                        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" ng-click="joinConference()"value="{{joined ? 'Leave' : 'Join' }}"> </input> 
                 </div>
 
             </div>

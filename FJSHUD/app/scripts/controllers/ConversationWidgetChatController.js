@@ -18,7 +18,15 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
 	
 	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		$scope.messages = $scope.messages.concat(data);
+		for (key in data) {
+			var from = data[key].from.replace('contacts:', '');
+			var to = data[key].to.replace('contacts:', '');
+			
+			// only attach messages related to this user
+			if (from == $scope.contactID || to == $scope.contactID)
+				$scope.messages.push(data[key]);
+		}
+		
 		addDetails();
 	});
 	
