@@ -7,14 +7,57 @@
             Video Collaboration
         </div>
     </div>
-    <div class="WidgetBody" data-ng-if="bodyDisplay">
+    <div > 
+        <div class="ListSection"> 
+            <div>  You are licensed to use Fonality's Video Collaboration. With this feature, you can hold live video meetings with others inside, or outside, your company. You can even share screens. To get started, simply join or start a meeting below. </div>
+        </div>
+        <div class="ZoomWidgetSection left"> 
+            <div class="ListSection WidgetTextHeader"> 
+                <div class="ListSectionHeaderTitle">Join</div> 
+                <div><i>To join a video collaboration session started by someone else, enter the Meeting ID below, and click the "Join Now" button.</i></div>
+            </div>
+
+            <div class="JoinMeetingSection"> 
+                <div class="SearchInputBox">
+                    <div class="SearchInputBoxInputHolder">
+                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="Meeting ID" />
+                    </div>
+                </div>
+                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Join Now</button>
+
+            </div>
+
+        </div>
+
+        <div class="ZoomWidgetSection right"> 
+            <div class="ListSection WidgetTextHeader"> 
+                <div class="ListSectionHeaderTitle">Create</div> 
+                <div><i>To create a new video collaboration session, select the type of video session you'd like to start below, and optionally select people from HUD that you'd wish to invite - they will be sent a link in HUD automatically.</i></div>
+            </div>
+
+            <div class="JoinMeetingSection"> 
+                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Start with Screen Share Only</button>
+                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Start with Video</button>
+                <div class="Add SearchInputBox">
+                        <div class="SearchInputBoxInputHolder">
+                            <input class="SearchInputBoxInput" type="text"  contact-search placeholder="Add someone" ng-controller="ContactsWidget"></div>
+                        <div class="SearchInputBoxStateButton">
+                            <div class="SearchInputBoxStateButtonIcon"></div>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+   <!-- <div class="WidgetBody" data-ng-if="bodyDisplay">
         <div class="ListSection">
             <div class="ListSectionHeaderTitle">Topic</div>
-            <div class="widget-zoom-topic">
-                <textarea data-ng-model="topic">
-                </textarea>
-            </div>
+            <div class="widget-zoom-topic"></div>
         </div>
+        
+
         <div class="ListSection widget-zoom-join">
             <div class="ListSectionHeaderTitle">Join</div>
             <div class="SearchInputBox">
@@ -59,5 +102,5 @@
     <div class="WidgetBody WidgetBodyStarted"  data-ng-if="bodyErrorDisplay">
         <p><h2>Video meeting hasn't been created</h2></p>
         <p>Please check Zoom service availability.</p>
-    </div>
+    </div>-->
 </div>
