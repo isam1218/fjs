@@ -42,7 +42,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/queue/:queueId', {
 			templateUrl: 'views/queues/QueueWidget.html',
-			controller: ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetAgentsController]
+			controller: ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetController]
 		})
         .when('/calllog', {
 			templateUrl: 'views/CallsRecordings.html',
@@ -140,6 +140,7 @@ hudweb.controller("GroupSinglePageController", ['$scope', fjs.ui.GroupSinglePage
 
 // Call Center and Queues
 hudweb.controller("CallCenterController", ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', fjs.ui.CallCenterController]);
+hudweb.controller("QueueWidgetController", ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetController]);
 hudweb.controller("QueueWidgetAgentsController", ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetAgentsController]);
 hudweb.controller("QueueWidgetStatsController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetStatsController]);
 

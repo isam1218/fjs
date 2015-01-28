@@ -1,46 +1,3 @@
-//fjs.core.namespace("fjs.ui");
-//
-//fjs.ui.QueueWidgetController = function($scope, $routeParams, $timeout, $filter, dataManager) {
-//    fjs.ui.Controller.call(this,  $scope, $routeParams, dataManager);
-//
-//  $scope.context = this;
-//  $scope.dataManager = dataManager;
-//  $scope.queueId = $routeParams.queueId;
-//
-//  $scope.contacts = dataManager.getModel('contacts').items;
-//
-//  $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
-//  $scope.selected = 'Agents';
-//
-//  $scope.queueMembersModel = dataManager.getModel("queue_members");
-//  $scope.loggedInMembers = [];
-//  $scope.loggedOutMembers = [];
-//
-//
-//  $scope.queueMembersModel.addEventListener('complete', function (data) {
-//
-//      $scope.$safeApply();
-//  });
-//
-//  $scope.queueMembersModel.addEventListener("push", function (data) {
-//    if (data.entry.queueId === $scope.queueId) {
-//      var member = data.entry;
-//
-//      member.contact = $scope.contacts[member.contactId];
-//
-//      if (member.contact.getQueueStatus() === 'LoggedIn') {
-//        $scope.loggedInMembers.push(member);
-//      } else {
-//        $scope.loggedOutMembers.push(member);
-//      }
-//    }
-//    $scope.$safeApply();
-//  });
-//
-//};
-//fjs.core.inherits(fjs.ui.QueueWidgetController, fjs.ui.Controller)
-//
-
 
 fjs.ui.QueueWidgetAgentsController = function ($scope, $rootScope, $routeParams, myHttpService) {
   $scope.queueId = $routeParams.queueId;
@@ -52,6 +9,13 @@ fjs.ui.QueueWidgetAgentsController = function ($scope, $rootScope, $routeParams,
   $scope.add = {};
   $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
+  myHttpService.getFeed('queues');
+  myHttpService.getFeed('queue_members');
+  myHttpService.getFeed('queue_members_status');
+  myHttpService.getFeed('queue_stat_calls');
+  myHttpService.getFeed('contacts');
+  myHttpService.getFeed('contacts_synced');
+  
   if (!$scope.loggedInQueueMembers) {
     $scope.loggedInQueueMembers = [];
     $scope.loggedInMembers = [];
@@ -125,23 +89,6 @@ fjs.ui.QueueWidgetAgentsController = function ($scope, $rootScope, $routeParams,
     localStorage.recents = JSON.stringify($scope.recents);
   };
 
-  $scope.addContact = function () {
-    // validate
-    if (!$scope.add.firstName && !$scope.add.lastName) {
-      $scope.addError = 'Contact name is not specified.';
-      return;
-    }
-    else if ($scope.add.email && $scope.add.email.indexOf('@') == -1) {
-      $scope.addError = 'E-mail is incorrect.';
-      return;
-    }
-
-    // save
-    myHttpService.sendAction('contacts', 'addContact', $scope.add);
-    $scope.$parent.showOverlay(false);
-    $scope.add = {};
-  };
-
   $scope.$on('contacts_synced', function (event, data) {
     for (key in data) {
       var contact = data[key];
@@ -198,13 +145,9 @@ fjs.ui.QueueWidgetAgentsController = function ($scope, $rootScope, $routeParams,
     $scope.loggedInMembers = $scope.loggedInQueueMembers[$scope.queueId];
   });
 
-  //$scope.getAvatarUrl = function (xpid) {
-  //  return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=28&h=28&Authorization=" + dataManager.api.ticket + "&node=" + dataManager.api.node;
-  //};
-
   $scope.getAvatarUrl = function (xpid) {
     if (xpid !== undefined) {
-      return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + xpid + "&w=14&h=14&Authorization=" + $scope.dataManager.api.ticket + "&node=" + $scope.dataManager.api.node;
+      return myHttpService.get_avatar(xpid, 14, 14);
     }
     else
       return 'img/Generic-Avatar-14.png';
@@ -219,6 +162,7 @@ fjs.ui.QueueWidgetAgentsController = function ($scope, $rootScope, $routeParams,
 
     $scope.add = {};
   };
-  // myHttpService.sendAction('queue_members', 'addQueueMember', $scope.add);
 
 };
+
+fjs.core.inherits(fjs.ui.QueueWidgetAgentsController, fjs.ui.Controller);

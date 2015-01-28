@@ -12,7 +12,7 @@
 
   <a href="#contact/{{::member.contactId}}"
      class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="member in loggedInMembers | SortCalllog | orderBy:sortField:sortReverse">
+     data-ng-repeat="member in loggedInMembers | orderBy:sortField:sortReverse">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 
@@ -28,7 +28,7 @@
 
   <a href="#contact/{{::member.contactId}}"
      class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="member in loggedOutMembers | SortCalllog | orderBy:sortField:sortReverse">
+     data-ng-repeat="member in loggedOutMembers | orderBy:sortField:sortReverse">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 

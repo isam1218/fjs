@@ -103,3 +103,5 @@ fjs.ui.CallCenterController = function($scope, $rootScope, myHttpService, contac
     }
   };
 };
+
+fjs.core.inherits(fjs.ui.CallCenterController, fjs.ui.Controller);
