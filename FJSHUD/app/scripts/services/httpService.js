@@ -1,4 +1,4 @@
-fjs.hud.httpService = function($http, $rootScope, $location, $q){
+hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', function($http, $rootScope, $location, $q){
 	/**
 		SHARED WORKER
 	*/
@@ -259,4 +259,4 @@ fjs.hud.httpService = function($http, $rootScope, $location, $q){
 		
 		return deferred.promise;
 	};
-}
+}]);

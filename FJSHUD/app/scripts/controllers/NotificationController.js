@@ -1,8 +1,4 @@
-
-
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.NotificationController = function($scope, myHttpService,$location){
+hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location', function($scope, myHttpService,$location){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
@@ -173,6 +169,4 @@ fjs.ui.NotificationController = function($scope, myHttpService,$location){
 		
 		$scope.$apply();
 	});
-}
-
-fjs.core.inherits(fjs.ui.NotificationController, fjs.ui.Controller)
+}]);

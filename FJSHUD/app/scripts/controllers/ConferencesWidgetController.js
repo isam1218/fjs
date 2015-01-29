@@ -1,4 +1,4 @@
-fjs.ui.ConferencesWidgetController = function($scope, $location, conferenceService, httpService) {
+hudweb.controller('ConferencesWidgetController', ['$scope', '$location', 'ConferenceService', 'HttpService', function($scope, $location, conferenceService, httpService) {
 	$scope.tab = 'my';
 	$scope.sortBy = 'location';
 	$scope.query = '';
@@ -57,4 +57,4 @@ fjs.ui.ConferencesWidgetController = function($scope, $location, conferenceServi
         else
             return 'img/Generic-Avatar-28.png';
     };
-};
+}]);

@@ -1,4 +1,4 @@
-fjs.ui.LeftBarController = function($scope, myHttpService) {
+hudweb.controller('LeftBarController', ['$scope', 'HttpService', function($scope, myHttpService) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
@@ -12,4 +12,4 @@ fjs.ui.LeftBarController = function($scope, myHttpService) {
 		else
 			$scope.overlay = show;
 	};
-};
+}]);

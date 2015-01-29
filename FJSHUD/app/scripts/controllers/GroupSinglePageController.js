@@ -1,3 +1,3 @@
-fjs.ui.GroupSinglePageController = function($scope) {
+hudweb.controller('GroupSinglePageController', ['$scope', function($scope) {
 
-};
+}]);

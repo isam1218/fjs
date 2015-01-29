@@ -1,6 +1,4 @@
-fjs.core.namespace('fjs.hud.filter');
-
-fjs.hud.filter.DurationFormatFilter = function() {
+hudweb.filter('Duration', function() {
     return function(duration) {
         var callduration = new Date(duration);
         var secs = callduration.getSeconds()+"";
@@ -8,5 +6,4 @@ fjs.hud.filter.DurationFormatFilter = function() {
         return (minutes.length == 1 ? '0'+minutes : minutes) + ':'
             + (secs.length == 1 ? '0'+secs : secs);
     };
-};
-
+});

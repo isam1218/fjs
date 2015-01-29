@@ -1,6 +1,4 @@
-fjs.core.namespace('fjs.hud.filter');
-
-fjs.hud.filter.SortCalllogFilter = function() {
+hudweb.filter('SortCalllog', function() {
     return function(items) {
         var keys = Object.keys(items);
         var arr = [];
@@ -11,4 +9,4 @@ fjs.hud.filter.SortCalllogFilter = function() {
 
         return arr;
     };
-};
+});

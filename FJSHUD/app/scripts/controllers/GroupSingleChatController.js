@@ -1,4 +1,4 @@
-fjs.ui.GroupSingleChatController = function($scope, $interval, contactService, myHttpService) {
+hudweb.controller('GroupSingleChatController', ['$scope', '$interval', 'ContactService', 'HttpService', function($scope, $interval, contactService, myHttpService) {
 	var version = 0;
 	
 	$scope.loading = true;
@@ -99,4 +99,4 @@ fjs.ui.GroupSingleChatController = function($scope, $interval, contactService, m
     $scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
     });
-};
+}]);

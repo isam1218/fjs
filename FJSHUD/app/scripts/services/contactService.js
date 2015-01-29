@@ -1,4 +1,4 @@
-fjs.hud.contactService = function($q, $rootScope, myHttpService) {
+hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, myHttpService) {
 	var deferred = $q.defer();	
 	var contacts = [];
 	
@@ -87,4 +87,4 @@ fjs.hud.contactService = function($q, $rootScope, myHttpService) {
 		
 		$rootScope.$broadcast('contacts_updated', contacts);
 	});
-}
+}]);

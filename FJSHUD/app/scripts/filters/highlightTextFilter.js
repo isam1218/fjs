@@ -1,4 +1,4 @@
-fjs.hud.filter.HighlightText = function($sce) {
+hudweb.filter('highlight', function($sce) {
     return function(text, phrase) {
 		if (phrase) {
 			// escape special chars
@@ -9,4 +9,4 @@ fjs.hud.filter.HighlightText = function($sce) {
 
 		return $sce.trustAsHtml(text);
     }
-};
+});

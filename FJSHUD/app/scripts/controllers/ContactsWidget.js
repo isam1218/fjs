@@ -1,4 +1,4 @@
-fjs.ui.ContactsWidget = function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
+hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
@@ -180,4 +180,4 @@ fjs.ui.ContactsWidget = function($scope, $rootScope, $filter, $timeout, myHttpSe
     $scope.$on("$destroy", function() {
 		
     });
-};
+}]);

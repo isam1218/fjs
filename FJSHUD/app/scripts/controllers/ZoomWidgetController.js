@@ -1,10 +1,4 @@
-fjs.core.namespace("fjs.ui");
-/**
- * @param $scope
- * @param dataManager
- * @constructor
- */
-fjs.ui.ZoomWidgetController = function($scope, $http,httpService) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', function($scope, $http,httpService) {
 
     var context = this;
 
@@ -98,7 +92,4 @@ fjs.ui.ZoomWidgetController = function($scope, $http,httpService) {
             $scope.bodyErrorDisplay=!$scope.bodyStartedDisplay;
         });
     };
-};
-
-fjs.core.inherits(fjs.ui.ZoomWidgetController, fjs.ui.Controller)
-
+}]);

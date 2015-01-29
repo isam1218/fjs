@@ -1,4 +1,4 @@
-UtilService = function(){
+hudweb.service('UtilService', function(){
 	var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
     var Weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -57,4 +57,4 @@ UtilService = function(){
 	        }
 	        return  dateString + " " + hour + ":" + minutes + ampm;  
 	    }
-}
+});

@@ -1,4 +1,4 @@
-fjs.ui.GroupSingleController = function($scope, $routeParams, myHttpService, groupService) {
+hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpService', 'GroupService', function($scope, $routeParams, myHttpService, groupService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -37,4 +37,4 @@ fjs.ui.GroupSingleController = function($scope, $routeParams, myHttpService, gro
     $scope.$on("$destroy", function() {
 	
     });
-};
+}]);

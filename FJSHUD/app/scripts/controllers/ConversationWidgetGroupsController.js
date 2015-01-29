@@ -1,17 +1,4 @@
-/**
- * Created by fnf on 15.01.14.
- */fjs.core.namespace("fjs.ui");
-
-/**
- *
- * @param $scope
- * @param $routeParams
- * @param dataManager
- * @constructor
- * @extends fjs.ui.ConversationWidgetController
- * @extends fjs.ui.GroupsTab
- */
-fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootScope,myHttpService,groupService,utils) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'UtilService', function($scope, $routeParams,$rootScope,myHttpService,groupService,utils) {
     var context = this;
     $scope.contactGroups = [];
     $scope.sharedGroups = [];
@@ -124,7 +111,4 @@ fjs.ui.ConversationWidgetGroupsController = function($scope, $routeParams,$rootS
         else
             $scope.$parent.overlay = 'groups';
     };
-};
-
-//fjs.core.inherits(fjs.ui.ConversationWidgetGroupsController, fjs.ui.ConversationWidgetController)
-//fjs.core.extend(fjs.ui.ConversationWidgetGroupsController, fjs.ui.GroupsTab);
+}]);

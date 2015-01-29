@@ -1,6 +1,4 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceService,httpService, $routeParams,utilService,contactService) {
+hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', 'UtilService', 'ContactService', function($scope,conferenceService,httpService, $routeParams,utilService,contactService) {
 	$scope.conversationType = 'conference';
 
     $scope.enableChat = true;
@@ -153,4 +151,4 @@ fjs.ui.ConferenceWidgetConversationController = function($scope,conferenceServic
     });
 
 
-} 
+}]);

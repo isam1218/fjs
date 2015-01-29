@@ -1,4 +1,4 @@
-fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService) {
+hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService', function($rootScope, $scope, myHttpService) {
 	$rootScope.myPid = null;
 
     $scope.currentPopup = {};
@@ -73,4 +73,4 @@ fjs.ui.MainController = function($rootScope, $scope, dataProvider, myHttpService
     $scope.logout = function() {
         dataProvider.logout();
     };
-};
+}]);

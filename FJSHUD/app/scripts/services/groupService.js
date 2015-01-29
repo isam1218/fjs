@@ -1,4 +1,4 @@
-fjs.hud.groupService = function($q, $rootScope) {	
+hudweb.service('GroupService', ['$q', '$rootScope', function($q, $rootScope) {	
 	var deferred = $q.defer();
 	var groups = [];
 	var favorites = {};
@@ -109,4 +109,4 @@ fjs.hud.groupService = function($q, $rootScope) {
 		
 		$rootScope.$broadcast('groups_updated', formatData());
 	});
-}
+}]);
