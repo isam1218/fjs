@@ -1,41 +1,45 @@
-fjs.core.namespace("fjs.ui");
 
-fjs.ui.QueueWidgetController = function($scope, $routeParams, $timeout, $filter, dataManager) {
-    fjs.ui.Controller.call(this,  $scope, $routeParams, dataManager);
-
-  $scope.context = this;
-  $scope.dataManager = dataManager;
-  $scope.queueId = $routeParams.queueId;
-
-  $scope.contacts = dataManager.getModel('contacts').items;
-
-  $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
-  $scope.selected = 'Agents';
-
-  $scope.queueMembersModel = dataManager.getModel("queue_members");
-  $scope.loggedInMembers = [];
-  $scope.loggedOutMembers = [];
-
-  $scope.queueMembersModel.addEventListener('complete', function (data) {
-
-      $scope.$safeApply();
-  });
-
-  $scope.queueMembersModel.addEventListener("push", function (data) {
-    if (data.entry.queueId === $scope.queueId) {
-      var member = data.entry;
-
-      member.contact = $scope.contacts[member.contactId];
-
-      if (member.contact.getQueueStatus() === 'LoggedIn') {
-        $scope.loggedInMembers.push(member);
-      } else {
-        $scope.loggedOutMembers.push(member);
-      }
-    }
-    $scope.$safeApply();
-  });
-
+fjs.ui.QueueWidgetController = function($scope, $rootScope, $routeParams, myHttpService) {
+    $scope.queueId = $routeParams.queueId;
+    $scope.query = "";
+    $scope.sortField = "displayName";
+    $scope.sortReverse = false;
+    $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
+    
+    $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
+    $scope.selected = 'Agents';
+    
+    myHttpService.getFeed('queuelogoutreasons');
+    myHttpService.getFeed('queues');
+    myHttpService.getFeed('queue_members');
+    myHttpService.getFeed('queue_members_status');
+    myHttpService.getFeed('queue_stat_calls');
+    
+    
+    $scope.$on('queues_updated', function(event, data) {
+        var queues = data.queues;
+        for (i = 0; i < queues.length && $scope.queue === undefined; i++) {
+            if (queues[i].xpid == $scope.queueId) {
+                $scope.queue = queues[i];
+            }
+        
+        }
+        
+        $scope.$safeApply();
+    });
+    
+    $scope.getAvatarUrl = function(index) {
+        
+        if ($scope.queue !== undefined) {
+            if ($scope.queue.members[index] !== undefined) {
+                var xpid = $scope.queue.members[index].xpid;
+                return myHttpService.get_avatar(xpid, 14, 14);
+            } 
+            else
+                return 'img/Generic-Avatar-14.png';
+        
+        }
+    };
 };
-fjs.core.inherits(fjs.ui.QueueWidgetController, fjs.ui.Controller)
 
+fjs.core.inherits(fjs.ui.QueueWidgetController, fjs.ui.Controller);

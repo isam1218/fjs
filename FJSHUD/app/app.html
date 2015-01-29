@@ -271,7 +271,7 @@
 
 					<div class="panel" ng-if="stack.tab == 'contact'" ng-include="'views/ConversationWidget.html'" ng-controller="ConversationWidgetController"></div>
 					<div class="panel" ng-if="stack.tab == 'conference'" ng-include="'views/ConferenceWidget.html'" ng-controller="ConferencesWidgetController"></div>
-					<div class="panel" ng-if="stack.tab == 'queue'" ng-include="'views/queues/QueueWidget.html'" ng-controller="QueueWidgetController"></div>
+					<div class="panel" ng-if="stack.tab == 'queue'" ng-include="'views/queues/QueueWidget.html'" ng-controller="QueueWidgetAgentsController"></div>
 					<div class="panel" ng-if="stack.tab == 'group'" ng-include="'views/GroupSingleWidget.html'" ng-controller="CallCenterController"></div>
 				</div>
 			</div>
@@ -432,7 +432,7 @@
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/controllers/LeftBarController.js"></script>
     <script src="scripts/controllers/LeftBarCallsController.js"></script>
-    <script src="scripts/controllers/QueueWidgetController.js"></script>
+    <script src="scripts/controllers/QueueWidgetAgentsController.js"></script>
 
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>

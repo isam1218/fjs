@@ -51,7 +51,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="PanelWrapper">
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
@@ -62,7 +62,7 @@
 							<input type="search" class="Search" placeholder="Search" ng-model="query" />
 							<input type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay('groups') : showOverlay('contacts')" />
 						</div>
-						
+
 						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="Add Someone" contact-search ng-controller="ContactsWidget" />
 					</div>
 
@@ -127,7 +127,7 @@
             </div>
         </div>
     </div>
-	
+
     <!--<object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0">
             <param name="onload" value="onloadphone" />
             <param name="debug" value="1" />
@@ -231,7 +231,7 @@
 
     <script src="scripts/react/ContextMenu.js"></script>
     <script src="scripts/react/ContactsList.js"></script>
-  
+
     <script src="scripts/direcives/contextMenuDirective.js"></script>
     <script src="scripts/direcives/contextMenuDialogDirective.js"></script>
     <script src="scripts/direcives/avatarMenuDirective.js"></script>
@@ -285,8 +285,10 @@
     <script src="scripts/controllers/LeftBarController.js"></script>
     <script src="scripts/controllers/LeftBarCallsController.js"></script>
     <script src="scripts/controllers/QueueWidgetController.js"></script>
+    <script src="scripts/controllers/QueueWidgetAgentsController.js"></script>
+    <script src="scripts/controllers/QueueWidgetStatsController.js"></script>
     <script src="scripts/controllers/NotificationController.js"></script>
-	
+
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/groupService.js"></script>
     <script src="scripts/services/contactService.js"></script>

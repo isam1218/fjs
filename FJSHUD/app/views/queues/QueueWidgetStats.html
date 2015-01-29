@@ -10,28 +10,46 @@
     <div class="ListSectionBody">TODO</div>
   </div>
 
-  <!--<a href="#contact/{{::member.contactId}}"-->
-     <!--class="ListRow Table AvatarHoverArea"-->
-     <!--data-ng-repeat="member in loggedInMembers | SortCalllog | orderBy:sortField:sortReverse">-->
+  <a href="#contact/{{::member.contactId}}"
+     class="ListRow Table AvatarHoverArea"
+     data-ng-repeat="stat in queuestats | SortCalllog | orderBy:sortField:sortReverse">
+    <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ stat.contact.getLocation() }}">
+      <img class="AvatarImgPH" data-fj-local-id="avatarImg"
+           ng-src="{{ stat.contact.getAvatarUrl(28,28)}}">
 
-    <!--<div ng-include="'views/queues/QueueMemberSection.html'"></div>-->
+      <div class="AvatarInteractable"></div>
+    </div>
 
-  <!--</a>-->
+    <!--"lastCallTimestamp": 0,-->
+    <!--"callsHandled": 6,-->
+    <!--"avgTalkTime": 1441333-->
+    <!---->
+    <div class="ListRowContent">
 
-  <!--<div class="ListSection">-->
-    <!--<div class="ListSectionHeader">-->
-      <!--<div class="ListSectionHeaderTitle">Logged Out</div>-->
-    <!--</div>-->
-    <!--<div class="ListSectionBody">Agents logged out of the queue</div>-->
-  <!--</div>-->
+      <div class="ListRowLeftAreaWide">
+        <div class="ListRowTitle"> {{ member.contact.getDisplayName()}}</div>
+        <div
+          class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.contact.contactstatus_queueStatus}}">
+          <div class="status-icon-inner"></div>
+        </div>
+
+        <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.contact.getChatStatus()}}">
+          <div class="status-icon-inner"></div>
+        </div>
+
+        <div class="ListRowStatus ListRowStatusText">{{member.contact.contactstatus_xmppCustom ||
+          member.contact.contactstatus_xmpp || 'offline'}}
+        </div>
+      </div>
+      <div class="ListRowStatus">
 
 
-  <!--<a href="#contact/{{::member.contactId}}"-->
-     <!--class="ListRow Table AvatarHoverArea"-->
-     <!--data-ng-repeat="member in loggedOutMembers | SortCalllog | orderBy:sortField:sortReverse">-->
+        <div class="Link ListRowDesc">#{{ member.contact.primaryExtension }}</div>
 
-    <!--<div ng-include="'views/queues/QueueMemberSection.html'"></div>-->
+      </div>
+    </div>
+  </a>
 
-  <!--</a>-->
+
 </div>
 

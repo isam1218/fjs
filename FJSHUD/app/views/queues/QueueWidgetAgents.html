@@ -10,13 +10,13 @@
     <div class="ListSectionBody">Agents logged into the queue</div>
   </div>
 
-  <a href="#contact/{{::member.contactId}}"
+  <div
      class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="member in loggedInMembers | SortCalllog | orderBy:sortField:sortReverse">
+     data-ng-repeat="member in loggedInMembers | orderBy:sortField:sortReverse">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 
-  </a>
+  </div>
 
   <div class="ListSection">
     <div class="ListSectionHeader">
@@ -26,12 +26,12 @@
   </div>
 
 
-  <a href="#contact/{{::member.contactId}}"
+  <div
      class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="member in loggedOutMembers | SortCalllog | orderBy:sortField:sortReverse">
+     data-ng-repeat="member in loggedOutMembers | orderBy:sortField:sortReverse">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 
-  </a>
+  </div>
 </div>
 

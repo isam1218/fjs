@@ -30,19 +30,19 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/callcenter', {
 			templateUrl: 'views/CallCenter.html',
-			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
+			controller:['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', fjs.ui.CallCenterController]
 		})
         .when('/callcenter/allqueues', {
 			templateUrl: 'views/CallCenter.html',
-			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
+			controller:['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', fjs.ui.CallCenterController]
 		})
         .when('/callcenter/mystatus', {
 			templateUrl: 'views/CallCenter.html',
-			controller:['$scope',  'DataManager', fjs.ui.CallCenterController]
+			controller:['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', fjs.ui.CallCenterController]
 		})
         .when('/queue/:queueId', {
 			templateUrl: 'views/queues/QueueWidget.html',
-			controller: ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]
+			controller: ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetController]
 		})
         .when('/calllog', {
 			templateUrl: 'views/CallsRecordings.html',
@@ -139,7 +139,10 @@ hudweb.controller("GroupSingleVoicemailsController", ['$scope','$routeParams','V
 hudweb.controller("GroupSinglePageController", ['$scope', fjs.ui.GroupSinglePageController]);
 
 // Call Center and Queues
-hudweb.controller("QueueWidgetController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetController]);
+hudweb.controller("CallCenterController", ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', fjs.ui.CallCenterController]);
+hudweb.controller("QueueWidgetController", ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetController]);
+hudweb.controller("QueueWidgetAgentsController", ['$scope', '$rootScope', '$routeParams', 'HttpService', fjs.ui.QueueWidgetAgentsController]);
+hudweb.controller("QueueWidgetStatsController", ['$scope', '$routeParams', '$timeout', '$filter', 'DataManager', fjs.ui.QueueWidgetStatsController]);
 
 hudweb.controller("MeWidgetController",['$scope','$http','HttpService',fjs.ui.MeWidgetController]);
 hudweb.controller("NotificationController",['$scope','HttpService','$location',fjs.ui.NotificationController]);
