@@ -74,7 +74,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/zoom', {
 			templateUrl: 'views/ZoomWidgetController.html',
-			controller:['$scope', 'DataManager', fjs.ui.ZoomWidgetController]
+			controller:['$scope', '$http','HttpService', fjs.ui.ZoomWidgetController]
 		})
         .when('/search', {
 			templateUrl: 'views/SearchWidget.html',

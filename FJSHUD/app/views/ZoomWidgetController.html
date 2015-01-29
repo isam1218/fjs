@@ -8,13 +8,13 @@
         </div>
     </div>
     <div > 
-        <div class="ListSection"> 
+        <div class="ListSection WidgetFont"> 
             <div>  You are licensed to use Fonality's Video Collaboration. With this feature, you can hold live video meetings with others inside, or outside, your company. You can even share screens. To get started, simply join or start a meeting below. </div>
         </div>
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader"> 
                 <div class="ListSectionHeaderTitle">Join</div> 
-                <div><i>To join a video collaboration session started by someone else, enter the Meeting ID below, and click the "Join Now" button.</i></div>
+                <div class="WidgetFont">To join a video collaboration session started by someone else, enter the Meeting ID below, and click the "Join Now" button.</div>
             </div>
 
             <div class="JoinMeetingSection"> 
@@ -32,20 +32,41 @@
         <div class="ZoomWidgetSection right"> 
             <div class="ListSection WidgetTextHeader"> 
                 <div class="ListSectionHeaderTitle">Create</div> 
-                <div><i>To create a new video collaboration session, select the type of video session you'd like to start below, and optionally select people from HUD that you'd wish to invite - they will be sent a link in HUD automatically.</i></div>
+                <div class="WidgetFont">To create a new video collaboration session, select the type of video session you'd like to start below, and optionally select people from HUD that you'd wish to invite - they will be sent a link in HUD automatically.</div>
             </div>
 
             <div class="JoinMeetingSection"> 
-                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Start with Screen Share Only</button>
-                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Start with Video</button>
+                <button data-ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">Start with Screen Share Only</button>
+                <button data-ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">Start with Video</button>
                 <div class="Add SearchInputBox">
                         <div class="SearchInputBoxInputHolder">
-                            <input class="SearchInputBoxInput" type="text"  contact-search placeholder="Add someone" ng-controller="ContactsWidget"></div>
+                            <input class="SearchInputBoxInput" type="text"  contact-search placeholder="Add someone"></div>
                         <div class="SearchInputBoxStateButton">
                             <div class="SearchInputBoxStateButtonIcon"></div>
                         </div>
                 </div>
             </div>
+
+            <div class="widget-zoom-contacts">
+                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
+                        <div class="AvatarSmall Avatar">
+                                <img class="AvatarImgPH" data-ng-src="{{ getAvatarUrl(contact.xpid,40,40)}}" onerror="this.src='img/Generic-Avatar-14.png'"/>
+                        </div>
+                        <div class="ListRowContent">
+                            <div class="ZoomRowTitle">
+                                <div class="name">{{contact.displayName}}</div>
+                                <div class="link">#{{contact.primaryExtension }}</div>
+                            </div>
+                            <div class="ZoomRowStatus">
+                                <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                                <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
+                                <div class="ListRowDesc">{{contact.hud_status}}</div>
+                            </div>
+                        </div>
+                        <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
+                    </div>
+            </div>
+
 
         </div>
 
