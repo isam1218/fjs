@@ -1,4 +1,4 @@
-fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParams,voicemailService,groupService,httpService,utilService) {
+hudweb.controller('GroupSingleVoicemailsController', ['$scope', '$routeParams', 'VoicemailService', 'GroupService', 'HttpService', 'UtilService', function($scope,$routeParams, voicemailService, groupService, httpService, utilService) {
 	$scope.groupId = $routeParams.groupId;
     $scope.data = {};
     $scope.voicemails;     
@@ -203,4 +203,4 @@ fjs.ui.GroupSingleVoicemailsController = function($scope,$routeParams,voicemailS
         }
        $scope.$apply();
     });
-};
+}]);

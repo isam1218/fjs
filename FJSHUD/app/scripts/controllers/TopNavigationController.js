@@ -1,15 +1,4 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.TopNavigationController = function($scope, dataManager) {
-
-    fjs.ui.Controller.call(this, $scope);
-    /**
-     * @type {fjs.hud.MeFeedModel}
-     */
-    $scope.model = dataManager.getModel("me");
-    $scope.model.addEventListener("complete", function(){
-        $scope.$safeApply();
-    });
+hudweb.controller('TopNavigationController', ['$scope', function($scope) {
 
     $scope.appIcons = [
         {title:"Me", url:"#/settings", key:"Me"}
@@ -23,8 +12,7 @@ fjs.ui.TopNavigationController = function($scope, dataManager) {
 
 
     $scope.$on("$destroy", function() {
-        $scope.model.removeEventListener("complete", $scope.$safeApply);
+	
     });
 
-};
-fjs.core.inherits(fjs.ui.TopNavigationController, fjs.ui.Controller);
+}]);

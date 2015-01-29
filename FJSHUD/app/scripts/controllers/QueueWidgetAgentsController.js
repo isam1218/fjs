@@ -1,5 +1,4 @@
-
-fjs.ui.QueueWidgetAgentsController = function($scope, $rootScope, $routeParams, myHttpService) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', function($scope, $rootScope, $routeParams, myHttpService) {
     $scope.queueId = $routeParams.queueId;
     $scope.query = "";
     $scope.sortField = "displayName";
@@ -160,6 +159,4 @@ fjs.ui.QueueWidgetAgentsController = function($scope, $rootScope, $routeParams, 
     
     });
 
-};
-
-fjs.core.inherits(fjs.ui.QueueWidgetAgentsController, fjs.ui.Controller);
+}]);

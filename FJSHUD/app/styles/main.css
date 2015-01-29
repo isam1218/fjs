@@ -1652,7 +1652,13 @@ div.NewCall {
   width: 100%;
   left: 0;
 }
-.WidgetZoom .XButton {
+.WidgetFont {
+  font-size: 12px;
+  font-weight: italic;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.WidgetZoom .XButtonBlue {
   /*(position:absolute;
   top: 30px;*/
   right: 0;
@@ -1671,6 +1677,32 @@ div.NewCall {
 }
 .WidgetZoom .ExpandedToolBarHolder.WidgetTabEditMode .ExpandedToolBar .SearchInputBox {
   left: 20px;
+}
+.ZoomRowStatus {
+  position: absolute;
+  top: 16px;
+  left: 5px;
+  height: 16px;
+  font-size: 10px;
+}
+.ZoomRowTitle {
+  flex: 2;
+  font-size: .75em;
+  text-decoration: none;
+  color: #555;
+  white-space: nowrap;
+}
+.ZoomRowTitle .link {
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #888;
+  font-size: 11px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 10px;
 }
 .WidgetZoom .JoinMeetingSection {
   padding: 5px 5px 5px 5px;

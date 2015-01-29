@@ -1,4 +1,4 @@
-fjs.ui.ConversationWidgetController = function($scope, $routeParams, contactService) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'ContactService', function($scope, $routeParams, contactService) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);	
 	
@@ -32,4 +32,4 @@ fjs.ui.ConversationWidgetController = function($scope, $routeParams, contactServ
     $scope.$on("$destroy", function() {
 	
     });
-};
+}]);

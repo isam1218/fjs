@@ -1,4 +1,4 @@
-fjs.hud.VoicemailService = function($q, $rootScope) {
+hudweb.service('VoicemailService', ['$q', '$rootScope', function($q, $rootScope) {
 	// required to deliver promises
 	var deferred = $q.defer();
 	
@@ -35,4 +35,4 @@ fjs.hud.VoicemailService = function($q, $rootScope) {
 	});
 
 	return deferred.promise;
-}
+}]);

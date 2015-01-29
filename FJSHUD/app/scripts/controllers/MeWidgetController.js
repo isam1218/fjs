@@ -1,14 +1,6 @@
-/**
- * Created by vovchuk on 11/6/13.
- */fjs.core.namespace("fjs.ui");
-/**
- * @param $scope
- * @constructor
- */
-fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
+hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', function($scope, $http, myHttpService) {
     var context = this;
 
-    fjs.ui.Controller.call(this, $scope);
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
 
     var settings = {};
@@ -567,6 +559,4 @@ fjs.ui.MeWidgetController = function($scope, $http, myHttpService) {
         }
         update_queues();
     });
-};
-
-fjs.core.inherits(fjs.ui.MeWidgetController, fjs.ui.Controller)
+}]);

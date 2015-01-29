@@ -1,9 +1,4 @@
-/**
- * Created by fnf on 15.01.14.
- */fjs.core.namespace("fjs.ui");
-
-
-fjs.ui.ConversationWidgetCallLogController = function($scope, $routeParams, $timeout, $filter, httpService,utilService,contactService) {
+hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParams', '$timeout', '$filter', 'HttpService', 'UtilService', 'ContactService', function($scope, $routeParams, $timeout, $filter, httpService, utilService, contactService) {
     $scope.contactId = $routeParams.contactId;
     $scope.calllogs = [];    
 
@@ -159,6 +154,4 @@ fjs.ui.ConversationWidgetCallLogController = function($scope, $routeParams, $tim
             $timeout.cancel(durationTimer);
         }
     });*/
-};
-
-fjs.core.inherits(fjs.ui.ConversationWidgetCallLogController, fjs.ui.Controller)
+}]);

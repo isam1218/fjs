@@ -1,4 +1,4 @@
-fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactService, myHttpService) {
+hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'ContactService', 'HttpService', function($scope, $interval, contactService, myHttpService) {
 	var version = 0;
 	
 	$scope.loading = true;
@@ -101,4 +101,4 @@ fjs.ui.ConversationWidgetChatController = function($scope, $interval, contactSer
     $scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
     });
-};
+}]);

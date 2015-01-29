@@ -1,4 +1,4 @@
-fjs.ui.GroupSingleMembersController = function($scope,$routeParams,groupService,contactService,httpService) {
+hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', function($scope, $routeParams, groupService, contactService, httpService) {
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
@@ -72,4 +72,4 @@ fjs.ui.GroupSingleMembersController = function($scope,$routeParams,groupService,
 		$scope.$safeApply();
 
 	}
-};
+}]);

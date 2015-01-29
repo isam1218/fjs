@@ -1,4 +1,4 @@
-fjs.hud.conferenceService = function($q, $rootScope, httpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
 	var conferences = [];
 
 	this.getConference = function(conferenceId){
@@ -97,7 +97,7 @@ fjs.hud.conferenceService = function($q, $rootScope, httpService) {
 	$rootScope.$on("conferencerecording_synced",function(event,data){
 		
 		for(conference in conferences){
-			conferences[conference].callrecordings = []
+			conferences[conference].callrecordings = [];
 			
 			for(key in data){
 				if(data[key].conferenceId == conferences[conference].xpid){
@@ -114,4 +114,4 @@ fjs.hud.conferenceService = function($q, $rootScope, httpService) {
 	$rootScope.$on("conferencepermissions_synced", function(event, data) {
 		
 	});
-}
+}]);

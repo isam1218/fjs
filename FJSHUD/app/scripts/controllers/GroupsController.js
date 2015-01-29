@@ -1,4 +1,4 @@
-fjs.ui.GroupsController = function($scope, $rootScope, myHttpService, groupService) {
+hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'GroupService', function($scope, $rootScope, myHttpService, groupService) {
     $scope.query = "";
     $scope.sortField = "name";
     $scope.sortReverse = false;
@@ -47,4 +47,4 @@ fjs.ui.GroupsController = function($scope, $rootScope, myHttpService, groupServi
 
 		}
     };
-};
+}]);

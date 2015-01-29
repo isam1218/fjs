@@ -1,8 +1,4 @@
-/**
- * Created by fnf on 15.01.14.
- */fjs.ui.ConversationWidgetQueuesController = function($scope, $routeParams, $timeout, $filter, contactService,httpService) {
-    //fjs.ui.Controller.call(this,  $scope);
-    
+hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', 'HttpService', function($scope, $routeParams, $timeout, $filter, contactService,httpService) {    
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactId);
     $scope.data = {};
@@ -159,6 +155,4 @@
 
     });
     
-};
-
-fjs.core.inherits(fjs.ui.ConversationWidgetVoicemailsController, fjs.ui.Controller)
+}]);

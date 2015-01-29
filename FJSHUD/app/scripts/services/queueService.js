@@ -1,4 +1,4 @@
-fjs.hud.queueService = function($http, $rootScope, $location, $q){
+hudweb.service('QueueService', ['$http', '$rootScope', '$location', '$q', function($http, $rootScope, $location, $q){
 
 	var queues = [];
 	var formatData = function() {
@@ -57,4 +57,4 @@ fjs.hud.queueService = function($http, $rootScope, $location, $q){
 	});
 
 
-}
+}]);

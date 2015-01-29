@@ -1,22 +1,9 @@
-/**
- * Created by vovchuk on 11/6/13.
- */fjs.core.namespace("fjs.ui");
-/**
- * @param $scope
- * @param dataManager
- * @constructor
- */
-fjs.ui.TopBarMeStatusController = function($scope, dataManager, myHttpService) {
+hudweb.controller('TopBarMeStatusController', ['$scope', 'HttpService', function($scope, myHttpService) {
     var context = this;
 
-    fjs.ui.Controller.call(this, $scope);
-
-    var meModel = dataManager.getModel("me");
-    var locationsModel = dataManager.getModel("locations");
+	$scope.meData = {};
     $scope.menuIsOpen = false;
-
-    meModel.addEventListener("complete", $scope.$safeApply);
-    locationsModel.addEventListener("complete", $scope.$safeApply);
+	
     $scope.getCurrentLocationTitle = function() {
         /**
          * @type {{name:string. phone:string}}
@@ -55,11 +42,6 @@ fjs.ui.TopBarMeStatusController = function($scope, dataManager, myHttpService) {
         return false;
     };
 
-    /**
-     * @type {{chat_status:{}, chat_custom_status:{}}}
-     */
-    $scope.meData = meModel.itemsByKey;
-
     $scope.chatStatuses = {"available":"Available", "away":"Away", "dnd":"Busy"};
 
     $scope.setChatStatus = function(chatStatus) {
@@ -79,6 +61,4 @@ fjs.ui.TopBarMeStatusController = function($scope, dataManager, myHttpService) {
         meModel.removeEventListener("complete", $scope.$safeApply);
         locationsModel.removeEventListener("complete", $scope.$safeApply);
     });
-};
-
-fjs.core.inherits(fjs.ui.TopBarMeStatusController, fjs.ui.Controller);
+}]);

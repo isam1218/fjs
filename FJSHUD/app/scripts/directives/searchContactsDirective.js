@@ -1,5 +1,4 @@
-fjs.core.namespace("fjs.directive");
-fjs.directive.ContactSearch = function($document, contactService) {
+hudweb.directive('contactSearch', ['$document', 'ContactService', function($document, contactService) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
@@ -14,7 +13,7 @@ fjs.directive.ContactSearch = function($document, contactService) {
 			element.css('z-index', 100);
 			
 			// create overlay elements
-			var overlay = angular.element('<div class="SearchContactOverlay">Add team member</div>');
+			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
 			//overlay.css('width', rect.width + 'px');
 			
 			var inset = angular.element('<div class="Inset"></div>');
@@ -86,4 +85,4 @@ fjs.directive.ContactSearch = function($document, contactService) {
 			}
 		}
 	};
-};
+}]);

@@ -1,3 +1,5 @@
+var fjs = {};
+
 fjs.CONFIG = {
     SERVER: {
         //serverURL: "https://dev4.fon9.com:8081"

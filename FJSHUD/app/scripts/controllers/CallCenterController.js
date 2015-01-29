@@ -1,4 +1,4 @@
-fjs.ui.CallCenterController = function($scope, $rootScope, myHttpService, contactService, queueService) {
+hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', function($scope, $rootScope, myHttpService, contactService, queueService) {
   $scope.query = "";
   $scope.sortField = "displayName";
   $scope.sortReverse = false;
@@ -102,6 +102,4 @@ fjs.ui.CallCenterController = function($scope, $rootScope, myHttpService, contac
 
     }
   };
-};
-
-fjs.core.inherits(fjs.ui.CallCenterController, fjs.ui.Controller);
+}]);

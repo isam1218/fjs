@@ -1,21 +1,8 @@
-fjs.core.namespace("fjs.ui");
-
-fjs.ui.SearchWidgetController = function($scope, dataManager) {
+hudweb.controller('SearchWidgetController', ['$scope', function($scope) {
     fjs.ui.Controller.call(this, $scope);
-	
-	// searchable models
-    var contactsModel = dataManager.getModel("contacts");
-    $scope.contacts = contactsModel.items;
-    var conferencesModel = dataManager.getModel("conferences");
-	$scope.conferences = conferencesModel.items;
-	var queueModel = dataManager.getModel("queues");
-	$scope.queues = queueModel.items;
 	
     $scope.searchValue = "";
     $scope.openedContact = null;
-    if($scope.searchValue!="") {
-        contactsModel.addEventListener("complete", $scope.$safeApply);
-    }
 
     $scope.filterContactFn = function(searchInput) {
         return function(contact) {
@@ -167,5 +154,4 @@ fjs.ui.SearchWidgetController = function($scope, dataManager) {
     $scope.$on("$destroy", function() {
         contactsModel.removeEventListener("complete", $scope.$safeApply);
     });
-};
-fjs.core.inherits(fjs.ui.SearchWidgetController, fjs.ui.Controller);
+}]);
