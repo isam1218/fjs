@@ -218,3 +218,9 @@ input.text.ChatInputBoxInput,
   display: inline-block;
   background-image: url(../img/XIcon-Voicemail.png);
 }
+.highlighted {
+  background-color: yellow;
+}
+.highlighted.found {
+  background-color: orange !important;
+}

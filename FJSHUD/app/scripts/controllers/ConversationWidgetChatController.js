@@ -1,6 +1,7 @@
 hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'ContactService', 'HttpService', function($scope, $interval, contactService, myHttpService) {
 	var version = 0;
 	
+	$scope.glued = true;
 	$scope.loading = true;
     $scope.messages = [];
 	$scope.conversationType = 'conversation';
@@ -52,7 +53,36 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			this.sendMessage();
 			$event.preventDefault();
 		}
-	};	
+	};
+	
+	$scope.searchChat = function(increment) {
+		var spans = document.querySelectorAll(".highlighted");
+			
+		if ($scope.query != '' && spans.length > 0) {			
+			// temporarily disable sticky directive
+			$scope.glued = false;
+				
+			var searchIndex = -1;
+			
+			for (i = 0; i < spans.length; i++) {
+				if (spans[i].className.indexOf('found') != -1)
+					searchIndex = i;
+				
+				spans[i].className = 'highlighted';
+			}
+			
+			searchIndex += increment;
+			
+			// loop
+			if (searchIndex < 0)
+				searchIndex = spans.length - 1;
+			else if (searchIndex >= spans.length)
+				searchIndex = 0;
+				
+			spans[searchIndex].className = 'highlighted found';
+			spans[searchIndex].scrollIntoView();
+		}
+	};
 	
 	// apply name and avatar
 	var addDetails = function() {
@@ -72,9 +102,9 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 		});
 	};
 	
-	var chatLoop = $interval(function() {
+	var chatLoop = $interval(function() {	
 		var scrollbox = document.getElementById('ListViewContent');
-		
+	
 		// check scroll position
 		if (!$scope.loading && $scope.messages.length > 0 && scrollbox.scrollTop == 0) {
 			$scope.loading = true;

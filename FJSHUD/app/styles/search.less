@@ -59,6 +59,48 @@
   background: url("../img/XIconSet-24x24.png") no-repeat -191px -24px;
 }
 
+.ChatSearch {
+  position: relative;
+  top: 5px;
+  left: 2px;
+  height: 1.8em;
+  border-radius: 3px;
+  background-color: white;
+  border: solid 1px #729C00;
+  float: left;
+
+  & > * {
+    display: inline-block;
+	vertical-align: top;
+  }
+  
+  .SearchIcon {
+    width: 24px;
+    height: 24px;
+    background: url("../img/XIconSet-24x24.png") no-repeat -168px -24px;
+  }
+  
+  .Search {
+    border: none;
+	padding: .25em;
+	margin-top: 2px;
+  }
+  
+  .Arrows {
+	height: 100%;
+	
+    input {
+	  height: 100%;
+	  background-color: white;
+	  color: gray;
+	  border: none;
+	  border-left: solid 1px #729C00;
+	  float: right;
+	  cursor: pointer;
+	}
+  }
+}
+
 #WidgetSearch {
   .SearchPanel {
     display: flex;

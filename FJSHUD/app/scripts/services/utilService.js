@@ -23,6 +23,10 @@ hudweb.service('UtilService', function(){
         
     }
 
+	this.isEnabled = function(permission, bit){
+		var val = (permission & (1 << bit) == 0);
+		return val;
+	}
 
 	this.formatDate =function(time,includeyear){
 	        var date = new Date(time)
