@@ -19,9 +19,6 @@ html {
 p {
   font-size: 11px;
 }
-.highlighted {
-  background-color: yellow;
-}
 .HeaderTitle {
   color: #0093f0;
   font-size: 11px;
@@ -1364,8 +1361,8 @@ div.NewCall {
   -webkit-transition: all 0.1s linear;
 }
 .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -1620,6 +1617,42 @@ div.NewCall {
 }
 .InSearch .SearchInputBoxStateButtonIcon {
   background: url("../img/XIconSet-24x24.png") no-repeat -191px -24px;
+}
+.ChatSearch {
+  position: relative;
+  top: 5px;
+  left: 2px;
+  height: 1.8em;
+  border-radius: 3px;
+  background-color: white;
+  border: solid 1px #729C00;
+  float: left;
+}
+.ChatSearch > * {
+  display: inline-block;
+  vertical-align: top;
+}
+.ChatSearch .SearchIcon {
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -168px -24px;
+}
+.ChatSearch .Search {
+  border: none;
+  padding: .25em;
+  margin-top: 2px;
+}
+.ChatSearch .Arrows {
+  height: 100%;
+}
+.ChatSearch .Arrows input {
+  height: 100%;
+  background-color: white;
+  color: gray;
+  border: none;
+  border-left: solid 1px #729C00;
+  float: right;
+  cursor: pointer;
 }
 #WidgetSearch .SearchPanel {
   display: flex;
@@ -1928,6 +1961,12 @@ input.text.ChatInputBoxInput,
 .ChatMessageIco.voicemail {
   display: inline-block;
   background-image: url(../img/XIcon-Voicemail.png);
+}
+.highlighted {
+  background-color: yellow;
+}
+.highlighted.found {
+  background-color: orange !important;
 }
 .ListLineContent {
   position: relative;
@@ -3419,7 +3458,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

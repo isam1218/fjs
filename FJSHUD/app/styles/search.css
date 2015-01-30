@@ -52,6 +52,42 @@
 .InSearch .SearchInputBoxStateButtonIcon {
   background: url("../img/XIconSet-24x24.png") no-repeat -191px -24px;
 }
+.ChatSearch {
+  position: relative;
+  top: 5px;
+  left: 2px;
+  height: 1.8em;
+  border-radius: 3px;
+  background-color: white;
+  border: solid 1px #729C00;
+  float: left;
+}
+.ChatSearch > * {
+  display: inline-block;
+  vertical-align: top;
+}
+.ChatSearch .SearchIcon {
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -168px -24px;
+}
+.ChatSearch .Search {
+  border: none;
+  padding: .25em;
+  margin-top: 2px;
+}
+.ChatSearch .Arrows {
+  height: 100%;
+}
+.ChatSearch .Arrows input {
+  height: 100%;
+  background-color: white;
+  color: gray;
+  border: none;
+  border-left: solid 1px #729C00;
+  float: right;
+  cursor: pointer;
+}
 #WidgetSearch .SearchPanel {
   display: flex;
   flex-direction: column;
