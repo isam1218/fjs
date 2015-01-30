@@ -1,17 +1,17 @@
 <div class="ToolBar">
-    <div class="SearchInputBox DirectionalySearchInputBox">
-        <div class="SearchInputBoxInputHolder">
-            <input ng-model="query" class="SearchInputBoxInput" type="search" placeholder="Search" />
-        </div>
-        <div class="SearchInputBoxStateButton">
-            <div class="SearchInputBoxStateButtonIcon"></div>
-        </div>
+    <div class="ChatSearch">
+        <div class="SearchIcon"></div>
+        <input ng-model="query" class="Search" type="search" placeholder="Search" />
+		<div class="Arrows">
+			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
+			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
+		</div>
     </div>
     <div class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="fileShare()"><span>File Share</span></div>
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
-<div class="ListViewContent" id="ListViewContent" scroll-glue>
+<div class="ListViewContent" id="ListViewContent" scroll-glue="glued">
     <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages">
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
