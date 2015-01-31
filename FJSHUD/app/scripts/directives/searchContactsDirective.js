@@ -11,6 +11,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 	
 			var rect = element[0].getBoundingClientRect();
 			element.css('z-index', 100);
+			element.css('position', 'relative');
 			
 			// create overlay elements
 			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
@@ -19,10 +20,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			var inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
 			
-			var headerTitle = angular.element('<div class="header"><b>Add a Team Member</b></div>')
-			headerTitle.css('text-align', 'center');
-			headerTitle.css('border-bottom', '1px solid #ccc');
-			headerTitle.css('color','#729c00');
+			var headerTitle = angular.element('<div class="Header">Add a Team Member</div>')
 
 			// search input
 			element.bind('keyup', function() {
@@ -31,6 +29,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				
 				if (element.val().length > 0) {
 					inset.append(headerTitle);
+					
 					// look for match
 					for (c in contacts) {
 						if (contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1) {
@@ -39,9 +38,9 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 							inset.append(line);
 						}
 					}
+					
 					overlay.append(inset);
 					element.after(overlay);
-					
 			
 					// prevent accidental closing
 					overlay.bind('click', function(e) {

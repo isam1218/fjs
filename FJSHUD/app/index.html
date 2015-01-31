@@ -65,7 +65,7 @@
 							<div class="inner">All</div>
 							<div class="arrow"></div>
 						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'favorites'" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'favorites'; query = ''" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
 							<div class="inner">Favorites</div>
 							<div class="arrow"></div>
 						</a>
@@ -122,10 +122,10 @@
         </div>
     </div>
 
-    <!--<object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0">
+    <object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0">
             <param name="onload" value="onloadphone" />
             <param name="debug" value="1" />
-    </object>-->
+    </object>
 
     <!--[if lt IE 9]>
 		<script src="../bower_components/es5-shim/es5-shim.js"></script>
@@ -203,5 +203,7 @@
     <script src="scripts/services/UtilService.js"></script>
     <script src="scripts/services/queueService.js"></script>
     <script src="scripts/services/conferenceService.js"></script>
+    <script src="scripts/services/phoneService.js"></script>
+
 </body>
 </html>
