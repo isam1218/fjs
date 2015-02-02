@@ -62,11 +62,12 @@
     <!--<div class="fj-scrollable ListView WithStatBar">-->
     <div class="ListView">
       <div class="fj-viewport" style="overflow: hidden;">
-        <div class="fj-viewcontent">
+        <div class="fj-viewcontent"
+             data-ng-repeat="member in queueMembers | orderBy:sortField:sortReverse">
           <div class="ListViewTopSpace"></div>
-          <div class="" style="min-height: 144px;">
+          <div class="">
             <div class="fj-scroll-content" style="top: 0px;">
-              <div class="ListRowFirst ListLine">
+              <div class="ListRowOdd ListLine ListLineExpanded">
                 <div class="fj-hbox ListLineContent ListLineContentTop">
                   <div class="fj-hbox-cell ListLineContentCell Status">
                     <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
@@ -74,7 +75,7 @@
                   <div class="fj-hbox-cell ListLineContentCell Status">
                     <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
                   </div>
-                  <div class="fj-hbox-space ListLineContentCell Name">Al Paghiligan</div>
+                  <div class="fj-hbox-space ListLineContentCell Name">{{member.displayName}}</div>
                   <div class="fj-hbox-cell ListLineContentCell Duration">
                     <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
                     <span class="ListLineContentCellTextWithIcon-false">---</span></div>
@@ -87,187 +88,7 @@
                 <div class="ListLineDetails">
                   <div class="ListLineDetailsBorder"></div>
                   <div class="QueueAgentDetails">Other queues</div>
-                  <div class="undefined" style="min-height: 264px;"></div>
-                  <div class="QueueAgentDetails">Current queue calls</div>
-                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
-                  <div class="QueueAgentCall fj-visibility-false">
-                    <div class="QueueCallerInfo">
-                      <div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>
-                      <div class="QueueCallerName">&nbsp;</div>
-                      <div class="QueueCallDuration">00:00</div>
-                      <div class="QueueCallArrowGray"></div>
-                      <div class="QueueCallArrowWhite"></div>
-                    </div>
-                    <div class="Avatar AvatarSmall QueueAgentAvatar"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="ListRowOdd ListLine">
-                <div class="fj-hbox ListLineContent ListLineContentTop">
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div class="ListLineContentCellIcon XIcon-ChatStatus-Offline"></div>
-                  </div>
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
-                  </div>
-                  <div class="fj-hbox-space ListLineContentCell Name">Che Cullenbine</div>
-                  <div class="fj-hbox-cell ListLineContentCell Duration">
-                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
-                    <span class="ListLineContentCellTextWithIcon-false">---</span></div>
-                  <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
-                  <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
-                  <div class="fj-hbox-cell ListLineContentCell Twistie">
-                    <div class="TwistieArrow"></div>
-                  </div>
-                </div>
-                <div class="ListLineDetails">
-                  <div class="ListLineDetailsBorder"></div>
-                  <div class="QueueAgentDetails">Other queues</div>
-                  <div class="OtherQueuesStat" data-fj-local-id="OtherQueuesStat"></div>
-                  <div class="QueueAgentDetails">Current queue calls</div>
-                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
-                  <div class="QueueAgentCall fj-visibility-false">
-                    <div class="QueueCallerInfo">
-                      <div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>
-                      <div class="QueueCallerName">&nbsp;</div>
-                      <div class="QueueCallDuration" >00:00</div>
-                      <div class="QueueCallArrowGray"></div>
-                      <div class="QueueCallArrowWhite"></div>
-                    </div>
-                    <div class="Avatar AvatarSmall QueueAgentAvatar"></div>
-                  </div>
-                </div>
-              </div>
-              <div id="id680|1000003ee_2019" class="ListLine">
-                <div class="fj-hbox ListLineContent ListLineContentTop">
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div class="ListLineContentCellIcon XIcon-ChatStatus-Offline"></div>
-                  </div>
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LoggedOut"></div>
-                  </div>
-                  <div class="fj-hbox-space ListLineContentCell Name">Herald Ombiga</div>
-                  <div class="fj-hbox-cell ListLineContentCell Duration">
-                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
-                    <span class="ListLineContentCellTextWithIcon-false">---</span></div>
-                  <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
-                  <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
-                  <div class="fj-hbox-cell ListLineContentCell Twistie">
-                    <div class="TwistieArrow"></div>
-                  </div>
-                </div>
-                <div class="ListLineDetails">
-                  <div class="ListLineDetailsBorder"></div>
-                  <div class="QueueAgentDetails">Other queues</div>
-                  <div class="OtherQueuesStat"></div>
-                  <div class="QueueAgentDetails">Current queue calls</div>
-                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
-                  <div class="QueueAgentCall fj-visibility-false">
-                    <div class="QueueCallerInfo">
-                      <div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>
-                      <div class="QueueCallerName">&nbsp;</div>
-                      <div class="QueueCallDuration">00:00</div>
-                      <div class="QueueCallArrowGray"></div>
-                      <div class="QueueCallArrowWhite"></div>
-                    </div>
-                    <div class="Avatar AvatarSmall QueueAgentAvatar"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="ListRowOdd ListLine">
-                <div class="fj-hbox ListLineContent ListLineContentTop">
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div class="ListLineContentCellIcon XIcon-ChatStatus-Away"></div>
-                  </div>
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
-                  </div>
-                  <div class="fj-hbox-space ListLineContentCell Name">Jefferson Limlingan</div>
-                  <div class="fj-hbox-cell ListLineContentCell Duration">
-                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
-                    <span data-fj-local-id="duration" class="ListLineContentCellTextWithIcon-false">---</span></div>
-                  <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
-                  <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
-                  <div class="fj-hbox-cell ListLineContentCell Twistie">
-                    <div class="TwistieArrow"></div>
-                  </div>
-                </div>
-                <div class="ListLineDetails">
-                  <div class="ListLineDetailsBorder"></div>
-                  <div class="QueueAgentDetails">Other queues</div>
-                  <div class="OtherQueuesStat" ></div>
-                  <div class="QueueAgentDetails">Current queue calls</div>
-                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
-                  <div class="QueueAgentCall fj-visibility-false">
-                    <div class="QueueCallerInfo">
-                      <div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>
-                      <div class="QueueCallerName">&nbsp;</div>
-                      <div class="QueueCallDuration" >00:00</div>
-                      <div class="QueueCallArrowGray"></div>
-                      <div class="QueueCallArrowWhite"></div>
-                    </div>
-                    <div class="Avatar AvatarSmall QueueAgentAvatar"></div>
-                  </div>
-                </div>
-              </div>
-              <div id="id680|1000003ee_6935" class="ListLine">
-                <div class="fj-hbox ListLineContent ListLineContentTop">
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div class="ListLineContentCellIcon XIcon-ChatStatus-Offline"></div>
-                  </div>
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LoggedOut"></div>
-                  </div>
-                  <div class="fj-hbox-space ListLineContentCell Name">Miji Pitts</div>
-                  <div class="fj-hbox-cell ListLineContentCell Duration">
-                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
-                    <span data-fj-local-id="duration" class="ListLineContentCellTextWithIcon-false">---</span></div>
-                  <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
-                  <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
-                  <div class="fj-hbox-cell ListLineContentCell Twistie">
-                    <div class="TwistieArrow"></div>
-                  </div>
-                </div>
-                <div class="ListLineDetails">
-                  <div class="ListLineDetailsBorder"></div>
-                  <div class="QueueAgentDetails">Other queues</div>
-                  <div class="OtherQueuesStat" ></div>
-                  <div class="QueueAgentDetails">Current queue calls</div>
-                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
-                  <div class="QueueAgentCall fj-visibility-false">
-                    <div class="QueueCallerInfo">
-                      <div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>
-                      <div class="QueueCallerName">&nbsp;</div>
-                      <div class="QueueCallDuration">00:00</div>
-                      <div class="QueueCallArrowGray"></div>
-                      <div class="QueueCallArrowWhite"></div>
-                    </div>
-                    <div class="Avatar AvatarSmall QueueAgentAvatar"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="ListRowLast ListRowOdd ListLine">
-                <div class="fj-hbox ListLineContent ListLineContentTop">
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div class="ListLineContentCellIcon XIcon-ChatStatus-Offline"></div>
-                  </div>
-                  <div class="fj-hbox-cell ListLineContentCell Status">
-                    <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
-                  </div>
-                  <div class="fj-hbox-space ListLineContentCell Name">Norman Javier</div>
-                  <div class="fj-hbox-cell ListLineContentCell Duration">
-                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
-                    <span class="ListLineContentCellTextWithIcon-false">---</span></div>
-                  <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
-                  <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
-                  <div class="fj-hbox-cell ListLineContentCell Twistie">
-                    <div class="TwistieArrow"></div>
-                  </div>
-                </div>
-                <div class="ListLineDetails">
-                  <div class="ListLineDetailsBorder"></div>
-                  <div class="QueueAgentDetails">Other queues</div>
-                  <div class="OtherQueuesStat" ></div>
+                  <!--<div class="undefined" style="min-height: 264px;"></div>-->
                   <div class="QueueAgentDetails">Current queue calls</div>
                   <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
                   <div class="QueueAgentCall fj-visibility-false">
