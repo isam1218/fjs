@@ -104,6 +104,12 @@
 			margin: 2em 0 .5em 0;
 		}
 	  }
+  
+	  .ContactSearchHolder {
+		position: relative;
+		display: inline-block;
+		padding: .5em;
+	  }
 	}
 	
 	.Header {
@@ -133,6 +139,38 @@
 	  }
 	}
   }
+  
+  .Members {
+	background-color: #ccc;
+	border: 1px solid gray;
+	width: 100%;
+	height: 200px;
+	overflow-y: auto;
+	
+	.ListRow {
+	  &:first-child .Delete {
+	    display: none !important;
+	  }
+	
+	  &:hover .Delete {
+	    opacity: 1;
+	  }
+	
+	  .Delete {
+	    background-color: #d72800;
+		border: 0;
+		border-radius: 2px;
+		padding: .25em .5em;
+		transition: .2s;
+	    color: white;
+	    opacity: 0;
+	    position: absolute;
+	    bottom: .25em;
+	    right: .25em;
+		cursor: pointer;
+	  }
+	}
+  }
 }
 
 .SearchContactOverlay {
@@ -146,6 +184,13 @@
   z-index: 99;
   padding: .5em;
   font-size: .8em;
+  
+  .Header {
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	color: #729c00;
+  }
   
   .Inset {
   	overflow-y: auto;

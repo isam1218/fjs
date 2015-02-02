@@ -43,6 +43,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', function($q, $rootScope) {
 		return {
 			groups: groups,
 			favorites: favorites,
+			favoriteID: favoriteID,
 			mine: mine
 		};
 	};

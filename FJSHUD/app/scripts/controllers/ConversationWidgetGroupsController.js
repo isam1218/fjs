@@ -6,6 +6,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     $scope.contactId = $routeParams.contactId;
     $scope.query = "";
     $scope.add = {};
+	
     // pull updates from service
     $scope.$on('groups_updated',function(event,data) {
         $scope.groups = data.groups;
@@ -93,22 +94,8 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
         $scope.$apply();
     });
 
-    $scope.addGroup = function() {
-        // TO DO: validation
-        
-        $scope.add.contactIds = $rootScope.myPid;
-        
-        // save
-        myHttpService.sendAction('groups', 'addWorkgroup', $scope.add);
-        $scope.showOverlay(false);
-        $scope.add = {type:2};
-    };
-
-    $scope.showOverlay = function(show, edit) {
-        //$scope.edit = edit ? edit : false;
-        if (!show)
-            $scope.$parent.overlay = '';
-        else
-            $scope.$parent.overlay = 'groups';
+    $scope.showOverlay = function() {
+		// send off to groups widget
+        $rootScope.$broadcast('new_group', $scope.contactId);
     };
 }]);

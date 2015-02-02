@@ -1,55 +1,119 @@
-<div class="ListLineContent Header LeftContactsColumns">
-
-</div>
-
-<div class="LeftBarTabContentList">
-  <div class="ListSection">
-    <div class="ListSectionHeader">
-      <div class="ListSectionHeaderTitle">Stats</div>
+<div class="fj-content WidgetTabContent QueueStatTab">
+  <div class="">
+    <div class="fj-hbox WidgetTabQueueStatArea">
+      <div class="fj-hbox-cell WidgetTabQueueStatBlock">
+        <div class="WidgetTabQueueStatBlockText">Holding</div>
+        <div class="WidgetTabQueueStatBlockValue Normal">0</div>
+      </div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlock">
+        <div class="WidgetTabQueueStatBlockText">Abandon</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">100%</div>
+      </div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlock">
+        <div class="WidgetTabQueueStatBlockText">Complete</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">0%</div>
+      </div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlock">
+        <div class="WidgetTabQueueStatBlockText">TTA SLA</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">0%</div>
+      </div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlock">
+        <div class="WidgetTabQueueStatBlockText">Avg Talk</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">0 sec</div>
+      </div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
+      <div class="fj-hbox-cell WidgetTabQueueStatBlock">
+        <div class="WidgetTabQueueStatBlockText">ESA</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">0 sec</div>
+      </div>
     </div>
-    <div class="ListSectionBody">TODO</div>
+    <div class="ListLineContent RecentStat fj-visibility-true">Reset: 2015 January 22, 02:30 pm</div>
+    <div class="fj-hbox ListLineContent Header">
+      <div class="fj-hbox-cell ListLineContentCell Status">
+        <div class="ListLineContentCellIcon fj-visibility-true"></div>
+        <div class="arrow None"></div>
+      </div>
+      <div class="fj-hbox-cell ListLineContentCell Status">
+        <div class="ListLineContentCellIcon fj-visibility-true"></div>
+        <div class="arrow None"></div>
+      </div>
+      <div class="fj-hbox-space ListLineContentCell Name" ><span>Agent Name</span>
+
+        <div class="arrow Up"></div>
+      </div>
+      <div class="fj-hbox-cell ListLineContentCell Duration"><span>Talk / Idle </span>
+
+        <div class="arrow None"></div>
+      </div>
+      <div class="fj-hbox-cell ListLineContentCell Calls" ><span>Calls</span>
+
+        <div class="arrow None"></div>
+      </div>
+      <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
+
+        <div class="arrow None"></div>
+      </div>
+      <div class="fj-hbox-cell ListLineContentCell Twistie"></div>
+    </div>
+    <!--<div class="fj-scrollable ListView WithStatBar">-->
+    <div class="ListView">
+      <div class="fj-viewport" style="overflow: hidden;">
+        <div class="fj-viewcontent"
+             data-ng-repeat="member in queueMembers | orderBy:sortField:sortReverse">
+          <div class="ListViewTopSpace"></div>
+          <div class="">
+            <div class="fj-scroll-content" style="top: 0px;">
+              <div class="ListRowOdd ListLine ListLineExpanded">
+                <div class="fj-hbox ListLineContent ListLineContentTop">
+                  <div class="fj-hbox-cell ListLineContentCell Status">
+                    <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
+                  </div>
+                  <div class="fj-hbox-cell ListLineContentCell Status">
+                    <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
+                  </div>
+                  <div class="fj-hbox-space ListLineContentCell Name">{{member.displayName}}</div>
+                  <div class="fj-hbox-cell ListLineContentCell Duration">
+                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
+                    <span class="ListLineContentCellTextWithIcon-false">---</span></div>
+                  <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
+                  <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
+                  <div class="fj-hbox-cell ListLineContentCell Twistie">
+                    <div class="TwistieArrow"></div>
+                  </div>
+                </div>
+                <div class="ListLineDetails">
+                  <div class="ListLineDetailsBorder"></div>
+                  <div class="QueueAgentDetails">Other queues</div>
+                  <!--<div class="undefined" style="min-height: 264px;"></div>-->
+                  <div class="QueueAgentDetails">Current queue calls</div>
+                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
+                  <!--<div class="QueueAgentCall fj-visibility-false">-->
+                    <!--<div class="QueueCallerInfo">-->
+                      <!--<div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>-->
+                      <!--<div class="QueueCallerName">&nbsp;</div>-->
+                      <!--<div class="QueueCallDuration">00:00</div>-->
+                      <!--<div class="QueueCallArrowGray"></div>-->
+                      <!--<div class="QueueCallArrowWhite"></div>-->
+                    <!--</div>-->
+                    <!--<div class="Avatar AvatarSmall QueueAgentAvatar"></div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
+        <div class="fj-ui-scrollerFr-decoration"></div>
+        <div class="fj-ui-scroller">
+          <div class="fj-ui-scroller-decoration"></div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <a href="#contact/{{::member.contactId}}"
-     class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="stat in queuestats | SortCalllog | orderBy:sortField:sortReverse">
-    <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ stat.contact.getLocation() }}">
-      <img class="AvatarImgPH" data-fj-local-id="avatarImg"
-           ng-src="{{ stat.contact.getAvatarUrl(28,28)}}">
-
-      <div class="AvatarInteractable"></div>
-    </div>
-
-    <!--"lastCallTimestamp": 0,-->
-    <!--"callsHandled": 6,-->
-    <!--"avgTalkTime": 1441333-->
-    <!---->
-    <div class="ListRowContent">
-
-      <div class="ListRowLeftAreaWide">
-        <div class="ListRowTitle"> {{ member.contact.getDisplayName()}}</div>
-        <div
-          class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.contact.contactstatus_queueStatus}}">
-          <div class="status-icon-inner"></div>
-        </div>
-
-        <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.contact.getChatStatus()}}">
-          <div class="status-icon-inner"></div>
-        </div>
-
-        <div class="ListRowStatus ListRowStatusText">{{member.contact.contactstatus_xmppCustom ||
-          member.contact.contactstatus_xmpp || 'offline'}}
-        </div>
-      </div>
-      <div class="ListRowStatus">
-
-
-        <div class="Link ListRowDesc">#{{ member.contact.primaryExtension }}</div>
-
-      </div>
-    </div>
-  </a>
-
-
 </div>
 

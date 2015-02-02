@@ -3397,6 +3397,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Overlay .Foreground .Section .Contact .Buttons {
   margin: 2em 0 .5em 0;
 }
+.Overlay .Foreground .Section .ContactSearchHolder {
+  position: relative;
+  display: inline-block;
+  padding: .5em;
+}
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
   padding-bottom: 1em;
@@ -3419,6 +3424,32 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-size: 0.9em;
   border-radius: .5em;
 }
+.Overlay .Members {
+  background-color: #ccc;
+  border: 1px solid gray;
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+}
+.Overlay .Members .ListRow:first-child .Delete {
+  display: none !important;
+}
+.Overlay .Members .ListRow:hover .Delete {
+  opacity: 1;
+}
+.Overlay .Members .ListRow .Delete {
+  background-color: #d72800;
+  border: 0;
+  border-radius: 2px;
+  padding: .25em .5em;
+  transition: .2s;
+  color: white;
+  opacity: 0;
+  position: absolute;
+  bottom: .25em;
+  right: .25em;
+  cursor: pointer;
+}
 .SearchContactOverlay {
   position: absolute;
   top: 0;
@@ -3430,6 +3461,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   z-index: 99;
   padding: .5em;
   font-size: .8em;
+}
+.SearchContactOverlay .Header {
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  color: #729c00;
 }
 .SearchContactOverlay .Inset {
   overflow-y: auto;
