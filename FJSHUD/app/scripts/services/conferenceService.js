@@ -113,10 +113,8 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	$rootScope.$on("conferencepermissions_synced", function(event, data) {
 		for (i = 0; i < conferences.length; i++) {
 			for (key in data) {
-				if (data[key].xpid == conferences[i].xpid) {
+				if (data[key].xpid == conferences[i].xpid)
 					conferences[i].permissions = data[key].permissions;
-					console.error(conferences[i].permissions);
-				}
 			}
 		}
 		
