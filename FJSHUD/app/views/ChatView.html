@@ -12,7 +12,7 @@
 </div>
 		
 <div class="ListViewContent" id="ListViewContent" scroll-glue="glued">
-    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages">
+    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages | orderBy: created">
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">

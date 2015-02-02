@@ -28,10 +28,12 @@ hudweb.controller('ConferencesWidgetController', ['$scope', '$location', 'Confer
 	});
 	
 	// filter list down
-	$scope.customFilter = function() {		
+	$scope.customFilter = function() {
 		return function(conference) {
-			if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
-				return true;
+			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)) {
+				if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
+					return true;
+			}
 		};
 	};
 	

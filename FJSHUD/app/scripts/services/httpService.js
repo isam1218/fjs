@@ -252,7 +252,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		})
 		.then(function(response) {
 			// send items back to controller
-			var data = JSON.parse(response.data);
+			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 			for (i in data)
 				deferred.resolve(data[i]);
 		});
