@@ -83,7 +83,7 @@ function sync_request(f){
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status && xmlhttp.status == 200){		
-			synced_data = JSON.parse(xmlhttp.responseText);
+			synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
 			
 			for (feed in synced_data){
 				if(feed == "callrecording"){
