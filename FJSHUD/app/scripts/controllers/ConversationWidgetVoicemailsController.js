@@ -12,8 +12,11 @@ hudweb.controller('ConversationWidgetVoicemailsController', ['$scope', '$routePa
     {display_name:"read_status", type:"read"}
     ];
 
+    $scope.contact = contactService.getContact($scope.contactId);
+
     $scope.selectedSort = $scope.sort_options[0];
 
+    $scope.emptyVoiceLabel = $scope.contact.displayName;
 
     $scope.actions = [
     {display_name:"Actions", type:"unknown"},

@@ -15,7 +15,7 @@ hudweb.controller('GroupSingleVoicemailsController', ['$scope', '$routeParams', 
 
     $scope.selectedSort = $scope.sort_options[0];
 
-
+	$scope.emptyVoiceLabel = $scope.group.name;
     $scope.actions = [
     {display_name:"Actions", type:"unknown"},
     {display_name:"Mark all incoming voicemails as read", type:"read"},

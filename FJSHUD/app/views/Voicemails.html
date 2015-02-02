@@ -30,6 +30,11 @@
     <!--<react-component name="Voicemailbox" props="data"></react-component>-->
     
     <div class="ListView fj-scrollable"> 
+
+        <div class="vmlabel" ng-if="voicemails.length == 0"> 
+            <div class="vmlabelheader"> No Voicemails In View </div> 
+            <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
+        </div>
         <div class="vmsection" ng-repeat="voicemail in voicemails | filter: { displayName:query }"> 
             
             <div class="vmavatarsection AvatarNormal" > 

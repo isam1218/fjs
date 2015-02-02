@@ -62,6 +62,20 @@
   position: relative;
   font-size: 11px;
 }
+.vmlabel {
+  text-align: center;
+  color: #999;
+  text-shadow: 0px 2px 0px #fff;
+  line-height: 20px;
+  padding-top: 60px;
+}
+.vmlabel .vmlabelheader {
+  font-weight: bold;
+  font-size: 14px;
+}
+.vmlabel .vmnomessage {
+  font-size: 12px;
+}
 .vmalternate:hover .vmcallbtn {
   background: #3c9c00 linear-gradient(#3c9c00, #328400);
   color: #e8e8e8;
