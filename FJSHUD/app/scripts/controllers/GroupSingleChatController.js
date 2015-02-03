@@ -21,7 +21,7 @@ hudweb.controller('GroupSingleChatController', ['$scope', '$interval', 'ContactS
 	$scope.$on('streamevent_synced', function(event, data) {
 		for (key in data) {			
 			// only attach messages related to this group
-			if (data[key].to.replace('groups:', '') == $scope.groupID)
+			if (data[key].context.replace('groups:', '') == $scope.groupID)
 				$scope.messages.push(data[key]);
 		}
 		
