@@ -5,8 +5,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService', func
     $scope.currentPopup.url = null;
     $scope.currentPopup.x = 0;
     $scope.currentPopup.y = 0;
-
-    var _contextMenuWrap = document.getElementById('_contextMenuWrap');
 	
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
@@ -30,17 +28,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService', func
         $scope.currentPopup.x = 0;
         $scope.currentPopup.y = 0;
         $scope.currentPopup.model = null;
-        _contextMenuWrap.style.display = 'none';
-    };
-    $scope.callPhone = function(number) {
-        dataProvider.sendAction("me", "callTo", {"phoneNumber":number});
-    };
-
-    $scope.showMenu = function(data) {
-        _contextMenuWrap.style.display = 'block';
-        $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
-        $scope.currentPopup.model = data.model;
-        React.renderComponent(fjs.hud.react.ContextMenu({scope: $scope}), _contextMenuWrap);
     };
 
     $scope.showPopup = function(data) {
@@ -69,8 +56,4 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService', func
 			// remove watcher
 			getMyPid = null;
 	});
-
-    $scope.logout = function() {
-        dataProvider.logout();
-    };
 }]);

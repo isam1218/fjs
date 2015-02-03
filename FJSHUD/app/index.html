@@ -136,10 +136,13 @@
 			<div class="DockPanel"></div>
 		</div>
 	</div>
-
-    <div ng-include="currentPopup.url">
-    </div>
-    <div id="_contextMenuWrap"></div>
+	
+	<div ng-include="currentPopup.url"></div>
+	
+	<div id="ContextMenu" 
+		ng-include="'views/ContextMenu.html'"
+		ng-controller="ContextMenuController">
+	</div>
 
     <div id="fj-loading" class="fj-loading" ng-if="!loaded">
         <div class="fji-box">
@@ -174,7 +177,7 @@
     <script src="../bower_components/ngReact/ngReact.min.js"></script>
     <script src="../bower_components/angular-scroll-glue/src/scrollglue.js"></script>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-   <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+	
 	<!--config-->	
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>
@@ -186,6 +189,7 @@
 
 	<!--directives-->
     <script src="scripts/directives/searchContactsDirective.js"></script>
+    <script src="scripts/directives/contextMenuDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>
@@ -195,6 +199,7 @@
     <script src="scripts/controllers/NotificationController.js"></script>
     <script src="scripts/controllers/ContactsWidget.js"></script>
     <script src="scripts/controllers/LocationsController.js"></script>
+    <script src="scripts/controllers/ContextMenuController.js"></script>
 
     <script src="scripts/controllers/ConversationWidgetController.js"></script>
     <script src="scripts/controllers/ConversationWidgetChatController.js"></script>
