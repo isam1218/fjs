@@ -15,7 +15,7 @@ var feeds = ['me', 'contacts', 'locations',
 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 
 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 
 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
-'calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers'
+'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers'
 ,'conferencepermissions','conferencestatus','callrecording'];
 
 onconnect = function(event){
@@ -117,9 +117,7 @@ function sync_request(f){
 			for (i = 0; i < ports.length; i++)
 				ports[i].postMessage(sync_response);
 				
-			// initial sync is complete, so attach chat feed now
 			synced = true;
-			feeds['streamevent'] = true;
 		}
 		
 		// again, again!
