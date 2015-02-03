@@ -17,6 +17,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
      var CALL_STATUS_CLOSED = 2;
      var CALL_STATUS_ERROR = 3;
 
+
+    var REG_STATUS_UNKNOWN = -1;
+	var REG_STATUS_OFFLINE = 0;
+	var REG_STATUS_ONLINE = 1;
+
+	registerPhone = function(isRegistered){
+		if(phone){
+			if(phone.status != REG_STATUS_ONLINE){
+				phone.register(isRegistered);
+			}
+		}
+	}
+
 	this.initializePhone = function(){
 		 phonePlugin = document.getElementById('phone');
 		 version = phonePlugin.version;
@@ -54,7 +67,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
             isRegistered = true;
 			phone = session.phone;
 			soundManager = session.soundManager;
-					
+			registerPhone(true);
          } else if (session_status.status == 1) {
                 alert("Session unauthorized");
                 return;
@@ -70,7 +83,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
     setupListeners = function(){
     	if(phone){
     		if(phone.attachEvent){
-
+				phone.attachEvent("onCall", callInProgress);
+                phone.attachEvent("onStatus", accStatus);
     		}else{
     			phone.addEventListener("Call",callInProgress,false);
     			phone.addEventListener("Status",accStatus,false)
@@ -134,11 +148,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 		}
 	}
 
-	this.registerPhone = function(isRegistered){
-		if(phone){
-			phone.register(isRegistered);
-		}
-	}
+	
 
 	this.makeCall = function(phoneNumber){
 		if(phone){

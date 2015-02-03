@@ -561,9 +561,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.makeCall = function(number){
         
         if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
-                phoneService.registerPhone(true);
                 phoneService.makeCall(number);
-            phoneService.displayNotification("www.google.com");
+                phoneService.displayNotification("/app/views/Notifications.html");
         }else{
             myHttpService.sendAction('me','callTo',{phoneNumber: number});
         }
