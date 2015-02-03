@@ -121,7 +121,7 @@ function sync_request(f){
 		}
 		
 		// again, again!
-		setTimeout('do_version_check();', 1000);
+		setTimeout('do_version_check();', 500);
 	});
 }
 
@@ -152,10 +152,10 @@ function do_version_check(){
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
             else
-				setTimeout('do_version_check();', 1000);
+				setTimeout('do_version_check();', 500);
 		}
 		else
-			setTimeout('do_version_check();', 1000);
+			setTimeout('do_version_check();', 500);
 	});
 }	
 
