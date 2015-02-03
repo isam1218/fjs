@@ -41,9 +41,9 @@
               <div class="WidgetSectionTitle">Place a call</div>
               
               <div class="NewCall">
-                <input class="NewCall" type="tel" placeholder="Phone number">
+                <input class="NewCall" type="tel" ng-model="phoneNumber" placeholder="Phone number">
                 <div class="XButton XButtonNormal" ><span>#</span></div>
-                <div class="XButton XButtonGreen" ng-click="makeCall('7364')"><span>Call</span></div>
+                <div class="XButton XButtonGreen" ng-click="makeCall(phoneNumber)"><span>Call</span></div>
               </div>
               
               <div class="WidgetSectionTitle">Recent calls</div>

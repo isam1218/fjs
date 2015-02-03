@@ -5,6 +5,7 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
     //var meModel = dataManager.getModel("me");
     httpService.getFeed("me");
     httpService.getFeed("locations");
+    httpService.getFeed("location_status");
     $scope.locations = {};
     $scope.meModel = {};
     $scope.setLocation = function(locationId){
@@ -48,6 +49,17 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
             var me = {};
             for(index in data){
                 $scope.locations[data[index].xpid] = data[index];
+            }
+        }
+
+        $scope.$apply();
+    });
+
+     $scope.$on('location_status_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(index in data){
+                $scope.locations[data[index].xpid].status = data[index];
             }
         }
 

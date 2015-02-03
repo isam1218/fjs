@@ -1,4 +1,4 @@
-hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', function($scope, $http, myHttpService) {
+hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService', function($scope, $http, myHttpService,phoneService) {
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -7,6 +7,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', funct
     var queues = [];
 
     $scope.avatar ={};
+
+    //$scope.locations = []
 
     $scope.getCurrentLocationTitle = function() {
         /**
@@ -32,8 +34,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', funct
     $scope.fdpVersion;
     $scope.meModel={};
     $scope.locations = {};
+    $scope.phoneNumber = "";
     /* */
-    //$scope.fon
     /**
     * used to determine what tab is selected in the me widget controller
     *
@@ -42,10 +44,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', funct
     $scope.selected = 'General';
 
     $scope.recentSelectSort = 'Date';
+    myHttpService.getFeed('me');
 
     myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
+    myHttpService.getFeed('locations');
+    
+    this.onAlertClicked = function(urlHash){
+        console.log(urlHash);
+    }
 
+
+
+    this.onAlertClicked = function(urlHash){
+        console.log(urlHash);
+    }
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
@@ -60,10 +73,43 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', funct
     $scope.setCustomStatus = function() {
         myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":$scope.meModel.chat_custom_status});
     };
+
+    this.getElementOffset = function(element) {
+        if(element != undefined)
+        {
+            var box = null;
+            try {
+                box = element.getBoundingClientRect();
+            }
+            catch(e) {
+                box = {top : 0, left: 0, right: 0, bottom: 0};
+            }
+            var body = document.body;
+            var docElem = document.documentElement;
+            var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+            var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+            var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+            var clientTop = docElem.clientTop || body.clientTop || 0;
+
+            var left = box.left + scrollLeft - clientLeft;
+            var top = box.top +  scrollTop - clientTop;
+            return {x:left, y:top};
+        }
+    }
+
+    this.getEventHandlerElement = function(target, event) {
+      if(target.getAttribute("data-ng-"+event.type)) {
+          return target;
+      }
+      else if(target.parentNode) {
+          return this.getEventHandlerElement(target.parentNode, event);
+      }
+};
+
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
-        var offset = fjs.utils.DOM.getElementOffset(eventTarget);
+        var offset = context.getElementOffset(eventTarget);
         $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y});
         return false;
     };
@@ -509,8 +555,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService', funct
         meGroup = data.filter(function(item){
             return item.xpid == $scope.meModel['my_pid'];
         });
+
     });
 
+    $scope.makeCall = function(number){
+        
+        if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
+                phoneService.registerPhone(true);
+                phoneService.makeCall(number);
+            phoneService.displayNotification("www.google.com");
+        }else{
+            myHttpService.sendAction('me','callTo',{phoneNumber: number});
+        }
+    }
+
+    
     $scope.$on('weblauncher_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
