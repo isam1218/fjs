@@ -1,28 +1,57 @@
-/**
- * Created by vovchuk on 11/6/13.
- */fjs.core.namespace("fjs.ui");
+hudweb.controller('LocationsController',['$scope','$element','HttpService',function($scope, $element,httpService) {
+    //fjs.ui.Controller.call(this, $scope);
 
-fjs.ui.LocationsController = function($scope, $element, dataManager) {
-    fjs.ui.Controller.call(this, $scope);
-
-    var locationsModel = dataManager.getModel("locations");
-    var meModel = dataManager.getModel("me");
-    $scope.locations = locationsModel.items;
+    //var locationsModel = dataManager.getModel("locations");
+    //var meModel = dataManager.getModel("me");
+    httpService.getFeed("me");
+    httpService.getFeed("locations");
+    $scope.locations = {};
+    $scope.meModel = {};
     $scope.setLocation = function(locationId){
-        dataManager.sendAction("locations", "select", {"locationId":meModel.itemsByKey["current_location"].propertyValue = locationId});
+        httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
     };
+    
     $scope.getCurrentLocationTitle = function() {
+        /**
+         * @type {{name:string. phone:string}}
+         */
         var currentLocation;
-        if(meModel.itemsByKey["current_location"] && (currentLocation = locationsModel.items[meModel.itemsByKey["current_location"].propertyValue])) {
-            return currentLocation.name+" ("+currentLocation.phone+")";
-        }
-        else {
-            return "Loading...";
-        }
-    };
-    $scope.getCurrentLocationId = function() {
-        return meModel.itemsByKey["current_location"] && meModel.itemsByKey["current_location"].propertyValue;
-    }
-}
 
-fjs.core.inherits(fjs.ui.LocationsController, fjs.ui.Controller)
+
+         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
+             currentLocation = $scope.locations[$scope.meModel["current_location"]];
+             return currentLocation.name+" ("+currentLocation.phone+")";
+         }
+         else {
+             return "Loading...";
+         }
+    };
+
+
+    $scope.getCurrentLocationId = function() {
+        return $scope.meModel["current_location"] && $scope.meModel["current_location"];
+    }
+
+    $scope.$on('me_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
+
+        $scope.$apply();
+    });
+
+    $scope.$on('locations_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(index in data){
+                $scope.locations[data[index].xpid] = data[index];
+            }
+        }
+
+        $scope.$apply();
+    });
+
+}]);

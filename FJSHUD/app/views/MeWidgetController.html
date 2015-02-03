@@ -24,6 +24,7 @@
                     </div>
                     <div class="MeInfoTitle">Location</div>
                     <div class="LocationSelector ">
+                      <!--<select> </select>-->
                         <div class="SelectBox" data-ng-click="showLocationsPopup($event, $element)">
                                 <div class="SelectBoxText">
                                     <span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span>
@@ -42,7 +43,7 @@
               <div class="NewCall">
                 <input class="NewCall" type="tel" placeholder="Phone number">
                 <div class="XButton XButtonNormal" ><span>#</span></div>
-                <div class="XButton XButtonGreen"><span>Call</span></div>
+                <div class="XButton XButtonGreen" ng-click="makeCall('7364')"><span>Call</span></div>
               </div>
               
               <div class="WidgetSectionTitle">Recent calls</div>
