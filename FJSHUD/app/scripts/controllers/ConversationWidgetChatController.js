@@ -20,6 +20,18 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
 		for (key in data) {
+			// prevent duplicates
+			var dupe = false;
+			
+			for (i = 0; i < $scope.messages.length; i++) {
+				if (data[key].xpid == $scope.messages[i].xpid) {
+					dupe = true;
+					break;
+				}
+			}
+			
+			if (dupe) continue;
+			
 			var from = data[key].from.replace('contacts:', '');
 			var to = data[key].to.replace('contacts:', '');
 			

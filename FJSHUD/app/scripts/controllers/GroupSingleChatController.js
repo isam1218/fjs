@@ -19,7 +19,19 @@ hudweb.controller('GroupSingleChatController', ['$scope', '$interval', 'ContactS
 	
 	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		for (key in data) {			
+		for (key in data) {
+			// prevent duplicates
+			var dupe = false;
+			
+			for (i = 0; i < $scope.messages.length; i++) {
+				if (data[key].xpid == $scope.messages[i].xpid) {
+					dupe = true;
+					break;
+				}
+			}
+			
+			if (dupe) continue;
+	
 			// only attach messages related to this group
 			if (data[key].context.replace('groups:', '') == $scope.groupID)
 				$scope.messages.push(data[key]);

@@ -251,10 +251,16 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			transformResponse: false
 		})
 		.then(function(response) {
-			// send items back to controller
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
-			for (i in data)
-				deferred.resolve(data[i]);
+	
+			for (key in data) {
+				// create xpid for each record
+				for (i = 0; i < data[key].items.length; i++)
+					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
+				
+				// send items back to controller
+				deferred.resolve(data[key]);
+			}
 		});
 		
 		return deferred.promise;
