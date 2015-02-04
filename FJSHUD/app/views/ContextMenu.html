@@ -1,5 +1,47 @@
-<div class="Avatar AvatarNormal">
-	<img class="AvatarImgPH" data-ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+<div class="Arrow"></div>
+
+<div class="TopRow">
+	<div>
+		<div class="Avatar AvatarNormal">
+			<img class="AvatarImgPH" data-ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		</div>
+		<div>
+			{{ contact.displayName }}
+			<br/>
+			<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
+				<div class="status-icon-inner"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="Numbers">
+		<div>email:</div> {{ contact.email }}
+		<br/>
+		<div>ext:</div> {{ contact.primaryExtension }}
+	</div>
+	
+	<div class="Numbers">
+		<div>mobile:</div> {{ contact.phoneMobile }}
+		<br/>
+		<div>phone:</div> {{ contact.phoneBusiness }}
+	</div>
 </div>
 
-{{ contact.displayName }}
+<div class="BottomRow">
+	<a class="Button" href="" ng-show="isFavorite" ng-click="removeFavorite()">
+		<div class="ListRowActionButtonRemove"></div>
+		<span>Remove</span>
+	</a>
+	<a class="Button" href="" ng-show="!contact.primaryExtension" ng-click="editContact()">
+		<div class="ListRowActionButtonEdit"></div>
+		<span>Edit</span>
+	</a>
+	<a class="Button" href="#/contact/{{contact.xpid}}" ng-show="contact.primaryExtension">
+		<div class="ListRowActionButtonChat"></div>
+		<span>Chat</span>
+	</a>
+	<a class="Button" href="mailto:{{ contact.email }}" target="_blank" ng-show="contact.email">
+		<div class="ListRowActionButtonEmail"></div>
+		<span>Email</span>
+	</a>
+</div>

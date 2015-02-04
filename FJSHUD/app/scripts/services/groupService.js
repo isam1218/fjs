@@ -25,6 +25,13 @@ hudweb.service('GroupService', ['$q', '$rootScope', function($q, $rootScope) {
 		else
 			return false;
 	};
+	
+	this.isFavorite = function(xpid) {
+		if (favorites[xpid])
+			return true;
+		else
+			return false;
+	};
 
 	var doesMemberExist = function(group,contact){
 		if(group.members){

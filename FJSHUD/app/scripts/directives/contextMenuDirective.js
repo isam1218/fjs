@@ -6,15 +6,17 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			var overlay = angular.element(document.getElementById('ContextMenu'));
-			var rect = element[0].getBoundingClientRect();
+			var buttons = overlay[0].getElementsByClassName('Button');
+			var rect;
 			
-			element.bind('mouseenter', function(e) {				
+			element.bind('mouseenter', function(e) {
+				rect = element[0].getBoundingClientRect();
 				$timeout.cancel(timer);
 				
 				if (overlay.css('display') != 'block') {
 					// delay
 					timer = $timeout(function() {
-						showOverlay(e);
+						showOverlay();
 				
 						overlay.bind('mouseleave', function(e) {							
 							// keep open if user moves back onto avatar
@@ -24,43 +26,52 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 							}
 							
 							if (e.relatedTarget != element)
-								hideOverlay();
+								hideOverlay(500);
 						});
 						
 						overlay.bind('mouseenter', function(e) {
 							$timeout.cancel(timer);
 						});
+			
+						// button clicks
+						angular.element(buttons).bind('click', function(e) {
+							e.stopPropagation();
+							hideOverlay(0);
+						});
 					}, 500);
 				}
 				else if (current != element) {
 					// hovered over a new avatar
-					showOverlay(e);
+					showOverlay();
 				}
 					
 				current = element;
 			});
 			
 			element.bind('mouseleave', function(e) {
-				if (e.relatedTarget.id != 'ContextMenu')
-					hideOverlay();
+				// hide pop-pop
+				if (overlay.css('display') != 'block')
+					$timeout.cancel(timer);
+				else if (e.relatedTarget.id != 'ContextMenu')
+					hideOverlay(500);
 			});
 			
-			function showOverlay(e) {
+			function showOverlay() {
 				// send object to controller
 				contact = $parse(attrs.contextMenu)(scope);
 				$rootScope.$broadcast('contextMenu', contact);
 				
 				// position pop-pop
-				overlay.css('left', e.clientX + 'px');
-				overlay.css('top', e.clientY + 'px');
+				overlay.css('left', (rect.left + rect.width/2) + 'px');
+				overlay.css('top', (rect.top + rect.height/2) + 'px');
 				overlay.css('display', 'block');
 			}
 			
-			function hideOverlay() {
+			function hideOverlay(t) {
 				timer = $timeout(function() {
 					overlay.css('display', 'none');
 					overlay.unbind();
-				}, 500);
+				}, t);
 			}
 		}
 	};
