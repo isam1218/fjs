@@ -24,7 +24,7 @@
 							<img class="NotificationAvatar"  ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
 						</div>
 					
-						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.xpid)"> 
+						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId)"> 
 							
 							<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.type }}</div>
@@ -70,7 +70,7 @@
 					
 						<div class="LeftBarNotificationMessageSection"> 
 							
-							<div class="NotificationDisplayName" ng-click="go_to_notification_chat(message.xpid)">{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
+							<div class="NotificationDisplayName" ng-click="go_to_notification_chat(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.type }}</div>
 							<div class="NotificationMessage"><p>{{ getMessage(message) }} </p> </div>
 					
@@ -87,4 +87,6 @@
 			<input type="button" class="XButton XButtonRed" value="Clear All" ng-click="remove_all()" />
 		</div>
 	</div>
+
 </div>
+<div ng-include="'views/NativeAlerts/CallAlert.html'" style="display:none"></div>
