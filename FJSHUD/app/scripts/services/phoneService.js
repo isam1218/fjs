@@ -8,6 +8,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 	var soundManager;
 	var meModel = {};
 	var sipCalls = {};
+	var xpid2Sip = {};
+	var callsDetails = {};
 	var isRegistered = false;
 	//fjs.CONFIG.SERVER.serverURL 
 	
@@ -36,12 +38,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 		 version = phonePlugin.version;
 	}
 
+	displayNotification = function(url){
+		if(alert){
+			alert.setShadow(false);
+			alert.setTransparency(255);
+			//alert.setAlertBounds(0,0,0,0);
+			alert.addAlert(url);
+		}
+	}
+
 	onCallStateChanged = function(call){
 		if (call.status == CALL_STATUS_RINGING || call.status == CALL_STATUS_ACCEPTED) {
+                sipCalls[call.sip_id] = call;
+				content = document.getElementById("CallAlert").innerHTML;
+       			displayNotification(content);
+        
                 if (call.incoming) {
-				alert('incoming call changed');                   
-              	} else {
-					sipCalls[call.sip_id] = call;
+						
+				} else {
 				}
         }
     }
@@ -83,6 +97,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
         console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
     }
 
+    onAlert = function(urlhash){
+    	console.log("AlertClicked: " + urlhash);
+	}
+
+	removeNotification = function(){
+
+		if(alert){
+			alert.removeAlert();
+		}
+	}
+
+    onAlertMouseEvent = function(event,x,y){
+    	console.log("MouseEvent: " + event + " (" + x + "," + y + ")");
+
+    	this.removeNotification();
+    }
+
     setupListeners = function(){
     	if(phone){
     		if(phone.attachEvent){
@@ -91,7 +122,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
     		}else{
     			phone.addEventListener("Call",onCallStateChanged,false);
     			phone.addEventListener("Status",accStatus,false)
+    		}
+    	}
 
+    	if(alert){
+    		if(alert.attachEvent){
+    			alert.attachEvent("onAlert",onAlert);
+    			alert.attackEvent("ononAlertMouseEvent",onAlertMouseEvent);
+    		
+
+    		}else{
+    			alert.addEventListener("Alert",onAlert,false);
+    			alert.addEventListener("onAlertMouseEvent",onAlertMouseEvent,false);
     		}
     	}
     }
@@ -126,22 +168,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 
     });
 
+	this.displayNotification = displayNotification;
 
 
-
-	this.displayNotification = function(url){
-		if(alert){
-			alert.addAlert(url);
-		}
-	}
-
-
-	this.removeNotification = function(url){
-
-		if(alert){
-			alert.removeAlert();
-		}
-	}
+	this.removeNotification = removeNotification;
 
 	this.getSoundManager = function(){
 		if(soundManager){
@@ -151,10 +181,42 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 		}
 	}
 
-	this.hangUp = function(){
-		if(phone){
-			phone.hangUp();
+	this.hangUp = function(xpid){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		if(call){
+			call.hangUp();
+			delete sipCalls[sip_id];
 		}
+	}
+
+	this.transfer = function(xpid,number){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		if(call){
+			call.transfer(number);
+		}	
+	}
+
+
+	this.sendDtmf = function(xpid,entry){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		if(call){
+			call.dtmf(entry);
+		}	
+	}
+
+	this.getCall = function(xpid){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		return call;
+	}
+
+	this.acceptCall = function(xpid){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		call.accept();	
 	}
 
 	this.makeCall = function(phoneNumber){
@@ -162,5 +224,38 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 			phone.makeCall(phoneNumber)
 		}
 	}
+
+	$rootScope.$on("calls_synced",function(event,data){
+		if(data){
+			for(i = 0; i < data.length; i ++){
+				if(data[i].xef001type == "delete"){
+					delete callsDetails[data[i].xpid];
+					delete xpid2Sip[data[i].xpid];
+				}
+				callsDetails[data[i].xpid] = data[i];
+				xpid2Sip[data[i].xpid] = Object.keys(sipCalls)[0];
+			
+			}
+		}
+
+		$rootScope.$broadcast('calls_updated', callsDetails);
+
+
+	});
+
+	
+
+	$rootScope.$on("calldetails_synced",function(event,data){
+		if(data){
+			for(i = 0; i < data.length; i ++){
+				if(callsDetails[data[i].xpid]){
+					callsDetails[data[i].xpid].details = data[i];
+				}
+			}
+		}
+		$rootScope.$broadcast('calls_updated', callsDetails);
+
+		
+	});
 
 }]);
