@@ -126,6 +126,11 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		else
 			$scope.overlay = 'groups';
 	};
+	$scope.$on('calls_synced',function(event,data){
+		if(data){
+			
+		}
+	});
 
 	$scope.$on('quickinbox_synced', function(event,data){
 		
