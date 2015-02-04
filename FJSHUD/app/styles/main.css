@@ -929,6 +929,10 @@ p {
   width: 40%;
   position: absolute;
 }
+.WidgetZoomBody {
+  top: 35px;
+  background-image: url(../img/XTile-Widget.png);
+}
 .left {
   left: 5%;
 }
@@ -1416,8 +1420,8 @@ div.NewCall {
   -webkit-transition: all 0.1s linear;
 }
 .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -4250,6 +4254,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-size: .9em;
   color: gray;
 }
+#ContextMenu {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background-color: #ededee;
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+  padding: .5em;
+}
 .MenuWindow {
   position: absolute;
   z-index: 1000;
@@ -4258,7 +4271,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

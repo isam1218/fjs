@@ -1,8 +1,5 @@
 hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', function($scope, $http,httpService) {
 
-    var context = this;
-
-    fjs.ui.Controller.call(this, $scope);
     //fjs.ui.AddContactMenuController.call(this, $scope, dataManager, "views/AddContactPopupMenu.html");
 
     $scope.joinMeeting = function(meetingId){
@@ -13,6 +10,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
     $scope.startUrl = "";
     $scope.joinUrl = "";
 
+    $scope.inMeeting = false;
     $scope.startMeeting = function(option){
         var data = {};
         data["topic"]="";
@@ -33,6 +31,8 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
             $scope.startUrl = response.data.start_url;
             $scope.joinUrl = response.data.join_url;
             window.open($scope.startUrl, '_blank');
+            $scope.inMeeting = true;
+            $scope.$safeApply();
 
         });
         /*dataManager.sendFDPRequest("/v1/zoom", data, function(xhr, data, isOk) {
