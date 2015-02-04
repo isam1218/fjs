@@ -7,6 +7,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 	var phone;
 	var soundManager;
 	var meModel = {};
+	var sipCalls = {};
 	var isRegistered = false;
 	//fjs.CONFIG.SERVER.serverURL 
 	
@@ -35,13 +36,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 		 version = phonePlugin.version;
 	}
 
-	callInProgress = function(call){
-		if (call.status == CALL_STATUS_RINGING) {
+	onCallStateChanged = function(call){
+		if (call.status == CALL_STATUS_RINGING || call.status == CALL_STATUS_ACCEPTED) {
                 if (call.incoming) {
 				alert('incoming call changed');                   
               	} else {
-				alert('outcoming call changed');                    
-                }
+					sipCalls[call.sip_id] = call;
+				}
         }
     }
 
@@ -68,6 +69,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 			phone = session.phone;
 			soundManager = session.soundManager;
 			registerPhone(true);
+			alert.initAlert('');
+			setupListeners();
          } else if (session_status.status == 1) {
                 alert("Session unauthorized");
                 return;
@@ -83,10 +86,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
     setupListeners = function(){
     	if(phone){
     		if(phone.attachEvent){
-				phone.attachEvent("onCall", callInProgress);
+				phone.attachEvent("onCall", onCallStateChanged);
                 phone.attachEvent("onStatus", accStatus);
     		}else{
-    			phone.addEventListener("Call",callInProgress,false);
+    			phone.addEventListener("Call",onCallStateChanged,false);
     			phone.addEventListener("Status",accStatus,false)
 
     		}
@@ -128,7 +131,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 
 	this.displayNotification = function(url){
 		if(alert){
-			alert.addAlertEx(url);
+			alert.addAlert(url);
 		}
 	}
 
@@ -148,7 +151,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 		}
 	}
 
-	
+	this.hangUp = function(){
+		if(phone){
+			phone.hangUp();
+		}
+	}
 
 	this.makeCall = function(phoneNumber){
 		if(phone){
