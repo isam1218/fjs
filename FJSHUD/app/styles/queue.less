@@ -704,481 +704,483 @@
 {
   border-left : solid 3px #292;
 }
-.ListRow .Avatar
-{
-  position : absolute;
-  top : 5px;
-  left : 5px;
-}
-.ListRowContent
-{
-  position : absolute;
-  top : 0px;
-  left : 50px;
-  right : 0px;
-  height : 50px;
-  border-left : solid 1px #dee1e5;
-}
-.ListRowTitle
-{
-  position : absolute;
-  top : 5px;
-  left : 5px;
-  right : 5px;
-  height : 20px;
-  line-height : 20px;
-  font-size : 12px;
-  text-align : left;
-  text-overflow : ellipsis;
-  overflow : hidden;
-  text-decoration : none;
-  color : #555;
-  white-space : nowrap;
-}
-.ListRowTitle .name
-{
-  height : 20px;
-  text-overflow : ellipsis;
-  white-space : nowrap;
-  overflow : hidden;
-  font-size : 13px;
-  color : #222;
-  text-shadow : 0px 1px 0px rgba(255,255,255,0.3);
-}
-.ListRowTitle .name .details
-{
-  margin-right : 10px;
-  font-size : 11px;
-  color : #999;
-  float : right;
-}
-.ListRowTitle .link
-{
-  height : 20px;
-  text-overflow : ellipsis;
-  white-space : nowrap;
-  overflow : hidden;
-  color : #888;
-  font-weight : bold;
-  font-size : 11px;
-}
-.ListRowStatus
-{
-  position : absolute;
-  display : -webkit-box;
-  top : 25px;
-  left : 5px;
-  right : 5px;
-  height : 24px;
-  line-height : 24px;
-  color : #888;
-  font-size : 12px;
-  text-align : left;
-  text-overflow : ellipsis;
-  text-decoration : none;
-}
-.ListRowStatusIcon
-{
-  position : relative;
-  width : 24px;
-  height : 24px;
-  max-width : 24px;
-  background-repeat : no-repeat;
-}
-.ListRowStatusIcon.CallStatus
-{
-  width : 40px;
-  max-width : 40px;
-}
-.ListRowStatusIcon.CallStatus .Avatar
-{
-  top : 7px;
-  left : auto;
-  right : -12px;
-  opacity : 0.5;
-  transition : all 0.3s ease;
-  -webkit-transition : all 0.3s ease;
-}
-.ListRow:hover .ListRowStatusIcon.CallStatus .Avatar
-{
-  opacity : 1;
-  top : -3px;
-  right : -6px;
-}
-.ListRowStatusText
-{
-  height : 24px;
-  line-height : 24px;
-  text-overflow : ellipsis;
-  overflow : hidden;
-  white-space : nowrap;
-}
-.ListRowStatusText2
-{
-  position : absolute;
-  top : 12px;
-  left : 0px;
-  right : 50px;
-  height : 25px;
-  text-overflow : ellipsis;
-  overflow : hidden;
-  white-space : nowrap;
-}
-.ListRowStatusDate
-{
-  position : absolute;
-  top : -2px;
-  left : 0px;
-  right : 50px;
-  height : 25px;
-  text-overflow : ellipsis;
-  overflow : hidden;
-  white-space : nowrap;
-}
-.ListRow .duration
-{
-  position : absolute;
-  top : 50%;
-  right : 5px;
-  font-size : 11px;
-  line-height : 15px;
-  font-weight : bold;
-  text-shadow : 0px 1px 0px #fff;
-}
-.ListRow .duration.top
-{
-  top : 5px;
-}
-.ListRow .action-buttons
-{
-  position : absolute;
-  right : -7px;
-  top : 14px;
-}
 
-.ListLine
+.Queues 
 {
-  position : relative;
-  width : 100%;
-  height : 24px;
-}
-.ListLineExpanded
-{
-  height : auto;
-}
-.ListLineContent
-{
-  position : relative;
-  width : 100%;
-  height : 24px;
-  background-color : #f9f9f9;
-  cursor : pointer;
-}
-.ListLineContent:hover
-{
-  background-color : #ddd;
-}
-.ListLine:nth-child(odd) .ListLineContent
-{
-  background-color : #eee;
-}
-.ListLine:nth-child(odd) .ListLineContent:hover
-{
-  background-color : #ddd;
-}
-.ListLineExpanded .ListLineContent.ListLineContentTop,
-.ListLineExpanded .ListLine:nth-child(odd) .ListLineContent.ListLineContentTop,
-.ListLineExpanded:hover .ListLine:nth-child(odd) .ListLineContent.ListLineContentTop
-{
-  background-color : rgb(193, 204, 218);
-}
-.ListLineExpanded .ListLineContent.ListLineContentTop:hover
-{
-  background-color : rgb(173, 183, 196);
-}
-.ListLineContent.RecentStat,
-.ListLineContent.RecentStat:hover
-{
-  position : relative;
-  height : 20px;
-  line-height : 20px;
-  width : 100%;
-  font-size : 11px;
-  color : #999;
-  text-align : center;
-  background-color : #f9f9f9;
-  cursor : default;
-}
-.ListLineContentCell
-{
-  position : relative;
-  height : 20px;
-  line-height : 20px;
-  white-space : nowrap;
-  text-overflow : clip;
-  overflow : hidden;
-}
-.ListLineContentCell.Red
-{
-  color : red;
-}
-.ListLineContentCellIcon
-{
-  position : absolute;
-  left : 0px;
-  top : 0px;
-  width : 24px;
-  height : 24px;
-}
-//.ListLineContentCellIcon.QueueCall
-//{
-//  background : url("img/XStatus.png?v=1418381374907") no-repeat -120px -24px;
-//}
-//.ListLineContentCellIcon.ChatHeader
-//{
-//  background : url("img/XStatus.png?v=1418381374907") no-repeat -96px -0px;
-//}
-//.ListLineContentCellIcon.QueueHeader
-//{
-//  background : url(img/XStatus.png?v=1418381374907) no-repeat -144px -24px;
-//}
-.ListLineContentCellTextWithIcon-true
-{
-  position : absolute;
-  left : 24px;
-  right : 0px;
-}
-.ListLineContentCellTextWithIcon-false
-{
-  position : absolute;
-  left : 4px;
-  right : 0px;
-}
-.ListLineContentCell.Status
-{
-  width : 24px;
-  text-align : center;
-  border-right : solid 1px #fff;
-}
-.ListLineContentCell.Name
-{
-  width : 24px;
-  margin-left : 4px;
-  border-right : solid 1px #fff;
-  overflow : hidden;
-  text-overflow : ellipsis;
-  white-space : nowrap;
-}
-.ListLineContentCell.Duration
-{
-  width : 105px;
-  padding-left : 4px;
-  border-right : solid 1px #fff;
-}
-.ListLineContentCell.Calls
-{
-  width : 55px;
-  padding-left : 4px;
-  border-right : solid 1px #fff;
-}
-.ListLineContentCell.AvgTalk
-{
-  width : 55px;
-  padding-left : 4px;
-  border-right : solid 1px #fff;
-}
-.ListLineContentCell.Twistie
-{
-  position : relative;
-  width : 24px;
-}
-.ListLineContentCell.AvgWaiting
-{
-  width : 60px;
-  padding-left : 4px;
-  border-right : solid 1px #fff;
-}
-.ListLineContentCell.Number
-{
-  width : 52px;
-  padding-left : 4px;
-  border-right : solid 1px #fff;
-}
-.ListLineContentCell.Twistie .TwistieArrow
-{
-  position : absolute;
-  width : 0;
-  height : 0;
-  right : 5px;
-  top : 7px;
-  border-style : solid;
-  border-width : 5px;
-  border-color : transparent transparent transparent #999;
-}
-.ListLineExpanded .ListLineContentCell.Twistie .TwistieArrow
-{
-  right : 7px;
-  top : 11px;
-  border-color : #999 transparent transparent transparent;
-}
-//.ListLineContent.Header
-//{
-//  background-color : #fff;
-//  border-top-left-radius : 3px;
-//  -webkit-border-top-left-radius : 3px;
-//  border-top-right-radius : 3px;
-//  -webkit-border-top-right-radius : 3px;
-//  width : auto;
-//  position : absolute;
-//  border-bottom : solid 1px #999;
-//  left : 10px;
-//  right : 10px;
-//  top : 70px;
-//}
-.ListLineContent.Header .ListLineContentCell
-{
-  color : #666;
-  padding-top : 4px;
-  font-size : 11px;
-}
-.ListView.WithStatBar
-{
-  top : 95px;
-  left : 10px;
-}
-.ListView.WithStatBar:after
-{
-  display : none;
-}
-.ListLineDetails
-{
-  position : relative;
-  width : 100%;
-  display : none;
-  background-color : #fff;
-  padding-bottom : 10px;
-}
-.ListLineDetailsBorder
-{
-  position : absolute;
-  left : 0px;
-  top : 0px;
-  right : 0px;
-  bottom : 5px;
-  border : dashed 1px rgb(193, 204, 218);
-  border-top : none;
-}
-.ListLineExpanded .ListLineDetails
-{
-  display : block;
-  position : relative;
-}
-.ListLineDetails .OtherQueuesStat
-{
-  margin-left : 25px;
-  margin-right : 24px;
-}
-.ListLineDetails .ListViewIsEmpty
-{
-  position : relative;
-  font-size : 12px;
-}
-.ListLineDetails .QueueAgentCall
-{
-  margin-left : 25px;
-  margin-right : 24px;
-  position : relative;
-  height : 50px;
-}
-.ListLineDetails .QueueCallerInfo
-{
-  border : 1px solid #555;
-  border-radius : 18px 0 0 18px;
-  -webkit-border-radius : 18px 0 0 18px;
-  height : 35px;
-  position : absolute;
-  left : 0;
-  right : 40px;
-}
-.ListLineDetails .QueueAgentDetails
-{
-  margin : 5px;
-  font-weight : bold;
-}
-.ListLineDetails .QueueCallerInfo .QueueCallerName
-{
-  left : 45px;
-  top : 10px;
-  position : absolute;
-}
-.ListLineDetails .QueueCallerInfo .QueueCallDuration
-{
-  right : 5px;
-  top : 10px;
-  position : absolute;
-}
-.ListLineDetails .QueueCallerInfo .QueueCallArrowGray
-{
-  height : 0px;
-  width : 0px;
-  right : -12px;
-  top : 10px;
-  position : absolute;
-  border-style : solid;
-  border-width : 6px;
-  border-color : transparent transparent transparent #555;
-}
-.ListLineDetails .QueueCallerInfo .QueueCallArrowWhite
-{
-  height : 0px;
-  width : 0px;
-  right : -10px;
-  top : 11px;
-  position : absolute;
-  border-style : solid;
-  border-width : 5px;
-  border-color : transparent transparent transparent white;
-}
-.ListLineDetails .QueueCallerInfo .Avatar
-{
-  top : 3px;
-  left : 3px;
-}
-.ListLineDetails .QueueAgentAvatar.Avatar
-{
-  left : auto;
-  right : 0;
-}
-.ListLine .Avatar
-{
-  position : absolute;
-  left : 0px;
-  top : 4px;
-}
+	.ListRow .Avatar
+	{
+	  position : absolute;
+	  top : 5px;
+	  left : 5px;
+	}
+	.ListRowContent
+	{
+	  position : absolute;
+	  top : 0px;
+	  left : 50px;
+	  right : 0px;
+	  height : 50px;
+	  border-left : solid 1px #dee1e5;
+	}
+	.ListRowTitle
+	{
+	  position : absolute;
+	  top : 5px;
+	  left : 5px;
+	  right : 5px;
+	  height : 20px;
+	  line-height : 20px;
+	  font-size : 12px;
+	  text-align : left;
+	  text-overflow : ellipsis;
+	  overflow : hidden;
+	  text-decoration : none;
+	  color : #555;
+	  white-space : nowrap;
+	}
+	.ListRowTitle .name
+	{
+	  height : 20px;
+	  text-overflow : ellipsis;
+	  white-space : nowrap;
+	  overflow : hidden;
+	  font-size : 13px;
+	  color : #222;
+	  text-shadow : 0px 1px 0px rgba(255,255,255,0.3);
+	}
+	.ListRowTitle .name .details
+	{
+	  margin-right : 10px;
+	  font-size : 11px;
+	  color : #999;
+	  float : right;
+	}
+	.ListRowTitle .link
+	{
+	  height : 20px;
+	  text-overflow : ellipsis;
+	  white-space : nowrap;
+	  overflow : hidden;
+	  color : #888;
+	  font-weight : bold;
+	  font-size : 11px;
+	}
+	.ListRowStatus
+	{
+	  position : absolute;
+	  display : -webkit-box;
+	  top : 25px;
+	  left : 5px;
+	  right : 5px;
+	  height : 24px;
+	  line-height : 24px;
+	  color : #888;
+	  font-size : 12px;
+	  text-align : left;
+	  text-overflow : ellipsis;
+	  text-decoration : none;
+	}
+	.ListRowStatusIcon
+	{
+	  position : relative;
+	  width : 24px;
+	  height : 24px;
+	  max-width : 24px;
+	  background-repeat : no-repeat;
+	}
+	.ListRowStatusIcon.CallStatus
+	{
+	  width : 40px;
+	  max-width : 40px;
+	}
+	.ListRowStatusIcon.CallStatus .Avatar
+	{
+	  top : 7px;
+	  left : auto;
+	  right : -12px;
+	  opacity : 0.5;
+	  transition : all 0.3s ease;
+	  -webkit-transition : all 0.3s ease;
+	}
+	.ListRow:hover .ListRowStatusIcon.CallStatus .Avatar
+	{
+	  opacity : 1;
+	  top : -3px;
+	  right : -6px;
+	}
+	.ListRowStatusText
+	{
+	  height : 24px;
+	  line-height : 24px;
+	  text-overflow : ellipsis;
+	  overflow : hidden;
+	  white-space : nowrap;
+	}
+	.ListRowStatusText2
+	{
+	  position : absolute;
+	  top : 12px;
+	  left : 0px;
+	  right : 50px;
+	  height : 25px;
+	  text-overflow : ellipsis;
+	  overflow : hidden;
+	  white-space : nowrap;
+	}
+	.ListRowStatusDate
+	{
+	  position : absolute;
+	  top : -2px;
+	  left : 0px;
+	  right : 50px;
+	  height : 25px;
+	  text-overflow : ellipsis;
+	  overflow : hidden;
+	  white-space : nowrap;
+	}
+	.ListRow .duration
+	{
+	  position : absolute;
+	  top : 50%;
+	  right : 5px;
+	  font-size : 11px;
+	  line-height : 15px;
+	  font-weight : bold;
+	  text-shadow : 0px 1px 0px #fff;
+	}
+	.ListRow .duration.top
+	{
+	  top : 5px;
+	}
+	.ListRow .action-buttons
+	{
+	  position : absolute;
+	  right : -7px;
+	  top : 14px;
+	}
 
-.LeftSideWidgetTabContent .DirectionArrow
-{
-  position : absolute;
-  left : 50%;
-  margin-left : -6px;
-}
-.Up .DirectionArrow
-{
-  bottom : 0px;
-  border-color : transparent transparent #729c00 transparent;
-}
-.ListLineContentCell.Up span, .ListLineContentCell.Down span
-{
-  color : #729C00;
-}
-.Down .DirectionArrow
-{
-  border-color : #729c00 transparent transparent transparent;
-  top : 0px;
-}
-.None .DirectionArrow
-{
-  display : none;
-}
+	.ListLine
+	{
+	  position : relative;
+	  width : 100%;
+	  height : 24px;
+	}
+	.ListLineExpanded
+	{
+	  height : auto;
+	}
+	.ListLineContent
+	{
+	  position : relative;
+	  width : 100%;
+	  height : 24px;
+	  background-color : #f9f9f9;
+	  cursor : pointer;
+	}
+	.ListLineContent:hover
+	{
+	  background-color : #ddd;
+	}
+	.ListLine:nth-child(odd) .ListLineContent
+	{
+	  background-color : #eee;
+	}
+	.ListLine:nth-child(odd) .ListLineContent:hover
+	{
+	  background-color : #ddd;
+	}
+	.ListLineExpanded .ListLineContent.ListLineContentTop,
+	.ListLineExpanded .ListLine:nth-child(odd) .ListLineContent.ListLineContentTop,
+	.ListLineExpanded:hover .ListLine:nth-child(odd) .ListLineContent.ListLineContentTop
+	{
+	  background-color : rgb(193, 204, 218);
+	}
+	.ListLineExpanded .ListLineContent.ListLineContentTop:hover
+	{
+	  background-color : rgb(173, 183, 196);
+	}
+	.ListLineContent.RecentStat,
+	.ListLineContent.RecentStat:hover
+	{
+	  position : relative;
+	  height : 20px;
+	  line-height : 20px;
+	  width : 100%;
+	  font-size : 11px;
+	  color : #999;
+	  text-align : center;
+	  background-color : #f9f9f9;
+	  cursor : default;
+	}
+	.ListLineContentCell
+	{
+	  position : relative;
+	  height : 20px;
+	  line-height : 20px;
+	  white-space : nowrap;
+	  text-overflow : clip;
+	  overflow : hidden;
+	}
+	.ListLineContentCell.Red
+	{
+	  color : red;
+	}
+	.ListLineContentCellIcon
+	{
+	  position : absolute;
+	  left : 0px;
+	  top : 0px;
+	  width : 24px;
+	  height : 24px;
+	}
+	//.ListLineContentCellIcon.QueueCall
+	//{
+	//  background : url("img/XStatus.png?v=1418381374907") no-repeat -120px -24px;
+	//}
+	//.ListLineContentCellIcon.ChatHeader
+	//{
+	//  background : url("img/XStatus.png?v=1418381374907") no-repeat -96px -0px;
+	//}
+	//.ListLineContentCellIcon.QueueHeader
+	//{
+	//  background : url(img/XStatus.png?v=1418381374907) no-repeat -144px -24px;
+	//}
+	.ListLineContentCellTextWithIcon-true
+	{
+	  position : absolute;
+	  left : 24px;
+	  right : 0px;
+	}
+	.ListLineContentCellTextWithIcon-false
+	{
+	  position : absolute;
+	  left : 4px;
+	  right : 0px;
+	}
+	.ListLineContentCell.Status
+	{
+	  width : 24px;
+	  text-align : center;
+	  border-right : solid 1px #fff;
+	}
+	.ListLineContentCell.Name
+	{
+	  width : 24px;
+	  margin-left : 4px;
+	  border-right : solid 1px #fff;
+	  overflow : hidden;
+	  text-overflow : ellipsis;
+	  white-space : nowrap;
+	}
+	.ListLineContentCell.Duration
+	{
+	  width : 105px;
+	  padding-left : 4px;
+	  border-right : solid 1px #fff;
+	}
+	.ListLineContentCell.Calls
+	{
+	  width : 55px;
+	  padding-left : 4px;
+	  border-right : solid 1px #fff;
+	}
+	.ListLineContentCell.AvgTalk
+	{
+	  width : 55px;
+	  padding-left : 4px;
+	  border-right : solid 1px #fff;
+	}
+	.ListLineContentCell.Twistie
+	{
+	  position : relative;
+	  width : 24px;
+	}
+	.ListLineContentCell.AvgWaiting
+	{
+	  width : 60px;
+	  padding-left : 4px;
+	  border-right : solid 1px #fff;
+	}
+	.ListLineContentCell.Number
+	{
+	  width : 52px;
+	  padding-left : 4px;
+	  border-right : solid 1px #fff;
+	}
+	.ListLineContentCell.Twistie .TwistieArrow
+	{
+	  position : absolute;
+	  width : 0;
+	  height : 0;
+	  right : 5px;
+	  top : 7px;
+	  border-style : solid;
+	  border-width : 5px;
+	  border-color : transparent transparent transparent #999;
+	}
+	.ListLineExpanded .ListLineContentCell.Twistie .TwistieArrow
+	{
+	  right : 7px;
+	  top : 11px;
+	  border-color : #999 transparent transparent transparent;
+	}
+	//.ListLineContent.Header
+	//{
+	//  background-color : #fff;
+	//  border-top-left-radius : 3px;
+	//  -webkit-border-top-left-radius : 3px;
+	//  border-top-right-radius : 3px;
+	//  -webkit-border-top-right-radius : 3px;
+	//  width : auto;
+	//  position : absolute;
+	//  border-bottom : solid 1px #999;
+	//  left : 10px;
+	//  right : 10px;
+	//  top : 70px;
+	//}
+	.ListLineContent.Header .ListLineContentCell
+	{
+	  color : #666;
+	  padding-top : 4px;
+	  font-size : 11px;
+	}
+	.ListView.WithStatBar
+	{
+	  top : 95px;
+	  left : 10px;
+	}
+	.ListView.WithStatBar:after
+	{
+	  display : none;
+	}
+	.ListLineDetails
+	{
+	  position : relative;
+	  width : 100%;
+	  display : none;
+	  background-color : #fff;
+	  padding-bottom : 10px;
+	}
+	.ListLineDetailsBorder
+	{
+	  position : absolute;
+	  left : 0px;
+	  top : 0px;
+	  right : 0px;
+	  bottom : 5px;
+	  border : dashed 1px rgb(193, 204, 218);
+	  border-top : none;
+	}
+	.ListLineExpanded .ListLineDetails
+	{
+	  display : block;
+	  position : relative;
+	}
+	.ListLineDetails .OtherQueuesStat
+	{
+	  margin-left : 25px;
+	  margin-right : 24px;
+	}
+	.ListLineDetails .ListViewIsEmpty
+	{
+	  position : relative;
+	  font-size : 12px;
+	}
+	.ListLineDetails .QueueAgentCall
+	{
+	  margin-left : 25px;
+	  margin-right : 24px;
+	  position : relative;
+	  height : 50px;
+	}
+	.ListLineDetails .QueueCallerInfo
+	{
+	  border : 1px solid #555;
+	  border-radius : 18px 0 0 18px;
+	  -webkit-border-radius : 18px 0 0 18px;
+	  height : 35px;
+	  position : absolute;
+	  left : 0;
+	  right : 40px;
+	}
+	.ListLineDetails .QueueAgentDetails
+	{
+	  margin : 5px;
+	  font-weight : bold;
+	}
+	.ListLineDetails .QueueCallerInfo .QueueCallerName
+	{
+	  left : 45px;
+	  top : 10px;
+	  position : absolute;
+	}
+	.ListLineDetails .QueueCallerInfo .QueueCallDuration
+	{
+	  right : 5px;
+	  top : 10px;
+	  position : absolute;
+	}
+	.ListLineDetails .QueueCallerInfo .QueueCallArrowGray
+	{
+	  height : 0px;
+	  width : 0px;
+	  right : -12px;
+	  top : 10px;
+	  position : absolute;
+	  border-style : solid;
+	  border-width : 6px;
+	  border-color : transparent transparent transparent #555;
+	}
+	.ListLineDetails .QueueCallerInfo .QueueCallArrowWhite
+	{
+	  height : 0px;
+	  width : 0px;
+	  right : -10px;
+	  top : 11px;
+	  position : absolute;
+	  border-style : solid;
+	  border-width : 5px;
+	  border-color : transparent transparent transparent white;
+	}
+	.ListLineDetails .QueueCallerInfo .Avatar
+	{
+	  top : 3px;
+	  left : 3px;
+	}
+	.ListLineDetails .QueueAgentAvatar.Avatar
+	{
+	  left : auto;
+	  right : 0;
+	}
+	.ListLine .Avatar
+	{
+	  position : absolute;
+	  left : 0px;
+	  top : 4px;
+	}
 
-
+	.LeftSideWidgetTabContent .DirectionArrow
+	{
+	  position : absolute;
+	  left : 50%;
+	  margin-left : -6px;
+	}
+	.Up .DirectionArrow
+	{
+	  bottom : 0px;
+	  border-color : transparent transparent #729c00 transparent;
+	}
+	.ListLineContentCell.Up span, .ListLineContentCell.Down span
+	{
+	  color : #729C00;
+	}
+	.Down .DirectionArrow
+	{
+	  border-color : #729c00 transparent transparent transparent;
+	  top : 0px;
+	}
+	.None .DirectionArrow
+	{
+	  display : none;
+	}
+}
