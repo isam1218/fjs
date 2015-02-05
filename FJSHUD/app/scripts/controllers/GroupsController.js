@@ -31,6 +31,35 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
         }
     };
 	
+	// filter groups down
+	$scope.customFilter = function(type) {
+		return function(group) {
+			// remove mine
+			if (group != $scope.mine && $scope.favoriteID != group.xpid) {
+				switch (type) {
+					case 'all':
+						return (group.type == 0);
+						break;
+					case 'mine':
+						return (group.ownerId == $rootScope.myPid);
+						break;
+					case 'shared':
+						// find groups i don't own but that i belong to
+						if (group.ownerId != $rootScope.myPid && group.members) {
+							for (i = 0; i < group.members.length; i++) {
+								if (group.members[i].contactId == $rootScope.myPid)
+									return true;
+							}
+						}
+						break;
+					case 'others':
+						return (group.type == 4);
+						break;
+				}
+			}
+		};
+	};
+	
 	// display avatar for group member
     $scope.getAvatarUrl = function(group, index) {
 		if (group.members) {
@@ -43,6 +72,15 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 
 		}
     };
+	
+	$scope.getOwner = function(group) {
+		if (group.ownerId == $rootScope.myPid)
+			return 'owner: me';
+		else {
+			var contact = contactService.getContact(group.ownerId);
+			return (contact ? 'owner: ' + contact.displayName : '');
+		}
+	};
 	
 	/**
 		ADD/EDIT GROUPS

@@ -1,0 +1,26 @@
+<div class="Avatar AvatarNormal" context-menu="group">
+    <div class="GroupAvatarItem GroupAvatarItem_0">
+		<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+    </div>
+    <div class="GroupAvatarItem GroupAvatarItem_1">
+		<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+    </div>
+    <div class="GroupAvatarItem GroupAvatarItem_2">
+		<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+    </div>
+    <div class="GroupAvatarItem GroupAvatarItem_3">
+		<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+    </div>
+    <div class="AvatarInteractable"></div>
+</div>
+<div class="ListRowContent">
+    <div class="ListRowTitle">
+        <div class="name">
+            <strong>{{ group.name }}</strong>
+            <span class="details">
+				{{ ::group.extension ? '#' + group.extension : getOwner(group) }}
+			</span>
+        </div>
+    </div>
+    <div class="ListRowStatus Members">{{ group.members.length }}</div>
+</div>

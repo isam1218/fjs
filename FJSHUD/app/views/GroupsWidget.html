@@ -11,59 +11,33 @@
 
 <div class="ContactList">
 	<h4>My Department</h4>
+	<em>Collaborate with your colleagues</em>
 	<a href="#/group/{{::mine.xpid}}" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="ConversationAvatarSection Avatar AvatarNormal" context-menu="mine">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="AvatarInteractable"></div>
-        </div>
-        <div class="ListRowContent">
-            <div class="ListRowTitle">
-                <div class="name">
-                    <b>{{ ::mine.name }}</b>
-                    <span class="details">{{ ::mine.members.length }}</span>
-                </div>
-            </div>
-            <div class="ListRowStatus">#{{ ::mine.extension }}</div>
-		</div>
+		<div ng-include="'views/GroupsRow.html'" ng-init="group = mine"></div>
 	</a>
 	
 	<h4>All Other Departments</h4>
-	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | orderBy:sortField:sortReverse track by group.xpid" ng-if="group != mine && group.xpid != favoriteID" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="Avatar AvatarNormal" context-menu="group">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="AvatarInteractable"></div>
-        </div>
-        <div class="ListRowContent">
-            <div class="ListRowTitle">
-                <div class="name">
-                    <b>{{ group.name }}</b>
-                    <span class="details">{{ group.members.length }}</span>
-                </div>
-            </div>
-            <div class="ListRowStatus">#{{ ::group.extension }}</div>
-		</div>
+	<em>Other departments</em>
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('all') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<div ng-include="'views/GroupsRow.html'"></div>
+	</a>
+	
+	<h4>My Teams</h4>
+	<em>Teams managed by me</em>
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('mine') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<div ng-include="'views/GroupsRow.html'"></div>
+	</a>
+	
+	<h4>Shared</h4>
+	<em>I'm a member of these teams</em>
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('shared') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<div ng-include="'views/GroupsRow.html'"></div>
+	</a>
+	
+	<h4>Others</h4>
+	<em>Teams visible to everyone</em>
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('others') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+		<div ng-include="'views/GroupsRow.html'"></div>
 	</a>
 </div>
 
