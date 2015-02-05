@@ -3,8 +3,10 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
 	$scope.calls = {};
-	myHttpService.getFeed('quickinbox');
+	$scope.inCall = false;
+	$scope.inRinging = false;
 	
+	myHttpService.getFeed('quickinbox');
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
 	}
@@ -122,6 +124,17 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		console.log("test");
 	}
 
+	$scope.endCall = function(xpid){
+		phoneService.hangUp(xpid);
+	}
+
+
+	$scope.holdCall = function(xpid,isHeld){
+		phoneService.holdCall(xpid,isHeld);
+	}
+
+
+
 	$scope.showOverlay = function(show) {
 		if (!show)
 			$scope.overlay = '';
@@ -135,8 +148,31 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			$scope.calls = data;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
 		}
+		$scope.inCall = Object.keys($scope.calls).length > 0;
+		$scope.$safeApply();
+	});
+
+	$scope.$on('phone_event',function(event,data){
+		phoneEvent = data.event;
+
+		switch (phoneEvent){
+			case "ringing":
+				$scope.isRinging = true;
+				break;
+			case "accepted":
+				$scope.isRinging = false;
+				break;
+			case "onhold":
+				$scope.onHold = true;
+				break;
+			case "resume":
+				$scope.onHold = false;
+				break;
+
+		}
 
 		$scope.$safeApply();
+
 	});
 
 	$scope.$on('quickinbox_synced', function(event,data){
