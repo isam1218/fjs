@@ -90,7 +90,12 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		
 		// save
 		myHttpService.sendAction('groups', 'addWorkgroup', $scope.add);
-		$scope.$parent.showOverlay(false);
+		$scope.clearGroup();
+	};
+	
+	$scope.clearGroup = function() {
 		$scope.add = {type: 2, contacts: []};
+		$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
+		$scope.$parent.showOverlay(false);
 	};
 }]);

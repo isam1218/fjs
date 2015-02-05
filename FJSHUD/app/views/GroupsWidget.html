@@ -12,7 +12,7 @@
 <div class="ContactList">
 	<h4>My Department</h4>
 	<a href="#/group/{{::mine.xpid}}" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="ConversationAvatarSection Avatar AvatarNormal" style="width:43px">
+        <div class="ConversationAvatarSection Avatar AvatarNormal" context-menu="mine">
             <div class="GroupAvatarItem GroupAvatarItem_0">
 				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
@@ -40,7 +40,7 @@
 	
 	<h4>All Other Departments</h4>
 	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | orderBy:sortField:sortReverse track by group.xpid" ng-if="group != mine && group.xpid != favoriteID" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="Avatar AvatarNormal">
+        <div class="Avatar AvatarNormal" context-menu="group">
             <div class="GroupAvatarItem GroupAvatarItem_0">
 				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
@@ -70,9 +70,9 @@
 </div>
 
 <div ng-show="$parent.overlay == 'groups'" class="Overlay">
-	<div ng-click="showOverlay(false)" class="Background"></div>
+	<div ng-click="clearGroup()" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="showOverlay(false)" class="Close">x</div>
+		<div ng-click="clearGroup()" class="Close">x</div>
 		
 		<div class="Header">
 			<h2>Build the Team</h2>
@@ -90,7 +90,7 @@
 				</div>
 				<div>
 					<h4>Description</h4>
-					<textarea ng-model="add.description" placeholder="Team description used for search and provides useful information to the team members."></textarea>
+					<textarea ng-model="add.description" placeholder="Team description is used for search and provides useful information to the team members."></textarea>
 				</div>
 			</div>
 			
@@ -107,7 +107,12 @@
 						<div class="Avatar AvatarNormal">
 							<img ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 						</div>
-						<div class="ListRowContent">{{ contact.displayName }}</div>
+						<div class="ListRowContent">
+							<div class="ListRowTitle">
+								<strong>{{ contact.displayName }}</strong>
+								<p>#{{ contact.primaryExtension }}</p>
+							</div>
+						</div>
 						<input type="button" value="Delete" class="Delete" ng-click="removeUser(contact)" />
 					</div>
 				</div>
@@ -117,7 +122,7 @@
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			
-			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton" value="Cancel" ng-click="clearGroup()" />
 			<input type="button" class="XButton" value="Create Team" ng-click="addGroup()" />
 		</div>
 	</div>

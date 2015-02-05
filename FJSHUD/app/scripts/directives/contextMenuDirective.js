@@ -58,8 +58,8 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 			
 			function showOverlay() {
 				// send object to controller
-				contact = $parse(attrs.contextMenu)(scope);
-				$rootScope.$broadcast('contextMenu', contact);
+				var data = $parse(attrs.contextMenu)(scope);
+				$rootScope.$broadcast('contextMenu', data);
 				
 				// position pop-pop
 				overlay.css('left', (rect.left + rect.width/2) + 'px');

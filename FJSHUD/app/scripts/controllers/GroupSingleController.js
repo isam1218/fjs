@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpService', 'GroupService', function($scope, $routeParams, myHttpService, groupService) {
+hudweb.controller('GroupSingleController', ['$scope', '$routeParams', '$location', 'HttpService', 'GroupService', function($scope, $routeParams, $location, myHttpService, groupService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -19,7 +19,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 	});
 	
 	$scope.tabs = ['Chat', 'Members', 'Voicemails', 'Page'];
-	$scope.selected = 'Members';
+	$scope.selected = $location.path().indexOf('/chat') != -1 ? 'Chat' : 'Members';
 	
 	// display avatar for group member
     $scope.getAvatarUrl = function(index) {

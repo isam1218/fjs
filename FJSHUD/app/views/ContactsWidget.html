@@ -59,9 +59,9 @@
 </div>
 
 <div ng-if="$parent.overlay == 'contacts'" class="Overlay">
-	<div ng-click="showOverlay(false)" class="Background"></div>
+	<div ng-click="clearContact()" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="showOverlay(false)" class="Close">x</div>
+		<div ng-click="clearContact()" class="Close">x</div>
 		
 		<div class="Header">
 			<h2>{{ $parent.edit ? 'Edit Contact' : 'Add a New Contact' }}</h2>
@@ -126,7 +126,7 @@
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="$parent.edit" />
-			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton" value="Cancel" ng-click="clearContact()" />
 			<input type="button" class="XButton" value="{{ $parent.edit ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
 		</div>
 	</div>
