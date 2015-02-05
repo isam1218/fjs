@@ -72,6 +72,23 @@ hudweb.service('GroupService', ['$q', '$rootScope', function($q, $rootScope) {
 				}
 			}
 		}
+		else {
+			// update or add groups
+			for (i = 0; i < data.length; i++) {
+				var newGroup = true;
+				
+				for (g = 0; g < groups.length; g++) {
+					if (data[i].xpid == groups[g].xpid) {
+						groups[g] = data[i];
+						newGroup = false;
+						break;
+					}
+				}
+				
+				if (newGroup)
+					groups.push(data[i]);
+			}
+		}
 		
 		$rootScope.$broadcast('groups_updated', formatData());
 	});

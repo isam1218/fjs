@@ -164,6 +164,11 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	$scope.searchContact = function(contact) {
 		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.xpid});
 	};
+	
+	$scope.clearContact = function() {
+		$scope.add = {};
+		$scope.$parent.showOverlay(false);
+	};
 
     $scope.$on("$destroy", function() {
 		
