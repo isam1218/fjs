@@ -140,23 +140,19 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		$scope.add = {};
 	};
 	
-	// TO DO: action should take place on a contextual menu
-	$scope.editContact = function(contact) {
-		// only edit externals
-		if (contact.primaryExtension == '') {
-			$scope.$parent.showOverlay('contacts', true);
-			
-			$scope.add.pid = contact.xpid;
-			$scope.add.displayName = contact.displayName;
-			$scope.add.firstName = contact.firstName;
-			$scope.add.lastName = contact.lastName;
-			$scope.add.business = contact.phoneBusiness;
-			$scope.add.mobile = contact.phoneMobile;
-			$scope.add.email = contact.email;
-			$scope.add.jid = contact.jid;
-			$scope.add.ims = contact.ims;
-		}
-	};
+	$scope.$on('editContact', function(event, contact) {
+		$scope.$parent.showOverlay('contacts', true);
+		
+		$scope.add.pid = contact.xpid;
+		$scope.add.displayName = contact.displayName;
+		$scope.add.firstName = contact.firstName;
+		$scope.add.lastName = contact.lastName;
+		$scope.add.business = contact.phoneBusiness;
+		$scope.add.mobile = contact.phoneMobile;
+		$scope.add.email = contact.email;
+		$scope.add.jid = contact.jid;
+		$scope.add.ims = contact.ims;
+	});
 	
 	$scope.delContact = function() {
 		myHttpService.sendAction('contacts', 'delete', {contactId: $scope.add.pid});
@@ -167,14 +163,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	// add favorites action (via directive)
 	$scope.searchContact = function(contact) {
 		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.xpid});
-	};
-	
-	// TO DO: action should take place on a contextual menu
-	$scope.removeFavorite = function($event, contact) {
-		myHttpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: contact.xpid});
-		
-		$event.stopPropagation();
-        $event.preventDefault();
 	};
 
     $scope.$on("$destroy", function() {

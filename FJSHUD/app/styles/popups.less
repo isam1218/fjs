@@ -220,10 +220,72 @@
   display: none;
   position: absolute;
   z-index: 1000;
+  font-size: .9em;
   background-color: #ededee;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 0 10px gray;
   padding: .5em;
+  height: 7.5em;
+  margin-left: 10px;
+  margin-top: -3.5em;
+  
+  .Arrow {
+    position: absolute;
+	top: 3em;
+	left: -10px;
+    width: 0; 
+	height: 0; 
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent; 	
+	border-right: 10px solid #ededee; 
+  }
+  
+  .TopRow {	  
+	& > div:not(:last-child) {
+	  border-right: 1px solid #ccc;
+	  margin-right: .5em;
+	  padding-right: .5em;
+	}
+	
+	div {
+	  display: inline-block;
+	  vertical-align: top;
+	}
+	
+	.Numbers div {
+	  min-width: 3em;
+	  text-align: right;
+	}
+  }
+  
+  .BottomRow {
+    border-top: 1px solid #ccc;
+	margin-top: .25em;
+  }
+  
+  .Button {
+    text-align: center;
+	text-decoration: none;
+	color: gray;
+	display: inline-block;
+	
+	div {
+	  margin: 0 auto;
+      width: 30px;
+	  height: 32px;
+	}
+	
+	span {
+	  font-size: .8em;
+	  padding: 0 1em;
+	  border: 1px solid #ededee;
+	  border-radius: 10px;
+	}
+	
+	&:hover span {
+	  border: 1px solid gray;
+	}
+  }
 }
 
 .MenuWindow {
