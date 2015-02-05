@@ -29,6 +29,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.contact.xpid});
 	};
 	
+	$scope.makeCall = function(number) {
+		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+	};
+	
 	$scope.sendGroupMail = function() {
 		var emails = [];
 		

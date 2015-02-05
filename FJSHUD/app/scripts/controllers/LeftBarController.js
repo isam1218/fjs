@@ -2,7 +2,6 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
-	$scope.edit = false;
 	$scope.number = "";
 	$scope.locations = [];
 	

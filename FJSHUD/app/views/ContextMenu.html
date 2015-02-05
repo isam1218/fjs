@@ -44,6 +44,18 @@
 		<div class="ListRowActionButtonChat"></div>
 		<span>Chat</span>
 	</a>
+	<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="makeCall(contact.primaryExtension)">
+		<div class="ListRowActionButtonCall"></div>
+		<span>Call</span>
+	</a>
+	<a class="Button" href="" ng-show="contact.phoneBusiness" ng-click="makeCall(contact.phoneBusiness)">
+		<div class="ListRowActionButtonCall"></div>
+		<span>Business</span>
+	</a>
+	<a class="Button" href="" ng-show="contact.phoneMobile" ng-click="makeCall(contact.phoneMobile)">
+		<div class="ListRowActionButtonMobile"></div>
+		<span>Mobile</span>
+	</a>
 	<a class="Button" href="mailto:{{ contact.email }}" target="_blank" ng-show="contact.email">
 		<div class="ListRowActionButtonEmail"></div>
 		<span>Email</span>
