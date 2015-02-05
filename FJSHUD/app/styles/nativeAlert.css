@@ -17,3 +17,6 @@
   height: 40px;
   background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
 }
+.CallStatusText {
+  font-size: .7em;
+}

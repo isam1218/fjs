@@ -4135,6 +4135,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: inline-block;
   width: 38%;
 }
+.Overlay .Foreground .Section textarea {
+  width: 80%;
+  min-height: 100px;
+}
 .Overlay .Foreground .Section .Contact {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -4162,6 +4166,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   display: inline-block;
   padding: .5em;
+  margin-left: -0.5em;
 }
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
@@ -4258,6 +4263,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   box-shadow: 0 0 10px gray;
   padding: .5em;
   height: 7.5em;
+  min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
 }
@@ -4270,6 +4276,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-right: 10px solid #ededee;
+}
+#ContextMenu .TopRow.Group {
+  margin-top: 1em;
+  text-align: center;
 }
 #ContextMenu .TopRow > div:not(:last-child) {
   border-right: 1px solid #ccc;
@@ -4287,6 +4297,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 #ContextMenu .BottomRow {
   border-top: 1px solid #ccc;
   margin-top: .25em;
+}
+#ContextMenu .BottomRow.Group {
+  text-align: center;
 }
 #ContextMenu .Button {
   text-align: center;
@@ -4687,4 +4700,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 40px;
   height: 40px;
   background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+}
+.CallStatusText {
+  font-size: .7em;
 }

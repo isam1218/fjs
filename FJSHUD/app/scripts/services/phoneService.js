@@ -14,12 +14,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	var isRegistered = false;
 	//fjs.CONFIG.SERVER.serverURL 
 	
-	 var CALL_STATUS_UNKNOWN = -1;
-     var CALL_STATUS_RINGING = 0;
-     var CALL_STATUS_ACCEPTED = 1;
-     var CALL_STATUS_HOLD = 4;
-     var CALL_STATUS_CLOSED = 2;
-     var CALL_STATUS_ERROR = 3;
+	 var CALL_STATUS_UNKNOWN = "-1";
+     var CALL_STATUS_RINGING = "0";
+     var CALL_STATUS_ACCEPTED = "1";
+     var CALL_STATUS_HOLD = "4";
+     var CALL_STATUS_CLOSED = "2";
+     var CALL_STATUS_ERROR = "3";
 
 
     var REG_STATUS_UNKNOWN = -1;
@@ -43,6 +43,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		}
 	}
 
+	holdCall = function(xpid,isHeld){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		if(call){
+			call.hold = isHeld;
+		}
+	}
+
 	this.initializePhone = function(){
 		 phonePlugin = document.getElementById('phone');
 		 version = phonePlugin.version;
@@ -59,14 +67,33 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	}
 
 	onCallStateChanged = function(call){
-		status = call.status;
+		status = parseInt(call.status);
 		sipCalls[call.sip_id] = call;
-                
+        data = {}
 		switch(status){
 			case CALL_STATUS_RINGING:
-
+				data = {
+					event: 'ringing',
+				}
+				break;
 			case CALL_STATUS_ACCEPTED:
-
+				data = {
+					event: 'accepted',
+				}
+				break;
+			case CALL_STATUS_HOLD:
+				data = {
+					event: 'onhold'
+				}
+				break;
+			case CALL_STATUS_ERROR:
+				break;
+			case CALL_STATUS_UNKNOWN:
+				break;
+			case CALL_STATUS_CLOSED:
+				removeNotification();
+				return;
+				break;
 		}
 
 		  element = document.getElementById("CallAlert");
@@ -74,7 +101,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		  content = element.innerHTML;
        	  displayNotification(content,element.offsetWidth,element.offsetHeight);
           element.style.display="none";
-    }
+
+          $rootScope.$broadcast('phone_event',data);
+	}
 
     accStatus = function(account_) {
             console.log("Phone status:" + account_.status);
@@ -123,9 +152,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
     		case '#/Close':
     			removeNotification();
     			break;
+    		case '#/CancelCall':
+    			hangUp(xpid);
+    			break;
     		case '#/EndCall':
     			hangUp(xpid);
-    			removeNotification();
+    			break;
+    		case '#/HoldCall':
+    			holdCall(xpid,true);
+    			break;
+    		case '#/ResumeCall':
+    			data = {
+    				event: 'resume'
+    			}
+    			$rootScope.$broadcast('phone_event',data);
+				holdCall(xpid,false);
     			break;
     	}
 
@@ -212,7 +253,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	}
 
 	this.hangUp = hangUp;
-
+	this.holdCall = holdCall;
 	this.transfer = function(xpid,number){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
@@ -254,10 +295,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				if(data[i].xef001type == "delete"){
 					delete callsDetails[data[i].xpid];
 					delete xpid2Sip[data[i].xpid];
+				}else{
+					callsDetails[data[i].xpid] = data[i];
+					xpid2Sip[data[i].xpid] = Object.keys(sipCalls)[0];
 				}
-				callsDetails[data[i].xpid] = data[i];
-				xpid2Sip[data[i].xpid] = Object.keys(sipCalls)[0];
-			
 			}
 		}
 

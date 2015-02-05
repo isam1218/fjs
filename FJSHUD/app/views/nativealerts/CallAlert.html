@@ -50,15 +50,16 @@
 		<div class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
-		<div style="display:inline-block"> 
-			<div>{{currentCall.contactId}}</div>
-			<div><div> </div></div>
+		<div style="display:inline-block" class="CallStatusText"> 
+			<div>{{currentCall.displayName}}</div>
+			<div><div>outbound on call</div></div>
 		</div>
 		<div style="float:right;display:inline-block">
-			<!--<a href="#/CancelCall" ng-if="isRinging" class="XButton" value="Cancel" onclick="window.close()">Cancel</a>-->
-			<!--<a href="#/HoldCall" ng-if="isAccepted" class="XButton"  onclick="window.close()">Hold</a>-->
+			<a href="#/CancelCall?{{currentCall.xpid}}" class="XButton" value="Cancel" onclick="window.close()">Cancel</a>
+			<a href="#/HoldCall?{{currentCall.xpid}}"  class="XButton"  onclick="window.close()">Hold</a>
 			<a href="#/EndCall?{{currentCall.xpid}}" class="XButton">End</a>
-		
+			<a href="#/ResumeCall?{{currentCall.xpid}}" class="XButton">Talk</a>
+
 		</div>
 	</div>
 	<div style="margin:0px 0px 0px 0px;background-color: gray;color: white;padding: .25em;">
