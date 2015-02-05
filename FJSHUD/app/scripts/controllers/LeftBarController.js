@@ -2,11 +2,8 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService', function($scope
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
-	$scope.edit = false;
 	
-	$scope.showOverlay = function(show, edit) {
-		$scope.edit = edit ? edit : false;
-			
+	$scope.showOverlay = function(show) {			
 		if (!show)
 			$scope.overlay = '';
 		else

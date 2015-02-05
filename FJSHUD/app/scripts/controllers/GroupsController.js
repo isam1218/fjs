@@ -56,6 +56,23 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		$scope.add.contacts[1] = contactService.getContact(data);
 	});
 	
+	// comes from contextual directive (editing)
+	$scope.$on('editGroup', function(event, data) {
+		$scope.$parent.showOverlay('groups');
+		$scope.editing = true;
+		
+		$scope.add.groupId = data.xpid;
+		$scope.add.name = data.name;
+		$scope.add.description = data.description;
+		$scope.add.type = data.type;
+		
+		angular.forEach(data.members, function(obj) {
+			// avoid adding self again
+			if (obj.contactId != $rootScope.myPid)
+				$scope.add.contacts.push(contactService.getContact(obj.contactId));
+		});
+	});
+	
 	$scope.searchContact = function(contact) {
 		// prevent duplicates
 		for (i = 0; i < $scope.add.contacts.length; i++) {
@@ -75,7 +92,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		}
 	};
 	
-	$scope.addGroup = function() {
+	$scope.saveGroup = function() {
 		// validate
 		if (!$scope.add.name) {
 			$scope.addError = 'Group name is not specified.';
@@ -89,13 +106,22 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		delete $scope.add.contacts;
 		
 		// save
-		myHttpService.sendAction('groups', 'addWorkgroup', $scope.add);
+		myHttpService.sendAction('groups', $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup'), $scope.add);
+		
 		$scope.clearGroup();
+	};
+	
+	$scope.endGroup = function() {
+		$scope.closing = true;
 	};
 	
 	$scope.clearGroup = function() {
 		$scope.add = {type: 2, contacts: []};
 		$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
+		
+		$scope.addError = null;
+		$scope.editing = false;
+		$scope.closing = false;
 		$scope.$parent.showOverlay(false);
 	};
 }]);

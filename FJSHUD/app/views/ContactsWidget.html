@@ -64,7 +64,7 @@
 		<div ng-click="clearContact()" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>{{ $parent.edit ? 'Edit Contact' : 'Add a New Contact' }}</h2>
+			<h2>{{ editing ? 'Edit Contact' : 'Add a New Contact' }}</h2>
 		</div>
 		
 		<div class="Sections">
@@ -125,9 +125,9 @@
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
-			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="$parent.edit" />
+			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="editing" />
 			<input type="button" class="XButton" value="Cancel" ng-click="clearContact()" />
-			<input type="button" class="XButton" value="{{ $parent.edit ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
+			<input type="button" class="XButton" value="{{ editing ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
 		</div>
 	</div>
 </div>

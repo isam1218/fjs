@@ -21,6 +21,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		$rootScope.$broadcast('editContact', $scope.contact);
 	};
 	
+	$scope.editGroup = function() {
+		$rootScope.$broadcast('editGroup', $scope.group);
+	};
+	
 	$scope.removeFavorite = function() {
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.contact.xpid});
 	};

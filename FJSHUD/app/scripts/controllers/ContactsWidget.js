@@ -131,17 +131,14 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		}
 		
 		// save new contact
-		if (!$scope.$parent.edit)
-			myHttpService.sendAction('contacts', 'addContact', $scope.add);
-		else
-			myHttpService.sendAction('contacts', 'updateContact', $scope.add);
+		myHttpService.sendAction('contacts', $scope.editing ? 'updateContact' : 'addContact', $scope.add);
 			
-		$scope.$parent.showOverlay(false);
-		$scope.add = {};
+		$scope.clearContact();
 	};
 	
 	$scope.$on('editContact', function(event, contact) {
-		$scope.$parent.showOverlay('contacts', true);
+		$scope.$parent.showOverlay('contacts');
+		$scope.editing = true;
 		
 		$scope.add.pid = contact.xpid;
 		$scope.add.displayName = contact.displayName;
@@ -167,6 +164,8 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	
 	$scope.clearContact = function() {
 		$scope.add = {};
+		$scope.addError = null;
+		$scope.editing = false;
 		$scope.$parent.showOverlay(false);
 	};
 
