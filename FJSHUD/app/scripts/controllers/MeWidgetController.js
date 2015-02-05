@@ -35,6 +35,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.meModel={};
     $scope.locations = {};
     $scope.phoneNumber = "";
+    $scope.calls = {};
     /* */
     /**
     * used to determine what tab is selected in the me widget controller
@@ -559,10 +560,26 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     });
 
     $scope.makeCall = function(number){
-        
+        //content = document.body.innerHTML;
+        //var title = document.getElementsByClassName("TitleBar");
+        //content = "<div class='Notifications'> <div class='TitleBar'><div class='Icon'></div><div>Notifications  </div><input type='button' value='Open' class='XButton' ng-click='$parent.overlay ='notifications'' /></div></div>";
+        //content = "<div class='SearchInputBox'><div class='SearchInputBoxInputHolder'> <input class='SearchInputBoxInput' data-ng-model='meetingId' type='text' placeholder='Meeting ID' /></div></div>";
         if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
                 phoneService.makeCall(number);
-                phoneService.displayNotification("/app/views/Notifications.html");
+        }else{
+            myHttpService.sendAction('me','callTo',{phoneNumber: number});
+        }
+    }
+
+     $scope.hangup = function(){
+        
+        if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
+            //phoneService.hangUp();
+            for(call in $scope.calls){
+                phoneService.hangUp(call);
+                phoneService.removeNotification();
+            }
+
         }else{
             myHttpService.sendAction('me','callTo',{phoneNumber: number});
         }
@@ -617,4 +634,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
         update_queues();
     });
+
+      $scope.$on("calls_updated", function(event,data){
+         $scope.calls = data;
+       });
 }]);
