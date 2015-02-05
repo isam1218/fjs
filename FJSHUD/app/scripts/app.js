@@ -9,7 +9,8 @@ var hudweb = angular.module('fjshudApp', [
     'ngTouch',
     'flow',
     'react',
-	'luegg.directives'
+	'luegg.directives',
+
 ]);
 
 hudweb.config(function ($routeProvider) {
