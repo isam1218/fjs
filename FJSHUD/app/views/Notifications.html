@@ -89,4 +89,18 @@
 	</div>
 
 </div>
-<div ng-include="'views/NativeAlerts/CallAlert.html'" ></div>
+
+<div  ng-if="inCall" class="CallStatusContainerInCall"> 
+		<div class="CallStatusIconContainer">
+			<div class="CallStatusIcon"> </div>
+		</div>
+		<div style="display:inline-block"> 
+			<div></div>
+			<div><div> </div></div>
+		</div>
+		<div style="float:right;display:inline-block">
+			<a href="#/CancelCall"class="XButton" value="Cancel" onclick="window.close()">Cancel</a>
+		</div>
+</div>
+
+<div id="CallAlert" ng-include="'views/NativeAlerts/CallAlert.html'" style="display:none"></div>
