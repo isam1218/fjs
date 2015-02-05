@@ -1,8 +1,8 @@
-hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location', function($scope, myHttpService,$location){
+hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location','PhoneService','ContactService', function($scope, myHttpService,$location,phoneService,contactService){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
-	
+	$scope.calls = {};
 	myHttpService.getFeed('quickinbox');
 	
 	$scope.getAvatar = function(pid){
@@ -118,6 +118,10 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		$scope.showOverlay(false);
 	}
 
+	$scope.test_pop = function(){
+		console.log("test");
+	}
+
 	$scope.showOverlay = function(show) {
 		if (!show)
 			$scope.overlay = '';
@@ -126,10 +130,13 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		else
 			$scope.overlay = 'groups';
 	};
-	$scope.$on('calls_synced',function(event,data){
+	$scope.$on('calls_updated',function(event,data){
 		if(data){
-			
+			$scope.calls = data;
+			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
 		}
+
+		$scope.$safeApply();
 	});
 
 	$scope.$on('quickinbox_synced', function(event,data){

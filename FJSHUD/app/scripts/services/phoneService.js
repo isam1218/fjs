@@ -34,32 +34,46 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		}
 	}
 
+	hangUp = function(xpid){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		if(call){
+			call.hangUp();
+			delete sipCalls[sip_id];
+		}
+	}
+
 	this.initializePhone = function(){
 		 phonePlugin = document.getElementById('phone');
 		 version = phonePlugin.version;
 	}
 
-	displayNotification = function(url){
+	displayNotification = function(content, width,height){
 		if(alert){
 			alert.setShadow(false);
 			alert.setTransparency(255);
-			alert.setAlertSize(300,120);
+			alert.setAlertSize(width,height);
 			//alert.setAlertBounds(0,0,0,0);
-			alert.addAlert(url);
+			alert.addAlert(content);
 		}
 	}
 
 	onCallStateChanged = function(call){
-		if (call.status == CALL_STATUS_RINGING || call.status == CALL_STATUS_ACCEPTED) {
-                sipCalls[call.sip_id] = call;
-				content = document.getElementById("CallAlert").innerHTML;
-       			displayNotification(content);
-        
-                if (call.incoming) {
-						
-				} else {
-				}
-        }
+		status = call.status;
+		sipCalls[call.sip_id] = call;
+                
+		switch(status){
+			case CALL_STATUS_RINGING:
+
+			case CALL_STATUS_ACCEPTED:
+
+		}
+
+		  element = document.getElementById("CallAlert");
+          element.style.display="block";
+		  content = element.innerHTML;
+       	  displayNotification(content,element.offsetWidth,element.offsetHeight);
+          element.style.display="none";
     }
 
     accStatus = function(account_) {
@@ -101,6 +115,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
     onAlert = function(urlhash){
     	console.log("AlertClicked: " + urlhash);
+    	arguments = urlhash.split("?");
+    	url = arguments[0];
+    	xpid = arguments[1];
+
+    	switch(url){
+    		case '#/Close':
+    			removeNotification();
+    			break;
+    		case '#/EndCall':
+    			hangUp(xpid);
+    			removeNotification();
+    			break;
+    	}
+
 	}
 
 	removeNotification = function(){
@@ -183,14 +211,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		}
 	}
 
-	this.hangUp = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		if(call){
-			call.hangUp();
-			delete sipCalls[sip_id];
-		}
-	}
+	this.hangUp = hangUp;
 
 	this.transfer = function(xpid,number){
 		sip_id = xpid2Sip[xpid];

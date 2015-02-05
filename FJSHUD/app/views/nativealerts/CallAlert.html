@@ -1,50 +1,72 @@
-<div id="CallAlert" style="width:100%; margin:0px 0px 0px 0px;font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;font-size: 1em;">    <style> 
-		#test{
-			background-color:red;
-		}
-	</style>
+<div ng-controller="NotificationController">    
 
 	<link rel="stylesheet" href="http://localhost:9900/app/styles/main.css">
+	<script> 
+		function 
+	</script>
+	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact">			
+			<div class="Avatar AvatarNormal" context-menu="contact">
+				<img class="AvatarImgPH" src="http://localhost:9900/app/img/Generic-Avatar-Small.png" />
+				<div class="AvatarForeground AvatarInteractable"></div>
+			</div>
+			
+			<div class="ListRowContent">
+				<div class="ListRowTitle">
+					<div class="name">
+						
+					
+						<span><strong>{{ ::meModel.display_name }}</strong><div onclick="window.location.replace('#/Close')" style="display:inline-block; width:24px; float:right"class="NotificationClose"></div></span>
+						<!--<span style="display:inline-block">#{{ ::meModel.primary_extension }}</span>-->
+					</div>
+					
+				</div>
+				
+				<div class="CallStatus">
+					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
+						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarInteractable AvatarForeground"></div>
+					</div>
+				</div>
+				
+				<div class="ListRowStatus">
+					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
+						<div class="status-icon-inner"></div>
+					</div>
+					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
+						<div class="status-icon-inner"></div>
+					</div>
+					
+					<br/>
+					<div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+				</div>
+			</div>
+	</a>
+
+<!--style="background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));"-->
 
 
-	<div  id="test" style="">
-		<div style="display:inline-block"> 
-			<img src="http://localhost:9900/app/img/Generic-Avatar-Small.png"></img>
-			<div style="display:inline-block">{{meModel.display_name}}</div>
 	
-		</div>
-	</div>
-	<div style="background-color:#44F0F7"> 
-		<div style=" width:37px;height:37px;border:3px solid #0093f0;border-radius:30px; text-align:center;display:inline-block">
-			<div style="width:37px;height:37px;background:url('http://localhost:9900/app/img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;"> </div>
+	<div class="CallStatusContainerInCall"> 
+		<div class="CallStatusIconContainer">
+			<div class="CallStatusIcon"> </div>
 		</div>
 		<div style="display:inline-block"> 
-			<div> in contact phone number</div>
-			<div> outbound  <div> </div></div>
+			<div>{{currentCall.contactId}}</div>
+			<div><div> </div></div>
 		</div>
 		<div style="float:right;display:inline-block">
-			<Input class="XButton"type="button" value="Cancel"/>
+			<!--<a href="#/CancelCall" ng-if="isRinging" class="XButton" value="Cancel" onclick="window.close()">Cancel</a>-->
+			<!--<a href="#/HoldCall" ng-if="isAccepted" class="XButton"  onclick="window.close()">Hold</a>-->
+			<a href="#/EndCall?{{currentCall.xpid}}" class="XButton">End</a>
+		
 		</div>
 	</div>
 	<div style="margin:0px 0px 0px 0px;background-color: gray;color: white;padding: .25em;">
 		<div style="width: 24px;height: 24px;background: url('img/XIconSet-24x24.png') no-repeat -48px -72px;display:inline-block"></div>
 		<div style="display:inline-block;vertical-align: middle">Notifications</div>
-		<input type="button" value="Open" style="float:right;position: relative;display: inline-block;height: 2.5em;margin: 0;padding: 0 10px;text-align: center;line-height: 2.4em;text-decoration: none;cursor: pointer;font-size: .7em;font-weight: bold;border-radius: 2px;border: 1px solid rgba(0, 0, 0, 0.2);background: #fefefe linear-gradient(#fefefe, #ebebeb);color: #333;text-shadow: 0 1px 0 #fff;" ng-click="$parent.overlay ='notifications'"></input>
+		<a href="#/OpenNotifications"value="Open" ng-click="test_pop()" style="float:right;position: relative;display: inline-block;" class="XButton">Open</a>
 	</div>
-	Countdown until 2050
-	<h1 id="countdown-holder"></h1>
-	<script src="https://bitbucket.org/mckamey/countdown.js/raw/tip/countdown.min.js"></script>
-	<script> 
-		 var clock = document.getElementById("countdown-holder"), targetDate = new Date(2050, 00, 01); // Jan 1, 2050;
- 			console.error("countdown timer script");
-  			clock.innerHTML = countdown(targetDate).toString();
-  			setInterval(function(){
-    			clock.innerHTML = countdown(targetDate).toString();
-  			}, 1000);
 
-	</script>
-	<script> 
-	document.writeln("foo");
-	</script>
-	
+
+
 </div>
