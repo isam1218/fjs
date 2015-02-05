@@ -1,6 +1,6 @@
 <div class="Arrow"></div>
 
-<div class="TopRow">
+<div class="TopRow" ng-if="contact">
 	<div>
 		<div class="Avatar AvatarNormal">
 			<img class="AvatarImgPH" data-ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
@@ -27,7 +27,11 @@
 	</div>
 </div>
 
-<div class="BottomRow">
+<div class="TopRow Group" ng-if="group">
+	<strong>{{ group.name }}</strong>
+</div>
+
+<div class="BottomRow" ng-if="contact">
 	<a class="Button" href="" ng-show="isFavorite" ng-click="removeFavorite()">
 		<div class="ListRowActionButtonRemove"></div>
 		<span>Remove</span>
@@ -42,6 +46,17 @@
 	</a>
 	<a class="Button" href="mailto:{{ contact.email }}" target="_blank" ng-show="contact.email">
 		<div class="ListRowActionButtonEmail"></div>
+		<span>Email</span>
+	</a>
+</div>
+
+<div class="BottomRow Group" ng-if="group">
+	<a class="Button" href="#/group/{{group.xpid}}/chat" ng-show="isMine">
+		<div class="ListRowActionButtonChat"></div>
+		<span>Chat</span>
+	</a>
+	<a class="Button" href="">
+		<div class="ListRowActionButtonEmail" ng-click="sendGroupMail()"></div>
 		<span>Email</span>
 	</a>
 </div>

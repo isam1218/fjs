@@ -12,7 +12,7 @@
 <div class="ContactList">
 	<h4>My Department</h4>
 	<a href="#/group/{{::mine.xpid}}" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="ConversationAvatarSection Avatar AvatarNormal" style="width:43px">
+        <div class="ConversationAvatarSection Avatar AvatarNormal" context-menu="mine">
             <div class="GroupAvatarItem GroupAvatarItem_0">
 				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
@@ -40,7 +40,7 @@
 	
 	<h4>All Other Departments</h4>
 	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | orderBy:sortField:sortReverse track by group.xpid" ng-if="group != mine && group.xpid != favoriteID" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="Avatar AvatarNormal">
+        <div class="Avatar AvatarNormal" context-menu="group">
             <div class="GroupAvatarItem GroupAvatarItem_0">
 				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>

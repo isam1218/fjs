@@ -66,6 +66,10 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/group/GroupSingleWidget.html',
 			controller: 'GroupSingleController'
 		})
+        .when('/group/:groupId/chat', {
+			templateUrl: 'views/group/GroupSingleWidget.html',
+			controller: 'GroupSingleController'
+		})
         .when('/zoom', {
 			templateUrl: 'views/ZoomWidgetController.html',
 			controller: 'ZoomWidgetController'

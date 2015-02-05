@@ -226,6 +226,7 @@
   box-shadow: 0 0 10px gray;
   padding: .5em;
   height: 7.5em;
+  min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
   
@@ -240,7 +241,12 @@
 	border-right: 10px solid #ededee; 
   }
   
-  .TopRow {	  
+  .TopRow {
+    &.Group {
+	  margin-top: 1em;
+	  text-align: center;
+	}
+	
 	& > div:not(:last-child) {
 	  border-right: 1px solid #ccc;
 	  margin-right: .5em;
@@ -259,6 +265,10 @@
   }
   
   .BottomRow {
+    &.Group {
+	  text-align: center;
+	}
+	
     border-top: 1px solid #ccc;
 	margin-top: .25em;
   }
