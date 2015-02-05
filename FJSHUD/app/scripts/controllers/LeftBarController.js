@@ -5,9 +5,8 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
 	$scope.edit = false;
 	$scope.number = "";
 	$scope.locations = [];
-	$scope.showOverlay = function(show, edit) {
-		$scope.edit = edit ? edit : false;
-			
+	
+	$scope.showOverlay = function(show) {			
 		if (!show)
 			$scope.overlay = '';
 		else

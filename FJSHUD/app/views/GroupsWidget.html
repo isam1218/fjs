@@ -58,8 +58,8 @@
         <div class="ListRowContent">
             <div class="ListRowTitle">
                 <div class="name">
-                    <b>{{ ::group.name }}</b>
-                    <span class="details">{{ ::group.members.length }}</span>
+                    <b>{{ group.name }}</b>
+                    <span class="details">{{ group.members.length }}</span>
                 </div>
             </div>
             <div class="ListRowStatus">#{{ ::group.extension }}</div>
@@ -75,11 +75,11 @@
 		<div ng-click="clearGroup()" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>Build the Team</h2>
+			<h2>{{ closing ? 'Time to Say Goodbye...' : (editing ? 'Expand the Team' : 'Build the Team') }}</h2>
 		</div>
 		
 		<div class="Sections">
-			<div class="Section">
+			<div class="Section" ng-show="!closing">
 				<div>
 					<h4>Name</h4>
 					<input type="text" ng-model="add.name" class="XInputText" />
@@ -94,10 +94,17 @@
 				</div>
 			</div>
 			
+			<div class="Section" ng-show="closing">
+				<h4>Message</h4>
+				<em>This chat message will be sent to each team member individually.</em>
+				<br/>
+				<textarea ng-model="add.message"></textarea>
+			</div>
+			
 			<div class="Section">
 				<div>
 					<h4>Members</h4>
-					<div class="ContactSearchHolder">
+					<div class="ContactSearchHolder" ng-show="!closing">
 						<input type="search" class="XInputText" placeholder="Add Someone" contact-search />
 					</div>
 				</div>
@@ -113,9 +120,14 @@
 								<p>#{{ contact.primaryExtension }}</p>
 							</div>
 						</div>
-						<input type="button" value="Delete" class="Delete" ng-click="removeUser(contact)" />
+						<input type="button" value="Delete" class="Delete" ng-show="!closing" ng-click="removeUser(contact)" />
 					</div>
 				</div>
+			</div>
+			
+			<div class="Section" ng-show="editing && !closing">
+				<h4>Job is done?</h4>
+				<a href="" ng-click="endGroup()">Click here to delete this team and say goodbye.</a>
 			</div>
 		</div>
 		
@@ -123,7 +135,7 @@
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			
 			<input type="button" class="XButton" value="Cancel" ng-click="clearGroup()" />
-			<input type="button" class="XButton" value="Create Team" ng-click="addGroup()" />
+			<input type="button" class="XButton" value="{{ closing ? 'Delete Group & Send Message' : (editing ? 'Save Changes' : 'Create Team') }}" ng-click="saveGroup()" />
 		</div>
 	</div>
 </div>

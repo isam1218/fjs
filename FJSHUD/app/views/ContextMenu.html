@@ -51,6 +51,10 @@
 </div>
 
 <div class="BottomRow Group" ng-if="group">
+	<a class="Button" href="" ng-show="group.ownerId == myPid" ng-click="editGroup()">
+		<div class="ListRowActionButtonEdit"></div>
+		<span>Edit</span>
+	</a>
 	<a class="Button" href="#/group/{{group.xpid}}/chat" ng-show="isMine">
 		<div class="ListRowActionButtonChat"></div>
 		<span>Chat</span>
