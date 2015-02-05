@@ -1,4 +1,4 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', function($q, $rootScope, httpService,$compile) {
 
 	var phonePlugin = document.getElementById('phone');
 	var version = phonePlugin.version;
@@ -10,6 +10,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 	var sipCalls = {};
 	var xpid2Sip = {};
 	var callsDetails = {};
+	$rootScope.meModel = {};
 	var isRegistered = false;
 	//fjs.CONFIG.SERVER.serverURL 
 	
@@ -42,6 +43,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 		if(alert){
 			alert.setShadow(false);
 			alert.setTransparency(255);
+			alert.setAlertSize(300,120);
 			//alert.setAlertBounds(0,0,0,0);
 			alert.addAlert(url);
 		}
@@ -111,7 +113,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
     onAlertMouseEvent = function(event,x,y){
     	console.log("MouseEvent: " + event + " (" + x + "," + y + ")");
 
-    	this.removeNotification();
+    	//this.removeNotification();
     }
 
     setupListeners = function(){
@@ -243,6 +245,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService', function($q, 
 
 	});
 
+
+	$rootScope.$on('me_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
+	});
 	
 
 	$rootScope.$on("calldetails_synced",function(event,data){
