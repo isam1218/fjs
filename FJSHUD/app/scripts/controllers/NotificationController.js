@@ -132,7 +132,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 	$scope.holdCall = function(xpid,isHeld){
 		phoneService.holdCall(xpid,isHeld);
 	}
-
+	$scope.acceptCall = function(xpid){
+		phoneService.acceptCall(xpid);
+	}
 
 
 	$scope.showOverlay = function(show) {

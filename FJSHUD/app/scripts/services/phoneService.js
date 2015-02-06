@@ -297,7 +297,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 					delete xpid2Sip[data[i].xpid];
 				}else{
 					callsDetails[data[i].xpid] = data[i];
-					xpid2Sip[data[i].xpid] = Object.keys(sipCalls)[0];
+
+					for(sipCall in sipCalls){
+						var toBreak = false;
+						
+						if(xpid2Sip[data[i].xpid]){
+							if(xpid2Sip[data[i].xpid] != sipCall){
+								xpid2Sip[data[i].xpid] = sipCall;
+							}
+						}else{
+							xpid2Sip[data[i].xpid] = sipCall;
+						}
+
+					}
+
 				}
 			}
 		}
@@ -318,7 +331,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	});
 	
 
-	$rootScope.$on("calldetails_synced",function(event,data){
+	/*$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
 			for(i = 0; i < data.length; i ++){
 				if(callsDetails[data[i].xpid]){
@@ -329,6 +342,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		$rootScope.$broadcast('calls_updated', callsDetails);
 
 		
-	});
+	});*/
 
 }]);
