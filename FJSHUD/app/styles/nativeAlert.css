@@ -1,7 +1,7 @@
-.CallStatusContainerInCall {
+.CallStatusContainerOutbound {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
 }
-.CallStatusContainerRinging {
+.CallStatusContainerInbound {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
 }
 .CallStatusIconContainer {
@@ -19,4 +19,6 @@
 }
 .CallStatusText {
   font-size: .7em;
+  top: -13px;
+  position: relative;
 }
