@@ -5,147 +5,25 @@
     </div>
     <div class="WidgetHeaderTitle">Call Center</div>
   </div>
+
+
+
   <div class="WidgetBody">
     <div class="WidgetTabBar">
-      <a href="#/callcenter" class="WidgetTabBarButton Ready">
-        <div class="inner">My Queue</div>
-        <div class="arrow"></div>
-      </a>
-      <a href="#/callcenter/allqueues" class="WidgetTabBarButton Ready fj-selected-item">
-        <div class="inner">All Queues</div>
-        <div class="arrow"></div>
-      </a>
-      <a href="#/callcenter/mystatus" class="WidgetTabBarButton Ready">
-        <div class="inner">My Status</div>
+      <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready"
+         ng-class="selected == tab ? 'fj-selected-item' : ''">
+        <div class="inner">{{ ::tab }}</div>
         <div class="arrow"></div>
       </a>
     </div>
-    <!--<div class="ToolBar">-->
-    <!--<div class="SearchInputBox">-->
-    <!--<div class="SearchInputBoxInputHolder">-->
-    <!--<input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech=""-->
-    <!--data-ng-model="query" placeholder="Search">-->
-    <!--</div>-->
-    <!--<div class="SearchInputBoxStateButton">-->
-    <!--<div class="SearchInputBoxStateButtonIcon"></div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div class="ListLineContent Header LeftContactsColumns">
-      <div class="ListLineContentCell">
-        Sort:
-      </div>
-      <div data-ng-click="sort('name')"
-           class="ListLineContentCell Name {{(sortField == 'name' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>NAME</span>
 
-        <div class="DirectionArrow"></div>
-      </div>
-      <div data-ng-click="sort('complete')"
-           class="ListLineContentCell Complete {{(sortField == 'complete' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>COMPLETED</span>
+    <!-- ng-views -->
+    <div ng-if="selected == 'MyQueue'" class="ListView WithToolBar"
+         ng-include="'views/queues/MyQueue.html'" ng-controller="CallCenterController"></div>
+    <div ng-if="selected == 'AllQueues'" class="ListView WithToolBar"
+         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController"></div>
+    <div ng-if="selected == 'MyStatus'" class="fj-content WidgetTabContent"
+         ng-include="'views/queues/MyStatus.html'" ng-controller="CallCenterController"></div>
 
-        <div class="DirectionArrow"></div>
-      </div>
-      <div data-ng-click="sort('abandon')"
-           class="ListLineContentCell Abandon {{(sortField == 'abandon' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>ABANDONED</span>
-
-        <div class="DirectionArrow"></div>
-      </div>
-      <div data-ng-click="sort('sla')"
-           class="ListLineContentCell Abandon {{(sortField == 'sla' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-        <span>SLA</span>
-
-        <div class="DirectionArrow"></div>
-      </div>
-    </div>
-
-    <div class="ListViewTopSpace"></div>
-    <div class="LeftBarTabContentList">
-      <div class="QueueBlockHolder AvatarHoverArea QueueDetailsEnabled-true"
-           data-ng-repeat="queue in queues | filter: {name: query}">
-
-        <div class="QueueBlock">
-          <div class="Avatar AvatarNormal QueueBlockAvatar">
-            <div class="AvatarImgPH GroupAvatarShowDefault-false">
-
-              <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
-                                                                  data-ng-src="{{ ::getAvatarUrl(queue, 0) }}">
-              </div>
-              <div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg"
-                                                                  data-ng-src="{{ ::getAvatarUrl(queue, 1) }}">
-              </div>
-              <div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg"
-                                                                  data-ng-src="{{ ::getAvatarUrl(queue, 2) }}">
-              </div>
-              <div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg"
-                                                                  data-ng-src="{{ ::getAvatarUrl(queue, 3) }}">
-              </div>
-            </div>
-            <div class="AvatarForeground AvatarInteractable"></div>
-          </div>
-          <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name}} - {{ queue.description }}</a>
-          <div class="QueueBlockStatus QueueBlockAgentsStatLine">
-              <!--Agents:<span>{{queueStatMembers[queue.xpid].membersTalking}}</span> / <span>{{queueStatMembers[queue.xpid].membersCount}}</span> / <span>{{queueStatMembers[queue.xpid].membersLogged}}</span></div>-->
-              Agents:<span>?</span> / <span>?</span> / <span>?</span></div>
-
-          <!--"tta": 60,-->
-          <!--"resetTime": 1413326243803,-->
-          <!--"waiting": 0,-->
-          <!--"abandon": 1,-->
-          <!--"abandonPercent": 20,-->
-          <!--"completed": 4,-->
-          <!--"completedPercent": 80,-->
-          <!--"completedSla": 4,-->
-          <!--"completedSlaPercent": 100,-->
-          <!--"avgTalk": 1054,-->
-          <!--"esa": 14,-->
-          <!--"active": 0-->
-
-
-          <div class="QueueBlockStat">
-            <div class="QueueBlockStatInner">
-              <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>{{ queue.info.waiting }}</span></div>
-                <div class="QueueBlockStatBlockTitle">Waiting</div>
-              </div>
-              <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>??</span></div>
-                <div class="QueueBlockStatBlockTitle">Avg Wait</div>
-              </div>
-              <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>{{ queue.info.avgTalk | Duration }}</span></div>
-                <div class="QueueBlockStatBlockTitle">Avg Talk</div>
-              </div>
-              <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>{{ queue.info.completed }}</span></div>
-                <div class="QueueBlockStatBlockTitle">Total</div>
-              </div>
-              <div class="QueueBlockStatBlock Red">
-                <div class="QueueBlockStatBlockValue"><span>{{ queue.info.abandon }}</span>%
-                </div>
-                <div class="QueueBlockStatBlockTitle">Abandon</div>
-              </div>
-              <div class="QueueBlockStatBlock">
-                <div class="QueueBlockStatBlockValue"><span>{{ queue.info.active }}</span></div>
-                <div class="QueueBlockStatBlockTitle">Active</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-</div>
 
-<!--<div class="ListRowLeftAreaExtraWide">-->
-<!--<div class="ListRowTitle"> {{ queue.name}}</div>-->
-<!--<div class="ListRowDesc"> {{ queue.description }}</div>-->
-<!--<div class="ListRowDesc"> completed: {{ queuestats[queue.xpid].completed }}</div>-->
-<!--<div class="ListRowDesc"> completed %: {{ queuestats[queue.xpid].completedPercent }}</div>-->
-<!--&lt;!&ndash;<div class="ListRowDesc"> completed SLA: {{ queuestats[queue.xpid].completedSla }}</div>&ndash;&gt;-->
-<!--<div class="ListRowDesc"> SLA %: {{ queuestats[queue.xpid].completedSlaPercent }}</div>-->
-<!--&lt;!&ndash;<div class="ListRowDesc"> abandoned: {{ queuestats[queue.xpid].abandone }}</div>&ndash;&gt;-->
-<!--<div class="ListRowDesc"> abandoned %: {{ queuestats[queue.xpid].abandonPercent }}</div>-->
-<!--</div>-->

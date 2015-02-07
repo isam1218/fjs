@@ -12,6 +12,9 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
   myHttpService.getFeed('queue_members_status');
   myHttpService.getFeed('queue_stat_calls');
 
+  $scope.tabs = ['MyQueue', 'AllQueues', 'MyStatus'];
+  $scope.selected = 'AllQueues';
+
   $scope.$on('queues_updated', function(event, data) {
     $scope.queues = data.queues;
     $scope.$safeApply();
