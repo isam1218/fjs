@@ -1,37 +1,59 @@
-<div class="ListLineContent Header LeftContactsColumns">
 
-</div>
-
-<div class="LeftBarTabContentList">
-  <div class="ListSection">
-    <div class="ListSectionHeader">
-      <div class="ListSectionHeaderTitle">Call Log</div>
+  <div class="fj-stream ng-scope">
+    <div class="ToolBar">
+      <div class="SearchInputBox">
+        <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text" x-webkit-speech=""
+                                                      placeholder="Search"></div>
+        <div class="SearchInputBoxStateButton">
+          <div class="SearchInputBoxStateButtonIcon"></div>
+        </div>
+      </div>
+      <div></div>
     </div>
-    <div class="ListSectionBody">TODO</div>
+
+    <div class="RecentCallSection">
+      <div class="RecentCallColumnHeaders">
+        <div class="RecentCallsHeader CalllogAvatar">
+          <div class="RecentPointer"></div>
+          <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'" class="desc_arrow"></div>
+        </div>
+
+        <div class="RecentCallsHeader CalllogName" ng-class="recentSelectSort == 'Name' ? 'recent-selected-column' :''"
+             ng-click="sortCallLog('Name')">
+          <div class="RecentPointer">Name</div>
+          <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'" class="desc_arrow"></div>
+        </div>
+
+        <div class="RecentCallsHeader CalllogPhone"
+             ng-class="recentSelectSort == 'Phone' ? 'recent-selected-column' :''" ng-click="sortCallLog('Phone')">
+          <div class="RecentPointer">Phone</div>
+          <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'" class="desc_arrow"></div>
+        </div>
+
+        <div class="RecentCallsHeader CalllogDuration"
+             ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''"
+             ng-click="sortCallLog('Duration')">
+          <div class="RecentPointer">Duration</div>
+          <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'" class="desc_arrow"></div>
+        </div>
+
+        <div class="RecentCallsHeader CallLogDate recent-selected-column" ng-class="recentSelectSort == 'Date' ?
+                    'recent-selected-column' :''" ng-click="sortCallLog('Date')">
+          <div class="RecentPointer">Date</div>
+          <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'" class="desc_arrow"></div>
+        </div>
+
+        <div class="RecentCallsHeader CallLogType" ng-class="recentSelectSort == 'Type' ?
+                    'recent-selected-column' :''" ng-click="sortCallLog('Type')">
+          <div class="RecentPointer">Type</div>
+          <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'" class="desc_arrow"></div>
+        </div>
+      </div>
+      <div ng-show="calllogs.length == 0" class="NoRecentCalls ng-hide"> No Recent Calls</div>
+      <div class="CallLogs">
+        <!-- ngRepeat: calllog in calllogs | filter:{contactId: contactId} -->
+      </div>
+    </div>
+
   </div>
-
-  <!--<a href="#contact/{{::member.contactId}}"-->
-     <!--class="ListRow Table AvatarHoverArea"-->
-     <!--data-ng-repeat="member in loggedInMembers | SortCalllog | orderBy:sortField:sortReverse">-->
-
-    <!--<div ng-include="'views/queues/QueueMemberSection.html'"></div>-->
-
-  <!--</a>-->
-
-  <!--<div class="ListSection">-->
-    <!--<div class="ListSectionHeader">-->
-      <!--<div class="ListSectionHeaderTitle">Logged Out</div>-->
-    <!--</div>-->
-    <!--<div class="ListSectionBody">Agents logged out of the queue</div>-->
-  <!--</div>-->
-
-
-  <!--<a href="#contact/{{::member.contactId}}"-->
-     <!--class="ListRow Table AvatarHoverArea"-->
-     <!--data-ng-repeat="member in loggedOutMembers | SortCalllog | orderBy:sortField:sortReverse">-->
-
-    <!--<div ng-include="'views/queues/QueueMemberSection.html'"></div>-->
-
-  <!--</a>-->
 </div>
-
