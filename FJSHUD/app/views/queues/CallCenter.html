@@ -4,6 +4,7 @@
       <div class="TopBarItemAppIcon CallCenter"></div>
     </div>
     <div class="WidgetHeaderTitle">Call Center</div>
+
   </div>
 
 
@@ -18,11 +19,11 @@
     </div>
 
     <!-- ng-views -->
-    <div ng-if="selected == 'MyQueue'" class="ListView WithToolBar"
+    <div ng-if="selected == 'My Queue'" class="ListView WithToolBar"
          ng-include="'views/queues/MyQueue.html'" ng-controller="CallCenterController"></div>
-    <div ng-if="selected == 'AllQueues'" class="ListView WithToolBar"
+    <div ng-if="selected == 'All Queues'" class="ListView WithToolBar"
          ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController"></div>
-    <div ng-if="selected == 'MyStatus'" class="fj-content WidgetTabContent"
+    <div ng-if="selected == 'My Status'" class="fj-content WidgetTabContent"
          ng-include="'views/queues/MyStatus.html'" ng-controller="CallCenterController"></div>
 
   </div>
