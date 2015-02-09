@@ -12,17 +12,26 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
 	httpService.getFeed("conferencemembers");
 	$scope.members = [];
 	$scope.meModel = {};
+	$scope.upload = {};
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
-	$scope.showOverlay = false;
+	$scope.showAttachments = false;
 	$scope.formate_date = function(time){
         return utilService.formatDate(time,true);
     }
+    
+    $scope.update = function(archiveObject){
+    	console.log(archiveObject);
+    	$scope.selectedArchiveOption = archiveObject;
+    }
+
     $scope.archiveOptions = [
     	{name:'Never',taskId:"2_6",value:0},
     	{name:'in 3 Hours', taskId:"2_3",value:10800000},
     	{name: 'in 2 Days', taskId:"2_4", value:172800000},
     	{name: "in a Week", taskId:"2_5", value:604800000},
     ]
+
+    $scope.selectedArchiveOption = $scope.archiveOptions[0];
 
 
     $scope.formatDuration = function(duration){
@@ -64,26 +73,29 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
       	$files[0];
       	fileList = [];
       	for (i in $files){
-      		fileList.append($files[i].file);
+      		fileList.push($files[i].file);
       	}
         data = {
             'action':'sendWallEvent',
             'a.targetId': $scope.conferenceId,
             'a.type':'f.conversation.wall',
-            'a.xpid':,
-            'a.archive':,
-            'a.retainKeys':,
-            'a.taskId':,
-            'a.message':,
+            'a.xpid':"",
+            'a.archive':$scope.selectedArchiveOption.value,
+            'a.retainKeys':"",
+            'a.taskId':"",
+            'a.message':this.message,
             'a.callback':'postToParent',
             'a.audience':'conference',
-            'a.attachment':fileList,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "1_0",
-            "_archive":
+            "_archive": $scope.selectedArchiveOption.value,
         }
-        myHttpService.update_avatar(data);*/
+        httpService.upload_attachment(data,fileList);
+		
+        this.message = "";
+        $scope.upload.flow.cancel();
+        $scope.showFileShareOverlay(false);
     }
 
     $scope.getAvatarUrl = function(index) {
@@ -140,6 +152,10 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
 			$scope.$safeApply();
 		});
 	};
+
+	$scope.showFileShareOverlay = function(toShow){
+		$scope.showAttachments = toShow;
+	}
 
 	$scope.joinConference = function(){
 
