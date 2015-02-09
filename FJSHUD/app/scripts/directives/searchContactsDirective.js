@@ -20,8 +20,15 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			var inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
 			
-			var headerTitle = angular.element('<div class="Header">Add a Team Member</div>')
+			var headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
 
+			var note = angular.element('<div></div>');
+			if(attrs.conference =="true"){
+				headerTitle = angular.element('<div class="Header">Join to conference</div>')
+				overlay.css('width','300%');
+			}
+
+			
 			// search input
 			element.bind('keyup', function() {
 				overlay.remove();

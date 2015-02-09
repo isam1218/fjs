@@ -305,6 +305,7 @@ p {
 .TopBarIcons {
   flex: 1;
   min-width: 400px;
+  margin-left: 10px;
 }
 .TopBarItemApp {
   position: relative;
@@ -404,6 +405,16 @@ p {
   position: absolute;
   left: 0;
   top: 1px;
+}
+.TopBarMeStatus .Status {
+  margin-top: 5px;
+}
+.TopBarMeStatus .Status * {
+  vertical-align: middle;
+}
+.TopBarMeStatus .Status span {
+  font-size: .8em;
+  text-transform: capitalize;
 }
 .ToolBarNotification {
   position: relative;
@@ -954,6 +965,14 @@ p {
 }
 .right {
   left: 55%;
+}
+.AutoDelete {
+  background-color: #ccc;
+  width: 89px;
+  margin-right: 1px;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
 }
 .WidgetMe .SettingsPanel,
 .WidgetMe .SettingsTabContent {

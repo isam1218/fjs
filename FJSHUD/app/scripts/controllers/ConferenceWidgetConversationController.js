@@ -13,10 +13,16 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
 	$scope.members = [];
 	$scope.meModel = {};
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
-
+	$scope.showOverlay = false;
 	$scope.formate_date = function(time){
         return utilService.formatDate(time,true);
     }
+    $scope.archiveOptions = [
+    	{name:'Never',taskId:"2_6",value:0},
+    	{name:'in 3 Hours', taskId:"2_3",value:10800000},
+    	{name: 'in 2 Days', taskId:"2_4", value:172800000},
+    	{name: "in a Week", taskId:"2_5", value:604800000},
+    ]
 
 
     $scope.formatDuration = function(duration){
@@ -46,6 +52,38 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
     	}else{
     		return 'img/Generic-Avatar-14.png';
     	}
+    }
+
+    $scope.removeAttachment = function(file){
+
+    	for(i in $flow.files){
+
+    	}
+    }
+    $scope.uploadAttachments = function($files){
+      	$files[0];
+      	fileList = [];
+      	for (i in $files){
+      		fileList.append($files[i].file);
+      	}
+        data = {
+            'action':'sendWallEvent',
+            'a.targetId': $scope.conferenceId,
+            'a.type':'f.conversation.wall',
+            'a.xpid':,
+            'a.archive':,
+            'a.retainKeys':,
+            'a.taskId':,
+            'a.message':,
+            'a.callback':'postToParent',
+            'a.audience':'conference',
+            'a.attachment':fileList,
+            'alt':"",
+            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
+            "a.taskId": "1_0",
+            "_archive":
+        }
+        myHttpService.update_avatar(data);*/
     }
 
     $scope.getAvatarUrl = function(index) {
@@ -119,6 +157,17 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
 			httpService.sendAction("conferences","joinContact",params);
 
 			
+		}
+	}
+
+	$scope.searchContact = function(contact){
+		if(contact){
+			params = {
+				conferenceId: $scope.conferenceId,
+				contactId: contact.xpid
+			}
+
+			httpService.sendAction("conferences","joinContact",params);
 		}
 	}
 

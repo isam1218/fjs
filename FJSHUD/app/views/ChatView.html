@@ -46,3 +46,72 @@
     <textarea ng-model="message" class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break"></textarea>
     <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
 </div>
+
+<div ng-show="showOverlay" class="Overlay" flow-init>
+    <div ng-click="clearGroup()" class="Background"></div>
+    <div class="Foreground">
+        <div ng-click="clearGroup()" class="Close">x</div>
+        
+        <div class="Header">
+            <h2 style="display:inline-block">File Share To </h2><h2 style="color:#729c00;display:inline-block"> {{conference.name}} </h2>
+        </div>
+        
+        <div class="Sections" >
+            <div class="Section" ng-show="!closing">
+                <div>
+                    <h4>MESSAGE</h4>
+                    <p>Add message to shared files or send message alone </p>
+                    <textarea type="text" ng-model="message" class="XInputText"></textarea>
+                </div>
+                <div>
+
+              
+                    <h4>AUTO DELETE</h4>
+                    <div class="AutoDelete"> 
+                        <input type="radio">Never</input>
+                    </div>
+                    <input type="radio">in 3 Hours</input>
+                    <input type="radio">in 2 Days</input>
+                    <input type="radio">in a week</input>
+               
+                </div>
+                <div>
+                    <!--<h4>Description</h4>
+                    <textarea ng-model="add.description" placeholder="Team description is used for search and provides useful information to the team members."></textarea>-->
+                </div>
+            </div>
+            
+            
+            <div class="Section">
+                <div >
+                    <span> 
+                        <h4 style="display:inline-block">ATTACHMENTS  </h4>
+                        <span class="XButton" style="float:right;position:relative;margin: .75em 0 .25em 0;" flow-btn>Attach</span>
+                    </span>
+                </div>
+                
+                <div class="Members">
+                    <div ng-repeat="file in $flow.files" class="ListRow">
+                        <div style="margin-left:5px;display:inline-block;width:70%">  
+                        <p style="border-bottom:1px solid #ccc;width:100%;color:#009cff;font-weight:bold">File</p>
+                        <span style="margin-top:0px"><p>{{file.name}} ({{file.size}} bytes)</p></span>
+                        </div>
+                        <div class="XButton" style="float:right;margin-top:10px;margin-right:5px" ng-click="$flow.removeFile(file)">Remove</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="Section" ng-show="editing && !closing">
+                <h4>Job is done?</h4>
+                <a href="" ng-click="endGroup()">Click here to delete this team and say goodbye.</a>
+            </div>
+        </div>
+        
+        <div class="Footer">
+            <div class="Error" ng-show="addError" ng-bind="addError"></div>
+            
+            <input type="button" class="XButton" value="Cancel" ng-click="clearGroup()" />
+            <input type="button" class="XButton XButtonBlue" value="Share Message & Files" ng-click="uploadAttachments($flow.files)" />
+        </div>
+    </div>
+</div>

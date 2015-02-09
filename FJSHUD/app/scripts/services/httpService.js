@@ -184,6 +184,27 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         }
     };
     
+    this.upload_attachment = function(data) {
+        var params = {
+            'Authorization': authTicket,
+            'node': nodeID,
+        }
+    
+        var fd = new FormData();
+    
+        for (field in data) {
+            fd.append(field, data[field]);
+        }
+        var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
+    
+        $http.post(requestURL, fd, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined,
+            }
+        })
+    };
+
     this.update_avatar = function(data) {
         var params = {
             'Authorization': authTicket,
