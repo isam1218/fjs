@@ -1,10 +1,8 @@
-hudweb.controller('TopNavigationController',['$scope', 'UtilService',function($scope, utilService) {
-
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'HttpService', 'UtilService', function($rootScope, $scope, httpService, utilService) {
     $scope.meModel = {};
     $scope.permissions = {
         Zoom: {bit:1,enabled:false}
     };
-
 
     $scope.appIcons = [
         {title:"Me", url:"#/settings", key:"Me",enabled:1}
@@ -16,17 +14,8 @@ hudweb.controller('TopNavigationController',['$scope', 'UtilService',function($s
         , {title:"Box", url:"#/box", key:"Box",enabled:1}
     ];
 
-    $scope.filterTopBar = function(enabled){
-        if(enabled == 0){
-            return false;
-        }else{
-            return true;
-        }
-    }
-
     $scope.$on('me_synced', function(event,data){
         if(data){
-            var me = {};
             for(medata in data){
                 $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
             }
@@ -49,11 +38,18 @@ hudweb.controller('TopNavigationController',['$scope', 'UtilService',function($s
 
         }
 
-        $scope.$apply();
+        $scope.$safeApply();
     });
+	
+	$scope.getAvatar = function() {
+		return httpService.get_avatar($rootScope.myPid, 28, 28);
+	};
+	
+	$scope.logout = function() {
+		httpService.logout();
+	};
 
     $scope.$on("$destroy", function() {
 	
     });
-
 }]);
