@@ -1,4 +1,5 @@
-hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', 'UtilService', 'ContactService', function($scope,conferenceService,httpService, $routeParams,utilService,contactService) {
+hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService',
+	function($scope,conferenceService,httpService, $routeParams,utilService,contactService,phoneService) {
 	$scope.conversationType = 'conference';
 
     $scope.enableChat = true;
@@ -37,6 +38,14 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
         }
         return minString + ":" + secString;
 
+    }
+
+    $scope.getSingleAvatarUrl = function(xpid){
+    	if(xpid){
+    		return httpService.get_avatar(xpid,14,14);
+    	}else{
+    		return 'img/Generic-Avatar-14.png';
+    	}
     }
 
     $scope.getAvatarUrl = function(index) {
@@ -96,13 +105,21 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
 
 	$scope.joinConference = function(){
 
-		params = {
-			conferenceId: $scope.conferenceId,
-			contactId: $scope.meModel.my_pid,
+		if($scope.joined){
+			params = {
+				conferenceId:$scope.conferenceId
+			}
+			httpService.sendAction("conferences",'leave',params);
+		}else{
+				params = {
+					conferenceId: $scope.conferenceId,
+					contactId: $scope.meModel.my_pid,
+				}
+
+			httpService.sendAction("conferences","joinContact",params);
+
+			
 		}
-
-		httpService.sendAction("conferences","joinContact",params);
-
 	}
 
     $scope.sendMessage = function() {
@@ -130,9 +147,8 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
     			$scope.enableFileShare = $scope.joined;
     		}
 
-    		if($scope.conference.members){
-    			$scope.members = $scope.conference.members;
-    		}
+    		$scope.members = $scope.conference.members;
+    		
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;
     		}
