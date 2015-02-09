@@ -90,21 +90,23 @@
 
 </div>
 
-<div class="CallStatusContainerInCall" ng-hide="!inCall"> 
+<div ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall">
+		<a href="#">  
 		<div class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
 		<div style="display:inline-block" class="CallStatusText"> 
-			<div>{{currentCall.displayName}}</div>
+			<div style="font-weight:bold;font-size:14px">{{currentCall.displayName}}</div>
 			<div><div>outbound on call</div></div>
 		</div>
-		<div style="float:right;display:inline-block">
+		<div style="float:right;display:inline-block;margin-top:5px">
 			<a ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton" onclick="window.close()">Cancel</a>
 			<a ng-click="holdCall(currentCall.xpid,true)" ng-if="!isRinging && !onHold" class="XButton"  onclick="window.close()">Hold</a>
-			<a ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="!isRinging">End</a>
+			<a ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="!isRinging && !onHold">End</a>
 			<a ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="onHold">Talk</a>
-
+			<a ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">Accept</a>
 		</div>
+		</a>
 </div>
 
 <div id="CallAlert" ng-include="'views/NativeAlerts/CallAlert.html'" style="display:none"></div>

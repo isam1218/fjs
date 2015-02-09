@@ -1,6 +1,6 @@
-hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService', function($rootScope, $scope, myHttpService) {
+hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','PhoneService', function($rootScope, $scope, myHttpService,phoneService) {
 	$rootScope.myPid = null;
-
+    $scope.number = "";
     $scope.currentPopup = {};
     $scope.currentPopup.url = null;
     $scope.currentPopup.x = 0;
@@ -42,6 +42,8 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService', func
         $scope.currentPopup.model = data.model;
     };
 	
+   
+
 	var getMyPid = $scope.$on('me_synced', function(event, data) {
 		// find my pid
 		if (!$rootScope.myPid) {

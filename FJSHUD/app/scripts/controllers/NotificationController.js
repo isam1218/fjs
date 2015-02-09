@@ -5,7 +5,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 	$scope.calls = {};
 	$scope.inCall = false;
 	$scope.inRinging = false;
-	
+	$scope.path = $location.protocol() + "://" + $location.host() + ":" + $location.port();
 	myHttpService.getFeed('quickinbox');
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
@@ -131,8 +131,13 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 
 	$scope.holdCall = function(xpid,isHeld){
 		phoneService.holdCall(xpid,isHeld);
+		if(!isHeld){
+			$scope.onHold = false;
+		}
 	}
-
+	$scope.acceptCall = function(xpid){
+		phoneService.acceptCall(xpid);
+	}
 
 
 	$scope.showOverlay = function(show) {
@@ -147,6 +152,16 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		if(data){
 			$scope.calls = data;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
+			
+			if(data.length > 0){
+				element = document.getElementById("CallAlert");
+         		element.style.display="block";
+		  		content = element.innerHTML;
+       	  		phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+          		element.style.display="none";
+
+			}
+
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 		$scope.$safeApply();
