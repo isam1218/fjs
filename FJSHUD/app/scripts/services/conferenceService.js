@@ -25,6 +25,20 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 		}
 	};
 
+
+ 	var conferenceHasMember = function(conference,contactId){
+ 		if(conference.members){
+ 			for(member in conference.members){
+ 				if(conference.members[member].contactId == contactId){
+ 					return true;
+ 				}
+ 			}
+ 		}
+
+ 		return false;
+	}
+
+
 	var containsConferenceRecording = function(conference, callrecording){
 		callrecordings = conference.callrecordings;
 		exist = false;
@@ -56,10 +70,26 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	$rootScope.$on("conferencemembers_synced",function(event,data){
 		
 		for(conference in conferences){
-			conferences[conference].members = [];
+			conferenceTemp = conferences[conference];
+			if(!conferences[conference].members){
+				 conferences[conference].members = [];	
+			}
 			for(key in data){
-				if(data[key].fdpConferenceId == conferences[conference].xpid){
-					conferences[conference].members.push(data[key]);
+
+				if(data[key].xef001type == "delete"){
+
+					if(conferences[conference].members && conferences[conference].members.length > 0){
+						for( i in conferenceTemp.members){
+							if(conferenceTemp.members[i].xpid == data[key].xpid){
+								conferences[conference].members.splice(i,1);
+							}
+						}
+					}
+
+				}else if(data[key].fdpConferenceId == conferences[conference].xpid){
+					if(!conferenceHasMember(conferences[conference],data[key].contactId)){
+						conferences[conference].members.push(data[key]);
+					}
 				}
 			}
 		}
