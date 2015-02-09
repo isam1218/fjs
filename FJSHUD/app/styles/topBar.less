@@ -119,8 +119,9 @@
 }
 
 .TopBarMeStatus {
+  position: relative;
   flex: 1;
-  margin: 5px 10px 0 0;
+  padding: 5px 10px 0 0;
   text-align: right;
   
   .Logout {  
@@ -146,6 +147,117 @@
 	span {
 	  font-size: .8em;
 	  text-transform: capitalize;
+	}
+  }
+}
+
+.TopBarVoicemailControls {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  max-height: 100%;
+  overflow: hidden;
+  text-align: left;
+  padding: 10px 20px;
+  font-size: .8em;
+  
+  &:hover {
+    max-height: 200%;
+    background-color: #fafafa;
+	box-shadow: 0 0 20px black;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	
+	.Buttons {
+	  opacity: 1;
+	}
+  }
+  
+  .XButtonClose {
+    position: absolute;
+	top: 5px;
+	right: 5px;
+  }
+  
+  .Caller {
+    background-color: white;
+	margin: 0 20px 15px 0;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+	padding: 2px 6px;
+	
+	.Details {
+	  display: inline-block;
+	  
+	  em {
+	    color: #999;
+	  }
+	  
+	  strong {
+	    color: #009cff;
+		margin-left: .75em;
+	  }
+	}
+  }
+  
+  .Progress {
+    display: flex;
+	flex-direction: row;
+	align-items: center;
+	
+	div {
+      display: inline-block;
+	}
+	
+	.Left, .Right {
+	  width: 5px;
+	  height: 5px;
+	  border: 1px solid gray;
+	}
+	
+	.Left {
+	  margin-left: 5px;
+	}
+	
+	.Right {
+	  margin-right: 5px;
+	}
+	
+	.Bar {
+	  border-bottom: 1px solid gray;
+	  height: 1px;
+	  flex: 1;
+	}
+  }
+  
+  .Buttons {
+    margin-top: 20px;
+    opacity: 0;
+	
+	div {
+      display: inline-block;
+	  vertical-align: middle;
+	}
+	
+	& > div:first-child {
+	  border-right: 1px solid #ccc;
+	}
+  }
+  
+  .Volume {
+	border-bottom: 2px solid gray;
+	padding-bottom: 2px;
+	
+    div {
+	  border: 1px solid gray;
+	  vertical-align: bottom;
+	  width: 12px;
+	  height: 8px;
+	  
+	  &:nth-child(2) { height: 10px; }
+	  &:nth-child(3) { height: 12px; }
+	  &:nth-child(4) { height: 14px; }
+	  &:nth-child(5) { height: 16px; }
 	}
   }
 }
