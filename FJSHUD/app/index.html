@@ -64,7 +64,7 @@
 				<div class="Status">
 					<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
 					<br/>
-					<span>{{ meModel.chat_status || 'offline' }}</span>
+					<span>{{ meModel.chat_status ? (meModel.chat_status == 'dnd' ? 'busy' : meModel.chat_status) : 'offline' }}</span>
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ meModel.chat_status || 'offline' }}"></div>
 				</div>
 			</div>
