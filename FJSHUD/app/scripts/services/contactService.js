@@ -16,12 +16,19 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		return deferred.promise;
 	};
 	
+	this.getAllContacts = function(){
+		return contacts;
+	}
 	/**
 		SYNCING
 	*/
 
 	$rootScope.$on('contacts_synced', function(event, data) {
 		// initial sync
+		if(!data){
+			return;
+		}
+
 		if (contacts.length < 1) {
 			contacts = data;
 			deferred.resolve(contacts);

@@ -1,9 +1,11 @@
-hudweb.directive('contactSearch', ['$document', 'ContactService', function($document, contactService) {
+hudweb.directive('contactSearch', ['$document', 'ContactService','HttpService', function($document, contactService,httpService) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			var contacts = [];
 			
+			contacts = contactService.getAllContacts();
+
 			// pull updates from service
 			scope.$on('contacts_updated', function(event, data) {
 				contacts = data;
@@ -28,7 +30,6 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				overlay.css('width','300%');
 			}
 
-			
 			// search input
 			element.bind('keyup', function() {
 				overlay.remove();

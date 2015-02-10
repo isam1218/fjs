@@ -29,7 +29,11 @@
 							<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.type }}</div>
 							<div class="NotificationMessage">{{ getMessage(message) }} </div>
-					
+							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+								<span class="XButton XButtonRed"> Reject</span>
+								<a class="XButton XButtonGreen" href="{{message.data.url}}" target="_blank">Accept</a>
+							
+							</div>
 						</div>
 				</div>
 
