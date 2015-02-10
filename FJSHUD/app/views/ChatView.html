@@ -7,12 +7,12 @@
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
 		</div>
     </div>
-    <div class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="fileShare()"><span>File Share</span></div>
+    <div class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="showFileShareOverlay(true)"><span>File Share</span></div>
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
 <div class="ListViewContent" id="ListViewContent" scroll-glue="glued">
-    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages | orderBy: 'created'">
+    <div class="ListRowFirst  AvatarHoverArea ChatItemTypeRoot-true" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments':'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created'">
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
@@ -28,6 +28,10 @@
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="time">{{::message.created | date: 'h:mm a'}}</div>
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
+                <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment">
+                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url)}}"></img>                 
+                    <p> {{ attachment.fileName }}</p>
+                </div> 
             </div>
         </div>
     </div>
@@ -47,10 +51,10 @@
     <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
 </div>
 
-<div ng-show="showOverlay" class="Overlay" flow-init>
-    <div ng-click="clearGroup()" class="Background"></div>
+<div ng-show="showAttachments" class="Overlay" flow-init flow-name="upload.flow">
+    <div ng-click="showFileShareOverlay(false)" class="Background"></div>
     <div class="Foreground">
-        <div ng-click="clearGroup()" class="Close">x</div>
+        <div ng-click="showFileShareOverlay(false)" class="Close">x</div>
         
         <div class="Header">
             <h2 style="display:inline-block">File Share To </h2><h2 style="color:#729c00;display:inline-block"> {{conference.name}} </h2>
@@ -64,16 +68,10 @@
                     <textarea type="text" ng-model="message" class="XInputText"></textarea>
                 </div>
                 <div>
-
-              
                     <h4>AUTO DELETE</h4>
-                    <div class="AutoDelete"> 
-                        <input type="radio">Never</input>
+                    <div ng-repeat="archive in archiveOptions" class="AutoDelete"> 
+                        <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-click="update(selectedArchiveOption)">{{archive.name}}</input>
                     </div>
-                    <input type="radio">in 3 Hours</input>
-                    <input type="radio">in 2 Days</input>
-                    <input type="radio">in a week</input>
-               
                 </div>
                 <div>
                     <!--<h4>Description</h4>
@@ -110,7 +108,7 @@
         <div class="Footer">
             <div class="Error" ng-show="addError" ng-bind="addError"></div>
             
-            <input type="button" class="XButton" value="Cancel" ng-click="clearGroup()" />
+            <input type="button" class="XButton" value="Cancel" ng-click="showFileShareOverlay(false)" />
             <input type="button" class="XButton XButtonBlue" value="Share Message & Files" ng-click="uploadAttachments($flow.files)" />
         </div>
     </div>
