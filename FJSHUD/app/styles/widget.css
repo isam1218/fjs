@@ -279,9 +279,22 @@
 }
 .AutoDelete {
   background-color: #ccc;
-  width: 89px;
+  width: 76px;
   margin-right: 1px;
   height: 30px;
   line-height: 30px;
   display: inline-block;
+  font-size: 12px;
+}
+.AttachmentContainer {
+  width: 90px;
+  height: 100px;
+  text-align: center;
+  border: 1px solid #ccc;
+  display: inline-block;
+  overflow: hidden;
+}
+.AttachmentImg {
+  max-width: 70px;
+  max-height: 70px;
 }

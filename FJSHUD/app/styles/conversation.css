@@ -179,6 +179,14 @@ input.text.ChatInputBoxInput,
 .ChatItemTypeRoot-true.ListMessageChatWidget {
   min-height: 3.2em;
 }
+.ChatItemTypeRoot-true.ListMessageChatWidgetAttachments {
+  min-height: 152px;
+  background-color: #fff;
+  width: 100%;
+  border-bottom: none;
+  position: relative;
+  margin-bottom: 5px;
+}
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageLeft,
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageHeader {
   display: none;

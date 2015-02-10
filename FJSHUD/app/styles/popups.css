@@ -70,6 +70,10 @@
   display: inline-block;
   width: 38%;
 }
+.Overlay .Foreground .Section textarea {
+  width: 80%;
+  min-height: 100px;
+}
 .Overlay .Foreground .Section .Contact {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -97,6 +101,7 @@
   position: relative;
   display: inline-block;
   padding: .5em;
+  margin-left: -0.5em;
 }
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
@@ -183,6 +188,74 @@
   font-size: .9em;
   color: gray;
 }
+#ContextMenu {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  font-size: .9em;
+  background-color: #ededee;
+  border-radius: 8px;
+  box-shadow: 0 0 10px gray;
+  padding: .5em;
+  height: 7.5em;
+  min-width: 10em;
+  margin-left: 10px;
+  margin-top: -3.5em;
+}
+#ContextMenu .Arrow {
+  position: absolute;
+  top: 3em;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #ededee;
+}
+#ContextMenu .TopRow.Group {
+  margin-top: 1em;
+  text-align: center;
+}
+#ContextMenu .TopRow > div:not(:last-child) {
+  border-right: 1px solid #ccc;
+  margin-right: .5em;
+  padding-right: .5em;
+}
+#ContextMenu .TopRow div {
+  display: inline-block;
+  vertical-align: top;
+}
+#ContextMenu .TopRow .Numbers div {
+  min-width: 3em;
+  text-align: right;
+}
+#ContextMenu .BottomRow {
+  border-top: 1px solid #ccc;
+  margin-top: .25em;
+}
+#ContextMenu .BottomRow.Group {
+  text-align: center;
+}
+#ContextMenu .Button {
+  text-align: center;
+  text-decoration: none;
+  color: gray;
+  display: inline-block;
+}
+#ContextMenu .Button div {
+  margin: 0 auto;
+  width: 30px;
+  height: 32px;
+}
+#ContextMenu .Button span {
+  font-size: .8em;
+  padding: 0 1em;
+  border: 1px solid #ededee;
+  border-radius: 10px;
+}
+#ContextMenu .Button:hover span {
+  border: 1px solid gray;
+}
 .MenuWindow {
   position: absolute;
   z-index: 1000;
@@ -191,7 +264,7 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

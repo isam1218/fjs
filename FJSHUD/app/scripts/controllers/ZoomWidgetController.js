@@ -13,17 +13,22 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
     $scope.inMeeting = false;
     $scope.startMeeting = function(option){
         var data = {};
+        var users = ""
+
+        for(contact in $scope.addedContacts){
+            users = users + $scope.addedContacts[contact].xpid + ",";
+        }
+
         data["topic"]="";
-        data["users"]= "";
+        data["users"]= users;
         data["option_start_type"]= option;
         $http({
             method:'POST',
-            url:"https://huc-dev.fonality.com:8081/v1/zoom",
+            url:fjs.CONFIG.SERVER.serverURL + "/v1/zoom",
            data: $.param(data),
            headers:{
                 'Authorization': 'auth=' + localStorage.authTicket,//'auth=7aa21bf443b5c6c7b5d6e28a23ca5479061f36f5181b7677',
                 'node':localStorage.nodeID,//'afdp37_1',
-                'node':'afdp37_1',
                 'Content-Type':'application/x-www-form-urlencoded',
             }
         }).then(function(response){

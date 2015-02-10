@@ -1,4 +1,4 @@
-hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, myHttpService) {
+hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
 	var deferred = $q.defer();	
 	var contacts = [];
 	
@@ -32,7 +32,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		for (i = 0; i < contacts.length; i++) {
 			// add avatar function
 			contacts[i].getAvatar = function(size) {
-				return myHttpService.get_avatar(this.xpid, size, size); 
+				return httpService.get_avatar(this.xpid, size, size); 
 			};
 			
 			// contact was deleted
