@@ -62,6 +62,20 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 			
 			// pull feed again in case shared worker got ahead of us
 			httpService.getFeed('server');
+					
+			// add avatar function
+			for (i = 0; i < conferences.length; i++) {
+				conferences[i].getAvatar = function(index, size) {
+					if (this.members) {
+						if (this.members[index] !== undefined) {
+							var xpid = this.members[index].contactId;
+							return httpService.get_avatar(xpid, size, size);
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
+					}
+				};
+			}
 		}
 		
 		$rootScope.$broadcast('conferences_updated', conferences);

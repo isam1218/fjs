@@ -1,6 +1,10 @@
-hudweb.service('QueueService', ['$http', '$rootScope', '$location', '$q', function($http, $rootScope, $location, $q){
-
+hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function($rootScope, $q, httpService){
 	var queues = [];
+	
+	this.getQueues = function() {
+		return queues;
+	};
+	
 	var formatData = function() {
 		// format data that controller needs
 		return {
@@ -11,6 +15,23 @@ hudweb.service('QueueService', ['$http', '$rootScope', '$location', '$q', functi
 	$rootScope.$on("queues_synced", function(event,data){
 		if(queues.length < 1){
 			queues = data;
+			
+			// pull feed again in case shared worker got ahead of us
+			httpService.getFeed('queue_members');
+					
+			// add avatar function
+			for (i = 0; i < queues.length; i++) {
+				queues[i].getAvatar = function(index, size) {
+					if (this.members) {
+						if (this.members[index] !== undefined) {
+							var xpid = this.members[index].contactId;
+							return httpService.get_avatar(xpid, size, size);
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
+					}
+				};
+			}
 		}
 
 		$rootScope.$broadcast('queues_updated',formatData());

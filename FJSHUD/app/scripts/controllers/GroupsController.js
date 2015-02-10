@@ -60,19 +60,6 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		};
 	};
 	
-	// display avatar for group member
-    $scope.getAvatarUrl = function(group, index) {
-		if (group.members) {
-			if (group.members[index] !== undefined) {
-				var xpid = group.members[index].contactId;
-				return myHttpService.get_avatar(xpid, 28, 28);
-			}
-			else
-				return 'img/Generic-Avatar-28.png';
-
-		}
-    };
-	
 	$scope.getOwner = function(group) {
 		if (group.ownerId == $rootScope.myPid)
 			return 'owner: me';

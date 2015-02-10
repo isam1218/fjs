@@ -40,11 +40,10 @@
             <div class="WidgetBody">
               <div class="WidgetSectionTitle">Place a call</div>
               
-              <div class="NewCall">
+              <div class="NewCall" >
                 <input class="NewCall" type="tel" ng-model="phoneNumber" placeholder="Phone number">
-                <div class="XButton XButtonNormal" ><span>#</span></div>
-                <div class="XButton XButtonGreen" ng-click="makeCall(phoneNumber)"><span>Call</span></div>
-                <div class="XButton XButtonGreen" ng-click="hangup()"><span>Hangup</span></div>
+                <div class="XButton XButtonNormal" style="width:58px" ><span>#</span></div>
+                <div class="XButton XButtonGreen" style="width:58px" ng-click="makeCall(phoneNumber)"><span>Call</span></div>
               </div>
               
               <div class="WidgetSectionTitle">Recent calls</div>
