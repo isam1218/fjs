@@ -183,17 +183,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             return "img/Generic-Avatar-Small.png";
         }
     };
+
+    this.get_attachment = function(xkeyUrl){
+
+    	if(xkeyUrl){
+    		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID;
+    	}
+    }
     
     this.upload_attachment = function(data,attachments) {
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
         }
-
-
-
-    
-        var fd = new FormData();
+		var fd = new FormData();
     
         for (field in data) {
             fd.append(field, data[field]);

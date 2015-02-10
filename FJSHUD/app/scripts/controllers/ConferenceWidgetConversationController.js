@@ -113,6 +113,10 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
 	        }
     	}
     };
+
+    $scope.getAttachment = function(url){
+    	return httpService.get_attachment(url);
+    }
     httpService.getChat('conferences',$scope.conferenceId).then(function(data) {
 		version = data.h_ver;
 		

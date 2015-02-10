@@ -10,13 +10,17 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     // pull updates from service
     $scope.$on('groups_updated',function(event,data) {
         $scope.groups = data.groups;
-        $scope.mine = data.mine;
-        $scope.$safeApply();
+        $scope.groups = $scope.groups.filter(function(item){
+            return item.members && item.members.length > 0;
+        });
+       $scope.mine = data.mine;
        update_groups(); 
+       $scope.$safeApply();
+
     });
 
     myHttpService.getFeed("me");
-    myHttpService.getFeed("groups");
+    //myHttpService.getFeed("groups");
 
     myHttpService.getFeed("groupcontacts");
     update_groups = function(){
@@ -25,7 +29,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             isMember = false;
             isShared = false;
             members = $scope.groups[i].members;
-            if(members.length > 0){
+            if(members && members.length > 0){
                 for(j in members){
                     if(members[j].contactId == $scope.contactId){
                         isMember = true;
