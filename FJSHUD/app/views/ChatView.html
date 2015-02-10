@@ -12,7 +12,7 @@
 </div>
 		
 <div class="ListViewContent" id="ListViewContent" scroll-glue="glued">
-    <div class="ListRowFirst ListMessageChatWidget AvatarHoverArea ChatItemTypeRoot-true" ng-repeat="message in messages | orderBy: 'created'">
+    <div class="ListRowFirst  AvatarHoverArea ChatItemTypeRoot-true" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments':'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created'">
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
@@ -28,8 +28,9 @@
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="time">{{::message.created | date: 'h:mm a'}}</div>
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
-                <div ng-repeat="attachment in message.data.attachment">
-                    <img style="display:inline-block" ng-src="{{getAttachment(attachment.url)}}"></img>                 
+                <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment">
+                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url)}}"></img>                 
+                    <p> {{ attachment.fileName }}</p>
                 </div> 
             </div>
         </div>
