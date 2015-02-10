@@ -217,7 +217,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
             }
         }
 
-        if(phonePlugin && meModel){
+        if(phonePlugin && meModel && meModel.my_jid){
         	username = meModel.my_jid.split("@")[0];
 			if(!isRegistered){
 				session = phonePlugin.getSession(username);
