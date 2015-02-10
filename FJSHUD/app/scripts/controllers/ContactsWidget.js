@@ -153,8 +153,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	
 	$scope.delContact = function() {
 		myHttpService.sendAction('contacts', 'delete', {contactId: $scope.add.pid});
-		$scope.$parent.showOverlay(false);
-		$scope.add = {};
+		$scope.clearContact();
 	};
 	
 	// add favorites action (via directive)

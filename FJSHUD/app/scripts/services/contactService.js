@@ -21,41 +21,28 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	*/
 
 	$rootScope.$on('contacts_synced', function(event, data) {
+		contacts = data;
+		
 		// initial sync
-		if (contacts.length < 1) {
-			contacts = data;
+		if (!$rootScope.loaded) {
 			deferred.resolve(contacts);
 			$rootScope.loaded = true;
-			
-			// add avatar to each contact
-			for (i = 0; i < contacts.length; i++) {
-				contacts[i].getAvatar = function(size) {
-					return myHttpService.get_avatar(this.xpid, size, size); 
-				};
-			}
-		}
-		else {
-			for (i = 0; i < data.length; i++) {	
-				for (c = 0; c < contacts.length; c++) {
-					// found contact
-					if (contacts[c].xpid == data[i].xpid) {
-						// update or delete
-						if (data[i].xef001type == 'delete')
-							contacts.splice(c, 1);
-						else
-							contacts[c] = data[i];
-							
-						break;
-					}
-					
-					// no match, so new record
-					if (c == contacts.length-1)
-						contacts.push(data[i]);
-				}
-			}
 		}
 		
-		$rootScope.$broadcast('contacts_updated', contacts);
+		for (i = 0; i < contacts.length; i++) {
+			// add avatar function
+			contacts[i].getAvatar = function(size) {
+				return myHttpService.get_avatar(this.xpid, size, size); 
+			};
+			
+			// contact was deleted
+			if (contacts[i].xef001type == 'delete')
+				contacts.splice(i, 1);
+		}
+		
+		// let other feeds push update
+		httpService.getFeed('contactstatus');
+		httpService.getFeed('calls');
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {

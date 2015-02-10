@@ -33,7 +33,7 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			if (dupe) continue;
 			
 			var from = data[key].from.replace('contacts:', '');
-			var to = data[key].to.replace('contacts:', '');
+			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
 			
 			// only attach messages related to this user
 			if (from == $scope.contactID || to == $scope.contactID)
