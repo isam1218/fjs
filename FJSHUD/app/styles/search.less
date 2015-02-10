@@ -102,18 +102,56 @@
 }
 
 #WidgetSearch {
+  padding: 10px;
+  
   .SearchPanel {
+    margin-top: 10px;
     display: flex;
-	flex-direction: column;
+	flex-direction: row;
   }
   
   .SearchInputBox {
     position: relative;
-	top: 0;
+    flex: 1;
+	margin: -4px 10px 0 0;
   }
   
   .SearchResults {
+    margin-top: 10px;
     flex: 1;
-	overflow-y: auto;
+    overflow-y: auto;
+	
+	h4 {
+	  margin: .75em 0 0 .5em;
+	  color: #0093f0;
+	  font-variant: small-caps;
+	}
+	
+	.Intro em {
+	  font-size: .8em;
+	  margin-left: .5em;
+	}
+	
+	.Empty {
+	  text-align: center;
+	  margin-top: 2em;
+	  font-size: .9em;
+	}
+	
+	.ListRowStatusIcon {
+	  display: inline-block;
+	}
+	
+	.ListRowTitle {
+	  .link, .details {
+	    margin-top: .5em;
+	  }
+	}
+	
+	.ListRowStatus {
+	  flex: .5;
+	  padding: .5em 1em 0 0;
+	  text-align: right;
+	}
   }
 }

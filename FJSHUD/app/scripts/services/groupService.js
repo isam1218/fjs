@@ -1,4 +1,4 @@
-hudweb.service('GroupService', ['$q', '$rootScope', function($q, $rootScope) {	
+hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {	
 	var deferred = $q.defer();
 	var groups = [];
 	var favorites = {};
@@ -63,13 +63,24 @@ hudweb.service('GroupService', ['$q', '$rootScope', function($q, $rootScope) {
 		// initial sync
 		if (groups.length < 1) {
 			groups = data;
+			deferred.resolve(groups);
 			
-			// find favorites group
 			for (i = 0; i < data.length; i++) {
-				if (data[i].name.toLowerCase() == 'favorites') {
+				// find favorites group
+				if (data[i].name.toLowerCase() == 'favorites')
 					favoriteID = data[i].xpid;
-					break;
-				}
+					
+				// add avatar function
+				groups[i].getAvatar = function(index, size) {
+					if (this.members) {
+						if (this.members[index] !== undefined) {
+							var xpid = this.members[index].contactId;
+							return httpService.get_avatar(xpid, size, size);
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
+					}
+				};
 			}
 		}
 		else {
