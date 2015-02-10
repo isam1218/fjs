@@ -114,6 +114,17 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   cursor: auto;
 }
 
+.XButtonClose {
+  background: url(../img/XIconSet-24x24.png) no-repeat -28px -28px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XIconSet-24x24.png) no-repeat -52px -28px;
+  }
+}
+
 .XButtonDropDown span
 {
   padding-right : 10px;
@@ -310,73 +321,78 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   margin-top: 30px;
 }
 
-.MediaPlayerSlider
-{
-  position: absolute;
-  top: 22px;
-  height: 10px;
-  left: 30px;
-  right: 30px;
-}
-.MediaPlayerSliderBg {
-  position: absolute;
-  top: -1px;
-  height: 10px;
-  left: 6px;
-  right: 16px;
-  border-top: solid 1px #959595;
-}
-.MediaPlayerSliderBgLeft
-{
-  background-image: url("img/XPlayer.png");
-  position: absolute;
-  bottom: 0px;
-  height: 20px;
-  width: 30px;
-  left: 0px;
-  right: 4px;
-  background-position: -40px -150px;
+/* voicemail buttons */
+
+.MediaPlayerBack {
+  background: url(../img/XPlayer.png) no-repeat 0px 0px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XPlayer.png) no-repeat 0px -50px;
+  }
 }
 
-.MediaPlayerSliderBgRight
-{
-  background-image: url("img/XPlayer.png");
-  background-position: -50px -150px;
-  position: absolute;
-  bottom: 0px;
-  height: 20px;
-  width: 30px;
-  right: 0px;
+.MediaPlayerForward {
+  background: url(../img/XPlayer.png) no-repeat -135px 0px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XPlayer.png) no-repeat -135px -50px;
+  }
 }
-.MediaPlayerSliderInner
-{
-  position: absolute;
-  top: 0px;
-  height: 10px;
-  left: 0px;
-  right: 20px;
+
+.MediaPlayerPlay {
+  background: url(../img/XPlayer.png) no-repeat -40px 0px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XPlayer.png) no-repeat -40px -50px;
+  }
 }
-.MediaPlayerSliderThumb
-{
-  position: absolute;
-  top: 0px;
-  height: 16px;
-  border-radius: 20px;
-  /** sample, fill from controller */
+
+.MediaPlayerPause {
+  background: url(../img/XPlayer.png) no-repeat -88px 0px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XPlayer.png) no-repeat -88px -50px;
+  }
 }
-.MediaPlayerSliderThumbIco
-{
-  top: -10px;
-  height: 20px;
-  right: 0px;
-  background-image: url("img/XPlayer.png");
-  background-position: 0px -150px;
-  position: absolute;
+
+.MediaPlayerVolumeDown {
+  background: url(../img/XPlayer.png) no-repeat -173px -5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XPlayer.png) no-repeat -173px -55px;
+  }
+}
+
+.MediaPlayerVolumeUp {
+  background: url(../img/XPlayer.png) no-repeat -209px -5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+
+  &:hover {
+    background: url(../img/XPlayer.png) no-repeat -209px -55px;
+  }
+}
+
+.MediaPlayerProgressButton {
+  background: url(../img/XPlayer.png) no-repeat -20px -150px;
   width: 20px;
-  left: 0px;
-}
-.MediaPlayerSliderIndicator{
-  display: none;
+  height: 20px;
 }
 
 .PopupSlider {

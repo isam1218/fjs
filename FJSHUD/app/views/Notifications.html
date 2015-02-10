@@ -20,11 +20,11 @@
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
-						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message.xpid)"> 
+						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
 							<img class="NotificationAvatar"  ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
 						</div>
 					
-						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId)"> 
+						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
 							
 							<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.type }}</div>
@@ -90,7 +90,7 @@
 
 </div>
 
-<div ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall">
+<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall">
 		<a href="#">  
 		<div class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>

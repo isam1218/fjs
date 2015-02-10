@@ -7,7 +7,7 @@
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
 		</div>
     </div>
-    <div class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="fileShare()"><span>File Share</span></div>
+    <div class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="showFileShareOverlay(true)"><span>File Share</span></div>
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
@@ -28,6 +28,7 @@
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="time">{{::message.created | date: 'h:mm a'}}</div>
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
+                <div ng-repeat="attachment in message.data.attachments">{{attachment.fileName}}</div> 
             </div>
         </div>
     </div>
@@ -37,7 +38,7 @@
     <div class="TabWarning" >
         <div class="TabWarningHeader">Join conference call to use chat.</div>
         <div class="TabWarningMessage">You can see only messages sent during conference call.</div>
-        <div class="XButton XButtonGreen TabWarningButton"><span>Join</span></div>
+        <div class="XButton XButtonGreen TabWarningButton" ng-click="joinConference()"><span>Join</span></div>
     </div>
 </div>
 
@@ -45,4 +46,67 @@
     <div class="ChatInputBoxBorder"></div>
     <textarea ng-model="message" class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break"></textarea>
     <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
+</div>
+
+<div ng-show="showAttachments" class="Overlay" flow-init flow-name="upload.flow">
+    <div ng-click="showFileShareOverlay(false)" class="Background"></div>
+    <div class="Foreground">
+        <div ng-click="showFileShareOverlay(false)" class="Close">x</div>
+        
+        <div class="Header">
+            <h2 style="display:inline-block">File Share To </h2><h2 style="color:#729c00;display:inline-block"> {{conference.name}} </h2>
+        </div>
+        
+        <div class="Sections" >
+            <div class="Section" ng-show="!closing">
+                <div>
+                    <h4>MESSAGE</h4>
+                    <p>Add message to shared files or send message alone </p>
+                    <textarea type="text" ng-model="message" class="XInputText"></textarea>
+                </div>
+                <div>
+                    <h4>AUTO DELETE</h4>
+                    <div ng-repeat="archive in archiveOptions" class="AutoDelete"> 
+                        <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-click="update(selectedArchiveOption)">{{archive.name}}</input>
+                    </div>
+                </div>
+                <div>
+                    <!--<h4>Description</h4>
+                    <textarea ng-model="add.description" placeholder="Team description is used for search and provides useful information to the team members."></textarea>-->
+                </div>
+            </div>
+            
+            
+            <div class="Section">
+                <div >
+                    <span> 
+                        <h4 style="display:inline-block">ATTACHMENTS  </h4>
+                        <span class="XButton" style="float:right;position:relative;margin: .75em 0 .25em 0;" flow-btn>Attach</span>
+                    </span>
+                </div>
+                
+                <div class="Members">
+                    <div ng-repeat="file in $flow.files" class="ListRow">
+                        <div style="margin-left:5px;display:inline-block;width:70%">  
+                        <p style="border-bottom:1px solid #ccc;width:100%;color:#009cff;font-weight:bold">File</p>
+                        <span style="margin-top:0px"><p>{{file.name}} ({{file.size}} bytes)</p></span>
+                        </div>
+                        <div class="XButton" style="float:right;margin-top:10px;margin-right:5px" ng-click="$flow.removeFile(file)">Remove</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="Section" ng-show="editing && !closing">
+                <h4>Job is done?</h4>
+                <a href="" ng-click="endGroup()">Click here to delete this team and say goodbye.</a>
+            </div>
+        </div>
+        
+        <div class="Footer">
+            <div class="Error" ng-show="addError" ng-bind="addError"></div>
+            
+            <input type="button" class="XButton" value="Cancel" ng-click="showFileShareOverlay(false)" />
+            <input type="button" class="XButton XButtonBlue" value="Share Message & Files" ng-click="uploadAttachments($flow.files)" />
+        </div>
+    </div>
 </div>

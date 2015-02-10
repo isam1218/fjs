@@ -114,9 +114,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			
 	}
 
-	$scope.go_to_notification_chat = function(xpid){
+	$scope.go_to_notification_chat = function(xpid,messageXpid){
 		$location.path("/contact/" + xpid);
-		$scope.remove_notification(xpid);
+		$scope.remove_notification(messageXpid);
 		$scope.showOverlay(false);
 	}
 
@@ -192,7 +192,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 
 	$scope.$on('quickinbox_synced', function(event,data){
 		
-		if(data){
+  		if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
 			});
@@ -214,7 +214,12 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 					}
 				}
 			}else{
-				$scope.notifications = data;
+				for(notification in data){
+					if(data[notification].xef001type != "delete"){
+						$scope.notifications.push(data[notification]);
+						
+					}
+				}
 			}
 		}
 

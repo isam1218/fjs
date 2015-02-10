@@ -1,4 +1,4 @@
-hudweb.controller('ConferencesWidgetController', ['$scope', '$location', 'ConferenceService', 'HttpService', function($scope, $location, conferenceService, httpService) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
 	$scope.tab = 'my';
 	$scope.sortBy = 'location';
 	$scope.query = '';
@@ -37,15 +37,54 @@ hudweb.controller('ConferencesWidgetController', ['$scope', '$location', 'Confer
 		};
 	};
 	
+	$scope.getSingleAvatarUrl = function(xpid){
+    	if(xpid){
+    		return httpService.get_avatar(xpid,14,14);
+    	}else{
+    		return 'img/Generic-Avatar-14.png';
+    	}
+    };
+	
 	$scope.findRoom = function() {
-		for (i = 0; i < $scope.conferences.length; i++) {
+		// sort by permissions
+		var conferences = $scope.conferences;
+		conferences.sort(function(obj1, obj2) {
+			return obj1.permissions - obj2.permissions;
+		});
+	
+		for (i = 0; i < conferences.length; i++) {
 			// find first available room
-			if ($scope.conferences[i].members && $scope.conferences[i].members.length == 0) {
-				$location.path('/conference/' + $scope.conferences[i].xpid);
+			if (!conferences[i].members || conferences[i].members.length == 0) {
+				var params = {
+					conferenceId: conferences[i].xpid,
+					contactId: $rootScope.myPid,
+				};
+				httpService.sendAction("conferences", "joinContact", params);
+				
+				$location.path('/conference/' + conferences[i].xpid);
 				break;
 			}
 		}
 	};
+
+	$scope.$on('calls_updated',function(event,data){
+		if(data){
+			$scope.calls = data;
+			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
+			
+			if(data.length > 0){
+				element = document.getElementById("CallAlert");
+         		element.style.display="block";
+		  		content = element.innerHTML;
+       	  		phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+          		element.style.display="none";
+
+			}
+
+		}
+		$scope.inCall = Object.keys($scope.calls).length > 0;
+		$scope.$safeApply();
+	});
 
     $scope.getAvatarUrl = function(conference, index) {
         if (conference.members) {
