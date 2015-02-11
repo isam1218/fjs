@@ -88,15 +88,47 @@
   float: right;
   cursor: pointer;
 }
+#WidgetSearch {
+  padding: 10px;
+}
 #WidgetSearch .SearchPanel {
+  margin-top: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 #WidgetSearch .SearchInputBox {
   position: relative;
-  top: 0;
+  flex: 1;
+  margin: -4px 10px 0 0;
 }
 #WidgetSearch .SearchResults {
+  margin-top: 10px;
   flex: 1;
   overflow-y: auto;
+}
+#WidgetSearch .SearchResults h4 {
+  margin: .75em 0 0 .5em;
+  color: #0093f0;
+  font-variant: small-caps;
+}
+#WidgetSearch .SearchResults .Intro em {
+  font-size: .8em;
+  margin-left: .5em;
+}
+#WidgetSearch .SearchResults .Empty {
+  text-align: center;
+  margin-top: 2em;
+  font-size: .9em;
+}
+#WidgetSearch .SearchResults .ListRowStatusIcon {
+  display: inline-block;
+}
+#WidgetSearch .SearchResults .ListRowTitle .link,
+#WidgetSearch .SearchResults .ListRowTitle .details {
+  margin-top: .5em;
+}
+#WidgetSearch .SearchResults .ListRowStatus {
+  flex: .5;
+  padding: .5em 1em 0 0;
+  text-align: right;
 }

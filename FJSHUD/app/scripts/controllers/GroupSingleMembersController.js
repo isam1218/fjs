@@ -12,6 +12,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
     ];
     $scope.selectedSort = $scope.sort_options[0];
 
+    $scope.getAvatar = function(xpid) {
+		return httpService.get_avatar(xpid, 40, 40);
+	};
 	
 	$scope.$on('groups_updated', function(event, data) {
 			

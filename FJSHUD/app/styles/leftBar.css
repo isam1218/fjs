@@ -61,6 +61,19 @@
   flex: 1;
   overflow-y: auto;
 }
+.LeftBar .Contacts .ContactList h4,
+.LeftBar .Groups .ContactList h4 {
+  margin: .5em 0 0 .5em;
+  color: #0093f0;
+  font-variant: small-caps;
+  font-size: .9em;
+}
+.LeftBar .Contacts .ContactList h4 + em,
+.LeftBar .Groups .ContactList h4 + em {
+  margin: 0 0 .5em .5em;
+  font-size: .8em;
+  display: block;
+}
 .LeftBar .Notifications > div:first-child {
   font-size: .9em;
   min-height: 25px;

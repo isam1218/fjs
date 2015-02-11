@@ -22,6 +22,7 @@
 .TopBarIcons {
   flex: 1;
   min-width: 400px;
+  margin-left: 10px;
 }
 .TopBarItemApp {
   position: relative;
@@ -107,8 +108,9 @@
   font-size: 12px;
 }
 .TopBarMeStatus {
+  position: relative;
   flex: 1;
-  margin: 5px 10px 0 0;
+  padding: 5px 10px 0 0;
   text-align: right;
 }
 .TopBarMeStatus .Logout {
@@ -121,6 +123,116 @@
   position: absolute;
   left: 0;
   top: 1px;
+}
+.TopBarMeStatus .Status {
+  margin-top: 5px;
+}
+.TopBarMeStatus .Status * {
+  vertical-align: middle;
+}
+.TopBarMeStatus .Status span {
+  font-size: .8em;
+  text-transform: capitalize;
+}
+.TopBarVoicemailControls {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  max-height: 100%;
+  overflow: hidden;
+  text-align: left;
+  padding: 10px 20px;
+  font-size: .8em;
+}
+.TopBarVoicemailControls:hover {
+  max-height: 200%;
+  background-color: #fafafa;
+  box-shadow: 0 0 20px black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.TopBarVoicemailControls:hover .Buttons {
+  opacity: 1;
+}
+.TopBarVoicemailControls .XButtonClose {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.TopBarVoicemailControls .Caller {
+  background-color: white;
+  margin: 0 20px 15px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 2px 6px;
+}
+.TopBarVoicemailControls .Caller .Details {
+  display: inline-block;
+}
+.TopBarVoicemailControls .Caller .Details em {
+  color: #999;
+}
+.TopBarVoicemailControls .Caller .Details strong {
+  color: #009cff;
+  margin-left: .75em;
+}
+.TopBarVoicemailControls .Progress {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.TopBarVoicemailControls .Progress div {
+  display: inline-block;
+}
+.TopBarVoicemailControls .Progress .Left,
+.TopBarVoicemailControls .Progress .Right {
+  width: 5px;
+  height: 5px;
+  border: 1px solid gray;
+}
+.TopBarVoicemailControls .Progress .Left {
+  margin-left: 5px;
+}
+.TopBarVoicemailControls .Progress .Right {
+  margin-right: 5px;
+}
+.TopBarVoicemailControls .Progress .Bar {
+  border-bottom: 1px solid gray;
+  height: 1px;
+  flex: 1;
+}
+.TopBarVoicemailControls .Buttons {
+  margin-top: 20px;
+  opacity: 0;
+}
+.TopBarVoicemailControls .Buttons div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.TopBarVoicemailControls .Buttons > div:first-child {
+  border-right: 1px solid #ccc;
+}
+.TopBarVoicemailControls .Volume {
+  border-bottom: 2px solid gray;
+  padding-bottom: 2px;
+}
+.TopBarVoicemailControls .Volume div {
+  border: 1px solid gray;
+  vertical-align: bottom;
+  width: 12px;
+  height: 8px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(2) {
+  height: 10px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(3) {
+  height: 12px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(4) {
+  height: 14px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(5) {
+  height: 16px;
 }
 .ToolBarNotification {
   position: relative;

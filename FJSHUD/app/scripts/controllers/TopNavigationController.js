@@ -32,7 +32,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'HttpServi
 
             for(app in $scope.appIcons){
                 if($scope.appIcons[app].key == perm){
-                    $scope.appIcons[app].enabled = $scope.permissions[perm].enabled;
+                    $scope.appIcons[app].enabled = 1;//$scope.permissions[perm].enabled;
                 }
             }
 

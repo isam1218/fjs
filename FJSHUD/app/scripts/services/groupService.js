@@ -60,48 +60,29 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 	*/
 
 	$rootScope.$on('groups_synced', function(event, data) {
-		// initial sync
-		if (groups.length < 1) {
-			groups = data;
-			deferred.resolve(groups);
+		groups = data;
+		deferred.resolve(groups);
 			
-			for (i = 0; i < data.length; i++) {
-				// find favorites group
-				if (data[i].name.toLowerCase() == 'favorites')
-					favoriteID = data[i].xpid;
-					
-				// add avatar function
-				groups[i].getAvatar = function(index, size) {
-					if (this.members) {
-						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
-							return httpService.get_avatar(xpid, size, size);
-						}
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					}
-				};
-			}
-		}
-		else {
-			// update or add groups
-			for (i = 0; i < data.length; i++) {
-				var newGroup = true;
+		for (i = 0; i < groups.length; i++) {
+			// find favorites group
+			if (groups[i].name.toLowerCase() == 'favorites')
+				favoriteID = groups[i].xpid;
 				
-				for (g = 0; g < groups.length; g++) {
-					if (data[i].xpid == groups[g].xpid) {
-						groups[g] = data[i];
-						newGroup = false;
-						break;
+			// add avatar function
+			groups[i].getAvatar = function(index, size) {
+				if (this.members) {
+					if (this.members[index] !== undefined) {
+						var xpid = this.members[index].contactId;
+						return httpService.get_avatar(xpid, size, size);
 					}
+					else
+						return 'img/Generic-Avatar-' + size + '.png';
 				}
-				
-				if (newGroup)
-					groups.push(data[i]);
-			}
+			};
 		}
 		
-		$rootScope.$broadcast('groups_updated', formatData());
+		// populate members via different feed
+		httpService.getFeed('groupcontacts');
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {

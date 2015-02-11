@@ -175,7 +175,10 @@ hudweb.controller('GroupSingleVoicemailsController', ['$scope', '$routeParams', 
             $scope.$safeApply();
         }
     };
-
+	$scope.getMeAvatarUrl = function(xpid,width,height){
+        
+        return httpService.get_avatar(xpid,width,height);
+    };
     $scope.$on('groups_updated', function(event, data) {
             
         $scope.group = groupService.getGroup($scope.groupId);

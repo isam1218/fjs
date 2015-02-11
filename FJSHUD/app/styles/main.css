@@ -391,8 +391,9 @@ p {
   font-size: 12px;
 }
 .TopBarMeStatus {
+  position: relative;
   flex: 1;
-  margin: 5px 10px 0 0;
+  padding: 5px 10px 0 0;
   text-align: right;
 }
 .TopBarMeStatus .Logout {
@@ -415,6 +416,106 @@ p {
 .TopBarMeStatus .Status span {
   font-size: .8em;
   text-transform: capitalize;
+}
+.TopBarVoicemailControls {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  max-height: 100%;
+  overflow: hidden;
+  text-align: left;
+  padding: 10px 20px;
+  font-size: .8em;
+}
+.TopBarVoicemailControls:hover {
+  max-height: 200%;
+  background-color: #fafafa;
+  box-shadow: 0 0 20px black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.TopBarVoicemailControls:hover .Buttons {
+  opacity: 1;
+}
+.TopBarVoicemailControls .XButtonClose {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.TopBarVoicemailControls .Caller {
+  background-color: white;
+  margin: 0 20px 15px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 2px 6px;
+}
+.TopBarVoicemailControls .Caller .Details {
+  display: inline-block;
+}
+.TopBarVoicemailControls .Caller .Details em {
+  color: #999;
+}
+.TopBarVoicemailControls .Caller .Details strong {
+  color: #009cff;
+  margin-left: .75em;
+}
+.TopBarVoicemailControls .Progress {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.TopBarVoicemailControls .Progress div {
+  display: inline-block;
+}
+.TopBarVoicemailControls .Progress .Left,
+.TopBarVoicemailControls .Progress .Right {
+  width: 5px;
+  height: 5px;
+  border: 1px solid gray;
+}
+.TopBarVoicemailControls .Progress .Left {
+  margin-left: 5px;
+}
+.TopBarVoicemailControls .Progress .Right {
+  margin-right: 5px;
+}
+.TopBarVoicemailControls .Progress .Bar {
+  border-bottom: 1px solid gray;
+  height: 1px;
+  flex: 1;
+}
+.TopBarVoicemailControls .Buttons {
+  margin-top: 20px;
+  opacity: 0;
+}
+.TopBarVoicemailControls .Buttons div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.TopBarVoicemailControls .Buttons > div:first-child {
+  border-right: 1px solid #ccc;
+}
+.TopBarVoicemailControls .Volume {
+  border-bottom: 2px solid gray;
+  padding-bottom: 2px;
+}
+.TopBarVoicemailControls .Volume div {
+  border: 1px solid gray;
+  vertical-align: bottom;
+  width: 12px;
+  height: 8px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(2) {
+  height: 10px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(3) {
+  height: 12px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(4) {
+  height: 14px;
+}
+.TopBarVoicemailControls .Volume div:nth-child(5) {
+  height: 16px;
 }
 .ToolBarNotification {
   position: relative;
@@ -968,11 +1069,24 @@ p {
 }
 .AutoDelete {
   background-color: #ccc;
-  width: 89px;
+  width: 76px;
   margin-right: 1px;
   height: 30px;
   line-height: 30px;
   display: inline-block;
+  font-size: 12px;
+}
+.AttachmentContainer {
+  width: 90px;
+  height: 100px;
+  text-align: center;
+  border: 1px solid #ccc;
+  display: inline-block;
+  overflow: hidden;
+}
+.AttachmentImg {
+  max-width: 70px;
+  max-height: 70px;
 }
 .WidgetMe .SettingsPanel,
 .WidgetMe .SettingsTabContent {
@@ -1455,8 +1569,8 @@ div.NewCall {
   -webkit-transition: all 0.1s linear;
 }
 .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -2456,17 +2570,49 @@ div.NewCall {
   float: right;
   cursor: pointer;
 }
+#WidgetSearch {
+  padding: 10px;
+}
 #WidgetSearch .SearchPanel {
+  margin-top: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 #WidgetSearch .SearchInputBox {
   position: relative;
-  top: 0;
+  flex: 1;
+  margin: -4px 10px 0 0;
 }
 #WidgetSearch .SearchResults {
+  margin-top: 10px;
   flex: 1;
   overflow-y: auto;
+}
+#WidgetSearch .SearchResults h4 {
+  margin: .75em 0 0 .5em;
+  color: #0093f0;
+  font-variant: small-caps;
+}
+#WidgetSearch .SearchResults .Intro em {
+  font-size: .8em;
+  margin-left: .5em;
+}
+#WidgetSearch .SearchResults .Empty {
+  text-align: center;
+  margin-top: 2em;
+  font-size: .9em;
+}
+#WidgetSearch .SearchResults .ListRowStatusIcon {
+  display: inline-block;
+}
+#WidgetSearch .SearchResults .ListRowTitle .link,
+#WidgetSearch .SearchResults .ListRowTitle .details {
+  margin-top: .5em;
+}
+#WidgetSearch .SearchResults .ListRowStatus {
+  flex: .5;
+  padding: .5em 1em 0 0;
+  text-align: right;
 }
 .WidgetZoom .WidgetBody {
   top: 75px;
@@ -2724,6 +2870,14 @@ input.text.ChatInputBoxInput,
 }
 .ChatItemTypeRoot-true.ListMessageChatWidget {
   min-height: 3.2em;
+}
+.ChatItemTypeRoot-true.ListMessageChatWidgetAttachments {
+  min-height: 152px;
+  background-color: #fff;
+  width: 100%;
+  border-bottom: none;
+  position: relative;
+  margin-bottom: 5px;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageLeft,
 .ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageHeader {
@@ -3694,6 +3848,15 @@ input[type="tel"] {
   opacity: 0.5;
   cursor: auto;
 }
+.XButtonClose {
+  background: url(../img/XIconSet-24x24.png) no-repeat -28px -28px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+.XButtonClose:hover {
+  background: url(../img/XIconSet-24x24.png) no-repeat -52px -28px;
+}
 .XInputText {
   border-radius: 3px;
   padding: 3px;
@@ -3789,66 +3952,65 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .SelectMenuBox .MenuContent {
   margin-top: 30px;
 }
-.MediaPlayerSlider {
-  position: absolute;
-  top: 22px;
-  height: 10px;
-  left: 30px;
-  right: 30px;
+/* voicemail buttons */
+.MediaPlayerBack {
+  background: url(../img/XPlayer.png) no-repeat 0px 0px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
 }
-.MediaPlayerSliderBg {
-  position: absolute;
-  top: -1px;
-  height: 10px;
-  left: 6px;
-  right: 16px;
-  border-top: solid 1px #959595;
+.MediaPlayerBack:hover {
+  background: url(../img/XPlayer.png) no-repeat 0px -50px;
 }
-.MediaPlayerSliderBgLeft {
-  background-image: url("img/XPlayer.png");
-  position: absolute;
-  bottom: 0px;
-  height: 20px;
-  width: 30px;
-  left: 0px;
-  right: 4px;
-  background-position: -40px -150px;
+.MediaPlayerForward {
+  background: url(../img/XPlayer.png) no-repeat -135px 0px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
 }
-.MediaPlayerSliderBgRight {
-  background-image: url("img/XPlayer.png");
-  background-position: -50px -150px;
-  position: absolute;
-  bottom: 0px;
-  height: 20px;
-  width: 30px;
-  right: 0px;
+.MediaPlayerForward:hover {
+  background: url(../img/XPlayer.png) no-repeat -135px -50px;
 }
-.MediaPlayerSliderInner {
-  position: absolute;
-  top: 0px;
-  height: 10px;
-  left: 0px;
-  right: 20px;
+.MediaPlayerPlay {
+  background: url(../img/XPlayer.png) no-repeat -40px 0px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
 }
-.MediaPlayerSliderThumb {
-  position: absolute;
-  top: 0px;
-  height: 16px;
-  border-radius: 20px;
-  /** sample, fill from controller */
+.MediaPlayerPlay:hover {
+  background: url(../img/XPlayer.png) no-repeat -40px -50px;
 }
-.MediaPlayerSliderThumbIco {
-  top: -10px;
-  height: 20px;
-  right: 0px;
-  background-image: url("img/XPlayer.png");
-  background-position: 0px -150px;
-  position: absolute;
+.MediaPlayerPause {
+  background: url(../img/XPlayer.png) no-repeat -88px 0px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+}
+.MediaPlayerPause:hover {
+  background: url(../img/XPlayer.png) no-repeat -88px -50px;
+}
+.MediaPlayerVolumeDown {
+  background: url(../img/XPlayer.png) no-repeat -173px -5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+.MediaPlayerVolumeDown:hover {
+  background: url(../img/XPlayer.png) no-repeat -173px -55px;
+}
+.MediaPlayerVolumeUp {
+  background: url(../img/XPlayer.png) no-repeat -209px -5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+.MediaPlayerVolumeUp:hover {
+  background: url(../img/XPlayer.png) no-repeat -209px -55px;
+}
+.MediaPlayerProgressButton {
+  background: url(../img/XPlayer.png) no-repeat -20px -150px;
   width: 20px;
-  left: 0px;
-}
-.MediaPlayerSliderIndicator {
-  display: none;
+  height: 20px;
 }
 .PopupSlider {
   display: none;
@@ -4367,7 +4529,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -4505,6 +4667,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   .DockPanel {
     display: none;
   }
+  .AttachmentImg {
+    max-width: 90px;
+    max-height: 90px;
+  }
 }
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
@@ -4628,6 +4794,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   padding: 1em;
   display: flex;
   flex-direction: column;
+}
+.NotificationZoomBtn {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .displayName {
   font-size: 12px;

@@ -3,8 +3,12 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			var contacts = [];
-			
+
 			// pull updates from service
+			contactService.getContacts().then(function(data) {
+				contacts = data;
+			});
+			
 			scope.$on('contacts_updated', function(event, data) {
 				contacts = data;
 			});
@@ -28,7 +32,6 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				overlay.css('width','300%');
 			}
 
-			
 			// search input
 			element.bind('keyup', function() {
 				overlay.remove();
