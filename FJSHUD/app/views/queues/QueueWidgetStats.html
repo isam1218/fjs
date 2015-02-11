@@ -71,7 +71,7 @@
                 <!--<div class="{{$index%2==0?'ListRow ListLine':'ListRowOdd'}}">-->
                 <!--<div class="ListRow {{$index%2==0?'':'ListRowOdd'}} ListLine ListLineExpanded">-->
                 <div class="fj-hbox ListLineContent ListLineContentTop">
-                  <div class="fj-hbox-cell ListLineContentCell Status">
+                 <div class="fj-hbox-cell ListLineContentCell Status">
                     <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
                   </div>
                   <div class="fj-hbox-cell ListLineContentCell Status">
@@ -90,8 +90,23 @@
                 <div class="ListLineDetails">
                   <div class="ListLineDetailsBorder"></div>
                   <div class="QueueAgentDetails">Other queues</div>
-                  <div class="OtherQueuesStat ListIsEmpty">
+                  <div ng-if="member.otherQueues.length == 0" class="OtherQueuesStat ListIsEmpty">
                     Agents of this queue only
+                  </div>
+                  <div ng-if="member.otherQueues.length > 0" ng-repeat="otherQueue in member.otherQueues" class="OtherQueueLine">
+                    <div class="fj-hbox-cell ListLineContentCell Status">
+                      <div class="ListLineContentCellIcon XIcon-ChatStatus-PlaceHolder"></div>
+                    </div>
+                    <div class="fj-hbox-cell ListLineContentCell Status">
+                      <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
+                    </div>
+                    <div class="fj-hbox-space ListLineContentCell Name">{{otherQueue.name}}</div>
+                    <div class="fj-hbox-cell ListLineContentCell Duration">
+                      <div class="ListLineContentCellIcon QueueCall"></div>
+                      <span class="ListLineContentCellTextWithIcon-false">---</span></div>
+                    <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
+                    <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
+
                   </div>
                   <!--<div class="undefined" style="min-height: 264px;"></div>-->
                   <div class="QueueAgentDetails">Current queue calls</div>

@@ -1010,3 +1010,6 @@
 .Queues .SortHeader {
   display: flex;
 }
+.Queues .OtherQueueLine {
+  display: flex;
+}

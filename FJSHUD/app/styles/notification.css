@@ -23,7 +23,9 @@
 .LeftBarNotificationMessageSection .NotificationMessage {
   width: 100%;
   white-space: pre;
+  word-wrap: break-word;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  position: relative;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
@@ -44,6 +46,7 @@
   border-top: 1px solid #ccc;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-top: 45px;
   background-image: url("../img/XTile-Widget.png?v=1418381374907");
 }
 .LeftBarNotifications {
@@ -124,4 +127,9 @@
 .NotificationZoomBtn {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.Messages {
+  position: relative;
+  margin-top: -18px;
+  min-height: 50px;
 }

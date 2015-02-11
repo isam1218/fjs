@@ -5,8 +5,6 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$rootScope', '$route
         $scope.sortReverse = false;
         $scope.contacts = [];
         $scope.queueMembers = [];
-        $scope.add = {};
-        $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
         myHttpService.getFeed('queues');
         myHttpService.getFeed('queue_members');
@@ -114,18 +112,18 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$rootScope', '$route
             }
         });
 
-        $scope.$on('queues_synced', function(event, data) {
-            if (data.queues !== undefined) {
-                var queues = data.queues;
-                for (i = 0; i < queues.length && $scope.queue === undefined; i++) {
-                    if (queues[i].xpid == $scope.queueId) {
-                        $scope.queue = queues[i];
-                    }
-
-                }
-                $scope.$safeApply();
-            }
-        });
+        //$scope.$on('queues_synced', function(event, data) {
+        //    if (data.queues !== undefined) {
+        //        var queues = data.queues;
+        //        for (i = 0; i < queues.length && $scope.queue === undefined; i++) {
+        //            if (queues[i].xpid == $scope.queueId) {
+        //                $scope.queue = queues[i];
+        //            }
+        //
+        //        }
+        //        $scope.$safeApply();
+        //    }
+        //});
 
         $scope.$on('queues_updated', function(event, data) {
             $scope.queueMembers = [];
@@ -134,8 +132,30 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$rootScope', '$route
                 var member = $scope.queue.members[i];
 
                 member.contact = $scope.contacts[member.contactId];
-
+                member.otherQueues = [];
                 $scope.queueMembers.push(member);
+            }
+
+          var queues = data.queues;
+          for (var q in queues) {
+              var queue = queues[q];
+
+                // Don't include this queue
+              if (queue.xpid === $scope.queue.xpid) {
+                continue;
+              }
+
+              for (var m in $scope.queueMembers) {
+                var member = $scope.queueMembers[m];
+
+                for (var qm in queue.members) {
+                  var qMember = queue.members[qm];
+
+                  if (qMember.xpid === member.xpid) {
+                    member.otherQueues.push(queue);
+                  }
+                }
+              }
             }
         });
 
@@ -144,7 +164,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$rootScope', '$route
                 return myHttpService.get_avatar(xpid, 32, 32);
             }
             else
-                return 'img/Generic-Avatar-14.png';
+                return 'img/Generic-Avatar-32.png';
         };
 
 

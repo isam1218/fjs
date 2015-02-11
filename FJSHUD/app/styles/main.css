@@ -2502,6 +2502,9 @@ div.NewCall {
 .Queues .SortHeader {
   display: flex;
 }
+.Queues .OtherQueueLine {
+  display: flex;
+}
 .SearchInputBox {
   position: absolute;
   margin: 0;
@@ -4628,7 +4631,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -4819,7 +4822,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-top: 1px solid #ccc;
   overflow-y: auto;
   overflow-x: hidden;
-  /* padding-top: 45px; */
+  padding-top: 45px;
   background-image: url("../img/XTile-Widget.png?v=1418381374907");
 }
 .LeftBarNotifications {
@@ -4905,7 +4908,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   margin-top: -18px;
   min-height: 50px;
-  /* z-index: 10; */
 }
 .displayName {
   font-size: 12px;

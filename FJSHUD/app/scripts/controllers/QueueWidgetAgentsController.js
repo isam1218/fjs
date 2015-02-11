@@ -153,7 +153,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
             return myHttpService.get_avatar(xpid, 32, 32);
         }
         else
-            return 'img/Generic-Avatar-14.png';
+            return 'img/Generic-Avatar-32.png';
     };
 
 
