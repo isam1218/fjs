@@ -2499,6 +2499,9 @@ div.NewCall {
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.05);
   padding: 5px;
 }
+.Queues .SortHeader {
+  display: flex;
+}
 .SearchInputBox {
   position: absolute;
   margin: 0;
