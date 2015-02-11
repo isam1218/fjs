@@ -1,4 +1,4 @@
-hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', function($scope, $rootScope, myHttpService, contactService, queueService) {
+hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', function($scope, $rootScope, myHttpService, contactService, queueService) {
   $scope.query = "";
   $scope.sortField = "displayName";
   $scope.sortReverse = false;
@@ -13,7 +13,7 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
   myHttpService.getFeed('queue_stat_calls');
 
   $scope.tabs = ['My Queue', 'All Queues', 'My Status'];
-  $scope.selected = 'All Queues';
+  $scope.selected = 'My Queue';
 
   $scope.$on('queues_updated', function(event, data) {
     $scope.queues = data.queues;

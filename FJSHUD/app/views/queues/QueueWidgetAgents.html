@@ -1,7 +1,3 @@
-<div class="ListLineContent Header LeftContactsColumns">
-
-</div>
-
 <div class="LeftBarTabContentList">
   <div class="ListSection">
     <div class="ListSectionHeader">
@@ -11,8 +7,8 @@
   </div>
 
   <div
-     class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="member in loggedInMembers | orderBy:sortField:sortReverse">
+    class="ListRow Table AvatarHoverArea"
+    data-ng-repeat="member in loggedInMembers | orderBy:sortField:sortReverse">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 
@@ -27,8 +23,8 @@
 
 
   <div
-     class="ListRow Table AvatarHoverArea"
-     data-ng-repeat="member in loggedOutMembers | orderBy:sortField:sortReverse">
+    class="ListRow Table AvatarHoverArea"
+    data-ng-repeat="member in loggedOutMembers | orderBy:sortField:sortReverse">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 

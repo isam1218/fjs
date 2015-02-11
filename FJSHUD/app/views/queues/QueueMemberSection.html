@@ -9,29 +9,22 @@
 
     <div class="ListRowLeftAreaWide">
       <div class="ListRowTitle"> {{ member.displayName}}</div>
-      <div
-        class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}">
-        <div class="status-icon-inner"></div>
-      </div>
+        <div
+          class="ListRowStatusIcon XIcon-QueueStatus"
+          ng-class="member.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' ">
+         </div>
 
+        <div class="ListRowStatusIcon"
+          ng-class="member.status.status == 'login' ? 'XIcon-ChatStatus-available' : 'XIcon-ChatStatus-unavailable' ">
+        </div>
 
-      <!--<div class=" XIcon-QueueStatus  QueueStatus" ng-class="member.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' "></div>-->
-      <!--<div class="QueueStatus ListRowStatusText">{{member.status.status == 'login' ?  'Logged in' : 'Logged Out'}}</div>-->
-
-      <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.status.status}}">
-        <div class="status-icon-inner"></div>
-      </div>
-
-      <div class="ListRowStatus ListRowStatusText">{{member.status.status ||
-        member.contact.displayName || 'offline'}}
-      </div>
+        <div class="fj-hbox-space ListRowStatusText">
+          {{member.status.status == 'login' ? 'Logged In' : 'Logged Out'}}
+        </div>
     </div>
     <div class="ListRowStatus">
-
-
       <div class="Link ListRowDesc">#{{ member.extension }}</div>
 
     </div>
   </div>
 </a>
-

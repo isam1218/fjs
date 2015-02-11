@@ -1,0 +1,94 @@
+<div class="SortHeader ListLineContent Header LeftContactsColumns">
+  <div class="ListLineContentCell">
+    Sort:
+  </div>
+  <div data-ng-click="sort('name')"
+       class="ListLineContentCell Name {{(sortField == 'name' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+    <span>NAME</span>
+
+    <div class="DirectionArrow"></div>
+  </div>
+  <div data-ng-click="sort('complete')"
+       class="ListLineContentCell Complete {{(sortField == 'complete' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+    <span>COMPLETED</span>
+
+    <div class="DirectionArrow"></div>
+  </div>
+  <div data-ng-click="sort('abandon')"
+       class="ListLineContentCell Abandon {{(sortField == 'abandon' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+    <span>ABANDONED</span>
+
+    <div class="DirectionArrow"></div>
+  </div>
+  <div data-ng-click="sort('sla')"
+       class="ListLineContentCell Abandon {{(sortField == 'sla' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+    <span>SLA</span>
+
+    <div class="DirectionArrow"></div>
+  </div>
+</div>
+
+<div class="ListViewTopSpace"></div>
+<div class="LeftBarTabContentList">
+  <div class="QueueBlockHolder AvatarHoverArea QueueDetailsEnabled-true"
+       data-ng-repeat="queue in queues | filter: {name: query}">
+
+    <div class="QueueBlock">
+      <div class="Avatar AvatarNormal QueueBlockAvatar">
+        <div class="AvatarImgPH GroupAvatarShowDefault-false">
+
+          <div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg"
+                                                              data-ng-src="{{ ::getAvatarUrl(queue, 0) }}">
+          </div>
+          <div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg"
+                                                              data-ng-src="{{ ::getAvatarUrl(queue, 1) }}">
+          </div>
+          <div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg"
+                                                              data-ng-src="{{ ::getAvatarUrl(queue, 2) }}">
+          </div>
+          <div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg"
+                                                              data-ng-src="{{ ::getAvatarUrl(queue, 3) }}">
+          </div>
+        </div>
+        <div class="AvatarForeground AvatarInteractable"></div>
+      </div>
+      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name}} - {{ queue.description }}</a>
+
+      <div class="QueueBlockStatus QueueBlockAgentsStatLine">
+        <!--Agents:<span>{{queueStatMembers[queue.xpid].membersTalking}}</span> / <span>{{queueStatMembers[queue.xpid].membersCount}}</span> / <span>{{queueStatMembers[queue.xpid].membersLogged}}</span></div>-->
+        Agents:<span>?</span> / <span>?</span> / <span>?</span></div>
+
+
+      <div class="QueueBlockStat">
+        <div class="QueueBlockStatInner">
+          <div class="QueueBlockStatBlock">
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.waiting }}</span></div>
+            <div class="QueueBlockStatBlockTitle">Waiting</div>
+          </div>
+          <div class="QueueBlockStatBlock">
+            <div class="QueueBlockStatBlockValue"><span>??</span></div>
+            <div class="QueueBlockStatBlockTitle">Avg Wait</div>
+          </div>
+          <div class="QueueBlockStatBlock">
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.avgTalk | Duration }}</span></div>
+            <div class="QueueBlockStatBlockTitle">Avg Talk</div>
+          </div>
+          <div class="QueueBlockStatBlock">
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.completed }}</span></div>
+            <div class="QueueBlockStatBlockTitle">Total</div>
+          </div>
+          <div class="QueueBlockStatBlock Red">
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.abandon }}</span>%
+            </div>
+            <div class="QueueBlockStatBlockTitle">Abandon</div>
+          </div>
+          <div class="QueueBlockStatBlock">
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.active }}</span></div>
+            <div class="QueueBlockStatBlockTitle">Active</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

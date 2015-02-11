@@ -61,6 +61,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 
 	$rootScope.$on('groups_synced', function(event, data) {
 		groups = data;
+		deferred.resolve(groups);
 			
 		for (i = 0; i < groups.length; i++) {
 			// find favorites group

@@ -7,22 +7,22 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
     $scope.queueMembers = [];
     $scope.add = {};
     $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
-    
+
     myHttpService.getFeed('queues');
     myHttpService.getFeed('queue_members');
     myHttpService.getFeed('queue_members_status');
     myHttpService.getFeed('queue_stat_calls');
     myHttpService.getFeed('contacts');
     myHttpService.getFeed('contacts_synced');
-    
+
     $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
     $scope.selected = 'Agents';
-    
+
     $scope.sort = function(field) {
         if ($scope.sortField != field) {
             $scope.sortField = field;
             $scope.sortReverse = false;
-        } 
+        }
         else {
             $scope.sortReverse = !$scope.sortReverse;
         }
@@ -31,7 +31,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
     // filter contacts down
     $scope.customFilter = function() {
         var tab = $scope.$parent.tab;
-        
+
         return function(contact) {
             // remove self
             if (contact.xpid != $rootScope.myPid) {
@@ -57,7 +57,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
             }
         };
     };
-    
+
     $scope.customSort = function() {
         // recent list doesn't have a sort field
         if ($scope.$parent.tab == 'recent')
@@ -65,7 +65,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
         else
             return $scope.sortField;
     };
-    
+
     $scope.customReverse = function() {
         // recent list is always reversed
         if ($scope.$parent.tab == 'recent')
@@ -79,17 +79,17 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
         $scope.recents[xpid] = new Date().getTime();
         localStorage.recents = JSON.stringify($scope.recents);
     };
-    
+
     $scope.$on('contacts_synced', function(event, data) {
         for (key in data) {
             var contact = data[key];
-            
+
             $scope.contacts[contact.xpid] = contact;
         }
         $rootScope.loaded = true;
         $scope.$apply();
     });
-    
+
     $scope.$on('contactstatus_synced', function(event, data) {
         for (key in data) {
             for (c in $scope.contacts) {
@@ -101,7 +101,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
             }
         }
     });
-    
+
     $scope.$on('calls_synced', function(event, data) {
         for (key in data) {
             for (c in $scope.contacts) {
@@ -113,7 +113,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
             }
         }
     });
-    
+
     $scope.$on('queues_synced', function(event, data) {
         if (data.queues !== undefined) {
             var queues = data.queues;
@@ -121,42 +121,44 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
                 if (queues[i].xpid == $scope.queueId) {
                     $scope.queue = queues[i];
                 }
-            
+
             }
             $scope.$safeApply();
         }
     });
-    
+
     $scope.$on('queues_updated', function(event, data) {
         $scope.loggedInMembers = [];
         $scope.loggedOutMembers = [];
-        
+
         for (var i = 0; i < $scope.queue.members.length; i++) {
             var member = $scope.queue.members[i];
-            
+
             member.contact = $scope.contacts[member.contactId];
-            
+
             if (member.status !== undefined) {
                 if (member.status.status == 'login') {
+                    member.displayStatus = "Logged in"
                     $scope.loggedInMembers.push(member);
                 } else {
-                    $scope.loggedOutMembers.push(member);
+                  member.displayStatus = "Logged out"
+                  $scope.loggedOutMembers.push(member);
                 }
             }
         }
     });
-    
+
     $scope.getAvatarUrl = function(xpid) {
         if (xpid !== undefined) {
             return myHttpService.get_avatar(xpid, 32, 32);
-        } 
+        }
         else
             return 'img/Generic-Avatar-14.png';
     };
-    
-    
+
+
     $scope.$on("$destroy", function() {
-    
+
     });
 
 }]);

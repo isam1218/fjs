@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
  	<!--<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">-->
-    
+
 	<link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
     <link rel="stylesheet" href="styles/main.css">
   	<script type="text/javascript">
@@ -47,7 +47,7 @@
 			<div class="TopBarLogo"></div>
 
 			<div class="TopBarIcons">
-				<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: 1}">		
+				<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: 1}">
 					<div class="Avatar AvatarNormal TopBarItemAppIcon" ng-show="icon.key == 'Me'">
 						<img class="AvatarImgPH" data-ng-src="{{ getAvatar() }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 					</div>
@@ -95,12 +95,12 @@
 						</div>
 					</div>
 				</div>
-			
+
 				<div class="XButton Logout" ng-click="logout()">
 					<div class="logout-ico"></div>
 					<span>Sign out</span>
 				</div>
-				
+
 				<div class="Status">
 					<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
 					<br/>
@@ -172,10 +172,10 @@
 			<div class="DockPanel"></div>
 		</div>
 	</div>
-	
+
 	<div ng-include="currentPopup.url"></div>
-	
-	<div id="ContextMenu" 
+
+	<div id="ContextMenu"
 		ng-include="'views/ContextMenu.html'"
 		ng-controller="ContextMenuController">
 	</div>
@@ -213,8 +213,8 @@
     <script src="../bower_components/ngReact/ngReact.min.js"></script>
     <script src="../bower_components/angular-scroll-glue/src/scrollglue.js"></script>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	
-	<!--config-->	
+
+	<!--config-->
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>
 
@@ -242,24 +242,26 @@
     <script src="scripts/controllers/ConversationWidgetVoicemailsController.js"></script>
     <script src="scripts/controllers/ConversationWidgetQueuesController.js"></script>
     <script src="scripts/controllers/ConversationWidgetCallLogController.js"></script>
-	
+
     <script src="scripts/controllers/GroupsController.js"></script>
     <script src="scripts/controllers/GroupSingleController.js"></script>
     <script src="scripts/controllers/GroupSingleChatController.js"></script>
     <script src="scripts/controllers/GroupSingleMembersController.js"></script>
     <script src="scripts/controllers/GroupSingleVoicemailsController.js"></script>
     <script src="scripts/controllers/GroupSinglePageController.js"></script>
-	
+
     <script src="scripts/controllers/ConferencesWidgetController.js"></script>
     <script src="scripts/controllers/ConferenceWidgetConversationController.js"></script>
-	
+
     <script src="scripts/controllers/QueueWidgetController.js"></script>
     <script src="scripts/controllers/QueueWidgetAgentsController.js"></script>
     <script src="scripts/controllers/QueueWidgetStatsController.js"></script>
-	
+
     <script src="scripts/controllers/CallsRecordingsController.js"></script>
     <script src="scripts/controllers/CallCenterController.js"></script>
-	
+    <script src="scripts/controllers/CallCenterMyQueueController.js"></script>
+    <script src="scripts/controllers/CallCenterMyStatusController.js"></script>
+
     <script src="scripts/controllers/MeWidgetController.js"></script>
     <script src="scripts/controllers/SearchWidgetController.js"></script>
     <script src="scripts/controllers/ZoomWidgetController.js"></script>

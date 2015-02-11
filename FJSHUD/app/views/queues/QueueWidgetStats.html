@@ -3,17 +3,17 @@
     <div class="fj-hbox WidgetTabQueueStatArea">
       <div class="fj-hbox-cell WidgetTabQueueStatBlock">
         <div class="WidgetTabQueueStatBlockText">Holding</div>
-        <div class="WidgetTabQueueStatBlockValue Normal">0</div>
+        <div class="WidgetTabQueueStatBlockValue Normal">{{queue.info.waiting}}</div>
       </div>
       <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
       <div class="fj-hbox-cell WidgetTabQueueStatBlock">
         <div class="WidgetTabQueueStatBlockText">Abandon</div>
-        <div class="WidgetTabQueueStatBlockValueNormal">100%</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">{{queue.info.abadonPercent}}%</div>
       </div>
       <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
       <div class="fj-hbox-cell WidgetTabQueueStatBlock">
         <div class="WidgetTabQueueStatBlockText">Complete</div>
-        <div class="WidgetTabQueueStatBlockValueNormal">0%</div>
+        <div class="WidgetTabQueueStatBlockValueNormal">{{queue.info.completed}}</div>
       </div>
       <div class="fj-hbox-cell WidgetTabQueueStatBlockDelimiter"></div>
       <div class="fj-hbox-cell WidgetTabQueueStatBlock">
@@ -31,31 +31,31 @@
         <div class="WidgetTabQueueStatBlockValueNormal">0 sec</div>
       </div>
     </div>
-    <div class="ListLineContent RecentStat fj-visibility-true">Reset: 2015 January 22, 02:30 pm</div>
+    <div class="ListLineContent RecentStat">Reset: 2015 January 22, 02:30 pm</div>
     <div class="fj-hbox ListLineContent Header">
       <div class="fj-hbox-cell ListLineContentCell Status">
-        <div class="ListLineContentCellIcon fj-visibility-true"></div>
+        <div class="ListLineContentCellIcon"></div>
         <div class="arrow None"></div>
       </div>
       <div class="fj-hbox-cell ListLineContentCell Status">
-        <div class="ListLineContentCellIcon fj-visibility-true"></div>
+        <div class="ListLineContentCellIcon"></div>
         <div class="arrow None"></div>
       </div>
-      <div class="fj-hbox-space ListLineContentCell Name" ><span>Agent Name</span>
+      <div class="fj-hbox-space ListLineContentCell Name"><span>Agent Name</span>
 
-        <div class="arrow Up"></div>
+        <div class="arrow"></div>
       </div>
       <div class="fj-hbox-cell ListLineContentCell Duration"><span>Talk / Idle </span>
 
-        <div class="arrow None"></div>
+        <div class="arrow"></div>
       </div>
-      <div class="fj-hbox-cell ListLineContentCell Calls" ><span>Calls</span>
+      <div class="fj-hbox-cell ListLineContentCell Calls"><span>Calls</span>
 
-        <div class="arrow None"></div>
+        <div class="arrow"></div>
       </div>
       <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
 
-        <div class="arrow None"></div>
+        <div class="arrow"></div>
       </div>
       <div class="fj-hbox-cell ListLineContentCell Twistie"></div>
     </div>
@@ -64,10 +64,12 @@
       <div class="fj-viewport" style="overflow: hidden;">
         <div class="fj-viewcontent"
              data-ng-repeat="member in queueMembers | orderBy:sortField:sortReverse">
-          <div class="ListViewTopSpace"></div>
+          <!--<div class="ListViewTopSpace"></div>-->
           <div class="">
             <div class="fj-scroll-content" style="top: 0px;">
-              <div class="ListRowOdd ListLine ListLineExpanded">
+              <div class="{{$even?'ListRow ListLine':'ListRowOdd'}}">
+                <!--<div class="{{$index%2==0?'ListRow ListLine':'ListRowOdd'}}">-->
+                <!--<div class="ListRow {{$index%2==0?'':'ListRowOdd'}} ListLine ListLineExpanded">-->
                 <div class="fj-hbox ListLineContent ListLineContentTop">
                   <div class="fj-hbox-cell ListLineContentCell Status">
                     <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
@@ -77,43 +79,39 @@
                   </div>
                   <div class="fj-hbox-space ListLineContentCell Name">{{member.displayName}}</div>
                   <div class="fj-hbox-cell ListLineContentCell Duration">
-                    <div class="ListLineContentCellIcon QueueCall fj-visibility-false"></div>
+                    <div class="ListLineContentCellIcon QueueCall"></div>
                     <span class="ListLineContentCellTextWithIcon-false">---</span></div>
                   <div class="fj-hbox-cell ListLineContentCell Calls">0</div>
                   <div class="fj-hbox-cell ListLineContentCell AvgTalk">0:00</div>
-                  <div class="fj-hbox-cell ListLineContentCell Twistie">
+                  <div class="fj-hbox-cell ListLineContentCell Twistie" ng-click="onTwistieClicked($event)">
                     <div class="TwistieArrow"></div>
                   </div>
                 </div>
                 <div class="ListLineDetails">
                   <div class="ListLineDetailsBorder"></div>
                   <div class="QueueAgentDetails">Other queues</div>
+                  <div class="OtherQueuesStat ListIsEmpty">
+                    Agents of this queue only
+                  </div>
                   <!--<div class="undefined" style="min-height: 264px;"></div>-->
                   <div class="QueueAgentDetails">Current queue calls</div>
-                  <div class="ListViewIsEmpty fj-visibility-true">no calls</div>
-                  <!--<div class="QueueAgentCall fj-visibility-false">-->
-                    <!--<div class="QueueCallerInfo">-->
-                      <!--<div class="Avatar CallSmallAvatar CallSmallAvatar_Queue "></div>-->
-                      <!--<div class="QueueCallerName">&nbsp;</div>-->
-                      <!--<div class="QueueCallDuration">00:00</div>-->
-                      <!--<div class="QueueCallArrowGray"></div>-->
-                      <!--<div class="QueueCallArrowWhite"></div>-->
-                    <!--</div>-->
-                    <!--<div class="Avatar AvatarSmall QueueAgentAvatar"></div>-->
-                  <!--</div>-->
-                <!--</div>-->
+                  <div class="ListViewIsEmpty">
+                    <div class="OtherQueuesStat ListIsEmpty">no calls
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
-        <div class="fj-ui-scrollerFr-decoration"></div>
-        <div class="fj-ui-scroller">
-          <div class="fj-ui-scroller-decoration"></div>
+        <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
+          <div class="fj-ui-scrollerFr-decoration"></div>
+          <div class="fj-ui-scroller">
+            <div class="fj-ui-scroller-decoration"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
