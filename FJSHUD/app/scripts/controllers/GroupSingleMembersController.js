@@ -1,4 +1,5 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', function($scope, $routeParams, groupService, contactService, httpService) {
+hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
+	function($scope, $routeParams, groupService, contactService, httpService,phoneService) {
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
@@ -33,6 +34,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 		$scope.$safeApply();
 	});
 
+	$scope.callExtension= function(extension){
+		phoneService.makeCall(extension);
+	}
 	$scope.$on("contacts_updated", function(event,data){
 		for(index in $scope.members){
 			for(key in data){
