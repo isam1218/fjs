@@ -183,6 +183,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             return "img/Generic-Avatar-Small.png";
         }
     };
+	
+	this.get_audio = function(key) {
+		return fjs.CONFIG.SERVER.serverURL + '/v1/vm_download?id=' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
+	};
 
     this.get_attachment = function(xkeyUrl){
 

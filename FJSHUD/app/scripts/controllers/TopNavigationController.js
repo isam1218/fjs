@@ -1,4 +1,4 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'HttpService', 'UtilService', function($rootScope, $scope, httpService, utilService) {
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, httpService, utilService) {
     $scope.meModel = {};
     $scope.permissions = {
         Zoom: {bit:1,enabled:false}
@@ -43,6 +43,28 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'HttpServi
 	
 	$scope.getAvatar = function() {
 		return httpService.get_avatar($rootScope.myPid, 28, 28);
+	};
+	
+	/**
+		VOICEMAILS
+	*/
+	
+	$scope.$on('play_voicemail', function(event, data) {
+		$scope.voicemail = data;
+		
+		// update hidden audio element
+		var player = document.getElementById('voicemail_player');
+		var source = document.getElementById('voicemail_player_source');
+		source.src = $sce.trustAsResourceUrl(httpService.get_audio(data.voicemailMessageKey));
+		player.load();
+		player.play();
+	});
+	
+	$scope.closePlayer = function() {
+		$scope.voicemail = null;
+		
+		var player = document.getElementById('voicemail_player');
+		player.pause();
 	};
 	
 	$scope.logout = function() {

@@ -1,5 +1,4 @@
-hudweb.controller('ConversationWidgetVoicemailsController', ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', 'VoicemailService', 'HttpService', 'UtilService', function($scope, $routeParams, $timeout, $filter, contactService,voicemailService,httpService,utilService) {
-    //fjs.ui.Controller.call(this,  $scope);
+hudweb.controller('ConversationWidgetVoicemailsController', ['$rootScope', '$scope', '$routeParams', '$timeout', '$filter', 'ContactService', 'VoicemailService', 'HttpService', 'UtilService', function($rootScope, $scope, $routeParams, $timeout, $filter, contactService,voicemailService,httpService,utilService) {
     
     $scope.contactId = $routeParams.contactId;
     $scope.data = {};
@@ -45,7 +44,7 @@ hudweb.controller('ConversationWidgetVoicemailsController', ['$scope', '$routePa
 	
 	 $scope.getMeAvatarUrl = function(xpid,width,height){
         
-        return myHttpService.get_avatar(xpid,width,height);
+        return httpService.get_avatar(xpid,width,height);
     };
 
     voicemailService.then(function(data){
@@ -61,13 +60,6 @@ hudweb.controller('ConversationWidgetVoicemailsController', ['$scope', '$routePa
         $scope.voicemails = voiceMails;
         $scope.data.voicemails = voiceMails;
     });
-
-    //var voicemail = 
-	// override data, where "stack" comes from ng-repeat
-    if (typeof $scope.stack !== "undefined") {
-		$scope.contactId = $scope.stack.id;
-		$scope.contact = contactModel.items[$scope.stack.id];
-	}
 	
      $scope.formate_date = function(time){
         return utilService.formatDate(time,true);
@@ -173,7 +165,11 @@ hudweb.controller('ConversationWidgetVoicemailsController', ['$scope', '$routePa
             $scope.$safeApply();
         }
     };
-   
+	
+	// send to top navigation controller
+	$scope.playVoicemail = function(voicemail) {
+		$rootScope.$broadcast('play_voicemail', voicemail);
+	};
 
     $scope.$on("me_synced",function(event,data){
         if(data){

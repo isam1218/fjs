@@ -41,7 +41,7 @@
                     <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
             </div>
 
-            <div class="vminfo"> 
+            <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                     <div class="displayName"><span ng-if="voicemail.phone == meModel.primary_extension"><i> Me to</i> </span>  
                     <span ng-if="voicemail.phone != meModel.primary_extension"> <i>from...</i> </span>  
                         <p class="vmdisplay">
