@@ -61,13 +61,28 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	});
 	
 	$rootScope.$on('calls_synced', function(event, data) {
-		for (key in data) {
-			for (i = 0; i < contacts.length; i++) {
-				// set contact's call status
-				if (contacts[i].xpid == data[key].xpid) {
-					contacts[i].call = data[key].xef001type == 'delete' ? null : contacts[i].call = data[key];
-					
-					break;
+		for (i = 0; i < contacts.length; i++) {
+			contacts[i].call = null;
+			
+			// find caller
+			for (key in data) {
+				if (contacts[i].xpid == data[key].xpid)
+					contacts[i].call = data[key];
+			}
+			
+			if (contacts[i].call) {
+				contacts[i].call.bargers = [];
+			
+				// find people barging call
+				for (key in data) {
+					if (data[key].barge > 0 && data[key].xpid != contacts[i].xpid && (data[key].contactId == contacts[i].call.xpid || data[key].contactId == contacts[i].call.contactId)) {
+						for (c = 0; c < contacts.length; c++) {
+							if (contacts[c].xpid == data[key].xpid) {
+								contacts[i].call.bargers.push(contacts[c]);
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
