@@ -163,10 +163,10 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="Barge" />
-						<input type="button" class="XButton" value="Monitor" />
-						<input type="button" class="XButton" value="Whisper" />
-						<input type="button" class="XButton" value="Transfer" />
+						<input type="button" class="XButton" value="Barge" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="Monitor" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="Whisper" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="Transfer" ng-disabled="onCall.call.type != 4" />
 					</div>
 				</div>
 				<div class="Contact">
@@ -183,10 +183,10 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="Barge" />
-						<input type="button" class="XButton" value="Monitor" />
-						<input type="button" class="XButton" value="Whisper" />
-						<input type="button" class="XButton" value="Transfer" />
+						<input type="button" class="XButton" value="Barge" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="Monitor" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="Whisper" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="Transfer" ng-disabled="onCall.call.type != 4" />
 					</div>
 				</div>
 			</div>

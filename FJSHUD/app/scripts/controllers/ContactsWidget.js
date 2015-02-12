@@ -84,6 +84,10 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		localStorage.recents = JSON.stringify($scope.recents);
 	};
 	
+	/**
+		CALL STATUS
+	*/
+	
 	$scope.getCallStatusAvatar = function(call) {
 		if (call && call.contactId)
 			return myHttpService.get_avatar(call.contactId, 28, 28);
@@ -92,13 +96,17 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	};
 	
 	$scope.showCallStatus = function($event, contact) {
+		$event.stopPropagation();
+        $event.preventDefault();
+		
+		// permission?
+		if (contact.call.type == 0)
+			return;
+	
 		$scope.onCall = contact;
 		$scope.$parent.showOverlay('callstatus');
 		
 		updateTime();
-		
-		$event.stopPropagation();
-        $event.preventDefault();
 	};
 	
 	var updateTime = function() {
@@ -113,6 +121,10 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		}
 		else
 			$scope.$parent.showOverlay(false);
+	};
+	
+	$scope.bargeCall = function(type, xpid) {
+		myHttpService.sendAction('contacts', type + 'Call', {contactId: xpid});
 	};
 	
 	/**
