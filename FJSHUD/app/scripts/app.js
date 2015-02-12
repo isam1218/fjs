@@ -29,7 +29,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/callcenter', {
 			templateUrl: 'views/queues/CallCenter.html',
-			controller: 'CallCenterController'
+			controller: 'CallCenterMyQueueController'
 		})
         .when('/queue/:queueId', {
 			templateUrl: 'views/queues/QueueWidget.html',

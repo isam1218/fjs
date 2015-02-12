@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div class="fj-visibility-false">
+  <div ng-if="myQueues.length > 0" class="fj-visibility-false">
     <div class="fj-hbox QueueTableHeader ListLineContent Header">
       <div class="fj-hbox-space ListLineContentCell Name"><span>Queue Name</span>
 
@@ -55,18 +55,53 @@
   </div>
   <div class="fj-scrollable ListView WithToolBar QueueListView-false">
     <div class="fj-viewport" style="overflow: hidden;">
-      <div class="fj-viewcontent">
-        <div class="ListViewTopSpace"></div>
-        <div
-          class="ListIsEmpty" style="display: block;">
-          <div class="fj-scroll-content"></div>
-          <div></div>
-        </div>
-        <div class="QueueTableList ListIsEmpty" style="display: none;">
-          <div class="fj-scroll-content"></div>
-          <div></div>
+      <div class="fj-viewcontent"
+           data-ng-repeat="queue in myQueues | orderBy:sortField:sortReverse">
+        <!--<div class="ListViewTopSpace"></div>-->
+        <div class="">
+          <div class="fj-scroll-content" style="top: 0px;">
+            <div class="{{$even?'ListRow ListLine':'ListRowOdd'}}">
+              <!--<div class="{{$index%2==0?'ListRow ListLine':'ListRowOdd'}}">-->
+              <!--<div class="ListRow {{$index%2==0?'':'ListRowOdd'}} ListLine ListLineExpanded">-->
+              <div class="fj-hbox ListLineContent ListLineContentTop">
+                <div class="fj-hbox-cell ListLineContentCell Status">
+                  <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell Status">
+                  <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
+                </div>
+                <div class="fj-hbox-space ListLineContentCell Name"><span>{{ queue.name }}</span>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>Waiting </span>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell AvgWaiting"><span>Avg Wait </span>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>Total</span>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>Aband</span>
+                </div>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>Active</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
+      <!--<div class="fj-viewcontent">-->
+      <!--<div class="ListViewTopSpace"></div>-->
+      <!--<div-->
+      <!--class="ListIsEmpty" style="display: block;">-->
+      <!--<div class="fj-scroll-content"></div>-->
+      <!--<div></div>-->
+      <!--</div>-->
+      <!--<div class="QueueTableList ListIsEmpty" style="display: none;">-->
+      <!--<div class="fj-scroll-content"></div>-->
+      <!--<div></div>-->
+      <!--</div>-->
+      <!--</div>-->
     </div>
     <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
       <div class="fj-ui-scrollerFr-decoration"></div>

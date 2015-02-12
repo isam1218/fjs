@@ -1,12 +1,11 @@
-hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', function($scope, $rootScope, myHttpService, contactService, queueService) {
+hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', function ($scope, $rootScope, myHttpService, contactService, queueService) {
   $scope.query = "";
   $scope.sortField = "displayName";
   $scope.sortReverse = false;
   $scope.queues = [];
-  $scope.contacts = {};
-  $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
+  $scope.me = [];
 
-  myHttpService.getFeed('queuelogoutreasons');
+  myHttpService.getFeed('me');
   myHttpService.getFeed('queues');
   myHttpService.getFeed('queue_members');
   myHttpService.getFeed('queue_members_status');
@@ -15,14 +14,47 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
   $scope.tabs = ['My Queue', 'All Queues', 'My Status'];
   $scope.selected = 'My Queue';
 
-  $scope.$on('queues_updated', function(event, data) {
-    $scope.queues = data.queues;
-    $scope.$safeApply();
+  $scope.$on('queues_updated', function (event, data) {
+    var queues = data.queues;
+    var my_pid = $scope.me['my_pid'];
+
+    for (var q in queues) {
+      var queue = queues[q];
+
+      if (queue.members) {
+        for (var m in queue.members) {
+          var member = queue.members[m];
+
+          if (member.contactId === my_pid) {
+            $scope.queues.push(queue);
+          }
+        }
+
+      }
+      // testing REMOVE THIS CODE
+      if (q == 0 && $scope.queues.length == 0) {
+        $scope.queues.push(queue);
+
+      }
+      // REMOVE THIS CODE
+    }
+
+
+      $scope.$safeApply();
   });
 
+  $scope.$on('me_synced', function (event, data) {
+    if (data) {
+      for (var medata in data) {
+        $scope.me[data[medata].propertyKey] = data[medata].propertyValue;
+      }
+    }
 
-  $scope.sort = function(field) {
-    if($scope.sortField!=field) {
+    $scope.$apply();
+  });
+
+  $scope.sort = function (field) {
+    if ($scope.sortField != field) {
       $scope.sortField = field;
       $scope.sortReverse = false;
     }
@@ -32,10 +64,10 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
   };
 
   // filter contacts down
-  $scope.customFilter = function() {
+  $scope.customFilter = function () {
     var tab = $scope.$parent.tab;
 
-    return function(queue) {
+    return function (queue) {
       // remove self
       if (contact.xpid != $rootScope.myPid) {
         // filter by tab
@@ -47,13 +79,6 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
             if (contact.primaryExtension == '')
               return true;
             break;
-          case 'recent':
-            if ($scope.recents[contact.xpid] !== undefined) {
-              // attach timestamp to sort by
-              contact.timestamp = $scope.recents[contact.xpid];
-              return true;
-            }
-            break;
           case 'queues':
             if ($scope.queues[queue.xpid] !== undefined)
               return true;
@@ -63,7 +88,7 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
     };
   };
 
-  $scope.customSort = function() {
+  $scope.customSort = function () {
     // recent list doesn't have a sort field
     if ($scope.$parent.tab == 'recent')
       return 'timestamp';
@@ -71,7 +96,7 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
       return $scope.sortField;
   };
 
-  $scope.customReverse = function() {
+  $scope.customReverse = function () {
     // recent list is always reversed
     if ($scope.$parent.tab == 'recent')
       return true;
@@ -79,30 +104,25 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
       return $scope.sortReverse;
   };
 
-  // record most recent queue
-  $scope.storeRecent = function(xpid) {
-    $scope.recents[xpid] = new Date().getTime();
-    localStorage.recents = JSON.stringify($scope.recents);
+  $scope.getAvatarUrl = function (xpid) {
+    return myHttpService.get_avatar(xpid, 28, 28);
   };
 
-  $scope.getAvatarUrl = function(xpid) {
-    return myHttpService.get_avatar(xpid,28,28);
-  };
+  $scope.getAvatarUrl = function (queue, index) {
 
-  $scope.$on("$destroy", function() {
-
-  });
-
-  $scope.getAvatarUrl = function(queue, index) {
-
-    if(queue.members){
+    if (queue.members) {
       if (queue.members[index] !== undefined) {
         var xpid = queue.members[index].xpid;
-        return myHttpService.get_avatar(xpid,14,14);
+        return myHttpService.get_avatar(xpid, 14, 14);
       }
       else
         return 'img/Generic-Avatar-14.png';
 
     }
   };
+
+  $scope.$on("$destroy", function () {
+
+  });
+
 }]);

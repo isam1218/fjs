@@ -1,30 +1,21 @@
-<div class="SortHeader ListLineContent Header LeftContactsColumns">
-  <div class="ListLineContentCell">
-    Sort:
+<div class="ToolBar ">
+  <div class="SearchInputBox">
+    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text"
+                                                  onchange="onSearch(!event, this)"
+                                                  x-webkit-speech=""
+                                                  placeholder="Search"></div>
+    <div class="SearchInputBoxStateButton">
+      <div class="SearchInputBoxStateButtonIcon"></div>
+    </div>
   </div>
-  <div data-ng-click="sort('name')"
-       class="ListLineContentCell Name {{(sortField == 'name' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-    <span>NAME</span>
-
-    <div class="DirectionArrow"></div>
+  <div class="XButton XButtonToggle XButtonNormal"><span><div class="QueueViewIcon QueueListView"></div></span>
   </div>
-  <div data-ng-click="sort('complete')"
-       class="ListLineContentCell Complete {{(sortField == 'complete' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-    <span>COMPLETED</span>
+  <div class="fj-visibility-true conversation-queues-tab-tool-bar-sort-button">
+    <div
+      class="XButton XButtonNormal XButtonDropDown XSortButton disabled-false"><span>Sort by Queue name</span>
 
-    <div class="DirectionArrow"></div>
-  </div>
-  <div data-ng-click="sort('abandon')"
-       class="ListLineContentCell Abandon {{(sortField == 'abandon' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-    <span>ABANDONED</span>
-
-    <div class="DirectionArrow"></div>
-  </div>
-  <div data-ng-click="sort('sla')"
-       class="ListLineContentCell Abandon {{(sortField == 'sla' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-    <span>SLA</span>
-
-    <div class="DirectionArrow"></div>
+      <div class="XButtonDropDownArrow"></div>
+    </div>
   </div>
 </div>
 
@@ -52,11 +43,13 @@
         </div>
         <div class="AvatarForeground AvatarInteractable"></div>
       </div>
-      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name}} - {{ queue.description }}</a>
+      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name }} - {{ queue.description
+        }}</a>
 
       <div class="QueueBlockStatus QueueBlockAgentsStatLine">
         <!--Agents:<span>{{queueStatMembers[queue.xpid].membersTalking}}</span> / <span>{{queueStatMembers[queue.xpid].membersCount}}</span> / <span>{{queueStatMembers[queue.xpid].membersLogged}}</span></div>-->
-        Agents:<span>?</span> / <span>?</span> / <span>?</span></div>
+        Agents:<span>{{queue.loggedInMembers}}</span> / <span>{{queue.loggedOutMembers}}</span> / <span>{{queue.membersCount}}</span>
+      </div>
 
 
       <div class="QueueBlockStat">
@@ -66,7 +59,7 @@
             <div class="QueueBlockStatBlockTitle">Waiting</div>
           </div>
           <div class="QueueBlockStatBlock">
-            <div class="QueueBlockStatBlockValue"><span>??</span></div>
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.waiting }}</span></div>
             <div class="QueueBlockStatBlockTitle">Avg Wait</div>
           </div>
           <div class="QueueBlockStatBlock">
@@ -92,3 +85,65 @@
   </div>
 </div>
 
+<div class="MenuWindow WidgetActionDropDownMenu" style="top: 216px; left: 621px;">
+  <div class="MenuContent">
+    <div class="MenuSection">
+      <div>
+        <div class="fj-hbox MenuItem selected-true">
+          <div class="fj-hbox-cell MenuItemCheck-true">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Queue name</div>
+        </div>
+      </div>
+      <div>
+        <div class="fj-hbox MenuItem selected-false">
+          <div class="fj-hbox-cell MenuItemCheck-false">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Calls waiting</div>
+        </div>
+      </div>
+      <div>
+        <div class="fj-hbox MenuItem selected-false">
+          <div class="fj-hbox-cell MenuItemCheck-false">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Average wait time (ESA)</div>
+        </div>
+      </div>
+      <div>
+        <div class="fj-hbox MenuItem selected-false">
+          <div class="fj-hbox-cell MenuItemCheck-false">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Average talk time</div>
+        </div>
+      </div>
+      <div>
+        <div class="fj-hbox MenuItem selected-false">
+          <div class="fj-hbox-cell MenuItemCheck-false">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Total calls (since last reset)</div>
+        </div>
+      </div>
+      <div>
+        <div class="fj-hbox MenuItem selected-false">
+          <div class="fj-hbox-cell MenuItemCheck-false">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Abandoned calls</div>
+        </div>
+      </div>
+      <div>
+        <div class="fj-hbox MenuItem selected-false">
+          <div class="fj-hbox-cell MenuItemCheck-false">
+            <div class="status-icon-inner"></div>
+          </div>
+          <div class="fj-hbox-space MenuItemText">Active calls</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

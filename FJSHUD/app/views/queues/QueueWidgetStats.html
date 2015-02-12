@@ -71,7 +71,7 @@
                 <!--<div class="{{$index%2==0?'ListRow ListLine':'ListRowOdd'}}">-->
                 <!--<div class="ListRow {{$index%2==0?'':'ListRowOdd'}} ListLine ListLineExpanded">-->
                 <div class="fj-hbox ListLineContent ListLineContentTop">
-                 <div class="fj-hbox-cell ListLineContentCell Status">
+                  <div class="fj-hbox-cell ListLineContentCell Status">
                     <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
                   </div>
                   <div class="fj-hbox-cell ListLineContentCell Status">
@@ -93,7 +93,8 @@
                   <div ng-if="member.otherQueues.length == 0" class="OtherQueuesStat ListIsEmpty">
                     Agents of this queue only
                   </div>
-                  <div ng-if="member.otherQueues.length > 0" ng-repeat="otherQueue in member.otherQueues" class="OtherQueueLine">
+                  <div ng-if="member.otherQueues.length > 0" ng-repeat="otherQueue in member.otherQueues"
+                       class="OtherQueueLine">
                     <div class="fj-hbox-cell ListLineContentCell Status">
                       <div class="ListLineContentCellIcon XIcon-ChatStatus-PlaceHolder"></div>
                     </div>
@@ -130,3 +131,4 @@
     </div>
   </div>
 
+</div>
