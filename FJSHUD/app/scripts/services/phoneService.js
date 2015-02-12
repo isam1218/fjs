@@ -51,6 +51,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		}
 	}
 
+	acceptCall = function(xpid){
+		sip_id = xpid2Sip[xpid];
+		call = sipCalls[sip_id];
+		call.accept();	
+	}
+
 	this.initializePhone = function(){
 		 phonePlugin = document.getElementById('phone');
 		 version = phonePlugin.version;
@@ -168,6 +174,16 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
     			$rootScope.$broadcast('phone_event',data);
 				holdCall(xpid,false);
     			break;
+    		case '#/AcceptCall':
+				acceptCall(xpid);
+    			break;
+    		case '#/OpenNotifications':
+    			data = {
+    				event:'openNot'
+    			}
+    			$rootScope.$broadcast('phone_event',data);
+				break;
+
     	}
 
 	}
@@ -254,6 +270,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
+	this.acceptCall = acceptCall;
+
 	this.transfer = function(xpid,number){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
@@ -277,11 +295,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		return call;
 	}
 
-	this.acceptCall = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		call.accept();	
-	}
 
 	this.makeCall = function(phoneNumber){
 		if(phone){
