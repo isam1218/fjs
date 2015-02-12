@@ -4492,6 +4492,21 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-size: 0.9em;
   border-radius: .5em;
 }
+.Overlay .Bargers {
+  border: 1px solid #999999;
+  background-color: #999999;
+  height: 235px;
+  margin-top: 10px;
+  overflow-y: auto;
+}
+.Overlay .Barging {
+  color: #c33;
+  font-size: .8em;
+  font-weight: bold;
+  position: absolute;
+  top: 4em;
+  right: .5em;
+}
 .Overlay .Members {
   background-color: #ccc;
   border: 1px solid gray;
@@ -4822,7 +4837,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-top: 1px solid #ccc;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 45px;
   background-image: url("../img/XTile-Widget.png?v=1418381374907");
 }
 .LeftBarNotifications {
@@ -4904,9 +4918,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.Messages:not(:first-child) {
+  margin-top: -18px;
+}
 .Messages {
   position: relative;
-  margin-top: -18px;
   min-height: 50px;
 }
 .displayName {
