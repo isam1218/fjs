@@ -168,6 +168,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
     			$rootScope.$broadcast('phone_event',data);
 				holdCall(xpid,false);
     			break;
+    		case '#/OpenNotifications':
+    			data = {
+    				event:'openNot'
+    			}
+    			$rootScope.$broadcast('phone_event',data);
+				break;
+
     	}
 
 	}

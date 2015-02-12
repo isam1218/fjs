@@ -155,7 +155,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		if(data){
 
 			for (i in data){
-				if(data[i].xpid == $scope.meModel.my_pid || data[i].incoming){
+				if(data[i].xpid == $scope.meModel.my_pid){
 					$scope.calls[data[i].contactId] = data[i];
 				}
 			}
@@ -191,6 +191,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 				break;
 			case "resume":
 				$scope.onHold = false;
+				break;
+			case "openNot":
+				$scope.$parent.overlay ='notifications'
 				break;
 
 		}
@@ -254,8 +257,13 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			notifyElement[0].style["max-height"] = "400px";	
 		}else{
 			notifyElement[0].style["max-height"] = "1px";	
-		
 		}
+
+		element = document.getElementById("CallAlert");
+        element.style.display="block";
+		content = element.innerHTML;
+       	phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+        element.style.display="none";
 		
 		$scope.$apply();
 	});
