@@ -138,7 +138,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 	$scope.acceptCall = function(xpid){
 		phoneService.acceptCall(xpid);
 	}
-
+	$scope.makeCall = function(phone){
+		phoneService.makeCall(phone);
+	}
 
 	$scope.showOverlay = function(show) {
 		if (!show)
@@ -149,8 +151,15 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			$scope.overlay = 'groups';
 	};
 	$scope.$on('calls_updated',function(event,data){
+		$scope.calls = {};
 		if(data){
-			$scope.calls = data;
+
+			for (i in data){
+				if(data[i].xpid == $scope.meModel.my_pid || data[i].incoming){
+					$scope.calls[data[i].contactId] = data[i];
+				}
+			}
+			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
 			
 			if(data.length > 0){
@@ -234,6 +243,19 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			}
 			return false;
 		});
+
+		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
+			return a.time - b.time;
+		});
+
+		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
+		
+		if($scope.todaysNotifications && $scope.todaysNotifications.length > 0){
+			notifyElement[0].style["max-height"] = "400px";	
+		}else{
+			notifyElement[0].style["max-height"] = "1px";	
+		
+		}
 		
 		$scope.$apply();
 	});
