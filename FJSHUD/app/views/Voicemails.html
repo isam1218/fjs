@@ -1,4 +1,3 @@
-
     <div class="ToolBar" >
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
@@ -8,7 +7,6 @@
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-
 
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
@@ -25,12 +23,8 @@
             <div class="XButtonDropDownArrow"></div>
         </select>
     </div>
-
-
-    <!--<react-component name="Voicemailbox" props="data"></react-component>-->
     
     <div class="ListView fj-scrollable"> 
-
         <div class="vmlabel" ng-if="voicemails.length == 0"> 
             <div class="vmlabelheader"> No Voicemails In View </div> 
             <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
@@ -42,11 +36,10 @@
             </div>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
-                    <div class="displayName"><span ng-if="voicemail.phone == meModel.primary_extension"><i> Me to</i> </span>  
-                    <span ng-if="voicemail.phone != meModel.primary_extension"> <i>from...</i> </span>  
-                        <p class="vmdisplay">
-                            <b ng-show="!voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </b>
-                            <span ng-show="voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </span>
+                    <div class="displayName">
+						<em>{{ voicemail.phone == meModel.primary_extension ? 'Me to' : 'from...' }}<em>
+						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
+							{{ voicemail.displayName + ' <' + voicemail.phone + '>' }}
                         </p>
                         <div class="vmalternate">
                             <div class="vmtime">{{ formate_date(voicemail.date) }} </div>
@@ -61,5 +54,3 @@
             </div>
         </div>
     </div>
- 
-

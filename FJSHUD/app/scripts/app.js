@@ -39,10 +39,6 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/CallsRecordings.html',
 			controller: 'CallsRecordingsController'
 		})
-        .when('/calllog/voicemails', {
-			templateUrl: 'views/VoiceRecordings.html',
-			controller: 'CallsRecordingsController'
-		})
         .when('/conferences', {
 			templateUrl: 'views/ConferenceRoomWidget.html',
 			controller: 'ConferencesWidgetController'
