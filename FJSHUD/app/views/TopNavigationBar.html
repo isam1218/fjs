@@ -19,33 +19,36 @@
 				<div class="AvatarInteractable AvatarForeground"></div>
 			</div>
 			<div class="Details">
-				<em>...from</em>
+				<em>...{{ voicemail.phone == meModel.primary_extension ? 'to' : 'from' }}</em>
 				<strong>{{ voicemail.displayName }}</strong>
 				<br/>
 				<span>{{ voicemail.phone }}</span>
 			</div>
 		</div>
-		<div class="Progress">
-			<div class="Time">00:00</div>
-			<div class="Left"></div><div class="Bar"></div><div class="Right"></div>
-			<div class="Time">00:00</div>
+		<div class="Loading" ng-show="!player.loaded">Loading...</div>
+		<div class="Progress" ng-show="player.loaded">
+			<div class="Time">{{ player.position }}</div>
+			<div class="Left"></div><div class="Bar">
+				<div class="MediaPlayerProgressButton" ng-style="{'left':player.progress}" ng-mousedown="moveSlider($event)"></div>
+			</div><div class="Right"></div>
+			<div class="Time">{{ player.duration }}</div>
 		</div>
 		<div class="Buttons">
 			<div>
-				<div class="MediaPlayerBack"></div>
-				<div class="MediaPlayerPlay"></div>
-				<div class="MediaPlayerForward"></div>
+				<div class="MediaPlayerBack" ng-click="changeSeek(-2)"></div>
+				<div ng-class="player.playing ? 'MediaPlayerPause' : 'MediaPlayerPlay'" ng-click="playAudio()"></div>
+				<div class="MediaPlayerForward" ng-click="changeSeek(2)"></div>
 			</div>
 			<div>
-				<div class="MediaPlayerVolumeDown"></div>
+				<div class="MediaPlayerVolumeDown" ng-click="changeVolume(-.2)"></div>
 				<div class="Volume">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
+					<div ng-class="{'On': player.volume > 0}"></div>
+					<div ng-class="{'On': player.volume > .2}"></div>
+					<div ng-class="{'On': player.volume > .4}"></div>
+					<div ng-class="{'On': player.volume > .6}"></div>
+					<div ng-class="{'On': player.volume > .8}"></div>
 				</div>
-				<div class="MediaPlayerVolumeUp"></div>
+				<div class="MediaPlayerVolumeUp" ng-click="changeVolume(.2)"></div>
 			</div>
 		</div>
 		

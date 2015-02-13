@@ -1,4 +1,4 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, httpService, utilService) {
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, httpService, utilService) {	
     $scope.meModel = {};
     $scope.permissions = {
         Zoom: {bit:1,enabled:false}
@@ -13,6 +13,16 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'H
         , {title:"Video Collaboration", url:"#/zoom", key:"Zoom",enabled:1}
         , {title:"Box", url:"#/box", key:"Box",enabled:1}
     ];
+	
+	$scope.player = {
+		position: '00:00',
+		duration: '00:00',
+		loaded: false,
+		playing: false,
+		volume: 0.6,
+		progress: 0
+	};
+	var player; // html element
 
     $scope.$on('me_synced', function(event,data){
         if(data){
@@ -46,24 +56,107 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'H
 	};
 	
 	/**
-		VOICEMAILS
+		VOICEMAIL PLAYER
 	*/
 	
 	$scope.$on('play_voicemail', function(event, data) {
 		$scope.voicemail = data;
+		$scope.player.loaded = false;
+		$scope.player.duration = utilService.formatDuration(data.duration);
 		
 		// update hidden audio element
-		var player = document.getElementById('voicemail_player');
 		var source = document.getElementById('voicemail_player_source');
 		source.src = $sce.trustAsResourceUrl(httpService.get_audio(data.voicemailMessageKey));
+		
+		player = document.getElementById('voicemail_player');
 		player.load();
-		player.play();
+		
+		player.onloadeddata = function() {
+			$scope.player.loaded = true;
+			$scope.player.playing = true;
+			$scope.player.position = '00:00';
+			$scope.$safeApply();
+			
+			player.play();
+		};
+		
+		player.ontimeupdate = function() {
+			$scope.player.position = utilService.formatDuration(player.currentTime*1000);
+			
+			// prevent the jitters
+			if (!document.body.onmousemove)
+				$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
+				
+			$scope.$safeApply();
+		};
+		
+		player.onpause = function() {
+			$scope.player.playing = false;
+			$scope.$safeApply();
+			
+			// kill player
+			if (!$scope.voicemail)
+				player = null;
+		};
+		
+		player.onplay = function() {
+			$scope.player.playing = true;
+			$scope.$safeApply();
+		};
 	});
+	
+	$scope.playAudio = function() {
+		if ($scope.player.playing)
+			player.pause();
+		else
+			player.play();
+	};
+	
+	$scope.changeSeek = function(seek) {
+		player.currentTime += seek;
+	};
+	
+	$scope.changeVolume = function(vol) {
+		$scope.player.volume += vol;
+		
+		// keep within range
+		if ($scope.player.volume > 1)
+			$scope.player.volume = 1;
+		else if ($scope.player.volume < 0)
+			$scope.player.volume = 0;
+			
+		player.volume = $scope.player.volume;
+	};
+	
+	$scope.moveSlider = function($event) {
+		var rect = $event.target.parentNode.getBoundingClientRect();
+		
+		document.body.onmousemove = function(e) {
+			var diff = e.clientX - rect.left;
+			
+			// keep within range
+			if (diff < 0)
+				diff = 0;
+			else if (diff > rect.width)
+				diff = rect.width;
+			
+			$scope.player.progress = diff + 'px';
+			$scope.$safeApply();
+		};
+		
+		document.body.onmouseup = function(e) {
+			// set new progress
+			var diff = (e.clientX - rect.left) / rect.width;
+			player.currentTime = diff * player.duration;
+			
+			// remove listeners
+			document.body.onmousemove = null;
+			document.body.onmouseup = null;
+		};
+	};
 	
 	$scope.closePlayer = function() {
 		$scope.voicemail = null;
-		
-		var player = document.getElementById('voicemail_player');
 		player.pause();
 	};
 	

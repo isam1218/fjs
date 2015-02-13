@@ -199,11 +199,18 @@
 	  }
 	}
   }
+	
+  .Loading {
+    text-align: center;
+    color: gray;
+  }
   
   .Progress {
     display: flex;
 	flex-direction: row;
 	align-items: center;
+	-webkit-user-select: none;
+	user-select: none;
 	
 	div {
       display: inline-block;
@@ -224,15 +231,24 @@
 	}
 	
 	.Bar {
+	  position: relative;
 	  border-bottom: 1px solid gray;
 	  height: 1px;
 	  flex: 1;
+	  
+	  div {
+	    position: absolute;
+		top: -10px;
+		margin-left: -10px;
+	  }
 	}
   }
   
   .Buttons {
     margin-top: 20px;
     opacity: 0;
+	-webkit-user-select: none;
+	user-select: none;
 	
 	div {
       display: inline-block;
@@ -258,6 +274,10 @@
 	  &:nth-child(3) { height: 12px; }
 	  &:nth-child(4) { height: 14px; }
 	  &:nth-child(5) { height: 16px; }
+	  
+	  &.On {
+	    background-color: gray;
+	  }
 	}
   }
 }
