@@ -38,6 +38,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		// calls & recordings
 		else {
 			$scope.voicemails = data;
+			$scope.emptyVoiceLabel = 'anyone else';
 			$scope.$safeApply();
 			return;
 		}
