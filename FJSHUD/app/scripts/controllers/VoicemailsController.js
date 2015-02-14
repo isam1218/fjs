@@ -91,14 +91,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	$scope.getMeAvatarUrl = function(xpid,width,height){
         return httpService.get_avatar(xpid,width,height);
     };
-	
-    $scope.formate_date = function(time){
-        return utilService.formatDate(time,true);
-    };
-
-    $scope.formatDuration = function(duration){
-        return utilService.formatDuration(duration);
-    };
 
     $scope.handleVoiceMailAction = function(type){
         switch(type){

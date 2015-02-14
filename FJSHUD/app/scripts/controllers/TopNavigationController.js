@@ -15,8 +15,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'H
     ];
 	
 	$scope.player = {
-		position: '00:00',
-		duration: '00:00',
+		position: 0,
+		duration: 0,
 		loaded: false,
 		playing: false,
 		volume: 0.6,
@@ -62,7 +62,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'H
 	$scope.$on('play_voicemail', function(event, data) {
 		$scope.voicemail = data;
 		$scope.player.loaded = false;
-		$scope.player.duration = utilService.formatDuration(data.duration);
+		$scope.player.duration = data.duration;
 		
 		// update hidden audio element
 		var source = document.getElementById('voicemail_player_source');
@@ -74,14 +74,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'H
 		player.onloadeddata = function() {
 			$scope.player.loaded = true;
 			$scope.player.playing = true;
-			$scope.player.position = '00:00';
+			$scope.player.position = 0;
 			$scope.$safeApply();
 			
 			player.play();
 		};
 		
 		player.ontimeupdate = function() {
-			$scope.player.position = utilService.formatDuration(player.currentTime*1000);
+			$scope.player.position = player.currentTime*1000;
 			
 			// prevent the jitters
 			if (!document.body.onmousemove)
