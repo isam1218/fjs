@@ -111,4 +111,22 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
 
     }
   };
+
+  $scope.showSeachByPopup = function(event, elm) {
+    e.stopPropagation();
+    var items = [];
+    for (var id in context.sortMenuItems){
+      if(context.sortMenuItems.hasOwnProperty(id)){
+        items.push({"id": id, "name": context.sortMenuItems[id], "selected": $scope.getSortMode() == id});
+      }
+    }
+    var model = {};
+    model.items = items;
+    model.callback = context.setSortMode;
+    var eventTarget = context.getEventHandlerElement(e.target, e);
+    var offset = fjs.utils.DOM.getElementOffset(eventTarget);
+    $scope.$emit("showPopup", {key:"SortMenuPopup", x:offset.x, y:offset.y+30, model: model, id:context.sortingKey});
+    return false;
+  };
+
 }]);

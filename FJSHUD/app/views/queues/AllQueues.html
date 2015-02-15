@@ -11,11 +11,16 @@
   <div class="XButton XButtonToggle XButtonNormal"><span><div class="QueueViewIcon QueueListView"></div></span>
   </div>
   <div class="fj-visibility-true conversation-queues-tab-tool-bar-sort-button">
-    <div
-      class="XButton XButtonNormal XButtonDropDown XSortButton disabled-false"><span>Sort by Queue name</span>
+    <!--<div-->
+    <!--class="XButton XButtonNormal XButtonDropDown XSortButton disabled-false"><span>Sort by Queue name</span>-->
 
-      <div class="XButtonDropDownArrow"></div>
-    </div>
+    <!--<div class="XButtonDropDownArrow"></div>-->
+    <!--</div>-->
+    <select class="XButton XButtonNormal XButtonDropDown XSortButton ng-pristine ng-valid ng-touched"
+            ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
+            ng-change="sortBy(selectedSort.type)">
+
+    </select>
   </div>
 </div>
 
@@ -63,7 +68,7 @@
             <div class="QueueBlockStatBlockTitle">Avg Wait</div>
           </div>
           <div class="QueueBlockStatBlock">
-            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.avgTalk | Duration }}</span></div>
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.avgTalk | duration }}</span></div>
             <div class="QueueBlockStatBlockTitle">Avg Talk</div>
           </div>
           <div class="QueueBlockStatBlock">
@@ -85,65 +90,4 @@
   </div>
 </div>
 
-<div class="MenuWindow WidgetActionDropDownMenu" style="top: 216px; left: 621px;">
-  <div class="MenuContent">
-    <div class="MenuSection">
-      <div>
-        <div class="fj-hbox MenuItem selected-true">
-          <div class="fj-hbox-cell MenuItemCheck-true">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Queue name</div>
-        </div>
-      </div>
-      <div>
-        <div class="fj-hbox MenuItem selected-false">
-          <div class="fj-hbox-cell MenuItemCheck-false">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Calls waiting</div>
-        </div>
-      </div>
-      <div>
-        <div class="fj-hbox MenuItem selected-false">
-          <div class="fj-hbox-cell MenuItemCheck-false">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Average wait time (ESA)</div>
-        </div>
-      </div>
-      <div>
-        <div class="fj-hbox MenuItem selected-false">
-          <div class="fj-hbox-cell MenuItemCheck-false">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Average talk time</div>
-        </div>
-      </div>
-      <div>
-        <div class="fj-hbox MenuItem selected-false">
-          <div class="fj-hbox-cell MenuItemCheck-false">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Total calls (since last reset)</div>
-        </div>
-      </div>
-      <div>
-        <div class="fj-hbox MenuItem selected-false">
-          <div class="fj-hbox-cell MenuItemCheck-false">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Abandoned calls</div>
-        </div>
-      </div>
-      <div>
-        <div class="fj-hbox MenuItem selected-false">
-          <div class="fj-hbox-cell MenuItemCheck-false">
-            <div class="status-icon-inner"></div>
-          </div>
-          <div class="fj-hbox-space MenuItemText">Active calls</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
