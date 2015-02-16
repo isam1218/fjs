@@ -45,14 +45,12 @@
         </div>
         <div class="AvatarForeground AvatarInteractable"></div>
       </div>
-      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name }} - {{ queue.description
-        }}</a>
+      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name }} - {{ queue.description}}</a>
 
       <div class="QueueBlockStatus QueueBlockAgentsStatLine">
         <!--Agents:<span>{{queueStatMembers[queue.xpid].membersTalking}}</span> / <span>{{queueStatMembers[queue.xpid].membersCount}}</span> / <span>{{queueStatMembers[queue.xpid].membersLogged}}</span></div>-->
         Agents:<span>{{queue.loggedInMembers}}</span> / <span>{{queue.loggedOutMembers}}</span> / <span>{{queue.membersCount}}</span>
       </div>
-
 
       <div class="QueueBlockStat">
         <div class="QueueBlockStatInner">
@@ -88,7 +86,7 @@
 </div>
 
 <div ng-if="!viewIcon" class="fj-content WidgetTabContent">
-  <div class="fj-visibility-false">
+  <div>
     <div class="fj-hbox QueueTableHeader ListLineContent Header">
       <div class="fj-hbox-space ListLineContentCell Name"><span>Queue Name</span>
 
@@ -120,36 +118,30 @@
       </div>
     </div>
   </div>
-  <div class="fj-scrollable ListView WithToolBar QueueListView-false">
+   <div class="ListView WithToolBar QueueListView-false">
     <div class="fj-viewport" style="overflow: hidden;">
       <div class="fj-viewcontent"
-           data-ng-repeat="queue in myQueues | orderBy:sortField:sortReverse">
+           data-ng-repeat="queue in queues">
         <!--<div class="ListViewTopSpace"></div>-->
-        <div class="">
+        <div>
           <div class="fj-scroll-content" style="top: 0px;">
             <div class="{{$even?'ListRow ListLine':'ListRowOdd'}}">
-              <!--<div class="{{$index%2==0?'ListRow ListLine':'ListRowOdd'}}">-->
-              <!--<div class="ListRow {{$index%2==0?'':'ListRowOdd'}} ListLine ListLineExpanded">-->
-              <div class="fj-hbox ListLineContent ListLineContentTop">
-                <div class="fj-hbox-cell ListLineContentCell Status">
-                  <div class="ListLineContentCellIcon XIcon-ChatStatus-Available"></div>
+               <div class="fj-hbox ListLineContent ListLineContentTop">
+                 <a href="#queue/{{::queue.xpid}}">
+                   <div class="fj-hbox-space ListLineContentCell Name"><span>{{ queue.name }}</span>
+                 </a>
                 </div>
-                <div class="fj-hbox-cell ListLineContentCell Status">
-                  <div title="" class="ListLineContentCellIcon XIcon-QueueStatus LockedIn"></div>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.waiting}} </span>
                 </div>
-                <div class="fj-hbox-space ListLineContentCell Name"><span>{{ queue.name }}</span>
+                <div class="fj-hbox-cell ListLineContentCell AvgWaiting"><span>{{ queue.info.waiting}}</span>
                 </div>
-                <div class="fj-hbox-cell ListLineContentCell Number"><span>Waiting </span>
+                <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>{{ queue.info.avgTalk | duration}}</span>
                 </div>
-                <div class="fj-hbox-cell ListLineContentCell AvgWaiting"><span>Avg Wait </span>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.completed }}</span>
                 </div>
-                <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.abandoned }}</span>
                 </div>
-                <div class="fj-hbox-cell ListLineContentCell Number"><span>Total</span>
-                </div>
-                <div class="fj-hbox-cell ListLineContentCell Number"><span>Aband</span>
-                </div>
-                <div class="fj-hbox-cell ListLineContentCell Number"><span>Active</span>
+                <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.active }}</span>
                 </div>
               </div>
 

@@ -459,10 +459,16 @@ p {
   color: #009cff;
   margin-left: .75em;
 }
+.TopBarVoicemailControls .Loading {
+  text-align: center;
+  color: gray;
+}
 .TopBarVoicemailControls .Progress {
   display: flex;
   flex-direction: row;
   align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .TopBarVoicemailControls .Progress div {
   display: inline-block;
@@ -480,13 +486,21 @@ p {
   margin-right: 5px;
 }
 .TopBarVoicemailControls .Progress .Bar {
+  position: relative;
   border-bottom: 1px solid gray;
   height: 1px;
   flex: 1;
 }
+.TopBarVoicemailControls .Progress .Bar div {
+  position: absolute;
+  top: -10px;
+  margin-left: -10px;
+}
 .TopBarVoicemailControls .Buttons {
   margin-top: 20px;
   opacity: 0;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .TopBarVoicemailControls .Buttons div {
   display: inline-block;
@@ -516,6 +530,9 @@ p {
 }
 .TopBarVoicemailControls .Volume div:nth-child(5) {
   height: 16px;
+}
+.TopBarVoicemailControls .Volume div.On {
+  background-color: gray;
 }
 .ToolBarNotification {
   position: relative;
@@ -1571,8 +1588,8 @@ div.NewCall {
   -webkit-transition: all 0.1s linear;
 }
 .Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Queues .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -2502,8 +2519,15 @@ div.NewCall {
 .Queues .SortHeader {
   display: flex;
 }
+.Queues .SortButton {
+  width: 150px;
+}
 .Queues .OtherQueueLine {
   display: flex;
+}
+.Queues .QueueButtonToggle {
+  width: 28px;
+  height: 28px;
 }
 .SearchInputBox {
   position: absolute;
@@ -4083,13 +4107,13 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url(../img/XPlayer.png) no-repeat -40px -50px;
 }
 .MediaPlayerPause {
-  background: url(../img/XPlayer.png) no-repeat -88px 0px;
+  background: url(../img/XPlayer.png) no-repeat -87px 0px;
   width: 46px;
   height: 46px;
   cursor: pointer;
 }
 .MediaPlayerPause:hover {
-  background: url(../img/XPlayer.png) no-repeat -88px -50px;
+  background: url(../img/XPlayer.png) no-repeat -87px -50px;
 }
 .MediaPlayerVolumeDown {
   background: url(../img/XPlayer.png) no-repeat -173px -5px;
@@ -4110,9 +4134,13 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url(../img/XPlayer.png) no-repeat -209px -55px;
 }
 .MediaPlayerProgressButton {
-  background: url(../img/XPlayer.png) no-repeat -20px -150px;
+  background: url(../img/XPlayer.png) no-repeat 0 -150px;
   width: 20px;
   height: 20px;
+  cursor: pointer;
+}
+.MediaPlayerProgressButton:hover {
+  background: url(../img/XPlayer.png) no-repeat -20px -150px;
 }
 .PopupSlider {
   display: none;
@@ -4464,6 +4492,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Overlay .Foreground .Section .Contact .Buttons {
   margin: 2em 0 .5em 0;
 }
+.Overlay .Foreground .Section .Contact .Buttons input[disabled] {
+  cursor: default;
+  color: #ccc;
+}
 .Overlay .Foreground .Section .ContactSearchHolder {
   position: relative;
   display: inline-block;
@@ -4646,7 +4678,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

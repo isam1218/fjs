@@ -82,13 +82,13 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
     }
   };
 
-  $scope.getAvatarUrl = function (xpid) {
-    return myHttpService.get_avatar(xpid, 28, 28);
-  };
-
   $scope.$on("$destroy", function () {
 
   });
+
+  $scope.getAvatarUrl = function (xpid) {
+    return myHttpService.get_avatar(xpid, 28, 28);
+  };
 
   $scope.getAvatarUrl = function (queue, index) {
 
