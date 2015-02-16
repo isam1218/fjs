@@ -1,7 +1,5 @@
-hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'QueueService', function ($scope, $rootScope, myHttpService, contactService, queueService) {
-  $scope.query = "";
-  $scope.sortField = "displayName";
-  $scope.sortReverse = false;
+hudweb.controller('CallCenterController', ['$scope', 'HttpService', function ($scope, myHttpService) {
+  $scope.query;
   $scope.queues = [];
   $scope.contacts = {};
 
@@ -48,38 +46,78 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
     switch (type) {
       case "name":
         $scope.queues.sort(function(a, b) {
-          return a.name.localeCompare(b.Name);
+          if ($scope.isAscending) {
+            return a.name.localeCompare(b.name);
+          } else {
+            return b.name.localeCompare(a.name);
+          }
         });
+        if ($scope.sortColumn == 'name') {
+          $scope.isAscending = !$scope.isAscending;
+        }
+        $scope.sortColumn = 'name';
         break;
       case "callsWaiting":
         $scope.queues.sort(function(a, b) {
-          return b.info.waiting - a.info.waiting;
+          if (b && b.info && a && a.info) {
+            return b.info.waiting - a.info.waiting;
+          } else {
+            return -1;
+          }
         });
+        if ($scope.sortColumn == 'callsWaiting') {
+          $scope.isAscending = !$scope.isAscending;
+        }
+        $scope.sortColumn = 'callsWaiting';
         break;
-      case "waitTime":
+      case "avgWait":
         $scope.queues.sort(function(a, b) {
-          return a.info.waiting - b.info.waiting;
+          if (b && b.info && a && a.info) {
+            return b.info.waiting - a.info.waiting;
+          } else {
+            return -1;
+          }
         });
+        if ($scope.sortColumn == 'avgWait') {
+          $scope.isAscending = !$scope.isAscending;
+        }
+        $scope.sortColumn = 'avgWait';
         break;
-      case "talkTime":
+      case "avgTalk":
         $scope.queues.sort(function(a, b) {
-          return a.info.waiting - b.info.waiting;
+          return a.info.avgTalk - b.info.avgTalk;
         });
+        if ($scope.sortColumn == 'avgTalk') {
+          $scope.isAscending = !$scope.isAscending;
+        }
+        $scope.sortColumn = 'avgTalk';
         break;
-      case "totalCalls":
+      case "total":
         $scope.queues.sort(function(a, b) {
-          return a.info.waiting - b.info.waiting;
+          return a.info.completed - b.info.completed;
         });
+        if ($scope.sortColumn == 'total') {
+          $scope.isAscending = !$scope.isAscending;
+        }
+        $scope.sortColumn = 'total';
         break;
-      case "abandonedCallsa":
+       case "abandoned":
+         $scope.queues.sort(function(a, b) {
+           return a.info.abandoned - b.info.abandoned;
+         });
+         if ($scope.sortColumn == 'abandoned') {
+           $scope.isAscending = !$scope.isAscending;
+         }
+         $scope.sortColumn = 'abandoned';
+         break;
+      case "active":
         $scope.queues.sort(function(a, b) {
-          return a.info.waiting - b.info.waiting;
+          return a.info.active - b.info.active;
         });
-        break;
-      case "activeCalls":
-        $scope.queues.sort(function(a, b) {
-          return a.info.waiting - b.info.waiting;
-        });
+        if ($scope.sortColumn == 'active') {
+          $scope.isAscending = !$scope.isAscending;
+        }
+        $scope.sortColumn = 'active';
         break;
     }
   };
