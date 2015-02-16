@@ -15,6 +15,8 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
   $scope.selected = 'All Queues';
 
   $scope.viewIcon = true;
+  $scope.sortColumn = 'name';
+  $scope.isAscending = true;
 
   $scope.$on('queues_updated', function (event, data) {
     $scope.queues = data.queues;
