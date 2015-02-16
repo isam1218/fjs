@@ -14,6 +14,8 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
   $scope.tabs = ['My Queue', 'All Queues', 'My Status'];
   $scope.selected = 'All Queues';
 
+  $scope.viewIcon = true;
+
   $scope.$on('queues_updated', function (event, data) {
     $scope.queues = data.queues;
 
@@ -40,55 +42,44 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
   });
 
 
-  $scope.sort = function (field) {
-    if ($scope.sortField != field) {
-      $scope.sortField = field;
-      $scope.sortReverse = false;
+  $scope.sortBy = function(type) {
+    switch (type) {
+      case "name":
+        $scope.queues.sort(function(a, b) {
+          return a.name.localeCompare(b.Name);
+        });
+        break;
+      case "callsWaiting":
+        $scope.queues.sort(function(a, b) {
+          return b.info.waiting - a.info.waiting;
+        });
+        break;
+      case "waitTime":
+        $scope.queues.sort(function(a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "talkTime":
+        $scope.queues.sort(function(a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "totalCalls":
+        $scope.queues.sort(function(a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "abandonedCallsa":
+        $scope.queues.sort(function(a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "activeCalls":
+        $scope.queues.sort(function(a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
     }
-    else {
-      $scope.sortReverse = !$scope.sortReverse;
-    }
-  };
-
-  // filter contacts down
-  $scope.customFilter = function () {
-    var tab = $scope.$parent.tab;
-
-    return function (queue) {
-      // remove self
-      if (contact.xpid != $rootScope.myPid) {
-        // filter by tab
-        switch (tab) {
-          case 'all':
-            return true;
-            break;
-          case 'external':
-            if (contact.primaryExtension == '')
-              return true;
-            break;
-          case 'queues':
-            if ($scope.queues[queue.xpid] !== undefined)
-              return true;
-            break;
-        }
-      }
-    };
-  };
-
-  $scope.customSort = function () {
-    // recent list doesn't have a sort field
-    if ($scope.$parent.tab == 'recent')
-      return 'timestamp';
-    else
-      return $scope.sortField;
-  };
-
-  $scope.customReverse = function () {
-    // recent list is always reversed
-    if ($scope.$parent.tab == 'recent')
-      return true;
-    else
-      return $scope.sortReverse;
   };
 
   $scope.getAvatarUrl = function (xpid) {
@@ -110,23 +101,6 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', 'HttpService'
         return 'img/Generic-Avatar-14.png';
 
     }
-  };
-
-  $scope.showSeachByPopup = function(event, elm) {
-    e.stopPropagation();
-    var items = [];
-    for (var id in context.sortMenuItems){
-      if(context.sortMenuItems.hasOwnProperty(id)){
-        items.push({"id": id, "name": context.sortMenuItems[id], "selected": $scope.getSortMode() == id});
-      }
-    }
-    var model = {};
-    model.items = items;
-    model.callback = context.setSortMode;
-    var eventTarget = context.getEventHandlerElement(e.target, e);
-    var offset = fjs.utils.DOM.getElementOffset(eventTarget);
-    $scope.$emit("showPopup", {key:"SortMenuPopup", x:offset.x, y:offset.y+30, model: model, id:context.sortingKey});
-    return false;
   };
 
 }]);

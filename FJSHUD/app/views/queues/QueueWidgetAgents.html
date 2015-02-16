@@ -1,3 +1,29 @@
+<div class="ToolBar ">
+  <div class="SearchInputBox">
+    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text"
+                                                  onchange="onSearch(!event, this)"
+                                                  x-webkit-speech=""
+                                                  placeholder="Search"></div>
+    <div class="SearchInputBoxStateButton">
+      <div class="SearchInputBoxStateButtonIcon"></div>
+    </div>
+  </div>
+  <!--<div class="XButton XButtonToggle XButtonNormal"><span><div class="QueueViewIcon QueueListView"></div></span>-->
+  <!--</div>-->
+  <div class="fj-visibility-true conversation-queues-tab-tool-bar-sort-button">
+    <!--<div-->
+    <!--class="XButton XButtonNormal XButtonDropDown XSortButton disabled-false"><span>Sort by Queue name</span>-->
+
+    <!--<div class="XButtonDropDownArrow"></div>-->
+    <!--</div>-->
+    <select class="XButton XButtonNormal XButtonDropDown XSortButton ng-pristine ng-valid ng-touched"
+            ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
+            ng-change="sortBy(selectedSort.type)">
+
+    </select>
+  </div>
+</div>
+
 <div class="LeftBarTabContentList">
   <div class="ListSection">
     <div class="ListSectionHeader">
