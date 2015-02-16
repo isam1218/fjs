@@ -97,6 +97,10 @@
 .Overlay .Foreground .Section .Contact .Buttons {
   margin: 2em 0 .5em 0;
 }
+.Overlay .Foreground .Section .Contact .Buttons input[disabled] {
+  cursor: default;
+  color: #ccc;
+}
 .Overlay .Foreground .Section .ContactSearchHolder {
   position: relative;
   display: inline-block;

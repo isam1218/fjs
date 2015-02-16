@@ -1,5 +1,5 @@
-hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'ContactService',  function($scope, httpService, contactService) {
-    $scope.openedCallId = null;
+hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'ContactService',  function($scope, httpService, contactService) {	
+	$scope.query = '';
 	
 	httpService.getFeed('calllog');
 	
@@ -13,6 +13,15 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
 		
 		$scope.$safeApply();
 	});
+	
+	$scope.customFilter = function() {
+		var query = $scope.query.toLowerCase();
+		
+		return function(call) {
+			if (query == '' || call.displayName.toLowerCase().indexOf(query) != -1 || call.phone.indexOf(query) != -1)
+				return true;
+		};
+	};
 
     $scope.sortField = "displayName";
     $scope.sortReverse = false;

@@ -114,6 +114,83 @@ input[type="tel"] {
 .XButtonClose:hover {
   background: url(../img/XIconSet-24x24.png) no-repeat -52px -28px;
 }
+.XButtonDropDown span {
+  padding-right: 10px;
+}
+.XButtonDropDownArrow {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  border-color: #555 transparent  transparent  transparent;
+  border-width: 4px;
+  border-style: solid;
+  width: 0px;
+  height: 0px;
+}
+.XButton.XButtonToggle,
+.XButtonNormal.XButton.XButtonToggle {
+  width: 40px;
+}
+.XButtonToggle.XButtonNormal {
+  width: 80px;
+}
+.XButtonToggle.XButtonSmall {
+  width: 65px;
+}
+.XButtonToggle span {
+  color: #333;
+  text-shadow: 0 1px 0px #fff;
+  transition: border .3s;
+  -webkit-transition: border .3s;
+  left: 6px;
+  right: 6px;
+}
+.XButtonToggle.Off span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));
+}
+.XButtonToggle.On span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#dddddd));
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15) inset;
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15) inset;
+}
+.XButtonToggle .XButtonToggleIcon {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.XButtonToggle:hover span {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0px #fff;
+  transition: border .3s;
+  -webkit-transition: border .3s;
+}
+.XButtonToggle.Off:hover span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dddddd));
+}
+.XButtonToggle.On:hover span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dddddd));
+}
+.XButtonToggle .SelectBoxArrowBox {
+  position: absolute;
+  top: 1px;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+.XSortButton span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ToolBar .XButton.XSortButton {
+  width: 150px;
+}
 .XInputText {
   border-radius: 3px;
   padding: 3px;
@@ -238,13 +315,13 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url(../img/XPlayer.png) no-repeat -40px -50px;
 }
 .MediaPlayerPause {
-  background: url(../img/XPlayer.png) no-repeat -88px 0px;
+  background: url(../img/XPlayer.png) no-repeat -87px 0px;
   width: 46px;
   height: 46px;
   cursor: pointer;
 }
 .MediaPlayerPause:hover {
-  background: url(../img/XPlayer.png) no-repeat -88px -50px;
+  background: url(../img/XPlayer.png) no-repeat -87px -50px;
 }
 .MediaPlayerVolumeDown {
   background: url(../img/XPlayer.png) no-repeat -173px -5px;
@@ -265,9 +342,13 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url(../img/XPlayer.png) no-repeat -209px -55px;
 }
 .MediaPlayerProgressButton {
-  background: url(../img/XPlayer.png) no-repeat -20px -150px;
+  background: url(../img/XPlayer.png) no-repeat 0 -150px;
   width: 20px;
   height: 20px;
+  cursor: pointer;
+}
+.MediaPlayerProgressButton:hover {
+  background: url(../img/XPlayer.png) no-repeat -20px -150px;
 }
 .PopupSlider {
   display: none;
