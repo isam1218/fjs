@@ -1,9 +1,7 @@
 <a href="#contact/{{member.contactId}}">
-  <div class="Avatar AvatarSmall">
-    <img class="AvatarImgPH"
-         ng-src="{{ getAvatarUrl(member.contactId)}}">
-
-    <div class="AvatarInteractable"></div>
+  <div class="Avatar AvatarNormal" context-menu="contact">
+    <img class="AvatarImgPH" data-ng-src="{{::member.getAvatarUrl(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+    <div class="AvatarForeground AvatarInteractable"></div>
   </div>
   <div class="ListRowContent">
 

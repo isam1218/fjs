@@ -1010,6 +1010,13 @@
 .Queues .SortHeader {
   display: flex;
 }
+.Queues .SortButton {
+  width: 150px;
+}
 .Queues .OtherQueueLine {
   display: flex;
+}
+.Queues .QueueButtonToggle {
+  width: 28px;
+  height: 28px;
 }

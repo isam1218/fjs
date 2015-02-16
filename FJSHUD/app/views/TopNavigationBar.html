@@ -27,11 +27,11 @@
 		</div>
 		<div class="Loading" ng-show="!player.loaded">Loading...</div>
 		<div class="Progress" ng-show="player.loaded">
-			<div class="Time">{{ player.position }}</div>
+			<div class="Time">{{ player.position | duration }}</div>
 			<div class="Left"></div><div class="Bar">
 				<div class="MediaPlayerProgressButton" ng-style="{'left':player.progress}" ng-mousedown="moveSlider($event)"></div>
 			</div><div class="Right"></div>
-			<div class="Time">{{ player.duration }}</div>
+			<div class="Time">{{ player.duration | duration }}</div>
 		</div>
 		<div class="Buttons">
 			<div>

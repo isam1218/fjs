@@ -1,14 +1,12 @@
-
     <div class="ToolBar" >
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="text" x-webkit-speech="" placeholder="Search" ng-model="query">
+                <input class="SearchInputBoxInput" type="search" x-webkit-speech="" placeholder="Search" ng-model="query">
             </div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-
 
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
@@ -25,12 +23,8 @@
             <div class="XButtonDropDownArrow"></div>
         </select>
     </div>
-
-
-    <!--<react-component name="Voicemailbox" props="data"></react-component>-->
     
     <div class="ListView fj-scrollable"> 
-
         <div class="vmlabel" ng-if="voicemails.length == 0"> 
             <div class="vmlabelheader"> No Voicemails In View </div> 
             <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
@@ -42,24 +36,21 @@
             </div>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
-                    <div class="displayName"><span ng-if="voicemail.phone == meModel.primary_extension"><i> Me to</i> </span>  
-                    <span ng-if="voicemail.phone != meModel.primary_extension"> <i>from...</i> </span>  
-                        <p class="vmdisplay">
-                            <b ng-show="!voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </b>
-                            <span ng-show="voicemail.readStatus"> {{voicemail.displayName}} {{'<' + voicemail.phone + '>'}} </span>
+                    <div class="displayName">
+						<em>{{ voicemail.phone == meModel.primary_extension ? 'Me to' : 'from...' }}<em>
+						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
+							{{ voicemail.displayName + ' <' + voicemail.phone + '>' }}
                         </p>
                         <div class="vmalternate">
-                            <div class="vmtime">{{ formate_date(voicemail.date) }} </div>
+                            <div class="vmtime">{{ voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
                             <input style="float:right"class="vmcallbtn" type="button" value="Call"></input>
                         </div>
                     </div> 
                     <div class="footnote">
-                        <div class="vmfootnote vmduration">{{ formatDuration(voicemail.duration) }} </div>
+                        <div class="vmfootnote vmduration">{{ voicemail.duration | duration }} </div>
                         <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : "no transcription available" }}</div>
                     </div>
                     
             </div>
         </div>
     </div>
- 
-

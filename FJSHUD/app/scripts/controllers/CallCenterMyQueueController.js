@@ -14,6 +14,21 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
   $scope.tabs = ['My Queue', 'All Queues', 'My Status'];
   $scope.selected = 'My Queue';
 
+  $scope.sort_options = [
+    {display_name: "Queue name", type: "name"},
+    {display_name: "Calls waiting", type: "callsWaiting"},
+    {display_name: "Average wait time (ESA)", type: "waitTime"},
+    {display_name: "Average talk time", type: "talkTime"},
+    {display_name: "Total calls (since last reset)", type: "totalCalls"},
+    {display_name: "Abandoned calls", type: "abandonedCalls"},
+    {display_name: "Active calls", type: "activeCalls"}
+  ];
+  $scope.selectedSort = $scope.sort_options[0];
+
+  $scope.viewIcon = false;
+  $scope.sortColumn = 'name';
+  $scope.isAscending = true;
+
   $scope.$on('queues_updated', function (event, data) {
     var queues = data.queues;
     var my_pid = $scope.me['my_pid'];
@@ -40,7 +55,7 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
     }
 
 
-      $scope.$safeApply();
+    $scope.$safeApply();
   });
 
   $scope.$on('me_synced', function (event, data) {
@@ -53,55 +68,44 @@ hudweb.controller('CallCenterMyQueueController', ['$scope', '$rootScope', 'HttpS
     $scope.$apply();
   });
 
-  $scope.sort = function (field) {
-    if ($scope.sortField != field) {
-      $scope.sortField = field;
-      $scope.sortReverse = false;
+  $scope.sortBy = function (type) {
+    switch (type) {
+      case "name":
+        $scope.queues.sort(function (a, b) {
+          return a.name.localeCompare(b.Name);
+        });
+        break;
+      case "callsWaiting":
+        $scope.queues.sort(function (a, b) {
+          return b.info.waiting - a.info.waiting;
+        });
+        break;
+      case "waitTime":
+        $scope.queues.sort(function (a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "talkTime":
+        $scope.queues.sort(function (a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "totalCalls":
+        $scope.queues.sort(function (a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "abandonedCallsa":
+        $scope.queues.sort(function (a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
+      case "activeCalls":
+        $scope.queues.sort(function (a, b) {
+          return a.info.waiting - b.info.waiting;
+        });
+        break;
     }
-    else {
-      $scope.sortReverse = !$scope.sortReverse;
-    }
-  };
-
-  // filter contacts down
-  $scope.customFilter = function () {
-    var tab = $scope.$parent.tab;
-
-    return function (queue) {
-      // remove self
-      if (contact.xpid != $rootScope.myPid) {
-        // filter by tab
-        switch (tab) {
-          case 'all':
-            return true;
-            break;
-          case 'external':
-            if (contact.primaryExtension == '')
-              return true;
-            break;
-          case 'queues':
-            if ($scope.queues[queue.xpid] !== undefined)
-              return true;
-            break;
-        }
-      }
-    };
-  };
-
-  $scope.customSort = function () {
-    // recent list doesn't have a sort field
-    if ($scope.$parent.tab == 'recent')
-      return 'timestamp';
-    else
-      return $scope.sortField;
-  };
-
-  $scope.customReverse = function () {
-    // recent list is always reversed
-    if ($scope.$parent.tab == 'recent')
-      return true;
-    else
-      return $scope.sortReverse;
   };
 
   $scope.getAvatarUrl = function (xpid) {
