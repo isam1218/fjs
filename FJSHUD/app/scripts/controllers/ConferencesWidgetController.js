@@ -5,6 +5,9 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
 	$scope.conferences = conferenceService.getConferences();
 	
+	$scope.enableChat = true;
+
+
 	// get data from sync
 	$scope.$on('conferences_updated', function(event, data) {
 		$scope.conferences = data;
@@ -66,6 +69,25 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 			}
 		}
 	};
+
+	$scope.joinConference = function(){
+
+		if($scope.joined){
+			params = {
+				conferenceId:$scope.targetId
+			}
+			httpService.sendAction("conferences",'leave',params);
+		}else{
+				params = {
+					conferenceId: $scope.targetId,
+					contactId: $scope.meModel.my_pid,
+				}
+
+			httpService.sendAction("conferences","joinContact",params);
+
+			
+		}
+	}
 
 	$scope.$on('calls_updated',function(event,data){
 		if(data){

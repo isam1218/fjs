@@ -4,11 +4,16 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
 	httpService.getFeed('calllog');
 	
 	$scope.$on('calllog_synced', function(event, data) {
-		$scope.calls = data;
+		$scope.calls = [];
 		
-		angular.forEach($scope.calls, function(obj) {
-			if (obj.contactId !== undefined)
-				obj.contact = contactService.getContact(obj.contactId);
+		angular.forEach(data, function(obj) {
+			if (obj.xef001type != 'delete') {
+				$scope.calls.push(obj);
+				
+				// add internal contact info
+				if (obj.contactId !== undefined)
+					$scope.calls[$scope.calls.length-1].contact = contactService.getContact(obj.contactId);
+			}
 		});
 		
 		$scope.$safeApply();
@@ -35,4 +40,8 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
             $scope.sortReverse = !$scope.sortReverse;
         }
     };
+	
+	$scope.makeCall = function(number) {
+		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+	};
 }]);

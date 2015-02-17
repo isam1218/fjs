@@ -8,6 +8,54 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 	$scope.enableChat = true;
 	$scope.enableFileShare = true;
 	
+
+	$scope.showAttachments = false;
+	$scope.upload = {};
+    $scope.showFileShareOverlay = function(toShow){
+		$scope.showAttachments = toShow;
+	}
+
+	$scope.archiveOptions = [
+    	{name:'Never',taskId:"2_6",value:0},
+    	{name:'in 3 Hours', taskId:"2_3",value:10800000},
+    	{name: 'in 2 Days', taskId:"2_4", value:172800000},
+    	{name: "in a Week", taskId:"2_5", value:604800000},
+    ]
+
+    $scope.uploadAttachments = function($files){
+      	$files[0];
+      	fileList = [];
+      	for (i in $files){
+      		fileList.push($files[i].file);
+      	}
+        data = {
+            'action':'sendWallEvent',
+            'a.targetId': $scope.contactID,
+            'a.type':'f.conversation.wall',
+            'a.xpid':"",
+            'a.archive':$scope.selectedArchiveOption.value,
+            'a.retainKeys':"",
+            'a.taskId':"",
+            'a.message':this.message,
+            'a.callback':'postToParent',
+            'a.audience':'contact',
+            'alt':"",
+            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
+            "a.taskId": "1_0",
+            "_archive": $scope.selectedArchiveOption.value,
+        }
+        myHttpService.upload_attachment(data,fileList);
+		
+        this.message = "";
+        $scope.upload.flow.cancel();
+        $scope.showFileShareOverlay(false);
+    }
+
+    $scope.selectedArchiveOption = $scope.archiveOptions[0];
+
+     $scope.getAttachment = function(url){
+    	return myHttpService.get_attachment(url);
+    }
 	// get initial messages from server
 	myHttpService.getChat('contacts', $scope.contactID).then(function(data) {
 		version = data.h_ver;

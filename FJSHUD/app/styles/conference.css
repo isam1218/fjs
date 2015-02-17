@@ -9,6 +9,11 @@
   border: solid 1px #EEE;
   border-radius: 3px;
   padding: .5em;
+  height: 55px;
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 1px 1px 5px #888888;
 }
 .Conference-HeaderTitle {
   color: #0093f0;
