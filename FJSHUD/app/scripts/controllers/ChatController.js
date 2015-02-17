@@ -91,18 +91,30 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	});
 
 
-    // get additional messages from sync
+   	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		messages = [];
-		for(key in data){
-			message = data[key];
-			contactId = message.context.split(":")[1]
-			if( contactId == $scope.targetId ){
-				messages.push(data[key]);
+		for (key in data) {
+			// prevent duplicates
+			var dupe = false;
+			
+			for (i = 0; i < $scope.messages.length; i++) {
+				if (data[key].xpid == $scope.messages[i].xpid) {
+					dupe = true;
+					break;
+				}
 			}
+			
+			if (dupe) continue;
+			
+			var from = data[key].from.replace('contacts:', '');
+			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
+			
+			// only attach messages related to this user
+			if (from == $scope.contactID || to == $scope.contactID)
+				$scope.messages.push(data[key]);
 		}
-		$scope.messages = $scope.messages.concat(messages);
-		$scope.addDetails();
+		
+		addDetails();
 	});
 
 	// apply name and avatar

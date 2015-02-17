@@ -4,7 +4,6 @@ hudweb.controller('GroupSingleChatController', ['$scope', '$interval', 'ContactS
 	$scope.glued = true;
 	$scope.loading = true;
     $scope.messages = [];
-	$scope.conversationType = 'group';
 	$scope.enableChat = true;
 	$scope.enableFileShare = true;
 	
