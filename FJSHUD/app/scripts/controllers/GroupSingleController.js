@@ -3,6 +3,17 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', '$location
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
 	
+	$scope.targetId = $scope.groupID;
+	$scope.conversationType = 'group';
+	$scope.targetAudience = "group";
+	$scope.targetType = "f.conversation.chat";
+	$scope.feed = "groups";
+
+    $scope.enableChat = true;
+    $scope.enableFileShare = true;
+	$scope.messages = [];
+
+
 	$scope.$on('groups_updated', function(event, data) {
 		var groups = data.groups;
 		

@@ -7,11 +7,9 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
     $scope.cTabSelected = "CurrentCall";
 	$scope.conferenceId = $routeParams.conferenceId;
 	$scope.enableFileShare = false;
-	httpService.getFeed("me");
 	httpService.getFeed("conferencestatus")
 	httpService.getFeed("conferencemembers");
 	$scope.members = [];
-	$scope.meModel = {};
 	$scope.upload = {};
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
 	$scope.showAttachments = false;
@@ -19,7 +17,7 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
         return utilService.formatDate(time,true);
     }
     
-    $scope.update = function(archiveObject){
+	$scope.update = function(archiveObject){
     	console.log(archiveObject);
     	$scope.selectedArchiveOption = archiveObject;
     }
@@ -63,12 +61,6 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
     	}
     }
 
-    $scope.removeAttachment = function(file){
-
-    	for(i in $flow.files){
-
-    	}
-    }
     $scope.uploadAttachments = function($files){
       	$files[0];
       	fileList = [];
@@ -225,7 +217,7 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
     	}
    	});
 
-   	$scope.$on('me_synced', function(event,data){
+   	/*$scope.$on('me_synced', function(event,data){
         if(data){
             var me = {};
             for(medata in data){
@@ -233,7 +225,7 @@ hudweb.controller('ConferenceWidgetConversationController', ['$scope', 'Conferen
             }
         }
 		$scope.$apply();
-    });
+    });*/
 
 
 }]);

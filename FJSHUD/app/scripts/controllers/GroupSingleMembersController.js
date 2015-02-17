@@ -21,7 +21,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 			
 		$scope.group = groupService.getGroup($scope.groupId);
 		
-		$scope.members = $scope.group.members;
+		if($scope.group){
+			$scope.members = $scope.group.members;
+		}
 		
 		if($scope.members){
 			for(member in $scope.members){

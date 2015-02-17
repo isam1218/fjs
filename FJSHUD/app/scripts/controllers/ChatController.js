@@ -1,26 +1,53 @@
-hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'ContactService', 'HttpService', function($scope, $interval, contactService, myHttpService) {
-	var version = 0;
-	
-	$scope.glued = true;
-	$scope.loading = true;
-    $scope.messages = [];
-	$scope.conversationType = 'conversation';
-	$scope.enableChat = true;
-	$scope.enableFileShare = true;
-	
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval',
+	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval) {
 
 	$scope.showAttachments = false;
 	$scope.upload = {};
-    $scope.showFileShareOverlay = function(toShow){
+
+
+	 $scope.showFileShareOverlay = function(toShow){
 		$scope.showAttachments = toShow;
 	}
 
-	$scope.archiveOptions = [
+	$scope.formate_date = function(time){
+        return utilService.formatDate(time,true);
+    }
+    
+	$scope.update = function(archiveObject){
+    	console.log(archiveObject);
+    	$scope.selectedArchiveOption = archiveObject;
+    }
+
+    $scope.archiveOptions = [
     	{name:'Never',taskId:"2_6",value:0},
     	{name:'in 3 Hours', taskId:"2_3",value:10800000},
     	{name: 'in 2 Days', taskId:"2_4", value:172800000},
     	{name: "in a Week", taskId:"2_5", value:604800000},
     ]
+
+    $scope.selectedArchiveOption = $scope.archiveOptions[0];
+
+
+    $scope.formatDuration = function(duration){
+        var time =   duration/1000;
+        var seconds = time;
+        var minutes;
+        secString = "00";
+        minString = "00";
+        if(time >= 60){
+            minutes = time/60;
+            seconds = seconds - minutes*60;
+        }  
+
+        if(minutes < 10){
+            minString = "0" + minutes; 
+        }
+        if(seconds < 10){
+            secString = "0" + seconds;  
+        }
+        return minString + ":" + secString;
+
+    }
 
     $scope.uploadAttachments = function($files){
       	$files[0];
@@ -30,7 +57,7 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
       	}
         data = {
             'action':'sendWallEvent',
-            'a.targetId': $scope.contactID,
+            'a.targetId': $scope.targetId,
             'a.type':'f.conversation.wall',
             'a.xpid':"",
             'a.archive':$scope.selectedArchiveOption.value,
@@ -38,75 +65,82 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
             'a.taskId':"",
             'a.message':this.message,
             'a.callback':'postToParent',
-            'a.audience':'contact',
+            'a.audience':$scope.targetAudience,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "1_0",
             "_archive": $scope.selectedArchiveOption.value,
         }
-        myHttpService.upload_attachment(data,fileList);
+        httpService.upload_attachment(data,fileList);
 		
         this.message = "";
         $scope.upload.flow.cancel();
         $scope.showFileShareOverlay(false);
     }
 
-    $scope.selectedArchiveOption = $scope.archiveOptions[0];
 
-     $scope.getAttachment = function(url){
-    	return myHttpService.get_attachment(url);
+    $scope.getAttachment = function(url){
+    	return httpService.get_attachment(url);
     }
-	// get initial messages from server
-	myHttpService.getChat('contacts', $scope.contactID).then(function(data) {
+    httpService.getChat($scope.feed,$scope.targetId).then(function(data) {
 		version = data.h_ver;
 		
 		$scope.loading = false;
 		$scope.messages = data.items;		
-		addDetails();
+		$scope.addDetails();
 	});
-	
-	// get additional messages from sync
+
+
+    // get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		for (key in data) {
-			// prevent duplicates
-			var dupe = false;
-			
+		messages = [];
+		for(key in data){
+			message = data[key];
+			contactId = message.context.split(":")[1]
+			if( contactId == $scope.targetId ){
+				messages.push(data[key]);
+			}
+		}
+		$scope.messages = $scope.messages.concat(messages);
+		$scope.addDetails();
+	});
+
+	// apply name and avatar
+	$scope.addDetails = function() {
+		// wait for sync to catch up
+		contactService.getContacts().then(function(data) {
 			for (i = 0; i < $scope.messages.length; i++) {
-				if (data[key].xpid == $scope.messages[i].xpid) {
-					dupe = true;
-					break;
+				for (key in data) {
+					if (data[key].xpid == $scope.messages[i].from.replace('contacts:', '')) {
+						$scope.messages[i].avatar = data[key].getAvatar(28);
+						$scope.messages[i].displayName = data[key].displayName;
+						break;
+					}
 				}
 			}
 			
-			if (dupe) continue;
-			
-			var from = data[key].from.replace('contacts:', '');
-			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
-			
-			// only attach messages related to this user
-			if (from == $scope.contactID || to == $scope.contactID)
-				$scope.messages.push(data[key]);
-		}
-		
-		addDetails();
-	});
+			$scope.$safeApply();
+		});
+	};
+
+
 	
 	$scope.sendMessage = function() {
 		if (this.message == '')
 			return;
 			
 		var data = {
-			type: 'f.conversation.chat',
-			audience: 'contact',
-			to: $scope.contactID,
+			type: $scope.targetType,
+			audience: $scope.targetAudience,
+			to: $scope.targetId,
 			message: this.message,
 		};
 		
-		myHttpService.sendAction('streamevent', 'sendConversationEvent', data);
+		httpService.sendAction('streamevent', 'sendConversationEvent', data);
 		
 		this.message = '';
 	};
-	
+
 	// look for enter key
 	$scope.chatKeypress = function($event) {
 		if ($event.keyCode == 13 && !$event.shiftKey) {
@@ -114,6 +148,7 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			$event.preventDefault();
 		}
 	};
+
 	
 	$scope.searchChat = function(increment) {
 		var spans = document.querySelectorAll(".highlighted");
@@ -143,14 +178,15 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			spans[searchIndex].scrollIntoView();
 		}
 	};
-	
+
+
 	// apply name and avatar
 	var addDetails = function() {
 		// wait for sync to catch up
 		contactService.getContacts().then(function(data) {
 			for (i = 0; i < $scope.messages.length; i++) {
 				for (key in data) {
-					if (data[key].xpid == $scope.messages[i].from.replace('contacts:', '')) {
+					if (data[key].xpid == $scope.messages[i].from.replace($scope.feed +':', '')) {
 						$scope.messages[i].avatar = data[key].getAvatar(28);
 						$scope.messages[i].displayName = data[key].displayName;
 						break;
@@ -161,7 +197,7 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			$scope.$safeApply();
 		});
 	};
-	
+
 	var chatLoop = $interval(function() {	
 		var scrollbox = document.getElementById('ListViewContent');
 	
@@ -170,7 +206,7 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			$scope.loading = true;
 			
 			// ping server
-			myHttpService.getChat('contacts', $scope.contactID, version).then(function(data) {
+			httpService.getChat($scope.feed, $scope.targetId, version).then(function(data) {
 				version = data.h_ver;
 			
 				$scope.loading = false;
@@ -187,8 +223,7 @@ hudweb.controller('ConversationWidgetChatController', ['$scope', '$interval', 'C
 			});
 		}
 	}, 500);
-
-    $scope.$on("$destroy", function() {
+	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
-    });
+    });	
 }]);

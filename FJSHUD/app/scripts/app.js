@@ -45,7 +45,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/conference/:conferenceId', {
 			templateUrl: 'views/ConferenceWidget.html',
-			controller: 'ConferenceWidgetConversationController'
+			controller: 'ConferenceSingleController'
 		})
         .when('/contact/:contactId', {
 			templateUrl: 'views/conversation/ConversationWidget.html',
