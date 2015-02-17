@@ -1,11 +1,13 @@
 hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval',
 	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval) {
 
+	var version = 0;
+	
 	$scope.showAttachments = false;
 	$scope.showDownloadAttachment = false;
 	$scope.upload = {};
-	var version = 0;
 	$scope.glued = true;
+	$scope.loading = true;
 
 	$scope.downloadables = [];
 	$scope.currentDownload = {};
@@ -97,7 +99,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
             'a.xpid':"",
             'a.archive':$scope.selectedArchiveOption.value,
             'a.retainKeys':"",
-            'a.taskId':"",
             'a.message':this.message,
             'a.callback':'postToParent',
             'a.audience':$scope.targetAudience,
@@ -122,7 +123,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		
 		$scope.loading = false;
 		$scope.messages = data.items;
-		$scope.addDetails();
+		addDetails();
 	});
 
 
@@ -157,26 +158,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		
 		addDetails();
 	});
-
-	// apply name and avatar
-	$scope.addDetails = function() {
-		// wait for sync to catch up
-		contactService.getContacts().then(function(data) {
-			for (i = 0; i < $scope.messages.length; i++) {
-				for (key in data) {
-					if (data[key].xpid == $scope.messages[i].from.replace('contacts:', '')) {
-						$scope.messages[i].avatar = data[key].getAvatar(28);
-						$scope.messages[i].displayName = data[key].displayName;
-						break;
-					}
-				}
-			}
-			
-			$scope.$safeApply();
-		});
-	};
-
-
 	
 	$scope.sendMessage = function() {
 		if (this.message == '')
@@ -294,6 +275,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			});
 		}
 	}, 500);
+
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
     });	
