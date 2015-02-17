@@ -15,7 +15,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 	$scope.feed="conferences";
 	$scope.targetType = "f.conversation.chat";
 	$scope.cTabSelected = "CurrentCall";
-
+	$scope.callrecordings = [];
 
 
 	$scope.$on("conferences_updated", function(event,data){
@@ -79,5 +79,32 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 			
 		}
 	}
+
+	$scope.formate_date = function(time){
+        return utilService.formatDate(time,true);
+    }
+    
+    $scope.formatDuration = function(duration){
+        var time =   duration/1000;
+        var seconds = time;
+        var minutes;
+        secString = "00";
+        minString = "00";
+        if(time >= 60){
+            minutes = Math.floor(time/60);
+            seconds = seconds - (minutes*60);
+        }  
+
+        if(minutes < 10){
+            minString = "0" + minutes; 
+        }
+        if(seconds < 10){
+            secString = "0" + seconds;  
+        }else{
+        	secString = seconds;	
+        }
+        return minString + ":" + secString;
+
+    }
 
 }]);
