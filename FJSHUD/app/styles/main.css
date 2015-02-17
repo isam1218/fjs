@@ -281,6 +281,11 @@ p {
   border: none;
   margin: 13px 13px 13px 13px;
 }
+.Center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 .TopBar {
   position: relative;
   width: 100%;
@@ -1100,6 +1105,8 @@ p {
   border: 1px solid #ccc;
   display: inline-block;
   overflow: hidden;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 .AttachmentImg {
   max-width: 70px;
@@ -4398,6 +4405,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   left: 5px;
   top: 5px;
 }
+.Selected {
+  border-left: 3px solid #292;
+}
 .Overlay {
   position: fixed;
   left: 0;
@@ -4443,6 +4453,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Overlay .Foreground .Sections {
   flex: 1;
   overflow-y: auto;
+  height: inherit;
 }
 .Overlay .Foreground .Section {
   display: inline-block;
@@ -4450,6 +4461,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 300px;
   vertical-align: top;
   font-size: .9em;
+  height: inherit;
 }
 .Overlay .Foreground .Section > div {
   margin-bottom: .5em;
@@ -4569,6 +4581,45 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   bottom: .25em;
   right: .25em;
   cursor: pointer;
+}
+.Overlay .AttachmentDownload {
+  background-color: #ccc;
+  border: 1px solid gray;
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+  height: inherit;
+}
+.Overlay .AttachmentDownload .ListRow:first-child .Delete {
+  display: none !important;
+}
+.Overlay .AttachmentDownload .ListRow:hover .Delete {
+  opacity: 1;
+}
+.Overlay .AttachmentDownload .ListRow .Delete {
+  background-color: #d72800;
+  border: 0;
+  border-radius: 2px;
+  padding: .25em .5em;
+  transition: .2s;
+  color: white;
+  opacity: 0;
+  position: absolute;
+  bottom: .25em;
+  right: .25em;
+  cursor: pointer;
+}
+.Overlay .AttachmentDownload .Downloadables:hover {
+  background-color: #f0f0ff;
+}
+.CurrentDownload {
+  height: auto;
+  max-height: 100%;
+  width: auto;
+  margin: auto;
+  display: block;
+  padding-top: 50%;
+  /* position: absolute; */
 }
 .SearchContactOverlay {
   position: absolute;
@@ -5013,7 +5064,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: inline-block;
   float: right;
   position: relative;
-  margin-top: 8px;
+  margin-top: 3px;
   margin-right: 5px;
 }
 .vmalternate .vmcallbtn {

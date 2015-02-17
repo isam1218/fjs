@@ -204,3 +204,6 @@
   left: 5px;
   top: 5px;
 }
+.Selected {
+  border-left: 3px solid #292;
+}

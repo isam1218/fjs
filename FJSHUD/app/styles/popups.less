@@ -45,6 +45,7 @@
 	.Sections {
 	  flex: 1;
 	  overflow-y: auto;
+	  height:inherit;
 	}
 	
 	.Section {
@@ -53,7 +54,7 @@
 	  max-width: 300px;
 	  vertical-align: top;
 	  font-size: .9em;
-	  
+	  height:inherit;
 	  & > div {
 		margin-bottom: .5em;
 	  }
@@ -199,8 +200,21 @@
 	  }
 	}
   }
-}
 
+  .AttachmentDownload{
+  	.Members();
+  	height:inherit;
+  	.Downloadables:hover {
+  		background-color: #f0f0ff;
+	}
+
+	
+  }
+}
+.CurrentDownload{
+		height:auto;
+		max-height:100%;
+	}
 .SearchContactOverlay {
   position: absolute;
   top: 0;
