@@ -1,41 +1,51 @@
 hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', function($http, $rootScope, $location, $q){
+	
+	/**
+		Detect Current Browser
+	*/
+	var ua = navigator.userAgent;
+	var browser = ua.match(/(chrome|safari|firefox|msie(?=\/))\/?\s*(\d+)/i)[1];
+	var isSWSupport = browser == "Chrome" || browser == "Firefox";
 	/**
 		SHARED WORKER
 	*/
 	var worker = undefined;
-	
-	if (SharedWorker != 'undefined') {
-	    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
-	    worker.port.addEventListener("message", function(event) {
-	        switch (event.data.action) {
-	            case "init":
-	                worker.port.postMessage({
-	                    "action": "sync"
-	                });
-	                break;
-	            case "sync_completed":
-	                if (event.data.data) {
+	if(isSWSupport){
+		if (SharedWorker != 'undefined') {
+		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
+		    worker.port.addEventListener("message", function(event) {
+		        switch (event.data.action) {
+		            case "init":
+		                worker.port.postMessage({
+		                    "action": "sync"
+		                });
+		                break;
+		            case "sync_completed":
+		                if (event.data.data) {
 
-	                    synced_data = event.data.data;
+		                    synced_data = event.data.data;
 
-	                    // send data to other controllers
-	                    for (feed in synced_data) {
-	                        if (synced_data[feed].length > 0)
-	                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
-	                    }
-	                }
-	                break;
-	            case "feed_request":
-	                $rootScope.$broadcast(event.data.feed + '_synced', event.data.data);
-	                break;
-				case "auth_failed":
-					delete localStorage.nodeID;
-					attemptLogin();
-					break;
-	        }
-	    }, false);
+		                    // send data to other controllers
+		                    for (feed in synced_data) {
+		                        if (synced_data[feed].length > 0)
+		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+		                    }
+		                }
+		                break;
+		            case "feed_request":
+		                $rootScope.$broadcast(event.data.feed + '_synced', event.data.data);
+		                break;
+					case "auth_failed":
+						delete localStorage.nodeID;
+						attemptLogin();
+						break;
+		        }
+		    }, false);
 
-	    worker.port.start();
+		    worker.port.start();
+		}else{
+			console.log("No Shared Worker");
+		}
 	}
 
 	
@@ -51,20 +61,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
 	    };
 
-	    /*var pluginApi = document.getElementById('phone');
-		var version=pluginApi.version;
-		var session = pluginApi.getSession('5549_7340');
-		session.authorize(authTicket,nodeID,'huc-dev.fonality.com');
-		var win = session.createFloatWindow;
-		var alert = session.alertAPI;
-		alert.initAlert('../../popup.html');
-		alert.setAlertSize(100,100);
-		alert.setLocation(100,100);
-
-		win.initWindow('../../popup.html');
-		win.setAlwaysOnTop(true);
-		*/
-	    worker.port.postMessage(events);
+	    
+	    if(isSWSupport){
+			worker.port.postMessage(events);
+	    }
 	};
 	
 	/**
@@ -141,10 +141,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	};
 	
     this.getFeed = function(feed) {
-        worker.port.postMessage({
-            "action": "feed_request",
-            "feed": feed
-        })
+        if(isSWSupport){
+			worker.port.postMessage({
+	            "action": "feed_request",
+	            "feed": feed
+	        });
+    	}
     };
     
     this.updateSettings = function(type, action, model) {

@@ -78,8 +78,8 @@
                   <div  class="RecentCallLogs"> 
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
                       <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
-                      <div class="RecentCallsHeader RecentFromTo">{{ formatIncoming(calllog,'From')}} </div>
-                      <div class="RecentCallsHeader RecentFromTo" >{{ formatIncoming(calllog,'To')}} </div>
+                      <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
+                      <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
                       <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
                     </div>
                   </div>

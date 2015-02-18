@@ -286,6 +286,12 @@ p {
   margin-right: auto;
   text-align: center;
 }
+.dial {
+  text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+  color: #91B139;
+}
 .TopBar {
   position: relative;
   width: 100%;
@@ -1378,21 +1384,39 @@ input.text {
   -webkit-border-radius: 3px;
   border: solid 1px #c7c7c7;
 }
-input.NewCall {
-  margin-top: 2px;
-  margin-left: 10px;
-  display: inline-block;
-  width: 305px;
-  height: 22px;
-  border: 1px solid #c2c2c2;
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  padding: 2px 5px;
+.Widget.CallLog .ListRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: .9em;
 }
-div.NewCall {
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-bottom: 10px;
+.Widget.CallLog .ListRow:nth-child(odd) {
+  background-color: #eee;
+}
+.Widget.CallLog .ListRow:hover {
+  background-color: #ddd;
+}
+.Widget.CallLog .ListRow > div {
+  flex: 1;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+.Widget.CallLog .ListRow > div:not(:first-child):not(.Name) {
+  font-size: .8em;
+}
+.Widget.CallLog .ListRow > div.Name {
+  text-align: left;
+  flex: 3;
+  color: #009cff;
+}
+.Widget.CallLog .ListRow > div.Phone {
+  text-decoration: underline;
+  color: #333;
+  flex: 3;
+}
+.Widget.CallLog .ListRow > div.Date {
+  flex: 3;
 }
 .Conference .ToolBar .XButton {
   width: auto !important;
@@ -4615,11 +4639,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CurrentDownload {
   height: auto;
   max-height: 100%;
-  width: auto;
-  margin: auto;
-  display: block;
-  padding-top: 50%;
-  /* position: absolute; */
 }
 .SearchContactOverlay {
   position: absolute;

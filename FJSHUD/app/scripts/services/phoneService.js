@@ -1,5 +1,9 @@
 hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', function($q, $rootScope, httpService,$compile) {
 
+	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="1" height="1"><param name="onload" value="onloadphone" ><param value="true" name="windowless"></object>'
+)($rootScope));
+
+
 	var phonePlugin = document.getElementById('phone');
 	var version = phonePlugin.version;
 	var session;
