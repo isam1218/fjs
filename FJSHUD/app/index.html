@@ -1,11 +1,12 @@
 <!doctype html>
+
+
 <html class="no-js" ng-app="fjshudApp">
   <head>
     <meta charset="utf-8">
     <title>Fonality HUDWeb</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
- 	<!--<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">-->
 
 	<link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
     <link rel="stylesheet" href="styles/main.css">
@@ -36,13 +37,16 @@
 			  tab_inverted: false
 			}]);
 		</script>
+	
+
   </head>
   <body  data-ng-controller="MainController" data-ng-click="onBodyClick()" flow-prevent-drop>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
+    
 	<div id="App">
+		
 		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" ng-controller="TopNavigationController"></div>
 
 		<div class="PanelWrapper">
@@ -124,18 +128,15 @@
         </div>
     </div>
 
-    <object id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute">
-            <param name="onload" value="onloadphone" />
-            <param name="debug" value="1" />
-    </object>
-
     <!--[if lt IE 9]>
 		<script src="../bower_components/es5-shim/es5-shim.js"></script>
 		<script src="../bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <!--bower components-->
+  
+    <!--bower components-->	
     <script src="../bower_components/angular/angular.js"></script>
+    
     <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
     <script src="../bower_components/json3/lib/json3.js"></script>
     <script src="../bower_components/angular-resource/angular-resource.js"></script>
@@ -160,6 +161,7 @@
 	<!--directives-->
     <script src="scripts/directives/searchContactsDirective.js"></script>
     <script src="scripts/directives/contextMenuDirective.js"></script>
+    <script src="scripts/directives/phoneDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>

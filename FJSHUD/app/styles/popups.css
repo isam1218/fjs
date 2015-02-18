@@ -43,6 +43,7 @@
 .Overlay .Foreground .Sections {
   flex: 1;
   overflow-y: auto;
+  height: inherit;
 }
 .Overlay .Foreground .Section {
   display: inline-block;
@@ -50,6 +51,7 @@
   max-width: 300px;
   vertical-align: top;
   font-size: .9em;
+  height: inherit;
 }
 .Overlay .Foreground .Section > div {
   margin-bottom: .5em;
@@ -170,6 +172,40 @@
   right: .25em;
   cursor: pointer;
 }
+.Overlay .AttachmentDownload {
+  background-color: #ccc;
+  border: 1px solid gray;
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+  height: inherit;
+}
+.Overlay .AttachmentDownload .ListRow:first-child .Delete {
+  display: none !important;
+}
+.Overlay .AttachmentDownload .ListRow:hover .Delete {
+  opacity: 1;
+}
+.Overlay .AttachmentDownload .ListRow .Delete {
+  background-color: #d72800;
+  border: 0;
+  border-radius: 2px;
+  padding: .25em .5em;
+  transition: .2s;
+  color: white;
+  opacity: 0;
+  position: absolute;
+  bottom: .25em;
+  right: .25em;
+  cursor: pointer;
+}
+.Overlay .AttachmentDownload .Downloadables:hover {
+  background-color: #f0f0ff;
+}
+.CurrentDownload {
+  height: auto;
+  max-height: 100%;
+}
 .SearchContactOverlay {
   position: absolute;
   top: 0;
@@ -283,7 +319,7 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

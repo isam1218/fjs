@@ -1,12 +1,48 @@
 hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval',
 	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval) {
 
+	var version = 0;
+	
 	$scope.showAttachments = false;
+	$scope.showDownloadAttachment = false;
 	$scope.upload = {};
+	$scope.glued = true;
+	$scope.loading = true;
 
-
+	$scope.downloadables = [];
+	$scope.currentDownload = {};
 	 $scope.showFileShareOverlay = function(toShow){
 		$scope.showAttachments = toShow;
+	}
+
+	 $scope.showDownloadAttachmentOverlay = function(toShow,imagetoDownload){
+		var i = 0;
+		for(i; i < $scope.messages.length;i++){
+			if($scope.messages[i].data.attachment){
+				addDownloadables($scope.messages[i].data.attachment);
+			}
+		}
+
+		$scope.currentDownload = imagetoDownload;
+
+		$scope.showDownloadAttachment = toShow;
+	}
+
+	$scope.selectCurrentDownload = function(download){
+		$scope.currentDownload = download;
+		$scope.$safeApply;
+	}
+
+	$scope.getOffsetDownload = function(index){
+		var nextIndex = $scope.downloadables.indexOf($scope.currentDownload) + index
+		if(nextIndex > $scope.downloadables.length - 1){
+			nextIndex = 0;
+		}else if(nextIndex < 0){
+			nextIndex = $scope.downloadables.length - 1;
+		}
+
+		$scope.currentDownload = $scope.downloadables[nextIndex];
+		
 	}
 
 	$scope.formate_date = function(time){
@@ -49,6 +85,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
     }
 
+
     $scope.uploadAttachments = function($files){
       	$files[0];
       	fileList = [];
@@ -62,7 +99,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
             'a.xpid':"",
             'a.archive':$scope.selectedArchiveOption.value,
             'a.retainKeys':"",
-            'a.taskId':"",
             'a.message':this.message,
             'a.callback':'postToParent',
             'a.audience':$scope.targetAudience,
@@ -86,8 +122,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		version = data.h_ver;
 		
 		$scope.loading = false;
-		$scope.messages = data.items;		
-		$scope.addDetails();
+		$scope.messages = data.items;
+		addDetails();
 	});
 
 
@@ -103,39 +139,25 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					break;
 				}
 			}
-			
+		
+
 			if (dupe) continue;
 			
 			var from = data[key].from.replace('contacts:', '');
 			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
 			
 			// only attach messages related to this user
-			if (from == $scope.contactID || to == $scope.contactID)
+			if (from == $scope.contactID || to == $scope.contactID){
 				$scope.messages.push(data[key]);
+				if(data[key].data.attachment){
+					addDownloadables(data[key].data.attachment);
+				}
+			}
+
 		}
 		
 		addDetails();
 	});
-
-	// apply name and avatar
-	$scope.addDetails = function() {
-		// wait for sync to catch up
-		contactService.getContacts().then(function(data) {
-			for (i = 0; i < $scope.messages.length; i++) {
-				for (key in data) {
-					if (data[key].xpid == $scope.messages[i].from.replace('contacts:', '')) {
-						$scope.messages[i].avatar = data[key].getAvatar(28);
-						$scope.messages[i].displayName = data[key].displayName;
-						break;
-					}
-				}
-			}
-			
-			$scope.$safeApply();
-		});
-	};
-
-
 	
 	$scope.sendMessage = function() {
 		if (this.message == '')
@@ -201,7 +223,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					if (data[key].xpid == $scope.messages[i].from.replace($scope.feed +':', '')) {
 						$scope.messages[i].avatar = data[key].getAvatar(28);
 						$scope.messages[i].displayName = data[key].displayName;
-						break;
+						
 					}
 				}
 			}
@@ -209,6 +231,24 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			$scope.$safeApply();
 		});
 	};
+	
+	var addDownloadables = function(attachments){
+		var i = 0;
+		for(i; i < attachments.length; i++){
+			isDupe = false;
+			for(j = 0; j < $scope.downloadables.length;j++){
+					if(attachments[i].xkey == $scope.downloadables[j].xkey){
+						isDupe = true;
+						break;
+					}
+			}
+			if(!isDupe){
+				$scope.downloadables.push(attachments[i]);		
+			}	
+		}
+	
+		
+	}
 
 	var chatLoop = $interval(function() {	
 		var scrollbox = document.getElementById('ListViewContent');
@@ -235,6 +275,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			});
 		}
 	}, 500);
+
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
     });	

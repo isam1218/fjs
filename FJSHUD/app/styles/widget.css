@@ -293,6 +293,8 @@
   border: 1px solid #ccc;
   display: inline-block;
   overflow: hidden;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 .AttachmentImg {
   max-width: 70px;
