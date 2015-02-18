@@ -8,8 +8,7 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'ngTouch',
     'flow',
-    'react',
-	'luegg.directives',
+    'luegg.directives',
 
 ]);
 
