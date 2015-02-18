@@ -1,6 +1,4 @@
 <!doctype html>
-
-
 <html class="no-js" ng-app="fjshudApp">
   <head>
     <meta charset="utf-8">
@@ -108,7 +106,7 @@
 
 			<ng-view class="WidgetPanel"></ng-view>
 
-			<div class="DockPanel"></div>
+			<div id="DockPanel" class="DockPanel" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
 		</div>
 	</div>
 
@@ -157,6 +155,7 @@
     <script src="scripts/filters/durationFilter.js"></script>
 
 	<!--directives-->
+    <script src="scripts/directives/dockResizerDirective.js"></script>
     <script src="scripts/directives/searchContactsDirective.js"></script>
     <script src="scripts/directives/contextMenuDirective.js"></script>
 
@@ -183,6 +182,7 @@
 
     <script src="scripts/controllers/ConferencesWidgetController.js"></script>
     <script src="scripts/controllers/ConferenceWidgetConversationController.js"></script>
+    <script src="scripts/controllers/ConferenceSingleController.js"></script>
 
     <script src="scripts/controllers/QueueWidgetController.js"></script>
     <script src="scripts/controllers/QueueWidgetAgentsController.js"></script>
@@ -200,7 +200,8 @@
     <script src="scripts/controllers/SearchWidgetController.js"></script>
     <script src="scripts/controllers/ZoomWidgetController.js"></script>
     <script src="scripts/controllers/ChatController.js"></script>
-    <script src="scripts/controllers/ConferenceSingleController.js"></script>
+    <script src="scripts/controllers/DockController.js"></script>
+	
 	<!--services-->
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/groupService.js"></script>
