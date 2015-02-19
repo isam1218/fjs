@@ -77,4 +77,17 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
     $rootScope.$broadcast('queues_updated', formatData());
   });
 
+  $rootScope.$on("queuemembercalls_synced", function (event, data) {
+    for (i = 0; i < queues.length; i++) {
+      for (key in data) {
+        if (data[key].xpid == queues[i].xpid) {
+          queues[i].callLogs = data[key];
+        }
+      }
+    }
+    $rootScope.$broadcast('queues_updated', formatData());
+  });
+
+
+
 }]);
