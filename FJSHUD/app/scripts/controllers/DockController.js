@@ -3,7 +3,6 @@ hudweb.controller('DockController', ['$scope', '$rootScope', 'HttpService', 'Con
 	
 	$scope.$on('settings_synced', function(event, data) {
 		for (key in data) {
-			console.error(data);
 			if (data[key].key == 'use_column_layout') {
 				// enable/disable grid layout
 				if (data[key].value == 'true') {

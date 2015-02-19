@@ -8,7 +8,13 @@ hudweb.directive('dragger', function() {
 				cursor: 'move',
 				cursorAt: { bottom: 0 },
 				stack: '#DockPanel .Element',
-				connectToSortable: "#DockPanel"
+				connectToSortable: "#DockPanel",
+				start: function() {
+					$('#DockPanel').addClass('Moving');
+				},
+				stop: function() {
+					$('#DockPanel').removeClass('Moving');
+				}
 			});
 		}
 	};
