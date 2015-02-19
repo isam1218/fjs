@@ -79,8 +79,8 @@
   -webkit-transition: all 0.1s linear;
 }
 .Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Queues .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -999,7 +999,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: 240px;
   height: 55px;
   border-radius: 4px;
   background-color: #fff;
@@ -1019,4 +1019,12 @@
 .Queues .QueueButtonToggle {
   width: 28px;
   height: 28px;
+}
+.Queues .WidgetStatEntry .Label {
+  width: 75px;
+  display: block;
+}
+.Queues .WidgetStatEntry .Value {
+  width: 75px;
+  display: block;
 }

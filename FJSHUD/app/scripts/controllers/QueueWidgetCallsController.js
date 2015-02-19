@@ -1,8 +1,7 @@
 hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', function($scope, $rootScope, $routeParams, myHttpService) {
   $scope.queueId = $routeParams.queueId;
   $scope.query = "";
-  $scope.sortField = "displayName";
-  $scope.sortReverse = false;
+
   $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
   $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];

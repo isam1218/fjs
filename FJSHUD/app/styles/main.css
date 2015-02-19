@@ -2601,7 +2601,7 @@ input.text {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: 240px;
   height: 55px;
   border-radius: 4px;
   background-color: #fff;
@@ -2621,6 +2621,14 @@ input.text {
 .Queues .QueueButtonToggle {
   width: 28px;
   height: 28px;
+}
+.Queues .WidgetStatEntry .Label {
+  width: 75px;
+  display: block;
+}
+.Queues .WidgetStatEntry .Value {
+  width: 75px;
+  display: block;
 }
 .SearchInputBox {
   position: absolute;
