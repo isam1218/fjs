@@ -1,7 +1,7 @@
 <div class="ToolBar ">
   <div class="SearchInputBox">
-    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text"
-                                                  onchange="onSearch(!event, this)"
+    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="searcn"
+                                                  ng-model="query"
                                                   x-webkit-speech=""
                                                   placeholder="Search"></div>
     <div class="SearchInputBoxStateButton">
@@ -34,7 +34,7 @@
 
   <div
     class="ListRow Table AvatarHoverArea"
-    data-ng-repeat="member in loggedInMembers | orderBy:sortField:sortReverse">
+    data-ng-repeat="member in loggedInMembers | filter: {name: query}">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 
@@ -50,7 +50,7 @@
 
   <div
     class="ListRow Table AvatarHoverArea"
-    data-ng-repeat="member in loggedOutMembers | orderBy:sortField:sortReverse">
+    data-ng-repeat="member in loggedOutMembers | filter: {name: query}">
 
     <div ng-include="'views/queues/QueueMemberSection.html'"></div>
 

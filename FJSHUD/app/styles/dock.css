@@ -1,0 +1,57 @@
+.DockPanel {
+  font-size: .8em;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.DockPanel .Element {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  min-height: 150px;
+  width: 160px;
+  background-color: #EBEBEB;
+  margin: 1em;
+}
+.DockPanel .Element:hover {
+  box-shadow: 0 0 5px gray;
+}
+.DockPanel .Element:hover .Scrollable {
+  overflow-y: auto;
+}
+.DockPanel .Element .Header {
+  background-color: #ECECEC;
+  padding: .25em;
+}
+.DockPanel .Element .Header > div {
+  display: inline-block;
+  vertical-align: top;
+}
+.DockPanel .Element .Scrollable {
+  flex: 1;
+  overflow-y: hidden;
+}
+.DockPanel .Element .Scrollable .SubHeader {
+  background-color: #D6D6D6;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid white;
+  text-align: center;
+  font-size: .95em;
+  padding: .25em;
+}
+.DockPanel .Element .Resizer {
+  background-color: #E2E3E3;
+  height: 12px;
+  cursor: n-resize;
+  text-align: center;
+}
+.DockPanel .Element .Resizer div {
+  background: url("../img/XIconSet-24x24.png") no-repeat 0px -30px;
+  height: 12px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: middle;
+}

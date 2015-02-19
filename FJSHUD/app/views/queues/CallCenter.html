@@ -38,9 +38,9 @@
 
     <!-- ng-views -->
     <div ng-if="selected == 'My Queue'" class="ListView WithToolBar"
-         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterMyQueueController"></div>
+         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController" ng-init="init(false, 'My Queue')"></div>
     <div ng-if="selected == 'All Queues'" class="ListView WithToolBar"
-         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController"></div>
+         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController"  ng-init="init(true, 'All Queues')"></div>
     <div ng-if="selected == 'My Status'" class="fj-content WidgetTabContent"
          ng-include="'views/queues/MyStatus.html'" ng-controller="CallCenterMyStatusController"></div>
 

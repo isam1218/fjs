@@ -122,7 +122,7 @@
   <div class="ListView WithToolBar QueueListView-false">
     <div class="fj-viewport" style="overflow: hidden;">
       <div class="fj-viewcontent"
-           data-ng-repeat="queue in queues">
+           data-ng-repeat="queue in queues | filter: {name: query}">
         <!--<div class="ListViewTopSpace"></div>-->
         <div>
           <div class="fj-scroll-content" style="top: 0px;">

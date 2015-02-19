@@ -1,12 +1,9 @@
 hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', function ($scope, $rootScope, $routeParams, myHttpService) {
   $scope.queueId = $routeParams.queueId;
   $scope.query = "";
-  $scope.sortField = "displayName";
-  $scope.sortReverse = false;
+
   $scope.contacts = [];
   $scope.queueMembers = [];
-  $scope.add = {};
-  $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
   myHttpService.getFeed('queues');
   myHttpService.getFeed('queue_members');
