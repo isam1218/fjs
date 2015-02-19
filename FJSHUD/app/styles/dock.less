@@ -1,12 +1,21 @@
 .DockPanel {
   font-size: .8em;
   overflow: hidden;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
+  
+  &.Grid {
+    column-width: 170px;
+    -webkit-column-width: 170px;
+    -moz-column-width: 170px;
+    column-gap: 5px;
+    -webkit-column-gap: 5px;
+    -moz-column-gap: 5px;
+  }
   
   .Element {
-	position: absolute;
-    display: flex;
+	position: relative;
+    display: inline-flex;
     flex-direction: column;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -20,6 +29,8 @@
 	  border: 2px dashed #ccc;
 	  opacity: .7;
 	  min-height: 0px;
+	  height: auto !important;
+	  box-shadow: 5px 5px 8px gray !important;
 	  
 	  .Scrollable, .Resizer {
 	    display: none;
