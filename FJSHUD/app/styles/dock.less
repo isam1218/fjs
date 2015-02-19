@@ -5,7 +5,7 @@
   -webkit-user-select: none;
   
   .Element {
-	position: relative;
+	position: absolute;
     display: flex;
     flex-direction: column;
     border-radius: 5px;
@@ -16,8 +16,18 @@
 	background-color: #EBEBEB;
 	margin: 1em;
 	
+	&.ui-draggable-dragging {
+	  border: 2px dashed #ccc;
+	  opacity: .7;
+	  min-height: 0px;
+	  
+	  .Scrollable, .Resizer {
+	    display: none;
+	  }
+	}
+	
 	&:hover {
-	  box-shadow: 0 0 5px gray;
+	  box-shadow: 0 0 8px gray;
 	  
 	  .Scrollable {
 	    overflow-y: auto;
