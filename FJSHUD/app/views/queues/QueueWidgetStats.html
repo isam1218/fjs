@@ -41,29 +41,34 @@
         <div class="ListLineContentCellIcon"></div>
         <div class="arrow None"></div>
       </div>
-      <div class="fj-hbox-space ListLineContentCell Name"><span>Agent Name</span>
 
-        <div class="arrow"></div>
+      <div ng-click="sortBy('name')" class="recent-selected-column fj-hbox-space ListLineContentCell Name">
+        <span>Queue Name</span>
+        <div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="fj-hbox-cell ListLineContentCell Duration"><span>Talk / Idle </span>
 
-        <div class="arrow"></div>
+      <div ng-click="sortBy('talkIdle')" class="recent-selected-column fj-hbox-space ListLineContentCell Duration">
+        <span>Talk / Idle</span>
+        <div ng-if="sortColumn == 'talkIdle'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="fj-hbox-cell ListLineContentCell Calls"><span>Calls</span>
 
-        <div class="arrow"></div>
+      <div ng-click="sortBy('calls')" class="recent-selected-column fj-hbox-space ListLineContentCell Calls">
+        <span>Calls</span>
+        <div ng-if="sortColumn == 'calls'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
 
-        <div class="arrow"></div>
+      <div ng-click="sortBy('avgTalk')" class="recent-selected-column fj-hbox-space ListLineContentCell AvgTalk">
+        <span>Avg Talk</span>
+        <div ng-if="sortColumn == 'avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
+
       <div class="fj-hbox-cell ListLineContentCell Twistie"></div>
     </div>
     <!--<div class="fj-scrollable ListView WithStatBar">-->
     <div class="ListView">
       <div class="fj-viewport" style="overflow: hidden;">
         <div class="fj-viewcontent"
-             data-ng-repeat="member in queueMembers | orderBy:sortField:sortReverse">
+             data-ng-repeat="member in queueMembers">
           <!--<div class="ListViewTopSpace"></div>-->
           <div class="">
             <div class="fj-scroll-content" style="top: 0px;">

@@ -1,15 +1,3 @@
-.Queues {
-  /*
-  .fj-stream
-  {
-    position : absolute;
-    left : 0px;
-    top : 0px;
-    right : 0px;
-    bottom : 0px;
-  }
-  */
-}
 .Queues .fj-content-items {
   position: absolute;
   left: 0px;
@@ -522,256 +510,6 @@
   left: 2px;
   top: 2px;
 }
-.Queues .ListRowTitle.Table {
-  position: relative;
-  top: 2px;
-  color: #000000;
-  font-weight: bold;
-}
-.Queues .LisrRowDesc.Table {
-  position: relative;
-  left: 5px;
-  color: #999;
-}
-.Queues .ListRow.Small .LisrRowDesc.Table {
-  font-size: 10px;
-}
-.Queues .ListRowStatus.Table {
-  position: relative;
-  top: 0;
-  left: 0;
-}
-.Queues .ListRow.Small .ListRowStatus.Table {
-  width: 60px;
-  text-align: center;
-  margin-left: 20px;
-}
-.Queues .ListRowStatusText.Table {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  text-align: center;
-  color: #999;
-}
-.Queues .ListRow.Small .ListRowStatusText.Table {
-  width: 70px;
-  height: 16px;
-  font-size: 10px;
-  line-height: 8px;
-  margin-left: 10px;
-}
-.Queues .ListRow.Small .ListRowOneValueColumn {
-  width: 70px;
-  text-align: center;
-}
-.Queues .ListRow {
-  position: relative;
-  height: 50px;
-  left: 0px;
-  right: 0px;
-  cursor: pointer;
-  overflow: hidden;
-  border-bottom: solid 1px #dee1e5;
-  background-color: #fff;
-  width: 100%;
-}
-.Queues .ListRow.ListRowOdd {
-  background-color: #f9f9f9;
-}
-.Queues .ListRow.ListRowLast {
-  border-bottom: solid 1px transparent;
-}
-.Queues .InlineList .ListRow.ListRowLast {
-  border-bottom-left-radius: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-}
-.Queues .InlineList .ListRow.ListRowFirst {
-  border-top-left-radius: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  -webkit-border-top-right-radius: 3px;
-}
-.Queues .Widget .ListRow,
-.Queues .Inbox .ListRow {
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  background-image: none;
-}
-.Queues .ListRow:hover {
-  background-color: #f0f0ff;
-}
-.Queues .ListRowSelected,
-.Queues .ListRow.selected .ListRowContent {
-  border-left: solid 3px #292;
-}
-.Queues .ListRow .Avatar {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-}
-.Queues .ListRowContent {
-  position: absolute;
-  top: 0px;
-  left: 50px;
-  right: 0px;
-  height: 50px;
-  border-left: solid 1px #dee1e5;
-}
-.Queues .ListRowTitle {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  height: 20px;
-  line-height: 20px;
-  font-size: 12px;
-  text-align: left;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  text-decoration: none;
-  color: #555;
-  white-space: nowrap;
-}
-.Queues .ListRowTitle .name {
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 13px;
-  color: #222;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3);
-}
-.Queues .ListRowTitle .name .details {
-  margin-right: 10px;
-  font-size: 11px;
-  color: #999;
-  float: right;
-}
-.Queues .ListRowTitle .link {
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #888;
-  font-weight: bold;
-  font-size: 11px;
-}
-.Queues .ListRowStatus {
-  position: absolute;
-  display: -webkit-box;
-  top: 25px;
-  left: 5px;
-  right: 5px;
-  height: 24px;
-  line-height: 24px;
-  color: #888;
-  font-size: 12px;
-  text-align: left;
-  text-overflow: ellipsis;
-  text-decoration: none;
-}
-.Queues .ListRowStatusIcon {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  max-width: 24px;
-  background-repeat: no-repeat;
-}
-.Queues .ListRowStatusIcon.CallStatus {
-  width: 40px;
-  max-width: 40px;
-}
-.Queues .ListRowStatusIcon.CallStatus .Avatar {
-  top: 7px;
-  left: auto;
-  right: -12px;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-}
-.Queues .ListRow:hover .ListRowStatusIcon.CallStatus .Avatar {
-  opacity: 1;
-  top: -3px;
-  right: -6px;
-}
-.Queues .ListRowStatusText {
-  height: 24px;
-  line-height: 24px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  margin-top: -25px;
-}
-.Queues .ListRowStatusText2 {
-  position: absolute;
-  top: 12px;
-  left: 0px;
-  right: 50px;
-  height: 25px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.Queues .ListRowStatusDate {
-  position: absolute;
-  top: -2px;
-  left: 0px;
-  right: 50px;
-  height: 25px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.Queues .ListRow .duration {
-  position: absolute;
-  top: 50%;
-  right: 5px;
-  font-size: 11px;
-  line-height: 15px;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px #fff;
-}
-.Queues .ListRow .duration.top {
-  top: 5px;
-}
-.Queues .ListRow .action-buttons {
-  position: absolute;
-  right: -7px;
-  top: 14px;
-}
-.Queues .ListLine {
-  position: relative;
-  width: 100%;
-  height: 24px;
-}
-.Queues .ListLineExpanded {
-  height: auto;
-}
-.Queues .ListLineContent {
-  position: relative;
-  width: 100%;
-  height: 24px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-}
-.Queues .ListLineContent:hover {
-  background-color: #ddd;
-}
-.Queues .ListLine:nth-child(odd) .ListLineContent {
-  background-color: #eee;
-}
-.Queues .ListLine:nth-child(odd) .ListLineContent:hover {
-  background-color: #ddd;
-}
-.Queues .ListLineExpanded .ListLineContent.ListLineContentTop,
-.Queues .ListLineExpanded .ListLine:nth-child(odd) .ListLineContent.ListLineContentTop,
-.Queues .ListLineExpanded:hover .ListLine:nth-child(odd) .ListLineContent.ListLineContentTop {
-  background-color: #c1ccda;
-}
-.Queues .ListLineExpanded .ListLineContent.ListLineContentTop:hover {
-  background-color: #adb7c4;
-}
 .Queues .ListLineContent.RecentStat,
 .Queues .ListLineContent.RecentStat:hover {
   position: relative;
@@ -783,34 +521,6 @@
   text-align: center;
   background-color: #f9f9f9;
   cursor: default;
-}
-.Queues .ListLineContentCell {
-  position: relative;
-  height: 20px;
-  line-height: 20px;
-  white-space: nowrap;
-  text-overflow: clip;
-  overflow: hidden;
-}
-.Queues .ListLineContentCell.Red {
-  color: red;
-}
-.Queues .ListLineContentCellIcon {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 24px;
-  height: 24px;
-}
-.Queues .ListLineContentCellTextWithIcon-true {
-  position: absolute;
-  left: 24px;
-  right: 0px;
-}
-.Queues .ListLineContentCellTextWithIcon-false {
-  position: absolute;
-  left: 4px;
-  right: 0px;
 }
 .Queues .ListLineContentCell.Status {
   width: 24px;
@@ -975,31 +685,11 @@
   left: 0px;
   top: 4px;
 }
-.Queues .LeftSideWidgetTabContent .DirectionArrow {
-  position: absolute;
-  left: 50%;
-  margin-left: -6px;
-}
-.Queues .Up .DirectionArrow {
-  bottom: 0px;
-  border-color: transparent transparent #729c00 transparent;
-}
-.Queues .ListLineContentCell.Up span,
-.Queues .ListLineContentCell.Down span {
-  color: #729C00;
-}
-.Queues .Down .DirectionArrow {
-  border-color: #729c00 transparent transparent transparent;
-  top: 0px;
-}
-.Queues .None .DirectionArrow {
-  display: none;
-}
 .Queues .WidgetStat {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: 240px;
   height: 55px;
   border-radius: 4px;
   background-color: #fff;
@@ -1019,4 +709,12 @@
 .Queues .QueueButtonToggle {
   width: 28px;
   height: 28px;
+}
+.Queues .WidgetStatEntry .Label {
+  width: 75px;
+  display: block;
+}
+.Queues .WidgetStatEntry .Value {
+  width: 75px;
+  display: inline-block;
 }

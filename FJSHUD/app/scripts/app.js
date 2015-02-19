@@ -8,8 +8,7 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'ngTouch',
     'flow',
-    'react',
-	'luegg.directives',
+    'luegg.directives',
 
 ]);
 
@@ -29,7 +28,7 @@ hudweb.config(function ($routeProvider) {
 		})
         .when('/callcenter', {
 			templateUrl: 'views/queues/CallCenter.html',
-			controller: 'CallCenterMyQueueController'
+			controller: 'CallCenterController'
 		})
         .when('/queue/:queueId', {
 			templateUrl: 'views/queues/QueueWidget.html',

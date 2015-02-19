@@ -1,7 +1,7 @@
 <div class="ToolBar Queues">
   <div class="SearchInputBox">
-    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="text"
-                                                  onchange="onSearch($event, $element)"
+    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search"
+                                                  ng-model="query"
                                                   x-webkit-speech=""
                                                   placeholder="Search"></div>
     <div class="SearchInputBoxStateButton">
@@ -89,31 +89,31 @@
 <div ng-if="!viewIcon" class="fj-content WidgetTabContent">
   <div>
     <div class="fj-hbox QueueTableHeader ListLineContent Header">
-      <div class="recent-selected-column fj-hbox-space ListLineContentCell Name">
+      <div ng-click="sortBy('name')" class="recent-selected-column fj-hbox-space ListLineContentCell Name">
         <span>Queue Name</span>
         <div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Waiting </span>
+      <div ng-click="sortBy('callsWaiting')"  class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Waiting </span>
 
-        <div ng-if="sortColumn == 'waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+        <div ng-if="sortColumn == 'callsWaiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="recent-selected-column fj-hbox-cell ListLineContentCell AvgWaiting"><span>Avg Wait </span>
+      <div ng-click="sortBy('avgWait')" class="recent-selected-column fj-hbox-cell ListLineContentCell AvgWaiting"><span>Avg Wait </span>
 
         <div ng-if="sortColumn == 'avgWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="recent-selected-column fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
+      <div ng-click="sortBy('avgTalk')" class="recent-selected-column fj-hbox-cell ListLineContentCell AvgTalk"><span>Avg. Talk</span>
 
         <div ng-if="sortColumn == 'avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Total</span>
+      <div ng-click="sortBy('total')" class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Total</span>
 
         <div ng-if="sortColumn == 'total'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Aband</span>
+      <div ng-click="sortBy('abandoned')" class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Aband</span>
 
         <div ng-if="sortColumn == 'abandoned'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
-      <div class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Active</span>
+      <div ng-click="sortBy('active')" class="recent-selected-column fj-hbox-cell ListLineContentCell Number"><span>Active</span>
 
         <div ng-if="sortColumn == 'active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
@@ -122,7 +122,7 @@
   <div class="ListView WithToolBar QueueListView-false">
     <div class="fj-viewport" style="overflow: hidden;">
       <div class="fj-viewcontent"
-           data-ng-repeat="queue in queues">
+           data-ng-repeat="queue in queues | filter: {name: query}">
         <!--<div class="ListViewTopSpace"></div>-->
         <div>
           <div class="fj-scroll-content" style="top: 0px;">
