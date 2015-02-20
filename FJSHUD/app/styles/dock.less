@@ -1,12 +1,33 @@
 .DockPanel {
+  margin-left: 10px;
   font-size: .8em;
   overflow: hidden;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
+  
+  &.Grid {
+    column-width: 170px;
+    -webkit-column-width: 170px;
+    -moz-column-width: 170px;
+    column-gap: 5px;
+    -webkit-column-gap: 5px;
+    -moz-column-gap: 5px;
+	
+	.Element {
+      position: relative !important;
+	}
+  }
+  
+  &.Moving {
+    border-width: 1px;
+    border-image: url("../img/marching-ants.gif") 8 repeat repeat;
+    -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+    -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  }
   
   .Element {
 	position: absolute;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -20,6 +41,8 @@
 	  border: 2px dashed #ccc;
 	  opacity: .7;
 	  min-height: 0px;
+	  height: auto !important;
+	  box-shadow: 5px 5px 8px gray !important;
 	  
 	  .Scrollable, .Resizer {
 	    display: none;
