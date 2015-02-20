@@ -1,9 +1,9 @@
 hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
 	$scope.grid = true;
-	$scope.gadgets = [];
+	$scope.gadgets = {};
 	
 	$scope.$on('settings_synced', function(event, data) {
-		$scope.gadgets = [];
+		$scope.gadgets = {};
 		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
@@ -15,7 +15,7 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 						
 						$('#DockPanel').sortable({
 							revert: 1,
-							handle: '.Header, .Scrollable'
+							handle: '.Header, .Content'
 						});
 					}
 					else {
@@ -35,24 +35,42 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 						data: {}
 					};
 					
+					// create new array for each type of gadget
+					if ($scope.gadgets[gadget.value.factoryId] === undefined)
+						$scope.gadgets[gadget.value.factoryId] = [];
+					
 					switch (gadget.value.factoryId) {
 						case 'GadgetContact':
 							gadget.data = contactService.getContact(gadget.value.entityId);
 							break;
 						case 'GadgetGroup':
 							gadget.data = groupService.getGroup(gadget.value.entityId);
+							
+							// get complete contact data
+							angular.forEach(gadget.data.members, function(obj, i) {
+								gadget.data.members[i] = contactService.getContact(obj.contactId);
+							});
+							
 							break;
 						case 'GadgetConferenceRoom':
 							gadget.data = conferenceService.getConference(gadget.value.entityId);
+							
+							// get complete contact data
+							angular.forEach(gadget.data.members, function(obj, i) {
+								gadget.data.members[i] = contactService.getContact(obj.contactId);
+							});
+							
 							break;
 						case 'GadgetQueueStat':
 							gadget.data = queueService.getQueue(gadget.value.entityId);
 							break;
 					}
 					
-					$scope.gadgets.push(gadget);
+					$scope.gadgets[gadget.value.factoryId].push(gadget);
 				}
 			}
+			
+			$scope.$safeApply();
 		});
 	});
 }]);

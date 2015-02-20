@@ -3,7 +3,7 @@ hudweb.directive('dragger', function() {
 		restrict: 'A',
 		link: function(scope, element, attrs) {			
 			$(element).draggable({
-				handle: '.Header, .Scrollable',
+				handle: '.Header, .Content',
 				containment: '#DockPanel',
 				cursor: 'move',
 				cursorAt: { bottom: 0 },

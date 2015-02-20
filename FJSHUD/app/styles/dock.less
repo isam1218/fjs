@@ -31,21 +31,20 @@
     display: inline-flex;
     flex-direction: column;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #aaa;
 	overflow: hidden;
-	min-height: 150px;
 	width: 160px;
 	background-color: #EBEBEB;
 	margin: 1em;
 	
 	&.ui-draggable-dragging {
-	  border: 2px dashed #ccc;
+	  border: 2px dashed #aaa;
 	  opacity: .7;
-	  min-height: 0px;
+	  min-height: 0px !important;
 	  height: auto !important;
 	  box-shadow: 5px 5px 8px gray !important;
 	  
-	  .Scrollable, .Resizer {
+	  .Content, .Resizer {
 	    display: none;
 	  }
 	}
@@ -53,7 +52,7 @@
 	&:hover {
 	  box-shadow: 0 0 8px gray;
 	  
-	  .Scrollable {
+	  .Content {
 	    overflow-y: auto;
 	  }
 	}
@@ -68,7 +67,7 @@
 	  }
 	}
 	
-	.Scrollable {
+	.Content {
 	  flex: 1;
 	  overflow-y: hidden;
 	  

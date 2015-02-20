@@ -1,18 +1,102 @@
-<div class="Gadget" ng-repeat="gadget in gadgets" dragger>
+<!-- standard gadgets -->
+<div class="Gadget" ng-repeat="gadget in gadgets.GadgetUserQueues" dragger>
 	<div class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
-			<div>{{ ::gadget.data.name ? gadget.data.name : (gadget.data.displayName ? gadget.data.displayName : gadget.value.factoryId) }}</div>
+			<div>My Queues</div>
 			<div class="Subtitle">Not an agent</div>
 		</div>
 	</div>
-	<div class="Scrollable">
-		<div class="SubHeader">
-			My Queues
-		</div>
-		<div class="List">
-			{{ JSON.stringify(gadget.data) }}
+		
+	<div class="Content">
+		<div class="SubHeader">My Queues</div>
+	</div>
+	
+	<resizer></resizer>
+</div>
+
+<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" dragger>
+	<div class="Header">
+		<div class="Icon XIcon24-Speaker-On"></div>
+		<div class="Title">
+			<div>Parked Calls</div>
+			<div class="Subtitle"></div>
 		</div>
 	</div>
+</div>
+
+<!-- contacts -->
+<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" dragger>
+	<div class="Header">
+		<div class="Icon XIcon24-Speaker-On"></div>
+		<div class="Title">
+			<div>{{ ::gadget.data.displayName }}</div>
+			<div class="Subtitle"></div>
+		</div>
+	</div>
+</div>
+
+<!-- groups -->
+<div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
+	<div class="Header">
+		<div class="Icon XIcon24-Speaker-On"></div>
+		<div class="Title">
+			<div>{{ ::gadget.data.name }}</div>
+			<div class="Subtitle"></div>
+		</div>
+	</div>
+	
+	<div class="Content">
+		<div class="SubHeader">Members</div>
+		
+		<div class="List">
+			<div ng-repeat="member in gadget.data.members">
+				{{ member.displayName }}
+			</div>
+		</div>
+	</div>
+	
 	<resizer></resizer>
+</div>
+
+<!-- conferences -->
+<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" dragger>
+	<div class="Header">
+		<div class="Icon XIcon24-Speaker-On"></div>
+		<div class="Title">
+			<div>{{ ::gadget.data.name }}</div>
+			<div class="Subtitle"></div>
+		</div>
+	</div>
+	
+	<div class="Content">
+		<div class="SubHeader">Members</div>
+		
+		<div class="List">
+			<div ng-repeat="member in gadget.data.members">
+				{{ member.displayName }}
+			</div>
+			
+			<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
+				Room is free and you can do it...
+				<input type="button" value="Join!" class="XButton" />
+			</div>
+		</div>
+	</div>
+	
+	<resizer></resizer>
+</div>
+
+<!-- queues -->
+<div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
+	<div class="Header">
+		<div class="Icon XIcon24-Speaker-On"></div>
+		<div class="Title">
+			<div>{{ ::gadget.data.name }}</div>
+			<div class="Subtitle"></div>
+		</div>
+	</div>
+	
+	<div class="Content">
+	</div>
 </div>

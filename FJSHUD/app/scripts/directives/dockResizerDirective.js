@@ -3,7 +3,10 @@ hudweb.directive('resizer', function() {
 		restrict: 'E',
 		replace: true,
 		template: '<div class="Resizer"><div></div></div>',
-		link: function(scope, element, attrs) {			
+		link: function(scope, element, attrs) {
+			element.parent().css('height', '150px');
+			element.parent().css('min-height', '150px');
+			
 			element.bind('mousedown', function() {
 				document.body.onmousemove = function(e) {
 					// prevent getting too big
