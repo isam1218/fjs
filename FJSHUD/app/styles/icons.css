@@ -23,10 +23,25 @@
 .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
 }
-.AvatarNormal,
+.AvatarNormal {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  line-height: 0px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
 .AvatarNormal img {
-  width: 2.50em;
-  height: 2.50em;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 38px;
+  width: 38px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
 }
 .AvatarBig,
 .AvatarBig img {
@@ -35,8 +50,8 @@
 }
 .AvatarSmall,
 .AvatarSmall img {
-  width: 1.9em;
-  height: 1.9em;
+  width: 40px;
+  height: 40px;
 }
 .AvatarApp {
   width: 40px;

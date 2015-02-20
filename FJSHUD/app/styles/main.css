@@ -257,7 +257,7 @@ p {
 .footnote {
   font-size: .6em;
   font-style: italic;
-  font-color: #ccc;
+  color: #ccc;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -560,13 +560,20 @@ p {
 }
 .ToolBar {
   position: relative;
-  padding: 0 5px;
+  padding: 0;
+  /* 0  5px */
   border-bottom: solid 1px #ccc;
   height: 40px;
+  width: 95.3%;
+  margin-left: 10px;
 }
 .ToolBar .XButton {
   float: right;
   margin: 5px;
+}
+.ToolBar .XButton.XSortButton {
+  margin-top: 2px;
+  width: 150px;
 }
 .Widget.Contacts .details {
   float: right;
@@ -911,6 +918,26 @@ p {
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  top: 50px;
+  right: 0px;
+}
+.Widget .ListRow {
+  -webkit-border-radius: 3px;
+}
+.Widget .ListView {
+  position: relative;
+  left: 0;
+  right: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+.Widget .SearchInputBox {
+  left: 2px;
+  top: 2px;
+  width: 160px;
 }
 .WidgetHeader {
   position: relative;
@@ -1058,29 +1085,20 @@ p {
   display: inline-block;
   font-weight: bold;
 }
-.Widget .ListView {
-  position: relative;
-  left: 0;
-  right: 0;
-  flex: 1;
-  overflow-y: auto;
-}
-.Widget .SearchInputBox {
-  left: 2px;
-  top: 4px;
-  width: 160px;
-}
 .WidgetTabBar {
-  position: relative;
-  margin: 0;
-  left: 0;
-  right: 0;
-  height: 2.1em;
+  position: absolute;
+  margin: 0px;
+  left: 0px;
+  top: 10px;
+  right: 0px;
+  height: 33px;
   border-bottom: solid 1px #729c00;
   border-top: solid 1px #e0e0e0;
   vertical-align: bottom;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#eeeeee));
   background: #fefefe linear-gradient(#fefefe, #eeeeee);
   user-select: none;
+  -webkit-user-select: none;
 }
 .WidgetTabBarButton {
   position: relative;
@@ -1678,8 +1696,8 @@ input.text {
   -webkit-transition: all 0.1s linear;
 }
 .Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Queues .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -2773,6 +2791,10 @@ input.text.ChatInputBoxInput,
 .highlighted.found {
   background-color: orange !important;
 }
+.ListViewTopSpace {
+  height: 9px;
+  width: 100%;
+}
 .ListLineContent {
   position: relative;
   width: 100%;
@@ -2910,6 +2932,7 @@ input.text.ChatInputBoxInput,
 }
 .ListRow {
   position: relative;
+  height: 50px;
   left: 0;
   right: 0;
   cursor: pointer;
@@ -2921,6 +2944,7 @@ input.text.ChatInputBoxInput,
 }
 .ListRow:hover .Remove {
   display: block;
+  background-color: #f0f0ff;
 }
 .ListRow .Remove {
   position: absolute;
@@ -2933,8 +2957,15 @@ input.text.ChatInputBoxInput,
   display: none;
 }
 .ListRow .Avatar {
-  position: relative;
-  margin: 5px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.ListRow .ListRowFirst {
+  -webkit-border-radius: 3px;
+}
+.Inbox .ListRow {
+  -webkit-border-radius: 3px;
 }
 .ListRowTitle .link {
   height: 20px;
@@ -3590,6 +3621,12 @@ input.text.ChatInputBoxInput,
   margin-top: 0px;
   display: inline-block;
 }
+.ListRowOdd {
+  background-color: #f9f9f9;
+}
+.ListRowLast {
+  border-bottom: 1px solid #ccc !important;
+}
 option {
   text-align: center;
   padding-left: 20px;
@@ -3613,8 +3650,6 @@ input[type="text"],
 input[type="email"],
 input[type="search"],
 input[type="tel"] {
-  /*padding:5px;*/
-  /*height:16px;*/
   border-radius: 2px;
   outline: none;
 }
@@ -3636,6 +3671,9 @@ input[type="tel"] {
   color: #333;
   text-shadow: 0 1px 0 #fff;
   vertical-align: top;
+  /* green */
+  /* blue */
+  /* red */
 }
 .XButton:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
@@ -3645,13 +3683,16 @@ input[type="tel"] {
 }
 .XButton.XButtonGreen {
   background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  text-shadow: none;
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#3c9c00), to(#328400));
+  background-color: #3c9c00;
   color: #e8e8e8;
   border: 1px solid rgba(155, 155, 155, 0.3);
-  text-shadow: none;
+  transition: all .3s;
+  -webkit-transition: all .3s;
 }
-.XButton.XButtonGreen:hover,
-.XButton.XButtonBlue:hover,
-.XButton.XButtonRed:hover {
+.XButton.XButtonGreen:hover {
   border: 1px solid rgba(0, 0, 0, 0.3);
   color: #fff;
   text-shadow: 0 -1px 0 #000000;
@@ -3779,9 +3820,6 @@ input[type="tel"] {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-.ToolBar .XButton.XSortButton {
-  width: 150px;
 }
 .XInputText {
   border-radius: 3px;
@@ -4012,10 +4050,25 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
 }
-.AvatarNormal,
+.AvatarNormal {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  line-height: 0px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
 .AvatarNormal img {
-  width: 2.50em;
-  height: 2.50em;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 38px;
+  width: 38px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
 }
 .AvatarBig,
 .AvatarBig img {
@@ -4024,8 +4077,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .AvatarSmall,
 .AvatarSmall img {
-  width: 1.9em;
-  height: 1.9em;
+  width: 40px;
+  height: 40px;
 }
 .AvatarApp {
   width: 40px;
@@ -4517,7 +4570,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -4800,17 +4853,21 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-size: 12px;
 }
 .vmsection {
-  margin: 10px 10px 10px 10px;
-  border: 1px solid #ccc;
+  margin: 0px 10px;
+  border: 0px;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  width: 96%;
   height: 50px;
 }
 .vmsection .vmavatarsection {
   -webkit-box-flex: 0;
-  position: relative;
-  width: 50px;
-  height: 100%;
+  position: absolute;
   display: flex;
   float: left;
+  top: 5px;
+  left: 5px;
 }
 .vmsection .vmavatarsection .vmavatar {
   position: absolute;
@@ -4825,6 +4882,73 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   padding-left: 10px;
   display: block;
   -webkit-box-flex: 1;
+  border-left: 1px solid #ccc;
+  margin-left: 50px;
+  padding: 5px;
+  height: 100%;
+}
+.vmsection .vminfo .displayName {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  line-height: 20px;
+  font-size: 12px;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  color: #555;
+  white-space: nowrap;
+}
+.vmsection .vminfo .displayName .ListDisplayName span {
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 13px;
+  color: #222;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3);
+}
+.vmsection .vminfo .displayName .vmalternate .vmtime {
+  opacity: 1;
+  margin-left: 15px;
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #888;
+  font-weight: bold;
+  font-size: 11px;
+}
+.vmsection .vminfo .footnote {
+  position: relative;
+  margin-top: 20px;
+}
+.vmsection:hover {
+  background-color: #f0f0ff;
+}
+.vmsection:hover .vmcallbtn {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+  visibility: visible;
+  height: 26px;
+  width: 40px;
+  text-align: center;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmsection:hover .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 .vmfootnote {
   display: inline-block;
@@ -4860,6 +4984,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   visibility: visible;
   position: relative;
   font-size: 11px;
+  font-weight: bold;
 }
 .vmlabel {
   text-align: center;
@@ -4881,9 +5006,21 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border: 1px solid rgba(155, 155, 155, 0.3);
   text-shadow: none;
   visibility: visible;
-  height: 30px;
-  width: 60px;
+  height: 26px;
+  width: 40px;
+  text-align: center;
   border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmalternate:hover .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 .vmalternate:hover .vmtime {
   visibility: hidden;

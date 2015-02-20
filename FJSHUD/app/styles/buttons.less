@@ -19,9 +19,7 @@ textarea {
   position: relative;
 }
 
-input[type="text"], input[type="email"], input[type="search"], input[type="tel"] {
-  /*padding:5px;*/
-  /*height:16px;*/
+input[type="text"], input[type="email"], input[type="search"], input[type="tel"] {  
   border-radius:2px;
   outline: none;
 }
@@ -43,43 +41,55 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   background: #fefefe linear-gradient(#fefefe, #ebebeb);
   color: #333;
   text-shadow: 0 1px 0 #fff;
-  vertical-align: top;
-}
+  vertical-align: top;  
 
-
-
-.XButton:hover {
-  background: #fefefe linear-gradient(#fefefe, #ddd);
-  border: 1px solid rgba(0,0,0,0.3);
-  color: #222;
-  text-shadow : 0 1px 0 #fff;
-}
-
-.XButton.XButtonGreen {
-  background: #3c9c00 linear-gradient(#3c9c00, #328400);
-  color: #e8e8e8;
-  border: 1px solid rgba(155,155,155,0.3);
-  text-shadow: none;
-}
-
-.XButton.XButtonGreen:hover, .XButton.XButtonBlue:hover, .XButton.XButtonRed:hover {
-  border: 1px solid rgba(0,0,0,0.3);
-  color: #fff;
-  text-shadow: 0 -1px 0 #000;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-}
-.XButton.XButtonBlue {
-  background: #0077f1 linear-gradient(#0077f1, #006fe1);
-  color: #e8e8e8;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
-  border: 1px solid rgba(155,155,155,0.3);
-}
-
-.XButton.XButtonRed {
-  background: #d72800 linear-gradient(#d72800, #b72200);
-  color: #e8e8e8;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
-  border: 1px solid rgba(155,155,155,0.3);
+  &:hover {
+      background: #fefefe linear-gradient(#fefefe, #ddd);
+      border: 1px solid rgba(0,0,0,0.3);
+      color: #222;
+      text-shadow : 0 1px 0 #fff;
+  }
+  /* green */
+  &.XButtonGreen {
+      background: #3c9c00 linear-gradient(#3c9c00, #328400);
+      color: #e8e8e8;
+      border: 1px solid rgba(155,155,155,0.3);
+      text-shadow: none;
+      height: 26px;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#3c9c00), to(#328400));
+      background-color: #3c9c00;
+      color: #e8e8e8;
+      border: 1px solid rgba(155,155,155,0.3);
+      transition: all .3s;
+      -webkit-transition: all .3s;
+      
+      &:hover{
+        border: 1px solid rgba(0,0,0,0.3);
+        color: #fff;
+        text-shadow: 0 -1px 0 #000;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+      }
+  }
+  /* blue */
+  &.XButtonBlue {
+      background: #0077f1 linear-gradient(#0077f1, #006fe1);
+      color: #e8e8e8;
+      text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+      border: 1px solid rgba(155,155,155,0.3);
+      &:hover{
+        &:extend(.XButtonGreen:hover);
+      }
+  }
+  /* red */
+  &.XButtonRed {
+      background: #d72800 linear-gradient(#d72800, #b72200);
+      color: #e8e8e8;
+      text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+      border: 1px solid rgba(155,155,155,0.3);
+      &:hover{
+        &:extend(.XButtonGreen:hover);
+      }
+  }
 }
 
 .XButtonMedium.disabled-true span,
@@ -212,10 +222,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   white-space : nowrap;
   overflow : hidden;
 }
-.ToolBar .XButton.XSortButton
-{
-  width : 150px;
-}
+
 .XInputText {
   border-radius: 3px;
   padding: 3px;
