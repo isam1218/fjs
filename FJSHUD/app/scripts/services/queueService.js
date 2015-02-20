@@ -1,11 +1,24 @@
 hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($rootScope, $q, httpService) {
+  var deferred = $q.defer();	
   var queues = [];
+  
+  this.getQueue = function(xpid) {
+	for(queue in queues){
+		if(queues[queue].xpid == xpid){
+			return queues[queue];
+		}
+	}
+  };
 
   this.getQueues = function () {
-    return queues;
+	// waits until data is present before sending back
+	return deferred.promise;
   };
 
   var formatData = function () {
+	if (queues.length > 0)
+	  deferred.resolve(queues);
+		
     // format data that controller needs
     return {
       queues: queues

@@ -1,8 +1,8 @@
-<div class="Element" dragger>
+<div class="Gadget" ng-repeat="gadget in gadgets" dragger>
 	<div class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
-			<div>My Queues</div>
+			<div>{{ ::gadget.data.name ? gadget.data.name : (gadget.data.displayName ? gadget.data.displayName : gadget.value.factoryId) }}</div>
 			<div class="Subtitle">Not an agent</div>
 		</div>
 	</div>
@@ -11,22 +11,7 @@
 			My Queues
 		</div>
 		<div class="List">
-			No queues...
-		</div>
-	</div>
-	<resizer></resizer>
-</div>
-
-<div class="Element" dragger>
-	<div class="Header">
-		Parked Calls
-	</div>
-	<div class="Scrollable">
-		<div class="SubHeader">
-		
-		</div>
-		<div class="List">
-	
+			{{ JSON.stringify(gadget.data) }}
 		</div>
 	</div>
 	<resizer></resizer>

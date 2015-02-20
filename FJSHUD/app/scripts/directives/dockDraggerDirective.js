@@ -7,7 +7,7 @@ hudweb.directive('dragger', function() {
 				containment: '#DockPanel',
 				cursor: 'move',
 				cursorAt: { bottom: 0 },
-				stack: '#DockPanel .Element',
+				stack: '#DockPanel .Gadget',
 				connectToSortable: "#DockPanel",
 				start: function() {
 					$('#DockPanel').addClass('Moving');
