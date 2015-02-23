@@ -21,8 +21,6 @@ input[type="text"],
 input[type="email"],
 input[type="search"],
 input[type="tel"] {
-  /*padding:5px;*/
-  /*height:16px;*/
   border-radius: 2px;
   outline: none;
 }
@@ -44,6 +42,9 @@ input[type="tel"] {
   color: #333;
   text-shadow: 0 1px 0 #fff;
   vertical-align: top;
+  /* green */
+  /* blue */
+  /* red */
 }
 .XButton:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
@@ -53,13 +54,16 @@ input[type="tel"] {
 }
 .XButton.XButtonGreen {
   background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  text-shadow: none;
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#3c9c00), to(#328400));
+  background-color: #3c9c00;
   color: #e8e8e8;
   border: 1px solid rgba(155, 155, 155, 0.3);
-  text-shadow: none;
+  transition: all .3s;
+  -webkit-transition: all .3s;
 }
-.XButton.XButtonGreen:hover,
-.XButton.XButtonBlue:hover,
-.XButton.XButtonRed:hover {
+.XButton.XButtonGreen:hover {
   border: 1px solid rgba(0, 0, 0, 0.3);
   color: #fff;
   text-shadow: 0 -1px 0 #000000;
@@ -187,9 +191,6 @@ input[type="tel"] {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-.ToolBar .XButton.XSortButton {
-  width: 150px;
 }
 .XInputText {
   border-radius: 3px;

@@ -1,27 +1,50 @@
 .DockPanel {
+  margin-left: 10px;
   font-size: .8em;
   overflow: hidden;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
   
-  .Element {
+  &.Grid {
+    column-width: 170px;
+    -webkit-column-width: 170px;
+    -moz-column-width: 170px;
+    column-gap: 5px;
+    -webkit-column-gap: 5px;
+    -moz-column-gap: 5px;
+	overflow: visible;
+	
+	.Gadget {
+      position: static;
+	}
+  }
+  
+  &.Moving {
+    border-width: 1px;
+    border-image: url("../img/marching-ants.gif") 8 repeat repeat;
+    -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+    -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  }
+  
+  .Gadget {
 	position: absolute;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #aaa;
 	overflow: hidden;
-	min-height: 150px;
 	width: 160px;
 	background-color: #EBEBEB;
 	margin: 1em;
 	
 	&.ui-draggable-dragging {
-	  border: 2px dashed #ccc;
+	  border: 2px dashed #aaa;
 	  opacity: .7;
-	  min-height: 0px;
+	  min-height: 0px !important;
+	  height: auto !important;
+	  box-shadow: 5px 5px 8px gray !important;
 	  
-	  .Scrollable, .Resizer {
+	  .Content, .Resizer {
 	    display: none;
 	  }
 	}
@@ -29,7 +52,7 @@
 	&:hover {
 	  box-shadow: 0 0 8px gray;
 	  
-	  .Scrollable {
+	  .Content {
 	    overflow-y: auto;
 	  }
 	}
@@ -37,6 +60,8 @@
     .Header {
 	  background-color: #ECECEC;
 	  padding: .25em;
+	  cursor: pointer;
+	  text-decoration: none;
 	  
 	  & > div {
 	    display: inline-block;
@@ -44,7 +69,7 @@
 	  }
 	}
 	
-	.Scrollable {
+	.Content {
 	  flex: 1;
 	  overflow-y: hidden;
 	  

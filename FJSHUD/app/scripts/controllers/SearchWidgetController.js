@@ -31,14 +31,16 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 			}
 		});
 		
+		queueService.getQueues().then(function(data) {
+			for (key in data) {
+				if (data[key].name.toLowerCase().indexOf(query) != -1)
+					$scope.queues.push(data[key]);
+			}
+		});
+		
 		angular.forEach(conferenceService.getConferences(), function(obj) {
 			if (obj.name.toLowerCase().indexOf(query) != -1)
 				$scope.conferences.push(obj);
-		});
-		
-		angular.forEach(queueService.getQueues(), function(obj) {
-			if (obj.name.toLowerCase().indexOf(query) != -1)
-				$scope.queues.push(obj);
 		});
 	};
 	

@@ -1,3 +1,7 @@
+.ListViewTopSpace {
+  height: 9px;
+  width: 100%;
+}
 .ListLineContent {
   position: relative;
   width: 100%;
@@ -157,6 +161,7 @@
 
 .ListRow {
   position: relative;
+  height: 50px;
   left: 0;
   right: 0;
   cursor: pointer;
@@ -168,6 +173,7 @@
   
   &:hover .Remove {
     display: block;
+    background-color: #f0f0ff;
   }
   
   .Remove {
@@ -180,11 +186,20 @@
 	z-index: 5;
 	display: none;
   }
-}
+  
+  .Avatar {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+  
+  .ListRowFirst{
+    -webkit-border-radius : 3px;
+  }   
+ } 
 
-.ListRow .Avatar {
-  position: relative;
-  margin:5px;
+.Inbox .ListRow{
+    -webkit-border-radius : 3px;
 }
 
 .ListRowTitle .link {
@@ -968,4 +983,11 @@
   padding-left: 5px;
   margin-top: 0px;
   display:inline-block;
+}
+
+.ListRowOdd {
+    background-color: #f9f9f9;
+}
+.ListRowLast{
+    border-bottom: 1px solid #ccc !important;
 }

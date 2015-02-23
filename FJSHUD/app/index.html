@@ -106,7 +106,7 @@
 
 			<ng-view class="WidgetPanel"></ng-view>
 
-			<div id="DockPanel" class="DockPanel" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
+			<div id="DockPanel" class="DockPanel" ng-class="{'Grid': grid}" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
 		</div>
 	</div>
 
@@ -170,32 +170,28 @@
     <script src="scripts/controllers/LocationsController.js"></script>
     <script src="scripts/controllers/ContextMenuController.js"></script>
 
-    <script src="scripts/controllers/ConversationWidgetController.js"></script>
-    <script src="scripts/controllers/ConversationWidgetChatController.js"></script>
-    <script src="scripts/controllers/ConversationWidgetGroupsController.js"></script>
-    <script src="scripts/controllers/ConversationWidgetQueuesController.js"></script>
-    <script src="scripts/controllers/ConversationWidgetCallLogController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetGroupsController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetQueuesController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetCallLogController.js"></script>
 
-    <script src="scripts/controllers/GroupsController.js"></script>
-    <script src="scripts/controllers/GroupSingleController.js"></script>
-    <script src="scripts/controllers/GroupSingleChatController.js"></script>
-    <script src="scripts/controllers/GroupSingleMembersController.js"></script>
-    <script src="scripts/controllers/GroupSinglePageController.js"></script>
+    <script src="scripts/controllers/group/GroupsController.js"></script>
+    <script src="scripts/controllers/group/GroupSingleController.js"></script>
+    <script src="scripts/controllers/group/GroupSingleMembersController.js"></script>
+    <script src="scripts/controllers/group/GroupSinglePageController.js"></script>
 
-    <script src="scripts/controllers/ConferencesWidgetController.js"></script>
-    <script src="scripts/controllers/ConferenceWidgetConversationController.js"></script>
-    <script src="scripts/controllers/ConferenceSingleController.js"></script>
+    <script src="scripts/controllers/conference/ConferencesWidgetController.js"></script>
+    <script src="scripts/controllers/conference/ConferenceSingleController.js"></script>
 
-    <script src="scripts/controllers/QueueWidgetController.js"></script>
-    <script src="scripts/controllers/QueueWidgetAgentsController.js"></script>
-    <script src="scripts/controllers/QueueWidgetStatsController.js"></script>
-    <script src="scripts/controllers/QueueWidgetCallsController.js"></script>
-    <script src="scripts/controllers/QueueWidgetCallLogController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetAgentsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetStatsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetCallsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetCallLogController.js"></script>
 
-    <script src="scripts/controllers/CallsRecordingsController.js"></script>
-    <script src="scripts/controllers/CallCenterController.js"></script>
-    <!--<script src="scripts/controllers/CallCenterMyQueueController.js"></script>-->
-    <script src="scripts/controllers/CallCenterMyStatusController.js"></script>
+    <script src="scripts/controllers/callcenter/CallsRecordingsController.js"></script>
+    <script src="scripts/controllers/callcenter/CallCenterController.js"></script>
+    <script src="scripts/controllers/callcenter/CallCenterMyStatusController.js"></script>
 
     <script src="scripts/controllers/MeWidgetController.js"></script>
     <script src="scripts/controllers/VoicemailsController.js"></script>
