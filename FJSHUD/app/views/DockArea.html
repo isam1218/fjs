@@ -10,6 +10,15 @@
 		
 	<div class="Content">
 		<div class="SubHeader">My Queues</div>
+		
+		<div class="List">
+			<div ng-repeat="queue in gadget.data">
+				{{ queue.name }}
+			</div>
+			<div ng-if="gadget.data.length == 0">
+				No queues...
+			</div>
+		</div>
 	</div>
 	
 	<resizer></resizer>
