@@ -3,11 +3,11 @@ hudweb.directive('dragger', function() {
 		restrict: 'A',
 		link: function(scope, element, attrs) {			
 			$(element).draggable({
-				handle: '.Header, .Scrollable',
+				handle: '.Header, .Content',
 				containment: '#DockPanel',
 				cursor: 'move',
 				cursorAt: { bottom: 0 },
-				stack: '#DockPanel .Element',
+				stack: '#DockPanel .Gadget',
 				connectToSortable: "#DockPanel",
 				start: function() {
 					$('#DockPanel').addClass('Moving');
