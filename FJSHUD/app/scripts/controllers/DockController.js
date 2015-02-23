@@ -45,25 +45,20 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 							break;
 						case 'GadgetGroup':
 							gadget.data = groupService.getGroup(gadget.value.entityId);
-							
-							// get complete contact data
-							angular.forEach(gadget.data.members, function(obj, i) {
-								gadget.data.members[i] = contactService.getContact(obj.contactId);
-							});
-							
 							break;
 						case 'GadgetConferenceRoom':
-							gadget.data = conferenceService.getConference(gadget.value.entityId);
-							
-							// get complete contact data
-							angular.forEach(gadget.data.members, function(obj, i) {
-								gadget.data.members[i] = contactService.getContact(obj.contactId);
-							});
-							
+							gadget.data = conferenceService.getConference(gadget.value.entityId);							
 							break;
 						case 'GadgetQueueStat':
 							gadget.data = queueService.getQueue(gadget.value.entityId);
 							break;
+					}
+					
+					if (gadget.data.members) {	
+						// get complete contact data
+						angular.forEach(gadget.data.members, function(obj, i) {
+							gadget.data.members[i] = contactService.getContact(obj.contactId);
+						});
 					}
 					
 					$scope.gadgets[gadget.value.factoryId].push(gadget);
