@@ -64,7 +64,7 @@
 }
 
 .WidgetBody {
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
   flex: 1;
@@ -75,6 +75,11 @@
     .ListLineContentCell {
       display:inline-block;
       width:auto !important;
+    }
+    
+    .WidgetBody{
+        position: relative;
+        clear: both;
     }
   }
 }
@@ -194,6 +199,8 @@
   font-weight: normal;
   letter-spacing: 1px;
   background-image: linear-gradient(#fefefe, #ebebeb);
+  position: relative;
+  clear: both;
 }
 
 .WidgetStat {
@@ -227,7 +234,7 @@
 }
 
 .WidgetTabBar {  
-  position: absolute;
+  position: relative;
   margin: 0px;
   left: 0px;
   top: 10px;
@@ -360,3 +367,32 @@
   max-width:70px;
   max-height:70px;
 }
+
+div.NewCall{
+      position: relative; 
+      height: 40px;   
+      input.NewCall{
+        position: relative;
+        top: 6px;
+        left: 10px;
+        width: 305px;
+        height: 22px;
+        border: 1px solid #c2c2c2;
+        border-radius: 2px;
+        -webkit-border-radius: 2px;
+        padding: 2px 5px;
+      }  
+
+      .XButton{
+        float: right;
+        height: 26px;
+        width: 80px !important;
+        position: relative;
+        margin-left: 10px;
+        margin-top: 5px;
+        
+        .XButtonNormal{
+            margin-right: 10px;
+        }
+      }
+ }     
