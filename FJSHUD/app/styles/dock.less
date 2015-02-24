@@ -5,7 +5,7 @@
   -webkit-user-select: none;
   user-select: none;
   
-  &.Grid {
+  &.ui-sortable:not(.ui-sortable-disabled) {
     column-width: 170px;
     -webkit-column-width: 170px;
     -moz-column-width: 170px;
@@ -36,6 +36,7 @@
 	width: 160px;
 	background-color: #EBEBEB;
 	margin: 1em;
+	opacity: .9;
 	
 	&.ui-draggable-dragging {
 	  border: 2px dashed #aaa;

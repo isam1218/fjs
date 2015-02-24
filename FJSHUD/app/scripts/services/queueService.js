@@ -21,7 +21,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	for (q in queues) {
         if (queues[q].members) {
 			for (i = 0; i < queues[q].members.length; i++) {
-				if (queues[q].members[i].contactId == xpid) {
+				if (queues[q].members[i] && queues[q].members[i].contactId == xpid) {
 					myQueues.push(queues[q]);
 					break;
 				}

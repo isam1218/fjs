@@ -9,14 +9,7 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = fjs.CONFIG.FEEDS/*['me', 'contacts', 'locations', 
-'settings', 'location_status', 'queue_members', 'queuemembercalls', 
-'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 
-'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 
-'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 
-'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
-'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers'
-,'conferencepermissions','conferencestatus','callrecording'];*/
+var feeds = fjs.CONFIG.FEEDS;
 
 onconnect = function(event){
 	var port = event.ports[0];
