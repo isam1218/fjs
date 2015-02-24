@@ -12,9 +12,10 @@
   column-gap: 5px;
   -webkit-column-gap: 5px;
   -moz-column-gap: 5px;
+  overflow: visible;
 }
-.DockPanel.Grid .Element {
-  position: relative !important;
+.DockPanel.Grid .Gadget {
+  position: static;
 }
 .DockPanel.Moving {
   border-width: 1px;
@@ -22,48 +23,49 @@
   -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
 }
-.DockPanel .Element {
+.DockPanel .Gadget {
   position: absolute;
   display: inline-flex;
   flex-direction: column;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #aaa;
   overflow: hidden;
-  min-height: 150px;
   width: 160px;
   background-color: #EBEBEB;
   margin: 1em;
 }
-.DockPanel .Element.ui-draggable-dragging {
-  border: 2px dashed #ccc;
+.DockPanel .Gadget.ui-draggable-dragging {
+  border: 2px dashed #aaa;
   opacity: .7;
-  min-height: 0px;
+  min-height: 0px !important;
   height: auto !important;
   box-shadow: 5px 5px 8px gray !important;
 }
-.DockPanel .Element.ui-draggable-dragging .Scrollable,
-.DockPanel .Element.ui-draggable-dragging .Resizer {
+.DockPanel .Gadget.ui-draggable-dragging .Content,
+.DockPanel .Gadget.ui-draggable-dragging .Resizer {
   display: none;
 }
-.DockPanel .Element:hover {
+.DockPanel .Gadget:hover {
   box-shadow: 0 0 8px gray;
 }
-.DockPanel .Element:hover .Scrollable {
+.DockPanel .Gadget:hover .Content {
   overflow-y: auto;
 }
-.DockPanel .Element .Header {
+.DockPanel .Gadget .Header {
   background-color: #ECECEC;
   padding: .25em;
+  cursor: pointer;
+  text-decoration: none;
 }
-.DockPanel .Element .Header > div {
+.DockPanel .Gadget .Header > div {
   display: inline-block;
   vertical-align: top;
 }
-.DockPanel .Element .Scrollable {
+.DockPanel .Gadget .Content {
   flex: 1;
   overflow-y: hidden;
 }
-.DockPanel .Element .Scrollable .SubHeader {
+.DockPanel .Gadget .Content .SubHeader {
   background-color: #D6D6D6;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid white;
@@ -71,13 +73,13 @@
   font-size: .95em;
   padding: .25em;
 }
-.DockPanel .Element .Resizer {
+.DockPanel .Gadget .Resizer {
   background-color: #E2E3E3;
   height: 12px;
   cursor: n-resize;
   text-align: center;
 }
-.DockPanel .Element .Resizer div {
+.DockPanel .Gadget .Resizer div {
   background: url("../img/XIconSet-24x24.png") no-repeat 0px -30px;
   height: 12px;
   width: 24px;

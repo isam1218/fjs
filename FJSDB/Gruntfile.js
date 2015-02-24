@@ -90,5 +90,5 @@ module.exports = function (grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', ['clean', 'shell:clear', 'shell:install', 'karma', 'version', 'concat', 'string-replace', 'closure-compiler']);
+  grunt.registerTask('default', ['clean', 'shell:clear', 'shell:install', /*'karma', */'version', 'concat', 'string-replace', 'closure-compiler']);
 };
