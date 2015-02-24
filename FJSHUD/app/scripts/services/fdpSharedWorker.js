@@ -9,14 +9,14 @@ var node = undefined;
 var auth = undefined;
 
 var data_obj = {};
-var feeds = ['me', 'contacts', 'locations', 
+var feeds = fjs.CONFIG.FEEDS/*['me', 'contacts', 'locations', 
 'settings', 'location_status', 'queue_members', 'queuemembercalls', 
 'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 
 'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 
 'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 
 'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
 'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers'
-,'conferencepermissions','conferencestatus','callrecording'];
+,'conferencepermissions','conferencestatus','callrecording'];*/
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -182,8 +182,14 @@ function do_version_check(){
             else
 				setTimeout('do_version_check();', 500);
 		}
-		else
+		else{
+			for(i = 0; i < ports.length;i++){
+				ports[i].postMessage({
+					"action": "auth_failed"
+				});
+			}
 			setTimeout('do_version_check();', 500);
+		}
 	});
 }	
 
