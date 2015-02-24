@@ -148,5 +148,5 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-  grunt.registerTask('default', ['karma', 'version', 'concat', 'string-replace', 'clean', 'shell:clear', 'closure-compiler']);
+  grunt.registerTask('default', [/*'karma', */'version', 'concat', 'string-replace', 'clean', 'shell:clear', 'closure-compiler']);
 };

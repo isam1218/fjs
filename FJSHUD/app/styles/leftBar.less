@@ -61,7 +61,7 @@
 	  padding: .5em;
 	  margin: .5em;
 	  flex: 2;
-    }
+     }
     
     .New {
       margin: .5em;
@@ -93,31 +93,37 @@
 	    }
 	  }
 	}
-  }
+  }  
   
-  .Notifications > div:first-child {
-	font-size: .9em;
-	min-height: 25px;
-	transition: .25s;
-	  
+  .Notifications{
+    position: relative;
+    width: 300px;
+    border-bottom-left-radius: 30px;
+    -webkit-border-bottom-left-radius: 30px;
+    
+    & > div:first-child {
+    	font-size: .9em;
+    	min-height: 25px;
+    	transition: .25s;
+	}  
 	&:hover {
-	  min-height: 50px;
+	   min-height: 50px;
 	}
 	
 	.TitleBar {
-	  width: 100%;
-	  background-color: gray;
-	  color: white;
-	  padding: .25em;
+	   width: 100%;
+	   background-color: gray;
+	   color: white;
+	   padding: .25em;
 	
-	  & > * {
+	   & > * {
 	    display: inline-block;
 	    vertical-align: middle;
-	  }
+	   }
 	  
-	  .XButton {
+	   .XButton {
 	    float: right;
-	  }
+	   }
 	  
 	  .Icon {
 	    width: 24px;

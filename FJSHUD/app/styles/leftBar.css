@@ -89,28 +89,34 @@
   font-size: .8em;
   display: block;
 }
+.LeftBar .Notifications {
+  position: relative;
+  width: 300px;
+  border-bottom-left-radius: 30px;
+  -webkit-border-bottom-left-radius: 30px;
+}
 .LeftBar .Notifications > div:first-child {
   font-size: .9em;
   min-height: 25px;
   transition: .25s;
 }
-.LeftBar .Notifications > div:first-child:hover {
+.LeftBar .Notifications:hover {
   min-height: 50px;
 }
-.LeftBar .Notifications > div:first-child .TitleBar {
+.LeftBar .Notifications .TitleBar {
   width: 100%;
   background-color: gray;
   color: white;
   padding: .25em;
 }
-.LeftBar .Notifications > div:first-child .TitleBar > * {
+.LeftBar .Notifications .TitleBar > * {
   display: inline-block;
   vertical-align: middle;
 }
-.LeftBar .Notifications > div:first-child .TitleBar .XButton {
+.LeftBar .Notifications .TitleBar .XButton {
   float: right;
 }
-.LeftBar .Notifications > div:first-child .TitleBar .Icon {
+.LeftBar .Notifications .TitleBar .Icon {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
