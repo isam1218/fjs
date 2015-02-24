@@ -143,21 +143,70 @@
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/angular-touch/angular-touch.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
-    <script src="../bower_components/react/react.min.js"></script>
+    <script src="../bower_components/angular-scroll-glue/src/scrollglue.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
 
-    <script src="../bower_components/FJSCore/dist/fjs.core.debug.js"></script>
-    <script src="scripts/dom.js"></script>
-    <script src="../bower_components/FJSModel/dist/fjs.model.debug.js"></script>
-    <script src="../bower_components/FJSDB/dist/fjs.db.debug.js"></script>
-    <script src="../bower_components/FJSTabs/dist/fjs.tabs.debug.js"></script>
-    <script src="../bower_components/FJSFDP/dist/fjs.fdp.debug.js"></script>
-    <script src="../bower_components/FJSAPI/dist/fjs.api.debug.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-    <script src="scripts/fjs.hud.debug.js"></script>
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-
+	<!--config-->
     <script src="properties.js"></script>
     <script src="scripts/app.js"></script>
+
+    <!--filters-->
+    <script src="scripts/filters/highlightTextFilter.js"></script>
+    <script src="scripts/filters/durationFilter.js"></script>
+
+	<!--directives-->
+    <script src="scripts/directives/dockDraggerDirective.js"></script>
+    <script src="scripts/directives/dockResizerDirective.js"></script>
+    <script src="scripts/directives/searchContactsDirective.js"></script>
+    <script src="scripts/directives/contextMenuDirective.js"></script>
+
+    <!--controllers-->
+    <script src="scripts/controllers/MainController.js"></script>
+    <script src="scripts/controllers/TopNavigationController.js"></script>
+    <script src="scripts/controllers/LeftBarController.js"></script>
+    <script src="scripts/controllers/NotificationController.js"></script>
+    <script src="scripts/controllers/ContactsWidget.js"></script>
+    <script src="scripts/controllers/LocationsController.js"></script>
+    <script src="scripts/controllers/ContextMenuController.js"></script>
+
+    <script src="scripts/controllers/conversation/ConversationWidgetController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetGroupsController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetQueuesController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetCallLogController.js"></script>
+
+    <script src="scripts/controllers/group/GroupsController.js"></script>
+    <script src="scripts/controllers/group/GroupSingleController.js"></script>
+    <script src="scripts/controllers/group/GroupSingleMembersController.js"></script>
+    <script src="scripts/controllers/group/GroupSinglePageController.js"></script>
+
+    <script src="scripts/controllers/conference/ConferencesWidgetController.js"></script>
+    <script src="scripts/controllers/conference/ConferenceSingleController.js"></script>
+
+    <script src="scripts/controllers/queues/QueueWidgetController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetAgentsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetStatsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetCallsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetCallLogController.js"></script>
+
+    <script src="scripts/controllers/callcenter/CallsRecordingsController.js"></script>
+    <script src="scripts/controllers/callcenter/CallCenterController.js"></script>
+    <script src="scripts/controllers/callcenter/CallCenterMyStatusController.js"></script>
+
+    <script src="scripts/controllers/MeWidgetController.js"></script>
+    <script src="scripts/controllers/VoicemailsController.js"></script>
+    <script src="scripts/controllers/SearchWidgetController.js"></script>
+    <script src="scripts/controllers/ZoomWidgetController.js"></script>
+    <script src="scripts/controllers/ChatController.js"></script>
+    <script src="scripts/controllers/DockController.js"></script>
+
+	<!--services-->
+    <script src="scripts/services/httpService.js"></script>
+    <script src="scripts/services/groupService.js"></script>
+    <script src="scripts/services/contactService.js"></script>
+    <script src="scripts/services/utilService.js"></script>
+    <script src="scripts/services/queueService.js"></script>
+    <script src="scripts/services/conferenceService.js"></script>
+    <script src="scripts/services/phoneService.js"></script>
 </body>
 </html>
