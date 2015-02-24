@@ -1,15 +1,24 @@
 <!-- standard gadgets -->
 <div class="Gadget" ng-repeat="gadget in gadgets.GadgetUserQueues" dragger>
-	<div class="Header">
+	<a href="#/callcenter" class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
 			<div>My Queues</div>
 			<div class="Subtitle">Not an agent</div>
 		</div>
-	</div>
+	</a>
 		
 	<div class="Content">
 		<div class="SubHeader">My Queues</div>
+		
+		<div class="List">
+			<div ng-repeat="queue in gadget.data">
+				{{ queue.name }}
+			</div>
+			<div ng-if="gadget.data.length == 0">
+				No queues...
+			</div>
+		</div>
 	</div>
 	
 	<resizer></resizer>
@@ -20,31 +29,31 @@
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
 			<div>Parked Calls</div>
-			<div class="Subtitle"></div>
+			<div class="Subtitle">no calls on park</div>
 		</div>
 	</div>
 </div>
 
 <!-- contacts -->
 <div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" dragger>
-	<div class="Header">
+	<a href="#/contact/{{::gadget.data.xpid}}" class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
 			<div>{{ ::gadget.data.displayName }}</div>
-			<div class="Subtitle"></div>
+			<div class="Subtitle">{{ gadget.data.hud_status + ', ' + gadget.data.queue_status }}</div>
 		</div>
-	</div>
+	</a>
 </div>
 
 <!-- groups -->
 <div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
-	<div class="Header">
+	<a href="#/group/{{::gadget.data.xpid}}" class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
 			<div>{{ ::gadget.data.name }}</div>
-			<div class="Subtitle"></div>
+			<div class="Subtitle">None</div>
 		</div>
-	</div>
+	</a>
 	
 	<div class="Content">
 		<div class="SubHeader">Members</div>
@@ -61,13 +70,13 @@
 
 <!-- conferences -->
 <div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" dragger>
-	<div class="Header">
+	<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
-			<div>{{ ::gadget.data.name }}</div>
-			<div class="Subtitle"></div>
+			<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
+			<div class="Subtitle">{{ ::gadget.data.location }}</div>
 		</div>
-	</div>
+	</a>
 	
 	<div class="Content">
 		<div class="SubHeader">Members</div>
@@ -89,13 +98,13 @@
 
 <!-- queues -->
 <div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
-	<div class="Header">
+	<a href="#/queue/{{::gadget.data.xpid}}" class="Header">
 		<div class="Icon XIcon24-Speaker-On"></div>
 		<div class="Title">
 			<div>{{ ::gadget.data.name }}</div>
-			<div class="Subtitle"></div>
+			<div class="Subtitle">Agents: {{ gadget.data.members.length }}</div>
 		</div>
-	</div>
+	</a>
 	
 	<div class="Content">
 	</div>

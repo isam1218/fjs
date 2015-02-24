@@ -5,14 +5,18 @@
   height:40px;
   width: 95.3%;
   margin-left: 10px;
-}
-.ToolBar .XButton {
-  float: right;
-  margin:5px;
-  &.XSortButton{
-    margin-top: 2px;
-    width : 150px;
+  
+  .XButton {
+     width: 90px;
+     float: right;
+     margin:5px;
+     &.XSortButton{
+        margin-top: 2px;
+        width : 150px;
+     }
   }
+  
+  &.chatTop{margin-top: 10px;}
 }
 
 .Widget.Contacts {
@@ -43,6 +47,8 @@
 	box-shadow: 0px 1px 1px #ccc inset;
   }
   
+  .WidgetTabBar{height: 46px; position: relative;}
+  
   .ContactSearch {
     display: flex;
 	flex-direction: row;
@@ -62,6 +68,7 @@
 	  height: 2.8em;
 	  padding: 0 20px;
     }
+    
   }
   
   .Contacts, .Groups {
@@ -241,9 +248,6 @@
   overflow-y: auto;
 }
 
-.ToolBar .XButton {
-  width: 90px;
-}
 
 .LeftSideBarSection {
   position:absolute;

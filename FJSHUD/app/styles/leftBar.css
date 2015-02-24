@@ -8,12 +8,16 @@
   margin-left: 10px;
 }
 .ToolBar .XButton {
+  width: 90px;
   float: right;
   margin: 5px;
 }
 .ToolBar .XButton.XSortButton {
   margin-top: 2px;
   width: 150px;
+}
+.ToolBar.chatTop {
+  margin-top: 10px;
 }
 .Widget.Contacts .details {
   float: right;
@@ -38,6 +42,10 @@
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   box-shadow: 0px 1px 1px #ccc inset;
+}
+.LeftBar .WidgetTabBar {
+  height: 46px;
+  position: relative;
 }
 .LeftBar .ContactSearch {
   display: flex;
@@ -205,9 +213,6 @@
 }
 .LeftBarTabContentList:hover {
   overflow-y: auto;
-}
-.ToolBar .XButton {
-  width: 90px;
 }
 .LeftSideBarSection {
   position: absolute;

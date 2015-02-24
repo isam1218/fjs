@@ -480,6 +480,8 @@
   background-color: #fff;
   width: 100%;
   border-bottom: none;
+  float: left;
+  height: auto;
 }
 .ListMessageChatWidget .ListMessageContent,
 .ChatItemTypeRoot-false.ListMessageChatWidget {
@@ -496,7 +498,8 @@
   display: none;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem .time {
-  top: 7px;
+  top: 12px;
+  margin: 0px 3px;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ChatMessageItem {
   margin-left: 54px;
@@ -615,6 +618,12 @@
   top: 0px;
   right: 0px;
   min-height: 50px;
+}
+.ListMessageContent.chatCont {
+  position: relative;
+  width: 89%;
+  float: left;
+  left: 0;
 }
 .Widget .ListMessageContent {
   cursor: default;

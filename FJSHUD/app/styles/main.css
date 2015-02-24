@@ -568,12 +568,16 @@ p {
   margin-left: 10px;
 }
 .ToolBar .XButton {
+  width: 90px;
   float: right;
   margin: 5px;
 }
 .ToolBar .XButton.XSortButton {
   margin-top: 2px;
   width: 150px;
+}
+.ToolBar.chatTop {
+  margin-top: 10px;
 }
 .Widget.Contacts .details {
   float: right;
@@ -598,6 +602,10 @@ p {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   box-shadow: 0px 1px 1px #ccc inset;
+}
+.LeftBar .WidgetTabBar {
+  height: 46px;
+  position: relative;
 }
 .LeftBar .ContactSearch {
   display: flex;
@@ -766,9 +774,6 @@ p {
 .LeftBarTabContentList:hover {
   overflow-y: auto;
 }
-.ToolBar .XButton {
-  width: 90px;
-}
 .LeftSideBarSection {
   position: absolute;
   left: 0;
@@ -824,14 +829,32 @@ p {
   flex-direction: column;
 }
 .DockPanel {
+  margin-left: 10px;
   font-size: .8em;
   overflow: hidden;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
+}
+.DockPanel.Grid {
+  column-width: 170px;
+  -webkit-column-width: 170px;
+  -moz-column-width: 170px;
+  column-gap: 5px;
+  -webkit-column-gap: 5px;
+  -moz-column-gap: 5px;
+}
+.DockPanel.Grid .Element {
+  position: relative !important;
+}
+.DockPanel.Moving {
+  border-width: 1px;
+  border-image: url("../img/marching-ants.gif") 8 repeat repeat;
+  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
 }
 .DockPanel .Element {
   position: absolute;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -845,6 +868,8 @@ p {
   border: 2px dashed #ccc;
   opacity: .7;
   min-height: 0px;
+  height: auto !important;
+  box-shadow: 5px 5px 8px gray !important;
 }
 .DockPanel .Element.ui-draggable-dragging .Scrollable,
 .DockPanel .Element.ui-draggable-dragging .Resizer {
@@ -947,7 +972,7 @@ p {
   margin: .7em 0 0 .7em;
 }
 .WidgetBody {
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
   flex: 1;
@@ -957,6 +982,10 @@ p {
 .WidgetBody .ListLineContent.Header .ListLineContentCell {
   display: inline-block;
   width: auto !important;
+}
+.WidgetBody .ListLineContent.Header .WidgetBody {
+  position: relative;
+  clear: both;
 }
 .WidgetHeaderTitle {
   position: absolute;
@@ -1058,6 +1087,8 @@ p {
   font-weight: normal;
   letter-spacing: 1px;
   background-image: linear-gradient(#fefefe, #ebebeb);
+  position: relative;
+  clear: both;
 }
 .WidgetStat {
   position: absolute;
@@ -1086,7 +1117,7 @@ p {
   font-weight: bold;
 }
 .WidgetTabBar {
-  position: absolute;
+  position: relative;
   margin: 0px;
   left: 0px;
   top: 10px;
@@ -1201,6 +1232,32 @@ p {
 .AttachmentImg {
   max-width: 70px;
   max-height: 70px;
+}
+div.NewCall {
+  position: relative;
+  height: 40px;
+}
+div.NewCall input.NewCall {
+  position: relative;
+  top: 6px;
+  left: 10px;
+  width: 305px;
+  height: 22px;
+  border: 1px solid #c2c2c2;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  padding: 2px 5px;
+}
+div.NewCall .XButton {
+  float: right;
+  height: 26px;
+  width: 80px !important;
+  position: relative;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+div.NewCall .XButton .XButtonNormal {
+  margin-right: 10px;
 }
 .WidgetMe .SettingsPanel,
 .WidgetMe .SettingsTabContent {
@@ -2751,7 +2808,8 @@ input.text.ChatInputBoxInput,
   display: none;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem .time {
-  top: 7px;
+  top: 12px;
+  margin: 0px 3px;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ChatMessageItem {
   margin-left: 54px;
@@ -3273,6 +3331,8 @@ input.text.ChatInputBoxInput,
   background-color: #fff;
   width: 100%;
   border-bottom: none;
+  float: left;
+  height: auto;
 }
 .ListMessageChatWidget .ListMessageContent,
 .ChatItemTypeRoot-false.ListMessageChatWidget {
@@ -3289,7 +3349,8 @@ input.text.ChatInputBoxInput,
   display: none;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem .time {
-  top: 7px;
+  top: 12px;
+  margin: 0px 3px;
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ChatMessageItem {
   margin-left: 54px;
@@ -3408,6 +3469,12 @@ input.text.ChatInputBoxInput,
   top: 0px;
   right: 0px;
   min-height: 50px;
+}
+.ListMessageContent.chatCont {
+  position: relative;
+  width: 89%;
+  float: left;
+  left: 0;
 }
 .Widget .ListMessageContent {
   cursor: default;

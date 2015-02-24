@@ -45,25 +45,23 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 							break;
 						case 'GadgetGroup':
 							gadget.data = groupService.getGroup(gadget.value.entityId);
-							
-							// get complete contact data
-							angular.forEach(gadget.data.members, function(obj, i) {
-								gadget.data.members[i] = contactService.getContact(obj.contactId);
-							});
-							
 							break;
 						case 'GadgetConferenceRoom':
-							gadget.data = conferenceService.getConference(gadget.value.entityId);
-							
-							// get complete contact data
-							angular.forEach(gadget.data.members, function(obj, i) {
-								gadget.data.members[i] = contactService.getContact(obj.contactId);
-							});
-							
+							gadget.data = conferenceService.getConference(gadget.value.entityId);							
 							break;
 						case 'GadgetQueueStat':
 							gadget.data = queueService.getQueue(gadget.value.entityId);
 							break;
+						case 'GadgetUserQueues':
+							gadget.data = queueService.getUserQueues($rootScope.myPid);
+							break;
+					}
+					
+					if (gadget.data.members) {	
+						// get complete contact data
+						angular.forEach(gadget.data.members, function(obj, i) {
+							gadget.data.members[i] = contactService.getContact(obj.contactId);
+						});
 					}
 					
 					$scope.gadgets[gadget.value.factoryId].push(gadget);
@@ -72,5 +70,21 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 			
 			$scope.$safeApply();
 		});
+	});
+	
+	$scope.$on('conferences_updated', function(event, data) {
+		if (!$scope.gadgets.GadgetConferenceRoom)
+			return;
+			
+		for (key in data) {
+			for (i = 0; i < $scope.gadgets.GadgetConferenceRoom.length; i++) {
+				if (data[key].xpid == $scope.gadgets.GadgetConferenceRoom[i].xpid) {
+					$scope.gadgets.GadgetConferenceRoom[i] = data[key];
+					break;
+				}
+			}
+		}
+			
+		$scope.$safeApply();
 	});
 }]);
