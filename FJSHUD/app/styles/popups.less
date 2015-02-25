@@ -283,16 +283,16 @@
 	border-right: 10px solid #ededee; 
   }
   
-  .TopRow {
-    &.Group {
-	  margin-top: 1em;
-	  text-align: center;
-	}
-	
-	& > div:not(:last-child) {
+  .TopRow {	
+	& > div > div:not(:last-child) {
 	  border-right: 1px solid #ccc;
 	  margin-right: .5em;
 	  padding-right: .5em;
+	}
+	
+    .Group {
+	  margin-top: 1em;
+	  text-align: center;
 	}
 	
 	div {
@@ -307,7 +307,11 @@
   }
   
   .BottomRow {
-    &.Group {
+    & > div {
+	  display: inline;
+	}
+	
+    .Group {
 	  text-align: center;
 	}
 	

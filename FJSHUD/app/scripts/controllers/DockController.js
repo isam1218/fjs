@@ -1,35 +1,34 @@
-hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 
 	$scope.gadgets = {};
 	
-	$scope.$on('settings_synced', function(event, data) {
+	$scope.$on('settings_updated', function(event, data) {
+		// enable/disable grid layout
+		if (data.use_column_layout == 'true') {
+			$timeout(function() {
+				$('#DockPanel').sortable({
+					revert: 1,
+					handle: '.Header, .Content'
+				});
+			}, 100);
+		}
+		else {						
+			try {
+				$('#DockPanel').sortable('disable');
+			}
+			catch(e) { }
+		}
+				
 		$scope.gadgets = {};
 		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
 			for (key in data) {
-				if (data[key].key == 'use_column_layout') {
-					// enable/disable grid layout
-					if (data[key].value == 'true') {
-						$timeout(function() {
-							$('#DockPanel').sortable({
-								revert: 1,
-								handle: '.Header, .Content'
-							});
-						}, 100);
-					}
-					else {						
-						try {
-							$('#DockPanel').sortable('disable');
-						}
-						catch(e) { }
-					}
-				}
-				else if (data[key].key.indexOf('GadgetConfig') != -1) {
+				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
 					var gadget = {
-						name: data[key].key,
-						value: JSON.parse(data[key].value),
+						name: key,
+						value: JSON.parse(data[key]),
 						data: {}
 					};
 					
