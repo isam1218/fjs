@@ -64,6 +64,10 @@
 	  cursor: pointer;
 	  text-decoration: none;
 	  
+	  &.Single {
+		background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
+	  }
+	  
 	  & > div {
 	    display: inline-block;
 		vertical-align: top;
@@ -75,20 +79,23 @@
 	  overflow-y: hidden;
 	  
 	  .SubHeader {
-	    background-color: #D6D6D6;
-		border-top: 1px solid #ccc;
+	    background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
+		border-top: 1px solid #aaa;
 		border-bottom: 1px solid white;
 		text-align: center;
 		font-size: .95em;
 		padding: .25em;
+		font-weight: bold;
+		color: #888;
+		text-shadow: whiteSmoke 0 1px 0;
 	  }
 	  
 	  .List {
-	  
+	    background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
 	  }
 	}
 	.Resizer {
-	  background-color: #E2E3E3;
+	  background-color: #DDDDDE;
 	  height: 12px;
 	  cursor: n-resize;
 	  text-align: center;
@@ -101,5 +108,11 @@
 	    vertical-align: middle;
 	  }
 	}
+  }
+  
+  .TopBarItemAppIcon.CallCenter {
+    position: relative;
+	top: 0;
+	left: 0;
   }
 }

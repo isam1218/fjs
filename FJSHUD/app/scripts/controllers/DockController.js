@@ -1,4 +1,5 @@
-hudweb.controller('DockController', ['$q', '$timeout', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
+
 	$scope.gadgets = {};
 	
 	$scope.$on('settings_synced', function(event, data) {
@@ -85,4 +86,14 @@ hudweb.controller('DockController', ['$q', '$timeout', '$scope', '$rootScope', '
 			
 		$scope.$safeApply();
 	});
+	
+	$scope.joinConference = function(conference) {
+		var params = {
+			conferenceId: conference.xpid,
+			contactId: $rootScope.myPid,
+		};
+		httpService.sendAction("conferences", "joinContact", params);
+				
+		$location.path('/conference/' + conference.xpid);
+	};
 }]);

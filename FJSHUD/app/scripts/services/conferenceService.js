@@ -68,12 +68,14 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				conferences[i].getAvatar = function(index, size) {
 					if (this.members) {
 						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
+							var xpid = this.members[index].contactId ? this.members[index].contactId : this.members[index].xpid;
 							return httpService.get_avatar(xpid, size, size);
 						}
 						else
 							return 'img/Generic-Avatar-' + size + '.png';
 					}
+					else
+						return 'img/Generic-Avatar-' + size + '.png';
 				};
 			}
 		}
