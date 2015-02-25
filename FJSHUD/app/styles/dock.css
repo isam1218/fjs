@@ -5,7 +5,7 @@
   -webkit-user-select: none;
   user-select: none;
 }
-.DockPanel.Grid {
+.DockPanel.ui-sortable:not(.ui-sortable-disabled) {
   column-width: 170px;
   -webkit-column-width: 170px;
   -moz-column-width: 170px;
@@ -14,7 +14,7 @@
   -moz-column-gap: 5px;
   overflow: visible;
 }
-.DockPanel.Grid .Gadget {
+.DockPanel.ui-sortable:not(.ui-sortable-disabled) .Gadget {
   position: static;
 }
 .DockPanel.Moving {
@@ -33,6 +33,7 @@
   width: 160px;
   background-color: #EBEBEB;
   margin: 1em;
+  opacity: .9;
 }
 .DockPanel .Gadget.ui-draggable-dragging {
   border: 2px dashed #aaa;
@@ -57,6 +58,9 @@
   cursor: pointer;
   text-decoration: none;
 }
+.DockPanel .Gadget .Header.Single {
+  background: linear-gradient(to bottom, #eeeeef, #ddddde);
+}
 .DockPanel .Gadget .Header > div {
   display: inline-block;
   vertical-align: top;
@@ -66,15 +70,21 @@
   overflow-y: hidden;
 }
 .DockPanel .Gadget .Content .SubHeader {
-  background-color: #D6D6D6;
-  border-top: 1px solid #ccc;
+  background: linear-gradient(to bottom, #d4d4d5, #d9d9da);
+  border-top: 1px solid #aaa;
   border-bottom: 1px solid white;
   text-align: center;
   font-size: .95em;
   padding: .25em;
+  font-weight: bold;
+  color: #888;
+  text-shadow: whiteSmoke 0 1px 0;
+}
+.DockPanel .Gadget .Content .List {
+  background: linear-gradient(to bottom, #dcdcdc, #eaeaeb);
 }
 .DockPanel .Gadget .Resizer {
-  background-color: #E2E3E3;
+  background-color: #DDDDDE;
   height: 12px;
   cursor: n-resize;
   text-align: center;
@@ -85,4 +95,9 @@
   width: 24px;
   display: inline-block;
   vertical-align: middle;
+}
+.DockPanel .TopBarItemAppIcon.CallCenter {
+  position: relative;
+  top: 0;
+  left: 0;
 }

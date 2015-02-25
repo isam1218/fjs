@@ -21,7 +21,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	for (q in queues) {
         if (queues[q].members) {
 			for (i = 0; i < queues[q].members.length; i++) {
-				if (queues[q].members[i].contactId == xpid) {
+				if (queues[q].members[i] && queues[q].members[i].contactId == xpid) {
 					myQueues.push(queues[q]);
 					break;
 				}
@@ -54,7 +54,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
         queues[i].getAvatar = function (index, size) {
           if (this.members) {
             if (this.members[index] !== undefined) {
-              var xpid = this.members[index].contactId;
+              var xpid = this.members[index].contactId ? this.members[index].contactId : this.members[index].xpid;
               return httpService.get_avatar(xpid, size, size);
             }
             else

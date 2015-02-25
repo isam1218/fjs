@@ -1,5 +1,5 @@
-hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
-	$scope.grid = true;
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
+
 	$scope.gadgets = {};
 	
 	$scope.$on('settings_synced', function(event, data) {
@@ -11,16 +11,14 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 				if (data[key].key == 'use_column_layout') {
 					// enable/disable grid layout
 					if (data[key].value == 'true') {
-						$scope.grid = true;
-						
-						$('#DockPanel').sortable({
-							revert: 1,
-							handle: '.Header, .Content'
-						});
+						$timeout(function() {
+							$('#DockPanel').sortable({
+								revert: 1,
+								handle: '.Header, .Content'
+							});
+						}, 100);
 					}
-					else {
-						$scope.grid = false;
-						
+					else {						
 						try {
 							$('#DockPanel').sortable('disable');
 						}
@@ -60,7 +58,8 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 					if (gadget.data.members) {	
 						// get complete contact data
 						angular.forEach(gadget.data.members, function(obj, i) {
-							gadget.data.members[i] = contactService.getContact(obj.contactId);
+							if (obj.contactId)
+								gadget.data.members[i] = contactService.getContact(obj.contactId);
 						});
 					}
 					
@@ -87,4 +86,14 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 			
 		$scope.$safeApply();
 	});
+	
+	$scope.joinConference = function(conference) {
+		var params = {
+			conferenceId: conference.xpid,
+			contactId: $rootScope.myPid,
+		};
+		httpService.sendAction("conferences", "joinContact", params);
+				
+		$location.path('/conference/' + conference.xpid);
+	};
 }]);
