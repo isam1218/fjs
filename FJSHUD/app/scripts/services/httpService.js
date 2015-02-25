@@ -1,14 +1,40 @@
 hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', function($http, $rootScope, $location, $q){
-	
 	/**
 		Detect Current Browser
 	*/
+	var feeds = fjs.CONFIG.FEEDS;
 	var ua = navigator.userAgent;
-	var browser = ua.match(/(chrome|safari|firefox|msie(?=\/))\/?\s*(\d+)/i)[1];
+	var browser = ua.match(/(chrome|safari|firefox|msie)/i)[0];
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
+	var isMasterTab = false;
+	var tabId = 1;
+	var synced = false;
+	if(localStorage.tabs == undefined){
+		localStorage.tabs = [] 
+	}
+
+	
+
+
+    var VERSIONS_PATH = "/v1/versions";
+        /**
+         * Versionscache servlet URL
+         * @const {string}
+         * @protected
+         */
+    var VERSIONSCACHE_PATH = "/v1/versionscache";
+     window.onbeforeunload = function(){
+     	//return "Are you sure you want to close the window";
+     }
+
+     window.onunload  = function(){
+
+     }
 	/**
 		SHARED WORKER
+
 	*/
+	//isSWSupport = false;
 	var worker = undefined;
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
@@ -37,19 +63,161 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                break;
 					case "auth_failed":
 						delete localStorage.nodeID;
+						delete localStorage.authTicket;
 						attemptLogin();
 						break;
 		        }
 		    }, false);
 
 		    worker.port.start();
-		}else{
-			console.log("No Shared Worker");
 		}
 	}
 
+	var assignTab = function(){
+
+		if(!localStorage[tabId]){
+			localStoarge[tabId] = tabId;
+			if(tabId = 1){
+				isMasterTab = true;
+			}
+		}else{
+			tabId = tabId + 1;
+			assignTab();
+		}
+	}
+
+	var version_check = function(){
+		var newFeeds ='';
+
+		for (i = 0; i < feeds.length; i++)
+			newFeeds += '&' + feeds[i] + '=';
+
+			
+		var requestUrl = fjs.CONFIG.SERVER.serverURL + (synced ? VERSIONSCACHE_PATH : VERSIONS_PATH) + "?t=web" + newFeeds
+		
+		
+			var request = new httpRequest();
+			var header = {
+				"Authorization":'auth=' + authTicket,
+    	  		"node":nodeID,
+			}
+		request.makeRequest(requestUrl,"POST",{},header,function(xmlhttp){
+				 if (xmlhttp.status == 200){
+					var changedFeeds = [];
+		            var params = xmlhttp.responseText.split(";");
+					
+		            for(var i = 2; i < params.length-1; i++)
+						changedFeeds.push(params[i]);
+						
+					if (changedFeeds.length > 0)
+		               	sync_request(changedFeeds);
+		            
+				}else{
+					delete localStorage.nodeID;
+					delete localStorage.authTicket;
+					attemptLogin();
+				}
+			
+			});
+	}
+
+	var format_array = function(feed) {
+    var arr = [];
 	
+	for (key in feed) {
+		if (feed[key].items.length > 0) {
+			// create xpid for each record
+				for (i = 0; i < feed[key].items.length; i++)
+					feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
+					
+				arr = arr.concat(feed[key].items);
+			}
+		}
+		
+		return arr;
+	}
+
+	var sync_request = function(f){			
+	var newFeeds = '';
+	for (i = 0; i < f.length; i++)
+		newFeeds += '&' + f[i] + '=';
 	
+	var request = new httpRequest();
+	var header = {
+				"Authorization":'auth=' + authTicket,
+    	  		"node":nodeID,
+	}
+	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
+		
+		var data_obj = localStorage.data_obj != undefined ? localStorage.data_obj : {};
+
+		if (xmlhttp.status && xmlhttp.status == 200){		
+			synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
+			
+			for (feed in synced_data) {
+				// first time
+				if (!synced)
+					data_obj[feed] = synced_data[feed];
+				else {
+					for (key in synced_data[feed]) {
+						// full replace
+						if (synced_data[feed][key].xef001type == 'F')
+							data_obj[feed][key].items = synced_data[feed][key].items;
+						// update individually
+						else {
+							for (i = 0; i < synced_data[feed][key].items.length; i++) {
+								var newItem = true;
+								
+								for (j = 0; j < data_obj[feed][key].items.length; j++) {
+									if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
+										data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
+										newItem = false;
+										break;
+									}
+								}
+								
+								if (newItem)
+									data_obj[feed][key].items.push(synced_data[feed][key].items[i]);
+							}
+						}
+					}
+				}
+			
+				// split recordings up into additional feeds
+				if (feed == "callrecording") {
+					data_obj['callerrecording'] = {};
+					data_obj['conferencerecording'] = {};
+					
+					for (key in synced_data[feed]) {
+						data_obj['callerrecording'][key] = {items: []};
+						data_obj['conferencerecording'][key] = {items: []};
+					
+						for (i = 0; i < synced_data[feed][key].items.length; i++) {
+							if (synced_data[feed][key].items[i].conferenceId)
+								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
+							else
+								data_obj['callerrecording'][key].items.push(synced_data[feed][key].items[i]);
+						}
+					}
+					
+					synced_data['callerrecording'] = format_array(data_obj['callerrecording']);
+					synced_data['conferencerecording'] = format_array(data_obj['conferencerecording']);
+				}
+				else
+					synced_data[feed] = format_array(data_obj[feed]);
+			}
+			
+			synced = true;
+
+			 for (feed in synced_data) {
+		            if (synced_data[feed].length > 0)
+		                $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+		      }
+		}
+		
+	});
+	}
+
 	// send first message to shared worker
 	var authorizeWorker = function() {
 	    var events = {
@@ -61,9 +229,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
 	    };
 
-	    
 	    if(isSWSupport){
 			worker.port.postMessage(events);
+	    }else{
+	    	setInterval(version_check,500);
 	    }
 	};
 	
@@ -82,7 +251,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
-			
+		console.log(authURL);
 		location.href = authURL;
 	};
 	
@@ -99,11 +268,16 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		
 	// get node id
 	if (localStorage.nodeID === undefined) {
-		$http.post(
-			fjs.CONFIG.SERVER.serverURL 
+		$http({
+			url:fjs.CONFIG.SERVER.serverURL 
 			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
-			+ authTicket
-		)
+			+ authTicket,
+			headers:{
+				'Content-Type':'application/x-www-form-urlencoded'
+			},
+			data:'',
+			method:'POST'
+		})
 		.success(function(response) {
 			nodeID = response.match(/node=([^\n]+)/)[1];
 			localStorage.nodeID = nodeID;
@@ -111,7 +285,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			// start shared worker
 			authorizeWorker();
 		})
-		.error(function() {
+		.error(function(response, status) {
+			console.log("Error accessing this api: "  + fjs.CONFIG.SERVER.serverURL 
+			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
+			+ authTicket)
 			attemptLogin();
 		});
 	}
@@ -303,4 +480,5 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		
 		return deferred.promise;
 	};
+
 }]);
