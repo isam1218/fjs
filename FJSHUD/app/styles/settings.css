@@ -1,9 +1,3 @@
-.WidgetMe .SettingsPanel,
-.WidgetMe .SettingsTabContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
 .WidgetMe .WidgetHeader {
   height: 170px;
   padding: 0 10px;
@@ -22,6 +16,84 @@
   position: relative;
   top: 0;
   left: 0;
+}
+.WidgetMe .WidgetBody {
+  background-color: #fff;
+}
+.WidgetMe .Preferences-Holder {
+  position: relative;
+  -webkit-box-flex: 1;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel,
+.WidgetMe .Preferences-Holder .SettingsTabContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
+  left: 0px;
+  top: 10px;
+  right: 0px;
+  bottom: 0px;
+  position: relative;
+  border: none;
+  background-image: url("img/XTile-Widget.png?v=1418381374907");
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  height: 145px;
+  overflow-y: auto;
+  padding-bottom: 20px;
+  background-color: #f9f9f9;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport {
+  position: relative;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-content {
+  position: relative;
+  min-height: 40px;
+  background-color: #f9f9f9;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable.fj-viewport {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent {
+  padding: 0 10px 10px 10px;
+  margin-top: 0px;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent .ListPage .Dialog-settings-row .SelectBox,
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent .ListPage .Dialog-settings-row .lblSelect p {
+  font-size: 12px;
+  color: #555;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: normal;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent .ListPage .Dialog-settings-row .SelectBox {
+  height: 24px;
+  line-height: 24px;
 }
 .MeInfoBlock {
   display: inline-block;

@@ -79,12 +79,13 @@ p {
 ::-webkit-scrollbar {
   background-color: #eee;
   height: 7px;
-  width: 4px;
+  width: 6px;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
+  height: 30px;
 }
 .PopupMenu {
   position: absolute;
@@ -1247,10 +1248,10 @@ div.NewCall {
 }
 div.NewCall input.NewCall {
   position: relative;
-  top: 6px;
+  top: 7px;
   left: 10px;
   width: 305px;
-  height: 22px;
+  height: 26px;
   border: 1px solid #c2c2c2;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -1262,16 +1263,10 @@ div.NewCall .XButton {
   width: 80px !important;
   position: relative;
   margin-left: 10px;
-  margin-top: 5px;
+  top: 7px;
 }
-div.NewCall .XButton .XButtonNormal {
+div.NewCall .XButton.XButtonNormal {
   margin-right: 10px;
-}
-.WidgetMe .SettingsPanel,
-.WidgetMe .SettingsTabContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 .WidgetMe .WidgetHeader {
   height: 170px;
@@ -1291,6 +1286,84 @@ div.NewCall .XButton .XButtonNormal {
   position: relative;
   top: 0;
   left: 0;
+}
+.WidgetMe .WidgetBody {
+  background-color: #fff;
+}
+.WidgetMe .Preferences-Holder {
+  position: relative;
+  -webkit-box-flex: 1;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel,
+.WidgetMe .Preferences-Holder .SettingsTabContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
+  left: 0px;
+  top: 10px;
+  right: 0px;
+  bottom: 0px;
+  position: relative;
+  border: none;
+  background-image: url("img/XTile-Widget.png?v=1418381374907");
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  height: 145px;
+  overflow-y: auto;
+  padding-bottom: 20px;
+  background-color: #f9f9f9;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport {
+  position: relative;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-content {
+  position: relative;
+  min-height: 40px;
+  background-color: #f9f9f9;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable.fj-viewport {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent {
+  padding: 0 10px 10px 10px;
+  margin-top: 0px;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent .ListPage .Dialog-settings-row .SelectBox,
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent .ListPage .Dialog-settings-row .lblSelect p {
+  font-size: 12px;
+  color: #555;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: normal;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable .ListView.WithoutToolBar.fj-viewcontent .ListPage .Dialog-settings-row .SelectBox {
+  height: 24px;
+  line-height: 24px;
 }
 .MeInfoBlock {
   display: inline-block;
@@ -2681,6 +2754,9 @@ input.text {
   margin-right: 3px;
   font-size: .8em;
   color: #555;
+}
+.Widget.Conversation .WidgetBody {
+  position: relative;
 }
 .Widget.Conversation .WidgetBody .ChatView {
   -webkit-box-orient: vertical;
@@ -4941,8 +5017,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: absolute;
   display: flex;
   float: left;
-  top: 5px;
-  left: 5px;
+  /* top: 5px;
+        left: 5px;*/
 }
 .vmsection .vmavatarsection .vmavatar {
   position: absolute;
@@ -4961,6 +5037,16 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   margin-left: 50px;
   padding: 5px;
   height: 100%;
+}
+.vmsection .vminfo:hover .displayName .vmtime {
+  visibility: hidden;
+}
+.vmsection .vminfo:hover .displayName .vmcallbtn {
+  visibility: visible;
+}
+.vmsection .vminfo p.vmdisplay {
+  padding: 0;
+  margin: 0;
 }
 .vmsection .vminfo .displayName {
   position: absolute;
@@ -5048,6 +5134,32 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   margin-top: 3px;
   margin-right: 5px;
+  height: 40px;
+}
+.vmalternate:hover .vmcallbtn {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+  visibility: visible;
+  height: 26px;
+  width: 40px;
+  text-align: center;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmalternate:hover .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.vmalternate:hover .vmtime {
+  visibility: hidden;
 }
 .vmalternate .vmcallbtn {
   visibility: hidden;
@@ -5074,31 +5186,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .vmlabel .vmnomessage {
   font-size: 12px;
-}
-.vmalternate:hover .vmcallbtn {
-  background: #3c9c00 linear-gradient(#3c9c00, #328400);
-  color: #e8e8e8;
-  border: 1px solid rgba(155, 155, 155, 0.3);
-  text-shadow: none;
-  visibility: visible;
-  height: 26px;
-  width: 40px;
-  text-align: center;
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: bold;
-}
-.vmalternate:hover .vmcallbtn:hover {
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  color: #fff;
-  text-shadow: 0 -1px 0 #000000;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-}
-.vmalternate:hover .vmtime {
-  visibility: hidden;
 }
 .CallStatusContainerOutbound {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));

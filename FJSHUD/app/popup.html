@@ -16,61 +16,55 @@
     <!-- endbuild -->
 </head>
 <body  data-ng-controller="MainController" data-ng-click="onBodyClick()" class="popupWindow">
+	<!--[if lt IE 7]>
+	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
 
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
+	<!-- Add your site or application content here -->
 
-<!-- Add your site or application content here -->
+	<ng-view></ng-view>
 
+	<div ng-include="currentPopup.url"></div>
 
-<ng-view></ng-view>
-
-<div ng-include="currentPopup.url"></div>
-
-<div  id="fj-loading" class="fj-loading">
-    <div class="fji-box">
-        <div class="fji-label">Loading...</div>
-        <div class="loading-amination">
-            <img src="img/ajax-loader.gif">
-        </div>
-    </div>
-</div>
+	<div  id="fj-loading" class="fj-loading">
+		<div class="fji-box">
+			<div class="fji-label">Loading...</div>
+			<div class="loading-amination">
+				<img src="img/ajax-loader.gif">
+			</div>
+		</div>
+	</div>
 
 
-<!-- build:js(.) scripts/oldieshim.js -->
-<!--[if lt IE 9]>
-<script src="../bower_components/es5-shim/es5-shim.js"></script>
-<script src="../bower_components/json3/lib/json3.min.js"></script>
-<![endif]-->
-<!-- endbuild -->
+	<!-- build:js(.) scripts/oldieshim.js -->
+	<!--[if lt IE 9]>
+	<script src="../bower_components/es5-shim/es5-shim.js"></script>
+	<script src="../bower_components/json3/lib/json3.min.js"></script>
+	<![endif]-->
+	<!-- endbuild -->
 
-<!-- build:js(.) scripts/vendor.js -->
-<!-- bower:js -->
-<script src="../bower_components/angular/angular.js"></script>
-<script src="../bower_components/json3/lib/json3.js"></script>
-<script src="../bower_components/angular-resource/angular-resource.js"></script>
-<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
-<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="../bower_components/angular-animate/angular-animate.js"></script>
-<script src="../bower_components/angular-touch/angular-touch.js"></script>
-<script src="../bower_components/angular-route/angular-route.js"></script>
-<script src="../bower_components/react/react.min.js"></script>
+	<!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/json3/lib/json3.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-touch/angular-touch.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/react/react.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
-<script src="../bower_components/FJSCore/dest/fjs.core.debug.js"></script>
-<script src="scripts/dom.js"></script>
-<script src="../bower_components/FJSModel/dest/fjs.model.debug.js"></script>
-<script src="../bower_components/FJSDB/dest/fjs.db.debug.js"></script>
-<script src="../bower_components/FJSTabs/dest/fjs.tabs.debug.js"></script>
-<script src="../bower_components/FJSFDP/dest/fjs.fdp.debug.js"></script>
-<script src="../bower_components/FJSAPI/dist/fjsapi.debug.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
-
-<!-- build:js({.tmp,app}) scripts/scripts.js -->
-
-<script src="scripts/fjs.hud.debug.js"></script>
-
+    <script src="../bower_components/FJSCore/dist/fjs.core.debug.js"></script>
+    <script src="scripts/dom.js"></script>
+    <script src="../bower_components/FJSModel/dist/fjs.model.debug.js"></script>
+    <script src="../bower_components/FJSDB/dist/fjs.db.debug.js"></script>
+    <script src="../bower_components/FJSTabs/dist/fjs.tabs.debug.js"></script>
+    <script src="../bower_components/FJSFDP/dist/fjs.fdp.debug.js"></script>
+    <script src="../bower_components/FJSAPI/dist/fjs.api.debug.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
 
     <script src="scripts/model/entryModel.js"></script>

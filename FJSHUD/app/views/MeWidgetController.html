@@ -84,23 +84,33 @@
                     </div>
                   </div>
               </div>
-              <div class="WidgetSectionTitle">Preferences</div>
-              <div class="WidgetTabBar">
-                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
-                  <div class="inner HeaderLabel">{{ tab }}</div>
-                  <div class="arrow"></div>
-                </a>
-              </div>
-
-
-              <div ng-show="selected == 'General'" class="fj-content WidgetTabContent" ng-include="'views/settings/Settings.html'" ></div>
-             <div ng-show="selected == 'Web Launcher'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
-              <div ng-show="selected == 'Queues'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsQueues.html'"></div>
-              <div ng-show="selected == 'Account'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAccount.html'"></div>
-              <div ng-show="selected == 'Alerts'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAlerts.html'"></div>
-              <div ng-show="selected == 'CP'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsCP.html'"></div>
-              <div ng-show="selected == 'About'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsAbout.html'"></div>
-              <div ng-show="selected == 'Phone'" class="fj-content WidgetTabContent" ng-include="'views/settings/SettingsPhone.html'" ></div>
-
-          </div>
+              <div class="fj-vbox-space Preferences-Holder">
+	              <div class="WidgetSectionTitle">Preferences</div>	              
+		              <div class="WidgetTabBar">
+		                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+		                  <div class="inner HeaderLabel">{{ tab }}</div>
+		                  <div class="arrow"></div>
+		                </a>
+		              </div>
+		         
+		              <div class="SettingsPanel DialogContentMainBlock_List">
+		                <div class="fj-stream">
+		                    <div class="fj-scrollable WithoutToolBar">
+		                        <div class="fj-viewport" style="overflow: hidden;">
+		                            <div class="fj-viewcontent">
+						              <div ng-show="selected == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
+						              <div ng-show="selected == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
+						              <div ng-show="selected == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
+						              <div ng-show="selected == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
+						              <div ng-show="selected == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
+						              <div ng-show="selected == 'CP'" class="fj-content" ng-include="'views/settings/SettingsCP.html'"></div>
+						              <div ng-show="selected == 'About'" class="fj-content" ng-include="'views/settings/SettingsAbout.html'"></div>
+						              <div ng-show="selected == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
+						            </div>
+						        </div> 
+						     </div>  
+						  </div>   
+						</div> 	                
+	                </div>
+	          </div>  
 </div>

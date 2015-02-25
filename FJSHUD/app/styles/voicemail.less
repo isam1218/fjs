@@ -16,8 +16,8 @@
 		position: absolute;		
 		display:flex;
 		float:left;		
-        top: 5px;
-        left: 5px;
+       /* top: 5px;
+        left: 5px;*/
 		
 		.vmavatar{
 			position: absolute;
@@ -38,6 +38,20 @@
 		padding: 5px;
 		height: 100%;
 		
+		&:hover{
+		  .displayName{
+             .vmtime{
+               visibility: hidden;
+             }
+             .vmcallbtn{
+               visibility: visible;
+             }
+           }  
+		}
+		p.vmdisplay{
+		  padding:0;
+		  margin: 0;
+		}
 		.displayName{ 
             position: absolute;
             top: 5px;
@@ -79,7 +93,7 @@
           }
           .footnote{
             position: relative;
-            margin-top: 20px;
+            margin-top: 20px;            
           }
 	}
 		
@@ -137,6 +151,36 @@
 	position:relative;
 	margin-top:3px;
 	margin-right:5px;
+	height: 40px;
+	
+	&:hover{
+    .vmcallbtn {                      
+       background: #3c9c00 linear-gradient(#3c9c00, #328400);           
+       color: #e8e8e8;
+       border: 1px solid rgba(155,155,155,0.3);
+       text-shadow: none;
+       visibility:visible;      
+       height: 26px;
+       width: 40px;
+       text-align: center;
+       border-radius: 2px;
+       -webkit-border-radius: 2px;
+       text-decoration: none;
+       cursor: pointer;
+       font-size: 11px;
+       font-weight: bold;
+       &:hover{
+         border: 1px solid rgba(0,0,0,0.3);
+         color: #fff;
+         text-shadow: 0 -1px 0 #000;
+         box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+       }
+    }
+    .vmtime{
+        visibility:hidden;
+    }
+
+   }
 	.vmcallbtn{
   		visibility:hidden;
   		right:0;
@@ -167,33 +211,3 @@
 		font-size:12px;
 	}
 }
-
-.vmalternate:hover{
-    .vmcallbtn {                      
-       background: #3c9c00 linear-gradient(#3c9c00, #328400);           
-       color: #e8e8e8;
-       border: 1px solid rgba(155,155,155,0.3);
-       text-shadow: none;
-       visibility:visible;      
-       height: 26px;
-       width: 40px;
-       text-align: center;
-       border-radius: 2px;
-       -webkit-border-radius: 2px;
-       text-decoration: none;
-       cursor: pointer;
-       font-size: 11px;
-       font-weight: bold;
-       &:hover{
-         border: 1px solid rgba(0,0,0,0.3);
-         color: #fff;
-         text-shadow: 0 -1px 0 #000;
-         box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-       }
-    }
-	.vmtime{
-		visibility:hidden;
-	}
-
-}
-
