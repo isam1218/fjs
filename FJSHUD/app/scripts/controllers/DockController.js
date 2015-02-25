@@ -58,8 +58,10 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					if (gadget.data.members) {	
 						// get complete contact data
 						angular.forEach(gadget.data.members, function(obj, i) {
-							if (obj.contactId)
+							if (obj.contactId) {
 								gadget.data.members[i] = contactService.getContact(obj.contactId);
+								gadget.data.members[i].contactId = obj.contactId;
+							}
 						});
 					}
 					

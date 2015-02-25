@@ -1,31 +1,118 @@
 
-.WidgetMe {
-  .SettingsPanel, .SettingsTabContent {
-    flex: 1;
-	display: flex;
-	flex-direction: column;
-  }
+.WidgetMe {  
+  .WidgetHeader {
+      height: 170px;
+      padding:0 10px;
+   }
+   .WidgetHeaderTitle {
+      color: #333;
+      font-size: 20px;
+      line-height: 35px;
+      left: 0px;
+      right: 15px;
+      top: 0;
+      height: 35px;
+      position:relative;
+    }
+    .Avatar.AvatarBig{
+      position: relative;
+      top: 0;
+      left: 0;
+    } 
+    .WidgetBody{background-color: #fff;}  
+    .Preferences-Holder{
+      position: relative;
+      -webkit-box-flex: 1;
+      
+     .SettingsPanel, .SettingsTabContent {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+     }
+     .SettingsPanel{
+      &.DialogContentMainBlock_List {
+        left: 0px;
+        top: 10px;
+        right: 0px;
+        bottom: 0px;
+        position: relative;       
+        border: none;        
+        background-image: url("img/XTile-Widget.png?v=1418381374907");
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        height: 145px;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        background-color: #f9f9f9;
+       }  
+   
+      .fj-stream {
+        position: relative;
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        .WithoutToolBar {
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            &.fj-scrollable {
+              .fj-viewport {
+                position: relative;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                overflow: hidden;
+                .fj-content{
+                    position: relative;
+                    min-height: 40px;
+                    background-color: #f9f9f9;
+                }
+              }  
+            }            
+        }
+        .fj-scrollable{
+          &.fj-viewport {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            overflow: hidden;
+           }
+           .ListView{
+             &.WithoutToolBar{
+                &.fj-viewcontent {
+                    padding: 0 10px 10px 10px;
+                    margin-top: 0px;
+                    
+                    .ListPage{
+                        .Dialog-settings-row{
+                            .SelectBox, .lblSelect p{
+                               font-size: 12px;
+                               color: #555;
+                               font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif; 
+                               font-weight: normal;
+                            }
+                            .SelectBox{
+                                height: 24px;
+                                line-height: 24px;
+                            }
+                        }
+                    }
+                }
+             }
+           }     
+         }
+       }  
+     }
+    }
+    
 }
 
-.WidgetMe .WidgetHeader {
-  height: 170px;
-  padding:0 10px;
-}
-.WidgetMe .WidgetHeaderTitle {
-  color: #333;
-  font-size: 20px;
-  line-height: 35px;
-  left: 0px;
-  right: 15px;
-  top: 0;
-  height: 35px;
-  position:relative;
-}
-.WidgetMe .Avatar.AvatarBig{
-  position: relative;
-  top: 0;
-  left: 0;
-}
 .MeInfoBlock {
   display:inline-block;
   margin-left:5px;

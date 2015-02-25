@@ -58,6 +58,9 @@
   font-size: .8em;
   color: #555;
 }
+.Widget.Conversation .WidgetBody {
+  position: relative;
+}
 .Widget.Conversation .WidgetBody .ChatView {
   -webkit-box-orient: vertical;
   display: -webkit-box;
