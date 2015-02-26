@@ -271,19 +271,28 @@
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
+  white-space: nowrap;
   
   .Arrow {
     position: absolute;
 	top: 3em;
-	left: -10px;
     width: 0; 
 	height: 0; 
 	border-top: 10px solid transparent;
 	border-bottom: 10px solid transparent; 	
-	border-right: 10px solid #ededee; 
+	
+	&.Left {
+	  left: -10px;
+	  border-right: 10px solid #ededee; 
+	}
+	
+	&.Right {
+	  right: -10px;
+	  border-left: 10px solid #ededee; 
+	}
   }
   
-  .TopRow {	
+  .TopRow {
 	& > div > div:not(:last-child) {
 	  border-right: 1px solid #ccc;
 	  margin-right: .5em;
@@ -292,7 +301,6 @@
 	
     .Group {
 	  margin-top: 1em;
-	  text-align: center;
 	}
 	
 	div {
@@ -309,10 +317,6 @@
   .BottomRow {
     & > div {
 	  display: inline;
-	}
-	
-    .Group {
-	  text-align: center;
 	}
 	
     border-top: 1px solid #ccc;
@@ -350,7 +354,7 @@
   border-radius: 4px;
   min-width: 195px;
   max-width: 500px;
-  background: #fff url("../img/XTile-Widget.png?v=1387535133370");
+  background: #fff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
   box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }

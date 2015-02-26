@@ -6,6 +6,7 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			var overlay = angular.element(document.getElementById('ContextMenu'));
+			var arrow = angular.element(overlay[0].getElementsByClassName('Arrow')[0]);
 			var buttons = overlay[0].getElementsByClassName('Button');
 			var rect;
 			
@@ -64,10 +65,22 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 				
 				$rootScope.$broadcast('contextMenu', data);
 				
-				// position pop-pop
-				overlay.css('left', (rect.left + rect.width/2) + 'px');
-				overlay.css('top', (rect.top + rect.height/2) + 'px');
-				overlay.css('display', 'block');
+				$timeout(function() {
+					// position pop-pop
+					overlay.css('left', (rect.left + rect.width/2) + 'px');
+					overlay.css('top', (rect.top + rect.height/2) + 'px');
+					overlay.css('display', 'block');
+					
+					// switch sides
+					var oRect = overlay[0].getBoundingClientRect();
+					
+					if (rect.left + rect.width/2 + oRect.width >= window.innerWidth) {
+						arrow.removeClass('Left').addClass('Right');
+						overlay.css('left', (rect.left - oRect.width) + 'px');
+					}
+					else
+						arrow.removeClass('Right').addClass('Left');
+				}, 10);
 			}
 			
 			function hideOverlay(t) {
