@@ -54,7 +54,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 							break;
 					}
 					
-					if (gadget.data.members) {	
+					if (gadget.data && gadget.data.members) {	
 						// get complete contact data
 						angular.forEach(gadget.data.members, function(obj, i) {
 							if (obj.contactId) {

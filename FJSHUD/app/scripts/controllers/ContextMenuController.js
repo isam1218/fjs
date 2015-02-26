@@ -1,24 +1,35 @@
 hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactService', 'GroupService', 'SettingsService', 'HttpService', function($rootScope, $scope, contactService, groupService, settingsService, httpService) {
 	$scope.xpid;
 	$scope.type;
+	$scope.name;
 	$scope.canDock = true;
 	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, data) {
+		$scope.group = null;
+		$scope.contact = null;			
 		$scope.xpid = data.xpid;
 		
-		// is a group
-		if (data.members) {
-			$scope.type = 'Group';
-			$scope.group = data;
-			$scope.contact = null;
-			$scope.isMine = groupService.isMine(data.xpid);
-		}
-		else {
+		// get type
+		if (data.firstName) {
 			$scope.type = 'Contact';
 			$scope.contact = data;
-			$scope.group = null;
+			$scope.name = data.displayName;
 			$scope.isFavorite = groupService.isFavorite(data.xpid);
+		}
+		else if (data.membersCount) {
+			$scope.type = 'QueueStat';
+			$scope.name = data.name;
+		}
+		else if (data.roomNumber) {
+			$scope.type = 'ConferenceRoom';
+			$scope.name = data.name;
+		}
+		else {
+			$scope.type = 'Group';
+			$scope.group = data;
+			$scope.name = data.name;
+			$scope.isMine = groupService.isMine(data.xpid);
 		}
 		
 		// check if in dock
