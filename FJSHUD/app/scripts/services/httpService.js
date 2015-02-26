@@ -9,9 +9,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var isMasterTab = false;
 	var tabId = 1;
 	var synced = false;
-	if(localStorage.tabs == undefined){
-		localStorage.tabs = [] 
-	}
+	
 
 	
 
@@ -75,9 +73,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
 	var assignTab = function(){
 
-		if(!localStorage[tabId]){
-			localStoarge[tabId] = tabId;
-			if(tabId = 1){
+		if(!localStorage.tabs[tabId]){
+			localStorage.tabs[tabId] = tabId;
+			if(tabId == 1){
 				isMasterTab = true;
 			}
 		}else{
@@ -86,6 +84,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 	}
 
+	if(localStorage.tabs == undefined){
+		localStorage.tabs = [] 
+	}else{
+		assignTab()		
+	}
 	var version_check = function(){
 		var newFeeds ='';
 
@@ -102,6 +105,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     	  		"node":nodeID,
 			}
 		request.makeRequest(requestUrl,"POST",{},header,function(xmlhttp){
+				 
+				console.log(xmlhttp.responseText);
 				 if (xmlhttp.status == 200){
 					var changedFeeds = [];
 		            var params = xmlhttp.responseText.split(";");
@@ -149,20 +154,27 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	}
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
 		
-		var data_obj = localStorage.data_obj != undefined ? localStorage.data_obj : {};
+		this.data_obj = {};
+		
+		if(localStorage.data_obj){
+			this.data_obj = JSON.parse(localStorage.data_obj);
+		}else{
+			this.data_obj = {};
+		}
 
+		this.data_obj["test"] = "hello";
 		if (xmlhttp.status && xmlhttp.status == 200){		
 			synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
 			
 			for (feed in synced_data) {
 				// first time
 				if (!synced)
-					data_obj[feed] = synced_data[feed];
+					this.data_obj[feed] = synced_data[feed];
 				else {
 					for (key in synced_data[feed]) {
 						// full replace
 						if (synced_data[feed][key].xef001type == 'F')
-							data_obj[feed][key].items = synced_data[feed][key].items;
+							this.data_obj[feed][key].items = synced_data[feed][key].items;
 						// update individually
 						else {
 							for (i = 0; i < synced_data[feed][key].items.length; i++) {
@@ -177,7 +189,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 								}
 								
 								if (newItem)
-									data_obj[feed][key].items.push(synced_data[feed][key].items[i]);
+									this.data_obj[feed][key].items.push(synced_data[feed][key].items[i]);
 							}
 						}
 					}
@@ -185,27 +197,29 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			
 				// split recordings up into additional feeds
 				if (feed == "callrecording") {
-					data_obj['callerrecording'] = {};
-					data_obj['conferencerecording'] = {};
+					this.data_obj['callerrecording'] = {};
+					this.data_obj['conferencerecording'] = {};
 					
 					for (key in synced_data[feed]) {
-						data_obj['callerrecording'][key] = {items: []};
-						data_obj['conferencerecording'][key] = {items: []};
+						this.data_obj['callerrecording'][key] = {items: []};
+						this.data_obj['conferencerecording'][key] = {items: []};
 					
 						for (i = 0; i < synced_data[feed][key].items.length; i++) {
 							if (synced_data[feed][key].items[i].conferenceId)
-								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
+								this.data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
 							else
-								data_obj['callerrecording'][key].items.push(synced_data[feed][key].items[i]);
+								this.data_obj['callerrecording'][key].items.push(synced_data[feed][key].items[i]);
 						}
 					}
 					
-					synced_data['callerrecording'] = format_array(data_obj['callerrecording']);
-					synced_data['conferencerecording'] = format_array(data_obj['conferencerecording']);
+					synced_data['callerrecording'] = format_array(this.data_obj['callerrecording']);
+					synced_data['conferencerecording'] = format_array(this.data_obj['conferencerecording']);
 				}
 				else
-					synced_data[feed] = format_array(data_obj[feed]);
+					synced_data[feed] = format_array(this.data_obj[feed]);
 			}
+
+			localStorage.data_obj = JSON.stringify(this.data_obj);
 			
 			synced = true;
 
