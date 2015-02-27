@@ -89,9 +89,17 @@
 		<div class="SubHeader">Members</div>
 		
 		<div class="List">
-			<div ng-repeat="member in gadget.data.members">
-				{{ member.displayName }}
-			</div>
+			<a href="#/contact/{{member.xpid}}/" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">			
+				<div class="Avatar AvatarSmall" context-menu="member">
+					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					<div class="AvatarForeground AvatarInteractable"></div>
+				</div>
+			
+				<div class="ListRowContent">
+					<div>{{ member.displayName }}</div>
+					<div class="IconDisplay XIcon-ChatStatus-{{member.hud_status || 'offline' }}"></div>
+				</div>
+			</a>
 		</div>
 	</div>
 	
