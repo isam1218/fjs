@@ -510,6 +510,12 @@
 .ListRowActionButtonUnpin {
   background: url("../img/XActionSet-30x30.png") no-repeat -0px -120px;
 }
+.ListRowActionButtonDock {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0 0;
+}
+.ListRowActionButtonUndock {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px 0;
+}
 .ListMessageLeftSmall .Avatar.AvatarWarning
 {
   left : 0px;
@@ -562,6 +568,8 @@
   background-color : #fff;
   width : 100%;
   border-bottom : none;
+  float: left;
+  height: auto;
 }
 .ListMessageChatWidget .ListMessageContent
 , .ChatItemTypeRoot-false.ListMessageChatWidget
@@ -583,7 +591,8 @@
 }
 .ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem .time
 {
-  top : 7px;
+  top : 12px; 
+  margin : 0px 3px;  
 }
 .ListMessageChatWidget.ChatItemTypeRoot-false .ChatMessageItem
 {
@@ -735,6 +744,12 @@
   top: 0px;
   right: 0px;
   min-height : 50px;
+  &.chatCont{
+      position: relative;
+      width: 89%;
+      float: left;
+      left: 0;
+  }
 }
 .Widget .ListMessageContent
 {

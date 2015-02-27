@@ -1,37 +1,34 @@
-hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $scope, $rootScope, httpService, contactService, groupService, conferenceService, queueService) {
-	$scope.grid = true;
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
+
 	$scope.gadgets = {};
 	
-	$scope.$on('settings_synced', function(event, data) {
+	$scope.$on('settings_updated', function(event, data) {
+		// enable/disable grid layout
+		if (data.use_column_layout == 'true') {
+			$timeout(function() {
+				$('#DockPanel').sortable({
+					revert: 1,
+					handle: '.Header, .Content'
+				});
+			}, 100);
+		}
+		else {						
+			try {
+				$('#DockPanel').sortable('disable');
+			}
+			catch(e) { }
+		}
+				
 		$scope.gadgets = {};
 		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
 			for (key in data) {
-				if (data[key].key == 'use_column_layout') {
-					// enable/disable grid layout
-					if (data[key].value == 'true') {
-						$scope.grid = true;
-						
-						$('#DockPanel').sortable({
-							revert: 1,
-							handle: '.Header, .Content'
-						});
-					}
-					else {
-						$scope.grid = false;
-						
-						try {
-							$('#DockPanel').sortable('disable');
-						}
-						catch(e) { }
-					}
-				}
-				else if (data[key].key.indexOf('GadgetConfig') != -1) {
+				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
 					var gadget = {
-						name: data[key].key,
-						value: JSON.parse(data[key].value),
+						name: key,
+						value: JSON.parse(data[key]),
 						data: {}
 					};
 					
@@ -52,12 +49,18 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 						case 'GadgetQueueStat':
 							gadget.data = queueService.getQueue(gadget.value.entityId);
 							break;
+						case 'GadgetUserQueues':
+							gadget.data = queueService.getUserQueues($rootScope.myPid);
+							break;
 					}
 					
-					if (gadget.data.members) {	
+					if (gadget.data && gadget.data.members) {	
 						// get complete contact data
 						angular.forEach(gadget.data.members, function(obj, i) {
-							gadget.data.members[i] = contactService.getContact(obj.contactId);
+							if (obj.contactId) {
+								gadget.data.members[i] = contactService.getContact(obj.contactId);
+								gadget.data.members[i].contactId = obj.contactId;
+							}
 						});
 					}
 					
@@ -68,4 +71,30 @@ hudweb.controller('DockController', ['$q', '$scope', '$rootScope', 'HttpService'
 			$scope.$safeApply();
 		});
 	});
+	
+	$scope.$on('conferences_updated', function(event, data) {
+		if (!$scope.gadgets.GadgetConferenceRoom)
+			return;
+			
+		for (key in data) {
+			for (i = 0; i < $scope.gadgets.GadgetConferenceRoom.length; i++) {
+				if (data[key].xpid == $scope.gadgets.GadgetConferenceRoom[i].xpid) {
+					$scope.gadgets.GadgetConferenceRoom[i] = data[key];
+					break;
+				}
+			}
+		}
+			
+		$scope.$safeApply();
+	});
+	
+	$scope.joinConference = function(conference) {
+		var params = {
+			conferenceId: conference.xpid,
+			contactId: $rootScope.myPid,
+		};
+		httpService.sendAction("conferences", "joinContact", params);
+				
+		$location.path('/conference/' + conference.xpid);
+	};
 }]);

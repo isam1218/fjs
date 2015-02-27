@@ -74,6 +74,8 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 						else
 							return 'img/Generic-Avatar-' + size + '.png';
 					}
+					else
+						return 'img/Generic-Avatar-' + size + '.png';
 				};
 			}
 		}

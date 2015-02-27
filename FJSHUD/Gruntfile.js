@@ -1,266 +1,183 @@
-// Generated on 2014-08-11 using generator-angular 0.9.5
-'use strict';
+module.exports = function(grunt) {
 
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
+  var currentTime = getCurrentTime()
+    , buildNumber;
 
-module.exports = function (grunt) {
+  grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
-  // Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
+  function getCurrentTime() {
+    if(!currentTime) {
+      var date = new Date();
+      var values = [ date.getDate(), date.getMonth() + 1, date.getHours(), date.getMinutes()];
+      for (var i = 0; i < values.length; i++) {
+        values[i] = values[i].toString().replace(/^([0-9])$/, '0$1');
+      }
+      currentTime = date.getFullYear()+values[1]+values[0]+"_"+values[2]+values[3];
+    }
+    return currentTime;
+  }
 
-  // Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt);
+  function getBuildNumber() {
+    if(!buildNumber) {
+      try {
+        buildNumber = grunt.file.read('../hud-buildid/count.txt');
+      }
+      catch(e) {
+        buildNumber = -1
+      }
+    }
+    return buildNumber;
+  }
 
-  // Configurable paths for the application
-  var appConfig = {
-    app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
-  };
-
-  // Define the configuration for all the tasks
   grunt.initConfig({
-
-    // Project settings
-    yeoman: appConfig,
-
-    // Watches files for changes and runs tasks based on the changed files
-
-    // The actual grunt server settings
-
-    // Empties folders to start fresh
-    clean: {
-      dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/{,*/}*',
-            '!<%= yeoman.dist %>/.git*'
-          ]
-        }]
-      },
-      server: '.tmp'
-    },
-
-    // Add vendor prefixed styles
-    autoprefixer: {
+    pkg: grunt.file.readJSON('package.json'),
+    'concat': {
       options: {
-        browsers: ['last 1 version']
+        separator: ';'
       },
       dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
+        src: [ "app/scripts/model/entryModel.js",
+        "app/scripts/model/feedModel.js",
+        "app/scripts/model/custom/meFeedModel.js",
+        "app/scripts/model/custom/contactEntryModel.js",
+        "app/scripts/model/custom/contactsFeedModel.js",
+        "app/scripts/model/custom/conferenceEntryModel.js",
+        "app/scripts/model/custom/conferenceFeedModel.js",
+        "app/scripts/model/custom/conferenceMemberEntryModel.js",
+        "app/scripts/model/custom/conferenceMemberFeedModel.js",
+        "app/scripts/model/custom/groupEntryModel.js",
+        "app/scripts/model/custom/groupFeedModel.js",
+        "app/scripts/model/custom/voicemailMessageEntryModel.js",
+        "app/scripts/model/custom/voicemailMessageFeedModel.js",
+        "app/scripts/model/custom/myCallEntryModel.js",
+        "app/scripts/model/custom/myCallFeedModel.js",
+        "app/scripts/model/custom/widgetHistoryEntryModel.js",
+        "app/scripts/model/custom/widgetHistoryFeedModel.js",
+        "app/scripts/model/custom/streameventEntryModel.js",
+        "app/scripts/model/custom/streameventFeedModel.js",
+        "app/scripts/model/client/clientFeedModel.js",
+        "app/scripts/model/client/sortingEntryModel.js",
+        "app/scripts/model/client/sortingFeedModel.js",
+        "app/scripts/model/filters/contactsWithoutMeFilter.js",
+        "app/scripts/model/filters/sortConferenceFilter.js",
+        "app/scripts/model/filters/sortVoicemailFilter.js",
+        "app/scripts/model/filters/externalContactsFilter.js",
+        "app/scripts/model/filters/durationFormatFilter.js",
+        "app/scripts/model/filters/resentsSortFilter.js",
+        "app/scripts/model/filters/chatFilter.js",
+        "app/scripts/model/filters/contactVoicemailsFilter.js",
+        "app/scripts/model/actions/actionEntryModel.js",
+        "app/scripts/model/actions/actionContactCallExtension.js",
+        "app/scripts/model/actions/actionContactCallMobile.js",
+        "app/scripts/model/actions/actionContactChat.js",
+        "app/scripts/model/actions/actionContactEmail.js",
+        "app/scripts/model/actions/actionContactIntercom.js",
+        "app/scripts/model/actions/actionContactVoicemail.js",
+        "app/scripts/model/actions/actionScreenShare.js",
+        "app/scripts/model/actions/actionContactFileShare.js",
+        "app/scripts/model/actions/actionContactUnpin.js",
+        "app/scripts/model/actions/actionsManager.js",
+        "app/scripts/model/dataManager.js",
+        "app/scripts/model/module.js",
+        "app/scripts/react/ContextMenu.js",
+        "app/scripts/react/ContactsList.js",
+        "app/scripts/direcives/contextMenuDirective.js",
+        "app/scripts/direcives/contextMenuDialogDirective.js",
+        "app/scripts/direcives/avatarMenuDirective.js",
+        "app/scripts/direcives/contactsListDirective.js",
+        "app/scripts/direcives/unpinDirective.js",
+        "app/scripts/direcives/module.js",
+        "app/scripts/controllers/base/Controller.js",
+        "app/scripts/controllers/base/SortableController.js",
+        "app/scripts/controllers/base/SortMenuController.js",
+        "app/scripts/controllers/base/ActionMenuController.js",
+        "app/scripts/controllers/MainController.js",
+        "app/scripts/controllers/TopNavigationController.js",
+        "app/scripts/controllers/TopBarMeStatusController.js",
+        "app/scripts/controllers/MeWidgetController.js",
+        "app/scripts/controllers/LocationsController.js",
+        "app/scripts/controllers/base/AddContactMenuController.js",
+        "app/scripts/controllers/ZoomWidgetController.js",
+        "app/scripts/controllers/ContactsWidget.js",
+        "app/scripts/controllers/ConferencesWidgetController.js",
+        "app/scripts/controllers/LeftBarContactsController.js",
+        "app/scripts/controllers/GroupsTab.js",
+        "app/scripts/controllers/VoicemailTab.js",
+        "app/scripts/controllers/EditContactDialog.js",
+        "app/scripts/controllers/ConversationWidgetController.js",
+        "app/scripts/controllers/ConversationWidgetGroupsController.js",
+        "app/scripts/controllers/ConversationWidgetVoicemailsController.js",
+        "app/scripts/controllers/ConversationWidgetQueuesController.js",
+        "app/scripts/controllers/ConversationWidgetVoicemailsController.js",
+        "app/scripts/controllers/ConversationWidgetGroupsController.js",
+        "app/scripts/controllers/ContactWidgetChatController.js",
+        "app/scripts/controllers/ContactWidgetGroupsController.js",
+        "app/scripts/controllers/ConversationWidgetCallLogController.js",
+        "app/scripts/controllers/TestWidgetController.js",
+        "app/scripts/controllers/SearchInputController.js",
+        "app/scripts/controllers/MyCallController.js",
+        "app/scripts/controllers/RecentsListController.js",
+        "app/scripts/controllers/RecentItemController.js",
+        "app/scripts/controllers/ChatController.js",
+        "app/scripts/controllers/contextMenuController.js",
+        "app/scripts/controllers/ChatStatusController.js",
+        "app/scripts/controllers/LeftBarController.js",
+        "app/scripts/controllers/LeftBarCallsController.js"
+      ],
+        dest: 'app/scripts/fjs.hud.debug.js'
       }
-    },
-    // Automatically inject Bower components into the app
-    wiredep: {
-      options: {
-        cwd: '<%= yeoman.app %>'
-      },
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
-      }
-    },
+    }
 
-    // Renames files for browser caching purposes
-    filerev: {
-      dist: {
-        src: [
-          '<%= yeoman.dist %>/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
-        ]
-      }
-    },
-
-    // Reads HTML for usemin blocks to enable smart builds that automatically
-    // concat, minify and revision files. Creates configurations in memory so
-    // additional tasks can operate on them
-    useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
-      options: {
-        dest: '<%= yeoman.dist %>',
-        flow: {
-          html: {
-            steps: {
-              js: ['concat', 'uglifyjs'],
-              css: ['cssmin']
-            },
-            post: {}
-          }
+    , 'closure-compiler': {
+      frontend: {
+        closurePath: '../Tools/closure',
+        js: 'app/scripts/fjs.hud.debug.js',
+        jsOutputFile: 'app/scripts/fjs.hud.min.js',
+        options: {
+          compilation_level: 'SIMPLE_OPTIMIZATIONS',
+          language_in: 'ECMASCRIPT5_STRICT'
         }
       }
-    },
+    }
 
-    // Performs rewrites based on filerev and the useminPrepare configuration
-    usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+    , 'zip': {
+      'sfa-zip': {
+        cwd: ''
+        , src: ['app/**/*'
+          , 'bower_components/**/*'
+        ]
+        , dest: 'bin/HUDw-'+getBuildNumber()+'.zip'
       }
-    },
-
-
-
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
-
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
-
-    htmlmin: {
-      dist: {
-        options: {
-          collapseWhitespace: true,
-          conservativeCollapse: true,
-          collapseBooleanAttributes: true,
-          removeCommentsFromCDATA: true,
-          removeOptionalTags: true
+    }
+    , 'string-replace':{
+      kit: {
+        files: {
+          'src/js/build_number.js':'src/js/build_number.js'
         },
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html'],
-          dest: '<%= yeoman.dist %>'
-        }]
+        options: {
+          replacements: [{
+            pattern: /manual/gm,
+            replacement: getBuildNumber()
+          }]
+        }
       }
-    },
-
-    // ngmin tries to make the code safe for minification automatically by
-    // using the Angular long form for dependency injection. It doesn't work on
-    // things like resolve or inject so those have to be done manually.
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
-        }]
-      }
-    },
-
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-
-    // Copies remaining files to places other tasks can use
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/*'
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
-        }]
-      },
-      styles: {
-        expand: true,
-        cwd: '<%= yeoman.app %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
-      }
-    },
-
-    // Run some tasks in parallel to speed up the build process
-    concurrent: {
-      server: [
-        'copy:styles'
-      ],
-      test: [
-        'copy:styles'
-      ],
-      dist: [
-        'copy:styles',
-        'imagemin',
-        'svgmin'
-      ]
-    },
-
-    // Test settings
-    karma: {
-      unit: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
+    }
+    ,'copy': {
+      main: {
+        files: [
+          {expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+        ]
       }
     }
   });
 
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
-    }
+  grunt.loadNpmTasks('grunt-string-replace');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-closure-compiler');
+  grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.task.run([
-      'clean:server',
-      'wiredep',
-      'concurrent:server',
-      'autoprefixer',
-      'connect:livereload',
-      'watch'
-    ]);
-  });
-
-
-
-  grunt.registerTask('default', [
-    'clean:dist',
-    'wiredep',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
+  grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };

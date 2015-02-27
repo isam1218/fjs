@@ -1,5 +1,5 @@
 hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueService', function ($scope, myHttpService, queueService) {
-  $scope.query;
+  $scope.query = '';
   $scope.queues = [];
   $scope.contacts = {};
   $scope.me = [];

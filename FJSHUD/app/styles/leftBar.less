@@ -5,14 +5,18 @@
   height:40px;
   width: 95.3%;
   margin-left: 10px;
-}
-.ToolBar .XButton {
-  float: right;
-  margin:5px;
-  &.XSortButton{
-    margin-top: 2px;
-    width : 150px;
+  
+  .XButton {
+     width: 90px;
+     float: right;
+     margin:5px;
+     &.XSortButton{
+        margin-top: 2px;
+        width : 150px;
+     }
   }
+  
+  &.chatTop{margin-top: 10px;}
 }
 
 .Widget.Contacts {
@@ -43,6 +47,8 @@
 	box-shadow: 0px 1px 1px #ccc inset;
   }
   
+  .WidgetTabBar{height: 46px; position: relative;}
+  
   .ContactSearch {
     display: flex;
 	flex-direction: row;
@@ -55,13 +61,14 @@
 	  padding: .5em;
 	  margin: .5em;
 	  flex: 2;
-    }
+     }
     
     .New {
       margin: .5em;
 	  height: 2.8em;
 	  padding: 0 20px;
     }
+    
   }
   
   .Contacts, .Groups {
@@ -86,31 +93,37 @@
 	    }
 	  }
 	}
-  }
+  }  
   
-  .Notifications > div:first-child {
-	font-size: .9em;
-	min-height: 25px;
-	transition: .25s;
-	  
+  .Notifications{
+    position: relative;
+    width: 300px;
+    border-bottom-left-radius: 30px;
+    -webkit-border-bottom-left-radius: 30px;
+    
+    & > div:first-child {
+    	font-size: .9em;
+    	min-height: 25px;
+    	transition: .25s;
+	}  
 	&:hover {
-	  min-height: 50px;
+	   min-height: 50px;
 	}
 	
 	.TitleBar {
-	  width: 100%;
-	  background-color: gray;
-	  color: white;
-	  padding: .25em;
+	   width: 100%;
+	   background-color: gray;
+	   color: white;
+	   padding: .25em;
 	
-	  & > * {
+	   & > * {
 	    display: inline-block;
 	    vertical-align: middle;
-	  }
+	   }
 	  
-	  .XButton {
+	   .XButton {
 	    float: right;
-	  }
+	   }
 	  
 	  .Icon {
 	    width: 24px;
@@ -241,9 +254,6 @@
   overflow-y: auto;
 }
 
-.ToolBar .XButton {
-  width: 90px;
-}
 
 .LeftSideBarSection {
   position:absolute;

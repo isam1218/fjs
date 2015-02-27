@@ -106,7 +106,7 @@
 
 			<ng-view class="WidgetPanel"></ng-view>
 
-			<div id="DockPanel" class="DockPanel" ng-class="{'Grid': grid}" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
+			<div id="DockPanel" class="DockPanel" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
 		</div>
 	</div>
 
@@ -201,6 +201,8 @@
     <script src="scripts/controllers/DockController.js"></script>
 
 	<!--services-->
+    <script src="scripts/services/fdpRequest.js"></script>
+    <script src="scripts/services/settingsService.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/groupService.js"></script>
     <script src="scripts/services/contactService.js"></script>
@@ -208,6 +210,5 @@
     <script src="scripts/services/queueService.js"></script>
     <script src="scripts/services/conferenceService.js"></script>
     <script src="scripts/services/phoneService.js"></script>
-
 </body>
 </html>
