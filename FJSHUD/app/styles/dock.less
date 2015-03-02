@@ -61,6 +61,7 @@
 	  padding: .25em;
 	  cursor: pointer;
 	  text-decoration: none;
+	  white-space: nowrap;
 	  
 	  &.Single {
 		background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
@@ -69,6 +70,19 @@
 	  & > div {
 	    display: inline-block;
 		vertical-align: top;
+	  }
+	  
+	  .Title {
+	    width: 75%;
+		
+		div {
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  
+		  &:first-child {
+		    font-weight: bold;
+		  }
+		}
 	  }
 	}
 	

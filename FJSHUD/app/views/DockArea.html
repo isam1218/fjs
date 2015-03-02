@@ -4,7 +4,8 @@
 		<div class="Icon TopBarItemAppIcon CallCenter"></div>
 		<div class="Title">
 			<div>My Queues</div>
-			<div class="Subtitle">Not an agent</div>
+			<div ng-if="gadget.data.length == 0">Not an agent</div>
+			<div ng-if="gadget.data.length > 0">Logged out</div>
 		</div>
 	</a>
 		
@@ -12,9 +13,29 @@
 		<div class="SubHeader">My Queues</div>
 		
 		<div class="List">
-			<div ng-repeat="queue in gadget.data">
-				{{ queue.name }}
-			</div>
+			<a href="#/queue/{{queue.xpid}}" ng-repeat="queue in gadget.data | orderBy: 'name' track by queue.xpid">	
+				<div class="Avatar AvatarNormal" context-menu="queue">
+					<div class="GroupAvatarItem GroupAvatarItem_0">
+						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					</div>
+					<div class="GroupAvatarItem GroupAvatarItem_1">
+						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					</div>
+					<div class="GroupAvatarItem GroupAvatarItem_2">
+						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					</div>
+					<div class="GroupAvatarItem GroupAvatarItem_3">
+						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					</div>
+					<div class="AvatarInteractable"></div>
+				</div>
+			
+				<div class="ListRowContent">
+					<div>{{ queue.name }}</div>
+					<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
+				</div>
+			</a>
+			
 			<div ng-if="gadget.data.length == 0">
 				No queues...
 			</div>
@@ -42,7 +63,7 @@
 		</div>
 		<div class="Title">
 			<div>Parked Calls</div>
-			<div class="Subtitle">no calls on park</div>
+			<div>no calls on park</div>
 		</div>
 	</div>
 </div>
@@ -56,7 +77,10 @@
 		</div>
 		<div class="Title">
 			<div>{{ ::gadget.data.displayName }}</div>
-			<div class="Subtitle">{{ gadget.data.hud_status + ', ' + gadget.data.queue_status }}</div>
+			<div>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
+				<div class="ListRowStatusIcon XIcon-ChatStatus-{{gadget.data.hud_status || 'offline' }}"></div>
+			</div>
 		</div>
 	</a>
 </div>
@@ -81,7 +105,7 @@
 		</div>
 		<div class="Title">
 			<div>{{ ::gadget.data.name }}</div>
-			<div class="Subtitle">None</div>
+			<div>None</div>
 		</div>
 	</a>
 	
@@ -126,7 +150,8 @@
 		</div>
 		<div class="Title">
 			<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
-			<div class="Subtitle">{{ ::gadget.data.location }}</div>
+			<div ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
+			<div ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
 		</div>
 	</a>
 	
@@ -134,13 +159,23 @@
 		<div class="SubHeader">Members</div>
 		
 		<div class="List">
-			<div ng-repeat="member in gadget.data.members">
-				{{ member.displayName }}
-			</div>
+			<a href="#/contact/{{member.xpid}}" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">			
+				<div class="Avatar AvatarSmall" context-menu="member">
+					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					<div class="AvatarForeground AvatarInteractable"></div>
+				</div>
+			
+				<div class="ListRowContent">
+					<div>{{ ::member.displayName }}</div>
+					<div>{{ ::member.primaryExtension }} , {{ timeElapsed(member.call.startedAt) }}</div>
+				</div>
+			</a>
 			
 			<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
 				Room is free and you can do it...
-				<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
+				<p>
+					<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
+				</p>
 			</div>
 		</div>
 	</div>
@@ -168,7 +203,7 @@
 		</div>
 		<div class="Title">
 			<div>{{ ::gadget.data.name }}</div>
-			<div class="Subtitle">Agents: {{ gadget.data.members.length }}</div>
+			<div>Agents: {{ gadget.data.loggedInMembers + ' / ' + gadget.data.loggedOutMembers + ' / ' + gadget.data.membersCount }}</div>
 		</div>
 	</a>
 	
