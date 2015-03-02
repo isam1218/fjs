@@ -7,6 +7,7 @@ var auth = undefined;
 var feeds = fjs.CONFIG.FEEDS;
 var data_obj = {};
 
+var is_dirty = false;
 
 self.addEventListener('message',function(event){
 	if(event.data.action){
@@ -18,11 +19,21 @@ self.addEventListener('message',function(event){
 				
 				break;	
 			case 'sync':
-				version_check();
+				if(event.data.data != undefined){
+					data_obj = event.data.data;
+				}
+				
+				if(event.data.to_sync){
+					version_check();
+				}else{
+					setTimeout('should_sync();', 500);
+				}
+
 				break;
 			case 'feed_request':
 				get_feed_data(event.data.feed);
 				break;
+
 		}
 	}
 });
@@ -53,6 +64,11 @@ function format_array(feed) {
 }
 
 
+function should_sync(){
+	self.postMessage({
+		action:'should_sync',
+	})
+}
 
 function version_check (){
 		var newFeeds ='';
@@ -63,7 +79,7 @@ function version_check (){
 			
 		
 		
-			var request = new httpRequest();
+		var request = new httpRequest();
 		var requestUrl = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) + "?t=web" + newFeeds
 		
 			var header = {
@@ -83,7 +99,7 @@ function version_check (){
 					if (changedFeeds.length > 0)
 		               	sync_request(changedFeeds);
 		            else
-		            	setTimeout('version_check();', 500);
+		            	setTimeout('should_sync();', 500);
 				}else{
 					//delete localStorage.nodeID;
 					//delete localStorage.authTicket;
@@ -91,7 +107,7 @@ function version_check (){
 					self.postMessage({
 						action:'auth_failed'
 					})
-					setTimeout('version_check();', 500);
+					setTimeout('should_sync();', 500);
 				}
 			
 		});
@@ -177,7 +193,11 @@ var sync_request = function(f){
 			};
 
 			self.postMessage(sync_response);
-			setTimeout('version_check();', 500);
+			setTimeout('should_sync();', 500);
+		}else{
+			self.postMessage({
+				action:'auth_failed'
+			})
 		}
 		
 	});

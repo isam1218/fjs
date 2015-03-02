@@ -7,9 +7,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var browser = ua.match(/(chrome|safari|firefox|msie)/i)[0];
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
 	var isMasterTab = false;
-	var tabId = 1;
+	var tabId = 0;
 	var synced = false;
-	
+	var tabMap = undefined;
 
 	
 
@@ -25,14 +25,55 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
      	//return "Are you sure you want to close the window";
      }
 
+
+     //when unloading reassign master tab 
      window.onunload  = function(){
+     	tabMap = JSON.parse(localStorage.fon_tabs);
+     	delete tabMap[tabId];
 
+     	if($.isEmptyObject(tabMap)){
+     		delete localStorage.fon_tabs;
+     	}else{
+     		for(tab in tabMap){
+     			tabMap[tabId].isMaster = true;
+     			break;
+     		}
+			localStorage.fon_tabs = JSON.stringify(tabMap);		
+     	}
      }
-	/**
-		SHARED WORKER
+	
+	//method that generates a random guid for the tab
+	var genGuid = function(){
+		return "xxx".replace("x",function(c){
+			return c == 'x' ? Math.random().toString(16).substr(2,2) : c
+		});
+	}
 
-	*/
-	//isSWSupport = false;
+	var assignTab = function(){
+		tabId = genGuid();//generate a unique tab id
+		if(localStorage.fon_tabs){
+			tabMap = JSON.parse(localStorage.fon_tabs);
+		}
+
+		//if the tabmap is empty or not defined in localstorage then initialize the tab map is set the current tab as the master tab
+		if(tabMap != undefined){
+			tabMap[tabId] = {
+				isMaster:false,
+				isSynced:false
+			}
+		}else{
+			tabMap = {};
+			tabMap[tabId] = {
+				isMaster: true,
+				isSynced: false
+			}
+		}
+
+		localStorage.fon_tabs = JSON.stringify(tabMap);
+	}
+
+	
+
 	var worker = undefined;
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
@@ -65,7 +106,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 						delete localStorage.data_obj;
 						attemptLogin();
 						break;
-		        }
+				}
 		    }, false);
 
 		    worker.port.start();
@@ -73,19 +114,24 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			
 		}
 	}else{
+		
+		assignTab();
+
 		worker = new Worker("scripts/services/fdpWebWorker.js");
-			worker.addEventListener("message", function(event) {
+		worker.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
 		                worker.postMessage({
-		                    "action": "sync"
+		                    "action": "sync",
+		                    to_sync:true
+		                	//"data": JSON.parse(localStorage.data_obj)
 		                });
 		                break;
 		            case "sync_completed":
 		                if (event.data.data) {
 
 		                    synced_data = event.data.data;
-
+		                    localStorage.data_obj = JSON.stringify(synced_data);
 		                    // send data to other controllers
 		                    for (feed in synced_data) {
 		                        if (synced_data[feed].length > 0)
@@ -100,30 +146,37 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
 						delete localStorage.data_obj;
+						delete localStorage.fon_tabs;
 						attemptLogin();
+						break;
+					case "should_sync":
+						
+						//only the master tab should be syncing it will pull the tabs being kept track in local storage
+						tabMap = JSON.parse(localStorage.fon_tabs);
+						if(tabMap[tabId].isMaster){
+							worker.postMessage({
+		                    	"action": "sync",
+		                    	to_sync: true,
+		                	});	
+						}else{
+							
+							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
+							synced_data = JSON.parse(localStorage.data_obj);
+							for(feed in synced_data){
+								if (synced_data[feed].length > 0)
+		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+							}
+							worker.postMessage({
+								action:"sync",
+								to_sync: false,
+							})
+						}
 						break;
 		        }
 		    }, false);
 	}
 
-	var assignTab = function(){
 
-		if(!localStorage.tabs[tabId]){
-			localStorage.tabs[tabId] = tabId;
-			if(tabId == 1){
-				isMasterTab = true;
-			}
-		}else{
-			tabId = tabId + 1;
-			assignTab();
-		}
-	}
-
-	if(localStorage.tabs == undefined){
-		localStorage.tabs = [] 
-	}else{
-		assignTab()		
-	}
 	
 	// send first message to shared worker
 	var authorizeWorker = function() {
@@ -221,7 +274,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			
 		delete localStorage.authTicket;
 		delete localStorage.nodeID;
-			
+		delete localStorage.data_obj;
 		location.href = authURL;
 	};
 	
@@ -232,11 +285,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	            "feed": feed
 	        });
     	}else{
-    		worker.postMessage({
-	            "action": "feed_request",
-	            "feed": feed
-	        });
-    	}
+    		var data = {};
+			if(localStorage.data_obj){
+				data = JSON.parse(localStorage.data_obj);
+				$rootScope.$broadcast(feed + '_synced', data[feed]);
+			}
+		}
     };
     
     this.updateSettings = function(type, action, model) {

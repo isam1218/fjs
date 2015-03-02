@@ -68,15 +68,20 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   });
 
   $rootScope.$on("queue_members_synced", function (event, data) {
-    for (i = 0; i < queues.length; i++) {
-      queues[i].members = [];
-      for (key in data) {
-        if (data[key].queueId == queues[i].xpid) {
-          queues[i].members.push(data[key]);
+    
+    if(queues != undefined){
+
+
+      for (i = 0; i < queues.length; i++) {
+        queues[i].members = [];
+        for (key in data) {
+          if (data[key].queueId == queues[i].xpid) {
+            queues[i].members.push(data[key]);
+          }
         }
       }
+      $rootScope.$broadcast('queues_updated', formatData());
     }
-    $rootScope.$broadcast('queues_updated', formatData());
   });
 
   $rootScope.$on("queue_members_status_synced", function (event, data) {
