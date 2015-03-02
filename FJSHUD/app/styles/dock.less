@@ -1,4 +1,6 @@
 .DockPanel {
+  position: relative;
+  flex: 1;
   margin-left: 10px;
   font-size: .8em;
   overflow: hidden;
@@ -52,10 +54,6 @@
 	
 	&:hover {
 	  box-shadow: 0 0 8px gray;
-	  
-	  .Content {
-	    overflow-y: auto;
-	  }
 	}
 	
     .Header {
@@ -78,6 +76,10 @@
 	  flex: 1;
 	  overflow-y: hidden;
 	  
+	  &:hover {
+	    overflow-y: auto;
+	  }
+	  
 	  .SubHeader {
 	    background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
 		border-top: 1px solid #aaa;
@@ -92,8 +94,14 @@
 	  
 	  .List {
 	    background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
+		
+		& > a {
+		  display: block;
+		  position: relative;
+		}
 	  }
 	}
+	
 	.Resizer {
 	  background-color: #DDDDDE;
 	  height: 12px;
