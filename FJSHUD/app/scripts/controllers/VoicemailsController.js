@@ -4,12 +4,12 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.meModel = {};
         
     $scope.sort_options = [
-		{display_name:"Alphabetically", type:"name"},
-		{display_name:"Newest First", type:"new"},
-		{display_name:"Oldest First", type:"old"},
-		{display_name:"Read Status", type:"read"}
+		{display_name:"Alphabetically", type:"displayName", desc: false},
+		{display_name:"Newest First", type:"date", desc: true},
+		{display_name:"Oldest First", type:"date", desc: false},
+		{display_name:"Read Status", type:"readStatus", desc: false}
     ];
-    $scope.selectedSort = $scope.sort_options[0];
+    $scope.selectedSort = $scope.sort_options[1];
 	
     $scope.actions = [
 		{display_name:"Actions", type:"unknown"},
@@ -59,33 +59,8 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		$scope.$safeApply();
 	});
 
-    $scope.sortBy = function(type){
-        switch(type){
-            case "name":
-                $scope.voicemails.sort(function(a,b){
-                    return a.displayName.localeCompare(b.displayName);
-                });
-                break;
-            case "new":
-                $scope.voicemails.sort(function(a,b){
-                    return b.date - a.date;
-                });
-                break;
-            case "old":
-                $scope.voicemails.sort(function(a,b){
-                    return a.date - b.date;
-                });
-                break;
-            case "read":
-                $scope.voicemails.sort(function(a,b){
-                    if(a.readStatus){
-                        return 1;
-                    }else{
-                        return -1;
-                    }
-                });
-                break;
-        }
+    $scope.sortBy = function(sort){
+        $scope.selectedSort = sort;
     };
 	
 	$scope.getMeAvatarUrl = function(xpid,width,height){
