@@ -25,7 +25,7 @@
 
 <div ng-if="viewIcon" class="LeftBarTabContentList">
   <div class="QueueBlockHolder AvatarHoverArea QueueDetailsEnabled-true"
-       data-ng-repeat="queue in queues | filter: {name: query}">
+       data-ng-repeat="queue in queues | filter: {name: query} track by queue.xpid">
 
     <div class="QueueBlock">
       <div class="Avatar AvatarNormal QueueBlockAvatar" context-menu="queue">
