@@ -237,7 +237,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
         if(phonePlugin && meModel && meModel.my_jid){
         	username = meModel.my_jid.split("@")[0];
-			if(!isRegistered){
+			if(!isRegistered && phonePlugin.getSession){
 				session = phonePlugin.getSession(username);
 				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
 					
