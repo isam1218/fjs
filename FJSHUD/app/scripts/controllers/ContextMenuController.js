@@ -17,7 +17,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 			$scope.name = data.displayName;
 			$scope.isFavorite = groupService.isFavorite(data.xpid);
 		}
-		else if (data.membersCount) {
+		else if (data.loggedInMembers) {
 			$scope.type = 'QueueStat';
 			$scope.name = data.name;
 		}

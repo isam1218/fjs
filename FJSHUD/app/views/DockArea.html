@@ -113,7 +113,7 @@
 		<div class="SubHeader">Members</div>
 		
 		<div class="List">
-			<a href="#/contact/{{member.xpid}}" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">			
+			<a href="#/contact/{{member.xpid}}" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
 				<div class="Avatar AvatarSmall" context-menu="member">
 					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 					<div class="AvatarForeground AvatarInteractable"></div>
@@ -159,7 +159,7 @@
 		<div class="SubHeader">Members</div>
 		
 		<div class="List">
-			<a href="#/contact/{{member.xpid}}" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">			
+			<a href="#/contact/{{member.xpid}}" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
 				<div class="Avatar AvatarSmall" context-menu="member">
 					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 					<div class="AvatarForeground AvatarInteractable"></div>
@@ -203,7 +203,7 @@
 		</div>
 		<div class="Title">
 			<div>{{ ::gadget.data.name }}</div>
-			<div>Agents: {{ gadget.data.loggedInMembers + ' / ' + gadget.data.loggedOutMembers + ' / ' + gadget.data.membersCount }}</div>
+			<div>Agents: {{ gadget.data.loggedInMembers + ' / ' + gadget.data.loggedOutMembers + ' / ' + gadget.data.members.length }}</div>
 		</div>
 	</a>
 	

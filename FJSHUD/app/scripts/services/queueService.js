@@ -32,6 +32,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	
 	return myQueues;
   };
+  
+  this.getMyQueues = function() {
+	return mine;  
+  };
 
   var formatData = function () {
 	if (queues.length > 0 && queues[0].members)
@@ -45,28 +49,24 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   };
 
   $rootScope.$on("queues_synced", function (event, data) {
-    if (queues.length < 1) {
-      queues = data;
+    queues = data;
 
-      // pull feed again in case shared worker got ahead of us
-      httpService.getFeed('queue_members');
-
-      // add avatar function
-      for (i = 0; i < queues.length; i++) {
-        queues[i].getAvatar = function (index, size) {
-          if (this.members) {
-            if (this.members[index] !== undefined) {
-              var xpid = this.members[index].contactId;
-              return httpService.get_avatar(xpid, size, size);
-            }
-            else
-              return 'img/Generic-Avatar-' + size + '.png';
+    // add avatar function
+    for (i = 0; i < queues.length; i++) {
+      queues[i].getAvatar = function (index, size) {
+        if (this.members) {
+          if (this.members[index] !== undefined) {
+            var xpid = this.members[index].contactId;
+            return httpService.get_avatar(xpid, size, size);
           }
-        };
-      }
+          else
+            return 'img/Generic-Avatar-' + size + '.png';
+        }
+      };
     }
-
-    $rootScope.$broadcast('queues_updated', formatData());
+	
+	httpService.getFeed('queue_stat_calls');
+	httpService.getFeed('queue_members');
   });
 
   $rootScope.$on("queue_members_synced", function (event, data) {
@@ -87,18 +87,26 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
         }
       }
 	  
-      $rootScope.$broadcast('queues_updated', formatData());
+	  httpService.getFeed('queue_members_status');
     }
   });
 
   $rootScope.$on("queue_members_status_synced", function (event, data) {
     for (i = 0; i < queues.length; i++) {
+	  queues[i].loggedInMembers = 0;
+	  queues[i].loggedOutMembers = 0;
 
       if (queues[i].members && queues[i].members.length > 0) {
         for (j = 0; j < queues[i].members.length; j++) {
           for (key in data) {
             if (data[key].xpid == queues[i].members[j].xpid) {
               queues[i].members[j].status = data[key];
+			  
+			  // logged totals
+			  if (queues[i].members[j].status && queues[i].members[j].status.status == 'login')
+				  queues[i].loggedInMembers++;
+			  else
+				  queues[i].loggedOutMembers++;
             }
           }
         }
@@ -116,6 +124,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
         }
       }
     }
+	
     $rootScope.$broadcast('queues_updated', formatData());
   });
 
