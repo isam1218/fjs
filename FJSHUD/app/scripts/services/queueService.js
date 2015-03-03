@@ -1,6 +1,7 @@
 hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($rootScope, $q, httpService) {
   var deferred = $q.defer();	
   var queues = [];
+  var mine = [];
   
   this.getQueue = function(xpid) {
 	for(queue in queues){
@@ -38,7 +39,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 		
     // format data that controller needs
     return {
-      queues: queues
+      queues: queues,
+	  mine: mine
     };
   };
 
@@ -68,18 +70,23 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   });
 
   $rootScope.$on("queue_members_synced", function (event, data) {
-    
-    if(queues != undefined){
-
-
+    if (queues !== undefined){
+	  mine = [];
+	  
       for (i = 0; i < queues.length; i++) {
         queues[i].members = [];
-        for (key in data) {
+        for (key in data) {		  
+		  // add to member list
           if (data[key].queueId == queues[i].xpid) {
             queues[i].members.push(data[key]);
+			
+			// mark as mine
+			if (data[key].contactId == $rootScope.myPid)
+				mine.push(queues[i]);
           }
         }
       }
+	  
       $rootScope.$broadcast('queues_updated', formatData());
     }
   });

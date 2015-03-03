@@ -61,23 +61,8 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
 
       case 'My Queue':
         $scope.$on('queues_updated', function (event, data) {
-          var queues = data.queues;
-          var my_pid = $scope.me['my_pid'];
-
-          for (var q in queues) {
-            var queue = queues[q];
-
-            if (queue.members) {
-              for (var m in queue.members) {
-                var member = queue.members[m];
-
-                if (member.contactId === my_pid) {
-                  $scope.queues.push(queue);
-                }
-              }
-
-            }
-          }
+          $scope.queues = data.mine;
+		  $scope.$safeApply();
         });
 
         $scope.$on('me_synced', function (event, data) {
