@@ -1,4 +1,4 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, httpService, utilService) {	
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, queueService, httpService, utilService) {
     $scope.meModel = {};
     $scope.permissions = {
         Zoom: {bit:1,enabled:false}
@@ -54,6 +54,11 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'H
 	$scope.getAvatar = function() {
 		return httpService.get_avatar($rootScope.myPid, 28, 28);
 	};
+	
+	$scope.$on('queues_updated', function(event, data) {
+		$scope.queue = queueService.getMyQueues();
+		$scope.$safeApply();
+	});
 	
 	/**
 		VOICEMAIL PLAYER
