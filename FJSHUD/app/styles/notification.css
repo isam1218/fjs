@@ -46,7 +46,7 @@
   border-top: 1px solid #ccc;
   overflow-y: auto;
   overflow-x: hidden;
-  background-image: url("../img/XTile-Widget.png?v=1418381374907");
+  background-image: url("../img/XTile-Widget.png");
 }
 .LeftBarNotifications {
   max-height: 1px;

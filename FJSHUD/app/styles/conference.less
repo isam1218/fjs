@@ -1,7 +1,19 @@
 .Conference {
   .ToolBar .XButton {
-    width: auto !important;
+    width: 150px !important;
+    height: 2.6em;   
+    top: -3px;
+    &[type=button]{left: 5px; }        
   }
+  &.Widget{
+   .SearchInputBox{
+    left: 0px;
+    top: 2px;
+    width: 160px;
+   }
+  }  
+  .ListViewTopNoteClose{top: 30%;}
+  .ListViewTopNote{font-size: 12px;}
 }
 
 .ListViewTopNote {
