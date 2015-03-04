@@ -35,26 +35,7 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
       case 'All Queues':
         $scope.$on('queues_updated', function (event, data) {
           $scope.queues = data.queues;
-
-          for (var q in $scope.queues) {
-            var queue = $scope.queues[q];
-
-
-            if (queue.members != undefined) {
-              queue.membersCount = queue.members.length;
-              queue.loggedInMembers = 0;
-              queue.loggedOutMembers = 0;
-              for (var m in queue.members) {
-                var member = queue.members[m];
-
-                if (member.status && member.status.status == 'login') {
-                  queue.loggedInMembers++;
-                } else {
-                  queue.loggedOutMembers++;
-                }
-              }
-            }
-          }
+		  
           $scope.$safeApply();
         });
         break;

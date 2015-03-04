@@ -61,16 +61,16 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
 	this.initializePhone = function(){
 		 phonePlugin = document.getElementById('phone');
-		 version = phonePlugin.version;
+		// version = phonePlugin.version;
 	}
 
 	displayNotification = function(content, width,height){
 		if(alert){
-			alert.setShadow(false);
+			alert.setAlertBounds(1321,340,width,height);
+			alert.addAlertEx(content);
+			alert.setShadow(true);
+			alert.setBorderRadius(5);
 			alert.setTransparency(255);
-			alert.setAlertSize(width,height);
-			//alert.setAlertBounds(0,0,0,0);
-			alert.addAlert(content);
 		}
 	}
 
@@ -109,39 +109,47 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		  content = element.innerHTML;
        	  displayNotification(content,element.offsetWidth,element.offsetHeight);
           element.style.display="none";
-
-          $rootScope.$broadcast('phone_event',data);
+          if(!$.isEmptyObject(data)){
+          	$rootScope.$broadcast('phone_event',data);
+			 }
 	}
 
     accStatus = function(account_) {
-            console.log("Phone status:" + account_.status);
             if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
-                     console.log("Online");
-
-                } else if (account_.status == REG_STATUS_OFFLINE) {
-                     console.log( "Offline");
+                     isRegistered = true;
                 } else {
-                     console.log( "Registering");
-                }
+                     isRegistered = false;
+				}
             }
     }
 
 
 	sessionStatus = function(session_status){
-		if (session_status.status == 0) {
+		if (session_status.status == 0 && !isRegistered) {
             ("Session ready");
-            alert = session.alertAPI;
+            
+            if(!alert && !phone){
+            	alert = session.alertAPI;
+				phone = session.phone;
+         		setupListeners();
+			 }
             isRegistered = true;
-			phone = session.phone;
 			soundManager = session.soundManager;
 			registerPhone(true);
-			alert.initAlert('');
-			setupListeners();
+			
+			//alert.initAlert('http://localhost:9900/app/views/nativeAlerts/CallAlert.html');
+			//alert.initAlert('/app/views/nativeAlerts/CallAlert.html');
+			alert.init('');
+			//alert.initAlert(undefined);
+			//removeNotification();
+			
          } else if (session_status.status == 1) {
                 alert("Session unauthorized");
+                isRegistered = false;
                 return;
         } else if (session_status.status == 2) {
+            isRegistered = false;
             alert("Session not permitted");
         }
 	}
@@ -217,7 +225,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
     	if(alert){
     		if(alert.attachEvent){
     			alert.attachEvent("onAlert",onAlert);
-    			alert.attackEvent("ononAlertMouseEvent",onAlertMouseEvent);
+    			alert.attachEvent("ononAlertMouseEvent",onAlertMouseEvent);
     		
 
     		}else{
@@ -299,6 +307,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
 
 	this.makeCall = function(phoneNumber){
+		console.log("making call: " + phoneNumber)
 		if(phone){
 			phone.makeCall(phoneNumber)
 		}

@@ -63,9 +63,15 @@
 	</div>
 
 	<div class="Status">
-		<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
-		<br/>
-		<span>{{ meModel.chat_status ? (meModel.chat_status == 'dnd' ? 'busy' : meModel.chat_status) : 'offline' }}</span>
-		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ meModel.chat_status || 'offline' }}"></div>
+		<div ng-if="queue.queues && queue.queues.length > 0">
+			Me {{ queue.loggedIn > 0 ? 'in (' + queue.loggedIn + ')' : 'out (' + queue.queues.length + ')' }}
+			<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.loggedIn > 0 ? 'login' : 'logout' }}"></div>
+		</div>
+		<div ng-if="!queue.queues || queue.queues.length == 0" class="ListRowStatusIcon XIcon-QueueStatus-"></div>
+		
+		<div>
+			{{ meModel.chat_status ? (meModel.chat_status == 'dnd' ? 'busy' : meModel.chat_status) : 'offline' }}
+			<div class="ListRowStatusIcon XIcon-ChatStatus-{{ meModel.chat_status || 'offline' }}"></div>
+		</div>
 	</div>
 </div>

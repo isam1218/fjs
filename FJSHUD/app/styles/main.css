@@ -41,7 +41,9 @@ p {
   min-width: 300px;
   min-height: 300px;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 #App.stacked {
   min-height: 600px;
@@ -50,9 +52,12 @@ p {
   position: relative;
   padding: 0 10px 10px 10px;
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
   top: 50px;
+  -webkit-flex-direction: row;
 }
 .col1 {
   width: 180px;
@@ -213,6 +218,7 @@ p {
 .RecentCallSection .CalllogName {
   width: 23%;
   display: inline-flex;
+  display: -webkit-inline-flex;
 }
 .RecentCallSection .CalllogName .info {
   color: #009cff;
@@ -221,14 +227,17 @@ p {
   width: 17%;
   text-align: center;
   display: inline-flex;
+  display: -webkit-inline-flex;
 }
 .RecentCallSection .CalllogDuration {
   width: 14%;
   display: inline-flex;
+  display: -webkit-inline-flex;
 }
 .RecentCallSection .CallLogDate {
   width: 25%;
   display: inline-flex;
+  display: -webkit-inline-flex;
 }
 .RecentCallSection .CallLogType {
   width: 7%;
@@ -4454,7 +4463,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url("../img/XStatus.png") no-repeat -24px -24px;
 }
 .XIcon-QueueStatus.LockedIn,
-.XIcon-QueueStatus-logout-permanent {
+.XIcon-QueueStatus-login-permanent {
   background: url("../img/XStatus.png") no-repeat -48px -24px;
 }
 .XIcon-QueueStatus.LockedOut {

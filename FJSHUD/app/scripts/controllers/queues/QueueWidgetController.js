@@ -28,15 +28,13 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     });
     
     $scope.getAvatarUrl = function(index) {
-        
-        if ($scope.queue !== undefined) {
+        if ($scope.queue && $scope.queue.members) {
             if ($scope.queue.members[index] !== undefined) {
                 var xpid = $scope.queue.members[index].xpid;
                 return myHttpService.get_avatar(xpid, 14, 14);
             } 
             else
                 return 'img/Generic-Avatar-14.png';
-        
         }
     };
 }]);

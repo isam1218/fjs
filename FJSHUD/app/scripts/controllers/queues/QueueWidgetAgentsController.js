@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', function ($scope, $rootScope, $routeParams, myHttpService) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$routeParams', 'QueueService', 'HttpService', function ($scope, $rootScope, $routeParams, queueService, myHttpService) {
   $scope.queueId = $routeParams.queueId;
   $scope.query = "";
 
@@ -76,38 +76,32 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
     }
   });
 
-  $scope.$on('queues_synced', function (event, data) {
-    if (data.queues !== undefined) {
-      var queues = data.queues;
-      for (i = 0; i < queues.length && $scope.queue === undefined; i++) {
-        if (queues[i].xpid == $scope.queueId) {
-          $scope.queue = queues[i];
-        }
-
-      }
-      $scope.$safeApply();
-    }
+  queueService.getQueues().then(function(data) {
+	$scope.queue = queueService.getQueue($scope.queueId); 
+	myHttpService.getFeed('queue_members');
   });
 
   $scope.$on('queues_updated', function (event, data) {
     $scope.loggedInMembers = [];
     $scope.loggedOutMembers = [];
+	
+	if ($scope.queue && $scope.queue.members) {
+		for (var i = 0; i < $scope.queue.members.length; i++) {
+		  var member = $scope.queue.members[i];
 
-    for (var i = 0; i < $scope.queue.members.length; i++) {
-      var member = $scope.queue.members[i];
+		  member.contact = $scope.contacts[member.contactId];
 
-      member.contact = $scope.contacts[member.contactId];
-
-      if (member.status !== undefined) {
-        if (member.status.status == 'login') {
-          member.displayStatus = "Logged in"
-          $scope.loggedInMembers.push(member);
-        } else {
-          member.displayStatus = "Logged out"
-          $scope.loggedOutMembers.push(member);
-        }
-      }
-    }
+		  if (member.status !== undefined) {
+			if (member.status.status == 'login') {
+			  member.displayStatus = "Logged in"
+			  $scope.loggedInMembers.push(member);
+			} else {
+			  member.displayStatus = "Logged out"
+			  $scope.loggedOutMembers.push(member);
+			}
+		  }
+		}
+	}
   });
 
   $scope.getAvatarUrl = function (xpid) {
