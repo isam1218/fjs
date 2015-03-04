@@ -34,7 +34,7 @@
 </div>
 
 <div class="BottomRow">
-	<div class="Contact" ng-if="contact">
+	<div ng-if="contact">
 		<a class="Button" href="" ng-show="isFavorite" ng-click="removeFavorite()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>Remove</span>
@@ -65,7 +65,7 @@
 		</a>
 	</div>
 	
-	<div class="Group" ng-if="group">
+	<div ng-if="group">
 		<a class="Button" href="" ng-show="group.ownerId == myPid" ng-click="editGroup()">
 			<div class="ListRowActionButtonEdit"></div>
 			<span>Edit</span>
@@ -77,6 +77,21 @@
 		<a class="Button" href="">
 			<div class="ListRowActionButtonEmail" ng-click="sendGroupMail()"></div>
 			<span>Email</span>
+		</a>
+	</div>
+		
+	<div ng-if="type == 'QueueStat'">
+		<a class="Button" href="" ng-show="queue.length == 1" ng-click="loginQueue(true)">
+			<div class="ListRowActionButtonLogin"></div>
+			<span>Login</span>
+		</a>
+		<a class="Button" href="" ng-show="queue.length > 1" ng-click="loginQueue(false)">
+			<div class="ListRowActionButtonLogout"></div>
+			<span>Logout</span>
+		</a>
+		<a class="Button" href="" ng-click="resetQueue()">
+			<div class="ListRowActionButtonReset"></div>
+			<span>Reset Stats</span>
 		</a>
 	</div>
 		

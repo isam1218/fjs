@@ -78,8 +78,8 @@
 		<div class="Title">
 			<div>{{ ::gadget.data.displayName }}</div>
 			<div>
-				<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
-				<div class="ListRowStatusIcon XIcon-ChatStatus-{{gadget.data.hud_status || 'offline' }}"></div>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
+				<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
 			</div>
 		</div>
 	</a>
