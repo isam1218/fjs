@@ -91,11 +91,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 	};
 	
 	$scope.editContact = function() {
-		$rootScope.$broadcast('editContact', $scope.contact);
+		$scope.showOverlay(true, 'ContactEditOverlay', $scope.contact);
 	};
 	
 	$scope.editGroup = function() {
-		$rootScope.$broadcast('editGroup', $scope.group);
+		$scope.showOverlay(true, 'GroupEditOverlay', $scope.group);
 	};
 	
 	$scope.removeFavorite = function() {

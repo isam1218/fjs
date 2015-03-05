@@ -3,10 +3,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
     $scope.contacts = [];
-	$scope.add = {};
 	$scope.favorites = {};
-	$scope.timeElapsed = 0;
-	$scope.onCall = null;
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
 	// pull updates from service
@@ -84,10 +81,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		localStorage.recents = JSON.stringify($scope.recents);
 	};
 	
-	/**
-		CALL STATUS
-	*/
-	
 	$scope.getCallStatusAvatar = function(call) {
 		if (call && call.contactId)
 			return myHttpService.get_avatar(call.contactId, 28, 28);
@@ -103,81 +96,12 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		if (contact.call.type == 0)
 			return;
 	
-		$scope.onCall = contact;
-		$scope.$parent.showOverlay('callstatus');
-		
-		updateTime();
-	};
-	
-	var updateTime = function() {
-		if ($scope.onCall.call) {
-			// format date
-			var date = new Date().getTime();
-			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.startedAt, 'mm:ss');
-		
-			// increment
-			if ($scope.$parent.overlay == 'callstatus')
-				$timeout(updateTime, 1000);
-		}
-		else
-			$scope.$parent.showOverlay(false);
-	};
-	
-	$scope.bargeCall = function(type, xpid) {
-		myHttpService.sendAction('contacts', type + 'Call', {contactId: xpid});
-	};
-	
-	/**
-		ADD/EDIT CONTACTS
-	*/
-	
-	$scope.saveContact = function() {
-		// validate
-		if (!$scope.add.firstName && !$scope.add.lastName) {
-			$scope.addError = 'Contact name is not specified.';
-			return;
-		}
-		else if ($scope.add.email && $scope.add.email.indexOf('@') == -1) {
-			$scope.addError = 'E-mail is incorrect.';
-			return;
-		}
-		
-		// save new contact
-		myHttpService.sendAction('contacts', $scope.editing ? 'updateContact' : 'addContact', $scope.add);
-			
-		$scope.clearContact();
-	};
-	
-	$scope.$on('editContact', function(event, contact) {
-		$scope.$parent.showOverlay('contacts');
-		$scope.editing = true;
-		
-		$scope.add.pid = contact.xpid;
-		$scope.add.displayName = contact.displayName;
-		$scope.add.firstName = contact.firstName;
-		$scope.add.lastName = contact.lastName;
-		$scope.add.business = contact.phoneBusiness;
-		$scope.add.mobile = contact.phoneMobile;
-		$scope.add.email = contact.email;
-		$scope.add.jid = contact.jid;
-		$scope.add.ims = contact.ims;
-	});
-	
-	$scope.delContact = function() {
-		myHttpService.sendAction('contacts', 'delete', {contactId: $scope.add.pid});
-		$scope.clearContact();
+		$scope.showOverlay(true, 'CallStatusOverlay', contact);
 	};
 	
 	// add favorites action (via directive)
 	$scope.searchContact = function(contact) {
 		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.xpid});
-	};
-	
-	$scope.clearContact = function() {
-		$scope.add = {};
-		$scope.addError = null;
-		$scope.editing = false;
-		$scope.$parent.showOverlay(false);
 	};
 
     $scope.$on("$destroy", function() {

@@ -55,7 +55,7 @@
 					<div class="ContactSearch">
 						<div ng-show="tab != 'favorites'">
 							<input type="search" class="Search" placeholder="Search" ng-model="query" />
-							<input type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay('groups') : showOverlay('contacts')" />
+							<input type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 						</div>
 
 						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="Add Someone" contact-search ng-controller="ContactsWidget" />
@@ -111,6 +111,7 @@
 	</div>
 
 	<div ng-include="currentPopup.url"></div>
+	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
 	<div id="ContextMenu"
 		ng-include="'views/ContextMenu.html'"
@@ -199,6 +200,10 @@
     <script src="scripts/controllers/ZoomWidgetController.js"></script>
     <script src="scripts/controllers/ChatController.js"></script>
     <script src="scripts/controllers/DockController.js"></script>
+	
+	<script src="scripts/controllers/popups/CallStatusOverlayController.js"></script>
+	<script src="scripts/controllers/popups/ContactEditOverlayController.js"></script>
+	<script src="scripts/controllers/popups/GroupEditOverlayController.js"></script>
 
 	<!--services-->
     <script src="scripts/services/fdpRequest.js"></script>

@@ -97,9 +97,4 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
         }
         $scope.$apply();
     });
-
-    $scope.showOverlay = function() {
-		// send off to groups widget
-        $rootScope.$broadcast('new_group', $scope.contactId);
-    };
 }]);

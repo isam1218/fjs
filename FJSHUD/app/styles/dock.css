@@ -100,6 +100,22 @@
   display: block;
   position: relative;
 }
+.DockPanel .Gadget .Content .List.Stats {
+  font-size: .8em;
+  text-align: center;
+  color: #9B9B9B;
+  padding: 1em 0;
+  line-height: 1.5em;
+  border-top: 1px solid #D5D6D6;
+}
+.DockPanel .Gadget .Content .List.Stats > div {
+  display: inline-block;
+  width: 30%;
+}
+.DockPanel .Gadget .Content .List.Stats > div strong {
+  font-size: 1.3em;
+  display: block;
+}
 .DockPanel .Gadget .Resizer {
   background-color: #DDDDDE;
   height: 12px;
