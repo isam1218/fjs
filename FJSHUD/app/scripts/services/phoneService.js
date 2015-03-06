@@ -14,6 +14,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	var callsDetails = {};
 	$rootScope.meModel = {};
 	var isRegistered = false;
+	var isAlertShown = true;
 	//fjs.CONFIG.SERVER.serverURL 
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
@@ -66,11 +67,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
 	displayNotification = function(content, width,height){
 		if(alert){
-			alert.setAlertBounds(1321,340,width,height);
+			alert.setAlertBounds(0,0,width,height);
+			
+			
 			alert.addAlertEx(content);
 			alert.setShadow(true);
 			alert.setBorderRadius(5);
 			alert.setTransparency(255);
+			isAlertShown = true;
 		}
 	}
 
@@ -83,11 +87,29 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				data = {
 					event: 'ringing',
 				}
+				if(!isAlertShown){
+		  			element = document.getElementById("CallAlert");
+          			element.style.display="block";
+		  			content = element.innerHTML;
+       	  			displayNotification(content,element.offsetWidth,element.offsetHeight);
+          			element.style.display="none";
+        			
+        		}
+
+
 				break;
 			case CALL_STATUS_ACCEPTED:
 				data = {
 					event: 'accepted',
 				}
+
+				element = document.getElementById("CallAlert");
+          		element.style.display="block";
+		  		content = element.innerHTML;
+       	  		displayNotification(content,element.offsetWidth,element.offsetHeight);
+          		element.style.display="none";
+        
+
 				break;
 			case CALL_STATUS_HOLD:
 				data = {
@@ -104,14 +126,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				break;
 		}
 
-		  element = document.getElementById("CallAlert");
-          element.style.display="block";
-		  content = element.innerHTML;
-       	  displayNotification(content,element.offsetWidth,element.offsetHeight);
-          element.style.display="none";
-          if(!$.isEmptyObject(data)){
-          	$rootScope.$broadcast('phone_event',data);
-			 }
+		  
+        
+        if(!$.isEmptyObject(data)){
+          $rootScope.$broadcast('phone_event',data);
+		}
 	}
 
     accStatus = function(account_) {
@@ -132,16 +151,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
             if(!alert && !phone){
             	alert = session.alertAPI;
 				phone = session.phone;
+         	
+         		alert.initAlert('http://localhost:9900/app/views/nativeAlerts/Alert.html');
+				removeNotification();
          		setupListeners();
 			 }
             isRegistered = true;
 			soundManager = session.soundManager;
 			registerPhone(true);
 			
-			//alert.initAlert('http://localhost:9900/app/views/nativeAlerts/CallAlert.html');
-			//alert.initAlert('/app/views/nativeAlerts/CallAlert.html');
-			alert.init('');
-			//alert.initAlert(undefined);
+			//alert.initAlert('views/nativeAlerts/Alert.html');
+			//alert.init('');
+		
+			//alert.initAlert("<h1> testing </h1>");
+			
+			
 			//removeNotification();
 			
          } else if (session_status.status == 1) {
@@ -155,7 +179,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	}
 
 	onNetworkStatus = function(st){
-        console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
+        //console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
     }
 
     onAlert = function(urlhash){
@@ -199,8 +223,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	}
 
 	removeNotification = function(){
-
 		if(alert){
+			isAlertShown = false;
 			alert.removeAlert();
 		}
 	}
