@@ -1,43 +1,82 @@
 .Widget.CallLog {
-  .ListRow {
-    display: flex;
-	flex-direction: row;
-	align-items: center;
-	font-size: .9em;
-	
-	&:nth-child(odd) {
-	  background-color: #eee;
-	}
-	
-	&:hover {
-	  background-color: #ddd;
-	}
-	
-    & > div {
-	  flex: 1;
-	  display: inline-block;
-	  vertical-align: middle;
-	  text-align: center;
-	  
-	  &:not(:first-child):not(.Name) {
-	    font-size: .8em;
-	  }
-	  
-	  &.Name {
-	    text-align: left;
-		flex: 3;
-		color: #009cff;
-	  }
-	  
-	  &.Phone {
-	    text-decoration: underline;
-		color: #333;
-	    flex: 3;
-	  }
-	  
-	  &.Date {
-	    flex: 3;
-	  }
-	}
-  }
+
+      .ToolBar {top: 15px;}
+      .WidgetTabContent{
+        margin-top: 45px;
+       } 
+        .WidgetBody{
+            .ListLineContent.Header{
+                .ListLineContentCell{
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    
+                    .DirectionArrow{
+                        left: 15% !important; 
+                        position: relative !important;
+                    } 
+                    &.Down{
+                     .DirectionArrow{top: 4px;}
+                    } 
+                    &.Name{padding-left: 0px;}   
+                    &.Phone{padding-left: 15px;}
+                    &.Duration{padding-left: 10px;}  
+                    &.StartedAt{padding-right: 40px;padding-left: 40px;}
+                    &.CallType{padding-right: 5px; padding-left: 26px;}
+                                                                                   
+                }                                               
+            }
+        }                
+       
+      .ListRow {
+        display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    	font-size: .9em;
+    	
+    	&:nth-child(odd) {
+    	  background-color: #eee;
+    	}
+    	
+    	&:hover {
+    	  background-color: #ddd;
+    	}
+    	
+        & > div {
+    	  flex: 1;
+    	  display: inline-block;
+    	  vertical-align: middle;
+    	  text-align: left;
+    	  
+    	  &:not(:first-child):not(.Name) {
+    	    font-size: .8em;
+    	    padding-left: 22px;
+    	    padding-right: 22px;
+    	    
+    	    &.Type{
+    	       padding-right: 20px;               
+    	    }
+    	  }
+    	  
+    	  &.Name {
+    	    text-align: left;
+    		flex: 3;
+    		color: #009cff;  
+    		padding-left: 22px;  		
+    	  }
+    	  
+    	  &.Phone {
+    	    text-decoration: underline;
+    		color: #333;
+    		padding-left: 0px !important;
+    		padding-right: 30px !important;
+    	    
+    	    span{white-space: nowrap;}
+    	  }
+    	  
+    	  &.Date {
+    	    flex: 3;
+    	    white-space: nowrap;
+    	  }
+    	}
+       }  
 }

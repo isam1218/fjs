@@ -6,6 +6,12 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
     $scope.currentPopup.x = 0;
     $scope.currentPopup.y = 0;
 	
+	$scope.overlay = {
+		show: false,
+		url: '',
+		data: null
+	};
+	
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
         var phase = $scope.$root.$$phase;
@@ -35,14 +41,18 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
             $scope.currentPopup.url = null;
             return;
         }
-        else if($scope.currentPopup.url != "views/"+data.key+".html") {
-            $scope.currentPopup.url = "views/" + data.key + ".html";
+        else if($scope.currentPopup.url != "views/popups/"+data.key+".html") {
+            $scope.currentPopup.url = "views/popups/" + data.key + ".html";
         }
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
     };
 	
-   
+	$scope.showOverlay = function(show, url, data) {
+		$scope.overlay.show = show;
+		$scope.overlay.url = url ? 'views/popups/' + url + '.html' : '';
+		$scope.overlay.data = data ? data : null;
+	};
 
 	var getMyPid = $scope.$on('me_synced', function(event, data) {
 		// find my pid

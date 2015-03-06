@@ -1,6 +1,8 @@
 hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($rootScope, $q, httpService) {
   var deferred = $q.defer();	
   var queues = [];
+  var mine = [];
+  var myLoggedIn = 0;
   
   this.getQueue = function(xpid) {
 	for(queue in queues){
@@ -16,20 +18,27 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   };
   
   this.getUserQueues = function(xpid) {
-	var myQueues = [];
+	var userqueues = [];
 	
 	for (q in queues) {
         if (queues[q].members) {
 			for (i = 0; i < queues[q].members.length; i++) {
 				if (queues[q].members[i] && queues[q].members[i].contactId == xpid) {
-					myQueues.push(queues[q]);
+					userqueues.push(queues[q]);
 					break;
 				}
 			}
         }
 	}
 	
-	return myQueues;
+	return userqueues;
+  };
+  
+  this.getMyQueues = function() {
+	return {
+		queues: mine,
+		loggedIn: myLoggedIn
+	};
   };
 
   var formatData = function () {
@@ -38,60 +47,76 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 		
     // format data that controller needs
     return {
-      queues: queues
+      queues: queues,
+	  mine: mine
     };
   };
 
   $rootScope.$on("queues_synced", function (event, data) {
-    if (queues.length < 1) {
-      queues = data;
+    queues = data;
 
-      // pull feed again in case shared worker got ahead of us
-      httpService.getFeed('queue_members');
-
-      // add avatar function
-      for (i = 0; i < queues.length; i++) {
-        queues[i].getAvatar = function (index, size) {
-          if (this.members) {
-            if (this.members[index] !== undefined) {
-              var xpid = this.members[index].contactId;
-              return httpService.get_avatar(xpid, size, size);
-            }
-            else
-              return 'img/Generic-Avatar-' + size + '.png';
+    // add avatar function
+    for (i = 0; i < queues.length; i++) {
+      queues[i].getAvatar = function (index, size) {
+        if (this.members) {
+          if (this.members[index] !== undefined) {
+            var xpid = this.members[index].contactId;
+            return httpService.get_avatar(xpid, size, size);
           }
-        };
-      }
+          else
+            return 'img/Generic-Avatar-' + size + '.png';
+        }
+      };
     }
-
-    $rootScope.$broadcast('queues_updated', formatData());
+	
+	httpService.getFeed('queue_stat_calls');
+	httpService.getFeed('queue_members');
   });
 
   $rootScope.$on("queue_members_synced", function (event, data) {
-    
-    if(queues != undefined){
-
-
+    if (queues !== undefined){
+	  mine = [];
+	  
       for (i = 0; i < queues.length; i++) {
         queues[i].members = [];
-        for (key in data) {
+        for (key in data) {		  
+		  // add to member list
           if (data[key].queueId == queues[i].xpid) {
             queues[i].members.push(data[key]);
+			
+			// mark as mine
+			if (data[key].contactId == $rootScope.myPid)
+				mine.push(queues[i]);
           }
         }
       }
-      $rootScope.$broadcast('queues_updated', formatData());
+	  
+	  httpService.getFeed('queue_members_status');
     }
   });
 
   $rootScope.$on("queue_members_status_synced", function (event, data) {
+	myLoggedIn = 0;
+	
     for (i = 0; i < queues.length; i++) {
+	  queues[i].loggedInMembers = 0;
+	  queues[i].loggedOutMembers = 0;
 
       if (queues[i].members && queues[i].members.length > 0) {
         for (j = 0; j < queues[i].members.length; j++) {
           for (key in data) {
             if (data[key].xpid == queues[i].members[j].xpid) {
               queues[i].members[j].status = data[key];
+			  
+			  // logged totals
+			  if (queues[i].members[j].status.status.indexOf('login') != -1) {
+				  queues[i].loggedInMembers++;
+				  
+				  if (queues[i].members[j].contactId == $rootScope.myPid)
+					  myLoggedIn++;
+			  }
+			  else
+				  queues[i].loggedOutMembers++;
             }
           }
         }
@@ -109,6 +134,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
         }
       }
     }
+	
     $rootScope.$broadcast('queues_updated', formatData());
   });
 

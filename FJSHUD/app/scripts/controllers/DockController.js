@@ -50,18 +50,17 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 							gadget.data = queueService.getQueue(gadget.value.entityId);
 							break;
 						case 'GadgetUserQueues':
-							gadget.data = queueService.getUserQueues($rootScope.myPid);
+							gadget.data = queueService.getMyQueues();
+							
+							angular.forEach(gadget.data.queues, function(obj) {
+								for (i = 0; i < obj.members.length; i++) {
+									// we only care about ourselves
+									if (obj.members[i].contactId == $rootScope.myPid)
+										obj.me = obj.members[i];
+								}
+							});
+							
 							break;
-					}
-					
-					if (gadget.data && gadget.data.members) {	
-						// get complete contact data
-						angular.forEach(gadget.data.members, function(obj, i) {
-							if (obj.contactId) {
-								gadget.data.members[i] = contactService.getContact(obj.contactId);
-								gadget.data.members[i].contactId = obj.contactId;
-							}
-						});
 					}
 					
 					$scope.gadgets[gadget.value.factoryId].push(gadget);
@@ -71,6 +70,10 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 			$scope.$safeApply();
 		});
 	});
+	
+	$scope.getContact = function(xpid) {
+		return contactService.getContact(xpid);
+	};
 	
 	$scope.$on('conferences_updated', function(event, data) {
 		if (!$scope.gadgets.GadgetConferenceRoom)

@@ -1,4 +1,4 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactService', 'GroupService', 'SettingsService', 'HttpService', function($rootScope, $scope, contactService, groupService, settingsService, httpService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', function($rootScope, $scope, contactService, groupService, queueService, settingsService, httpService) {
 	$scope.xpid;
 	$scope.type;
 	$scope.name;
@@ -7,21 +7,40 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, data) {
 		$scope.group = null;
-		$scope.contact = null;			
+		$scope.contact = null;
+		$scope.queue = [];
 		$scope.xpid = data.xpid;
 		
 		// get type
-		if (data.firstName) {
+		if (data.firstName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.contact = data;
 			$scope.name = data.displayName;
 			$scope.isFavorite = groupService.isFavorite(data.xpid);
 		}
-		else if (data.membersCount) {
+		else if (data.loggedInMembers !== undefined) {
 			$scope.type = 'QueueStat';
 			$scope.name = data.name;
+			
+			angular.forEach(queueService.getMyQueues().queues, function(obj) {
+				// user is in this queue
+				if (obj.xpid == $scope.xpid) {					
+					for (i = 0; i < obj.members.length; i++) {
+						// find user's member ID
+						if (obj.members[i].contactId == $rootScope.myPid) {
+							$scope.queue.push(obj.members[i].xpid);
+						
+							// user is logged in but not permanently
+							if (obj.members[i].status.status.indexOf('permanent') != -1)
+								$scope.queue = [];
+							else if (obj.members[i].status.status.indexOf('login') != -1)
+								$scope.queue.push(true);
+						}
+					}
+				}
+			});
 		}
-		else if (data.roomNumber) {
+		else if (data.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
 			$scope.name = data.name;
 		}
@@ -47,7 +66,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		});
 	});
 	
-	// add to dock area
+	/**
+		DOCK ICON ACTIONS
+	*/
+	
 	$scope.dockItem = function(add) {
 		if (add) {
 			var data = {
@@ -68,13 +90,12 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		}
 	};
 	
-	// send to contacts widget
 	$scope.editContact = function() {
-		$rootScope.$broadcast('editContact', $scope.contact);
+		$scope.showOverlay(true, 'ContactEditOverlay', $scope.contact);
 	};
 	
 	$scope.editGroup = function() {
-		$rootScope.$broadcast('editGroup', $scope.group);
+		$scope.showOverlay(true, 'GroupEditOverlay', $scope.group);
 	};
 	
 	$scope.removeFavorite = function() {
@@ -96,5 +117,19 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		});
 		
 		window.open('mailto:' + emails.join(';'));
+	};
+	
+	$scope.loginQueue = function(login) {
+		if (login)
+			httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue[0]});
+		else
+			httpService.sendAction('queue_members', 'agentLogout', {memberId: $scope.queue[0], reason: '0_71485'});
+	};
+	
+	$scope.resetQueue = function() {
+		var doIt = confirm('Are you sure you want to reset statistics for queue ' + $scope.name + '?');
+		
+		if (doIt)
+			httpService.sendAction('queues', 'resetStatistics', {queueId: $scope.xpid});
 	};
 }]);

@@ -46,11 +46,11 @@
         </div>
         <div class="AvatarForeground AvatarInteractable"></div>
       </div>
-      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name }} - {{ queue.description}}</a>
+      <a href="#queue/{{::queue.xpid}}" class="QueueBlockTitle SortField"> {{ queue.name }}</a>
 
       <div class="QueueBlockStatus QueueBlockAgentsStatLine">
         <!--Agents:<span>{{queueStatMembers[queue.xpid].membersTalking}}</span> / <span>{{queueStatMembers[queue.xpid].membersCount}}</span> / <span>{{queueStatMembers[queue.xpid].membersLogged}}</span></div>-->
-        Agents:<span>{{queue.loggedInMembers}}</span> / <span>{{queue.loggedOutMembers}}</span> / <span>{{queue.membersCount}}</span>
+        Agents:<span>0</span> / <span>{{queue.loggedInMembers}}</span> / <span>{{queue.members.length}}</span>
       </div>
 
       <div class="QueueBlockStat">
@@ -60,19 +60,19 @@
             <div class="QueueBlockStatBlockTitle">Waiting</div>
           </div>
           <div class="QueueBlockStatBlock">
-            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.waiting }}</span></div>
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.esa*1000 | duration }}</span></div>
             <div class="QueueBlockStatBlockTitle">Avg Wait</div>
           </div>
           <div class="QueueBlockStatBlock">
-            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.avgTalk | duration }}</span></div>
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.avgTalk*1000 | duration }}</span></div>
             <div class="QueueBlockStatBlockTitle">Avg Talk</div>
           </div>
           <div class="QueueBlockStatBlock">
-            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.completed }}</span></div>
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.abandon + queue.info.completed }}</span></div>
             <div class="QueueBlockStatBlockTitle">Total</div>
           </div>
           <div class="QueueBlockStatBlock Red">
-            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.abandon }}</span>%
+            <div class="QueueBlockStatBlockValue"><span>{{ queue.info.abandonPercent }}</span>%
             </div>
             <div class="QueueBlockStatBlockTitle">Abandon</div>
           </div>
@@ -122,7 +122,7 @@
   <div class="ListView WithToolBar QueueListView-false">
     <div class="fj-viewport" style="overflow: hidden;">
       <div class="fj-viewcontent"
-           data-ng-repeat="queue in queues | filter: {name: query}">
+           data-ng-repeat="queue in queues | filter: {name: query} track by queue.xpid">
         <!--<div class="ListViewTopSpace"></div>-->
         <div>
           <div class="fj-scroll-content" style="top: 0px;">
@@ -134,13 +134,13 @@
               </div>
               <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.waiting}} </span>
               </div>
-              <div class="fj-hbox-cell ListLineContentCell AvgWaiting"><span>{{ queue.info.waiting}}</span>
+              <div class="fj-hbox-cell ListLineContentCell AvgWaiting"><span>{{ queue.info.esa*1000 | duration}}</span>
               </div>
-              <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>{{ queue.info.avgTalk | duration}}</span>
+              <div class="fj-hbox-cell ListLineContentCell AvgTalk"><span>{{ queue.info.avgTalk*1000 | duration}}</span>
               </div>
-              <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.completed }}</span>
+              <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.abandon + queue.info.completed }}</span>
               </div>
-              <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.abandoned }}</span>
+              <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.abandonPercent }}%</span>
               </div>
               <div class="fj-hbox-cell ListLineContentCell Number"><span>{{ queue.info.active }}</span>
               </div>

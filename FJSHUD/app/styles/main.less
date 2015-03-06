@@ -46,19 +46,20 @@ p {
   min-width: 300px;
   min-height: 300px;
   display: flex;
+  display:-webkit-flex;
   flex-direction: column;
-
-  &.stacked {
-    min-height: 600px;
-  }
+  -webkit-flex-direction:column;
 }
 
 .PanelWrapper {
   position: relative;
   padding: 0 10px 10px 10px;
   flex: 1;
+  -webkit-flex:1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction:row;
 }
 
 .col1{
@@ -244,7 +245,8 @@ p {
   }
   .CalllogName{
     width:23%;
-    display:inline-flex; 
+    display:inline-flex;
+    display:-webkit-inline-flex; 
     .info{
         color:#009cff;
     } 
@@ -254,19 +256,21 @@ p {
     width:17%;
     text-align:center;
     display:inline-flex;  
- 
+    display:-webkit-inline-flex;
   }
 
   .CalllogDuration{
     width:14%;
     display:inline-flex;  
-
+    display:-webkit-inline-flex;
+ 
   }
 
   .CallLogDate{
     width:25%;
     display:inline-flex;  
-  
+    display:-webkit-inline-flex;
+ 
   }
 
   .CallLogType{

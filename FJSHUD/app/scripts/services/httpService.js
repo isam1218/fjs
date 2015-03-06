@@ -23,11 +23,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     var VERSIONSCACHE_PATH = "/v1/versionscache";
      window.onbeforeunload = function(){
      	//return "Are you sure you want to close the window";
-     }
-
-
-     //when unloading reassign master tab 
-     window.onunload  = function(){
      	tabMap = JSON.parse(localStorage.fon_tabs);
      	delete tabMap[tabId];
 
@@ -40,17 +35,30 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
      		}
 			localStorage.fon_tabs = JSON.stringify(tabMap);		
      	}
+    }
+
+
+     //when unloading reassign master tab 
+     window.onunload  = function(){
+     	
      }
 	
 	//method that generates a random guid for the tab
 	var genGuid = function(){
-		return "xxx".replace("x",function(c){
+		return "xxx".replace(/[x]/g,function(c){
 			return c == 'x' ? Math.random().toString(16).substr(2,2) : c
 		});
 	}
 
 	var assignTab = function(){
-		tabId = genGuid();//generate a unique tab id
+		
+		tabId = sessionStorage.getItem("tabId");
+
+		if(!tabId){
+			tabId = genGuid();//generate a unique tab id
+			sessionStorage.setItem("tabId",tabId);
+		}
+
 		if(localStorage.fon_tabs){
 			tabMap = JSON.parse(localStorage.fon_tabs);
 		}
