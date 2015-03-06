@@ -1,3 +1,37 @@
+.Widget.CallLog .ToolBar {
+  top: 15px;
+}
+.Widget.CallLog .WidgetTabContent {
+  margin-top: 45px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+  left: 15% !important;
+  position: relative !important;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
+  top: 4px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Name {
+  padding-left: 0px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Phone {
+  padding-left: 15px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Duration {
+  padding-left: 10px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.StartedAt {
+  padding-right: 40px;
+  padding-left: 40px;
+}
+.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.CallType {
+  padding-right: 5px;
+  padding-left: 26px;
+}
 .Widget.CallLog .ListRow {
   display: flex;
   flex-direction: row;
@@ -14,21 +48,32 @@
   flex: 1;
   display: inline-block;
   vertical-align: middle;
-  text-align: center;
+  text-align: left;
 }
 .Widget.CallLog .ListRow > div:not(:first-child):not(.Name) {
   font-size: .8em;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+.Widget.CallLog .ListRow > div:not(:first-child):not(.Name).Type {
+  padding-right: 20px;
 }
 .Widget.CallLog .ListRow > div.Name {
   text-align: left;
   flex: 3;
   color: #009cff;
+  padding-left: 22px;
 }
 .Widget.CallLog .ListRow > div.Phone {
   text-decoration: underline;
   color: #333;
-  flex: 3;
+  padding-left: 0px !important;
+  padding-right: 30px !important;
+}
+.Widget.CallLog .ListRow > div.Phone span {
+  white-space: nowrap;
 }
 .Widget.CallLog .ListRow > div.Date {
   flex: 3;
+  white-space: nowrap;
 }

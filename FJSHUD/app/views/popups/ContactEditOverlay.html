@@ -1,0 +1,73 @@
+<div class="Overlay" ng-controller="ContactEditOverlayController">
+	<div ng-click="showOverlay(false)" class="Background"></div>
+	<div class="Foreground">
+		<div ng-click="showOverlay(false)" class="Close">x</div>
+		
+		<div class="Header">
+			<h2>{{ editing ? 'Edit Contact' : 'Add a New Contact' }}</h2>
+		</div>
+		
+		<div class="Sections">
+			<div class="Section">
+				<div>
+					<h4>Contact Information</h4>
+					<em>Want to know who is calling you?</em>
+				</div>
+				<div>
+					<label>First Name</label>
+					<input ng-model="add.firstName" type="text" class="XInputText" />
+				</div>
+				<div>
+					<label>Last Name</label>
+					<input ng-model="add.lastName" type="text" class="XInputText" />
+				</div>
+				<div>
+					<label>Display Name</label>
+					<input ng-model="add.displayName" type="text" class="XInputText" />
+				</div>
+				<div>
+					<h4>Visibility</h4>
+					<input ng-model="add.favorite" type="checkbox" /> Add to favorites group
+				</div>
+			</div>
+			
+			<div class="Section">
+				<div>
+					<h4>Phones</h4>
+					<em>Add contact phone to make calls</em>
+				</div>
+				<div>
+					<label>Business phone</label>
+					<input ng-model="add.business" type="text" class="XInputText" />
+				</div>
+				<div>
+					<label>Mobile phone</label>
+					<input ng-model="add.mobile" type="text" class="XInputText" />
+				</div>
+				<div>
+					<h4>Messaging</h4>
+					<em>Want to chat and e-mail this person?</em>
+				</div>
+				<div>
+					<label>E-mail</label>
+					<input ng-model="add.email" type="text" class="XInputText" />
+				</div>
+				<div>
+					<label>GoogleTalk (JID)</label>
+					<input ng-model="add.jid" type="text" class="XInputText" />
+				</div>
+				<div>
+					<label>IMS</label>
+					<input ng-model="add.ims" type="text" class="XInputText" />
+				</div>
+			</div>
+		</div>
+		
+		<div class="Footer">
+			<div class="Error" ng-show="addError" ng-bind="addError"></div>
+			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="editing" />
+			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton" value="{{ editing ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
+		</div>
+	</div>
+</div>

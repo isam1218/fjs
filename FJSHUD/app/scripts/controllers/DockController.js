@@ -52,7 +52,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 						case 'GadgetUserQueues':
 							gadget.data = queueService.getMyQueues();
 							
-							angular.forEach(gadget.data, function(obj) {
+							angular.forEach(gadget.data.queues, function(obj) {
 								for (i = 0; i < obj.members.length; i++) {
 									// we only care about ourselves
 									if (obj.members[i].contactId == $rootScope.myPid)

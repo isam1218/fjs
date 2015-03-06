@@ -4,13 +4,6 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
 	$scope.overlay = '';
 	$scope.number = "";
 	$scope.locations = [];
-	
-	$scope.showOverlay = function(show) {			
-		if (!show)
-			$scope.overlay = '';
-		else
-			$scope.overlay = show;
-	};
 
 	 $scope.makeCall = function(number){
         if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){

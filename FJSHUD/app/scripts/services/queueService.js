@@ -2,6 +2,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   var deferred = $q.defer();	
   var queues = [];
   var mine = [];
+  var myLoggedIn = 0;
   
   this.getQueue = function(xpid) {
 	for(queue in queues){
@@ -17,24 +18,27 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   };
   
   this.getUserQueues = function(xpid) {
-	var myQueues = [];
+	var userqueues = [];
 	
 	for (q in queues) {
         if (queues[q].members) {
 			for (i = 0; i < queues[q].members.length; i++) {
 				if (queues[q].members[i] && queues[q].members[i].contactId == xpid) {
-					myQueues.push(queues[q]);
+					userqueues.push(queues[q]);
 					break;
 				}
 			}
         }
 	}
 	
-	return myQueues;
+	return userqueues;
   };
   
   this.getMyQueues = function() {
-	return mine;  
+	return {
+		queues: mine,
+		loggedIn: myLoggedIn
+	};
   };
 
   var formatData = function () {
@@ -92,6 +96,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   });
 
   $rootScope.$on("queue_members_status_synced", function (event, data) {
+	myLoggedIn = 0;
+	
     for (i = 0; i < queues.length; i++) {
 	  queues[i].loggedInMembers = 0;
 	  queues[i].loggedOutMembers = 0;
@@ -103,8 +109,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
               queues[i].members[j].status = data[key];
 			  
 			  // logged totals
-			  if (queues[i].members[j].status && queues[i].members[j].status.status == 'login')
+			  if (queues[i].members[j].status.status.indexOf('login') != -1) {
 				  queues[i].loggedInMembers++;
+				  
+				  if (queues[i].members[j].contactId == $rootScope.myPid)
+					  myLoggedIn++;
+			  }
 			  else
 				  queues[i].loggedOutMembers++;
             }
@@ -127,5 +137,18 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	
     $rootScope.$broadcast('queues_updated', formatData());
   });
+
+  $rootScope.$on("queuemembercalls_synced", function (event, data) {
+    for (i = 0; i < queues.length; i++) {
+      for (key in data) {
+        if (data[key].xpid == queues[i].xpid) {
+          queues[i].callLogs = data[key];
+        }
+      }
+    }
+    $rootScope.$broadcast('queues_updated', formatData());
+  });
+
+
 
 }]);

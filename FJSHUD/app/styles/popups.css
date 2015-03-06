@@ -256,22 +256,25 @@
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
+  white-space: nowrap;
 }
 #ContextMenu .Arrow {
   position: absolute;
   top: 3em;
-  left: -10px;
   width: 0;
   height: 0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
+}
+#ContextMenu .Arrow.Left {
+  left: -10px;
   border-right: 10px solid #ededee;
 }
-#ContextMenu .TopRow.Group {
-  margin-top: 1em;
-  text-align: center;
+#ContextMenu .Arrow.Right {
+  right: -10px;
+  border-left: 10px solid #ededee;
 }
-#ContextMenu .TopRow > div:not(:last-child) {
+#ContextMenu .TopRow > div > div:not(:last-child) {
   border-right: 1px solid #ccc;
   margin-right: .5em;
   padding-right: .5em;
@@ -288,8 +291,8 @@
   border-top: 1px solid #ccc;
   margin-top: .25em;
 }
-#ContextMenu .BottomRow.Group {
-  text-align: center;
+#ContextMenu .BottomRow > div {
+  display: inline;
 }
 #ContextMenu .Button {
   text-align: center;
@@ -317,9 +320,9 @@
   border-radius: 4px;
   min-width: 195px;
   max-width: 500px;
-  background: #ffffff url("../img/XTile-Widget.png?v=1387535133370");
+  background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

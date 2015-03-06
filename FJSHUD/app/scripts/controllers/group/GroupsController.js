@@ -5,12 +5,6 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
     $scope.groups = [];
 	$scope.mine = null;
 	$scope.favoriteID = null;
-	$scope.add = {type: 2, contacts: []};
-	
-	// add user as first group member
-	contactService.getContacts().then(function(data) {
-		$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
-	});
 
 	// pull updates from service
 	$scope.$on('groups_updated', function(event, data) {
@@ -67,86 +61,5 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 			var contact = contactService.getContact(group.ownerId);
 			return (contact ? 'owner: ' + contact.displayName : '');
 		}
-	};
-	
-	/**
-		ADD/EDIT GROUPS
-	*/
-	
-	// comes from conversation widget
-	$scope.$on('new_group', function(event, data) {
-		$scope.$parent.tab = 'groups';
-		$scope.$parent.showOverlay('groups');
-		
-		$scope.add.contacts[1] = contactService.getContact(data);
-	});
-	
-	// comes from contextual directive (editing)
-	$scope.$on('editGroup', function(event, data) {
-		$scope.$parent.showOverlay('groups');
-		$scope.editing = true;
-		
-		$scope.add.groupId = data.xpid;
-		$scope.add.name = data.name;
-		$scope.add.description = data.description;
-		$scope.add.type = data.type;
-		
-		angular.forEach(data.members, function(obj) {
-			// avoid adding self again
-			if (obj.contactId != $rootScope.myPid)
-				$scope.add.contacts.push(contactService.getContact(obj.contactId));
-		});
-	});
-	
-	$scope.searchContact = function(contact) {
-		// prevent duplicates
-		for (i = 0; i < $scope.add.contacts.length; i++) {
-			if ($scope.add.contacts[i] == contact)
-				return;
-		}
-		
-		$scope.add.contacts.push(contact);
-	};
-	
-	$scope.removeUser = function(contact) {
-		for (i = 0; i < $scope.add.contacts.length; i++) {
-			if ($scope.add.contacts[i] == contact) {
-				$scope.add.contacts.splice(i, 1);
-				break;
-			}
-		}
-	};
-	
-	$scope.saveGroup = function() {
-		// validate
-		if (!$scope.add.name) {
-			$scope.addError = 'Group name is not specified.';
-			return;
-		}
-		
-		// comma separated list
-		$scope.add.contactIds = '';
-		for (i = 0; i < $scope.add.contacts.length; i++)
-			$scope.add.contactIds += $scope.add.contacts[i].xpid + ',';
-		delete $scope.add.contacts;
-		
-		// save
-		myHttpService.sendAction('groups', $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup'), $scope.add);
-		
-		$scope.clearGroup();
-	};
-	
-	$scope.endGroup = function() {
-		$scope.closing = true;
-	};
-	
-	$scope.clearGroup = function() {
-		$scope.add = {type: 2, contacts: []};
-		$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
-		
-		$scope.addError = null;
-		$scope.editing = false;
-		$scope.closing = false;
-		$scope.$parent.showOverlay(false);
 	};
 }]);

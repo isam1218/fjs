@@ -48,6 +48,9 @@
   top: 2px;
   width: 160px;
 }
+.Widget.boxWidget {
+  height: 450px;
+}
 .WidgetHeader {
   position: relative;
 }
@@ -56,7 +59,7 @@
   margin: .7em 0 0 .7em;
 }
 .WidgetBody {
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
   flex: 1;
