@@ -78,8 +78,8 @@
 		<div class="Title">
 			<div>{{ ::gadget.data.displayName }}</div>
 			<div>
-				<div class="ListRowStatusIcon XIcon-QueueStatus-"></div>
-				<div class="ListRowStatusIcon XIcon-ChatStatus-{{gadget.data.hud_status || 'offline' }}"></div>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
+				<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
 			</div>
 		</div>
 	</a>
@@ -208,5 +208,31 @@
 	</a>
 	
 	<div class="Content">
+		<div class="List Stats">
+			<div>
+				<strong>{{ gadget.data.info.waiting }}</strong>
+				Waiting
+			</div>
+			<div>
+				<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
+				Avg Wait
+			</div>
+			<div>
+				<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
+				Avg Talk
+			</div>
+			<div>
+				<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
+				Total
+			</div>
+			<div>
+				<strong>{{ gadget.data.info.abandonPercent }}</strong>
+				Abandon
+			</div>
+			<div>
+				<strong>{{ gadget.data.info.active }}</strong>
+				Active
+			</div>
+		</div>
 	</div>
 </div>
