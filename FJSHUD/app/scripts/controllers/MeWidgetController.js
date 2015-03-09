@@ -296,7 +296,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 $scope.fdpVersion = $scope.meModel["fdp_version"];
             }
         }
-        $scope.$apply();
+        $scope.$safeApply();
     }
 
 
@@ -614,7 +614,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             }
         }
 
-        $scope.$apply();
+        $scope.$safeApply();
     });
 
     $scope.$on('locations_synced', function(event,data){
@@ -625,7 +625,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             }
         }
 
-        $scope.$apply();
+        $scope.$safeApply();
     });
 
      $scope.$on("queues_synced", function(event,data){

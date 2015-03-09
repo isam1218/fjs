@@ -1,0 +1,102 @@
+<div class="Overlay" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
+    <div ng-click="showOverlay(false)" class="Background"></div>
+	
+    <div class="Foreground" ng-if="audience">
+        <div ng-click="showOverlay(false)" class="Close">x</div>
+        
+        <div class="Header">
+            <h2>File Share To <span style="color:#729c00">{{ toName }}</span></h2>
+        </div>
+        
+        <div class="Sections">
+            <div class="Section">
+                <div>
+                    <h4>MESSAGE</h4>
+                    <p>Add message to shared files or send message alone </p>
+                    <textarea type="text" ng-model="message" class="XInputText"></textarea>
+                </div>
+                <div>
+                    <h4>AUTO DELETE</h4>
+                    <div ng-repeat="archive in archiveOptions" class="AutoDelete"> 
+                        <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-click="update(selectedArchiveOption)">{{archive.name}}</input>
+                    </div>
+                </div>
+                <div>
+                    <!--<h4>Description</h4>
+                    <textarea ng-model="add.description" placeholder="Team description is used for search and provides useful information to the team members."></textarea>-->
+                </div>
+            </div>
+            
+            
+            <div class="Section">
+                <div >
+                    <span> 
+                        <h4 style="display:inline-block">ATTACHMENTS  </h4>
+                        <span class="XButton" style="float:right;position:relative;margin: .75em 0 .25em 0;" flow-btn>Attach</span>
+                    </span>
+                </div>
+                
+                <div class="Members">
+                    <div ng-repeat="file in $flow.files" class="ListRow">
+                        <div style="margin-left:5px;display:inline-block;width:70%">  
+                        <p style="border-bottom:1px solid #ccc;width:100%;color:#009cff;font-weight:bold">File</p>
+                        <span style="margin-top:0px"><p>{{file.name}} ({{file.size}} bytes)</p></span>
+                        </div>
+                        <div class="XButton" style="float:right;margin-top:10px;margin-right:5px" ng-click="$flow.removeFile(file)">Remove</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="Footer">            
+            <input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
+            <input type="button" class="XButton XButtonBlue" value="Share Message & Files" ng-click="uploadAttachments($flow.files)" />
+        </div>
+	</div>
+	
+    <div class="Foreground" ng-if="downloadables">
+        <div ng-click="showOverlay(false)" class="Close">x</div>
+        
+        <div class="Header">
+            <h2>Preview: <span style="color:#729c00">{{ currentDownload.fileName }}</span></h2>
+        </div>
+        
+        <div class="Sections" >
+            <div class="Section">
+                <div style="background-color:#FFF;height:inherit">
+                <img class="CurrentDownload" ng-src="{{getAttachment(currentDownload.url)}}"> </img>
+                </div>
+            </div>
+            
+            
+            <div class="Section">
+                <div style="margin-bottom:10px">
+                    <span> 
+                        <h4>ITEMS </h4>
+                        <i>{{downloadables.length}} items found </i>
+                    </span>
+                </div>
+                
+                <div class="AttachmentDownload">
+                    <div ng-repeat="download in downloadables" class="ListRow Small Downloadables" ng-click="selectCurrentDownload(download)">
+                        <div style="display:inline-block;width:40px" class="Center"> 
+                            <img class="AvatarSmall Center" ng-src="{{getAttachment(download.url)}}"></img> 
+                        </div>
+                        <div ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' "style="display:inline-block">
+                            <div style="margin-top:0px;margin-left:5px">
+                                <p style="margin-top:0px">{{download.fileName}}</p>
+                                <p> {{ download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="Footer">
+            <input type="button" class="XButton" value="Previous" ng-click="getOffsetDownload(-1)" />
+            <input type="button" class="XButton" value="Next" ng-click="getOffsetDownload(1)" />
+            <a type="button" href="{{getAttachment(currentDownload.url)}}" target="_blank" class="XButton XButtonBlue" download value="Share Message & Files">Download Current</a>
+        </div>
+    </div>
+</div>

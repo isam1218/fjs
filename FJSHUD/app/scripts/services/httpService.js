@@ -6,10 +6,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var ua = navigator.userAgent;
 	var browser = ua.match(/(chrome|safari|firefox|msie)/i)[0];
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
+	var isIE = browser == "MSIE";
 	var isMasterTab = false;
 	var tabId = 0;
 	var synced = false;
 	var tabMap = undefined;
+
+	$rootScope.isIE = isIE;
 
 	
 

@@ -87,14 +87,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				data = {
 					event: 'ringing',
 				}
-				if(!isAlertShown){
-		  			element = document.getElementById("CallAlert");
+				
+				/*	element = document.getElementById("CallAlert");
           			element.style.display="block";
 		  			content = element.innerHTML;
        	  			displayNotification(content,element.offsetWidth,element.offsetHeight);
           			element.style.display="none";
-        			
-        		}
+        		*/	
+        		
 
 
 				break;
@@ -102,14 +102,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				data = {
 					event: 'accepted',
 				}
-
-				element = document.getElementById("CallAlert");
-          		element.style.display="block";
-		  		content = element.innerHTML;
-       	  		displayNotification(content,element.offsetWidth,element.offsetHeight);
-          		element.style.display="none";
-        
-
+					element = document.getElementById("CallAlert");
+	          		element.style.display="block";
+			  		content = element.innerHTML;
+	       	  		displayNotification(content,element.offsetWidth,element.offsetHeight);
+	          		element.style.display="none";
+	        	
 				break;
 			case CALL_STATUS_HOLD:
 				data = {
@@ -122,7 +120,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				break;
 			case CALL_STATUS_CLOSED:
 				removeNotification();
-				return;
 				break;
 		}
 
@@ -187,39 +184,73 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
     	arguments = urlhash.split("?");
     	url = arguments[0];
     	xpid = arguments[1];
+    	if($rootScope.isIE){
 
-    	switch(url){
-    		case '#/Close':
-    			removeNotification();
-    			break;
-    		case '#/CancelCall':
-    			hangUp(xpid);
-    			break;
-    		case '#/EndCall':
-    			hangUp(xpid);
-    			break;
-    		case '#/HoldCall':
-    			holdCall(xpid,true);
-    			break;
-    		case '#/ResumeCall':
-    			data = {
-    				event: 'resume'
-    			}
-    			$rootScope.$broadcast('phone_event',data);
-				holdCall(xpid,false);
-    			break;
-    		case '#/AcceptCall':
-				acceptCall(xpid);
-    			break;
-    		case '#/OpenNotifications':
-    			data = {
-    				event:'openNot'
-    			}
-    			$rootScope.$broadcast('phone_event',data);
-				break;
 
+	    	switch(url){
+	    		case '/Close':
+	    			removeNotification();
+	    			break;
+	    		case '/CancelCall':
+	    			hangUp(xpid);
+	    			break;
+	    		case '/EndCall':
+	    			hangUp(xpid);
+	    			break;
+	    		case '/HoldCall':
+	    			holdCall(xpid,true);
+	    			break;
+	    		case '/ResumeCall':
+	    			data = {
+	    				event: 'resume'
+	    			}
+	    			$rootScope.$broadcast('phone_event',data);
+					holdCall(xpid,false);
+	    			break;
+	    		case '/AcceptCall':
+					acceptCall(xpid);
+	    			break;
+	    		case '/OpenNotifications':
+	    			data = {
+	    				event:'openNot'
+	    			}
+	    			$rootScope.$broadcast('phone_event',data);
+					break;
+
+	    	}
+    	}else{
+    		switch(url){
+	    		case '#/Close':
+	    			removeNotification();
+	    			break;
+	    		case '#/CancelCall':
+	    			hangUp(xpid);
+	    			break;
+	    		case '#/EndCall':
+	    			hangUp(xpid);
+	    			break;
+	    		case '#/HoldCall':
+	    			holdCall(xpid,true);
+	    			break;
+	    		case '#/ResumeCall':
+	    			data = {
+	    				event: 'resume'
+	    			}
+	    			$rootScope.$broadcast('phone_event',data);
+					holdCall(xpid,false);
+	    			break;
+	    		case '#/AcceptCall':
+					acceptCall(xpid);
+	    			break;
+	    		case '#/OpenNotifications':
+	    			data = {
+	    				event:'openNot'
+	    			}
+	    			$rootScope.$broadcast('phone_event',data);
+					break;
+
+	    	}
     	}
-
 	}
 
 	removeNotification = function(){
