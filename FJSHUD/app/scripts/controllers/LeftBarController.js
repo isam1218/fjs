@@ -21,6 +21,6 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
             }
         }
 
-        $scope.$apply();
+        $scope.$safeApply();
     });
 }]);

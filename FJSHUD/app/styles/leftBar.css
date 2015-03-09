@@ -75,6 +75,7 @@
 .LeftBar .Groups .ContactList {
   flex: 1;
   overflow-y: auto;
+  min-height: 60px;
 }
 .LeftBar .Contacts .ContactList h4,
 .LeftBar .Groups .ContactList h4 {
