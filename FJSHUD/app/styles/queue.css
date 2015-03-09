@@ -274,6 +274,9 @@
   overflow: hidden;
   margin-bottom: 10px;
 }
+.Queues .WidgetTabContent.myStatus {
+  top: -5px;
+}
 .Queues .WidgetTabQueueStatArea {
   height: 50px;
   margin-left: 10px;

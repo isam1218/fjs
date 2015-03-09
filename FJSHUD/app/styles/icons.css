@@ -8,6 +8,10 @@
   border-radius: 3px;
   overflow: hidden;
 }
+.Avatar .GroupAvatarShowDefault-false .GroupAvatarItem,
+.Avatar .GroupAvatarShowDefault-false .default-avatar {
+  display: none;
+}
 .AvatarInteractable {
   right: 1px;
   bottom: 1px;
@@ -22,6 +26,21 @@
 .Avatar:hover .AvatarInteractable,
 .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
+}
+.AvatarHoverArea:hover .CallAvatar_External .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
+}
+.AvatarHoverArea:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+}
+.AvatarHoverArea:hover .CallAvatar_Queue .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
+}
+.AvatarHoverArea:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+}
+.AvatarHoverArea:hover .AvatarSmall .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
 }
 .AvatarNormal {
   background-color: #fff;
@@ -43,15 +62,101 @@
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
+.AvatarNormal .AvatarImgPH {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 38px;
+  width: 38px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+.AvatarNormal .AvatarForeground {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+}
+.AvatarNormal .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -5px;
+}
+.AvatarNormal .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -50px;
+}
+.AvatarNormal .GroupAvatarItem {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 19px;
+  height: 19px;
+}
+.AvatarNormal .GroupAvatarItemImg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 19px;
+  height: 19px;
+}
+.AvatarNormal:hover .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+}
+.AvatarNormal:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+}
 .AvatarBig,
 .AvatarBig img {
   width: 90px;
   height: 90px;
 }
-.AvatarSmall,
+.AvatarSmall {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
+  display: inline-block;
+  position: relative;
+  height: 30px;
+  width: 30px;
+  border: none;
+  line-height: 0px;
+}
+.AvatarSmall .AvatarImgPH {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 28px;
+  width: 28px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+.AvatarSmall .AvatarForeground {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+}
+.AvatarSmall .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -95px -5px;
+}
+.AvatarSmall .GroupAvatarItem {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 14px;
+  height: 14px;
+}
+.AvatarSmall .GroupAvatarItemImg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 14px;
+  height: 14px;
+}
 .AvatarSmall img {
   width: 40px;
   height: 40px;
+}
+.AvatarSmall:hover .AvatarForeground .AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+}
+.AvatarSmall:hover .AvatarForeground .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
 }
 .AvatarApp {
   width: 40px;
@@ -90,6 +195,25 @@
 .CallAvatar {
   border-radius: 20px;
   border: 2px solid #666;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+  overflow: hidden;
+}
+.CallAvatar .AvatarImgPH {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 38px;
+  width: 38px;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+}
+.CallAvatar .AvatarForeground {
+  position: absolute;
+  height: 40px;
+  width: 40px;
 }
 .CallAvatar .AvatarInteractable {
   right: 0;
@@ -98,9 +222,15 @@
 .CallAvatar_Office {
   border: 2px solid #009cff;
 }
+.CallAvatar_Office .AvatarForeground {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -95px;
+}
 .CallAvatar_Office .AvatarInteractable {
   border-bottom: 14px solid #009cff;
   border-left: 14px solid transparent;
+}
+.CallAvatar_Office:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
 }
 .CallAvatar_External {
   border: 2px solid #729c00;
@@ -108,13 +238,21 @@
 .CallAvatar_External .AvatarInteractable {
   border-bottom: 14px solid #729c00;
   border-left: 14px solid transparent;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -140px;
+}
+.CallAvatar_External:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
 }
 .CallAvatar_Queue {
   border: 2px solid #e27100;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -185px;
 }
 .CallAvatar_Queue .AvatarInteractable {
   border-bottom: 14px solid #e27100;
   border-left: 14px solid transparent;
+}
+.CallAvatar_Queue .AvatarInteractable:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
 }
 .XIcon-ChatStatus-Available,
 .XIcon-ChatStatus-available {
@@ -221,4 +359,24 @@
 }
 .Selected {
   border-left: 3px solid #292;
+}
+.AvatarWarning {
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  border: none;
+  line-height: 0px;
+}
+.AvatarWarning .AvatarImgPH {
+  display: none;
+}
+.AvatarWarning .AvatarForeground {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background: url("img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+}
+.AvatarWarning:hover .AvatarForeground {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
 }

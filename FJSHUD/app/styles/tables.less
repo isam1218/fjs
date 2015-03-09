@@ -171,9 +171,41 @@
   width: 100%;
   display:block;
   
-  &:hover .Remove {
-    display: block;
-    background-color: #f0f0ff;
+  &:hover{ 
+   .Remove {
+        display: block;
+        background-color: #f0f0ff;
+    }    
+    .CallAvatar_Office .AvatarForeground.AvatarInteractable
+    {
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+    }
+    
+    .AvatarNormal{
+         .AvatarForeground.AvatarStatic{
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+         }
+         .AvatarForeground.AvatarInteractable{
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+         }
+    }
+    .AvatarSmall{
+        .AvatarForeground{
+            .AvatarStatic
+            {
+                background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+            }
+            .AvatarInteractable{
+                background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+            }
+        }    
+    }
+    .AvatarWarning{
+        .AvatarForeground
+        {
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+        }
+    }
   }
   
   .Remove {

@@ -7,6 +7,10 @@
   line-height: 0px;
   border-radius: 3px;
   overflow: hidden;
+  
+  .GroupAvatarShowDefault-false{
+     .GroupAvatarItem, .default-avatar{display: none;}
+  }
 }
 
 .AvatarInteractable {
@@ -23,6 +27,27 @@
 
 .Avatar:hover .AvatarInteractable, .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
+}
+.AvatarHoverArea{        
+     .CallAvatar_Office{
+       .AvatarForeground.AvatarInteractable {
+         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+       }
+     }     
+     }
+     .AvatarNormal{
+       .AvatarForeground.AvatarInteractable
+       {
+         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+       }
+     }
+     .AvatarSmall{
+       .AvatarForeground.AvatarInteractable
+       {
+         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+       }
+     }
+    }    
 }
 
 .AvatarNormal {
@@ -45,16 +70,123 @@
       border-radius: 2px;
       -webkit-border-radius: 2px;
     }
-    
+    .AvatarImgPH
+    {
+        position : absolute;
+        left : 1px;
+        top : 1px;
+        height : 38px;
+        width : 38px;
+        border-radius : 2px;
+        -webkit-border-radius : 2px;
+    }
+    .AvatarForeground
+    {
+        position : absolute;
+        height : 40px;
+        width : 40px;
+        &.AvatarStatic
+        {
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -5px;
+        }
+        &.AvatarInteractable
+        {
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -50px;
+        }
+    }
+    .GroupAvatarItem
+    {
+        position : relative;
+        display : inline-block;
+        float : left;
+        width : 19px;
+        height : 19px;
+    }
+    .GroupAvatarItemImg
+    {
+        position : absolute;
+        left : 0px;
+        top : 0px;
+        width : 19px;
+        height : 19px;
+    }
+    &:hover{
+        .AvatarForeground.AvatarStatic{
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+        }
+        .AvatarForeground.AvatarInteractable{
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+        }
+    }
 }
 
 .AvatarBig,  .AvatarBig img {
   width:90px;
   height:90px;
 }
-.AvatarSmall, .AvatarSmall img { 
-  width: 40px;
-  height: 40px;
+.AvatarSmall{
+  background-color : #fff;
+  background-image : -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
+  display : inline-block;
+  position : relative;
+  height : 30px;
+  width : 30px;
+  border : none;
+  line-height : 0px; 
+  
+  .AvatarImgPH
+  {
+      position : absolute;
+      left : 1px;
+      top : 1px;
+      height : 28px;
+      width : 28px;
+      border-radius : 2px;
+      -webkit-border-radius : 2px;
+  }
+  
+  .AvatarForeground
+  {
+      position : absolute;
+      height : 30px;
+      width : 30px;
+  }
+  .AvatarForeground.AvatarStatic
+  {
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -95px -5px;
+  }
+  
+  .GroupAvatarItem
+  {
+     position : relative;
+     display : inline-block;
+     float : left;
+     width : 14px;
+     height : 14px;
+  }
+  .GroupAvatarItemImg
+  {
+    position : absolute;
+    left : 0px;
+    top : 0px;
+    width : 14px;
+    height : 14px;
+  }
+  img { 
+      width: 40px;
+      height: 40px;
+  }
+  
+  &:hover{
+    .AvatarForeground{
+     .AvatarStatic{
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+     }
+     .AvatarInteractable{
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+     }
+    }
+  }
 }
 
 .AvatarApp {
@@ -99,38 +231,81 @@
 .CallAvatar {
   border-radius:20px;
   border: 2px solid #666;
-}
-
-.CallAvatar .AvatarInteractable {
-  right:0;
-  bottom:0;
+  
+  width : 40px;
+  height : 40px;
+  border-radius : 40px;
+  -webkit-border-radius : 40px;
+  overflow : hidden;
+  
+  .AvatarImgPH
+  {
+    position : absolute;
+    left : 1px;
+    top : 1px;
+    height : 38px;
+    width : 38px;
+    border-radius : 40px;
+    -webkit-border-radius : 40px;
+  }
+  
+  .AvatarForeground
+  {
+    position : absolute;
+    height : 40px;
+    width : 40px;
+  }
+  
+  .AvatarInteractable {
+    right:0;
+    bottom:0;
+  }
 }
 
 .CallAvatar_Office {
   border: 2px solid #009cff;
-}
 
-.CallAvatar_Office .AvatarInteractable {
-  border-bottom: 14px solid #009cff;
-  border-left: 14px solid transparent;
+  .AvatarForeground{
+    background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -95px;
+  }
+ .AvatarInteractable {
+      border-bottom: 14px solid #009cff;
+      border-left: 14px solid transparent;
+  }
+  &:hover{
+    .AvatarForeground.AvatarInteractable {
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+    }
+  }
 }
 
 .CallAvatar_External {
   border: 2px solid #729c00;
+  
+ .AvatarInteractable {
+      border-bottom: 14px solid #729c00;
+      border-left: 14px solid transparent;
+      background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -140px;
+ }
+ &:hover{
+    .AvatarForeground.AvatarInteractable{
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
+    }
+ }
 }
-
-.CallAvatar_External  .AvatarInteractable {
-  border-bottom: 14px solid #729c00;
-  border-left: 14px solid transparent;
-}
-
 .CallAvatar_Queue {
   border: 2px solid #e27100;
+  background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -185px;
 }
 
 .CallAvatar_Queue .AvatarInteractable {
   border-bottom: 14px solid #e27100;
   border-left: 14px solid transparent;
+  &:hover{
+    .AvatarForeground.AvatarInteractable{
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
+    }
+  }
 }
 
 .XIcon-ChatStatus-Available
@@ -272,3 +447,30 @@
   border-left:3px solid #292;
 }
 
+.AvatarWarning
+{
+    display : inline-block;
+    position : relative;
+    height : 40px;
+    width : 40px;
+    border : none;
+    line-height : 0px;
+    .AvatarImgPH
+    {
+        display : none;
+    }
+    
+    .AvatarForeground
+    {
+        position : absolute;
+        height : 40px;
+        width : 40px;
+        background : url("img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+    }
+    &:hover{
+        .AvatarForeground
+        {
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+        }
+    }
+}

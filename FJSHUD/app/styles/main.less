@@ -154,7 +154,7 @@ p {
 
 .fj-loading
 {
-  position: absolute;
+  position: fixed;
   left:0;
   top:0;
   right: 0;
@@ -171,6 +171,9 @@ p {
     color: #333;
     font-weight:bold;
     text-shadow: 0 2px 0 #fff;
+    &.error{
+        font-size: 30px;
+    }
   }
   .fji-box
   {
@@ -347,6 +350,28 @@ p {
   font-weight:bold;
   cursor: pointer;
   color:#91B139;
+}
+
+
+.fj-scrollable, .fj-stream, .fj-ui-scrollerHolder{
+  &:hover{
+    .fj-ui-scrollerFr{opacity : 0.6;}
+  } 
+}
+.fj-scrollable-h, .fj-stream, .fj-ui-scrollerHolder
+{
+  &:hover{
+    .fj-ui-scrollerFr-h{opacity : 0.6;}
+  }
+}
+.fj-relative
+{
+    position : relative;
+}
+
+#crdmnFrame
+{
+    display : none;
 }
 
 @import "topBar";
