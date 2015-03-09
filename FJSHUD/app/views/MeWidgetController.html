@@ -48,41 +48,44 @@
                             
               <div class="RecentCallSection"> 
                   <div class="WidgetSectionTitle meTitle">Recent calls</div>
+                  
                   <div class="RecentCallColumnHeaders">  
-                    <div class="RecentCallsHeader RecentDate" 
-                    ng-class="recentSelectSort == 'Date' ? 
-                    'recent-selected-column' :''"
-                    ng-click="sortCallLog('Date')"
-                    > 
+                    <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortCallLog('Date')"> 
                       <div class="RecentPointer">Date/Time </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentFromTo" 
-                    ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('From')"
-                    ><div class="RecentPointer">From</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortCallLog('From')">
+                        <div class="RecentPointer">From</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentFromTo" 
-                    ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('To')"
-                    ><div class="RecentPointer">To</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                    <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortCallLog('To')">
+                        <div class="RecentPointer">To</div>
+                        <div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
                     
-                    <div class="RecentCallsHeader RecentDur" 
-                    ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''"
-                    ng-click="sortCallLog('Duration')"
-                 
-                    ><div class="RecentPointer">Duration</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div></div>
+                    <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortCallLog('Duration')">
+                     <div class="RecentPointer">Duration</div>
+                     <div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                    </div>
                   </div>
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
+                  
                   <div  class="RecentCallLogs"> 
+                   <div>
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
                       <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
                       <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
                     </div>
-                  </div>
+                    <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id111" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
+                      <div class="fj-ui-scrollerFr-decoration"></div>
+                      <div class="fj-ui-scroller" data-fj-local-id="scroller" style="height: 41.4473684210526px; top: 0px;">
+                           <div class="fj-ui-scroller-decoration"></div>
+                      </div>
+                    </div>
+                   </div> 
+                  </div>                  
                </div>
               </div>
               <div class="fj-vbox-space Preferences-Holder">

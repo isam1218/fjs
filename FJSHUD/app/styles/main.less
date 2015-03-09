@@ -187,28 +187,40 @@ p {
   cursor:pointer;
   display:inline;
 }
+
+.call-block{min-height: 200px;}
 .RecentCallSection{
   font-size:.7em;
-  padding-left:7px;
+  padding: 10px 0;
+ /* padding-left:7px;
   padding-top:10px;
-  padding-bottom:10px;
+  padding-bottom:10px;*/
   
   .RecentCallColumnHeaders{
-    padding-bottom:6px;
+    /*padding-bottom:6px;*/
+    padding: 6px 10px;
     border-bottom:1px solid #ccc;
   }
   .RecentCallLogs{
-    font-weight:bold;
-    padding-top:4px;
-    padding-bottom:10px;
-    height:75px;
+    font-weight:bold;   
+    padding: 4px 10px 10px 10px;
+    /*min-height:75px;*/
     overflow-y:auto;
+    height: 90px;
+    position: relative;
+    
     .RecentCallRow{
       padding-top:7px;
       padding-bottom:7px;
       border-bottom:1px solid #ccc;
     }
-  
+    .fj-scroll{
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        width: 10px;
+        right: 0px;
+    }
   }
 
   .CallLogs{
@@ -299,6 +311,7 @@ p {
   text-align:center;
   font-size:1.3em;
   opacity: 0.5;
+  padding: 10px 0 0 0;
 }
 .RecentCallsHeader{
   display:inline-block;
