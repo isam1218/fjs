@@ -93,6 +93,57 @@
   }
 }
 
+.AttachmentsHolder 
+{
+  .AttachmentsList{
+    position : relative;
+    
+    .Avatar
+    {
+        position : relative;
+        display : inline-block;
+        width : 128px;
+        height : 120px;
+        background-color : white;
+        border : 1px solid #ccc;
+        border-radius : 2px;
+        -webkit-border-radius : 2px;
+        margin : 5px;
+        text-align : center;
+        line-height : 100px;
+        
+        .AvatarCustomPH
+        {
+            position : absolute;
+            bottom : 0px;
+            left : 0px;
+            right : 0px;
+            height : 18px;
+            color : #515115;
+            overflow : hidden;
+            text-align : center;
+            font-size : 12px;
+            text-overflow : ellipsis;
+            white-space : nowrap;
+            line-height : normal;
+        }
+        .AvatarImgPH
+        {
+            position : relative;
+            max-width : 90px;
+            max-height : 90px;
+            margin-top : 9px;
+            vertical-align : middle;
+        }
+     }
+   } 
+}
+
+.AttachmentsList .fj-content-items
+{
+    position : relative;
+}
+
 .SettingsTabContent .fj-viewcontent {
   padding:10px;
   .lblSelect {
@@ -273,3 +324,23 @@ input.text.ChatInputBoxInput,
   }
 }
 
+.fj-visibility-false,
+.fj-visibility-undefined,
+.fj-visibility-null,
+.fj-visibility-0,
+.fj-visibility-NaN
+{
+    display : none !important;
+}
+
+.fj-expanded-false,
+.fj-expanded-undefined,
+.fj-expanded-null,
+.fj-expanded-0,
+.fj-expanded-NaN
+{
+    height : 0px !important;
+    min-height : 0px !important;
+    max-height : 0px !important;
+    overflow : hidden !important;
+}

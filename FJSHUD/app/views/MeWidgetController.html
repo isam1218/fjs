@@ -37,17 +37,17 @@
             </div>
 
 
-            <div class="WidgetBody">
-              <div class="WidgetSectionTitle">Place a call</div>
-              
+            <div class="WidgetBody"> 
+             <div class="call-block">                           
               <div class="NewCall" >
+                <div class="WidgetSectionTitle">Place a call</div>
                 <input class="NewCall" type="tel" ng-model="phoneNumber" placeholder="Phone number">
                 <div class="XButton XButtonNormal" style="width:58px" ><span>#</span></div>
                 <div class="XButton XButtonGreen" style="width:58px" ng-click="makeCall(phoneNumber)"><span>Call</span></div>
-              </div>
-              
-              <div class="WidgetSectionTitle">Recent calls</div>
+              </div>              
+                            
               <div class="RecentCallSection"> 
+                  <div class="WidgetSectionTitle meTitle">Recent calls</div>
                   <div class="RecentCallColumnHeaders">  
                     <div class="RecentCallsHeader RecentDate" 
                     ng-class="recentSelectSort == 'Date' ? 
@@ -83,6 +83,7 @@
                       <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
                     </div>
                   </div>
+               </div>
               </div>
               <div class="fj-vbox-space Preferences-Holder">
 	              <div class="WidgetSectionTitle">Preferences</div>	              
@@ -108,6 +109,14 @@
 						              <div ng-show="selected == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
 						            </div>
 						        </div> 
+						        <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id203" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="
+    position: absolute;  top: 10px;  bottom: 10px;  width: 10px;  right: -10px;  opacity: 0;  overflow: hidden;  border-radius: 3px;  -webkit-border-radius: 3px;
+">  
+                                    <div class="fj-ui-scrollerFr-decoration"></div>
+                                    <div class="fj-ui-scroller" data-fj-local-id="scroller" style="height: 0px; top: -20px;">
+                                        <div class="fj-ui-scroller-decoration"></div>
+                                    </div>
+                               </div>
 						     </div>  
 						  </div>   
 						</div> 	                

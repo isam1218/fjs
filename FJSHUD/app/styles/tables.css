@@ -153,6 +153,24 @@
   display: block;
   background-color: #f0f0ff;
 }
+.ListRow:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+}
+.ListRow:hover .AvatarNormal .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+}
+.ListRow:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+}
+.ListRow:hover .AvatarSmall .AvatarForeground .AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+}
+.ListRow:hover .AvatarSmall .AvatarForeground .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+}
+.ListRow:hover .AvatarWarning .AvatarForeground {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+}
 .ListRow .Remove {
   position: absolute;
   top: .25em;
@@ -439,6 +457,15 @@
 }
 .ListRowActionButtonUnpin {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLogin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0 -90px;
+}
+.ListRowActionButtonLogout {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -90px;
+}
+.ListRowActionButtonReset {
+  background: url("../img/XActionSet-30x30.png") no-repeat -60px -90px;
 }
 .ListRowActionButtonDock {
   background: url("../img/XActionSet-30x30.png") no-repeat 0 0;

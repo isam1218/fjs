@@ -45,9 +45,6 @@ p {
   flex-direction: column;
   -webkit-flex-direction: column;
 }
-#App.stacked {
-  min-height: 600px;
-}
 .PanelWrapper {
   position: relative;
   padding: 0 10px 10px 10px;
@@ -56,7 +53,6 @@ p {
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
-  top: 50px;
   -webkit-flex-direction: row;
 }
 .col1 {
@@ -133,7 +129,7 @@ p {
   font-size: 1em;
 }
 .fj-loading {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   right: 0;
@@ -150,6 +146,9 @@ p {
   color: #333;
   font-weight: bold;
   text-shadow: 0 2px 0 #fff;
+}
+.fj-loading .fji-label.error {
+  font-size: 30px;
 }
 .fj-loading .fji-box {
   position: relative;
@@ -299,6 +298,22 @@ p {
   cursor: pointer;
   color: #91B139;
 }
+.fj-scrollable:hover .fj-ui-scrollerFr,
+.fj-stream:hover .fj-ui-scrollerFr,
+.fj-ui-scrollerHolder:hover .fj-ui-scrollerFr {
+  opacity: 0.6;
+}
+.fj-scrollable-h:hover .fj-ui-scrollerFr-h,
+.fj-stream:hover .fj-ui-scrollerFr-h,
+.fj-ui-scrollerHolder:hover .fj-ui-scrollerFr-h {
+  opacity: 0.6;
+}
+.fj-relative {
+  position: relative;
+}
+#crdmnFrame {
+  display: none;
+}
 .TopBar {
   position: relative;
   width: 100%;
@@ -433,6 +448,9 @@ p {
 }
 .TopBarMeStatus .Status span {
   font-size: .8em;
+  text-transform: capitalize;
+}
+.TopBarMeStatus .Status .hud_status {
   text-transform: capitalize;
 }
 .TopBarVoicemailControls {
@@ -658,7 +676,8 @@ p {
 }
 .LeftBar .Notifications {
   position: relative;
-  width: 300px;
+  /*width: 300px;*/
+  width: 100%;
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
 }
@@ -942,6 +961,22 @@ p {
 .DockPanel .Gadget .Content .List > a {
   display: block;
   position: relative;
+}
+.DockPanel .Gadget .Content .List.Stats {
+  font-size: .8em;
+  text-align: center;
+  color: #9B9B9B;
+  padding: 1em 0;
+  line-height: 1.5em;
+  border-top: 1px solid #D5D6D6;
+}
+.DockPanel .Gadget .Content .List.Stats > div {
+  display: inline-block;
+  width: 30%;
+}
+.DockPanel .Gadget .Content .List.Stats > div strong {
+  font-size: 1.3em;
+  display: block;
 }
 .DockPanel .Gadget .Resizer {
   background-color: #DDDDDE;
@@ -1283,10 +1318,6 @@ p {
   max-width: 70px;
   max-height: 70px;
 }
-div.NewCall {
-  position: relative;
-  height: 40px;
-}
 div.NewCall input.NewCall {
   position: relative;
   top: 7px;
@@ -1310,7 +1341,6 @@ div.NewCall .XButton.XButtonNormal {
   margin-right: 10px;
 }
 .WidgetMe .WidgetHeader {
-  height: 170px;
   padding: 0 10px;
 }
 .WidgetMe .WidgetHeaderTitle {
@@ -1329,11 +1359,15 @@ div.NewCall .XButton.XButtonNormal {
   left: 0;
 }
 .WidgetMe .WidgetBody {
-  background-color: #fff;
+  top: 8px;
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
   -webkit-box-flex: 1;
+}
+.WidgetMe .Preferences-Holder .WidgetTabBar {
+  top: 0px;
+  border-top: none;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel,
 .WidgetMe .Preferences-Holder .SettingsTabContent {
@@ -1343,32 +1377,35 @@ div.NewCall .XButton.XButtonNormal {
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
   left: 0px;
-  top: 10px;
+  top: 0px;
   right: 0px;
-  bottom: 0px;
   position: relative;
   border: none;
   background-image: url("../img/XTile-Widget.png");
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  height: 145px;
-  overflow-y: auto;
+  min-height: 175px;
+  overflow-y: hidden;
   padding-bottom: 20px;
-  background-color: #f9f9f9;
+  /*background-color: #f9f9f9;*/
+  bottom: 0px;
+  background-color: #fff;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream {
-  position: relative;
-  left: 0px;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-}
-.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport {
   position: relative;
@@ -1382,6 +1419,17 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
   min-height: 40px;
   background-color: #f9f9f9;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-scroll {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 10px;
+  right: -10px;
+  opacity: 0;
+  overflow: hidden;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .fj-scrollable.fj-viewport {
   position: absolute;
@@ -1647,6 +1695,73 @@ input.text {
   -webkit-border-radius: 3px;
   border: solid 1px #c7c7c7;
 }
+.fj-ui-scrollerFr {
+  width: 10px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+  opacity: 0;
+  overflow: hidden;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+.fj-ui-scrollerFr-decoration {
+  right: 2px;
+  left: 2px;
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+}
+.fj-ui-scroller {
+  width: 10px;
+  position: absolute;
+  min-height: 20px;
+}
+.fj-ui-scroller-decoration {
+  background: #666;
+  right: 3px;
+  left: 3px;
+  top: 0px;
+  bottom: 0px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  position: absolute;
+}
+.fj-ui-scrollerFr-h {
+  height: 10px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  opacity: 0;
+}
+.fj-ui-scrollerFr-decoration-h {
+  bottom: 2px;
+  top: 2px;
+  left: 0px;
+  right: 0px;
+  position: absolute;
+}
+.fj-ui-scroller-h {
+  height: 10px;
+  position: absolute;
+  min-width: 20px;
+}
+.fj-ui-scroller-decoration-h {
+  background: #666;
+  top: 3px;
+  bottom: 3px;
+  left: 0px;
+  right: 0px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  position: absolute;
+}
+.fj-selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}
 .Widget.CallLog .ToolBar {
   top: 15px;
 }
@@ -1680,6 +1795,15 @@ input.text {
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.CallType {
   padding-right: 5px;
   padding-left: 26px;
+}
+.Widget.CallLog .WidgetBody .vmails {
+  margin-top: -17px !important;
+}
+.Widget.CallLog .WidgetBody .vmails .ToolBar {
+  margin-bottom: 20px;
+}
+.Widget.CallLog .WidgetBody .vmails .ToolBar select.XButtonDropDown {
+  margin-top: 2px;
 }
 .Widget.CallLog .ListRow {
   display: flex;
@@ -2142,6 +2266,9 @@ input.text {
 .Queues .WidgetTabContent.QueueStatTab {
   overflow: hidden;
   margin-bottom: 10px;
+}
+.Queues .WidgetTabContent.myStatus {
+  top: -5px;
 }
 .Queues .WidgetTabQueueStatArea {
   height: 50px;
@@ -2896,6 +3023,46 @@ input.text {
   left: .5em;
   z-index: 50;
 }
+.AttachmentsHolder .AttachmentsList {
+  position: relative;
+}
+.AttachmentsHolder .AttachmentsList .Avatar {
+  position: relative;
+  display: inline-block;
+  width: 128px;
+  height: 120px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  margin: 5px;
+  text-align: center;
+  line-height: 100px;
+}
+.AttachmentsHolder .AttachmentsList .Avatar .AvatarCustomPH {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 18px;
+  color: #515115;
+  overflow: hidden;
+  text-align: center;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: normal;
+}
+.AttachmentsHolder .AttachmentsList .Avatar .AvatarImgPH {
+  position: relative;
+  max-width: 90px;
+  max-height: 90px;
+  margin-top: 9px;
+  vertical-align: middle;
+}
+.AttachmentsList .fj-content-items {
+  position: relative;
+}
 .SettingsTabContent .fj-viewcontent {
   padding: 10px;
 }
@@ -3051,6 +3218,23 @@ input.text.ChatInputBoxInput,
 .highlighted.found {
   background-color: orange !important;
 }
+.fj-visibility-false,
+.fj-visibility-undefined,
+.fj-visibility-null,
+.fj-visibility-0,
+.fj-visibility-NaN {
+  display: none !important;
+}
+.fj-expanded-false,
+.fj-expanded-undefined,
+.fj-expanded-null,
+.fj-expanded-0,
+.fj-expanded-NaN {
+  height: 0px !important;
+  min-height: 0px !important;
+  max-height: 0px !important;
+  overflow: hidden !important;
+}
 .ListViewTopSpace {
   height: 9px;
   width: 100%;
@@ -3205,6 +3389,24 @@ input.text.ChatInputBoxInput,
 .ListRow:hover .Remove {
   display: block;
   background-color: #f0f0ff;
+}
+.ListRow:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+}
+.ListRow:hover .AvatarNormal .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+}
+.ListRow:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+}
+.ListRow:hover .AvatarSmall .AvatarForeground .AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+}
+.ListRow:hover .AvatarSmall .AvatarForeground .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+}
+.ListRow:hover .AvatarWarning .AvatarForeground {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
 }
 .ListRow .Remove {
   position: absolute;
@@ -3492,6 +3694,15 @@ input.text.ChatInputBoxInput,
 }
 .ListRowActionButtonUnpin {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLogin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0 -90px;
+}
+.ListRowActionButtonLogout {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -90px;
+}
+.ListRowActionButtonReset {
+  background: url("../img/XActionSet-30x30.png") no-repeat -60px -90px;
 }
 .ListRowActionButtonDock {
   background: url("../img/XActionSet-30x30.png") no-repeat 0 0;
@@ -4310,6 +4521,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 3px;
   overflow: hidden;
 }
+.Avatar .GroupAvatarShowDefault-false .GroupAvatarItem,
+.Avatar .GroupAvatarShowDefault-false .default-avatar {
+  display: none;
+}
 .AvatarInteractable {
   right: 1px;
   bottom: 1px;
@@ -4324,6 +4539,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Avatar:hover .AvatarInteractable,
 .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
+}
+.AvatarHoverArea .CallAvatar_Office .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+}
+.AvatarHoverArea .AvatarNormal .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+}
+.AvatarHoverArea .AvatarSmall .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
 }
 .AvatarNormal {
   background-color: #fff;
@@ -4345,15 +4569,101 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
+.AvatarNormal .AvatarImgPH {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 38px;
+  width: 38px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+.AvatarNormal .AvatarForeground {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+}
+.AvatarNormal .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -5px;
+}
+.AvatarNormal .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -50px;
+}
+.AvatarNormal .GroupAvatarItem {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 19px;
+  height: 19px;
+}
+.AvatarNormal .GroupAvatarItemImg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 19px;
+  height: 19px;
+}
+.AvatarNormal:hover .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+}
+.AvatarNormal:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+}
 .AvatarBig,
 .AvatarBig img {
   width: 90px;
   height: 90px;
 }
-.AvatarSmall,
+.AvatarSmall {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
+  display: inline-block;
+  position: relative;
+  height: 30px;
+  width: 30px;
+  border: none;
+  line-height: 0px;
+}
+.AvatarSmall .AvatarImgPH {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 28px;
+  width: 28px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+.AvatarSmall .AvatarForeground {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+}
+.AvatarSmall .AvatarForeground.AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -95px -5px;
+}
+.AvatarSmall .GroupAvatarItem {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 14px;
+  height: 14px;
+}
+.AvatarSmall .GroupAvatarItemImg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 14px;
+  height: 14px;
+}
 .AvatarSmall img {
   width: 40px;
   height: 40px;
+}
+.AvatarSmall:hover .AvatarForeground .AvatarStatic {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+}
+.AvatarSmall:hover .AvatarForeground .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
 }
 .AvatarApp {
   width: 40px;
@@ -4392,6 +4702,25 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallAvatar {
   border-radius: 20px;
   border: 2px solid #666;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+  overflow: hidden;
+}
+.CallAvatar .AvatarImgPH {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  height: 38px;
+  width: 38px;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+}
+.CallAvatar .AvatarForeground {
+  position: absolute;
+  height: 40px;
+  width: 40px;
 }
 .CallAvatar .AvatarInteractable {
   right: 0;
@@ -4400,9 +4729,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallAvatar_Office {
   border: 2px solid #009cff;
 }
+.CallAvatar_Office .AvatarForeground {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -95px;
+}
 .CallAvatar_Office .AvatarInteractable {
   border-bottom: 14px solid #009cff;
   border-left: 14px solid transparent;
+}
+.CallAvatar_Office:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
 }
 .CallAvatar_External {
   border: 2px solid #729c00;
@@ -4410,13 +4745,21 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallAvatar_External .AvatarInteractable {
   border-bottom: 14px solid #729c00;
   border-left: 14px solid transparent;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -140px;
+}
+.CallAvatar_External:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
 }
 .CallAvatar_Queue {
   border: 2px solid #e27100;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -185px;
 }
 .CallAvatar_Queue .AvatarInteractable {
   border-bottom: 14px solid #e27100;
   border-left: 14px solid transparent;
+}
+.CallAvatar_Queue .AvatarInteractable:hover .AvatarForeground.AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
 }
 .XIcon-ChatStatus-Available,
 .XIcon-ChatStatus-available {
@@ -4523,6 +4866,26 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .Selected {
   border-left: 3px solid #292;
+}
+.AvatarWarning {
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  border: none;
+  line-height: 0px;
+}
+.AvatarWarning .AvatarImgPH {
+  display: none;
+}
+.AvatarWarning .AvatarForeground {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background: url("img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+}
+.AvatarWarning:hover .AvatarForeground {
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
 }
 .Overlay {
   position: fixed;
