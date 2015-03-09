@@ -3,121 +3,65 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
 	var version = 0;
 	
-	$scope.showAttachments = false;
-	$scope.showDownloadAttachment = false;
 	$scope.upload = {};
 	$scope.glued = true;
 	$scope.loading = true;
+	
+	// send to pop-up controller
+	$scope.showAttachmentOverlay = function() {
+		var name = '', audience = '';
+		
+		if ($scope.contact) {
+			name = $scope.contact.displayName;
+			audience = 'contact';
+		}
+		else if ($scope.conference) {
+			name = $scope.conference.name;
+			audience = 'conference';
+		}
+		else if ($scope.group) {
+			name = $scope.group.name;
+			audience = 'group';
+		}
+		
+		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
+			name: name,
+			audience: audience,
+			xpid: $scope.targetId
+		});
+	};
 
-	$scope.downloadables = [];
-	$scope.currentDownload = {};
-	 $scope.showFileShareOverlay = function(toShow){
-		$scope.showAttachments = toShow;
-	}
-
-	 $scope.showDownloadAttachmentOverlay = function(toShow,imagetoDownload){
-		var i = 0;
-		for(i; i < $scope.messages.length;i++){
-			if($scope.messages[i].data.attachment){
-				addDownloadables($scope.messages[i].data.attachment);
+	$scope.showDownloadAttachmentOverlay = function(selected){
+		var downloadables = [];
+		var current = 0;
+		
+		for(i = 0; i < $scope.messages.length; i++){
+			if ($scope.messages[i].data.attachment) {
+				var attachments = $scope.messages[i].data.attachment;
+				
+				for(a = 0; a < attachments.length; a++) {
+					var tempAttach = attachments[a];
+					tempAttach.created = $scope.messages[i].created;
+					
+					downloadables.push(tempAttach);
+					
+					// mark the one that was clicked
+					if (attachments[a] == selected)
+						current = downloadables.length-1;
+				}
 			}
 		}
-
-		$scope.currentDownload = imagetoDownload;
-
-		$scope.showDownloadAttachment = toShow;
-	}
-
-	$scope.selectCurrentDownload = function(download){
-		$scope.currentDownload = download;
-		$scope.$safeApply;
-	}
-
-	$scope.getOffsetDownload = function(index){
-		var nextIndex = $scope.downloadables.indexOf($scope.currentDownload) + index
-		if(nextIndex > $scope.downloadables.length - 1){
-			nextIndex = 0;
-		}else if(nextIndex < 0){
-			nextIndex = $scope.downloadables.length - 1;
-		}
-
-		$scope.currentDownload = $scope.downloadables[nextIndex];
 		
-	}
-
-	$scope.formate_date = function(time){
-        return utilService.formatDate(time,true);
-    }
-    
-	$scope.update = function(archiveObject){
-    	console.log(archiveObject);
-    	$scope.selectedArchiveOption = archiveObject;
-    }
-
-    $scope.archiveOptions = [
-    	{name:'Never',taskId:"2_6",value:0},
-    	{name:'in 3 Hours', taskId:"2_3",value:10800000},
-    	{name: 'in 2 Days', taskId:"2_4", value:172800000},
-    	{name: "in a Week", taskId:"2_5", value:604800000},
-    ]
-
-    $scope.selectedArchiveOption = $scope.archiveOptions[0];
-
-
-    $scope.formatDuration = function(duration){
-        var time =   duration/1000;
-        var seconds = time;
-        var minutes;
-        secString = "00";
-        minString = "00";
-        if(time >= 60){
-            minutes = time/60;
-            seconds = seconds - minutes*60;
-        }  
-
-        if(minutes < 10){
-            minString = "0" + minutes; 
-        }
-        if(seconds < 10){
-            secString = "0" + seconds;  
-        }
-        return minString + ":" + secString;
-
-    }
-
-
-    $scope.uploadAttachments = function($files){
-      	$files[0];
-      	fileList = [];
-      	for (i in $files){
-      		fileList.push($files[i].file);
-      	}
-        data = {
-            'action':'sendWallEvent',
-            'a.targetId': $scope.targetId,
-            'a.type':'f.conversation.wall',
-            'a.xpid':"",
-            'a.archive':$scope.selectedArchiveOption.value,
-            'a.retainKeys':"",
-            'a.message':this.message,
-            'a.callback':'postToParent',
-            'a.audience':$scope.targetAudience,
-            'alt':"",
-            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "1_0",
-            "_archive": $scope.selectedArchiveOption.value,
-        }
-        httpService.upload_attachment(data,fileList);
-		
-        this.message = "";
-        $scope.upload.flow.cancel();
-        $scope.showFileShareOverlay(false);
-    }
-
+		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
+			downloadables: downloadables,
+			current: current
+		});
+	};
 
     $scope.getAttachment = function(url){
     	return httpService.get_attachment(url);
-    }
+    };
+	
     httpService.getChat($scope.feed,$scope.targetId).then(function(data) {
 		version = data.h_ver;
 		
@@ -125,7 +69,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		$scope.messages = data.items;
 		addDetails();
 	});
-
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
@@ -149,9 +92,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			// only attach messages related to this user
 			if (from == $scope.contactID || to == $scope.contactID){
 				$scope.messages.push(data[key]);
-				if(data[key].data.attachment){
-					addDownloadables(data[key].data.attachment);
-				}
 			}
 
 		}
@@ -182,7 +122,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			$event.preventDefault();
 		}
 	};
-
 	
 	$scope.searchChat = function(increment) {
 		var spans = document.querySelectorAll(".highlighted");
@@ -213,7 +152,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		}
 	};
 
-
 	// apply name and avatar
 	var addDetails = function() {
 		// wait for sync to catch up
@@ -231,24 +169,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			$scope.$safeApply();
 		});
 	};
-	
-	var addDownloadables = function(attachments){
-		var i = 0;
-		for(i; i < attachments.length; i++){
-			isDupe = false;
-			for(j = 0; j < $scope.downloadables.length;j++){
-					if(attachments[i].xkey == $scope.downloadables[j].xkey){
-						isDupe = true;
-						break;
-					}
-			}
-			if(!isDupe){
-				$scope.downloadables.push(attachments[i]);		
-			}	
-		}
-	
-		
-	}
 
 	var chatLoop = $interval(function() {	
 		var scrollbox = document.getElementById('ListViewContent');

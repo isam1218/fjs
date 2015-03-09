@@ -32,6 +32,15 @@
   padding-right: 5px;
   padding-left: 26px;
 }
+.Widget.CallLog .WidgetBody .vmails {
+  margin-top: -17px !important;
+}
+.Widget.CallLog .WidgetBody .vmails .ToolBar {
+  margin-bottom: 20px;
+}
+.Widget.CallLog .WidgetBody .vmails .ToolBar select.XButtonDropDown {
+  margin-top: 2px;
+}
 .Widget.CallLog .ListRow {
   display: flex;
   flex-direction: row;
