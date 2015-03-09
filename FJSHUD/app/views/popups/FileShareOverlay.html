@@ -79,17 +79,15 @@
                 
                 <div class="AttachmentDownload">
                     <div ng-repeat="download in downloadables" class="ListRow Small Downloadables" ng-click="selectCurrentDownload(download)">
-                        <!--<div style="margin-left:5px;display:inline-block;width:70%"> --> 
-                            <div style="display:inline-block;width:40px" class="Center"> 
-                                <img class="AvatarSmall Center" ng-src="{{getAttachment(download.url)}}"></img> 
+                        <div style="display:inline-block;width:40px" class="Center"> 
+                            <img class="AvatarSmall Center" ng-src="{{getAttachment(download.url)}}"></img> 
+                        </div>
+                        <div ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' "style="display:inline-block">
+                            <div style="margin-top:0px;margin-left:5px">
+                                <p style="margin-top:0px">{{download.fileName}}</p>
+                                <p> {{ download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>
                             </div>
-                            <div ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' "style="display:inline-block">
-                                <div style="margin-top:0px;margin-left:5px">
-                                    <p style="margin-top:0px">{{download.fileName}}</p>
-                                    <p> created </p>
-                                </div>
-                            </div>
-                        <!--</div>-->
+                        </div>
                     </div>
                 </div>
             </div>

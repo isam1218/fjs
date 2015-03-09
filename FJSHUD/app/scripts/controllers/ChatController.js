@@ -40,7 +40,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 				var attachments = $scope.messages[i].data.attachment;
 				
 				for(a = 0; a < attachments.length; a++) {
-					downloadables.push(attachments[a]);
+					var tempAttach = attachments[a];
+					tempAttach.created = $scope.messages[i].created;
+					
+					downloadables.push(tempAttach);
 					
 					// mark the one that was clicked
 					if (attachments[a] == selected)
