@@ -162,14 +162,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
 			
-			if(data.length > 0){
-				element = document.getElementById("CallAlert");
-         		element.style.display="block";
-		  		content = element.innerHTML;
-       	  		phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-          		element.style.display="none";
-
-			}
+		
 
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
@@ -272,6 +265,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
        	phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
         element.style.display="none";
 		
-		$scope.$apply();
+		$scope.$safeApply();
 	});
 }]);
