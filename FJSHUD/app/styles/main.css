@@ -45,9 +45,6 @@ p {
   flex-direction: column;
   -webkit-flex-direction: column;
 }
-#App.stacked {
-  min-height: 600px;
-}
 .PanelWrapper {
   position: relative;
   padding: 0 10px 10px 10px;
@@ -56,7 +53,6 @@ p {
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
-  top: 50px;
   -webkit-flex-direction: row;
 }
 .col1 {
@@ -454,6 +450,9 @@ p {
   font-size: .8em;
   text-transform: capitalize;
 }
+.TopBarMeStatus .Status .hud_status {
+  text-transform: capitalize;
+}
 .TopBarVoicemailControls {
   position: absolute;
   top: 0;
@@ -677,7 +676,8 @@ p {
 }
 .LeftBar .Notifications {
   position: relative;
-  width: 300px;
+  /*width: 300px;*/
+  width: 100%;
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
 }
@@ -961,6 +961,22 @@ p {
 .DockPanel .Gadget .Content .List > a {
   display: block;
   position: relative;
+}
+.DockPanel .Gadget .Content .List.Stats {
+  font-size: .8em;
+  text-align: center;
+  color: #9B9B9B;
+  padding: 1em 0;
+  line-height: 1.5em;
+  border-top: 1px solid #D5D6D6;
+}
+.DockPanel .Gadget .Content .List.Stats > div {
+  display: inline-block;
+  width: 30%;
+}
+.DockPanel .Gadget .Content .List.Stats > div strong {
+  font-size: 1.3em;
+  display: block;
 }
 .DockPanel .Gadget .Resizer {
   background-color: #DDDDDE;
@@ -3377,9 +3393,6 @@ input.text.ChatInputBoxInput,
 .ListRow:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
 }
-.ListRow:hover .CallAvatar_Queue .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
-}
 .ListRow:hover .AvatarNormal .AvatarForeground.AvatarStatic {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
 }
@@ -3681,6 +3694,15 @@ input.text.ChatInputBoxInput,
 }
 .ListRowActionButtonUnpin {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLogin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0 -90px;
+}
+.ListRowActionButtonLogout {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -90px;
+}
+.ListRowActionButtonReset {
+  background: url("../img/XActionSet-30x30.png") no-repeat -60px -90px;
 }
 .ListRowActionButtonDock {
   background: url("../img/XActionSet-30x30.png") no-repeat 0 0;
@@ -4518,19 +4540,13 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
 }
-.AvatarHoverArea:hover .CallAvatar_External .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
-}
-.AvatarHoverArea:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
+.AvatarHoverArea .CallAvatar_Office .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
 }
-.AvatarHoverArea:hover .CallAvatar_Queue .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
-}
-.AvatarHoverArea:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
+.AvatarHoverArea .AvatarNormal .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
 }
-.AvatarHoverArea:hover .AvatarSmall .AvatarForeground.AvatarInteractable {
+.AvatarHoverArea .AvatarSmall .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
 }
 .AvatarNormal {

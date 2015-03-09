@@ -27,19 +27,13 @@
 .AvatarHoverArea:hover .AvatarInteractable {
   display: block;
 }
-.AvatarHoverArea:hover .CallAvatar_External .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
-}
-.AvatarHoverArea:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
+.AvatarHoverArea .CallAvatar_Office .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
 }
-.AvatarHoverArea:hover .CallAvatar_Queue .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
-}
-.AvatarHoverArea:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
+.AvatarHoverArea .AvatarNormal .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
 }
-.AvatarHoverArea:hover .AvatarSmall .AvatarForeground.AvatarInteractable {
+.AvatarHoverArea .AvatarSmall .AvatarForeground.AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
 }
 .AvatarNormal {
