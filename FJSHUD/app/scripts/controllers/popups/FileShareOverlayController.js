@@ -1,4 +1,4 @@
-hudweb.controller('FileShareOverlayController', ['$scope', '$rootScope', 'ContactService', 'HttpService', function($scope, $rootScope, contactService, httpService) {
+hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpService', function($scope, $location, httpService) {
 	if ($scope.$parent.overlay.data.audience) {
 		$scope.toName = $scope.$parent.overlay.data.name;
 		$scope.targetId = $scope.$parent.overlay.data.xpid;
@@ -54,6 +54,10 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$rootScope', 'Contac
         this.message = "";
         $scope.upload.flow.cancel();
         $scope.$parent.showOverlay(false);
+		
+		// go to chat page if not already there
+		if ($location.path().indexOf($scope.audience) == -1)
+			$location.path('/' + $scope.audience + '/' + $scope.targetId);
     };
 
 	$scope.selectCurrentDownload = function(download){
