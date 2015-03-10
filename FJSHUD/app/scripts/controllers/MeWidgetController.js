@@ -50,7 +50,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
     myHttpService.getFeed('locations');
-    
+    myHttpService.getFeed('calllog');    
     this.onAlertClicked = function(urlHash){
         console.log(urlHash);
     }
@@ -350,6 +350,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 			update_queues();
             update_settings();
         }
+        $scope.$safeApply();
     });
 
     $scope.change_avatar = function($file){
@@ -383,6 +384,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         if(data){
             $scope.calllogs = data;
         }
+        $scope.$safeApply();
     });
 
     $scope.sortCallLog = function(sortType){
