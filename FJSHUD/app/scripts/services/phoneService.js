@@ -67,9 +67,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
 	displayNotification = function(content, width,height){
 		if(alert){
-			alert.setAlertBounds(0,0,width,height);
+			//alert.setAlertBounds(0,0,width,height);
 			
-			
+			alert.setAlertSize(width,height);
 			alert.addAlertEx(content);
 			alert.setShadow(true);
 			alert.setBorderRadius(5);
@@ -179,11 +179,31 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
         //console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
     }
 
+    activateBrowserTab = function(tabId){
+
+    	switch($rootScope.browser){
+    		case "MSIE":
+    			session.activateIE("#/");
+				break;
+    		case "Chrome":
+    			session.activateChrome("#/");
+				break;
+    		case "Safari":
+    			session.activateSafari("#/");
+				break;
+    		case "FireFox":
+    			session.activateFirefox("#/");
+				break;
+    	}
+    }
+
     onAlert = function(urlhash){
     	console.log("AlertClicked: " + urlhash);
     	arguments = urlhash.split("?");
     	url = arguments[0];
     	xpid = arguments[1];
+    	
+    	activateBrowserTab();
     	if($rootScope.isIE){
 
 
@@ -211,6 +231,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 					acceptCall(xpid);
 	    			break;
 	    		case '/OpenNotifications':
+	    			
 	    			data = {
 	    				event:'openNot'
 	    			}
@@ -246,6 +267,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	    			data = {
 	    				event:'openNot'
 	    			}
+
 	    			$rootScope.$broadcast('phone_event',data);
 					break;
 
