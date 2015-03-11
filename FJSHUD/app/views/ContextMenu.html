@@ -1,7 +1,7 @@
 <div class="Arrow Left"></div>
 
 <div class="TopRow">
-	<div class="Contact" ng-if="contact">
+	<div class="Contact" ng-if="type == 'Contact'">
 		<div>
 			<div class="Avatar AvatarNormal">
 				<img class="AvatarImgPH" data-ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
@@ -28,13 +28,13 @@
 		</div>
 	</div>
 	
-	<div ng-if="!contact">
+	<div ng-if="type != 'Contact'">
 		<strong>{{ name }}</strong>
 	</div>
 </div>
 
 <div class="BottomRow">
-	<div ng-if="contact">
+	<div ng-if="type == 'Contact'">
 		<a class="Button" href="" ng-show="isFavorite" ng-click="removeFavorite()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>Remove</span>
@@ -63,9 +63,13 @@
 			<div class="ListRowActionButtonEmail"></div>
 			<span>Email</span>
 		</a>
+		<a class="Button" href="" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>File Share</span>
+		</a>
 	</div>
 	
-	<div ng-if="group">
+	<div ng-if="type == 'Group'">
 		<a class="Button" href="" ng-show="group.ownerId == myPid" ng-click="editGroup()">
 			<div class="ListRowActionButtonEdit"></div>
 			<span>Edit</span>
@@ -74,9 +78,13 @@
 			<div class="ListRowActionButtonChat"></div>
 			<span>Chat</span>
 		</a>
-		<a class="Button" href="">
-			<div class="ListRowActionButtonEmail" ng-click="sendGroupMail()"></div>
+		<a class="Button" href="" ng-click="sendGroupMail(group)">
+			<div class="ListRowActionButtonEmail"></div>
 			<span>Email</span>
+		</a>
+		<a class="Button" href="" ng-show="isMine" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>File Share</span>
 		</a>
 	</div>
 		
@@ -94,11 +102,29 @@
 			<span>Reset Stats</span>
 		</a>
 	</div>
-		
-	<a class="Button" href="" ng-show="true" ng-click="fileShare()">
-		<div class="ListRowActionButtonFileShare"></div>
-		<span>File Share</span>
-	</a>
+	
+	<div ng-if="type == 'ConferenceRoom'">
+		<a class="Button" href="" ng-show="!joined" ng-click="joinConference(true)">
+			<div class="ListRowActionButtonJoin"></div>
+			<span>Join</span>
+		</a>
+		<a class="Button" href="" ng-show="joined" ng-click="joinConference(false)">
+			<div class="ListRowActionButtonLeave"></div>
+			<span>Leave</span>
+		</a>
+		<a class="Button" href="#/conference/{{xpid}}" ng-show="joined">
+			<div class="ListRowActionButtonChat"></div>
+			<span>Chat</span>
+		</a>
+		<a class="Button" href="" ng-show="joined" ng-click="sendGroupMail(conference)">
+			<div class="ListRowActionButtonEmail"></div>
+			<span>Email</span>
+		</a>
+		<a class="Button" href="" ng-show="joined" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>File Share</span>
+		</a>
+	</div>
 		
 	<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 		<div class="ListRowActionButtonDock"></div>
