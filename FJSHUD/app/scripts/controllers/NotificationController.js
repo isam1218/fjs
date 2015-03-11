@@ -167,14 +167,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 		$scope.$safeApply();
-
-		
-		element = document.getElementById("CallAlert");
-        element.style.display="block";
-		content = element.innerHTML;
-       	phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        element.style.display="none";
-		
 	});
 
 	$scope.$on('phone_event',function(event,data){
@@ -183,9 +175,19 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		switch (phoneEvent){
 			case "ringing":
 				$scope.isRinging = true;
+				element = document.getElementById("CallAlert");
+       			element.style.display="block";
+				content = element.innerHTML;
+       			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+        		element.style.display="none";
 				break;
 			case "accepted":
 				$scope.isRinging = false;
+				element = document.getElementById("CallAlert");
+        		element.style.display="block";
+				content = element.innerHTML;
+       			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+        		element.style.display="none";
 				break;
 			case "onhold":
 				$scope.onHold = true;

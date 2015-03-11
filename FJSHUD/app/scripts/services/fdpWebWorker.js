@@ -185,7 +185,7 @@ var sync_request = function(f){
 			//localStorage.data_obj = JSON.stringify(this.data_obj);
 			
 			synced = true;
-
+			
 
 			var sync_response = {
 				"action": "sync_completed",

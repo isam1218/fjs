@@ -69,7 +69,7 @@
 	<div class="NotificationMessages" style="min-height:150px">
 		<!--<react-component name="notification" props='notifications'/>-->
 			
-			<a class="Messages" href="#/contact?"ng-repeat="message in todaysNotifications">
+			<a class="Messages" href="#/contact?{{message.senderId}}"ng-repeat="message in todaysNotifications">
 					
 					<div class="NotificationHeader"> 
 							<div class="NotificationHeaderBackground"> 
