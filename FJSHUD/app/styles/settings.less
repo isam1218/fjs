@@ -42,14 +42,20 @@
         background-image: url("../img/XTile-Widget.png");
         box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
         -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.1);       
-        min-height: 176px;
+        /*min-height: 176px;*/
+        min-height: 130px;
         overflow-y: hidden;
         padding-bottom: 20px;
         background-color: #f9f9f9;
         bottom: 0px;        
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
-       }  
+       } 
+       
+       @media screen and (-ms-high-contrast: active),
+      (-ms-high-contrast: none) {
+        &.DialogContentMainBlock_List {min-height: 225px;}
+      } 
    
       .fj-stream {
         position: absolute;       
@@ -78,6 +84,10 @@
                     min-height: 40px;
                     background-color: #f9f9f9;
                 }
+                @media screen and (-ms-high-contrast: active),
+                (-ms-high-contrast: none) {
+                    .fj-content {min-height: 235px;}
+                } 
               }
               .fj-scroll{
                 position: absolute;

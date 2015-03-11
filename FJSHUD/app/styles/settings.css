@@ -42,13 +42,19 @@
   background-image: url("../img/XTile-Widget.png");
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  min-height: 176px;
+  /*min-height: 176px;*/
+  min-height: 130px;
   overflow-y: hidden;
   padding-bottom: 20px;
   background-color: #f9f9f9;
   bottom: 0px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
+    min-height: 225px;
+  }
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream {
   position: absolute;
@@ -76,6 +82,11 @@
   position: relative;
   min-height: 40px;
   background-color: #f9f9f9;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-content {
+    min-height: 235px;
+  }
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-scroll {
   position: absolute;
