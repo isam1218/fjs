@@ -119,6 +119,14 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		window.open('mailto:' + emails.join(';'));
 	};
 	
+	$scope.fileShare = function() {
+		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
+			name: $scope.name,
+			audience: $scope.type.split(/(?=[A-Z])/)[0].toLowerCase(),
+			xpid: $scope.xpid
+		});
+	};
+	
 	$scope.loginQueue = function(login) {
 		if (login)
 			httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue[0]});

@@ -167,6 +167,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 		$scope.$safeApply();
+
 		
 		element = document.getElementById("CallAlert");
         element.style.display="block";
@@ -251,8 +252,12 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			return a.time - b.time;
 		});
 
+		
+		$scope.$safeApply();
+		
 		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
 		
+
 		if($scope.todaysNotifications && $scope.todaysNotifications.length > 0){
 			notifyElement[0].style["max-height"] = "400px";	
 		}else{
@@ -265,6 +270,5 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
        	phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
         element.style.display="none";
 		
-		$scope.$safeApply();
 	});
 }]);

@@ -1,8 +1,9 @@
 hudweb.controller('LocationsController',['$scope','$element','HttpService',function($scope, $element,httpService) {
     //fjs.ui.Controller.call(this, $scope);
 
-    //var locationsModel = dataManager.getModel("locations");
-    //var meModel = dataManager.getModel("me");
+    /*
+    when loading controller get the necessary feeds 
+    */
     httpService.getFeed("me");
     httpService.getFeed("locations");
     httpService.getFeed("location_status");

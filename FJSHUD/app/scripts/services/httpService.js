@@ -11,7 +11,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var tabId = 0;
 	var synced = false;
 	var tabMap = undefined;
-
+	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
 
 	
@@ -31,6 +31,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
      	if($.isEmptyObject(tabMap)){
      		delete localStorage.fon_tabs;
+     		delete localStorage.data_obj;
      	}else{
      		for(tab in tabMap){
      			tabMap[tabId].isMaster = true;
@@ -68,7 +69,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
 		//if the tabmap is empty or not defined in localstorage then initialize the tab map is set the current tab as the master tab
 		if(tabMap != undefined){
-			tabMap[tabId] = {
+			tabMap[tabId] = { 
 				isMaster:false,
 				isSynced:false
 			}
@@ -140,11 +141,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                break;
 		            case "sync_completed":
 		                if (event.data.data) {
-
+		                	var data_obj = {};
 		                    synced_data = event.data.data;
-		                    localStorage.data_obj = JSON.stringify(synced_data);
+		                    if(!localStorage.data_obj){
+		                    	localStorage.data_obj = JSON.stringify(synced_data);
+		                    }else{
+		                    	data_obj = JSON.parse(localStorage.data_obj);
+		                    }
 		                    // send data to other controllers
 		                    for (feed in synced_data) {
+		                        if(!$.isEmptyObject(data_obj)){
+		                        	data_obj[feed] = synced_data[feed];
+		                        	localStorage.data_obj = JSON.stringify(data_obj);
+		                        }
+
 		                        if (synced_data[feed].length > 0)
 		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
 		                    }
@@ -289,6 +299,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		location.href = authURL;
 	};
 	
+
+	/*
+	 if there is sharedworker support then it will get the data from the sharedwebworker otherwise it will check localstorage for the data
+	*/
     this.getFeed = function(feed) {
         if(isSWSupport){
 			worker.port.postMessage({
