@@ -1,4 +1,4 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', function($q, $rootScope, httpService,$compile) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location', function($q, $rootScope, httpService,$compile,$location) {
 
 	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
 
@@ -67,7 +67,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 
 	displayNotification = function(content, width,height){
 		if(alert){
-			//alert.setAlertBounds(0,0,width,height);
 			
 			alert.setAlertSize(width,height);
 			alert.addAlertEx(content);
@@ -88,13 +87,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 					event: 'ringing',
 				}
 				
-				/*	element = document.getElementById("CallAlert");
-          			element.style.display="block";
-		  			content = element.innerHTML;
-       	  			displayNotification(content,element.offsetWidth,element.offsetHeight);
-          			element.style.display="none";
-        		*/	
-        		
+				
 
 
 				break;
@@ -102,17 +95,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 				data = {
 					event: 'accepted',
 				}
-					element = document.getElementById("CallAlert");
-	          		element.style.display="block";
-			  		content = element.innerHTML;
-	       	  		displayNotification(content,element.offsetWidth,element.offsetHeight);
-	          		element.style.display="none";
-	        	
 				break;
 			case CALL_STATUS_HOLD:
 				data = {
 					event: 'onhold'
 				}
+			
 				break;
 			case CALL_STATUS_ERROR:
 				break;
@@ -157,14 +145,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 			soundManager = session.soundManager;
 			registerPhone(true);
 			
-			//alert.initAlert('views/nativeAlerts/Alert.html');
-			//alert.init('');
-		
-			//alert.initAlert("<h1> testing </h1>");
-			
-			
-			//removeNotification();
-			
          } else if (session_status.status == 1) {
                 alert("Session unauthorized");
                 isRegistered = false;
@@ -206,8 +186,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
     	activateBrowserTab();
     	if($rootScope.isIE){
 
-
-	    	switch(url){
+			switch(url){
 	    		case '/Close':
 	    			removeNotification();
 	    			break;
@@ -236,6 +215,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	    				event:'openNot'
 	    			}
 	    			$rootScope.$broadcast('phone_event',data);
+					break;
+				case '/contact':
+					$location.path('/contact/'+xpid);
+					$location.replace();
+					$rootScope.$apply();
 					break;
 
 	    	}
@@ -267,8 +251,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	    			data = {
 	    				event:'openNot'
 	    			}
-
 	    			$rootScope.$broadcast('phone_event',data);
+					break;
+				case '#/contact':
+					$location.path('/contact/'+xpid);
+					$location.replace();
+					$rootScope.$apply();
 					break;
 
 	    	}
@@ -283,8 +271,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 	}
 
     onAlertMouseEvent = function(event,x,y){
-    	console.log("MouseEvent: " + event + " (" + x + "," + y + ")");
-
     	//this.removeNotification();
     }
 
@@ -388,6 +374,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile', fu
 		if(phone){
 			phone.makeCall(phoneNumber)
 		}
+	}
+
+	this.isAlertShown = function(){
+		return isAlertShown;
 	}
 
 	$rootScope.$on("calls_synced",function(event,data){

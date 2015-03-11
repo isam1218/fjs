@@ -133,16 +133,38 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		worker.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
-		                worker.postMessage({
-		                    "action": "sync",
-		                    to_sync:true
-		                	//"data": JSON.parse(localStorage.data_obj)
-		                });
-		                break;
+		            	tabMap = JSON.parse(localStorage.fon_tabs);
+						if(tabMap[tabId].isMaster){
+							worker.postMessage({
+		                    	"action": "sync",
+		                    	to_sync: true,
+		                	});	
+						}else{
+							synced_data = JSON.parse(localStorage.data_obj);
+							for(feed in synced_data){
+								if (synced_data[feed].length > 0)
+		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+							}
+							
+							worker.postMessage({
+								action:"sync",
+								to_sync: false,
+							})
+						}
+						break;
 		            case "sync_completed":
 		                if (event.data.data) {
 		                	var data_obj = {};
 		                    synced_data = event.data.data;
+		                  	tabMap = JSON.parse(localStorage.fon_tabs);
+		                  	if(tabMap[tabId].isMaster){
+								for(tab in tabMap){
+									tabMap[tab].isSynced = false;	
+								}
+
+								tabMap[tabId].isSynced = true;
+							}
+
 		                    if(!localStorage.data_obj){
 		                    	localStorage.data_obj = JSON.stringify(synced_data);
 		                    }else{
@@ -182,15 +204,21 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 						}else{
 							
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
-							synced_data = JSON.parse(localStorage.data_obj);
-							for(feed in synced_data){
-								if (synced_data[feed].length > 0)
-		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+							if(!tabMap[tabId].isSynced){
+								synced_data = JSON.parse(localStorage.data_obj);
+								for(feed in synced_data){
+									if (synced_data[feed].length > 0)
+		                            	$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+								}
+
+								tabMap[tabId].isSynced = true;	
 							}
+							
+							
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
-							})
+							});
 						}
 						break;
 		        }
