@@ -47,15 +47,23 @@
 			<div class="ListRowActionButtonChat"></div>
 			<span>Chat</span>
 		</a>
-		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="makeCall(contact.primaryExtension)">
+		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callNumber(contact.primaryExtension)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>Call</span>
 		</a>
-		<a class="Button" href="" ng-show="contact.phoneBusiness" ng-click="makeCall(contact.phoneBusiness)">
+		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
+			<div class="ListRowActionButtonCall"></div>
+			<span>Intercom</span>
+		</a>
+		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callVoicemail')">
+			<div class="ListRowActionButtonVoicemail"></div>
+			<span>Voicemail</span>
+		</a>
+		<a class="Button" href="" ng-show="contact.phoneBusiness" ng-click="callNumber(contact.phoneBusiness)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>Business</span>
 		</a>
-		<a class="Button" href="" ng-show="contact.phoneMobile" ng-click="makeCall(contact.phoneMobile)">
+		<a class="Button" href="" ng-show="contact.phoneMobile" ng-click="callNumber(contact.phoneMobile)">
 			<div class="ListRowActionButtonMobile"></div>
 			<span>Mobile</span>
 		</a>
@@ -82,6 +90,18 @@
 			<div class="ListRowActionButtonEmail"></div>
 			<span>Email</span>
 		</a>
+		<a class="Button" href="" ng-show="group.extension" ng-click="callInternal('page', group)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>Page</span>
+		</a>
+		<a class="Button" href="" ng-show="group.extension" ng-click="callInternal('intercom', group)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>Intercom</span>
+		</a>
+		<a class="Button" href="" ng-show="group.extension" ng-click="callInternal('voicemail', group)">
+			<div class="ListRowActionButtonVoicemail"></div>
+			<span>Voicemail</span>
+		</a>
 		<a class="Button" href="" ng-show="isMine" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>File Share</span>
@@ -89,11 +109,11 @@
 	</div>
 		
 	<div ng-if="type == 'QueueStat'">
-		<a class="Button" href="" ng-show="queue.length == 1" ng-click="loginQueue(true)">
+		<a class="Button" href="" ng-show="queue.memberID && !queue.status" ng-click="loginQueue(true)">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>Login</span>
 		</a>
-		<a class="Button" href="" ng-show="queue.length > 1" ng-click="loginQueue(false)">
+		<a class="Button" href="" ng-show="queue.status && queue.status == 'login'" ng-click="loginQueue(false)">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>Logout</span>
 		</a>
@@ -101,26 +121,42 @@
 			<div class="ListRowActionButtonReset"></div>
 			<span>Reset Stats</span>
 		</a>
-	</div>
-	
-	<div ng-if="type == 'ConferenceRoom'">
-		<a class="Button" href="" ng-show="!joined" ng-click="joinConference(true)">
-			<div class="ListRowActionButtonJoin"></div>
-			<span>Join</span>
-		</a>
-		<a class="Button" href="" ng-show="joined" ng-click="joinConference(false)">
-			<div class="ListRowActionButtonLeave"></div>
-			<span>Leave</span>
-		</a>
-		<a class="Button" href="#/conference/{{xpid}}" ng-show="joined">
+		<a class="Button" href="#/queue/{{xpid}}" ng-show="queue.memberID">
 			<div class="ListRowActionButtonChat"></div>
 			<span>Chat</span>
 		</a>
-		<a class="Button" href="" ng-show="joined" ng-click="sendGroupMail(conference)">
+		<a class="Button" href="" ng-show="queue.memberID" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>File Share</span>
+		</a>
+	</div>
+	
+	<div ng-if="type == 'ConferenceRoom'">
+		<a class="Button" href="" ng-show="!conference.status.isMeJoined" ng-click="joinConference(true)">
+			<div class="ListRowActionButtonJoin"></div>
+			<span>Join</span>
+		</a>
+		<a class="Button" href="" ng-show="conference.status.isMeJoined" ng-click="joinConference(false)">
+			<div class="ListRowActionButtonLeave"></div>
+			<span>Leave</span>
+		</a>
+		<a class="Button" href="" ng-show="conference.status.isMeJoined && !conference.status.recorded" ng-click="recordConference(true)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Start</span>
+		</a>
+		<a class="Button" href="" ng-show="conference.status.isMeJoined && conference.status.recorded" ng-click="recordConference(false)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Stop</span>
+		</a>
+		<a class="Button" href="#/conference/{{xpid}}" ng-show="conference.status.isMeJoined">
+			<div class="ListRowActionButtonChat"></div>
+			<span>Chat</span>
+		</a>
+		<a class="Button" href="" ng-show="conference.status.isMeJoined" ng-click="sendGroupMail(conference)">
 			<div class="ListRowActionButtonEmail"></div>
 			<span>Email</span>
 		</a>
-		<a class="Button" href="" ng-show="joined" ng-click="fileShare()">
+		<a class="Button" href="" ng-show="conference.status.isMeJoined" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>File Share</span>
 		</a>
