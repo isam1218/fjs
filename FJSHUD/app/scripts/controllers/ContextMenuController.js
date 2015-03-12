@@ -1,4 +1,4 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', function($rootScope, $scope, contactService, groupService, queueService, settingsService, httpService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService) {
 	$scope.xpid;
 	$scope.type;
 	$scope.name;
@@ -6,9 +6,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, data) {
-		$scope.group = null;
-		$scope.contact = null;
-		$scope.queue = [];
 		$scope.xpid = data.xpid;
 		
 		// get type
@@ -21,6 +18,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		else if (data.loggedInMembers !== undefined) {
 			$scope.type = 'QueueStat';
 			$scope.name = data.name;
+			$scope.queue = {};
 			
 			angular.forEach(queueService.getMyQueues().queues, function(obj) {
 				// user is in this queue
@@ -28,13 +26,13 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 					for (i = 0; i < obj.members.length; i++) {
 						// find user's member ID
 						if (obj.members[i].contactId == $rootScope.myPid) {
-							$scope.queue.push(obj.members[i].xpid);
+							$scope.queue.memberID = obj.members[i].xpid;
 						
 							// user is logged in but not permanently
 							if (obj.members[i].status.status.indexOf('permanent') != -1)
-								$scope.queue = [];
+								$scope.queue.status = 'permanent';
 							else if (obj.members[i].status.status.indexOf('login') != -1)
-								$scope.queue.push(true);
+								$scope.queue.status = 'login';
 						}
 					}
 				}
@@ -42,6 +40,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		}
 		else if (data.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
+			$scope.conference = data;
 			$scope.name = data.name;
 		}
 		else {
@@ -61,9 +60,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 					break;
 				}
 			}
-		
-			$scope.$safeApply();
 		});
+		
+		$scope.$safeApply();
 	});
 	
 	/**
@@ -102,18 +101,38 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.contact.xpid});
 	};
 	
-	$scope.makeCall = function(number) {
+	$scope.callNumber = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
 	
-	$scope.sendGroupMail = function() {
+	// generic function for any internal calls (page, intercom, voicemail, etc.)
+	$scope.callInternal = function(action, group) {
+		// group
+		if (group) {
+			if (group.extension) {
+				var params = {
+					contactId: $rootScope.myPid,
+					groupId: group.xpid
+				};
+				httpService.sendAction('groups', action, params);
+			}
+		}
+		// single user
+		else
+			httpService.sendAction('contacts', action, {toContactId: $scope.xpid});
+	};
+	
+	$scope.sendGroupMail = function(group) {
 		var emails = [];
 		
-		angular.forEach($scope.group.members, function(obj) {
-			var contact = contactService.getContact(obj.contactId);
-			
-			if (contact.email)
-				emails.push(contact.email);
+		// get all addresses from members
+		angular.forEach(group.members, function(obj) {
+			if (obj.contactId != $rootScope.myPid) {
+				var contact = contactService.getContact(obj.contactId);
+				
+				if (contact.email)
+					emails.push(contact.email);
+			}
 		});
 		
 		window.open('mailto:' + emails.join(';'));
@@ -129,9 +148,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 	
 	$scope.loginQueue = function(login) {
 		if (login)
-			httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue[0]});
+			httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue.memberID});
 		else
-			httpService.sendAction('queue_members', 'agentLogout', {memberId: $scope.queue[0], reason: '0_71485'});
+			httpService.sendAction('queue_members', 'agentLogout', {memberId: $scope.queue.memberID, reason: '0_71485'});
 	};
 	
 	$scope.resetQueue = function() {
@@ -139,5 +158,23 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', 'ContactServ
 		
 		if (doIt)
 			httpService.sendAction('queues', 'resetStatistics', {queueId: $scope.xpid});
+	};
+	
+	$scope.joinConference = function(join) {
+		if (join) {
+			var params = {
+				conferenceId: $scope.xpid,
+				contactId: $rootScope.myPid,
+			};
+			httpService.sendAction("conferences", "joinContact", params);
+					
+			$location.path('/conference/' + $scope.xpid);
+		}
+		else
+			httpService.sendAction("conferences", "leave", {conferenceId: $scope.xpid});
+	};
+	
+	$scope.recordConference = function(record) {		
+		httpService.sendAction("conferences", record ? "startRecord" : "stopRecord", {conferenceId: $scope.xpid});
 	};
 }]);
