@@ -1,6 +1,6 @@
 <div class="Overlay" ng-controller="CallStatusOverlayController">
 	<div ng-click="showOverlay(false)" class="Background"></div>
-	<div class="Foreground">
+	<div class="Foreground" ng-if="screen == 'call'">
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
@@ -84,7 +84,151 @@
 		
 		<div class="Footer">
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="Conferencing" />
+			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type == 4" ng-click="changeScreen('conference')" />
+		</div>
+	</div>
+	
+	<div class="Foreground" ng-show="screen == 'conference'">
+		<div ng-click="showOverlay(false)" class="Close">x</div>
+		
+		<div class="Header">
+			<h2>Transfer to Conference Room</h2>
+		</div>
+		
+		<div class="Sections">
+			<div class="Section">
+				<div>
+					<h4>Contacts to Transfer</h4>
+					<em>These contacts will be transferred to conference room</em>
+					<div>
+						<div class="ListRow">
+							<div class="Avatar AvatarNormal">
+								<img class="AvatarImgPH" data-ng-src="{{::onCall.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+								<div class="AvatarForeground AvatarInteractable"></div>
+							</div>
+							<div class="ListRowContent">
+								<div class="ListRowTitle">
+									<div class="name">
+										<strong>{{ ::onCall.displayName }}</strong>
+										<span>{{ ::onCall.primaryExtension }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ListRow">
+							<div class="Avatar AvatarNormal">
+								<img class="AvatarImgPH" data-ng-src="{{::getCallStatusAvatar(onCall.call)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+								<div class="AvatarForeground AvatarInteractable"></div>
+							</div>
+							<div class="ListRowContent">
+								<div class="ListRowTitle">
+									<div class="name">
+										<strong>{{ ::onCall.call.displayName }}</strong>
+										<span>{{ ::onCall.call.phone }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div>
+					<h4>Options</h4>
+					<em>Add yourself to the conference</em>
+					<input type="checkbox" ng-model="meToo" ng-true-value="1" ng-false-value="0" /> Join me as well
+				</div>
+			</div>
+			
+			<div class="Section" ng-show="!selectedConf">
+				<div>
+					<h4>Conference Room</h4>
+					<input type="search" class="Search" ng-model="confQuery" placeholder="Search by room or person" />
+				</div>
+				<div class="Members">
+                    <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: customConfFilter() track by conference.xpid" ng-click="selectConference(conference)">
+                        <div class="ConferenceAvatarSection Avatar AvatarNormal">
+                            <div class="GroupAvatarItem GroupAvatarItem_0" context-menu="conference">
+								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(0, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+                            <div class="GroupAvatarItem GroupAvatarItem_1">
+								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(1, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+                            <div class="GroupAvatarItem GroupAvatarItem_2">
+								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(2, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+							<div class="GroupAvatarItem GroupAvatarItem_3">
+								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(3, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+							</div>
+							
+                            <div class="AvatarInteractable"></div>
+                        </div>
+                        <div class="ListRowContent">
+                            <div class="ListRowTitle">
+                                <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+								
+                                <div data-ng-if="conference.members.length == 0">
+                                    <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
+									<div class="ListConferenceStatusText">Free room</div>
+                                </div>                            
+                                <div data-ng-if="conference.members.length > 0">
+                                    <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
+									<div class="ListConferenceStatusText">{{conference.members.length}} member(s) on a call</div>
+								</div> 
+                            </div>
+                        </div>
+                    </a>
+				</div>
+			</div>
+			
+			<div class="Section" ng-show="selectedConf">
+				<div>
+					<h4>Destination</h4>
+				</div>
+				
+                <a href="" class="ListRow ListRow-Conference">
+                    <div class="ConferenceAvatarSection Avatar AvatarNormal">
+                        <div class="GroupAvatarItem GroupAvatarItem_0">
+							<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(0, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+						</div>
+                        <div class="GroupAvatarItem GroupAvatarItem_1">
+							<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(1, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+						</div>
+                        <div class="GroupAvatarItem GroupAvatarItem_2">
+							<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(2, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_3">
+							<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(3, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+						</div>
+						
+                        <div class="AvatarInteractable"></div>
+                    </div>
+                    <div class="ListRowContent">
+                        <div class="ListRowTitle">
+                            <div class="name"> Room # {{::selectedConf.roomNumber}} ({{::selectedConf.extensionNumber}})</div>
+                                <span class="link" ng-if="selectedConf.location">at {{::selectedConf.location}}</span>
+							
+                            <div data-ng-if="selectedConf.members.length == 0">
+                                <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
+								<div class="ListConferenceStatusText">Free room</div>
+                            </div>                            
+                            <div data-ng-if="selectedConf.members.length > 0">
+                                <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
+								<div class="ListConferenceStatusText">{{selectedConf.members.length}} member(s) on a call</div>
+							</div> 
+                        </div>
+                    </div>
+                </a>
+				
+				<h4>Are you Ready?</h4>
+				<em>Call will be transferred to this conference</em>
+			</div>
+		</div>
+		
+		<div class="Footer">
+			<div class="Error" ng-show="addError" ng-bind="addError"></div>
+			
+			<input type="button" class="XButton" value="Cancel" ng-click="changeScreen('call')" />
+			<input type="button" class="XButton" value="Join" ng-click="joinConference()" />
 		</div>
 	</div>
 </div>
