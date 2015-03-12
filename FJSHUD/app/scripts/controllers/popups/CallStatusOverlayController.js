@@ -1,11 +1,13 @@
-hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout', '$location', 'ConferenceService', 'HttpService', function($scope, $filter, $timeout, $location, conferenceService, httpService) {
+hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', function($scope, $filter, $timeout, $location, conferenceService, contactService, httpService) {
 	$scope.onCall = $scope.$parent.overlay.data;
 	$scope.timeElapsed = 0;
 	$scope.screen = 'call';
+	
 	$scope.confQuery = '';
 	$scope.tranQuery = '';
 	$scope.selectedConf = null;
 	$scope.addError = null;
+	$scope.contacts = [];
 
 	var updateTime = function() {
 		if ($scope.onCall.call && $scope.onCall.call.startedAt) {
@@ -34,16 +36,43 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		httpService.sendAction('contacts', type + 'Call', {contactId: xpid});
 	};
 	
-	$scope.changeScreen = function(screen) {
+	$scope.changeScreen = function(screen, xpid) {
 		$scope.screen = screen;
+		$scope.addError = null;
 		
 		if (screen == 'conference') {
 			$scope.conferences = conferenceService.getConferences();
 			$scope.confQuery = '';
-			$scope.addError = null;
 			$scope.selectedConf = null;
 			$scope.meToo = 0;
 		}
+		else if (screen == 'transfer') {
+			$scope.transferFrom = contactService.getContact(xpid);
+			$scope.tranQuery = '';
+			$scope.transferTo = null;
+			$scope.sendToPrimary = 1;
+			
+			contactService.getContacts().then(function(data) { 
+				$scope.contacts = data;
+			});
+		}
+	};
+	
+	$scope.selectDestination = function(contact) {
+		$scope.transferTo = contact;
+	};
+	
+	$scope.transferCall = function() {
+		if ($scope.transferTo) {
+			httpService.sendAction('calls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+				fromContactId: $scope.transferFrom.xpid,
+				toContactId: $scope.transferTo.xpid
+			});
+			
+			$scope.showOverlay(false);
+		}
+		else
+			$scope.addError = 'Select destination';
 	};
 	
 	$scope.selectConference = function(conference) {
@@ -60,7 +89,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 			// by member name
 			else if (conference.members) {
 				for (i = 0; i < conference.members.length; i++) {
-					console.error(conference.members[i]);
 					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
 						return true;
 				}
@@ -89,6 +117,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	};
 
     $scope.$on("$destroy", function() {
-		
+		updateTime = null;
     });
 }]);
