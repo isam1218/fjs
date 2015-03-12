@@ -1,5 +1,6 @@
 .WidgetMe .WidgetHeader {
   padding: 0 10px;
+  height: 22%;
 }
 .WidgetMe .WidgetHeaderTitle {
   color: #333;
@@ -18,10 +19,17 @@
 }
 .WidgetMe .WidgetBody {
   top: 8px;
+  height: 80%;
+  position: relative;
+}
+.WidgetMe .WidgetBody .call-block {
+  height: 45%;
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
   -webkit-box-flex: 1;
+  height: 37%;
+  margin-top: 3px;
 }
 .WidgetMe .Preferences-Holder .WidgetTabBar {
   top: 0px;
@@ -38,23 +46,13 @@
   top: 0px;
   right: 0px;
   position: relative;
-  border: none;
+  border: none 0px;
   background-image: url("../img/XTile-Widget.png");
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  /*min-height: 176px;*/
-  min-height: 130px;
+  height: 100%;
   overflow-y: hidden;
   padding-bottom: 20px;
   background-color: #f9f9f9;
   bottom: 0px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
-    min-height: 225px;
-  }
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream {
   position: absolute;
@@ -62,6 +60,8 @@
   left: 0;
   right: 0;
   bottom: 0;
+  height: 100%;
+  background-color: #f9f9f9;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar {
   position: absolute;
@@ -69,6 +69,7 @@
   left: 10px;
   right: 10px;
   bottom: 10px;
+  height: 100%;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport {
   position: relative;
@@ -77,16 +78,15 @@
   left: 0px;
   right: 0px;
   overflow: hidden;
+  height: 100%;
 }
-.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-content {
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-viewcontent {
+  height: 100%;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-viewcontent .fj-content {
   position: relative;
-  min-height: 40px;
+  height: 100%;
   background-color: #f9f9f9;
-}
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-content {
-    min-height: 235px;
-  }
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-scroll {
   position: absolute;

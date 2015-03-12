@@ -34,6 +34,11 @@ p {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  select {
+    padding-right: 0px !important;
+  }
+}
 #App {
   position: relative;
   height: 100%;
@@ -54,6 +59,7 @@ p {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
+  /*  top: 150px;*/
 }
 .col1 {
   width: 180px;
@@ -164,27 +170,19 @@ p {
   cursor: pointer;
   display: inline;
 }
-.call-block {
-  min-height: 200px;
-}
 .RecentCallSection {
   font-size: .7em;
   padding: 10px 0;
-  /* padding-left:7px;
-  padding-top:10px;
-  padding-bottom:10px;*/
 }
 .RecentCallSection .RecentCallColumnHeaders {
-  /*padding-bottom:6px;*/
   padding: 6px 10px;
   border-bottom: 1px solid #ccc;
 }
 .RecentCallSection .RecentCallLogs {
   font-weight: bold;
   padding: 4px 10px 10px 10px;
-  /*min-height:75px;*/
   overflow-y: auto;
-  height: 90px;
+  height: 110px;
   position: relative;
 }
 .RecentCallSection .RecentCallLogs .RecentCallRow {
@@ -198,6 +196,11 @@ p {
   bottom: 10px;
   width: 10px;
   right: 0px;
+  background-color: #f9f9f9;
+}
+.RecentCallSection .RecentCallLogs .fj-scroll .fj-ui-scrollerFr-decoration,
+.RecentCallSection .RecentCallLogs .fj-scroll .fj-ui-scroller {
+  background-color: #f9f9f9;
 }
 .RecentCallSection .CallLogs {
   font-weight: bold;
@@ -329,7 +332,7 @@ p {
   display: none;
 }
 .TopBar {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100px;
   display: flex;
@@ -348,27 +351,38 @@ p {
   margin: 5px 0 0 10px;
   flex: .6;
   min-width: 250px;
+  position: relative;
+  background-repeat: no-repeat;
 }
 .TopBarIcons {
   flex: 1;
-  min-width: 400px;
-  margin-left: 10px;
+  min-width: 44em;
+  left: 30px;
+  position: relative;
 }
 .TopBarItemApp {
   position: relative;
   display: inline-block;
   height: 96px;
-  width: 50px;
+  min-width: 6em;
+  max-width: 6em;
   cursor: pointer;
   vertical-align: top;
+  text-align: center;
+  text-decoration: none;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .TopBarItemApp .AvatarNormal .AvatarImgPH {
+    border: none;
+  }
 }
 .TopBarItemAppIcon {
-  position: absolute;
+  position: relative;
   top: 10px;
-  left: 5px;
   width: 40px;
   height: 40px;
   background: url("../img/XApp-Icons.png") no-repeat 0 0;
+  margin: 0 auto;
 }
 .TopBarItemAppIcon.Home {
   background-position: 0 0;
@@ -417,31 +431,40 @@ p {
   background-image: none;
 }
 .TopBarItemAppName {
-  position: absolute;
-  top: 60px;
+  position: relative;
+  top: 10px;
   left: 0;
   right: 0;
-  height: 20px;
   font-family: "Chalkduster", "wchalkduster", "Comic Sans MS";
-  text-align: center;
-  font-size: 5px;
-  color: #ccc;
+  text-align: left;
+  font-size: .7em;
+  /*color: #ccc;*/
+  color: #999;
   overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
 }
 .TopBarItemApp:hover .TopBarItemAppName {
   opacity: 1;
-  left: -100px;
-  right: -100px;
-  top: 70px;
+  /*left : -100px;
+  right : -100px;
+  top : 65px;*/
+  left: -10px;
+  right: -10px;
+  top: 20px;
   background-color: #f3f3f3;
-  color: #999;
-  font-size: 12px;
+  color: #888;
+  /*font-size : 12px;*/
+  font-size: 0.875em;
+  font-weight: bold;
 }
 .TopBarMeStatus {
   position: relative;
   flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
+  width: 20em;
 }
 .TopBarMeStatus .Logout {
   padding-left: 24px;
@@ -470,12 +493,13 @@ p {
 .TopBarVoicemailControls {
   position: absolute;
   top: 0;
-  left: 10px;
+  /*left: 10px;*/
   max-height: 100%;
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
   font-size: .8em;
+  width: 20em;
 }
 .TopBarVoicemailControls:hover {
   max-height: 200%;
@@ -597,6 +621,41 @@ p {
   margin-top: 10px;
   margin-bottom: 20px;
 }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .TopBarLogo {
+    min-width: 14em;
+  }
+  .TopBarIcons {
+    min-width: 25em;
+    left: 0px;
+  }
+  .TopBarIcons .TopBarItemApp {
+    min-width: 5.93em;
+    max-width: 5.93em;
+  }
+  .TopBarMeStatus {
+    width: 24em;
+    padding-left: 0px;
+  }
+  .TopBarMeStatus .TopBarVoicemailControls {
+    width: 14em;
+    margin-left: -15px;
+  }
+  .TopBarMeStatus .XButton.Logout {
+    clear: none;
+    float: right;
+    right: 10px;
+  }
+  .TopBarMeStatus .Status {
+    width: 30%;
+    float: right;
+    clear: both;
+    margin-right: 10px;
+  }
+  .TopBarItemAppIcon {
+    background: url("../img/XApp-Icons.png") no-repeat 40px 0;
+  }
+}
 .ToolBar {
   position: relative;
   padding: 0;
@@ -688,6 +747,45 @@ p {
   margin: 0 0 .5em .5em;
   font-size: .8em;
   display: block;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell {
+  text-align: left;
+  font-size: 0.625em;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Name {
+  width: 16%;
+  padding-left: 5px;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Extension {
+  width: 25%;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.CallStatus {
+  width: 28%;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+  left: 1%;
+  position: relative;
+  float: inherit;
+  margin-left: 0px;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
+  top: 5px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell {
+    font-size: 0.688em;
+  }
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Name {
+    width: 14%;
+  }
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Extension {
+    width: 35%;
+  }
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.CallStatus {
+    width: 25%;
+  }
 }
 .LeftBar .Notifications {
   position: relative;
@@ -1333,11 +1431,16 @@ p {
   max-width: 70px;
   max-height: 70px;
 }
+div.NewCall {
+  width: 100%;
+  background-color: #fff;
+}
 div.NewCall input.NewCall {
   position: relative;
   top: 7px;
+  margin-bottom: 4px;
   left: 10px;
-  width: 305px;
+  width: 60%;
   height: 26px;
   border: 1px solid #c2c2c2;
   border-radius: 2px;
@@ -1347,7 +1450,7 @@ div.NewCall input.NewCall {
 div.NewCall .XButton {
   float: right;
   height: 26px;
-  width: 80px !important;
+  width: 15%;
   position: relative;
   margin-left: 10px;
   top: 7px;
@@ -1357,6 +1460,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .WidgetMe .WidgetHeader {
   padding: 0 10px;
+  height: 22%;
 }
 .WidgetMe .WidgetHeaderTitle {
   color: #333;
@@ -1375,10 +1479,17 @@ div.NewCall .XButton.XButtonNormal {
 }
 .WidgetMe .WidgetBody {
   top: 8px;
+  height: 80%;
+  position: relative;
+}
+.WidgetMe .WidgetBody .call-block {
+  height: 45%;
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
   -webkit-box-flex: 1;
+  height: 37%;
+  margin-top: 3px;
 }
 .WidgetMe .Preferences-Holder .WidgetTabBar {
   top: 0px;
@@ -1395,17 +1506,13 @@ div.NewCall .XButton.XButtonNormal {
   top: 0px;
   right: 0px;
   position: relative;
-  border: none;
+  border: none 0px;
   background-image: url("../img/XTile-Widget.png");
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  min-height: 176px;
+  height: 100%;
   overflow-y: hidden;
   padding-bottom: 20px;
   background-color: #f9f9f9;
   bottom: 0px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream {
   position: absolute;
@@ -1413,6 +1520,8 @@ div.NewCall .XButton.XButtonNormal {
   left: 0;
   right: 0;
   bottom: 0;
+  height: 100%;
+  background-color: #f9f9f9;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar {
   position: absolute;
@@ -1420,6 +1529,7 @@ div.NewCall .XButton.XButtonNormal {
   left: 10px;
   right: 10px;
   bottom: 10px;
+  height: 100%;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport {
   position: relative;
@@ -1428,10 +1538,14 @@ div.NewCall .XButton.XButtonNormal {
   left: 0px;
   right: 0px;
   overflow: hidden;
+  height: 100%;
 }
-.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-content {
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-viewcontent {
+  height: 100%;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-viewport .fj-viewcontent .fj-content {
   position: relative;
-  min-height: 40px;
+  height: 100%;
   background-color: #f9f9f9;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .fj-stream .WithoutToolBar.fj-scrollable .fj-scroll {
@@ -1783,32 +1897,32 @@ input.text {
   margin-top: 45px;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  width: 10% !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
-  left: 15% !important;
+  left: 8px !important;
   position: relative !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
   top: 4px;
 }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+    margin-left: 0;
+  }
+}
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Name {
-  padding-left: 0px;
+  width: 14% !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Phone {
-  padding-left: 15px;
+  width: 15% !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Duration {
-  padding-left: 10px;
+  width: 23%  !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.StartedAt {
-  padding-right: 40px;
-  padding-left: 40px;
-}
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.CallType {
-  padding-right: 5px;
-  padding-left: 26px;
+  width: 19%  !important;
 }
 .Widget.CallLog .WidgetBody .vmails {
   margin-top: -17px !important;
@@ -1871,6 +1985,11 @@ input.text {
 }
 .Conference .ToolBar .XButton[type=button] {
   left: 5px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .Conference .ToolBar .SelectBox.XButton {
+    padding-right: 0px;
+  }
 }
 .Conference.Widget .SearchInputBox {
   left: 0px;
@@ -3700,6 +3819,9 @@ input.text.ChatInputBoxInput,
 .ListRowActionButtonScreenShare {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -210px;
 }
+.ListRowActionButtonFileShare {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0px -30px;
+}
 .ListRowActionButtonEdit {
   background: url("../img/XActionSet-30x30.png") no-repeat -60px -150px;
 }
@@ -4213,8 +4335,10 @@ input[type="tel"] {
 .XButtonMedium.disabled-true span,
 .XButtonMedium.disabled-true:hover span {
   height: 26px;
-  background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
-  background-color: #fefefe;
+  /*background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #ebebeb;
+  background: #fefefe linear-gradient(#fefefe, #ebebeb);*/
+  background: transparent;
   color: #999;
   text-shadow: 0 1px 0px #fff;
   cursor: auto;
@@ -4226,12 +4350,14 @@ input[type="tel"] {
 .XButtonNormal:disabled span,
 .XButtonNormal.disabled-true span {
   height: 26px;
-  background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
-  background-color: #fefefe;
+  /*background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #ebebeb;*/
   color: #999;
   text-shadow: 0 1px 0px #fff;
   transition: border .3s;
   cursor: auto;
+  /*background: #fefefe linear-gradient(#fefefe, #ebebeb);*/
+  background: transparent;
 }
 .XButtonBlue.disabled-true span,
 .XButtonBlue.disabled span {

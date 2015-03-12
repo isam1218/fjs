@@ -6,6 +6,11 @@
 .Conference .ToolBar .XButton[type=button] {
   left: 5px;
 }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .Conference .ToolBar .SelectBox.XButton {
+    padding-right: 0px;
+  }
+}
 .Conference.Widget .SearchInputBox {
   left: 0px;
   top: 2px;

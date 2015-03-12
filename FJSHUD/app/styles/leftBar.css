@@ -90,6 +90,45 @@
   font-size: .8em;
   display: block;
 }
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell {
+  text-align: left;
+  font-size: 0.625em;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Name {
+  width: 16%;
+  padding-left: 5px;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Extension {
+  width: 25%;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.CallStatus {
+  width: 28%;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+  left: 1%;
+  position: relative;
+  float: inherit;
+  margin-left: 0px;
+}
+.LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
+  top: 5px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell {
+    font-size: 0.688em;
+  }
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Name {
+    width: 14%;
+  }
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.Extension {
+    width: 35%;
+  }
+  .LeftBar .Contacts .ListLineContent.Header .ListLineContentCell.CallStatus {
+    width: 25%;
+  }
+}
 .LeftBar .Notifications {
   position: relative;
   /*width: 300px;*/

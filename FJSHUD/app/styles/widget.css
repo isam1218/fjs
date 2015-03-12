@@ -320,11 +320,16 @@
   max-width: 70px;
   max-height: 70px;
 }
+div.NewCall {
+  width: 100%;
+  background-color: #fff;
+}
 div.NewCall input.NewCall {
   position: relative;
   top: 7px;
+  margin-bottom: 4px;
   left: 10px;
-  width: 305px;
+  width: 60%;
   height: 26px;
   border: 1px solid #c2c2c2;
   border-radius: 2px;
@@ -334,7 +339,7 @@ div.NewCall input.NewCall {
 div.NewCall .XButton {
   float: right;
   height: 26px;
-  width: 80px !important;
+  width: 15%;
   position: relative;
   margin-left: 10px;
   top: 7px;

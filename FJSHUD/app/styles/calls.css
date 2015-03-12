@@ -5,32 +5,32 @@
   margin-top: 45px;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  width: 10% !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
-  left: 15% !important;
+  left: 8px !important;
   position: relative !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
   top: 4px;
 }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+    margin-left: 0;
+  }
+}
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Name {
-  padding-left: 0px;
+  width: 14% !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Phone {
-  padding-left: 15px;
+  width: 15% !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Duration {
-  padding-left: 10px;
+  width: 23%  !important;
 }
 .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.StartedAt {
-  padding-right: 40px;
-  padding-left: 40px;
-}
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.CallType {
-  padding-right: 5px;
-  padding-left: 26px;
+  width: 19%  !important;
 }
 .Widget.CallLog .WidgetBody .vmails {
   margin-top: -17px !important;

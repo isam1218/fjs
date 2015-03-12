@@ -93,8 +93,43 @@
 	  	  display: block;
 	    }
 	  }
-	}
-  }  
+	}	
+  } 
+  
+   .Contacts{
+    .ListLineContent.Header{
+        .ListLineContentCell{
+                text-align: left;
+                font-size: 0.625em;
+                padding-right: 0px;
+                padding-left: 0px;
+                
+                &.Name{width: 16%; padding-left: 5px;}
+                &.Extension{width: 25%;}
+                &.CallStatus{width: 28%;}
+                .DirectionArrow{
+                  left: 1%;                  
+                  position: relative;
+                  float: inherit;
+                  margin-left:0px;
+                }
+                &.Down{
+                 .DirectionArrow{ top: 5px;}
+                } 
+        }
+        @media screen and (-ms-high-contrast: active),
+        (-ms-high-contrast: none) {           
+            .ListLineContentCell{
+                font-size: 0.688em;
+                
+                &.Name{width: 14%;}
+                &.Extension{width: 35%;}
+                &.CallStatus{width: 25%;}
+             }
+        }
+        
+    }
+   }
   
   .Notifications{
     position: relative;

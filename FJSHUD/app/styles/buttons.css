@@ -84,8 +84,10 @@ input[type="tel"] {
 .XButtonMedium.disabled-true span,
 .XButtonMedium.disabled-true:hover span {
   height: 26px;
-  background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
-  background-color: #fefefe;
+  /*background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #ebebeb;
+  background: #fefefe linear-gradient(#fefefe, #ebebeb);*/
+  background: transparent;
   color: #999;
   text-shadow: 0 1px 0px #fff;
   cursor: auto;
@@ -97,12 +99,14 @@ input[type="tel"] {
 .XButtonNormal:disabled span,
 .XButtonNormal.disabled-true span {
   height: 26px;
-  background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
-  background-color: #fefefe;
+  /*background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #ebebeb;*/
   color: #999;
   text-shadow: 0 1px 0px #fff;
   transition: border .3s;
   cursor: auto;
+  /*background: #fefefe linear-gradient(#fefefe, #ebebeb);*/
+  background: transparent;
 }
 .XButtonBlue.disabled-true span,
 .XButtonBlue.disabled span {

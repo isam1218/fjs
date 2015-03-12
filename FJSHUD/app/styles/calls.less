@@ -7,22 +7,26 @@
         .WidgetBody{
             .ListLineContent.Header{
                 .ListLineContentCell{
-                    padding-left: 20px;
-                    padding-right: 20px;
+                   padding-left: 10px;                    
+                    width: 10% !important;
                     
                     .DirectionArrow{
-                        left: 15% !important; 
+                        left: 8px !important; 
                         position: relative !important;
-                    } 
+                    }
                     &.Down{
                      .DirectionArrow{top: 4px;}
-                    } 
-                    &.Name{padding-left: 0px;}   
-                    &.Phone{padding-left: 15px;}
-                    &.Duration{padding-left: 10px;}  
-                    &.StartedAt{padding-right: 40px;padding-left: 40px;}
-                    &.CallType{padding-right: 5px; padding-left: 26px;}
-                                                                                   
+                    }
+                    
+                    @media screen and (-ms-high-contrast: active),
+                    (-ms-high-contrast: none) {
+                        .DirectionArrow{margin-left: 0;}
+                    }                   
+                  
+                    &.Name{width: 14% !important;}   
+                    &.Phone{width: 15% !important;}
+                    &.Duration{width: 23%  !important;}  
+                    &.StartedAt{width: 19%  !important;}                                                                                                   
                 }                                               
             }
             
