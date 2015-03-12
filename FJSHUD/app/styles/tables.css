@@ -446,6 +446,12 @@
 .ListRowActionButtonIntercom {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -60px;
 }
+.ListRowActionButtonJoin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLeave {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -120px;
+}
 .ListRowActionButtonScreenShare {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -210px;
 }
@@ -475,6 +481,9 @@
 }
 .ListRowActionButtonUndock {
   background: url("../img/XActionSet-30x30.png") no-repeat -30px 0;
+}
+.ListRowActionButtonRecord {
+  background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
 }
 .ListMessageLeftSmall .Avatar.AvatarWarning {
   left: 0px;

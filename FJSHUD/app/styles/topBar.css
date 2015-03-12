@@ -1,5 +1,5 @@
 .TopBar {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100px;
   display: flex;
@@ -18,27 +18,38 @@
   margin: 5px 0 0 10px;
   flex: .6;
   min-width: 250px;
+  position: relative;
+  background-repeat: no-repeat;
 }
 .TopBarIcons {
   flex: 1;
-  min-width: 400px;
-  margin-left: 10px;
+  min-width: 44em;
+  left: 30px;
+  position: relative;
 }
 .TopBarItemApp {
   position: relative;
   display: inline-block;
   height: 96px;
-  width: 50px;
+  min-width: 6em;
+  max-width: 6em;
   cursor: pointer;
   vertical-align: top;
+  text-align: center;
+  text-decoration: none;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .TopBarItemApp .AvatarNormal .AvatarImgPH {
+    border: none;
+  }
 }
 .TopBarItemAppIcon {
-  position: absolute;
+  position: relative;
   top: 10px;
-  left: 5px;
   width: 40px;
   height: 40px;
   background: url("../img/XApp-Icons.png") no-repeat 0 0;
+  margin: 0 auto;
 }
 .TopBarItemAppIcon.Home {
   background-position: 0 0;
@@ -87,31 +98,40 @@
   background-image: none;
 }
 .TopBarItemAppName {
-  position: absolute;
-  top: 60px;
+  position: relative;
+  top: 10px;
   left: 0;
   right: 0;
-  height: 20px;
   font-family: "Chalkduster", "wchalkduster", "Comic Sans MS";
-  text-align: center;
-  font-size: 5px;
-  color: #ccc;
+  text-align: left;
+  font-size: .7em;
+  /*color: #ccc;*/
+  color: #999;
   overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
 }
 .TopBarItemApp:hover .TopBarItemAppName {
   opacity: 1;
-  left: -100px;
-  right: -100px;
-  top: 70px;
+  /*left : -100px;
+  right : -100px;
+  top : 65px;*/
+  left: -10px;
+  right: -10px;
+  top: 20px;
   background-color: #f3f3f3;
-  color: #999;
-  font-size: 12px;
+  color: #888;
+  /*font-size : 12px;*/
+  font-size: 0.875em;
+  font-weight: bold;
 }
 .TopBarMeStatus {
   position: relative;
   flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
+  width: 20em;
 }
 .TopBarMeStatus .Logout {
   padding-left: 24px;
@@ -140,12 +160,13 @@
 .TopBarVoicemailControls {
   position: absolute;
   top: 0;
-  left: 10px;
+  /*left: 10px;*/
   max-height: 100%;
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
   font-size: .8em;
+  width: 20em;
 }
 .TopBarVoicemailControls:hover {
   max-height: 200%;
@@ -266,4 +287,39 @@
   -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
   margin-bottom: 20px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .TopBarLogo {
+    min-width: 14em;
+  }
+  .TopBarIcons {
+    min-width: 25em;
+    left: 0px;
+  }
+  .TopBarIcons .TopBarItemApp {
+    min-width: 5.93em;
+    max-width: 5.93em;
+  }
+  .TopBarMeStatus {
+    width: 24em;
+    padding-left: 0px;
+  }
+  .TopBarMeStatus .TopBarVoicemailControls {
+    width: 14em;
+    margin-left: -15px;
+  }
+  .TopBarMeStatus .XButton.Logout {
+    clear: none;
+    float: right;
+    right: 10px;
+  }
+  .TopBarMeStatus .Status {
+    width: 30%;
+    float: right;
+    clear: both;
+    margin-right: 10px;
+  }
+  .TopBarItemAppIcon {
+    background: url("../img/XApp-Icons.png") no-repeat 40px 0;
+  }
 }

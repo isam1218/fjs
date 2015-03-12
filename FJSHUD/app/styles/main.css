@@ -59,7 +59,7 @@ p {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
-  /*  top: 150px;*/
+  top: 150px;
 }
 .col1 {
   width: 180px;
@@ -3816,6 +3816,12 @@ input.text.ChatInputBoxInput,
 .ListRowActionButtonIntercom {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -60px;
 }
+.ListRowActionButtonJoin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLeave {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -120px;
+}
 .ListRowActionButtonScreenShare {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -210px;
 }
@@ -3845,6 +3851,9 @@ input.text.ChatInputBoxInput,
 }
 .ListRowActionButtonUndock {
   background: url("../img/XActionSet-30x30.png") no-repeat -30px 0;
+}
+.ListRowActionButtonRecord {
+  background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
 }
 .ListMessageLeftSmall .Avatar.AvatarWarning {
   left: 0px;
@@ -5175,6 +5184,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   top: 4em;
   right: .5em;
 }
+.Overlay .Banner {
+  width: 100%;
+  text-align: center;
+  color: white;
+  background-color: #888888;
+  padding: .25em;
+  font-size: .8em;
+  margin-bottom: 0 !important;
+}
 .Overlay .Members {
   background-color: #ccc;
   border: 1px solid gray;
@@ -5629,6 +5647,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Messages {
   position: relative;
   min-height: 50px;
+  font-style: normal;
+  font-size: 1em;
+}
+a.Messages {
+  text-decoration: none;
 }
 .displayName {
   font-size: 12px;
