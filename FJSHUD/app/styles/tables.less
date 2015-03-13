@@ -178,32 +178,33 @@
     }    
     .CallAvatar_Office .AvatarForeground.AvatarInteractable
     {
-        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+        position: absolute;
     }
     
     .AvatarNormal{
          .AvatarForeground.AvatarStatic{
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -5px;
          }
          .AvatarForeground.AvatarInteractable{
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
          }
     }
     .AvatarSmall{
         .AvatarForeground{
             .AvatarStatic
             {
-                background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+                background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -5px;
             }
             .AvatarInteractable{
-                background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+                background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
             }
         }    
     }
     .AvatarWarning{
         .AvatarForeground
         {
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -230px;
         }
     }
   }
@@ -336,6 +337,10 @@
 .CallStatus {
   text-align: center;
   flex: .8;
+  
+  .Avatar.AvatarSmall.CallAvatar.CallAvatar_Office{position: relative;}
+  
+  
 }
 
 .ListRowCallArea {

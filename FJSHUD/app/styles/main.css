@@ -332,7 +332,7 @@ p {
   display: none;
 }
 .TopBar {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100px;
   display: flex;
@@ -351,38 +351,27 @@ p {
   margin: 5px 0 0 10px;
   flex: .6;
   min-width: 250px;
-  position: relative;
-  background-repeat: no-repeat;
 }
 .TopBarIcons {
   flex: 1;
-  min-width: 44em;
-  left: 30px;
-  position: relative;
+  min-width: 400px;
+  margin-left: 10px;
 }
 .TopBarItemApp {
   position: relative;
   display: inline-block;
   height: 96px;
-  min-width: 6em;
-  max-width: 6em;
+  width: 50px;
   cursor: pointer;
   vertical-align: top;
-  text-align: center;
-  text-decoration: none;
-}
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .TopBarItemApp .AvatarNormal .AvatarImgPH {
-    border: none;
-  }
 }
 .TopBarItemAppIcon {
-  position: relative;
+  position: absolute;
   top: 10px;
+  left: 5px;
   width: 40px;
   height: 40px;
   background: url("../img/XApp-Icons.png") no-repeat 0 0;
-  margin: 0 auto;
 }
 .TopBarItemAppIcon.Home {
   background-position: 0 0;
@@ -431,40 +420,31 @@ p {
   background-image: none;
 }
 .TopBarItemAppName {
-  position: relative;
-  top: 10px;
+  position: absolute;
+  top: 60px;
   left: 0;
   right: 0;
+  height: 20px;
   font-family: "Chalkduster", "wchalkduster", "Comic Sans MS";
-  text-align: left;
-  font-size: .7em;
-  /*color: #ccc;*/
-  color: #999;
-  overflow: hidden;
-  margin: 0 auto;
   text-align: center;
-  width: 100%;
+  font-size: 5px;
+  color: #ccc;
+  overflow: hidden;
 }
 .TopBarItemApp:hover .TopBarItemAppName {
   opacity: 1;
-  /*left : -100px;
-  right : -100px;
-  top : 65px;*/
-  left: -10px;
-  right: -10px;
-  top: 20px;
+  left: -100px;
+  right: -100px;
+  top: 70px;
   background-color: #f3f3f3;
-  color: #888;
-  /*font-size : 12px;*/
-  font-size: 0.875em;
-  font-weight: bold;
+  color: #999;
+  font-size: 12px;
 }
 .TopBarMeStatus {
   position: relative;
   flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
-  width: 20em;
 }
 .TopBarMeStatus .Logout {
   padding-left: 24px;
@@ -493,13 +473,12 @@ p {
 .TopBarVoicemailControls {
   position: absolute;
   top: 0;
-  /*left: 10px;*/
+  left: 10px;
   max-height: 100%;
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
   font-size: .8em;
-  width: 20em;
 }
 .TopBarVoicemailControls:hover {
   max-height: 200%;
@@ -621,45 +600,9 @@ p {
   margin-top: 10px;
   margin-bottom: 20px;
 }
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .TopBarLogo {
-    min-width: 14em;
-  }
-  .TopBarIcons {
-    min-width: 25em;
-    left: 0px;
-  }
-  .TopBarIcons .TopBarItemApp {
-    min-width: 5.93em;
-    max-width: 5.93em;
-  }
-  .TopBarMeStatus {
-    width: 24em;
-    padding-left: 0px;
-  }
-  .TopBarMeStatus .TopBarVoicemailControls {
-    width: 14em;
-    margin-left: -15px;
-  }
-  .TopBarMeStatus .XButton.Logout {
-    clear: none;
-    float: right;
-    right: 10px;
-  }
-  .TopBarMeStatus .Status {
-    width: 30%;
-    float: right;
-    clear: both;
-    margin-right: 10px;
-  }
-  .TopBarItemAppIcon {
-    background: url("../img/XApp-Icons.png") no-repeat 40px 0;
-  }
-}
 .ToolBar {
   position: relative;
   padding: 0;
-  /* 0  5px */
   border-bottom: solid 1px #ccc;
   height: 40px;
   width: 95.3%;
@@ -789,7 +732,6 @@ p {
 }
 .LeftBar .Notifications {
   position: relative;
-  /*width: 300px;*/
   width: 100%;
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
@@ -3524,22 +3466,23 @@ input.text.ChatInputBoxInput,
   background-color: #f0f0ff;
 }
 .ListRow:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+  position: absolute;
 }
 .ListRow:hover .AvatarNormal .AvatarForeground.AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -5px;
 }
 .ListRow:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
 }
 .ListRow:hover .AvatarSmall .AvatarForeground .AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -5px;
 }
 .ListRow:hover .AvatarSmall .AvatarForeground .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
 }
 .ListRow:hover .AvatarWarning .AvatarForeground {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -230px;
 }
 .ListRow .Remove {
   position: absolute;
@@ -3648,6 +3591,9 @@ input.text.ChatInputBoxInput,
 .CallStatus {
   text-align: center;
   flex: .8;
+}
+.CallStatus .Avatar.AvatarSmall.CallAvatar.CallAvatar_Office {
+  position: relative;
 }
 .ListRowCallArea {
   position: relative;
@@ -3816,6 +3762,12 @@ input.text.ChatInputBoxInput,
 .ListRowActionButtonIntercom {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -60px;
 }
+.ListRowActionButtonJoin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLeave {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -120px;
+}
 .ListRowActionButtonScreenShare {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -210px;
 }
@@ -3845,6 +3797,9 @@ input.text.ChatInputBoxInput,
 }
 .ListRowActionButtonUndock {
   background: url("../img/XActionSet-30x30.png") no-repeat -30px 0;
+}
+.ListRowActionButtonRecord {
+  background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
 }
 .ListMessageLeftSmall .Avatar.AvatarWarning {
   left: 0px;
@@ -4672,8 +4627,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 0;
   border-left: 8px solid transparent;
   border-right: 0;
-  border-bottom: 8px solid #739D03;
-  position: absolute;
+  /*border-bottom: 8px solid #739D03;*/
+  position: relative;
   display: none;
 }
 .Avatar:hover .AvatarInteractable,
@@ -4681,13 +4636,14 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: block;
 }
 .AvatarHoverArea .CallAvatar_Office .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+  position: absolute;
 }
 .AvatarHoverArea .AvatarNormal .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
 }
 .AvatarHoverArea .AvatarSmall .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
 }
 .AvatarNormal {
   background-color: #fff;
@@ -4719,15 +4675,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   -webkit-border-radius: 2px;
 }
 .AvatarNormal .AvatarForeground {
-  position: absolute;
+  position: relative;
   height: 40px;
   width: 40px;
 }
 .AvatarNormal .AvatarForeground.AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -5px;
 }
 .AvatarNormal .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
 }
 .AvatarNormal .GroupAvatarItem {
   position: relative;
@@ -4744,10 +4700,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 19px;
 }
 .AvatarNormal:hover .AvatarForeground.AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -5px;
 }
 .AvatarNormal:hover .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
 }
 .AvatarBig,
 .AvatarBig img {
@@ -4761,8 +4717,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   height: 30px;
   width: 30px;
-  border: none;
+  /*border : none;*/
   line-height: 0px;
+  top: 3px;
 }
 .AvatarSmall .AvatarImgPH {
   position: absolute;
@@ -4774,7 +4731,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   -webkit-border-radius: 2px;
 }
 .AvatarSmall .AvatarForeground {
-  position: absolute;
+  position: relative;
   height: 30px;
   width: 30px;
 }
@@ -4800,10 +4757,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 40px;
 }
 .AvatarSmall:hover .AvatarForeground .AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -5px;
 }
 .AvatarSmall:hover .AvatarForeground .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
 }
 .AvatarApp {
   width: 40px;
@@ -4849,8 +4806,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
 }
 .CallAvatar .AvatarImgPH {
-  position: absolute;
-  left: 1px;
+  position: relative;
+  left: -1px;
   top: 1px;
   height: 38px;
   width: 38px;
@@ -4858,7 +4815,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   -webkit-border-radius: 40px;
 }
 .CallAvatar .AvatarForeground {
-  position: absolute;
+  position: relative;
   height: 40px;
   width: 40px;
 }
@@ -4867,17 +4824,19 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   bottom: 0;
 }
 .CallAvatar_Office {
-  border: 2px solid #009cff;
+  border: 3px solid #009cff;
 }
 .CallAvatar_Office .AvatarForeground {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -95px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+  position: absolute;
 }
 .CallAvatar_Office .AvatarInteractable {
-  border-bottom: 14px solid #009cff;
-  border-left: 14px solid transparent;
+  /*border-bottom: 14px solid #009cff;
+      border-left: 14px solid transparent;*/
 }
 .CallAvatar_Office:hover .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+  position: absolute;
 }
 .CallAvatar_External {
   border: 2px solid #729c00;
@@ -4885,21 +4844,21 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallAvatar_External .AvatarInteractable {
   border-bottom: 14px solid #729c00;
   border-left: 14px solid transparent;
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -140px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -140px;
 }
 .CallAvatar_External:hover .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -140px;
 }
 .CallAvatar_Queue {
   border: 2px solid #e27100;
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -185px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -185px;
 }
 .CallAvatar_Queue .AvatarInteractable {
   border-bottom: 14px solid #e27100;
   border-left: 14px solid transparent;
 }
 .CallAvatar_Queue .AvatarInteractable:hover .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -185px;
 }
 .XIcon-ChatStatus-Available,
 .XIcon-ChatStatus-available {
@@ -5019,13 +4978,13 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: none;
 }
 .AvatarWarning .AvatarForeground {
-  position: absolute;
+  position: relative;
   height: 40px;
   width: 40px;
-  background: url("img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+  background: url("img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -230px;
 }
 .AvatarWarning:hover .AvatarForeground {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -66px -230px;
 }
 .Overlay {
   position: fixed;
@@ -5174,6 +5133,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: absolute;
   top: 4em;
   right: .5em;
+}
+.Overlay .Banner {
+  width: 100%;
+  text-align: center;
+  color: white;
+  background-color: #888888;
+  padding: .25em;
+  font-size: .8em;
+  margin-bottom: 0 !important;
 }
 .Overlay .Members {
   background-color: #ccc;
@@ -5629,6 +5597,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Messages {
   position: relative;
   min-height: 50px;
+  font-style: normal;
+  font-size: 1em;
+}
+a.Messages {
+  text-decoration: none;
 }
 .displayName {
   font-size: 12px;

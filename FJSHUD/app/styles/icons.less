@@ -20,8 +20,8 @@
   height: 0;
   border-left: 8px solid transparent;
   border-right: 0;
-  border-bottom: 8px solid #739D03;
-  position: absolute;
+  /*border-bottom: 8px solid #739D03;*/
+  position: relative;
   display: none;
 }
 
@@ -31,19 +31,20 @@
 .AvatarHoverArea{        
      .CallAvatar_Office{
        .AvatarForeground.AvatarInteractable {
-         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+         position: absolute;
        }
      }         
      .AvatarNormal{
        .AvatarForeground.AvatarInteractable
        {
-         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
        }
      }
      .AvatarSmall{
        .AvatarForeground.AvatarInteractable
        {
-         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+         background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
        }
      }        
 }
@@ -80,16 +81,16 @@
     }
     .AvatarForeground
     {
-        position : absolute;
+        position : relative;
         height : 40px;
         width : 40px;
         &.AvatarStatic
         {
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -5px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -5px;
         }
         &.AvatarInteractable
         {
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -50px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
         }
     }
     .GroupAvatarItem
@@ -110,10 +111,10 @@
     }
     &:hover{
         .AvatarForeground.AvatarStatic{
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -5px;
         }
         .AvatarForeground.AvatarInteractable{
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
         }
     }
 }
@@ -129,8 +130,9 @@
   position : relative;
   height : 30px;
   width : 30px;
-  border : none;
+  /*border : none;*/
   line-height : 0px; 
+  top: 3px;
   
   .AvatarImgPH
   {
@@ -145,7 +147,7 @@
   
   .AvatarForeground
   {
-      position : absolute;
+      position : relative;
       height : 30px;
       width : 30px;
   }
@@ -178,10 +180,10 @@
   &:hover{
     .AvatarForeground{
      .AvatarStatic{
-        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -5px;
      }
      .AvatarInteractable{
-        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
      }
     }
   }
@@ -238,8 +240,8 @@
   
   .AvatarImgPH
   {
-    position : absolute;
-    left : 1px;
+    position : relative;
+    left : -1px;
     top : 1px;
     height : 38px;
     width : 38px;
@@ -249,7 +251,7 @@
   
   .AvatarForeground
   {
-    position : absolute;
+    position : relative;
     height : 40px;
     width : 40px;
   }
@@ -261,18 +263,20 @@
 }
 
 .CallAvatar_Office {
-  border: 2px solid #009cff;
+  border: 3px solid #009cff;
 
   .AvatarForeground{
-    background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -95px;
+    background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+    position: absolute;
   }
  .AvatarInteractable {
-      border-bottom: 14px solid #009cff;
-      border-left: 14px solid transparent;
+      /*border-bottom: 14px solid #009cff;
+      border-left: 14px solid transparent;*/
   }
   &:hover{
     .AvatarForeground.AvatarInteractable {
-        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+        position: absolute;
     }
   }
 }
@@ -283,17 +287,17 @@
  .AvatarInteractable {
       border-bottom: 14px solid #729c00;
       border-left: 14px solid transparent;
-      background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -140px;
+      background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -140px;
  }
  &:hover{
     .AvatarForeground.AvatarInteractable{
-        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -140px;
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -140px;
     }
  }
 }
 .CallAvatar_Queue {
   border: 2px solid #e27100;
-  background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -185px;
+  background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -185px;
 }
 
 .CallAvatar_Queue .AvatarInteractable {
@@ -301,7 +305,7 @@
   border-left: 14px solid transparent;
   &:hover{
     .AvatarForeground.AvatarInteractable{
-        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -185px;
+        background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -185px;
     }
   }
 }
@@ -460,15 +464,15 @@
     
     .AvatarForeground
     {
-        position : absolute;
+        position : relative;
         height : 40px;
         width : 40px;
-        background : url("img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+        background : url("img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -230px;
     }
     &:hover{
         .AvatarForeground
         {
-            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+            background : url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -66px -230px;
         }
     }
 }

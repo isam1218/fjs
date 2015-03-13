@@ -154,22 +154,23 @@
   background-color: #f0f0ff;
 }
 .ListRow:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -95px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
+  position: absolute;
 }
 .ListRow:hover .AvatarNormal .AvatarForeground.AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -5px;
 }
 .ListRow:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -50px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
 }
 .ListRow:hover .AvatarSmall .AvatarForeground .AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -5px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -5px;
 }
 .ListRow:hover .AvatarSmall .AvatarForeground .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -130px -50px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
 }
 .ListRow:hover .AvatarWarning .AvatarForeground {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -5px -230px;
+  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -230px;
 }
 .ListRow .Remove {
   position: absolute;
@@ -278,6 +279,9 @@
 .CallStatus {
   text-align: center;
   flex: .8;
+}
+.CallStatus .Avatar.AvatarSmall.CallAvatar.CallAvatar_Office {
+  position: relative;
 }
 .ListRowCallArea {
   position: relative;
@@ -446,6 +450,12 @@
 .ListRowActionButtonIntercom {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -60px;
 }
+.ListRowActionButtonJoin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0px -120px;
+}
+.ListRowActionButtonLeave {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -120px;
+}
 .ListRowActionButtonScreenShare {
   background: url("../img/XActionSet-30x30.png") no-repeat 0px -210px;
 }
@@ -475,6 +485,9 @@
 }
 .ListRowActionButtonUndock {
   background: url("../img/XActionSet-30x30.png") no-repeat -30px 0;
+}
+.ListRowActionButtonRecord {
+  background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
 }
 .ListMessageLeftSmall .Avatar.AvatarWarning {
   left: 0px;
