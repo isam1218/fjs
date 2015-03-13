@@ -2,20 +2,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	/**
 		Detect Current Browser
 	*/
-	var feeds = fjs.CONFIG.FEEDS;
 	var ua = navigator.userAgent;
-	var browser = ua.match(/(chrome|safari|firefox|msie|windows)/i)[0];
+	var browser = ua.match(/(chrome|safari|firefox|msie)/i);
+	// if not found, default to IE mode
+	browser = browser && browser[0] ? browser[0] : "MSIE";
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
-	var isIE = browser == "MSIE" || "Windows";
+	var isIE = browser == "MSIE";
 	var isMasterTab = false;
 	var tabId = 0;
 	var synced = false;
 	var tabMap = undefined;
 	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
-
-	
-
+console.error(browser, isSWSupport);
+	var feeds = fjs.CONFIG.FEEDS;
 
     var VERSIONS_PATH = "/v1/versions";
         /**
