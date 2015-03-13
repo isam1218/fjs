@@ -87,8 +87,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 				}
 			}
 		}
-			
-		$scope.$safeApply();
 	});
 	
 	$scope.joinConference = function(conference) {

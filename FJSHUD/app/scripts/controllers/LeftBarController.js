@@ -20,7 +20,5 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
                 $scope.locations[data[index].xpid] = data[index];
             }
         }
-
-        $scope.$safeApply();
     });
 }]);

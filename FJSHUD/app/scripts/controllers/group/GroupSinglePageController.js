@@ -73,10 +73,6 @@ hudweb.controller('GroupSinglePageController', ['$scope','$routeParams','PhoneSe
     			$scope.pageMembers.push(contact);
     		}
     	}
-	
-		$scope.$safeApply();
-
-
     });
 
     $scope.callGroup = function(numPrefix){

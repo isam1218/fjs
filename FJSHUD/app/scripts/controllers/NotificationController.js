@@ -166,7 +166,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
-		$scope.$safeApply();
 	});
 
 	$scope.$on('phone_event',function(event,data){
@@ -202,7 +201,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		}
 
 		$scope.$safeApply();
-
 	});
 
 	$scope.$on('quickinbox_synced', function(event,data){
@@ -253,9 +251,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time;
 		});
-
-		
-		$scope.$safeApply();
 		
 		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
 		

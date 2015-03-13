@@ -32,7 +32,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;
     		}
-    		$scope.$safeApply();
     	}
    	});
 

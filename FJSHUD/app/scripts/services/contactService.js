@@ -57,7 +57,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			}
 		}
 		
-		$rootScope.$broadcast('contacts_updated', contacts);
+		$rootScope.$evalAsync($rootScope.$broadcast('contacts_updated', contacts));
 	});
 	
 	$rootScope.$on('calls_synced', function(event, data) {
@@ -87,6 +87,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			}
 		}
 		
-		$rootScope.$broadcast('contacts_updated', contacts);
+		$rootScope.$evalAsync($rootScope.$broadcast('contacts_updated', contacts));
 	});
 }]);

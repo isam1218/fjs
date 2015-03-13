@@ -22,8 +22,6 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
       }
 
     }
-
-    $scope.$safeApply();
   });
 
 }]);

@@ -17,7 +17,6 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 
   $scope.$on('queues_updated', function(event, data) {
     $scope.queues = data.queues;
-    $scope.$safeApply();
   });
 
 

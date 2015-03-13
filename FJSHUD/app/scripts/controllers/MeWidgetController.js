@@ -350,7 +350,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 			update_queues();
             update_settings();
         }
-        $scope.$safeApply();
     });
 
     $scope.change_avatar = function($file){
@@ -384,7 +383,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         if(data){
             $scope.calllogs = data;
         }
-        $scope.$safeApply();
     });
 
     $scope.sortCallLog = function(sortType){
@@ -615,8 +613,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
             }
         }
-
-        $scope.$safeApply();
     });
 
     $scope.$on('locations_synced', function(event,data){
@@ -626,8 +622,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 $scope.locations[data[index].xpid] = data[index];
             }
         }
-
-        $scope.$safeApply();
     });
 
      $scope.$on("queues_synced", function(event,data){

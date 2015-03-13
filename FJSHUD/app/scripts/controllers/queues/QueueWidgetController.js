@@ -23,8 +23,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
             }
         
         }
-        
-        $scope.$safeApply();
     });
     
     $scope.getAvatarUrl = function(index) {

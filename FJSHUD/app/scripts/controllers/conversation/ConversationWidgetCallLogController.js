@@ -5,7 +5,6 @@ hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParam
     httpService.getFeed("calllog")
     $scope.$on('calllog_synced', function(event,data){
         $scope.calllogs = data;
-        $scope.$safeApply();
     });
     $scope.recentSelectSort = "Date";
     $scope.isAscending = false;
@@ -20,7 +19,6 @@ hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParam
                 $scope.contact = contactModel.items[$scope.contactId];
             }
             updateFavicon();
-            //$scope.$safeApply();
         }
     };
 

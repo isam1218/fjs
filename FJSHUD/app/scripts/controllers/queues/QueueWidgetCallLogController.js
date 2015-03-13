@@ -25,8 +25,6 @@ hudweb.controller('QueueWidgetCallLogController', ['$scope', '$rootScope', '$rou
         $scope.callLogs = queue.callLogs;
       }
     }
-
-    $scope.$safeApply();
   });
 
   $scope.sortBy = function (type) {

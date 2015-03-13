@@ -21,6 +21,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', function($
 		deferred = $q.defer();
 		deferred.resolve(settings);
 		
-		$rootScope.$broadcast('settings_updated', settings);
+		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 	});
 }]);

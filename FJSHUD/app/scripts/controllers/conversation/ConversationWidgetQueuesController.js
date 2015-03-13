@@ -85,8 +85,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
             
                 break;
         }
-
-        //$scope.$safeApply();
     }
 
 
@@ -122,7 +120,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
     	$scope.log_out_reasons = data;
     	$scope.log_out_reasons.push({name:"Logout All"});
     	$scope.log_out_option = data[$scope.log_out_reasons.length - 1];
-    	$scope.$safeApply();
     });
 
     $scope.getChatStatus == function(){
@@ -150,9 +147,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
                 }
             }
         }
-
-        //$scope.$safeApply();
-
     });
     
 }]);

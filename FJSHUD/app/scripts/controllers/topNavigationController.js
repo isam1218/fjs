@@ -47,8 +47,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
             }
 
         }
-
-        $scope.$safeApply();
     });
 	
 	$scope.getAvatar = function() {
@@ -57,7 +55,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 	
 	$scope.$on('queues_updated', function(event, data) {
 		$scope.queue = queueService.getMyQueues();
-		$scope.$safeApply();
 	});
 	
 	/**

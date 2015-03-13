@@ -49,7 +49,6 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', '$rout
       $scope.contacts[contact.xpid] = contact;
     }
     $rootScope.loaded = true;
-    $scope.$safeApply();
   });
 
   $scope.$on('contactstatus_synced', function (event, data) {

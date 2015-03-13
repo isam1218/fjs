@@ -124,6 +124,6 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 			}
 		}
 		
-		$rootScope.$broadcast('groups_updated', formatData());
+		$rootScope.$evalAsync($rootScope.$broadcast('groups_updated', formatData()));
 	});
 }]);

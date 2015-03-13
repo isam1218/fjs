@@ -14,7 +14,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var tabMap = undefined;
 	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
-console.error(browser, isSWSupport);
+
 	var feeds = fjs.CONFIG.FEEDS;
 
     var VERSIONS_PATH = "/v1/versions";
@@ -103,14 +103,16 @@ console.error(browser, isSWSupport);
 		                    synced_data = event.data.data;
 
 		                    // send data to other controllers
-		                    for (feed in synced_data) {
-		                        if (synced_data[feed].length > 0)
-		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
-		                    }
+							$rootScope.$evalAsync(function() {
+								for (feed in synced_data) {
+									if (synced_data[feed].length > 0)
+										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+								}
+							});
 		                }
 		                break;
 		            case "feed_request":
-		                $rootScope.$broadcast(event.data.feed + '_synced', event.data.data);
+		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
 						delete localStorage.nodeID;

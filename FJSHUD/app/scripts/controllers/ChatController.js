@@ -165,8 +165,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					}
 				}
 			}
-			
-			$scope.$safeApply();
 		});
 	};
 

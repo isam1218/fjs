@@ -14,9 +14,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             return item.members && item.members.length > 0;
         });
        $scope.mine = data.mine;
-       update_groups(); 
-       //$scope.$safeApply();
-
+       update_groups();
     });
 
     myHttpService.getFeed("me");
@@ -95,6 +93,5 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
                 $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
             }
         }
-        $scope.$safeApply();
     });
 }]);

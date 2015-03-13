@@ -123,7 +123,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
       }
     }
 
-    $rootScope.$broadcast('queues_updated', formatData());
+    $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
 
   $rootScope.$on("queue_stat_calls_synced", function (event, data) {
@@ -135,7 +135,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
       }
     }
 	
-    $rootScope.$broadcast('queues_updated', formatData());
+    $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
 
   $rootScope.$on("queuemembercalls_synced", function (event, data) {
@@ -146,7 +146,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
         }
       }
     }
-    $rootScope.$broadcast('queues_updated', formatData());
+    $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
 
 

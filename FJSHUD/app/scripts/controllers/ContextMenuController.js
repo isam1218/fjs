@@ -61,8 +61,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 				}
 			}
 		});
-		
-		$scope.$safeApply();
 	});
 	
 	/**

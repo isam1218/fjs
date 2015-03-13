@@ -39,7 +39,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		else {
 			$scope.voicemails = data;
 			$scope.emptyVoiceLabel = 'anyone else';
-			$scope.$safeApply();
 			return;
 		}
 		
@@ -55,8 +54,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
                     $scope.voicemails.push(data[voicemail]);
 			}
 		}
-		
-		$scope.$safeApply();
 	});
 
     $scope.sortBy = function(sort){

@@ -80,7 +80,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 			}
 		}
 		
-		$rootScope.$broadcast('conferences_updated', conferences);
+		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
@@ -109,7 +109,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', conferences);
+		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 
 	});
 
@@ -123,7 +123,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', conferences);
+		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 
 	});
 
@@ -137,7 +137,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', conferences);
+		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 
 	$rootScope.$on("conferencerecording_synced",function(event,data){
@@ -153,7 +153,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				}
 			}
 		}
-		$rootScope.$broadcast('conferences_updated', conferences);
+		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 	
 	$rootScope.$on("conferencepermissions_synced", function(event, data) {
@@ -164,6 +164,6 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 			}
 		}
 		
-		$rootScope.$broadcast('conferences_updated', conferences);
+		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 }]);

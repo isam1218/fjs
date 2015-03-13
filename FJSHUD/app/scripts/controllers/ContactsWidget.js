@@ -9,12 +9,10 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	// pull updates from service
 	$scope.$on('contacts_updated', function(event, data) {
 		$scope.contacts = data;
-		$scope.$safeApply();
 	});
 	
 	$scope.$on('groups_updated', function(event, data) {
 		$scope.favorites = data.favorites;
-		$scope.$safeApply();
 	});
 
     $scope.sort = function(field) {

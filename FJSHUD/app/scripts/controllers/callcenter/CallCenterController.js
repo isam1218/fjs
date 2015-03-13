@@ -35,15 +35,12 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
       case 'All Queues':
         $scope.$on('queues_updated', function (event, data) {
           $scope.queues = data.queues;
-		  
-          $scope.$safeApply();
         });
         break;
 
       case 'My Queue':
         $scope.$on('queues_updated', function (event, data) {
           $scope.queues = data.mine;
-		  $scope.$safeApply();
         });
 
         $scope.$on('me_synced', function (event, data) {
@@ -52,8 +49,6 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
               $scope.me[data[medata].propertyKey] = data[medata].propertyValue;
             }
           }
-
-          $scope.$safeApply();
         });
 
         break;

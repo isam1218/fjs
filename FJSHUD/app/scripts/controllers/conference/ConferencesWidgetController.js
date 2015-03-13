@@ -26,8 +26,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 				}
 			}
 		}
-		
-		$scope.$safeApply();
 	});
 	
 	// filter list down
@@ -104,7 +102,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
-		$scope.$safeApply();
 	});
 
     $scope.getAvatarUrl = function(conference, index) {

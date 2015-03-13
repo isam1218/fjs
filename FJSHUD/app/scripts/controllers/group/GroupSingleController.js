@@ -26,7 +26,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', '$location
 		}
 				
 		$scope.isMine = groupService.isMine($scope.groupID);		
-		$scope.$safeApply();
 	});
 	
 	$scope.tabs = ['Chat', 'Members', 'Voicemails', 'Page'];
