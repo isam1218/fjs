@@ -14,7 +14,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
 	
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
-        /*var phase = $scope.$root.$$phase;
+        var phase = $scope.$root.$$phase;
         if(phase == '$apply' || phase == '$digest') {
             if(fn && (typeof(fn) === 'function')) {
                 fn();
@@ -26,7 +26,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
             else {
                 $scope.$apply();
             }
-        }*/
+        }
     };
 
     $scope.onBodyClick = function() {
