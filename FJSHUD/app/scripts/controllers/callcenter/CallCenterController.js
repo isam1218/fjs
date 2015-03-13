@@ -53,7 +53,7 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
             }
           }
 
-          $scope.$apply();
+          $scope.$safeApply();
         });
 
         break;

@@ -219,10 +219,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '/contact':
 					$location.path('/contact/'+xpid);
 					$location.replace();
-					$rootScope.$apply();
+					//$rootScope.$apply();
+					removeNotification();
 					break;
-
-	    	}
+			}
     	}else{
     		switch(url){
 	    		case '#/Close':
@@ -256,7 +256,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '#/contact':
 					$location.path('/contact/'+xpid);
 					$location.replace();
-					$rootScope.$apply();
+					//$rootScope.$apply();
+					removeNotification();
 					break;
 
 	    	}
@@ -407,20 +408,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
-
-
 	});
 
 
-	$rootScope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
+
+	$rootScope.$on("parkedcalls_synced",function(event,data){
+		if(data){
+		}
+
+		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-	
+
+	$rootScope.$on("mycalls_synced",function(event,data){
+		if(data){
+		}
+
+		$rootScope.$broadcast('calls_updated', callsDetails);
+	});
 
 	/*$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){

@@ -81,7 +81,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', 'Http
 
       $scope.contacts[contact.xpid] = contact;
     }
-     $scope.$apply();
+     $scope.$safeApply();
   });
 
   $scope.$on('contactstatus_synced', function (event, data) {

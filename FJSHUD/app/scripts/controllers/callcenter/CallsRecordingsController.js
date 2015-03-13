@@ -3,6 +3,7 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
 	
 	httpService.getFeed('calllog');
 	
+
 	$scope.$on('calllog_synced', function(event, data) {
 		$scope.calls = [];
 		
@@ -16,9 +17,9 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
 			}
 		});
 		
-		$scope.$safeApply();
+		//$scope.$safeApply();
 	});
-	
+	$scope.callListLimit = 20;
 	$scope.customFilter = function() {
 		var query = $scope.query.toLowerCase();
 		
@@ -27,6 +28,11 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
 				return true;
 		};
 	};
+
+	$scope.loadMore = function(){
+		if($scope.callListLimit < $scope.calls.length)
+			$scope.callListLimit = $scope.callListLimit + 20;
+	}
 
     $scope.sortField = "displayName";
     $scope.sortReverse = false;

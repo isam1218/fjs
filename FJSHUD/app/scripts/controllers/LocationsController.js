@@ -42,7 +42,6 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
             }
         }
 
-        $scope.$apply();
     });
 
     $scope.$on('locations_synced', function(event,data){
@@ -53,7 +52,6 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
             }
         }
 
-        $scope.$apply();
     });
 
      $scope.$on('location_status_synced', function(event,data){
@@ -64,7 +62,6 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
             }
         }
 
-        $scope.$apply();
     });
 
 }]);

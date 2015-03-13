@@ -9,7 +9,7 @@ var hudweb = angular.module('fjshudApp', [
     'ngTouch',
     'flow',
     'luegg.directives',
-
+    'infinite-scroll',
 ]);
 
 hudweb.config(function ($routeProvider) {

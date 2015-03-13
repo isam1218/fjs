@@ -12,7 +12,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		$scope.mine = data.mine;
 		$scope.favoriteID = data.favoriteID;
 		
-		$scope.$safeApply();
+		//$scope.$safeApply();
 	});
 	
     $scope.sort = function(field) {

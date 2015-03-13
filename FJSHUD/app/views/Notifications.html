@@ -127,11 +127,11 @@
 			<div><div>{{ currentCall.incoming ? 'inbound' : 'outbound'}} on call</div></div>
 		</div>
 		<div style="float:right;display:inline-block;margin-top:5px">
-			<a ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton" onclick="window.close()">Cancel</a>
-			<a ng-click="holdCall(currentCall.xpid,true)" ng-if="!isRinging && !onHold" class="XButton"  onclick="window.close()">Hold</a>
-			<a ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="!isRinging && !onHold">End</a>
-			<a ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="onHold">Talk</a>
-			<a ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">Accept</a>
+			<div ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton">Cancel</div>
+			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="!isRinging && !onHold" class="XButton">Hold</div>
+			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="!isRinging && !onHold">End</div>
+			<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="onHold">Talk</div>
+			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">Accept</div>
 		</div>
 		</a>
 </div>

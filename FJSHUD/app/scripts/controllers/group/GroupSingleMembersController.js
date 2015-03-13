@@ -33,7 +33,7 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 			}
 		}
 		$scope.isMine = groupService.isMine($scope.groupId);		
-		$scope.$safeApply();
+		//$scope.$safeApply();
 	});
 
 	$scope.callExtension= function(extension){
@@ -49,7 +49,7 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 				}
 			}
 		}
-		$scope.$safeApply();
+		//$scope.$safeApply();
 	});
 
 	$scope.sortBy = function(type){

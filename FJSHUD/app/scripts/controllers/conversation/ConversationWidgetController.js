@@ -21,7 +21,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
 			}
 		}
 		
-		$scope.$safeApply();
+		//$scope.$safeApply();
 	});
 	
 	$scope.tabs = ['Chat', 'Voicemails', 'Groups','Queues', 'Call Log'];

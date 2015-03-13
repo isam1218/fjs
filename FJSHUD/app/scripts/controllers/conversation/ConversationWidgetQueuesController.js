@@ -86,7 +86,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
                 break;
         }
 
-        $scope.$safeApply();
+        //$scope.$safeApply();
     }
 
 
@@ -151,7 +151,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
             }
         }
 
-        $scope.$apply();
+        //$scope.$safeApply();
 
     });
     

@@ -20,7 +20,7 @@ hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParam
                 $scope.contact = contactModel.items[$scope.contactId];
             }
             updateFavicon();
-            $scope.$safeApply();
+            //$scope.$safeApply();
         }
     };
 
