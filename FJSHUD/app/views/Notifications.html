@@ -36,12 +36,12 @@
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
 								<span class="XButton" style="width:70px" > Play</span>
-								<span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" target="_blank">Call Back</span>
+								<span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)">Call Back</span>
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
 								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message.senderId,message.xpid)">Chat</span>
-								<a class="XButton XButtonGreen" style="width:70px" href="{{message.data.url}}" target="_blank">Call</a>
+								<a class="XButton XButtonGreen" style="width:70px" href="{{message.data.url}}" >Call</a>
 							</div>
 						</div>
 				</div>
@@ -118,7 +118,6 @@
 </div>
 
 <div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall">
-		<a href="#">  
 		<div class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
@@ -133,7 +132,7 @@
 			<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="onHold">Talk</div>
 			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">Accept</div>
 		</div>
-		</a>
+		
 </div>
 
-<div id="CallAlert" ng-include="'views/NativeAlerts/CallAlert.html'" style="display:none"></div>
+<div id="CallAlert" ng-include="'views/nativealerts/CallAlert.html'" style="display:none"></div>
