@@ -11,6 +11,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var meModel = {};
 	var sipCalls = {};
 	var xpid2Sip = {};
+	var tabInFocus = true;
 	var callsDetails = {};
 	$rootScope.meModel = {};
 	var isRegistered = false;
@@ -28,6 +29,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     var REG_STATUS_UNKNOWN = -1;
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
+
+	window.onfocus = function(){
+		tabInFocus = true;
+	}
+
+	window.onblur = function(){
+		tabInFocus = false;
+	}
+
 
 	registerPhone = function(isRegistered){
 		if(phone){
@@ -66,7 +76,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	displayNotification = function(content, width,height){
-		if(alertPlugin){
+		if(alertPlugin && !tabInFocus){
 			
 			alertPlugin.setAlertSize(width,height);
 			alertPlugin.addAlertEx(content);
@@ -146,12 +156,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			registerPhone(true);
 			
          } else if (session_status.status == 1) {
-                alert("Session unauthorized");
                 isRegistered = false;
                 return;
         } else if (session_status.status == 2) {
             isRegistered = false;
-            alert("Session not permitted");
         }
 	}
 
