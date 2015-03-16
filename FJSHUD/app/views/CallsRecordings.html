@@ -66,7 +66,9 @@
 			</div>
 
 			<div class="ListView calllogList" infinite-scroll="loadMore()" infinite-scroll-container='".calllogList"'>
-				<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | limitTo: callListLimit | orderBy:sortField:sortReverse track by call.xpid"
+				<CallRecordingList calllog="calls"></CallRecordingList>
+
+				<!--<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | limitTo: callListLimit | orderBy:sortField:sortReverse track by call.xpid"
 				 
 				>
 					<div>
@@ -85,7 +87,7 @@
 						<div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.incoming ? 'Incoming' : 'Outbound' }}"></div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
         
 		<!-- ng-view -->

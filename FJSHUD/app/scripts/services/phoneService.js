@@ -5,7 +5,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var phonePlugin = document.getElementById('phone');
 	var version = phonePlugin.version;
 	var session;
-	var alert;
+	var alertPlugin;
 	var phone;
 	var soundManager;
 	var meModel = {};
@@ -66,13 +66,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	displayNotification = function(content, width,height){
-		if(alert){
+		if(alertPlugin){
 			
-			alert.setAlertSize(width,height);
-			alert.addAlertEx(content);
-			alert.setShadow(true);
-			alert.setBorderRadius(5);
-			alert.setTransparency(255);
+			alertPlugin.setAlertSize(width,height);
+			alertPlugin.addAlertEx(content);
+			alertPlugin.setShadow(true);
+			alertPlugin.setBorderRadius(5);
+			alertPlugin.setTransparency(255);
 			isAlertShown = true;
 		}
 	}
@@ -133,11 +133,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if (session_status.status == 0 && !isRegistered) {
             ("Session ready");
             
-            if(!alert && !phone){
-            	alert = session.alertAPI;
+            if(!alertPlugin && !phone){
+            	alertPlugin = session.alertAPI;
 				phone = session.phone;
          	
-         		alert.initAlert('http://localhost:9900/app/views/nativeAlerts/Alert.html');
+         		alertPlugin.initAlert('http://localhost:9900/app/views/nativeAlerts/Alert.html');
 				removeNotification();
          		setupListeners();
 			 }
@@ -265,9 +265,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	removeNotification = function(){
-		if(alert){
+		if(alertPlugin){
 			isAlertShown = false;
-			alert.removeAlert();
+			alertPlugin.removeAlert();
 		}
 	}
 
@@ -286,15 +286,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		}
     	}
 
-    	if(alert){
-    		if(alert.attachEvent){
-    			alert.attachEvent("onAlert",onAlert);
-    			alert.attachEvent("ononAlertMouseEvent",onAlertMouseEvent);
+    	if(alertPlugin){
+    		if(alertPlugin.attachEvent){
+    			alertPlugin.attachEvent("onAlert",onAlert);
+    			alertPlugin.attachEvent("ononAlertMouseEvent",onAlertMouseEvent);
     		
 
     		}else{
-    			alert.addEventListener("Alert",onAlert,false);
-    			alert.addEventListener("onAlertMouseEvent",onAlertMouseEvent,false);
+    			alertPlugin.addEventListener("Alert",onAlert,false);
+    			alertPlugin.addEventListener("onAlertMouseEvent",onAlertMouseEvent,false);
     		}
     	}
     }
@@ -424,6 +424,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
+	});
+
+	$rootScope.$on('me_synced', function(event,data){
+        if(data){
+            var me = {};
+            for(medata in data){
+                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            }
+        }
 	});
 
 	/*$rootScope.$on("calldetails_synced",function(event,data){

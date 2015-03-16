@@ -165,12 +165,14 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		
 
 		}
+
+
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 	});
 
 	$scope.$on('phone_event',function(event,data){
 		phoneEvent = data.event;
-
+		$scope.inCall = true;
 		switch (phoneEvent){
 			case "ringing":
 				$scope.isRinging = true;
