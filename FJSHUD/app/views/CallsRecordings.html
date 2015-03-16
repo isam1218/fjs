@@ -61,14 +61,17 @@
 					 class="ListLineContentCell CallType {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
 					<span>TYPE</span>
 
+				
 					<div class="DirectionArrow"></div>
 				</div>
 			</div>
 
-			<div class="ListView calllogList" infinite-scroll="loadMore()" infinite-scroll-container='".calllogList"'>
-				<CallRecordingList calllog="calls"></CallRecordingList>
-
-				<!--<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | limitTo: callListLimit | orderBy:sortField:sortReverse track by call.xpid"
+				<!--<calllog class="ListView calllogList" callsies="calls" scope="$scope"watch-depth="reference" getAvatar=></calllog>-->
+			
+			<div class="ListView calllogList">
+				
+			
+				<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() |  orderBy:sortField:sortReverse track by call.xpid"
 				 
 				>
 					<div>
@@ -77,17 +80,18 @@
 							<div class="AvatarInteractable" ng-if="call.contact"></div>
 						</div>
 					</div>
-					<div class="Name"> {{ call.displayName }}</div>
+					<div class="Name"> {{ ::call.displayName }}</div>
 					<div class="Phone">
-						<span ng-click="makeCall(call.phone)">{{ call.phone }}</span>
+						<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
 					</div>
-					<div class="Duration"> {{ call.duration | duration }}</div>
-					<div class="Date"> {{ call.startedAt | date: 'MMMM d, h:mm a' }}</div>
+					<div class="Duration"> {{ ::call.duration | duration }}</div>
+					<div class="Date"> {{ ::call.startedAt | date: 'MMMM d, h:mm a' }}</div>
 					<div class="Type">
 						<div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.incoming ? 'Incoming' : 'Outbound' }}"></div>
 					</div>
 				</div>
-			</div>-->
+			</div>
+			
 		</div>
         
 		<!-- ng-view -->
