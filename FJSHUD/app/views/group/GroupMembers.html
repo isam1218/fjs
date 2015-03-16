@@ -19,7 +19,7 @@
             <a  href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" ng-repeat= "member in members | filter: {displayName:query}"> 
             
                 <div class="vmavatarsection Avatar AvatarNormal" > 
-                    <img class="AvatarNoBorder" ng-src="{{getAvatar(member.xpid)}}" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
+                    <img class="AvatarNoBorder" ng-src="{{getAvatar(member.xpid)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
                 </div>
 
                 <div class="vminfo"> 

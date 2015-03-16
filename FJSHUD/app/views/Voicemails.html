@@ -32,7 +32,7 @@
         <div class="vmsection" ng-repeat="voicemail in voicemails | filter: { displayName:query } | orderBy: selectedSort.type: selectedSort.desc"> 
             
             <div class="vmavatarsection AvatarNormal" > 
-                    <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='/app/img/Generic-Avatar-28.png'"/>
+                    <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
             </div>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
