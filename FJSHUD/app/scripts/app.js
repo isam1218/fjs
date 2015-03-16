@@ -6,7 +6,6 @@ var hudweb = angular.module('fjshudApp', [
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
     'flow',
     'luegg.directives',
     'react',
