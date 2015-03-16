@@ -53,7 +53,7 @@
 				<div class="Toolbar">
 					<div class="ContactSearch">
 						<div ng-show="tab != 'favorites'">
-							<input type="search" class="Search" placeholder="Search" ng-model="query" />
+							<input type="search" class="Search" placeholder="Search" ng-model="query" ng-model-options="{debounce: 100}" />
 							<input type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 						</div>
 
