@@ -39,13 +39,6 @@ p {
   white-space: nowrap;
 }
 
-@media screen and (-ms-high-contrast: active),
-(-ms-high-contrast: none) {
-    select{
-      padding-right: 0px !important;
-    }
-}
-
 #App {
   position: relative;
   height: 100%;
@@ -67,13 +60,11 @@ p {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction:row;
-/*  top: 150px;*/
 }
 
 .col1{
   width:180px;
   display:inline-block;
-
 }
 
 .text[contenteditable] {
@@ -119,25 +110,6 @@ p {
 }
 .PopupMenuRow:hover {
   background-color: #b3d4fc;
-}
-
-.ContextMenu.SelectMenuBox {
-  width:140px;
-  min-width:140px;
-  .MenuContent {
-    margin: 0px;
-    .MenuItem:hover {
-      background-color: #b3d4fc;
-    }
-    .MenuItem {
-      padding:0 5px;
-      height: 32px;
-      .SelectedIcon {
-        width: 30px;
-        height: 30px;
-      }
-    }
-  }
 }
 
 .LeftBarMeCustomStatusSection {
@@ -196,136 +168,6 @@ p {
   display:inline;
 }
 
-.RecentCallSection{
-  font-size:.7em;
-  padding: 10px 0;
-    
-  .RecentCallColumnHeaders{    
-    padding: 6px 10px;
-    border-bottom:1px solid #ccc;
-  }
-  .RecentCallLogs{
-    font-weight:bold;   
-    padding: 4px 10px 10px 10px;    
-    overflow-y:auto;
-    height: 110px;
-    position: relative;
-    
-    .RecentCallRow{
-      padding-top:7px;
-      padding-bottom:7px;
-      border-bottom:1px solid #ccc;
-    }
-    .fj-scroll{
-        position: absolute;
-        top: 10px;
-        bottom: 10px;
-        width: 10px;
-        right: 0px;
-        background-color: #f9f9f9;
-        
-        .fj-ui-scrollerFr-decoration, 
-        .fj-ui-scroller{
-            background-color: #f9f9f9;
-        }
-    }
-  }
-
-  .CallLogs{
-    font-weight:bold;
-    padding-top:4px;
-    padding-bottom:10px;
-    overflow-y:auto;
-    .RecentCallRow{
-      padding-top:7px;
-      padding-bottom:7px;
-      border:1px solid white;
-      width:99%;
-      background-color:#eee;
-    }
-
-    .RecentCallRow:hover{
-      padding-top:7px;
-      padding-bottom:7px;
-      border:1px solid white;
-      width:99%;
-      background-color:#ccc;
-    }
-  
-  }
-
-  .CalllogAvatar{
-    width:10%;
-      .CalllogImage{
-          border-radius:30px;
-          -webkit-border-radius:30px;
-          border:3px solid #0093f0;
-
-      }
-  }
-
-  .CallLogText{
-  }
-  .CalllogName{
-    width:23%;
-    display:inline-flex;
-    display:-webkit-inline-flex; 
-    .info{
-        color:#009cff;
-    } 
-  }
-
-  .CalllogPhone{
-    width:17%;
-    text-align:center;
-    display:inline-flex;  
-    display:-webkit-inline-flex;
-  }
-
-  .CalllogDuration{
-    width:14%;
-    display:inline-flex;  
-    display:-webkit-inline-flex;
- 
-  }
-
-  .CallLogDate{
-    width:25%;
-    display:inline-flex;  
-    display:-webkit-inline-flex;
- 
-  }
-
-  .CallLogType{
-    width:7%;
-      
-  }
-
-
-  .RecentDate{
-    width:30%
-
-  }
-  .RecentFromTo{
-    width:25%;
-    text-align:center;
- }
-  .RecentDur{
-    width:14%;
-    text-align:center;
-  }
-}
-.NoRecentCalls{
-  text-align:center;
-  font-size:1.3em;
-  opacity: 0.5;
-  padding: 10px 0 0 0;
-}
-.RecentCallsHeader{
-  display:inline-block;
-  
-}
-
 .footnote{
   font-size:.6em;
   font-style:italic;
@@ -380,15 +222,6 @@ p {
   &:hover{
     .fj-ui-scrollerFr-h{opacity : 0.6;}
   }
-}
-.fj-relative
-{
-    position : relative;
-}
-
-#crdmnFrame
-{
-    display : none;
 }
 
 @import "topBar";
