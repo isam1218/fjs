@@ -2,7 +2,7 @@
   position: relative;
   flex: 1;
   margin: -40px 0 0 10px;
-  min-width: 400px;
+  min-width: 350px;
   
   .Widget {
     border-top-left-radius: 10px;
@@ -53,15 +53,18 @@
       top: 2px;
       width: 160px;
    }
-   
-   &.boxWidget{height: 450px;}
 }
 .WidgetHeader {
   position: relative;
-}
-.WidgetHeader .Avatar {
-  position: relative;
-  margin: .7em 0 0 .7em;
+  padding: .5em .25em;
+  
+  .TopBarItemAppIcon, .WidgetHeaderTitle {
+    position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	top: 0;
+	left: 0;
+  }
 }
 
 .WidgetBody {
@@ -87,9 +90,6 @@
 
 
 .WidgetHeaderTitle {
-  position: absolute;
-  left: 3.7em;
-  top: .7em;
   font-size: 1em;
   font-weight: bold;
   color: #999;

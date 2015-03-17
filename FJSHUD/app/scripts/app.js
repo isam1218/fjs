@@ -58,7 +58,7 @@ hudweb.config(function ($routeProvider) {
 			controller: 'GroupSingleController'
 		})
         .when('/zoom', {
-			templateUrl: 'views/ZoomWidgetController.html',
+			templateUrl: 'views/ZoomWidget.html',
 			controller: 'ZoomWidgetController'
 		})
         .when('/search', {

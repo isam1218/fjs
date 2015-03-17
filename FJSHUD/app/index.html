@@ -37,13 +37,8 @@
 
 
   </head>
-  <body  data-ng-controller="MainController" data-ng-click="onBodyClick()" flow-prevent-drop>
-    <!--[if lt IE 9]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
+  <body data-ng-controller="MainController" data-ng-click="onBodyClick()" flow-prevent-drop>
 	<div id="App">
-
 		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" ng-controller="TopNavigationController"></div>
 
 		<div class="PanelWrapper">
@@ -52,10 +47,8 @@
 
 				<div class="Toolbar">
 					<div class="ContactSearch">
-						<div ng-show="tab != 'favorites'">
-							<input type="search" class="Search" placeholder="Search" ng-model="query" ng-model-options="{debounce: 100}" />
-							<input type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
-						</div>
+						<input ng-show="tab != 'favorites'" type="search" class="Search" placeholder="Search" ng-model="query" ng-model-options="{debounce: 100}" />
+						<input ng-show="tab != 'favorites'" type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 
 						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="Add Someone" contact-search ng-controller="ContactsWidget" />
 					</div>
@@ -109,6 +102,11 @@
 		</div>
 	</div>
 
+    <div id="AppLoading" ng-if="!loaded">
+		<div>Loading...</div>
+        <img src="img/ajax-loader.gif" />
+    </div>
+
 	<div ng-include="currentPopup.url"></div>
 	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
@@ -116,15 +114,6 @@
 		ng-include="'views/ContextMenu.html'"
 		ng-controller="ContextMenuController">
 	</div>
-
-    <div id="fj-loading" class="fj-loading" ng-if="!loaded">
-        <div class="fji-box">
-            <div class="fji-label">Loading...</div>
-            <div class="loading-amination">
-                <img src="img/ajax-loader.gif">
-            </div>
-        </div>
-    </div>
 
     <!--bower components-->
     <script src="../bower_components/angular/angular.js"></script>
