@@ -92,8 +92,8 @@
 							<div class="NotificationMessage">{{ getMessage(message) }} </div>
 							</a>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
-								<span class="XButton XButtonRed"> Reject</span>
-								<a class="XButton XButtonGreen" href="{{message.data.url}}" >Accept</a>
+								<a class="XButton XButtonRed" href="#/RejectZoom"> Reject</span>
+								<a class="XButton XButtonGreen" href="#/AcceptZoom?{{message.data.url}}" >Accept</a>
 							
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">

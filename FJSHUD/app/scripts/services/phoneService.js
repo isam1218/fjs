@@ -91,7 +91,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	displayNotification = function(content, width,height){
 		
-		document.visibilityState;
 		if(alertPlugin && document.visibilityState == "hidden"){
 			
 			alertPlugin.setAlertSize(width,height);
@@ -236,9 +235,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					acceptCall(xpid);
 	    			break;
 	    		case '/AcceptZoom':
+					window.open(xpid,'_blank');
+	    			removeNotification();
+	    			break;
+
+	    		case '/RejectZoom':
+	    			removeNotification();
 	    			break;
 	    		case '/OpenNotifications':
-	    			
 	    			data = {
 	    				event:'openNot'
 	    			}
@@ -250,6 +254,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '/CallBack':
 					makeCall(xpid);
 					break;
+
 				case '/contact':
 					$location.path('/contact/'+xpid);
 					$location.replace();
@@ -288,6 +293,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			$rootScope.$broadcast('phone_event',data);
 					break;
 				case '#/AcceptZoom':
+					window.open(xpid,'_blank');
+	    			removeNotification();
+	    			break;
+				case '#/RejectZoom':
+					removeNotification();
 					break;
 				case '#/PlayVM':
 					$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
