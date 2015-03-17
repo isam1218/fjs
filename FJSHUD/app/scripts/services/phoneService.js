@@ -16,6 +16,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.meModel = {};
 	var isRegistered = false;
 	var isAlertShown = true;
+	var voicemails = {};
 	//fjs.CONFIG.SERVER.serverURL 
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
@@ -64,11 +65,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	}
 
+	makeCall = function(phoneNumber){
+		console.log("making call: " + phoneNumber)
+		if(phone){
+			phone.makeCall(phoneNumber)
+		}
+	}
+
 	acceptCall = function(xpid){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
 		call.accept();	
 	}
+
+	playVm = function(xpid){
+		$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
+	}
+
+
 
 	this.initializePhone = function(){
 		 phonePlugin = document.getElementById('phone');
@@ -76,7 +90,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	displayNotification = function(content, width,height){
-		if(alertPlugin && !tabInFocus){
+		
+		document.visibilityState;
+		if(alertPlugin && document.visibilityState == "hidden"){
 			
 			alertPlugin.setAlertSize(width,height);
 			alertPlugin.addAlertEx(content);
@@ -113,8 +129,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			
 				break;
 			case CALL_STATUS_ERROR:
+				removeNotification();
 				break;
 			case CALL_STATUS_UNKNOWN:
+				removeNotification();
 				break;
 			case CALL_STATUS_CLOSED:
 				removeNotification();
@@ -146,8 +164,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
 				phone = session.phone;
-         	
-         		alertPlugin.initAlert('http://localhost:9900/app/views/nativeAlerts/Alert.html');
+         		var url = $location.absUrl().split("#")[0] + "views/nativeAlerts/Alert.html"
+         		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
 			 }
@@ -217,12 +235,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/AcceptCall':
 					acceptCall(xpid);
 	    			break;
+	    		case '/AcceptZoom':
+	    			break;
 	    		case '/OpenNotifications':
 	    			
 	    			data = {
 	    				event:'openNot'
 	    			}
 	    			$rootScope.$broadcast('phone_event',data);
+					break;
+				case '/PlayVM':
+					$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
+					break;
+				case '/CallBack':
+					makeCall(xpid);
 					break;
 				case '/contact':
 					$location.path('/contact/'+xpid);
@@ -260,6 +286,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    				event:'openNot'
 	    			}
 	    			$rootScope.$broadcast('phone_event',data);
+					break;
+				case '#/AcceptZoom':
+					break;
+				case '#/PlayVM':
+					$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
+					break;
+				case '#/CallBack':
+					makeCall(xpid);
 					break;
 				case '#/contact':
 					$location.path('/contact/'+xpid);
@@ -353,6 +387,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
+	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
 		sip_id = xpid2Sip[xpid];
@@ -367,6 +402,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
 		if(call){
+			session.getDTMFToneGenerator().setToneEnabled(true);
+			session.getDTMFToneGenerator().play(entry);
+
 			call.dtmf(entry);
 		}	
 	}
@@ -378,12 +416,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 
-	this.makeCall = function(phoneNumber){
-		console.log("making call: " + phoneNumber)
-		if(phone){
-			phone.makeCall(phoneNumber)
-		}
-	}
+	this.makeCall = makeCall;
 
 	this.isAlertShown = function(){
 		return isAlertShown;
@@ -417,8 +450,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-
-
+	
+	httpService.getFeed('voicemailbox');
+	
+	$rootScope.$on('voicemailbox_synced', function(event, data) {
+		for(voicemail in data){
+			voicemails[data[voicemail].xpid]  = data[voicemail];
+		}
+		return;
+	});
 
 	$rootScope.$on("parkedcalls_synced",function(event,data){
 		if(data){

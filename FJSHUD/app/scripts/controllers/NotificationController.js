@@ -168,7 +168,26 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 
 
 		$scope.inCall = Object.keys($scope.calls).length > 0;
+		
+		$scope.isRinging = true;
+		element = document.getElementById("CallAlert");
+       	if(element != null){
+       		element.style.display="block";
+		}
+		
+		$scope.$safeApply();
+
+		if(element != null){
+			content = element.innerHTML;
+			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			element.style.display="none";
+		}
+
 	});
+
+	$scope.playVm = function(xpid){
+		phoneService.playVm(xpid);
+	}
 
 	$scope.$on('phone_event',function(event,data){
 		phoneEvent = data.event;
@@ -176,19 +195,19 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		switch (phoneEvent){
 			case "ringing":
 				$scope.isRinging = true;
-				element = document.getElementById("CallAlert");
+				/*element = document.getElementById("CallAlert");
        			element.style.display="block";
 				content = element.innerHTML;
        			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        		element.style.display="none";
+        		element.style.display="none";*/
 				break;
 			case "accepted":
 				$scope.isRinging = false;
-				element = document.getElementById("CallAlert");
+				/*element = document.getElementById("CallAlert");
         		element.style.display="block";
 				content = element.innerHTML;
        			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        		element.style.display="none";
+        		element.style.display="none";*/
 				break;
 			case "onhold":
 				$scope.onHold = true;
@@ -251,7 +270,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		});
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-			return a.time - b.time;
+			return a.time - b.time; 
 		});
 		
 		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
@@ -263,11 +282,16 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 			notifyElement[0].style["max-height"] = "1px";	
 		}
 
+		$scope.$safeApply();
+
+
 		element = document.getElementById("CallAlert");
-        element.style.display="block";
-		content = element.innerHTML;
-       	phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        element.style.display="none";
-		
+        if(element){
+        	element.style.display="block";
+			content = element.innerHTML;
+       		phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+        	element.style.display="none";
+	   }
+        
 	});
 }]);
