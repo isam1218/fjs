@@ -40,43 +40,66 @@
             <div class="WidgetBody"> 
              <div class="call-block">                           
               
-             <!-- <div class="NewCall" >
+              <div class="CurrentCall" ng-if="currentCall != null">
                 <div class="WidgetSectionTitle">Current Call </div>
                 <div class="LeftSide"> 
-                  <div> Icon </div>
-                <div> Number</div>
-                <div> Status</div>
-                
+                  <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
+                      <div class="Avatar AvatarSmall CallAvatar CallAvatar_External" context-menu="contact">
+                        <img class="AvatarImgPH" src="{{path}}/app/img/Generic-Avatar-Small.png" />
+                        <div class="AvatarForeground AvatarInteractable"></div>
+                      </div>
+                      
+                      <div class="ListRowContent">
+                        <div class="ListRowTitle">
+                          <div class="name">
+                            <span><strong>{{ ::meModel.display_name }}</strong></span>
+                          </div>
+                          <div class="ListRowStatus">
+                          <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
+                            <div class="status-icon-inner"></div>
+                          </div>
+                          <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
+                            <div class="status-icon-inner"></div>
+                          </div>
+                          
+                          <br/>
+                          <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+                        </div>
+                        </div>
+                        
+                        
+                      </div>
+                  </div>
                   <div class="Dialog-settings-row">
-                    <div class="lblSelect">Microphone:</div>
+                     <div class="XButton XButtonToggleSmall XIcon24-MuteOff"></div>
+                 
                     <input type="range" min="0" max="1" step=".01" ng-model="micVol" ng-change="update_settings('hudmw_webphone_mic','update',micVol)"
                     ></input>
-          </div>
+                </div>
              <div class="Dialog-settings-row">
-                
-                <div class="lblSelect">Speaker:</div>
+                <div class="XButton XButtonToggleSmall XIcon24-Speaker-On"></div>
                 <input type="range" min="0" max="1" step=".01" ng-model="spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',spkVol)"></input>
                   </div>
                 </div>
                 <div class="RightSide"> 
                   <div class="row_buttons"> 
-                    <div class="XButton"> Transfer</div> 
-                    <div class="XButton"> Conf Room</div> 
-                    <div class="XButton"> Park</div> 
+                    <div class="XButton CurrentCallBtn"> Transfer</div> 
+                    <div class="XButton CurrentCallBtn"> Conf Room</div> 
+                    <div class="XButton CurrentCallBtn"> Park</div> 
                   </div>
                   <div class="row_buttons">
-                    <div class="XButton"> Hold</div> 
-                    <div class="XButton"> Rec </div> 
-                    <div class="XButton"> Move </div> 
+                    <div class="XButton CurrentCallBtn"> Hold</div> 
+                    <div class="XButton CurrentCallBtn"> Rec </div> 
+                    <div class="XButton CurrentCallBtn"> Move </div> 
                   <div>
                   <div class="row_buttons">
-                    <div class="XButton"> # </div> 
-                    <div class="XButton"> End </div> 
+                    <div class="XButton CurrentCallBtn"> # </div> 
+                    <div class="XButton CurrentCallBtnLong"> End </div> 
                   </div>
                 </div>
                 </div>
-              </div> -->           
-              
+              </div>           
+              </div>
 
               <div class="NewCall" >
                 <div class="WidgetSectionTitle">Place a call</div>
