@@ -1,4 +1,4 @@
-<div ng-controller="NotificationController">    
+<div>    
 
 	<link rel="stylesheet" href="{{path}}/app/styles/main.css">
 	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact">			
@@ -69,14 +69,15 @@
 	<div class="NotificationMessages" style="min-height:150px">
 		<!--<react-component name="notification" props='notifications'/>-->
 			
-			<a class="Messages" href="#/contact?{{message.senderId}}"ng-repeat="message in todaysNotifications">
-					
+			<div class="Messages" ng-repeat="message in todaysNotifications">
+					<a href="#/contact?{{message.senderId}}">
 					<div class="NotificationHeader"> 
 							<div class="NotificationHeaderBackground"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
 					</div>
+					</a>
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
@@ -85,28 +86,29 @@
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
-							
+							<a href="#/contact?{{message.senderId}}" > 
 							<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.type }}</div>
 							<div class="NotificationMessage">{{ getMessage(message) }} </div>
+							</a>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
-								<span class="XButton XButtonRed"> Reject</span>
-								<a class="XButton XButtonGreen" href="{{message.data.url}}" target="_blank">Accept</a>
+								<a class="XButton XButtonRed" href="#/RejectZoom"> Reject</span>
+								<a class="XButton XButtonGreen" href="#/AcceptZoom?{{message.data.url}}" >Accept</a>
 							
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
-								<span class="XButton" style="width:70px" > Play</span>
-								<span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" target="_blank">Call Back</span>
+								<a class="XButton" style="width:70px" href="#/PlayVM?{{message.vmId}}" > Play</a>
+								<a class="XButton XButtonGreen" style="width:90px" href="#/CallBack?{{message.phone}}">Call Back</a>
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message.senderId,message.xpid)">Chat</span>
-								<a class="XButton XButtonGreen" style="width:70px" href="{{message.data.url}}" target="_blank">Call</a>
+								<a class="XButton" style="width:70px" href="#contact/{{::contact.xpid}}">Chat</a>
+								<a class="XButton XButtonGreen" style="width:70px" href="#/CallBack?{{message.phone}}">Call</a>
 							</div>
 						</div>
 				</div>
 
-			</a>
+			</div>
 	</div>
 
 
