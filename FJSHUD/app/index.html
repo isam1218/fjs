@@ -45,7 +45,7 @@
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
-				<div class="Toolbar">
+				<div class="LeftBarTop">
 					<div class="ContactSearch">
 						<input ng-show="tab != 'favorites'" type="search" class="Search" placeholder="Search" ng-model="query" ng-model-options="{debounce: 100}" />
 						<input ng-show="tab != 'favorites'" type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
