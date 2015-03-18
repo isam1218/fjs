@@ -68,6 +68,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		$scope.loading = false;
 		$scope.messages = data.items;
 		addDetails();
+		
+		// no more chats
+		if (version == -1)
+			$interval.cancel(chatLoop);
 	});
 
    	// get additional messages from sync
@@ -192,7 +196,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					$interval.cancel(chatLoop);
 			});
 		}
-	}, 500);
+	}, 600);
 
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
