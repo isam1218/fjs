@@ -135,11 +135,10 @@
 						</div>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<div class="name">
-									<strong>{{ ::contact.displayName }}</strong>
-									<div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
-									<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
-								</div>
+								<strong>{{ ::contact.displayName }}</strong>
+								<br/>
+								<div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
+								<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
 							</div>
 						</div>
 					</a>
@@ -159,11 +158,10 @@
 						</div>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<div class="name">
-									<strong>{{ ::transferTo.displayName }}</strong>
-									<div class="ListRowStatusIcon XIcon-QueueStatus-{{transferTo.queue_status}}"></div>
-									<div class="ListRowStatusIcon XIcon-ChatStatus-{{transferTo.hud_status || 'offline' }}"></div>
-								</div>
+								<strong>{{ ::transferTo.displayName }}</strong>
+								<br/>
+								<div class="ListRowStatusIcon XIcon-QueueStatus-{{transferTo.queue_status}}"></div>
+								<div class="ListRowStatusIcon XIcon-ChatStatus-{{transferTo.hud_status || 'offline' }}"></div>
 							</div>
 						</div>
 					</a>
@@ -270,11 +268,11 @@
 								
                                 <div data-ng-if="conference.members.length == 0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-									<div class="ListConferenceStatusText">Free room</div>
+									Free room
                                 </div>                            
                                 <div data-ng-if="conference.members.length > 0">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-									<div class="ListConferenceStatusText">{{conference.members.length}} member(s) on a call</div>
+									{{conference.members.length}} member(s) on a call
 								</div> 
                             </div>
                         </div>
@@ -308,16 +306,19 @@
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name"> Room # {{::selectedConf.roomNumber}} ({{::selectedConf.extensionNumber}})</div>
-									<span class="link" ng-if="selectedConf.location">at {{::selectedConf.location}}</span>
 								
 								<div data-ng-if="selectedConf.members.length == 0">
 									<div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-									<div class="ListConferenceStatusText">Free room</div>
+									Free room
 								</div>                            
 								<div data-ng-if="selectedConf.members.length > 0">
 									<div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-									<div class="ListConferenceStatusText">{{selectedConf.members.length}} member(s) on a call</div>
+									{{selectedConf.members.length}} member(s) on a call
 								</div> 
+							</div>
+							
+							<div class="ListRowStatus" ng-if="selectedConf.location">
+								at {{::selectedConf.location}}
 							</div>
 						</div>
 					</a>
