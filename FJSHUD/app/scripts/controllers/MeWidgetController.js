@@ -1,15 +1,17 @@
-hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService', function($scope, $http, myHttpService,phoneService) {
+hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout', function($scope, $http, myHttpService,phoneService,$routeParam,$contactService,$filter,$timeout) {
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
 
     var settings = {};
     var queues = [];
-
+    var callId = $routeParam.callId;
     $scope.avatar ={};
-
     //$scope.locations = []
-
+    if($scope.currentCall){
+        $scope.currentCall.isHeld = false;
+    }
+    $scope.timeElapsed = "00:00";
     $scope.getCurrentLocationTitle = function() {
         /**
          * @type {{name:string. phone:string}}
@@ -50,7 +52,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
     myHttpService.getFeed('locations');
-    myHttpService.getFeed('calllog');    
+    myHttpService.getFeed('calllog');   
+    myHttpService.getFeed('calls');    
+ 
     this.onAlertClicked = function(urlHash){
         console.log(urlHash);
     }
@@ -484,7 +488,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
         $scope.recentSelectSort = sortType;
   }
-
+    $scope.showCallOvery = function(screen){
+        var data = $contactService.getContact($scope.currentCall.xpid);
+        if(!data){
+            data = {};
+            data.displayName = $scope.currentCall.displayName;
+            data.xpid = "0_" + $scope.currentCall.callId;
+        }
+        data.screen = screen;
+        data.call = $scope.currentCall;
+        $scope.showOverlay(true, 'CallStatusOverlay', data);
+    }
    
     $scope.formatDuration = function(calllog){
         var date = new Date(calllog.duration)
@@ -559,16 +573,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     });
 
+    $scope.holdCall = function(call){
+        phoneService.holdCall(call.xpid,!$scope.currentCall.isHeld);
+        $scope.currentCall.isHeld = !$scope.currentCall.isHeld;
+    }
     $scope.makeCall = function(number){
-        //content = document.body.innerHTML;
-        //var title = document.getElementsByClassName("TitleBar");
-        //content = "<div class='Notifications'> <div class='TitleBar'><div class='Icon'></div><div>Notifications  </div><input type='button' value='Open' class='XButton' ng-click='$parent.overlay ='notifications'' /></div></div>";
-        //content = "<div class='SearchInputBox'><div class='SearchInputBoxInputHolder'> <input class='SearchInputBoxInput' data-ng-model='meetingId' type='text' placeholder='Meeting ID' /></div></div>";
         if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
                 phoneService.makeCall(number);
         }else{
             myHttpService.sendAction('me','callTo',{phoneNumber: number});
         }
+    }
+
+    $scope.endCall = function(call){
+        phoneService.hangUp(call.xpid);
     }
 
      $scope.hangup = function(){
@@ -624,7 +642,61 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
     });
 
-     $scope.$on("queues_synced", function(event,data){
+
+    $scope.$on('current_call_control', function(event,currentCall){
+         $scope.currentCall = currentCall;
+    });
+
+
+
+    $scope.recordCall = function(action) {
+        var action = '';
+        
+        if (!$scope.currentCall.recorded) {
+            $scope.recordingElapsed = '00:00';
+            localStorage.recordedAt = new Date().getTime();
+            action = 'startCallRecording';
+        }
+        else
+            action = 'stopCallRecording';
+            
+        httpService.sendAction('contacts', action, {contactId: $scope.onCall.xpid});
+    };
+
+    var updateTime = function() {
+        if ($scope.currentCall && $scope.currentCall.startedAt) {
+            // format date
+            var date = new Date().getTime();
+            $scope.timeElapsed = $filter('date')(date - $scope.currentCall.startedAt, 'mm:ss');
+            
+            // also get recorded time
+            if ($scope.currentCall.recorded)
+                $scope.recordingElapsed = $filter('date')(date - localStorage.recordedAt, 'mm:ss');
+            // increment
+            $timeout(updateTime, 1000);
+
+        }
+    };
+    $scope.$on('calls_updated',function(event,data){
+        $scope.calls = {};
+        if(data){
+            for (i in data){
+                if(data[i].xpid == $scope.meModel.my_pid){
+                    $scope.calls[data[i].contactId] = data[i];
+                }
+            }
+
+            if($scope.calls[[callId]]){
+                $scope.currentCall = $scope.calls[$scope.callId];
+                 
+            }else{
+                $scope.timeElapsed = "00:00";
+            }
+        }
+        updateTime();
+    });
+
+    $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
         }

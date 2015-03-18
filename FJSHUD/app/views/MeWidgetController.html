@@ -41,7 +41,7 @@
              <div class="call-block">                           
               
               <div class="CurrentCall" ng-if="currentCall != null">
-                <div class="WidgetSectionTitle">Current Call </div>
+                <div class="WidgetSectionTitle">Current Call {{ timeElapsed }}</div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
                       <div class="Avatar AvatarSmall CallAvatar CallAvatar_External" context-menu="contact">
@@ -52,7 +52,7 @@
                       <div class="ListRowContent">
                         <div class="ListRowTitle">
                           <div class="name">
-                            <span><strong>{{ ::meModel.display_name }}</strong></span>
+                            <span><strong>{{ ::currentCall.display_name }}</strong></span>
                           </div>
                           <div class="ListRowStatus">
                           <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
@@ -83,25 +83,31 @@
                 </div>
                 <div class="RightSide"> 
                   <div class="row_buttons"> 
-                    <div class="XButton CurrentCallBtn"> Transfer</div> 
-                    <div class="XButton CurrentCallBtn"> Conf Room</div> 
+                    <div class="XButton CurrentCallBtn" ng-click="showCallOvery('transfer',currentCall)"> Transfer</div> 
+                    <div class="XButton CurrentCallBtn" ng-click="showCallOvery('conference',currentCall)"> Conf Room</div> 
                     <div class="XButton CurrentCallBtn"> Park</div> 
                   </div>
                   <div class="row_buttons">
-                    <div class="XButton CurrentCallBtn"> Hold</div> 
+                    <div class="XButton CurrentCallBtn" ng-if="!currentCall.isHeld"ng-click="holdCall(currentCall)"> Hold</div> 
+                    <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall)"> Talk</div> 
+
                     <div class="XButton CurrentCallBtn"> Rec </div> 
-                    <div class="XButton CurrentCallBtn"> Move </div> 
+                    <div class=" SelectBox XButton CurrentCallBtn" data-ng-click="showLocationsPopup($event, $element)">  
+                      <div class="SelectBoxText">
+                                <span>Move</span>
+                                </div>
+                    </div> 
                   <div>
                   <div class="row_buttons">
                     <div class="XButton CurrentCallBtn"> # </div> 
-                    <div class="XButton CurrentCallBtnLong"> End </div> 
+                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"> End </div> 
                   </div>
                 </div>
                 </div>
               </div>           
               </div>
 
-              <div class="NewCall" >
+              <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">Place a call</div>
                 <input class="NewCall" type="tel" ng-model="phoneNumber" placeholder="Phone number">
                 <div class="XButton XButtonNormal" ><span>#</span></div>

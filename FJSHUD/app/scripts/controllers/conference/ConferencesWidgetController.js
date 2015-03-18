@@ -32,8 +32,16 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.customFilter = function() {
 		return function(conference) {
 			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)) {
-				if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
+				if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1){
 					return true;
+				} else if (conference.members.length){
+					for (j = 0; j < conference.members.length; j++){
+						var individualMember = conference.members[j];
+						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1){
+							return true;
+						}
+					}
+				}
 			}
 		};
 	};

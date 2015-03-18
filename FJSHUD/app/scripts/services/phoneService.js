@@ -134,6 +134,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				removeNotification();
 				break;
 			case CALL_STATUS_CLOSED:
+				showCallControls(null);
 				removeNotification();
 				break;
 		}
@@ -154,7 +155,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
             }
     }
-
+    showCallControls = function(call){
+    	$rootScope.$broadcast("current_call_control", call);
+	}
 
 	sessionStatus = function(session_status){
 		if (session_status.status == 0 && !isRegistered) {
@@ -425,6 +428,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return call;
 	}
 
+	this.showCallControls = showCallControls;
 
 	this.makeCall = makeCall;
 
