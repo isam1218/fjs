@@ -120,9 +120,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		$scope.showOverlay(false);
 	}
 
-	$scope.test_pop = function(){
-		console.log("test");
-	}
 
 	$scope.endCall = function(xpid){
 		phoneService.hangUp(xpid);
@@ -189,25 +186,20 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		phoneService.playVm(xpid);
 	}
 
+	$scope.showCurrentCallControls = function(currentCall){
+		$location.path("settings/callid/"+currentCall.xpid);
+		phoneService.showCallControls(currentCall);
+	}
+
 	$scope.$on('phone_event',function(event,data){
 		phoneEvent = data.event;
 		$scope.inCall = true;
 		switch (phoneEvent){
 			case "ringing":
 				$scope.isRinging = true;
-				/*element = document.getElementById("CallAlert");
-       			element.style.display="block";
-				content = element.innerHTML;
-       			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        		element.style.display="none";*/
 				break;
 			case "accepted":
 				$scope.isRinging = false;
-				/*element = document.getElementById("CallAlert");
-        		element.style.display="block";
-				content = element.innerHTML;
-       			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        		element.style.display="none";*/
 				break;
 			case "onhold":
 				$scope.onHold = true;
