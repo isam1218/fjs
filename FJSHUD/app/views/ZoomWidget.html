@@ -1,8 +1,6 @@
 <div class="Widget WidgetZoom" id="widget-zoom">
     <div class="WidgetHeader">
-        <div class="Avatar AvatarApp">
-            <div class="TopBarItemAppIcon Zoom"></div>
-        </div>
+        <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
             Video Collaboration
         </div>
@@ -58,8 +56,8 @@
             </div>
 
             <div class="JoinMeetingSection"> 
-                <button data-ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">Start with Screen Share Only</button>
-                <button data-ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">Start with Video</button>
+                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">Start with Screen Share Only</button>
+                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">Start with Video</button>
                 <div class="Add SearchInputBox">
                         <div class="SearchInputBoxInputHolder">
                             <input class="SearchInputBoxInput" type="text"  contact-search placeholder="Add someone"></div>

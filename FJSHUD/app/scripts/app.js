@@ -17,6 +17,10 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/MeWidgetController.html',
 			controller: 'MeWidgetController'
 		})
+		.when('/settings/callid/:callId',{
+			templateUrl:'views/MeWidgetController.html',
+			controller: 'MeWidgetController'	
+		})
         .when('/settings/weblauncer', {
 			templateUrl: 'views/SettingsWebLauncer.html',
 			controller: 'MeWidgetController'
@@ -58,7 +62,7 @@ hudweb.config(function ($routeProvider) {
 			controller: 'GroupSingleController'
 		})
         .when('/zoom', {
-			templateUrl: 'views/ZoomWidgetController.html',
+			templateUrl: 'views/ZoomWidget.html',
 			controller: 'ZoomWidgetController'
 		})
         .when('/search', {

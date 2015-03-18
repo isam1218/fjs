@@ -1,8 +1,37 @@
 hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', function($scope, $filter, $timeout, $location, conferenceService, contactService, httpService) {
 	$scope.onCall = $scope.$parent.overlay.data;
+	
+	if($scope.$parent.overlay.data.screen){
+		
+		switch($scope.$parent.overlay.data.screen){
+			case 'transfer':
+				$scope.screen = 'transfer';
+				$scope.transferFrom = $scope.$parent.overlay.data;
+				$scope.transferTo = null;
+				contactService.getContacts().then(function(data) { 
+					$scope.contacts = data;
+				});
+				break;
+			case 'conference':
+				$scope.screen = 'conference';
+				$scope.conferences = conferenceService.getConferences();
+				$scope.selectedConf = null;
+				$scope.meToo = 0;
+				break;
+			default:
+				$scope.screen = 'call';
+				break;
+		}
+
+	}else{
+		$scope.screen = 'call';
+	}
+
+
+
+
 	$scope.timeElapsed = 0;
 	$scope.recordingElapsed = 0;
-	$scope.screen = 'call';
 	
 	$scope.confQuery = '';
 	$scope.tranQuery = '';

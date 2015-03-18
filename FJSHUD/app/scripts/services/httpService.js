@@ -106,7 +106,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 							$rootScope.$evalAsync(function() {
 								for (feed in synced_data) {
 									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+										$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 								}
 							});
 		                }
@@ -145,7 +145,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 							synced_data = JSON.parse(localStorage.data_obj);
 							for(feed in synced_data){
 								if (synced_data[feed].length > 0)
-		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 							}
 							
 							worker.postMessage({
@@ -180,12 +180,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                        }
 
 		                        if (synced_data[feed].length > 0)
-		                            $rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 		                    }
 		                }
 		                break;
 		            case "feed_request":
-		                $rootScope.$broadcast(event.data.feed + '_synced', event.data.data);
+		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
 						delete localStorage.nodeID;
@@ -210,7 +210,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 								synced_data = JSON.parse(localStorage.data_obj);
 								for(feed in synced_data){
 									if (synced_data[feed].length > 0)
-		                            	$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+		
+		                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 								}
 
 								tabMap[tabId].isSynced = true;	
@@ -343,7 +344,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     		var data = {};
 			if(localStorage.data_obj){
 				data = JSON.parse(localStorage.data_obj);
-				$rootScope.$broadcast(feed + '_synced', data[feed]);
+				$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', data[feed]));
 			}
 		}
     };
