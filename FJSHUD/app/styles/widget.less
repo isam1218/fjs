@@ -10,13 +10,12 @@
      width: 90px;
      float: right;
      margin:5px;
-     &.XSortButton{
+	 
+     &.XSortButton {
         margin-top: 2px;
         width : 150px;
      }
   }
-  
-  &.chatTop{margin-top: 10px;}
 }
 
 .WidgetPanel {
@@ -57,10 +56,6 @@
     right: 0px;
   }
   
-  .ListRow{
-    -webkit-border-radius : 3px;
-  }
-  
   .ListView {
       position: relative;
       left:0;
@@ -79,7 +74,7 @@
   position: relative;
   padding: .5em .25em;
   
-  .TopBarItemAppIcon, .WidgetHeaderTitle {
+  .TopBarItemAppIcon, .WidgetHeaderTitle, .Avatar {
     position: relative;
 	display: inline-block;
 	vertical-align: middle;
@@ -95,18 +90,6 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-
-  .ListLineContent.Header {
-    .ListLineContentCell {
-      display:inline-block;
-      width:auto !important;
-    }
-    
-    .WidgetBody{
-        position: relative;
-        clear: both;
-    }
-  }
 }
 
 
@@ -128,55 +111,6 @@
     width: auto !important;
   }
 }
-.WidgetHeaderStatus
-{
-  position : absolute;
-  left : 4.7em;
-  top : 2.5em;
-  text-align : left;
-  font-size : .75em;
-  color : #555;
-  user-select : none;
-  -webkit-user-select : none;
-}
-.WidgetHeaderCallStatus
-{
-  position : relative;
-  width : 200px;
-  border-radius : 4px;
-  -webkit-border-radius : 4px;
-  background-color : #fff;
-  border : solid 1px #ccc;
-  box-shadow : 1px 1px 0px rgba(0,0,0,0.05);
-  -webkit-box-shadow : 1px 1px 0px rgba(0,0,0,0.05);
-}
-.WidgetHeaderCallStatus .CallAvatar
-{
-  top : 5px;
-  left : 5px;
-}
-.WidgetHeaderCallStatus .CallLineTop
-{
-  position : absolute;
-  top : 0px;
-  left : 55px;
-  right : 10px;
-}
-.WidgetHeaderCallStatus .CallDuration
-{
-  top : 11px;
-  font-weight : bold;
-}
-.WidgetHeaderCallStatus .CallerName
-{
-  top : 10px;
-}
-.WidgetHeaderCallStatus .CallerPhone
-{
-  top : 30px;
-  left : 55px;
-  right : 35px;
-}
 .WidgetHeaderCallStatus .NoCallText
 {
   text-align : center;
@@ -189,26 +123,6 @@
   background : url("../img/XIconSet-24x24.png?v=1383213555647") no-repeat -24px -72px;
 }
 
-.WidgetHeaderStatusItem
-{
-  position : relative;
-  float : left;
-  min-width : 24px;
-  height : 24px;
-  line-height : 24px;
-  overflow : hidden;
-  text-overflow : ellipsis;
-  white-space : nowrap;
-  display: inline-block;
-}
-.WidgetHeaderStatusItem.ChatStatus
-{
-  max-width : 165px;
-}
-.WidgetHeaderStatusItem.CallStatus
-{
-  max-width : 100px;
-}
 .WidgetSectionTitle {
   height: 32px;
   text-align: center;
@@ -225,11 +139,11 @@
   clear: both;
 }
 
-.WidgetStat {
+.WidgetStat, .WidgetHeaderCallStatus {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 200px;
+  top: .25em;
+  right: .25em;
+  width: 30%;
   border-radius: 4px;
   background-color: #fff;
   border: solid 1px #ccc;
@@ -312,106 +226,4 @@
 
 .WidgetTabBarButton.fj-selected-item .arrow {
   display: block;
-}
-
-.recent-selected-column{
-  color:#729C00;
-
-  .desc_arrow{
-    position:relative;
-    border: solid 6px;
-    width:0;
-    height:0;
-    display:inline-block;
-    border-color:transparent transparent #729c00 transparent;
-    bottom:3px;
-    
-  }
-
-  .asc_arrow{
-    position:relative;
-    border: solid 6px;
-    border-color: #729c00 transparent transparent transparent;
-    top:6px;
-    
-    width:0;
-    height:0;
-    display:inline-block;
-  }
-}
-
-.WidgetTextHeader{
-  height:200px;
-}
-.ZoomWidgetSection{
-  width:40%;
-  position:absolute;
-}
-
-.WidgetZoomBody{
-  top:35px;
-  background-image: url(../img/XTile-Widget.png);
-}
-
-.left{
-  left:5%;
-}
-.right{
-  left:55%;
-}
-
-.AutoDelete{
-  background-color:#ccc;
-  width:76px;
-  margin-right:1px;
-  height:30px;
-  line-height:30px;
-  display:inline-block;
-  font-size:12px;
-}
-
-.AttachmentContainer{
-  width:90px;
-  height:100px;
-  text-align:center;border:1px solid #ccc;
-  display:inline-block;
-  overflow:hidden;
-  margin-right: 5px;
-  margin-left: 5px;
-}
-
-.AttachmentImg{
-  max-width:70px;
-  max-height:70px;
-}
-
-div.NewCall{ 
-      width: 100%;
-      background-color: #fff;
-           
-      input.NewCall{
-        position: relative;
-        top: 7px;
-        margin-bottom: 4px;
-        left: 10px;        
-        width: 60%;
-        height: 26px;
-        border: 1px solid #c2c2c2;
-        border-radius: 2px;
-        -webkit-border-radius: 2px;
-        padding: 2px 5px;
-      }  
-
-      .XButton{
-        float: right;
-        height: 26px;        
-        width: 15%;
-        position: relative;
-        margin-left: 10px;
-        top: 7px;
-        
-        &.XButtonNormal{
-            margin-right: 10px;
-        }
-      }
- }     
+} 

@@ -2,7 +2,6 @@
   position: relative;
   flex: 1;
   margin-left: 10px;
-  font-size: .8em;
   overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
@@ -62,6 +61,7 @@
 	  cursor: pointer;
 	  text-decoration: none;
 	  white-space: nowrap;
+	  font-size: .8em;
 	  
 	  &.Single {
 		background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
@@ -88,18 +88,14 @@
 	
 	.Content {
 	  flex: 1;
-	  overflow-y: hidden;
-	  
-	  &:hover {
-	    overflow-y: auto;
-	  }
+	  overflow-y: auto;
 	  
 	  .SubHeader {
 	    background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
 		border-top: 1px solid #aaa;
 		border-bottom: 1px solid white;
 		text-align: center;
-		font-size: .95em;
+		font-size: .75em;
 		padding: .25em;
 		font-weight: bold;
 		color: #888;
@@ -109,13 +105,16 @@
 	  .List {
 	    background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
 		
-		& > a {
-		  display: block;
-		  position: relative;
+		.ListRow {
+		  background-color: #eee;
+		  
+		  .ListRowTitle {
+		    padding: 0;
+		  }
 		}
 		
 		&.Stats {
-		  font-size: .8em;
+		  font-size: .7em;
 		  text-align: center;
 		  color: #9B9B9B;
 		  padding: 1em 0;
