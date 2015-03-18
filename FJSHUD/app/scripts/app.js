@@ -17,6 +17,10 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/MeWidgetController.html',
 			controller: 'MeWidgetController'
 		})
+		.when('/settings/callid/:callId',{
+			templateUrl:'views/MeWidgetController.html',
+			controller: 'MeWidgetController'	
+		})
         .when('/settings/weblauncer', {
 			templateUrl: 'views/SettingsWebLauncer.html',
 			controller: 'MeWidgetController'
