@@ -1,5 +1,5 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval',
-	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval', '$timeout',
+	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval, $timeout) {
 
 	var version = 0;
 	
@@ -76,6 +76,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
+		var found = false;
+		
 		for (key in data) {
 			// prevent duplicates
 			var dupe = false;
@@ -86,7 +88,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					break;
 				}
 			}
-		
 
 			if (dupe) continue;
 			
@@ -96,11 +97,19 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			// only attach messages related to this user
 			if (from == $scope.contactID || to == $scope.contactID){
 				$scope.messages.push(data[key]);
+				found = true;
 			}
-
 		}
 		
-		addDetails();
+		if (found) {
+			addDetails();
+			
+			// jump to bottom if new messages were found
+			$timeout(function() {
+				var scrollbox = document.getElementById('ListViewContent');
+				scrollbox.scrollTop = scrollbox.scrollHeight;
+			}, 100);
+		}
 	});
 	
 	$scope.sendMessage = function() {
