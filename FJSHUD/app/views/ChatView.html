@@ -11,22 +11,22 @@
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
-<div class="ListViewContent" id="ListViewContent" scroll-glue="glued">
-    <div class="ListRowFirst  AvatarHoverArea ChatItemTypeRoot-true" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created'">
+<div class="ListViewContent" id="ListViewContent">
+    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created'">
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
                 <div class="AvatarInteractable AvatarForeground"></div>
             </div>
+            <div class="time">{{::message.created | date: 'h:mm a'}}</div>
         </div>
-        <div class="ListMessageContent AttachmentsHolder chatCont" >
-            <div class="ListMessageHeader ChatOutbound">
-                <div class="ListMessageHeaderPrefix">...from</div>
-                <div class="ListMessageHeaderName">{{message.displayName}}</div>
+        <div class="ListMessageContent AttachmentsHolder" >
+            <div class="ListMessageHeader">
+                <em>...from</em>
+                <span class="ListMessageHeaderName">{{message.displayName}}</span>
                 <div class="time">{{::message.created | date: 'MMMM d'}}</div>
             </div>
             <div class="ChatMessageItem AttachmentsHolder">
-                <div class="time">{{::message.created | date: 'h:mm a'}}</div>
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)">
                     <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url)}}"></img>                 

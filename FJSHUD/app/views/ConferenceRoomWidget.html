@@ -81,18 +81,19 @@
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
                                 <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
-                                <span class="link" ng-if="conference.location">at {{::conference.location}}</span>
 								
                                 <div data-ng-if="conference.members.length == 0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-									<div class="ListConferenceStatusText">Free room</div>
+									Free room
                                 </div>                            
                                 <div data-ng-if="conference.members.length > 0">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-									<div class="ListConferenceStatusText">{{conference.members.length}} member(s) on a call</div>
+									{{conference.members.length}} member(s) on a call
 								</div> 
                             </div>
-                        </div>
+							<div class="ListRowStatus" ng-if="conference.location">
+								at {{::conference.location}}
+							</div>
 						
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
@@ -102,6 +103,7 @@
                                 </div>
                                 <div class="first-name">{{member.displayName}}</div>
                             </div>
+                        </div>
                         </div>
                     </a>
                 </div>

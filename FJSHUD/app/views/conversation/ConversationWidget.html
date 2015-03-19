@@ -5,27 +5,14 @@
                  data-ng-src="{{contact.getAvatar(32)}}">
             <div class="AvatarForeground AvatarInteractable"></div>
         </div>
-        <div class="WidgetHeaderTitle" data-ng-if="!contact.isExternal()">{{contact.displayName}} ({{contact.primaryExtension}})</div>
-        <div class="WidgetHeaderTitle" data-ng-if="contact.isExternal()">{{contact.displayName}}</div>
-        <div class="WidgetHeaderStatus WithIcons">
-            <div title="contact.queueStatusTitle" class="WidgetHeaderStatusItem Icon XIcon-QueueStatus" data-ng-class="contact.getQueueStatus()"></div>
-            <div class="WidgetHeaderStatusItem Icon XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
-            <div class="WidgetHeaderStatusItem ChatStatus">{{ contact.hud_status ? (contact.hud_status == 'dnd' ? 'busy' : contact.hud_status) : 'offline' }}</div>
-        </div>
-        <div class="WidgetHeaderInfo">
-            <div class="WidgetHeaderInfoRow">
-                <label>Email:</label><a ng-href="{{'mailto://'+contact.email}}">{{contact.email}}</a>
-            </div>
-            <div class="WidgetHeaderInfoRow">
-                <label>Ext:</label><a href="javascript:" ng-click="callPhone(contact.primaryExtension)">{{contact.primaryExtension}}</a>
-            </div>
-            <div class="WidgetHeaderInfoRow">
-                <label>Phone:</label><a href="javascript:" ng-click="callPhone(contact.phoneBusiness)">{{contact.phoneBusiness}}</a>
-            </div>
-            <div class="WidgetHeaderInfoRow">
-                <label>Mobile:</label><a href="javascript:" ng-click="callPhone(contact.phoneMobile)">{{contact.phoneMobile}}</a>
-            </div>
-        </div>
+        <div class="WidgetHeaderTitle">
+			{{contact.displayName}} 
+			<span ng-if="contact.primaryExtension">({{contact.primaryExtension}})</span>
+			<br/>
+            <div class="XIcon-QueueStatus" data-ng-class="contact.getQueueStatus()"></div>
+            <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
+            <span class="ChatStatus">{{ contact.hud_status ? (contact.hud_status == 'dnd' ? 'busy' : contact.hud_status) : 'offline' }}</span>
+		</div>
         <div class="WidgetHeaderCallStatus">
             <div ng-if="contact.hasCall()">
                 <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">

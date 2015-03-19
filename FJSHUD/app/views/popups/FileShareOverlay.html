@@ -82,7 +82,7 @@
                         <div style="display:inline-block;width:40px" class="Center"> 
                             <img class="AvatarSmall Center" ng-src="{{getAttachment(download.url)}}"></img> 
                         </div>
-                        <div ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' "style="display:inline-block">
+                        <div class="FileInfo" ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' ">
                             <div style="margin-top:0px;margin-left:5px">
                                 <p style="margin-top:0px">{{download.fileName}}</p>
                                 <p> {{ download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>

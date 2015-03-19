@@ -16,26 +16,24 @@
 
  <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
-            <a  href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" ng-repeat= "member in members | filter: {displayName:query}"> 
+            <a  href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" ng-repeat= "member in members | filter: {displayName:query}"> 
             
-                <div class="vmavatarsection Avatar AvatarNormal" > 
+                <div class="Avatar AvatarNormal" > 
                     <img class="AvatarNoBorder" ng-src="{{getAvatar(member.xpid)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
                 </div>
 
-                <div class="vminfo"> 
-                    <div class="displayName">
-                        <p class="ListDisplayName">
-                            <span> {{ member.displayName }} </span>
-                        </p>
-                        <div class="vmalternate">
-                            <div class="vmtime">#{{ member.primaryExtension }}</div>
-                            <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(member.primaryExtension)"></input>
-
-                        </div>
-                    </div> 
-                    <div class="footnote">
+                <div class="ListRowContent"> 
+                    <div class="ListRowTitle">
+                        <span> {{ member.displayName }} </span>
+						<br/>
                         <div class="QueueStatus IconDisplay " ng-class="member.queue_status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-'"></div>
                         <div class="QueueStatus IconDisplay" ng-class="member.hud_status == 'available' ? 'XIcon-ChatStatus-Available' : 'XIcon-ChatStatus-offline' " ></div>
+                    </div>
+					
+                    <div class="vmalternate">
+                        <div class="vmtime">#{{ member.primaryExtension }}</div>
+                        <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(member.primaryExtension)"></input>
+
                     </div>
                     
                 </div>

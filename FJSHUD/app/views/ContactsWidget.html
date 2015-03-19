@@ -36,13 +36,6 @@
 					</div>
 				</div>
 				
-				<div class="CallStatus">
-					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
-						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarInteractable AvatarForeground"></div>
-					</div>
-				</div>
-				
 				<div class="ListRowStatus">
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
 						<div class="status-icon-inner"></div>
@@ -52,6 +45,13 @@
 					</div>
 					<br/>
 					<div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+				</div>
+				
+				<div class="CallStatus">
+					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
+						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarInteractable AvatarForeground"></div>
+					</div>
 				</div>
 			</div>
 		</a>

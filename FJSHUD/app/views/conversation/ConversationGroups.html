@@ -13,7 +13,7 @@
     <div class="ContactList">
     <div class="HeaderTitle" ng-show="contactGroups.length > 0 ">Department</div>
     <div class="footnote"  ng-show="contactGroups.length > 0 "> Contact is a member of this department </div>
-    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRowFirst ListRow-Contact">
+    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRow ListRow-Contact">
         <div class="Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
                 <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
@@ -36,8 +36,9 @@
                     <span class="details">{{ ::group.members.length }}</span>
                 </div>
             </div>
-            <div class="GroupRowStatus">#{{ ::group.extension }}</div>
         </div>
+		
+        <div class="ListRowStatus">#{{ ::group.extension }}</div>
     </a>
     
     <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">Our Teams</div>
