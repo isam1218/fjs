@@ -11,6 +11,7 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
     $scope.meModel = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
+        $scope.onBodyClick();
     };
     
     $scope.getCurrentLocationTitle = function() {

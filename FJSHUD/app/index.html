@@ -37,11 +37,11 @@
 
 
   </head>
-  <body data-ng-controller="MainController" data-ng-click="onBodyClick()" flow-prevent-drop>
+  <body data-ng-controller="MainController"  flow-prevent-drop>
 	<div id="App">
-		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" ng-controller="TopNavigationController"></div>
+		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
 
-		<div class="PanelWrapper">
+		<div class="PanelWrapper" data-ng-click="onBodyClick()">
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 

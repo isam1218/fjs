@@ -85,7 +85,7 @@
                   <div class="row_buttons"> 
                     <div class="XButton CurrentCallBtn" ng-click="showCallOvery('transfer',currentCall)"> Transfer</div> 
                     <div class="XButton CurrentCallBtn" ng-click="showCallOvery('conference',currentCall)"> Conf Room</div> 
-                    <div class="XButton CurrentCallBtn"> Park</div> 
+                    <div class="XButton CurrentCallBtn" ng-click="parkCall(currentCall)"> Park</div> 
                   </div>
                   <div class="row_buttons">
                     <div class="XButton CurrentCallBtn" ng-if="!currentCall.isHeld"ng-click="holdCall(currentCall)"> Hold</div> 
@@ -110,7 +110,7 @@
               <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">Place a call</div>
                 <input class="NewCall" type="tel" ng-model="phoneNumber" placeholder="Phone number">
-                <div class="XButton XButtonNormal" ><span>#</span></div>
+                <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
                 <div class="XButton XButtonGreen" ng-click="makeCall(phoneNumber)"><span>Call</span></div>
               </div>              
                             

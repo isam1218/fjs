@@ -119,6 +119,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         return false;
     };
 
+    $scope.showDialPad = function(e) {
+        e.stopPropagation();
+        var eventTarget = context.getEventHandlerElement(e.target, e);
+        var offset = context.getElementOffset(eventTarget);
+        $scope.showPopup({key:"DialPadPopup", x:offset.x-60, y:offset.y + 25});
+        return true;
+    };
+
     $scope.getMeAvatarUrl = function(width,height){
         var pid;  
         if($scope.meModel["my_pid"]){
@@ -663,6 +671,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         httpService.sendAction('contacts', action, {contactId: $scope.onCall.xpid});
     };
 
+    $scope.parkCall = function(currentCall){
+       call =  phoneService.getCall(currentCall.contactId);
+        phoneService.parkCall(call.call_id);
+    }
+
     var updateTime = function() {
         if ($scope.currentCall && $scope.currentCall.startedAt) {
             // format date
@@ -694,6 +707,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             }
         }
         updateTime();
+    });
+
+    $scope.$on("key_press", function(event,data){
+        if(data){
+            $scope.phoneNumber = $scope.phoneNumber + data;
+        }
     });
 
     $scope.$on("queues_synced", function(event,data){
