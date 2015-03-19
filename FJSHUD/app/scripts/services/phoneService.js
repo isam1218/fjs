@@ -75,7 +75,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	acceptCall = function(xpid){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
-		call.accept();	
+		if(call){
+			call.accept();	
+		}
 	}
 
 	playVm = function(xpid){
@@ -111,10 +113,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				data = {
 					event: 'ringing',
 				}
-				
-				
-
-
 				break;
 			case CALL_STATUS_ACCEPTED:
 				data = {
@@ -165,6 +163,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
+            	soundManager = session.getDTMFToneGenerator();
 				phone = session.phone;
          		var url = $location.absUrl().split("#")[0] + "views/nativeAlerts/Alert.html"
          		alertPlugin.initAlert(url);
@@ -411,12 +410,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 
+	this.getDtmfToneGenerator = function(){
+		return session.getDTMFToneGenerator();
+	}
+	/*this.playDtmfSound=function(entry){
+			//session.getDTMFToneGenerator().setToneEnabled(true);
+			session.getDTMFToneGenerator().play(entry);
+	}*/
+
 	this.sendDtmf = function(xpid,entry){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
 		if(call){
-			session.getDTMFToneGenerator().setToneEnabled(true);
-			session.getDTMFToneGenerator().play(entry);
 
 			call.dtmf(entry);
 		}	
@@ -434,6 +439,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	this.isAlertShown = function(){
 		return isAlertShown;
+	}
+
+	this.parkCall = function(call_id){
+		httpService.sendAction('mycalls', 'transferToPark', {mycallId: "0_" + call_id});
 	}
 
 	$rootScope.$on("calls_synced",function(event,data){

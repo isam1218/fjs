@@ -717,17 +717,22 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var dtmf_input = "";
 
     $scope.$on("key_press", function(event,data){
-        if(data){
             dtmf_input = dtmf_input + data;
             $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
             if($scope.currentCall){
+                
+                phoneService.getDtmfToneGenerator().play(data);
+                setTimeout(function(){
+                    phoneService.getDtmfToneGenerator().stop();
+                },200)
+
                 var call = phoneService.getCall($scope.currentCall.xpid);
                 setTimeout(function(){
                     call.dtmf(dtmf_input);
                     dtmf_input = "";
                 },2000);
             }
-        }
+        
     });
 
     $scope.$on("queues_synced", function(event,data){
