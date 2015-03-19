@@ -24,7 +24,7 @@
             <div class="ListMessageHeader">
                 <em>...from</em>
                 <span class="ListMessageHeaderName">{{message.displayName}}</span>
-                <div class="time">{{::message.created | date: 'MMMM d'}}</div>
+                <div class="time">{{formatDate(message)}}</div>
             </div>
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
