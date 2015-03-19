@@ -37,27 +37,6 @@
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus.HasCall {
   border-radius: 18px 4px 4px 18px;
 }
-.Widget.Conversation .WidgetHeader .WidgetHeaderInfo {
-  float: right;
-  background-color: #fff;
-  border-left: 1px solid #bbb;
-  border-bottom: 1px solid #bbb;
-  width: 45%;
-  max-width: 200px;
-  border-radius: 4px;
-  font-size: .8em;
-}
-.Widget.Conversation .WidgetHeader .WidgetHeaderInfo .WidgetHeaderInfoRow {
-  padding: .1em 5px;
-}
-.Widget.Conversation .WidgetHeader .WidgetHeaderInfo .WidgetHeaderInfoRow label {
-  display: inline-block;
-  width: 40px;
-  text-align: right;
-  margin-right: 3px;
-  font-size: .8em;
-  color: #555;
-}
 .Widget.Conversation .WidgetBody {
   position: relative;
 }
@@ -292,4 +271,18 @@ input.text.ChatInputBoxInput,
   min-height: 0px !important;
   max-height: 0px !important;
   overflow: hidden !important;
+}
+.AttachmentContainer {
+  width: 90px;
+  height: 100px;
+  text-align: center;
+  border: 1px solid #ccc;
+  display: inline-block;
+  overflow: hidden;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+.AttachmentImg {
+  max-width: 70px;
+  max-height: 70px;
 }

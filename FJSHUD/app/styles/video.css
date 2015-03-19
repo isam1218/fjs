@@ -1,6 +1,3 @@
-.WidgetZoom {
-  height: 450px;
-}
 .WidgetZoom .WidgetBody {
   top: 75px;
   left: 10px;
@@ -76,4 +73,21 @@
   padding: 5px 5px 5px 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.WidgetTextHeader {
+  height: 200px;
+}
+.ZoomWidgetSection {
+  width: 40%;
+  position: absolute;
+}
+.ZoomWidgetSection.left {
+  left: 5%;
+}
+.ZoomWidgetSection.right {
+  left: 55%;
+}
+.WidgetZoomBody {
+  top: 35px;
+  background-image: url(../img/XTile-Widget.png);
 }

@@ -67,8 +67,8 @@
   -webkit-transition: all 0.1s linear;
 }
 .Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Queues .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -525,6 +525,9 @@
   background-color: #f9f9f9;
   cursor: default;
 }
+.Queues .ListLineContentCell {
+  float: none;
+}
 .Queues .ListLineContentCell.Status {
   width: 24px;
   text-align: center;
@@ -733,4 +736,25 @@
   height: 28px;
   top: 3px;
   font-size: 12px;
+}
+.recent-selected-column {
+  color: #729C00;
+}
+.recent-selected-column .desc_arrow {
+  position: relative;
+  border: solid 6px;
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border-color: transparent transparent #729c00 transparent;
+  bottom: 3px;
+}
+.recent-selected-column .asc_arrow {
+  position: relative;
+  border: solid 6px;
+  border-color: #729c00 transparent transparent transparent;
+  top: 6px;
+  width: 0;
+  height: 0;
+  display: inline-block;
 }

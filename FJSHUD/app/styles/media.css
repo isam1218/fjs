@@ -1,59 +1,10 @@
-@media screen and (max-width: 700px) {
-  #App {
-    font-size: .95em;
+@media screen and (max-width: 1200px) {
+  body {
+    font-size: .9em;
   }
-  .TopBar {
-    height: 75px;
-  }
-  .TopBarLogo {
-    display: none;
-  }
-  .TopBarIcons {
-    left: 12px;
-    top: 25px;
-  }
-  .TopBarIcons .TopBarItemApp {
-    width: 40px;
-  }
-  .TopBarIcons .TopBarItemAppIcon {
-    background-size: 640px 64px;
-    width: 32px;
-    height: 32px;
-  }
-  .TopBarItemAppName {
-    display: none;
-  }
-  .TopBarMeStatus {
-    top: 0px;
-    width: 100%;
-  }
-  .TopBarMeStatus-row .AvatarNormal,
-  .TopBarMeStatus-row .AvatarNormal img {
-    width: 29px;
-    height: 29px;
-  }
-  .TopBarMeStatus-row .XButtonToggle {
-    display: inline-block;
-    padding: 0;
-  }
-  .TopBarMeStatus-row .SelectBox {
-    display: inline-block;
-    width: 60px;
-  }
-  .TopBarMeStatus-row .PopupMenu {
-    top: 30px !important;
-  }
-  .PanelWrapper {
-    flex-direction: column;
-  }
-  .PanelWrapper .WidgetPanel {
-    margin: 0px;
-  }
-  .DockPanel {
-    display: none;
-  }
-  .AttachmentImg {
-    max-width: 90px;
-    max-height: 90px;
+}
+@media screen and (max-width: 900px) {
+  body {
+    font-size: .8em;
   }
 }

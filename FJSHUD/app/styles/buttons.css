@@ -139,6 +139,10 @@ input[type="tel"] {
 .XButtonNormal.XButton.XButtonToggle {
   width: 40px;
 }
+.XButton.XButtonToggleSmall,
+.XButtonNormal.XButton.XButtonToggleSmall {
+  width: 24px;
+}
 .XButtonToggle.XButtonNormal {
   width: 80px;
 }
@@ -170,6 +174,15 @@ input[type="tel"] {
   width: 24px;
   height: 24px;
   cursor: pointer;
+}
+.CurrentCallBtn {
+  margin: 10px 10px 0px 0px;
+  width: 78px;
+  padding: 0px;
+}
+.CurrentCallBtnLong {
+  margin: 10px 10px 0px 0px;
+  width: 170px;
 }
 .XButtonToggle:hover span {
   border: 1px solid rgba(0, 0, 0, 0.3);
