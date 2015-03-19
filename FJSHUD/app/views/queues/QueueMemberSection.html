@@ -1,24 +1,23 @@
-<a href="#contact/{{member.contactId}}">
+<a href="#contact/{{member.contactId}}" class="ListRow">
   <div class="Avatar AvatarNormal" context-menu="contact">
     <img class="AvatarImgPH" data-ng-src="{{::member.getAvatarUrl(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
     <div class="AvatarForeground AvatarInteractable"></div>
   </div>
   <div class="ListRowContent">
 
-    <div class="ListRowLeftAreaWide">
-      <div class="ListRowTitle"> {{ member.displayName}}</div>
-        <div
-          class="ListRowStatusIcon XIcon-QueueStatus"
-          ng-class="member.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' ">
-         </div>
+    <div class="ListRowTitle">
+      <strong> {{ member.displayName}}</strong>
+	  <br/>
+      <div
+        class="ListRowStatusIcon XIcon-QueueStatus"
+        ng-class="member.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' ">
+       </div>
 
-        <div class="ListRowStatusIcon"
-          ng-class="member.status.status == 'login' ? 'XIcon-ChatStatus-available' : 'XIcon-ChatStatus-unavailable' ">
-        </div>
+      <div class="ListRowStatusIcon"
+        ng-class="member.status.status == 'login' ? 'XIcon-ChatStatus-available' : 'XIcon-ChatStatus-unavailable' ">
+      </div>
 
-        <div class="fj-hbox-space ListRowStatusText">
-          {{member.status.status == 'login' ? 'Logged In' : 'Logged Out'}}
-        </div>
+      {{member.status.status == 'login' ? 'Logged In' : 'Logged Out'}}
     </div>
     <div class="ListRowStatus">
       <div class="Link ListRowDesc">#{{ member.extension }}</div>
