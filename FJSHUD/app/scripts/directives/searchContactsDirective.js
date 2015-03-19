@@ -42,7 +42,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 					
 					// look for match
 					for (c in contacts) {
-						if (contacts[c].primaryExtension && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1) {
+						if (contacts[c].primaryExtension && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1) {
 							// add to div
 							var line = makeLine(contacts[c]);
 							inset.append(line);
