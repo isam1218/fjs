@@ -655,6 +655,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.$on('current_call_control', function(event,currentCall){
          $scope.currentCall = currentCall;
+        if(currentCall  == null){
+            $scope.call_obj.phoneNumber = "";
+        }
     });
 
 
@@ -710,13 +713,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
         updateTime();
     });
+    
+    var dtmf_input = "";
 
     $scope.$on("key_press", function(event,data){
         if(data){
+            dtmf_input = dtmf_input + data;
             $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-
             if($scope.currentCall){
-                $scope.currentCall.dtmf(data);
+                var call = phoneService.getCall($scope.currentCall.xpid);
+                setTimeout(function(){
+                    call.dtmf(dtmf_input);
+                    dtmf_input = "";
+                },2000);
             }
         }
     });
