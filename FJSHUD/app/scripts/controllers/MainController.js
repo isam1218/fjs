@@ -36,6 +36,11 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
         $scope.currentPopup.model = null;
     };
 
+    $scope.broadcastDial = function(key){
+        $scope.$broadcast("key_press",key);
+    }
+
+
     $scope.showPopup = function(data) {
         if(!data.key) {
             $scope.currentPopup.url = null;
