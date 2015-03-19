@@ -2,9 +2,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval, $timeout) {
 
 	var version = 0;
+	var scrollbox = {};
 	
 	$scope.upload = {};
-	$scope.glued = true;
 	$scope.loading = true;
 	
 	// send to pop-up controller
@@ -62,12 +62,24 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
     	return httpService.get_attachment(url);
     };
 	
+	// keep scrollbar at bottom until chats are loaded
+	var scrollWatch = $scope.$watch(function(scope) {
+		if (scrollbox.scrollHeight)
+			scrollbox.scrollTop = scrollbox.scrollHeight;
+	});
+	
     httpService.getChat($scope.feed,$scope.targetId).then(function(data) {
 		version = data.h_ver;
+		scrollbox = document.getElementById('ListViewContent');
 		
 		$scope.loading = false;
 		$scope.messages = data.items;
 		addDetails();
+		
+		// kill watcher
+		$timeout(function() {
+			scrollWatch();
+		}, 100);
 		
 		// no more chats
 		if (version == -1)
@@ -106,7 +118,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			
 			// jump to bottom if new messages were found
 			$timeout(function() {
-				var scrollbox = document.getElementById('ListViewContent');
 				scrollbox.scrollTop = scrollbox.scrollHeight;
 			}, 100);
 		}
@@ -139,10 +150,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	$scope.searchChat = function(increment) {
 		var spans = document.querySelectorAll(".highlighted");
 			
-		if ($scope.query != '' && spans.length > 0) {			
-			// temporarily disable sticky directive
-			$scope.glued = false;
-				
+		if ($scope.query != '' && spans.length > 0) {				
 			var searchIndex = -1;
 			
 			for (i = 0; i < spans.length; i++) {
@@ -182,8 +190,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	};
 
 	var chatLoop = $interval(function() {	
-		var scrollbox = document.getElementById('ListViewContent');
-	
 		// check scroll position
 		if (!$scope.loading && $scope.messages.length > 0 && scrollbox.scrollTop == 0) {
 			$scope.loading = true;

@@ -11,7 +11,7 @@
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
-<div class="ListViewContent" id="ListViewContent" scroll-glue="glued">
+<div class="ListViewContent" id="ListViewContent">
     <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created'">
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
