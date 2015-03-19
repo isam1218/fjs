@@ -11,6 +11,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     if($scope.currentCall){
         $scope.currentCall.isHeld = false;
     }
+
     $scope.timeElapsed = "00:00";
     $scope.getCurrentLocationTitle = function() {
         /**
@@ -36,7 +37,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.fdpVersion;
     $scope.meModel={};
     $scope.locations = {};
-    $scope.phoneNumber = "";
+    $scope.call_obj = {};
+    $scope.call_obj.phoneNumber = "";
     $scope.calls = {};
     /* */
     /**
@@ -711,7 +713,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.$on("key_press", function(event,data){
         if(data){
-            $scope.phoneNumber = $scope.phoneNumber + data;
+            $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
+
+            if($scope.currentCall){
+                $scope.currentCall.dtmf(data);
+            }
         }
     });
 
