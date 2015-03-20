@@ -120,13 +120,14 @@
 
 
 <div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall">
-		<div class="CallStatusIconContainer">
+		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
-		<div style="display:inline-block" class="CallStatusText"> 
+		<div ng-click="showCurrentCallControls(currentCall)" style="display:inline-block" class="CallStatusText"> 
 			<div style="font-weight:bold;font-size:14px">{{currentCall.displayName}}</div>
 			<div><div>{{ currentCall.incoming ? 'inbound' : 'outbound'}} on call</div></div>
 		</div>
+		
 		<div style="float:right;display:inline-block;margin-top:5px">
 			<div ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton">Cancel</div>
 			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="!isRinging && !onHold" class="XButton">Hold</div>

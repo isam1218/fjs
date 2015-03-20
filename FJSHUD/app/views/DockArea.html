@@ -66,8 +66,34 @@
 		</div>
 		<div class="Title">
 			<div>Parked Calls</div>
-			<div>no calls on park</div>
+			<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">no calls on park</div>
+			<div class = "GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
+			<div class = "GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
 		</div>
+
+		
+
+	</div>
+	<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> Calls </div>
+			  <!--ng-click="storeRecent(contact.xpid)" -->
+	<div> 
+		<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
+			<div class="Avatar AvatarNormal" context-menu="call" style="display:inline-block;">
+				<img class="AvatarImgPH" data-ng-src="getAvatar(call.parkerContactId)"  onerror="this.src='img/Generic-Avatar-28.png'" />
+				<div class="AvatarForeground AvatarInteractable"></div>
+			</div>
+			
+			<div class="ListRowContent" style="display:inline-block;margin-right:2px">
+				<div class="ListRowTitle" style="width:80px;padding:0px;text-overflow:ellipssis;white-space:nowrap">
+					<div>{{ ::call.displayName }}</div>
+					<div>{{ ::call.phone }}</div>
+				</div>
+					
+					
+			</div>
+				<div style="float:right;font-size:.65em;margin-top:2px;margin-right:2px">00:00</div>
+			
+		</div>		
 	</div>
 </div>
 

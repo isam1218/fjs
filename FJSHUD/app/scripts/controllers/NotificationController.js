@@ -152,15 +152,12 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		if(data){
 
 			for (i in data){
-				if(data[i].xpid == $scope.meModel.my_pid){
-					$scope.calls[data[i].contactId] = data[i];
-				}
+			//	if(data[i].xpid == $scope.meModel.my_pid){
+				$scope.calls[data[i].contactId] = data[i];
 			}
+			//}
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
-			
-		
-
 		}
 
 

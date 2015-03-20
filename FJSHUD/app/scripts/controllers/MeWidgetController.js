@@ -499,11 +499,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         $scope.recentSelectSort = sortType;
   }
     $scope.showCallOvery = function(screen){
-        var data = $contactService.getContact($scope.currentCall.xpid);
+        var data = $contactService.getContact($scope.meModel.my_pid);
         if(!data){
             data = {};
             data.displayName = $scope.currentCall.displayName;
-            data.xpid = "0_" + $scope.currentCall.callId;
+            data.xpid = $scope.currentCall.xpid;
         }
         data.screen = screen;
         data.call = $scope.currentCall;
@@ -673,12 +673,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         else
             action = 'stopCallRecording';
             
-        httpService.sendAction('contacts', action, {contactId: $scope.onCall.xpid});
+        myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
     };
 
     $scope.parkCall = function(currentCall){
        call =  phoneService.getCall(currentCall.contactId);
-        phoneService.parkCall(call.call_id);
+        phoneService.parkCall(currentCall.xpid);
     }
 
     var updateTime = function() {

@@ -60,7 +60,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		$rootScope.$evalAsync($rootScope.$broadcast('contacts_updated', contacts));
 	});
 	
-	$rootScope.$on('calls_synced', function(event, data) {
+	$rootScope.$on('calls_updated', function(event, data) {
 		for (i = 0; i < contacts.length; i++) {
 			contacts[i].call = null;
 			

@@ -6,7 +6,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		switch($scope.$parent.overlay.data.screen){
 			case 'transfer':
 				$scope.screen = 'transfer';
-				$scope.transferFrom = $scope.$parent.overlay.data;
+				$scope.transferFrom = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 				$scope.transferTo = null;
 				contactService.getContacts().then(function(data) { 
 					$scope.contacts = data;
@@ -40,13 +40,13 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	$scope.contacts = [];
 
 	var updateTime = function() {
-		if ($scope.onCall.call && $scope.onCall.call.startedAt) {
+		if ($scope.onCall.call && $scope.onCall.call.created) {
 			// format date
 			var date = new Date().getTime();
-			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.startedAt, 'mm:ss');
+			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.created, 'mm:ss');
 			
 			// also get recorded time
-			if ($scope.onCall.call.recorded)
+			if ($scope.onCall.call.record)
 				$scope.recordingElapsed = $filter('date')(date - localStorage.recordedAt, 'mm:ss');
 		
 			// increment

@@ -42,8 +42,16 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			$scope.type = 'ConferenceRoom';
 			$scope.conference = data;
 			$scope.name = data.name;
-		}
-		else {
+		}else if(data.parkExt !== undefined){
+			$scope.type = 'ParkedCall'
+			$scope.contact = contactService.getContact(data.callerContactId);
+			if($scope.contact == null){
+				$scope.name = "private"
+				$scope.canDock = false;
+			}
+			$scope.parkedCall = data; 
+
+		}else {
 			$scope.type = 'Group';
 			$scope.group = data;
 			$scope.name = data.name;
@@ -103,6 +111,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
 	
+	$scope.takeCall = function(){
+		httpService.sendAction('parkedcalls','transferFromPark',{parkedCallId:$scope.parkedCall.xpid,contactId:$scope.meModel.my_pid});
+	}
+	
+
 	// generic function for any internal calls (page, intercom, voicemail, etc.)
 	$scope.callInternal = function(action, group) {
 		// group
@@ -143,7 +156,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			xpid: $scope.xpid
 		});
 	};
-	
+
+
 	$scope.loginQueue = function(login) {
 		if (login)
 			httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue.memberID});

@@ -23,7 +23,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
+			console.log(data);
 			for (key in data) {
+
 				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
 					var gadget = {
@@ -61,6 +63,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 							});
 							
 							break;
+						case 'GadgetParkedCalls':
+							//gadget.data 
+							break;
 					}
 					
 					$scope.gadgets[gadget.value.factoryId].push(gadget);
@@ -88,7 +93,33 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 			}
 		}
 	});
-	
+
+	$scope.isObjectEmpty = function(object){
+		return !$.isEmptyObject(object);
+	}
+	$scope.parkedCalls = [];
+	$scope.$on('parkedcalls_updated',function(event,data){
+		if(data){
+			for(parkedCall in data){
+				if(data[parkedCall]. xef001type == "delete"){
+					//delete $scope.parkedCalls[data[parkedCall.xpid]];
+					for (i = 0; i < $scope.parkedCalls.length;i++){
+						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
+							$scope.parkedCalls.splice(i,1);
+						}
+					}
+				
+				}else{
+					$scope.parkedCalls.push(data[parkedCall]);
+				}
+			}
+		}
+	});
+
+	$scope.takeParkedCall = function(call){
+		
+	}
+
 	$scope.joinConference = function(conference) {
 		var params = {
 			conferenceId: conference.xpid,

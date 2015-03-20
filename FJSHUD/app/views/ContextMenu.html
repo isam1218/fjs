@@ -130,7 +130,6 @@
 			<span>File Share</span>
 		</a>
 	</div>
-	
 	<div ng-if="type == 'ConferenceRoom'">
 		<a class="Button" href="" ng-show="!conference.status.isMeJoined" ng-click="joinConference(true)">
 			<div class="ListRowActionButtonJoin"></div>
@@ -161,7 +160,45 @@
 			<span>File Share</span>
 		</a>
 	</div>
+	
+	<div ng-if="type == 'ParkedCall'">
+		<a class="Button" href="" ng-click="takeCall()">
+			<div class="ListRowActionButtonTake"></div>
+			<span>Take</span>
+		</a>
 		
+		<a class="Button" href="#/contact/{{contact.xpid}}" ng-show="contact.primaryExtension">
+			<div class="ListRowActionButtonChat"></div>
+			<span>Chat</span>
+		</a>
+		
+		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callNumber(contact.primaryExtension)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>Call</span>
+		</a>
+		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
+			<div class="ListRowActionButtonCall"></div>
+			<span>Intercom</span>
+		</a>
+		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callVoicemail')">
+			<div class="ListRowActionButtonVoicemail"></div>
+			<span>Voicemail</span>
+		</a>
+		<a class="Button" href="" ng-show="contact.phoneMobile" ng-click="callNumber(contact.phoneMobile)">
+			<div class="ListRowActionButtonMobile"></div>
+			<span>Mobile</span>
+		</a>
+		<a class="Button" href="mailto:{{ contact.email }}" target="_blank" ng-show="contact.email">
+			<div class="ListRowActionButtonEmail"></div>
+			<span>Email</span>
+		</a>
+		<a class="Button" href="" ng-show="contact" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>File Share</span>
+		</a>
+	</div>
+	
+
 	<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 		<div class="ListRowActionButtonDock"></div>
 		<span>Dock</span>

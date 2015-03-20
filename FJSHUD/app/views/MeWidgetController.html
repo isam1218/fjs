@@ -91,7 +91,7 @@
                     <div class="XButton CurrentCallBtn" ng-if="!currentCall.isHeld"ng-click="holdCall(currentCall)"> Hold</div> 
                     <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall)"> Talk</div> 
 
-                    <div class="XButton CurrentCallBtn"> Rec </div> 
+                    <div class="XButton CurrentCallBtn" ng-click="recordCall(currentCall)"> <span>REC  </span> <div class="XIcon24-Record" ng-class=""></div></div> 
                     <div class=" SelectBox XButton CurrentCallBtn" data-ng-click="showLocationsPopup($event, $element)">  
                       <div class="SelectBoxText">
                                 <span>Move</span>

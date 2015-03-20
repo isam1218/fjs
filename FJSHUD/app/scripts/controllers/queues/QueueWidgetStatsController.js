@@ -95,7 +95,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', 'Http
     }
   });
 
-  $scope.$on('calls_synced', function (event, data) {
+  $scope.$on('calls_updated', function (event, data) {
     for (key in data) {
       for (c in $scope.contacts) {
         // set contact's status

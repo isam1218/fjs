@@ -40,6 +40,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
         $scope.$broadcast("key_press",key);
     }
 
+    $scope.getAvatar = function(pid,width,height){
+        return myHttpService.get_avatar(pid,40,40);
+    }
+
 
     $scope.showPopup = function(data) {
         if(!data.key) {
