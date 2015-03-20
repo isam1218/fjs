@@ -1,29 +1,36 @@
 hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
-    $scope.query = "";
-    $scope.sortField = "displayName";
-    $scope.sortReverse = false;
-    $scope.contacts = [];
+  $scope.query = "";
+  $scope.sortField = "displayName";
+  $scope.sortReverse = false;
+  $scope.contacts = [];
 	$scope.favorites = {};
+	$scope.groupObj = {};
+	$scope.combined = [];
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
-	// pull updates from service
+	// pull contact updates from service
 	$scope.$on('contacts_updated', function(event, data) {
-		$scope.contacts = data;
+		$scope.contacts = data;	
+		$scope.combined = $scope.contacts.concat($scope.groupObj.groups);
 	});
 	
+	// pull group updates from service, including updated group-localstorage
 	$scope.$on('groups_updated', function(event, data) {
+		$scope.recents = JSON.parse(localStorage.recents);	
+		$scope.groupObj = data;
 		$scope.favorites = data.favorites;
+		$scope.combined = $scope.contacts.concat($scope.groupObj.groups);
 	});
 
-    $scope.sort = function(field) {
-        if($scope.sortField!=field) {
-            $scope.sortField = field;
-            $scope.sortReverse = false;
-        }
-        else {
-            $scope.sortReverse = !$scope.sortReverse;
-        }
-    };
+  $scope.sort = function(field) {
+      if($scope.sortField!=field) {
+          $scope.sortField = field;
+          $scope.sortReverse = false;
+      }
+      else {
+          $scope.sortReverse = !$scope.sortReverse;
+      }
+  };
 	
 	// filter contacts down
 	$scope.customFilter = function() {
