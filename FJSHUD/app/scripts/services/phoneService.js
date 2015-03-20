@@ -442,10 +442,55 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	this.parkCall = function(call_id){
-		httpService.sendAction('mycalls', 'transferToPark', {mycallId: "0_" + call_id});
+		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
 	}
 
 	$rootScope.$on("calls_synced",function(event,data){
+		
+		for(i = 0; i < data.length; i ++){
+				if(data[i].xef001type == "delete"){
+					delete callsDetails[data[i].xpid];
+					delete xpid2Sip[data[i].xpid];
+				}else{
+					if(data[i].incoming){
+						if(data[i].xpid == $rootScope.meModel.my_pid){
+							callsDetails[data[i].xpid] = data[i];
+			
+							for(sipCall in sipCalls){
+									var toBreak = false;
+						
+								if(xpid2Sip[data[i].xpid]){
+									if(xpid2Sip[data[i].xpid] != sipCall){
+										xpid2Sip[data[i].xpid] = sipCall;
+									}
+									}else{
+										xpid2Sip[data[i].xpid] = sipCall;
+									}
+
+							}
+
+						}
+					
+					}					
+				}
+		}	
+		$rootScope.$broadcast('calls_updated', callsDetails);
+	});
+	
+	httpService.getFeed('voicemailbox');
+	
+	$rootScope.$on('voicemailbox_synced', function(event, data) {
+		for(voicemail in data){
+			voicemails[data[voicemail].xpid]  = data[voicemail];
+		}
+		return;
+	});
+
+	$rootScope.$on("parkedcalls_synced",function(event,data){
+		$rootScope.$broadcast('parkedcalls_updated', data);
+	});
+
+	$rootScope.$on("mycalls_synced",function(event,data){
 		if(data){
 			for(i = 0; i < data.length; i ++){
 				if(data[i].xef001type == "delete"){
@@ -473,29 +518,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-	
-	httpService.getFeed('voicemailbox');
-	
-	$rootScope.$on('voicemailbox_synced', function(event, data) {
-		for(voicemail in data){
-			voicemails[data[voicemail].xpid]  = data[voicemail];
-		}
-		return;
-	});
-
-	$rootScope.$on("parkedcalls_synced",function(event,data){
-		if(data){
-		}
-
-		$rootScope.$broadcast('calls_updated', callsDetails);
-	});
-
-	$rootScope.$on("mycalls_synced",function(event,data){
-		if(data){
-		}
-
-		$rootScope.$broadcast('calls_updated', callsDetails);
-	});
 
 	$rootScope.$on('me_synced', function(event,data){
         if(data){
@@ -506,7 +528,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         }
 	});
 
-	/*$rootScope.$on("calldetails_synced",function(event,data){
+	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
 			for(i = 0; i < data.length; i ++){
 				if(callsDetails[data[i].xpid]){
@@ -517,6 +539,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$rootScope.$broadcast('calls_updated', callsDetails);
 
 		
-	});*/
+	});
 
 }]);
