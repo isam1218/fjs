@@ -19,7 +19,7 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 	
 		contactService.getContacts().then(function(data) {
 			for (key in data) {
-				if (data[key].displayName.toLowerCase().indexOf(query) != -1)
+				if (data[key].displayName.toLowerCase().indexOf(query) != -1 || data[key].primaryExtension.indexOf(query) != -1)
 					$scope.contacts.push(data[key]);
 			}
 		});

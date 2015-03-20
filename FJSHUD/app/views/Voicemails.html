@@ -1,7 +1,7 @@
     <div class="ToolBar" >
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="search" x-webkit-speech="" placeholder="Search" ng-model="query">
+                <input class="SearchInputBoxInput" type="search" x-webkit-speech="" placeholder="Search" ng-model="tester.query">
             </div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
@@ -29,7 +29,7 @@
             <div class="vmlabelheader"> No Voicemails In View </div> 
             <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
         </div>
-        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: { displayName:query } | orderBy: selectedSort.type: selectedSort.desc"> 
+        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy: selectedSort.type: selectedSort.desc"> 
             
             <div class="vmavatarsection AvatarNormal" > 
                     <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
