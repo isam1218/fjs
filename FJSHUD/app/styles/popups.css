@@ -211,6 +211,17 @@
 .Overlay .AttachmentDownload .Downloadables:hover {
   background-color: #f0f0ff;
 }
+.Overlay .AttachmentDownload img {
+  max-width: 100%;
+}
+.Overlay .AttachmentDownload .FileInfo {
+  display: inline-block;
+  flex: 1;
+  margin-left: .5em;
+}
+.Overlay .AttachmentDownload .Selected {
+  border-left: 3px solid #292;
+}
 .CurrentDownload {
   height: auto;
   max-height: 100%;
@@ -331,7 +342,7 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -414,4 +425,37 @@
   right: 0;
   bottom: 0;
   min-width: 400px;
+}
+/*******Dialpad popup *******/
+.dialpad {
+  margin: 3px;
+  background-color: #ccc;
+}
+.dialpadrow {
+  padding: 3px;
+}
+.DialPadBtn {
+  height: 38px;
+  width: 58px;
+}
+.dialpadnum {
+  color: #328400;
+  font-size: 16px;
+  text-align: center;
+  height: 13px;
+}
+.dialpadletter {
+  color: #888;
+  font-size: 8px;
+  font-weight: bold;
+  text-shadow: 0px 0px 3px;
+}
+.AutoDelete {
+  background-color: #ccc;
+  width: 76px;
+  margin-right: 1px;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  font-size: 12px;
 }

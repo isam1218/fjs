@@ -3,6 +3,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
 	var version = 0;
 	var scrollbox = {};
+	var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 	
 	$scope.upload = {};
 	$scope.loading = true;
@@ -172,6 +173,25 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			spans[searchIndex].scrollIntoView();
 		}
 	};
+
+  $scope.formatDate = function(message){
+
+    var date = new Date(message.created);
+    var today = new Date();
+    var dateString = "";
+    dateString = Months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+
+    if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+      if (date.getDate() == today.getDate()){
+        dateString = "today";
+      } else if (date.getDate() == today.getDate() - 1){
+        dateString = "yesterday";
+      } 
+    }
+
+    return dateString;
+
+  };	
 
 	// apply name and avatar
 	var addDetails = function() {

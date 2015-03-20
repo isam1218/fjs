@@ -1,23 +1,17 @@
-.ListViewTopSpace {
-  height: 9px;
-  width: 100%;
-}
 .ListLineContent {
   position: relative;
   width: 100%;
-  height: 24px;
   background-color: #f9f9f9;
   cursor: pointer;
 }
 .ListLineContent.Header {
   background-color: #fff;
-  border-top-left-radius: 3px 3px;
   width: auto;
   position: relative;
   border-bottom: solid 1px #999;
 }
 .ListLineContent.Header .ListLineContentCell {
-  padding: 0 5px;
+  margin: 0 .5em;
 }
 .ListLineContent.Header .DirectionArrow {
   position: absolute;
@@ -26,15 +20,16 @@
 }
 .ListLineContentCell {
   position: relative;
-  height: 24px;
-  line-height: 24px;
+  float: left;
   white-space: nowrap;
   text-overflow: clip;
   overflow: hidden;
+  max-width: 7em;
 }
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  font-size: 11px;
+  font-size: .7em;
+  line-height: 2.5em;
 }
 .DirectionArrow {
   position: relative;
@@ -44,45 +39,6 @@
   margin-left: 1px;
   border-style: solid;
   border-width: 6px;
-}
-.ListConferenceStatusText {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  display: inline-block;
-  height: 24px;
-  line-height: 24px;
-  color: gray;
-}
-.ListConferenceStatusIcon {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  max-width: 24px;
-  background-repeat: no-repeat;
-  display: inline-block;
-}
-.GroupRow {
-  margin: 5px 5px 5px 5px;
-  border: 1px solid #ccc;
-  position: relative;
-  left: 0;
-  right: 0;
-  cursor: pointer;
-  overflow: hidden;
-  background-color: #fff;
-  width: 98%;
-  display: block;
-}
-.GroupRowStatus {
-  color: #888;
-  font-size: 12px;
-  text-overflow: ellipsis;
-  text-decoration: none;
-  padding-right: 5px;
-  padding-top: 5px;
-  /* flex: 1; */
-  float: right;
 }
 .Up .DirectionArrow {
   bottom: 0;
@@ -99,78 +55,21 @@
 .ListLineContentCell.Down span {
   color: #729C00;
 }
-.ListSection {
-  position: relative;
-  min-height: 40px;
-  background-color: #f9f9f9;
-}
-.ListSectionHeaderTitle {
-  color: #0093f0;
-  font-size: 11px;
-  font-weight: bold;
-  line-height: 18px;
-  margin-top: 10px;
-  width: auto;
-  text-transform: uppercase;
-  margin-left: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.ListSectionBody {
-  color: #555;
-  font-size: 11px;
-  font-style: italic;
-  font-weight: normal;
-  margin-left: 10px;
-  margin-top: 0px;
-  margin-bottom: 4px;
-  display: inline-block;
-}
-.InlineList {
-  border: solid 1px #eee;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  position: relative;
-  margin: 0 10px 10px;
-}
-.InlineList.ListIsEmpty {
-  border: solid 1px transparent;
-}
 .ListRow {
   position: relative;
-  height: 50px;
-  left: 0;
-  right: 0;
   cursor: pointer;
   overflow: hidden;
   border-bottom: solid 1px #dee1e5;
   background-color: #fff;
   width: 100%;
   display: block;
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
 }
 .ListRow:hover .Remove {
   display: block;
   background-color: #f0f0ff;
-}
-.ListRow:hover .CallAvatar_Office .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -55px -92px;
-  position: absolute;
-}
-.ListRow:hover .AvatarNormal .AvatarForeground.AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -5px;
-}
-.ListRow:hover .AvatarNormal .AvatarForeground.AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -58px -50px;
-}
-.ListRow:hover .AvatarSmall .AvatarForeground .AvatarStatic {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -5px;
-}
-.ListRow:hover .AvatarSmall .AvatarForeground .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -138px -50px;
-}
-.ListRow:hover .AvatarWarning .AvatarForeground {
-  background: url("../img/XAvatarBorder.png?v=1418381374907") no-repeat -13px -230px;
 }
 .ListRow .Remove {
   position: absolute;
@@ -183,241 +82,56 @@
   display: none;
 }
 .ListRow .Avatar {
-  position: absolute;
-  top: 5px;
-  left: 5px;
+  margin: .25em;
 }
-.ListRow .ListRowFirst {
-  -webkit-border-radius: 3px;
-}
-.Inbox .ListRow {
-  -webkit-border-radius: 3px;
-}
-.ListRowTitle .link {
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #888;
-  font-size: 11px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: 10px;
-}
-.ListPage {
-  border: 1px solid #999;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  -o-border-radius: 6px;
-  padding-top: 7px;
-  padding-bottom: 20px;
-  padding-left: 10px;
-  font-size: .8em;
-}
-.ListRowContent {
-  position: absolute;
-  top: 0;
-  left: 50px;
-  right: 0;
+.ListRow .ListRowContent {
+  flex: 1;
   border-left: solid 1px #DEE1E5;
-  height: 3em;
-  display: flex;
-  flex-direction: row;
-}
-.ListRowStatusIcon {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  max-width: 24px;
-  background-repeat: no-repeat;
-  display: inline-block;
-}
-.ListRowStatusText {
-  height: 24px;
-  line-height: 24px;
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
-  display: inline-block;
 }
-.ListRowStatusIcon.Small {
-  width: 20px;
-  height: 20px;
-  max-width: 20px;
-}
-.ListRowTitle {
+.ListRow .ListRowTitle {
+  float: left;
   padding: .5em;
-  flex: 2;
   font-size: .75em;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
-}
-.ListRowTitle .name strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.ListRowTitle .name > * {
-  display: block;
-}
-.ListRowTitle .name span {
-  color: gray;
-}
-.ListRowStatus {
-  color: #888;
-  font-size: 12px;
-  text-overflow: ellipsis;
-  text-decoration: none;
-  text-align: center;
+  width: 55%;
   flex: 1;
 }
-.ListRowStatus.Members {
-  padding-top: .5em;
+.ListRow .ListRowTitle .name strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.CallStatus {
-  text-align: center;
-  flex: .8;
-}
-.CallStatus .Avatar.AvatarSmall.CallAvatar.CallAvatar_Office {
-  position: relative;
-}
-.ListRowCallArea {
-  position: relative;
-  width: 150px;
-  height: 40px;
-  margin-top: 5px;
-  margin-right: 3px;
-  border-radius: 5px;
-  background-color: #fff;
-  border: solid 1px #ccc;
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.05);
-}
-.ListRowDesc {
-  vertical-align: top;
-  display: inline-block;
-}
-.XButton.ListRowItemDel {
-  position: absolute;
-  bottom: 7px;
-  right: 0;
-  top: auto;
-  display: none;
-  cursor: pointer;
-}
-.ListRow:hover .ListRowItemDel {
+.ListRow .ListRowTitle .name > * {
   display: block;
 }
-.ListRow.Small {
-  height: 40px;
+.ListRow .ListRowTitle .name span {
+  color: gray;
 }
-.ListRow.Small .ListRowContent {
-  left: 40px;
-  height: 40px;
-}
-.ListRow.Small .Avatar {
-  margin: 4px;
-}
-.ListRow.Small .ListRowTitle {
-  position: absolute;
-  top: 0;
-  left: 5px;
-  right: 0;
-  height: 20px;
-  line-height: 20px;
-  font-size: 12px;
-  text-align: left;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  text-decoration: none;
-}
-.ListRow.Small .ListRowStatus {
-  position: absolute;
-  top: 16px;
-  left: 5px;
-  right: 5px;
-  height: 16px;
-  font-size: 10px;
-}
-.ListRow.Small .ListRowCallArea {
-  width: 34px;
-  height: 34px;
-  margin: 2px;
-  border-radius: 3px;
-}
-.ListRowSmallest {
-  height: 32px;
-}
-.ListRowSmallest.selected {
-  background-color: orange;
-}
-.ListRowSmallest .Avatar {
-  margin: 0;
-}
-.ListRowSmallest .ListRowContent {
-  left: 32px;
-  height: 32px;
-}
-.ListRowSmallest .ListRowTitle {
-  line-height: 12px;
-  font-size: 11px;
-  left: 2px;
-  top: 0;
-  font-weight: bold;
-}
-.ListRowSmallest .ListRowStatus {
-  top: 8px;
-  font-size: 10px;
-}
-.ListRow.Table .ListRowTitle {
-  position: relative;
-  top: 2px;
-  color: #000000;
-  font-weight: bold;
-}
-.ListRow.Table .ListRowDesc {
-  position: relative;
-  left: 5px;
-  color: #999;
-  font-size: 10px;
-}
-.ListRow.Table .ListRowLeftArea {
-  width: 175px;
-}
-.ListRow.Table .ListRowLeftAreaExtraWide {
-  width: 375px;
-}
-.ListRow.Table .ListRowLeftAreaWide {
-  width: 250px;
-}
-.ListRow.Table .ListRowCallArea + .ListRowLeftArea {
-  width: 150px;
-}
-.ListRow.Table .ListRowCallArea {
-  position: absolute;
-  left: 155px;
-}
-.ListRow.Table .ListRowCallArea .Avatar {
-  margin: 0;
-}
-.ListRow.Table .ListRowStatus {
-  width: 60px;
+.ListRow .ListRowStatus {
+  float: right;
+  color: #888;
+  font-size: .8em;
   text-align: center;
-  margin-left: 20px;
-  position: absolute;
-  right: 0;
-  top: 3px;
-  left: auto;
 }
-.ListRow.Table .ListRowStatusText {
-  position: relative;
-  margin-top: -15px;
+.ListRow .CallStatus {
+  float: right;
+  margin-right: .5em;
 }
-.ListRowButtons {
-  position: absolute;
-  right: 0;
-  top: 0;
+.Groups .ListRow > div {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.Groups .ListRow > div .Members {
+  padding: 1em 1em 0 0;
+}
+.ListRowOdd {
+  background-color: #f9f9f9;
+}
+.ListRowLast {
+  border-bottom: 1px solid #ccc !important;
 }
 .ListRowActionButton {
   width: 30px;
@@ -489,406 +203,101 @@
 .ListRowActionButtonRecord {
   background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
 }
-.ListMessageLeftSmall .Avatar.AvatarWarning {
-  left: 0px;
-}
-.ListMessage.Notification,
-.ListMessage.Notification:hover {
-  background-color: transparent;
-}
-.NavBarInboxList .ListMessageText {
-  max-height: 55px;
-  overflow: hidden;
-  width: 247px;
-}
-.DialogInbox .NavBarInboxList .ListMessageText {
-  width: 328px;
-}
-.ClickArea,
-.Widget .ListMessageContent.ClickArea {
-  cursor: pointer;
-}
-.MediaPlayerInfo .ListMessageHeader {
-  position: absolute;
-  top: 3px;
-  left: 45px;
-  right: 40px;
-  height: 16px;
-  line-height: 16px;
-  background: none;
-}
-.ListEmpty {
-  text-align: center;
-  min-height: 30px;
-  font-size: 12px;
-}
-.ListMessage.ListRowCallRecording {
-  cursor: default;
-}
-.ListMessageChatWidget {
-  background-color: #fff;
-  width: 100%;
-  border-bottom: none;
-  float: left;
-  height: auto;
-}
-.ListMessageChatWidget .ListMessageContent,
-.ChatItemTypeRoot-false.ListMessageChatWidget {
-  min-height: 22px;
-}
-.ChatItemTypeRoot-true.ListMessageChatWidget {
-  min-height: 52px;
-}
-.ChatItemTypeRoot-true.ListMessageChatWidget {
-  min-height: 52px;
-}
-.ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageLeft,
-.ListMessageChatWidget.ChatItemTypeRoot-false .ListMessageHeader {
-  display: none;
-}
-.ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem .time {
-  top: 12px;
-  margin: 0px 3px;
-}
-.ListMessageChatWidget.ChatItemTypeRoot-false .ChatMessageItem {
-  margin-left: 54px;
-  margin-right: 4px;
-  width: auto;
-}
-.ListMessageChatWidget.ChatItemTypeRoot-true .ChatMessageItem {
-  margin-right: 4px;
-  width: auto;
-}
-.ListRowStatusIcon.Inbox {
-  position: absolute;
-  top: 36px;
-  left: 20px;
-  transform: rotate(160deg);
-  -webkit-transform: rotate(160deg);
-  display: none;
-}
-.ListMessageMissedCallBtn {
-  position: absolute;
-  margin: 0px;
-  right: 10px;
-  bottom: 10px;
-  width: 60px;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-  border: solid 2px #fff;
-  font-weight: bold;
-  border-radius: 8px;
-  -webkit-border-radius: 8px;
-  color: #729c00;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-.ListMessageMissedCallBtn:hover {
-  border: solid 2px #729c00;
-}
-.ListMessage.ListMessageShare {
-  border: none;
-}
-.Widget .ListMessage.ListMessageShare:nth-child(odd) {
-  background-color: #fff;
-}
-.Transcription-Available {
-  color: #888;
-  font-size: 12px;
-  line-height: 16px;
-}
-.Transcription-NoLicense,
-.Transcription-NotAvailable {
-  color: #999;
+.ListSectionHeaderTitle {
+  color: #0093f0;
   font-size: 11px;
-  line-height: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  margin-top: 10px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.ListMessage {
+.ListPage {
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding-top: 7px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  font-size: .8em;
+}
+.ListSection {
   position: relative;
-  height: 50px;
-  left: 0px;
-  right: 0px;
-  cursor: pointer;
-  border-bottom: solid 1px #dee1e5;
-  background-color: #fff;
-  width: 100%;
-}
-.Widget .ListMessage.ListRowOdd {
+  min-height: 40px;
   background-color: #f9f9f9;
 }
-.ListMessage:first-child {
-  border-top-left-radius: 6px;
-  -webkit-border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  -webkit-border-top-right-radius: 6px;
-}
-.ListMessage:last-child {
-  border-bottom-left-radius: 6px;
-  -webkit-border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  -webkit-border-bottom-right-radius: 6px;
-  border-bottom: solid 1px transparent;
-}
-.ListMessage:hover {
-  background-color: #f8f8f8;
-}
-.Widget .ListMessage:hover {
-  background-color: #fff;
-}
-.ListIsEmptyHide.ListIsEmpty {
-  display: none;
-}
-.ListMessageLeft {
-  position: relative;
-  width: 50px;
-  min-height: 50px;
-  float: left;
-  text-align: center;
-}
-.ListMessage .Avatar {
-  position: absolute;
-  left: 5px;
-  top: 5px;
-}
-.ListMessageLeftSmall {
-  position: relative;
-  width: 38px;
-  border-right: solid 1px #eee;
-}
-.ListMessageLeftSmall .Avatar {
-  position: absolute;
-  left: 5px;
-  top: 5px;
-}
-.ListMessageContent {
-  position: absolute;
-  left: 50px;
-  top: 0px;
-  right: 0px;
-  min-height: 50px;
-}
-.ListMessageContent.chatCont {
-  position: relative;
-  width: 89%;
-  float: left;
-  left: 0;
-}
-.Widget .ListMessageContent {
-  cursor: default;
-}
-.ListMessageHeader {
-  position: relative;
-  margin: 4px;
-  height: 20px;
-  line-height: 20px;
-}
-.ListMessageHeader.ChatIncoming {
-  border-bottom: solid 1px #749e57;
-}
-.ListMessageHeader.ChatOutbound {
-  border-bottom: solid 1px #999;
-}
-.ListMessageHeader.Missed {
-  -background-color: #fc1b1b;
-}
-.ListMessageHeader .ListMessageHeaderKind {
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 12px;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-  color: #333;
-}
-.ListMessageHeader .ListMessageHeaderName.Queue {
-  color: #e27100;
-}
-.ListMessage.Voicemail .ListMessageHeader .ListMessageHeaderPrefix {
-  font-size: .7em;
-  font-style: normal;
-  color: #333;
-}
-.ListMessage.Voicemail .ListMessageHeader .ListMessageHeaderPrefix span {
+.ListSectionBody {
+  color: #555;
   font-size: 11px;
   font-style: italic;
-  color: #999;
   font-weight: normal;
-  float: right;
-}
-.ListMessageHeader .ListMessageHeaderPrefix.Right span {
-  float: right;
-}
-.ListMessageHeader .ListMessageHeaderPrefix {
+  margin-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 4px;
   display: inline-block;
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+}
+.ListSectionHeaderTitle {
+  color: #0093f0;
   font-size: 11px;
-  font-style: italic;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-  color: #999;
-  margin-right: 4px;
-  width: 40px;
+  font-weight: bold;
+  line-height: 18px;
+  margin-top: 10px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.ListMessageHeader .ListMessageHeaderName {
-  display: inline-block;
-  height: 20px;
+.InlineList {
+  border: solid 1px #eee;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  position: relative;
+  margin: 0 10px 10px;
+}
+.InlineList.ListIsEmpty {
+  border: solid 1px transparent;
+}
+/* chats */
+.ListMessage {
+  display: flex;
+  flex-direction: row;
+  margin: .5em 0 1em 2%;
+  width: 97%;
+  color: #999;
+  font-size: .85em;
+}
+.ListMessage .ListMessageLeft .time {
+  margin-top: 1em;
+  font-size: .7em;
+}
+.ListMessage .ListMessageContent {
+  margin-left: .5em;
+  flex: 1;
+}
+.ListMessage .ChatMessageItem {
+  color: #222;
+}
+.ListMessage .ListMessageHeader {
+  font-size: .8em;
+  width: 100%;
+  border-bottom: solid 1px #999;
+  margin-bottom: .5em;
+  padding-bottom: .5em;
+}
+.ListMessage .ListMessageHeader .ListMessageHeaderName {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: .7em;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
   color: #009cff;
   font-weight: bold;
+  padding-left: 1em;
 }
-.ListMessageHeader .name {
-  margin-left: 4px;
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 12px;
-}
-.ListMessageHeader .title {
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 12px;
-  font-weight: bold;
-  margin-right: 20px;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-  color: #111;
-}
-.ListMessageHeader .normal {
-  color: #555;
-}
-.ListMessageHeader i {
-  font-size: 11px;
-  color: #999;
-}
-.ListMessage.Read-false .ListMessageHeader .name {
-  font-weight: bold;
-}
-.ListMessage.Read-true .ListMessageHeader .name {
-  font-weight: normal;
-}
-.ListMessageHeader .time {
-  display: inline-block;
-  margin-right: 5px;
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: .7em;
-  color: #666;
+.ListMessage .ListMessageHeader .time {
   float: right;
-}
-.ListMessageText {
-  position: relative;
-  margin: 5px;
-  white-space: normal;
-  color: #222;
-  font-size: .8em;
-  word-wrap: break-word;
-}
-.Widget .ListMessageText {
-  user-select: text;
-  -webkit-user-select: text;
-  cursor: text;
-}
-.TabChat .ListMessageText {
-  width: 412px;
-}
-.ListMessageButtons {
-  position: relative;
-  text-align: right;
-}
-.ListMessageText .Avatar {
-  position: relative;
-  display: inline-block;
-  width: 128px;
-  height: 120px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  margin: 5px;
-}
-.ListMessageText .AvatarCustomPH {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  height: 18px;
-  color: #515115;
-  overflow: hidden;
-  text-align: center;
-  font-size: 12px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.ListMessageText .AvatarImgPH {
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  left: 19px;
-  top: 10px;
-}
-.ListMessageText.prefix {
-  position: relative;
-  margin: 5px;
-  white-space: normal;
-  color: #222;
-  font-size: 13px;
-  font-weight: bold;
-}
-.ListMessageDuration {
-  margin-right: 10px;
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  background-color: #999;
-  height: 10px;
-  color: #fff;
-  font-size: 10px;
-  padding: 2px;
-}
-.ButtonJoinByPhone {
-  position: absolute;
-  top: 5px;
-  right: 1px;
-  width: 115px;
-}
-.ListMessage:hover .MessageDate {
-  opacity: 0;
-}
-.CallButton {
-  position: absolute;
-  top: 11px;
-  right: 6px;
-  padding: 0;
-  opacity: 0;
-  transition: All 0.2s ease;
-  -webkit-transition: All 0.2s ease;
-  cursor: pointer;
-  width: 46px;
-  height: 26px;
-}
-.ListRow:hover .CallButton,
-.ListMessage:hover .CallButton {
-  opacity: 1;
-}
-.ListDisplayName {
-  padding-left: 5px;
-  margin-top: 0px;
-  display: inline-block;
-}
-.ListRowOdd {
-  background-color: #f9f9f9;
-}
-.ListRowLast {
-  border-bottom: 1px solid #ccc !important;
+  color: gray;
 }

@@ -1,6 +1,8 @@
 hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'UtilService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, utilService) {
     $scope.voicemails = [];     
     $scope.query = "";
+    $scope.tester = {};
+    $scope.tester.query = "";
     $scope.meModel = {};
         
     $scope.sort_options = [
@@ -24,7 +26,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	
 	$scope.$on('voicemailbox_synced', function(event, data) {
 		$scope.voicemails = [];
-		
+		console.log('voicemail data obj is - ', data);
 		// single group widget
 		if ($routeParams.groupId) {
 			var group = groupService.getGroup($routeParams.groupId);
@@ -76,6 +78,16 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
                 DeleteReadVoiceMails();
                 break;
         }
+    };
+
+    $scope.voiceFilter = function(){
+        var query = $scope.tester.query.toLowerCase();
+        return function(voicemail){
+            if (voicemail.displayName.toLowerCase().indexOf(query) !== -1 || voicemail.phone.indexOf(query) !== -1){
+                return true;
+            }
+        };
+    
     };
 
     var MarkReadVoiceMails = function(isRead){

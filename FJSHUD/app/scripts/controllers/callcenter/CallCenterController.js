@@ -1,5 +1,7 @@
 hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueService', function ($scope, myHttpService, queueService) {
   $scope.query = '';
+  $scope.newObj = {};
+  $scope.newObj.query = '';
   $scope.queues = [];
   $scope.contacts = {};
   $scope.me = [];
@@ -54,6 +56,23 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
         break;
     }
 
+  };
+
+  $scope.queueFilter = function(){
+    var query = $scope.newObj.query.toLowerCase();
+    // check the queue name too
+    return function(queue){
+      if ($scope.newObj.query === ''){
+        return true;
+      } else if (queue.members.length){
+        for (i = 0; i < queue.members.length; i++){
+          var individualMember = queue.members[i];
+          if (individualMember.displayName.toLowerCase().indexOf(query) !== -1 || individualMember.extension.indexOf(query) !== -1 || queue.name.toLowerCase().indexOf(query) !== -1){
+            return true;
+          }
+        }
+      }
+    };
   };
 
   $scope.$on("$destroy", function () {

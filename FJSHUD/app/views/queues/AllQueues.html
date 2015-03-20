@@ -1,7 +1,7 @@
 <div class="ToolBar Queues">
   <div class="SearchInputBox">
     <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search"
-                                                  ng-model="query"
+                                                  ng-model="newObj.query"
                                                   x-webkit-speech=""
                                                   placeholder="Search"></div>
     <div class="SearchInputBoxStateButton">
@@ -25,7 +25,7 @@
 
 <div ng-if="viewIcon" class="LeftBarTabContentList">
   <div class="QueueBlockHolder AvatarHoverArea QueueDetailsEnabled-true"
-       data-ng-repeat="queue in queues | filter: {name: query} track by queue.xpid">
+       data-ng-repeat="queue in queues | filter: queueFilter()">
 
     <div class="QueueBlock">
       <div class="Avatar AvatarNormal QueueBlockAvatar" context-menu="queue">
@@ -122,7 +122,7 @@
   <div class="ListView WithToolBar QueueListView-false">
     <div class="fj-viewport" style="overflow: hidden;">
       <div class="fj-viewcontent"
-           data-ng-repeat="queue in queues | filter: {name: query} track by queue.xpid">
+           data-ng-repeat="queue in queues | filter: queueFilter()">
         <!--<div class="ListViewTopSpace"></div>-->
         <div>
           <div class="fj-scroll-content" style="top: 0px;">

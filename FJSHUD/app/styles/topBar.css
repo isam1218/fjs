@@ -21,8 +21,11 @@
 }
 .TopBarIcons {
   flex: 1;
-  min-width: 400px;
+  min-width: 350px;
   margin-left: 10px;
+}
+.TopBarIcons .Avatar {
+  margin: 5px;
 }
 .TopBarItemApp {
   position: relative;
@@ -38,6 +41,8 @@
   left: 5px;
   width: 40px;
   height: 40px;
+}
+.TopBarItemAppIcon:not(.Avatar) {
   background: url("../img/XApp-Icons.png") no-repeat 0 0;
 }
 .TopBarItemAppIcon.Home {
@@ -112,11 +117,14 @@
   flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
+  font-size: .9em;
+  white-space: nowrap;
 }
 .TopBarMeStatus .Logout {
+  font-size: .8em;
   padding-left: 24px;
 }
-.TopBarMeStatus .Logout .logout-ico {
+.TopBarMeStatus .Logout .icon {
   background: url("../img/XIconSet-24x24.png") no-repeat -336px -24px;
   width: 24px;
   height: 24px;
@@ -130,10 +138,6 @@
 .TopBarMeStatus .Status * {
   vertical-align: middle;
 }
-.TopBarMeStatus .Status span {
-  font-size: .8em;
-  text-transform: capitalize;
-}
 .TopBarMeStatus .Status .hud_status {
   text-transform: capitalize;
 }
@@ -146,6 +150,7 @@
   text-align: left;
   padding: 10px 20px;
   font-size: .8em;
+  z-index: 50;
 }
 .TopBarVoicemailControls:hover {
   max-height: 200%;
@@ -253,17 +258,4 @@
 }
 .TopBarVoicemailControls .Volume div.On {
   background-color: gray;
-}
-.ToolBarNotification {
-  position: relative;
-  height: 50px;
-  background-color: #ffe;
-  -background-image: linear-gradient(left top, left bottom, #ffffff, #fafafa);
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border: solid 1px #ddd;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
-  margin-bottom: 20px;
 }

@@ -111,6 +111,10 @@
   color: #0093f0;
   font-variant: small-caps;
 }
+#WidgetSearch .SearchResults .Avatar {
+  width: 2.5em;
+  height: 2.5em;
+}
 #WidgetSearch .SearchResults .Intro em {
   font-size: .8em;
   margin-left: .5em;
