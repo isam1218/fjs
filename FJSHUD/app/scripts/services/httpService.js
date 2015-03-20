@@ -129,10 +129,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 	}else{
 		
-		assignTab();
+		if(localStorage.fon_tabs){
+			window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
 
-		worker = new Worker("scripts/services/fdpWebWorker.js");
-		worker.addEventListener("message", function(event) {
+		}else{
+			assignTab();
+			worker = new Worker("scripts/services/fdpWebWorker.js");
+			worker.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
 		            	tabMap = JSON.parse(localStorage.fon_tabs);
@@ -226,6 +229,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 						break;
 		        }
 		    }, false);
+		}
 	}
 
 
