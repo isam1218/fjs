@@ -249,10 +249,14 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location
 		$scope.todaysNotifications = $scope.notifications.filter(function(item){
 			currentDate = new Date();
 			itemDate = new Date(item.time);
-
+			var contactId = $routeParam.contactId;
+			
 			if(currentDate.getDate() == itemDate.getDate()){
 				if(currentDate.getMonth() == itemDate.getMonth()){
-					return true;
+					if(contactId && contactId != null && contactId == item.contactId)
+						return false;
+					else
+						return true;
 				}
 			}
 			return false;
