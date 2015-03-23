@@ -18,25 +18,25 @@
 	
 	<h4>All Other Departments</h4>
 	<em>Other departments</em>
-	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('all') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" ng-click="storeRecent(group.xpid)" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('all') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div ng-include="'views/GroupsRow.html'"></div>
 	</a>
 	
 	<h4>My Teams</h4>
 	<em>Teams managed by me</em>
-	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('mine') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" ng-click="storeRecent(group.xpid)" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('mine') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div ng-include="'views/GroupsRow.html'"></div>
 	</a>
 	
 	<h4>Shared</h4>
 	<em>I'm a member of these teams</em>
-	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('shared') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" ng-click="storeRecent(group.xpid)" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('shared') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div ng-include="'views/GroupsRow.html'"></div>
 	</a>
 	
 	<h4>Others</h4>
 	<em>Teams visible to everyone</em>
-	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('others') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" ng-click="storeRecent(group.xpid)" data-ng-repeat="group in groups | filter: {name: $parent.$parent.query} | filter: customFilter('others') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div ng-include="'views/GroupsRow.html'"></div>
 	</a>
 </div>

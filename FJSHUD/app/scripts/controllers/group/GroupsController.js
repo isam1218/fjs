@@ -1,27 +1,41 @@
 hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'GroupService', 'ContactService', function($scope, $rootScope, myHttpService, groupService, contactService) {
-    $scope.query = "";
-    $scope.sortField = "name";
-    $scope.sortReverse = false;
-    $scope.groups = [];
+  $scope.query = "";
+  $scope.sortField = "name";
+  $scope.sortReverse = false;
+  $scope.groups = [];
 	$scope.mine = null;
 	$scope.favoriteID = null;
+  $scope.contacts = [];
+  $scope.groupObj = {};
+  $scope.combined = [];
+  $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
-	// pull updates from service
-	$scope.$on('groups_updated', function(event, data) {
-		$scope.groups = data.groups;
-		$scope.mine = data.mine;
-		$scope.favoriteID = data.favoriteID;
+  // update contacts
+  $scope.$on('contacts_updated', function(event, data){
+    $scope.contacts = data;
+    $scope.combined = $scope.contacts.concat($scope.groupObj.groups);
+  });
+
+  // pull group updates from service, including groups from local storage
+  $scope.$on('groups_updated', function(event, data) {
+    $scope.recents = JSON.parse(localStorage.recents);
+    $scope.groups = data.groups;
+    $scope.mine = data.mine;
+    $scope.favoriteID = data.favoriteID;
+
+    $scope.groupObj = data;
+    $scope.combined = $scope.contacts.concat($scope.groupObj.groups);
 	});
 	
-    $scope.sort = function(field) {
-        if($scope.sortField!=field) {
-            $scope.sortField = field;
-            $scope.sortReverse = false;
-        }
-        else {
-            $scope.sortReverse = !$scope.sortReverse;
-        }
-    };
+  $scope.sort = function(field) {
+      if($scope.sortField!=field) {
+          $scope.sortField = field;
+          $scope.sortReverse = false;
+      }
+      else {
+          $scope.sortReverse = !$scope.sortReverse;
+      }
+  };
 	
 	// filter groups down
 	$scope.customFilter = function(type) {
@@ -60,4 +74,11 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 			return (contact ? 'owner: ' + contact.displayName : '');
 		}
 	};
+
+  // store most recent groups into local Storage
+  $scope.storeRecent = function(groupXpid){
+    $scope.recents[groupXpid] = new Date().getTime();
+    localStorage.recents = JSON.stringify($scope.recents);
+  };
+
 }]);
