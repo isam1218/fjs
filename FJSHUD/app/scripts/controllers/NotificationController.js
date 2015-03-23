@@ -251,13 +251,14 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			itemDate = new Date(item.time);
 			var contactId = $routeParam.contactId;
 			
-			if(currentDate.getDate() == itemDate.getDate()){
-				if(currentDate.getMonth() == itemDate.getMonth()){
-					if(contactId && contactId != null && contactId == item.contactId)
+			if(currentDate.getFullYear() == itemDate.getFullYear() &&
+			   currentDate.getMonth() == itemDate.getMonth() &&
+			   currentDate.getDate() == itemDate.getDate()){			
+					if(contactId && contactId != null && contactId == item.senderId)
 						return false;
 					else
 						return true;
-				}
+				
 			}
 			return false;
 		});
