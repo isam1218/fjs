@@ -18,6 +18,25 @@
 .DockPanel.ui-sortable:not(.ui-sortable-disabled) .Gadget {
   position: static;
 }
+.DockPanel .GadgetStatusText {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 11px;
+  cursor: pointer;
+}
+.DockPanel .ListSectionGadget {
+  height: 20px;
+  border-top: solid 1px #aaa;
+  border-bottom: solid 1px #fff;
+  background-image: -webkit-gradient(linear, top left, bottom left, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 20px;
+  color: #888;
+  text-shadow: whiteSmoke 0 1px 0;
+  text-align: center;
+}
 .DockPanel.Moving {
   border-width: 1px;
   border-image: url("../img/marching-ants.gif") 8 repeat repeat;

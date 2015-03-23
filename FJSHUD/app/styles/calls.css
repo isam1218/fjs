@@ -47,12 +47,6 @@
   align-items: center;
   font-size: .9em;
 }
-.Widget.CallLog .ListRow:nth-child(odd) {
-  background-color: #eee;
-}
-.Widget.CallLog .ListRow:hover {
-  background-color: #ddd;
-}
 .Widget.CallLog .ListRow > div {
   flex: 1;
   display: inline-block;

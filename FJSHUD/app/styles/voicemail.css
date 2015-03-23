@@ -42,6 +42,8 @@
 }
 .vmsection .vminfo:hover .displayName .vmcallbtn {
   visibility: visible;
+  top: 4px;
+  right: 2px;
 }
 .vmsection .vminfo p.vmdisplay {
   padding: 0;
@@ -96,6 +98,8 @@
   visibility: visible;
   height: 26px;
   width: 40px;
+  top: 9px;
+  right: 7px;
   text-align: center;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -109,6 +113,9 @@
   color: #fff;
   text-shadow: 0 -1px 0 #000000;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.vmsection:hover .vmtime {
+  visibility: hidden;
 }
 .vmfootnote {
   display: inline-block;

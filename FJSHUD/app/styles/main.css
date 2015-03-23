@@ -544,6 +544,25 @@ p {
 .DockPanel.ui-sortable:not(.ui-sortable-disabled) .Gadget {
   position: static;
 }
+.DockPanel .GadgetStatusText {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 11px;
+  cursor: pointer;
+}
+.DockPanel .ListSectionGadget {
+  height: 20px;
+  border-top: solid 1px #aaa;
+  border-bottom: solid 1px #fff;
+  background-image: -webkit-gradient(linear, top left, bottom left, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 20px;
+  color: #888;
+  text-shadow: whiteSmoke 0 1px 0;
+  text-align: center;
+}
 .DockPanel.Moving {
   border-width: 1px;
   border-image: url("../img/marching-ants.gif") 8 repeat repeat;
@@ -1372,12 +1391,6 @@ div.NewCall .XButton.XButtonNormal {
   align-items: center;
   font-size: .9em;
 }
-.Widget.CallLog .ListRow:nth-child(odd) {
-  background-color: #eee;
-}
-.Widget.CallLog .ListRow:hover {
-  background-color: #ddd;
-}
 .Widget.CallLog .ListRow > div {
   flex: 1;
   display: inline-block;
@@ -1728,8 +1741,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Queues .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -3059,6 +3072,24 @@ input.text.ChatInputBoxInput,
   float: right;
   margin-right: .5em;
 }
+.Widget .ListRow,
+.LeftBar .ListRow,
+.Widget .vmsection,
+.LeftBar .vmsection {
+  background-color: #fff;
+}
+.Widget .ListRow:nth-child(odd),
+.LeftBar .ListRow:nth-child(odd),
+.Widget .vmsection:nth-child(odd),
+.LeftBar .vmsection:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+.Widget .ListRow:hover,
+.LeftBar .ListRow:hover,
+.Widget .vmsection:hover,
+.LeftBar .vmsection:hover {
+  background-color: #eee;
+}
 .Groups .ListRow > div {
   flex: 1;
   display: flex;
@@ -3142,6 +3173,9 @@ input.text.ChatInputBoxInput,
 }
 .ListRowActionButtonRecord {
   background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
+}
+.ListRowActionButtonTake {
+  background: url("../img/XApp-Icons.png") no-repeat -606px -5px;
 }
 .ListSectionHeaderTitle {
   color: #0093f0;
@@ -3458,6 +3492,15 @@ input[type="tel"] {
   color: #333;
   border: solid 1px #C7C7C7;
   box-shadow: 0px 0px 1px #DDD inset;
+}
+.XIcon24-Record {
+  position: absolute;
+  right: 12px;
+  top: 2px;
+  margin-left: 5px;
+  width: 16px;
+  height: 24px;
+  background: url(../img/XIconSet-24x24.png) no-repeat -192px 0px;
 }
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
@@ -4133,7 +4176,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -4445,6 +4488,8 @@ a.Messages {
 }
 .vmsection .vminfo:hover .displayName .vmcallbtn {
   visibility: visible;
+  top: 4px;
+  right: 2px;
 }
 .vmsection .vminfo p.vmdisplay {
   padding: 0;
@@ -4499,6 +4544,8 @@ a.Messages {
   visibility: visible;
   height: 26px;
   width: 40px;
+  top: 9px;
+  right: 7px;
   text-align: center;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -4512,6 +4559,9 @@ a.Messages {
   color: #fff;
   text-shadow: 0 -1px 0 #000000;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.vmsection:hover .vmtime {
+  visibility: hidden;
 }
 .vmfootnote {
   display: inline-block;

@@ -119,6 +119,24 @@
   float: right;
   margin-right: .5em;
 }
+.Widget .ListRow,
+.LeftBar .ListRow,
+.Widget .vmsection,
+.LeftBar .vmsection {
+  background-color: #fff;
+}
+.Widget .ListRow:nth-child(odd),
+.LeftBar .ListRow:nth-child(odd),
+.Widget .vmsection:nth-child(odd),
+.LeftBar .vmsection:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+.Widget .ListRow:hover,
+.LeftBar .ListRow:hover,
+.Widget .vmsection:hover,
+.LeftBar .vmsection:hover {
+  background-color: #eee;
+}
 .Groups .ListRow > div {
   flex: 1;
   display: flex;
@@ -202,6 +220,9 @@
 }
 .ListRowActionButtonRecord {
   background: url("../img/XApp-Icons.png") no-repeat -324px -5px;
+}
+.ListRowActionButtonTake {
+  background: url("../img/XApp-Icons.png") no-repeat -606px -5px;
 }
 .ListSectionHeaderTitle {
   color: #0093f0;
