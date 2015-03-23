@@ -1,4 +1,4 @@
-hudweb.controller('NotificationController', ['$scope', 'HttpService', '$location','PhoneService','ContactService', function($scope, myHttpService,$location,phoneService,contactService){
+hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService', function($scope, myHttpService, $routeParam,$location,phoneService, contactService){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
