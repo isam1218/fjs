@@ -6,6 +6,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.inCall = false;
 	$scope.inRinging = false;
 	$scope.path = $location.protocol() + "://" + $location.host() + ":" + $location.port();
+	$scope.messageLimit = 300;
 	myHttpService.getFeed('quickinbox');
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
