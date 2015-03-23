@@ -21,39 +21,61 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     //myHttpService.getFeed("groups");
 
     myHttpService.getFeed("groupcontacts");
+
+
     update_groups = function(){
+        var isMember = false;
+        var isShared = false;
 
-        for (i in $scope.groups){
-            isMember = false;
-            isShared = false;
-            members = $scope.groups[i].members;
-            if(members && members.length > 0){
-                for(j in members){
-                    if(members[j].contactId == $scope.contactId){
-                        isMember = true;
-                    }
+        for (var j = 0; j < $scope.groups.length; j++){
+            // iterating thru array of groups...
 
-                    if(members[j].contactId == $scope.meModel.my_pid){
-                        isShared = true;
-                    }
+            // take each group (each group has a 'members' property)
+            // singleGroup = {members: [{},{},{}]}
+            var singleGroup = $scope.groups[j];
 
+            // take each member in that group...
+            // members = [{},{},{}]
+            var members = singleGroup.members;
+
+            for (var k = 0; k < members.length; k++){
+            // for each member obj in the group...
+                var singleMember = members[k];
+
+                // if the member's contact id matches the scope's contact id
+                if (singleMember.contactId === $scope.contactId){
+                    // console.log('$scope is --- ', $scope);
+                    // console.log('$SCOPE.CONTACTID IS - ', $scope.contactId)
+                    // then profile clicked on ($scope) is a member of that group
+                    isMember = true;
+                }
+
+                // if the contact id of that member matches the USER/scope-meModel's pid...
+                if (singleMember.contactId === $scope.meModel.my_pid){
+                    // console.log('$SCOPE.MEMODEL.MY_PID IS - ', $scope.meModel.my_pid)
+                    // then current user is a member of that group 
+                    isShared = true;
                 }
             }
 
-            if(isMember && isShared){
-                if(!isGroupIn($scope.groups[i],$scope.sharedGroups)){
-                     $scope.sharedGroups.push($scope.groups[i]);
+            // console.log('$SHAREDGROUPS CONSISTS OF - ', $scope.sharedGroups)
+            if (isMember && isShared){
+                if (!isGroupIn(singleGroup, $scope.sharedGroups)){
+
+                    // scope and current user are both members of the group
+                    $scope.sharedGroups.push(singleGroup);
                 }
-            }else if(isMember){
-                if(!isGroupIn($scope.groups[i],$scope.contactGroups)){
-                    $scope.contactGroups.push($scope.groups[i]); 
+            } else if (isMember){
+                if (!isGroupIn(singleGroup, $scope.contactGroups)){
+                    $scope.contactGroups.push(singleGroup);
                 }
             }
         }
 
+
     }
 
-    isGroupIn = function(groupToInsert,groups){
+    var isGroupIn = function(groupToInsert, groups){
         groupExist = false;
         for(group in groups){
             if(groupToInsert.xpid == groups[group].xpid){
@@ -75,8 +97,6 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 
         }
     };
-
-
         
     var filterGroup = function(){
         return function(group){
