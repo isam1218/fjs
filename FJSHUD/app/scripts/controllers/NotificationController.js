@@ -254,7 +254,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			if(currentDate.getFullYear() == itemDate.getFullYear() &&
 			   currentDate.getMonth() == itemDate.getMonth() &&
 			   currentDate.getDate() == itemDate.getDate()){			
-					if(contactId && contactId != null && contactId == item.senderId)
+					if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
 						return false;
 					else
 						return true;
