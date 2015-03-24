@@ -116,6 +116,25 @@ p {
 #AppLoading div {
   margin-top: 20%;
 }
+@supports (-moz-appearance:meterbar) {
+  img.x {
+    width: 7px;
+    height: 7px;
+    border: 0px none;
+    display: inline-block;
+    position: relative;
+    right: 10px;
+    top: 10px;
+    float: right;
+    cursor: pointer;
+  }
+  .SearchInputBoxInputHolder {
+    height: 100% !important;
+    width: 82%  !important;
+    right: 0px  !important;
+    top: 0px !important;
+  }
+}
 .RecentPointer {
   cursor: pointer;
   display: inline;
