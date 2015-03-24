@@ -6,6 +6,10 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', function($
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
+
+	this.getSetting = function(setting_key){
+		return settings[setting_key];
+	}
 	
 	/**
 		SYNCING
