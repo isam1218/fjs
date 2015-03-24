@@ -76,7 +76,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		
 		$scope.loading = false;
 		$scope.messages = data.items;
-		console.log('Initial load of msgs - ', $scope.messages);
 		addDetails();
 		
 		// kill watcher
