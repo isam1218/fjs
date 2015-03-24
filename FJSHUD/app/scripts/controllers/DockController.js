@@ -1,4 +1,4 @@
-hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $filter, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('DockController', ['$timeout', '$location', '$filter', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($timeout, $location, $filter, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 
 	$scope.gadgets = {};
 	
@@ -22,7 +22,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 		$scope.gadgets = {};
 		
 		// wait for sync
-		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
+		contactService.getContacts().then(function() {
 			for (key in data) {
 				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
