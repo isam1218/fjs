@@ -7,6 +7,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	
 	$scope.upload = {};
 	$scope.loading = true;
+	$scope.displayHeader = true;
 	
 	// send to pop-up controller
 	$scope.showAttachmentOverlay = function() {
@@ -59,9 +60,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		});
 	};
 
-    $scope.getAttachment = function(url){
-    	return httpService.get_attachment(url);
-    };
+  $scope.getAttachment = function(url){
+  	return httpService.get_attachment(url);
+  };
 	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
@@ -69,7 +70,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
 	
-    httpService.getChat($scope.feed,$scope.targetId).then(function(data) {
+  httpService.getChat($scope.feed,$scope.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
 		
@@ -107,6 +108,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			var from = data[key].from.replace('contacts:', '');
 			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
 			
+			if(from == $scope.meModel.my_pid){
+				phoneService.playSound("sent");
+			}else{
+				phoneService.playSound("received");
+			}
+
 			// only attach messages related to this user
 			if (from == $scope.contactID || to == $scope.contactID){
 				$scope.messages.push(data[key]);
@@ -136,7 +143,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		};
 		
 		httpService.sendAction('streamevent', 'sendConversationEvent', data);
-		
+		//phoneService.playSound("sent");
 		this.message = '';
 	};
 
@@ -232,6 +239,15 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			});
 		}
 	}, 600);
+
+	$scope.hideDisplay = function(message, index){
+		var currentMessage = $scope.messages[index];
+		var previousMessage = $scope.messages[index - 1];
+		// if current msg's owner is the SAME AS owner of previous msg --> return true upon ng-hide --> do NOT display
+		if (currentMessage.from === previousMessage.from){
+			return true;
+		}
+	}
 
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);

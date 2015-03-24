@@ -1,4 +1,4 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location', function($q, $rootScope, httpService,$compile,$location) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', function($q, $rootScope, httpService,$compile,$location,settingsService) {
 
 	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
 
@@ -48,6 +48,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	}
 
+	setVolume = function(volume){
+		if(soundManager){
+			soundManager.speaker = volume;
+		}
+	}
+
+	setMicSensitivity = function(sensitivity){
+		if(soundManager){
+			soundManager.microphone = sensitivity;
+		}
+	}
+
 	hangUp = function(xpid){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
@@ -66,8 +78,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	makeCall = function(phoneNumber){
-		console.log("making call: " + phoneNumber)
-		if(phone){
+		if(phone && phoneNumber != ""){
+			console.log("calling" + phoneNumber);
 			phone.makeCall(phoneNumber)
 		}
 	}
@@ -146,6 +158,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     accStatus = function(account_) {
             if (account_) {
+            	console.log(account_.status);
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
                 } else {
@@ -163,15 +176,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
-            	soundManager = session.getDTMFToneGenerator();
 				phone = session.phone;
          		var url = $location.absUrl().split("#")[0] + "views/nativeAlerts/Alert.html"
          		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
 			 }
-            isRegistered = true;
+            //isRegistered = true;
 			soundManager = session.soundManager;
+			spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
+			micVolume = settingsService.getSetting('hudmw_webphone_mic');
+			if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
+				soundManager.speaker = parseFloat(spkVolume);
+				soundManager.microphone = parseFloat(micVolume);
+			}
 			registerPhone(true);
 			
          } else if (session_status.status == 1) {
@@ -417,6 +435,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			//session.getDTMFToneGenerator().setToneEnabled(true);
 			session.getDTMFToneGenerator().play(entry);
 	}*/
+	this.setVolume = setVolume;
+	this.setMicSensitivity = setMicSensitivity;
+
+	this.playSound= function(sound_key){
+		var audio = $('audio.send')
+
+		switch(sound_key){
+			case 'received':
+				$("audio.received")[0].play();
+				break;
+			case 'sent':
+				
+				$("audio.send")[0].play();
+				break;
+		}
+	}
 
 	this.sendDtmf = function(xpid,entry){
 		sip_id = xpid2Sip[xpid];

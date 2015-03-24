@@ -41,12 +41,12 @@
   position: relative;
 }
 .Widget.Conversation .WidgetBody .ChatView {
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  flex: 1;
+  flex-direction: column;
+  display: flex;
+  flex: 1 1 0;
 }
 .Widget.Conversation .WidgetBody .ChatView .ListViewContent {
-  -webkit-box-flex: 1;
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 5px;
@@ -99,14 +99,6 @@
 }
 .AttachmentsList .fj-content-items {
   position: relative;
-}
-.SettingsTabContent .fj-viewcontent {
-  padding: 10px;
-}
-.SettingsTabContent .fj-viewcontent .lblSelect {
-  display: inline-block;
-  width: 150px;
-  font-size: 12;
 }
 .WidgetTabContent.TabChat {
   position: absolute;

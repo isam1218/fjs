@@ -192,7 +192,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
         }
     $scope.update_settings = function(type,action,model){
-        
         switch(type){
             case 'auto_away_timeout':
                 if(model){
@@ -200,15 +199,23 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 }else{
                     myHttpService.updateSettings(type,action,MAX_AUTO_AWAY_TIMEOUT);
                 }
+                break;
+            case 'hudmw_webphone_mic':
+                myHttpService.updateSettings(type,action,model); 
+                phoneService.setMicSensitivity(model);
+                break;
+            case 'hudmw_webphone_speaker':
+                myHttpService.updateSettings(type,action,model); 
+                phoneService.setVolume(model);
             default:
                 myHttpService.updateSettings(type,action,model); 
             
         }
 
     }
-
-    $scope.micVol;
-    $scope.spkVol;
+    $scope.volume = {};
+    $scope.volume.micVol;
+    $scope.volume.spkVol;
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
@@ -283,8 +290,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 return (item.value==settings['recent_call_history_length']);
             });
 
-            $scope.micVol = parseFloat(settings['hudmw_webphone_mic']);
-            $scope.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
+            $scope.volume.micVol = parseFloat(settings['hudmw_webphone_mic']);
+            $scope.volume.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
             $scope.callLogSizeSelected = callLogSelected[0];
             
             if($scope.settings.queueWaitingThreshold){
@@ -352,15 +359,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         myHttpService.sendAction("weblauncher","update",data);
     }
     
-    $scope.$on('settings_synced',function(event,data){
-        if (data && data != undefined){
-			for(i = 0; i < data.length; i++){
-                key = data[i].key;
-                value = data[i].value;
-                settings[key] = value;
-            }
-
-            $scope.settings = settings;
+    $scope.$on('settings_updated',function(event,data){
+        if (data){
+			$scope.settings = settings = data;
 			update_queues();
             update_settings();
         }
@@ -655,9 +656,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.$on('current_call_control', function(event,currentCall){
          $scope.currentCall = currentCall;
+        if($scope.currentCall){
+            if($scope.currentCall.contactId){
+                contact = $contactService.getContact(currentCall.contactId);
+                currentCall.contact = contact;
+            }
+        }
         if(currentCall  == null){
             $scope.call_obj.phoneNumber = "";
         }
+
     });
 
 
@@ -672,13 +680,26 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
         else
             action = 'stopCallRecording';
-            
-        myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
+        
+        if($scope.currentCall){
+            if($scope.currentCall.contactId){
+               myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
+            }else{
+               myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
+                
+            }
+        }
     };
 
     $scope.parkCall = function(currentCall){
        call =  phoneService.getCall(currentCall.contactId);
         phoneService.parkCall(currentCall.xpid);
+    }
+
+    $scope.muteCall = function(){
+       phoneService.setVolume(0);
+       $scope.volume.spkVol = 0;
+
     }
 
     var updateTime = function() {
@@ -716,16 +737,18 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     
     var dtmf_input = "";
 
+    //listen for key_press broadcasted from a root_controller
     $scope.$on("key_press", function(event,data){
             dtmf_input = dtmf_input + data;
             $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-            if($scope.currentCall){
-                
-                phoneService.getDtmfToneGenerator().play(data);
-                setTimeout(function(){
+            phoneService.getDtmfToneGenerator().play(data);
+            setTimeout(function(){
                     phoneService.getDtmfToneGenerator().stop();
                 },200)
 
+            if($scope.currentCall){
+                
+                
                 var call = phoneService.getCall($scope.currentCall.xpid);
                 setTimeout(function(){
                     call.dtmf(dtmf_input);

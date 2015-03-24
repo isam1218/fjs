@@ -1,6 +1,3 @@
-<div class="SettingsPanel DialogContentMainBlock_List" >
-  <div class="SettingsTabContent fj-content fj-stream" >
-    <div class="fj-scrollable ListView WithoutToolBar fj-viewcontent">
           <div class="ListSection">
             <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle">Sound Quality</div>
@@ -14,12 +11,12 @@
           </div>
           <div class="Dialog-settings-row">
             <div class="lblSelect">Microphone:</div>
-            <input type="range" min="0" max="1" step=".01" ng-model="micVol" ng-change="update_settings('hudmw_webphone_mic','update',micVol)"
+            <input type="range" min="0" max="1" step=".01" ng-model="volume.micVol" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVol)"
               ></input>
           </div>
         <div class="Dialog-settings-row">
           <div class="lblSelect">Speaker:</div>
-          <input type="range" min="0" max="1" step=".01" ng-model="spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',spkVol)"></input>
+          <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
         </div>
       <div class="Dialog-settings-row">
         <div class="lblSelect">Echo: </div>
@@ -60,7 +57,3 @@
 
       </div>
     </div>
-
-</div>
-</div>
-</div>
