@@ -79,6 +79,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	makeCall = function(phoneNumber){
 		if(phone && phoneNumber != ""){
+			console.log("calling" + phoneNumber);
 			phone.makeCall(phoneNumber)
 		}
 	}
@@ -157,6 +158,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     accStatus = function(account_) {
             if (account_) {
+            	console.log(account_.status);
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
                 } else {
@@ -435,6 +437,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}*/
 	this.setVolume = setVolume;
 	this.setMicSensitivity = setMicSensitivity;
+
+	this.playSound= function(sound_key){
+		var audio = $('audio.send')
+
+		switch(sound_key){
+			case 'received':
+				$("audio.received")[0].play();
+				break;
+			case 'sent':
+				
+				$("audio.send")[0].play();
+				break;
+		}
+	}
 
 	this.sendDtmf = function(xpid,entry){
 		sip_id = xpid2Sip[xpid];
