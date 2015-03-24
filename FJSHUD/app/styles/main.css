@@ -176,11 +176,11 @@ p {
 .TopBarLogo {
   background: url("../img/FonalityLogo.png") no-repeat;
   margin: 5px 0 0 10px;
-  flex: .6;
+  width: 21%;
   min-width: 250px;
 }
 .TopBarIcons {
-  flex: 1;
+  width: 36%;
   min-width: 350px;
   margin-left: 10px;
 }
@@ -421,7 +421,7 @@ p {
 }
 .LeftBar {
   position: relative;
-  flex: .6;
+  width: 21%;
   min-width: 250px;
   background-color: white;
   border: 1px solid #ccc;
@@ -697,8 +697,8 @@ p {
 }
 .WidgetPanel {
   position: relative;
-  flex: 1;
   margin: -40px 0 0 10px;
+  width: 36%;
   min-width: 350px;
 }
 .WidgetPanel .Widget {
@@ -1741,8 +1741,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Queues .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -2706,12 +2706,12 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
 }
 .Widget.Conversation .WidgetBody .ChatView {
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  flex: 1;
+  flex-direction: column;
+  display: flex;
+  flex: 1 1 0;
 }
 .Widget.Conversation .WidgetBody .ChatView .ListViewContent {
-  -webkit-box-flex: 1;
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 5px;
@@ -4176,7 +4176,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

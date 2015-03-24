@@ -44,12 +44,12 @@
   .WidgetBody {
     position: relative;
     .ChatView {
-      -webkit-box-orient: vertical;
-      display: -webkit-box;
-	  flex: 1;
+      flex-direction: column;
+      display: flex;
+	  flex: 1 1 0;
 
       .ListViewContent {
-        -webkit-box-flex: 1;
+        flex: 1;
         overflow-y: auto;
         overflow-x: hidden;
 		margin-top: 5px;

@@ -108,6 +108,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			var from = data[key].from.replace('contacts:', '');
 			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
 			
+			if(from == $scope.meModel.my_pid){
+				phoneService.playSound("sent");
+			}else{
+				phoneService.playSound("received");
+			}
+
 			// only attach messages related to this user
 			if (from == $scope.contactID || to == $scope.contactID){
 				$scope.messages.push(data[key]);
@@ -137,7 +143,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		};
 		
 		httpService.sendAction('streamevent', 'sendConversationEvent', data);
-		
+		//phoneService.playSound("sent");
 		this.message = '';
 	};
 

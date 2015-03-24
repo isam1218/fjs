@@ -6,7 +6,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.inCall = false;
 	$scope.inRinging = false;
 	$scope.path = $location.protocol() + "://" + $location.host() + ":" + $location.port();
-	$scope.messageLimit = 300;
+	$scope.messageLimit = 3;
 	myHttpService.getFeed('quickinbox');
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
@@ -247,6 +247,8 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			}
 		}
 
+		var playChatNotification = false;
+
 		$scope.todaysNotifications = $scope.notifications.filter(function(item){
 			currentDate = new Date();
 			itemDate = new Date(item.time);
@@ -258,11 +260,18 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 					if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
 						return false;
 					else
+						if(item.type == 'wall'){
+							playChatNotification = true;
+						}
 						return true;
 				
 			}
 			return false;
 		});
+
+		if(playChatNotification){
+			phoneService.playSound("received");
+		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time; 

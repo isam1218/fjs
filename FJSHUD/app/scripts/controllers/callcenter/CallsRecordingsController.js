@@ -16,6 +16,7 @@ hudweb.controller('CallsRecordingsController', ['$scope', 'HttpService', 'Contac
 					$scope.calls[$scope.calls.length-1].contact = contactService.getContact(obj.contactId);
 			}
 		});
+
 	});
 	$scope.callListLimit = 20;
 	$scope.customFilter = function() {
