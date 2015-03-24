@@ -22,17 +22,25 @@ hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParam
         }
     };
 
+    $scope.customFilter = function(){
+        return function(item){
+            if (item.contactId === $scope.$parent.$parent.contactID){
+                return true;
+            }
+        };
+    };
+
     $scope.get_avatar = function(xpid){
         return httpService.get_avatar(xpid,40,40);
-    }
+    };
 
     $scope.formate_date = function(time){
         return utilService.formatDate(time);
-    }
+    };
 
     $scope.formatDuration = function(time){
         return utilService.formatDuration(time);
-    }
+    };
 
     $scope.getCalllogTypeImg = function(calllog){
         if(calllog.missed){
@@ -40,7 +48,7 @@ hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParam
         }else{
             return "img/XIcon-CallLog-Outbound.png?v=1418381374907";
         }
-    }
+    };
 
      $scope.sortCallLog = function(sortType){
         switch(sortType){
@@ -141,7 +149,7 @@ hudweb.controller('ConversationWidgetCallLogController', ['$scope', '$routeParam
         }
 
         $scope.recentSelectSort = sortType;
-  }
+  };
 
    
 
