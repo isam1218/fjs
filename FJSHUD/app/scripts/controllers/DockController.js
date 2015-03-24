@@ -23,9 +23,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
-			console.log(data);
 			for (key in data) {
-
 				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
 					var gadget = {
@@ -63,16 +61,12 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 							});
 							
 							break;
-						case 'GadgetParkedCalls':
-							//gadget.data 
-							break;
 					}
 					
-					$scope.gadgets[gadget.value.factoryId].push(gadget);
+					if (gadget.data)
+						$scope.gadgets[gadget.value.factoryId].push(gadget);
 				}
 			}
-			
-			$scope.$safeApply();
 		});
 	});
 	
@@ -97,7 +91,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 	$scope.isObjectEmpty = function(object){
 		return !$.isEmptyObject(object);
 	}
+	
 	$scope.parkedCalls = [];
+	
 	$scope.$on('parkedcalls_updated',function(event,data){
 		if(data){
 			for(parkedCall in data){
