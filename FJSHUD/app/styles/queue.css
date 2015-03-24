@@ -247,14 +247,14 @@
 }
 .Queues .QueueHeader {
   background: #ddd;
-  width: 515px;
+  width: 100%;
 }
 .Queues .QueueSetting {
   display: inline-block;
   test-align: center;
 }
 .Queues .QueueSettingCol1 {
-  width: 180px;
+  width: 20%;
   overflow: auto;
   margin: auto;
   text-align: center;
