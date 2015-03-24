@@ -17,8 +17,8 @@
 }
 .WidgetPanel {
   position: relative;
-  flex: 1;
   margin: -40px 0 0 10px;
+  width: 36%;
   min-width: 350px;
 }
 .WidgetPanel .Widget {
