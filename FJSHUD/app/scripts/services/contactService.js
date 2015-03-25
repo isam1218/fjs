@@ -3,6 +3,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	var contacts = [];
 	
 	this.getContact = function(xpid) {
+		var i = 0;
+
 		for (i = 0; i < contacts.length; i++) {
 			if (contacts[i].xpid == xpid)
 				return contacts[i];
