@@ -2,6 +2,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   var deferred = $q.defer();	
   var queues = [];
   var mine = [];
+  var total = {};
   var myLoggedIn = 0;
   
   this.getQueue = function(xpid) {
@@ -48,7 +49,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
     // format data that controller needs
     return {
       queues: queues,
-	  mine: mine
+	  mine: mine,
+	  total: total
     };
   };
 
@@ -96,6 +98,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   });
 
   $rootScope.$on("queue_members_status_synced", function (event, data) {
+	total.members = 0;
+	total.loggedIn = 0;
 	myLoggedIn = 0;
 	
     for (i = 0; i < queues.length; i++) {
@@ -103,6 +107,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	  queues[i].loggedOutMembers = 0;
 
       if (queues[i].members && queues[i].members.length > 0) {
+		total.members += queues[i].members.length;
+		  
         for (j = 0; j < queues[i].members.length; j++) {
           for (key in data) {
             if (data[key].xpid == queues[i].members[j].xpid) {
@@ -111,6 +117,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 			  // logged totals
 			  if (queues[i].members[j].status.status.indexOf('login') != -1) {
 				  queues[i].loggedInMembers++;
+				  total.loggedIn++;
 				  
 				  if (queues[i].members[j].contactId == $rootScope.myPid)
 					  myLoggedIn++;
@@ -127,10 +134,19 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   });
 
   $rootScope.$on("queue_stat_calls_synced", function (event, data) {
+	total.active = 0;
+	total.waiting = 0;
+	total.calls = 0;
+	
     for (i = 0; i < queues.length; i++) {
       for (key in data) {
         if (data[key].xpid == queues[i].xpid) {
           queues[i].info = data[key];
+		  
+		  // add up overall totals
+		  total.active += data[key].active;
+		  total.waiting += data[key].waiting;
+		  total.calls += (data[key].completed + data[key].abandon);
         }
       }
     }
@@ -148,7 +164,4 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
     }
     $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
-
-
-
 }]);

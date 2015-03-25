@@ -1,16 +1,17 @@
-hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueService', function ($scope, myHttpService, queueService) {
+hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueService', function ($scope, httpService, queueService) {
   $scope.query = '';
   $scope.newObj = {};
   $scope.newObj.query = '';
   $scope.queues = [];
   $scope.contacts = {};
+  $scope.total = {};
   $scope.me = [];
 
-  myHttpService.getFeed('queuelogoutreasons');
-  myHttpService.getFeed('queues');
-  myHttpService.getFeed('queue_members');
-  myHttpService.getFeed('queue_members_status');
-  myHttpService.getFeed('queue_stat_calls');
+  httpService.getFeed('queuelogoutreasons');
+  httpService.getFeed('queues');
+  httpService.getFeed('queue_members');
+  httpService.getFeed('queue_members_status');
+  httpService.getFeed('queue_stat_calls');
 
   $scope.tabs = ['My Queue', 'All Queues', 'My Status'];
 
@@ -32,31 +33,24 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
   $scope.init = function (viewTile, selectedTab) {
     $scope.viewIcon = viewTile;
     $scope.selected = selectedTab;
-
-    switch (selectedTab) {
-      case 'All Queues':
-        $scope.$on('queues_updated', function (event, data) {
-          $scope.queues = data.queues;
-        });
-        break;
-
-      case 'My Queue':
-        $scope.$on('queues_updated', function (event, data) {
-          $scope.queues = data.mine;
-        });
-
-        $scope.$on('me_synced', function (event, data) {
-          if (data) {
-            for (var medata in data) {
-              $scope.me[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-          }
-        });
-
-        break;
-    }
-
   };
+  
+  $scope.$on('queues_updated', function (event, data) {
+	if ($scope.selected == 'My Queue')
+		$scope.queues = data.mine;
+	else
+		$scope.queues = data.queues;
+	
+    $scope.total = data.total;
+  });
+  
+  $scope.$on('me_synced', function (event, data) {
+    if (data) {
+      for (var medata in data) {
+        $scope.me[data[medata].propertyKey] = data[medata].propertyValue;
+      }
+    }
+  });
 
   $scope.queueFilter = function(){
     var query = $scope.newObj.query.toLowerCase();
@@ -74,26 +68,12 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
       }
     };
   };
-
-  $scope.$on("$destroy", function () {
-
-  });
-
-  $scope.getAvatarUrl = function (xpid) {
-    return myHttpService.get_avatar(xpid, 28, 28);
-  };
-
-  $scope.getAvatarUrl = function (queue, index) {
-
-    if (queue.members) {
-      if (queue.members[index] !== undefined) {
-        var xpid = queue.members[index].xpid;
-        return myHttpService.get_avatar(xpid, 14, 14);
-      }
-      else
-        return 'img/Generic-Avatar-14.png';
-
-    }
+  
+  $scope.resetStats = function() {
+	var doIt = confirm('Are you sure you want to reset statistics for all queues?');
+	
+	if (doIt)
+		httpService.sendAction('queues', 'resetAllQueuesStatistics');
   };
 
   $scope.sortBy = function (type) {
@@ -195,5 +175,8 @@ hudweb.controller('CallCenterController', ['$scope', 'HttpService', 'QueueServic
     $scope.sortColumn = type;
   };
 
-}])
-;
+  $scope.$on("$destroy", function () {
+
+  });
+
+}]);

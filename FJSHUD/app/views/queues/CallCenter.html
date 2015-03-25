@@ -4,26 +4,24 @@
     <div class="WidgetHeaderTitle">Call Center</div>
     <div class="WidgetStat WidgetStatQueue">
       <div class="fj-hbox WidgetStatEntry c00">
-        <div class="fj-hbox-cell Label">Agents:</div>
-        <div class="fj-hbox-space Value"><span>{{::queue.info.active}}</span> of <span>{{::queue.members.length}}</span>
+        <div class="fj-hbox-cell Label">Logged-in Agents:</div>
+        <div class="fj-hbox-space Value">{{ total.loggedIn + ' of ' + total.members }}
         </div>
       </div>
       <div class="fj-hbox WidgetStatEntry c01">
-        <div class="fj-hbox-cell Label">Calls Holding:</div>
-        <div class="fj-hbox-space Value">{{::queue.info.waiting}}</div>
+        <div class="fj-hbox-cell Label">Calls Waiting:</div>
+        <div class="fj-hbox-space Value">{{ total.waiting }}</div>
       </div>
       <div class="fj-hbox WidgetStatEntry c10">
-        <div class="fj-hbox-cell Label">Reset:</div>
-        <div class="fj-hbox-space Value">{{::queue.info.resetTime | date }}</div>
+        <div class="fj-hbox-cell Label">Active Agents:</div>
+        <div class="fj-hbox-space Value">{{ total.active }}</div>
       </div>
       <div class="fj-hbox WidgetStatEntry c11">
-        <div class="fj-hbox-cell Label">Total Calls:</div>
-        <div class="fj-hbox-space Value">{{::queue.info.completed}}</div>
+        <div class="fj-hbox-cell Label">Total Calls (since last reset):</div>
+        <div class="fj-hbox-space Value">{{ total.calls }}</div>
       </div>
     </div>
   </div>
-
-
 
   <div class="WidgetBody">
     <div class="WidgetTabBar">
