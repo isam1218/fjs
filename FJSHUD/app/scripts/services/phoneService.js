@@ -17,6 +17,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isRegistered = false;
 	var isAlertShown = true;
 	var voicemails = {};
+	var weblauncher = {};
 	//fjs.CONFIG.SERVER.serverURL 
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
@@ -118,8 +119,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	onCallStateChanged = function(call){
 		status = parseInt(call.status);
-		sipCalls[call.sip_id] = call;
         data = {}
+        sipCalls[call.sip_id] = call;
+		
 		switch(status){
 			case CALL_STATUS_RINGING:
 				data = {
@@ -130,6 +132,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				data = {
 					event: 'accepted',
 				}
+				/*weblauncher = settingsService.getActiveWebLauncher();
+				if(sipCalls[call.sip_id]){
+					if(!sipCalls[call.sip_id].accepted){
+						if(call.incoming){
+							if(weblauncher.inboundAuto){
+								url = weblauncher.inbound;
+								window.open(url, "_blank");
+							}	
+						}else{
+							if(weblauncher.outboundAuto){
+								url = weblauncher.outbound;
+								window.open(url, "_blank");
+							}
+						}		
+					}
+				}
+				sipCalls[call.sip_id].accepted = 1;*/
 				break;
 			case CALL_STATUS_HOLD:
 				data = {
@@ -144,11 +163,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				removeNotification();
 				break;
 			case CALL_STATUS_CLOSED:
+				/*weblauncher = settingsService.getActiveWebLauncher();
+				if(call.incoming){
+					if(weblauncher.inboundHangupAuto){
+						url = weblauncher.inboundHangup;
+						window.open(url, "_blank");
+					}	
+				}else{
+					if(weblauncher.outboundHangupAuto){
+						url = weblauncher.outboundHangup;
+						window.open(url, "_blank");
+					}
+				}
+				delete sipCalls[call.sip_id];*/
 				showCallControls(null);
 				removeNotification();
 				break;
 		}
-
+		
 		  
         
         if(!$.isEmptyObject(data)){
@@ -480,16 +512,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	$rootScope.$on("calls_synced",function(event,data){
+		var displayHangUpLauncher = false;
+		var displayLauncher = false;
 		
 		for(i = 0; i < data.length; i ++){
 				if(data[i].xef001type == "delete"){
-					delete callsDetails[data[i].xpid];
-					delete xpid2Sip[data[i].xpid];
+					
+					if(callsDetails[data[i].xpid]){
+						delete callsDetails[data[i].xpid];
+						delete xpid2Sip[data[i].xpid];
+					}
 				}else{
 					if(data[i].incoming){
+						
 						if(data[i].xpid == $rootScope.meModel.my_pid){
 							callsDetails[data[i].xpid] = data[i];
-			
 							for(sipCall in sipCalls){
 									var toBreak = false;
 						
@@ -506,6 +543,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						}
 					
 					}					
+				}
+		}
+
+		if(displayLauncher){
+				if(weblauncher.outboundAuto){
+					url = weblauncher.outbound;
+					window.open(url, "_blank");
+				}
+			}
+
+		if(displayHangUpLauncher){
+				if(weblauncher.outboundHangupAuto){
+					url = weblauncher.outboundHangup;
+					window.open(url, "_blank");
 				}
 		}	
 		$rootScope.$broadcast('calls_updated', callsDetails);
@@ -524,15 +575,49 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$rootScope.$broadcast('parkedcalls_updated', data);
 	});
 
+	
+	
 	$rootScope.$on("mycalls_synced",function(event,data){
+		
+		var displayHangUpLauncher = false;
+		var displayLauncher = false;
+		weblauncher = settingsService.getActiveWebLauncher();
+			
 		if(data){
 			for(i = 0; i < data.length; i ++){
 				if(data[i].xef001type == "delete"){
-					delete callsDetails[data[i].xpid];
-					delete xpid2Sip[data[i].xpid];
+
+					if(callsDetails[data[i].xpid]){
+						if(callsDetails[data[i].xpid].incoming){
+							if(weblauncher.inboundHangupAuto){
+									url = weblauncher.inboundHangup;
+									window.open(url, "_blank");
+							}
+						}else{
+							if(weblauncher.outboundHangupAuto){
+									url = weblauncher.outboundHangup;
+									window.open(url, "_blank");
+							}
+						}
+						delete callsDetails[data[i].xpid];
+						delete xpid2Sip[data[i].xpid];
+					}
+
 				}else{
 					callsDetails[data[i].xpid] = data[i];
-
+					if(data[i].state == 2){
+						if(data[i].incoming){
+							if(weblauncher.inboundAuto){
+									url = weblauncher.inbound;
+									window.open(url, "_blank");
+							}
+						}else{
+							if(weblauncher.outboundAuto){
+									url = weblauncher.outbound;
+									window.open(url, "_blank");
+							}
+						}					
+					}
 					for(sipCall in sipCalls){
 						var toBreak = false;
 						
@@ -548,6 +633,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 				}
 			}
+			
+			/*if(sipCalls[call.sip_id]){
+					if(!sipCalls[call.sip_id].accepted){
+						if(call.incoming){
+							if(weblauncher.inboundAuto){
+								url = weblauncher.inbound;
+								window.open(url, "_blank");
+							}	
+						}else{
+							if(weblauncher.outboundAuto){
+								url = weblauncher.outbound;
+								window.open(url, "_blank");
+							}
+						}		
+					}
+				}*/
 		}
 
 		$rootScope.$broadcast('calls_updated', callsDetails);

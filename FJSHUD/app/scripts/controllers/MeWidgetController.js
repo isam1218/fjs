@@ -615,7 +615,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     }
 
     
-    $scope.$on('weblauncher_synced', function(event,data){
+    $scope.$on('weblauncher_updated', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
             activeWebLauncher = data.filter(function(item){
@@ -628,6 +628,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             $scope.weblauncher_profiles = data;
         }
     });
+    
     $scope.$on('weblaunchervariables_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;

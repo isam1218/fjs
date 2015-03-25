@@ -1,7 +1,7 @@
 hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {	
 	var deferred = $q.defer();
 	var settings = {};
-	
+	var weblaunchers = [];
 	this.getSettings = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
@@ -9,6 +9,12 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', function($
 
 	this.getSetting = function(setting_key){
 		return settings[setting_key];
+	}
+
+	this.getActiveWebLauncher = function(){
+		return weblaunchers.filter(function(item){
+			return item.id == settings['hudmw_launcher_config_id'];
+		})[0];
 	}
 	
 	/**
@@ -27,4 +33,12 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', function($
 		
 		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 	});
+
+	$rootScope.$on('weblauncher_synced', function(event,data){
+        if(data){
+           weblaunchers = data;
+           $rootScope.$evalAsync($rootScope.$broadcast('weblauncher_updated', weblaunchers));
+	
+        }
+    });
 }]);
