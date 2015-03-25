@@ -1,5 +1,168 @@
-.Queues {
+.Widget.Queues {
+  .ListView {
+    display: flex;
+	flex-direction: column;
+  }
+  
+  .QueueList {
+    flex: 1;
+	overflow-y: auto;
+  }
+  
+  .Grid {
+    font-size: .85em;
+	padding: 1em;
+	
+    .Header, .Row {
+	  width: 100%;
+	  clear: both;
+	  display: block;
+	}
+	
+	.Header {
+	  border-bottom: 1px solid #333;
+	  overflow: hidden;
+	  cursor: pointer;
+	  font-size: .9em;
+	  margin-bottom: 8px;
+	  
+	  span {
+	    text-overflow: ellipsis;
+		overflow: hidden;
+	  }
 
+      .desc_arrow{
+        position:relative;
+        border: solid 6px;
+        width: 0;
+        height: 0;
+        display: inline-block;
+        border-color: transparent transparent #729c00 transparent;
+        bottom: 3px;
+      }
+      
+      .asc_arrow{
+        position: relative;
+        border: solid 6px;
+        border-color: #729c00 transparent transparent transparent;
+        top: 6px;
+        width: 0;
+        height: 0;
+        display: inline-block;
+      }
+	}
+	
+	.Row:nth-child(odd) {
+	  background-color: #eeeeee;
+	  overflow: hidden;
+	}
+	
+	.Header > div, .Row > div {
+	  float: left;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  padding: .5em;
+	  white-space: nowrap;
+	
+	  &:nth-child(1) { 
+		width: 25%; 
+	  }
+	  
+	  &:nth-child(n+2) { 
+	    width: 12.5%; 
+	  }
+	}
+  }
+  
+  .Block {
+	position: relative;
+    float: left;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+	overflow: hidden;
+	width: 31%;
+	background-color: #EBEBEB;
+	margin: 1%;
+	
+	.Avatar {
+	  font-size: 1.5em;
+	}
+	
+    .Header {
+	  background-color: #ECECEC;
+	  padding: .5em;
+	  cursor: pointer;
+	  text-decoration: none;
+	  white-space: nowrap;
+	  font-size: .9em;
+	  display: flex;
+	  flex-direction: row;
+	  
+	  & > div {
+	    display: inline-block;
+		vertical-align: top;
+	  }
+	  
+	  .Title {
+		margin-left: .5em;
+		flex: 1;
+		
+		div {
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		}
+		  
+		.Name {
+		  font-weight: bold;
+		  color: #333;
+		  width: 99%;
+		  text-overflow: ellipsis;
+		}
+		
+		.Agents {
+		  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+		  border-radius: 6px;
+		  margin-top: .5em;
+		  text-align: center;
+		  padding: .25em;
+		  font-size: .8em;
+		}
+	  }
+	}
+	
+	.Stats {
+	  background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
+	  font-size: .7em;
+	  text-align: center;
+	  padding: 1em 0;
+	  line-height: 1.5em;
+	  border-top: 1px solid #D5D6D6;
+	  color: gray;
+
+	  & > div {
+	    display: inline-block;
+	    width: 30%;
+		vertical-align: top;
+	    
+	    strong {
+	      font-size: 1.3em;
+	  	  display: block;
+	    }
+	  }
+	}
+  }
+  
+  .ToolBarBottom {
+    padding: .5em;
+	text-align: right;
+	font-size: 1.1em;
+	border-top: 1px solid #ccc;
+  }
+    
+	
+  /* everything below here is under construction */
+
+  
   .fj-content-items {
     position: absolute;
     left: 0px;
@@ -763,31 +926,4 @@
     }
   }
 
-}
-
-
-.recent-selected-column{
-  color:#729C00;
-
-  .desc_arrow{
-    position:relative;
-    border: solid 6px;
-    width:0;
-    height:0;
-    display:inline-block;
-    border-color:transparent transparent #729c00 transparent;
-    bottom:3px;
-    
-  }
-
-  .asc_arrow{
-    position:relative;
-    border: solid 6px;
-    border-color: #729c00 transparent transparent transparent;
-    top:6px;
-    
-    width:0;
-    height:0;
-    display:inline-block;
-  }
 }

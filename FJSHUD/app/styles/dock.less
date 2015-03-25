@@ -83,6 +83,12 @@
 	  text-decoration: none;
 	  white-space: nowrap;
 	  font-size: .8em;
+	  display: flex;
+	  flex-direction: row;
+	
+	  & > .Avatar {
+	    font-size: 1.25em;
+	  }
 	  
 	  &.Single {
 		background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
@@ -94,15 +100,27 @@
 	  }
 	  
 	  .Title {
-	    width: 75%;
+		margin-left: .5em;
+		flex: 1;
 		
 		div {
 		  overflow: hidden;
 		  text-overflow: ellipsis;
-		  
-		  &:first-child {
-		    font-weight: bold;
-		  }
+		}
+		
+		.Name {
+		  font-weight: bold;
+		  width: 99%;
+		  text-overflow: ellipsis;
+		}
+		
+		.Agents {
+		  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+		  border-radius: 6px;
+		  margin-top: .5em;
+		  text-align: center;
+		  padding: .25em;
+		  font-size: .8em;
 		}
 	  }
 	}
@@ -145,6 +163,7 @@
 		  & > div {
 		    display: inline-block;
 		    width: 30%;
+			vertical-align: top;
 		    
 		    strong {
 		      font-size: 1.3em;
