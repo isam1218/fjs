@@ -14,14 +14,11 @@
         > 
         </select>
         
-        <select class="XButton XButtonNormal XButtonDropDown disabled-false" ng-model="selectedAction"
-            ng-options = "action_option.display_name for action_option in actions"
-            ng-change="handleVoiceMailAction(selectedAction.type)"
-        >
+        <select class="XButton XButtonNormal XButtonDropDown disabled-false" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
             <option>Actions</option>
-
             <div class="XButtonDropDownArrow"></div>
         </select>
+
     </div>
     
     <div class="ListView fj-scrollable"> 

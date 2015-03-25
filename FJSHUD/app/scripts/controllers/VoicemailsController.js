@@ -12,21 +12,22 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		{display_name:"Read Status", type:"readStatus", desc: false}
     ];
     $scope.selectedSort = $scope.sort_options[1];
-	
+    
     $scope.actions = [
 		{display_name:"Actions", type:"unknown"},
 		{display_name:"Mark all incoming voicemails as read", type:"read"},
 		{display_name:"Mark all incoming voicemails as unread", type:"unread"},
 		{display_name:"Delete all read incoming voicemails", type:"delete"},
     ];
-    $scope.selectedAction = $scope.actions[0];
+
+    $scope.actionObj = {};
+    $scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[0];
 
 	httpService.getFeed('me');
 	httpService.getFeed('voicemailbox');
 	
 	$scope.$on('voicemailbox_synced', function(event, data) {
 		$scope.voicemails = [];
-		console.log('voicemail data obj is - ', data);
 		// single group widget
 		if ($routeParams.groupId) {
 			var group = groupService.getGroup($routeParams.groupId);
@@ -67,14 +68,26 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     };
 
     $scope.handleVoiceMailAction = function(type){
+        // console.log('currentAction is ', $scope.actionObj.currentAction);
+        // console.log('selectedAction is ', $scope.actionObj.selectedAction);
+        $scope.actionObj.selectedAction = $scope.actions[0];
         switch(type){
             case "read":
+                $scope.actionObj.currentAction = $scope.actions[1];
+                // console.log('2:currentAction is 2-', $scope.actionObj.currentAction);
+                // console.log('**:selectedAction is **', $scope.actionObj.selectedAction);
                 MarkReadVoiceMails(true);
                 break;
             case "unread":
+                $scope.actionObj.currentAction = $scope.actions[2];
+                // console.log('3:currentAction is 3-', $scope.actionObj.currentAction);
+                // console.log('**selectedAction is **', $scope.actionObj.selectedAction);
                 MarkReadVoiceMails(false);
                 break;
             case "delete":
+                $scope.actionObj.currentAction = $scope.actions[3];
+                // console.log('4:currentAction is 4-', $scope.actionObj.currentAction);
+                // console.log('**selectedAction is **', $scope.actionObj.selectedAction);
                 DeleteReadVoiceMails();
                 break;
         }
@@ -95,8 +108,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         for(voicemail in $scope.voicemails){
             xpid = $scope.voicemails[voicemail].xpid;
             voicemailIds = voicemailIds.concat(xpid.toString() + ",");
-        }
-		
+        }        
         httpService.sendAction("voicemailbox","setReadStatusAll",{'read':isRead, ids: voicemailIds});
     };
 
@@ -108,7 +120,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
                 voicemailIds = voicemailIds.concat(xpid.toString() + ",");
             }
         }
-		
         httpService.sendAction("voicemailbox","removeReadMessages",{messages: voicemailIds});
     };
 	
