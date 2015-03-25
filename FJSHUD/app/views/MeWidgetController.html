@@ -7,7 +7,7 @@
         </div>
         <div class="MeInfoBlock">
                <div class="MeInfoBlock-column">
-                    <div class="MeInfoTitle">Chat status</div>
+                    <div class="MeInfoTitle">{{verbage.chat_status}}</div>
                     <div class="MenuSection">
                         <div class="MenuItem" data-ng-class="{'selected':(meModel.chat_status ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
                             <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.title }}" >
@@ -18,11 +18,11 @@
                     </div>
                 </div>
                 <div class="MeInfoBlock-column">
-                    <div class="MeInfoTitle">Custom status</div>
+                    <div class="MeInfoTitle">{{verbage.custom_status}}</div>
                     <div class="LeftBarMeCustomStatusSection">
                         <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" placeholder="Custom message"></textarea>
                     </div>
-                    <div class="MeInfoTitle">Location</div>
+                    <div class="MeInfoTitle">{{verbage.location}}</div>
                     <div class="LocationSelector ">
                       <!--<select> </select>-->
                         <div class="SelectBox" data-ng-click="showLocationsPopup($event, $element)">
@@ -113,31 +113,31 @@
               </div>
 
               <div class="NewCall" ng-if="currentCall == null">
-                <div class="WidgetSectionTitle">Place a call</div>
+                <div class="WidgetSectionTitle">{{verbage.place_a_call}}</div>
                 <input class="NewCall" type="tel" ng-model="call_obj.phoneNumber" placeholder="Phone number">
                 <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
                 <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>Call</span></div>
               </div>              
                             
               <div class="RecentCallSection"> 
-                  <div class="WidgetSectionTitle meTitle">Recent calls</div>
+                  <div class="WidgetSectionTitle meTitle">{{verbage.recent_calls}}</div>
                   
                   <div class="RecentCallColumnHeaders">  
                     <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortCallLog('Date')"> 
-                      <div class="RecentPointer">Date/Time </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                      <div class="RecentPointer">{{verbage.date + '/' + verbage.time}} </div><div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
                     <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortCallLog('From')">
-                        <div class="RecentPointer">From</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                        <div class="RecentPointer">{{verbage.from}}</div><div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
                     <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortCallLog('To')">
-                        <div class="RecentPointer">To</div>
+                        <div class="RecentPointer">{{verbage.to}}</div>
                         <div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                     
                     <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortCallLog('Duration')">
-                     <div class="RecentPointer">Duration</div>
+                     <div class="RecentPointer">{{verbage.duration}}</div>
                      <div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                   </div>
@@ -162,7 +162,7 @@
                </div>
               </div>
               <div class="fj-vbox-space Preferences-Holder">
-	              <div class="WidgetSectionTitle">Preferences</div>	              
+	              <div class="WidgetSectionTitle">{{verbage.preferences}}</div>	              
 		              <div class="WidgetTabBar">
 		                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
 		                  <div class="inner HeaderLabel">{{ tab }}</div>
