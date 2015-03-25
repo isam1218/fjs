@@ -34,11 +34,14 @@
 
     <!-- ng-views -->
     <div ng-if="selected == 'My Queue'" class="ListView WithToolBar"
-         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController" ng-init="init(false, 'My Queue')"></div>
+         ng-include="'views/queues/AllQueues.html'" 
+		 ng-controller="CallCenterQueueController"></div>
     <div ng-if="selected == 'All Queues'" class="ListView WithToolBar"
-         ng-include="'views/queues/AllQueues.html'" ng-controller="CallCenterController"  ng-init="init(true, 'All Queues')"></div>
-    <div ng-if="selected == 'My Status'" class="fj-content WidgetTabContent myStatus"
-         ng-include="'views/queues/MyStatus.html'" ng-controller="CallCenterMyStatusController"></div>
+         ng-include="'views/queues/AllQueues.html'" 
+		 ng-controller="CallCenterQueueController"></div>
+    <div ng-if="selected == 'My Status'" class="ListView WithToolBar"
+         ng-include="'views/queues/MyStatus.html'" 
+		 ng-controller="CallCenterMyStatusController"></div>
 
   </div>
 
