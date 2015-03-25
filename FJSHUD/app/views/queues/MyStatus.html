@@ -1,33 +1,41 @@
-<div class="fj-content WidgetTabContent">
-  <div class="ToolBar">
-    <div class="XButton XButtonNormal XButtonDropDown disabled-true">
-      <span>Select</span>
+<div class="ToolBar">
+  <div class="XButton XButtonNormal XButtonDropDown disabled-true">
+    <span>Select</span>
 
-      <div class="XButtonDropDownArrow"></div>
-    </div>
-    <div class="XButton XButtonNormal XButtonDropDown disabled-true">
-      <span>Logout</span>
+    <div class="XButtonDropDownArrow"></div>
+  </div>
+  <div class="XButton XButtonNormal XButtonDropDown disabled-true">
+    <span>Logout</span>
 
-      <div class="XButtonDropDownArrow"></div>
-    </div>
-    <div class="XButton XButtonNormal disabled-true">
-      <span>Login</span></div>
+    <div class="XButtonDropDownArrow"></div>
   </div>
-  <div class="fj-scrollable ListView WithToolBar">
-    <div class="fj-viewport" style="overflow: hidden;">
-      <div class="fj-viewcontent">
-        <div class="ListViewTopSpace"></div>
-        <div class="InlineList ListIsEmpty">
-          <div class="fj-scroll-content"></div>
-          <div ></div>
-        </div>
-      </div>
-    </div>
-    <div class="fj-scroll fj-ui-scrollerFr" style="visibility: hidden;">
-      <div class="fj-ui-scrollerFr-decoration"></div>
-      <div class="fj-ui-scroller">
-        <div class="fj-ui-scroller-decoration"></div>
-      </div>
-    </div>
-  </div>
+  <div class="XButton XButtonNormal disabled-true">
+    <span>Login</span></div>
 </div>
+
+
+<a href="#/queue/{{queue.xpid}}" class="ListRow" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid">	
+	<div class="Avatar AvatarNormal" context-menu="queue">
+		<div class="GroupAvatarItem GroupAvatarItem_0">
+			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		</div>
+		<div class="GroupAvatarItem GroupAvatarItem_1">
+			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		</div>
+		<div class="GroupAvatarItem GroupAvatarItem_2">
+			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		</div>
+		<div class="GroupAvatarItem GroupAvatarItem_3">
+			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		</div>
+		<div class="AvatarInteractable"></div>
+	</div>
+
+	<div class="ListRowContent">
+		<div class="ListRowTitle">
+			{{ ::queue.name }}
+			<br/>
+			<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+		</div>
+	</div>
+</a>
