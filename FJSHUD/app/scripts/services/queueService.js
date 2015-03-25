@@ -42,7 +42,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   };
 
   var formatData = function () {
-	deferred.resolve(queues);
+	if (queues.length > 0 && queues[0].members)
+		deferred.resolve(queues);
 		
     // format data that controller needs
     return {
