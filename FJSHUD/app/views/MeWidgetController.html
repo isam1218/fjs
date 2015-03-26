@@ -143,8 +143,7 @@
                   </div>
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
                   
-                  <div  class="RecentCallLogs"> 
-                   <div>
+                  <div  class="RecentCallLogs">                   
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
                       <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
@@ -156,8 +155,7 @@
                       <div class="fj-ui-scroller" data-fj-local-id="scroller" style="height: 41.4473684210526px; top: 0px;">
                            <div class="fj-ui-scroller-decoration"></div>
                       </div>
-                    </div>
-                   </div> 
+                    </div>                   
                   </div>                  
                </div>
               </div>
