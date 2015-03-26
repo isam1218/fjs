@@ -1,14 +1,14 @@
           <div class="ListSection">
-            <div class="ListSectionHeaderTitle">Interface</div>
-            <div class="ListSectionBody">Application tuning</div>
+            <div class="ListSectionHeaderTitle">{{verbage.interface_word}}</div>
+            <div class="ListSectionBody">{{verbage.application_tuning}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <div class="lblSelect"><p>Language:</p></div>
+              <div class="lblSelect"><p>{{::verbage.language}}:</p></div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
               ng-model="languageSelect"
-              ng-options="language.label for language in languages"
+              ng-options="language.name for language in languages"
               ng-change="update_settings('hudw_lang','update',languageSelect)"
               ></select>
             </div>
@@ -16,10 +16,10 @@
                 <input
                 ng-model=searchAutoClear
                 ng-click="update_settings('hudmw_searchautoclear','update',searchAutoClear)"
-                name="autoclear" type="checkbox" value="true" > Autoclear search
+                name="autoclear" type="checkbox" value="true" > {{::verbage.autoclear_search}}
             </div>
             <div class="Dialog-settings-row">
-              <div class="lblSelect"><p>Autoclear after:</p></div>
+              <div class="lblSelect"><p>{{::verbage.autoclear_after}}:</p></div>
               <select class="fj-hbox SelectBox SelectBoxSettings" ng-model='autoClearSelected'
               ng-options="autoClearOption.label for autoClearOption in autoClearSettingOptions"
               ng-change="update_settings('hudmw_searchautocleardelay','update',autoClearSelected)"
@@ -27,7 +27,7 @@
               </select>
             </div>
             <div class="Dialog-settings-row">
-              <div class="lblSelect">Avatar hover menu delay: </div>
+              <div class="lblSelect">{{::verbage.avatar_hover_menu_delay}}: </div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
                 ng-model="hoverDelaySelected"
                 ng-options="hoverDelay.label for hoverDelay in hoverDelayOptions"
@@ -40,54 +40,54 @@
                 <input
                 ng-model="enableBox"
                 ng-change="update_settings('hudmw_box_enabled','update',enableBox)"
-                name="boxing" type="checkbox" value="true" >Enable Box
+                name="boxing" type="checkbox" value="true" >{{::verbage.enable_box}}
               </label>
             </div>
             <div class="Dialog-settings-row AppsReset">
               <div class="lblSelect"></div>
               <div ng-click="reset_app_menu()"event="c" class="XButton XButtonNormal XButtonWide ">
-                <span>Reset App Menu Order</span>
+                <span>{{::verbage.reset_app_menu_order}}</span>
               </div>
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Sounds</div>
+              <div class="ListSectionHeaderTitle">{{verbage.sounds}}</div>
             </div>
-            <div class="ListSectionBody">Sound settings for chat and notifications</div>
+            <div class="ListSectionBody">{{verbage.sound_settings_general_desc}}</div>
           </div>
           <div class="ListPage">
             <div class="Dialog-settings-row">
               <label><input
                 ng-model="enableSound"
                 ng-change="update_settings('hudmw_chat_sounds','update',enableSound)"
-                type="checkbox" checked="checked" >Enable chat sound</label>
+                type="checkbox" checked="checked" >{{::verbage.enable_chat_sound}}</label>
             </div>
             <div class="Dialog-settings-row">
               <label><input
                 ng-disabled="!enableSound"
                 ng-model="soundOnChatMsgReceived"
                 ng-change="update_settings('hudmw_chat_sound_received','update',soundOnChatMsgReceived)"
-                name="chat_sound_received" type="checkbox" value="true">On message received</label>
+                name="chat_sound_received" type="checkbox" value="true">{{::verbage.on_message_received}}</label>
             </div>
             <div class="Dialog-settings-row">
               <label><input
                 ng-disabled="!enableSound"
                 ng-model="soundOnSentMsg"
                 ng-change="update_settings('hudmw_chat_sound_sent','update',soundOnSentMsg)"
-                name="chat_sound_sent" type="checkbox" value="true">On sent message</label>
+                name="chat_sound_sent" type="checkbox" value="true">{{::verbage.on_sent_message}}</label>
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Calls</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.calls}}</div>
             </div>
-            <div class="ListSectionBody">Call preferences</div>
+            <div class="ListSectionBody">{{::verbage.call_preferences}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <div class="lblSelect">Call log size:</div>
+              <div class="lblSelect">{{verbage.call_log_size}}:</div>
               <select
               ng-model="callLogSizeSelected"
               ng-options="callLogSize.label for callLogSize in callLogSizeOptions"
@@ -98,18 +98,18 @@
               <label><input
                 ng-model="enableBusyRingBack"
                 ng-change="update_settings('busy_ring_back','update',enableBusyRingBack)"
-                name="busy_ring_back" type="checkbox" value="true">Busy ring back</label>
+                name="busy_ring_back" type="checkbox" value="true">{{::verbage.busy_ring_back}}</label>
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Auto away</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.auto_away}}</div>
             </div>
-            <div class="ListSectionBody">Auto away settings</div>
+            <div class="ListSectionBody">{{verbage.auto_away_settings_desc}}</div>
           </div>
           <div class="ListPage">
             <div class="Dialog-settings-row" >
-              <div class="lblSelect">Auto away after:</div>
+              <div class="lblSelect">{{verbage.auto_away_after}}:</div>
               <select
                 ng-model="autoAwaySelected"
                 ng-options="autoAway.label for autoAway in autoAwayOptions"
@@ -122,7 +122,7 @@
               <label><input
                 ng-model="enableAutoAway"
                 ng-change="update_settings('auto_away_timeout','update',enableAutoAway)"
-                name="autoaway" type="checkbox" value="true">Enable Auto away</label>
+                name="autoaway" type="checkbox" value="true">{{verbage.enable_auto_away}}</label>
             </div>
           </div>
           <div class="ListSection">

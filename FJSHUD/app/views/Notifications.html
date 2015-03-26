@@ -20,13 +20,15 @@
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
-						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
-							<img class="NotificationAvatar"  ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+						<div class="LeftBarNotificationAvatarSection " ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
+							<img class="NotificationAvatar CallAvatar "  
+								ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'"
+								ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection" > 
 							<div ng-click="go_to_notification_chat(message.senderId,message.xpid)">
-								<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
+								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 								<div class="NotificationType">...{{ message.type }}</div>
 								<div class="NotificationMessage">{{ getMessage(message) }} </div>
 							</div>
@@ -44,6 +46,9 @@
 								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message.senderId,message.xpid)">Chat</span>
 								<span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">Call</span>	
 							</div>
+							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue'">
+								<span class="XButton" style="width:70px" >Show</span>
+							</a>
 						</div>
 				</div>
 
@@ -79,7 +84,9 @@
 					<div class="NotificationSection"> 
 						
 						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
-							<img class="NotificationAvatar" ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+							<img class="NotificationAvatar CallAvatar"ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'" 
+
+							ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection"> 
@@ -100,7 +107,10 @@
 								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message.senderId,message.xpid)">Chat</span>
 								<span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">Call</span>
 							</div>
-
+							<div class="NotificationZoomBtn" ng-if="message.audience == 'queue'">
+								<span class="XButton" style="width:70px" >Show</span>
+							</div>
+							
 
 						</div>
 				</div>

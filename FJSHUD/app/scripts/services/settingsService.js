@@ -56,6 +56,14 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 	});
 
+	$rootScope.$on('i18n_langs_synced',function(event,data){
+		if(data){
+			
+		}
+		$rootScope.$evalAsync($rootScope.$broadcast('i18n_updated', data));
+	
+	});
+
 	$rootScope.$on('weblaunchervariables_synced', function(event,data){
         if(data){
             weblauncher_variables = data;
