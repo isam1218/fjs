@@ -6,26 +6,26 @@
       <div class="ListPage">
         
         <div><span class="queueBlock">Waiting</span><input type="number" min="0" style="width:50px"
-        ng-model="settings['queueWaitingThreshold']"
-        ng-change="update_settings('queueWaitingThreshold','update',settings['queueWaitingThreshold'])"
+        ng-model="queueSummaryStats.waiting_calls"
+        ng-change="update_settings('queueWaitingThreshold','update',queueSummaryStats.waiting_calls)"
         >   Calls</div>
         
         <br>
         <div><span class="queueBlock">Avg Wait</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
-           ng-model="settings['queueAvgWaitThreshold']"
-          ng-change="update_settings('queueAvgWaitThreshold','update',settings['queueAvgWaitThreshold'])"
+           ng-model="queueSummaryStats.avg_wait"
+          ng-change="update_settings('queueAvgWaitThreshold','update',queueSummaryStats.avg_wait)"
         >   minutes </div>
         
         <br>
         <div><span class="queueBlock">Avg Talk</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
-             ng-model="settings['queueAvgTalkThresholdThreshold']"
-          ng-change="update_settings('queueAvgTalkThresholdThreshold','update',settings['queueAvgTalkThresholdThreshold'])"
+             ng-model="queueSummaryStats.avg_talk"
+          ng-change="update_settings('queueAvgTalkThresholdThreshold','update',queueSummaryStats.avg_talk)"
         >   minutes </div>
         
         <br>
         <div><span class="queueBlock">Abandoned</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
-               ng-model="settings['queueAbandonThreshold']"
-          ng-change="update_settings('queueAbandonThreshold','update',settings['queueAbandonThreshold'])"
+               ng-model="queueSummaryStats.abandoned"
+          ng-change="update_settings('queueAbandonThreshold','update',queuueSummaryStats.abandoned)"
         >   %</div>
       
       </div>

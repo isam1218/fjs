@@ -50,23 +50,23 @@
 		</a>
 		
 		<div class="Stats">
-			<div>
+			<div ng-class="(queue.info.waiting > queueThresholds.waiting && queueThresholds.waiting != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.waiting }}</strong>
 				Waiting
 			</div>
-			<div>
+			<div ng-class="(queue.info.esa > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.esa*1000 | duration }}</strong>
 				Avg Wait
 			</div>
-			<div>
+			<div ng-class="(queue.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>
 				Avg Talk
 			</div>
-			<div>
+			<div >
 				<strong>{{ queue.info.abandon + gadget.data.info.completed }}</strong>
 				Total
 			</div>
-			<div>
+			<div ng-class="(queue.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.abandonPercent }}%</strong>
 				Abandon
 			</div>

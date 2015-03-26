@@ -1,4 +1,4 @@
-hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService', function ($scope, httpService) {
+hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService','SettingsService', function ($scope, httpService,settingsService) {
   $scope.query = '';
   $scope.newObj = {};
   $scope.newObj.query = '';
@@ -18,6 +18,11 @@ hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService', functio
   $scope.viewIcon = false;
   $scope.sortColumn = 'name';
   $scope.isAscending = true;
+  $scope.queueThresholds = {};
+  $scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
+  $scope.queueThresholds.avg_wait = parseInt(settingsService.getSetting('queueAvgWaitThreshold'));
+  $scope.queueThresholds.avg_talk = parseInt(settingsService.getSetting('queueAvgTalkThresholdThreshold'));
+  $scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
   
   // default view
   if ($scope.selected == 'My Queue')

@@ -216,6 +216,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.volume = {};
     $scope.volume.micVol;
     $scope.volume.spkVol;
+    $scope.queueSummaryStats = {};
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
@@ -248,6 +249,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 
             }
 
+            $scope.queueSummaryStats.waiting_calls = parseInt(settings['queueWaitingThreshold']);
+            $scope.queueSummaryStats.avg_wait = parseInt(settings['queueAvgWaitThreshold']);
+            $scope.queueSummaryStats.avg_talk = parseInt(settings['queueAvgTalkThresholdThreshold']);
+            $scope.queueSummaryStats.abandoned = parseInt(settings['queueAbandonThreshold']);
+            
             if(settings.auto_away_timeout){
                 $scope.enableAutoAway = true;    
             }else{
