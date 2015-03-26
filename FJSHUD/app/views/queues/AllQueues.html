@@ -1,26 +1,17 @@
 <div class="ToolBar Queues">
-  <div class="SearchInputBox">
-    <div class="SearchInputBoxInputHolder">
-		<input class="SearchInputBoxInput" type="search"
-            ng-model="newObj.query"
-            x-webkit-speech=""
-            placeholder="Search" />
-		</div>
-    <div class="SearchInputBoxStateButton">
-      <div class="SearchInputBoxStateButtonIcon"></div>
-    </div>
-  </div>
+	<input class="SearchBox" type="search"
+        ng-model="newObj.query"
+        x-webkit-speech=""
+        placeholder="Search" />
+		
   <div class="XButton QueueButtonToggle XButtonNormal">
     <span><div ng-click="viewIcon = !viewIcon" class="QueueViewIcon"
                ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div></span>
   </div>
-  <div ng-if="viewIcon" class="fj-visibility-true conversation-queues-tab-tool-bar-sort-button">
-    <select class="XButton XButtonNormal XButtonDropDown XSortButton ng-pristine ng-valid ng-touched"
+    <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
             ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
             ng-change="sortBy(selectedSort.type)">
-
     </select>
-  </div>
 </div>
 
 <div class="ListViewTopSpace"></div>

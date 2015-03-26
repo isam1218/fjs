@@ -2,24 +2,27 @@
   <div class="WidgetHeader">
     <div class="TopBarItemAppIcon CallCenter"></div>
     <div class="WidgetHeaderTitle">Call Center</div>
-    <div class="WidgetStat WidgetStatQueue">
-      <div class="fj-hbox WidgetStatEntry c00">
-        <div class="fj-hbox-cell Label">Logged-in Agents:</div>
-        <div class="fj-hbox-space Value">{{ total.loggedIn + ' of ' + total.members }}
-        </div>
-      </div>
-      <div class="fj-hbox WidgetStatEntry c01">
-        <div class="fj-hbox-cell Label">Calls Waiting:</div>
-        <div class="fj-hbox-space Value">{{ total.waiting }}</div>
-      </div>
-      <div class="fj-hbox WidgetStatEntry c10">
-        <div class="fj-hbox-cell Label">Active Agents:</div>
-        <div class="fj-hbox-space Value">{{ total.active }}</div>
-      </div>
-      <div class="fj-hbox WidgetStatEntry c11">
-        <div class="fj-hbox-cell Label">Total Calls (since last reset):</div>
-        <div class="fj-hbox-space Value">{{ total.calls }}</div>
-      </div>
+    <div class="WidgetStat">
+		<div class="Left">
+			<div class="Labels">
+				<div>Logged-in Agents:</div>
+				<div>Total Calls (since last reset):</div>
+			</div>
+			<div class="Data">
+				<div>{{ total.loggedIn + ' of ' + total.members }}</div>
+				<div>{{ total.calls }}</div>
+			</div>
+		</div>
+		<div class="Right">
+			<div class="Labels">
+				<div>Calls Waiting:</div>
+				<div>Active Agents:</div>
+			</div>
+			<div class="Data">
+				<div>{{ total.waiting }}</div>
+				<div>{{ total.active }}</div>
+			</div>
+		</div>
     </div>
   </div>
 

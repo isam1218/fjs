@@ -1,12 +1,5 @@
     <div class="ToolBar" >
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="search" x-webkit-speech="" placeholder="Search" data-ng-model="tester.query">
-            </div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
-        </div>
+		<input type="search" class="SearchBox" placeholder="Search" data-ng-model="tester.query" />
 
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
