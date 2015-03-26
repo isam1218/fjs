@@ -1,18 +1,24 @@
-.WidgetMe {   
+.WidgetMe {  
+ 
   .WidgetHeader {      
       padding:0 10px;
       height: 22%;
+      width: 100%; 
    }
    .WidgetHeaderTitle {
       color: #333;
-      font-size: 20px;
-      line-height: 35px;
+      /*font-size: 20px;
+      line-height: 35px;*/
+      font-size: 1.250em;
+      line-height: 45px;
       left: 0px;
       right: 15px;
       top: 0;
-      height: 35px;
+      height: 45px;
       position:relative;
 	  display: block;
+	  width: 100%;
+      margin: 10px 0 0;
     }
     .Avatar.AvatarBig{
       float: left;
@@ -20,12 +26,21 @@
 	  height: 5em;
     } 
     .WidgetBody{
-       top: 8px;
+       /*top: 8px;*/
        height: 80%;
-       position: relative;
+       /*position: relative;*/
+       top: 150px;
+       position: absolute;
        
-       .call-block{height: 45%;}
+       .call-block{height: 45%; overflow-y: hidden;}
     }  
+    
+    .LocationSelector .SelectBox,
+    .MeInfoBlock-column textarea
+     {
+        width: 16.5em;
+     }
+     .MeInfoBlock-column textarea{height: 3em;}
     .Preferences-Holder{
       position: relative;
       -webkit-box-flex: 1;
@@ -49,9 +64,9 @@
          bottom: 0px;
          position: relative;       
          border: none 0px;        
-         background-image: url("../img/XTile-Widget.png");
-         /*height: 100%;*/
-         height: 88%;
+         background-image: url("../img/XTile-Widget.png");         
+         /*height: 80%;*/
+         height: 72%;
          overflow-y: hidden;
          background-color: #f9f9f9;
          bottom: 0px;   
@@ -76,11 +91,16 @@
   display:inline-block;
   margin-left:5px;
   vertical-align: top;
+  width: 79.5%;
+  
 }
 .MeInfoBlock-column {
-  width:125px;
   display:inline-block;
   vertical-align: top;
+  &:nth-child(1)
+  {float: left;}
+  &:nth-child(2)
+  {float: right;}
 }
 .MeInfoTitle {
   color: #999;
