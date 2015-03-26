@@ -1,4 +1,4 @@
-hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', '$timeout', 'HttpService', function($scope, $rootScope, $timeout, httpService) {
+hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'HttpService', function($scope, $rootScope, httpService) {
 	$scope.checkboxes = {};
 	$scope.disableButtons = true;
 	

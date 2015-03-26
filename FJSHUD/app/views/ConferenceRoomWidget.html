@@ -3,22 +3,26 @@
         <div class="TopBarItemAppIcon Conferences"></div>
         <div class="WidgetHeaderTitle Single">Conferencing</div>
         <div class="WidgetStat">
-            <div class="WidgetStatEntry c00">
-                <div class="Label">Occupied:</div>
-                <div class="Value">{{ totals.occupied }}</div>
-            </div>
-            <div class="WidgetStatEntry c01">
-                <div class="Label">Rooms:</div>
-                <div class="Value">{{ conferences.length }}</div>
-            </div>
-            <div class="WidgetStatEntry c10">
-                <div class="Label">Talking:</div>
-                <div class="Value">{{ totals.talking }}</div>
-            </div>
-            <div class="WidgetStatEntry c11">
-                <div class="Label">Total:</div>
-                <div class="Value">{{ totals.all }}</div>
-            </div>
+			<div class="Left">
+				<div class="Labels">
+					<div>Occupied:</div>
+					<div>Talking:</div>
+				</div>
+				<div class="Data">
+					<div>{{ totals.occupied }}</div>
+					<div>{{ totals.talking }}</div>
+				</div>
+			</div>
+			<div class="Right">
+				<div class="Labels">
+					<div>Rooms:</div>
+					<div>Total:</div>
+				</div>
+				<div class="Data">
+					<div>{{ conferences.length }}</div>
+					<div>{{ totals.all }}</div>
+				</div>
+			</div>
         </div>
     </div>
 	
