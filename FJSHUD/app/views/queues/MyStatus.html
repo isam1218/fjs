@@ -1,41 +1,48 @@
 <div class="ToolBar">
-  <div class="XButton XButtonNormal XButtonDropDown disabled-true">
-    <span>Select</span>
-
-    <div class="XButtonDropDownArrow"></div>
-  </div>
-  <div class="XButton XButtonNormal XButtonDropDown disabled-true">
-    <span>Logout</span>
-
-    <div class="XButtonDropDownArrow"></div>
-  </div>
-  <div class="XButton XButtonNormal disabled-true">
-    <span>Login</span></div>
+  <select class="SelectBox XButton" ng-model="checkSelect" ng-change="selectQueues(checkSelect); checkSelect = ''">
+	<option value="">Select</option>
+	<option value="all">Select All</option>
+	<option value="clear">Clear Selection</option>
+  </select>
+  
+  <input type="button" class="XButton" value="Logout" ng-click="loginQueues(false)" ng-disabled="disableButtons" />
+  
+  <input type="button" class="XButton" value="Login" ng-click="loginQueues(true)" ng-disabled="disableButtons" />
 </div>
 
+<div class="QueueList">
+	<div class="ListRow" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]">	
+		<div class="Avatar AvatarNormal" context-menu="queue">
+			<div class="GroupAvatarItem GroupAvatarItem_0">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			</div>
+			<div class="GroupAvatarItem GroupAvatarItem_1">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			</div>
+			<div class="GroupAvatarItem GroupAvatarItem_2">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			</div>
+			<div class="GroupAvatarItem GroupAvatarItem_3">
+				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			</div>
+			<div class="AvatarInteractable"></div>
+		</div>
 
-<a href="#/queue/{{queue.xpid}}" class="ListRow" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid">	
-	<div class="Avatar AvatarNormal" context-menu="queue">
-		<div class="GroupAvatarItem GroupAvatarItem_0">
-			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		<div class="ListRowContent">
+			<div class="ListRowTitle">
+				{{ ::queue.name }}
+				<br/>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+			</div>
 		</div>
-		<div class="GroupAvatarItem GroupAvatarItem_1">
-			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-		<div class="GroupAvatarItem GroupAvatarItem_2">
-			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-		<div class="GroupAvatarItem GroupAvatarItem_3">
-			<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-		<div class="AvatarInteractable"></div>
-	</div>
-
-	<div class="ListRowContent">
-		<div class="ListRowTitle">
-			{{ ::queue.name }}
-			<br/>
-			<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+		
+		<div class="ListRowStatus">
+			<input type="checkbox" 
+				ng-model="checkboxes[queue.xpid]" 
+				ng-click="$event.stopPropagation();"
+				ng-true-value="true" ng-false-value="false" 
+				ng-init="checkboxes[queue.xpid] = false" 
+				ng-if="queue.me.status.status.indexOf('permanent') == -1" />
 		</div>
 	</div>
-</a>
+</div>
