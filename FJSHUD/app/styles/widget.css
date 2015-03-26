@@ -110,7 +110,8 @@
   background: url("../img/XIconSet-24x24.png?v=1383213555647") no-repeat -24px -72px;
 }
 .WidgetSectionTitle {
-  height: 32px;
+  /*height: 32px;*/
+  height: 2.5em;
   text-align: center;
   font-size: 14px;
   line-height: 32px;
