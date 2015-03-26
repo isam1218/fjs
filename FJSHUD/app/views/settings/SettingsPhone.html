@@ -1,25 +1,25 @@
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Sound Quality</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.sound_quality}}</div>
             </div>
-            <div class="ListSectionBody">Sound settings</div>
+            <div class="ListSectionBody">{{verbage.sound_settings}}</div>
           </div>
           <div class="ListPage">
           <div class="Dialog-settings-row">
-            <div class="lblSelect">Web phone state: </div>
+            <div class="lblSelect">{{::verbage.web_phone_state}}: </div>
             <b class="WebphoneRegistred-true">Registered</b>
           </div>
           <div class="Dialog-settings-row">
-            <div class="lblSelect">Microphone:</div>
+            <div class="lblSelect">{{::verbage.microphone}}:</div>
             <input type="range" min="0" max="1" step=".01" ng-model="volume.micVol" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVol)"
               ></input>
           </div>
         <div class="Dialog-settings-row">
-          <div class="lblSelect">Speaker:</div>
+          <div class="lblSelect">{{::verbage.speaker}}:</div>
           <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
         </div>
       <div class="Dialog-settings-row">
-        <div class="lblSelect">Echo: </div>
+        <div class="lblSelect">{{::verbage.echo}}: </div>
         <select class="fj-hbox SelectBox SelectBoxSettings">
           <option value="4"><span>14 ms - Laptop 13-17"</span></option>
         </select>
@@ -28,29 +28,29 @@
   </div>
   <div class="ListSection">
     <div class="ListSectionHeader">
-      <div class="ListSectionHeaderTitle">Devices</div>
+      <div class="ListSectionHeaderTitle">{{::verbage.device}}</div>
       <div class="ListSectionHeaderRight"></div>
     </div>
-  <div class="ListSectionBody">Select device to use</div>
+  <div class="ListSectionBody">{{::verbage.select_device_to_use}}</div>
   </div>
   <div class="ListPage">
     <div class="ListPageHeader"></div>
     <div class="Dialog-settings-row">
-      <div class="lblSelect">Input Devices: </div>
+      <div class="lblSelect">{{::verbage.input_devices}}: </div>
       <select class="fj-hbox SelectBox SelectBoxSettings">
         <option value="4"><span>Built-in Microph</span></option>
       </select>
 
     </div>
     <div class="Dialog-settings-row">
-      <div class="lblSelect">Output Devices: </div>
+      <div class="lblSelect">{{::verbage.output_devices}}: </div>
       <select class="fj-hbox SelectBox SelectBoxSettings">
         <option value="4">Built-in Output</option>
       </select>
 
       </div>
       <div class="Dialog-settings-row">
-        <div class="lblSelect">Ring Devices: </div>
+        <div class="lblSelect">{{::verbage.ring_devices}}: </div>
         <select class="fj-hbox SelectBox SelectBoxSettings">
           <option value="4">Built-in Output</option>
         </select>

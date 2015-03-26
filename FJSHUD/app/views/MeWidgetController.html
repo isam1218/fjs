@@ -7,7 +7,7 @@
         </div>
         <div class="MeInfoBlock">
                <div class="MeInfoBlock-column">
-                    <div class="MeInfoTitle">{{verbage.chat_status}}</div>
+                    <div class="MeInfoTitle">{{::verbage.chat_status}}</div>
                     <div class="MenuSection">
                         <div class="MenuItem" data-ng-class="{'selected':(meModel.chat_status ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
                             <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.title }}" >
@@ -18,11 +18,11 @@
                     </div>
                 </div>
                 <div class="MeInfoBlock-column">
-                    <div class="MeInfoTitle">{{verbage.custom_status}}</div>
+                    <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
                     <div class="LeftBarMeCustomStatusSection">
                         <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" placeholder="Custom message"></textarea>
                     </div>
-                    <div class="MeInfoTitle">{{verbage.location}}</div>
+                    <div class="MeInfoTitle">{{::verbage.location}}</div>
                     <div class="LocationSelector ">
                       <!--<select> </select>-->
                         <div class="SelectBox" data-ng-click="showLocationsPopup($event, $element)">
@@ -42,7 +42,7 @@
              <!--  ng-if="currentCall != null"-->
 
               <div class="CurrentCall"  ng-if="currentCall != null">
-                <div class="WidgetSectionTitle">Current Call {{ timeElapsed }}</div>
+                <div class="WidgetSectionTitle">{{verbase.current_call}} {{ timeElapsed }}</div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
                       <div class="Avatar AvatarSmall CallAvatar CallAvatar_External">
@@ -87,8 +87,8 @@
                 </div>
                 <div class="RightSide"> 
                   <div class="row_buttons"> 
-                    <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('transfer',currentCall)"><span>Transfer</span></button> 
-                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('conference',currentCall)"><span>Conf Room</span></button> 
+                    <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('transfer',currentCall)"><span>{{verbage.transfer}}</span></button> 
+                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('conference',currentCall)"><span>{{verbage.conf_room}}</span></button> 
                 <div class="XButton CurrentCallBtn" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>Mute</span></div>
                 <div class="XButton CurrentCallBtn" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>Park</span></div>  
                   </div>
@@ -99,13 +99,13 @@
                     <div class="XButton CurrentCallBtn" ng-class="currentCall.recorded ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>REC  </span> <div ng-class="currentCall.recorded ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
                     <div class=" SelectBox XButton CurrentCallBtn" data-ng-click="showLocationsPopup($event, $element)">  
                       <div class="SelectBoxText">
-                                <span>Move</span>
+                                <span>{{::verbage.move}}</span>
                                 </div>
                     </div> 
                   <div>
                   <div class="row_buttons">
                     <div class="XButton CurrentCallBtn" data-ng-click="showDialPad($event)"> # </div> 
-                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"> End </div> 
+                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"> {{::verbage.end}} </div> 
                   </div>
                 </div>
                 </div>

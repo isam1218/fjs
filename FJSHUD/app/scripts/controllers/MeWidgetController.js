@@ -233,11 +233,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
         if(settings){
             if(settings.hudw_lang){
-                language = $scope.languages.filter(function(item){
+                /*language = $scope.languages.filter(function(item){
                 return (item.value== settings['hudw_lang']);
                 })    
                 
-                $scope.languageSelect = language[0];
+                $scope.languageSelect = language[0];*/
             }
             
             if(settings.hudmw_auto_away_timeout){
@@ -758,6 +758,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             }
         
     });
+    $scope.$on('i18n_updated',function(event,data){
+		if(data){
+			$scope.languages = data;
+		     if(settings.hudw_lang){
+                var language_id =  settings.hudw_lang;
+             }
+             for(language in $scope.languages){
+                if($scope.languages[language].xpid == language_id){
+                    $scope.languageSelect = $scope.languages[language];
+                    break;
+                }
+             }
+        }
+	});
+    
 
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
