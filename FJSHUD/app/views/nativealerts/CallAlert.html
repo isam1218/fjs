@@ -1,18 +1,18 @@
-<div>    
+<div style="font-size:.8em">    
 
 	<link rel="stylesheet" href="{{path}}/app/styles/main.css">
-	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact">			
+	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact" style="background-color:#F7F4F4">			
 			<div class="Avatar AvatarNormal" context-menu="contact">
 				<img class="AvatarImgPH" src="{{path}}/app/img/Generic-Avatar-Small.png" />
 				<div class="AvatarForeground AvatarInteractable"></div>
 			</div>
 			
 			<div class="ListRowContent">
-				<div class="ListRowTitle">
+				<div class="NotificationTitle">
 					<div class="name">
 						
 					
-						<span><strong>{{ ::meModel.display_name }}</strong><div onclick="window.location.replace('#/Close')" style="display:inline-block; width:24px; float:right"class="NotificationClose"></div></span>
+						<span style="font-size:12px"><strong>{{ ::meModel.display_name }}</strong><div onclick="window.location.replace('#/Close')" style="display:inline-block; width:24px; float:right"class="NotificationClose"></div></span>
 					</div>
 					
 				</div>
@@ -24,16 +24,14 @@
 					</div>
 				</div>
 				
-				<div class="ListRowStatus">
+				<div class="">
 					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
 						<div class="status-icon-inner"></div>
 					</div>
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
 						<div class="status-icon-inner"></div>
 					</div>
-					
-					<br/>
-					<div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+					<div class="ListRowStatusText" style="display:inline-block;font-size:12px">{{contact.hud_status || 'offline'}}</div>
 				</div>
 			</div>
 	</a>
@@ -61,7 +59,9 @@
 	</div>
 	<div style="margin:0px 0px 0px 0px;background-color: gray;color: white;padding: .25em;">
 		<div style="width: 24px;height: 24px;background: url('img/XIconSet-24x24.png') no-repeat -48px -72px;display:inline-block"></div>
-		<div style="display:inline-block;vertical-align: middle">Notifications</div>
+		<div style="display:inline-block;vertical-align: middle"><span>Notifications</span><span class="Event" ng-show="notifications.length > 0 " > {{ notifications.length + ' events' }} </span> </div>
+		
+		
 		<a href="#/OpenNotifications"value="Open" ng-click="test_pop()" style="float:right;position: relative;display: inline-block;" class="XButton">Open</a>
 	</div>
 
@@ -69,7 +69,7 @@
 		<!--<react-component name="notification" props='notifications'/>-->
 			
 			<div class="Messages" ng-repeat="message in todaysNotifications | limitTo: messageLimit">
-					<a href="#/contact?{{message.senderId}}">
+					<a href="#/contact?{{message.senderId}}" style="text-decoration:none">
 					<div class="NotificationHeader"> 
 							<div class="NotificationHeaderBackground"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -85,7 +85,7 @@
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
-							<a href="#/contact?{{message.senderId}}" > 
+							<a href="#/contact?{{message.senderId}}" style="text-decoration:none"> 
 							<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.type }}</div>
 							<div class="NotificationMessage">{{ getMessage(message) }} </div>
