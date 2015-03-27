@@ -203,6 +203,24 @@ p {
   min-width: 350px;
   margin-left: 10px;
 }
+.TopBarIcons a div {
+  /*position: relative;*/
+}
+
+.DragDropList,
+.DragDropList > a,
+.DragDropList > div {
+  position: relative;
+  min-height: 42px;
+}
+div[dnd-list],
+div[dnd-list] > a,
+div[dnd-list] > div {
+  position: relative;
+  min-height: 42px;
+}
+
+
 .TopBarIcons .Avatar {
   margin: 5px;
 }

@@ -1,30 +1,13 @@
 <div class="ToolBar ">
-  <div class="SearchInputBox">
-    <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="searcn"
-                                                  data-ng-model="query"
-                                                  x-webkit-speech=""
-                                                  placeholder="Search"></div>
-    <div class="SearchInputBoxStateButton">
-      <div class="SearchInputBoxStateButtonIcon"></div>
-    </div>
-  </div>
-  <!--<div class="XButton XButtonToggle XButtonNormal"><span><div class="QueueViewIcon QueueListView"></div></span>-->
-  <!--</div>-->
-  <div class="fj-visibility-true conversation-queues-tab-tool-bar-sort-button">
-    <!--<div-->
-    <!--class="XButton XButtonNormal XButtonDropDown XSortButton disabled-false"><span>Sort by Queue name</span>-->
-
-    <!--<div class="XButtonDropDownArrow"></div>-->
-    <!--</div>-->
-    <select class="XButton XButtonNormal XButtonDropDown XSortButton ng-pristine ng-valid ng-touched"
-            ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
-            ng-change="sortBy(selectedSort.type)">
-
+  <input type="search" class="SearchBox" ng-model="query" placeholder="Search" />
+    <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort">
+		<option value="displayName">Sort By Name</option>
+		<option value="queue_status">Sort By Call Status</option>
+		<option value="hud_status">Sort By Chat Status</option>
     </select>
-  </div>
 </div>
 
-<div class="LeftBarTabContentList">
+<div class="QueueList">
   <div class="ListSection">
     <div class="ListSectionHeader">
       <div class="ListSectionHeaderTitle">Logged in</div>
@@ -34,7 +17,7 @@
 
   <div 
 	ng-include="'views/queues/QueueMemberSection.html'"
-    data-ng-repeat="member in loggedInMembers | filter: {name: query}">
+    data-ng-repeat="member in loggedInMembers | filter: {displayName: query} | orderBy: selectedSort">
   </div>
 
   <div class="ListSection">
@@ -46,7 +29,7 @@
 
   <div
 	ng-include="'views/queues/QueueMemberSection.html'"
-    data-ng-repeat="member in loggedOutMembers | filter: {name: query}">
+    data-ng-repeat="member in loggedOutMembers | filter: {displayName: query} | orderBy: selectedSort">
   </div>
 </div>
 
