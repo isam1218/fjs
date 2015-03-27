@@ -1,4 +1,4 @@
-hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService', function($scope, myHttpService, $routeParam,$location,phoneService, contactService,queueService){
+hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService', function($scope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
@@ -261,6 +261,8 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 					item.type = 'long waiting call';
 				}else if(item.type == 'q-alert-abandoned'){
 					item.type = 'abandoned call';
+				}else if(item.type == 'wall'){
+					item.type = 'chat message';
 				}
 
 			}
@@ -298,14 +300,19 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 
 		$scope.$safeApply();
 
-
+		
+		
 		element = document.getElementById("CallAlert");
-        if(element){
-        	element.style.display="block";
-			content = element.innerHTML;
-       		phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-        	element.style.display="none";
-	   }
+        
+		if(settingsService.getSetting('alert_show') == 'true'){
+
+			if(element){
+				element.style.display="block";
+				content = element.innerHTML;
+				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+				element.style.display="none";
+		   }
+		}
         
 	});
 }]);

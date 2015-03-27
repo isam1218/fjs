@@ -3,7 +3,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 	var settings = {};
 	var weblaunchers = [];
 	var weblauncher_variables = [];
-	$rootScope.verbage = fjs.i18n.jp;
+	$rootScope.verbage = fjs.i18n.en;
 	this.getSettings = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
