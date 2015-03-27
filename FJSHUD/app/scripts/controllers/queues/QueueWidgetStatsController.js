@@ -1,15 +1,14 @@
-hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', 'HttpService', function ($scope, $routeParams, myHttpService) {
+hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$location', 'ContactService', 'HttpService', function ($scope, $routeParams, $location, contactService, httpService) {
   $scope.queueId = $routeParams.queueId;
 
-  $scope.contacts = [];
   $scope.queueMembers = [];
 
-  myHttpService.getFeed('queues');
-  myHttpService.getFeed('queue_members');
-  myHttpService.getFeed('queue_members_status');
-  myHttpService.getFeed('queue_stat_calls');
-  myHttpService.getFeed('contacts');
-  myHttpService.getFeed('contacts_synced');
+  httpService.getFeed('queues');
+  httpService.getFeed('queue_members');
+  httpService.getFeed('queue_members_status');
+  httpService.getFeed('queue_stat_calls');
+  httpService.getFeed('contacts');
+  httpService.getFeed('contacts_synced');
 
   $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
   $scope.selected = 'Stats';
@@ -75,99 +74,37 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', 'Http
     $scope.sortColumn = type;
   };
 
-  $scope.$on('contacts_synced', function (event, data) {
-    for (key in data) {
-      var contact = data[key];
-
-      $scope.contacts[contact.xpid] = contact;
-    }
-  });
-
-  $scope.$on('contactstatus_synced', function (event, data) {
-    for (key in data) {
-      for (c in $scope.contacts) {
-        // set contact's status
-        if ($scope.contacts[c].xpid == data[key].xpid) {
-          $scope.contacts[c].hud_status = data[key].xmpp;
-          break;
-        }
-      }
-    }
-  });
-
-  $scope.$on('calls_updated', function (event, data) {
-    for (key in data) {
-      for (c in $scope.contacts) {
-        // set contact's status
-        if ($scope.contacts[c].xpid == data[key].xpid) {
-          $scope.contacts[c].calls_startedAt = data[key].startedAt;
-          break;
-        }
-      }
-    }
-  });
-
   $scope.$on('queues_updated', function (event, data) {
+	var queues = data.queues;
+	  
+	// get queue members
     $scope.queueMembers = [];
 
     for (var i = 0; i < $scope.queue.members.length; i++) {
-      var member = $scope.queue.members[i];
+      var member = contactService.getContact($scope.queue.members[i].contactId);
 
-      member.contact = $scope.contacts[member.contactId];
+	  // find other queues for this contact
       member.otherQueues = [];
+	  
+	  for (q = 0; q < queues.length; q++) {
+		// exclude this queue
+		if (queues[q].xpid != $scope.queueId) {
+			for (m = 0; m < queues[q].members.length; m++) {
+				if (queues[q].members[m].contactId == member.xpid)
+					member.otherQueues.push(queues[q]);
+			}
+		}
+	  }
+	  
       $scope.queueMembers.push(member);
-    }
-
-    var queues = data.queues;
-    for (var q in queues) {
-      var queue = queues[q];
-
-      // Don't include this queue
-      if (queue.xpid === $scope.queue.xpid) {
-        continue;
-      }
-
-      for (var m in $scope.queueMembers) {
-        var member = $scope.queueMembers[m];
-
-        for (var qm in queue.members) {
-          var qMember = queue.members[qm];
-
-          if (qMember.xpid === member.xpid) {
-            member.otherQueues.push(queue);
-          }
-        }
-      }
     }
   });
 
-  $scope.$on("$destroy", function () {
-
-  });  $scope.getAvatarUrl = function (xpid) {
-    if (xpid !== undefined) {
-      return myHttpService.get_avatar(xpid, 32, 32);
-    }
-    else
-      return 'img/Generic-Avatar-32.png';
+  $scope.goToQueue = function(xpid) {
+	  $location.path('/queue/' + xpid);
   };
 
-  $scope.onTwistieClicked = function (e) {
-    //   console.log('twistieClicked');
-    var rowDiv = e.srcElement.parentElement.parentElement.parentElement;
-    var className = rowDiv.className;
-    var expanded = className.indexOf('ListLineExpanded') != -1;
+  $scope.$on("$destroy", function () {
 
-    if (expanded) {
-
-      if (this.$even) {
-        className = 'ListRow ListLine';
-      } else {
-        className = 'ListRowOdd';
-      }
-    } else {
-      className = 'ListRow ListLine ListLineExpanded';
-    }
-
-    rowDiv.className = className;
-  }
+  });
 }]);
