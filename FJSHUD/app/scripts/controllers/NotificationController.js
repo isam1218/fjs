@@ -261,11 +261,14 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 					item.type = 'long waiting call';
 				}else if(item.type == 'q-alert-abandoned'){
 					item.type = 'abandoned call';
-				}else if(item.type == 'wall'){
-					item.type = 'chat message';
 				}
 
 			}
+			
+			if(item.type == 'wall'){
+					item.type = 'chat message';
+			}
+
 			if(currentDate.getFullYear() == itemDate.getFullYear() &&
 			   currentDate.getMonth() == itemDate.getMonth() &&
 			   currentDate.getDate() == itemDate.getDate()){			

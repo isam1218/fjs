@@ -1,8 +1,8 @@
-<div style="font-size:.8em">    
+<div style="font-size:1em">    
 
 	<link rel="stylesheet" href="{{path}}/app/styles/main.css">
 	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact" style="background-color:#F7F4F4">			
-			<div class="Avatar AvatarNormal" context-menu="contact">
+			<div class="Avatar AvatarNormal" style="width:2.4em;height:2.4em;display:inline-block;float:left" context-menu="contact">
 				<img class="AvatarImgPH" src="{{path}}/app/img/Generic-Avatar-Small.png" />
 				<div class="AvatarForeground AvatarInteractable"></div>
 			</div>
@@ -25,13 +25,13 @@
 				</div>
 				
 				<div class="">
-					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
+					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{meModel.queue_agent_status}}">
 						<div class="status-icon-inner"></div>
 					</div>
-					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
+					<div class="ListRowStatusIcon XIcon-ChatStatus-{{meModel.chat_status || 'offline' }}">
 						<div class="status-icon-inner"></div>
 					</div>
-					<div class="ListRowStatusText" style="display:inline-block;font-size:12px">{{contact.hud_status || 'offline'}}</div>
+					<div class="ListRowStatusText" style="display:inline-block;font-size:12px">{{meModel.chat_status || 'offline'}}</div>
 				</div>
 			</div>
 	</a>
@@ -62,7 +62,7 @@
 		<div style="display:inline-block;vertical-align: middle"><span>Notifications</span><span class="Event" ng-show="notifications.length > 0 " > {{ notifications.length + ' events' }} </span> </div>
 		
 		
-		<a href="#/OpenNotifications"value="Open" ng-click="test_pop()" style="float:right;position: relative;display: inline-block;" class="XButton">Open</a>
+		<a href="#/OpenNotifications"value="Open" style="float:right;position: relative;display: inline-block;" class="XButton">Open</a>
 	</div>
 
 	<div class="NotificationMessages" style="min-height:150px">
