@@ -1,9 +1,10 @@
-.Widget.CallLog {
+.Widget.CallLog {        
         .WidgetBody{
             .ListLineContent.Header{
                 .ListLineContentCell{
-                   padding-left: 10px;                    
-                    width: 10% !important;
+                   /*padding-left: 10px;                    
+                    width: 10% !important;*/
+                    max-width: none !important;
                     
                     .DirectionArrow{
                         left: 8px !important; 
@@ -18,10 +19,11 @@
                         .DirectionArrow{margin-left: 0;}
                     }                   
                   
-                    &.Name{width: 14% !important;}   
+                    &.Name{width: 23% !important;}   
                     &.Phone{width: 15% !important;}
-                    &.Duration{width: 23%  !important;}  
-                    &.StartedAt{width: 19%  !important;}                                                                                                   
+                    &.Duration{width: 16%  !important;}  
+                    &.StartedAt{width: 15%  !important;}  
+                    &.CallType{width: 10%  !important;}                                                                                                   
                 }                                               
             }
             
@@ -31,7 +33,13 @@
                     
                     select.XButtonDropDown{
                         margin-top: 2px;
+                        height: 2.7em;
+                        top: -2px;
+                        &.XSortButton{
+                            width: 12em;
+                        }    
                     }
+                    input, select{float: left;}
                 }
             }
         }                
@@ -41,6 +49,7 @@
     	flex-direction: row;
     	align-items: center;
     	font-size: .9em;
+    	width: 100%;
     	    	
         & > div {
     	  flex: 1;
@@ -49,35 +58,32 @@
     	  text-align: left;
     	  
     	  &:not(:first-child):not(.Name) {
-    	    font-size: .8em;
-    	    padding-left: 22px;
-    	    padding-right: 22px;
-    	    
-    	    &.Type{
-    	       padding-right: 20px;               
-    	    }
+    	    font-size: .8em;	        	        	       	       	        	        	    
     	  }
     	  
     	  &.Name {
     	    text-align: left;
-    		flex: 3;
-    		color: #009cff;  
-    		padding-left: 22px;  		
+    		text-overflow: ellipsis;
+            overflow: hidden;
+            flex: 3;
+    		color: #009cff;     		  		
     	  }
     	  
     	  &.Phone {
     	    text-decoration: underline;
     		color: #333;
-    		padding-left: 0px !important;
-    		padding-right: 30px !important;
+    		flex: 2;
     	    
     	    span{white-space: nowrap;}
     	  }
     	  
+    	   &.Duration{flex:1;}
+    	   
     	  &.Date {
     	    flex: 3;
     	    white-space: nowrap;
     	  }
+    	  &.Type{width: 6%;}
     	}
        }  
 }
