@@ -242,11 +242,19 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
 	$scope.hideDisplay = function(message, index){
 		var currentMessage = $scope.messages[index];
-		var previousMessage = $scope.messages[index - 1];
-		// if current msg's owner is the SAME AS owner of previous msg --> return true upon ng-hide --> do NOT display
-		if (currentMessage.from === previousMessage.from){
-			return true;
+		var previousMessage;
+		if(index != 0){
+			previousMessage = $scope.messages[index - 1];
 		}
+		
+		// if current msg's owner is the SAME AS owner of previous msg --> return true upon ng-hide --> do NOT display
+		if(previousMessage){
+			if (currentMessage.from === previousMessage.from){
+				return true;
+			}	
+		}
+		
+		return false;
 	}
 
 	$scope.$on("$destroy", function() {
