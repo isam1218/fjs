@@ -7,8 +7,7 @@ var hudweb = angular.module('fjshudApp', [
     'ngRoute',
     'ngSanitize',
     'flow',
-    'react',
-    'dndLists'
+    'react'
 ]);
 
 hudweb.config(function ($routeProvider) {
