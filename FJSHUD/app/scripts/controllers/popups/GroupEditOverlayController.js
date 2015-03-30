@@ -35,7 +35,9 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 				return;
 		}
 		
-		$scope.add.contacts.push(contact);
+		$scope.$evalAsync(function() {
+			$scope.add.contacts.push(contact);
+		});
 	};
 	
 	$scope.removeUser = function(contact) {
