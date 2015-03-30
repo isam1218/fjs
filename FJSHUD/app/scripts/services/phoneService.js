@@ -108,6 +108,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		
 		if(alertPlugin && document.visibilityState == "hidden"){
 			
+			if(settingsService.getSetting('alert_show') == 'true'){
+				/*if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
+					if($scope.meModel.chat_status == 'busy'){
+							displayNotification();
+					}
+				}
+
+				if(settingsService.getSetting('hudmw_show_alerts_always') == 'false'){
+					if(document.visibilityState == 'hidden')
+				}*/
+			}
+
 			alertPlugin.setAlertSize(width,height);
 			alertPlugin.addAlertEx(content);
 			alertPlugin.setShadow(true);
@@ -160,7 +172,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     accStatus = function(account_) {
             if (account_) {
-            	console.log(account_.status);
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
                 } else {
@@ -179,7 +190,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
 				phone = session.phone;
-         		var url = $location.absUrl().split("#")[0] + "views/nativeAlerts/Alert.html"
+         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html"
          		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
