@@ -2620,6 +2620,7 @@ div.NewCall .XButton.XButtonNormal {
   padding: .5em .5em .5em 2em;
   background: url("../img/search.png") no-repeat;
   background-position: 1%;
+  max-width: 100%;
 }
 .SearchInputBox {
   position: relative;
@@ -2831,6 +2832,9 @@ div.NewCall .XButton.XButtonNormal {
   padding: 5px 5px 5px 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.WidgetZoom .JoinMeetingSection .SearchContactOverlay .Inset {
+  height: 200px;
 }
 .WidgetTextHeader {
   height: 200px;

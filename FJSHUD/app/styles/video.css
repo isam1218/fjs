@@ -74,6 +74,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.WidgetZoom .JoinMeetingSection .SearchContactOverlay .Inset {
+  height: 200px;
+}
 .WidgetTextHeader {
   height: 200px;
 }
