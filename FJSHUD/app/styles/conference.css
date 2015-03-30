@@ -6,11 +6,6 @@
 .Conference .ToolBar .XButton[type=button] {
   left: 5px;
 }
-.Conference.Widget .SearchInputBox {
-  left: 0px;
-  top: 2px;
-  width: 160px;
-}
 .Conference .ListViewTopNoteClose {
   top: 30%;
 }
