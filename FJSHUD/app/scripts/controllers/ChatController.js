@@ -38,7 +38,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		var current = 0;
 		
 		for(i = 0; i < $scope.messages.length; i++){
-			if ($scope.messages[i].data.attachment) {
+			if ($scope.messages[i].data && $scope.messages[i].data.attachment) {
 				var attachments = $scope.messages[i].data.attachment;
 				
 				for(a = 0; a < attachments.length; a++) {
