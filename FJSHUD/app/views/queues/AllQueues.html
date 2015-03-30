@@ -4,9 +4,8 @@
         x-webkit-speech=""
         placeholder="Search" />
 		
-  <div class="XButton QueueButtonToggle XButtonNormal">
-    <span><div ng-click="viewIcon = !viewIcon" class="QueueViewIcon"
-               ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div></span>
+  <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
+    <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
   </div>
     <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
             ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"

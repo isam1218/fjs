@@ -8,6 +8,9 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	$scope.combined = [];
 	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 
+	// console.log('L: localStorage - ', localStorage);
+	// console.log('L: scope recents -', $scope.recents);
+
 	// pull contact updates from service
 	$scope.$on('contacts_updated', function(event, data) {
 		$scope.contacts = data;	

@@ -39,7 +39,7 @@ hudweb.directive('input', function() {
 					e.stopPropagation();
 				});
 				
-				$(element).parent().on('mouseleave', function() {						
+				$(element).parent().on('mouseleave', function(e) {						
 					scope.$apply(function () {
 						$(element).parent().find('.x').remove();		
 					});
