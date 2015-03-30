@@ -56,7 +56,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     myHttpService.getFeed('locations');
     myHttpService.getFeed('calllog');   
     myHttpService.getFeed('calls');    
- 
+    myHttpService.getFeed('weblauncher');    
+    myHttpService.getFeed('weblaunchervariables');
     this.onAlertClicked = function(urlHash){
         console.log(urlHash);
     }
@@ -680,7 +681,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.recordCall = function(action) {
         var action = '';
         
-        if (!$scope.currentCall.recorded) {
+        if (!$scope.currentCall.record) {
             $scope.recordingElapsed = '00:00';
             localStorage.recordedAt = new Date().getTime();
             action = 'startCallRecording';
