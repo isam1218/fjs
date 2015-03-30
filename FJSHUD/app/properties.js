@@ -17,5 +17,5 @@ fjs.CONFIG = {
             'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 
             'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
             'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers',
-            'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalls','mycalldetails']
+            'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalls','mycalldetails','i18n_langs']
 };
