@@ -6,7 +6,11 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	$scope.favorites = {};
 	$scope.groupObj = {};
 	$scope.combined = [];
-	$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
+	
+	if (localStorage.recents === undefined)
+		localStorage.recents = '{}';
+	
+	$scope.recents = JSON.parse(localStorage.recents);
 
 	// console.log('L: localStorage - ', localStorage);
 	// console.log('L: scope recents -', $scope.recents);
