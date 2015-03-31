@@ -215,12 +215,13 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	});
 
 	$scope.$on('quickinbox_synced', function(event,data){
-		
+			
   		if(data){
 			data.sort(function(a,b){
+				// recent notifications up top; down to oldest at the bottom...
 				return b.time - a.time;
 			});
-
+			console.log('final sorted data - ', data);
 			if($scope.notifications && $scope.notifications.length > 0){
 				for(notification in data){
 					isNotificationAdded = false;
@@ -250,6 +251,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		var playChatNotification = false;
 
 		$scope.todaysNotifications = $scope.notifications.filter(function(item){
+			console.log('todaysNotifications - ', $scope.todaysNotifications);
 			currentDate = new Date();
 			itemDate = new Date(item.time);
 			var contactId = $routeParam.contactId;
@@ -289,7 +291,8 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-			return a.time - b.time; 
+			// console.log('notifications order - ', $scope.todaysNotifications);
+			return b.time - a.time; 
 		});
 		
 		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
