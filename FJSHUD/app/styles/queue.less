@@ -35,26 +35,6 @@
 	    text-overflow: ellipsis;
 		overflow: hidden;
 	  }
-
-      .desc_arrow{
-        position: absolute;
-        border: solid 6px;
-        width: 0;
-        height: 0;
-        display: inline-block;
-        border-color: transparent transparent #729c00 transparent;
-        bottom: 7px;
-      }
-      
-      .asc_arrow{
-        position: absolute;
-        border: solid 6px;
-        border-color: #729c00 transparent transparent transparent;
-        top: 9px;
-        width: 0;
-        height: 0;
-        display: inline-block;
-      }
 	}
 	
 	.Row:nth-child(odd) {
@@ -251,6 +231,7 @@
 	  }
 	  
 	  & > div {
+		position: relative;
 	    float: left;
 		height: 2em;
 		line-height: 2em;
@@ -261,8 +242,8 @@
 		&:nth-child(1) { width: 5%; }
 		&:nth-child(2) { width: 5%; }
 		&:nth-child(3) { width: 35%; }
-		&:nth-child(4) { width: 20%; }
-		&:nth-child(5) { width: 15%; }
+		&:nth-child(4) { width: 25%; }
+		&:nth-child(5) { width: 10%; }
 		&:nth-child(6) { width: 15%; }
 		&:nth-child(7) { width: 5%; }
 	  }
@@ -305,5 +286,24 @@
 	  }
 	}
   }
+
+  .desc_arrow{
+    position: absolute;
+    border: solid 6px;
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-color: transparent transparent #729c00 transparent;
+    bottom: 7px;
+  }
   
+  .asc_arrow{
+    position: absolute;
+    border: solid 6px;
+    border-color: #729c00 transparent transparent transparent;
+    top: 9px;
+    width: 0;
+    height: 0;
+    display: inline-block;
+  }
 }

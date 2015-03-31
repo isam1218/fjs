@@ -76,7 +76,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
   });
 
   $rootScope.$on("queue_members_synced", function (event, data) {
-    if (queues !== undefined){
+    if (queues.length > 0){
 	  mine = [];
 	  
       for (i = 0; i < queues.length; i++) {
@@ -130,7 +130,32 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
       }
     }
 
-    $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
+	httpService.getFeed('queue_members_stat');
+  });
+  
+  $rootScope.$on('queue_members_stat_synced', function(event, data) {
+	for (i = 0; i < queues.length; i++) {
+		if (queues[i].members) {
+			for (m = 0; m < queues[i].members.length; m++) {
+				// attach stats to each queue agent
+				for (key in data) {
+					if (queues[i].members[m].xpid == data[key].xpid)
+						queues[i].members[m].stats = data[key];
+				}
+				
+				// no data, so set to zero
+				if (!queues[i].members[m].stats) {
+					queues[i].members[m].stats = {
+						lastCallTimestamp: 0,
+						callsHandled: 0,
+						avgTalkTime: 0
+					};
+				}
+			}
+		}
+	}
+	
+	$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
 
   $rootScope.$on("queue_stat_calls_synced", function (event, data) {

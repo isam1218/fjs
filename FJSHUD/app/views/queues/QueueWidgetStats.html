@@ -17,11 +17,11 @@
 	</div>
 	<div class="StatBlock">
 		<span>Avg Talk</span>
-		<span>{{ queue.info.avgTalk }} sec</span>
+		<span>{{ queue.info.avgTalk*1000 | duration }}</span>
 	</div>
 	<div class="StatBlock">
 		<span>ESA</span>
-		<span>{{ queue.info.esa }} sec</span>
+		<span>{{ queue.info.esa*1000 | duration }}</span>
 	</div>
 </div>
 
@@ -33,34 +33,46 @@
 	<div class="Row Header">
 		<div>&nbsp;</div>
 		<div>&nbsp;</div>
-		<div>Agent Name</div>
-		<div>Talk / Idle</div>
-		<div>Calls</div>
-		<div>Avg Talk</div>
+		<div ng-click="setSort('displayName')">
+			<span>Agent Name</span>
+			<div ng-if="sortOrder == 'displayName'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
+		</div>
+		<div ng-click="setSort('stats.lastCallTimestamp')">
+			<span>Talk / Idle</span>
+			<div ng-if="sortOrder == 'stats.lastCallTimestamp'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+		</div>
+		<div ng-click="setSort('stats.callsHandled')">
+			<span>Calls</span>
+			<div ng-if="sortOrder == 'stats.callsHandled'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+		</div>
+		<div ng-click="setSort('stats.avgTalkTime')">
+			<span>Avg Talk</span>
+			<div ng-if="sortOrder == 'stats.avgTalkTime'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+		</div>
 		<div>&nbsp;</div>
 	</div>
 	
 	<div class="Table">
-		<div class="Agent" ng-repeat="member in queueMembers | orderBy: 'displayName' track by member.xpid" ng-init="row[member.xpid] = false">
+		<div class="Agent" ng-repeat="member in queueMembers | orderBy: sortOrder: isAscending track by member.xpid" ng-init="row[member.xpid] = false">
 			<div class="Row" ng-click="row[member.xpid] = !row[member.xpid]" ng-class="row[member.xpid] ? 'Selected' : ''">
 				<div><div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div></div>
 				<div><div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div></div>
-				<div>{{member.displayName}}</div>
-				<div>0</div>
-				<div>0</div>
-				<div>{{ 0 | duration }}</div>
+				<div>{{::member.displayName}}</div>
+				<div> {{ member.stats.lastCallTimestamp | duration: 'date' }}</div>
+				<div>{{ member.stats.callsHandled }}</div>
+				<div>{{ member.stats.avgTalkTime | duration }}</div>
 				<div><div class="TwistieArrow" ng-class="row[member.xpid] ? 'Open' : 'Closed'"></div></div>
 			</div>
 			
 			<div class="Details" ng-show="row[member.xpid]">
 				<div class="SubHeader">Other queues</div>
-				<div class="Row" ng-repeat="queue in member.otherQueues" ng-click="goToQueue(queue.xpid)">
+				<div class="Row" ng-repeat="other in member.otherQueues" ng-click="goToQueue(other.queue.xpid)">
 					<div>&nbsp;</div>
 					<div>&nbsp;</div>
-					<div>{{ queue.name }}</div>
-					<div>0</div>
-					<div>0</div>
-					<div>{{ 0 | duration }}</div>
+					<div>{{ ::other.queue.name }}</div>
+					<div>{{ other.stats.lastCallTimestamp | duration: 'date' }}</div>
+					<div>{{ other.stats.callsHandled }}</div>
+					<div>{{ other.stats.avgTalkTime | duration }}</div>
 					<div>&nbsp;</div>
 				</div>
 				<div class="Empty" ng-if="member.otherQueues.length == 0">Agent of this queue only</div>
@@ -71,25 +83,3 @@
 		</div>
 	</div>
 </div>
-
-<!--
-      <div ng-click="sortBy('name')" class="recent-selected-column fj-hbox-space ListLineContentCell Name">
-        <span>Agent Name</span>
-        <div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-      </div>
-
-      <div ng-click="sortBy('talkIdle')" class="recent-selected-column fj-hbox-space ListLineContentCell Duration">
-        <span>Talk / Idle</span>
-        <div ng-if="sortColumn == 'talkIdle'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-      </div>
-
-      <div ng-click="sortBy('calls')" class="recent-selected-column fj-hbox-space ListLineContentCell Calls">
-        <span>Calls</span>
-        <div ng-if="sortColumn == 'calls'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-      </div>
-
-      <div ng-click="sortBy('avgTalk')" class="recent-selected-column fj-hbox-space ListLineContentCell AvgTalk">
-        <span>Avg Talk</span>
-        <div ng-if="sortColumn == 'avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-      </div>
--->
