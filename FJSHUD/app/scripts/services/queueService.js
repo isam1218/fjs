@@ -149,6 +149,19 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 		  total.calls += (data[key].completed + data[key].abandon);
         }
       }
+	  
+	  // didn't find one, so create empty data
+	  if (!queues[i].info) {
+		queues[i].info = {
+			waiting: 0,
+			esa: 0,
+			avgTalk: 0,
+			abandon: 0,
+			complete: 0,
+			abandonPercent: 0,
+			active: 0
+		};
+	  }
     }
 	
     $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
