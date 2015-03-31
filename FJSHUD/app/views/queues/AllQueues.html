@@ -42,27 +42,27 @@
 		
 		<div class="Stats">
 			<div ng-class="(queue.info.waiting > queueThresholds.waiting && queueThresholds.waiting != 0) ? 'RedText' : ''">
-				<strong>{{ queue.info.waiting }}</strong>
+				<strong>{{ queue.info.waiting || 0 }}</strong>
 				Waiting
 			</div>
 			<div ng-class="(queue.info.esa > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
-				<strong>{{ queue.info.esa*1000 | duration }}</strong>
+				<strong>{{ queue.info.esa*1000 || 0 | duration }}</strong>
 				Avg Wait
 			</div>
 			<div ng-class="(queue.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
-				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>
+				<strong>{{ queue.info.avgTalk*1000 || 0 | duration }}</strong>
 				Avg Talk
 			</div>
 			<div >
-				<strong>{{ queue.info.abandon + queue.info.completed }}</strong>
+				<strong>{{ (queue.info.abandon + queue.info.completed) || 0 }}</strong>
 				Total
 			</div>
 			<div ng-class="(queue.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
-				<strong>{{ queue.info.abandonPercent }}%</strong>
+				<strong>{{ queue.info.abandonPercent || 0 }}%</strong>
 				Abandon
 			</div>
 			<div>
-				<strong>{{ queue.info.active }}</strong>
+				<strong>{{ queue.info.active || 0 }}</strong>
 				Active
 			</div>
 		</div>
@@ -104,12 +104,12 @@
 		<div class="Table">
 			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid">
                 <div>{{ ::queue.name }}</div>
-				<div>{{ queue.info.waiting}}</div>
-				<div>{{ queue.info.esa*1000 | duration}}</div>
-				<div>{{ queue.info.avgTalk*1000 | duration}}</div>
-				<div>{{ queue.info.abandon + queue.info.completed }}</div>
-				<div>{{ queue.info.abandonPercent }}%</div>
-				<div>{{ queue.info.active }}</div>
+				<div>{{ queue.info.waiting || 0 }}</div>
+				<div>{{ queue.info.esa*1000 || 0 | duration}}</div>
+				<div>{{ queue.info.avgTalk*1000 || 0 | duration}}</div>
+				<div>{{ (queue.info.abandon + queue.info.completed) || 0 }}</div>
+				<div>{{ queue.info.abandonPercent || 0 }}%</div>
+				<div>{{ queue.info.active || 0 }}</div>
 			</a>
 		</div>
 	</div>

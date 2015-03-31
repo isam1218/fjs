@@ -249,27 +249,27 @@
 	<div class="Content">
 		<div class="List Stats">
 			<div>
-				<strong>{{ gadget.data.info.waiting }}</strong>
+				<strong>{{ gadget.data.info.waiting || 0 }}</strong>
 				Waiting
 			</div>
 			<div>
-				<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
+				<strong>{{ gadget.data.info.esa*1000 || 0 | duration }}</strong>
 				Avg Wait
 			</div>
 			<div>
-				<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
+				<strong>{{ gadget.data.info.avgTalk*1000 || 0 | duration }}</strong>
 				Avg Talk
 			</div>
 			<div>
-				<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
+				<strong>{{ (gadget.data.info.abandon + gadget.data.info.completed) || 0 }}</strong>
 				Total
 			</div>
 			<div>
-				<strong>{{ gadget.data.info.abandonPercent }}%</strong>
+				<strong>{{ gadget.data.info.abandonPercent || 0 }}%</strong>
 				Abandon
 			</div>
 			<div>
-				<strong>{{ gadget.data.info.active }}</strong>
+				<strong>{{ gadget.data.info.active || 0 }}</strong>
 				Active
 			</div>
 		</div>
