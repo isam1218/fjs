@@ -3,17 +3,13 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', 'ContactService', 'H
   $scope.selectedSort = "displayName";
 
   httpService.getFeed('queues');
-  httpService.getFeed('queue_members');
-  httpService.getFeed('queue_members_status');
   httpService.getFeed('queue_stat_calls');
-  httpService.getFeed('contacts');
-  httpService.getFeed('contacts_synced');
 
   $scope.$on('queues_updated', function (event, data) {
     $scope.loggedInMembers = [];
     $scope.loggedOutMembers = [];
 	
-	if ($scope.queue && $scope.queue.members) {
+	if ($scope.queue && $scope.queue.members && $scope.queue.members[0].status) {
 		for (var i = 0; i < $scope.queue.members.length; i++) {
 			var member = $scope.queue.members[i];
 			

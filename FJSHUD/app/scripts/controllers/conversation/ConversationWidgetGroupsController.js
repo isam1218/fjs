@@ -6,6 +6,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     $scope.contactId = $routeParams.contactId;
     $scope.query = "";
     $scope.add = {};
+    $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 	
     // pull updates from service
     $scope.$on('groups_updated',function(event,data) {
@@ -23,7 +24,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     myHttpService.getFeed("groupcontacts");
 
 
-    update_groups = function(){
+    var update_groups = function(){
         var isMember = false;
         var isShared = false;
 
@@ -72,8 +73,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             }
         }
 
-
-    }
+    };
 
     var isGroupIn = function(groupToInsert, groups){
         groupExist = false;
@@ -83,7 +83,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             }
         }
         return groupExist;
-    }
+    };
 
      $scope.getAvatarUrl = function(group, index) {
         
@@ -96,6 +96,11 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
                 return 'img/Generic-Avatar-14.png';
 
         }
+    };
+
+    $scope.storeRecent = function(xpid){
+        $scope.recents[xpid] = new Date().getTime();
+        localStorage.recents = JSON.stringify($scope.recents);
     };
         
     var filterGroup = function(){
