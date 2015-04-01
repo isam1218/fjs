@@ -1,6 +1,6 @@
 <div style="font-size:1em">    
 
-	<link rel="stylesheet" href="{{path}}/app/styles/main.css">
+	<!--<link rel="stylesheet" href="{{path}}/app/styles/main.css">-->
 	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact" style="background-color:#F7F4F4">			
 			<div class="Avatar AvatarNormal" style="width:2.4em;height:2.4em;display:inline-block;float:left" context-menu="contact">
 				<img class="AvatarImgPH" src="{{path}}/app/img/Generic-Avatar-Small.png" />
@@ -41,7 +41,7 @@
 
 	
 
-	<div ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall"> 
+	<div ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="activeCall.displayCall"> 
 		<div class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
