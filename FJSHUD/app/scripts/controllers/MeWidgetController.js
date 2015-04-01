@@ -2,6 +2,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
+    var CALL_ON_HOLD = 3
+    var CALL_IN_PROGRESS = 2
+
+
 
     var settings = {};
     var queues = [];
@@ -591,9 +595,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     });
 
-    $scope.holdCall = function(call){
-        phoneService.holdCall(call.xpid,!$scope.currentCall.isHeld);
-        $scope.currentCall.isHeld = !$scope.currentCall.isHeld;
+    $scope.holdCall = function(call,isHeld){
+        phoneService.holdCall(call.xpid,isHeld == 'True');
+        $scope.currentCall.isHeld =isHeld == 'True';
     }
     $scope.makeCall = function(number){
         if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
@@ -693,7 +697,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             if($scope.currentCall.contactId){
                myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
             }else{
-               myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
+               if(!$scope.currentCall.record){
+                    action = 'startRecord';
+               }else{
+                   action = 'stopRecord';
+               }
+               myHttpService.sendAction('mycalls', action, {mycallId: $scope.currentCall.xpid});
                 
             }
         }
@@ -732,7 +741,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                     $scope.calls[data[i].contactId] = data[i];
                 }
             }
-
+            if($scope.currentCall){
+                if(data[i].sipId == $scope.currentCall.sipId){
+                    $scope.currentCall = data[i];
+                    if($scope.currentCall.state == CALL_ON_HOLD){
+                        $scope.currentCall.isHeld = true;
+                    }else{
+                        $scope.currentCall.isHeld = false;
+                    }
+                }
+            }
             if($scope.calls[[callId]]){
                 $scope.currentCall = $scope.calls[$scope.callId];
                  
@@ -761,7 +779,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 setTimeout(function(){
                     call.dtmf(dtmf_input);
                     dtmf_input = "";
-                },2000);
+                },900);
             }
         
     });

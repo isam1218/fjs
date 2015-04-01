@@ -106,26 +106,41 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	displayNotification = function(content, width,height){
 		
-		if(alertPlugin && document.visibilityState == "hidden"){
-			
-			if(settingsService.getSetting('alert_show') == 'true'){
-				/*if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-					if($scope.meModel.chat_status == 'busy'){
-							displayNotification();
-					}
-				}
+		var displayNotification = false;
+		if(!alertPlugin){
+			return;
+		}
 
-				if(settingsService.getSetting('hudmw_show_alerts_always') == 'false'){
-					if(document.visibilityState == 'hidden')
-				}*/
+		if(settingsService.getSetting('alert_show') == 'true'){
+			
+			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
+					displayNotification = true;	
+				
+			}else{
+				if(document.visibilityState == "hidden"){
+					displayNotification = true;	
+				}		
 			}
 
-			alertPlugin.setAlertSize(width,height);
-			alertPlugin.addAlertEx(content);
-			alertPlugin.setShadow(true);
-			alertPlugin.setBorderRadius(5);
-			alertPlugin.setTransparency(255);
-			isAlertShown = true;
+
+			if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
+				if($rootScope.meModel.chat_status == 'busy'){
+					displayNotification = true;
+				}else{
+					displayNotification = false;
+				}
+			}
+		}
+
+			
+
+		if(alertPlugin && displayNotification){
+				alertPlugin.setAlertSize(width,height);
+				alertPlugin.addAlertEx(content);
+				alertPlugin.setShadow(true);
+				alertPlugin.setBorderRadius(5);
+				alertPlugin.setTransparency(255);
+				isAlertShown = true;
 		}
 	}
 
@@ -242,6 +257,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	xpid = arguments[1];
     	
     	activateBrowserTab();
+    	
+    	window.focus();
     	if($rootScope.isIE){
 
 			switch(url){
