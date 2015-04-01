@@ -280,6 +280,41 @@
 		margin: .25em;
 	  }
 	  
+	  .OnCall {
+	    display: flex;
+		flex-direction: row;
+		padding: .5em 1em;
+		
+	    .Info {
+		  position: relative;
+		  flex: 1;
+		  border-top-left-radius: 1em;
+		  border-bottom-left-radius: 1em;
+		  border: 1px solid #333;
+		  padding: .5em;
+		  margin-right: 1em;
+		  
+		  .Arrow {
+			position: absolute;
+			border: solid 6px;
+			width: 0;
+			height: 0;
+			display: inline-block;
+			border-color: transparent transparent transparent #333;
+			bottom: .5em;
+			right: -13px;
+		  }
+		  
+		  .Name {
+		    float: left;
+		  }
+		  
+		  .Time {
+		    float: right;
+		  }
+		}
+	  }
+	  
 	  .Empty {
 	    text-align: center;
 		color: gray;

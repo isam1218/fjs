@@ -58,7 +58,14 @@
 				<div><div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div></div>
 				<div><div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div></div>
 				<div>{{::member.displayName}}</div>
-				<div> {{ member.stats.lastCallTimestamp | duration: 'date' }}</div>
+				
+				<!-- change time based on call status -->
+				<div ng-if="!member.call.startedAt">
+					<span ng-if="member.stats.lastCallTimestamp != 0">Idle</span>
+					<span timer="member.stats.lastCallTimestamp"></span>
+				</div>
+				<div ng-if="member.call.startedAt" timer="member.call.startedAt"></div>
+				
 				<div>{{ member.stats.callsHandled }}</div>
 				<div>{{ member.stats.avgTalkTime | duration }}</div>
 				<div><div class="TwistieArrow" ng-class="row[member.xpid] ? 'Open' : 'Closed'"></div></div>
@@ -70,7 +77,7 @@
 					<div>&nbsp;</div>
 					<div>&nbsp;</div>
 					<div>{{ ::other.queue.name }}</div>
-					<div>{{ other.stats.lastCallTimestamp | duration: 'date' }}</div>
+					<div timer="other.stats.lastCallTimestamp"></div>
 					<div>{{ other.stats.callsHandled }}</div>
 					<div>{{ other.stats.avgTalkTime | duration }}</div>
 					<div>&nbsp;</div>
@@ -78,7 +85,19 @@
 				<div class="Empty" ng-if="member.otherQueues.length == 0">Agent of this queue only</div>
 				
 				<div class="SubHeader">Current queue calls</div>
-				<div class="Empty">no calls</div>
+				<div class="OnCall" ng-if="member.call.startedAt">
+					<div class="Info">
+						<div class="Arrow"></div>
+						<div class="Name">{{ member.call.displayName + ' (' + member.call.phone + ')' }}</div>
+						<div class="Time" timer="member.call.startedAt"></div>
+					</div>
+								
+					<div class="Avatar AvatarNormal" context-menu="member.fullProfile">
+						<img class="AvatarImgPH" data-ng-src="{{::member.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarForeground AvatarInteractable"></div>
+					</div>
+				</div>
+				<div class="Empty" ng-if="!member.call.startedAt">no calls</div>
 			</div>
 		</div>
 	</div>

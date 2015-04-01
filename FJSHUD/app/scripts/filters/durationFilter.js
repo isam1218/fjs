@@ -1,16 +1,6 @@
 hudweb.filter('duration', function() {
 	// format time as "x days 00:00:00"
-    return function(duration, date) {
-		// we were given a timestamp instead
-		if (date) {
-			if (duration > 0) {
-				var d = new Date(duration);
-				duration = new Date().getTime() - d.getTime();
-			}
-			else
-				return '--';
-		}
-		
+    return function(duration) {		
 		var seconds = Math.floor(duration / 1000);
 		var minutes = Math.floor(((seconds % 86400) % 3600) / 60);
 		var hours = Math.floor((seconds % 86400) / 3600);

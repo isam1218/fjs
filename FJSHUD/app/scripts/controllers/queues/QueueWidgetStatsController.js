@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$location', 'HttpService', function ($scope, $routeParams, $location, httpService) {
+hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$location', 'HttpService', 'ContactService', function ($scope, $routeParams, $location, httpService, contactService) {
   $scope.queueId = $routeParams.queueId;
   $scope.sortOrder = 'displayName';
   $scope.isAscending = false;
@@ -45,6 +45,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
 			}
 		  }
 		  
+		  member.fullProfile = contactService.getContact(member.contactId);  
 		  $scope.queueMembers.push(member);
 		}
 	}

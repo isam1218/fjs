@@ -189,17 +189,22 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	  }
     }
 	
+	httpService.getFeed('queuemembercalls');
     $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
 
   $rootScope.$on("queuemembercalls_synced", function (event, data) {
     for (i = 0; i < queues.length; i++) {
-      for (key in data) {
-        if (data[key].xpid == queues[i].xpid) {
-          queues[i].callLogs = data[key];
-        }
-      }
+		if (queues[i].members) {
+			for (m = 0; m < queues[i].members.length; m++) {
+				for (key in data) {
+					if (queues[i].members[m].xpid == data[key].xpid)
+						queues[i].members[m].call = data[key];
+				}
+			}
+		}
     }
+	
     $rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
   });
 }]);
