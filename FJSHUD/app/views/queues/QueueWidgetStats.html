@@ -85,9 +85,12 @@
 				<div class="Empty" ng-if="member.otherQueues.length == 0">Agent of this queue only</div>
 				
 				<div class="SubHeader">Current queue calls</div>
-				<div class="OnCall" ng-if="member.call.startedAt">
+				<div class="ActiveCall" ng-if="member.call.startedAt">
 					<div class="Info">
 						<div class="Arrow"></div>
+						<div class="Avatar CallAvatar CallAvatar_Queue">
+							<img class="AvatarImgPH" src="img/Generic-Avatar-28.png" />
+						</div>
 						<div class="Name">{{ member.call.displayName + ' (' + member.call.phone + ')' }}</div>
 						<div class="Time" timer="member.call.startedAt"></div>
 					</div>

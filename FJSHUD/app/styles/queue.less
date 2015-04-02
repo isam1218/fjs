@@ -5,6 +5,10 @@
 	font-size: .9em;
   }
   
+  .CallLog .ListView {
+    font-size: 1.15em;
+  }
+  
   .QueueList {
     flex: 1 1 0;
 	overflow-y: auto;
@@ -280,38 +284,12 @@
 		margin: .25em;
 	  }
 	  
-	  .OnCall {
-	    display: flex;
-		flex-direction: row;
+	  .ActiveCall {
+	    font-size: 1.1em;
 		padding: .5em 1em;
 		
-	    .Info {
-		  position: relative;
-		  flex: 1;
-		  border-top-left-radius: 1em;
-		  border-bottom-left-radius: 1em;
-		  border: 1px solid #333;
-		  padding: .5em;
-		  margin-right: 1em;
-		  
-		  .Arrow {
-			position: absolute;
-			border: solid 6px;
-			width: 0;
-			height: 0;
-			display: inline-block;
-			border-color: transparent transparent transparent #333;
-			bottom: .5em;
-			right: -13px;
-		  }
-		  
-		  .Name {
-		    float: left;
-		  }
-		  
-		  .Time {
-		    float: right;
-		  }
+		.Avatar {
+		  font-size: 1.2em;
 		}
 	  }
 	  
@@ -320,6 +298,98 @@
 		color: gray;
 	  }
 	}
+  }
+  
+  .CallList {
+    .Header {
+	  position: relative;
+	  
+	  em {
+	    font-size: .8em;
+	    margin-left: 10px;
+	  }
+	  
+	  .Arrow {
+	    position: absolute;
+		top: 0;
+		right: 0;
+		width: 0;
+		height: 0;
+		border: solid 8px;
+		cursor: pointer;
+		
+		&.On {
+		  border-color: #729c00 transparent transparent transparent;
+		}
+		
+		&.Off {
+		  border-color: transparent transparent transparent #729c00;
+		  right: -3px;
+		}
+	  }
+	}
+	
+    .Empty {
+	  border: 1px dashed #999;
+	  padding: .25em;
+	  color: #999;
+	  font-style: italic;
+	  font-size: .9em;
+	  text-align: center;
+	}
+  }
+	  
+  .ActiveCall {
+    display: flex;
+    flex-direction: row;
+	font-size: .9em;
+	padding: .5em;
+	
+	.Agent {
+      border: 1px solid #999;
+	  padding: .1em .5em .1em .1em;
+	  
+	  & > div {
+	    display: inline-block;
+	    vertical-align: middle;
+	  }
+	}
+  
+    .Info {
+      position: relative;
+      flex: 1;
+      border-top-left-radius: 1.5em;
+      border-bottom-left-radius: 1.5em;
+      border: 1px solid #999;
+      padding: .2em;
+      margin-right: 1em;
+	  display: flex;
+	  flex-direction: row;
+	  align-items: center;
+    
+      .Arrow {
+  	    position: absolute;
+  	    border: solid 6px;
+  	    width: 0;
+  	    height: 0;
+  	    border-color: transparent transparent transparent #e27100;
+  	    bottom: 33%;
+  	    right: -13px;
+      }
+      
+      .Name {
+        width: 70%;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		margin-left: 1%;
+      }
+	  
+	  .Time {
+	    flex: 1;
+		text-align: right;
+	  }
+    }
   }
 
   .desc_arrow{

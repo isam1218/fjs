@@ -1,91 +1,90 @@
-.Widget.CallLog {        
-        .WidgetBody{
-            .ListLineContent.Header{
-                .ListLineContentCell{
-                   /*padding-left: 10px;                    
-                    width: 10% !important;*/
-                    max-width: none !important;
+.CallLog {        
+  .ListLineContent.Header{
+    .ListLineContentCell{
+      max-width: none !important;
                     
-                    .DirectionArrow{
-                        left: 8px !important; 
-                        position: relative !important;
-                    }
-                    &.Down{
-                     .DirectionArrow{top: 4px;}
-                    }
+      .DirectionArrow{
+        left: 8px !important; 
+        position: relative !important;
+      }
+      &.Down{
+        .DirectionArrow{top: 4px;}
+      }
                     
-                    @media screen and (-ms-high-contrast: active),
-                    (-ms-high-contrast: none) {
-                        .DirectionArrow{margin-left: 0;}
-                    }                   
+      @media screen and (-ms-high-contrast: active),
+      (-ms-high-contrast: none) {
+        .DirectionArrow{margin-left: 0;}
+      }                   
                   
-                    &.Name{width: 23% !important;}   
-                    &.Phone{width: 15% !important;}
-                    &.Duration{width: 16%  !important;}  
-                    &.StartedAt{width: 15%  !important;}  
-                    &.CallType{width: 10%  !important;}                                                                                                   
-                }                                               
-            }
+      &.Name{width: 23% !important;}   
+      &.Phone{width: 15% !important;}
+      &.Duration{width: 16%  !important;}  
+      &.StartedAt{width: 15%  !important;}  
+      &.CallType{width: 10%  !important;}
+    }                                               
+  }
             
-            .vmails{                
-                .ToolBar{
-                    margin-bottom: 20px;
-                    
-                    select.XButtonDropDown{
-                        margin-top: 2px;
-                        height: 2.7em;
-                        top: -2px;
-                        &.XSortButton{
-                            width: 12em;
-                        }    
-                    }
-                    input, select{float: left;}
-                }
-            }
-        }                
+  .vmails{                
+      .ToolBar{
+          margin-bottom: 20px;
+          
+          select.XButtonDropDown{
+              margin-top: 2px;
+              height: 2.7em;
+              top: -2px;
+              &.XSortButton{
+                  width: 12em;
+              }    
+          }
+          input, select{float: left;}
+      }
+  }           
        
-      .ListRow {
-        display: flex;
-    	flex-direction: row;
-    	align-items: center;
-    	font-size: .9em;
-    	width: 100%;
+  .ListRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: .9em;
+    width: 100%;
     	    	
-        & > div {
-    	  flex: 1;
-    	  display: inline-block;
-    	  vertical-align: middle;
-    	  text-align: left;
+    & > div {
+      flex: 1;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: left;
+	  white-space: nowrap;
+	  text-overflow: ellipsis;
+	  overflow: hidden;
+      
+      &:not(:first-child):not(.Name) {
+        font-size: .8em;      	       	       	        	        	    
+      }
     	  
-    	  &:not(:first-child):not(.Name) {
-    	    font-size: .8em;	        	        	       	       	        	        	    
-    	  }
+      &.Name {
+    	text-align: left;
+    	text-overflow: ellipsis;
+        overflow: hidden;
+        flex: 3;
+    	color: #009cff;     		  		
+      }
     	  
-    	  &.Name {
-    	    text-align: left;
-    		text-overflow: ellipsis;
-            overflow: hidden;
-            flex: 3;
-    		color: #009cff;     		  		
-    	  }
-    	  
-    	  &.Phone {
-    	    text-decoration: underline;
-    		color: #333;
-    		flex: 2;
+      &.Phone {
+	    text-decoration: underline;
+    	color: #333;
+    	flex: 2;
     	    
-    	    span{white-space: nowrap;}
-    	  }
+    	span{white-space: nowrap;}
+      }
     	  
-    	   &.Duration{flex:1;}
+      &.Duration{flex:1;}
     	   
-    	  &.Date {
-    	    flex: 3;
-    	    white-space: nowrap;
-    	  }
-    	  &.Type{width: 6%;}
-    	}
-       }  
+      &.Date {
+        flex: 3;
+    	white-space: nowrap;
+      }
+      &.Type{width: 6%;}
+    }
+  }  
 }
 .ListRowNoBorders{
   border:none !important;

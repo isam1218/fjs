@@ -21,10 +21,18 @@
 	
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-			<a href="" ng-show="tab != 'Chat' || isMine" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
-				<div class="inner">{{ ::tab }}</div>
-				<div class="arrow"></div>
-			</a>
+<!-- 			<a href="#/group/{{ ::groupID }}/{{tab}}" ng-repeat="tab in tabs"  class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+                <div class="inner">{{ ::tab }}</div>
+                <div class="arrow"></div>
+            </a>
+ -->            
+            <!-- ng-show="tab != 'Chat' || isMine" ng-click="$parent.selected = tab" -->
+            <span ng-repeat="tab in tabs">
+                <a href="#/group/{{ ::groupID }}/{{tab.lower}}"   class="WidgetTabBarButton Ready" ng-class="selected == tab.upper ? 'fj-selected-item' : ''">
+                    <div class="inner">{{ ::tab.upper }}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
         </div>
 		
 		<!-- ng-views -->

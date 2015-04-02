@@ -1,47 +1,80 @@
-<div class="LeftBarTabContentList">
-  <div class="ToolBar">
-    <div></div>
-    <div></div>
-    <div class="SearchInputBox">
-      <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search"
-                                                    data-ng-model="query"
-                                                    x-webkit-speech=""
-                                                    placeholder="Search"></div>
-      <div class="SearchInputBoxStateButton">
-        <div class="SearchInputBoxStateButtonIcon"></div>
-      </div>
-    </div>
-  </div>
-  <div class="ListSection">
-    <div class="ListSectionHeader Expandable">
-      <div class="ListSectionHeaderTitle">In Qeueue</div>
-    </div>
-    <div class="ListSectionBody">Nobody is waiting</div>
-  </div>
+<div class="ToolBar">
+	<input type="search" class="SearchBox" ng-model="query" placeholder="Search" />
+</div>
 
-  <!--<a href="#contact/{{::member.contactId}}"-->
-  <!--class="ListRow Table AvatarHoverArea"-->
-  <!--data-ng-repeat="member in loggedInMembers | SortCalllog | orderBy:sortField:sortReverse">-->
+<div class="QueueList CallList">
+	<div class="Header">
+		<div class="ListSectionHeaderTitle">In Qeueue</div>
+		<em ng-if="callsWaiting.length > 0">
+			{{ callsWaiting.length }} call(s) in queue with the longest wait time of 
+			<span timer="longestWait"></span>
+		</em>
+		
+		<div class="Arrow" ng-class="showWaiting ? 'On' : 'Off'" ng-click="showWaiting = !showWaiting"></div>
+	</div>
+	
+	<div ng-if="showWaiting">
+		<div class="Empty" ng-if="callsWaiting.length == 0">
+			Nobody is waiting
+		</div>
+	  
+		<div ng-repeat="call in callsWaiting | filter: {displayName: query}">
+			<div class="ActiveCall">
+				<div class="Info">
+					<div class="Arrow" ng-if="call.agent"></div>
+					<div class="Avatar CallAvatar CallAvatar_Queue">
+						<img class="AvatarImgPH" src="img/Generic-Avatar-28.png" />
+					</div>
+					<div class="Name">{{ call.displayName + ' (' + call.phone + ')' }}</div>
+					<div class="Time" timer="call.startedAt"></div>
+				</div>
+							
+				<div class="Agent" ng-if="call.agent">
+					<div class="Avatar AvatarNormal" context-menu="call.agent">
+						<img class="AvatarImgPH" data-ng-src="{{::call.agent.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarForeground AvatarInteractable"></div>
+					</div>
+					<div>{{ call.agent.displayName }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <!--<div ng-include="'views/queues/QueueMemberSection.html'"></div>-->
-
-  <!--</a>-->
-
-  <div class="ListSection">
-    <div class="ListSectionHeader Expandable">
-      <div class="ListSectionHeaderTitle">Active Calls (Answered)</div>
-    </div>
-    <div class="ListSectionBody">No Active Calls</div>
-  </div>
-
-
-  <!--<a href="#contact/{{::member.contactId}}"-->
-  <!--class="ListRow Table AvatarHoverArea"-->
-  <!--data-ng-repeat="member in loggedOutMembers | SortCalllog | orderBy:sortField:sortReverse">-->
-
-  <!--<div ng-include="'views/queues/QueueMemberSection.html'"></div>-->
-
-  <!--</a>-->
-
+	<div class="Header">
+		<div class="ListSectionHeaderTitle">Active Calls (Answered)</div>
+		<em ng-if="callsActive.length > 0">
+			{{ callsActive.length }} active call(s) in queue with the longest call time of 
+			<span timer="longestActive"></span>
+		</em>
+		
+		<div class="Arrow" ng-class="showActive ? 'On' : 'Off'" ng-click="showActive = !showActive"></div>
+	</div>
+  
+	<div ng-if="showActive">
+		<div class="Empty" ng-if="callsActive.length == 0">
+			No active calls
+		</div>
+	  
+		<div ng-repeat="call in callsActive | filter: {agent: {displayName: query}}">
+			<div class="ActiveCall">
+				<div class="Info">
+					<div class="Arrow"></div>
+					<div class="Avatar CallAvatar CallAvatar_Queue">
+						<img class="AvatarImgPH" src="img/Generic-Avatar-28.png" />
+					</div>
+					<div class="Name">{{ call.displayName + ' (' + call.phone + ')' }}</div>
+					<div class="Time" timer="call.startedAt"></div>
+				</div>
+							
+				<div class="Agent">
+					<div class="Avatar AvatarNormal" context-menu="call.agent">
+						<img class="AvatarImgPH" data-ng-src="{{::call.agent.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarForeground AvatarInteractable"></div>
+					</div>
+					<div>{{ call.agent.displayName }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
