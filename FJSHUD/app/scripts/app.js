@@ -42,6 +42,26 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/queues/QueueWidget.html',
         controller: 'QueueWidgetController'
 		  })
+      .when('/queue/:queueId/agents', 
+      {
+        templateUrl: 'views/queues/QueueWidget.html',
+        controller: 'QueueWidgetController'
+      })
+      .when('/queue/:queueId/stats', 
+      {
+        templateUrl: 'views/queues/QueueWidget.html',
+        controller: 'QueueWidgetController'
+      })
+      .when('/queue/:queueId/calls', 
+      {
+        templateUrl: 'views/queues/QueueWidget.html',
+        controller: 'QueueWidgetController'
+      })
+      .when('/queue/:queueId/calllog', 
+      {
+        templateUrl: 'views/queues/QueueWidget.html',
+        controller: 'QueueWidgetController'
+      })
       .when('/calllog', 
       {
         templateUrl: 'views/CallsRecordings.html',
