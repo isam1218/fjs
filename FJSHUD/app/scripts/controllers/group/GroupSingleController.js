@@ -35,21 +35,13 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', '$location
 	
 	// when url includes '/chat' --> $scope.seleted === 'Chat' --> brings in Chat View & Controller
 	if ($location.path().indexOf('/chat') !== -1){
-		// console.log('chat location path - ', $location.path());
 		$scope.selected = 'Chat';
-		// console.log('scope selected - ', $scope.selected);
 	}  else if ($location.path().indexOf('/members') !== -1){
-		// console.log('members location path - ', $location.path());
 		$scope.selected = 'Members';
-		// console.log('scope selected - ', $scope.selected);
 	} else if ($location.path().indexOf('/voicemails') !== -1){
-		// console.log('voicemails location path - ', $location.path());
 		$scope.selected = 'Voicemails';
-		// console.log('scope selected - ', $scope.selected);
 	} else if ($location.path().indexOf('/page') !== -1){
-		// console.log('page location path - ', $location.path());
 		$scope.selected = 'Page';
-		// console.log('scope selected - ', $scope.selected);
 	}
 
 	// $scope.selected = $location.path().indexOf('/chat') != -1 ? 'Chat' : 'Members';
