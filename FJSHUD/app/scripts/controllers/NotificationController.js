@@ -207,10 +207,13 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		$scope.activeCall = {};
 	
 		if(alertDuration == 'while_ringing'){
-			if($scope.currentCall.state != 0){
-				$scope.activeCall.displayCall = false;
-			}else{
-				$scope.activeCall.displayCall = true;
+			if($scope.currentCall){
+
+				if($scope.currentCall.state != 0){
+					$scope.activeCall.displayCall = false;
+				}else{
+					$scope.activeCall.displayCall = true;
+				}
 			}
 		}else{
 			$scope.displayCall = true;
@@ -323,7 +326,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			
 			if(item.queueId){
 				queue = queueService.getQueue(item.queueId);
-				item.displayName = queue.name;
+				if(queue){
+					item.displayName = queue.name;
+				}
 				if(item.type == 'q-alert-rotation'){
 					item.type = 'long waiting call';
 				}else if(item.type == 'q-alert-abandoned'){

@@ -121,13 +121,29 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 				}
 			}
 
+			var contextInfo = data[key].context.split(":");
+			var context = contextInfo[0];
+
+
+			switch(context){
+				case 'conferences':
+					if($scope.conferenceId == contextInfo[1]){
+						$scope.messages.push(data[key]);
+						found = true;
+					}
+					break;
+				default:
+					// only attach messages related to this user
+					if (from == $scope.contactID || to == $scope.contactID){
+						$scope.messages.push(data[key]);
+						found = true;
+					}	 
+					break;
+
+			}
 			
 
-			// only attach messages related to this user
-			if (from == $scope.contactID || to == $scope.contactID){
-				$scope.messages.push(data[key]);
-				found = true;
-			}
+			
 		}
 		
 		if (found) {
