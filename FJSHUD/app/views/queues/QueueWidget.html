@@ -44,23 +44,14 @@
     </div>
   </div>
 
-  <!--<div class="WidgetBody">-->
-
   <div class="WidgetBody">
     <div class="WidgetTabBar">
       <span ng-repeat="tab in tabs">
-        <a href="#/queue/{{ ::queueId }}/{{tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.upper ? 'fj-selected-item': ''">
+        <a href="#/queue/{{ ::queueId }}/{{ ::tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.upper ? 'fj-selected-item': ''">
           <div class="inner">{{ ::tab.upper }}</div>
           <div class="arrow"></div>
         </a>
-      </span>
-
-<!--       <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready"
-         ng-class="selected == tab ? 'fj-selected-item' : ''">
-        <div class="inner">{{ ::tab }}</div>
-        <div class="arrow"></div>
-      </a>
- -->      
+      </span>     
     </div>
 
     <!-- ng-views -->
@@ -70,8 +61,8 @@
          ng-include="'views/queues/QueueWidgetStats.html'" ng-controller="QueueWidgetStatsController"></div>
     <div ng-if="selected == 'Calls'" class="ListView WithToolBar"
          ng-include="'views/queues/QueueWidgetCalls.html'" ng-controller="QueueWidgetCallsController"></div>
-    <div ng-if="selected == 'Call Log'" class="fj-content WidgetTabContent"
-         ng-include="'views/queues/QueueWidgetCallLog.html'" ng-controller="QueueWidgetCallLogController"></div>
+    <div ng-if="selected == 'Call Log'" class="ListView CallLog"
+         ng-include="'views/CallLog.html'" ng-controller="CallLogController"></div>
 
   </div>
 

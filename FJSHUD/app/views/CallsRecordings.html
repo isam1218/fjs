@@ -14,78 +14,9 @@
                 <div class="arrow"></div>
             </a>
         </div>
-		
-        <div ng-show="selected == 'calllog'" class="ToolBar">
-            <div class="SearchInputBox">
-                <div class="SearchInputBoxInputHolder">
-                    <input class="SearchInputBoxInput" type="search" x-webkit-speech="" data-ng-model="query" placeholder="Search" />
-                </div>
-                <div class="SearchInputBoxStateButton">
-                    <div class="SearchInputBoxStateButtonIcon"></div>
-                </div>
-            </div>
-        </div>
-
-		<div ng-if="selected == 'calllog'" class="WidgetTabContent">
-			<div class="ListLineContent Header LeftContactsColumns">
-				<div class="ListLineContentCell">
-					Sort:
-				</div>
-				<div data-ng-click="sort('displayName')"
-					 class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-					<span>NAME</span>
-
-					<div class="DirectionArrow"></div>
-				</div>
-				<div data-ng-click="sort('phone')"
-					 class="ListLineContentCell Phone {{(sortField == 'phone' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-					<span>PHONE</span>
-
-					<div class="DirectionArrow"></div>
-				</div>
-				<div data-ng-click="sort('duration')"
-					 class="ListLineContentCell Duration {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-					<span>DURATION</span>
-
-					<div class="DirectionArrow"></div>
-				</div>
-				<div data-ng-click="sort('startedAt')"
-					 class="ListLineContentCell StartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-					<span>DATE</span>
-
-					<div class="DirectionArrow"></div>
-				</div>
-				<div data-ng-click="sort('incoming')"
-					 class="ListLineContentCell CallType {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-					<span>TYPE</span>
-
-				
-					<div class="DirectionArrow"></div>
-				</div>
-			</div>
-        
-			<div class="ListView calllogList">	
-				<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() |  orderBy:sortField:sortReverse track by call.xpid">
-					<div>
-						<div class="Avatar AvatarSmall CallAvatar CallAvatar_{{ call.type <= 4 ? 'Office' : 'External' }}" context-menu="call.contact">
-							<img class="AvatarImgPH" ng-src="{{ call.contact ? call.contact.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-							<div class="AvatarInteractable" ng-if="call.contact"></div>
-						</div>
-					</div>
-					<div class="Name"> {{ ::call.displayName }}</div>
-					<div class="Phone">
-						<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
-					</div>
-					<div class="Duration"> {{ ::call.duration | duration }}</div>
-					<div class="Date"> {{ ::call.startedAt | date: 'MMMM d, h:mm a' }}</div>
-					<div class="Type">
-						<div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.incoming ? 'Incoming' : 'Outbound' }}"></div>
-					</div>
-				</div>
-			</div>
-		</div>
 			
 		<!-- ng-view -->
+        <div ng-if="selected == 'calllog'" class="fj-content WidgetTabContent" ng-include="'views/CallLog.html'" ng-controller="CallLogController"></div>
         <div ng-if="selected == 'voicemails'" class="fj-content WidgetTabContent vmails" ng-include="'views/Voicemails.html'" ng-controller="VoicemailsController"></div>
     </div>
 
