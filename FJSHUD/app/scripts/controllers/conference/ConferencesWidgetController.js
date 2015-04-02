@@ -54,25 +54,35 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
     	}
     };
 	
-	$scope.findRoom = function() {
-		// sort by permissions
-		var conferences = $scope.conferences;
-		conferences.sort(function(obj1, obj2) {
-			return obj1.permissions - obj2.permissions;
-		});
-	
-		for (i = 0; i < conferences.length; i++) {
-			// find first available room
-			if (!conferences[i].members || conferences[i].members.length == 0) {
-				var params = {
-					conferenceId: conferences[i].xpid,
-					contactId: $rootScope.myPid,
-				};
-				httpService.sendAction("conferences", "joinContact", params);
-				
-				$location.path('/conference/' + conferences[i].xpid);
+	$scope.findRoom = function() {	
+		var found = null;
+		
+		// find first empty room on same server
+		for (i = 0; i < $scope.conferences.length; i++) {
+			if ($scope.conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0)) {
+				found = $scope.conferences[i].xpid;
 				break;
 			}
+		}
+		
+		// try again for linked server
+		if (!found) {
+			for (i = 0; i < $scope.conferences.length; i++) {
+				// find first room on same server
+				if (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0) {
+					found = $scope.conferences[i].xpid;
+					break;
+				}
+			}
+		}
+		
+		if (found) {
+			httpService.sendAction("conferences", "joinContact", {
+				conferenceId: found,
+				contactId: $rootScope.myPid,
+			});
+			
+			$location.path('/conference/' + found + '/currentcall');
 		}
 	};
 
