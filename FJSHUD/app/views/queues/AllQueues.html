@@ -8,9 +8,9 @@
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
   </div>
     <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
-			ng-model="selectedSort"
-            ng-options="sort_option.display_name for sort_option in sort_options" 
-			ng-change="setSort(selectedSort.type)">
+			ng-model="selectedQueue"
+            ng-options="queue_option.display_name for queue_option in queue_options track by queue_option.display_name" 
+			ng-change="setSort(selectedQueue.type, selectedQueue)">
     </select>
 
 </div>

@@ -1,10 +1,26 @@
 hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
 	$scope.tab = 'my';
-	$scope.sortBy = 'location';
 	$scope.query = '';
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
 	$scope.conferences = conferenceService.getConferences();
+	$scope.sortBy = 'location';
+
+	$scope.sort_options = [{display_name: "Sort By Location"}, {display_name: "Sort By Room Number"}, {display_name: "Sort By Activity"}];
 	
+	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
+	// $scope.selectedConference = $scope.sort_options[1];
+	// console.log('upon initial load- 1) LS.conf_option is -  ', localStorage.conf_option);
+  // console.log('upon initial load- 2) $scope.selectedConference is - ', $scope.selectedConference);
+
+
+	$scope.sortedBy = function(selectedConference){
+		// console.log('selectedConference passed into sortBy is - ', selectedConference);
+		$scope.selectedConference = selectedConference;
+		// console.log('*scope.selectedConference after assign - ', $scope.selectedConference);
+		localStorage.conf_option = JSON.stringify($scope.selectedConference);
+		// console.log('*LS.conf_option is - ', localStorage.conf_option);
+	};
+
 	$scope.enableChat = true;
 
 
