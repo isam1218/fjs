@@ -22,23 +22,29 @@
       &.StartedAt{width: 15%  !important;}  
       &.CallType{width: 10%  !important;}
     }                                               
-  }
-            
-  .vmails{                
-      .ToolBar{
-          margin-bottom: 20px;
-          
-          select.XButtonDropDown{
-              margin-top: 2px;
-              height: 2.7em;
-              top: -2px;
-              &.XSortButton{
-                  width: 12em;
-              }    
-          }
-          input, select{float: left;}
-      }
   }           
+
+  .vmails{                
+    .ToolBar{
+            margin-bottom: 20px;
+            
+            select.XButtonDropDown{
+                margin-top: 2px;
+                height: 2.85em;
+                top: -2px;
+                float: right !important;
+                padding: 0 6.3%;
+                &.XSortButton{
+                    width: 32.5% !important;
+                }    
+            }
+            input, select{float: left;}
+            input[type=search]{
+                width: 30%;
+            }
+        }    
+  }                
+
        
   .ListRow {
     display: flex;
@@ -84,6 +90,12 @@
       }
       &.Type{width: 6%;}
     }
+  }
+
+  .Empty {
+    text-align: center;
+	margin-top: 1em;
+	color: gray;
   }  
 }
 .ListRowNoBorders{

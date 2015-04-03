@@ -60,7 +60,7 @@
 }
 .ChatSearch {
   position: relative;
-  top: 5px;
+  /*top: 5px;*/
   left: 2px;
   height: 1.8em;
   border-radius: 3px;
@@ -81,6 +81,9 @@
   border: none;
   padding: .25em;
   margin-top: 2px;
+}
+.ChatSearch .XButton {
+  top: 0.46em;
 }
 .ChatSearch .Arrows {
   height: 100%;

@@ -75,6 +75,8 @@
 					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.incoming ? 'Incoming' : 'Outbound' }}"></div>
 				</div>
 			</div>
+			
+			<div class="Empty" ng-if="calls.length == 0">No Recent Calls in View</div>
 		</div>
 	</div>
 </div>

@@ -34,10 +34,6 @@
   height: 45%;
   overflow-y: hidden;
 }
-.WidgetMe .LocationSelector .SelectBox,
-.WidgetMe .MeInfoBlock-column textarea {
-  width: 16.5em;
-}
 .WidgetMe .MeInfoBlock-column textarea {
   height: 3em;
 }
@@ -91,9 +87,15 @@
 }
 .MeInfoBlock-column:nth-child(1) {
   float: left;
+  width: 40%;
 }
 .MeInfoBlock-column:nth-child(2) {
   float: right;
+  width: 60%;
+}
+.MeInfoBlock-column textarea,
+.MeInfoBlock-column .SelectBox {
+  width: 98%;
 }
 .MeInfoTitle {
   color: #999;
@@ -336,7 +338,7 @@ div.NewCall input.NewCall {
   margin-bottom: 4px;
   left: 10px;
   width: 60%;
-  height: 26px;
+  height: 1.625em;
   border: 1px solid #c2c2c2;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -344,14 +346,17 @@ div.NewCall input.NewCall {
 }
 div.NewCall .XButton {
   float: right;
-  height: 26px;
+  height: 2em;
   width: 15%;
   position: relative;
-  margin-left: 10px;
+  margin-left: 0.5em;
   top: 7px;
 }
+div.NewCall .XButton.XButtonGreen {
+  margin-right: 1em;
+}
 div.NewCall .XButton.XButtonNormal {
-  margin-right: 10px;
+  margin-left: 0;
 }
 /* TODO: rewrite this css */
 .Preferences-Holder .fj-content-items {
@@ -423,8 +428,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;

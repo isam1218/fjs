@@ -42,7 +42,15 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   color: #333;
   text-shadow: 0 1px 0 #fff;
   vertical-align: top;  
-
+  text-overflow: ellipsis;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;  
+  
+  span{
+    vertical-align: middle;   
+    position: relative;
+    top: 1px; 
+  }
+  
   &:hover {
       background: #fefefe linear-gradient(#fefefe, #ddd);
       border: 1px solid rgba(0,0,0,0.3);
@@ -123,7 +131,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
 
 .XButtonBlue.disabled-true span,
 .XButtonBlue.disabled span,
-input[disabled]
+input[disabled], select[disabled],
 {
   opacity: 0.5;
   cursor: auto;
@@ -204,6 +212,11 @@ input[disabled]
   cursor : pointer;
 }
 
+.ToolBar .XButton{  
+  font-size: 0.6566em;
+  height: 2.9em;
+  padding: 0 5px;
+}
 .CurrentCallBtn
 {
   margin: 10px 10px 0px 0px;
@@ -317,7 +330,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-image: linear-gradient(#fefefe, #ebebeb);
   border: 1px solid rgba(0,0,0,0.2);
   vertical-align: middle;
-  padding:0 20px 0 10px;
   line-height: 2em;
   font-weight: bold;
   font-size: 11px;

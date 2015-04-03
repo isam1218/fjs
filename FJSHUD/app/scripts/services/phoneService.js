@@ -187,6 +187,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
     accStatus = function(account_) {
+
             if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;

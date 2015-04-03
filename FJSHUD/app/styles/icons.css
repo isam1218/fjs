@@ -61,6 +61,7 @@
 }
 .CallAvatar .AvatarInteractable {
   border-width: 0 0 .6em .6em;
+  border-color: #0093f0 transparent;
 }
 [class*="XIcon-ChatStatus"] {
   background: url("../img/XStatus.png") no-repeat;

@@ -37,6 +37,21 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/queues/CallCenter.html',
         controller: 'CallCenterController'
 		  })
+      .when('/callcenter/myqueue',
+      {
+        templateUrl: 'views/queues/CallCenter.html',
+        controller: 'CallCenterController'
+      })
+      .when('/callcenter/allqueues',
+      {
+        templateUrl: 'views/queues/CallCenter.html',
+        controller: 'CallCenterController'
+      })
+      .when('/callcenter/mystatus',
+      {
+        templateUrl: 'views/queues/CallCenter.html',
+        controller: 'CallCenterController'
+      })
       .when('/queue/:queueId', 
       {
         templateUrl: 'views/queues/QueueWidget.html',
@@ -67,6 +82,16 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/CallsRecordings.html',
         controller: 'CallsRecordingsController'
 		  })
+      .when('/calllog/calllog', 
+      {
+        templateUrl: 'views/CallsRecordings.html',
+        controller: 'CallsRecordingsController'
+      })
+      .when('/calllog/voicemails',
+      {
+        templateUrl: 'views/CallsRecordings.html',
+        controller: 'CallsRecordingsController'
+      })
       .when('/conferences', 
       {
         templateUrl: 'views/ConferenceRoomWidget.html',

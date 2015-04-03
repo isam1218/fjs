@@ -4,19 +4,26 @@
   width: 95%;
   margin: 0 auto;
   padding: .75em 0;
+  height: 3.4em;
   
-  .XButton {
-     width: 90px;
-     float: right;
-     margin-left: .75em;
-	 
-     &.XSortButton {
-        margin-top: 2px;
-        width : 150px;
-     }
+  .XButton {     
+     width: 32.5%;
+     float: right !important;
+     margin-left: .5em;	    
   }
 }
-
+.MyStatus{
+ .ToolBar{
+     .XButton{
+        width: 32% !important;
+        font-size: 0.688em !important;
+        padding-left: 1em !important;
+     }
+     select.XButton{
+        padding-left: 4em !important;
+     }
+ }
+}
 .WidgetPanel {
   position: relative;
   margin: -40px 0 0 10px;
@@ -62,7 +69,9 @@
    }
 
    .SearchInputBox {
-      width: 160px;
+      /*width: 160px;*/
+      width: 30%;
+      float: left;
    }
 }
 .WidgetHeader {
@@ -122,7 +131,7 @@
   height: 2.5em;
   text-align: center;
   font-size: 14px;
-  line-height: 32px;
+  line-height: 2.5em;
   border-top: 1px solid #b9b9b9;
   border-bottom: 1px solid #b9b9b9;
   text-shadow: 1px 0 0 #666;

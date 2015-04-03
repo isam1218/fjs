@@ -6,6 +6,9 @@
   flex-direction: column;
   font-size: .9em;
 }
+.Widget.Queues .CallLog .ListView {
+  font-size: 1.15em;
+}
 .Widget.Queues .QueueList {
   flex: 1 1 0;
   overflow-y: auto;
@@ -34,24 +37,6 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.Widget.Queues .Grid .Header .desc_arrow {
-  position: relative;
-  border: solid 6px;
-  width: 0;
-  height: 0;
-  display: inline-block;
-  border-color: transparent transparent #729c00 transparent;
-  bottom: 3px;
-}
-.Widget.Queues .Grid .Header .asc_arrow {
-  position: relative;
-  border: solid 6px;
-  border-color: #729c00 transparent transparent transparent;
-  top: 6px;
-  width: 0;
-  height: 0;
-  display: inline-block;
-}
 .Widget.Queues .Grid .Row:nth-child(odd) {
   background-color: #eeeeee;
   overflow: hidden;
@@ -63,6 +48,7 @@
   text-overflow: ellipsis;
   padding: .5em;
   white-space: nowrap;
+  position: relative;
 }
 .Widget.Queues .Grid .Header > div:nth-child(1),
 .Widget.Queues .Grid .Row > div:nth-child(1) {
@@ -144,17 +130,26 @@
   height: 28px;
 }
 .Widget.Queues .QueueButtonToggle .QueueViewIcon {
-  height: 20px;
-  width: 20px;
-  top: 3px;
-  left: 4px;
-  position: absolute;
+  /*height: 20px;
+      width: 20px;
+      top: 3px;
+      left: 4px;
+      position: absolute;*/
+  width: 1.8em;
+  height: 1.8em;
+  position: relative;
+  left: -2.18em;
+  top: .5em;
 }
 .Widget.Queues .QueueButtonToggle .QueueTileView {
   background: url("../img/QueueTileView.png") no-repeat 0px 0px;
 }
 .Widget.Queues .QueueButtonToggle .QueueListView {
   background: url("../img/QueueListView.png") no-repeat 0px 0px;
+}
+.Widget.Queues .ToolBar .XButton {
+  font-size: 0.75em;
+  padding-left: 3em;
 }
 .Widget.Queues .ToolBarBottom {
   padding: .5em;
@@ -218,6 +213,7 @@
   font-size: .9em;
 }
 .Widget.Queues .QueueStatTable .Row > div {
+  position: relative;
   float: left;
   height: 2em;
   line-height: 2em;
@@ -235,10 +231,10 @@
   width: 35%;
 }
 .Widget.Queues .QueueStatTable .Row > div:nth-child(4) {
-  width: 20%;
+  width: 25%;
 }
 .Widget.Queues .QueueStatTable .Row > div:nth-child(5) {
-  width: 15%;
+  width: 10%;
 }
 .Widget.Queues .QueueStatTable .Row > div:nth-child(6) {
   width: 15%;
@@ -273,7 +269,109 @@
   font-weight: bold;
   margin: .25em;
 }
+.Widget.Queues .QueueStatTable .Details .ActiveCall {
+  font-size: 1.1em;
+  padding: .5em 1em;
+}
+.Widget.Queues .QueueStatTable .Details .ActiveCall .Avatar {
+  font-size: 1.2em;
+}
 .Widget.Queues .QueueStatTable .Details .Empty {
   text-align: center;
   color: gray;
+}
+.Widget.Queues .CallList .Header {
+  position: relative;
+}
+.Widget.Queues .CallList .Header em {
+  font-size: .8em;
+  margin-left: 10px;
+}
+.Widget.Queues .CallList .Header .Arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border: solid 8px;
+  cursor: pointer;
+}
+.Widget.Queues .CallList .Header .Arrow.On {
+  border-color: #729c00 transparent transparent transparent;
+}
+.Widget.Queues .CallList .Header .Arrow.Off {
+  border-color: transparent transparent transparent #729c00;
+  right: -3px;
+}
+.Widget.Queues .CallList .Empty {
+  border: 1px dashed #999;
+  padding: .25em;
+  color: #999;
+  font-style: italic;
+  font-size: .9em;
+  text-align: center;
+}
+.Widget.Queues .ActiveCall {
+  display: flex;
+  flex-direction: row;
+  font-size: .9em;
+  padding: .5em;
+}
+.Widget.Queues .ActiveCall .Agent {
+  border: 1px solid #999;
+  padding: .1em .5em .1em .1em;
+}
+.Widget.Queues .ActiveCall .Agent > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.Widget.Queues .ActiveCall .Info {
+  position: relative;
+  flex: 1;
+  border-top-left-radius: 1.5em;
+  border-bottom-left-radius: 1.5em;
+  border: 1px solid #999;
+  padding: .2em;
+  margin-right: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.Widget.Queues .ActiveCall .Info .Arrow {
+  position: absolute;
+  border: solid 6px;
+  width: 0;
+  height: 0;
+  border-color: transparent transparent transparent #e27100;
+  bottom: 33%;
+  right: -13px;
+}
+.Widget.Queues .ActiveCall .Info .Name {
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-left: 1%;
+}
+.Widget.Queues .ActiveCall .Info .Time {
+  flex: 1;
+  text-align: right;
+}
+.Widget.Queues .desc_arrow {
+  position: absolute;
+  border: solid 6px;
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border-color: transparent transparent #729c00 transparent;
+  bottom: 7px;
+}
+.Widget.Queues .asc_arrow {
+  position: absolute;
+  border: solid 6px;
+  border-color: #729c00 transparent transparent transparent;
+  top: 9px;
+  width: 0;
+  height: 0;
+  display: inline-block;
 }

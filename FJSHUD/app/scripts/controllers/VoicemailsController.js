@@ -4,15 +4,27 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.tester = {};
     $scope.tester.query = "";
     $scope.meModel = {};
-        
-    $scope.sort_options = [
-		{display_name:"Alphabetically", type:"displayName", desc: false},
-		{display_name:"Newest First", type:"date", desc: true},
-		{display_name:"Oldest First", type:"date", desc: false},
-		{display_name:"Read Status", type:"readStatus", desc: false}
+
+    $scope.voice_options = [
+        {display_name:"Alphabetically", type:"displayName", desc: false},
+        {display_name:"Newest First", type:"date", desc: true},
+        {display_name:"Oldest First", type:"date", desc: false},
+        {display_name:"Read Status", type:"readStatus", desc: false}
     ];
-    $scope.selectedSort = $scope.sort_options[1];
-    
+
+    $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
+    // console.log('upon initial load- 1) LS.saved_voice_option is -  ', localStorage.saved_voice_option);
+    // console.log('upon initial load- 2) $scope.selectedVoice is - ', $scope.selectedVoice);
+
+    $scope.sortBy = function(selectedVoice){
+        // console.log('selectedVoice passed into sortBy is - ', selectedVoice);
+        $scope.selectedVoice = selectedVoice;
+        // console.log('*$scope.selcetdVoice after assignment - ', $scope.selectedVoice);
+        localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);
+        // console.log('*LS.saved_voice_option is - ', localStorage.saved_voice_option);
+    };
+
+
     $scope.actions = [
 		{display_name:"Actions", type:"unknown"},
 		{display_name:"Mark all incoming voicemails as read", type:"read"},
@@ -59,9 +71,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		}
 	});
 
-    $scope.sortBy = function(sort){
-        $scope.selectedSort = sort;
-    };
 	
 	$scope.getMeAvatarUrl = function(xpid,width,height){
         return httpService.get_avatar(xpid,width,height);

@@ -6,10 +6,7 @@ hudweb.directive('input', function() {
 		  if(attrs.type == 'search')
 		  {	  
 			if(navigator.userAgent.indexOf('Firefox') != -1)
-			{
-				var toggle = function(v){
-					return v?'addClass':'removeClass'; 
-				};
+			{				
 				// search input
 				element.on('keyup change mouseover mouseenter', function(e) {											
 						if(element.val() != '')
@@ -18,7 +15,10 @@ hudweb.directive('input', function() {
 							{
 							 scope.$apply(function (e) {
 								var xImg = angular.element('<img class="x" src="img/clear.png"/>');
-								element.after(xImg);
+								if($(element).closest('.ConferenceMembers').length > 0)
+									element.parent().append(xImg);
+								else
+									element.after(xImg);
 								var el = element;
 								xImg.bind('click', function(e){
 									scope.$apply(function () {				
@@ -43,8 +43,17 @@ hudweb.directive('input', function() {
 					scope.$apply(function () {
 						$(element).parent().find('.x').remove();		
 					});
+					e.stopPropagation();					
+				});	
+			
+				$('a, input[type=button]').on('click mouseover mouseenter', function(e){
+					scope.$apply(function () {
+						$(element).parent().find('.x').remove();	
+						if(e.type == 'click')
+							element.val('');
+					});
 					e.stopPropagation();
-				});											
+				});
 			}
 		  }
 		}			
