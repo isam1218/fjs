@@ -1,14 +1,14 @@
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Web Launcher</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.web_launcher}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-            <div class="ListSectionBody">General settings</div>
+            <div class="ListSectionBody">{{::verbage.general_settings}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <div class="lblSelect">Web launcher profile</div>
+              <div class="lblSelect">{{::verbage.web_launcher_profile}}</div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
                   ng-model="currentWebLauncher"
                   ng-options="profile.name for profile in weblauncher_profiles"
@@ -17,31 +17,31 @@
               </select>
             </div>
             <div class="Dialog-settings-row">
-              <label><input name="lwa" type="checkbox" value="true"> Launch web page only when the call is answered</label>
+              <label><input name="lwa" type="checkbox" value="true">{{::verbage.launch_page_when_answered}}</label>
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Outbound Calls</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.outbound_calls}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-            <div class="ListSectionBody">Outbound calls settings</div>
+            <div class="ListSectionBody">{{::verbage.outbound_calls_settings}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
-              <span class="inputBlock">Launch the web page below during new calls</span>
+              <span class="inputBlock">{{::verbage.web_launcher_on_new_calls}}</span>
               <label><input name="out.silent" type="checkbox"  ng-model="currentWebLauncher.outboundSilent"
               ng-disabled="currentWebLauncher.id != 'user_default'"
               ng-change="update_weblauncher_settings()"
             
-              > Silent</label>
+              > {{::verbage.silent}}</label>
               <label><input name="out.auto" type="checkbox" ng-model="currentWebLauncher.outboundAuto"
                 ng-disabled="currentWebLauncher.id != 'user_default'"
                 ng-change="update_weblauncher_settings()"
             
-              > Auto-launch</label>
+              >{{::verbage.auto_launch}}</label>
             </div>
             <input type="text" name="outbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outbound"
             ng-disabled="currentWebLauncher.id != 'user_default'"
@@ -51,17 +51,17 @@
           </div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
-              <span class="inputBlock">Launch the web page below after call hangs up</span>
+              <span class="inputBlock">{{::verbage.web_launcher_on_hang_ups}}</span>
               <label><input name="out.hangup.silent" type="checkbox" ng-model="currentWebLauncher.outboundHangupSilent"
                 ng-disabled="currentWebLauncher.id != 'user_default'"
                 ng-change="update_weblauncher_settings()"
             
-              > Silent</label>
+              > {{::verbage.silent}}</label>
               <label><input name="out.hangup.auto" type="checkbox" ng-model="currentWebLauncher.outboundHangupAuto" 
                 ng-disabled="currentWebLauncher.id != 'user_default'"
                 ng-change="update_weblauncher_settings()"
             
-              > Auto-launch</label>
+              >{{::verbage.auto_launch}}</label>
             </div>
             <input type="text" name="outbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outboundHangup"
             ng-disabled="currentWebLauncher.id != 'user_default'"
@@ -72,23 +72,23 @@
         </div>
         <div class="ListSection">
           <div class="ListSectionHeader">
-            <div class="ListSectionHeaderTitle">Inbound Calls</div>
+            <div class="ListSectionHeaderTitle">{{::verbage.inbound_calls}}</div>
             <div class="ListSectionHeaderRight"></div>
           </div>
-          <div class="ListSectionBody">Inbound calls settings</div>
+          <div class="ListSectionBody">{{::verbage.inbound_call_settings}}</div>
         </div>
         <div class="ListPage">
           <div class="ListPageHeader"></div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
-              <span class="inputBlock">Launch the web page below during new calls</span>
+              <span class="inputBlock">{{::verbage.web_launcher_on_new_calls}}</span>
               <label><input name="in.silent" type="checkbox" ng-model="currentWebLauncher.inboundSilent"
                 ng-disabled="currentWebLauncher.id != 'user_default'"
                 ng-change="update_weblauncher_settings()"
-              > Silent</label>
+              > {{::verbage.silent}}</label>
               <label><input name="in.auto" type="checkbox" ng-model="currentWebLauncher.inboundAuto"
                 ng-disabled="currentWebLauncher.id != 'user_default'"
-              > Auto-launch</label>
+              > {{::verbage.auto_launch}}</label>
             </div>
             <input type="text" name="inbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inbound"
             ng-disabled="currentWebLauncher.id != 'user_default'"
@@ -97,16 +97,16 @@
           </div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
-              <span class="inputBlock">Launch the web page below after call hangs up</span>
+              <span class="inputBlock">{{::verbage.web_launcher_on_hang_ups}}</span>
               <label><input name="in.hangup.silent" type="checkbox"  ng-model="currentWebLauncher.inboundHangupSilent"
                 ng-disabled="currentWebLauncher.id != 'user_default'"
                 ng-change="update_weblauncher_settings()"
-              > Silent</label>
+              > {{::verbage.silent}}</label>
               <label><input name="in.hangup.auto" type="checkbox" ng-model="currentWebLauncher.inboundHangupAuto" 
                 ng-disabled="currentWebLauncher.id != 'user_default'"
                 ng-change="update_weblauncher_settings()"
             
-              > Auto-launch</label>
+              > {{::verbage.auto_launch}}</label>
             </div>
             <input type="text" name="inbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inboundHangup"
             ng-disabled="currentWebLauncher.id != 'user_default'"
@@ -117,18 +117,18 @@
         </div>
         <div class="ListSection">
           <div class="ListSectionHeader">
-            <div class="ListSectionHeaderTitle">Web launcher variables</div>
+            <div class="ListSectionHeaderTitle">{{::verbage.web_launcher_variables}}</div>
             <div class="ListSectionHeaderRight"></div>
           </div>
-          <div class="ListSectionBody">Web launcher variables description</div>
+          <div class="ListSectionBody">{{::verbage.web_launcher_var_desc}}</div>
         </div>
         <div class="ListPage">
           <div class="ListPageHeader"></div>
           <div class="weblauncher-variables">
             <div class="scrollable-v">
               <div class="Dialog-settings-row">
-                <span class="col1 h2">Variable</span>
-                <span class="col2 h2">Description</span>
+                <span class="col1 h2">{{::verbage.variables}}</span>
+                <span class="col2 h2">{{::verbage.description}}</span>
               </div>
               <div >
                 <div ng-repeat="variable in weblaunchervariables" class="Dialog-settings-row"> 
