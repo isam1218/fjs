@@ -32,7 +32,7 @@
                         </p>
                         <div class="vmalternate">
                             <div class="vmtime">{{ voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
-                            <input style="float:right"class="vmcallbtn" type="button" value="Call"></input>
+                            <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(voicemail.phone)"></input>
                         </div>
                     </div> 
                     <div class="footnote">

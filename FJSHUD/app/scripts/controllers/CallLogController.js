@@ -10,6 +10,8 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 	// limit results on other widgets
 	if ($routeParams.queueId)
 		pageFilter = $routeParams.queueId;
+	else if ($routeParams.contactId)
+		pageFilter = $routeParams.contactId;
 	
 	// wait for sync
 	queueService.getQueues().then(function() {

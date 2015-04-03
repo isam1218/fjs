@@ -33,12 +33,6 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 						overlay.bind('mouseenter', function(e) {
 							$timeout.cancel(timer);
 						});
-			
-						// button clicks
-						angular.element(buttons).bind('click', function(e) {
-							e.stopPropagation();
-							hideOverlay(0);
-						});
 					}, 500);
 				}
 				else if (current != element) {
@@ -53,7 +47,7 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 				// hide pop-pop
 				if (overlay.css('display') != 'block')
 					$timeout.cancel(timer);
-				else if (e.relatedTarget.id != 'ContextMenu')
+				else if (e.relatedTarget && e.relatedTarget.id != 'ContextMenu')
 					hideOverlay(500);
 			});
 			
@@ -80,6 +74,15 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 					}
 					else
 						arrow.removeClass('Right').addClass('Left');
+			
+					// button clicks
+					angular.element(buttons).bind('click', function(e) {
+						e.stopPropagation();
+						
+						// logout button shouldn't close
+						if (this.className.indexOf('Logout') == -1)
+							hideOverlay(0);
+					});
 				}, 10);
 			}
 			

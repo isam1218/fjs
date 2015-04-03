@@ -4,6 +4,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	var mine = [];
 	var total = {};
 	var myLoggedIn = 0;
+	var reasons = [];
 	
 	this.getQueue = function(xpid) {
 		for(queue in queues){
@@ -40,6 +41,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 			queues: mine,
 			loggedIn: myLoggedIn
 		};
+	};
+	
+	this.getReasons = function() {
+		return reasons;
 	};
 
 	var formatData = function () {
@@ -228,5 +233,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 		}
 	
 		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
+	});
+	
+	$rootScope.$on('queuelogoutreasons_synced', function(event, data) {
+		reasons = data;
 	});
 }]);

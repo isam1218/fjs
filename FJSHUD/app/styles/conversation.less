@@ -1,6 +1,10 @@
 .Widget.Conversation {
   min-height: 300px;
 
+  .ContactList {      
+        margin-top: 10px;
+  }
+    
   .WidgetHeader {
     top:0;
     right:0;
@@ -59,11 +63,22 @@
   }
   .WidgetBody {
     position: relative;
+    
+    .ListRow{
+      position: relative;
+      width: 96%;
+      margin: 0 auto;
+     
+      &:hover{
+        .ListRowStatus{visibility: visible;}
+      }  
+    }
+    
     .ChatView {
       flex-direction: column;
       display: flex;
-	  flex: 1 1 0;
-
+	  flex: 1 1 0;     
+      
       .ListViewContent {
         flex: 1;
         overflow-y: auto;

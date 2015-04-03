@@ -9,7 +9,7 @@
 			{{contact.displayName}} 
 			<span ng-if="contact.primaryExtension">({{contact.primaryExtension}})</span>
 			<br/>
-            <div class="XIcon-QueueStatus" data-ng-class="contact.getQueueStatus()"></div>
+            <div class="ListRowStatusIcon XIcon-QueueStatus-{{ contact.queue_status }}"></div>
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
             <span class="ChatStatus">{{ contact.hud_status ? (contact.hud_status == 'dnd' ? 'busy' : contact.hud_status) : 'offline' }}</span>
 		</div>
@@ -65,8 +65,8 @@
         ng-controller="ConversationWidgetQueuesController"
         ></div>
 
-        <div ng-if="selected == 'Call Log'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationCallLog.html'"
-        ng-controller="ConversationWidgetCallLogController"
+        <div ng-if="selected == 'Call Log'" class="CallLog WidgetTabContent" ng-include="'views/CallLog.html'"
+        ng-controller="CallLogController"
         ></div>
 	</div>
 </div>
