@@ -42,7 +42,7 @@
              <!--  ng-if="currentCall != null"-->
 
               <div class="CurrentCall"  ng-if="currentCall != null">
-                <div class="WidgetSectionTitle">{{verbase.current_call}} {{ timeElapsed }}</div>
+                <div class="WidgetSectionTitle">{{verbage.current_call}} {{ timeElapsed }}</div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
                       <div class="Avatar AvatarSmall CallAvatar CallAvatar_External">
@@ -93,10 +93,10 @@
                 <div class="XButton CurrentCallBtn" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>Park</span></div>  
                   </div>
                   <div class="row_buttons">
-                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall)"><span> Hold</span></button> 
-                    <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall)"> Talk</div> 
+                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> Hold</span></button> 
+                    <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> Talk</div> 
 
-                    <div class="XButton CurrentCallBtn" ng-class="currentCall.recorded ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>REC  </span> <div ng-class="currentCall.recorded ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
+                    <div class="XButton CurrentCallBtn" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>REC  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
                     <div class=" SelectBox XButton CurrentCallBtn" data-ng-click="showLocationsPopup($event, $element)">  
                       <div class="SelectBoxText">
                                 <span>{{::verbage.move}}</span>

@@ -34,10 +34,6 @@
   height: 45%;
   overflow-y: hidden;
 }
-.WidgetMe .LocationSelector .SelectBox,
-.WidgetMe .MeInfoBlock-column textarea {
-  width: 16.5em;
-}
 .WidgetMe .MeInfoBlock-column textarea {
   height: 3em;
 }
@@ -91,9 +87,15 @@
 }
 .MeInfoBlock-column:nth-child(1) {
   float: left;
+  width: 40%;
 }
 .MeInfoBlock-column:nth-child(2) {
   float: right;
+  width: 60%;
+}
+.MeInfoBlock-column textarea,
+.MeInfoBlock-column .SelectBox {
+  width: 98%;
 }
 .MeInfoTitle {
   color: #999;
@@ -336,7 +338,7 @@ div.NewCall input.NewCall {
   margin-bottom: 4px;
   left: 10px;
   width: 60%;
-  height: 26px;
+  height: 1.625em;
   border: 1px solid #c2c2c2;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -344,12 +346,730 @@ div.NewCall input.NewCall {
 }
 div.NewCall .XButton {
   float: right;
-  height: 26px;
+  height: 2em;
   width: 15%;
   position: relative;
-  margin-left: 10px;
+  margin-left: 0.5em;
   top: 7px;
 }
+div.NewCall .XButton.XButtonGreen {
+  margin-right: 1em;
+}
 div.NewCall .XButton.XButtonNormal {
+  margin-left: 0;
+}
+/* TODO: rewrite this css */
+.Preferences-Holder .fj-content-items {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+}
+.Preferences-Holder .fj-scroll-content {
+  position: relative;
+}
+.Preferences-Holder .fj-hbox {
+  -webkit-box-orient: horizontal;
+  display: -webkit-box;
+}
+.Preferences-Holder .fj-hbox-cell {
+  -webkit-box-flex: 0;
+}
+.Preferences-Holder .fj-hbox-space {
+  -webkit-box-flex: 1;
+}
+.Preferences-Holder .fj-scrollable .fj-viewport {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+}
+.Preferences-Holder .fj-scrollable .fj-scroll {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 10px;
+  right: -10px;
+}
+.Preferences-Holder .fj-scrollable-h .fj-scroll-h {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 10px;
+  bottom: -10px;
+}
+.Preferences-Holder .ListViewTopSpace {
+  height: 9px;
+  width: 100%;
+}
+.Preferences-Holder .QueueBlockHolder {
+  position: relative;
+  display: inline-block;
+  margin: 0px;
+  width: 160px;
+  height: 140px;
+}
+.Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder {
+  cursor: pointer;
+}
+.Preferences-Holder .QueueBlock {
+  left: 5px;
+  top: 5px;
+  height: 130px;
+  width: 150px;
+  position: relative;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: solid 1px #aaa;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#dcdcdc));
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+}
+.Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+}
+.Preferences-Holder .Avatar .QueueBlockAvatar {
+  left: 6px;
+  top: 6px;
+  cursor: pointer;
+}
+.Preferences-Holder .QueueBlockTitle {
+  position: absolute;
+  top: 7px;
+  left: 55px;
+  right: 5px;
+  height: 16px;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: #fff 0 1px 0;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  color: #888;
+}
+.Preferences-Holder .QueueBlockTitle:hover {
+  color: blue;
+}
+.Preferences-Holder .SortField,
+.Preferences-Holder .QueueBlockTitle.SortField,
+.Preferences-Holder .QueueBlockStatBlock.SortField {
+  color: #000;
+}
+.Preferences-Holder .QueueBlockStatus {
+  position: absolute;
+  top: 27px;
+  left: 55px;
+  right: 1px;
+  height: 25px;
+  line-height: 15px;
+  color: #888;
+  font-size: 11px;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.Preferences-Holder .QueueBlockStatus.Waiting {
+  color: orange;
+}
+.Preferences-Holder .QueueBlockStatus.NoWaiting {
+  color: #888;
+}
+.Preferences-Holder .QueueBlockStatBlock {
+  width: 30%;
+  display: inline-block;
+  text-align: center;
+  color: #888;
+}
+.Preferences-Holder .QueueBlockStatBlockTitle {
+  left: 0px;
+  top: 3px;
+  height: 4px;
+  border-radius: 1px;
+  -webkit-border-radius: 1px;
+}
+.Preferences-Holder .QueueBlockStatLineSlider.Red {
+  background-color: #b32a15;
+  border-color: #b32a15;
+}
+.Preferences-Holder .QueueBlockStatLineSlider.Green {
+  background-color: #88a21f;
+  border-color: #88a21f;
+}
+.Preferences-Holder .QueueBlockStatLineSlider.Blue {
+  background-color: #226dd2;
+  border-color: #226dd2;
+}
+.Preferences-Holder .QueueHeader {
+  background: #ddd;
+  width: 100%;
+}
+.Preferences-Holder .QueueSetting {
+  display: inline-block;
+  test-align: center;
+}
+.Preferences-Holder .QueueSettingCol1 {
+  width: 20%;
+  overflow: auto;
+  margin: auto;
+  text-align: center;
+}
+.Preferences-Holder .QueueSettingHeader {
+  width: 155px;
+  background-color: #ddd;
+  text-align: center;
+  color: #0093f0;
+}
+.Preferences-Holder .QueueSettingCheckBox {
+  width: 77px;
+  text-align: center;
+  font-size: .6em;
+}
+.Preferences-Holder .WidgetTabContent.QueueStatTab {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.Preferences-Holder .WidgetTabContent.myStatus {
+  top: -5px;
+}
+.Preferences-Holder .WidgetTabQueueStatArea {
+  height: 50px;
+  margin-left: 10px;
   margin-right: 10px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  position: relative;
+}
+.Preferences-Holder .WidgetTabQueueStatArea {
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  position: relative;
+}
+.Preferences-Holder .WidgetTabQueueStatBlock {
+  position: relative;
+  height: 50px;
+  width: 78px;
+}
+.Preferences-Holder .WidgetTabQueueStatBlockDelimiter {
+  position: relative;
+  height: 28px;
+  margin-top: 10px;
+  width: 0px;
+  border-left: solid 1px #999;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .WidgetTabQueueStatBlockText {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 8px;
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+}
+.Preferences-Holder .WidgetTabQueueStatBlockValue,
+.Preferences-Holder .WidgetTabQueueStatBlockValueNormal {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 24px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
+.Preferences-Holder .WidgetTabQueueStatBlockValue.Alert {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 24px;
+  font-size: 16px;
+  color: red;
+  text-align: center;
+}
+.Preferences-Holder .ListLineDetails .OtherQueuesStat {
+  margin-left: 25px;
+  margin-right: 24px;
+}
+.Preferences-Holder .ListLineDetails .ListViewIsEmpty {
+  position: relative;
+  font-size: 12px;
+}
+.Preferences-Holder .ListLineDetails .QueueAgentCall {
+  margin-left: 25px;
+  margin-right: 24px;
+  position: relative;
+  height: 50px;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo {
+  border: 1px solid #555;
+  border-radius: 18px 0 0 18px;
+  -webkit-border-radius: 18px 0 0 18px;
+  height: 35px;
+  position: absolute;
+  left: 0;
+  right: 40px;
+}
+.Preferences-Holder .ListLineDetails .QueueAgentDetails {
+  margin: 5px;
+  font-weight: bold;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallerName {
+  left: 45px;
+  top: 10px;
+  position: absolute;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallDuration {
+  right: 5px;
+  top: 10px;
+  position: absolute;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallArrowGray {
+  height: 0px;
+  width: 0px;
+  right: -12px;
+  top: 10px;
+  position: absolute;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent transparent transparent #555;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallArrowWhite {
+  height: 0px;
+  width: 0px;
+  right: -10px;
+  top: 11px;
+  position: absolute;
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent transparent transparent white;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .Avatar {
+  top: 3px;
+  left: 3px;
+}
+.Preferences-Holder .ListLineDetails .QueueAgentAvatar.Avatar {
+  left: auto;
+  right: 0;
+}
+.Preferences-Holder .ListLine .Avatar {
+  position: absolute;
+  left: 0px;
+  top: 4px;
+}
+.Preferences-Holder .ListLineExpanded {
+  height: auto;
+}
+.Preferences-Holder .ListRow.Small .CallButton {
+  width: 60px;
+}
+.Preferences-Holder .ListRow.Small .CallButton span {
+  top: 1px;
+}
+.Preferences-Holder .ListRowQueueCall {
+  position: relative;
+  height: 36px;
+  margin: 0px;
+  margin-bottom: 4px;
+  width: 100%;
+  display: block;
+  cursor: default;
+  background-color: #fff;
+}
+.Preferences-Holder .ListRowQueueCallContent {
+  background-color: #fff;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-top-left-radius: 16px;
+  -webkit-border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  -webkit-border-bottom-left-radius: 16px;
+  border: solid 1px #999;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  cursor: pointer;
+}
+.Preferences-Holder .ListRowQueueCallContent.WithAgent-true {
+  right: 165px;
+}
+.Preferences-Holder .ListRowQueueCallContent:hover {
+  border-color: #666;
+}
+.Preferences-Holder .ListRowQueueCallContentArrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: -17px;
+  top: 8px;
+  border-style: solid;
+  border-width: 8px;
+  border-color: transparent transparent transparent #999;
+}
+.Preferences-Holder .ListRowQueueCallContent:hover .ListRowQueueCallContentArrow {
+  border-color: transparent transparent transparent #666;
+}
+.Preferences-Holder .ListRowQueueCallContentArrow2 {
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: -16px;
+  top: 8px;
+  border-style: solid;
+  border-width: 8px;
+  border-color: transparent transparent transparent #fff;
+}
+.Preferences-Holder .ListRowQueueCallContent .Avatar {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+}
+.Preferences-Holder .ListRowQueueCallContentTitle {
+  position: absolute;
+  left: 40px;
+  top: 0px;
+  height: 34px;
+  line-height: 34px;
+  right: 10px;
+}
+.Preferences-Holder .ListRowQueueCallContentTitle .Name {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.Preferences-Holder .ListRowQueueCallContentTitle .Duration {
+  font-size: 10px;
+  font-weight: bold;
+  color: #666;
+}
+.Preferences-Holder .ListRowQueueAgentContent {
+  position: absolute;
+  width: 150px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  background-color: #fff;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border: solid 1px #999;
+  cursor: pointer;
+}
+.Preferences-Holder .ListRowQueueAgentContent:hover {
+  border: solid 1px #666;
+}
+.Preferences-Holder .ListRowQueueAgentContent .Avatar {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+}
+.Preferences-Holder .ListLineContent.RecentStat,
+.Preferences-Holder .ListLineContent.RecentStat:hover {
+  position: relative;
+  height: 20px;
+  line-height: 20px;
+  width: 100%;
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  cursor: default;
+}
+.Preferences-Holder .ListLineContentCell {
+  float: none;
+}
+.Preferences-Holder .ListLineContentCell.Status {
+  width: 24px;
+  text-align: center;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .ListLineContentCell.Name {
+  width: 24px;
+  margin-left: 4px;
+  border-right: solid 1px #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.Preferences-Holder .ListLineContentCell.Duration {
+  width: 105px;
+  padding-left: 4px;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .ListLineContentCell.Calls {
+  width: 55px;
+  padding-left: 4px;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .ListLineContentCell.AvgTalk {
+  width: 55px;
+  padding-left: 4px;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .ListLineContentCell.Twistie {
+  position: relative;
+  width: 24px;
+}
+.Preferences-Holder .ListLineContentCell.AvgWaiting {
+  width: 60px;
+  padding-left: 4px;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .ListLineContentCell.Number {
+  width: 52px;
+  padding-left: 4px;
+  border-right: solid 1px #fff;
+}
+.Preferences-Holder .ListLineContentCell.Twistie .TwistieArrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: 5px;
+  top: 7px;
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent transparent transparent #999;
+}
+.Preferences-Holder .ListLineExpanded .ListLineContentCell.Twistie .TwistieArrow {
+  right: 7px;
+  top: 11px;
+  border-color: #999 transparent transparent transparent;
+}
+.Preferences-Holder .ListLineContent.Header .ListLineContentCell {
+  color: #666;
+  padding-top: 4px;
+  font-size: 11px;
+  display: block;
+}
+.Preferences-Holder .ListView {
+  font-size: .9em;
+}
+.Preferences-Holder .ListView.WithStatBar {
+  top: 95px;
+  left: 10px;
+}
+.Preferences-Holder .ListView.WithStatBar:after {
+  display: none;
+}
+.Preferences-Holder .ListLineDetails {
+  position: relative;
+  width: 100%;
+  display: none;
+  background-color: #fff;
+  padding-bottom: 10px;
+}
+.Preferences-Holder .ListLineDetailsBorder {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 5px;
+  font-size: 8px;
+}
+.Preferences-Holder .QueueBlockStatBlockValue {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.Preferences-Holder .QueueBlockStatBlock.Red {
+  font-weight: bold;
+  color: red;
+}
+.Preferences-Holder .XButton.QueueViewButton {
+  width: 25px;
+}
+.Preferences-Holder .QueueViewIcon {
+  height: 20px;
+  width: 20px;
+  top: 3px;
+  left: 4px;
+  position: absolute;
+}
+.Preferences-Holder .QueueTileView {
+  background: url("../img/QueueTileView.png") no-repeat 0px 0px;
+}
+.Preferences-Holder .QueueListView {
+  background: url("../img/QueueListView.png") no-repeat 0px 0px;
+}
+.Preferences-Holder .QueueBlockAgentsStatLine {
+  position: absolute;
+  left: 49px;
+  right: 5px;
+  height: 18px;
+  line-height: 18px;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: 10px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  text-align: center;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+}
+.Preferences-Holder .QueueBlockStat {
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  right: 0px;
+  border-bottom: solid 1px #ccc;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+}
+.Preferences-Holder .QueueBlockStatInner {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 0px;
+}
+.Preferences-Holder .QueueBlockStatLine {
+  position: relative;
+  height: 12px;
+}
+.Preferences-Holder .QueueBlockStatLineLabel {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 45px;
+  height: 16px;
+  line-height: 16px;
+  color: #333;
+  font-size: 10px;
+  font-weight: bold;
+  overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
+}
+.Preferences-Holder .QueueBlockStatLineValue {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 16px;
+  line-height: 16px;
+  color: #555;
+  font-size: 10px;
+  font-weight: bold;
+  overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+.Preferences-Holder .QueueBlockStatLineBg {
+  position: absolute;
+  left: 50px;
+  right: 0px;
+  top: 3px;
+  height: 8px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#ffffff));
+  border-radius: 1px;
+  -webkit-border-radius: 1px;
+}
+.Preferences-Holder .QueueBlockStatLineSlider {
+  position: absolute;
+  border: dashed 1px #c1ccda;
+  border-top: none;
+}
+.Preferences-Holder .ListLineExpanded .ListLineDetails {
+  display: block;
+  position: relative;
+}
+.Preferences-Holder .ListLineDetails .OtherQueuesStat {
+  margin-left: 25px;
+  margin-right: 24px;
+}
+.Preferences-Holder .ListLineDetails .ListViewIsEmpty {
+  position: relative;
+  font-size: 12px;
+}
+.Preferences-Holder .ListLineDetails .QueueAgentCall {
+  margin-left: 25px;
+  margin-right: 24px;
+  position: relative;
+  height: 50px;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo {
+  border: 1px solid #555;
+  border-radius: 18px 0 0 18px;
+  -webkit-border-radius: 18px 0 0 18px;
+  height: 35px;
+  position: absolute;
+  left: 0;
+  right: 40px;
+}
+.Preferences-Holder .ListLineDetails .QueueAgentDetails {
+  margin: 5px;
+  font-weight: bold;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallerName {
+  left: 45px;
+  top: 10px;
+  position: absolute;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallDuration {
+  right: 5px;
+  top: 10px;
+  position: absolute;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallArrowGray {
+  height: 0px;
+  width: 0px;
+  right: -12px;
+  top: 10px;
+  position: absolute;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent transparent transparent #555;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .QueueCallArrowWhite {
+  height: 0px;
+  width: 0px;
+  right: -10px;
+  top: 11px;
+  position: absolute;
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent transparent transparent white;
+}
+.Preferences-Holder .ListLineDetails .QueueCallerInfo .Avatar {
+  top: 3px;
+  left: 3px;
+}
+.Preferences-Holder .ListLineDetails .QueueAgentAvatar.Avatar {
+  left: auto;
+  right: 0;
+}
+.Preferences-Holder .ListLine .Avatar {
+  position: absolute;
+  left: 0px;
+  top: 4px;
+}
+.Preferences-Holder .SortHeader {
+  display: flex;
+}
+.Preferences-Holder .SortButton {
+  width: 150px;
+}
+.Preferences-Holder .OtherQueueLine {
+  display: flex;
+}
+.Preferences-Holder .QueueButtonToggle {
+  width: 28px;
+  height: 28px;
+}
+.Preferences-Holder .WidgetStatEntry .Label {
+  width: 75px;
+  display: block;
+}
+.Preferences-Holder .WidgetStatEntry .Value {
+  width: 75px;
+  display: inline-block;
 }

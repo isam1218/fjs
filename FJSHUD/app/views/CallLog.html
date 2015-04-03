@@ -1,0 +1,82 @@
+<div class="ToolBar">
+	<input type="search" class="SearchBox" ng-model="calllog.query" placeholder="Search" ng-model-options="{debounce: 100}" />
+</div>
+
+<div class="WidgetTabContent">
+	<div class="ListLineContent Header LeftContactsColumns">
+		<div class="ListLineContentCell">
+			Sort:
+		</div>
+		<div data-ng-click="sort('displayName')"
+			 class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>NAME</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('phone')"
+			 class="ListLineContentCell Phone {{(sortField == 'phone' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>PHONE</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('duration')"
+			 class="ListLineContentCell Duration {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>DURATION</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('startedAt')"
+			 class="ListLineContentCell StartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>DATE</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('incoming')"
+			 class="ListLineContentCell CallType {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>TYPE</span>
+
+		
+			<div class="DirectionArrow"></div>
+		</div>
+	</div>
+
+	<div class="ListView">	
+		<div>
+			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | orderBy:sortField:sortReverse track by call.xpid">
+				<div>
+					<!-- single vs group avatar -->
+					<div ng-if="!call.fullProfile || call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ call.type <= 4 ? 'Office' : 'External' }}" context-menu="call.fullProfile">
+						<img class="AvatarImgPH" ng-src="{{ call.fullProfile ? call.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarInteractable" ng-if="call.fullProfile"></div>
+					</div>
+					<div ng-if="call.fullProfile && !call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ call.fullProfile.loggedInMembers !== undefined ? 'Queue' : 'Office' }}" context-menu="call.fullProfile">
+						<div class="GroupAvatarItem GroupAvatarItem_0">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_1">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_2">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_3">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="AvatarInteractable"></div>
+					</div>
+				</div>
+				<div class="Name"> {{ ::call.displayName }}</div>
+				<div class="Phone">
+					<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
+				</div>
+				<div class="Duration"> {{ ::call.duration | duration }}</div>
+				<div class="Date"> {{ ::call.startedAt | date: 'MMMM d, h:mm a' }}</div>
+				<div class="Type">
+					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.incoming ? 'Incoming' : 'Outbound' }}"></div>
+				</div>
+			</div>
+			
+			<div class="Empty" ng-if="calls.length == 0">No Recent Calls in View</div>
+		</div>
+	</div>
+</div>

@@ -1,8 +1,16 @@
 hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'HttpService', function($scope, $rootScope, httpService) {
+	$scope.mystatus = this;
+	$scope.mystatus.logoutReason = '';
 	$scope.checkboxes = {};
 	$scope.disableButtons = true;
+	$scope.reasons = [];
 	
 	httpService.getFeed('queues');
+	httpService.getFeed('queuelogoutreasons');
+	
+	$scope.$on('queuelogoutreasons_synced', function(event, data) {
+		$scope.reasons = data;
+	});
 	
 	// attach "me" status
 	$scope.$on('queues_updated', function() {
@@ -50,9 +58,11 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 			httpService.sendAction('queues', login ? 'queueLogin' : 'queueLogout', {
 				contactId: $rootScope.myPid,
 				queues: toSend.join(','),
-				reason: '0_57213'
+				reason: $scope.mystatus.logoutReason.xpid
 			});
 		}
+			
+		$scope.mystatus.logoutReason = '';
 	};
 	
 	$scope.$on("$destroy", function () {

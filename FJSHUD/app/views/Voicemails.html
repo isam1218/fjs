@@ -1,12 +1,12 @@
     <div class="ToolBar" >
-		<input type="search" class="SearchBox" placeholder="Search" data-ng-model="tester.query" />
-              
-        <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
+		<input type="search" class="SearchBox" placeholder="Search" data-ng-model="tester.query" />              
+      <!--   <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
                 ng-change="sortBy(selectedSort)"
         > 
-        </select>               
- 
+        </select>  -->           
+        <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedVoice" ng-options="voice_option.display_name for voice_option in voice_options track by voice_option.display_name" ng-change="sortBy(selectedVoice)">
+        </select>
         <select class="XButton XButtonNormal XButtonDropDown disabled-false" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
             <option>Actions</option>
             <div class="XButtonDropDownArrow"></div>

@@ -42,9 +42,16 @@ input[type="tel"] {
   color: #333;
   text-shadow: 0 1px 0 #fff;
   vertical-align: top;
+  text-overflow: ellipsis;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   /* green */
   /* blue */
   /* red */
+}
+.XButton span {
+  vertical-align: middle;
+  position: relative;
+  top: 1px;
 }
 .XButton:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
@@ -109,7 +116,9 @@ input[type="tel"] {
   background: transparent;
 }
 .XButtonBlue.disabled-true span,
-.XButtonBlue.disabled span {
+.XButtonBlue.disabled span,
+input[disabled],
+select[disabled] {
   opacity: 0.5;
   cursor: auto;
 }
@@ -175,6 +184,11 @@ input[type="tel"] {
   height: 24px;
   cursor: pointer;
 }
+.ToolBar .XButton {
+  font-size: 0.6566em;
+  height: 2.9em;
+  padding: 0 5px;
+}
 .CurrentCallBtn {
   margin: 10px 10px 0px 0px;
   width: 78px;
@@ -216,7 +230,7 @@ input[type="tel"] {
   border: solid 1px #C7C7C7;
   box-shadow: 0px 0px 1px #DDD inset;
 }
-.XIcon24-Record {
+.XIcon24-Record-Off {
   position: absolute;
   right: 12px;
   top: 2px;
@@ -224,6 +238,18 @@ input[type="tel"] {
   width: 16px;
   height: 24px;
   background: url(../img/XIconSet-24x24.png) no-repeat -192px 0px;
+}
+.XButtonRecordOn {
+  border: 1px solid #FF0000;
+}
+.XIcon24-Record-On {
+  position: absolute;
+  right: 12px;
+  top: 2px;
+  margin-left: 5px;
+  width: 16px;
+  height: 24px;
+  background: url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
 }
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
@@ -259,9 +285,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-image: linear-gradient(#fefefe, #ebebeb);
   border: 1px solid rgba(0, 0, 0, 0.2);
   vertical-align: middle;
-  padding: 0 25px 0 10px;
-  height: 26px;
-  line-height: 26px;
+  line-height: 2em;
   font-weight: bold;
   font-size: 11px;
   position: relative;

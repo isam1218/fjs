@@ -1,25 +1,24 @@
 <div class="ToolBar Queues">
 	<input class="SearchBox" type="search"
-        ng-model="newObj.query"
+        ng-model="query"
         x-webkit-speech=""
         placeholder="Search" />
-
-  <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
-            ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
-            ng-change="sortBy(selectedSort.type)">
-  </select>
-    		
-  <div class="XButton QueueButtonToggle XButtonNormal">
-    <span><div ng-click="viewIcon = !viewIcon" class="QueueViewIcon"
-               ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div></span>
+		
+  <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
+    <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
   </div>
-    
+    <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
+			ng-model="selectedSort"
+            ng-options="sort_option.display_name for sort_option in sort_options" 
+			ng-change="setSort(selectedSort.type)">
+    </select>
+
 </div>
 
 <div class="ListViewTopSpace"></div>
 
 <div ng-if="viewIcon" class="QueueList">
-	<div class="Block" ng-repeat="queue in queues | filter: queueFilter() track by queue.xpid">
+	<div class="Block" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid">
 		<a href="#/queue/{{::queue.xpid}}" class="Header">
 			<div class="Avatar AvatarNormal" context-menu="queue">
 				<div class="GroupAvatarItem GroupAvatarItem_0">
@@ -56,7 +55,7 @@
 				Avg Talk
 			</div>
 			<div >
-				<strong>{{ queue.info.abandon + gadget.data.info.completed }}</strong>
+				<strong>{{ queue.info.abandon + queue.info.completed }}</strong>
 				Total
 			</div>
 			<div ng-class="(queue.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
@@ -74,37 +73,37 @@
 <div ng-if="!viewIcon" class="QueueList">
 	<div class="Grid">
 		<div class="Header">
-			<div ng-click="sortBy('name')">
+			<div ng-click="setSort('name')">
 				<span>Queue Name</span>
-				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
 			</div>
-			<div ng-click="sortBy('callsWaiting')">
+			<div ng-click="setSort('info.waiting')">
 				<span>Waiting</span>		
-				<div ng-if="sortColumn == 'callsWaiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+				<div ng-if="sortColumn == 'info.waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="sortBy('avgWait')">
-				<span><span ng-if="sortColumn != 'avgWait'">Avg</span> Wait</span>		
-				<div ng-if="sortColumn == 'avgWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+			<div ng-click="setSort('info.esa')">
+				<span>Avg Wait</span>		
+				<div ng-if="sortColumn == 'info.esa'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="sortBy('avgTalk')">
-				<span><span ng-if="sortColumn != 'avgTalk'">Avg</span> Talk</span>		
-				<div ng-if="sortColumn == 'avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+			<div ng-click="setSort('info.avgTalk')">
+				<span>Avg Talk</span>		
+				<div ng-if="sortColumn == 'info.avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="sortBy('total')">
+			<div ng-click="setSort('info.abandon + info.completed')">
 				<span>Total</span>		
-				<div ng-if="sortColumn == 'total'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+				<div ng-if="sortColumn == 'info.abandon + info.completed'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="sortBy('abandoned')">
+			<div ng-click="setSort('info.abandonPercent')">
 				<span>Aband</span>		
-				<div ng-if="sortColumn == 'abandoned'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+				<div ng-if="sortColumn == 'info.abandonPercent'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="sortBy('active')">
+			<div ng-click="setSort('info.active')">
 				<span>Active</span>		
-				<div ng-if="sortColumn == 'active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+				<div ng-if="sortColumn == 'info.active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 		</div>
 		<div class="Table">
-			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: queueFilter() track by queue.xpid">
+			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid">
                 <div>{{ ::queue.name }}</div>
 				<div>{{ queue.info.waiting}}</div>
 				<div>{{ queue.info.esa*1000 | duration}}</div>

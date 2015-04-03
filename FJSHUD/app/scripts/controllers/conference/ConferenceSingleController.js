@@ -1,5 +1,5 @@
-hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService',
-	function($scope,conferenceService,httpService, $routeParams,utilService,contactService,phoneService) {
+hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'UtilService', 'ContactService', 'PhoneService',
+	function($scope, conferenceService, httpService, $routeParams, $location, utilService, contactService, phoneService) {
 	$scope.conversationType = 'conference';
 	$scope.members = [];
 	$scope.conferenceId = $routeParams.conferenceId;
@@ -17,6 +17,15 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 	$scope.cTabSelected = "CurrentCall";
 	$scope.callrecordings = [];
 
+  $scope.tabs = [{upper: 'Current Call', lower: 'currentcall'}, {upper: 'Chat', lower: 'chat'}, {upper: 'Recordings', lower: 'recordings'}];
+
+  if ($location.path().indexOf('/currentcall') !== -1){
+    $scope.selected = 'Current Call';
+  } else if ($location.path().indexOf('/chat') !== -1){
+    $scope.selected = 'Chat';
+  } else if ($location.path().indexOf('recordings') !== -1){
+    $scope.selected = 'Recordings';
+  }
 
 	$scope.$on("conferences_updated", function(event,data){
    		$scope.conference = conferenceService.getConference($scope.conferenceId);

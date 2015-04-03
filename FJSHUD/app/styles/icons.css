@@ -53,11 +53,15 @@
 .CallAvatar.CallAvatar_External {
   border: .2em solid #729c00;
 }
+.CallAvatar.CallAvatar_Queue {
+  border: .2em solid #e27100;
+}
 .CallAvatar.CallAvatar_Office {
   border: .2em solid #009CFF;
 }
 .CallAvatar .AvatarInteractable {
   border-width: 0 0 .6em .6em;
+  border-color: #0093f0 transparent;
 }
 [class*="XIcon-ChatStatus"] {
   background: url("../img/XStatus.png") no-repeat;
@@ -124,6 +128,9 @@
 }
 .XIconSetMic {
   background: url("../img/XIconSet-24x24.png") no-repeat 0px 0px;
+}
+.XIconCallOperationVolumeOff {
+  background: url("../img/XCallOperation.png") no-repeat -78px 0px;
 }
 .IconDisplay {
   width: 24px;

@@ -1,759 +1,376 @@
-.Queues .fj-content-items {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  width: 100%;
-}
-.Queues .fj-scroll-content {
-  position: relative;
-}
-.Queues .fj-hbox {
-  -webkit-box-orient: horizontal;
-  display: -webkit-box;
-}
-.Queues .fj-hbox-cell {
-  -webkit-box-flex: 0;
-}
-.Queues .fj-hbox-space {
-  -webkit-box-flex: 1;
-}
-.Queues .fj-scrollable .fj-viewport {
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  overflow: hidden;
-}
-.Queues .fj-scrollable .fj-scroll {
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  width: 10px;
-  right: -10px;
-}
-.Queues .fj-scrollable-h .fj-scroll-h {
-  position: absolute;
-  left: 10px;
-  right: 10px;
-  height: 10px;
-  bottom: -10px;
-}
-.Queues .ListViewTopSpace {
-  height: 9px;
-  width: 100%;
-}
-.Queues .QueueBlockHolder {
-  position: relative;
-  display: inline-block;
-  margin: 0px;
-  width: 160px;
-  height: 140px;
-}
-.Queues .QueueDetailsEnabled-true .QueueBlockHolder {
-  cursor: pointer;
-}
-.Queues .QueueBlock {
-  left: 5px;
-  top: 5px;
-  height: 130px;
-  width: 150px;
-  position: relative;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border: solid 1px #aaa;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#dcdcdc));
-  transition: all 0.1s linear;
-  -webkit-transition: all 0.1s linear;
-}
-.Queues .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-}
-.Queues .Avatar .QueueBlockAvatar {
-  left: 6px;
-  top: 6px;
-  cursor: pointer;
-}
-.Queues .QueueBlockTitle {
-  position: absolute;
-  top: 7px;
-  left: 55px;
-  right: 5px;
-  height: 16px;
-  line-height: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-shadow: #fff 0 1px 0;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
-  color: #888;
-}
-.Queues .QueueBlockTitle:hover {
-  color: blue;
-}
-.Queues .SortField,
-.Queues .QueueBlockTitle.SortField,
-.Queues .QueueBlockStatBlock.SortField {
-  color: #000;
-}
-.Queues .QueueBlockStatus {
-  position: absolute;
-  top: 27px;
-  left: 55px;
-  right: 1px;
-  height: 25px;
-  line-height: 15px;
-  color: #888;
-  font-size: 11px;
-  text-align: left;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.Queues .QueueBlockStatus.Waiting {
-  color: orange;
-}
-.Queues .QueueBlockStatus.NoWaiting {
-  color: #888;
-}
-.Queues .QueueBlockStatBlock {
-  width: 30%;
-  display: inline-block;
-  text-align: center;
-  color: #888;
-}
-.Queues .QueueBlockStatBlockTitle {
-  font-size: 8px;
-}
-.Queues .QueueBlockStatBlockValue {
-  margin-top: 5px;
-  font-size: 14px;
-  font-weight: bold;
-}
-.Queues .QueueBlockStatBlock.Red {
-  font-weight: bold;
-  color: red;
-}
-.Queues .XButton.QueueViewButton {
-  width: 25px;
-}
-.Queues .QueueViewIcon {
-  height: 20px;
-  width: 20px;
-  top: 3px;
-  left: 4px;
-  position: absolute;
-}
-.Queues .QueueTileView {
-  background: url("../img/QueueTileView.png") no-repeat 0px 0px;
-}
-.Queues .QueueListView {
-  background: url("../img/QueueListView.png") no-repeat 0px 0px;
-}
-.Queues .QueueBlockAgentsStatLine {
-  position: absolute;
-  left: 49px;
-  right: 5px;
-  height: 18px;
-  line-height: 18px;
-  padding-left: 2px;
-  padding-right: 2px;
-  font-size: 10px;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  text-align: center;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
-}
-.Queues .QueueBlockStat {
-  position: absolute;
-  top: 50px;
-  left: 0px;
-  right: 0px;
-  border-bottom: solid 1px #ccc;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
-}
-.Queues .QueueBlockStatInner {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 0px;
-}
-.Queues .QueueBlockStatLine {
-  position: relative;
-  height: 12px;
-}
-.Queues .QueueBlockStatLineLabel {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 45px;
-  height: 16px;
-  line-height: 16px;
-  color: #333;
-  font-size: 10px;
-  font-weight: bold;
-  overflow: hidden;
-  text-align: left;
-  white-space: nowrap;
-}
-.Queues .QueueBlockStatLineValue {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  height: 16px;
-  line-height: 16px;
-  color: #555;
-  font-size: 10px;
-  font-weight: bold;
-  overflow: hidden;
-  text-align: left;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-.Queues .QueueBlockStatLineBg {
-  position: absolute;
-  left: 50px;
-  right: 0px;
-  top: 3px;
-  height: 8px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#ffffff));
-  border-radius: 1px;
-  -webkit-border-radius: 1px;
-}
-.Queues .QueueBlockStatLineSlider {
-  position: absolute;
-  left: 0px;
-  top: 3px;
-  height: 4px;
-  border-radius: 1px;
-  -webkit-border-radius: 1px;
-}
-.Queues .QueueBlockStatLineSlider.Red {
-  background-color: #b32a15;
-  border-color: #b32a15;
-}
-.Queues .QueueBlockStatLineSlider.Green {
-  background-color: #88a21f;
-  border-color: #88a21f;
-}
-.Queues .QueueBlockStatLineSlider.Blue {
-  background-color: #226dd2;
-  border-color: #226dd2;
-}
-.Queues .QueueHeader {
-  background: #ddd;
-  width: 100%;
-}
-.Queues .QueueSetting {
-  display: inline-block;
-  test-align: center;
-}
-.Queues .QueueSettingCol1 {
-  width: 20%;
-  overflow: auto;
-  margin: auto;
-  text-align: center;
-}
-.Queues .QueueSettingHeader {
-  width: 155px;
-  background-color: #ddd;
-  text-align: center;
-  color: #0093f0;
-}
-.Queues .QueueSettingCheckBox {
-  width: 77px;
-  text-align: center;
-  font-size: .6em;
-}
-.Queues .WidgetTabContent.QueueStatTab {
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-.Queues .WidgetTabContent.myStatus {
-  top: -5px;
-}
-.Queues .WidgetTabQueueStatArea {
-  height: 50px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  position: relative;
-}
-.Queues .WidgetTabQueueStatArea {
-  height: 50px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  position: relative;
-}
-.Queues .WidgetTabQueueStatBlock {
-  position: relative;
-  height: 50px;
-  width: 78px;
-}
-.Queues .WidgetTabQueueStatBlockDelimiter {
-  position: relative;
-  height: 28px;
-  margin-top: 10px;
-  width: 0px;
-  border-left: solid 1px #999;
-  border-right: solid 1px #fff;
-}
-.Queues .WidgetTabQueueStatBlockText {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 8px;
-  font-size: 11px;
-  color: #999;
-  text-align: center;
-}
-.Queues .WidgetTabQueueStatBlockValue,
-.Queues .WidgetTabQueueStatBlockValueNormal {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 24px;
-  font-size: 12px;
-  color: #666;
-  text-align: center;
-}
-.Queues .WidgetTabQueueStatBlockValue.Alert {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 24px;
-  font-size: 16px;
-  color: red;
-  text-align: center;
-}
-.Queues .ListLineDetails .OtherQueuesStat {
-  margin-left: 25px;
-  margin-right: 24px;
-}
-.Queues .ListLineDetails .ListViewIsEmpty {
-  position: relative;
-  font-size: 12px;
-}
-.Queues .ListLineDetails .QueueAgentCall {
-  margin-left: 25px;
-  margin-right: 24px;
-  position: relative;
-  height: 50px;
-}
-.Queues .ListLineDetails .QueueCallerInfo {
-  border: 1px solid #555;
-  border-radius: 18px 0 0 18px;
-  -webkit-border-radius: 18px 0 0 18px;
-  height: 35px;
-  position: absolute;
-  left: 0;
-  right: 40px;
-}
-.Queues .ListLineDetails .QueueAgentDetails {
-  margin: 5px;
-  font-weight: bold;
-}
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallerName {
-  left: 45px;
-  top: 10px;
-  position: absolute;
-}
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallDuration {
-  right: 5px;
-  top: 10px;
-  position: absolute;
-}
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallArrowGray {
-  height: 0px;
-  width: 0px;
-  right: -12px;
-  top: 10px;
-  position: absolute;
-  border-style: solid;
-  border-width: 6px;
-  border-color: transparent transparent transparent #555;
-}
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallArrowWhite {
-  height: 0px;
-  width: 0px;
-  right: -10px;
-  top: 11px;
-  position: absolute;
-  border-style: solid;
-  border-width: 5px;
-  border-color: transparent transparent transparent white;
-}
-.Queues .ListLineDetails .QueueCallerInfo .Avatar {
-  top: 3px;
-  left: 3px;
-}
-.Queues .ListLineDetails .QueueAgentAvatar.Avatar {
-  left: auto;
-  right: 0;
-}
-.Queues .ListLine .Avatar {
-  position: absolute;
-  left: 0px;
-  top: 4px;
-}
-.Queues .ListLineExpanded {
-  height: auto;
-}
-.Queues .ListRow.Small .CallButton {
-  width: 60px;
-}
-.Queues .ListRow.Small .CallButton span {
-  top: 1px;
-}
-.Queues .ListRowQueueCall {
-  position: relative;
-  height: 36px;
-  margin: 0px;
-  margin-bottom: 4px;
-  width: 100%;
-  display: block;
-  cursor: default;
-  background-color: #fff;
-}
-.Queues .ListRowQueueCallContent {
-  background-color: #fff;
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-top-left-radius: 16px;
-  -webkit-border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
-  -webkit-border-bottom-left-radius: 16px;
-  border: solid 1px #999;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  cursor: pointer;
-}
-.Queues .ListRowQueueCallContent.WithAgent-true {
-  right: 165px;
-}
-.Queues .ListRowQueueCallContent:hover {
-  border-color: #666;
-}
-.Queues .ListRowQueueCallContentArrow {
-  position: absolute;
-  width: 0;
-  height: 0;
-  right: -17px;
-  top: 8px;
-  border-style: solid;
-  border-width: 8px;
-  border-color: transparent transparent transparent #999;
-}
-.Queues .ListRowQueueCallContent:hover .ListRowQueueCallContentArrow {
-  border-color: transparent transparent transparent #666;
-}
-.Queues .ListRowQueueCallContentArrow2 {
-  position: absolute;
-  width: 0;
-  height: 0;
-  right: -16px;
-  top: 8px;
-  border-style: solid;
-  border-width: 8px;
-  border-color: transparent transparent transparent #fff;
-}
-.Queues .ListRowQueueCallContent .Avatar {
-  position: absolute;
-  left: 2px;
-  top: 2px;
-}
-.Queues .ListRowQueueCallContentTitle {
-  position: absolute;
-  left: 40px;
-  top: 0px;
-  height: 34px;
-  line-height: 34px;
-  right: 10px;
-}
-.Queues .ListRowQueueCallContentTitle .Name {
-  font-size: 12px;
-  color: #666;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.Queues .ListRowQueueCallContentTitle .Duration {
-  font-size: 10px;
-  font-weight: bold;
-  color: #666;
-}
-.Queues .ListRowQueueAgentContent {
-  position: absolute;
-  width: 150px;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  background-color: #fff;
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border: solid 1px #999;
-  cursor: pointer;
-}
-.Queues .ListRowQueueAgentContent:hover {
-  border: solid 1px #666;
-}
-.Queues .ListRowQueueAgentContent .Avatar {
-  position: absolute;
-  left: 2px;
-  top: 2px;
-}
-.Queues .ListLineContent.RecentStat,
-.Queues .ListLineContent.RecentStat:hover {
-  position: relative;
-  height: 20px;
-  line-height: 20px;
-  width: 100%;
-  font-size: 11px;
-  color: #999;
-  text-align: center;
-  background-color: #f9f9f9;
-  cursor: default;
-}
-.Queues .ListLineContentCell {
-  float: none;
-}
-.Queues .ListLineContentCell.Status {
-  width: 24px;
-  text-align: center;
-  border-right: solid 1px #fff;
-}
-.Queues .ListLineContentCell.Name {
-  width: 24px;
-  margin-left: 4px;
-  border-right: solid 1px #fff;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.Queues .ListLineContentCell.Duration {
-  width: 105px;
-  padding-left: 4px;
-  border-right: solid 1px #fff;
-}
-.Queues .ListLineContentCell.Calls {
-  width: 55px;
-  padding-left: 4px;
-  border-right: solid 1px #fff;
-}
-.Queues .ListLineContentCell.AvgTalk {
-  width: 55px;
-  padding-left: 4px;
-  border-right: solid 1px #fff;
-}
-.Queues .ListLineContentCell.Twistie {
-  position: relative;
-  width: 24px;
-}
-.Queues .ListLineContentCell.AvgWaiting {
-  width: 60px;
-  padding-left: 4px;
-  border-right: solid 1px #fff;
-}
-.Queues .ListLineContentCell.Number {
-  width: 52px;
-  padding-left: 4px;
-  border-right: solid 1px #fff;
-}
-.Queues .ListLineContentCell.Twistie .TwistieArrow {
-  position: absolute;
-  width: 0;
-  height: 0;
-  right: 5px;
-  top: 7px;
-  border-style: solid;
-  border-width: 5px;
-  border-color: transparent transparent transparent #999;
-}
-.Queues .ListLineExpanded .ListLineContentCell.Twistie .TwistieArrow {
-  right: 7px;
-  top: 11px;
-  border-color: #999 transparent transparent transparent;
-}
-.Queues .ListLineContent.Header .ListLineContentCell {
-  color: #666;
-  padding-top: 4px;
-  font-size: 11px;
-  display: block;
-}
-.Queues .ListView {
+.Widget.Queues {
+  /* individual queue panel */
+}
+.Widget.Queues .ListView {
+  display: flex;
+  flex-direction: column;
   font-size: .9em;
 }
-.Queues .ListView.WithStatBar {
-  top: 95px;
-  left: 10px;
+.Widget.Queues .CallLog .ListView {
+  font-size: 1.15em;
 }
-.Queues .ListView.WithStatBar:after {
-  display: none;
+.Widget.Queues .QueueList {
+  flex: 1 1 0;
+  overflow-y: auto;
+  padding: .5em 2.5%;
 }
-.Queues .ListLineDetails {
-  position: relative;
+.Widget.Queues .MyStatus {
+  font-size: 1em !important;
+}
+.Widget.Queues .Grid {
+  font-size: .85em;
+}
+.Widget.Queues .Grid .Header,
+.Widget.Queues .Grid .Row {
   width: 100%;
-  display: none;
-  background-color: #fff;
-  padding-bottom: 10px;
-}
-.Queues .ListLineDetailsBorder {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  right: 0px;
-  bottom: 5px;
-  border: dashed 1px #c1ccda;
-  border-top: none;
-}
-.Queues .ListLineExpanded .ListLineDetails {
+  clear: both;
   display: block;
+}
+.Widget.Queues .Grid .Header {
+  border-bottom: 1px solid #333;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: .9em;
+  margin-bottom: 8px;
+}
+.Widget.Queues .Grid .Header span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.Widget.Queues .Grid .Row:nth-child(odd) {
+  background-color: #eeeeee;
+  overflow: hidden;
+}
+.Widget.Queues .Grid .Header > div,
+.Widget.Queues .Grid .Row > div {
+  float: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: .5em;
+  white-space: nowrap;
   position: relative;
 }
-.Queues .ListLineDetails .OtherQueuesStat {
-  margin-left: 25px;
-  margin-right: 24px;
+.Widget.Queues .Grid .Header > div:nth-child(1),
+.Widget.Queues .Grid .Row > div:nth-child(1) {
+  width: 25%;
 }
-.Queues .ListLineDetails .ListViewIsEmpty {
+.Widget.Queues .Grid .Header > div:nth-child(n+2),
+.Widget.Queues .Grid .Row > div:nth-child(n+2) {
+  width: 12.5%;
+}
+.Widget.Queues .Block {
   position: relative;
-  font-size: 12px;
+  float: left;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  overflow: hidden;
+  width: 31%;
+  background-color: #EBEBEB;
+  margin: 1%;
 }
-.Queues .ListLineDetails .QueueAgentCall {
-  margin-left: 25px;
-  margin-right: 24px;
-  position: relative;
-  height: 50px;
+.Widget.Queues .Block .Avatar {
+  font-size: 1.5em;
 }
-.Queues .ListLineDetails .QueueCallerInfo {
-  border: 1px solid #555;
-  border-radius: 18px 0 0 18px;
-  -webkit-border-radius: 18px 0 0 18px;
-  height: 35px;
-  position: absolute;
-  left: 0;
-  right: 40px;
+.Widget.Queues .Block .Header {
+  background-color: #ECECEC;
+  padding: .5em;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: .9em;
+  display: flex;
+  flex-direction: row;
 }
-.Queues .ListLineDetails .QueueAgentDetails {
-  margin: 5px;
+.Widget.Queues .Block .Header > div {
+  display: inline-block;
+  vertical-align: top;
+}
+.Widget.Queues .Block .Header .Title {
+  margin-left: .5em;
+  flex: 1;
+}
+.Widget.Queues .Block .Header .Title div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.Widget.Queues .Block .Header .Title .Name {
   font-weight: bold;
+  color: #333;
+  width: 99%;
+  text-overflow: ellipsis;
 }
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallerName {
-  left: 45px;
-  top: 10px;
-  position: absolute;
+.Widget.Queues .Block .Header .Title .Agents {
+  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+  border-radius: 6px;
+  margin-top: .5em;
+  text-align: center;
+  padding: .25em;
+  font-size: .8em;
 }
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallDuration {
-  right: 5px;
-  top: 10px;
-  position: absolute;
+.Widget.Queues .Block .Stats {
+  background: linear-gradient(to bottom, #dcdcdc, #eaeaeb);
+  font-size: .7em;
+  text-align: center;
+  padding: 1em 0;
+  line-height: 1.5em;
+  border-top: 1px solid #D5D6D6;
+  color: gray;
 }
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallArrowGray {
-  height: 0px;
-  width: 0px;
-  right: -12px;
-  top: 10px;
-  position: absolute;
-  border-style: solid;
-  border-width: 6px;
-  border-color: transparent transparent transparent #555;
+.Widget.Queues .Block .Stats > div {
+  display: inline-block;
+  width: 30%;
+  vertical-align: top;
 }
-.Queues .ListLineDetails .QueueCallerInfo .QueueCallArrowWhite {
-  height: 0px;
-  width: 0px;
-  right: -10px;
-  top: 11px;
-  position: absolute;
-  border-style: solid;
-  border-width: 5px;
-  border-color: transparent transparent transparent white;
+.Widget.Queues .Block .Stats > div strong {
+  font-size: 1.3em;
+  display: block;
 }
-.Queues .ListLineDetails .QueueCallerInfo .Avatar {
-  top: 3px;
-  left: 3px;
-}
-.Queues .ListLineDetails .QueueAgentAvatar.Avatar {
-  left: auto;
-  right: 0;
-}
-.Queues .ListLine .Avatar {
-  position: absolute;
-  left: 0px;
-  top: 4px;
-}
-.Queues .WidgetStat {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 240px;
-  height: 55px;
-  border-radius: 4px;
-  background-color: #fff;
-  border: solid 1px #ccc;
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.05);
-  padding: 5px;
-}
-.Queues .SortHeader {
-  display: flex;
-}
-.Queues .SortButton {
-  width: 150px;
-}
-.Queues .OtherQueueLine {
-  display: flex;
-}
-.Queues .QueueButtonToggle {
+.Widget.Queues .QueueButtonToggle {
   width: 28px;
   height: 28px;
 }
-.Queues .WidgetStatEntry .Label {
-  width: 75px;
+.Widget.Queues .QueueButtonToggle .QueueViewIcon {
+  /*height: 20px;
+      width: 20px;
+      top: 3px;
+      left: 4px;
+      position: absolute;*/
+  width: 1.8em;
+  height: 1.8em;
+  position: relative;
+  left: -2.18em;
+  top: .5em;
+}
+.Widget.Queues .QueueButtonToggle .QueueTileView {
+  background: url("../img/QueueTileView.png") no-repeat 0px 0px;
+}
+.Widget.Queues .QueueButtonToggle .QueueListView {
+  background: url("../img/QueueListView.png") no-repeat 0px 0px;
+}
+.Widget.Queues .ToolBar .XButton {
+  font-size: 0.75em;
+  padding-left: 3em;
+}
+.Widget.Queues .ToolBarBottom {
+  padding: .5em;
+  text-align: right;
+  font-size: 1.1em;
+  border-top: 1px solid #ccc;
+}
+.Widget.Queues .StatHeader {
+  text-align: center;
+  width: 100%;
+  margin: 1em auto;
+  font-size: .8em;
+}
+.Widget.Queues .StatHeader .StatBlock {
+  display: inline-block;
+  padding: 1% 3% 0 3%;
+  line-height: 1.5em;
+  vertical-align: top;
+  max-width: 17%;
+}
+.Widget.Queues .StatHeader .StatBlock:not(:last-child) {
+  border-right: 1px solid gray;
+}
+.Widget.Queues .StatHeader .StatBlock span {
   display: block;
 }
-.Queues .WidgetStatEntry .Value {
-  width: 75px;
+.Widget.Queues .StatHeader .StatBlock span:first-child {
+  color: #999;
+}
+.Widget.Queues .ResetDate {
+  background-color: #F9F9F9;
+  width: 100%;
+  padding: .5em;
+  text-align: center;
+  color: gray;
+  font-size: .8em;
+}
+.Widget.Queues .QueueStatTable {
+  padding: 1em;
+}
+.Widget.Queues .QueueStatTable .Table {
+  flex: 1;
+  overflow-y: auto;
+}
+.Widget.Queues .QueueStatTable .Agent:nth-child(even) .Row,
+.Widget.Queues .QueueStatTable .Details .Row:nth-child(odd) {
+  background-color: #eeeeee;
+}
+.Widget.Queues .QueueStatTable .Row {
+  width: 100%;
+  clear: both;
+  cursor: pointer;
+  overflow: hidden;
+}
+.Widget.Queues .QueueStatTable .Row.Selected {
+  background-color: #C1CCDA !important;
+}
+.Widget.Queues .QueueStatTable .Row.Header {
+  border-bottom: 1px solid #333;
+  margin-bottom: .5em;
+  font-size: .9em;
+}
+.Widget.Queues .QueueStatTable .Row > div {
+  position: relative;
+  float: left;
+  height: 2em;
+  line-height: 2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(1) {
+  width: 5%;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(2) {
+  width: 5%;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(3) {
+  width: 35%;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(4) {
+  width: 25%;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(5) {
+  width: 10%;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(6) {
+  width: 15%;
+}
+.Widget.Queues .QueueStatTable .Row > div:nth-child(7) {
+  width: 5%;
+}
+.Widget.Queues .QueueStatTable .TwistieArrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: .5em;
   display: inline-block;
 }
-.Queues .ToolBar.Queues {
-  padding-top: 10px;
-  height: 50px;
+.Widget.Queues .QueueStatTable .TwistieArrow.Closed {
+  border-color: transparent transparent transparent #999;
 }
-.Queues .ToolBar.Queues .SearchInputBox {
-  top: 16px;
-  margin-bottom: 15px;
+.Widget.Queues .QueueStatTable .TwistieArrow.Open {
+  border-color: #999 transparent transparent transparent;
 }
-.Queues .ToolBar.Queues select.XButton {
-  height: 28px;
-  top: 3px;
-  font-size: 12px;
+.Widget.Queues .QueueStatTable .Details {
+  width: 100%;
+  border-left: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
+  clear: both;
+  margin-bottom: .5em;
+  padding-bottom: .25em;
+  background-color: white;
 }
-.recent-selected-column {
-  color: #729C00;
+.Widget.Queues .QueueStatTable .Details .SubHeader {
+  font-weight: bold;
+  margin: .25em;
 }
-.recent-selected-column .desc_arrow {
+.Widget.Queues .QueueStatTable .Details .ActiveCall {
+  font-size: 1.1em;
+  padding: .5em 1em;
+}
+.Widget.Queues .QueueStatTable .Details .ActiveCall .Avatar {
+  font-size: 1.2em;
+}
+.Widget.Queues .QueueStatTable .Details .Empty {
+  text-align: center;
+  color: gray;
+}
+.Widget.Queues .CallList .Header {
   position: relative;
+}
+.Widget.Queues .CallList .Header em {
+  font-size: .8em;
+  margin-left: 10px;
+}
+.Widget.Queues .CallList .Header .Arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border: solid 8px;
+  cursor: pointer;
+}
+.Widget.Queues .CallList .Header .Arrow.On {
+  border-color: #729c00 transparent transparent transparent;
+}
+.Widget.Queues .CallList .Header .Arrow.Off {
+  border-color: transparent transparent transparent #729c00;
+  right: -3px;
+}
+.Widget.Queues .CallList .Empty {
+  border: 1px dashed #999;
+  padding: .25em;
+  color: #999;
+  font-style: italic;
+  font-size: .9em;
+  text-align: center;
+}
+.Widget.Queues .ActiveCall {
+  display: flex;
+  flex-direction: row;
+  font-size: .9em;
+  padding: .5em;
+}
+.Widget.Queues .ActiveCall .Agent {
+  border: 1px solid #999;
+  padding: .1em .5em .1em .1em;
+}
+.Widget.Queues .ActiveCall .Agent > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.Widget.Queues .ActiveCall .Info {
+  position: relative;
+  flex: 1;
+  border-top-left-radius: 1.5em;
+  border-bottom-left-radius: 1.5em;
+  border: 1px solid #999;
+  padding: .2em;
+  margin-right: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.Widget.Queues .ActiveCall .Info .Arrow {
+  position: absolute;
+  border: solid 6px;
+  width: 0;
+  height: 0;
+  border-color: transparent transparent transparent #e27100;
+  bottom: 33%;
+  right: -13px;
+}
+.Widget.Queues .ActiveCall .Info .Name {
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-left: 1%;
+}
+.Widget.Queues .ActiveCall .Info .Time {
+  flex: 1;
+  text-align: right;
+}
+.Widget.Queues .desc_arrow {
+  position: absolute;
   border: solid 6px;
   width: 0;
   height: 0;
   display: inline-block;
   border-color: transparent transparent #729c00 transparent;
-  bottom: 3px;
+  bottom: 7px;
 }
-.recent-selected-column .asc_arrow {
-  position: relative;
+.Widget.Queues .asc_arrow {
+  position: absolute;
   border: solid 6px;
   border-color: #729c00 transparent transparent transparent;
-  top: 6px;
+  top: 9px;
   width: 0;
   height: 0;
   display: inline-block;

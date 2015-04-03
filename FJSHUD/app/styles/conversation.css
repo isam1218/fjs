@@ -21,6 +21,8 @@
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .Avatar {
   top: 1px;
   left: 1px;
+  float: left;
+  border: 1px solid #0093F0;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .CallLineTop {
   top: 3px;
@@ -28,11 +30,24 @@
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .CallLineTop .CallerName {
   font-weight: bold;
-  font-size: 13px;
+  font-size: 12px;
+  color: #645D5D;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  width: 100px;
+  top: 5px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .CallLineTop .CallDuration {
-  top: 5px;
   right: 5px;
+  position: relative;
+  font-size: 11px;
+}
+.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .CallLineTop .CallExtension {
+  font-size: 12px;
+  margin-top: 3px;
+  float: left;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus.HasCall {
   border-radius: 18px 4px 4px 18px;
@@ -59,6 +74,18 @@
   bottom: -30px;
   left: .5em;
   z-index: 50;
+}
+.Widget.Conversation .WidgetBody .ToolBar input[type=search].SearchBox {
+  width: 30% !important;
+}
+.Widget.Conversation .WidgetBody .ToolBar .XButton {
+  width: 32%;
+  height: 2.9em;
+  padding: 0 6%;
+}
+.Widget.Conversation .WidgetBody .fj-stream .ToolBar .XButton {
+  width: 21.9%;
+  padding: 0 1%;
 }
 .AttachmentsHolder .AttachmentsList {
   position: relative;

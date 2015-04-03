@@ -150,34 +150,92 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	};
 	$scope.$on('calls_updated',function(event,data){
 		$scope.calls = {};
+		var displayDesktopAlert = false;
+		var toDisplayFor = settingsService.getSetting('alert_call_display_for');
+		var alertDuration = settingsService.getSetting('alert_call_duration');
 		if(data){
 
 			for (i in data){
-			//	if(data[i].xpid == $scope.meModel.my_pid){
 				$scope.calls[data[i].contactId] = data[i];
+				
+
+				switch(toDisplayFor){
+					case 'never':
+						break;
+					case 'all':
+						if(data[i].incoming){
+							if(settingsService.getSetting('alert_call_incoming') == 'true'){
+								displayDesktopAlert = true;
+							}
+						}else{
+							if(settingsService.getSetting('alert_call_outgoing') == 'true'){
+								displayDesktopAlert = true;
+							}
+						}
+						break;
+					case 'known':
+						if(data[i].contactId){
+							if(data[i].incoming){
+								if(settingsService.getSetting('alert_call_incoming') == 'true'){
+									displayDesktopAlert = true;
+								}
+							}else{
+								if(settingsService.getSetting('alert_call_outgoing') == 'true'){
+									displayDesktopAlert = true;
+								}
+							}	
+						}else{
+							displayDesktopAlert = false;
+						}
+						break;
+						
+				}
+
+				
+
+								
 			}
 			//}
+
+			//entire state = 0
+			//while_ringing
+
+
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
 		}
+		$scope.activeCall = {};
+	
+		if(alertDuration == 'while_ringing'){
+			if($scope.currentCall){
 
-
+				if($scope.currentCall.state != 0){
+					$scope.activeCall.displayCall = false;
+				}else{
+					$scope.activeCall.displayCall = true;
+				}
+			}
+		}else{
+			$scope.displayCall = true;
+		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
-		
+
 		$scope.isRinging = true;
 		element = document.getElementById("CallAlert");
-       	if(element != null){
-       		element.style.display="block";
-		}
+       	
+       	if(displayDesktopAlert){
+			if(element != null){
+       			element.style.display="block";
+			}
+
+			$scope.$safeApply();
 		
-		$scope.$safeApply();
-
-		if(element != null){
-			content = element.innerHTML;
-			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-			element.style.display="none";
+			if(element != null){
+				content = element.innerHTML;
+				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+				element.style.display="none";
+			}	
 		}
-
 	});
 
 	$scope.playVm = function(xpid){
@@ -187,6 +245,17 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
 		phoneService.showCallControls(currentCall);
+	}
+
+	var displayNotification = function(){
+		element = document.getElementById("CallAlert");
+
+		if(element){
+			element.style.display="block";
+			content = element.innerHTML;
+			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			element.style.display="none";
+		  }
 	}
 
 	$scope.$on('phone_event',function(event,data){
@@ -215,12 +284,13 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	});
 
 	$scope.$on('quickinbox_synced', function(event,data){
-		
+		var displayDesktopAlert = true;
+			
   		if(data){
 			data.sort(function(a,b){
+				// recent notifications up top; down to oldest at the bottom...
 				return b.time - a.time;
 			});
-
 			if($scope.notifications && $scope.notifications.length > 0){
 				for(notification in data){
 					isNotificationAdded = false;
@@ -256,17 +326,23 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			
 			if(item.queueId){
 				queue = queueService.getQueue(item.queueId);
-				item.displayName = queue.name;
+				if(queue){
+					item.displayName = queue.name;
+				}
 				if(item.type == 'q-alert-rotation'){
 					item.type = 'long waiting call';
 				}else if(item.type == 'q-alert-abandoned'){
 					item.type = 'abandoned call';
 				}
-
 			}
 			
 			if(item.type == 'wall'){
 					item.type = 'chat message';
+			}
+			if(settingsService.getSetting('alert_vm_show_new') != 'true'){
+				if(item.type == 'vm'){
+					displayDesktopAlert = false;
+				}	
 			}
 
 			if(currentDate.getFullYear() == itemDate.getFullYear() &&
@@ -289,7 +365,8 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-			return a.time - b.time; 
+			// console.log('notifications order - ', $scope.todaysNotifications);
+			return b.time - a.time; 
 		});
 		
 		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
@@ -302,20 +379,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		}
 
 		$scope.$safeApply();
-
-		
-		
-		element = document.getElementById("CallAlert");
-        
-		if(settingsService.getSetting('alert_show') == 'true'){
-
-			if(element){
-				element.style.display="block";
-				content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-				element.style.display="none";
-		   }
+		if(displayDesktopAlert){
+			displayNotification();
 		}
-        
-	});
+		
+    });
 }]);

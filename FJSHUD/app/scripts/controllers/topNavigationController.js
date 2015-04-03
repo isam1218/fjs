@@ -1,18 +1,18 @@
 hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, queueService, httpService, utilService) {
-    $scope.meModel = {};
-    $scope.permissions = {
-        Zoom: {bit:1,enabled:false}
-    };
+  $scope.meModel = {};
+  $scope.permissions = {
+      Zoom: {bit:1,enabled:false}
+  };
 
-    $scope.appIcons = [
-        {title:"Me", url:"#/settings", key:"Me",enabled:1}
-        , {title:"Calls and Recordings", url:"#/calllog", key:"CallLog",enabled:1}
-        , {title:"Conferencing", url:"#/conferences", key:"Conferences", enabled:1}
-        , {title:"Call Center", url:"#/callcenter", key:"CallCenter",enabled:1}
-        , {title:"Search", url:"#/search", key:"Search",enabled:1}
-        , {title:"Video Collaboration", url:"#/zoom", key:"Zoom",enabled:1}
-        , {title:"Box", url:"#/box", key:"Box",enabled:1}
-    ];
+  $scope.appIcons = [
+      {title:"Me", url:"#/settings", key:"Me",enabled:1}
+      , {title:"Calls and Recordings", url:"#/calllog", key:"CallLog",enabled:1}
+      , {title:"Conferencing", url:"#/conferences", key:"Conferences", enabled:1}
+      , {title:"Call Center", url:"#/callcenter", key:"CallCenter",enabled:1}
+      , {title:"Search", url:"#/search", key:"Search",enabled:1}
+      , {title:"Video Collaboration", url:"#/zoom", key:"Zoom",enabled:1}
+      , {title:"Box", url:"#/box", key:"Box",enabled:1}
+  ];
 	
 	$scope.player = {
 		position: 0,
@@ -22,33 +22,52 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		volume: 0.6,
 		progress: 0
 	};
+
+  $scope.navbarOrder = localStorage.navbarOrder ? JSON.parse(localStorage.navbarOrder) : {};
+
+  // if ($scope.navbarOrder != $scope.appIcons){
+  //   $scope.appIcons = $scope.navbarOrder;
+  // }
+
+  // last time i did this, one extra icon was added to end of targetArray 
+  // if (localStorage.navbarOrder != undefined){
+  //   $scope.appIcons = $scope.navbarOrder;
+  // }
+
 	var player; // html element
 
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
+  console.log('R: localStorage - ', localStorage.navbarOrder);
+  console.log('***R: scope navbarOrder - ', $scope.navbarOrder);
 
-        var permissions = parseInt($scope.meModel.personal_permissions);
-        
-        for(perm in $scope.permissions){
+  $scope.$on('me_synced', function(event,data){
 
-            $scope.permissions[perm].enabled = utilService.isEnabled(
-                permissions,
-                $scope.permissions[perm].bit
-            )
+      // $scope.navbarOrder = JSON.parse(localStorage.navbarOrder);
 
-            for(app in $scope.appIcons){
-                if($scope.appIcons[app].key == perm){
-                    $scope.appIcons[app].enabled = 1;//$scope.permissions[perm].enabled;
-                }
-            }
+      if(data){
+          for(medata in data){
+              $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+          }
+      }
 
-        }
-    });
+      var permissions = parseInt($scope.meModel.personal_permissions);
+      
+      for(perm in $scope.permissions){
+
+          $scope.permissions[perm].enabled = utilService.isEnabled(
+              permissions,
+              $scope.permissions[perm].bit
+          )
+
+          for(app in $scope.appIcons){
+              if($scope.appIcons[app].key == perm){
+                  $scope.appIcons[app].enabled = 1;//$scope.permissions[perm].enabled;
+              }
+          }
+
+      }
+  });
 	
+
 	$scope.getAvatar = function() {
 		return httpService.get_avatar($rootScope.myPid, 28, 28);
 	};

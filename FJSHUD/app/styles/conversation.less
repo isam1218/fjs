@@ -23,17 +23,33 @@
       .Avatar {
         top:1px;
         left: 1px;
+        float:left;
+        border: 1px solid #0093F0;
+
       }
       .CallLineTop {
         top:3px;
         left:40px;
         .CallerName {
           font-weight: bold;
-          font-size:13px;
+          font-size: 12px;
+          color: #645D5D;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          position: relative;
+          overflow: hidden;
+          width: 100px;
+          top: 5px;
         }
         .CallDuration {
-          top:5px;
           right:5px;
+          position: relative;
+          font-size: 11px;
+        }
+        .CallExtension{
+          font-size:12px;
+          margin-top: 3px;
+          float:left;
         }
       }
     }

@@ -1,5 +1,5 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval', '$timeout',
-	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval, $timeout) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval', '$timeout','SettingsService',
+	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval, $timeout,settingsService) {
 
 	var version = 0;
 	var scrollbox = {};
@@ -38,7 +38,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		var current = 0;
 		
 		for(i = 0; i < $scope.messages.length; i++){
-			if ($scope.messages[i].data.attachment) {
+			if ($scope.messages[i].data && $scope.messages[i].data.attachment) {
 				var attachments = $scope.messages[i].data.attachment;
 				
 				for(a = 0; a < attachments.length; a++) {
@@ -108,17 +108,42 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			var from = data[key].from.replace('contacts:', '');
 			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
 			
-			if(from == $scope.meModel.my_pid){
-				phoneService.playSound("sent");
-			}else{
-				phoneService.playSound("received");
+			if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
+				if(from == $scope.meModel.my_pid){
+					if(settingsService.getSetting('hudmw_chat_sound_sent') == 'true'){
+						phoneService.playSound("sent");
+					}
+				}else{
+					if(settingsService.getSetting('hudmw_chat_sound_received') == 'true'){
+						phoneService.playSound("received");
+				
+					}
+				}
 			}
 
-			// only attach messages related to this user
-			if (from == $scope.contactID || to == $scope.contactID){
-				$scope.messages.push(data[key]);
-				found = true;
+			var contextInfo = data[key].context.split(":");
+			var context = contextInfo[0];
+
+
+			switch(context){
+				case 'conferences':
+					if($scope.conferenceId == contextInfo[1]){
+						$scope.messages.push(data[key]);
+						found = true;
+					}
+					break;
+				default:
+					// only attach messages related to this user
+					if (from == $scope.contactID || to == $scope.contactID){
+						$scope.messages.push(data[key]);
+						found = true;
+					}	 
+					break;
+
 			}
+			
+
+			
 		}
 		
 		if (found) {

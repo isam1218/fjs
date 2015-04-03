@@ -13,6 +13,16 @@
   font-weight: bold;
   font-size: .7em;
 }
+.LeftBarNotificationMessageSection .NotificationDisplayNameQueue {
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+  color: #e27100;
+  font-weight: bold;
+  font-size: .7em;
+}
 .LeftBarNotificationMessageSection .NotificationTime {
   font-size: .5em;
   color: black;
@@ -89,6 +99,9 @@
   height: 100%;
   border-right: solid 1px #eee;
   float: left;
+}
+.NotificationTitle {
+  width: 100%;
 }
 .NotificationHeaderBackground {
   right: 20px;

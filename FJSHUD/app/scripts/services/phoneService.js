@@ -13,6 +13,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var xpid2Sip = {};
 	var tabInFocus = true;
 	var callsDetails = {};
+	var allCallDetails = {};
 	$rootScope.meModel = {};
 	var isRegistered = false;
 	var isAlertShown = true;
@@ -106,14 +107,41 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	displayNotification = function(content, width,height){
 		
-		if(alertPlugin && document.visibilityState == "hidden"){
+		var displayNotification = false;
+		if(!alertPlugin){
+			return;
+		}
+
+		if(settingsService.getSetting('alert_show') == 'true'){
 			
-			alertPlugin.setAlertSize(width,height);
-			alertPlugin.addAlertEx(content);
-			alertPlugin.setShadow(true);
-			alertPlugin.setBorderRadius(5);
-			alertPlugin.setTransparency(255);
-			isAlertShown = true;
+			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
+					displayNotification = true;	
+				
+			}else{
+				if(document.visibilityState == "hidden"){
+					displayNotification = true;	
+				}		
+			}
+
+
+			if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
+				if($rootScope.meModel.chat_status == 'busy'){
+					displayNotification = true;
+				}else{
+					displayNotification = false;
+				}
+			}
+		}
+
+			
+
+		if(alertPlugin && displayNotification){
+				alertPlugin.setAlertSize(width,height);
+				alertPlugin.addAlertEx(content);
+				alertPlugin.setShadow(true);
+				alertPlugin.setBorderRadius(5);
+				alertPlugin.setTransparency(255);
+				isAlertShown = true;
 		}
 	}
 
@@ -159,7 +187,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
     accStatus = function(account_) {
-            if (account_) {            	
+
+            if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
                 } else {
@@ -178,7 +207,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
 				phone = session.phone;
-         		var url = $location.absUrl().split("#")[0] + "views/nativeAlerts/Alert.html"
+         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html"
          		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
@@ -230,6 +259,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	xpid = arguments[1];
     	
     	activateBrowserTab();
+    	
+    	window.focus();
     	if($rootScope.isIE){
 
 			switch(url){
@@ -467,6 +498,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		call = sipCalls[sip_id];
 		return call;
 	}
+	
+	this.getCallByContactId = function(contactId){
+		for(call in callsDetails){
+			if(callsDetails[call].contactId){
+				if(callsDetails[call].contactId == contactId){
+					return callsDetails[call];
+				}
+			}
+
+		}
+	}
 
 	this.showCallControls = showCallControls;
 
@@ -486,49 +528,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		
 		for(i = 0; i < data.length; i ++){
 				if(data[i].xef001type == "delete"){
-					
-					if(callsDetails[data[i].xpid]){
-						delete callsDetails[data[i].xpid];
-						delete xpid2Sip[data[i].xpid];
+					if(allCallDetails[data[i].xpid]){
+						delete allCallDetails[data[i].xpid];
 					}
 				}else{
-					if(data[i].incoming){
-						
-						if(data[i].xpid == $rootScope.meModel.my_pid){
-							callsDetails[data[i].xpid] = data[i];
-							for(sipCall in sipCalls){
-									var toBreak = false;
-						
-								if(xpid2Sip[data[i].xpid]){
-									if(xpid2Sip[data[i].xpid] != sipCall){
-										xpid2Sip[data[i].xpid] = sipCall;
-									}
-									}else{
-										xpid2Sip[data[i].xpid] = sipCall;
-									}
-
-							}
-
-						}
-					
-					}					
+					allCallDetails[data[i].xpid] = data[i];
 				}
 		}
-
-		if(displayLauncher){
-				if(weblauncher.outboundAuto){
-					url = weblauncher.outbound;
-					window.open(url, "_blank");
-				}
-			}
-
-		if(displayHangUpLauncher){
-				if(weblauncher.outboundHangupAuto){
-					url = weblauncher.outboundHangup;
-					window.open(url, "_blank");
-				}
-		}	
-		$rootScope.$broadcast('calls_updated', callsDetails);
+		$rootScope.$broadcast('all_calls_updated', allCallDetails);
 	});
 	
 	httpService.getFeed('voicemailbox');

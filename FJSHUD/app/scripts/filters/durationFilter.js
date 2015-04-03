@@ -1,20 +1,37 @@
 hudweb.filter('duration', function() {
-    return function(duration) {
-        var date = new Date(duration);
-        var seconds = date.getSeconds();
-        var minutes;
+	// format time as "x days 00:00:00"
+    return function(duration) {		
+		var seconds = Math.floor(duration / 1000);
+		var minutes = Math.floor(((seconds % 86400) % 3600) / 60);
+		var hours = Math.floor((seconds % 86400) / 3600);
+		var days = Math.floor(seconds / 86400);
 		
-        if (seconds > 60){
-            minutes = parseInt(seconds/60) 
-            seconds = seconds - (60*minutes);
-        }
-
-        if (seconds < 10)
-            seconds = "0" + seconds;
-			
-        if (minutes)
-            return minutes + ":" + seconds;
-        else
-            return "00:" + seconds;
+		var timeString = '';
+		
+		if (days > 1)
+			timeString = days + ' days ';
+		else if (days == 1)
+			timeString = '1 day ';
+		
+		if (hours > 0) 
+			timeString += hours + ':';
+		
+		if (minutes > 9)
+			timeString += minutes + ':';
+		else if (minutes > 0)
+			timeString += '0' + minutes + ':';
+		else
+			timeString += '00:';
+		
+		seconds = seconds % 60;
+		
+		if (seconds > 9)
+			timeString += seconds;
+		else if (seconds > 0)
+			timeString += '0' + seconds;
+		else
+			timeString += '00';
+		
+		return timeString;
     };
 });

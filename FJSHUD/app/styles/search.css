@@ -1,9 +1,15 @@
+.SearchBox {
+  color: #729c00;
+  border: 1px solid #729c00;
+  border-radius: 2px;
+  padding: .5em .5em .5em 2em;
+  background: url("../img/search.png") no-repeat;
+  background-position: 1%;
+  max-width: 100%;
+}
 .SearchInputBox {
-  position: absolute;
+  position: relative;
   margin: 0;
-  left: 14px;
-  top: 14px;
-  right: 14px;
   height: 1.8em;
   border-radius: 3px;
   background-color: white;
@@ -54,7 +60,7 @@
 }
 .ChatSearch {
   position: relative;
-  top: 5px;
+  /*top: 5px;*/
   left: 2px;
   height: 1.8em;
   border-radius: 3px;
@@ -75,6 +81,9 @@
   border: none;
   padding: .25em;
   margin-top: 2px;
+}
+.ChatSearch .XButton {
+  top: 0.46em;
 }
 .ChatSearch .Arrows {
   height: 100%;
@@ -103,7 +112,7 @@
 }
 #WidgetSearch .SearchResults {
   margin-top: 10px;
-  flex: 1;
+  flex: 1 1 0;
   overflow-y: auto;
 }
 #WidgetSearch .SearchResults h4 {
