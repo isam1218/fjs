@@ -2,11 +2,16 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.xpid;
 	$scope.type;
 	$scope.name;
+	$scope.reasons = {};
 	$scope.canDock = true;
 	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, data) {
 		$scope.xpid = data.xpid;
+		$scope.reasons = {
+			list: [],
+			show: false
+		};
 		
 		// get type
 		if (data.firstName !== undefined) {
@@ -19,6 +24,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			$scope.type = 'QueueStat';
 			$scope.name = data.name;
 			$scope.queue = {};
+			$scope.reasons.list = queueService.getReasons();
 			
 			angular.forEach(queueService.getMyQueues().queues, function(obj) {
 				// user is in this queue
@@ -157,12 +163,15 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		});
 	};
 
-
-	$scope.loginQueue = function(login) {
-		if (login)
-			httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue.memberID});
-		else
-			httpService.sendAction('queue_members', 'agentLogout', {memberId: $scope.queue.memberID, reason: '0_71485'});
+	$scope.loginQueue = function() {
+		httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue.memberID});
+	};
+	
+	$scope.logoutQueue = function(reason) {
+		httpService.sendAction('queue_members', 'agentLogout', {
+			memberId: $scope.queue.memberID, 
+			reason: reason
+		});
 	};
 	
 	$scope.resetQueue = function() {
