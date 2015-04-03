@@ -87,7 +87,7 @@
 						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
 							<a href="#/contact?{{message.senderId}}" style="text-decoration:none"> 
 							<div class="NotificationDisplayName" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
-							<div class="NotificationType">...{{ message.type }}</div>
+							<div class="NotificationType">...{{ message.labelType }}</div>
 							<div class="NotificationMessage">{{ getMessage(message) }} </div>
 							</a>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
