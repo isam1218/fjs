@@ -38,6 +38,7 @@
         </div>
 		
         <div class="ListRowStatus">#{{ ::group.extension }}</div>
+        <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(group.extension)"></input>
     </a>
     
     <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">Our Teams</div>
@@ -66,6 +67,7 @@
                 </div>
             </div>
             <div class="ListRowStatus">#{{ ::group.extension }}</div>
+            <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(group.extension)"></input>
         </div>
     </a>
 	</div>
