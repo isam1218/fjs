@@ -33,7 +33,7 @@
 	</div>
 </div>
 
-<div class="BottomRow">
+<div class="BottomRow Actions" ng-show="!reasons.show">
 	<div ng-if="type == 'Contact'">
 		<a class="Button" href="" ng-show="isFavorite" ng-click="removeFavorite()">
 			<div class="ListRowActionButtonRemove"></div>
@@ -109,11 +109,11 @@
 	</div>
 		
 	<div ng-if="type == 'QueueStat'">
-		<a class="Button" href="" ng-show="queue.memberID && !queue.status" ng-click="loginQueue(true)">
+		<a class="Button" href="" ng-show="queue.memberID && !queue.status" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>Login</span>
 		</a>
-		<a class="Button" href="" ng-show="queue.status && queue.status == 'login'" ng-click="loginQueue(false)">
+		<a class="Button Logout" href="" ng-show="queue.status && queue.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>Logout</span>
 		</a>
@@ -207,4 +207,16 @@
 		<div class="ListRowActionButtonUndock"></div>
 		<span>Undock</span>
 	</a>
+</div>
+
+<div class="BottomRow Reasons" ng-show="reasons.show">
+	<h4>Reason</h4>
+	<em>Select logout reason</em>
+	
+	<div class="List">
+		<div class="Button" ng-repeat="reason in reasons.list | orderBy: 'name'"
+			ng-click="logoutQueue(reason.xpid)">
+			{{ ::reason.name }}
+		</div>
+	</div>
 </div>
