@@ -13,10 +13,24 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				contacts = data;
 			});
 	
-			var rect = element[0].getBoundingClientRect();
-			element.css('z-index', 100);
+			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
-			
+			if($(element).closest('.ConferenceMembers').length > 0)
+				element.css('width', '100%');
+			else
+			{
+				element.css('z-index', 100);
+				if(navigator.userAgent.indexOf('Firefox') != -1)
+				{
+					element.css('max-width', '20em');
+					element.css('min-width', '17.5em');
+				}	
+				else
+				{	
+					element.css('width', '19.5em');
+				}
+			}
+				
 			// create overlay elements
 			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
 			//overlay.css('width', rect.width + 'px');
@@ -29,7 +43,12 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			var note = angular.element('<div></div>');
 			if(attrs.conference =="true"){
 				headerTitle = angular.element('<div class="Header">Join to conference</div>')
-				overlay.css('width','300%');
+				if($(element).closest('.ConferenceMembers').length > 0)
+				{	
+					overlay.css('width','330%');					
+				}	
+				else
+					overlay.css('width','300%');
 			}
 
 			// search input

@@ -33,14 +33,10 @@
        position: absolute;
        
        .call-block{height: 45%; overflow-y: hidden;}
-    }  
-    
-    .LocationSelector .SelectBox,
-    .MeInfoBlock-column textarea
-     {
-        width: 16.5em;
-     }
+    }     
+   
      .MeInfoBlock-column textarea{height: 3em;}
+     
     .Preferences-Holder{
       position: relative;
       -webkit-box-flex: 1;
@@ -97,10 +93,17 @@
 .MeInfoBlock-column {
   display:inline-block;
   vertical-align: top;
+  
   &:nth-child(1)
-  {float: left;}
+  {float: left; width: 40%;}
+  
   &:nth-child(2)
-  {float: right;}
+  {float: right; width: 60%;}
+  
+  textarea,
+  .SelectBox{
+    width: 98%;
+  }
 }
 .MeInfoTitle {
   color: #999;
@@ -378,7 +381,7 @@ div.NewCall{
         margin-bottom: 4px;
         left: 10px;        
         width: 60%;
-        height: 26px;
+        height: 1.625em;
         border: 1px solid #c2c2c2;
         border-radius: 2px;
         -webkit-border-radius: 2px;
@@ -387,14 +390,17 @@ div.NewCall{
 
       .XButton{
         float: right;
-        height: 26px;        
+        height: 2em;       
         width: 15%;
         position: relative;
-        margin-left: 10px;
+        margin-left: 0.5em;
         top: 7px;
         
+        &.XButtonGreen{
+            margin-right: 1em;
+        }
         &.XButtonNormal{
-            margin-right: 10px;
+            margin-left: 0;
         }
       }
  }

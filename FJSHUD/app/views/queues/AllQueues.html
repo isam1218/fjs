@@ -3,15 +3,17 @@
         ng-model="newObj.query"
         x-webkit-speech=""
         placeholder="Search" />
-		
+
+  <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
+            ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
+            ng-change="sortBy(selectedSort.type)">
+  </select>
+    		
   <div class="XButton QueueButtonToggle XButtonNormal">
     <span><div ng-click="viewIcon = !viewIcon" class="QueueViewIcon"
                ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div></span>
   </div>
-    <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
-            ng-model="selectedSort" ng-options="sort_option.display_name for sort_option in sort_options"
-            ng-change="sortBy(selectedSort.type)">
-    </select>
+    
 </div>
 
 <div class="ListViewTopSpace"></div>

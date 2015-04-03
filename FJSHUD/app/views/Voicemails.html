@@ -1,17 +1,16 @@
     <div class="ToolBar" >
 		<input type="search" class="SearchBox" placeholder="Search" data-ng-model="tester.query" />
-
+              
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
                 ng-change="sortBy(selectedSort)"
         > 
-        </select>
-        
+        </select>               
+ 
         <select class="XButton XButtonNormal XButtonDropDown disabled-false" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
             <option>Actions</option>
             <div class="XButtonDropDownArrow"></div>
         </select>
-
     </div>
     
     <div class="ListView fj-scrollable"> 

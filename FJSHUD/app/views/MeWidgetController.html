@@ -114,9 +114,9 @@
 
               <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">{{verbage.place_a_call}}</div>
-                <input class="NewCall" type="tel" ng-model="call_obj.phoneNumber" placeholder="Phone number">
-                <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
+                <input class="NewCall" type="tel" ng-model="call_obj.phoneNumber" placeholder="Phone number">                
                 <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>Call</span></div>
+                <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
               </div>              
                             
               <div class="RecentCallSection"> 
