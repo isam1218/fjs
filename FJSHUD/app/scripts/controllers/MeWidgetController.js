@@ -140,21 +140,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             pid = $scope.meModel["my_pid"];
         }
 
-        var imageUrl = myHttpService.get_avatar(pid,width,height);
-        
-        var mills = new Date().getTime();
-
-        if (mills-$scope.lastMillis>5000) {
-            $scope.lastMillis = mills;
-            if(imageUrl.indexOf('?') === -1){
-                imageUrl = imageUrl + '#' + new Date().getTime();
-            }else{
-                imageUrl = imageUrl + '#' + new Date().getTime();
-            }
-
-        }
-            
-        
+        var imageUrl = myHttpService.get_avatar(pid,width,height,icon_version);
         return imageUrl;
     };
 
@@ -778,6 +764,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     });
     
     var dtmf_input = "";
+    var icon_version;
+    $scope.$on("fdpImage_synced",function(event,data){
+        if(data){
+            for(i in data){
+                if(data[i].xpid == $scope.meModel.my_pid){
+                    icon_version = data[i].xef001iver;
+                }
+            }
+        } 
+    });
 
     //listen for key_press broadcasted from a root_controller
     $scope.$on("key_press", function(event,data){

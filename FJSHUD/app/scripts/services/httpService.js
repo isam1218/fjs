@@ -382,13 +382,22 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     };
     
     this.get_avatar = function(pid, width, height) {
-        if (pid) {
-            return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID;
-    
+		return get_avatar(pid,width,height,undefined);
+    };
+
+    this.get_avatar = function(pid,width,height,xversion){
+
+    	if (pid) {
+            if(xversion){
+            	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + "&xver=" + xversion;
+    		}else{
+    			return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID ;
+    		}
+            
         } else {
             return "img/Generic-Avatar-Small.png";
         }
-    };
+	}
 	
 	this.get_audio = function(key) {
 		return fjs.CONFIG.SERVER.serverURL + '/v1/vm_download?id=' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
