@@ -1,7 +1,7 @@
 hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService','SettingsService', function ($scope, httpService,settingsService) {  
   httpService.getFeed('queues');
 
-  $scope.sort_options = [
+  $scope.queue_options = [
     {display_name: "Queue name", type: "name"},
     {display_name: "Calls waiting", type: "info.waiting"},
     {display_name: "Average wait time (ESA)", type: "info.esa"},
@@ -11,8 +11,10 @@ hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService','Setting
     {display_name: "Active calls", type: "info.active"}
   ];
   
-  $scope.selectedSort = $scope.sort_options[0];
-  $scope.sortColumn = $scope.selectedSort.type;
+  // $scope.selectedQueue = $scope.queue_options[0];
+  $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option) : $scope.queue_options[0];
+
+  $scope.sortColumn = $scope.selectedQueue.type;
   $scope.isAscending = false;
   
   $scope.queueThresholds = {};
@@ -20,6 +22,7 @@ hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService','Setting
   $scope.queueThresholds.avg_wait = parseInt(settingsService.getSetting('queueAvgWaitThreshold'));
   $scope.queueThresholds.avg_talk = parseInt(settingsService.getSetting('queueAvgTalkThresholdThreshold'));
   $scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
+
   
   // default view
   if ($scope.selected == 'My Queue')
@@ -27,15 +30,16 @@ hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService','Setting
   else
 	  $scope.viewIcon = true;
   
-  $scope.setSort = function(select) {
-	if ($scope.sortColumn == select)
+  $scope.setSort = function(queueSelectionType, queueSelection) {
+	if ($scope.sortColumn == queueSelectionType)
 	  $scope.isAscending = !$scope.isAscending;
-    else if (select == 'name')
+    else if (queueSelectionType == 'name')
 	  $scope.isAscending = false;
     else
 	  $scope.isAscending = true;
 	
-	$scope.sortColumn = select;
+	$scope.sortColumn = queueSelectionType;
+  localStorage.queue_option = JSON.stringify(queueSelection);
   };
   
   $scope.resetStats = function() {

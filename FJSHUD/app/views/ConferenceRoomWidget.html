@@ -40,11 +40,15 @@
 		
         <div class="WidgetTabContent">
             <div class="ToolBar">
-                <select ng-model="sortBy" class="SelectBox XButton">
+<!--                 <select ng-model="sortBy" class="SelectBox XButton">
                     <option value="location">Sort By Location</option>
                     <option value="extensionNumber">Sort By Room Number</option>
                     <option value="members.length">Sort By Activity</option>
                 </select>
+ -->
+                <select class="SelectBox XButton" ng-model="selectedConference" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortedBy(selectedConference)">
+                </select>
+
                 <input type="button" value="Find Free Room & Join" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
