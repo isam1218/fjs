@@ -1,4 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService', function($scope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService){
+hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
+	function($scope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
@@ -115,9 +116,11 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			
 	}
 
-	$scope.go_to_notification_chat = function(xpid,messageXpid){
-		$location.path("/contact/" + xpid);
-		$scope.remove_notification(messageXpid);
+	$scope.go_to_notification_chat = function(message){
+		var context = message.context;
+		var xpid = context.split(':')[1];
+		$location.path("/" + message.audience + "/" + xpid + "/chat");
+		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
 	}
 
@@ -292,25 +295,70 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
-				for(notification in data){
+				for(index in data){
 					isNotificationAdded = false;
-					if(data[notification].xef001type != "delete"){
+					var notification = data[index];
+					
+					notification.label == '';
+							if(notification.type == 'q-alert-rotation'){
+								notification.label = 'long waiting call';
+							}else if(notification.type == 'q-alert-abandoned'){
+								notification.label = 'abandoned call';
+							}else if(notification.type == 'gchat'){
+								notification.label = "group chat to";
+							}else if(notification.type == 'vm'){
+								notification.label ='voicemail';
+							}else if(notification.type == 'wall'){
+								notification.label = 'chat message';
+							}else if(notification.type == 'missed-call'){
+								notification.label = 'missed call'
+							}
+					if(notification.audience == "conference"){
+						var xpid = notification.context.split(':')[1];
+						var conference = conferenceService.getConference(xpid);
+						notification.conference = conference;
+					}
+
+					if(notification.xef001type != "delete"){
 						for(i = 0; i < $scope.notifications.length;i++){
-							if($scope.notifications[i].xpid == data[notification].xpid){
-								$scope.notifications.splice(i,1,data[notification]);
+							if($scope.notifications[i].xpid == notification.xpid){
+								$scope.notifications.splice(i,1,notification);
 								isNotificationAdded = true;
 								break;	
 							}
 						}
 						if(!isNotificationAdded){
-							$scope.notifications.push(data[notification]);
+							
+
+							$scope.notifications.push(notification);
 						}
 					}
 				}
 			}else{
-				for(notification in data){
-					if(data[notification].xef001type != "delete"){
-						$scope.notifications.push(data[notification]);
+				for(index in data){
+					var notification = data[index];
+					notification.labelType == '';
+					if(notification.type == 'q-alert-rotation'){
+								notification.label = 'long waiting call';
+					}else if(notification.type == 'q-alert-abandoned'){
+								notification.label = 'abandoned call';
+					}else if(notification.type == 'gchat'){
+								notification.label = "group chat to";
+					}else if(notification.type == 'vm'){
+								notification.label ='voicemail';
+					}else if(notification.type == 'wall'){
+								notification.label = 'chat message';
+					}else if(notification.type == 'missed-call'){
+						notification.label = 'missed call'
+					}
+
+					if(notification.audience == "conference"){
+						var xpid = notification.context.split(':')[1];
+						var conference = conferenceService.getConference(xpid);
+						notification.conference = conference;
+					}
+					if(notification.xef001type != "delete"){
+						$scope.notifications.push(notification);
 						
 					}
 				}
@@ -323,22 +371,15 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			currentDate = new Date();
 			itemDate = new Date(item.time);
 			var contactId = $routeParam.contactId;
-			
 			if(item.queueId){
 				queue = queueService.getQueue(item.queueId);
 				if(queue){
 					item.displayName = queue.name;
 				}
-				if(item.type == 'q-alert-rotation'){
-					item.type = 'long waiting call';
-				}else if(item.type == 'q-alert-abandoned'){
-					item.type = 'abandoned call';
-				}
+				
 			}
 			
-			if(item.type == 'wall'){
-					item.type = 'chat message';
-			}
+			
 			if(settingsService.getSetting('alert_vm_show_new') != 'true'){
 				if(item.type == 'vm'){
 					displayDesktopAlert = false;
@@ -350,12 +391,12 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			   currentDate.getDate() == itemDate.getDate()){			
 					if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
 						return false;
-					else
+					else{
 						if(item.type == 'wall'){
 							playChatNotification = true;
 						}
 						return true;
-				
+					}
 			}
 			return false;
 		});

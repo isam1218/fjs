@@ -133,13 +133,29 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         $scope.showPopup({key:"DialPadPopup", x:offset.x-60, y:offset.y + 25});
         return true;
     };
-
+    $scope.lastMillis = 0;
     $scope.getMeAvatarUrl = function(width,height){
         var pid;  
         if($scope.meModel["my_pid"]){
             pid = $scope.meModel["my_pid"];
         }
-        return myHttpService.get_avatar(pid,width,height);
+
+        var imageUrl = myHttpService.get_avatar(pid,width,height);
+        
+        var mills = new Date().getTime();
+
+        if (mills-$scope.lastMillis>5000) {
+            $scope.lastMillis = mills;
+            if(imageUrl.indexOf('?') === -1){
+                imageUrl = imageUrl + '#' + new Date().getTime();
+            }else{
+                imageUrl = imageUrl + '#' + new Date().getTime();
+            }
+
+        }
+            
+        
+        return imageUrl;
     };
 
     $scope.somechild = "views/testTemplate.html";
