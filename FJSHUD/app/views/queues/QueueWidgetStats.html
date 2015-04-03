@@ -55,8 +55,8 @@
 	<div class="Table">
 		<div class="Agent" ng-repeat="member in queueMembers | orderBy: sortOrder: isAscending track by member.xpid" ng-init="row[member.xpid] = false">
 			<div class="Row" ng-click="row[member.xpid] = !row[member.xpid]" ng-class="row[member.xpid] ? 'Selected' : ''">
-				<div><div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div></div>
-				<div><div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div></div>
+				<div><div class="ListRowStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div></div>
+				<div><div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div></div>
 				<div>{{::member.displayName}}</div>
 				
 				<!-- change time based on call status -->

@@ -9,7 +9,7 @@
 			{{contact.displayName}} 
 			<span ng-if="contact.primaryExtension">({{contact.primaryExtension}})</span>
 			<br/>
-            <div class="XIcon-QueueStatus" data-ng-class="contact.getQueueStatus()"></div>
+            <div class="ListRowStatusIcon XIcon-QueueStatus-{{ contact.queue_status }}"></div>
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
             <span class="ChatStatus">{{ contact.hud_status ? (contact.hud_status == 'dnd' ? 'busy' : contact.hud_status) : 'offline' }}</span>
 		</div>
