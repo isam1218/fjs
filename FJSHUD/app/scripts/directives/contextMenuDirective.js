@@ -64,6 +64,7 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 					overlay.css('left', (rect.left + rect.width/2) + 'px');
 					overlay.css('top', (rect.top + rect.height/2) + 'px');
 					overlay.css('display', 'block');
+					overlay.css('width', 'auto');
 					
 					// switch sides
 					var oRect = overlay[0].getBoundingClientRect();
@@ -74,6 +75,9 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 					}
 					else
 						arrow.removeClass('Right').addClass('Left');
+					
+					// set width for logout reasons
+					overlay.css('width', oRect.width + 'px');
 			
 					// button clicks
 					angular.element(buttons).bind('click', function(e) {
@@ -82,6 +86,10 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 						// logout button shouldn't close
 						if (this.className.indexOf('Logout') == -1)
 							hideOverlay(0);
+						else {
+							var diff = window.innerHeight - oRect.top - oRect.height - 10;
+							$('#ContextMenu .List').css('height', diff + 'px');
+						}
 					});
 				}, 10);
 			}
