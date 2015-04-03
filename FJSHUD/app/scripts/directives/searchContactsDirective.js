@@ -45,7 +45,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				headerTitle = angular.element('<div class="Header">Join to conference</div>')
 				if($(element).closest('.ConferenceMembers').length > 0)
 				{	
-					overlay.css('width','330%');					
+					overlay.css('width','450%');					
 				}	
 				else
 					overlay.css('width','300%');
@@ -101,7 +101,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				
 				line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
-				
+				//line.append('<input style="float:right" class="vmcallbtn" type="button" value="Call" ng-click="callExtension('+contact.primaryExtension+')"></input>');
 				// send contact to parent scope
 				line.bind('click', function() {
 					scope.searchContact(contact);
