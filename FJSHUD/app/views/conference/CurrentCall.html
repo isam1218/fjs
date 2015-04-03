@@ -23,10 +23,11 @@
 </div>
 
 <div class="ListView fj-scrollable"> 
-	<div class="ListRow" ng-repeat="member in members" > 
+	<div class="ListRow" ng-repeat="member in conference.members" > 
 
-		<div class="CallAvatar CallAvatar_Office Avatar" > 
-			<img class="vmavatar " ng-src="getSingleAvatarUrl(member.contactId)" onerror="this.src='img/Generic-Avatar-28.png'"/>
+		<div class="CallAvatar CallAvatar_Office Avatar" context-menu="member.fullProfile"> 
+			<img class="vmavatar " ng-src="member.fullProfile.getAvatar(28)" onerror="this.src='img/Generic-Avatar-28.png'"/>
+			<div class="AvatarForeground AvatarInteractable"></div>
 		</div>
 
 		<div class="ListRowContent"> 
@@ -35,14 +36,14 @@
 					<span> {{ member.displayName }} </span>
 					<div class="footnote">
 						<div class="XIconSetMic QueueStatus IconDisplay"></div>
-						<div class="XIcon-QueueStatus- QueueStatus IconDisplay "></div>
-						<div class="XIcon-ChatStatus-Available QueueStatus IconDisplay"></div>
+						<div class="ListRowStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
+						<div class="ListRowStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
 					</div>
 				</div> 
 			</div>
 			
 			<div class="ListRowStatus">
-				<div class="vmtime">duration</div>
+				<div class="vmtime" timer="member.started"></div>
 			</div>
 		</div>
     </div>

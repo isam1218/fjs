@@ -9,9 +9,8 @@
 			<div>
 				{{ contact.displayName }}
 				<br/>
-				<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
-					<div class="status-icon-inner"></div>
-				</div>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
+				<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
 			</div>
 		</div>
 		

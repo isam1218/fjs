@@ -1,13 +1,13 @@
 hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'UtilService', 'ContactService', 'PhoneService',
 	function($scope, conferenceService, httpService, $routeParams, $location, utilService, contactService, phoneService) {
 	$scope.conversationType = 'conference';
-	$scope.members = [];
 	$scope.conferenceId = $routeParams.conferenceId;
 
 	$scope.enableChat = true;
     $scope.joined = false;
     $scope.conference = conferenceService.getConference($scope.conferenceId);
-    	httpService.getFeed("conferencestatus")
+    
+	httpService.getFeed("conferencestatus")
 	httpService.getFeed("conferencemembers");
 
 	$scope.targetId = $scope.conferenceId;
@@ -35,8 +35,11 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
     			$scope.enableChat = $scope.joined;
     			$scope.enableFileShare = $scope.joined;
     		}
-
-    		$scope.members = $scope.conference.members;
+			
+			// get full profile for status, context-menu
+			angular.forEach($scope.conference.members, function(obj) {
+				obj.fullProfile = contactService.getContact(obj.contactId);
+			});
     		
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;
