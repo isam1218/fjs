@@ -36,37 +36,36 @@
     <div class="WidgetBody">
         <div class="WidgetTabBar">
             <span ng-repeat="tab in tabs">
-                <a href="#/contact/{{ ::contactID }}/{{tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.upper ? 'fj-selected-item' : ''">
+                <a href="#/contact/{{ ::contactID + '/' + tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.lower ? 'fj-selected-item' : ''">
                     <div class="inner">{{ ::tab.upper}}</div>
                     <div class="arrow"></div>
                 </a>
-            </span>
-
-<!-- 			<a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
-				<div class="inner">{{ ::tab }}</div>
-				<div class="arrow"></div>
-			</a>
- -->            
+            </span>           
         </div>
 		
 		<!-- ng-views -->
-        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'" 
-        ng-controller="ChatController"></div>
-        
-        <div ng-if="selected == 'Voicemails'" class="voicemail fj-content WidgetTabContent" ng-include="'views/Voicemails.html'"
-        ng-controller="VoicemailsController" 
-        ></div>
-        
-        <div ng-if="selected == 'Groups'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationGroups.html'"
-        ng-controller="ConversationWidgetGroupsController"
-        ></div>
-        
-        <div ng-if="selected == 'Queues'" class="fj-content WidgetTabContent" ng-include="'views/conversation/ConversationQueues.html'"
-        ng-controller="ConversationWidgetQueuesController"
-        ></div>
-
-        <div ng-if="selected == 'Call Log'" class="CallLog WidgetTabContent" ng-include="'views/CallLog.html'"
-        ng-controller="CallLogController"
-        ></div>
+        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" 
+			ng-include="'views/ChatView.html'" 
+			ng-controller="ChatController"></div>
+			
+        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent" 
+			ng-include="'views/Voicemails.html'"
+			ng-controller="VoicemailsController"></div>
+			
+        <div ng-if="selected == 'groups'" class="fj-content WidgetTabContent" 
+			ng-include="'views/conversation/ConversationGroups.html'"
+			ng-controller="ConversationWidgetGroupsController"></div>   
+			
+        <div ng-if="selected == 'queues'" class="fj-content WidgetTabContent" 
+			ng-include="'views/conversation/ConversationQueues.html'"
+			ng-controller="ConversationWidgetQueuesController"></div>
+			
+        <div ng-if="selected == 'calllog'" class="CallLog WidgetTabContent" 
+			ng-include="'views/CallLog.html'"
+			ng-controller="CallLogController"></div>
+			
+        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" 
+			ng-include="'views/Recordings.html'"
+			ng-controller="RecordingsController"></div>
 	</div>
 </div>

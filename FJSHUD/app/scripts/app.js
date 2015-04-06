@@ -131,28 +131,8 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/conversation/ConversationWidget.html',
         controller: 'ConversationWidgetController'
-		  })
-      .when('/contact/:contactId/chat',
-      {
-        templateUrl: 'views/conversation/ConversationWidget.html',
-        controller: 'ConversationWidgetController'
-      })
-      .when('/contact/:contactId/voicemails',
-      {
-        templateUrl: 'views/conversation/ConversationWidget.html',
-        controller: 'ConversationWidgetController'
-      })
-      .when('/contact/:contactId/groups',
-      {
-        templateUrl: 'views/conversation/ConversationWidget.html',
-        controller: 'ConversationWidgetController'
-      })
-      .when('/contact/:contactId/queues',
-      {
-        templateUrl: 'views/conversation/ConversationWidget.html',
-        controller: 'ConversationWidgetController'
-      })
-      .when('/contact/:contactId/calllog',
+	  })
+      .when('/contact/:contactId/:route',
       {
         templateUrl: 'views/conversation/ConversationWidget.html',
         controller: 'ConversationWidgetController'
