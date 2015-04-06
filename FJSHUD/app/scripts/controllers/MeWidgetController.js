@@ -49,8 +49,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     * used to determine what tab is selected in the me widget controller
     *
     */
-    $scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
-    $scope.selected = 'General';
+    //$scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
+    $scope.tabs = [
+    {label:$scope.verbage.general,option:'General'},
+    {label:$scope.verbage.phone,option:'Phone'},
+    {label:$scope.verbage.web_launcher,option:'Web Launcher'},
+    {label:$scope.verbage.queues,option:'Queues'},
+    {label:$scope.verbage.my_account,option:'Account'},
+    {label:$scope.verbage.alerts,option:'Alerts'},
+    {label:$scope.verbage.cp,option:'CP'},
+    {label:$scope.verbage.about,option:'About'},
+    ];
+
+    $scope.selected = $scope.tabs[0];
 
     $scope.recentSelectSort = 'Date';
     myHttpService.getFeed('me');
@@ -78,7 +89,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     May need to move the settings into its own seperate controller
      */
-    $scope.chatStatuses = [{"title":"Available", "key":"available"}, {"title":"Away", "key":"away"}, {"title":"Busy", "key":"dnd"}];
+    $scope.chatStatuses = [{"title":$scope.verbage.available, "key":"available"}, {"title":$scope.verbage.away, "key":"away"}, {"title":$scope.verbage.busy, "key":"dnd"}];
     $scope.setChatStatus = function(chatStatus){
         myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status = chatStatus,"customMessage":$scope.meModel.chat_custom_status});
     };
@@ -214,6 +225,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             case 'hudmw_webphone_speaker':
                 myHttpService.updateSettings(type,action,model); 
                 phoneService.setVolume(model);
+                break;
+            case 'hudw_lang':
+                myHttpService.updateSettings(type,action,model.xpid); 
+                localStorage.fon_lang_code = model.code;
+                location.reload();
+                break;
             default:
                 myHttpService.updateSettings(type,action,model); 
             
@@ -797,15 +814,24 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     });
     $scope.$on('i18n_updated',function(event,data){
 		if(data){
+			var language_id;
 			$scope.languages = data;
-		     if(settings.hudw_lang){
-                var language_id =  settings.hudw_lang;
-             }
-             for(language in $scope.languages){
-                if($scope.languages[language].xpid == language_id){
-                    $scope.languageSelect = $scope.languages[language];
-                    break;
+		     if(localStorage.fon_lang_code){
+                for(language in $scope.languages){
+                    if($scope.languages[language].code == localStorage.fon_lang_code){
+                        $scope.languageSelect = $scope.languages[language];
+                        localStorage.fon_lang_code = $scope.languageSelect.code;
+                        break;
+                    }
                 }
+             }else{
+                for(language in $scope.languages){
+                    if($scope.languages[language].xpid == settings.hudw_lang){
+                        $scope.languageSelect = $scope.languages[language];
+                        localStorage.fon_lang_code = $scope.languageSelect.code;
+                        break;
+                    }
+                }    
              }
         }
 	});

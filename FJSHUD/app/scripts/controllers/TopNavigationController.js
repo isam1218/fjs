@@ -5,13 +5,13 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
   };
 
   $scope.appIcons = [
-      {title:"Me", url:"#/settings", key:"Me",enabled:1}
-      , {title:"Calls and Recordings", url:"#/calllog", key:"CallLog",enabled:1}
-      , {title:"Conferencing", url:"#/conferences", key:"Conferences", enabled:1}
-      , {title:"Call Center", url:"#/callcenter", key:"CallCenter",enabled:1}
-      , {title:"Search", url:"#/search", key:"Search",enabled:1}
-      , {title:"Video Collaboration", url:"#/zoom", key:"Zoom",enabled:1}
-      , {title:"Box", url:"#/box", key:"Box",enabled:1}
+      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
+      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
+      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
+      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
+      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
+      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
+      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
   ];
 	
 	$scope.player = {

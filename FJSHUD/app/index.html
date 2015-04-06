@@ -55,23 +55,23 @@
 
 					<div class="WidgetTabBar">
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'all'" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
-							<div class="inner">All</div>
+							<div class="inner">{{::verbage.all}}</div>
 							<div class="arrow"></div>
 						</a>
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'favorites'; query = ''" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
-							<div class="inner">Favorites</div>
+							<div class="inner">{{::verbage.favorites}}</div>
 							<div class="arrow"></div>
 						</a>
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'recent'" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
-							<div class="inner">Recent</div>
+							<div class="inner">{{::verbage.recent}}</div>
 							<div class="arrow"></div>
 						</a>
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'external'" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
-							<div class="inner">External</div>
+							<div class="inner">{{::verbage.external}}</div>
 							<div class="arrow"></div>
 						</a>
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
-							<div class="inner">Groups</div>
+							<div class="inner">{{::verbage.group}}</div>
 							<div class="arrow"></div>
 						</a>
 					</div>
