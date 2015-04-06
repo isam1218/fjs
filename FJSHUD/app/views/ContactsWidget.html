@@ -1,19 +1,19 @@
 <div class="ListLineContent Header LeftContactsColumns">
 	<div ng-show="$parent.tab != 'recent'">
 		<div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>NAME</span>
+			<span>{{::verbage.name}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>EXTENSION</span>
+			<span>{{::verbage.extension}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('call.startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'call.startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>CALL STATUS</span>
+			<span>{{::verbage.call_status}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>HUD STATUS</span>
+			<span>{{::verbage.hud_status}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
 	</div>

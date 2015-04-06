@@ -1,34 +1,34 @@
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">My account</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.my_account}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-            <div class="ListSectionBody">My account information</div>
+            <div class="ListSectionBody">{{::verbage.my_account_info}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
               <div class="Dialog-settings-row">
-              <label class="queueBlock">Login:</label>
+              <label class="queueBlock">{{::verbage.login}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.login">
               </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Server: </label>
+              <label class="queueBlock">{{::verbage.Server}}: </label>
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.server">
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">My personal information</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.my_personal_info}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-          <div class="ListSectionBody">This information is visible to your contacts list.</div>
+          <div class="ListSectionBody"></div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
               <div class="file-input Dialog-settings-row" flow-init flow-name="avatar.flow" flow-file-added="change_avatar($file)">
 
-                <label class="queueBlock">Avatar:</label>
+                <label class="queueBlock">{{::verbage.avatar}}:</label>
                   <img 
                    onerror="this.src='img/Generic-Avatar-Small.png'" data-ng-src="{{getMeAvatarUrl(40,38)}}"
                    style="min-height:38px; min-width:40px; max-height:38px; max-width:40px" flow-img="$flow.files[$flow.files.length-1]"  />
@@ -37,47 +37,47 @@
 
               </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">First Name:</label>
+              <label class="queueBlock">{{::verbage.first_name}}:</label>
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.first_name">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Last Name:</label>
+              <label class="queueBlock">{{::verbage.last_name}}:</label>
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.last_name">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Display Name:</label>
+              <label class="queueBlock">{{::verbage.display_name}}:</label>
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.display_name">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Email:</label>
+              <label class="queueBlock">{{verbage.email}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="email" ng-model="meModel.email">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Mobile:</label>
+              <label class="queueBlock">{{verbage.mobile}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.mobile">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Voicemail:</label>
+              <label class="queueBlock">{{::verbage.voicemail}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_vm_box">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Business Phone:</label>
+              <label class="queueBlock">{{verbage.business_phone}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.business_phone">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">Extension:</label>
+              <label class="queueBlock">{{::verbage.extension}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_extension">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">IMS:</label>
+              <label class="queueBlock">{{::verbage.IMS}}:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.ims">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">JID:</label>
+              <label class="queueBlock">{{::verbage.JID}}:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.my_jid">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">My Department:</label>
+              <label class="queueBlock">{{verbage.my_department}}:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" ng-model="department">
             </div>
           </div>

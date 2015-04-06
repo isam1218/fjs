@@ -1,31 +1,33 @@
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Fonality Web Client</div>
+              <div class="ListSectionHeaderTitle">
+                {{::verbage.fonality_web_client}}
+              </div>
             </div>
-            <div class="ListSectionBody">Version: 1.3.010127</div>
+            <div class="ListSectionBody">{{::verbage.version}}: 1.3.010127</div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Fonality Cloud Service</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.fon_cloud_service}}</div>
             </div>
-            <div class="ListSectionBody">FDP Version: 3.7.0.010138</div>
+            <div class="ListSectionBody">{{::verbage.fdp_version}} {{::meModel.fdp_version}}</div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Fonality PBX Control Server</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.fon_pbx_control_server}}</div>
             </div>
-            <div class="ListSectionBody">HUDserver Version: 3.5.0.008548</div>
+            <div class="ListSectionBody">{{verbage.hud_server_version}}: {{::meModel.server_version}}</div>
             </div>
             <div class="ListSection">
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle">Fonality PBX Server</div>
+                <div class="ListSectionHeaderTitle">{{::verbage.fon_pbx_server}}</div>
               </div>
-              <div class="ListSectionBody">FONcore Version: 1.6.0.28-samy-r118</div>
+              <div class="ListSectionBody">{{::verbage.fon_core_version}}: {{::meModel.fon_core}}</div>
             </div>
             <div class="ListSection PluginSection fj-visibility-true">
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle">Fonality Plugin</div>
+                <div class="ListSectionHeaderTitle">{{::verbage.fon_plugin}}</div>
               </div>
-              <div class="ListSectionBody">Version: <span>5.17.008986</span></div>
+              <div class="ListSectionBody">{{::verbage.version}}: <span>5.17.008986</span></div>
              
             </div>

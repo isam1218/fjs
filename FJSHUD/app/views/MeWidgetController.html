@@ -10,7 +10,7 @@
                     <div class="MeInfoTitle">{{::verbage.chat_status}}</div>
                     <div class="MenuSection">
                         <div class="MenuItem" data-ng-class="{'selected':(meModel.chat_status ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
-                            <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.title }}" >
+                            <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.key }}" >
                             </div>
                             <div class="MenuItemText">{{ cstatus.title }}</div>
                             <div class="SelectedIcon"></div>
@@ -20,7 +20,7 @@
                 <div class="MeInfoBlock-column">
                     <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
                     <div class="LeftBarMeCustomStatusSection">
-                        <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" placeholder="Custom message"></textarea>
+                        <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" placeholder="{{::verbage.custom_message}}"></textarea>
                     </div>
                     <div class="MeInfoTitle">{{::verbage.location}}</div>
                     <div class="LocationSelector ">
@@ -114,7 +114,7 @@
 
               <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">{{verbage.place_a_call}}</div>
-                <input class="NewCall" type="tel" ng-model="call_obj.phoneNumber" placeholder="Phone number">                
+                <input class="NewCall" type="tel" ng-model="call_obj.phoneNumber" placeholder="{{::verbage.phone_number}}">                
                 <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>Call</span></div>
                 <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
               </div>              
@@ -160,23 +160,23 @@
                </div>
               </div>
               <div class="fj-vbox-space Preferences-Holder">
-	              <div class="WidgetSectionTitle">{{verbage.preferences}}</div>	              
+	              <div class="WidgetSectionTitle">{{verbage.Preferences}}</div>	              
 		              <div class="WidgetTabBar">
 		                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
-		                  <div class="inner HeaderLabel">{{ tab }}</div>
+		                  <div class="inner HeaderLabel">{{ tab.label }}</div>
 		                  <div class="arrow"></div>
 		                </a>
 		              </div>
 		         
 		              <div class="SettingsPanel DialogContentMainBlock_List">
-						<div ng-show="selected == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
-						<div ng-show="selected == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
-						<div ng-show="selected == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
-						<div ng-show="selected == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
-						<div ng-show="selected == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
-						<div ng-show="selected == 'CP'" class="fj-content" ng-include="'views/settings/SettingsCP.html'"></div>
-						<div ng-show="selected == 'About'" class="fj-content" ng-include="'views/settings/SettingsAbout.html'"></div>
-						<div ng-show="selected == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
+						<div ng-show="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
+						<div ng-show="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
+						<div ng-show="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
+						<div ng-show="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
+						<div ng-show="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
+						<div ng-show="selected.option == 'CP'" class="fj-content" ng-include="'views/settings/SettingsCP.html'"></div>
+						<div ng-show="selected.option == 'About'" class="fj-content" ng-include="'views/settings/SettingsAbout.html'"></div>
+						<div ng-show="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
 					  </div> 	                
 	            </div>
 	        </div>  

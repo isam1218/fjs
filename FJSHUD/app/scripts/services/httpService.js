@@ -26,19 +26,26 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     var VERSIONSCACHE_PATH = "/v1/versionscache";
      window.onbeforeunload = function(){
      	//return "Are you sure you want to close the window";
-     	tabMap = JSON.parse(localStorage.fon_tabs);
-     	delete tabMap[tabId];
+     	
+     	if(localStorage.fon_tabs){
+     		tabMap = JSON.parse(localStorage.fon_tabs);
+			delete tabMap[tabId];
 
-     	if($.isEmptyObject(tabMap)){
-     		delete localStorage.fon_tabs;
-     		delete localStorage.data_obj;
-     	}else{
-     		for(tab in tabMap){
-     			tabMap[tabId].isMaster = true;
-     			break;
-     		}
-			localStorage.fon_tabs = JSON.stringify(tabMap);		
+			if($.isEmptyObject(tabMap)){
+				delete localStorage.fon_tabs;
+				delete localStorage.data_obj;
+			}else{
+				for(tab in tabMap){
+					tabMap[tabId].isMaster = true;
+					break;
+				}
+				localStorage.fon_tabs = JSON.stringify(tabMap);		
+			}	
      	}
+
+     	
+		return "Are you sure you want to navigate away from this page?";
+
     }
 
 
