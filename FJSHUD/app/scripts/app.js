@@ -77,6 +77,11 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/queues/QueueWidget.html',
         controller: 'QueueWidgetController'
       })
+      .when('/queue/:queueId/recordings', 
+      {
+        templateUrl: 'views/queues/QueueWidget.html',
+        controller: 'QueueWidgetController'
+      })
       .when('/calllog', 
       {
         templateUrl: 'views/CallsRecordings.html',

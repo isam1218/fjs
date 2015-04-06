@@ -189,7 +189,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			};
 			httpService.sendAction("conferences", "joinContact", params);
 					
-			$location.path('/conference/' + $scope.xpid);
+			$location.path('/conference/' + $scope.xpid + '/currentcall');
 		}
 		else
 			httpService.sendAction("conferences", "leave", {conferenceId: $scope.xpid});

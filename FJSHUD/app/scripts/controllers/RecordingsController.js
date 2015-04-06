@@ -1,14 +1,32 @@
-hudweb.controller('RecordingsController', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'ConferenceService', function($scope, $rootScope, httpService, contactService, conferenceService) {
+hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', function($scope, $rootScope, $routeParams, $location, httpService, contactService, conferenceService, queueService) {
 	$scope.rec = this;
 	$scope.rec.query = '';
 	$scope.recordings = [];
 	
 	httpService.getFeed('callrecording');
+
 	$scope.$on('callrecording_synced', function(event, data) {
 		$scope.recordings = [];
 		
 		for (i = 0; i < data.length; i++) {
-			if (data[i].originatorUserId && data[i].originatorUserId == $rootScope.myPid) {
+			// conferences
+			if ($routeParams.conferenceId) {
+				if (data[i].conferenceId == $routeParams.conferenceId) {
+					data[i].fullProfile = conferenceService.getConference(data[i].conferenceId);
+					
+					$scope.recordings.push(data[i]);
+				}
+			}
+			// queues
+			else if ($routeParams.queueId) {
+				if (data[i].queueId == $routeParams.queueId) {
+					data[i].fullProfile = queueService.getQueue(data[i].queueId);
+					
+					$scope.recordings.push(data[i]);
+				}
+			}
+			// my recordings
+			else if (data[i].originatorUserId && data[i].originatorUserId == $rootScope.myPid) {
 				// get full profile
 				if (data[i].conferenceId)
 					data[i].fullProfile = conferenceService.getConference(data[i].conferenceId);
@@ -29,7 +47,27 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', 'HttpService'
 		};
 	};
 	
+	/* action items: */
+	
 	$scope.playRecording = function(recording) {
 		$rootScope.$broadcast('play_voicemail', recording);
+	};
+	
+	$scope.callNumber = function(e, number) {
+		e.stopPropagation();
+		
+		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+	};
+	
+	$scope.joinConference = function(e, xpid) {
+		e.stopPropagation();
+		
+		var params = {
+			conferenceId: xpid,
+			contactId: $rootScope.myPid,
+		};
+		httpService.sendAction("conferences", "joinContact", params);
+				
+		$location.path('/conference/' + xpid + '/currentcall');
 	};
 }]);

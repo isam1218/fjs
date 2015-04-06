@@ -1,31 +1,27 @@
 <div class="ToolBar" >
-	<input type="search" class="SearchBox" placeholder="Search" data-ng-model="rec.query" />
+	<input type="search" class="SearchBox" placeholder="Search" data-ng-model="rec.query" ng-model-options="{debounce: 100}" />
 </div>
 
 <div class="ListView fj-scrollable"> 
-    <div class="vmlabel" ng-if="voicemails.length == 0"> 
-        <div class="vmlabelheader"> No Voicemails In View </div> 
-        <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
-    </div>
     <div class="vmsection" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid"> 
-        <div class="vmavatarsection AvatarNormal"> 
+        <div class="vmavatarsection AvatarNormal" context-menu="recording.fullProfile"> 
             <img class="vmavatar " ng-src="{{::recording.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+			<div class="AvatarInteractable"></div>
         </div>
-
         <div class="vminfo" ng-click="playRecording(recording)"> 
             <div class="displayName">
-				<em>{{ voicemail.phone == meModel.primary_extension ? 'Me to' : 'from...' }}<em>
-				<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
-					{{ recording.fullProfile.displayName || recording.fullProfile.name }}
+				<em>to...<em>
+				<p class="vmdisplay">
+					{{ ::recording.fullProfile.displayName || recording.fullProfile.name }}
                 </p>
                 <div class="vmalternate">
-                    <div class="vmtime">{{ recording.created | date: 'yyyy MMMM d, h:mm a' }} </div>
-                    <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(voicemail.phone)"></input>
+                    <div class="vmtime">{{ ::recording.created | date: 'yyyy MMMM d, h:mm a' }} </div>
+                    <input ng-if="!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="Call" ng-click="callNumber($event, recording.calleePhone)"></input>
+                    <input ng-if="recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="Join" ng-click="joinConference($event, recording.conferenceId)"></input>
                 </div>
             </div> 
             <div class="footnote">
-                <div class="vmfootnote vmduration">{{ recording.duration | duration }} </div>
-                <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : "no transcription available" }}</div>
+                <div class="vmfootnote vmduration">{{ ::recording.duration | duration }}</div>
             </div>
         </div>
     </div>
