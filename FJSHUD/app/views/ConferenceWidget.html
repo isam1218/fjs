@@ -31,30 +31,15 @@
                     <div class="arrow"></div>
                 </a>
             </span>
-
-<!--             <a  class="WidgetTabBarButton Ready" ng-click="cTabSelected='CurrentCall'" ng-class="cTabSelected == 'CurrentCall' ? 'fj-selected-item': ''">
-                <div class="inner">Current Call</div>
-                <div class="arrow"></div>
-            </a>
-            <a class="WidgetTabBarButton Ready" ng-click="cTabSelected='chat'" ng-class="cTabSelected == 'chat' ? 'fj-selected-item': ''">
-                <div class="inner">Chat</div>
-                <div class="arrow"></div>
-            </a>
-            <a class="WidgetTabBarButton Ready" ng-click="cTabSelected='Recordings'" ng-class="cTabSelected == 'Recordings' ? 'fj-selected-item': ''">
-                <div class="inner">Recordings</div>
-                <div class="arrow"></div>
-            </a> -->
-
         </div>
 
         <!-- ng-views -->
         <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'"
         ng-controller="ChatController"
         ></div>
-
         <div ng-if="selected == 'Current Call'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
         ></div>
-        <div ng-if="selected == 'Recordings'" class="fj-content WidgetTabContent" ng-include="'views/conference/ConferenceRecordings.html'"></div>
+        <div ng-if="selected == 'Recordings'" class="fj-content WidgetTabContent" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
         
     </div>
 

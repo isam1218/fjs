@@ -37,7 +37,7 @@
 			</div>
 			<div class="Title">
 				<div class="Name">{{ ::queue.name }}</div>
-				<div class="Agents">Agents: {{ 0 + ' / ' + queue.loggedInMembers + ' / ' + queue.members.length }}</div>
+				<div class="Agents">Agents: {{ queue.info.active + ' / ' + queue.loggedInMembers + ' / ' + queue.members.length }}</div>
 			</div>
 		</a>
 		

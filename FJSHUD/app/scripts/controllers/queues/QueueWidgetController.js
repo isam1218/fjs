@@ -5,8 +5,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.sortReverse = false;
     $scope.selected = 'Agents';
     
-    // $scope.tabs = ['Agents', 'Stats', 'Calls', 'Call Log'];
-    $scope.tabs = [{upper: 'Agents', lower: 'agents'}, {upper: 'Stats', lower: 'stats'}, {upper: 'Calls', lower: 'calls'}, {upper: 'Call Log', lower: 'calllog'}];
+    $scope.tabs = [{upper: 'Agents', lower: 'agents'}, {upper: 'Stats', lower: 'stats'}, {upper: 'Calls', lower: 'calls'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}];
 
     if ($location.path().indexOf('/agents') !== -1){
         $scope.selected = 'Agents';
@@ -16,6 +15,8 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         $scope.selected = 'Calls';
     } else if ($location.path().indexOf('/calllog') !== -1){
         $scope.selected = 'Call Log';
+    } else if ($location.path().indexOf('/recordings') !== -1){
+        $scope.selected = 'Recordings';
     }
     
     httpService.getFeed('queues');

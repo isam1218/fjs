@@ -126,8 +126,8 @@ function sync_request(f){
 					synced_data['callerrecording'] = format_array(data_obj['callerrecording']);
 					synced_data['conferencerecording'] = format_array(data_obj['conferencerecording']);
 				}
-				else
-					synced_data[feed] = format_array(data_obj[feed]);
+				
+				synced_data[feed] = format_array(data_obj[feed]);
 			}
 			
 			var sync_response = {

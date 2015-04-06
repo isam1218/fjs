@@ -63,6 +63,8 @@
          ng-include="'views/queues/QueueWidgetCalls.html'" ng-controller="QueueWidgetCallsController"></div>
     <div ng-if="selected == 'Call Log'" class="ListView CallLog"
          ng-include="'views/CallLog.html'" ng-controller="CallLogController"></div>
+    <div ng-if="selected == 'Recordings'" class="ListView WithToolBar"
+         ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
 
   </div>
 

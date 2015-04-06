@@ -407,7 +407,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	}
 	
 	this.get_audio = function(key) {
-		return fjs.CONFIG.SERVER.serverURL + '/v1/vm_download?id=' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
+		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
 	};
 
     this.get_attachment = function(xkeyUrl){

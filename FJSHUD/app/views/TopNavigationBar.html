@@ -17,14 +17,13 @@
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		<div class="Caller">
 			<div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
-				<img class="AvatarImgPH" ng-src="" onerror="this.src='img/Generic-Avatar-28.png'" />
-				<div class="AvatarInteractable AvatarForeground"></div>
+				<img class="AvatarImgPH" ng-src="{{voicemail.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 			</div>
 			<div class="Details">
-				<em>...{{ voicemail.phone == meModel.primary_extension ? 'to' : 'from' }}</em>
-				<strong>{{ voicemail.displayName }}</strong>
+				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? 'to' : 'from' }}</em>
+				<strong>{{ voicemail.displayName || voicemail.name }}</strong>
 				<br/>
-				<span>{{ voicemail.phone }}</span>
+				<span>{{ voicemail.primaryExtension || voicemail.extensionNumber }}</span>
 			</div>
 		</div>
 		<div class="Loading" ng-show="!player.loaded">Loading...</div>
