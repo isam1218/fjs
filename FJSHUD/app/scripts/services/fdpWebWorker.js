@@ -178,8 +178,8 @@ var sync_request = function(f){
 					synced_data['callerrecording'] = format_array(data_obj['callerrecording']);
 					synced_data['conferencerecording'] = format_array(data_obj['conferencerecording']);
 				}
-				else
-					synced_data[feed] = format_array(data_obj[feed]);
+				
+				synced_data[feed] = format_array(data_obj[feed]);
 			}
 
 			//localStorage.data_obj = JSON.stringify(this.data_obj);

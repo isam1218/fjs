@@ -14,10 +14,10 @@ hudweb.config(function ($routeProvider) {
     $routeProvider
       .when('/settings',
       {
-		    templateUrl: 'views/MeWidgetController.html',
+		templateUrl: 'views/MeWidgetController.html',
         controller: 'MeWidgetController'
       })
-		  .when('/settings/callid/:callId', 
+	  .when('/settings/callid/:callId', 
       {
         templateUrl:'views/MeWidgetController.html',
         controller: 'MeWidgetController'	
@@ -26,7 +26,7 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/SettingsWebLauncer.html',
         controller: 'MeWidgetController'
-		  })
+	  })
       .when('/settings/account', 
       {
         templateUrl: 'views/SettingsAccount.html',
@@ -56,7 +56,7 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/queues/QueueWidget.html',
         controller: 'QueueWidgetController'
-		  })
+	  })
       .when('/queue/:queueId/agents', 
       {
         templateUrl: 'views/queues/QueueWidget.html',
@@ -81,7 +81,7 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/CallsRecordings.html',
         controller: 'CallsRecordingsController'
-		  })
+	  })
       .when('/calllog/calllog', 
       {
         templateUrl: 'views/CallsRecordings.html',
@@ -92,16 +92,21 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/CallsRecordings.html',
         controller: 'CallsRecordingsController'
       })
+      .when('/calllog/recordings',
+      {
+        templateUrl: 'views/CallsRecordings.html',
+        controller: 'CallsRecordingsController'
+      })
       .when('/conferences', 
       {
         templateUrl: 'views/ConferenceRoomWidget.html',
         controller: 'ConferencesWidgetController'
-		  })
+	  })
       .when('/conference/:conferenceId', 
       {
         templateUrl: 'views/ConferenceWidget.html',
         controller: 'ConferenceSingleController'
-		  })
+	  })
       .when('/conference/:conferenceId/currentcall',
       {
         templateUrl: 'views/ConferenceWidget.html',
@@ -176,13 +181,13 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/ZoomWidget.html',
         controller: 'ZoomWidgetController'
-		  })
+	  })
       .when('/search', 
       {
         templateUrl: 'views/SearchWidget.html',
         controller: 'SearchWidgetController'
-		  })
-		  .when('/box',
+	  })
+	  .when('/box',
       {
         templateUrl: 'views/BoxWidget.html'
       })

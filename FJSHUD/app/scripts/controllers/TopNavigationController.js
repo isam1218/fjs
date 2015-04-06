@@ -1,4 +1,4 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, queueService, httpService, utilService) {
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', 'ContactService', function($rootScope, $scope, $sce, queueService, httpService, utilService, contactService) {
   $scope.meModel = {};
   $scope.permissions = {
       Zoom: {bit:1,enabled:false}
@@ -81,13 +81,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 	*/
 	
 	$scope.$on('play_voicemail', function(event, data) {
-		$scope.voicemail = data;
+		$scope.voicemail = data.fullProfile ? data.fullProfile : contactService.getContact(data.contactId);
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
 		
 		// update hidden audio element
 		var source = document.getElementById('voicemail_player_source');
-		source.src = $sce.trustAsResourceUrl(httpService.get_audio(data.voicemailMessageKey));
+		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
+		source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
 		
 		player = document.getElementById('voicemail_player');
 		player.load();
