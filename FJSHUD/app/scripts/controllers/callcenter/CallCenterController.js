@@ -1,16 +1,8 @@
-hudweb.controller('CallCenterController', ['$scope', '$location', 'HttpService', 'QueueService', function ($scope, $location, httpService, queueService) {
-	// $scope.tabs = ['My Queue', 'All Queues', 'My Status'];
-	$scope.selected = 'My Queue';
+hudweb.controller('CallCenterController', ['$scope', '$routeParams', 'HttpService', 'QueueService', function ($scope, $routeParams, httpService, queueService) {
 
 	$scope.tabs = [{upper: 'My Queue', lower: 'myqueue'},{upper: 'All Queues', lower: 'allqueues'},{upper: 'My Status', lower: 'mystatus'}];
 
-	if ($location.path().indexOf('/myqueue') !== -1){
-		$scope.selected = 'My Queue';
-	} else if ($location.path().indexOf('/allqueues') !== -1){
-		$scope.selected = 'All Queues';
-	} else if ($location.path().indexOf('/mystatus') !== -1){
-		$scope.selected = 'My Status';
-	}
+	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 
 	$scope.total = {};
 	

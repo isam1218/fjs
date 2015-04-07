@@ -1,8 +1,7 @@
-hudweb.controller('GroupSingleController', ['$scope', '$routeParams', '$location', 'HttpService', 'GroupService', function($scope, $routeParams, $location, myHttpService, groupService) {
+hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpService', 'GroupService', function($scope, $routeParams, myHttpService, groupService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
-	$scope.selected = 'Chat';
 	
 	$scope.targetId = $scope.groupID;
 	$scope.conversationType = 'group';
@@ -31,20 +30,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', '$location
 	
 	$scope.tabs = [{upper: 'Chat', lower: 'chat'}, {upper: 'Members', lower: 'members'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'Page', lower: 'page'}];
 
-	// $scope.tabs = ['Chat', 'Members', 'Voicemails', 'Page'];
-	
-	// when url includes '/chat' --> $scope.seleted === 'Chat' --> brings in Chat View & Controller
-	if ($location.path().indexOf('/chat') !== -1){
-		$scope.selected = 'Chat';
-	}  else if ($location.path().indexOf('/members') !== -1){
-		$scope.selected = 'Members';
-	} else if ($location.path().indexOf('/voicemails') !== -1){
-		$scope.selected = 'Voicemails';
-	} else if ($location.path().indexOf('/page') !== -1){
-		$scope.selected = 'Page';
-	}
-
-	// $scope.selected = $location.path().indexOf('/chat') != -1 ? 'Chat' : 'Members';
+	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 	
 	// display avatar for group member
     $scope.getAvatarUrl = function(index) {

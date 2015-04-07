@@ -1,11 +1,7 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$location', function($scope, $location) {
+hudweb.controller('CallsRecordingsController', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
 	// routing
-  $scope.selected = 'Call Log';
-  $scope.tabs = [{upper: 'Call Log', lower: 'calllog'}, {upper: 'Voicemails', lower: 'voicemails'}];
+	$scope.tabs = [{upper: 'Call Log', lower: 'calllog'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'My Recordings', lower: 'recordings'}];
+	
+	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 
-  if ($location.path().indexOf('/voicemails') !== -1){
-    $scope.selected = "Voicemails";
-  } else if ($location.path().indexOf('/calllog') !== -1){
-    $scope.selected = "Call Log";
-  }
 }]);

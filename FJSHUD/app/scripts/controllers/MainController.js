@@ -62,6 +62,20 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
 		$scope.overlay.url = url ? 'views/popups/' + url + '.html' : '';
 		$scope.overlay.data = data ? data : null;
 	};
+	
+	$scope.queueStatusLabel = function(status) {
+		switch(status) {
+			case 'login-permanent':
+				return 'Permanent in';
+				break;
+			case 'login':
+				return 'Logged in';
+				break;
+			case 'logout':
+				return 'Logged out';
+				break;
+		}
+	};
 
 	var getMyPid = $scope.$on('me_synced', function(event, data) {
 		// find my pid

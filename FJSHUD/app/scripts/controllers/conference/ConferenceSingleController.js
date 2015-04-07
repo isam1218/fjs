@@ -1,13 +1,13 @@
 hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'UtilService', 'ContactService', 'PhoneService',
 	function($scope, conferenceService, httpService, $routeParams, $location, utilService, contactService, phoneService) {
 	$scope.conversationType = 'conference';
-	$scope.members = [];
 	$scope.conferenceId = $routeParams.conferenceId;
 
 	$scope.enableChat = true;
     $scope.joined = false;
     $scope.conference = conferenceService.getConference($scope.conferenceId);
-    	httpService.getFeed("conferencestatus")
+    
+	httpService.getFeed("conferencestatus")
 	httpService.getFeed("conferencemembers");
 
 	$scope.targetId = $scope.conferenceId;
@@ -19,13 +19,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 
   $scope.tabs = [{upper: 'Current Call', lower: 'currentcall'}, {upper: 'Chat', lower: 'chat'}, {upper: 'Recordings', lower: 'recordings'}];
 
-  if ($location.path().indexOf('/currentcall') !== -1){
-    $scope.selected = 'Current Call';
-  } else if ($location.path().indexOf('/chat') !== -1){
-    $scope.selected = 'Chat';
-  } else if ($location.path().indexOf('recordings') !== -1){
-    $scope.selected = 'Recordings';
-  }
+  $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower
 
 	$scope.$on("conferences_updated", function(event,data){
    		$scope.conference = conferenceService.getConference($scope.conferenceId);
@@ -35,8 +29,11 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
     			$scope.enableChat = $scope.joined;
     			$scope.enableFileShare = $scope.joined;
     		}
-
-    		$scope.members = $scope.conference.members;
+			
+			// get full profile for status, context-menu
+			angular.forEach($scope.conference.members, function(obj) {
+				obj.fullProfile = contactService.getContact(obj.contactId);
+			});
     		
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;

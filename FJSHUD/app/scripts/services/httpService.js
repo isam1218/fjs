@@ -26,19 +26,26 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     var VERSIONSCACHE_PATH = "/v1/versionscache";
      window.onbeforeunload = function(){
      	//return "Are you sure you want to close the window";
-     	tabMap = JSON.parse(localStorage.fon_tabs);
-     	delete tabMap[tabId];
+     	
+     	if(localStorage.fon_tabs){
+     		tabMap = JSON.parse(localStorage.fon_tabs);
+			delete tabMap[tabId];
 
-     	if($.isEmptyObject(tabMap)){
-     		delete localStorage.fon_tabs;
-     		delete localStorage.data_obj;
-     	}else{
-     		for(tab in tabMap){
-     			tabMap[tabId].isMaster = true;
-     			break;
-     		}
-			localStorage.fon_tabs = JSON.stringify(tabMap);		
+			if($.isEmptyObject(tabMap)){
+				delete localStorage.fon_tabs;
+				delete localStorage.data_obj;
+			}else{
+				for(tab in tabMap){
+					tabMap[tabId].isMaster = true;
+					break;
+				}
+				localStorage.fon_tabs = JSON.stringify(tabMap);		
+			}	
      	}
+
+     	
+		return "Are you sure you want to navigate away from this page?";
+
     }
 
 
@@ -382,16 +389,25 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     };
     
     this.get_avatar = function(pid, width, height) {
-        if (pid) {
-            return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID;
-    
+		return get_avatar(pid,width,height,undefined);
+    };
+
+    this.get_avatar = function(pid,width,height,xversion){
+
+    	if (pid) {
+            if(xversion){
+            	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + "&xver=" + xversion;
+    		}else{
+    			return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID ;
+    		}
+            
         } else {
             return "img/Generic-Avatar-Small.png";
         }
-    };
+	}
 	
 	this.get_audio = function(key) {
-		return fjs.CONFIG.SERVER.serverURL + '/v1/vm_download?id=' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
+		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
 	};
 
     this.get_attachment = function(xkeyUrl){

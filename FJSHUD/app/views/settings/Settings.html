@@ -105,11 +105,11 @@
             <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle">{{::verbage.auto_away}}</div>
             </div>
-            <div class="ListSectionBody">{{verbage.auto_away_settings_desc}}</div>
+            <div class="ListSectionBody">{{::verbage.auto_away_settings_desc}}</div>
           </div>
           <div class="ListPage">
             <div class="Dialog-settings-row" >
-              <div class="lblSelect">{{verbage.auto_away_after}}:</div>
+              <div class="lblSelect">{{::verbage.auto_away_after}}:</div>
               <select
                 ng-model="autoAwaySelected"
                 ng-options="autoAway.label for autoAway in autoAwayOptions"
@@ -122,14 +122,14 @@
               <label><input
                 ng-model="enableAutoAway"
                 ng-change="update_settings('auto_away_timeout','update',enableAutoAway)"
-                name="autoaway" type="checkbox" value="true">{{verbage.enable_auto_away}}</label>
+                name="autoaway" type="checkbox" value="true">{{::verbage.enable_auto_away}}</label>
             </div>
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">Dashboard</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.dashboard}}</div>
             </div>
-            <div class="ListSectionBody">Dashboard settings</div>
+            <div class="ListSectionBody">{{::verbage.dashboard_setting}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
@@ -137,6 +137,6 @@
               <label><input
                 ng-model="useColumnLayout"
                 ng-change="update_settings('use_column_layout','update',useColumnLayout)"
-                name="use-column-layout" type="checkbox" value="true" >Use column layout</label>
+                name="use-column-layout" type="checkbox" value="true" >{{::verbage.use_column_layout}}</label>
             </div>
           </div>

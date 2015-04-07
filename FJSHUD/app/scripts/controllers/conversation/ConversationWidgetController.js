@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'ContactService','PhoneService','$filter','$timeout','$location', function($scope, $routeParams, contactService,phoneService,$filter,$timeout,$location) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'ContactService','PhoneService','$filter','$timeout', function($scope, $routeParams, contactService,phoneService,$filter,$timeout) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);
 	$scope.messages = [];
@@ -32,26 +32,9 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
 		}
 	});
 	
-	// $scope.tabs = ['Chat', 'Voicemails', 'Groups','Queues', 'Call Log'];
-    $scope.tabs = [{upper: 'Chat', lower: 'chat'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'Groups', lower: 'groups'}, {upper: 'Queues', lower: 'queues'}, {upper: 'Call Log', lower: 'calllog'}];
-	$scope.selected = 'Chat';
-
-    // console.log('location path - ', $location.path());
-
-    if ($location.path().indexOf('/chat') !== -1){
-        $scope.selected = 'Chat';
-    } else if ($location.path().indexOf('/members') !== -1){
-        $scope.selected = 'Members';
-    } else if ($location.path().indexOf('/voicemails') !== -1){
-        $scope.selected = 'Voicemails';
-    } else if ($location.path().indexOf('/groups') !== -1){
-        $scope.selected = 'Groups';
-    } else if ($location.path().indexOf('/queues') !== -1){
-        $scope.selected = 'Queues';
-    } else if ($location.path().indexOf('calllog') !== -1){
-        $scope.selected = 'Call Log';
-    }
-
+    $scope.tabs = [{upper: 'Chat', lower: 'chat'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'Groups', lower: 'groups'}, {upper: 'Queues', lower: 'queues'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}];
+	
+	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 
 	var updateTime = function() {
         if ($scope.contact.call && $scope.contact.call.startedAt) {

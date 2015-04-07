@@ -1,17 +1,17 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', function($rootScope, $scope, $sce, queueService, httpService, utilService) {
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', 'ContactService', function($rootScope, $scope, $sce, queueService, httpService, utilService, contactService) {
   $scope.meModel = {};
   $scope.permissions = {
       Zoom: {bit:1,enabled:false}
   };
 
   $scope.appIcons = [
-      {title:"Me", url:"#/settings", key:"Me",enabled:1}
-      , {title:"Calls and Recordings", url:"#/calllog", key:"CallLog",enabled:1}
-      , {title:"Conferencing", url:"#/conferences", key:"Conferences", enabled:1}
-      , {title:"Call Center", url:"#/callcenter", key:"CallCenter",enabled:1}
-      , {title:"Search", url:"#/search", key:"Search",enabled:1}
-      , {title:"Video Collaboration", url:"#/zoom", key:"Zoom",enabled:1}
-      , {title:"Box", url:"#/box", key:"Box",enabled:1}
+      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
+      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
+      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
+      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
+      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
+      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
+      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
   ];
 	
 	$scope.player = {
@@ -69,7 +69,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 	
 
 	$scope.getAvatar = function() {
-		return httpService.get_avatar($rootScope.myPid, 28, 28);
+		return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
 	};
 	
 	$scope.$on('queues_updated', function(event, data) {
@@ -81,13 +81,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 	*/
 	
 	$scope.$on('play_voicemail', function(event, data) {
-		$scope.voicemail = data;
+		$scope.voicemail = data.fullProfile ? data.fullProfile : contactService.getContact(data.contactId);
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
 		
 		// update hidden audio element
 		var source = document.getElementById('voicemail_player_source');
-		source.src = $sce.trustAsResourceUrl(httpService.get_audio(data.voicemailMessageKey));
+		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
+		source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
 		
 		player = document.getElementById('voicemail_player');
 		player.load();
@@ -181,6 +182,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		player.pause();
 	};
 	
+	var icon_version;
+    $scope.$on("fdpImage_synced",function(event,data){
+        if(data){
+            for(i in data){
+                if(data[i].xpid == $rootScope.myPid){
+                    icon_version = data[i].xef001iver;
+                }
+            }
+        } 
+    });
+
 	$scope.logout = function() {
 		httpService.logout();
 	};
