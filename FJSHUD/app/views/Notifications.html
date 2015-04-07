@@ -31,7 +31,7 @@
 								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 								<div class="NotificationType">...{{ message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
 								{{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
-								<div class="NotificationMessage">{{ getMessage(message) }} </div>
+								<div class="NotificationMessage" scroll-to-bottom>{{ getMessage(message) }}</div>
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
 								<span class="XButton XButtonRed"> Reject</span>

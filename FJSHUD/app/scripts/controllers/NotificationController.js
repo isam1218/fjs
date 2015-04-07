@@ -7,7 +7,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.inCall = false;
 	$scope.inRinging = false;
 	$scope.path = $location.protocol() + "://" + $location.host() + ":" + $location.port();
-	$scope.messageLimit = 3;
+	$scope.messageLimit = 10;//300;
 	myHttpService.getFeed('quickinbox');
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
@@ -408,21 +408,16 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			// console.log('notifications order - ', $scope.todaysNotifications);
 			return b.time - a.time; 
-		});
-		
-		var notifyElement = document.getElementsByClassName("LeftBarNotifications");
-		
+		});					
 
-		if($scope.todaysNotifications && $scope.todaysNotifications.length > 0){
+		/*if($scope.todaysNotifications && $scope.todaysNotifications.length > 0){
 			notifyElement[0].style["max-height"] = "400px";	
 		}else{
 			notifyElement[0].style["max-height"] = "1px";	
-		}
-
+		}*/			
 		$scope.$safeApply();
 		if(displayDesktopAlert){
 			displayNotification();
-		}
-		
+		}				
     });
 }]);
