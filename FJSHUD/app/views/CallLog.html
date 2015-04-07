@@ -45,11 +45,11 @@
 			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | orderBy:sortField:sortReverse track by call.xpid">
 				<div>
 					<!-- single vs group avatar -->
-					<div ng-if="!call.fullProfile || call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ call.type <= 4 ? 'Office' : 'External' }}" context-menu="call.fullProfile">
-						<img class="AvatarImgPH" ng-src="{{ call.fullProfile ? call.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+					<div ng-if="!call.fullProfile || call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ ::call.type <= 4 ? 'Office' : 'External' }}" context-menu="call.fullProfile">
+						<img class="AvatarImgPH" ng-src="{{ ::call.fullProfile ? call.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 						<div class="AvatarInteractable" ng-if="call.fullProfile"></div>
 					</div>
-					<div ng-if="call.fullProfile && !call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ call.fullProfile.loggedInMembers !== undefined ? 'Queue' : 'Office' }}" context-menu="call.fullProfile">
+					<div ng-if="call.fullProfile && !call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ ::call.fullProfile.loggedInMembers !== undefined ? 'Queue' : 'Office' }}" context-menu="call.fullProfile">
 						<div class="GroupAvatarItem GroupAvatarItem_0">
 							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 						</div>
@@ -72,7 +72,7 @@
 				<div class="Duration"> {{ ::call.duration | duration }}</div>
 				<div class="Date"> {{ ::call.startedAt | date: 'MMMM d, h:mm a' }}</div>
 				<div class="Type">
-					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ call.incoming ? 'Incoming' : 'Outbound' }}"></div>
+					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ ::call.incoming ? 'Incoming' : 'Outbound' }}"></div>
 				</div>
 			</div>
 			
