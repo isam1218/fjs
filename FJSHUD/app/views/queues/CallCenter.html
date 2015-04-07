@@ -29,28 +29,21 @@
   <div class="WidgetBody">
     <div class="WidgetTabBar">
       <span ng-repeat="tab in tabs">
-      	<a href="#/callcenter/{{ ::tab.lower }}" class="WidgetTabBarButton Ready" ng-class="selected == tab.upper ? 'fj-selected-item' : ''">
+      	<a href="#/callcenter/{{ ::tab.lower }}" class="WidgetTabBarButton Ready" ng-class="selected == tab.lower ? 'fj-selected-item' : ''">
       		<div class="inner">{{ ::tab.upper }}</div>
       		<div class="arrow"></div>
       	</a>
-      </span>
-
-<!--       <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready"
-         ng-class="selected == tab ? 'fj-selected-item' : ''">
-        <div class="inner">{{ ::tab }}</div>
-        <div class="arrow"></div>
-      </a>
- -->      
+      </span>   
     </div>
 
     <!-- ng-views -->
-    <div ng-if="selected == 'My Queue'" class="ListView WithToolBar"
+    <div ng-if="selected == 'myqueue'" class="ListView WithToolBar"
          ng-include="'views/queues/AllQueues.html'" 
 		 ng-controller="CallCenterQueueController"></div>
-    <div ng-if="selected == 'All Queues'" class="ListView WithToolBar"
+    <div ng-if="selected == 'allqueues'" class="ListView WithToolBar"
          ng-include="'views/queues/AllQueues.html'" 
 		 ng-controller="CallCenterQueueController"></div>
-    <div ng-if="selected == 'My Status'" class="MyStatus ListView WithToolBar"
+    <div ng-if="selected == 'mystatus'" class="MyStatus ListView WithToolBar"
          ng-include="'views/queues/MyStatus.html'" 
 		 ng-controller="CallCenterMyStatusController"></div>
   </div>

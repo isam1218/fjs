@@ -14,10 +14,10 @@ hudweb.config(function ($routeProvider) {
     $routeProvider
       .when('/settings',
       {
-		templateUrl: 'views/MeWidgetController.html',
+		    templateUrl: 'views/MeWidgetController.html',
         controller: 'MeWidgetController'
       })
-	  .when('/settings/callid/:callId', 
+	    .when('/settings/callid/:callId', 
       {
         templateUrl:'views/MeWidgetController.html',
         controller: 'MeWidgetController'	
@@ -26,7 +26,7 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/SettingsWebLauncer.html',
         controller: 'MeWidgetController'
-	  })
+	    })
       .when('/settings/account', 
       {
         templateUrl: 'views/SettingsAccount.html',
@@ -37,17 +37,7 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/queues/CallCenter.html',
         controller: 'CallCenterController'
 		  })
-      .when('/callcenter/myqueue',
-      {
-        templateUrl: 'views/queues/CallCenter.html',
-        controller: 'CallCenterController'
-      })
-      .when('/callcenter/allqueues',
-      {
-        templateUrl: 'views/queues/CallCenter.html',
-        controller: 'CallCenterController'
-      })
-      .when('/callcenter/mystatus',
+      .when('/callcenter/:route', 
       {
         templateUrl: 'views/queues/CallCenter.html',
         controller: 'CallCenterController'
@@ -56,28 +46,8 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/queues/QueueWidget.html',
         controller: 'QueueWidgetController'
-	  })
-      .when('/queue/:queueId/agents', 
-      {
-        templateUrl: 'views/queues/QueueWidget.html',
-        controller: 'QueueWidgetController'
-      })
-      .when('/queue/:queueId/stats', 
-      {
-        templateUrl: 'views/queues/QueueWidget.html',
-        controller: 'QueueWidgetController'
-      })
-      .when('/queue/:queueId/calls', 
-      {
-        templateUrl: 'views/queues/QueueWidget.html',
-        controller: 'QueueWidgetController'
-      })
-      .when('/queue/:queueId/calllog', 
-      {
-        templateUrl: 'views/queues/QueueWidget.html',
-        controller: 'QueueWidgetController'
-      })
-      .when('/queue/:queueId/recordings', 
+	    })
+      .when('/queue/:queueId/:route',
       {
         templateUrl: 'views/queues/QueueWidget.html',
         controller: 'QueueWidgetController'
@@ -86,18 +56,8 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/CallsRecordings.html',
         controller: 'CallsRecordingsController'
-	  })
-      .when('/calllog/calllog', 
-      {
-        templateUrl: 'views/CallsRecordings.html',
-        controller: 'CallsRecordingsController'
-      })
-      .when('/calllog/voicemails',
-      {
-        templateUrl: 'views/CallsRecordings.html',
-        controller: 'CallsRecordingsController'
-      })
-      .when('/calllog/recordings',
+	    })
+      .when('/calllog/:route',
       {
         templateUrl: 'views/CallsRecordings.html',
         controller: 'CallsRecordingsController'
@@ -106,32 +66,22 @@ hudweb.config(function ($routeProvider) {
       {
         templateUrl: 'views/ConferenceRoomWidget.html',
         controller: 'ConferencesWidgetController'
-	  })
+	    })
       .when('/conference/:conferenceId', 
       {
         templateUrl: 'views/ConferenceWidget.html',
         controller: 'ConferenceSingleController'
-	  })
-      .when('/conference/:conferenceId/currentcall',
+	    })
+      .when('/conference/:conferenceId/:route',
       {
         templateUrl: 'views/ConferenceWidget.html',
         controller: 'ConferenceSingleController'
-      })
-      .when('/conference/:conferenceId/chat',
-      {
-        templateUrl: 'views/ConferenceWidget.html',
-        controller: 'ConferenceSingleController'
-      })
-      .when('/conference/:conferenceId/recordings',
-      {
-        templateUrl: 'views/ConferenceWidget.html',
-        controller: 'ConferenceSingleController'
-      })
+      })      
       .when('/contact/:contactId', 
       {
         templateUrl: 'views/conversation/ConversationWidget.html',
         controller: 'ConversationWidgetController'
-	  })
+	    })
       .when('/contact/:contactId/:route',
       {
         templateUrl: 'views/conversation/ConversationWidget.html',
@@ -142,37 +92,22 @@ hudweb.config(function ($routeProvider) {
         templateUrl: 'views/group/GroupSingleWidget.html',
         controller: 'GroupSingleController'
 		  })
-      .when('/group/:groupId/chat',
+      .when('/group/:groupId/:route', 
       {
         templateUrl: 'views/group/GroupSingleWidget.html',
         controller: 'GroupSingleController'
-      })
-      .when('/group/:groupId/members',
-      {
-        templateUrl: 'views/group/GroupSingleWidget.html',
-        controller: 'GroupSingleController'
-      })
-      .when('/group/:groupId/voicemails',
-      {
-        templateUrl: 'views/group/GroupSingleWidget.html',
-        controller: 'GroupSingleController'
-      })
-      .when('/group/:groupId/page',
-      {
-        templateUrl: 'views/group/GroupSingleWidget.html',
-        controller: 'GroupSingleController'
-      })
+      })      
       .when('/zoom',
       {
         templateUrl: 'views/ZoomWidget.html',
         controller: 'ZoomWidgetController'
-	  })
+	    })
       .when('/search', 
       {
         templateUrl: 'views/SearchWidget.html',
         controller: 'SearchWidgetController'
-	  })
-	  .when('/box',
+	    })
+	    .when('/box',
       {
         templateUrl: 'views/BoxWidget.html'
       })

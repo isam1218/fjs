@@ -19,13 +19,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 
   $scope.tabs = [{upper: 'Current Call', lower: 'currentcall'}, {upper: 'Chat', lower: 'chat'}, {upper: 'Recordings', lower: 'recordings'}];
 
-  if ($location.path().indexOf('/currentcall') !== -1){
-    $scope.selected = 'Current Call';
-  } else if ($location.path().indexOf('/chat') !== -1){
-    $scope.selected = 'Chat';
-  } else if ($location.path().indexOf('recordings') !== -1){
-    $scope.selected = 'Recordings';
-  }
+  $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower
 
 	$scope.$on("conferences_updated", function(event,data){
    		$scope.conference = conferenceService.getConference($scope.conferenceId);
