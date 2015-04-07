@@ -18,7 +18,7 @@
             <div class="vmlabelheader"> No Voicemails In View </div> 
             <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
         </div>
-        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy: selectedSort.type: selectedSort.desc"> 
+        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy: selectedSort.type: selectedSort.desc track by voicemail.xpid"> 
             
             <div class="vmavatarsection AvatarNormal" > 
                     <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
@@ -26,17 +26,17 @@
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                     <div class="displayName">
-						<em>{{ voicemail.phone == meModel.primary_extension ? 'Me to' : 'from...' }}<em>
+						<em>{{ ::voicemail.phone == meModel.primary_extension ? 'Me to' : 'from...' }}<em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
-							{{ voicemail.displayName + ' <' + voicemail.phone + '>' }}
+							{{ ::voicemail.displayName + ' <' + voicemail.phone + '>' }}
                         </p>
                         <div class="vmalternate">
-                            <div class="vmtime">{{ voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
+                            <div class="vmtime">{{ ::voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
                             <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(voicemail.phone)"></input>
                         </div>
                     </div> 
                     <div class="footnote">
-                        <div class="vmfootnote vmduration">{{ voicemail.duration | duration }} </div>
+                        <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
                         <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : "no transcription available" }}</div>
                     </div>
                     

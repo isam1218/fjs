@@ -26,7 +26,7 @@
     <div class="WidgetBody">
 		<div class="WidgetTabBar">
             <span ng-repeat="tab in tabs">
-                <a href="#/conference/{{ ::conferenceId}}/{{tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.upper ? 'fj-selected-item': ''">
+                <a href="#/conference/{{ ::conferenceId + '/' +  tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.lower ? 'fj-selected-item': ''">
                     <div class="inner">{{::tab.upper}}</div>
                     <div class="arrow"></div>
                 </a>
@@ -34,12 +34,12 @@
         </div>
 
         <!-- ng-views -->
-        <div ng-if="selected == 'Chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'"
+        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'"
         ng-controller="ChatController"
         ></div>
-        <div ng-if="selected == 'Current Call'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
+        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
         ></div>
-        <div ng-if="selected == 'Recordings'" class="fj-content WidgetTabContent" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
         
     </div>
 

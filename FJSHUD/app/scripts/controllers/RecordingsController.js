@@ -25,6 +25,28 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 					$scope.recordings.push(data[i]);
 				}
 			}
+			// contact
+			else if ($routeParams.contactId) {
+				var type = false;
+				
+				// to...
+				if (data[i].callerUserId == $routeParams.contactId)
+					type = 'calleeUserId';
+				// from...
+				else if (data[i].calleeUserId == $routeParams.contactId)
+					type = 'callerUserId';
+				
+				if (type) {
+					if (data[i].queueId)
+						data[i].fullProfile = queueService.getQueue(data[i].queueId);
+					else if (data[i].conferenceId)
+						data[i].fullProfile = conferenceService.getConference(data[i].conferenceId);
+					else
+						data[i].fullProfile = contactService.getContact(data[i][type]);
+					
+					$scope.recordings.push(data[i]);
+				}
+			}
 			// my recordings
 			else if (data[i].originatorUserId && data[i].originatorUserId == $rootScope.myPid) {
 				// get full profile
