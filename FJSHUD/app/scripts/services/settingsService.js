@@ -10,6 +10,8 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		if(!$rootScope.verbage){
 			$rootScope.verbage = fjs.i18n.us;
 		}
+	}else{
+		$rootScope.verbage = fjs.i18n.us;
 	}
 	
 	this.getSettings = function() {
