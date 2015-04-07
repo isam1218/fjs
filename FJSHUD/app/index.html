@@ -38,6 +38,10 @@
 
   </head>
   <body data-ng-controller="MainController"  flow-prevent-drop>
+
+      <!--<div id="AppLoading"> </div>-->
+
+
 	<div id="App">
 		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
 
@@ -107,7 +111,7 @@
         <img src="img/ajax-loader.gif" />
     </div>
 
-	<div ng-include="currentPopup.url"></div>
+	<div  ng-include="currentPopup.url"></div>
 	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
 	<div id="ContextMenu"
