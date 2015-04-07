@@ -12,7 +12,7 @@
             <div class="displayName">
 				<em>to...</em>
 				<p class="vmdisplay">
-					{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.originatorPhone }}
+					{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.callerPhone }}
                 </p>
                 <div class="vmalternate">
                     <div class="vmtime">{{ ::recording.created | date: 'yyyy MMMM d, h:mm a' }}</div>
