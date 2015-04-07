@@ -3,26 +3,28 @@
 </div>
 
 <div class="ListView fj-scrollable"> 
-    <div class="vmsection" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid"> 
-        <div class="vmavatarsection AvatarNormal" context-menu="recording|'recordings'"> 
-            <img class="vmavatar " ng-src="{{ ::recording.fullProfile ? recording.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-			<div class="AvatarInteractable"></div>
-        </div>
-        <div class="vminfo" ng-click="playRecording(recording)"> 
-            <div class="displayName">
-				<em>{{::verbage.to}}...</em>
-				<p class="vmdisplay">
-					{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.callerPhone }}
-                </p>
-                <div class="vmalternate">
-                    <div class="vmtime">{{ ::recording.created | date: 'yyyy MMMM d, h:mm a' }}</div>
-                    <input ng-if="!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callNumber($event, recording.calleePhone)"></input>
-                    <input ng-if="recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.join}}" ng-click="joinConference($event, recording.conferenceId)"></input>
-                </div>
-            </div> 
-            <div class="footnote">
-                <div class="vmfootnote vmduration">{{ ::recording.duration | duration }}</div>
-            </div>
-        </div>
-    </div>
+	<div>
+		<div class="vmsection" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid"> 
+			<div class="vmavatarsection AvatarNormal" context-menu="recording|'recordings'"> 
+				<img class="vmavatar " ng-src="{{ ::recording.fullProfile ? recording.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+				<div class="AvatarInteractable"></div>
+			</div>
+			<div class="vminfo" ng-click="playRecording(recording)"> 
+				<div class="displayName">
+					<em>{{::verbage.to}}...</em>
+					<p class="vmdisplay">
+						{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.callerPhone }}
+					</p>
+					<div class="vmalternate">
+						<div class="vmtime">{{ ::recording.created | date: 'yyyy MMMM d, h:mm a' }}</div>
+						<input ng-if="!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callNumber($event, recording.calleePhone)"></input>
+						<input ng-if="recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.join}}" ng-click="joinConference($event, recording.conferenceId)"></input>
+					</div>
+				</div> 
+				<div class="footnote">
+					<div class="vmfootnote vmduration">{{ ::recording.duration | duration }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
