@@ -25,7 +25,28 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 					$scope.recordings.push(data[i]);
 				}
 			}
-			// contact
+			// groups
+			else if ($routeParams.groupId && $scope.group) {
+				for (m = 0; m < $scope.group.members.length; m++) {
+					var member = $scope.group.members[m];
+					
+					// member was involved somehow
+					if (member.contactId == data[i].callerUserId || member.contactId == data[i].calleeUserId) {
+						if (data[i].queueId)
+							data[i].fullProfile = queueService.getQueue(data[i].queueId);
+						else if (data[i].conferenceId)
+							data[i].fullProfile = conferenceService.getConference(data[i].conferenceId);
+						else if (member.contactId == data[i].callerUserId)
+							data[i].fullProfile = contactService.getContact(member.contactId);
+						else if (member.contactId == data[i].calleeUserId)
+							data[i].fullProfile = contactService.getContact(data[i].callerUserId);
+						
+						$scope.recordings.push(data[i]);
+						break;
+					}
+				}
+			}
+			// contacts
 			else if ($routeParams.contactId) {
 				var type = false;
 				
@@ -48,10 +69,12 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 				}
 			}
 			// my recordings
-			else if (data[i].originatorUserId && data[i].originatorUserId == $rootScope.myPid) {
+			else if (data[i].callerUserId == $rootScope.myPid || data[i].calleeUserId == $rootScope.myPid) {
 				// get full profile
 				if (data[i].conferenceId)
 					data[i].fullProfile = conferenceService.getConference(data[i].conferenceId);
+				else if (data[i].queueId)
+					data[i].fullProfile = queueService.getQueue(data[i].queueId);
 				else
 					data[i].fullProfile = contactService.getContact(data[i].calleeUserId);
 				
@@ -64,7 +87,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 		var query = $scope.rec.query.toLowerCase();
 		
 		return function(rec) {
-			if (query == '' || (rec.fullProfile.displayName && rec.fullProfile.displayName.toLowerCase().indexOf(query) != -1) || (rec.fullProfile.name && rec.fullProfile.name.toLowerCase().indexOf(query) != -1))
+			if (query == '' || (rec.fullProfile && ((rec.fullProfile.displayName && rec.fullProfile.displayName.toLowerCase().indexOf(query) != -1) || (rec.fullProfile.name && rec.fullProfile.name.toLowerCase().indexOf(query) != -1))))
 				return true;
 		};
 	};

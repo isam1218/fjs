@@ -4,7 +4,7 @@
 
 <div class="ListView fj-scrollable"> 
     <div class="vmsection" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid"> 
-        <div class="vmavatarsection AvatarNormal" context-menu="recording.fullProfile"> 
+        <div class="vmavatarsection AvatarNormal" context-menu="recording|'recordings'"> 
             <img class="vmavatar " ng-src="{{ ::recording.fullProfile ? recording.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'"/>
 			<div class="AvatarInteractable"></div>
         </div>
@@ -12,7 +12,7 @@
             <div class="displayName">
 				<em>{{::verbage.to}}...</em>
 				<p class="vmdisplay">
-					{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.originatorPhone }}
+					{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.callerPhone }}
                 </p>
                 <div class="vmalternate">
                     <div class="vmtime">{{ ::recording.created | date: 'yyyy MMMM d, h:mm a' }}</div>

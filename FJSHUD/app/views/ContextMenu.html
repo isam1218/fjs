@@ -28,13 +28,18 @@
 	</div>
 	
 	<div ng-if="type != 'Contact'">
-		<strong>{{ name }}</strong>
+		<strong>{{ name || 'private' }}</strong>
 	</div>
 </div>
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
+	<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
+		<div class="ListRowActionButtonRemove"></div>
+		<span>Delete</span>
+	</a>
+		
 	<div ng-if="type == 'Contact'">
-		<a class="Button" href="" ng-show="isFavorite" ng-click="removeFavorite()">
+		<a class="Button" href="" ng-show="widget == 'favorites' && isFavorite" ng-click="removeFavorite()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>Remove</span>
 		</a>
@@ -129,6 +134,7 @@
 			<span>File Share</span>
 		</a>
 	</div>
+	
 	<div ng-if="type == 'ConferenceRoom'">
 		<a class="Button" href="" ng-show="!conference.status.isMeJoined" ng-click="joinConference(true)">
 			<div class="ListRowActionButtonJoin"></div>
@@ -197,15 +203,16 @@
 		</a>
 	</div>
 	
-
-	<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
-		<div class="ListRowActionButtonDock"></div>
-		<span>Dock</span>
-	</a>
-	<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
-		<div class="ListRowActionButtonUndock"></div>
-		<span>Undock</span>
-	</a>
+	<div ng-show="name">
+		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
+			<div class="ListRowActionButtonDock"></div>
+			<span>Dock</span>
+		</a>
+		<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
+			<div class="ListRowActionButtonUndock"></div>
+			<span>Undock</span>
+		</a>
+	</div>
 </div>
 
 <div class="BottomRow Reasons" ng-show="reasons.show">

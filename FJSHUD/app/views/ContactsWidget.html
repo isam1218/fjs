@@ -23,7 +23,7 @@
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
 		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecent(contact.xpid)" data-ng-repeat="contact in combined | filter: {displayName: $parent.$parent.query} | filter: customFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">			
-			<div class="Avatar AvatarNormal" context-menu="contact">
+			<div class="Avatar AvatarNormal" context-menu="contact|$parent.tab">
 				<img class="AvatarImgPH" data-ng-src="{{::contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 				<div class="AvatarForeground AvatarInteractable"></div>
 			</div>
