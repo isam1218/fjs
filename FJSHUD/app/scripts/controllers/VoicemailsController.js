@@ -6,10 +6,10 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.meModel = {};
 
     $scope.voice_options = [
-        {display_name:"Alphabetically", type:"displayName", desc: false},
-        {display_name:"Newest First", type:"date", desc: true},
-        {display_name:"Oldest First", type:"date", desc: false},
-        {display_name:"Read Status", type:"readStatus", desc: false}
+        {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
+        {display_name:$scope.verbage.sort_newest_first, type:"date", desc: true},
+        {display_name:$scope.verbage.sort_oldest_first, type:"date", desc: false},
+        {display_name:$scope.verbage.sort_read_status, type:"readStatus", desc: false}
     ];
 
     $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
@@ -26,10 +26,10 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
 
     $scope.actions = [
-		{display_name:"Actions", type:"unknown"},
-		{display_name:"Mark all incoming voicemails as read", type:"read"},
-		{display_name:"Mark all incoming voicemails as unread", type:"unread"},
-		{display_name:"Delete all read incoming voicemails", type:"delete"},
+		{display_name:$scope.verbage.action, type:"unknown"},
+		{display_name:$scope.verbage.mark_all_incoming_vm_read, type:"read"},
+		{display_name:$scope.verbage.mark_all_incoming_vm_unread, type:"unread"},
+		{display_name:$scope.verbage.delete_all_incoming_read, type:"delete"},
     ];
 
     $scope.actionObj = {};

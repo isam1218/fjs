@@ -1,8 +1,8 @@
 <div class="LeftBarNotificationSection">
 	<div class="TitleBar ">
 		<div class="Icon"></div>
-		<div>Notifications  </div>
-		<div class="Event" ng-show="notifications.length > 0 " > {{ notifications.length + ' events' }} </div>
+		<div>{{::verbage.notifications}}</div>
+		<div class="Event" ng-show="notifications.length > 0 " > - {{ notifications.length + ' ' + verbage.events }} </div>
 		<input type="button" value="Open" class="XButton" ng-click="$parent.overlay ='notifications'" />
 	</div>
 	

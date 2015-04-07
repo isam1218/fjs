@@ -2,7 +2,7 @@
     <div class="WidgetHeader">
         <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
-            Video Collaboration
+            {{::verbage.zoom}}
         </div>
     </div>
 
@@ -10,12 +10,12 @@
              <div>
               <h2
               style="display: block;font-size: 1.5em;-webkit-margin-before: 0.83em;-webkit-margin-after: 0.83em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;color:#666"
-              >Video meeting has been created</h2>
+              >{{::verbage.zoom_created}}</h2>
             </div>
-            <div> Your meeting will begin in 30 seconds. If your meeting doesn't begin automatically, please use this <a href="{{joinUrl}}"> link </a> </div>
+            <div> Your meeting will begin in 30 seconds. If your meeting doesn't begin automatically, please use this <a href="{{joinUrl}}"> {{::verbage.link}} </a> </div>
             <br>
             <div> 
-                link to join:
+                {{::verbage.link_to_join}}
                 <br>
                 <a href="{{joinUrl}}">{{ joinUrl}} </a>
             </div>
@@ -29,21 +29,21 @@
                 
 
         <div class="ListSection WidgetFont" > 
-            <div>  You are licensed to use Fonality's Video Collaboration. With this feature, you can hold live video meetings with others inside, or outside, your company. You can even share screens. To get started, simply join or start a meeting below. </div>
+            <div> {{::verbage.video_collaboration_summary}}</div>
         </div>
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">Join</div> 
-                <div class="WidgetFont">To join a video collaboration session started by someone else, enter the Meeting ID below, and click the "Join Now" button.</div>
+                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
+                <div class="WidgetFont">{{::verbage.join_summary}}</div>
             </div>
 
             <div class="JoinMeetingSection"> 
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="Meeting ID" />
+                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
                     </div>
                 </div>
-                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">Join Now</button>
+                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
 
             </div>
 
@@ -51,15 +51,15 @@
 
         <div class="ZoomWidgetSection right"> 
             <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">Create</div> 
-                <div class="WidgetFont">To create a new video collaboration session, select the type of video session you'd like to start below, and optionally select people from HUD that you'd wish to invite - they will be sent a link in HUD automatically.</div>
+                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
+                <div class="WidgetFont">{{::verbage.create_summary}}</div>
             </div>
 
             <div class="JoinMeetingSection"> 
-                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">Start with Screen Share Only</button>
-                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">Start with Video</button>
+                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_screen_share_only}}</button>
+                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
                 <div class="Add SearchInputBox">
-					<input type="search" class="SearchBox" placeholder="Add Someone" contact-search />
+					<input type="search" class="SearchBox" placeholder="{{::verbage.add_someone}}" contact-search />
                 </div>
             </div>
 

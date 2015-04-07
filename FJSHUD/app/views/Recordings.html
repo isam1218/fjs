@@ -10,14 +10,14 @@
         </div>
         <div class="vminfo" ng-click="playRecording(recording)"> 
             <div class="displayName">
-				<em>to...</em>
+				<em>{{::verbage.to}}...</em>
 				<p class="vmdisplay">
 					{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.originatorPhone }}
                 </p>
                 <div class="vmalternate">
                     <div class="vmtime">{{ ::recording.created | date: 'yyyy MMMM d, h:mm a' }}</div>
-                    <input ng-if="!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="Call" ng-click="callNumber($event, recording.calleePhone)"></input>
-                    <input ng-if="recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="Join" ng-click="joinConference($event, recording.conferenceId)"></input>
+                    <input ng-if="!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callNumber($event, recording.calleePhone)"></input>
+                    <input ng-if="recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.join}}" ng-click="joinConference($event, recording.conferenceId)"></input>
                 </div>
             </div> 
             <div class="footnote">

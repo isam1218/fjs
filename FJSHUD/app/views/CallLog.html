@@ -1,39 +1,38 @@
 <div class="ToolBar">
-	<input type="search" class="SearchBox" ng-model="calllog.query" placeholder="Search" ng-model-options="{debounce: 100}" />
+	<input type="search" class="SearchBox" ng-model="calllog.query" placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" />
 </div>
 
 <div class="WidgetTabContent">
 	<div class="ListLineContent Header LeftContactsColumns">
 		<div class="ListLineContentCell">
-			Sort:
 		</div>
 		<div data-ng-click="sort('displayName')"
 			 class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>NAME</span>
+			<span class="upper">{{::verbage.name}}</span>
 
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('phone')"
 			 class="ListLineContentCell Phone {{(sortField == 'phone' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>PHONE</span>
+			<span class="upper" >{{::verbage.phone}}</span>
 
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('duration')"
 			 class="ListLineContentCell Duration {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>DURATION</span>
+			<span class="upper">{{::verbage.duration}}</span>
 
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('startedAt')"
 			 class="ListLineContentCell StartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>DATE</span>
+			<span class="upper">{{::verbage.date}}</span>
 
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('incoming')"
 			 class="ListLineContentCell CallType {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>TYPE</span>
+			<span class="upper">{{::verbage.type}}</span>
 
 		
 			<div class="DirectionArrow"></div>

@@ -7,7 +7,7 @@
 						   type="search" x-webkit-speech=""
 						   data-ng-model="query" 
 						   ng-click="clearSearch()" ng-keydown="onKeyDown($event)"
-						   placeholder="Type or speak for results"
+						   placeholder="{{::verbage.type_for_results}}"
 						   autofocus="true" />
 				</div>
 				<div class="SearchInputBoxStateButton"><div class="SearchInputBoxStateButtonIcon"></div></div>
@@ -17,8 +17,8 @@
 		
 		<div class="SearchResults">
 			<div ng-if="!searched" class="Intro">
-				<h4>Search to Start Conversation</h4>
-				<em>Type or speak name of contact, team, queue, or conference room...</em>
+				<h4>{{::verbage.search_to_start_convo}}</h4>
+				<em>{{::verbage.type_subject_name}}</em>
 			</div>
 			
 			<div ng-if="searched && contacts.length == 0 && groups.length == 0 && queues.length == 0 && conferences.length == 0" class="Empty">
@@ -26,7 +26,7 @@
 			</div>
 		
 			<div ng-if="contacts.length > 0">
-				<h4>Contacts</h4>
+				<h4>{{::verbage.contacts}}</h4>
 				<a href="#/contact/{{ contact.xpid }}" ng-repeat="contact in contacts track by contact.xpid" class="ListRow">		
 					<div class="Avatar AvatarNormal" context-menu="contact">
 						<img class="AvatarImgPH" data-ng-src="{{::contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
@@ -55,7 +55,7 @@
 			</div>
 			
 			<div ng-if="groups.length > 0">
-				<h4>Groups</h4>
+				<h4>{{::verbage.Groups}}</h4>
 				<a href="#/group/{{ group.xpid }}" ng-repeat="group in groups track by group.xpid" class="ListRow">
 					<div class="Avatar AvatarNormal" context-menu="group">
 						<div class="GroupAvatarItem GroupAvatarItem_0">
@@ -87,7 +87,7 @@
 			</div>
 			
 			<div ng-if="conferences.length > 0">
-				<h4>Conferences</h4>
+				<h4>{{::verbage.Conferences}}</h4>
 				<a href="#/conference/{{ conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow">
                     <div class="ConferenceAvatarSection Avatar AvatarNormal">
                         <div class="GroupAvatarItem GroupAvatarItem_0">
@@ -134,7 +134,7 @@
 			</div>
 			
 			<div ng-if="queues.length > 0">
-				<h4>Queues</h4>
+				<h4>{{::verbage.queues}}</h4>
 				<a href="#/queue/{{ queue.xpid }}" ng-repeat="queue in queues track by queue.xpid" class="ListRow">
 					<div class="Avatar AvatarNormal">
 						<div class="GroupAvatarItem GroupAvatarItem_0">

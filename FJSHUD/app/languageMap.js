@@ -1,5 +1,16 @@
 fjs.i18n = {
 	'us':{
+    /******global*****/
+    contacts:'Contacts',
+    Groups:'Groups',
+    group: 'group',
+    Conferences:'Conferences',
+    queues:'Queues',
+    member:'member(s)',
+    phone:'Phone',
+    date:'Date',
+    type:'Type',
+    Call:'Call',
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
 		enable_box: 'ボックス有効化',
@@ -19,7 +30,6 @@ fjs.i18n = {
 		busy:'busy',
 		favorites: 'favorites',
 		external: 'external',
-		group: 'group',
 		my_department: 'My Department',
 		my_department_collaborate: '部門のメンバ',
 		all_other_departments: '全ての他部門',
@@ -53,7 +63,6 @@ fjs.i18n = {
         decline:'Decline',
         talk:'talk',
         recent_calls:'Recent Calls',
-  		date:'Date',
   		time:'Time',
     	today:'Today' , 
     	yesterday:'Yesterday',
@@ -99,7 +108,6 @@ fjs.i18n = {
 		description:'Description',
 		inbound:'インバンド',
 		outbound:'アウトバンド',
-		queues:'またはキュー着信',
 		wl_var_desc_username_accounts:'認証を要求するアカウントのユーザネーム',
 		wl_var_desc_duration:'通話の経過時間（秒）',
 		wl_var_desc_name_of_party:'接続先番号',
@@ -108,7 +116,6 @@ fjs.i18n = {
 		wl_var_desc_name_of_your_party:'接続先番号',
 		wl_var_desc_your_password:'認証を要求するアカウントのパスワード',
 		wl_var_desc_caller_number:'%%caller_number%%文字列の削除された部分',
-		queues:'Queues',
 		waiting:'Waiting',
 		calls:'calls',
 		avg_wait:'Avg Wait',
@@ -126,7 +133,7 @@ fjs.i18n = {
 　　    IMS:	'IMS',
        JID:	'JID',
 　　　  my_department:'所属部門',
-	   alerts: 'アラート',
+	   alerts: 'Alerts',
 	   configure_desktop_alerts: 'Configure Desktop Alerts',
 	   show_alerts:	'Show alerts',
    	   show_status_when_busy:' Show when status is "Busy"',
@@ -136,7 +143,6 @@ fjs.i18n = {
    	   show_when_new_voicemail: 'Show when new voicemail arrives',
    	   call_alerts: 'Call Alerts',
 　     configure_call_desktop_alerts:'通話デスクトップアラート設定',
-   	   type:'Type',
        incoming_calls:	'Incoming Calls',
        outbound_calls:	'Outgoing Calls',
 	   display_for:	'Display for',
@@ -206,7 +212,6 @@ fjs.i18n = {
        fdp_version:'FDP Version',
        hud_server_version:'HUDserver Version',
        fon_core_version:'FONcore Version',
-       phone:'Phone',
        /***TOP NAVIGATION LABELS **/
        me:'Me',
        call_and_recordings:'Calls and Recordings',
@@ -219,13 +224,63 @@ fjs.i18n = {
        /***Left Bar Navigation **/
        all:'All',
        recent:'Recent',
+       new_word:'New',
+		  loading:'Loading',
+      offline:'offline',
+      events:'events',
+      new_call:'',
+      add_someone:'Add Someone',
 
-		
-	},
+      /**** ZOOM ****/
+      video_collaboration_summary: "You are licensed to use Fonality's Video Collaboration. With this feature, you can hold live video meetings with others inside, or outside, your company. You can even share screens. To get started, simply join or start a meeting below.",
+      join_summary:"To join a video collaboration session started by someone else, enter the Meeting ID below, and click the 'Join Now' button.",
+	    create_summary:"To create a new video collaboration session, select the type of video session you'd like to start below, and optionally select people from HUD that you'd wish to invite - they will be sent a link in HUD automatically.",
+      start_screen_share_only:"Start with Screen Share Only",
+      start_with_video:"Start with Video",
+      join_now:'Join Now',
+      join:'Join',
+      create:'Create',
+      link:'Link',
+      meeting_id:'Meeting ID',
+      zoom_created:'Video Meeting has been created',
+      link_to_join:'link to join:',
+      to:'to',
+      from:'from',
+      /*****Search WIdget ******/
+      type_for_results:'Type or speak for results',
+      search_to_start_convo:'Search to Start Conversation',
+      type_subject_name:'Type or speak name of contact, team, queue, or conference room...',
+    
+      /***** Call Recordings *****/
+      call_log_tab:'Call Log',
+      voicemail_tab:'Voicemails',
+      my_recordings_tab:'My Recordings',
+      no_transcriptions:'no transcription available',
+
+      action:'Actions',
+      mark_all_incoming_vm_read:'Mark all incoming voicemails as read',
+      mark_all_incoming_vm_unread:'Mark all incoming voicemails as unread',
+      delete_all_incoming_read:'Delete all read incoming voicemails', 
+
+      sort_newest_first:'Newest First',
+      sort_alphabetically:'Alphabetically',
+      sort_oldest_first:'Oldest First',
+      sort_read_status:'Read Status',
+
+
+  },
 
 	/*****Japanese Language******/
 	'jp':{
 
+    /******global*****/
+    contacts:'Contacts',
+    Groups:'Groups',
+    group: 'グループ',
+    Conferences:'Conferences',
+    queues:'キュー',
+    member:'',
+    Call:'呼出',
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
 		enable_box: 'ボックス有効化',
@@ -248,7 +303,6 @@ fjs.i18n = {
 		busy:'取り込み中',
 		favorites: 'よく使う端末',
 		external: '外部コンタクト',
-		group: 'グループ',
 		my_department: '部門',
 		my_department_collaborate: '部門のメンバ',
 		all_other_departments: '全ての他部門',
@@ -339,7 +393,6 @@ fjs.i18n = {
 		wl_var_desc_name_of_your_party:'接続先番号',
 		wl_var_desc_your_password:'認証を要求するアカウントのパスワード',
 		wl_var_desc_caller_number:'%%caller_number%%文字列の削除された部分',
-		queues:'キュー',
 		waiting:'待ち合わせ中',
 		calls:'呼',
 		avg_wait:'平均待ち時間',
@@ -431,7 +484,7 @@ fjs.i18n = {
        fdp_version:'FDPのバージョン',
        hud_server_version:'HUDサーバーバージョン',
        fon_core_version:'FONcoreバージョン',
-      phone: 'ウェブランチャー',    
+      phone: '電話',    
        me:'自席',
        call_and_recordings:'通話と録音',
        conferencing:'会議中',
@@ -442,9 +495,47 @@ fjs.i18n = {
        /***Left Bar Navigation **/
        all:'全席',
        recent:'最近の',
-       
-    
+       new_word: '新しい',
+       loading:'ローディング',
+       offline:'オフラインで',
+       events: 'イベント',
+       add_someone:'参加者を追加',
 
+       /**** ZOOM ****/
+      video_collaboration_summary: "お客様は弊社の用意するビデオ連携サービスをご利用していただくことができます。本機能は日本国内にある社内外においてビデオ会議を開催することができます。あわせてシェアスクリーン機能もご利用いただけます。",
+      join_summary:"ビデオ会議を利用するためにはミーティングＩＤを入力し、'参加する'ボタンをクリックしてください。",
+      create_summary:"下記の３つのタイプからビデオセッションを選択し、利用することができます。",
+      create:'クリエート',
+      start_screen_share_only:"シェアスクリーンのみで開始",
+      start_with_video:"video会議開始",
+      join_now:'参加する',
+      join:'参加',
+      meeting_id:'ミーティングＩＤ',
+      zoom_created:'ビデオ会議が作成されています',
+      link:'リンク',
+      link_to_join:'参加するリンク:',
+	        
+      /*****Search WIdget ******/
+      type_for_results:'名称　または番号',
+      search_to_start_convo:'会話を始めるために検索する',
+      type_subject_name:'コンタクト名称,チーム名称、キュー名称または会議室名称...',
+      call_log_tab:'通話履歴',
+      voicemail_tab:'ボイスメール',
+      my_recordings_tab:'通話録音',
+      action:'動作',
+      no_transcriptions:'テキスト変換はありません',
+      to:'から相手',
+      from:'から',
 
-	}
+      mark_all_incoming_vm_read:'既読のボイスメールにマークする ',
+      mark_all_incoming_vm_unread:'未読のボイスメールにマークする ',
+      delete_all_incoming_read:'既読のボイスメールを削除する ', 
+
+      sort_newest_first:'新しい順',
+      sort_alphabetically:'アルファベット順 ',
+      sort_oldest_first:'古い順',
+      sort_read_status:'既読状態',
+  
+      
+  }
 }
