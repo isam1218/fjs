@@ -23,13 +23,26 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
+  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : {};
+  // console.log('LS upon initial load - ', $scope.updatedNavbar);
+
+  if ($scope.updatedNavbar != $scope.appIcons){
+    // console.log('1. nav [] - ', $scope.updatedNavbar);
+    // console.log('2. app [] - ', $scope.appIcons);
+    $scope.appIcons = $scope.updatedNavbar;
+  }
 
   $scope.sortableOptions = {
     placeholder: "ui-state-highlight",
     forcePlaceholderSize: true,
     cursor: "move",
     cursorAt: { top: 0, left: 50 },
-    'ui-floating': true
+    'ui-floating': true,
+    stop: function(e, ui){
+      // console.log('$scope.appIcons - ', $scope.appIcons);
+      // save changed-order to localStorage
+      localStorage.setItem('savedNavbarOrder', JSON.stringify($scope.appIcons));      
+    }
   };
 
   var player; // html element
