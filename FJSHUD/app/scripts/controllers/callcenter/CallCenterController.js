@@ -1,6 +1,8 @@
 hudweb.controller('CallCenterController', ['$scope', '$routeParams', 'HttpService', 'QueueService', function ($scope, $routeParams, httpService, queueService) {
 
-	$scope.tabs = [{upper: 'My Queue', lower: 'myqueue'},{upper: 'All Queues', lower: 'allqueues'},{upper: 'My Status', lower: 'mystatus'}];
+	$scope.tabs = [{upper: $scope.verbage.my_queue, lower: 'myqueue'},
+	{upper: $scope.verbage.all_queues, lower: 'allqueues'},
+	{upper: $scope.verbage.my_status, lower: 'mystatus'}];
 
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 
@@ -8,7 +10,7 @@ hudweb.controller('CallCenterController', ['$scope', '$routeParams', 'HttpServic
 	
 	$scope.$on('queues_updated', function (event, data) {
 		// show all or my queues
-		if ($scope.selected == 'All Queues')
+		if ($scope.selected == 'allqueues')
 			$scope.queues = data.queues;
 		else
 			$scope.queues = data.mine;

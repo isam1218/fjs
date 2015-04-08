@@ -1,12 +1,12 @@
 <div class="fj-widget-area Widget Conference">
     <div class="WidgetHeader">
         <div class="TopBarItemAppIcon Conferences"></div>
-        <div class="WidgetHeaderTitle Single">Conferencing</div>
+        <div class="WidgetHeaderTitle Single">{{::verbage.conferencing}}</div>
         <div class="WidgetStat">
 			<div class="Left">
 				<div class="Labels">
-					<div>Occupied:</div>
-					<div>Talking:</div>
+					<div>{{::verbage.occupied}}:</div>
+					<div>{{::verbage.talking}}:</div>
 				</div>
 				<div class="Data">
 					<div>{{ totals.occupied }}</div>
@@ -15,8 +15,8 @@
 			</div>
 			<div class="Right">
 				<div class="Labels">
-					<div>Rooms:</div>
-					<div>Total:</div>
+					<div>{{::verbage.rooms}}:</div>
+					<div>{{::verbage.total}}:</div>
 				</div>
 				<div class="Data">
 					<div>{{ conferences.length }}</div>
@@ -29,11 +29,11 @@
     <div class="WidgetBody">
         <div class="WidgetTabBar">
             <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'my' ? 'fj-selected-item': ''" ng-click="tab = 'my'">
-                <div class="inner">My Rooms</div>
+                <div class="inner">{{::verbage.my_rooms}}</div>
                 <div class="arrow"></div>
             </a>
             <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'all' ? 'fj-selected-item': ''" ng-click="tab = 'all'">
-                <div class="inner">All Rooms</div>
+                <div class="inner">{{::verbage.all_rooms}}</div>
                 <div class="arrow"></div>
             </a>
         </div>
@@ -49,10 +49,10 @@
                 <select class="SelectBox XButton" ng-model="selectedConference" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortedBy(selectedConference)">
                 </select>
 
-                <input type="button" value="Find Free Room & Join" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
+                <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="Search" />
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="{{verbage.search}}" />
                     </div>
                     <div class="SearchInputBoxStateButton">
                         <div class="SearchInputBoxStateButtonIcon"></div>
@@ -63,8 +63,8 @@
             <div class="ListView WithToolBar">
                 <div class="InlineList">
                     <div class="ListViewTopNote" data-ng-hide="hideNote">
-                        <span ng-if="tab == 'all'">You may have limited control over some rooms in this list, such as adding or removing other users.</span>
-						<span ng-if="tab == 'my'">These are the rooms that you have advanced permissions to use, such as adding or removing other users.</span>
+                        <span ng-if="tab == 'all'">{{::verbage.conf_summary_all_rooms}}</span>
+						<span ng-if="tab == 'my'">{{::verbage.conf_summary_my_rooms}}</span>
 						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
@@ -88,11 +88,11 @@
                         </div>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
-                                <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+                                <div class="name"> {{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
 								
                                 <div data-ng-if="conference.members.length == 0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-									Free room
+									{{::verbage.free_room}}
                                 </div>                            
                                 <div data-ng-if="conference.members.length > 0">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>

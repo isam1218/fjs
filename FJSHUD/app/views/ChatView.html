@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="query" class="Search" type="search" placeholder="Search" />
+        <input ng-model="query" class="Search" type="search" placeholder="{{::verbage.join}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
@@ -22,7 +22,7 @@
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
             <div class="ListMessageHeader" ng-hide="hideDisplay(message, $index)" >
-                <em>...from</em>
+                <em>...{{::verbage.from}}</em>
                 <span class="ListMessageHeaderName">{{message.displayName}}</span>
                 <div class="time">{{formatDate(message)}}</div>
             </div>
@@ -39,9 +39,9 @@
 
 <div class="fj-vbox-cell fj-expanded-true" ng-if="conversationType == 'conference'  && !joined">
     <div class="TabWarning" >
-        <div class="TabWarningHeader">Join conference call to use chat.</div>
-        <div class="TabWarningMessage">You can see only messages sent during conference call.</div>
-        <div class="XButton XButtonGreen TabWarningButton" ng-click="joinConference()"><span>Join</span></div>
+        <div class="TabWarningHeader">{{::verbage.join_to_chat}}</div>
+        <div class="TabWarningMessage">{{::verbage.only_see_messages_during_chat}}</div>
+        <div class="XButton XButtonGreen TabWarningButton" ng-click="joinConference()"><span>{{::verbage.join}}</span></div>
     </div>
 </div>
 

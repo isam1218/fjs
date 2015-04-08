@@ -32,7 +32,12 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
 		}
 	});
 	
-    $scope.tabs = [{upper: 'Chat', lower: 'chat'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'Groups', lower: 'groups'}, {upper: 'Queues', lower: 'queues'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}];
+    $scope.tabs = [{upper:$scope.verbage.chat, lower: 'chat'}, 
+    {upper: $scope.verbage.voicemail_tab, lower: 'voicemails'}, 
+    {upper: $scope.verbage.group, lower: 'groups'}, 
+    {upper: $scope.verbage.queues, lower: 'queues'}, 
+    {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
+    {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 

@@ -1,17 +1,17 @@
     <div class="ToolBar">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="Search"></div>
+                <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="{{::verbage.search}}"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <div class="XButton XButtonNormal" ng-click="showOverlay(true, 'GroupEditOverlay', contactId)"><span>New</span></div>
+        <div class="XButton XButtonNormal" ng-click="showOverlay(true, 'GroupEditOverlay', contactId)"><span>{{::verbage.new_word}}</span></div>
     </div>
   
     <div class="ListView">
-    <div class="HeaderTitle" ng-show="contactGroups.length > 0 ">Department</div>
-    <div class="footnote"  ng-show="contactGroups.length > 0 "> Contact is a member of this department </div>
+    <div class="HeaderTitle" ng-show="contactGroups.length > 0 ">{{::verbage.department}}</div>
+    <div class="footnote"  ng-show="contactGroups.length > 0 "> {{::verbage.member_of_department}} </div>
     <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRow ListRow-Contact">
         <div class="Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
@@ -38,11 +38,11 @@
         </div>
 		
         <div class="ListRowStatus">#{{ ::group.extension }}</div>
-        <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(group.extension)"></input>
+        <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(group.extension)"></input>
     </a>
     
-    <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">Our Teams</div>
-    <div class="footnote" ng-show=" sharedGroups.length > 0 "> We are both in these teams </div>
+    <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">{{::verbage.our_teams}}</div>
+    <div class="footnote" ng-show=" sharedGroups.length > 0 "> {{::verbage.both_in_these_teams}} </div>
     <a href="#group/{{::group.xpid}}" ng-click="storeRecent(group.xpid)" data-ng-repeat="group in sharedGroups | filter: {name: query} | orderBy:sortField:sortReverse track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
         <div class="ConferenceAvatarSection Avatar AvatarNormal">
             <div class="GroupAvatarItem GroupAvatarItem_0">
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="ListRowStatus">#{{ ::group.extension }}</div>
-            <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(group.extension)"></input>
+            <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(group.extension)"></input>
         </div>
     </a>
 	</div>

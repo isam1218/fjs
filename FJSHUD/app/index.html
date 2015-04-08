@@ -108,8 +108,8 @@
 		</div>
 	</div>
 
-    <div id="AppLoading" ng-if="!loaded">
-		<div>{{::verbage.loading}}...</div>
+    <div id="AppLoading" ng-if="!loaded" >
+		<div ng-cloak>{{::verbage.loading}}...</div>
         <img src="img/ajax-loader.gif" />
     </div>
 

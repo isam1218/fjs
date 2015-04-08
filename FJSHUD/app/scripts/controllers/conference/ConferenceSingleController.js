@@ -17,7 +17,8 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 	$scope.cTabSelected = "CurrentCall";
 	$scope.callrecordings = [];
 
-  $scope.tabs = [{upper: 'Current Call', lower: 'currentcall'}, {upper: 'Chat', lower: 'chat'}, {upper: 'Recordings', lower: 'recordings'}];
+  $scope.tabs = [{upper: $scope.verbage.current_call, lower: 'currentcall'}, 
+  {upper: $scope.verbage.chat, lower: 'chat'}, {upper: $scope.verbage.recordings, lower: 'recordings'}];
 
   $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower
 

@@ -24,7 +24,7 @@
            ng-class="recentSelectSort == 'Name' ? 'recent-selected-column' :''"
            ng-click="sortBy('Name')"
         >
-        <div class="RecentPointer">Name</div>
+        <div class="RecentPointer">{{::verbage.name}}</div>
         <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
 
@@ -32,7 +32,7 @@
            ng-class="recentSelectSort == 'Phone' ? 'recent-selected-column' :''"
            ng-click="sortBy('Phone')"
         >
-        <div class="RecentPointer">Phone</div>
+        <div class="RecentPointer">{{::verbage.phone}}</div>
         <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
 
@@ -41,7 +41,7 @@
            ng-click="sortBy('Duration')"
 
         >
-        <div class="RecentPointer">Duration</div>
+        <div class="RecentPointer">{{::verbage.duration}}</div>
         <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
 
@@ -50,7 +50,7 @@
                     'recent-selected-column' :''"
            ng-click="sortBy('Date')"
         >
-        <div class="RecentPointer">Date</div>
+        <div class="RecentPointer">{{::verbage.date}}</div>
         <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
 
@@ -59,7 +59,7 @@
                     'recent-selected-column' :''"
            ng-click="sortBy('Type')"
         >
-        <div class="RecentPointer">Type</div>
+        <div class="RecentPointer">{{::verbage.type}}</div>
         <div ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
       </div>
     </div>

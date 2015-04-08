@@ -11,6 +11,9 @@ fjs.i18n = {
     date:'Date',
     type:'Type',
     Call:'Call',
+    chat:'Chat',
+    recordings:'Recordings',
+    cancel:'cancel',
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
 		enable_box: 'ボックス有効化',
@@ -30,16 +33,17 @@ fjs.i18n = {
 		busy:'busy',
 		favorites: 'favorites',
 		external: 'external',
-		my_department: 'My Department',
-		my_department_collaborate: '部門のメンバ',
-		all_other_departments: '全ての他部門',
-		other_departments: '他部門',
-		my_teams: 'チーム',
-		teams_managed_by_me:'管理チーム',
-		shared:'シェアチーム',
-		member_of_teams: '私はチームメンバです',
-		others:'その他',
-		teams_visible_to_everyone:'他に見えるチーム',
+		
+    my_department: 'My Department',
+		my_department_collaborate: 'Collaborate with your colleagues',
+		all_other_departments: 'All Other Departments',
+		other_departments: 'Other departments',
+		my_teams: 'My Teams',
+		teams_managed_by_me:'Teams managed by me',
+		shared:'Shared',
+		member_of_teams: "I'm a member of these teams",
+		others:'Others',
+		teams_visible_to_everyone:'Teams visible to everyone',
 		//call_status:'呼状態',
 		members:'メンバー',
 		custom_status:'Custom Status',
@@ -129,7 +133,7 @@ fjs.i18n = {
 　      email: 'E-Mail',
    		mobile:	'Mobile',
 　　    voicemail:	'ボイスメールアドレス',
-　　    business_phone:	'ビジネス番号',
+　　    business_phone:	'Business phone',
 　　    IMS:	'IMS',
        JID:	'JID',
 　　　  my_department:'所属部門',
@@ -267,7 +271,61 @@ fjs.i18n = {
       sort_oldest_first:'Oldest First',
       sort_read_status:'Read Status',
 
+      /*****Conferences*******/
+      conferencing:'Conferencing',
+      conference_member:'Conference Members',
+      my_rooms:'My Rooms',
+      all_rooms:'All Rooms',
+      find_free_room:'Find Free Room & Join',
+      sort_room:'Sort By Room Number',
+      sort_room_by_location:'Sort By Location',
+      sort_by_activity:'Sort By Activity',
+      sort_by_room_number:'Sort By Room number',
+      conf_summary_my_rooms:'These are the rooms that you have advanced permissions to use, such as adding or removing other users.',
+      conf_summary_all_rooms:'You may have limited control over some rooms in this list, such as adding or removing other users',
+      free_room:'Free room',
+      occupied:'Occupied',
+      talking:'talking',
+      rooms:'Rooms',
+      room:'Room',
+      total:'Total',
+      you_are_on_call:'you are on a call',
+      
+      not_a_member_of_conference:'You are not a member of this conference',
+      join_to_chat:'Join conference call to use chat.',
+      only_see_messages_during_chat:'You can see only messages sent during conference call.',
 
+      leave:'Leave',
+      /***Conversation***/
+      department:'Department',
+      member_of_department:'Contact is a member of this department',
+      our_teams:'Our Teams',
+      both_in_these_teams:'We are both both in these terms',
+
+      /*****QUEUES******/
+      login_all:'Login All',
+      logged_in:'Logged In',
+      Logged_out:'Logged Out',
+      logout:'Log Out',
+      active:'Active',
+      queue_name:'Queue Name',
+      my_queue:'My Queue',
+      all_queues:'All Queues',
+      my_status:'My Status',
+
+
+      /******POPUPS*****/
+      add_a_new_contact:'Add a New Contact',
+      contact_info:'Contact Information',
+      want_to_know_who_is_calling:'Want to know who is calling you?',
+
+      visibility:'Visibility',
+      add_to_favorites:'add to favorites group',
+      phones:'Phones',
+      add_contact_phone_to_make_calls:'Add contact phone to make calls',
+      google_talk:'GoogleTalk (JID)',
+      add_contact:'Add Contact',
+      save_changes:'Save Changes',
   },
 
 	/*****Japanese Language******/
@@ -281,6 +339,10 @@ fjs.i18n = {
     queues:'キュー',
     member:'',
     Call:'呼出',
+    chat:'チャット',
+    recordings:'録音',
+    cancel:'キャンセル',
+
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
 		enable_box: 'ボックス有効化',
@@ -395,7 +457,7 @@ fjs.i18n = {
 		wl_var_desc_caller_number:'%%caller_number%%文字列の削除された部分',
 		waiting:'待ち合わせ中',
 		calls:'呼',
-		avg_wait:'平均待ち時間',
+		avg_wait:'平均待',
 		avg_talk:'平均通話時間',
 		minutes:'分',
 		abandoned:'途中放棄',
@@ -536,6 +598,65 @@ fjs.i18n = {
       sort_oldest_first:'古い順',
       sort_read_status:'既読状態',
   
-      
-  }
+       /*****Conferences*******/
+      conferencing:'会議中',
+      my_rooms:'個人の会議室',
+      all_rooms:'全ての会議室',
+      find_free_room:'空き会議室＆参加',
+      sort_room:'利用中で並べ替え',
+      sort_room_by_location:'ロケーション ',
+      sort_by_activity:'利用中',
+      sort_by_room_number:'部屋番号で並べ替え',
+      conf_summary_my_rooms:'参加指示、退出指示等の拡張権限を利用できる会議室',
+      conf_summary_all_rooms:'参加指示、退出指示等の拡張権限が制限されている可能性がある会議室',
+      conf_members:'Conference Members',
+      free_room:'空室',
+      occupied:'利用中',
+      talking:'通話中',
+      rooms:'部屋数',
+      room:'会議室',
+      total:'総呼数',
+      you_are_on_call:'あなたは電話会議に参加しています',
+      not_a_member_of_conference:'あなたはこの電話会議に参加していません。',
+      leave:'退出',
+      conference_member:'会議メンバ.',
+      only_see_messages_during_chat:'会議通話中に送信されたメッセージだけを見ることができます。',
+      join_to_chat:'チャットを使用するために電話会議に参加して下さい ',
+
+      /***Conversation***/
+      department:'Department',
+      member_of_department:'Contact is a member of this department',
+      our_teams:'Our Teams',
+      both_in_these_teams:'We are both both in these terms',
+
+      /*****QUEUES******/
+      login_all:'Login All',
+      logged_in:'Logged In',
+      Logged_out:'Logged Out',
+      logout:'Log Out',
+      active:'通話中',
+      queue_name:'キュー名称',
+      my_queue:'キュー',
+      all_queues:'全てのキュー',
+      my_status:'状態',
+      aban:'放棄呼',
+
+      /******POPUPS*****/
+      add_a_new_contact:'新しい連絡先を追加',
+
+      contact_info:'コンタクト情報',
+      want_to_know_who_is_calling:'誰が電話をしてきたのか',
+
+      visibility:'よく見るグループ',
+      add_to_favorites:'よく利用するグループへの追加',
+      phones:'電話番号',
+      add_contact_phone_to_make_calls:'呼び出しを行うために電話を連絡先の追加',
+      google_talk:'Googleトーク(JID)',
+      add_contact:'連絡先を追加',
+      save_changes:'Save Changes',
+  },
+  
+ 
+
+  
 }
