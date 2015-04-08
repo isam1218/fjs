@@ -12,10 +12,10 @@
 </div>
 		
 <div class="ListViewContent" id="ListViewContent">
-    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created'">
+    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created' track by message.xpid">
         <div class="ListMessageLeft">
-            <div class="Avatar AvatarSmall" avatar-menu="message.getFrom()" ng-hide="hideDisplay(message, $index)"  ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}">
-                <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{message.avatar}}" onerror="this.src='img/Generic-Avatar-28.png'">
+            <div class="Avatar AvatarSmall" ng-hide="hideDisplay(message, $index)"  ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}" context-menu="message.fullProfile">
+                <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{::message.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'">
                 <div class="AvatarInteractable AvatarForeground"></div>
             </div>
             <div class="time">{{::message.created | date: 'h:mm a'}}</div>
@@ -23,8 +23,8 @@
         <div class="ListMessageContent AttachmentsHolder" >
             <div class="ListMessageHeader" ng-hide="hideDisplay(message, $index)" >
                 <em>...from</em>
-                <span class="ListMessageHeaderName">{{message.displayName}}</span>
-                <div class="time">{{formatDate(message)}}</div>
+                <span class="ListMessageHeaderName">{{::message.fullProfile.displayName}}</span>
+                <div class="time">{{::formatDate(message)}}</div>
             </div>
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
