@@ -4,16 +4,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
       Zoom: {bit:1,enabled:false}
   };
 
-  $scope.appIcons = [
-      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
-      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
-      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
-      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
-      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
-      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
-      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
-  ];
-	
 	$scope.player = {
 		position: 0,
 		duration: 0,
@@ -23,12 +13,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
-  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : {};
-  // console.log('LS upon initial load - ', $scope.updatedNavbar);
+  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = [
+      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
+      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
+      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
+      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
+      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
+      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
+      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
+  ];
 
   if ($scope.updatedNavbar != $scope.appIcons){
-    // console.log('1. nav [] - ', $scope.updatedNavbar);
-    // console.log('2. app [] - ', $scope.appIcons);
     $scope.appIcons = $scope.updatedNavbar;
   }
 
@@ -39,7 +34,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     cursorAt: { top: 0, left: 50 },
     'ui-floating': true,
     stop: function(e, ui){
-      // console.log('$scope.appIcons - ', $scope.appIcons);
       // save changed-order to localStorage
       localStorage.setItem('savedNavbarOrder', JSON.stringify($scope.appIcons));      
     }
@@ -49,8 +43,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 
 
   $scope.$on('me_synced', function(event,data){
-
-      // $scope.navbarOrder = JSON.parse(localStorage.navbarOrder);
 
       if(data){
           for(medata in data){
