@@ -60,9 +60,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		});
 	};
 
-  $scope.getAttachment = function(url){
-  	return httpService.get_attachment(url);
-  };
+	$scope.getAttachment = function(url){
+		return httpService.get_attachment(url);
+	};
 	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
@@ -70,7 +70,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
 	
-  httpService.getChat($scope.feed,$scope.targetId).then(function(data) {
+	httpService.getChat($scope.feed, $scope.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
 		
@@ -84,7 +84,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		}, 100);
 		
 		// no more chats
-		if (version == -1)
+		if (version < 0)
 			$interval.cancel(chatLoop);
 	});
 
@@ -124,7 +124,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			var contextInfo = data[key].context.split(":");
 			var context = contextInfo[0];
 
-
 			switch(context){
 				case 'conferences':
 					if($scope.conferenceId == contextInfo[1]){
@@ -139,11 +138,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 						found = true;
 					}	 
 					break;
-
 			}
-			
-
-			
 		}
 		
 		if (found) {
@@ -206,37 +201,29 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		}
 	};
 
-  $scope.formatDate = function(message){
+	$scope.formatDate = function(message){
+		var date = new Date(message.created);
+		var today = new Date();
+		var dateString = "";
+		dateString = Months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
 
-    var date = new Date(message.created);
-    var today = new Date();
-    var dateString = "";
-    dateString = Months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+		if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+			if (date.getDate() == today.getDate()){
+				dateString = "today";
+			} else if (date.getDate() == today.getDate() - 1){
+				dateString = "yesterday";
+			} 
+		}
 
-    if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-      if (date.getDate() == today.getDate()){
-        dateString = "today";
-      } else if (date.getDate() == today.getDate() - 1){
-        dateString = "yesterday";
-      } 
-    }
-
-    return dateString;
-
-  };	
+		return dateString;
+	};	
 
 	// apply name and avatar
 	var addDetails = function() {
 		// wait for sync to catch up
-		contactService.getContacts().then(function(data) {
+		contactService.getContacts().then(function() {
 			for (i = 0; i < $scope.messages.length; i++) {
-				for (key in data) {
-					if (data[key].xpid == $scope.messages[i].from.replace($scope.feed +':', '')) {
-						$scope.messages[i].avatar = data[key].getAvatar(28);
-						$scope.messages[i].displayName = data[key].displayName;
-						
-					}
-				}
+				$scope.messages[i].fullProfile = contactService.getContact($scope.messages[i].from.replace('contacts:', ''));
 			}
 		});
 	};
@@ -259,7 +246,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					scrollbox.scrollTop = 100;
 				
 				// end of history
-				if (version == -1)
+				if (version < 0)
 					$interval.cancel(chatLoop);
 			});
 		}

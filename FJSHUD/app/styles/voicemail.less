@@ -8,8 +8,8 @@
 	border-top: 1px solid #ccc;    
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
-	width: 96%;
-	height:50px;
+	display: flex;
+	flex-direction: row;
 	
 	&:hover{
     	.displayName{
@@ -27,17 +27,11 @@
     .ConferenceAvatarSection.Avatar.ConferenceRecording{
         margin: 0.5em;
     }
-	.vmavatarsection{
-		-webkit-box-flex:0;
-		position: absolute;		
-		display:flex;
-		float:left;	
+	.vmavatarsection{		
+		padding: 2.5px 5px;
 		
 		.vmavatar{
-			position: absolute;
-			left: 5px;
-			top: 5px;
-			-webkit-border-radius: 30px;
+			border-radius: 30px;
 			color: #009cff;
 			border: solid;
 			width: 2.5em;
@@ -45,14 +39,12 @@
 		}
 	}
 	.vminfo{
+		flex: 1;
 		position:relative;
 		padding-left:10px;
 		display:block;		
-		-webkit-box-flex:1;
 		border-left: 1px solid #ccc;
-		margin-left: 50px;
 		padding: 5px;
-		height: 100%;
 		cursor: pointer;
 		
 		&:hover{
@@ -76,7 +68,6 @@
             top: 5px;
             left: 5px;
             right: 5px;           
-            line-height: 20px;
             font-size: 12px;
             text-align: left;
             text-overflow: ellipsis;

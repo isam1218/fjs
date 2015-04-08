@@ -4,16 +4,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
       Zoom: {bit:1,enabled:false}
   };
 
-  $scope.appIcons = [
-      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
-      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
-      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
-      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
-      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
-      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
-      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
-  ];
-	
 	$scope.player = {
 		position: 0,
 		duration: 0,
@@ -23,25 +13,36 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
-  $scope.navbarOrder = localStorage.navbarOrder ? JSON.parse(localStorage.navbarOrder) : {};
+  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = [
+      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
+      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
+      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
+      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
+      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
+      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
+      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
+  ];
 
-  // if ($scope.navbarOrder != $scope.appIcons){
-  //   $scope.appIcons = $scope.navbarOrder;
-  // }
+  if ($scope.updatedNavbar != $scope.appIcons){
+    $scope.appIcons = $scope.updatedNavbar;
+  }
 
-  // last time i did this, one extra icon was added to end of targetArray 
-  // if (localStorage.navbarOrder != undefined){
-  //   $scope.appIcons = $scope.navbarOrder;
-  // }
+  $scope.sortableOptions = {
+    placeholder: "ui-state-highlight",
+    forcePlaceholderSize: true,
+    cursor: "move",
+    cursorAt: { top: 0, left: 50 },
+    'ui-floating': true,
+    stop: function(e, ui){
+      // save changed-order to localStorage
+      localStorage.setItem('savedNavbarOrder', JSON.stringify($scope.appIcons));      
+    }
+  };
 
-	var player; // html element
+  var player; // html element
 
-  console.log('R: localStorage - ', localStorage.navbarOrder);
-  console.log('***R: scope navbarOrder - ', $scope.navbarOrder);
 
   $scope.$on('me_synced', function(event,data){
-
-      // $scope.navbarOrder = JSON.parse(localStorage.navbarOrder);
 
       if(data){
           for(medata in data){
@@ -65,8 +66,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
           }
 
       }
+
   });
-	
+
 
 	$scope.getAvatar = function() {
 		return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);

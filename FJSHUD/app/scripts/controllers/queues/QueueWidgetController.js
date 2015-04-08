@@ -1,10 +1,16 @@
 hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', function($scope, $rootScope, $routeParams, httpService) {
-    $scope.queueId = $routeParams.queueId;
+    $scope.queueId = $scope.targetId = $routeParams.queueId;
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
+	
+	// for chat
+	$scope.enableChat = true;
+	$scope.feed = 'queues';
+    $scope.targetAudience = "queue";
+    $scope.targetType = "f.conversation.chat";
     
-    $scope.tabs = [{upper: 'Agents', lower: 'agents'}, {upper: 'Stats', lower: 'stats'}, {upper: 'Calls', lower: 'calls'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}];
+    $scope.tabs = [{upper: 'Agents', lower: 'agents'}, {upper: 'Stats', lower: 'stats'}, {upper: 'Calls', lower: 'calls'}, {upper: 'Chat', lower: 'chat'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}];
 
     $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
     
@@ -18,7 +24,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
             if (queues[i].xpid == $scope.queueId) {
                 $scope.queue = queues[i];
             }
-        
         }
     });
 }]);
