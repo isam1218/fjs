@@ -224,6 +224,11 @@ p {
   width: 40px;
   height: 40px;
 }
+.ui-state-highlight {
+  display: inline-block;
+  border-style: dashed;
+  border-width: 1px;
+}
 .TopBarItemAppIcon:not(.Avatar) {
   background: url("../img/XApp-Icons.png") no-repeat 0 0;
 }

@@ -23,21 +23,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
-  $scope.navbarOrder = localStorage.navbarOrder ? JSON.parse(localStorage.navbarOrder) : {};
 
-  // if ($scope.navbarOrder != $scope.appIcons){
-  //   $scope.appIcons = $scope.navbarOrder;
-  // }
+  $scope.sortableOptions = {
+    placeholder: "ui-state-highlight",
+    forcePlaceholderSize: true,
+    cursor: "move",
+    cursorAt: { top: 0, left: 50 },
+    'ui-floating': true
+  };
 
-  // last time i did this, one extra icon was added to end of targetArray 
-  // if (localStorage.navbarOrder != undefined){
-  //   $scope.appIcons = $scope.navbarOrder;
-  // }
+  var player; // html element
 
-	var player; // html element
-
-  console.log('R: localStorage - ', localStorage.navbarOrder);
-  console.log('***R: scope navbarOrder - ', $scope.navbarOrder);
 
   $scope.$on('me_synced', function(event,data){
 
@@ -65,8 +61,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
           }
 
       }
+
   });
-	
+
 
 	$scope.getAvatar = function() {
 		return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
