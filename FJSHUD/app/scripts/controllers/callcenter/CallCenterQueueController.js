@@ -2,13 +2,13 @@ hudweb.controller('CallCenterQueueController', ['$scope', 'HttpService','Setting
   httpService.getFeed('queues');
 
   $scope.queue_options = [
-    {display_name: "Queue name", type: "name"},
-    {display_name: "Calls waiting", type: "info.waiting"},
-    {display_name: "Average wait time (ESA)", type: "info.esa"},
-    {display_name: "Average talk time", type: "info.avgTalk"},
-    {display_name: "Total calls (since last reset)", type: "info.abandon + info.completed"},
-    {display_name: "Abandoned calls", type: "info.abandonPercent"},
-    {display_name: "Active calls", type: "info.active"}
+    {display_name: $scope.verbage.queue_name, type: "name"},
+    {display_name: $scope.verbage.queue_sort_calls_wait, type: "info.waiting"},
+    {display_name: $scope.verbage.queue_sort_avg_wait_time, type: "info.esa"},
+    {display_name: $scope.verbage.queue_sort_avg_talk_time, type: "info.avgTalk"},
+    {display_name: $scope.verbage.queue_sort_total_calls, type: "info.abandon + info.completed"},
+    {display_name: $scope.verbage.queue_abandoned_calls, type: "info.abandonPercent"},
+    {display_name: $scope.verbage.queue_active_calls, type: "info.active"}
   ];
   
   // $scope.selectedQueue = $scope.queue_options[0];

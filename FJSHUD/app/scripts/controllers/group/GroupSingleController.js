@@ -28,7 +28,11 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 		$scope.isMine = groupService.isMine($scope.groupID);		
 	});
 	
-	$scope.tabs = [{upper: 'Chat', lower: 'chat'}, {upper: 'Members', lower: 'members'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'Page', lower: 'page'}, {upper: 'Recordings', lower: 'recordings'}];
+	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
+	{upper: $scope.verbage.members, lower: 'members'}, 
+	{upper: $scope.verbage.voicemail, lower: 'voicemails'}, 
+	{upper: $scope.verbage.page, lower: 'page'}, 
+	{upper: $scope.verbage.recordings, lower: 'recordings'}];
 
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 	
