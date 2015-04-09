@@ -7,9 +7,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 	httpService.getFeed("groupcontacts");
 	httpService.getFeed("contactstatus");
 	$scope.sort_options = [
-	{name:"Sort By Name", id:1,type:'name'},
-    {name:"Sort By Call Status",id:2, type:'call_status'},
-    {name:"Sort By Chat Status",id:3, type:'chat_status'},
+	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
+    {name:$scope.verbage.sort_by_call_status,id:2, type:'call_status'},
+    {name:$scope.verbage.sort_by_chat_status,id:3, type:'chat_status'},
     ];
     $scope.selectedSort = $scope.sort_options[0];
 

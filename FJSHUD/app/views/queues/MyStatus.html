@@ -1,8 +1,8 @@
 <div class="ToolBar">
   <select class="SelectBox XButton" ng-model="checkSelect" ng-change="selectQueues(checkSelect); checkSelect = ''">
-	<option value="">Select</option>
-	<option value="all">Select All</option>
-	<option value="clear">Clear Selection</option>
+	<option value="">{{::verbage.select}}</option>
+	<option value="all">{{::verbage.select_all}}</option>
+	<option value="clear">{{::verbage.clear_selection}}</option>
   </select>
   
   <select class="SelectBox XButton" 
@@ -10,10 +10,10 @@
 	ng-change="loginQueues(false)" 
 	ng-disabled="disableButtons"
 	ng-options="reason.name for reason in reasons | orderBy:'name' track by reason.xpid">
-		<option value="">Logout</option>
+		<option value="">{{::verbage.logout}}</option>
   </select>
   
-  <input type="button" class="XButton" value="Login" ng-click="loginQueues(true)" ng-disabled="disableButtons" />
+  <input type="button" class="XButton" value="{{::verbage.login}}" ng-click="loginQueues(true)" ng-disabled="disableButtons" />
 </div>
 
 <div class="QueueList">

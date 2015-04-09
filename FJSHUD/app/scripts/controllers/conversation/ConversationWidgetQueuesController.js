@@ -31,13 +31,13 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
         httpService.sendAction("contacts", "agentLogoutAll", {contactId:$scope.contactId,reason:reasonId});
     }
 
-    $scope.sort_options = [{name:"Queue name", id:1,type:'name'},
-    {name:"Calls Waiting",id:2, type:'waiting'},
-    {name:"Average wait time",id:3, type:'avgwaiting'},
-    {name:"Average talk time",id:4, type:'avgtalk'},
-    {name:"Totals calls(since last reset", id:5, type:'total'},
-    {name:"Abandoned calls",id:6, type:'abandoned'},
-    {name:"Active calls", id:7, type:'active'}
+    $scope.sort_options = [{name:$scope.verbage.queue_name, id:1,type:'name'},
+    {name:$scope.verbage.queue_sort_calls_wait,id:2, type:'waiting'},
+    {name: $scope.verbage.queue_sort_avg_wait_time,id:3, type:'avgwaiting'},
+    {name:$scope.verbage.queue_sort_avg_talk_time,id:4, type:'avgtalk'},
+    {name:$scope.verbage.queue_sort_total_calls, id:5, type:'total'},
+    {name:$scope.verbage.queue_abandoned_calls,id:6, type:'abandoned'},
+    {name:$scope.verbage.queue_active_calls, id:7, type:'active'}
     ];
 
     $scope.sortQueues = function(type){
@@ -118,7 +118,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
     $scope.$on('queuelogoutreasons_synced',function(event,data){
     	$scope.log_out_reasons = [];
     	$scope.log_out_reasons = data;
-    	$scope.log_out_reasons.push({name:"Logout All"});
+    	$scope.log_out_reasons.push({name:$scope.verbage.logout_all});
     	$scope.log_out_option = data[$scope.log_out_reasons.length - 1];
     });
 

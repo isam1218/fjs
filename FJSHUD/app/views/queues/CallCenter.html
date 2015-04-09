@@ -6,7 +6,7 @@
 		<div class="Left">
 			<div class="Labels">
 				<div>Logged-in Agents:</div>
-				<div>Total Calls (since last reset):</div>
+				<div>{{::verbage.queue_sort_total_calls}}</div>
 			</div>
 			<div class="Data">
 				<div>{{ total.loggedIn + ' of ' + total.members }}</div>
@@ -15,7 +15,7 @@
 		</div>
 		<div class="Right">
 			<div class="Labels">
-				<div>Calls Waiting:</div>
+				<div>{{::verbage.queue_sort_calls_wait}}:</div>
 				<div>Active Agents:</div>
 			</div>
 			<div class="Data">

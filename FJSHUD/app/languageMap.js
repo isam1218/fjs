@@ -14,6 +14,9 @@ fjs.i18n = {
     chat:'Chat',
     recordings:'Recordings',
     cancel:'cancel',
+    select:'Select',
+    clear_selection:'Clear Selection',
+    
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
 		enable_box: 'ボックス有効化',
@@ -232,7 +235,7 @@ fjs.i18n = {
 		  loading:'Loading',
       offline:'offline',
       events:'events',
-      new_call:'',
+      new_call:'New Call',
       add_someone:'Add Someone',
 
       /**** ZOOM ****/
@@ -304,6 +307,7 @@ fjs.i18n = {
 
       /*****QUEUES******/
       login_all:'Login All',
+      logout_all:'Logout All',
       logged_in:'Logged In',
       Logged_out:'Logged Out',
       logout:'Log Out',
@@ -312,13 +316,21 @@ fjs.i18n = {
       my_queue:'My Queue',
       all_queues:'All Queues',
       my_status:'My Status',
-
+      agents:'Agents',
+      queue_sort_calls_wait:'Calls Waiting',
+      queue_sort_avg_wait_time:'Average wait time(ESA)',
+      queue_sort_avg_talk_time:'Average talk time',
+      queue_sort_total_calls:"Total calls (since last reset)",
+      queue_abandoned_calls:'Abandoned calls',
+      queue_active_calls:'Active calls',
 
       /******POPUPS*****/
       add_a_new_contact:'Add a New Contact',
       contact_info:'Contact Information',
       want_to_know_who_is_calling:'Want to know who is calling you?',
-
+      messaging:'Messaging',
+      want_to_chat_with_this_person:'Want to chat and e-mail this person?',
+     
       visibility:'Visibility',
       add_to_favorites:'add to favorites group',
       phones:'Phones',
@@ -326,6 +338,41 @@ fjs.i18n = {
       google_talk:'GoogleTalk (JID)',
       add_contact:'Add Contact',
       save_changes:'Save Changes',
+
+
+      sign_out:'Sign out',
+
+      Message:'Message',
+      message_individual:'This chat message will be sent to each team member individually.',
+      Security:'Security',
+      visible_to_entire:'Visible to entire company',
+      job_is_done:'Job is done?',
+      click_to_delete:'Click here to delete this team and say goodbye.',
+      create_team:'Create Team',
+      send_message:'Send Message',
+      delete_group:'Delete Group',
+      delete_word:'Delete',
+      team_description:'Team description is used for search and provides useful information to the team members.',
+      open:'Open',
+      old:'Old',
+      send:'Send',
+      file_share:'File Share',
+      sort_by_name:'Sort By Name',
+      sort_by_call_status:'Sort By Call Status',
+      sort_by_chat_status:'Sort By Chat Status',
+      /****Phone Notifications ***/
+
+      /***page**/
+      page:'Page',
+      group_page:'Group Page',
+      group_intercom:'Group Intercom',
+      group_voicemail:'Group Voicemail',
+      tab_shows_group_call_members:'this tab shows group call members. No group call at this moment',
+      no_active_call:'No active call',
+
+      /****DOCK AREA *****/
+      parked_calls:'Parked Calls',
+      no_calls_on_park:'no calls on park',
   },
 
 	/*****Japanese Language******/
@@ -342,6 +389,8 @@ fjs.i18n = {
     chat:'チャット',
     recordings:'録音',
     cancel:'キャンセル',
+    select:'選択',
+    clear_selection:'選択解除',
 
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
@@ -561,7 +610,7 @@ fjs.i18n = {
        loading:'ローディング',
        offline:'オフラインで',
        events: 'イベント',
-       add_someone:'参加者を追加',
+       add_someone:'任意のメンバ追加',
 
        /**** ZOOM ****/
       video_collaboration_summary: "お客様は弊社の用意するビデオ連携サービスをご利用していただくことができます。本機能は日本国内にある社内外においてビデオ会議を開催することができます。あわせてシェアスクリーン機能もご利用いただけます。",
@@ -624,16 +673,18 @@ fjs.i18n = {
       join_to_chat:'チャットを使用するために電話会議に参加して下さい ',
 
       /***Conversation***/
-      department:'Department',
+      department:'部門',
       member_of_department:'Contact is a member of this department',
       our_teams:'Our Teams',
       both_in_these_teams:'We are both both in these terms',
 
       /*****QUEUES******/
-      login_all:'Login All',
-      logged_in:'Logged In',
+      login_all:'すべてのログイン',
+      logout_all:'すべてログアウト',
+
+      logged_in:'すべてログアウト',
       Logged_out:'Logged Out',
-      logout:'Log Out',
+      logout:'ログアウト',
       active:'通話中',
       queue_name:'キュー名称',
       my_queue:'キュー',
@@ -641,9 +692,17 @@ fjs.i18n = {
       my_status:'状態',
       aban:'放棄呼',
 
+      queue_sort_calls_wait:'待ち呼数 ',
+      queue_sort_avg_wait_time:'平均待ち時間 (ESA)',
+      queue_sort_avg_talk_time:'平均通話時間 ',
+      queue_sort_total_calls:"総呼数 （最後のリセットから）",
+      queue_abandoned_calls:'途中放棄呼数 ',
+      queue_active_calls:'通話中の呼数 ',
+      
       /******POPUPS*****/
       add_a_new_contact:'新しい連絡先を追加',
-
+      messaging:'メッセージ方法',
+      want_to_chat_with_this_person:'この人をチャットや電子メールしてみませんか？',
       contact_info:'コンタクト情報',
       want_to_know_who_is_calling:'誰が電話をしてきたのか',
 
@@ -654,6 +713,51 @@ fjs.i18n = {
       google_talk:'Googleトーク(JID)',
       add_contact:'連絡先を追加',
       save_changes:'Save Changes',
+      agents:'エージェント',
+      send:'送信',
+
+
+      sign_out:'Sign out',
+
+      Message:'セキュリティ',
+      message_individual:'This chat message will be sent to each team member individually.',
+      Security:'セキュリティ',
+      visible_to_entire:'会社全体に表示されます',
+      job_is_done:'Job is done?',
+      click_to_delete:'Click here to delete this team and say goodbye.',
+      create_team:'チームを作成',
+      send_message:'Send Message',
+      delete_group:'Delete Group',
+      delete_word:'Delete',
+      team_description:'チームの詳細は検索のために使用されます。',
+      open:'開く',
+      file_share:'ファイルシェア',
+
+      sort_by_name:'ユーザ名 ',
+      sort_by_call_status:'コールステータス ',
+      sort_by_chat_status:'チャットステータス ',
+   
+
+      /***page ***/
+      page:'ページ',
+      group_page:'グループページ',
+      group_intercom:'グループインターホン ',
+      group_voicemail:'グループボイスメール ',
+      tab_shows_group_call_members:'このタブにグループコールのメンバーを表示しています。現時点ではグループコールはありません。',
+      no_active_call:'通話がありません',
+
+      /****phone notifications ****/
+      new_call:'新規通話',
+      old:'未読',
+
+      /****DOCK AREA *****/
+      parked_calls:'パーク保留',
+      no_calls_on_park:'パーク保留はありません',
+  
+
+
+
+
   },
   
  

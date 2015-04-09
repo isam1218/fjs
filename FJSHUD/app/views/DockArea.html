@@ -3,14 +3,14 @@
 	<a href="#/callcenter" class="Header">
 		<div class="Icon TopBarItemAppIcon CallCenter"></div>
 		<div class="Title">
-			<div>My Queues</div>
+			<div>{{::verbage.my_queue}}</div>
 			<div ng-if="gadget.data.queues.length == 0">Not an agent</div>
 			<div ng-if="gadget.data.queues.length > 0">Logged {{ gadget.data.loggedIn > 0 ? 'in (' + gadget.data.loggedIn + ')' : 'out' }}</div>
 		</div>
 	</a>
 		
 	<div class="Content">
-		<div class="SubHeader">My Queues</div>
+		<div class="SubHeader">{{::verbage.my_queue}}</div>
 		
 		<div class="List">
 			<a href="#/queue/{{queue.xpid}}" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">	
@@ -66,8 +66,8 @@
 			</div>
 		</div>
 		<div class="Title">
-			<div>Parked Calls</div>
-			<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">no calls on park</div>
+			<div>{{::verbage.parked_calls}}</div>
+			<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
 			<div class = "GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
 			<div class = "GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
 		</div>
@@ -75,7 +75,7 @@
 		
 
 	</div>
-	<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> Calls </div>
+	<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
 			  <!--ng-click="storeRecent(contact.xpid)" -->
 	<div> 
 		<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
@@ -140,7 +140,7 @@
 	</a>
 	
 	<div class="Content">
-		<div class="SubHeader">Members</div>
+		<div class="SubHeader">{{::verbage.member}}</div>
 		
 		<div class="List">
 			<a href="#/contact/{{member.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
@@ -190,7 +190,7 @@
 	</a>
 	
 	<div class="Content">
-		<div class="SubHeader">Members</div>
+		<div class="SubHeader">{{::verbage.member}}</div>
 		
 		<div class="List">
 			<a href="#/contact/{{member.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">

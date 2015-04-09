@@ -14,18 +14,18 @@
 					<input type="text" ng-model="add.name" class="XInputText" />
 				</div>
 				<div>
-					<h4>Security</h4>
-					<input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" /> Visible to entire company
+					<h4>{{::verbage.Message}}</h4>
+					<input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" /> {{::verbage.visible_to_entire}}
 				</div>
 				<div>
-					<h4>Description</h4>
-					<textarea ng-model="add.description" placeholder="Team description is used for search and provides useful information to the team members."></textarea>
+					<h4>{{::verbage.description}}</h4>
+					<textarea ng-model="add.description" placeholder="{{::verbage.team_description}}"></textarea>
 				</div>
 			</div>
 			
 			<div class="Section" ng-show="closing">
-				<h4>Message</h4>
-				<em>This chat message will be sent to each team member individually.</em>
+				<h4>{{::verbage.Message}}</h4>
+				<em>{{::verbage.message_individual}}</em>
 				<br/>
 				<textarea ng-model="add.message"></textarea>
 			</div>
@@ -34,7 +34,7 @@
 				<div>
 					<h4>{{::verbage.members}}</h4>
 					<div class="ContactSearchHolder" ng-show="!closing">
-						<input type="search" class="XInputText" placeholder="Add Someone" contact-search />
+						<input type="search" class="XInputText" placeholder="{{::verbage.add_someone}}" contact-search />
 					</div>
 				</div>
 				
@@ -50,22 +50,22 @@
 								#{{ contact.primaryExtension }}
 							</div>
 						</div>
-						<input type="button" value="Delete" class="Delete" ng-show="!closing" ng-click="removeUser(contact)" />
+						<input type="button" value="{{::verbage.delete_word}}" class="Delete" ng-show="!closing" ng-click="removeUser(contact)" />
 					</div>
 				</div>
 			</div>
 			
 			<div class="Section" ng-show="editing && !closing">
-				<h4>Job is done?</h4>
-				<a href="" ng-click="endGroup()">Click here to delete this team and say goodbye.</a>
+				<h4>{{verbage.job_is_done}}</h4>
+				<a href="" ng-click="endGroup()">{{::verbage.click_to_delete}}</a>
 			</div>
 		</div>
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			
-			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="{{ closing ? 'Delete Group & Send Message' : (editing ? 'Save Changes' : 'Create Team') }}" ng-click="saveGroup()" />
+			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton" value="{{ closing ? verbage.delete_group + '&' + verbage.send_message : (editing ? verbage.save_changes : verbage.create_team) }}" ng-click="saveGroup()" />
 		</div>
 	</div>
 </div>
