@@ -109,8 +109,10 @@
 	</div>
 
     <div id="AppLoading" ng-if="!loaded" >
-		<div ng-cloak>{{::verbage.loading}}...</div>
-        <img src="img/ajax-loader.gif" />
+		<div  ng-cloak >
+			<div>{{::verbage.loading}}...</div>
+        	<img src="img/ajax-loader.gif" />
+    	</div>
     </div>
 
 	<div  ng-include="currentPopup.url"></div>
