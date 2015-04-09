@@ -7,7 +7,7 @@
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
 		</div>
     </div>
-    <button class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="showAttachmentOverlay()"><span>File Share</span></button>
+    <button class="XButton XButtonNormal" ng-disabled="!enableFileShare" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button>
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 		
@@ -59,6 +59,6 @@
 	
 	<div class="ChatInputFields">
 		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : -1}}"></textarea>
-		<div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
+        <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>{{::verbage.send}}</span></div>
 	</div>
 </div>

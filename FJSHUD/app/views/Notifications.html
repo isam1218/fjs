@@ -3,7 +3,7 @@
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
-        <input type="button" value="Open" class="XButton" ng-click="$parent.overlay ='notifications'" />
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
      </div>   
 	<div class="NotificationMessages LeftBarNotifications">
 		<!--<react-component name="notification" props='notifications'/>-->		   
@@ -39,7 +39,7 @@
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
 								<span class="XButton XButtonRed"> Reject</span>
-								<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">Accept</span>
+								<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">{{::verbage.accept}}</span>
 							
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
@@ -48,8 +48,8 @@
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message)">Chat</span>
-								<span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">Call</span>	
+								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+								<span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
 							</div>
 							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue'">
 								<span class="XButton" style="width:70px" >Show</span>
@@ -68,9 +68,9 @@
 		
 		<div class="Header NotificationSectionHeader">
 			<div class="NotificationSectionHeaderImage"></div>
-			<div class="NotificationHeaderTitle"> <h2>  Notifications </h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  New: {{get_new_notifications().length}} </h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  Away: {{ get_away_notifications().length}}</h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.notifications}} </h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.new_word}}: {{get_new_notifications().length}} </h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.away}}: {{ get_away_notifications().length}}</h2> </div>
 			<div class="NotificationHeaderTitle"> <h2>  Old:  {{ get_old_notifications().length}}</h2> </div>
 		
 		</div>
