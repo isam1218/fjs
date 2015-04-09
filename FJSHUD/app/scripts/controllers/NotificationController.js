@@ -7,7 +7,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.inCall = false;
 	$scope.inRinging = false;
 	$scope.path = $location.protocol() + "://" + $location.host() + ":" + $location.port();
-	$scope.messageLimit = 10;//300;
+	$scope.messageLimit = 300;
+	$scope.showNotificationBody = true;
+	$scope.showHeader = false;
 	myHttpService.getFeed('quickinbox');
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
@@ -409,15 +411,18 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			// console.log('notifications order - ', $scope.todaysNotifications);
 			return b.time - a.time; 
 		});					
-
-		/*if($scope.todaysNotifications && $scope.todaysNotifications.length > 0){
-			notifyElement[0].style["max-height"] = "400px";	
-		}else{
-			notifyElement[0].style["max-height"] = "1px";	
-		}*/			
+       
+		$scope.$watch(function(scope){
+			if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
+				$scope.showNotificationBody = false;
+			}else{
+				$scope.showNotificationBody = true;
+			}	
+		});		
+			
 		$scope.$safeApply();
 		if(displayDesktopAlert){
 			displayNotification();
 		}				
-    });
+    });		
 }]);
