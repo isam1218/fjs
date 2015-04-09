@@ -2,8 +2,11 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.tab = 'my';
 	$scope.query = '';
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
-	$scope.conferences = conferenceService.getConferences();
 	$scope.sortBy = 'location';
+	
+	conferenceService.getConferences().then(function(data) {
+		$scope.conferences = data;
+	});
 
 	$scope.sort_options = [
 		{display_name: $scope.verbage.sort_room_by_location}, 
