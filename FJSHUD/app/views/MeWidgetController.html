@@ -20,7 +20,7 @@
                 <div class="MeInfoBlock-column">
                     <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
                     <div class="LeftBarMeCustomStatusSection">
-                        <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" placeholder="{{::verbage.custom_message}}"></textarea>
+                        <textarea data-ng-change="setCustomStatus()" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" placeholder="{{::verbage.custom_message}}"></textarea>
                     </div>
                     <div class="MeInfoTitle">{{::verbage.location}}</div>
                     <div class="LocationSelector ">
