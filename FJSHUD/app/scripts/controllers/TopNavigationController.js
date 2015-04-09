@@ -25,6 +25,34 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 
   if ($scope.updatedNavbar != $scope.appIcons){
     $scope.appIcons = $scope.updatedNavbar;
+    for(i in $scope.appIcons){
+    	var key = $scope.appIcons[i].key;
+
+    	switch(key){
+    		case 'Me':
+    			$scope.appIcons[i].title = $scope.verbage.me;
+    			break;
+    		case 'CallLog':
+    			$scope.appIcons[i].title = $scope.verbage.call_and_recordings;
+    			break;
+    		case 'Conferences':
+    			$scope.appIcons[i].title = $scope.verbage.conferencing;
+    			break;
+    		case 'CallCenter':
+    			$scope.appIcons[i].title = $scope.verbage.callcenter;
+    			break;
+    		case 'Search':
+    			$scope.appIcons[i].title = $scope.verbage.search;
+    			break;
+    		case 'Zoom':
+    			$scope.appIcons[i].title =$scope.verbage.zoom;
+    			break;
+    		case 'Box':
+    			$scope.appIcons[i].title = $scope.verbage.box;
+    			break;
+    	}
+
+    }
   }
 
   $scope.sortableOptions = {

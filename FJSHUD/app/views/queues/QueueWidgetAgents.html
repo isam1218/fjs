@@ -1,9 +1,9 @@
 <div class="ToolBar ">
   <input type="search" class="SearchBox" ng-model="query" placeholder="Search" />
     <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort">
-		<option value="displayName">Sort By Name</option>
-		<option value="queue_status">Sort By Call Status</option>
-		<option value="hud_status">Sort By Chat Status</option>
+		<option value="displayName">{{::verbage.sort_by_name}}</option>
+		<option value="queue_status">{{::verbage.sort_by_call_status}}</option>
+		<option value="hud_status">{{::verbage.sort_by_chat_status}}</option>
     </select>
 </div>
 
@@ -12,7 +12,7 @@
     <div class="ListSectionHeader">
       <div class="ListSectionHeaderTitle">{{::verbage.logged_in}}</div>
     </div>
-    <div class="ListSectionBody">Agents logged into the queue</div>
+    <div class="ListSectionBody">{{::verbage.agents_logged_into_queue}}</div>
   </div>
 
   <div 
@@ -24,7 +24,7 @@
     <div class="ListSectionHeader">
       <div class="ListSectionHeaderTitle">{{::verbage.logged_out}}</div>
     </div>
-    <div class="ListSectionBody">Agents logged out of the queue</div>
+    <div class="ListSectionBody">{{::verbage.agents_logged_out_of_queue}}</div>
   </div>
 
   <div

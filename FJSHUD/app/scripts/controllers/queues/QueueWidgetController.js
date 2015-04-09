@@ -9,7 +9,13 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	$scope.enableChat = true;
 	$scope.enableFileShare = true;
     
-    $scope.tabs = [{upper: 'Agents', lower: 'agents'}, {upper: 'Stats', lower: 'stats'}, {upper: 'Calls', lower: 'calls'}, {upper: 'Chat', lower: 'chat'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}, {upper: 'Alerts', lower: 'alerts'}];
+    $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
+    {upper: $scope.verbage.stats_tab, lower: 'stats'}, 
+    {upper: $scope.verbage.calls_tab, lower: 'calls'}, 
+    {upper: $scope.verbage.chat, lower: 'chat'}, 
+    {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
+    {upper: $scope.verbage.recordings, lower: 'recordings'}, 
+    {upper: $scope.verbage.alerts, lower: 'alerts'}];
 
     $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
     
