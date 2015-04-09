@@ -199,6 +199,27 @@ p {
   border-width: 1px;
 }
 
+@import "topBar";
+@import "leftBar";
+@import "dock";
+@import "widget";
+  @import "settings";
+  @import "calls";
+  @import "conference";
+  @import "queue";
+  @import "search";
+  @import "video";
+  @import "conversation";
+@import "tables";
+@import "buttons";
+@import "icons";
+@import "popups";
+@import "media";
+@import "notification";
+@import "voicemail";
+@import "nativeAlert";
+@import "queue";
+
 @supports (-moz-appearance:meterbar) {  
      input[type="search"]{float: left;}
      
@@ -415,26 +436,71 @@ p {
      .XButton span{
         vertical-align: top;        
         top: -3px;   
-    }  
+    }
+  /******* notifications **********/
+  
+  .LeftBarNotificationSection{
+    background-color: transparent;
+  }
+  
+  .Messages{        
+          
+        &:first-child{         
+            clear: both;
+        }
+        &:not(:first-child) {
+            margin-top: 0;
+            clear: both;          
+        }
+  }
+  
+  .NotificationHeader{
+    position: relative;
+    z-index: 100;
+    top: 0;   
+  }
+  .NotificationSection {
+    float: left;
+    top: -10px;
+    width: 100%;
+    position: relative;
+    margin-top: 0px;    
+    
+     &.firstsection{
+        top: -4px;        
+     }
+     
+     &.halfHeight{
+        overflow: hidden;
+        height: 1.5em;
+         &.firstsection{
+            height: 1.8em;
+         }
+     }
+  }
+  
+  .LeftBarNotificationMessageSection{
+    float: left;
+    padding-left: 0px;
+    width: 82%;
+    
+    .NotificationDisplayName {
+        padding-left: 5px; 
+        
+        span{width: auto !important;}       
+    }
+    
+    .NotificationType {
+        position: relative;
+        left: 5px;
+        top: -5px;
+    }
+    .NotificationTime{
+        right: 0;
+    }
+    
+    .NotificationMessage {
+        padding-left: 5px;
+    }
+  }    
 }
-
-@import "topBar";
-@import "leftBar";
-@import "dock";
-@import "widget";
-  @import "settings";
-  @import "calls";
-  @import "conference";
-  @import "queue";
-  @import "search";
-  @import "video";
-  @import "conversation";
-@import "tables";
-@import "buttons";
-@import "icons";
-@import "popups";
-@import "media";
-@import "notification";
-@import "voicemail";
-@import "nativeAlert";
-@import "queue";

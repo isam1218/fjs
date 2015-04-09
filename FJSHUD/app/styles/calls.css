@@ -1,90 +1,106 @@
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell {
-  /*padding-left: 10px;                    
-                    width: 10% !important;*/
+.CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+.CallLog .ListLineContent.Header .ListLineContentCell .DirectionArrow {
   left: 8px !important;
   position: relative !important;
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
+.CallLog .ListLineContent.Header .ListLineContentCell.Down .DirectionArrow {
   top: 4px;
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell .DirectionArrow {
+  .CallLog .ListLineContent.Header .ListLineContentCell .DirectionArrow {
     margin-left: 0;
   }
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Name {
+.CallLog .ListLineContent.Header .ListLineContentCell.Name {
   width: 23% !important;
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Phone {
+.CallLog .ListLineContent.Header .ListLineContentCell.Phone {
   width: 15% !important;
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.Duration {
+.CallLog .ListLineContent.Header .ListLineContentCell.Duration {
   width: 16%  !important;
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.StartedAt {
+.CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
   width: 15%  !important;
 }
-.Widget.CallLog .WidgetBody .ListLineContent.Header .ListLineContentCell.CallType {
+.CallLog .ListLineContent.Header .ListLineContentCell.CallType {
   width: 10%  !important;
 }
-.Widget.CallLog .WidgetBody .vmails .ToolBar {
+.CallLog .vmails .ToolBar {
   margin-bottom: 20px;
 }
-.Widget.CallLog .WidgetBody .vmails .ToolBar select.XButtonDropDown {
+.CallLog .vmails .ToolBar select.XButtonDropDown {
   margin-top: 2px;
-  height: 2.7em;
+  height: 2.85em;
   top: -2px;
+  float: right !important;
+  padding: 0 6.3%;
 }
-.Widget.CallLog .WidgetBody .vmails .ToolBar select.XButtonDropDown.XSortButton {
-  width: 12em;
+.CallLog .vmails .ToolBar select.XButtonDropDown.XSortButton {
+  width: 32.5% !important;
 }
-.Widget.CallLog .WidgetBody .vmails .ToolBar input,
-.Widget.CallLog .WidgetBody .vmails .ToolBar select {
+.CallLog .vmails .ToolBar input,
+.CallLog .vmails .ToolBar select {
   float: left;
 }
-.Widget.CallLog .ListRow {
+.CallLog .vmails .ToolBar input[type=search] {
+  width: 30%;
+}
+.CallLog .ListRow {
   display: flex;
   flex-direction: row;
   align-items: center;
   font-size: .9em;
   width: 100%;
+  cursor: default !important;
 }
-.Widget.CallLog .ListRow > div {
+.CallLog .ListRow > div {
   flex: 1;
   display: inline-block;
   vertical-align: middle;
   text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-.Widget.CallLog .ListRow > div:not(:first-child):not(.Name) {
+.CallLog .ListRow > div .CallAvatar {
+  cursor: pointer;
+}
+.CallLog .ListRow > div:not(:first-child):not(.Name) {
   font-size: .8em;
 }
-.Widget.CallLog .ListRow > div.Name {
+.CallLog .ListRow > div.Name {
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
   flex: 3;
   color: #009cff;
 }
-.Widget.CallLog .ListRow > div.Phone {
+.CallLog .ListRow > div.Phone {
   text-decoration: underline;
   color: #333;
   flex: 2;
 }
-.Widget.CallLog .ListRow > div.Phone span {
+.CallLog .ListRow > div.Phone span {
   white-space: nowrap;
+  cursor: pointer;
 }
-.Widget.CallLog .ListRow > div.Duration {
+.CallLog .ListRow > div.Duration {
   flex: 1;
 }
-.Widget.CallLog .ListRow > div.Date {
+.CallLog .ListRow > div.Date {
   flex: 3;
   white-space: nowrap;
 }
-.Widget.CallLog .ListRow > div.Type {
+.CallLog .ListRow > div.Type {
   width: 6%;
+}
+.CallLog .Empty {
+  text-align: center;
+  margin-top: 1em;
+  color: gray;
 }
 .ListRowNoBorders {
   border: none !important;

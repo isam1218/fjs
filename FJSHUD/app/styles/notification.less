@@ -4,7 +4,7 @@
 	-webkit-box-flex: 1;
 	padding-left:10px;
 	.NotificationDisplayName{
-		height: 20px;
+		height: 2.5em;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
@@ -12,6 +12,7 @@
 		color: #009cff;
 		font-weight: bold;
 		font-size:.7em;
+		span{float: left;}
 	}
 
 	.NotificationDisplayNameQueue{
@@ -29,18 +30,20 @@
 		font-size:1em;
 		color:black;
 		font-weight:normal;
+		position: relative;
 		float:right;
-		margin-right:10px;
+		right:20%;		
 	}
 
 	.NotificationMessage{
 		width:100%;
-		white-space: pre;
-		word-wrap:break-word;
+		/*white-space: pre;
+		word-wrap:break-word;*/
 		font-family: Arial,Tahoma,'Helvetica Neue',Helvetica,sans-serif;
 		position:relative;
 		overflow:hidden;
 		max-height: 4.2em;
+		padding-bottom: 20px;
 		//text-overflow:ellipsis;
 		p{
 			font-size:.8em;
@@ -63,35 +66,33 @@
 
 
 .NotificationMessages{
-	border-left:1px solid #ccc;
+	/*border-left:1px solid #ccc;
 	border-right:1px solid #ccc;
-	border-top:1px solid #ccc;
+	border-top:1px solid #ccc;*/
 	overflow-y: auto;
 	overflow-x:hidden;
 	background-image:url("../img/XTile-Widget.png");
+	background: transparent;
 }
 
 
-.LeftBarNotifications{
-	//display:none;
-	/*max-height:1px;*/
-	transition: 1s;
-	
-	/*display:block;
-	overflow-y:auto;
-	overflow-x: hidden;
-	height:600px;
-	*/
+.LeftBarNotifications{		
+	transition: 1s;		
 }
 
-
-
-.LeftBarNotificationSection:hover > .LeftBarNotifications{
-	//display:block;
+.LeftBarNotificationSection{
+    background-color: #999;
+    background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#888));
+    border-bottom: solid 1px #777;
+    &:hover{
+        background: transparent;
+    }
+}
+.LeftBarNotificationSection:hover > .LeftBarNotifications{	
 	visibility:visible;
 	overflow-y:auto;
 	overflow-x: hidden;
-	max-height:400px;
+	/*max-height:400px;*/
 }
 
 .NotificationType{
@@ -103,19 +104,40 @@
 
 .NotificationSection{
 	margin-top:5px;
-	border-bottom:solid 1px #eee;
+	/*border-bottom:solid 1px #eee;*/
 	-webkit-box-orient:horizontal;
 	display:-webkit-box;
+	padding-left: 5px;
+	width: 100%;
+	
+	&.firstsection{
+	   margin-top: 10px;
+	}
 }
 
 .NotificationHeader{
 	float:right;
+	margin-right: -1px;
+	
+	.firstHeaderTitle{	   
+       position: relative;
+       bottom: -1.3em;
+       right: -1px;
+	}
 }
 
 .NotificationDivider{
-	border-bottom:1px solid #ccc;
-	top:-2px;
-	display:block
+	border-bottom:1px solid #ccc;	
+	display:block;
+	height: 4px;
+	
+	&.firstHeaderDivider{
+	   background-color: #999;
+       background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));
+       height: 2.3em;
+       
+       img{display: none;}
+	}
 }
 	
 .LeftBarNotificationAvatarSection{
@@ -136,11 +158,14 @@
 	width: 51px;
 	height: 21px;
 	background: url("../img/XEvent.png?v=1418381374907") no-repeat 0px 0px;
+	position: relative;
+	right: 0;
+	bottom: 14px;
 }
 .NotificationClose{
 		width: 50%;
 		height: 24px;
-		margin:0 auto;
+		margin:-3px auto 0 auto;
 		background: url("../img/XIconSet-24x24.png?v=1418381374907") no-repeat -24px -24px;
 }
 
@@ -177,6 +202,7 @@
 	/*min-height: 50px;*/
 	font-style:normal;
 	font-size:1em;
+	background-image:url("../img/XTile-Widget.png");
 	
 	&:not(:first-child) {
         margin-top: -18px;

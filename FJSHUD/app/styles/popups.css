@@ -44,14 +44,20 @@
   flex: 1;
   overflow-y: auto;
   height: inherit;
+  overflow-x: hidden;
 }
 .Overlay .Foreground .Section {
   display: inline-block;
   min-width: 48%;
-  max-width: 300px;
+  /*max-width: 300px;*/
+  max_width: 100%;
   vertical-align: top;
   font-size: .9em;
   height: inherit;
+}
+.Overlay .Foreground .Section .AutoDelete {
+  width: 24% !important;
+  font-size: 0.75em;
 }
 .Overlay .Foreground .Section > div {
   margin-bottom: .5em;
@@ -262,6 +268,10 @@
 .SearchContactOverlay .Inset .ListRowContent .Extension {
   font-size: .9em;
   color: gray;
+  position: relative;
+  float: right;
+  right: 5px;
+  top: -10px;
 }
 #ContextMenu {
   display: none;
@@ -271,8 +281,7 @@
   background-color: #ededee;
   border-radius: 8px;
   box-shadow: 0 0 10px gray;
-  padding: .5em;
-  height: 7.5em;
+  padding: .5em .5em 1em .5em;
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
@@ -311,28 +320,53 @@
   border-top: 1px solid #ccc;
   margin-top: .25em;
 }
-#ContextMenu .BottomRow > div {
+#ContextMenu .BottomRow.Actions > div {
   display: inline;
 }
-#ContextMenu .Button {
+#ContextMenu .BottomRow.Actions .Button {
   text-align: center;
   text-decoration: none;
   color: gray;
   display: inline-block;
 }
-#ContextMenu .Button div {
+#ContextMenu .BottomRow.Actions .Button div {
   margin: 0 auto;
   width: 30px;
   height: 32px;
 }
-#ContextMenu .Button span {
+#ContextMenu .BottomRow.Actions .Button span {
   font-size: .8em;
   padding: 0 1em;
   border: 1px solid #ededee;
   border-radius: 10px;
 }
-#ContextMenu .Button:hover span {
+#ContextMenu .BottomRow.Actions .Button:hover span {
   border: 1px solid gray;
+}
+#ContextMenu .BottomRow.Reasons {
+  padding: .5em;
+  font-size: .8em;
+}
+#ContextMenu .BottomRow.Reasons h4 {
+  color: #0093f0;
+  margin: 0 0 .25em 0;
+  text-transform: uppercase;
+}
+#ContextMenu .BottomRow.Reasons .List {
+  overflow-y: auto;
+  max-height: 300px;
+  font-size: 1.2em;
+  margin-top: 1em;
+}
+#ContextMenu .BottomRow.Reasons .Button {
+  cursor: pointer;
+  padding: .25em 1em .25em 1.5em;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+#ContextMenu .BottomRow.Reasons .Button:hover {
+  background-color: #5A9801;
+  color: white;
 }
 .MenuWindow {
   position: absolute;
@@ -342,7 +376,7 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -455,10 +489,14 @@
 }
 .AutoDelete {
   background-color: #ccc;
-  width: 76px;
+  width: 24%;
   margin-right: 1px;
-  height: 30px;
-  line-height: 30px;
+  height: 2.5em;
+  line-height: 2.5em;
   display: inline-block;
-  font-size: 12px;
+  font-size: 0.75em;
+}
+.AutoDelete input {
+  position: relative;
+  top: 3px;
 }

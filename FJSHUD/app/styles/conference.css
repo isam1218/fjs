@@ -1,7 +1,10 @@
 .Conference .ToolBar .XButton {
-  width: 150px !important;
-  height: 2.6em;
-  top: -3px;
+  width: 32.5%;
+  font-family: Arial, Tahoma, "Helvetica Neue", Helvetica, sans-serif !important;
+  font-size: 0.625em !important;
+  height: 2.91em !important;
+  float: right !important;
+  margin-left: 0.8em !important;
 }
 .Conference .ToolBar .XButton[type=button] {
   left: 5px;
@@ -118,6 +121,13 @@
   position: absolute;
   right: 0px;
   bottom: 10px;
+}
+.TabWarning .XButton.XButtonGreen.TabWarningButton {
+  font-size: 1em;
+  margin-right: 10px;
+}
+.TabWarning .XButton.XButtonGreen.TabWarningButton span {
+  top: -2px;
 }
 .ConferenceAvatarSection {
   -webkit-box-flex: 0;

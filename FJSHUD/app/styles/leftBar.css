@@ -30,12 +30,15 @@
   border-radius: 2px;
   padding: .5em;
   margin: .5em;
-  flex: 2;
+  width: 14.5em;
 }
 .LeftBar .ContactSearch .New {
-  margin: .5em;
   height: 2.8em;
   padding: 0 20px;
+  float: right;
+  position: absolute;
+  right: 0.5em;
+  top: 0.6em;
 }
 .LeftBar .Contacts,
 .LeftBar .Groups {
@@ -48,6 +51,7 @@
   flex: 1 1 0;
   overflow-y: auto;
   min-height: 60px;
+  margin-top: 10px;
 }
 .LeftBar .Contacts .ContactList h4,
 .LeftBar .Groups .ContactList h4 {
@@ -67,29 +71,49 @@
   width: 100%;
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
+  -webkit-box-flex: 0;
+  /*
+	&:hover{        
+        .TitleBar.noButton{
+            margin-top: -15px;
+            border-top: 0px none;
+        }         
+    }*/
 }
 .LeftBar .Notifications > div:first-child {
   font-size: .9em;
-  min-height: 25px;
   transition: .25s;
 }
-.LeftBar .Notifications:hover {
-  min-height: 50px;
-}
-.LeftBar .Notifications .TitleBar {
+.LeftBar .Notifications .TitleBar,
+.LeftBar .Notifications .NotificationDivider > div {
   width: 100%;
-  background-color: gray;
+  background-color: #999;
   color: white;
   padding: .25em;
+  height: 2.5em;
+  transition: 1s;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
 }
-.LeftBar .Notifications .TitleBar > * {
+.LeftBar .Notifications .TitleBar > *,
+.LeftBar .Notifications .NotificationDivider > div > * {
   display: inline-block;
   vertical-align: middle;
 }
-.LeftBar .Notifications .TitleBar .XButton {
+.LeftBar .Notifications .TitleBar.hasButton,
+.LeftBar .Notifications .NotificationDivider > div.hasButton {
+  z-index: 100;
+  display: none;
+  position: relative;
+  bottom: -10px;
+}
+.LeftBar .Notifications .TitleBar .XButton,
+.LeftBar .Notifications .NotificationDivider > div .XButton {
   float: right;
 }
-.LeftBar .Notifications .TitleBar .Icon {
+.LeftBar .Notifications .TitleBar .Icon,
+.LeftBar .Notifications .NotificationDivider > div .Icon {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
@@ -102,4 +126,13 @@
 }
 .LeftBar .Phone .Number {
   flex: 2;
+  border: 1px solid #c2c2c2;
+}
+.LeftBar .Phone input[type=button] {
+  left: 5px;
+}
+@supports (-moz-appearance:meterbar) {
+  .LeftBar .ContactSearch .Search {
+    width: 11.5em;
+  }
 }

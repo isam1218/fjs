@@ -149,7 +149,7 @@
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
-  font-size: .8em;
+  font-size: .9em;
   z-index: 50;
 }
 .TopBarVoicemailControls:hover {
@@ -172,7 +172,8 @@
   margin: 0 20px 15px 0;
   border-radius: 4px;
   border: 1px solid #ccc;
-  padding: 2px 6px;
+  padding: .25em .5em;
+  line-height: 1.5em;
 }
 .TopBarVoicemailControls .Caller .Details {
   display: inline-block;
@@ -183,6 +184,9 @@
 .TopBarVoicemailControls .Caller .Details strong {
   color: #009cff;
   margin-left: .75em;
+}
+.TopBarVoicemailControls .Avatar {
+  font-size: 1.2em;
 }
 .TopBarVoicemailControls .Loading {
   text-align: center;

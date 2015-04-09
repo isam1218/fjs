@@ -154,48 +154,68 @@
   right: 0;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.ChatInputBox {
-  position: relative;
-  min-height: 35px;
-  padding: 10px 0;
+.ChatView {
+  flex-direction: column;
   display: flex;
-  flex-direction: row;
-}
-.ChatInputBoxBorder
-{
-  position: absolute;
-  top: 0px;
-  left: 10px;
-  right: 10px;
-  height: 0px;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #fff;
-}
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-input.text.ChatInputBoxInput,
-.text.ChatInputBoxInput[contenteditable]
-{
-  margin:0 10px;
-  height:auto;
-  min-height: 16px;
-  max-height: 200px;
-  width:365px;
-  font-size: .95em;
-  line-height: 1.1em;
-  padding:5px;
-  overflow:auto;
-  background-color: #fff;
-  flex: 1;
+  flex: 1 1 0;     
+  
+  .ListViewContent {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+	margin-top: 5px;
+  }
+  
+  .Loading {
+    position: absolute;
+	bottom: -30px;
+	left: .5em;
+	z-index: 50;
+  }
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.XButton.ChatInputBoxSend
-{
-  margin: 0px;
+.ChatInputBox {
+  border-top: solid 1px #ccc;
   position: relative;
-  margin-right: 10px;
-  width: 65px;
+  min-height: 35px;
+  margin: 10px;
+  padding-top: 10px;
+  
+  .ChatAlertOptions {
+    font-size: .8em;
+	margin-bottom: 5px;
+	display: flex;
+	flex-direction: row;
+	
+	.Right { 
+	  flex: 1;
+	  text-align: right;
+	}
+  }
+  
+  .ChatInputFields {
+    display: flex;
+	flex-direction: row;
+
+	.text.ChatInputBoxInput {
+	  margin-right: 10px;
+	  height:auto;
+	  min-height: 16px;
+	  max-height: 200px;
+	  width:365px;
+	  font-size: .95em;
+	  line-height: 1.1em;
+	  padding:5px;
+	  overflow:auto;
+	  background-color: #fff;
+	  flex: 1;
+	}
+	
+	.XButton.ChatInputBoxSend {
+	  position: relative;
+	  width: 65px;
+	}
+  }
 }
 
 .ListMessageChatWidget

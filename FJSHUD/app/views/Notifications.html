@@ -1,24 +1,28 @@
-<div class="LeftBarNotificationSection">
-	<div class="TitleBar ">
-		<div class="Icon"></div>
-		<div>{{::verbage.notifications}}</div>
-		<div class="Event" ng-show="notifications.length > 0 " > - {{ notifications.length + ' ' + verbage.events }} </div>
-		<input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
-	</div>
-	
+<div class="LeftBarNotificationSection notificationsSection" ng-mouseover="showNotificationBody = true; showHeader = true" ng-mouseleave="showHeader = false; showNotificationBody = todaysNotifications.length > 3 ? false:true">
+	 <div class="TitleBar hasButton" show-on-hover-parent>
+        <div class="Icon"></div>
+        <div>{{::verbage.notifications}}</div>
+        <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
+     </div>   
 	<div class="NotificationMessages LeftBarNotifications">
-		<!--<react-component name="notification" props='notifications'/>-->
-			
-			<div class="Messages" ng-repeat="message in todaysNotifications">
-					
-					<div class="NotificationHeader"> 
-							<div class="NotificationHeaderBackground"> 
+		<!--<react-component name="notification" props='notifications'/>-->		   
+			<div class="Messages" ng-repeat="message in todaysNotifications">			
+					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
+							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
 					</div>
-					<div class="NotificationDivider"><img /></div>
-					<div class="NotificationSection"> 
+					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0};">
+					    <img />
+					   <div ng-if="$index == 0"> 
+					    <div class="Icon" ng-show="!showHeader"></div>
+				        <div ng-show="!showHeader">Notifications  </div>
+				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ notifications.length + ' events' }} </div>
+				       </div>             
+					</div>
+					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
 						
 						<div class="LeftBarNotificationAvatarSection " style="display:inline-block" ng-click="go_to_notification_chat(message)"> 
 							<img class="NotificationAvatar CallAvatar "  
@@ -28,10 +32,10 @@
 					
 						<div class="LeftBarNotificationMessageSection" > 
 							<div ng-click="go_to_notification_chat(message)">
-								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
-								<div class="NotificationType">...{{ message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
+								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
+								<div class="NotificationType" ng-show="showNotificationBody">...{{ message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
 								{{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
-								<div class="NotificationMessage" scroll-to-bottom>{{ getMessage(message) }}</div>
+								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>{{ getMessage(message) }}</div>
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
 								<span class="XButton XButtonRed"> Reject</span>

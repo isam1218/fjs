@@ -75,25 +75,34 @@
     width: 100%;
     border-bottom-left-radius: 30px;
     -webkit-border-bottom-left-radius: 30px;
+    -webkit-box-flex: 0;
     
     & > div:first-child {
-    	font-size: .9em;
-    	/*min-height: 25px;*/
+    	font-size: .9em;    	
     	transition: .25s;
-	}  
-	/*&:hover {
-	  min-height: 50px;
-	}*/
+	} 	
 	
-	.TitleBar {
+	.TitleBar, .NotificationDivider > div {
 	   width: 100%;
-	   background-color: gray;
+	   background-color: #999;
 	   color: white;
 	   padding: .25em;
+	   height: 2.5em;
+	   transition: 1s;
+	   border-top: 1px solid #ccc;
+	   border-left:1px solid #ccc;
+       border-right:1px solid #ccc; 
 	
 	  & > * {
 	    display: inline-block;
 	    vertical-align: middle;
+	  }
+	  
+	  &.hasButton{
+	   z-index: 100;	   
+       display: none;
+       position: relative;
+       bottom: -10px;
 	  }
 	  
 	  .XButton {
@@ -106,6 +115,14 @@
 	    background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
 	  }
 	}
+	
+	/*
+	&:hover{        
+        .TitleBar.noButton{
+            margin-top: -15px;
+            border-top: 0px none;
+        }         
+    }*/
   }
   
   .Phone {
@@ -116,7 +133,9 @@
 	
 	.Number {
 	  flex: 2;
+	  border: 1px solid #c2c2c2;
 	}
+	input[type=button]{left: 5px;}
   }
 }
 
