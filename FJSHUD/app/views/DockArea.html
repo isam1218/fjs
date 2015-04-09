@@ -13,7 +13,7 @@
 		<div class="SubHeader">{{::verbage.my_queue}}</div>
 		
 		<div class="List">
-			<a href="#/queue/{{queue.xpid}}" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">	
+			<a href="#/queue/{{::queue.xpid}}" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">	
 				<div class="Avatar AvatarNormal" context-menu="queue">
 					<div class="GroupAvatarItem GroupAvatarItem_0">
 						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
@@ -143,7 +143,7 @@
 		<div class="SubHeader">{{::verbage.member}}</div>
 		
 		<div class="List">
-			<a href="#/contact/{{member.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
+			<a href="#/contact/{{::member.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
 				<div class="Avatar AvatarSmall" context-menu="member">
 					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 					<div class="AvatarForeground AvatarInteractable"></div>
@@ -193,7 +193,7 @@
 		<div class="SubHeader">{{::verbage.member}}</div>
 		
 		<div class="List">
-			<a href="#/contact/{{member.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
+			<a href="#/contact/{{::member.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
 				<div class="Avatar AvatarSmall" context-menu="member">
 					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 					<div class="AvatarForeground AvatarInteractable"></div>
@@ -205,9 +205,7 @@
 						<br/>
 						{{ ::member.primaryExtension }}
 					</div>
-					<div class="ListRowStatus">
-						{{ timeElapsed(member.call.startedAt) }}
-					</div>
+					<div class="ListRowStatus" timer="member.call.startedAt"></div>
 				</div>
 			</a>
 			
