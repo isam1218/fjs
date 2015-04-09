@@ -24,12 +24,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 
 	$rootScope.$on('contacts_synced', function(event, data) {
 		contacts = data;
-		
-		// initial sync
-		if (!$rootScope.loaded) {
-			deferred.resolve(contacts);
-			$rootScope.loaded = true;
-		}
+		deferred.resolve(contacts);
 		
 		for (i = 0; i < contacts.length; i++) {
 			// add avatar function
@@ -59,6 +54,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			}
 		}
 		
+		$rootScope.loaded.contacts = true;
 		$rootScope.$evalAsync($rootScope.$broadcast('contacts_updated', contacts));
 	});
 	

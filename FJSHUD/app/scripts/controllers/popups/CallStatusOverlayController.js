@@ -13,8 +13,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				});
 				break;
 			case 'conference':
+				conferenceService.getConferences().then(function(data) {
+					$scope.conferences = data;
+				});
+	
 				$scope.screen = 'conference';
-				$scope.conferences = conferenceService.getConferences();
 				$scope.selectedConf = null;
 				$scope.meToo = 0;
 				break;
@@ -93,7 +96,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		$scope.addError = null;
 		
 		if (screen == 'conference') {
-			$scope.conferences = conferenceService.getConferences();
+			conferenceService.getConferences().then(function(data) {
+				$scope.conferences = data;
+			});
+	
 			$scope.confQuery = '';
 			$scope.selectedConf = null;
 			$scope.meToo = 0;

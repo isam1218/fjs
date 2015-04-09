@@ -116,6 +116,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 			}
 		}
 	
+		$rootScope.loaded.queues = true;
 		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 	

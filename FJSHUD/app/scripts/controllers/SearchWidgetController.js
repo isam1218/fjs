@@ -43,9 +43,11 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 		});
 		
 		// search conferences by name
-		angular.forEach(conferenceService.getConferences(), function(obj) {
-			if (obj.name.toLowerCase().indexOf(query) != -1)
-				$scope.conferences.push(obj);
+		conferenceService.getConferences().then(function(data) {
+			for (key in data) {
+				if (data[key].name.toLowerCase().indexOf(query) != -1)
+					$scope.conferences.push(data[key]);
+			}
 		});
 	};
 	

@@ -1,5 +1,7 @@
-hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','PhoneService', function($rootScope, $scope, myHttpService,phoneService) {
+hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpService','PhoneService', function($rootScope, $scope, $timeout, myHttpService, phoneService) {
 	$rootScope.myPid = null;
+	$rootScope.loaded = {all: false};
+	
     $scope.number = "";
     $scope.currentPopup = {};
     $scope.currentPopup.url = null;
@@ -28,6 +30,38 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
             }
         }
     };
+	
+	// wait to show app
+	var loadWatch = $rootScope.$watch('loaded', function(data) {
+		var count = 0;
+		
+		for (key in data)
+			count++;
+		
+		if (count >= 5) {
+			$timeout(function() {
+				$rootScope.loaded.all = true;
+			}, 500);
+			
+			// kill watcher
+			loadWatch();
+		}
+	}, true);
+
+	// store user's xpid globally
+	var getMyPid = $scope.$on('me_synced', function(event, data) {
+		if (!$rootScope.myPid) {
+			for (key in data) {
+				if (data[key].propertyKey == 'my_pid') {
+					$rootScope.myPid = data[key].propertyValue;
+					break;
+				}
+			}
+		}
+		else
+			// remove watcher
+			getMyPid();
+	});
 
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
@@ -90,20 +124,5 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
 		},10000);
 
 		$scope.showOverlay(true,'NoPermission',data);
-	});
-
-	var getMyPid = $scope.$on('me_synced', function(event, data) {
-		// find my pid
-		if (!$rootScope.myPid) {
-			for (key in data) {
-				if (data[key].propertyKey == 'my_pid') {
-					$rootScope.myPid = data[key].propertyValue;
-					break;
-				}
-			}
-		}
-		else
-			// remove watcher
-			getMyPid = null;
 	});
 }]);
