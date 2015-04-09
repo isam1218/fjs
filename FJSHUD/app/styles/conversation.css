@@ -1,6 +1,9 @@
 .Widget.Conversation {
   min-height: 300px;
 }
+.Widget.Conversation .ContactList {
+  margin-top: 10px;
+}
 .Widget.Conversation .WidgetHeader {
   top: 0;
   right: 0;
@@ -55,25 +58,13 @@
 .Widget.Conversation .WidgetBody {
   position: relative;
 }
-.Widget.Conversation .WidgetBody .ChatView {
-  flex-direction: column;
-  display: flex;
-  flex: 1 1 0;
+.Widget.Conversation .WidgetBody .ListRow {
+  position: relative;
+  width: 96%;
+  margin: 0 auto;
 }
-.Widget.Conversation .WidgetBody .ChatView .ListViewContent {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-top: 5px;
-}
-.Widget.Conversation .WidgetBody .ChatView .ChatInputBox {
-  -webkit-box-flex: 0;
-}
-.Widget.Conversation .WidgetBody .ChatView .Loading {
-  position: absolute;
-  bottom: -30px;
-  left: .5em;
-  z-index: 50;
+.Widget.Conversation .WidgetBody .ListRow:hover .ListRowStatus {
+  visibility: visible;
 }
 .Widget.Conversation .WidgetBody .ToolBar input[type=search].SearchBox {
   width: 30% !important;

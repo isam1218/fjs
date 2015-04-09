@@ -77,6 +77,21 @@ hudweb.controller('MainController', ['$rootScope', '$scope', 'HttpService','Phon
 		}
 	};
 
+	$scope.reloadPage = function(){
+		window.onbeforeunload = function(){};
+		myHttpService.logout();
+	}
+
+	$scope.$on('no_license',function(event,data){
+		var data = {}
+		setTimeout(function(){
+			window.onbeforeunload = function(){};
+			myHttpService.logout();
+		},10000);
+
+		$scope.showOverlay(true,'NoPermission',data);
+	});
+
 	var getMyPid = $scope.$on('me_synced', function(event, data) {
 		// find my pid
 		if (!$rootScope.myPid) {

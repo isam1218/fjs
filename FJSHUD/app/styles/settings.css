@@ -5,8 +5,6 @@
 }
 .WidgetMe .WidgetHeaderTitle {
   color: #333;
-  /*font-size: 20px;
-      line-height: 35px;*/
   font-size: 1.250em;
   line-height: 45px;
   left: 0px;
@@ -24,9 +22,7 @@
   height: 5em;
 }
 .WidgetMe .WidgetBody {
-  /*top: 8px;*/
   height: 80%;
-  /*position: relative;*/
   top: 150px;
   position: absolute;
 }
@@ -60,7 +56,6 @@
   position: relative;
   border: none 0px;
   background-image: url("../img/XTile-Widget.png");
-  /*height: 80%;*/
   height: 72%;
   overflow-y: hidden;
   background-color: #f9f9f9;
@@ -357,6 +352,9 @@ div.NewCall .XButton.XButtonGreen {
 }
 div.NewCall .XButton.XButtonNormal {
   margin-left: 0;
+}
+div.NewCall .XButton span {
+  top: -4px;
 }
 /* TODO: rewrite this css */
 .Preferences-Holder .fj-content-items {

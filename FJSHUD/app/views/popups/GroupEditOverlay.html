@@ -10,7 +10,7 @@
 		<div class="Sections">
 			<div class="Section" ng-show="!closing">
 				<div>
-					<h4>Name</h4>
+					<h4>{{::verbage.name}}</h4>
 					<input type="text" ng-model="add.name" class="XInputText" />
 				</div>
 				<div>
@@ -32,7 +32,7 @@
 			
 			<div class="Section">
 				<div>
-					<h4>Members</h4>
+					<h4>{{::verbage.members}}</h4>
 					<div class="ContactSearchHolder" ng-show="!closing">
 						<input type="search" class="XInputText" placeholder="Add Someone" contact-search />
 					</div>

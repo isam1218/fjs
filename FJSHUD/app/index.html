@@ -19,7 +19,9 @@
 		</script>
 		<script type="text/javascript">
 			UserVoice = window.UserVoice || [];
-			var ja = /hudmw_lang=lang.jp/.test(document.cookie);
+			var ja = localStorage.fon_lang_code == 'lang.jp';
+
+			///hudmw_lang=lang.jp/.test(document.cookie);
 			var _label=ja?"フィードバック":'Feedback';
 			var _name= ja?'私達にあなたのフィードバックを与える':'Give us your feedback';
 			UserVoice.push(['showTab', 'classic_widget', {
@@ -38,6 +40,10 @@
 
   </head>
   <body data-ng-controller="MainController"  flow-prevent-drop>
+
+      <!--<div id="AppLoading"> </div>-->
+
+
 	<div id="App">
 		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
 
@@ -47,10 +53,10 @@
 
 				<div class="LeftBarTop">
 					<div class="ContactSearch">
-						<input ng-show="tab != 'favorites'" type="search" class="Search" placeholder="Search" ng-model="query" ng-model-options="{debounce: 100}" />
-						<input ng-show="tab != 'favorites'" type="button" value="New" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+						<input ng-show="tab != 'favorites'" type="search" class="Search" placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" />
+						<input ng-show="tab != 'favorites'" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 
-						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="Add Someone" contact-search ng-controller="ContactsWidget" />
+						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
 					</div>
 
 					<div class="WidgetTabBar">
@@ -102,12 +108,12 @@
 		</div>
 	</div>
 
-    <div id="AppLoading" ng-if="!loaded">
-		<div>Loading...</div>
+    <div id="AppLoading" ng-if="!loaded" >
+		<div ng-cloak>{{::verbage.loading}}...</div>
         <img src="img/ajax-loader.gif" />
     </div>
 
-	<div ng-include="currentPopup.url"></div>
+	<div  ng-include="currentPopup.url"></div>
 	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
 	<div id="ContextMenu"
@@ -123,6 +129,8 @@
 	</div>
 
     <!--bower components-->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
 
     <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
@@ -133,8 +141,7 @@
     <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../bower_components/angular-ui-sortable/sortable.min.js"></script>
 
 
 
@@ -158,8 +165,6 @@
     <script src="scripts/directives/dockResizerDirective.js"></script>
     <script src="scripts/directives/searchContactsDirective.js"></script>
     <script src="scripts/directives/contextMenuDirective.js"></script>
-    <script src="scripts/directives/dndDraggableDirective.js"></script>
-    <script src="scripts/directives/dndListDirective.js"></script>
     <script src="scripts/directives/timeElapsedDirective.js"></script>
 
     <!--controllers-->

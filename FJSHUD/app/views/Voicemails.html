@@ -1,5 +1,5 @@
     <div class="ToolBar" >
-		<input type="search" class="SearchBox" placeholder="Search" data-ng-model="tester.query" />              
+		<input type="{{::verbage.search}}" class="SearchBox" placeholder="{{::verbage.search}}" data-ng-model="tester.query" />              
       <!--   <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
                 ng-change="sortBy(selectedSort)"
@@ -8,7 +8,7 @@
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedVoice" ng-options="voice_option.display_name for voice_option in voice_options track by voice_option.display_name" ng-change="sortBy(selectedVoice)">
         </select>
         <select class="XButton XButtonNormal XButtonDropDown disabled-false" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
-            <option>Actions</option>
+            <option>{{::verbage.action}}</option>
             <div class="XButtonDropDownArrow"></div>
         </select>
     </div>
@@ -26,18 +26,18 @@
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                     <div class="displayName">
-						<em>{{ ::voicemail.phone == meModel.primary_extension ? 'Me to' : 'from...' }}<em>
+						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + verbage.to + '...' :  verbage.from + '...' }}<em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
 							{{ ::voicemail.displayName + ' <' + voicemail.phone + '>' }}
                         </p>
                         <div class="vmalternate">
                             <div class="vmtime">{{ ::voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
-                            <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(voicemail.phone)"></input>
+                            <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(voicemail.phone)"></input>
                         </div>
                     </div> 
                     <div class="footnote">
                         <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
-                        <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : "no transcription available" }}</div>
+                        <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
                     </div>
                     
             </div>

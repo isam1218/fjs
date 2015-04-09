@@ -1,17 +1,26 @@
 hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService) {
 	$scope.xpid;
+	$scope.targetID;
 	$scope.type;
 	$scope.name;
+	$scope.widget;
 	$scope.reasons = {};
 	$scope.canDock = true;
 	
 	// populate contact info from directive
-	$scope.$on('contextMenu', function(event, data) {
+	$scope.$on('contextMenu', function(event, res) {
+		var data = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
+		
+		$scope.widget = res.widget;		
 		$scope.xpid = data.xpid;
 		$scope.reasons = {
 			list: [],
 			show: false
 		};
+		
+		// remember parent xpid to delete records
+		if (res.widget == 'recordings')
+			$scope.targetID = res.obj.xpid;
 		
 		// get type
 		if (data.firstName !== undefined) {
@@ -48,20 +57,26 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			$scope.type = 'ConferenceRoom';
 			$scope.conference = data;
 			$scope.name = data.name;
-		}else if(data.parkExt !== undefined){
-			$scope.type = 'ParkedCall'
+		}
+		else if (data.parkExt !== undefined) {
+			$scope.type = 'ParkedCall';
 			$scope.contact = contactService.getContact(data.callerContactId);
-			if($scope.contact == null){
-				$scope.name = "private"
+			if ($scope.contact == null) {
+				$scope.name = "private";
 				$scope.canDock = false;
 			}
 			$scope.parkedCall = data; 
-
-		}else {
+		}
+		else if (data.name) {
 			$scope.type = 'Group';
 			$scope.group = data;
 			$scope.name = data.name;
 			$scope.isMine = groupService.isMine(data.xpid);
+		}
+		else {
+			$scope.type = null;
+			$scope.name = null;
+			return;
 		}
 		
 		// check if in dock
@@ -113,14 +128,17 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.contact.xpid});
 	};
 	
+	$scope.deleteRecording = function() {
+		httpService.sendAction('callrecording', 'remove', {id: $scope.targetID});
+	};
+	
 	$scope.callNumber = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
 	
 	$scope.takeCall = function(){
 		httpService.sendAction('parkedcalls','transferFromPark',{parkedCallId:$scope.parkedCall.xpid,contactId:$scope.meModel.my_pid});
-	}
-	
+	};	
 
 	// generic function for any internal calls (page, intercom, voicemail, etc.)
 	$scope.callInternal = function(action, group) {

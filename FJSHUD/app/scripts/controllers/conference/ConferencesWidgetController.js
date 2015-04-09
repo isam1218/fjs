@@ -5,7 +5,11 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.conferences = conferenceService.getConferences();
 	$scope.sortBy = 'location';
 
-	$scope.sort_options = [{display_name: "Sort By Location"}, {display_name: "Sort By Room Number"}, {display_name: "Sort By Activity"}];
+	$scope.sort_options = [
+		{display_name: $scope.verbage.sort_room_by_location}, 
+		{display_name: $scope.verbage.sort_by_room_number}, 
+		{display_name: $scope.verbage.sort_by_activity}
+	];
 	
 	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
 	// $scope.selectedConference = $scope.sort_options[1];
@@ -30,7 +34,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		// update totals
 		$scope.totals = {occupied: 0, talking: 0, all: 0};
-		
+		x
 		for (i = 0; i < $scope.conferences.length; i++) {
 			if ($scope.conferences[i].members && $scope.conferences[i].members.length > 0) {
 				$scope.totals.occupied++;

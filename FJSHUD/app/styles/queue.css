@@ -14,6 +14,9 @@
   overflow-y: auto;
   padding: .5em 2.5%;
 }
+.Widget.Queues .QueueList .ListRow:hover .ListRowStatus {
+  visibility: visible !important;
+}
 .Widget.Queues .MyStatus {
   font-size: 1em !important;
 }

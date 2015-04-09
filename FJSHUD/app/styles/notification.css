@@ -4,7 +4,7 @@
   padding-left: 10px;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
-  height: 20px;
+  height: 2.5em;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -12,6 +12,9 @@
   color: #009cff;
   font-weight: bold;
   font-size: .7em;
+}
+.LeftBarNotificationMessageSection .NotificationDisplayName span {
+  float: left;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayNameQueue {
   height: 20px;
@@ -24,18 +27,22 @@
   font-size: .7em;
 }
 .LeftBarNotificationMessageSection .NotificationTime {
-  font-size: .5em;
+  font-size: 1em;
   color: black;
   font-weight: normal;
+  position: relative;
   float: right;
-  margin-right: 10px;
+  right: 20%;
 }
 .LeftBarNotificationMessageSection .NotificationMessage {
   width: 100%;
-  white-space: pre;
-  word-wrap: break-word;
+  /*white-space: pre;
+		word-wrap:break-word;*/
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
+  overflow: hidden;
+  max-height: 4.2em;
+  padding-bottom: 20px;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
@@ -51,27 +58,30 @@
   display: inline-block;
 }
 .NotificationMessages {
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-top: 1px solid #ccc;
+  /*border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+	border-top:1px solid #ccc;*/
   overflow-y: auto;
   overflow-x: hidden;
   background-image: url("../img/XTile-Widget.png");
+  background: transparent;
 }
 .LeftBarNotifications {
-  max-height: 1px;
   transition: 1s;
-  /*display:block;
-	overflow-y:auto;
-	overflow-x: hidden;
-	height:600px;
-	*/
+}
+.LeftBarNotificationSection {
+  background-color: #999;
+  background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));
+  border-bottom: solid 1px #777;
+}
+.LeftBarNotificationSection:hover {
+  background: transparent;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 400px;
+  /*max-height:400px;*/
 }
 .NotificationType {
   font-size: .6em;
@@ -81,17 +91,36 @@
 }
 .NotificationSection {
   margin-top: 5px;
-  border-bottom: solid 1px #eee;
+  /*border-bottom:solid 1px #eee;*/
   -webkit-box-orient: horizontal;
   display: -webkit-box;
+  padding-left: 5px;
+  width: 100%;
+}
+.NotificationSection.firstsection {
+  margin-top: 10px;
 }
 .NotificationHeader {
   float: right;
+  margin-right: -1px;
+}
+.NotificationHeader .firstHeaderTitle {
+  position: relative;
+  bottom: -1.3em;
+  right: -1px;
 }
 .NotificationDivider {
   border-bottom: 1px solid #ccc;
-  top: -2px;
   display: block;
+  height: 4px;
+}
+.NotificationDivider.firstHeaderDivider {
+  background-color: #999;
+  background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));
+  height: 2.3em;
+}
+.NotificationDivider.firstHeaderDivider img {
+  display: none;
 }
 .LeftBarNotificationAvatarSection {
   position: relative;
@@ -108,11 +137,14 @@
   width: 51px;
   height: 21px;
   background: url("../img/XEvent.png?v=1418381374907") no-repeat 0px 0px;
+  position: relative;
+  right: 0;
+  bottom: 14px;
 }
 .NotificationClose {
   width: 50%;
   height: 24px;
-  margin: 0 auto;
+  margin: -3px auto 0 auto;
   background: url("../img/XIconSet-24x24.png?v=1418381374907") no-repeat -24px -24px;
 }
 .NotificationAvatar {
@@ -140,14 +172,15 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.Messages:not(:first-child) {
-  margin-top: -18px;
-}
 .Messages {
   position: relative;
-  min-height: 50px;
+  /*min-height: 50px;*/
   font-style: normal;
   font-size: 1em;
+  background-image: url("../img/XTile-Widget.png");
+}
+.Messages:not(:first-child) {
+  margin-top: -18px;
 }
 a.Messages {
   text-decoration: none;

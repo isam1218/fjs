@@ -2,6 +2,7 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 	var timer;
 	var current;
 
+	// used as context-menu="object|scopeName"
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
@@ -52,10 +53,16 @@ hudweb.directive('contextMenu', ['$rootScope', '$parse', '$timeout', function($r
 			});
 			
 			function showOverlay() {
-				// send object to controller
-				var data = $parse(attrs.contextMenu)(scope);
+				// eval object before sending to controller
+				var data = attrs.contextMenu.split('|');				
+				data = {
+					obj: $parse(data[0])(scope),
+					widget: data[1] ? $parse(data[1])(scope) : null
+				};
 				
-				if (!data) return;
+				// cancel if no data
+				if (!data.obj && data.widget != 'recordings')
+					return;
 				
 				$rootScope.$broadcast('contextMenu', data);
 				

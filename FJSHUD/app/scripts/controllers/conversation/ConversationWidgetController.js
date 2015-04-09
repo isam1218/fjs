@@ -4,7 +4,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
 	$scope.messages = [];
 	
 	var CONFERENCE_CALL_TYPE = 0;
-	var CONTACT_CALL_TYPE = 4
+	var CONTACT_CALL_TYPE = 4;
 
     $scope.enableChat = true;
     $scope.enableFileShare = true;
@@ -12,7 +12,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
     $scope.targetId = $scope.contactID;
     $scope.targetAudience="contact";
     $scope.targetType="f.conversation.wall";
-    $scope.feed = "contacts"
+    $scope.feed = "contacts";
 
     if($scope.contact && $scope.contact.call){
     	$scope.targetCallContact = contactService.getContact($scope.contact.call.contactId);
@@ -32,7 +32,12 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
 		}
 	});
 	
-    $scope.tabs = [{upper: 'Chat', lower: 'chat'}, {upper: 'Voicemails', lower: 'voicemails'}, {upper: 'Groups', lower: 'groups'}, {upper: 'Queues', lower: 'queues'}, {upper: 'Call Log', lower: 'calllog'}, {upper: 'Recordings', lower: 'recordings'}];
+    $scope.tabs = [{upper:$scope.verbage.chat, lower: 'chat'}, 
+    {upper: $scope.verbage.voicemail_tab, lower: 'voicemails'}, 
+    {upper: $scope.verbage.group, lower: 'groups'}, 
+    {upper: $scope.verbage.queues, lower: 'queues'}, 
+    {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
+    {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 

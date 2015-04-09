@@ -23,7 +23,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
 	// get queue members
     $scope.queueMembers = [];
 
-	if ($scope.queue.members) {
+	if ($scope.queue && $scope.queue.members) {
 		for (var i = 0; i < $scope.queue.members.length; i++) {
 		  var member = $scope.queue.members[i];
 

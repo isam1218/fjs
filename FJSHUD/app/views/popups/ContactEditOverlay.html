@@ -10,38 +10,38 @@
 		<div class="Sections">
 			<div class="Section">
 				<div>
-					<h4>Contact Information</h4>
-					<em>Want to know who is calling you?</em>
+					<h4>{{::verbage.contact_info}}</h4>
+					<em>{{::verbage.want_to_know_who_is_calling}}</em>
 				</div>
 				<div>
-					<label>First Name</label>
+					<label>{{::verbage.first_name}}</label>
 					<input ng-model="add.firstName" type="text" class="XInputText" />
 				</div>
 				<div>
-					<label>Last Name</label>
+					<label>{{::verbage.last_name}}</label>
 					<input ng-model="add.lastName" type="text" class="XInputText" />
 				</div>
 				<div>
-					<label>Display Name</label>
+					<label>{{::verbage.display_name}}</label>
 					<input ng-model="add.displayName" type="text" class="XInputText" />
 				</div>
 				<div>
-					<h4>Visibility</h4>
-					<input ng-model="add.favorite" type="checkbox" /> Add to favorites group
+					<h4>{{::verbage.visibility}}</h4>
+					<input ng-model="add.favorite" type="checkbox" /> {{::verbage.add_to_favorites}}
 				</div>
 			</div>
 			
 			<div class="Section">
 				<div>
-					<h4>Phones</h4>
-					<em>Add contact phone to make calls</em>
+					<h4>{{::verbage.phones}}</h4>
+					<em>{{::verbage.add_contact_phone_to_make_calls}}</em>
 				</div>
 				<div>
-					<label>Business phone</label>
+					<label>{{::verbage.business_phone}}</label>
 					<input ng-model="add.business" type="text" class="XInputText" />
 				</div>
 				<div>
-					<label>Mobile phone</label>
+					<label>{{::verbage.mobile}}</label>
 					<input ng-model="add.mobile" type="text" class="XInputText" />
 				</div>
 				<div>
@@ -49,15 +49,15 @@
 					<em>Want to chat and e-mail this person?</em>
 				</div>
 				<div>
-					<label>E-mail</label>
+					<label>{{::verbage.email}}</label>
 					<input ng-model="add.email" type="text" class="XInputText" />
 				</div>
 				<div>
-					<label>GoogleTalk (JID)</label>
+					<label>{{::verbage.google_talk}}</label>
 					<input ng-model="add.jid" type="text" class="XInputText" />
 				</div>
 				<div>
-					<label>IMS</label>
+					<label>{{::verbage.IMS}}</label>
 					<input ng-model="add.ims" type="text" class="XInputText" />
 				</div>
 			</div>
@@ -67,7 +67,7 @@
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="editing" />
 			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="{{ editing ? 'Save Changes' : 'Add Contact' }}" ng-click="saveContact()" />
+			<input type="button" class="XButton" value="{{ editing ? verbage.save_changes : verbage.add_contact }}" ng-click="saveContact()" />
 		</div>
 	</div>
 </div>

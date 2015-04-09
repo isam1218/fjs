@@ -1,19 +1,19 @@
 <div>     
     <div class="ListViewTopNote">
-        <span style="font-size:12px;">{{ joined ? 'you are on a call' : 'You are not a member of this conference' }}</span>
-        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" ng-click="joinConference()"value="{{joined ? 'Leave' : 'Join' }}"> </input> 
+        <span style="font-size:12px;">{{ joined ? verbage.you_are_on_call : verbage.not_a_member_of_conference }}</span>
+        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" ng-click="joinConference()"value="{{joined ? verbage.leave : verbage.join }}"> </input> 
 	</div>
 
 </div>
 
 <div class="ToolBar" style="height:6em;"> 
     <div class="ConferenceMembers"> 
-        <div class="Conference-HeaderTitle">Conference Members</div>
+        <div class="Conference-HeaderTitle">{{::verbage.conference_member}}}</div>
         
 
         <div class="Add SearchInputBox" style="top:20px">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="search" contact-search conference="true" placeholder="Add someone" data-ng-model="query"></div>
+                <input class="SearchInputBoxInput" type="search" contact-search conference="true" placeholder="{{verbage.add_someone}}" data-ng-model="query"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>

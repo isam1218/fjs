@@ -1,0 +1,52 @@
+<div class="Overlay" style="z-index:1200">
+    
+    <style> 
+
+        #dialogheadicon{
+            left: 0px;
+              top: 10px;
+              width: 40px;
+              height: 40px;
+              background: url("img/XApp-Icons.png") no-repeat -200px -40px;
+              font-size:12px;
+        }
+
+        #header_label{
+            display: inline-block;
+            position: absolute;
+            left: 10%;
+            top: 4%;
+        }
+    </style>
+    <div   class="Background"></div>
+    <div class="Foreground">
+        <div class="Close">x</div>
+        
+        <div class="Header">
+            <span><div id="dialogheadicon"></div>  <h2 id="header_label">We are so sorry. You are not authorized to use the fonality web client at this time.</h2></span>
+        </div>
+        
+        <div class="Sections">
+            <div class="Section">
+                 <div>
+                    <h4>WHY?</h4>
+                    <em>You have no valid license</em>
+                </div>
+            </div>
+            
+            <div class="Section">
+                <div>
+                    <h4>SUGGESTION</h4>
+                    <em>if you think this is an error, or you would like to request participation, please contact your system administrator for further assistance</em>
+                </div>
+            </div>
+        </div>
+        
+        <div class="Footer">
+            
+        
+            <input type="button" class="XButton XButtonRed" value="Sign in as another user" ng-click="reloadPage()" />
+           
+        </div>
+    </div>
+</div>

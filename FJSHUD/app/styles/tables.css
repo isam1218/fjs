@@ -28,7 +28,8 @@
 }
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  font-size: .7em;
+  /*font-size: .7em;*/
+  font-size: .65em;
   line-height: 2.5em;
 }
 .DirectionArrow {
@@ -67,9 +68,45 @@
   flex-direction: row;
   text-decoration: none;
 }
-.ListRow:hover .Remove {
+.ListRow .vmcallbtn {
+  visibility: hidden;
+  right: 0;
+  top: 0;
+  position: absolute;
+}
+.ListRow .ListRowStatus {
+  visibility: visible;
+}
+.ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .Remove {
   display: block;
   background-color: #f0f0ff;
+}
+.ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .vmcallbtn {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+  visibility: visible;
+  height: 26px;
+  width: 40px;
+  text-align: center;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  top: 8px;
+  right: 5px;
+}
+.ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .ListRowStatus:not(.Members) {
+  visibility: hidden;
 }
 .ListRow .Remove {
   position: absolute;
@@ -115,6 +152,18 @@
   color: #888;
   font-size: .8em;
   text-align: center;
+  line-height: 1em;
+  height: 1em;
+  position: relative;
+  top: 10px;
+  right: 5px;
+  display: inline-block;
+}
+.ListRow .ListRowStatus .ListRowStatusIcon,
+.ListRow .ListRowStatus .ListRowStatusText {
+  display: inline-block;
+  position: relative;
+  top: -10px;
 }
 .ListRow .CallStatus {
   float: right;
@@ -275,11 +324,15 @@
   white-space: nowrap;
 }
 .InlineList {
-  border: solid 1px #eee;
+  /*border : solid 1px #eee;*/
   border-radius: 3px;
   -webkit-border-radius: 3px;
   position: relative;
-  margin: 0 10px 10px;
+  /*margin: 0 10px 10px;*/
+}
+.InlineList .ListRow {
+  width: 96%;
+  margin: 0 auto;
 }
 .InlineList.ListIsEmpty {
   border: solid 1px transparent;

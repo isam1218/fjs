@@ -2,7 +2,7 @@
 	<input class="SearchBox" type="search"
         ng-model="query"
         x-webkit-speech=""
-        placeholder="Search" />
+        placeholder="{{::verbage.search}}" />
 		
   <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
@@ -44,27 +44,27 @@
 		<div class="Stats">
 			<div ng-class="(queue.info.waiting > queueThresholds.waiting && queueThresholds.waiting != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.waiting }}</strong>
-				Waiting
+				{{::verbage.waiting}}
 			</div>
 			<div ng-class="(queue.info.esa > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.esa*1000 | duration }}</strong>
-				Avg Wait
+				{{::verbage.avg_wait}}
 			</div>
 			<div ng-class="(queue.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>
-				Avg Talk
+				{{::verbage.avg_talk}}
 			</div>
 			<div >
 				<strong>{{ queue.info.abandon + queue.info.completed }}</strong>
-				Total
+				{{::verbage.talk}}
 			</div>
 			<div ng-class="(queue.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.abandonPercent }}%</strong>
-				Abandon
+				{{::verbage.aban}}
 			</div>
 			<div>
 				<strong>{{ queue.info.active }}</strong>
-				Active
+				{{::verbage.active}}
 			</div>
 		</div>
 	</div>
@@ -74,31 +74,31 @@
 	<div class="Grid">
 		<div class="Header">
 			<div ng-click="setSort('name')">
-				<span>Queue Name</span>
+				<span>{{::verbage.queue_name}}</span>
 				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.waiting')">
-				<span>Waiting</span>		
+				<span>{{::verbage.waiting}}</span>		
 				<div ng-if="sortColumn == 'info.waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.esa')">
-				<span>Avg Wait</span>		
+				<span>{{::verbage.avg_wait}}</span>		
 				<div ng-if="sortColumn == 'info.esa'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.avgTalk')">
-				<span>Avg Talk</span>		
+				<span>{{::verbage.avg_talk}}</span>		
 				<div ng-if="sortColumn == 'info.avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.abandon + info.completed')">
-				<span>Total</span>		
+				<span>{{::verbage.total}}</span>		
 				<div ng-if="sortColumn == 'info.abandon + info.completed'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.abandonPercent')">
-				<span>Aband</span>		
+				<span>{{::verbage.abandoned}}</span>		
 				<div ng-if="sortColumn == 'info.abandonPercent'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.active')">
-				<span>Active</span>		
+				<span>{{::verbage.active}}</span>		
 				<div ng-if="sortColumn == 'info.active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 		</div>

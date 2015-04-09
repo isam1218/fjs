@@ -24,7 +24,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
          * @protected
          */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-     window.onbeforeunload = function(){
+     /*window.onbeforeunload = function(){
      	//return "Are you sure you want to close the window";
      	
      	if(localStorage.fon_tabs){
@@ -46,7 +46,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
      	
 		return "Are you sure you want to navigate away from this page?";
 
-    }
+    }*/
 
 
      //when unloading reassign master tab 
@@ -275,7 +275,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
-		console.log(authURL);
 		location.href = authURL;
 	};
 	
@@ -313,7 +312,25 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			console.log("Error accessing this api: "  + fjs.CONFIG.SERVER.serverURL 
 			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
 			+ authTicket)
-			attemptLogin();
+			
+			switch(status){
+				case 401:
+					break;
+				case 402:
+					//alert("bad authentication");
+					delete localStorage.nodeID;
+					delete localStorage.authTicket;
+					$rootScope.$broadcast('no_license', undefined);
+
+					break;
+				default:
+					delete localStorage.nodeID;
+					delete localStorage.authTicket;
+					attemptLogin();
+					break;
+			}
+
+			//attemptLogin();
 		});
 	}
 	else {
