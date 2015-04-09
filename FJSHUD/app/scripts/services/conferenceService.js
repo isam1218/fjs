@@ -47,9 +47,6 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	$rootScope.$on("conferences_synced",function(event, data){
 		conferences = data;
 		deferred.resolve(conferences);
-			
-		// pull feed again in case shared worker got ahead of us
-		httpService.getFeed('server');
 				
 		// add avatar function
 		for (i = 0; i < conferences.length; i++) {
