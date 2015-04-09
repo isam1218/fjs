@@ -3,33 +3,53 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
 	var version = 0;
 	var scrollbox = {};
+	var chat = {};
 	var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
+	
+	// set chat data
+	if ($routeParams.contactId) {
+		chat.name = $scope.contact.displayName;
+		chat.audience = 'contact';
+		chat.targetId = $routeParams.contactId;
+		chat.type = 'f.conversation.wall';
+	}
+	else if ($routeParams.conferenceId) {
+		chat.name = $scope.conference.name;
+		chat.audience = 'conference';
+		chat.targetId = $routeParams.conferenceId;
+		chat.type = 'f.conversation.chat';
+	}
+	else if ($routeParams.groupId) {
+		chat.name = $scope.group.name;
+		chat.audience = 'group';
+		chat.targetId = $routeParams.groupId;
+		chat.type = 'f.conversation.chat';
+	}
+	else if ($routeParams.queueId) {
+		chat.name = $scope.queue.name;
+		chat.audience = 'queue';
+		chat.targetId = $routeParams.queueId;
+		
+		// alerts are a wee bit different
+		if ($routeParams.route && $routeParams.route == 'alerts') {
+			chat.type = 'queuemessage';
+			$scope.showAlerts = true;
+			$scope.alertStatus = 3;
+		}
+		else
+			chat.type = 'f.conversation.chat';
+	}
 	
 	$scope.upload = {};
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	
 	// send to pop-up controller
-	$scope.showAttachmentOverlay = function() {
-		var name = '', audience = '';
-		
-		if ($scope.contact) {
-			name = $scope.contact.displayName;
-			audience = 'contact';
-		}
-		else if ($scope.conference) {
-			name = $scope.conference.name;
-			audience = 'conference';
-		}
-		else if ($scope.group) {
-			name = $scope.group.name;
-			audience = 'group';
-		}
-		
-		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
-			name: name,
-			audience: audience,
-			xpid: $scope.targetId
+	$scope.showAttachmentOverlay = function() {		
+		$scope.showOverlay(true, 'FileShareOverlay', {
+			name: chat.name,
+			audience: chat.audience,
+			xpid: chat.targetId
 		});
 	};
 
@@ -54,7 +74,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			}
 		}
 		
-		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
+		$scope.showOverlay(true, 'FileShareOverlay', {
 			downloadables: downloadables,
 			current: current
 		});
@@ -70,7 +90,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
 	
-	httpService.getChat($scope.feed, $scope.targetId).then(function(data) {
+	httpService.getChat(chat.audience+'s', chat.type, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
 		
@@ -106,38 +126,24 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			if (dupe) continue;
 			
 			var from = data[key].from.replace('contacts:', '');
-			var to = data[key].to ? data[key].to.replace('contacts:', '') : null;
 			
-			if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
-				if(from == $scope.meModel.my_pid){
-					if(settingsService.getSetting('hudmw_chat_sound_sent') == 'true'){
+			if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
+				if (from == $scope.meModel.my_pid){
+					if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
 						phoneService.playSound("sent");
-					}
-				}else{
-					if(settingsService.getSetting('hudmw_chat_sound_received') == 'true'){
+				}
+				else{
+					if(settingsService.getSetting('hudmw_chat_sound_received') == 'true')
 						phoneService.playSound("received");
-				
-					}
 				}
 			}
 
-			var contextInfo = data[key].context.split(":");
-			var context = contextInfo[0];
-
-			switch(context){
-				case 'conferences':
-					if($scope.conferenceId == contextInfo[1]){
-						$scope.messages.push(data[key]);
-						found = true;
-					}
-					break;
-				default:
-					// only attach messages related to this user
-					if (from == $scope.contactID || to == $scope.contactID){
-						$scope.messages.push(data[key]);
-						found = true;
-					}	 
-					break;
+			// only attach messages related to this page
+			var context = data[key].context.split(":")[1];
+			
+			if (data[key].type == chat.type && context == chat.targetId) {
+				$scope.messages.push(data[key]);
+				found = true;
 			}
 		}
 		
@@ -155,15 +161,26 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		if (this.message == '')
 			return;
 			
-		var data = {
-			type: $scope.targetType,
-			audience: $scope.targetAudience,
-			to: $scope.targetId,
-			message: this.message,
-		};
+		// alert
+		if ($scope.showAlerts) {
+			httpService.sendAction('queues', 'broadcastMessage', {
+				queueId: chat.targetId,
+				plain: this.message,
+				xhtml: this.message,
+				status: $scope.alertStatus,
+				clientId: ''
+			});
+		}
+		// normal chat
+		else {
+			httpService.sendAction('streamevent', 'sendConversationEvent', {
+				type: chat.type,
+				audience: chat.audience,
+				to: chat.targetId,
+				message: this.message
+			});
+		}		
 		
-		httpService.sendAction('streamevent', 'sendConversationEvent', data);
-		//phoneService.playSound("sent");
 		this.message = '';
 	};
 
@@ -234,7 +251,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			$scope.loading = true;
 			
 			// ping server
-			httpService.getChat($scope.feed, $scope.targetId, version).then(function(data) {
+			httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
 				version = data.h_ver;
 			
 				$scope.loading = false;
@@ -267,7 +284,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		}
 		
 		return false;
-	}
+	};
 
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);

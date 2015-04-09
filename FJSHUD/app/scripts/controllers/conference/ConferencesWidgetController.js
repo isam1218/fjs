@@ -34,7 +34,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		// update totals
 		$scope.totals = {occupied: 0, talking: 0, all: 0};
-		x
+		
 		for (i = 0; i < $scope.conferences.length; i++) {
 			if ($scope.conferences[i].members && $scope.conferences[i].members.length > 0) {
 				$scope.totals.occupied++;
