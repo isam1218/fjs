@@ -31,8 +31,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		chat.targetId = $routeParams.queueId;
 		
 		// alerts are a wee bit different
-		if ($routeParams.route && $routeParams.route == 'alerts')
+		if ($routeParams.route && $routeParams.route == 'alerts') {
 			chat.type = 'queuemessage';
+			$scope.showAlerts = true;
+			$scope.alertStatus = 3;
+		}
 		else
 			chat.type = 'f.conversation.chat';
 	}
@@ -138,7 +141,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			// only attach messages related to this page
 			var context = data[key].context.split(":")[1];
 			
-			if (context == chat.targetId) {
+			if (data[key].type == chat.type && context == chat.targetId) {
 				$scope.messages.push(data[key]);
 				found = true;
 			}
@@ -158,14 +161,26 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		if (this.message == '')
 			return;
 			
-		var data = {
-			type: chat.type,
-			audience: chat.audience,
-			to: chat.targetId,
-			message: this.message,
-		};
+		// alert
+		if ($scope.showAlerts) {
+			httpService.sendAction('queues', 'broadcastMessage', {
+				queueId: chat.targetId,
+				plain: this.message,
+				xhtml: this.message,
+				status: $scope.alertStatus,
+				clientId: ''
+			});
+		}
+		// normal chat
+		else {
+			httpService.sendAction('streamevent', 'sendConversationEvent', {
+				type: chat.type,
+				audience: chat.audience,
+				to: chat.targetId,
+				message: this.message
+			});
+		}		
 		
-		httpService.sendAction('streamevent', 'sendConversationEvent', data);
 		this.message = '';
 	};
 

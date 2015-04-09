@@ -45,8 +45,20 @@
     </div>
 </div>
 
-<div class="ChatInputBox" ng-if="enableChat">
-    <div class="ChatInputBoxBorder"></div>
-    <textarea ng-model="message" class="text ChatInputBoxInput" contenteditable="true" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break"></textarea>
-    <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
+<div class="ChatInputBox" ng-if="enableChat">	
+	<div class="ChatAlertOptions" ng-if="showAlerts">
+		<div class="Left">
+			<input type="radio" ng-model="alertStatus" name="alertStatus" value="3" /> All Agents
+			<input type="radio" ng-model="alertStatus" name="alertStatus" value="1" /> Logged In
+			<input type="radio" ng-model="alertStatus" name="alertStatus" value="2" /> Logged Out
+		</div>
+		<div class="Right">
+			{{ 150 - message.length }} characters left
+		</div>
+	</div>
+	
+	<div class="ChatInputFields">
+		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : -1}}"></textarea>
+		<div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>Send</span></div>
+	</div>
 </div>
