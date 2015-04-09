@@ -40,7 +40,7 @@
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
 					<br/>					
-					<div class="ListRowStatusText">{{contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline' }}</div>
+					<div class="ListRowStatusText">{{contact.custom_status ? verbage[contact.custom_status] : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}</div>
 				</div>
 				
 				<div class="CallStatus">

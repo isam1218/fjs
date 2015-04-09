@@ -5,7 +5,7 @@
 		<div class="Title">
 			<div>{{::verbage.my_queue}}</div>
 			<div ng-if="gadget.data.queues.length == 0">Not an agent</div>
-			<div ng-if="gadget.data.queues.length > 0">Logged {{ gadget.data.loggedIn > 0 ? 'in (' + gadget.data.loggedIn + ')' : 'out' }}</div>
+			<div ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.Logged_out }}</div>
 		</div>
 	</a>
 		
