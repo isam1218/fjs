@@ -154,7 +154,7 @@
 						{{ ::member.displayName }}
 						<br/>
 						<div class="IconDisplay XIcon-ChatStatus-{{member.hud_status || 'offline' }}"></div>
-						{{member.hud_status || 'offline'}}
+						{{verbage[member.hud_status] || verbage['offline']}}
 					</div>
 				</div>
 			</a>

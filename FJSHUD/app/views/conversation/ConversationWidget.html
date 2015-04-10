@@ -11,7 +11,7 @@
 			<br/>
             <div class="ListRowStatusIcon XIcon-QueueStatus-{{ contact.queue_status }}"></div>
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
-            <span class="ChatStatus">{{ contact.hud_status ? (contact.hud_status == 'dnd' ? 'busy' : contact.hud_status) : 'offline' }}</span>
+            <span class="ChatStatus">{{ contact.hud_status ? (contact.hud_status == 'dnd' ? verbage['busy'] : verbage[contact.hud_status]) : verbage['offline'] }}</span>
 		</div>
         <div class="WidgetHeaderCallStatus">
             <div ng-if="contact.call">

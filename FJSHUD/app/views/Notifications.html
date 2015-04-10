@@ -144,11 +144,11 @@
 		</div>
 		
 		<div style="float:right;display:inline-block;margin-top:5px">
-			<div ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton">{{::verbage.cancel}}</div>
-			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="!isRinging && !onHold" class="XButton">Hold</div>
-			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="!isRinging && !onHold">End</div>
-			<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="onHold">Talk</div>
-			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">{{::verbage.accept}}</div>
+			<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
+			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">Hold</div>
+			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">End</div>
+			<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">Talk</div>
+			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</div>
 		</div>
 		
 </div>
