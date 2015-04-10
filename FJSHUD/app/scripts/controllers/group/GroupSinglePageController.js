@@ -57,32 +57,25 @@ hudweb.controller('GroupSinglePageController', ['$scope','$routeParams','PhoneSe
 
     $scope.$on("groups_updated", function(event,data){
     	$scope.group = groupService.getGroup($scope.groupId);
-    });
-
-    $scope.$on("group_page_member_synced",function(event,data){
-    	var pageMembers = data.filter(function(item){
-    		return item.groupId == $scope.groupId;
-    	});
-		$scope.pageMembers = [];
-    	for (member in pageMembers){
-    		var contact = contactService.getContact(pageMembers[member].contactId);
-    		contact.pageMemberId = pageMembers[member].xpid;    		
-    		if(pageMembers[member].originator){
+    	var members = $scope.group.members;  	
+    	
+    	$scope.pageMembers = [];
+    	
+    	for (member in members){
+    		var contact = contactService.getContact(members[member].contactId);
+    		contact.pageMemberId = members[member].xpid;    
+    		
+    		if(members[member].originator){
     			$scope.groupCallOriginator = contact;	
     		}else{
     			$scope.pageMembers.push(contact);
     		}
     	}
-    });
+    });   
 
     $scope.callGroup = function(numPrefix){
     	if($scope.group.extension){
 			phoneService.makeCall(numPrefix + $scope.group.extension);
-    	}
+    	}    	
     }
-
-
-
-
-
 }]);

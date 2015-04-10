@@ -15,21 +15,10 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 	
 			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
-			if($(element).closest('.ConferenceMembers').length > 0)
-				element.css('width', '100%');
-			else
-			{
-				element.css('z-index', 100);
-				if(navigator.userAgent.indexOf('Firefox') != -1)
-				{
-					element.css('max-width', '20em');
-					element.css('min-width', '17.5em');
-				}	
-				else
-				{	
-					element.css('width', '19.5em');
-				}
-			}
+			element.css('width', '100%');
+			
+			if($(element).closest('.ConferenceMembers').length == 0)
+				element.css('z-index', 100);								
 				
 			// create overlay elements
 			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
