@@ -57,9 +57,25 @@ hudweb.controller('GroupSinglePageController', ['$scope','$routeParams','PhoneSe
 
     $scope.$on("groups_updated", function(event,data){
     	$scope.group = groupService.getGroup($scope.groupId);
+    	var members = $scope.group.members;    	
+    	/*
+    	$.each(members, function(){
+    		$scope.pageMembers.push(this);  
+    	});*/
+    	$scope.pageMembers = [];
+    	for (member in members){
+    		var contact = contactService.getContact(members[member].contactId);
+    		contact.pageMemberId = members[member].xpid;    
+    		
+    		if(members[member].originator){
+    			$scope.groupCallOriginator = contact;	
+    		}else{
+    			$scope.pageMembers.push(contact);
+    		}
+    	}
     });
 
-    $scope.$on("group_page_member_synced",function(event,data){
+   /* $scope.$on("group_page_member_synced",function(event,data){
     	var pageMembers = data.filter(function(item){
     		return item.groupId == $scope.groupId;
     	});
@@ -73,16 +89,11 @@ hudweb.controller('GroupSinglePageController', ['$scope','$routeParams','PhoneSe
     			$scope.pageMembers.push(contact);
     		}
     	}
-    });
+    });*/
 
     $scope.callGroup = function(numPrefix){
     	if($scope.group.extension){
 			phoneService.makeCall(numPrefix + $scope.group.extension);
-    	}
+    	}    	
     }
-
-
-
-
-
 }]);
