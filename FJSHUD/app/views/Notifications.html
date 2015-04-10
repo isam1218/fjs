@@ -1,10 +1,16 @@
 <div class="LeftBarNotificationSection notificationsSection" ng-mouseover="showNotificationBody = true; showHeader = true" ng-mouseleave="showHeader = false; showNotificationBody = todaysNotifications.length > 3 ? false:true">
-	 <div class="TitleBar hasButton" show-on-hover-parent>
+	<div class="TitleBar noNotifications" ng-show="!hasMessages">
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
-     </div>   
+     </div> 
+	 <div class="TitleBar hasButton"  ng-show="hasMessages" show-on-hover-parent>
+        <div class="Icon"></div>
+        <div>{{::verbage.notifications}}</div>
+        <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
+     </div>       
 	<div class="NotificationMessages LeftBarNotifications">
 		<!--<react-component name="notification" props='notifications'/>-->		   
 			<div class="Messages" ng-repeat="message in todaysNotifications">			
