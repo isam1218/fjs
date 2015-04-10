@@ -13,8 +13,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				});
 				break;
 			case 'conference':
+				conferenceService.getConferences().then(function(data) {
+					$scope.conferences = data;
+				});
+	
 				$scope.screen = 'conference';
-				$scope.conferences = conferenceService.getConferences();
 				$scope.selectedConf = null;
 				$scope.meToo = 0;
 				break;
@@ -40,10 +43,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	$scope.contacts = [];
 
 	var updateTime = function() {
-		if ($scope.onCall.call && $scope.onCall.call.created) {
+		if ($scope.onCall.call && $scope.onCall.call.startedAt) {
 			// format date
 			var date = new Date().getTime();
-			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.created, 'mm:ss');
+			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.startedAt, 'mm:ss');
 			
 			// also get recorded time
 			if ($scope.onCall.call.record)
@@ -93,7 +96,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		$scope.addError = null;
 		
 		if (screen == 'conference') {
-			$scope.conferences = conferenceService.getConferences();
+			conferenceService.getConferences().then(function(data) {
+				$scope.conferences = data;
+			});
+	
 			$scope.confQuery = '';
 			$scope.selectedConf = null;
 			$scope.meToo = 0;

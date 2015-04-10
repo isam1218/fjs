@@ -49,7 +49,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     * used to determine what tab is selected in the me widget controller
     *
     */
-    //$scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
+        //$scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
     $scope.tabs = [
     {label:$scope.verbage.general,option:'General'},
     {label:$scope.verbage.phone,option:'Phone'},

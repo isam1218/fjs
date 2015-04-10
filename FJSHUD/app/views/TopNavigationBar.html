@@ -20,13 +20,13 @@
 				<img class="AvatarImgPH" ng-src="{{voicemail.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 			</div>
 			<div class="Details">
-				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? 'to' : 'from' }}</em>
+				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
 				<strong>{{ voicemail.displayName || voicemail.name }}</strong>
 				<br/>
 				<span>{{ voicemail.primaryExtension || voicemail.extensionNumber }}</span>
 			</div>
 		</div>
-		<div class="Loading" ng-show="!player.loaded">Loading...</div>
+		<div class="Loading" ng-show="!player.loaded">{{::verbage.loading}}...</div>
 		<div class="Progress" ng-show="player.loaded">
 			<div class="Time">{{ player.position | duration }}</div>
 			<div class="Left"></div><div class="Bar">
@@ -60,7 +60,7 @@
 
 	<div class="XButton Logout" ng-click="logout()">
 		<div class="icon"></div>
-		<span>Sign out</span>
+		<span>{{::verbage.sign_out}}</span>
 	</div>
 
 	<div class="Status">

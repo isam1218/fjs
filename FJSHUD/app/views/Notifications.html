@@ -24,7 +24,7 @@
 					    <img />
 					   <div ng-if="$index == 0"> 
 					    <div class="Icon" ng-show="!showHeader"></div>
-				        <div ng-show="!showHeader">Notifications  </div>
+				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ notifications.length + ' events' }} </div>
 				       </div>             
 					</div>
@@ -77,7 +77,7 @@
 			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.notifications}} </h2> </div>
 			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.new_word}}: {{get_new_notifications().length}} </h2> </div>
 			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.away}}: {{ get_away_notifications().length}}</h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  Old:  {{ get_old_notifications().length}}</h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.old}}:  {{ get_old_notifications().length}}</h2> </div>
 		
 		</div>
 		
@@ -107,7 +107,7 @@
 							<div class="NotificationMessage"><p>{{ getMessage(message) }} </p> </div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
 								<span class="XButton XButtonRed" style="width:70px" > Reject</span>
-								<span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >Accept</a>
+								<span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
 								<span class="XButton" style="width:70px" > Play</span>
@@ -132,8 +132,8 @@
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
-			<input type="button" class="XButton" value="Cancel" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton XButtonRed" value="Clear All" ng-click="remove_all()" />
+			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton XButtonRed" value="{{::verbage.clear_all}}" ng-click="remove_all()" />
 		</div>
 	</div>
 
@@ -146,15 +146,15 @@
 		</div>
 		<div ng-click="showCurrentCallControls(currentCall)" style="display:inline-block" class="CallStatusText"> 
 			<div style="font-weight:bold;font-size:14px">{{currentCall.displayName}}</div>
-			<div><div>{{ currentCall.incoming ? 'inbound' : 'outbound'}} on call</div></div>
+			<div><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} on call</div></div>
 		</div>
 		
 		<div style="float:right;display:inline-block;margin-top:5px">
-			<div ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton">Cancel</div>
+			<div ng-click="endCall(currentCall.xpid)" ng-if="isRinging" class="XButton">{{::verbage.cancel}}</div>
 			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="!isRinging && !onHold" class="XButton">Hold</div>
 			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="!isRinging && !onHold">End</div>
 			<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="onHold">Talk</div>
-			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">Accept</div>
+			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && isRinging" class="XButton">{{::verbage.accept}}</div>
 		</div>
 		
 </div>

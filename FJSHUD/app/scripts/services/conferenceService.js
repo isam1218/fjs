@@ -1,5 +1,6 @@
 hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
-	var conferences = [];
+	var deferred = $q.defer();
+	var conferences = [];	
 
 	this.getConference = function(conferenceId){
 		for(conference in conferences){
@@ -10,21 +11,9 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	};
 	
 	this.getConferences = function() {
-		// wake shared worker
-		httpService.getFeed("conferences");
-		httpService.getFeed("conferencestatus");
-		httpService.getFeed("conferencemembers");
-		httpService.getFeed("conferencepermissions");
-		
-		return conferences;
+		// waits until data is present before sending back
+		return deferred.promise;
 	};
-	
-	this.getConferenceRecordings = function(conferenceId){
-		for(conference in conferences){
-
-		}
-	};
-
 
  	var conferenceHasMember = function(conference,contactId){
  		if(conference.members){
@@ -36,8 +25,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
  		}
 
  		return false;
-	}
-
+	};
 
 	var containsConferenceRecording = function(conference, callrecording){
 		callrecordings = conference.callrecordings;
@@ -56,35 +44,34 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 		SYNCING
 	*/
 
-	$rootScope.$on("conferences_synced",function(event,data){
-		if (conferences.length  < 1 && data) {
-			conferences = data;
-			
-			// pull feed again in case shared worker got ahead of us
-			httpService.getFeed('server');
-					
-			// add avatar function
-			for (i = 0; i < conferences.length; i++) {
-				conferences[i].getAvatar = function(index, size) {
-					if (this.members) {
-						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
-							return httpService.get_avatar(xpid, size, size);
-						}
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
+	$rootScope.$on("conferences_synced",function(event, data){
+		conferences = data;
+		deferred.resolve(conferences);
+				
+		// add avatar function
+		for (i = 0; i < conferences.length; i++) {
+			conferences[i].getAvatar = function(index, size) {
+				if (this.members) {
+					if (this.members[index] !== undefined) {
+						var xpid = this.members[index].contactId;
+						return httpService.get_avatar(xpid, size, size);
 					}
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
-				};
-			}
+				}
+				else
+					return 'img/Generic-Avatar-' + size + '.png';
+			};
 		}
 		
-		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
+		httpService.getFeed('conferencemembers');
+		httpService.getFeed('server');
+		httpService.getFeed('conferencestatus');
+		httpService.getFeed('conferencerecording');
+		httpService.getFeed('conferencepermissions');
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
-		
 		for(conference in conferences){
 			conferenceTemp = conferences[conference];
 			if(!conferences[conference].members){
@@ -109,12 +96,12 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				}
 			}
 		}
+		
+		$rootScope.loaded.conferences = true;
 		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
-
 	});
 
 	$rootScope.$on("server_synced",function(event,data){
-		
 		for(conference in conferences){
 			conferences[conference].location = "";
 			for(key in data){
@@ -128,20 +115,18 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	});
 
 	$rootScope.$on("conferencestatus_synced",function(event,data){
-		
 		for(conference in conferences){
-
 			for(key in data){
 				if(data[key].xpid == conferences[conference].xpid){
 					conferences[conference].status = data[key];
 				}
 			}
 		}
+		
 		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 
 	$rootScope.$on("conferencerecording_synced",function(event,data){
-		
 		for(conference in conferences){
 			conferences[conference].callrecordings = [];
 			
@@ -153,6 +138,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 				}
 			}
 		}
+		
 		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 	

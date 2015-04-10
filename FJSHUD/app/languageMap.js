@@ -48,7 +48,7 @@ fjs.i18n = {
 		others:'Others',
 		teams_visible_to_everyone:'Teams visible to everyone',
 		//call_status:'呼状態',
-		members:'メンバー',
+		members:'Members',
 		custom_status:'Custom Status',
 		location: 'location',
 		carrier: '通信事業者',
@@ -139,7 +139,6 @@ fjs.i18n = {
 　　    business_phone:	'Business phone',
 　　    IMS:	'IMS',
        JID:	'JID',
-　　　  my_department:'所属部門',
 	   alerts: 'Alerts',
 	   configure_desktop_alerts: 'Configure Desktop Alerts',
 	   show_alerts:	'Show alerts',
@@ -323,6 +322,9 @@ fjs.i18n = {
       queue_sort_total_calls:"Total calls (since last reset)",
       queue_abandoned_calls:'Abandoned calls',
       queue_active_calls:'Active calls',
+      agents_logged_into_queue:'Agents logged into the queue',
+      agents_logged_out_of_queue:'Agents logged into the queue',
+
 
       /******POPUPS*****/
       add_a_new_contact:'Add a New Contact',
@@ -361,7 +363,7 @@ fjs.i18n = {
       sort_by_call_status:'Sort By Call Status',
       sort_by_chat_status:'Sort By Chat Status',
       /****Phone Notifications ***/
-
+      clear_all:'Clear All',
       /***page**/
       page:'Page',
       group_page:'Group Page',
@@ -373,6 +375,7 @@ fjs.i18n = {
       /****DOCK AREA *****/
       parked_calls:'Parked Calls',
       no_calls_on_park:'no calls on park',
+
   },
 
 	/*****Japanese Language******/
@@ -691,6 +694,7 @@ fjs.i18n = {
       all_queues:'全てのキュー',
       my_status:'状態',
       aban:'放棄呼',
+      agents:'内線',
 
       queue_sort_calls_wait:'待ち呼数 ',
       queue_sort_avg_wait_time:'平均待ち時間 (ESA)',
@@ -698,7 +702,14 @@ fjs.i18n = {
       queue_sort_total_calls:"総呼数 （最後のリセットから）",
       queue_abandoned_calls:'途中放棄呼数 ',
       queue_active_calls:'通話中の呼数 ',
-      
+      agents_logged_into_queue:'Agents logged into the queue',
+      agents_logged_out_of_queue:'Agents logged into the queue',
+
+      agent_tab:'オペレータ',
+      stats_tab:'統計',
+      calls_tab:'通話',
+
+
       /******POPUPS*****/
       add_a_new_contact:'新しい連絡先を追加',
       messaging:'メッセージ方法',
@@ -749,10 +760,17 @@ fjs.i18n = {
       /****phone notifications ****/
       new_call:'新規通話',
       old:'未読',
+      clear_all:'すべてをクリア',
 
       /****DOCK AREA *****/
       parked_calls:'パーク保留',
       no_calls_on_park:'パーク保留はありません',
+
+      file_share_message:'メッセージ',
+      add_message_to_shared:'共有ファイルにメッセージを追加したり、単独でメッセージを送信',
+      auto_delete:'自動削除',
+      never:'決して',
+      hours:'3時間後'
   
 
 

@@ -70,8 +70,8 @@
                     </div>
 					
                     <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid">
-                        <div class="ConferenceAvatarSection Avatar AvatarNormal">
-                            <div class="GroupAvatarItem GroupAvatarItem_0" context-menu="conference">
+                        <div class="ConferenceAvatarSection Avatar AvatarNormal" context-menu="conference">
+                            <div class="GroupAvatarItem GroupAvatarItem_0">
 								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
 							</div>
                             <div class="GroupAvatarItem GroupAvatarItem_1">

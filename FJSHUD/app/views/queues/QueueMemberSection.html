@@ -10,8 +10,8 @@
 		<br/>
 		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.queue_status}}"></div>
 
-		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.hud_status || 'offline' }}"></div>
-		{{ member.hud_status || 'offline' }}
+		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.hud_status] || verbage['offline'] }}"></div>
+		{{ verbage[member.hud_status] || verbage['offline'] }}
     </div>
     <div class="ListRowStatus">
       <div class="Link ListRowDesc">#{{ member.primaryExtension }}</div>
