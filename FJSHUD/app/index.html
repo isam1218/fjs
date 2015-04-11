@@ -68,7 +68,7 @@
 							<div class="inner">{{::verbage.favorites}}</div>
 							<div class="arrow"></div>
 						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'recent'" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'recent'" ng-class="$safeApply(); tab == 'recent' ? 'fj-selected-item' : ''">
 							<div class="inner">{{::verbage.recent}}</div>
 							<div class="arrow"></div>
 						</a>
@@ -84,7 +84,7 @@
 				</div>
 
 				<div class="Contacts"
-					ng-show="tab != 'groups'"
+					ng-hide="tab == 'recent' || tab == 'groups'"
 					ng-include="'views/ContactsWidget.html'"
 					ng-controller="ContactsWidget">
 				</div>
@@ -92,6 +92,11 @@
 					ng-show="tab == 'groups'"
 					ng-include="'views/GroupsWidget.html'"
 					ng-controller="GroupsController">
+				</div>
+				<div class="Recent"
+					ng-show="tab == 'recent'"
+					ng-include="'views/RecentWidget.html'"
+					ng-controller="RecentController">
 				</div>
 
 				<div class="Notifications" ng-include="'views/Notifications.html'" ng-controller="NotificationController"></div>
@@ -213,6 +218,7 @@
     <script src="scripts/controllers/ZoomWidgetController.js"></script>
     <script src="scripts/controllers/ChatController.js"></script>
     <script src="scripts/controllers/DockController.js"></script>
+    <script src="scripts/controllers/RecentController.js"></script>
 
 	<!--services-->
     <script src="scripts/services/fdpRequest.js"></script>

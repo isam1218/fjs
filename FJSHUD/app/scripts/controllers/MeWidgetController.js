@@ -76,6 +76,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     myHttpService.getFeed('i18n_langs');
     
 
+    this.onAlertClicked = function(urlHash){
+        console.log(urlHash);
+    }
+
+
 
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
@@ -126,8 +131,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
+        // console.log('showLocationsPopup: context - ', context);
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
+        // console.log('scope.showPopup - ', $scope);
         $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y});
         return false;
     };

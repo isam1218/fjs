@@ -28,7 +28,7 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 		// search groups by name or description or extension number
 		groupService.getGroups().then(function(data) {
 			for (key in data) {
-				console.log('key - ', data[key]);
+				// console.log('key - ', data[key]);
 				if (data[key].name.toLowerCase().indexOf(query) != -1 || data[key].description.toLowerCase().indexOf(query) != -1 || data[key].extension.indexOf(query) != -1)
 					$scope.groups.push(data[key]);
 			}

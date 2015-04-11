@@ -224,6 +224,32 @@ p {
 @import "nativeAlert";
 @import "queue";
 
+.LeftBar .Recent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.LeftBar .Recent .ContactList {
+  flex: 1 1 0;
+  overflow-y: auto;
+  min-height: 60px;
+  margin-top: 10px;
+}
+
+.LeftBar .Recent .ContactList h4 {
+  margin: .5em 0 0 .5em;
+  color: #0093f0;
+  font-variant: small-caps;
+  font-size: .9em;
+}
+
+.LeftBar .Recent .ContactList h4 + em {
+  margin: 0 0 .5em .5em;
+  font-size: .8em;
+  display: block;
+}
+
 @supports (-moz-appearance:meterbar) {  
      input[type="search"]{float: left;}
      

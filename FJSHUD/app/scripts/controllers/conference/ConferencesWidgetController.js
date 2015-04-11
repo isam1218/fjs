@@ -15,17 +15,26 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	];
 	
 	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
-	// $scope.selectedConference = $scope.sort_options[1];
-	// console.log('upon initial load- 1) LS.conf_option is -  ', localStorage.conf_option);
-  // console.log('upon initial load- 2) $scope.selectedConference is - ', $scope.selectedConference);
 
+	if (localStorage.recent === undefined)
+		localStorage.recent = '{}';
+
+	$scope.recent = JSON.parse(localStorage.recent);
 
 	$scope.sortedBy = function(selectedConference){
-		// console.log('selectedConference passed into sortBy is - ', selectedConference);
 		$scope.selectedConference = selectedConference;
-		// console.log('*scope.selectedConference after assign - ', $scope.selectedConference);
 		localStorage.conf_option = JSON.stringify($scope.selectedConference);
-		// console.log('*LS.conf_option is - ', localStorage.conf_option);
+	};
+
+	$scope.storeRecentConference = function(confXpid){
+		$scope.recent = JSON.parse(localStorage.recent);
+		$scope.recent[confXpid] = {
+			type: 'conference',
+			time: new Date().getTime()
+		};
+		localStorage.recent = JSON.stringify($scope.recent);
+		// console.log('*storeRecentConference - ', $scope.recent);
+		$rootScope.$broadcast('recentAdded', {info: confXpid});
 	};
 
 	$scope.enableChat = true;

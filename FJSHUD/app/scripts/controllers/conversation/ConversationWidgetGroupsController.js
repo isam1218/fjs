@@ -6,7 +6,6 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     $scope.contactId = $routeParams.contactId;
     $scope.query = "";
     $scope.add = {};
-    $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : {};
 	
     // pull updates from service
     $scope.$on('groups_updated',function(event,data) {
@@ -98,10 +97,6 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
         }
     };
 
-    $scope.storeRecent = function(xpid){
-        $scope.recents[xpid] = new Date().getTime();
-        localStorage.recents = JSON.stringify($scope.recents);
-    };
         
     var filterGroup = function(){
         return function(group){
