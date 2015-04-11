@@ -135,7 +135,7 @@ fjs.i18n = {
     	display_name:'Display Name',
 　      email: 'E-Mail',
    		mobile:	'Mobile',
-　　    voicemail:	'ボイスメールアドレス',
+　　    voicemail:	'Voicemail',
 　　    business_phone:	'Business phone',
 　　    IMS:	'IMS',
        JID:	'JID',
@@ -302,7 +302,7 @@ fjs.i18n = {
       department:'Department',
       member_of_department:'Contact is a member of this department',
       our_teams:'Our Teams',
-      both_in_these_teams:'We are both both in these terms',
+      both_in_these_teams:'We are both both in these teams',
 
       /*****QUEUES******/
       login_all:'Login All',
@@ -375,6 +375,9 @@ fjs.i18n = {
       /****DOCK AREA *****/
       parked_calls:'Parked Calls',
       no_calls_on_park:'no calls on park',
+
+      no_voicemails:'No Voicemails In View',
+      no_voicemails_between:'There are currently no voicemails in the system between you and'
 
   },
 
@@ -460,7 +463,7 @@ fjs.i18n = {
     	you:	'あなた',
   		to:	'通話相手',
    		duration:	'通話時間',
-		Preferences:	'HUDWeb情報',
+		preferences:	'HUDWeb情報',
     	general:	'一般',
 　　　	language:	'言語',
         autoclear_search:	'自動クリア検索',
@@ -677,16 +680,16 @@ fjs.i18n = {
 
       /***Conversation***/
       department:'部門',
-      member_of_department:'Contact is a member of this department',
-      our_teams:'Our Teams',
-      both_in_these_teams:'We are both both in these terms',
+      member_of_department:'コンタクトはこの部門のメンバー',
+      our_teams:'我々のチーム',
+      both_in_these_teams:'我々は、下記のチームに所属しています',
 
       /*****QUEUES******/
       login_all:'すべてのログイン',
       logout_all:'すべてログアウト',
 
       logged_in:'すべてログアウト',
-      Logged_out:'Logged Out',
+      Logged_out:'ログアウト',
       logout:'ログアウト',
       active:'通話中',
       queue_name:'キュー名称',
@@ -708,6 +711,7 @@ fjs.i18n = {
       agent_tab:'オペレータ',
       stats_tab:'統計',
       calls_tab:'通話',
+      all_agents:' すべてのエージェント',
 
 
       /******POPUPS*****/
@@ -770,9 +774,11 @@ fjs.i18n = {
       add_message_to_shared:'共有ファイルにメッセージを追加したり、単独でメッセージを送信',
       auto_delete:'自動削除',
       never:'決して',
-      hours:'3時間後'
+      hours:'3時間後',
   
 
+      no_voicemails:'ビューにはボイスメールがありません',
+      no_voicemails_between:'現在システム内にボイスメールはありません'
 
 
 

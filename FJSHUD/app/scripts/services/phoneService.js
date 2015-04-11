@@ -29,6 +29,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      var CALL_STATUS_ERROR = "3";
 
 
+     $rootScope.callState = {};
+
+     $rootScope.callState.CALL_UNKNOWN = -1;
+     $rootScope.callState.CALL_RINGING = 0;
+     $rootScope.callState.CALL_ACCEPTED = 2;
+     $rootScope.callState.CALL_HOLD = 3;
+
+
     var REG_STATUS_UNKNOWN = -1;
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
@@ -68,6 +76,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(call){
 			call.hangUp();
 			delete sipCalls[sip_id];
+		}else{
+			delete xpid2Sip[xpid];
 		}
 	}
 

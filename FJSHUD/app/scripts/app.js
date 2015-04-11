@@ -18,6 +18,11 @@ hudweb.config(function ($routeProvider) {
 			templateUrl: 'views/MeWidgetController.html',
 			controller: 'MeWidgetController'
 		})
+		 .when('/settings/callid/:callId',
+      	{
+        	templateUrl:'views/MeWidgetController.html',
+        	controller: 'MeWidgetController'
+      	})
 		.when('/callcenter/:route?',
 		{
 			templateUrl: 'views/queues/CallCenter.html',

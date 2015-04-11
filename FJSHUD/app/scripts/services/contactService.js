@@ -47,6 +47,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			for (i = 0; i < contacts.length; i++) {
 				// set contact's status
 				if (contacts[i].xpid == data[key].xpid) {
+					contacts[i].contact_status = data[key];
 					contacts[i].hud_status = data[key].xmpp;
 					contacts[i].queue_status = data[key].queueStatus;
 					contacts[i].custom_status = data[key].xmppCustom;

@@ -14,6 +14,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     //$scope.locations = []
     if($scope.currentCall){
         $scope.currentCall.isHeld = false;
+        updateTime();
     }
 
     $scope.timeElapsed = "00:00";
@@ -65,7 +66,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.recentSelectSort = 'Date';
     myHttpService.getFeed('me');
-
     myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
     myHttpService.getFeed('locations');
@@ -73,15 +73,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     myHttpService.getFeed('calls');    
     myHttpService.getFeed('weblauncher');    
     myHttpService.getFeed('weblaunchervariables');
-    this.onAlertClicked = function(urlHash){
-        console.log(urlHash);
-    }
+    myHttpService.getFeed('i18n_langs');
+    
 
 
-
-    this.onAlertClicked = function(urlHash){
-        console.log(urlHash);
-    }
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */

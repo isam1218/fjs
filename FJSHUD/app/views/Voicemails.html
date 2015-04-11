@@ -15,8 +15,8 @@
     
     <div class="ListView fj-scrollable"> 
         <div class="vmlabel" ng-if="voicemails.length == 0"> 
-            <div class="vmlabelheader"> No Voicemails In View </div> 
-            <div class="vmnomessage"> There are currently no voicemails in the system between you and {{ emptyVoiceLabel }} </div>
+            <div class="vmlabelheader"> {{::verbage.no_voicemails}} </div> 
+            <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
         </div>
         <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy: selectedSort.type: selectedSort.desc track by voicemail.xpid"> 
             

@@ -103,14 +103,18 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 				return 'Permanent in';
 				break;
 			case 'login':
-				return 'Logged in';
+				return $scope.verbage.logged_in;
 				break;
 			case 'logout':
-				return 'Logged out';
+				return $scope.verbage.Logged_out;
 				break;
 		}
 	};
 
+	$scope.formateGlobalDate = function(time){
+		var formatter = Globalize('ja').dateFormatter({datetime:"MMMM d, h:mm a"});
+		return formatter(new Date(time));
+	}
 	$scope.reloadPage = function(){
 		window.onbeforeunload = function(){};
 		myHttpService.logout();

@@ -42,7 +42,7 @@
              <!--  ng-if="currentCall != null"-->
 
               <div class="CurrentCall"  ng-if="currentCall != null">
-                <div class="WidgetSectionTitle">{{verbage.current_call}} {{ timeElapsed }}</div>
+                <div class="WidgetSectionTitle">{{verbage.current_call}} {{currentCall.startedAt | duration}} </div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
                       <div class="Avatar AvatarSmall CallAvatar CallAvatar_External">
@@ -160,7 +160,7 @@
                </div>
               </div>
               <div class="fj-vbox-space Preferences-Holder">
-	              <div class="WidgetSectionTitle">{{verbage.Preferences}}</div>	              
+	              <div class="WidgetSectionTitle">{{verbage.preferences}}</div>	              
 		              <div class="WidgetTabBar">
 		                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
 		                  <div class="inner HeaderLabel">{{ tab.label }}</div>
