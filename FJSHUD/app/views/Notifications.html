@@ -49,16 +49,16 @@
 							
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
-								<span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> Play</span>
-								<span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)">Call Back</span>
+								<span class="XButton" ng-click="playVm(message.vmId)"> Play</span>
+								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">Call Back</span>
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
-								<span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
+								<span class="XButton" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
 							</div>
 							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue'">
-								<span class="XButton" style="width:70px" >Show</span>
+								<span class="XButton" >Show</span>
 							</a>
 						</div>
 				</div>

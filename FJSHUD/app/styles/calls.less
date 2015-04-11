@@ -1,4 +1,5 @@
-.CallLog {        
+.CallLog {  
+  .ToolBar{margin-top: 5px;}      
   .ListLineContent.Header{
     .ListLineContentCell{
       max-width: none !important;
@@ -30,10 +31,10 @@
             
             select.XButtonDropDown{
                 margin-top: 2px;
-                height: 2.85em;
+                /*height: 2.85em;*/
                 top: -2px;
                 float: right !important;
-                padding: 0 6.3%;
+                padding: 6px 0;
                 &.XSortButton{
                     width: 32.5% !important;
                 }    
@@ -41,6 +42,8 @@
             input, select{float: left;}
             input[type=search]{
                 width: 30%;
+                  
+                &.recording{width: 45%};
             }
         }    
   }                

@@ -150,21 +150,16 @@
 	}
   }
 
-  .QueueButtonToggle {
-    width: 28px;
-    height: 28px;
+  .QueueButtonToggle {   
+    width: 2.5em;
+    padding: 1px 5px;
+    top: -1px;
 	
-    .QueueViewIcon {
-      /*height: 20px;
-      width: 20px;
-      top: 3px;
-      left: 4px;
-      position: absolute;*/
+    .QueueViewIcon {      
       width: 1.8em;
       height: 1.8em;
-      position: relative;
-      left: -2.18em;
-      top: .5em;
+      position: relative;     
+      top: .21em;
     }
     .QueueTileView {
       background: url("../img/QueueTileView.png") no-repeat 0px 0px;      
@@ -174,9 +169,13 @@
     }
   }
   
-  .ToolBar .XButton{
-    font-size: 0.75em;
-    padding-left: 3em;
+  .ToolBar{
+    /*top: -8px;*/
+    
+    &.Queues{
+        input[type=search]{width: 50%;}
+    }   
+    select.XButton{width: 37%; top: -1px;}
   }
   .ToolBarBottom {
     padding: .5em;

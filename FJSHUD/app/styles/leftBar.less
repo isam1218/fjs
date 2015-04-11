@@ -34,13 +34,15 @@
 	  width: 70%; 
     }
     
-    .New {     
-	  height: 2.8em;
-	  padding: 0 20px;
-	  float: right;
-	  position: absolute;
-	  right: 0.5em;
-	  top: 0.6em;
+    .New {    	  
+    float: right;
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    width: 22%;
+    height: 2.35em;
+    text-align: center;
+    padding: 0;
     }
   }
   
@@ -78,7 +80,7 @@
     -webkit-box-flex: 0;
     
     & > div:first-child {
-    	font-size: .9em;    	
+    	/*font-size: .9em;*/    	
     	transition: .25s;
 	} 	
 	
@@ -87,7 +89,7 @@
 	   background-color: #999;
 	   color: white;
 	   padding: .25em;
-	   height: 2.5em;
+	   /*height: 2.5em;*/
 	   transition: 1s;
 	   border-top: 1px solid #ccc;
 	   border-left:1px solid #ccc;
@@ -107,6 +109,7 @@
 	  
 	  .XButton {
 	    float: right;
+	    top: -1px;
 	  }
 	  
 	  .Icon {
@@ -117,17 +120,25 @@
 	}		
   }
   
-  .Phone {
-    padding: .5em;
-	display: flex;
-	flex-direction: row;
+  .Phone {    
+	display: flex;	
 	width: 100%;
+	padding: 5px 10px 5px 5px;
+	z-index: 100;
+    background-color: #fff;
+    border: solid 1px #eee;
+    min-height: 2.5em;
 	
-	.Number {
-	  flex: 2;
+	.Number {	    
+      width: 70%;
+      padding: 6px 3px;
 	  border: 1px solid #c2c2c2;
 	}
-	input[type=button]{left: 5px;}
+	input[type=button]{
+	   left: 5px; 
+	   width: 28%;
+       padding: .1em;
+     }
   }
 }
 
