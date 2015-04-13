@@ -43,21 +43,21 @@
 								{{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
 								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>{{ getMessage(message) }}</div>
 							</div>
-							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom' && showNotificationBody">
 								<span class="XButton XButtonRed"> Reject</span>
 								<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">{{::verbage.accept}}</span>
 							
 							</div>
-							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
+							<div class="NotificationZoomBtn" ng-if="message.type == 'vm' && showNotificationBody">
 								<span class="XButton" ng-click="playVm(message.vmId)"> Play</span>
 								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">Call Back</span>
 							</div>
 
-							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
+							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call' && showNotificationBody">
 								<span class="XButton" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
 								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
 							</div>
-							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue'">
+							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue' && showNotificationBody">
 								<span class="XButton" >Show</span>
 							</a>
 						</div>
