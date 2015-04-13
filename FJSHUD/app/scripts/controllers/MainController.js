@@ -113,10 +113,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 		}
 	};
 
-	$scope.formateGlobalDate = function(time){
-		var formatter = Globalize('ja').dateFormatter({datetime:"MMMM d, h:mm a"});
-		return formatter(new Date(time));
-	}
 	$scope.reloadPage = function(){
 		window.onbeforeunload = function(){};
 		myHttpService.logout();
