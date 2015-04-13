@@ -205,6 +205,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 } else {
                      isRegistered = false;
 				}
+
+				data = {
+					event:'state',
+					registration: isRegistered,
+				}
+				$rootScope.$broadcast('phone_event',data);
+	
             }
     }
     showCallControls = function(call){
@@ -470,6 +477,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}
 
+	this.getPhoneState = function(){
+		return isRegistered;
+	}
 
 	this.getDtmfToneGenerator = function(){
 		return session.getDTMFToneGenerator();

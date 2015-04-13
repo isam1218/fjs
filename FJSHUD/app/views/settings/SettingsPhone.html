@@ -7,7 +7,7 @@
           <div class="ListPage">
           <div class="Dialog-settings-row">
             <div class="lblSelect">{{::verbage.web_phone_state}}: </div>
-            <b class="WebphoneRegistred-true">Registered</b>
+            <b class="WebphoneRegistred-true">{{phoneState ? 'Registered' : 'Unregistered'}}</b>
           </div>
           <div class="Dialog-settings-row">
             <div class="lblSelect">{{::verbage.microphone}}:</div>

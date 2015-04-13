@@ -17,6 +17,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         updateTime();
     }
 
+    $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
     $scope.getCurrentLocationTitle = function() {
         /**
@@ -837,6 +838,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
              }
         }
 	});
+
+
+    $scope.$on('phone_event',function(event,data){
+        if(data){
+            if(data.event == 'state'){
+                $scope.phoneState = data.registration;
+            }
+        }
+    });
     
 
     $scope.$on("queues_synced", function(event,data){

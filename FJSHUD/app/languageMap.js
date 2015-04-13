@@ -324,6 +324,11 @@ fjs.i18n = {
       queue_active_calls:'Active calls',
       agents_logged_into_queue:'Agents logged into the queue',
       agents_logged_out_of_queue:'Agents logged into the queue',
+      stats_tab:'Stats',
+
+      calls_tab:'Calls',
+      all_agents:' All Agents',
+
 
 
       /******POPUPS*****/
