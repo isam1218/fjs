@@ -443,9 +443,21 @@ p {
      } 
      .XButton span{
         vertical-align: top;        
-        top: -3px;   
+        /*top: -3px; */  
     }
+    
   /******* notifications **********/
+  .LeftBar
+  {
+   .Notifications
+   {
+        .TitleBar .XButton,
+        .NotificationDivider > div .XButton
+        {
+           top: -3px !important;
+        }
+   }
+  }
   
   .LeftBarNotificationSection{
     background-color: transparent;
