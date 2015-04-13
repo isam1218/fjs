@@ -114,7 +114,7 @@
 					<div class="Name">
 						<strong>{{ transferFrom.displayName }}</strong>
 						<br/>
-						x{{ transferFrom.primaryExtension }}
+						x{{ transferFrom.primaryExtension ? transferFrom.primaryExtension : transferFrom.phone }}
 					</div>
 					
 					<div class="Time">{{ timeElapsed }}</div>
@@ -265,7 +265,7 @@
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
                                 <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
-								
+								 
                                 <div data-ng-if="conference.members.length == 0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
 									Free room
