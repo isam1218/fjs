@@ -1,6 +1,23 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $filter, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 
 	$scope.gadgets = {};
+
+	if (localStorage.recent === undefined)
+		localStorage.recent = '{}';
+
+	$scope.recent = JSON.parse(localStorage.recent);
+
+	$scope.storeRecent = function(xpid, type){
+		$scope.recent = JSON.parse(localStorage.recent);
+		$scope.recent[xpid] = {
+			type: type,
+			time: new Date().getTime()
+		}
+		localStorage.recent = JSON.stringify($scope.recent);
+		// console.log('*storeRecent - ', $scope.recent);
+		// broadcast
+		$rootScope.$broadcast('recentAdded', {info: xpid});
+	};
 	
 	$scope.$on('settings_updated', function(event, data) {
 		// enable/disable grid layout

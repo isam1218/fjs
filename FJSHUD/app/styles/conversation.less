@@ -1,8 +1,15 @@
 .Widget.Conversation {
   min-height: 300px;
+  
+  .ToolBar{margin-top: 5px;}
+ 
 
   .ContactList {      
         margin-top: 10px;
+  }
+  
+  .ListView{
+    margin-top: 0px;
   }
     
   .WidgetHeader {
@@ -79,19 +86,19 @@
         width: 30% !important;
       }
      .XButton{
-        width: 32%;
-        height: 2.9em;
-        padding: 0 6%;        
+        width: 32%;         
      }
-    } 
-    .fj-stream{
-        .ToolBar{ 
+    }  
+        .ToolBar.fj-stream{ 
             .XButton{
-                width: 21.9%; 
-                padding: 0 1%;                     
+                width: 24%;                             
             }
-        }
-    }     
+            div.XButton{ width: 21%; padding: 6px 5px 5px 5px;}
+            select.XButton{padding: 6px 0px;}
+            .SearchInputBox{
+                width: 25%;
+            }
+        }         
   }
   
   .page{
@@ -239,12 +246,12 @@
 
 	.text.ChatInputBoxInput {
 	  margin-right: 10px;
-	  height:auto;
+	  /*height:auto;
 	  min-height: 16px;
 	  max-height: 200px;
 	  width:365px;
 	  font-size: .95em;
-	  line-height: 1.1em;
+	  line-height: 1.1em;*/
 	  padding:5px;
 	  overflow:auto;
 	  background-color: #fff;
@@ -253,7 +260,9 @@
 	
 	.XButton.ChatInputBoxSend {
 	  position: relative;
-	  width: 65px;
+	  /*width: 65px;*/
+	  width: 15%;
+      padding-top: 8px;
 	}
   }
 }

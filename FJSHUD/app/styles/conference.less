@@ -1,14 +1,15 @@
 .Conference {
-  .ToolBar .XButton {    
-    width: 32.5%;
-    font-family: Arial,Tahoma,"Helvetica Neue",Helvetica,sans-serif !important;
-    font-size: 0.625em !important;
-    height: 2.91em !important;   
-    float: right !important;
-    margin-left: 0.8em !important;
-    &[type=button]{left: 5px; }        
+  .ToolBar{
+   .XButton {        
+        width: 34.8%;
+    }
+    select.XButton {padding: 5px 0px;}
+    .SearchInputBox{width: 26%;}        
   }
-   
+ 
+  &.fj-widget-area{
+    .ToolBar{margin-top: 5px;}
+  }
   .ListViewTopNoteClose{top: 30%;}
   .ListViewTopNote{font-size: 12px;}
 }
