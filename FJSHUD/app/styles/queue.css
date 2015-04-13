@@ -129,20 +129,15 @@
   display: block;
 }
 .Widget.Queues .QueueButtonToggle {
-  width: 28px;
-  height: 28px;
+  width: 2.5em;
+  padding: 1px 5px;
+  top: -1px;
 }
 .Widget.Queues .QueueButtonToggle .QueueViewIcon {
-  /*height: 20px;
-      width: 20px;
-      top: 3px;
-      left: 4px;
-      position: absolute;*/
   width: 1.8em;
   height: 1.8em;
   position: relative;
-  left: -2.18em;
-  top: .5em;
+  top: .21em;
 }
 .Widget.Queues .QueueButtonToggle .QueueTileView {
   background: url("../img/QueueTileView.png") no-repeat 0px 0px;
@@ -150,9 +145,15 @@
 .Widget.Queues .QueueButtonToggle .QueueListView {
   background: url("../img/QueueListView.png") no-repeat 0px 0px;
 }
-.Widget.Queues .ToolBar .XButton {
-  font-size: 0.75em;
-  padding-left: 3em;
+.Widget.Queues .ToolBar {
+  /*top: -8px;*/
+}
+.Widget.Queues .ToolBar.Queues input[type=search] {
+  width: 50%;
+}
+.Widget.Queues .ToolBar select.XButton {
+  width: 37%;
+  top: -1px;
 }
 .Widget.Queues .ToolBarBottom {
   padding: .5em;

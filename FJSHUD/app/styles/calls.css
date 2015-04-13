@@ -1,3 +1,6 @@
+.CallLog .ToolBar {
+  margin-top: 5px;
+}
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
 }
@@ -33,10 +36,10 @@
 }
 .CallLog .vmails .ToolBar select.XButtonDropDown {
   margin-top: 2px;
-  height: 2.85em;
+  /*height: 2.85em;*/
   top: -2px;
   float: right !important;
-  padding: 0 6.3%;
+  padding: 6px 0;
 }
 .CallLog .vmails .ToolBar select.XButtonDropDown.XSortButton {
   width: 32.5% !important;
@@ -47,6 +50,9 @@
 }
 .CallLog .vmails .ToolBar input[type=search] {
   width: 30%;
+}
+.CallLog .vmails .ToolBar input[type=search].recording {
+  width: 45%;
 }
 .CallLog .ListRow {
   display: flex;

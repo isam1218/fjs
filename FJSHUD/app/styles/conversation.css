@@ -1,8 +1,14 @@
 .Widget.Conversation {
   min-height: 300px;
 }
+.Widget.Conversation .ToolBar {
+  margin-top: 5px;
+}
 .Widget.Conversation .ContactList {
   margin-top: 10px;
+}
+.Widget.Conversation .ListView {
+  margin-top: 0px;
 }
 .Widget.Conversation .WidgetHeader {
   top: 0;
@@ -71,12 +77,49 @@
 }
 .Widget.Conversation .WidgetBody .ToolBar .XButton {
   width: 32%;
-  height: 2.9em;
-  padding: 0 6%;
 }
-.Widget.Conversation .WidgetBody .fj-stream .ToolBar .XButton {
-  width: 21.9%;
-  padding: 0 1%;
+.Widget.Conversation .WidgetBody .ToolBar.fj-stream .XButton {
+  width: 24%;
+}
+.Widget.Conversation .WidgetBody .ToolBar.fj-stream div.XButton {
+  width: 21%;
+  padding: 6px 5px 5px 5px;
+}
+.Widget.Conversation .WidgetBody .ToolBar.fj-stream select.XButton {
+  padding: 6px 0px;
+}
+.Widget.Conversation .WidgetBody .ToolBar.fj-stream .SearchInputBox {
+  width: 25%;
+}
+.Widget.Conversation .page .vmsection {
+  width: 97%;
+  margin-left: 10px;
+}
+.Widget.Conversation .page .vmsection .vmavatarsection {
+  margin: auto 5px;
+}
+.Widget.Conversation .page .vmsection .vminfo .displayName {
+  vertical-align: top;
+  padding-top: 0px;
+}
+.Widget.Conversation .page .vmsection .vminfo .ListDisplayName {
+  float: left;
+  position: relative;
+  top: -10px;
+}
+.Widget.Conversation .page .vmsection .vminfo .footnote {
+  top: -2px;
+  left: -5px;
+  vertical-align: bottom;
+}
+.Widget.Conversation .page .vmsection .vminfo .footnote .QueueStatus {
+  float: left;
+}
+.Widget.Conversation .page .vmsection .vminfo .footnote .ListRowStatusText {
+  float: left;
+  clear: none;
+  position: relative;
+  bottom: -6px;
 }
 .AttachmentsHolder .AttachmentsList {
   position: relative;
@@ -125,44 +168,62 @@
   left: 0;
   right: 0;
 }
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.ChatView {
+  flex-direction: column;
+  display: flex;
+  flex: 1 1 0;
+}
+.ChatView .ListViewContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 5px;
+}
+.ChatView .Loading {
+  position: absolute;
+  bottom: -30px;
+  left: .5em;
+  z-index: 50;
+}
 .ChatInputBox {
+  border-top: solid 1px #ccc;
   position: relative;
   min-height: 35px;
-  padding: 10px 0;
+  margin: 10px;
+  padding-top: 10px;
+}
+.ChatInputBox .ChatAlertOptions {
+  font-size: .8em;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: row;
 }
-.ChatInputBoxBorder {
-  position: absolute;
-  top: 0px;
-  left: 10px;
-  right: 10px;
-  height: 0px;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #fff;
+.ChatInputBox .ChatAlertOptions .Right {
+  flex: 1;
+  text-align: right;
 }
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-input.text.ChatInputBoxInput,
-.text.ChatInputBoxInput[contenteditable] {
-  margin: 0 10px;
-  height: auto;
-  min-height: 16px;
-  max-height: 200px;
-  width: 365px;
-  font-size: .95em;
-  line-height: 1.1em;
+.ChatInputBox .ChatInputFields {
+  display: flex;
+  flex-direction: row;
+}
+.ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
+  margin-right: 10px;
+  /*height:auto;
+	  min-height: 16px;
+	  max-height: 200px;
+	  width:365px;
+	  font-size: .95em;
+	  line-height: 1.1em;*/
   padding: 5px;
   overflow: auto;
   background-color: #fff;
   flex: 1;
 }
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.XButton.ChatInputBoxSend {
-  margin: 0px;
+.ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
   position: relative;
-  margin-right: 10px;
-  width: 65px;
+  /*width: 65px;*/
+  width: 15%;
+  padding-top: 8px;
 }
 .ListMessageChatWidget {
   background-color: #fff;
