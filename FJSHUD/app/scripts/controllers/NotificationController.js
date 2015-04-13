@@ -117,6 +117,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 
 		myHttpService.sendAction('quickinbox','removeAll');
 			
+		$scope.showOverlay(false);
 	}
 
 	$scope.go_to_notification_chat = function(message){
