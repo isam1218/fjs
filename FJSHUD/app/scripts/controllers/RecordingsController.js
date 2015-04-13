@@ -75,8 +75,10 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 					data[i].fullProfile = conferenceService.getConference(data[i].conferenceId);
 				else if (data[i].queueId)
 					data[i].fullProfile = queueService.getQueue(data[i].queueId);
-				else
+				else if (data[i].calleeUserId != $rootScope.myPid)
 					data[i].fullProfile = contactService.getContact(data[i].calleeUserId);
+				else
+					data[i].fullProfile = contactService.getContact(data[i].callerUserId);
 				
 				$scope.recordings.push(data[i]);
 			}
