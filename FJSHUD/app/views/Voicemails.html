@@ -26,7 +26,7 @@
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                     <div class="displayName">
-						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + verbage.to + '...' :  verbage.from + '...' }}<em>
+						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}<em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
 							{{ ::voicemail.displayName + ' <' + voicemail.phone + '>' }}
                         </p>
