@@ -36,7 +36,7 @@
 .WidgetMe .Preferences-Holder {
   position: relative;
   -webkit-box-flex: 1;
-  height: 37%;
+  height: 42%;
   margin-top: 3px;
   display: inline-block;
 }
@@ -333,11 +333,11 @@ div.NewCall input.NewCall {
   margin-bottom: 4px;
   left: 10px;
   width: 60%;
-  height: 1.625em;
+  /*height: 1.625em;*/
   border: 1px solid #c2c2c2;
   border-radius: 2px;
   -webkit-border-radius: 2px;
-  padding: 2px 5px;
+  padding: 7px 5px;
 }
 div.NewCall .XButton {
   float: right;
@@ -346,15 +346,13 @@ div.NewCall .XButton {
   position: relative;
   margin-left: 0.5em;
   top: 7px;
+  /*span{top: -4px;}*/
 }
 div.NewCall .XButton.XButtonGreen {
   margin-right: 1em;
 }
 div.NewCall .XButton.XButtonNormal {
   margin-left: 0;
-}
-div.NewCall .XButton span {
-  top: -4px;
 }
 /* TODO: rewrite this css */
 .Preferences-Holder .fj-content-items {
@@ -426,8 +424,8 @@ div.NewCall .XButton span {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;

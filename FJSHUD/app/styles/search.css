@@ -10,10 +10,10 @@
 .SearchInputBox {
   position: relative;
   margin: 0;
-  height: 1.8em;
   border-radius: 3px;
   background-color: white;
   border: solid 1px #729C00;
+  padding: 14px;
 }
 .SearchInputBoxInputHolder {
   position: absolute;
