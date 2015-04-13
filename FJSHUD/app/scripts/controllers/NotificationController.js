@@ -6,7 +6,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.calls = {};
 	$scope.inCall = false;
 	$scope.inRinging = false;
-	$scope.path = $location.protocol() + "://" + $location.host() + ":" + $location.port();
+	$scope.path = $location.absUrl().split("#")[0];
 	$scope.messageLimit = 300;
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
@@ -140,6 +140,11 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		}
 	}
 	$scope.acceptCall = function(xpid){
+		for(call in $scope.calls){
+			if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
+				$scope.holdCall($scope.calls[call].xpid);
+			}
+		}
 		phoneService.acceptCall(xpid);
 	}
 	$scope.makeCall = function(phone){
@@ -291,7 +296,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 
 	$scope.$on('quickinbox_synced', function(event,data){
 		var displayDesktopAlert = true;
-			
+		
   		if(data){
 			data.sort(function(a,b){
 				// recent notifications up top; down to oldest at the bottom...
