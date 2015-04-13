@@ -1,0 +1,138 @@
+<div class="ContactList">
+    <h4>Recent Contacts</h4>
+    <em>Contact name (call status / HUD status)</em>
+    <a href="#/contact/{{contact.xpid}}" data-ng-repeat="contact in totalContacts |filter: {displayName: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+        <div class="Avatar AvatarNormal" context-menu="contact|$parent.tab">
+            <img class="AvatarImgPH" data-ng-src="{{::contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            <div class="AvatarForeground AvatarInteractable"></div>
+        </div>
+        
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <strong>{{ contact.displayName || contact.name }}</strong>
+                    <span>#{{ ::contact.primaryExtension || contact.extension }}</span>
+                </div>
+            </div>
+            
+            <div class="ListRowStatus">
+                <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
+                <br/>
+                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+            </div>
+            
+            <div class="CallStatus">
+                <div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
+                    <img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+                    <div class="AvatarInteractable AvatarForeground"></div>
+                </div>
+            </div>              
+        </div>
+    </a>
+
+    <h4>Recent Groups</h4>
+    <em>Group name (# of members)</em>
+    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+        <div class="Avatar AvatarNormal" context-menu="group">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <strong>{{ group.name }}</strong>
+                    <span class="details">
+                        {{ ::group.extension ? '#' + group.extension : getOwner(group) }}
+                    </span>
+                </div>
+            </div>
+            <div class="ListRowStatus Members">{{ group.members.length }}</div>
+        </div>
+    </a>
+
+    <h4>Recent Queues</h4>
+    <em>Queue name (status)</em>
+    <a href="#/queue/{{queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" ng-repeat="queue in totalQueues | filter: recentFilter() | orderBy: customSort(): customReverse() track by queue.xpid"> 
+        <div class="Avatar AvatarNormal" context-menu="queue">
+            <div class="GroupAvatarItem GroupAvatarItem_0">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+            </div>
+            <div class="AvatarInteractable"></div>
+        </div>
+    
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                {{ ::queue.name }}
+                <br/>
+                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+                {{ queueStatusLabel(queue.me.status.status) }}
+            </div>
+        </div>
+    </a>
+
+    <h4>Recent Conferences</h4>
+    <em>Conference Room (extension number)</em>
+    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: recentFilter() | orderBy: customSort(): customReverse() track by conference.xpid">
+        <div class="ConferenceAvatarSection Avatar AvatarNormal">
+            <div class="GroupAvatarItem GroupAvatarItem_0" context-menu="conference">
+                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_1">
+                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_2">
+                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            <div class="GroupAvatarItem GroupAvatarItem_3">
+                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
+            </div>
+            
+            <div class="AvatarInteractable"></div>
+        </div>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+                
+                <div data-ng-if="conference.members.length == 0">
+                    <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
+                    Free room
+                </div>                            
+                <div data-ng-if="conference.members.length > 0">
+                    <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
+                    {{conference.members.length}} member(s) on a call
+                </div> 
+            </div>
+        
+        <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
+            <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
+                <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
+                    <img class="AvatarImgPH" data-ng-src="{{getAvatarUrl(conference, $index)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+                    <div class="AvatarInteractable"></div>
+                </div>
+                <div class="first-name">{{member.displayName}}</div>
+            </div>
+        </div>
+        </div>
+    </a>
+</div>

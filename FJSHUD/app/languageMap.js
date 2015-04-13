@@ -98,7 +98,7 @@ fjs.i18n = {
         output_devices:	'Output Devices',
         ring_devices:	'リングデバイス',
 		weblauncher:	'ウェブランチャー',
-		general_settings:'一般設定',
+		general_settings:'General settings',
         weblauncher_profile:'ウェッブランチャープロファイル',
 　　　 	launch_page_when_answered:'Launch web page only when the call is answered',
 		outbound_calls:'Outbound Calls',
@@ -113,8 +113,8 @@ fjs.i18n = {
 		web_launcher_var_desc:'Web launcher variables description',
 		variables:'Variable',
 		description:'Description',
-		inbound:'インバンド',
-		outbound:'アウトバンド',
+		inbound:'Inbound Call',
+		outbound:'OutBound Call',
 		wl_var_desc_username_accounts:'認証を要求するアカウントのユーザネーム',
 		wl_var_desc_duration:'通話の経過時間（秒）',
 		wl_var_desc_name_of_party:'接続先番号',
@@ -324,6 +324,11 @@ fjs.i18n = {
       queue_active_calls:'Active calls',
       agents_logged_into_queue:'Agents logged into the queue',
       agents_logged_out_of_queue:'Agents logged into the queue',
+      stats_tab:'Stats',
+
+      calls_tab:'Calls',
+      all_agents:' All Agents',
+
 
 
       /******POPUPS*****/

@@ -19,7 +19,7 @@
 
 <div ng-if="viewIcon" class="QueueList">
 	<div class="Block" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid">
-		<a href="#/queue/{{::queue.xpid}}" class="Header">
+		<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecentQueue(queue.xpid)" class="Header">
 			<div class="Avatar AvatarNormal" context-menu="queue">
 				<div class="GroupAvatarItem GroupAvatarItem_0">
 					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
@@ -103,7 +103,7 @@
 			</div>
 		</div>
 		<div class="Table">
-			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid">
+			<a href="#queue/{{::queue.xpid}}" ng-click="storeRecentQueue(queue.xpid)" class="Row" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid">
                 <div>{{ ::queue.name }}</div>
 				<div>{{ queue.info.waiting}}</div>
 				<div>{{ queue.info.esa*1000 | duration}}</div>

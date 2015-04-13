@@ -75,7 +75,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		call = sipCalls[sip_id];
 		if(call){
 			call.hangUp();
-			delete sipCalls[sip_id];
 		}else{
 			delete xpid2Sip[xpid];
 		}
@@ -179,6 +178,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				break;
 			case CALL_STATUS_ERROR:
 				removeNotification();
+				delete sipCalls[call.sip_id];
 				break;
 			case CALL_STATUS_UNKNOWN:
 				removeNotification();
@@ -186,6 +186,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			case CALL_STATUS_CLOSED:
 				showCallControls(null);
 				removeNotification();
+				delete sipCalls[call.sip_id];
 				break;
 		}
 		
@@ -204,6 +205,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 } else {
                      isRegistered = false;
 				}
+
+				data = {
+					event:'state',
+					registration: isRegistered,
+				}
+				$rootScope.$broadcast('phone_event',data);
+	
             }
     }
     showCallControls = function(call){
@@ -469,6 +477,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}
 
+	this.getPhoneState = function(){
+		return isRegistered;
+	}
 
 	this.getDtmfToneGenerator = function(){
 		return session.getDTMFToneGenerator();

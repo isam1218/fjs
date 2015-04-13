@@ -58,9 +58,6 @@
   display: inline-block;
 }
 .NotificationMessages {
-  /*border-left:1px solid #ccc;
-	border-right:1px solid #ccc;
-	border-top:1px solid #ccc;*/
   overflow-y: auto;
   overflow-x: hidden;
   background-image: url("../img/XTile-Widget.png");
@@ -81,7 +78,6 @@
   visibility: visible;
   overflow-y: auto;
   overflow-x: hidden;
-  /*max-height:400px;*/
 }
 .NotificationType {
   font-size: .6em;
@@ -91,7 +87,6 @@
 }
 .NotificationSection {
   margin-top: 5px;
-  /*border-bottom:solid 1px #eee;*/
   -webkit-box-orient: horizontal;
   display: -webkit-box;
   padding-left: 5px;
@@ -171,6 +166,13 @@
 .NotificationZoomBtn {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.NotificationZoomBtn span.XButton {
+  width: 30%;
+  font-size: 0.8rem;
+}
+.NotificationZoomBtn span.XButton.XButtonGreen {
+  width: 45%;
 }
 .Messages {
   position: relative;

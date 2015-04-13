@@ -20,7 +20,6 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
          */
         var currentLocation;
 
-
          if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
              currentLocation = $scope.locations[$scope.meModel["current_location"]];
              return currentLocation.name+" ("+currentLocation.phone+")";
@@ -52,7 +51,7 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
                 $scope.locations[data[index].xpid] = data[index];
             }
         }
-
+        console.log('locationsctrl: scope.locations - ', $scope.locations);
     });
 
      $scope.$on('location_status_synced', function(event,data){

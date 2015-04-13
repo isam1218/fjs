@@ -17,6 +17,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         updateTime();
     }
 
+    $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
     $scope.getCurrentLocationTitle = function() {
         /**
@@ -76,6 +77,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     myHttpService.getFeed('i18n_langs');
     
 
+    this.onAlertClicked = function(urlHash){
+        console.log(urlHash);
+    }
+
+
 
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
@@ -126,8 +132,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
+        // console.log('showLocationsPopup: context - ', context);
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
+        // console.log('scope.showPopup - ', $scope);
         $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y});
         return false;
     };
@@ -830,6 +838,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
              }
         }
 	});
+
+
+    $scope.$on('phone_event',function(event,data){
+        if(data){
+            if(data.event == 'state'){
+                $scope.phoneState = data.registration;
+            }
+        }
+    });
     
 
     $scope.$on("queues_synced", function(event,data){

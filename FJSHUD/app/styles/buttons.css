@@ -27,21 +27,21 @@ input[type="tel"] {
 .XButton {
   position: relative;
   display: inline-block;
-  height: 2.5em;
+  /*height: 2.5em;*/
   margin: 0;
-  padding: 0 10px;
+  padding: 5px 10px;
   text-align: center;
-  line-height: 2.4em;
+  /*line-height: 2.4em;*/
   text-decoration: none;
   cursor: pointer;
-  font-size: .7em;
+  /*font-size: .7em;*/
   font-weight: bold;
   border-radius: 2px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   background: #fefefe linear-gradient(#fefefe, #ebebeb);
   color: #333;
   text-shadow: 0 1px 0 #fff;
-  vertical-align: top;
+  vertical-align: middle;
   text-overflow: ellipsis;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   /* green */
@@ -51,7 +51,7 @@ input[type="tel"] {
 .XButton span {
   vertical-align: middle;
   position: relative;
-  top: 1px;
+  font-size: .8rem;
 }
 .XButton:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
@@ -62,7 +62,6 @@ input[type="tel"] {
 .XButton.XButtonGreen {
   background: #3c9c00 linear-gradient(#3c9c00, #328400);
   text-shadow: none;
-  height: 26px;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#3c9c00), to(#328400));
   background-color: #3c9c00;
   color: #e8e8e8;
@@ -185,9 +184,9 @@ select[disabled] {
   cursor: pointer;
 }
 .ToolBar .XButton {
-  font-size: 0.6566em;
-  height: 2.9em;
-  padding: 0 5px;
+  /*font-size: 0.6566em;
+  height: 2.9em;*/
+  padding: 6px 5px;
 }
 .CurrentCallBtn {
   margin: 10px 10px 0px 0px;
@@ -285,9 +284,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-image: linear-gradient(#fefefe, #ebebeb);
   border: 1px solid rgba(0, 0, 0, 0.2);
   vertical-align: middle;
-  line-height: 2em;
+  /*line-height: 2em;*/
   font-weight: bold;
-  font-size: 11px;
+  /*font-size: 11px;*/
   position: relative;
   cursor: pointer;
 }

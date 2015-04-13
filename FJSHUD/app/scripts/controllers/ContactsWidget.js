@@ -4,29 +4,21 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
   $scope.sortReverse = false;
   $scope.contacts = [];
 	$scope.favorites = {};
-	$scope.groupObj = {};
-	$scope.combined = [];
 	
-	if (localStorage.recents === undefined)
-		localStorage.recents = '{}';
+	if (localStorage.recent === undefined)
+		localStorage.recent = '{}';
 	
-	$scope.recents = JSON.parse(localStorage.recents);
-
-	// console.log('L: localStorage - ', localStorage);
-	// console.log('L: scope recents -', $scope.recents);
-
+	$scope.recent = JSON.parse(localStorage.recent);
+	
 	// pull contact updates from service
 	$scope.$on('contacts_updated', function(event, data) {
 		$scope.contacts = data;	
-		$scope.combined = $scope.contacts.concat($scope.groupObj.groups);
 	});
 	
 	// pull group updates from service, including updated group-localstorage
 	$scope.$on('groups_updated', function(event, data) {
 		$scope.recents = JSON.parse(localStorage.recents);	
-		$scope.groupObj = data;
 		$scope.favorites = data.favorites;
-		$scope.combined = $scope.contacts.concat($scope.groupObj.groups);
 	});
 
   $scope.sort = function(field) {
@@ -55,13 +47,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 						if (contact.primaryExtension == '')
 							return true;
 						break;
-					case 'recent':
-						if ($scope.recents[contact.xpid] !== undefined) {
-							// attach timestamp to sort by
-							contact.timestamp = $scope.recents[contact.xpid];
-							return true;
-						}
-						break;
 					case 'favorites':
 						if ($scope.favorites[contact.xpid] !== undefined)
 							return true;
@@ -88,11 +73,18 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	};
 	
 	// record most recent contacts
-	$scope.storeRecent = function(xpid) {
-		$scope.recents[xpid] = new Date().getTime();
-		localStorage.recents = JSON.stringify($scope.recents);
+	$scope.storeRecentContact = function(xpid){
+		$scope.recent = JSON.parse(localStorage.recent);		
+		$scope.recent[xpid] = {
+			type: 'contact',
+			time:  new Date().getTime()
+		};
+		localStorage.recent = JSON.stringify($scope.recent);
+		// console.log('*storeRecentContact - ', $scope.recent);
+		$rootScope.$broadcast('recentAdded', {info: xpid});
 	};
 	
+
 	$scope.getCallStatusAvatar = function(call) {
 		if (call && call.contactId)
 			return myHttpService.get_avatar(call.contactId, 28, 28);

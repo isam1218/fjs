@@ -86,9 +86,11 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         }
         else if($scope.currentPopup.url != "views/popups/"+data.key+".html") {
             $scope.currentPopup.url = "views/popups/" + data.key + ".html";
+            console.log('mainctrl: scope.currentpopup.url - ', $scope.currentPopup.url);
         }
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
+        console.log('mainctrl: scope.currentpopup - ', $scope.currentPopup);
     };
 	
 	$scope.showOverlay = function(show, url, data) {
@@ -111,10 +113,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 		}
 	};
 
-	$scope.formateGlobalDate = function(time){
-		var formatter = Globalize('ja').dateFormatter({datetime:"MMMM d, h:mm a"});
-		return formatter(new Date(time));
-	}
 	$scope.reloadPage = function(){
 		window.onbeforeunload = function(){};
 		myHttpService.logout();
