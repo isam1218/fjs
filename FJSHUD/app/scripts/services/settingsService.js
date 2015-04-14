@@ -28,7 +28,10 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 			return item.id == settings['hudmw_launcher_config_id'];
 		})[0];
 	}
-		
+	this.reset_app_menu = function(){
+		data = {};
+		$rootScope.$broadcast('reset_app',data);
+	}	
 	this.formatWebString = function(url,call){
 		var val = $rootScope.meModel;
 		var me = contactService.getContact($rootScope.meModel.my_pid);

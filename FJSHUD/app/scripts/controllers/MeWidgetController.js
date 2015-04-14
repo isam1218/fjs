@@ -1,4 +1,4 @@
-hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout', function($scope, $http, myHttpService,phoneService,$routeParam,$contactService,$filter,$timeout) {
+hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $http, myHttpService,phoneService,$routeParam,$contactService,$filter,$timeout,settingService) {
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -252,6 +252,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         $scope.update_settings('HUDw_AppModel_search','delete');
         $scope.update_settings('HUDw_AppModel_zoom','delete');
         $scope.update_settings('HUDw_AppModel_box','delete');
+        data = {};
+        settingService.reset_app_menu();
     }
     
     update_settings = function(){
