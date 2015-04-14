@@ -8,12 +8,12 @@
   <select class="SelectBox XButton" 
 	ng-model="mystatus.logoutReason" 
 	ng-change="loginQueues(false)" 
-	ng-disabled="disableButtons"
+	ng-disabled="disableLogout"
 	ng-options="reason.name for reason in reasons | orderBy:'name' track by reason.xpid">
 		<option value="">{{::verbage.logout}}</option>
   </select>
   
-  <input type="button" class="XButton" value="{{::verbage.login}}" ng-click="loginQueues(true)" ng-disabled="disableButtons" />
+  <input type="button" class="XButton" value="{{::verbage.login}}" ng-click="loginQueues(true)" ng-disabled="disableLogin" />
 </div>
 
 <div class="QueueList">
