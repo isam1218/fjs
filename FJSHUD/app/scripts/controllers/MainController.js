@@ -73,6 +73,16 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
     $scope.broadcastDial = function(key){
         $scope.$broadcast("key_press",key);
     }
+    $scope.makePhoneCall = function(type,$event){
+    	switch(type){
+    		case 'dialpad':
+    			if ($event.keyCode == 13 && !$event.shiftKey) {
+         			$scope.$broadcast("make_phone_call",$event);
+    				$event.preventDefault();
+				}
+				break;
+    	}
+    }
 
     $scope.getAvatar = function(pid,width,height){
         return myHttpService.get_avatar(pid,40,40);
