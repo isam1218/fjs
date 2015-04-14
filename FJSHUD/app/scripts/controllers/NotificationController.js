@@ -300,7 +300,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		
   		if(data){
 			data.sort(function(a,b){
-				// recent notifications up top; down to oldest at the bottom...
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
@@ -343,6 +342,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 						}
 					}
 				}
+				$scope.notifications.sort(function(a, b){
+					return b.time - a.time;
+				});
 			}else{
 				for(index in data){
 					var notification = data[index];
