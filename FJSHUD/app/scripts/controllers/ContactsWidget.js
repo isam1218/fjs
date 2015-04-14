@@ -17,12 +17,12 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	
 	// pull group updates from service, including updated group-localstorage
 	$scope.$on('groups_updated', function(event, data) {
-		$scope.recents = JSON.parse(localStorage.recents);	
+		$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : [];	
 		$scope.favorites = data.favorites;
 	});
 
   $scope.sort = function(field) {
-      if($scope.sortField!=field) {
+      if($scope.sortField != field) {
           $scope.sortField = field;
           $scope.sortReverse = false;
       }
