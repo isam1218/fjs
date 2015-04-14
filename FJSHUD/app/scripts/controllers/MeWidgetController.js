@@ -11,11 +11,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var queues = [];
     var callId = $routeParam.callId;
     $scope.avatar ={};
-    //$scope.locations = []
+    
+    //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
+    
     $scope.currentCall = phoneService.getCallDetail(callId);
     if($scope.currentCall){
         $scope.currentCall.isHeld = false;
-        //updateTime();
     }
 
     $scope.phoneState = phoneService.getPhoneState();
