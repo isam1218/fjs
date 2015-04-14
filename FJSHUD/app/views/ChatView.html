@@ -29,7 +29,7 @@
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)">
-                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url)}}"></img>                 
+                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}"></img>                 
                     <p> {{ attachment.fileName }}</p>
                 </div> 
             </div>
@@ -48,9 +48,9 @@
 <div class="ChatInputBox" ng-if="enableChat">	
 	<div class="ChatAlertOptions" ng-if="showAlerts">
 		<div class="Left">
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="3" /> All Agents
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="1" /> {{::verbage.logged_in}}
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="2" /> {{::verbage.Logged_out}}
+			<input type="radio" ng-model="alert.status" name="alertStatus" value="3" /> All Agents
+			<input type="radio" ng-model="alert.status" name="alertStatus" value="1" /> {{::verbage.logged_in}}
+			<input type="radio" ng-model="alert.status" name="alertStatus" value="2" /> {{::verbage.Logged_out}}
 		</div>
 		<div class="Right">
 			{{ 150 - message.length }} characters left

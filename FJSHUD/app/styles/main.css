@@ -105,7 +105,7 @@ p {
   width: 100%;
 }
 .LocationSelector {
-  width: 25%;
+  width: 100%;
 }
 .LocationSelector .SelectBox {
   width: 100%;
@@ -530,10 +530,8 @@ p {
   background-color: #999;
   color: white;
   padding: .25em;
-  /*height: 2.5em;*/
   transition: 1s;
   border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
 .LeftBar .Notifications .TitleBar > *,
@@ -558,6 +556,9 @@ p {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+}
+.LeftBar .Notifications .NotificationDivider:not(.firstHeaderDivider) > div {
+  border-left: 1px solid #ccc;
 }
 .LeftBar .Phone {
   display: flex;
@@ -1401,8 +1402,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -4738,7 +4739,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -4965,7 +4966,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .NotificationHeader .firstHeaderTitle {
   position: relative;
-  bottom: -1.3em;
+  /* bottom: -1.3em;*/
+  bottom: -1.2em;
   right: -1px;
 }
 .NotificationDivider {
@@ -4975,7 +4977,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .NotificationDivider.firstHeaderDivider {
   background-color: #999;
-  background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));
+  /*background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));*/
   height: 2.3em;
 }
 .NotificationDivider.firstHeaderDivider img {
@@ -5032,11 +5034,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   margin-bottom: 10px;
 }
 .NotificationZoomBtn span.XButton {
-  width: 30%;
+  /*width: 30%;*/
+  width: auto;
   font-size: 0.8rem;
-}
-.NotificationZoomBtn span.XButton.XButtonGreen {
-  width: 45%;
+  /*&.XButtonGreen{width: 45%;}*/
 }
 .Messages {
   position: relative;
@@ -5044,6 +5045,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-style: normal;
   font-size: 1em;
   background-image: url("../img/XTile-Widget.png");
+  padding-bottom: 20px;
 }
 .Messages:not(:first-child) {
   margin-top: -18px;
@@ -5481,9 +5483,13 @@ a.Messages {
   }
   .XButton span {
     vertical-align: top;
-    top: -3px;
+    /*top: -3px; */
   }
   /******* notifications **********/
+  .LeftBar .Notifications .TitleBar .XButton,
+  .LeftBar .Notifications .NotificationDivider > div .XButton {
+    top: -3px !important;
+  }
   .LeftBarNotificationSection {
     background-color: transparent;
   }

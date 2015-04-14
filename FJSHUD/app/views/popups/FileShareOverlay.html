@@ -96,7 +96,7 @@
         <div class="Footer">
             <input type="button" class="XButton" value="Previous" ng-click="getOffsetDownload(-1)" />
             <input type="button" class="XButton" value="Next" ng-click="getOffsetDownload(1)" />
-            <a type="button" href="{{getAttachment(currentDownload.url)}}" target="_blank" class="XButton XButtonBlue" download value="Share Message & Files">Download Current</a>
+            <a type="button" href="{{getAttachment(currentDownload.url,currentDownload.fileName)}}" target="_blank" class="XButton XButtonBlue" download value="Share Message & Files">Download Current</a>
         </div>
     </div>
 </div>

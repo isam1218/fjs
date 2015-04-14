@@ -6,6 +6,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	var chat = {};
 	var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 	
+	$scope.upload = {};
+	$scope.alert = {};
+	$scope.loading = true;
+	$scope.displayHeader = true;
+	
 	// set chat data
 	if ($routeParams.contactId) {
 		chat.name = $scope.contact.displayName;
@@ -34,15 +39,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		if ($routeParams.route && $routeParams.route == 'alerts') {
 			chat.type = 'queuemessage';
 			$scope.showAlerts = true;
-			$scope.alertStatus = 3;
+			$scope.alert.status = 3;
 		}
 		else
 			chat.type = 'f.conversation.chat';
 	}
-	
-	$scope.upload = {};
-	$scope.loading = true;
-	$scope.displayHeader = true;
 	
 	// send to pop-up controller
 	$scope.showAttachmentOverlay = function() {		
@@ -80,8 +81,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		});
 	};
 
-	$scope.getAttachment = function(url){
-		return httpService.get_attachment(url);
+	$scope.getAttachment = function(url,fileName){
+		return httpService.get_attachment(url,fileName);
 	};
 	
 	// keep scrollbar at bottom until chats are loaded
@@ -167,7 +168,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 				queueId: chat.targetId,
 				plain: this.message,
 				xhtml: this.message,
-				status: $scope.alertStatus,
+				status: $scope.alert.status,
 				clientId: ''
 			});
 		}

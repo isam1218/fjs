@@ -13,7 +13,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
-  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = [
+
+  reset_order = function(){
+  	return [
       {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
       , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
       , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
@@ -21,7 +23,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
       , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
       , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
       , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
-  ];
+  	];
+  }
+
+  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = reset_order();
+
+  
 
   if ($scope.updatedNavbar != $scope.appIcons){
     $scope.appIcons = $scope.updatedNavbar;
@@ -221,6 +228,24 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
                 }
             }
         } 
+    });
+
+    $scope.$on("reset_app", function(event,data){
+    	$scope.appIcons = reset_order();
+    })
+
+    $scope.$on("settings_updated",function(event,data){
+    	for(item in $scope.appIcons){
+    		key = $scope.appIcons[item].key;
+
+    		switch(key){
+    			case 'Box':
+    				$scope.appIcons[item].enabled = data["hudmw_box_enabled"] == "true" ? 1 : 0;
+    				break;
+    			default:
+    				break;
+    		}
+    	}
     });
 
 	$scope.logout = function() {

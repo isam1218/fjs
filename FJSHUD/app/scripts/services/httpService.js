@@ -427,10 +427,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
 	};
 
-    this.get_attachment = function(xkeyUrl){
+    this.get_attachment = function(xkeyUrl,fileName){
 
     	if(xkeyUrl){
-    		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID;
+    		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID + "&" + fileName + '&d';
     	}
     }
     

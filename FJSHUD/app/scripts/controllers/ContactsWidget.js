@@ -15,9 +15,9 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		$scope.contacts = data;	
 	});
 	
-	// pull group updates from service, including updated group-localstorage
+	// pull group updates from service
 	$scope.$on('groups_updated', function(event, data) {
-		$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : [];	
+		$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : [];
 		$scope.favorites = data.favorites;
 	});
 
