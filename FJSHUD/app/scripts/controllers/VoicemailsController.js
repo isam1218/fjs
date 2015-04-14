@@ -51,23 +51,23 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 			$scope.emptyVoiceLabel = contact.displayName;
 		}
 		// calls & recordings
-		else {
-			$scope.voicemails = data;
+		else
 			$scope.emptyVoiceLabel = 'anyone else';
-			return;
-		}
 		
 		// populate voicemails according to page
-		for (voicemail in data) {
-			if (group) {				
+		for (key in data) {
+			data[key].fullProfile = contactService.getContact(data[key].contactId);
+			
+			if (group) {
 				for (i = 0; i < group.members.length; i++) {
-					if (data[voicemail].contactId == group.members[i].contactId)
-						$scope.voicemails.push(data[voicemail]);
+					if (data[key].contactId == group.members[i].contactId)
+						$scope.voicemails.push(data[key]);
 				}
 			}
-			else if (contact && data[voicemail].contactId == contact.xpid) {
-                    $scope.voicemails.push(data[voicemail]);
-			}
+			else if (contact && data[key].contactId == contact.xpid)
+                $scope.voicemails.push(data[key]);
+			else
+				$scope.voicemails.push(data[key]);
 		}
 	});
 
