@@ -28,7 +28,7 @@
                     <div class="displayName">
 						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}<em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
-							{{ ::voicemail.displayName + ' <' + voicemail.phone + '>' }}
+							{{ ::voicemail.displayName + ' <' + voicemail.fullProfile.primaryExtension + '>' }}
                         </p>
                         <div class="vmalternate">
                             <div class="vmtime">{{ ::voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
