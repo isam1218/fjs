@@ -520,6 +520,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return call;
 	}
 	
+	this.getCallDetail = function(xpid){
+		return callsDetails[xpid];
+	}
+
 	this.getCallByContactId = function(contactId){
 		for(call in callsDetails){
 			if(callsDetails[call].contactId){

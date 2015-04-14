@@ -12,9 +12,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var callId = $routeParam.callId;
     $scope.avatar ={};
     //$scope.locations = []
+    $scope.currentCall = phoneService.getCallDetail(callId);
     if($scope.currentCall){
         $scope.currentCall.isHeld = false;
-        updateTime();
+        //updateTime();
     }
 
     $scope.phoneState = phoneService.getPhoneState();
