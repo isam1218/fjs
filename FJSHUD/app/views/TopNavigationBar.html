@@ -65,7 +65,7 @@
 
 	<div class="Status">
 		<div ng-if="queue.queues && queue.queues.length > 0">
-			Me {{ queue.loggedIn > 0 ? 'in (' + queue.loggedIn + ')' : 'out (' + queue.queues.length + ')' }}
+			{{::verbage.me}} {{ queue.loggedIn > 0 ? 'in (' + queue.loggedIn + ')' : 'out (' + queue.queues.length + ')' }}
 			<div class="ListRowStatusIcon XIcon-QueueStatus-{{ meModel.queue_agent_status }}"></div>
 		</div>
 		<div ng-if="!queue.queues || queue.queues.length == 0" class="ListRowStatusIcon XIcon-QueueStatus-"></div>

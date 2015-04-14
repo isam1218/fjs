@@ -382,8 +382,27 @@ fjs.i18n = {
       no_calls_on_park:'no calls on park',
 
       no_voicemails:'No Voicemails In View',
-      no_voicemails_between:'There are currently no voicemails in the system between you and'
+      no_voicemails_between:'There are currently no voicemails in the system between you and',
 
+
+      
+      no_recent_calls = "No Recent Calls",
+
+      Mute:'Mute',
+      Park:'Park',
+      Hold:'Hold',
+      Talk:'Talk',
+      REC:'REC',
+      not_an_agent:'Not an agent',
+      no_queues:'No queues...',
+      Remove:'Remove',
+      Edit:'Edit',
+      Intercom:'Intercom',
+      Business:'Business',
+      Upload:'Upload',
+      edit_contact: 'Edit Contact',
+      delete_contact_and_history:'Delete Contact  & History',
+      created_by:'Created by',
   },
 
 	/*****Japanese Language******/

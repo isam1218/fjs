@@ -17,8 +17,8 @@
 
         <div ng-if="pageMembers.length > 0">
             <div id="" style="margin:10px;padding:5px;width:97%;background-color:#EDEDED"> 
-                <div style="color:#009cff;font-weight:bold;font-size:.7em">{{group.name}} GROUP Page </div>
-                <i style="margin-top:0px;font-size:.7em">Created by {{groupCallOriginator.displayName}}</i>
+                <div style="color:#009cff;font-weight:bold;font-size:.7em">{{group.name}} {{ ::verbage.group_page}}</div>
+                <i style="margin-top:0px;font-size:.7em">{{::verbage.created_by }} {{groupCallOriginator.displayName}}</i>
             </div>
 
             <!--ng-repeat= "member in members | filter: {displayName:query}"-->
@@ -44,7 +44,7 @@
                     <div class="footnote">
                         <!--<div class="QueueStatus IconDisplay " ng-class="member.queue_status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-'"></div>-->
                         <div class="QueueStatus IconDisplay" ng-class="member.hud_status == 'available' ? 'XIcon-ChatStatus-Available' : 'XIcon-ChatStatus-offline' " ></div>
-                        <div class="ListRowStatusText">{{member.hud_status}}</div>
+                        <div class="ListRowStatusText">{{verbage[member.hud_status]}}</div>
                     </div>
                     
                 </div>
