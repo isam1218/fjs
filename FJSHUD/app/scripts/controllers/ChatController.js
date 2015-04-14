@@ -81,8 +81,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		});
 	};
 
-	$scope.getAttachment = function(url){
-		return httpService.get_attachment(url);
+	$scope.getAttachment = function(url,fileName){
+		return httpService.get_attachment(url,fileName);
 	};
 	
 	// keep scrollbar at bottom until chats are loaded

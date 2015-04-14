@@ -22,7 +22,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpSer
     	$scope.selectedArchiveOption = archiveObject;
     };
 
-    $scope.getAttachment = function(url){
+    $scope.getAttachment = function(url,fileName){
     	return httpService.get_attachment(url);
     };
 
