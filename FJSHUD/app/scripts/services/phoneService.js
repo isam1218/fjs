@@ -77,6 +77,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			call.hangUp();
 		}else{
 			delete xpid2Sip[xpid];
+			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 		}
 	}
 
@@ -85,6 +86,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		call = sipCalls[sip_id];
 		if(call){
 			call.hold = isHeld;
+		}else{
+			if(isHeld){
+				httpService.sendAction('mycalls','transferToHold',{mycallId:xpid})
+			}else{
+				httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid})
+			}
+			
 		}
 	}
 
