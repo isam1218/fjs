@@ -545,6 +545,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
         data.screen = screen;
         data.call = $scope.currentCall;
+        data.close = true;
+        
         $scope.showOverlay(true, 'CallStatusOverlay', data);
     }
    
