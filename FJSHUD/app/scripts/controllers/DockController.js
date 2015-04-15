@@ -119,7 +119,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.$on('parkedcalls_updated',function(event,data){
 		if(data){
 			for(parkedCall in data){
-				if(data[parkedCall]. xef001type == "delete"){
+				if(data[parkedCall].xef001type == "delete"){
 					//delete $scope.parkedCalls[data[parkedCall.xpid]];
 					for (i = 0; i < $scope.parkedCalls.length;i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
@@ -128,7 +128,15 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					}
 				
 				}else{
-					$scope.parkedCalls.push(data[parkedCall]);
+					var toAdd = true;
+					for (i = 0; i < $scope.parkedCalls.length;i++){
+						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
+							toAdd = false;
+						}
+					}
+					if(toAdd){
+						$scope.parkedCalls.push(data[parkedCall]);
+					}
 				}
 			}
 		}
