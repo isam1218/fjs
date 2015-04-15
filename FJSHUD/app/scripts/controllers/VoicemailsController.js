@@ -4,6 +4,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.tester = {};
     $scope.tester.query = "";
     $scope.meModel = {};
+    var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
@@ -140,6 +141,30 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		
         httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: voicemail.xpid});
 	};
+
+    $scope.formatDate = function(voicemail){
+        var date = new Date(voicemail.date);
+        var today = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        var dateString = "";
+        dateString = Months[date.getMonth()] + " " + date.getDate() + ", " + strTime;
+
+        if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+            if (date.getDate() == today.getDate()){
+                dateString = "Today" + ", " + strTime;
+            } else if (date.getDate() == today.getDate() - 1){
+                dateString = "Yesterday" + ", " + strTime;
+            } 
+        }
+
+        return dateString;
+    };
 
     $scope.$on("me_synced",function(event,data){
         if(data){

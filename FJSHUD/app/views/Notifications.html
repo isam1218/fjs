@@ -16,7 +16,7 @@
 			<div class="Messages" ng-repeat="message in todaysNotifications">			
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
-								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+								<div class="NotificationClose" ng-click="remove_notification(message.senderId)"></div>
 							</div>
 							
 					</div>
@@ -30,14 +30,14 @@
 					</div>
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
 						
-						<div class="LeftBarNotificationAvatarSection " style="display:inline-block" ng-click="go_to_notification_chat(message)"> 
+						<div class="LeftBarNotificationAvatarSection " style="display:inline-block" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"> 
 							<img class="NotificationAvatar CallAvatar "  
 								ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'"
 								ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection" > 
-							<div ng-click="go_to_notification_chat(message)">
+							<div ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">
 								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 								<div class="NotificationType" ng-show="showNotificationBody">...{{ message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
 								{{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
@@ -54,7 +54,7 @@
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call' && showNotificationBody">
-								<span class="XButton" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+								<span class="XButton" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
 								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
 							</div>
 							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue' && showNotificationBody">
@@ -87,14 +87,14 @@
 					
 					<div class="NotificationHeader"> 
 							<div class="NotificationHeaderBackground"> 
-								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+								<div class="NotificationClose" ng-click="remove_notification(message.senderId)"></div>
 							</div>
 							
 					</div>
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
-						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message)"> 
+						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"> 
 							<img class="NotificationAvatar CallAvatar"ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'" 
 
 							ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
@@ -102,7 +102,7 @@
 					
 						<div class="LeftBarNotificationMessageSection"> 
 							
-							<div class="NotificationDisplayName" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
+							<div class="NotificationDisplayName" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 							<div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">conference room</span></div>
 							<div class="NotificationMessage"><p>{{ getMessage(message) }} </p> </div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
@@ -115,7 +115,7 @@
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message)">Chat</span>
+								<span class="XButton" style="width:70px"  ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">Chat</span>
 								<span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">Call</span>
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.audience == 'queue'">

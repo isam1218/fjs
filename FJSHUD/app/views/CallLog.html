@@ -68,7 +68,8 @@
 					<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
 				</div>
 				<div class="Duration"> {{ ::call.duration | duration }}</div>
-				<div class="Date"> {{ ::call.startedAt | date: 'MMMM d, h:mm a' }}</div>
+				<!-- <div class="Date"> {{ ::call.startedAt | date: 'MMMM d, h:mm a' }}</div> -->
+				<div class="Date"> {{ formatDate(call)}}</div>
 				
 
 				<div class="Type">
