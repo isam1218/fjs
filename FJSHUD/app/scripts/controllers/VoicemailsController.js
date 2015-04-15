@@ -69,8 +69,11 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 				if (data[key].contactId == contact.xpid)
 					$scope.voicemails.push(data[key]);
 			}
-			else
-				$scope.voicemails.push(data[key]);
+			else{
+				if(data[key].xef001type != "delete")
+					$scope.voicemails.push(data[key]);
+				
+			}
 		}
 	});
 
