@@ -69,7 +69,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.recentSelectSort = 'Date';
     myHttpService.getFeed('me');
-    myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
     myHttpService.getFeed('locations');
     myHttpService.getFeed('calllog');   
@@ -395,6 +394,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
         myHttpService.sendAction("weblauncher","update",data);
     }
+	
+	// grab settings from service (prevents conflict with dock)
+	settingService.getSettings().then(function(data) {
+		$scope.settings = settings = data;
+		update_queues();
+        update_settings();
+	});
     
     $scope.$on('settings_updated',function(event,data){
         if (data){
