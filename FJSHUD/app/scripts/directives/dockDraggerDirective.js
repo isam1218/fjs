@@ -10,6 +10,8 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 			
 			if (scope.gadget.value.config.height)
 				element.css('height', scope.gadget.value.config.height + 'px');
+			else
+				element.addClass('NoFixedHeight');
 	
 			$(element).draggable({
 				handle: '.Header, .Content',
