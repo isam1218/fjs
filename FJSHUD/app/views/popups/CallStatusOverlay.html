@@ -108,7 +108,7 @@
 				</div>
 				<div class="Contact">
 					<div class="Avatar AvatarNormal">
-						<img class="AvatarImgPH" data-ng-src="{{ transferFrom.getAvatar(28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<img class="AvatarImgPH" data-ng-src="{{ transferFrom.getAvatar ? transferFrom.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 					<div class="Name">
