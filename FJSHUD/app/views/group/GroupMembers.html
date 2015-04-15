@@ -18,7 +18,7 @@
     <div class="ListViewTopSpace"></div>
             <a  href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" ng-repeat= "member in members | filter: {displayName:query}"> 
             
-                <div class="Avatar AvatarNormal" > 
+                <div class="Avatar AvatarNormal" context-menu="member"> 
                     <img class="AvatarNoBorder" ng-src="{{getAvatar(member.xpid)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
                 </div>
 

@@ -12,8 +12,8 @@
     <div class="ListView">
     <div class="HeaderTitle" ng-show="contactGroups.length > 0 ">{{::verbage.department}}</div>
     <div class="footnote"  ng-show="contactGroups.length > 0 "> {{::verbage.member_of_department}} </div>
-    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRow ListRow-Contact">
-        <div class="Avatar AvatarNormal">
+    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRow ListRow-Contact" ng-click="storeRecentGroup(group.xpid)">
+        <div class="Avatar AvatarNormal" context-menu="group">
             <div class="GroupAvatarItem GroupAvatarItem_0">
                 <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(mine, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
@@ -43,8 +43,8 @@
     
     <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">{{::verbage.our_teams}}</div>
     <div class="footnote" ng-show=" sharedGroups.length > 0 "> {{::verbage.both_in_these_teams}} </div>
-    <a href="#group/{{::group.xpid}}" ng-click="storeRecent(group.xpid)" data-ng-repeat="group in sharedGroups | filter: {name: query} | orderBy:sortField:sortReverse track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
-        <div class="ConferenceAvatarSection Avatar AvatarNormal">
+    <a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in sharedGroups | filter: {name: query} | orderBy:sortField:sortReverse track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
+        <div class="ConferenceAvatarSection Avatar AvatarNormal" context-menu="group">
             <div class="GroupAvatarItem GroupAvatarItem_0">
                 <img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(group, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
             </div>
