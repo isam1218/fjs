@@ -3,7 +3,8 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			// snap to position
-			if (!$('#DockPanel').hasClass('ui-sortable') || $('#DockPanel').hasClass('ui-sortable-disabled')) {
+			if ((scope.gadget.value.config.x > 0 || scope.gadget.value.config.y > 0) && (!$('#DockPanel').hasClass('ui-sortable') || $('#DockPanel').hasClass('ui-sortable-disabled'))) {
+				element.addClass('Positioned');
 				element.css('top', scope.gadget.value.config.y + '%');
 				element.css('left', scope.gadget.value.config.x + '%');
 			}
@@ -22,6 +23,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				connectToSortable: "#DockPanel",
 				start: function(e) {
 					$('#DockPanel').addClass('Moving');
+					$(this).addClass('Positioned');
 				},
 				stop: function(event) {
 					$(event.toElement).one('click', function(e) { 
