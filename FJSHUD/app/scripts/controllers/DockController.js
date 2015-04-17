@@ -23,29 +23,51 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		// enable/disable grid layout
 		if (data.use_column_layout == 'true') {
 			$timeout(function() {
-				try {
-					$('#DockPanel').sortable('enable');
-				}
-				catch(e) {
-					$('#DockPanel').sortable({
+				$('#InnerDock .Gadget').draggable('disable');
+			
+				if ($('#InnerDock').hasClass('ui-sortable'))
+					$('#InnerDock').sortable('enable');
+				else {
+					$('#InnerDock').sortable({
 						revert: 1,
-						handle: '.Header, .Content'
+						handle: '.Header, .Content',
+						start: function() {
+							$('#DockPanel').addClass('Moving');
+						},
+						stop: function() {
+							$('#DockPanel').removeClass('Moving');
+						}
 					});
 				}
 			}, 100);
 		}
-		else {						
-			try {
-				$('#DockPanel').sortable('disable');
-			}
-			catch(e) { }
+		else {		
+			$('#InnerDock .Gadget').draggable('enable');
+			
+			if ($('#InnerDock').hasClass('ui-sortable'))
+				$('#InnerDock').sortable('disable');
 		}
-				
-		$scope.gadgets = {};
 		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
 			for (key in data) {
+				// check for dupes
+				var found = false;
+				
+				for (g in $scope.gadgets) {
+					for (i = 0; i < $scope.gadgets[g].length; i++) {
+						if (key == $scope.gadgets[g][i].name) {
+							found = true;
+							break;
+						}
+					}
+					
+					if (found) break;
+				}
+				
+				if (found) continue;
+				
+				// add new
 				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
 					var gadget = {
@@ -73,15 +95,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 							break;
 						case 'GadgetUserQueues':
 							gadget.data = queueService.getMyQueues();
-							
-							angular.forEach(gadget.data.queues, function(obj) {
-								for (i = 0; i < obj.members.length; i++) {
-									// we only care about ourselves
-									if (obj.members[i].contactId == $rootScope.myPid)
-										obj.me = obj.members[i];
-								}
-							});
-							
 							break;
 					}
 					
@@ -90,6 +103,21 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				}
 			}
 		});
+	});
+	
+	$scope.$on('delete_gadget', function(event, data) {
+		// remove from fdp
+		httpService.sendAction('settings', 'delete', {name: data});
+		
+		// remove from ui
+		for (g in $scope.gadgets) {
+			for (i = 0; i < $scope.gadgets[g].length; i++) {
+				if (data == $scope.gadgets[g][i].name) {
+					$scope.gadgets[g].splice(i, 1);
+					return;
+				}
+			}
+		}
 	});
 	
 	$scope.getContact = function(xpid) {

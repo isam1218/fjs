@@ -1,275 +1,277 @@
-<!-- standard gadgets -->
-<div class="Gadget" ng-repeat="gadget in gadgets.GadgetUserQueues" dragger>
-	<a href="#/callcenter" class="Header">
-		<div class="Icon TopBarItemAppIcon CallCenter"></div>
-		<div class="Title">
-			<div>{{::verbage.my_queue}}</div>
-			<div ng-if="gadget.data.queues.length == 0">Not an agent</div>
-			<div ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.Logged_out }}</div>
-		</div>
-	</a>
-		
-	<div class="Content">
-		<div class="SubHeader">{{::verbage.my_queue}}</div>
-		
-		<div class="List">
-			<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecent(queue.xpid, 'queue')" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">
-				<div class="Avatar AvatarNormal" context-menu="queue">
-					<div class="GroupAvatarItem GroupAvatarItem_0">
-						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-					</div>
-					<div class="GroupAvatarItem GroupAvatarItem_1">
-						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-					</div>
-					<div class="GroupAvatarItem GroupAvatarItem_2">
-						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-					</div>
-					<div class="GroupAvatarItem GroupAvatarItem_3">
-						<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-					</div>
-					<div class="AvatarInteractable"></div>
-				</div>
-			
-				<div class="ListRowContent">
-					<div class="ListRowTitle">
-						{{ ::queue.name }}
-						<br/>
-						<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
-						{{ queueStatusLabel(queue.me.status.status) }}
-					</div>
-				</div>
-			</a>
-			
-			<div ng-if="gadget.data.queues.length == 0">
-				No queues...
+<div id="InnerDock" class="InnerDock">
+	<!-- standard gadgets -->
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetUserQueues" dragger>
+		<a href="#/callcenter" class="Header">
+			<div class="Icon TopBarItemAppIcon CallCenter"></div>
+			<div class="Title">
+				<div>{{::verbage.my_queue}}</div>
+				<div ng-if="gadget.data.queues.length == 0">Not an agent</div>
+				<div ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.Logged_out }}</div>
 			</div>
+		</a>
+			
+		<div class="Content">
+			<div class="SubHeader">{{::verbage.my_queue}}</div>
+			
+			<div class="List">
+				<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecent(queue.xpid, 'queue')" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">
+					<div class="Avatar AvatarNormal" context-menu="queue">
+						<div class="GroupAvatarItem GroupAvatarItem_0">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_1">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_2">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="GroupAvatarItem GroupAvatarItem_3">
+							<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						</div>
+						<div class="AvatarInteractable"></div>
+					</div>
+				
+					<div class="ListRowContent">
+						<div class="ListRowTitle">
+							{{ ::queue.name }}
+							<br/>
+							<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+							{{ queueStatusLabel(queue.me.status.status) }}
+						</div>
+					</div>
+				</a>
+				
+				<div ng-if="gadget.data.queues.length == 0">
+					No queues...
+				</div>
+			</div>
+		</div>
+		
+		<resizer></resizer>
+	</div>
+
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" dragger>
+		<div class="Header Single">
+			<div class="Avatar AvatarNormal">
+				<div class="GroupAvatarItem GroupAvatarItem_0">
+					<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_1">
+					<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_2">
+					<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_3">
+					<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
+				</div>
+			</div>
+			<div class="Title">
+				<div>{{::verbage.parked_calls}}</div>
+				<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
+				<div class = "GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
+				<div class = "GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
+			</div>
+
+			
+
+		</div>
+		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
+				  <!--ng-click="storeRecent(contact.xpid)" -->
+		<div> 
+			<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
+				<div class="Avatar AvatarNormal" context-menu="call" style="display:inline-block;">
+					<img class="AvatarImgPH" data-ng-src="getAvatar(call.parkerContactId)"  onerror="this.src='img/Generic-Avatar-28.png'" />
+					<div class="AvatarForeground AvatarInteractable"></div>
+				</div>
+				
+				<div class="ListRowContent" style="display:inline-block;margin-right:2px">
+					<div class="ListRowTitle" style="width:80px;padding:0px;text-overflow:ellipssis;white-space:nowrap">
+						<div>{{ ::call.displayName }}</div>
+						<div>{{ ::call.phone }}</div>
+					</div>
+						
+						
+				</div>
+					<div style="float:right;font-size:.65em;margin-top:2px;margin-right:2px">00:00</div>
+				
+			</div>		
 		</div>
 	</div>
-	
-	<resizer></resizer>
-</div>
 
-<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" dragger>
-	<div class="Header Single">
-		<div class="Avatar AvatarNormal">
-			<div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" src="img/Generic-Avatar-28.png" />
-			</div>
-		</div>
-		<div class="Title">
-			<div>{{::verbage.parked_calls}}</div>
-			<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
-			<div class = "GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
-			<div class = "GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
-		</div>
-
-		
-
-	</div>
-	<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
-			  <!--ng-click="storeRecent(contact.xpid)" -->
-	<div> 
-		<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
-			<div class="Avatar AvatarNormal" context-menu="call" style="display:inline-block;">
-				<img class="AvatarImgPH" data-ng-src="getAvatar(call.parkerContactId)"  onerror="this.src='img/Generic-Avatar-28.png'" />
+	<!-- contacts -->
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" dragger>
+		<a href="#/contact/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'contact')" class="Header Single">
+			<div class="Avatar AvatarNormal" context-menu="gadget.data">
+				<img class="AvatarImgPH" data-ng-src="{{::gadget.data.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
 				<div class="AvatarForeground AvatarInteractable"></div>
 			</div>
-			
-			<div class="ListRowContent" style="display:inline-block;margin-right:2px">
-				<div class="ListRowTitle" style="width:80px;padding:0px;text-overflow:ellipssis;white-space:nowrap">
-					<div>{{ ::call.displayName }}</div>
-					<div>{{ ::call.phone }}</div>
+			<div class="Title">
+				<div>{{ ::gadget.data.displayName }}</div>
+				<div>
+					<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
+					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
 				</div>
-					
-					
 			</div>
-				<div style="float:right;font-size:.65em;margin-top:2px;margin-right:2px">00:00</div>
-			
-		</div>		
+		</a>
 	</div>
-</div>
 
-<!-- contacts -->
-<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" dragger>
-	<a href="#/contact/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'contact')" class="Header Single">
-		<div class="Avatar AvatarNormal" context-menu="gadget.data">
-			<img class="AvatarImgPH" data-ng-src="{{::gadget.data.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			<div class="AvatarForeground AvatarInteractable"></div>
-		</div>
-		<div class="Title">
-			<div>{{ ::gadget.data.displayName }}</div>
-			<div>
-				<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
-				<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
+	<!-- groups -->
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
+		<a href="#/group/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'group')" class="Header">
+			<div class="Avatar AvatarNormal" context-menu="gadget.data">
+				<div class="GroupAvatarItem GroupAvatarItem_0">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_1">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_2">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_3">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="AvatarInteractable"></div>
 			</div>
-		</div>
-	</a>
-</div>
-
-<!-- groups -->
-<div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
-	<a href="#/group/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'group')" class="Header">
-		<div class="Avatar AvatarNormal" context-menu="gadget.data">
-			<div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			<div class="Title">
+				<div>{{ ::gadget.data.name }}</div>
+				<div>None</div>
 			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="AvatarInteractable"></div>
-		</div>
-		<div class="Title">
-			<div>{{ ::gadget.data.name }}</div>
-			<div>None</div>
-		</div>
-	</a>
-	
-	<div class="Content">
-		<div class="SubHeader">{{::verbage.member}}</div>
+		</a>
 		
-		<div class="List">
-			<a href="#/contact/{{member.xpid}}" ng-click="storeRecent(member.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
-				<div class="Avatar AvatarSmall" context-menu="member">
-					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-					<div class="AvatarForeground AvatarInteractable"></div>
-				</div>
+		<div class="Content">
+			<div class="SubHeader">{{::verbage.member}}</div>
 			
-				<div class="ListRowContent">
-					<div class="ListRowTitle">
-						{{ ::member.displayName }}
-						<br/>
-						<div class="IconDisplay XIcon-ChatStatus-{{member.hud_status || 'offline' }}"></div>
-						{{verbage[member.hud_status] || verbage['offline']}}
+			<div class="List">
+				<a href="#/contact/{{member.xpid}}" ng-click="storeRecent(member.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
+					<div class="Avatar AvatarSmall" context-menu="member">
+						<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
-				</div>
-			</a>
+				
+					<div class="ListRowContent">
+						<div class="ListRowTitle">
+							{{ ::member.displayName }}
+							<br/>
+							<div class="IconDisplay XIcon-ChatStatus-{{member.hud_status || 'offline' }}"></div>
+							{{verbage[member.hud_status] || verbage['offline']}}
+						</div>
+					</div>
+				</a>
+			</div>
 		</div>
-	</div>
-	
-	<resizer></resizer>
-</div>
-
-<!-- conferences -->
-<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" dragger>
-	<a href="#/conference/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'conference')" class="Header">
-		<div class="Avatar AvatarNormal" context-menu="gadget.data">
-			<div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="AvatarInteractable"></div>
-		</div>
-		<div class="Title">
-			<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
-			<div ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
-			<div ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
-		</div>
-	</a>
-	
-	<div class="Content">
-		<div class="SubHeader">{{::verbage.member}}</div>
 		
-		<div class="List">
-			<a href="#/contact/{{member.xpid}}" ng-click="storeRecent(member.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
-				<div class="Avatar AvatarSmall" context-menu="member">
-					<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-					<div class="AvatarForeground AvatarInteractable"></div>
-				</div>
-			
-				<div class="ListRowContent">
-					<div class="ListRowTitle">
-						{{ ::member.displayName }}
-						<br/>
-						{{ ::member.primaryExtension }}
-					</div>
-					<div class="ListRowStatus" timer="member.call.startedAt"></div>
-				</div>
-			</a>
-			
-			<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
-				Room is free and you can do it...
-				<p>
-					<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
-				</p>
-			</div>
-		</div>
+		<resizer></resizer>
 	</div>
-	
-	<resizer></resizer>
-</div>
 
-<!-- queues -->
-<div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
-	<a href="#/queue/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'queue')" class="Header">
-		<div class="Avatar AvatarNormal" context-menu="gadget.data">
-			<div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+	<!-- conferences -->
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" dragger>
+		<a href="#/conference/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'conference')" class="Header">
+			<div class="Avatar AvatarNormal" context-menu="gadget.data">
+				<div class="GroupAvatarItem GroupAvatarItem_0">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_1">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_2">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_3">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="AvatarInteractable"></div>
 			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+			<div class="Title">
+				<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
+				<div ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
+				<div ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
 			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+		</a>
+		
+		<div class="Content">
+			<div class="SubHeader">{{::verbage.member}}</div>
+			
+			<div class="List">
+				<a href="#/contact/{{member.xpid}}" ng-click="storeRecent(member.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
+					<div class="Avatar AvatarSmall" context-menu="member">
+						<img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<div class="AvatarForeground AvatarInteractable"></div>
+					</div>
+				
+					<div class="ListRowContent">
+						<div class="ListRowTitle">
+							{{ ::member.displayName }}
+							<br/>
+							{{ ::member.primaryExtension }}
+						</div>
+						<div class="ListRowStatus" timer="member.call.startedAt"></div>
+					</div>
+				</a>
+				
+				<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
+					Room is free and you can do it...
+					<p>
+						<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
+					</p>
+				</div>
 			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="AvatarInteractable"></div>
 		</div>
-		<div class="Title">
-			<div class="Name">{{ ::gadget.data.name }}</div>
-			<div class="Agents">Agents: {{ gadget.data.info.active + ' / ' + gadget.data.loggedInMembers + ' / ' + gadget.data.members.length }}</div>
-		</div>
-	</a>
-	
-	<div class="Content">
-		<div class="List Stats">
-			<div>
-				<strong>{{ gadget.data.info.waiting }}</strong>
-				Waiting
+		
+		<resizer></resizer>
+	</div>
+
+	<!-- queues -->
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
+		<a href="#/queue/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'queue')" class="Header">
+			<div class="Avatar AvatarNormal" context-menu="gadget.data">
+				<div class="GroupAvatarItem GroupAvatarItem_0">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_1">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_2">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="GroupAvatarItem GroupAvatarItem_3">
+					<img class="GroupAvatarItemImg" data-ng-src="{{ ::gadget.data.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+				</div>
+				<div class="AvatarInteractable"></div>
 			</div>
-			<div>
-				<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
-				Avg Wait
+			<div class="Title">
+				<div class="Name">{{ ::gadget.data.name }}</div>
+				<div class="Agents">Agents: {{ gadget.data.info.active + ' / ' + gadget.data.loggedInMembers + ' / ' + gadget.data.members.length }}</div>
 			</div>
-			<div>
-				<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
-				Avg Talk
-			</div>
-			<div>
-				<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
-				Total
-			</div>
-			<div>
-				<strong>{{ gadget.data.info.abandonPercent }}%</strong>
-				Abandon
-			</div>
-			<div>
-				<strong>{{ gadget.data.info.active }}</strong>
-				Active
+		</a>
+		
+		<div class="Content">
+			<div class="List Stats">
+				<div>
+					<strong>{{ gadget.data.info.waiting }}</strong>
+					Waiting
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
+					Avg Wait
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
+					Avg Talk
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
+					Total
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.abandonPercent }}%</strong>
+					Abandon
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.active }}</strong>
+					Active
+				</div>
 			</div>
 		</div>
 	</div>

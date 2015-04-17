@@ -3,7 +3,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			// snap to position
-			if ((scope.gadget.value.config.x > 0 || scope.gadget.value.config.y > 0) && (!$('#DockPanel').hasClass('ui-sortable') || $('#DockPanel').hasClass('ui-sortable-disabled'))) {
+			if ((scope.gadget.value.config.x > 0 || scope.gadget.value.config.y > 0) && (!$('#InnerDock').hasClass('ui-sortable') || $('#InnerDock').hasClass('ui-sortable-disabled'))) {
 				element.addClass('Positioned');
 				element.css('top', scope.gadget.value.config.y + '%');
 				element.css('left', scope.gadget.value.config.x + '%');
@@ -16,35 +16,40 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 	
 			$(element).draggable({
 				handle: '.Header, .Content',
-				containment: '#DockPanel',
+				containment: '#InnerDock',
+				helper: 'clone',
+				scroll: false,
 				cursor: 'move',
-				cursorAt: { bottom: 0 },
-				stack: '#DockPanel .Gadget',
-				connectToSortable: "#DockPanel",
-				start: function(e) {
+				cursorAt: { top: 25 },
+				zIndex: 50,
+				stack: '#InnerDock .Gadget',
+				connectToSortable: "#InnerDock",
+				start: function() {
+					// show container area
+					$('#DockPanel').scrollLeft(0);
 					$('#DockPanel').addClass('Moving');
-					$(this).addClass('Positioned');
+					$(this).hide().addClass('Positioned');
 				},
-				stop: function(event) {
-					$(event.toElement).one('click', function(e) { 
+				stop: function(event, ui) {
+					$(event.toElement).one('click', function(e) {
 						e.preventDefault(); 
 					});
 					
 					$('#DockPanel').removeClass('Moving');
 					
-					if (!$('#DockPanel').hasClass('ui-sortable') || $('#DockPanel').hasClass('ui-sortable-disabled')) {
-						// save new position to db
-						var position = $(this).position();
-						var rect = document.getElementById('DockPanel').getBoundingClientRect();
-						
-						scope.gadget.value.config.x = position.left/rect.width * 100;
-						scope.gadget.value.config.y = position.top/rect.height * 100;
-						
-						httpService.sendAction('settings', 'update', {
-							name: scope.gadget.name,
-							value: JSON.stringify(scope.gadget.value)
-						});
-					}
+					// make sure dragged element matches helper position
+					$(this).show().css('top', ui.position.top + 'px').css('left', ui.position.left + 'px');
+					
+					var rect = document.getElementById('InnerDock').getBoundingClientRect();
+					
+					// save new position to db as percentage
+					scope.gadget.value.config.x = ui.position.left/rect.width * 100;
+					scope.gadget.value.config.y = ui.position.top/rect.height * 100;
+					
+					httpService.sendAction('settings', 'update', {
+						name: scope.gadget.name,
+						value: JSON.stringify(scope.gadget.value)
+					});
 				}
 			});
 		}

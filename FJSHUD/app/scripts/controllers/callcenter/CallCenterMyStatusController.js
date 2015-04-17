@@ -13,16 +13,6 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 		$scope.reasons = data;
 	});
 	
-	// attach "me" status
-	$scope.$on('queues_updated', function() {
-		angular.forEach($scope.queues, function(obj) {
-			for (i = 0; i < obj.members.length; i++) {
-				if (obj.members[i].contactId == $rootScope.myPid)
-					obj.me = obj.members[i];
-			}
-		});
-	});
-	
 	// enable/disable action buttons
 	$scope.$watch('checkboxes', function() {
 		$scope.disableLogin = true;

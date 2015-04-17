@@ -4,18 +4,32 @@
   margin-left: 10px;
   -webkit-user-select: none;
   user-select: none;
-  column-width: 170px;
-  -webkit-column-width: 170px;
-  -moz-column-width: 170px;
-  column-gap: 5px;
-  -webkit-column-gap: 5px;
-  -moz-column-gap: 5px;
-  overflow: visible;
+  overflow-x: auto;
+  overflow-y: hidden;
   
-  &.ui-sortable:not(.ui-sortable-disabled) .Gadget {
-    position: static;
-	top: 0;
-	left: 0;
+  &.Moving {
+    border-width: 1px;
+    border-image: url("../img/marching-ants.gif") 8 repeat repeat;
+    -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+    -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  }
+  
+  .InnerDock {
+    position: absolute;
+	height: 100%;
+	width: 100%;
+    column-width: 170px;
+    -webkit-column-width: 170px;
+    -moz-column-width: 170px;
+    column-gap: 5px;
+    -webkit-column-gap: 5px;
+    -moz-column-gap: 5px;
+  
+    &.ui-sortable:not(.ui-sortable-disabled) .Gadget {
+      position: static;
+	  top: 0;
+	  left: 0;
+    }
   }
 
   .GadgetStatusText {
@@ -38,13 +52,6 @@
 	  text-shadow: whiteSmoke 0 1px 0;
 	  text-align: center;
 	}
-  
-  &.Moving {
-    border-width: 1px;
-    border-image: url("../img/marching-ants.gif") 8 repeat repeat;
-    -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
-    -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
-  }
   
   .Gadget {
 	position: relative;

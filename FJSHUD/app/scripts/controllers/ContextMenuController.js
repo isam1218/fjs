@@ -113,7 +113,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			httpService.sendAction('settings', 'update', data);
 		}
 		else {
-			httpService.sendAction('settings', 'delete', {name: 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.xpid});
+			// send to dock controller
+			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.xpid);
 		}
 	};
 	
