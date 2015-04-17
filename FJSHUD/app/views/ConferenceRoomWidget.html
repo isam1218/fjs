@@ -95,7 +95,7 @@
                                 </div>                            
                                 <div data-ng-if="conference.members.length > 0">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-									{{conference.members.length}} member(s) on a call
+									{{conference.members.length}} {{::verbage.members_on_call}}
 								</div> 
                             </div>
 							<div class="ListRowStatus" ng-if="conference.location">

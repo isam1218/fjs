@@ -19,7 +19,7 @@
 				
 				<div class="CallStatus">
 					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
-						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
+						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='{{path}}/img/Generic-Avatar-28.png'" />
 						<div class="AvatarInteractable AvatarForeground"></div>
 					</div>
 				</div>
@@ -50,19 +50,19 @@
 			<div><div>outbound on call</div></div>
 		</div>
 		<div style="float:right;display:inline-block;margin-top:5px">
-			<a href="#/CancelCall?{{currentCall.xpid}}" ng-if="isRinging" class="XButton" value="Cancel" onclick="window.close()">Cancel</a>
-			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="!isRinging && !onHold" class="XButton"  onclick="window.close()">Hold</a>
-			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="!isRinging && !onHold" class="XButton">End</a>
-			<a href="#/ResumeCall?{{currentCall.xpid}}" ng-if="onHold" class="XButton">Talk</a>
-			<a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && isRinging"  class="XButton">Accept</a>
+			<a href="#/CancelCall?{{currentCall.xpid}}" ng-if="isRinging" class="XButton" value="{{::verbage.cancel}}" onclick="window.close()">{{::verbage.cancel}}</a>
+			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="!isRinging && !onHold" class="XButton"  onclick="window.close()">{{::verbage.hold}}</a>
+			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="!isRinging && !onHold" class="XButton">{{::verbage.end}}</a>
+			<a href="#/ResumeCall?{{currentCall.xpid}}" ng-if="onHold" class="XButton">{{::verbate.talk}}</a>
+			<a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && isRinging"  class="XButton">{{::verbage.accept}}</a>
 		</div>
 	</div>
 	<div style="margin:0px 0px 0px 0px;background-color: gray;color: white;padding: .25em;">
 		<div style="width: 24px;height: 24px;background: url('img/XIconSet-24x24.png') no-repeat -48px -72px;display:inline-block"></div>
-		<div style="display:inline-block;vertical-align: middle"><span>Notifications</span><span class="Event" ng-show="notifications.length > 0 " > {{ notifications.length + ' events' }} </span> </div>
+		<div style="display:inline-block;vertical-align: middle"><span>{{::verbage.notifications}}</span><span class="Event" ng-show="notifications.length > 0 " > {{ notifications.length + ' events' }} </span> </div>
 		
 		
-		<a href="#/OpenNotifications"value="Open" style="float:right;position: relative;display: inline-block;" class="XButton">Open</a>
+		<a href="#/OpenNotifications"value="{{::verbage.Open}}" style="float:right;position: relative;display: inline-block;" class="XButton">{{::verbage.open}}</a>
 	</div>
 
 	<div class="NotificationMessages" style="min-height:150px">
@@ -81,7 +81,7 @@
 					<div class="NotificationSection"> 
 						
 						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
-							<img class="NotificationAvatar"  ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+							<img class="NotificationAvatar"  ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='{{path}}/img/Generic-Avatar-28.png'"/>
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
@@ -91,18 +91,18 @@
 							<div class="NotificationMessage">{{ getMessage(message) }} </div>
 							</a>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
-								<a class="XButton XButtonRed" href="#/RejectZoom"> Reject</span>
-								<a class="XButton XButtonGreen" href="#/AcceptZoom?{{message.data.url}}" >Accept</a>
+								<a class="XButton XButtonRed" href="#/RejectZoom"> {{::verbage.Reject}}</span>
+								<a class="XButton XButtonGreen" href="#/AcceptZoom?{{message.data.url}}" >{{::verbage.accept}}</a>
 							
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
-								<a class="XButton" style="width:70px" href="#/PlayVM?{{message.vmId}}" > Play</a>
-								<a class="XButton XButtonGreen" style="width:90px" href="#/CallBack?{{message.phone}}">Call Back</a>
+								<a class="XButton" style="width:70px" href="#/PlayVM?{{message.vmId}}" > {{::verbage.Play}}</a>
+								<a class="XButton XButtonGreen" style="width:90px" href="#/CallBack?{{message.phone}}">{{::verbage.call_back}}</a>
 							</div>
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-								<a class="XButton" style="width:70px" href="#contact/{{::contact.xpid}}">Chat</a>
-								<a class="XButton XButtonGreen" style="width:70px" href="#/CallBack?{{message.phone}}">Call</a>
+								<a class="XButton" style="width:70px" href="#contact/{{::contact.xpid}}">{{::verbage.chat}}</a>
+								<a class="XButton XButtonGreen" style="width:70px" href="#/CallBack?{{message.phone}}">{{::verbage.Call}}</a>
 							</div>
 						</div>
 				</div>

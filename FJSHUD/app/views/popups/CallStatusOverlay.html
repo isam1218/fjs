@@ -4,14 +4,14 @@
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>Call Management</h2>
+			<h2>{{::verbage.call_management}}</h2>
 		</div>
 		
 		<div class="Sections">
 			<div class="Section">
 				<div>
-					<h4>Call Members</h4>
-					<em>These contacts are talking</em>
+					<h4>{{::verbage.call_members}}</h4>
+					<em>{{::verbage.contacts_talking}}</em>
 				</div>
 				<div class="Contact">
 					<div class="Avatar AvatarNormal" context-menu="onCall">
@@ -24,15 +24,15 @@
 						x{{ onCall.primaryExtension }}
 					</div>
 					
-					<div class="Barging" ng-if="onCall.call.barge > 0">Barging</div>
+					<div class="Barging" ng-if="onCall.call.barge > 0">{{::verbage.barging}}</div>
 					
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="Barge" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="Monitor" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="Whisper" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="Transfer" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
 					</div>
 				</div>
 				<div class="Contact">
@@ -49,18 +49,18 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="Barge" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="Monitor" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="Whisper" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="Transfer" ng-click="changeScreen('transfer', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
 					</div>
 				</div>
 			</div>
 			
 			<div class="Section">
 				<div>
-					<h4>Barged By</h4>
-					<em>Contacts who barge the call</em>
+					<h4>{{::verbage.barged_by}}</h4>
+					<em>{{::verbage.contacts_barge_call}}</em>
 				</div>
 				
 				<div class="Bargers">
@@ -97,14 +97,14 @@
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>Call Transfer</h2>
+			<h2>{{::verbage.call_transfer}}</h2>
 		</div>
 		
 		<div class="Sections">
 			<div class="Section">
 				<div>
-					<h4>Contact to Transfer</h4>
-					<em>This person will be transferred to the selected destination</em>
+					<h4>{{::verbage.contact_to_transfer}}</h4>
+					<em>{{::verbage.transfer_selected_person}}</em>
 				</div>
 				<div class="Contact">
 					<div class="Avatar AvatarNormal">
@@ -123,10 +123,10 @@
 			
 			<div class="Section" ng-show="!transferTo">
 				<div>
-					<h4>Destination</h4>
-					<input type="search" class="Search" ng-model="tranQuery" placeholder="Search" />
+					<h4>{{::verbage.destination}}</h4>
+					<input type="search" class="Search" ng-model="tranQuery" placeholder="{{::verbage.search}}" />
 				</div>
-				<div class="Banner">CONTACTS</div>
+				<div class="Banner upper">{{::verbage.contacts}}</div>
 				<div class="Members">
 					<a href="" class="ListRow" ng-repeat="contact in contacts | filter: {displayName: tranQuery} track by contact.xpid" ng-click="selectDestination(contact)"> 
 						<div class="Avatar AvatarNormal">
@@ -147,8 +147,8 @@
 			
 			<div class="Section" ng-show="transferTo">
 				<div>
-					<h4>Office Destination</h4>
-					<em>Call will be transferred to this contact</em>
+					<h4>{{::verbage.office_destination}}</h4>
+					<em>{{::verbage.call_transfer_destination}}</em>
 				</div>
 				<div>
 					<a href="" class="ListRow"> 
@@ -167,13 +167,13 @@
 					</a>
 				</div>
 				<div>
-					<h4>Transfer Options</h4>
-					<em>Call will be transferred to this contact</em>
+					<h4>{{::verbage.transfer_options}}</h4>
+					<em>{{::verbage.call_transfer_destination}}</em>
 				</div>
 				<div>
-					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="1" ng-false-value="0" /> Primary extension
+					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="1" ng-false-value="0" /> {{::verbage.primary_extension}}
 					<br/>
-					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="0" ng-false-value="1" /> Voicemail box
+					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="0" ng-false-value="1" /> {{::verbage.voicemail_box}}x
 				</div>
 			</div>
 		</div>
@@ -191,14 +191,14 @@
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>Transfer to Conference Room</h2>
+			<h2>{{::verbage.transfer_to_conference_room}}</h2>
 		</div>
 		
 		<div class="Sections">
 			<div class="Section">
 				<div>
-					<h4>Contacts to Transfer</h4>
-					<em>These contacts will be transferred to conference room</em>
+					<h4>{{::verbage.contact_to_transfer}}</h4>
+					<em>{{::verbage.contacts_will_be_transfered_to_conference}}</em>
 				</div>
 				<div>
 					<div class="ListRow">
@@ -232,17 +232,17 @@
 				</div>
 				
 				<div>
-					<h4>Options</h4>
-					<em>Add yourself to the conference</em>
+					<h4>{{::verbage.Options}}</h4>
+					<em>{{::verbage.add_yourself_to_conference}}</em>
 				</div>
 				
-				<input type="checkbox" ng-model="meToo" ng-true-value="1" ng-false-value="0" /> Join me as well
+				<input type="checkbox" ng-model="meToo" ng-true-value="1" ng-false-value="0" /> {{::verbage.join_me_as_well}}
 			</div>
 			
 			<div class="Section" ng-show="!selectedConf">
 				<div>
-					<h4>Conference Room</h4>
-					<input type="search" class="Search" ng-model="confQuery" placeholder="Search by room or person" />
+					<h4>{{::verbage.conference_room}}</h4>
+					<input type="search" class="Search" ng-model="confQuery" placeholder="{{::verbage.search_by_room_or_person}}" />
 				</div>
 				<div class="Members">
                     <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: customConfFilter() track by conference.xpid" ng-click="selectConference(conference)">
@@ -264,15 +264,15 @@
                         </div>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
-                                <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+                                <div class="name"> {{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
 								 
                                 <div data-ng-if="conference.members.length == 0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-									Free room
+									{{::verbage.free_room}}
                                 </div>                            
                                 <div data-ng-if="conference.members.length > 0">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-									{{conference.members.length}} member(s) on a call
+									{{conference.members.length}} {{::verbage.members_on_call}}
 								</div> 
                             </div>
                         </div>
@@ -282,7 +282,7 @@
 			
 			<div class="Section" ng-show="selectedConf">
 				<div>
-					<h4>Destination</h4>
+					<h4>{{::verbage.destination}}</h4>
 				</div>
 				
 				<div>
@@ -305,15 +305,15 @@
 						</div>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<div class="name"> Room # {{::selectedConf.roomNumber}} ({{::selectedConf.extensionNumber}})</div>
+								<div class="name"> {{::verbage.room}} # {{::selectedConf.roomNumber}} ({{::selectedConf.extensionNumber}})</div>
 								
 								<div data-ng-if="selectedConf.members.length == 0">
 									<div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-									Free room
+									{{::verbage.free_room}}
 								</div>                            
 								<div data-ng-if="selectedConf.members.length > 0">
 									<div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-									{{selectedConf.members.length}} member(s) on a call
+									{{selectedConf.members.length}} {{::verbage.members_on_call}}
 								</div> 
 							</div>
 							
@@ -325,8 +325,8 @@
 				</div>
 				
 				<div>
-					<h4>Are you Ready?</h4>
-					<em>Call will be transferred to this conference</em>
+					<h4>{{::verbage.are_you_ready}}?</h4>
+					<em>{{::verbage.call_transfer_to_conference}}</em>
 				</div>
 			</div>
 		</div>
@@ -334,8 +334,8 @@
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
 			
-			<input type="button" class="XButton" value="Cancel" ng-click="changeScreen('call')" />
-			<input type="button" class="XButton" value="Join" ng-click="joinConference()" />
+			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="changeScreen('call')" />
+			<input type="button" class="XButton" value="{{::verbage.join}}" ng-click="joinConference()" />
 		</div>
 	</div>
 </div>

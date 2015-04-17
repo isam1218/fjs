@@ -48,12 +48,12 @@
 <div class="ChatInputBox" ng-if="enableChat">	
 	<div class="ChatAlertOptions" ng-if="showAlerts">
 		<div class="Left">
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="3" /> All Agents
+			<input type="radio" ng-model="alertStatus" name="alertStatus" value="3" /> {{::verbage.all_agents}}
 			<input type="radio" ng-model="alertStatus" name="alertStatus" value="1" /> {{::verbage.logged_in}}
 			<input type="radio" ng-model="alertStatus" name="alertStatus" value="2" /> {{::verbage.Logged_out}}
 		</div>
 		<div class="Right">
-			{{ 150 - message.length }} characters left
+			{{ 150 - message.length }} {{::verbage.characters_left}}
 		</div>
 	</div>
 	
