@@ -4,7 +4,7 @@
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
-			<h2>{{ editing ? 'Edit Contact' : verbage.add_a_new_contact }}</h2>
+			<h2>{{ editing ? verbage.edit_contact : verbage.add_a_new_contact }}</h2>
 		</div>
 		
 		<div class="Sections">
@@ -65,7 +65,7 @@
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
-			<input type="button" class="XButton" value="Delete Contact & History" ng-click="delContact()" ng-show="editing" />
+			<input type="button" class="XButton" value="{{::verbage.delete_contact_and_history}}" ng-click="delContact()" ng-show="editing" />
 			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showOverlay(false)" />
 			<input type="button" class="XButton" value="{{ editing ? verbage.save_changes : verbage.add_contact }}" ng-click="saveContact()" />
 		</div>

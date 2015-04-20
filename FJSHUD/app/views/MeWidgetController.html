@@ -64,11 +64,10 @@
                             <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.contact.hud_status || 'offline' }}">
                               <div class="status-icon-inner"></div>
                             </div>
-                          
+                            
                           <br/>
                         </div>
                         </div>
-                        
                         
                       </div>
                   </div>
@@ -89,14 +88,14 @@
                   <div class="row_buttons"> 
                     <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('transfer',currentCall)"><span>{{verbage.transfer}}</span></button> 
                     <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('conference',currentCall)"><span>{{verbage.conf_room}}</span></button> 
-                <div class="XButton CurrentCallBtn" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>Mute</span></div>
-                <div class="XButton CurrentCallBtn" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>Park</span></div>  
+                <div class="XButton CurrentCallBtn" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>{{::verbage.Mute}}</span></div>
+                <div class="XButton CurrentCallBtn" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
                   </div>
                   <div class="row_buttons">
-                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> Hold</span></button> 
-                    <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> Talk</div> 
+                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button> 
+                    <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
 
-                    <div class="XButton CurrentCallBtn" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>REC  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
+                    <div class="XButton CurrentCallBtn" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>{{::verbate.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
                     <div class=" SelectBox XButton CurrentCallBtn" data-ng-click="showLocationsPopup($event, $element)">  
                       <div class="SelectBoxText">
                                 <span>{{::verbage.move}}</span>
@@ -141,11 +140,15 @@
                      <div  ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
                     </div>
                   </div>
-                  <div ng-show="calllogs.length == 0" class="NoRecentCalls"> No Recent Calls</div>
+                  <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
-                      <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
+                      <!--<div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>-->
+
+                      <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D h:mm a':fon_lang_code}} </div>
+
+                      
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
                       <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>

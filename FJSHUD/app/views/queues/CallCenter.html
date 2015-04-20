@@ -5,7 +5,7 @@
     <div class="WidgetStat">
 		<div class="Left">
 			<div class="Labels">
-				<div>Logged-in Agents:</div>
+				<div>{{::verbage.logged_in_agents}}:</div>
 				<div>{{::verbage.queue_sort_total_calls}}</div>
 			</div>
 			<div class="Data">
@@ -16,7 +16,7 @@
 		<div class="Right">
 			<div class="Labels">
 				<div>{{::verbage.queue_sort_calls_wait}}:</div>
-				<div>Active Agents:</div>
+				<div>{{::verbage.active_agents}}:</div>
 			</div>
 			<div class="Data">
 				<div>{{ total.waiting }}</div>

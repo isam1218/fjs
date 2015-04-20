@@ -1,14 +1,14 @@
 <div class="StatHeader">
 	<div class="StatBlock">
-		<span>Holding</span>
+		<span>{{::verbage.Holding}}</span>
 		<span>{{ queue.info.waiting }}</span>
 	</div>
 	<div class="StatBlock">
-		<span>Abandon</span>
+		<span>{{::verbage.Abandon}}</span>
 		<span>{{ queue.info.abandonPercent }}%</span>
 	</div>
 	<div class="StatBlock">
-		<span>Complete</span>
+		<span>{{::verbage.Complete}}</span>
 		<span>{{ queue.info.completedPercent }}%</span>
 	</div>
 	<div class="StatBlock">
@@ -34,19 +34,19 @@
 		<div>&nbsp;</div>
 		<div>&nbsp;</div>
 		<div ng-click="setSort('displayName')">
-			<span>Agent Name</span>
+			<span>{{::verbage.Agent_Name}}</span>
 			<div ng-if="sortOrder == 'displayName'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
 		</div>
 		<div ng-click="setSort('stats.lastCallTimestamp')">
-			<span>Talk / Idle</span>
+			<span>{{::verbage.Talk_IDLE}}</span>
 			<div ng-if="sortOrder == 'stats.lastCallTimestamp'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 		</div>
 		<div ng-click="setSort('stats.callsHandled')">
-			<span>Calls</span>
+			<span>{{::verbage.calls}}</span>
 			<div ng-if="sortOrder == 'stats.callsHandled'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 		</div>
 		<div ng-click="setSort('stats.avgTalkTime')">
-			<span>Avg Talk</span>
+			<span>{{::verbage.avg_talk}}</span>
 			<div ng-if="sortOrder == 'stats.avgTalkTime'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 		</div>
 		<div>&nbsp;</div>
@@ -72,7 +72,7 @@
 			</div>
 			
 			<div class="Details" ng-show="row[member.xpid]">
-				<div class="SubHeader">Other queues</div>
+				<div class="SubHeader">{{::verbage.other_queues}}</div>
 				<div class="Row" ng-repeat="other in member.otherQueues" ng-click="goToQueue(other.queue.xpid)">
 					<div>&nbsp;</div>
 					<div>&nbsp;</div>
@@ -82,9 +82,9 @@
 					<div>{{ other.stats.avgTalkTime | duration }}</div>
 					<div>&nbsp;</div>
 				</div>
-				<div class="Empty" ng-if="member.otherQueues.length == 0">Agent of this queue only</div>
+				<div class="Empty" ng-if="member.otherQueues.length == 0">{{::verbage.agent_of_queue_only}}</div>
 				
-				<div class="SubHeader">Current queue calls</div>
+				<div class="SubHeader">{{::verbage.current_queue_call}}</div>
 				<div class="ActiveCall" ng-if="member.call.startedAt">
 					<div class="Info">
 						<div class="Arrow"></div>
@@ -100,7 +100,7 @@
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 				</div>
-				<div class="Empty" ng-if="!member.call.startedAt">no calls</div>
+				<div class="Empty" ng-if="!member.call.startedAt">{{::verbage.no_calls}}</div>
 			</div>
 		</div>
 	</div>

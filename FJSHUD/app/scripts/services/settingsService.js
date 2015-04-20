@@ -9,6 +9,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 	if(localStorage.fon_lang_code){
 		var code = localStorage.fon_lang_code.split(".")[1];
 		$rootScope.verbage = fjs.i18n[code];
+		$rootScope.fon_lang_code = code;
 		if(!$rootScope.verbage){
 			$rootScope.verbage = fjs.i18n.us;
 		}

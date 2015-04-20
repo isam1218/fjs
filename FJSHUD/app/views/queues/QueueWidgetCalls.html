@@ -1,12 +1,12 @@
 <div class="ToolBar">
-	<input type="search" class="SearchBox" ng-model="query" placeholder="Search" />
+	<input type="search" class="SearchBox" ng-model="query" placeholder="{{::verbage.search}}" />
 </div>
 
 <div class="QueueList CallList">
 	<div class="Header">
-		<div class="ListSectionHeaderTitle">In Qeueue</div>
+		<div class="ListSectionHeaderTitle">{{::verbage.in_queue}}</div>
 		<em ng-if="callsWaiting.length > 0">
-			{{ callsWaiting.length }} call(s) in queue with the longest wait time of 
+			{{ callsWaiting.length }} {{::verbage.calls_in_queue_longest_wait}}
 			<span timer="longestWait"></span>
 		</em>
 		
@@ -15,7 +15,7 @@
 	
 	<div ng-if="showWaiting">
 		<div class="Empty" ng-if="callsWaiting.length == 0">
-			Nobody is waiting
+			{{::verbage.nobody_is_waiting}}
 		</div>
 	  
 		<div ng-repeat="call in callsWaiting | filter: {displayName: query}">
@@ -41,9 +41,9 @@
 	</div>
 
 	<div class="Header">
-		<div class="ListSectionHeaderTitle">Active Calls (Answered)</div>
+		<div class="ListSectionHeaderTitle">{{::verbage.active_calls_answered}}</div>
 		<em ng-if="callsActive.length > 0">
-			{{ callsActive.length }} active call(s) in queue with the longest call time of 
+			{{ callsActive.length }} {{::verbage.active_calls_in_queue_longest_wait}}
 			<span timer="longestActive"></span>
 		</em>
 		
@@ -52,7 +52,7 @@
   
 	<div ng-if="showActive">
 		<div class="Empty" ng-if="callsActive.length == 0">
-			No active calls
+			{{::verbage.no_active_calls}}
 		</div>
 	  
 		<div ng-repeat="call in callsActive | filter: {agent: {displayName: query}}">

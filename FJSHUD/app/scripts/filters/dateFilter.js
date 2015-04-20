@@ -4,10 +4,10 @@ hudweb.filter('fondate', function() {
 		
     	var todayTime = new Date().getTime();
     	if(moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
-    		return "today";
+    		return "today" + moment(milliseconds).format('hh:mm a');
     	}else if(moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day')))
     	{
-    		return "yesterday";
+    		return "yesterday" + moment(milliseconds).format('hh:mm a');
     	}
 
     	switch(locale){

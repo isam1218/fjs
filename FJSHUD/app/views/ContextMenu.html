@@ -15,15 +15,15 @@
 		</div>
 		
 		<div class="Numbers">
-			<div>email:</div> {{ contact.email }}
+			<div>{{::verbage.email}}:</div> {{ contact.email }}
 			<br/>
 			<div>ext:</div> {{ contact.primaryExtension }}
 		</div>
 		
 		<div class="Numbers">
-			<div>mobile:</div> {{ contact.phoneMobile }}
+			<div>{{::verbage.mobile}}:</div> {{ contact.phoneMobile }}
 			<br/>
-			<div>phone:</div> {{ contact.phoneBusiness }}
+			<div>{{::verbage.phone}}:</div> {{ contact.phoneBusiness }}
 		</div>
 	</div>
 	
@@ -35,189 +35,189 @@
 <div class="BottomRow Actions" ng-show="!reasons.show">
 	<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
 		<div class="ListRowActionButtonRemove"></div>
-		<span>Delete</span>
+		<span>{{::delete_word}}</span>
 	</a>
 		
 	<div ng-if="type == 'Contact'">
 		<a class="Button" href="" ng-show="widget == 'favorites' && isFavorite" ng-click="removeFavorite()">
 			<div class="ListRowActionButtonRemove"></div>
-			<span>Remove</span>
+			<span>{{::verbage.Remove}}</span>
 		</a>
 		<a class="Button" href="" ng-show="!contact.primaryExtension" ng-click="editContact()">
 			<div class="ListRowActionButtonEdit"></div>
-			<span>Edit</span>
+			<span>{{::verbage.Edit}}</span>
 		</a>
 		<a class="Button" href="#/contact/{{contact.xpid}}" ng-show="contact.primaryExtension">
 			<div class="ListRowActionButtonChat"></div>
-			<span>Chat</span>
+			<span>{{::verbage.chat}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callNumber(contact.primaryExtension)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Call</span>
+			<span>{{::verbage.Call}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Intercom</span>
+			<span>{{::verbage.Intercom}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callVoicemail')">
 			<div class="ListRowActionButtonVoicemail"></div>
-			<span>Voicemail</span>
+			<span>{{::verbage.voicemail}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.phoneBusiness" ng-click="callNumber(contact.phoneBusiness)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Business</span>
+			<span>{{::verbage.Business}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.phoneMobile" ng-click="callNumber(contact.phoneMobile)">
 			<div class="ListRowActionButtonMobile"></div>
-			<span>Mobile</span>
+			<span>{{::verbage.mobile}}</span>
 		</a>
 		<a class="Button" href="mailto:{{ contact.email }}" target="_blank" ng-show="contact.email">
 			<div class="ListRowActionButtonEmail"></div>
-			<span>Email</span>
+			<span>{{::verbage.email}}</span>
 		</a>
 		<a class="Button" href="" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
-			<span>File Share</span>
+			<span>{{::verbage.file_share}}</span>
 		</a>
 	</div>
 	
 	<div ng-if="type == 'Group'">
 		<a class="Button" href="" ng-show="group.ownerId == myPid" ng-click="editGroup()">
 			<div class="ListRowActionButtonEdit"></div>
-			<span>Edit</span>
+			<span>{{::verbage.Edit}}</span>
 		</a>
 		<a class="Button" href="#/group/{{group.xpid}}/chat" ng-show="isMine">
 			<div class="ListRowActionButtonChat"></div>
-			<span>Chat</span>
+			<span>{{::verbage.chat}}</span>
 		</a>
 		<a class="Button" href="" ng-click="sendGroupMail(group)">
 			<div class="ListRowActionButtonEmail"></div>
-			<span>Email</span>
+			<span>{{::verbage.email}}</span>
 		</a>
 		<a class="Button" href="" ng-show="group.extension" ng-click="callInternal('page', group)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Page</span>
+			<span>{{::verbage.page}}</span>
 		</a>
 		<a class="Button" href="" ng-show="group.extension" ng-click="callInternal('intercom', group)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Intercom</span>
+			<span>{{::verbage.Intercom}}</span>
 		</a>
 		<a class="Button" href="" ng-show="group.extension" ng-click="callInternal('voicemail', group)">
 			<div class="ListRowActionButtonVoicemail"></div>
-			<span>Voicemail</span>
+			<span>{{::verbage.voicemail}}</span>
 		</a>
 		<a class="Button" href="" ng-show="isMine" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
-			<span>File Share</span>
+			<span>{{::verbage.file_share}}</span>
 		</a>
 	</div>
 		
 	<div ng-if="type == 'QueueStat'">
 		<a class="Button" href="" ng-show="queue.memberID && !queue.status" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
-			<span>Login</span>
+			<span>{{::verbage.login}}</span>
 		</a>
 		<a class="Button Logout" href="" ng-show="queue.status && queue.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
-			<span>Logout</span>
+			<span>{{::verbage.logout}}</span>
 		</a>
 		<a class="Button" href="" ng-click="resetQueue()">
 			<div class="ListRowActionButtonReset"></div>
-			<span>Reset Stats</span>
+			<span>{{::verbage.Reset_Stats}}</span>
 		</a>
 		<a class="Button" href="#/queue/{{xpid}}" ng-show="queue.memberID">
 			<div class="ListRowActionButtonChat"></div>
-			<span>Chat</span>
+			<span>{{::verbage.chat}}</span>
 		</a>
 		<a class="Button" href="" ng-show="queue.memberID" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
-			<span>File Share</span>
+			<span>{{::verbage.file_share}}</span>
 		</a>
 	</div>
 	
 	<div ng-if="type == 'ConferenceRoom'">
 		<a class="Button" href="" ng-show="!conference.status.isMeJoined" ng-click="joinConference(true)">
 			<div class="ListRowActionButtonJoin"></div>
-			<span>Join</span>
+			<span>{{::verbage.join}}</span>
 		</a>
 		<a class="Button" href="" ng-show="conference.status.isMeJoined" ng-click="joinConference(false)">
 			<div class="ListRowActionButtonLeave"></div>
-			<span>Leave</span>
+			<span>{{::verbage.leave}}</span>
 		</a>
 		<a class="Button" href="" ng-show="conference.status.isMeJoined && !conference.status.recorded" ng-click="recordConference(true)">
 			<div class="ListRowActionButtonRecord"></div>
-			<span>Start</span>
+			<span>{{::verbage.start}}</span>
 		</a>
 		<a class="Button" href="" ng-show="conference.status.isMeJoined && conference.status.recorded" ng-click="recordConference(false)">
 			<div class="ListRowActionButtonRecord"></div>
-			<span>Stop</span>
+			<span>{{::verbage.stop}}</span>
 		</a>
 		<a class="Button" href="#/conference/{{xpid}}" ng-show="conference.status.isMeJoined">
 			<div class="ListRowActionButtonChat"></div>
-			<span>Chat</span>
+			<span>{{::verbage.chat}}</span>
 		</a>
 		<a class="Button" href="" ng-show="conference.status.isMeJoined" ng-click="sendGroupMail(conference)">
 			<div class="ListRowActionButtonEmail"></div>
-			<span>Email</span>
+			<span>{{::verbage.email}}</span>
 		</a>
 		<a class="Button" href="" ng-show="conference.status.isMeJoined" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
-			<span>File Share</span>
+			<span>{{::verbage.file_share}}</span>
 		</a>
 	</div>
 	
 	<div ng-if="type == 'ParkedCall'">
 		<a class="Button" href="" ng-click="takeCall()">
 			<div class="ListRowActionButtonTake"></div>
-			<span>Take</span>
+			<span>{{::verbage.take}}</span>
 		</a>
 		
 		<a class="Button" href="#/contact/{{contact.xpid}}" ng-show="contact.primaryExtension">
 			<div class="ListRowActionButtonChat"></div>
-			<span>Chat</span>
+			<span>{{::verbage.chat}}</span>
 		</a>
 		
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callNumber(contact.primaryExtension)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Call</span>
+			<span>{{::verbage.Call}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Intercom</span>
+			<span>{{::verbage.intercom}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callVoicemail')">
 			<div class="ListRowActionButtonVoicemail"></div>
-			<span>Voicemail</span>
+			<span>{{::verbage.voicemail}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.phoneMobile" ng-click="callNumber(contact.phoneMobile)">
 			<div class="ListRowActionButtonMobile"></div>
-			<span>Mobile</span>
+			<span>{{::verbage.mobile}}</span>
 		</a>
 		<a class="Button" href="mailto:{{ contact.email }}" target="_blank" ng-show="contact.email">
 			<div class="ListRowActionButtonEmail"></div>
-			<span>Email</span>
+			<span>{{::verbage.email}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
-			<span>File Share</span>
+			<span>{{::verbage.file_share}}</span>
 		</a>
 	</div>
 	
 	<div ng-show="name">
 		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 			<div class="ListRowActionButtonDock"></div>
-			<span>Dock</span>
+			<span>{{::verbage.dock}}</span>
 		</a>
 		<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
 			<div class="ListRowActionButtonUndock"></div>
-			<span>Undock</span>
+			<span>{{::verbage.undock}}</span>
 		</a>
 	</div>
 </div>
 
 <div class="BottomRow Reasons" ng-show="reasons.show">
-	<h4>Reason</h4>
-	<em>Select logout reason</em>
+	<h4>{{::verbage.reason}}</h4>
+	<em>{{::verbage.select_logout_reason}}</em>
 	
 	<div class="List">
 		<div class="Button" ng-repeat="reason in reasons.list | orderBy: 'name'"
