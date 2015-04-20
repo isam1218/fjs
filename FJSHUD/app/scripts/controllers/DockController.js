@@ -87,11 +87,14 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 							revert: 1,
 							handle: '.Header, .Content',
 							containment: '#InnerDock',
-							start: function() {
+							start: function(event, ui) {
+								// visual cues
 								$('#DockPanel').addClass('Moving');
+								$(ui.item).addClass('ui-draggable-dragging');
 							},
-							stop: function() {
+							stop: function(event, ui) {
 								$('#DockPanel').removeClass('Moving');
+								$(ui.item).removeClass('ui-draggable-dragging');
 							}
 						});
 					}
