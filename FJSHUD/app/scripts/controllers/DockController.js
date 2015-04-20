@@ -31,6 +31,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					$('#InnerDock').sortable({
 						revert: 1,
 						handle: '.Header, .Content',
+						containment: '#InnerDock',
 						start: function() {
 							$('#DockPanel').addClass('Moving');
 						},
