@@ -31,7 +31,7 @@
 							{{ ::voicemail.displayName + ' <' + voicemail.phone + '>' }}
                         </p>
                         <div class="vmalternate">
-                            <div class="vmtime">{{ ::voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div>
+                            <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM d, h:mm a':fon_lang_code }} </div>
                             <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(voicemail.phone)"></input>
                         </div>
                     </div> 

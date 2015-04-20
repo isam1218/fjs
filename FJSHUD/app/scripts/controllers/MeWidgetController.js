@@ -581,7 +581,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
     }
 
-    $scope.formatDate = function(calllog){
+    /*$scope.formatDate = function(calllog){
         var date = new Date(calllog.startedAt)
         var today = new Date();
         var DateString = "";
@@ -608,7 +608,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             }
         }
         return  dateString + " " + hour + ":" + minutes + ampm;  
-    }
+    }*/
 
     $scope.$on('groups_synced', function(event,data){
         meGroup = data.filter(function(item){

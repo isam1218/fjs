@@ -64,11 +64,10 @@
                             <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.contact.hud_status || 'offline' }}">
                               <div class="status-icon-inner"></div>
                             </div>
-                          
+                            
                           <br/>
                         </div>
                         </div>
-                        
                         
                       </div>
                   </div>
@@ -145,7 +144,11 @@
                   
                   <div  class="RecentCallLogs">                   
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
-                      <div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>
+                      <!--<div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>-->
+
+                      <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D h:mm a':fon_lang_code}} </div>
+
+                      
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
                       <div class="RecentCallsHeader RecentFromTo" ng-click="makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
                       <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
