@@ -15,7 +15,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				element.addClass('NoFixedHeight');
 	
 			$(element).draggable({
-				handle: '.Header, .Content',
+				handle: '.Header, .List',
 				containment: '#InnerDock',
 				helper: 'clone',
 				scroll: false,
