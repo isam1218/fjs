@@ -19,36 +19,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		$rootScope.$broadcast('recentAdded', {info: xpid});
 	};
 	
-	$scope.$on('settings_updated', function(event, data) {
-		// enable/disable grid layout
-		if (data.use_column_layout == 'true') {
-			$timeout(function() {
-				$('#InnerDock .Gadget').draggable('disable');
-			
-				if ($('#InnerDock').hasClass('ui-sortable'))
-					$('#InnerDock').sortable('enable');
-				else {
-					$('#InnerDock').sortable({
-						revert: 1,
-						handle: '.Header, .Content',
-						containment: '#InnerDock',
-						start: function() {
-							$('#DockPanel').addClass('Moving');
-						},
-						stop: function() {
-							$('#DockPanel').removeClass('Moving');
-						}
-					});
-				}
-			}, 100);
-		}
-		else {		
-			$('#InnerDock .Gadget').draggable('enable');
-			
-			if ($('#InnerDock').hasClass('ui-sortable'))
-				$('#InnerDock').sortable('disable');
-		}
-		
+	$scope.$on('settings_updated', function(event, data) {		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
 			for (key in data) {
@@ -102,6 +73,35 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					if (gadget.data)
 						$scope.gadgets[gadget.value.factoryId].push(gadget);
 				}
+			}
+			
+			// enable/disable grid layout
+			if (data.use_column_layout == 'true') {
+				$timeout(function() {
+					$('#InnerDock .Gadget').draggable('disable');
+				
+					if ($('#InnerDock').hasClass('ui-sortable'))
+						$('#InnerDock').sortable('enable');
+					else {
+						$('#InnerDock').sortable({
+							revert: 1,
+							handle: '.Header, .Content',
+							containment: '#InnerDock',
+							start: function() {
+								$('#DockPanel').addClass('Moving');
+							},
+							stop: function() {
+								$('#DockPanel').removeClass('Moving');
+							}
+						});
+					}
+				}, 100);
+			}
+			else {		
+				$('#InnerDock .Gadget').draggable('enable');
+				
+				if ($('#InnerDock').hasClass('ui-sortable'))
+					$('#InnerDock').sortable('disable');
 			}
 		});
 	});
