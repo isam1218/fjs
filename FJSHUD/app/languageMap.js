@@ -36,7 +36,7 @@ fjs.i18n = {
 		busy:'busy',
 		favorites: 'favorites',
 		external: 'external',
-		
+		public_team: 'Public Team',
     my_department: 'My Department',
 		my_department_collaborate: 'Collaborate with your colleagues',
 		all_other_departments: 'All Other Departments',
@@ -638,6 +638,7 @@ fjs.i18n = {
 		inbound:'インバンド',
 		outbound:'アウトバンド',
 		queues:'またはキュー着信',
+    public_team: '',
 		wl_var_desc_username_accounts:'認証を要求するアカウントのユーザネーム',
 		wl_var_desc_duration:'通話の経過時間（秒）',
 		wl_var_desc_name_of_party:'接続先番号',
