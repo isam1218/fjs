@@ -386,7 +386,7 @@ fjs.i18n = {
 
 
       
-      no_recent_calls:"No Recent Calls",
+      no_recent_calls = "No Recent Calls",
 
       Mute:'Mute',
       Park:'Park',
