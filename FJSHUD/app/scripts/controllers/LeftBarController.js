@@ -5,12 +5,8 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
 	$scope.number = "";
 	$scope.locations = [];
 
-	 $scope.makeCall = function(number){
-        if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
-                phoneService.makeCall(number);
-        }else{
-            myHttpService.sendAction('me','callTo',{phoneNumber: number});
-        }
+	$scope.makeCall = function(number){
+        phoneService.makeCall(number);
     }
 
     $scope.$on('locations_synced', function(event,data){

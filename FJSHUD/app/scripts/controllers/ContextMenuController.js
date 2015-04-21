@@ -1,4 +1,4 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService','PhoneService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService,phoneService) {
 	$scope.xpid;
 	$scope.targetID;
 	$scope.type;
@@ -135,7 +135,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.callNumber = function(number) {
-		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+		phoneService.makeCall(number);
 	};
 	
 	$scope.takeCall = function(){

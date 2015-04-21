@@ -96,10 +96,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	}
 
-	makeCall = function(phoneNumber){
+	makeCall = function(number){
 		if(phone && phoneNumber != ""){
-			console.log("calling" + phoneNumber);
-			phone.makeCall(phoneNumber)
+			if($rootScope.meModel.location.locationType == 'w'){
+				phone.makeCall(number)
+			}else{
+				httpService.sendAction('me', 'callTo', {phoneNumber: number});
+			}
 		}
 	}
 
@@ -680,6 +683,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             }
         }
 	});
+
+	$rootScope.$on('locations_synced', function(event,data){
+        if(data){
+            for(index in data){
+                if(data[index].xpid == $rootScope.meModel.current_location){
+            		$rootScope.meModel.location = data[index];
+            		break;	
+            	}
+            }
+        }
+    });
 
 	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
