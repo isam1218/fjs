@@ -102,7 +102,7 @@
 					
 						<div class="LeftBarNotificationMessageSection"> 
 							
-							<div class="NotificationDisplayName" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
+							<div class="NotificationDisplayName" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'dddd hh:mm a':fon_lang_code    }} </div></div> 
                             <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 							<div class="NotificationMessage"><p>{{ getMessage(message) }} </p> </div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">

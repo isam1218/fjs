@@ -50,33 +50,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		}
 	};
 
-	$scope.convertTime = function(time){
-		var date = new Date(time);
-		var currentDate = new Date();
-		var Hour = date.getHours();
-		var minutes = date.getMinutes();
-		if(minutes < 10){
-			minutes = "0" + minutes;
-		}
-
-		if(date.getDate() == currentDate.getDate() && date.getFullYear() == currentDate.getFullYear()){
-
-			if(Hour > 12){
-				return "today" +  " " + (Hour - 12).toString() + ":" + minutes + " pm" ;
-			}else{
-				return "today" +  " " + Hour.toString() + ":" + minutes + " am" ;
-			}
-
-		}else{
-			if(Hour > 12){
-				return weekday[date.getDay()] + " " + (Hour - 12).toString() + ":" + minutes + " pm";
-		
-			}else{
-				return weekday[date.getDay()] + " " + (Hour).toString() + ":" + minutes + " am";
-			}
-		}
-	};
-
 	$scope.remove_notification = function(xpid){
 		for(i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
@@ -375,13 +348,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					var notification = data[index];
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){
-								notification.label = 'long waiting call';
+								notification.label = $scope.verbage.long_waiting_call;
 					}else if(notification.type == 'q-alert-abandoned'){
 								notification.label = 'abandoned call';
 					}else if(notification.type == 'gchat'){
 								notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
-								notification.label ='voicemail';
+								notification.label = $scope.verbage.voicemail;
 					}else if(notification.type == 'wall'){
 								notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){

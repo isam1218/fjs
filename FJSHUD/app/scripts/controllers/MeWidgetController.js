@@ -582,11 +582,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 if(calllog.incoming){
                     return calllog.phone;
                 }else{
-                    return "You @ " + calllog.location;
+                    return $scope.verbage.you + "@ " + calllog.location;
                 }
             case "To":
                 if(calllog.incoming){
-                    return "You @ " + calllog.location;
+                    return $scope.verbage.you + "@ " + calllog.location;
                 }else{
                     return calllog.phone;
                 }
