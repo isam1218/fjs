@@ -307,13 +307,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					
 					notification.label == '';
 							if(notification.type == 'q-alert-rotation'){
-								notification.label = 'long waiting call';
+								notification.label = $scope.verbage.long_waiting_call;;
 							}else if(notification.type == 'q-alert-abandoned'){
 								notification.label = 'abandoned call';
 							}else if(notification.type == 'gchat'){
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
-								notification.label ='voicemail';
+								notification.label =$scope.verbage.voicemail;
 							}else if(notification.type == 'wall'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
