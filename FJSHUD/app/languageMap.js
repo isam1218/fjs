@@ -460,7 +460,7 @@ fjs.i18n = {
       active_agents:'Active Agents',
       logged_in_agents:'Logged-in Agents',
       file_share_to:'File Share To',
-      add_message_to_shared_files:'共有ファイルにメッセージを追加したり、単独でメッセージを送信',
+      add_message_to_shared_files:'Add message to shared files or send message alone',
       items:'items',
       items_found:'items_found',
       download_current:'Download Current',
