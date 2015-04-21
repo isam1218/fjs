@@ -1,7 +1,7 @@
   <div class="ToolBar fj-stream">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="{{::verbage.search}}"></div>
+                <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>

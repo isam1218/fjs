@@ -124,7 +124,7 @@
 			<div class="Section" ng-show="!transferTo">
 				<div>
 					<h4>{{::verbage.destination}}</h4>
-					<input type="search" class="Search" ng-model="tranQuery" placeholder="{{::verbage.search}}" />
+					<input type="search" class="Search" ng-model="tranQuery" placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" />
 				</div>
 				<div class="Banner upper">{{::verbage.contacts}}</div>
 				<div class="Members">
