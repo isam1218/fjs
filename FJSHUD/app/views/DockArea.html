@@ -42,8 +42,10 @@
 				</a>
 				
 				<div ng-if="gadget.data.queues.length == 0">
-					No queues...
+			    {{::verbage.no_queues}}
+	
 				</div>
+			
 			</div>
 		</div>
 		
@@ -211,7 +213,7 @@
 				</a>
 				
 				<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
-					Room is free and you can do it...
+					{{::verbage.room_is_free}}...
 					<p>
 						<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
 					</p>
@@ -250,27 +252,28 @@
 			<div class="List Stats">
 				<div>
 					<strong>{{ gadget.data.info.waiting }}</strong>
-					Waiting
+					{{::verbage.waiting}}
 				</div>
 				<div>
 					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
-					Avg Wait
+					{{::verbage.avg_wait}}
 				</div>
 				<div>
 					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
-					Avg Talk
+                    {{::verbage.avg_talk}}
 				</div>
 				<div>
 					<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
-					Total
+					{{::verbage.total}}
 				</div>
 				<div>
 					<strong>{{ gadget.data.info.abandonPercent }}%</strong>
-					Abandon
+					{{::verbage.Abandon}}
+
 				</div>
 				<div>
 					<strong>{{ gadget.data.info.active }}</strong>
-					Active
+					{{::verbage.active}}
 				</div>
 			</div>
 		</div>

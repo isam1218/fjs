@@ -3,16 +3,16 @@
         <div class="Avatar AvatarApp">
             <div class="TopBarItemAppIcon CallLog"></div>
         </div>
-        <div class="WidgetHeaderTitle">Calls & Recordings</div>
+        <div class="WidgetHeaderTitle">{{::verbage.call_and_recordings}}</div>
     </div>
     <div class="WidgetBody">
         <div class="WidgetTabBar">
             <a href="#/calllog" class="WidgetTabBarButton Ready">
-                <div class="inner">Call Log</div>
+                <div class="inner">{{::verbage.call_log_tab}}</div>
                 <div class="arrow"></div>
             </a>
             <a href="#/calllog/voicemails" class="WidgetTabBarButton Ready fj-selected-item">
-                <div class="inner">Voicemails</div>
+                <div class="inner">{{::verbage.voicemail_tab}}</div>
                 <div class="arrow"></div>
             </a>
         </div>
@@ -22,13 +22,13 @@
                 <div class="SelectBoxArrow"></div>
             </div>
             <div class="SelectBox XButton" data-ng-click="showActionMenu($event)">
-                <div class="SelectBoxText"> Actions </div>
+                <div class="SelectBoxText"> {{::verbage.action}} </div>
                 <div class="SelectBoxArrow"></div>
             </div>
             <div class="SearchInputBox">
                 <div class="SearchInputBoxInputHolder">
                     <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="search" x-webkit-speech=""
-                           data-ng-model="query" placeholder="Search">
+                           data-ng-model="query" placeholder="{{::verbage.search}}">
                 </div>
                 <div class="SearchInputBoxStateButton">
                     <div class="SearchInputBoxStateButtonIcon"></div>

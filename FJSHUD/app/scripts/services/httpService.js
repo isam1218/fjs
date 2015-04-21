@@ -24,16 +24,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
          * @protected
          */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-     /*window.onbeforeunload = function(){
+     window.onbeforeunload = function(){
      	//return "Are you sure you want to close the window";
-     	
      	if(localStorage.fon_tabs){
      		tabMap = JSON.parse(localStorage.fon_tabs);
 			delete tabMap[tabId];
 
 			if($.isEmptyObject(tabMap)){
-				delete localStorage.fon_tabs;
-				delete localStorage.data_obj;
+				localStorage.removeItem('fon_tabs');
+				localStorage.removeItem('data_obj');
 			}else{
 				for(tab in tabMap){
 					tabMap[tabId].isMaster = true;
@@ -41,18 +40,22 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 				}
 				localStorage.fon_tabs = JSON.stringify(tabMap);		
 			}	
-     	}
 
-     	
-		return "Are you sure you want to navigate away from this page?";
-
-    }*/
+			return;
+ 
+    	}
+	}
 
 
      //when unloading reassign master tab 
-     window.onunload  = function(){
+     /*window.onunload  = function(){
+     	    
      	
-     }
+     }*/
+     	
+		//return "Are you sure you want to navigate away from this page?";
+
+     
 	
 	//method that generates a random guid for the tab
 	var genGuid = function(){
@@ -136,11 +139,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 	}else{
 		
-		if(localStorage.fon_tabs){
+		assignTab();
+		
+		
+		if(Object.keys(tabMap).length > 1){
 			window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
 
 		}else{
-			assignTab();
 			worker = new Worker("scripts/services/fdpWebWorker.js");
 			worker.addEventListener("message", function(event) {
 		        switch (event.data.action) {
@@ -346,7 +351,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         var authURL = fjs.CONFIG.SERVER.loginURL
             + '/oauth/authorize'
             + "?response_type=token"
-            + "&redirect_uri=" + encodeURIComponent(location.href)
+            + "&redirect_uri=" + encodeURIComponent(location.href.replace(location.hash, ''))
             + "&display=page"
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
@@ -355,6 +360,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		delete localStorage.authTicket;
 		delete localStorage.nodeID;
 		delete localStorage.data_obj;
+		
+		// shut off web worker
+		if (worker.port)
+			worker.port.close();
+		else
+			worker.terminate();
+		
 		location.href = authURL;
 	};
 	

@@ -18,13 +18,14 @@
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{::message.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'">
                 <div class="AvatarInteractable AvatarForeground"></div>
             </div>
-            <div class="time">{{::message.created | date: 'h:mm a'}}</div>
+            <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code}}</div>
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
             <div class="ListMessageHeader" ng-hide="hideDisplay(message, $index)" >
                 <em>...{{::verbage.from}}</em>
                 <span class="ListMessageHeaderName">{{::message.fullProfile.displayName}}</span>
-                <div class="time">{{::formatDate(message)}}</div>
+                <div class="time">{{::message.created | fondate:'MMMM d YYYY':fon_lang_code}}</div>
+            
             </div>
             <div class="ChatMessageItem AttachmentsHolder">
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
@@ -48,12 +49,12 @@
 <div class="ChatInputBox" ng-if="enableChat">	
 	<div class="ChatAlertOptions" ng-if="showAlerts">
 		<div class="Left">
-			<input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> All Agents
+    <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
 			<input type="radio" ng-model="chat.status" name="alertStatus" value="1" /> {{::verbage.logged_in}}
 			<input type="radio" ng-model="chat.status" name="alertStatus" value="2" /> {{::verbage.Logged_out}}
 		</div>
 		<div class="Right">
-			{{ 150 - message.length }} characters left
+			{{ 150 - message.length }} {{::verbage.characters_left}}
 		</div>
 	</div>
 	

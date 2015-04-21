@@ -12,7 +12,7 @@
 				</div>
 				<div class="SearchInputBoxStateButton"><div class="SearchInputBoxStateButtonIcon"></div></div>
 			</div>
-			<input type="button" class="XButton" value="Search" ng-click="searchEmUp()" />
+			<input type="button" class="XButton" value="{{::verbage.search}}" ng-click="searchEmUp()" />
 		</div>
 		
 		<div class="SearchResults">
@@ -22,7 +22,7 @@
 			</div>
 			
 			<div ng-if="searched && contacts.length == 0 && groups.length == 0 && queues.length == 0 && conferences.length == 0" class="Empty">
-				Nothing found.
+				{{::verbage.nothing_found}}
 			</div>
 		
 			<div ng-if="contacts.length > 0">
@@ -77,7 +77,7 @@
 							<div class="name">
 								<strong>{{ ::group.name }}</strong>
 								<span class="details">
-									{{ ::group.members.length }} member(s)
+									{{ ::group.members.length }} {{::verbage.members}}
 								</span>
 							</div>
 						</div>
@@ -112,11 +112,11 @@
 							
                             <div data-ng-if="conference.members.length == 0">
                                 <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-								<div class="ListConferenceStatusText">Free room</div>
+								<div class="ListConferenceStatusText">{{::verbage.free_room}}</div>
                             </div>                            
                             <div data-ng-if="conference.members.length > 0">
                                 <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-								<div class="ListConferenceStatusText">{{conference.members.length}} member(s) on a call</div>
+								<div class="ListConferenceStatusText">{{conference.members.length}} {{::verbage.members_on_call}}</div>
 							</div> 
                         </div>
                     </div>
@@ -156,7 +156,7 @@
 							<div class="name">
 								<strong>{{ ::queue.name }}</strong>
 								<span class="details">
-									{{ ::queue.members.length }} member(s)
+									{{ ::queue.members.length }} {{::verbage.members}}
 								</span>
 							</div>
 						</div>

@@ -24,7 +24,7 @@
 		<div class="Left">
 			<div class="Labels">
 				<div>{{::verbage.agents}}:</div>
-				<div>Reset:</div>
+				<div>{{::verbage.Reset_word}}:</div>
 			</div>
 			<div class="Data">
 				<div>{{ queue.loggedInMembers + ' of ' + queue.members.length}}</div>
@@ -33,8 +33,8 @@
 		</div>
 		<div class="Right">
 			<div class="Labels">
-				<div>Calls Holding:</div>
-				<div>Total Calls:</div>
+				<div>{{::verbage.calls_holding}}:</div>
+				<div>{{::verbage.total_calls}}:</div>
 			</div>
 			<div class="Data">
 				<div>{{ queue.info.waiting }}</div>

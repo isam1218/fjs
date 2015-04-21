@@ -582,46 +582,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
                 if(calllog.incoming){
                     return calllog.phone;
                 }else{
-                    return "You @ " + calllog.location;
+                    return $scope.verbage.you + "@ " + calllog.location;
                 }
             case "To":
                 if(calllog.incoming){
-                    return "You @ " + calllog.location;
+                    return $scope.verbage.you + "@ " + calllog.location;
                 }else{
                     return calllog.phone;
                 }
         }
     }
-
-    $scope.formatDate = function(calllog){
-        var date = new Date(calllog.startedAt)
-        var today = new Date();
-        var DateString = "";
-        hour = date.getHours();
-        ampm = " am";
-        dateString = date.getFullYear() + " " + Months[date.getMonth()] + " " + date.getDate();
-        minutes = date.getMinutes();
-        
-        if(hour > 12){
-            hour = hour - 12;
-            ampm = " pm";
-        }
-        if(minutes < 10){
-            minutes = "0" + date.getMinutes(); 
-        }
-        
-        if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-            if(date.getDate() == today.getDate()){
-                dateString = "today"
-            }else if(date.getDate() == today.getDate() - 1){
-                dateString = "yesterday"
-            }else if(parseInt(date.getDate()/7) == parseInt(today.getDate()/7)){
-                dateString = Weekday[date.getDay];
-            }
-        }
-        return  dateString + " " + hour + ":" + minutes + ampm;  
-    }
-
+    
     $scope.$on('groups_synced', function(event,data){
         meGroup = data.filter(function(item){
             return item.xpid == $scope.meModel['my_pid'];

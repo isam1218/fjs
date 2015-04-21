@@ -224,12 +224,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     });
 
     $scope.$on("settings_updated",function(event,data){
-    	for(item in $scope.appIcons){
-    		key = $scope.appIcons[item].key;
+    	for (i = 0; i < $scope.appIcons.length; i++) {
+    		var key = $scope.appIcons[i].key;
 
     		switch(key){
     			case 'Box':
-    				$scope.appIcons[item].enabled = data["hudmw_box_enabled"] == "true" ? 1 : 0;
+    				$scope.appIcons[i].enabled = data["hudmw_box_enabled"] == "true" ? 1 : 0;
     				break;
     			default:
     				break;
