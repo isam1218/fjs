@@ -2,8 +2,9 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 	$scope.calllog = this;
 	$scope.calllog.query = '';
 	$scope.calls = [];
-    $scope.sortField = "displayName";
-    $scope.sortReverse = false;
+  $scope.sortField = "displayName";
+  $scope.sortReverse = false;
+  var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 	
 	var pageFilter = '';
 	
@@ -74,4 +75,29 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 	$scope.makeCall = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
+
+	$scope.formatDate = function(call){
+		var date = new Date(call.startedAt);
+		var today = new Date();
+		var hours = date.getHours();
+		var minutes = date.getMinutes();
+		var ampm = hours >= 12 ? 'PM' : 'AM';
+		hours = hours % 12;
+		hours = hours ? hours : 12;
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+		var strTime = hours + ':' + minutes + ' ' + ampm;
+		var dateString = "";
+		dateString = Months[date.getMonth()] + " " + date.getDate() + ", " + strTime;
+
+		if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+			if (date.getDate() == today.getDate()){
+				dateString = "Today" + ", " + strTime;
+			} else if (date.getDate() == today.getDate() - 1){
+				dateString = "Yesterday" + ", " + strTime;
+			} 
+		}
+
+		return dateString;
+	};
+
 }]);

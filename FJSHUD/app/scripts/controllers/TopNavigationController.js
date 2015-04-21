@@ -1,8 +1,5 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'UtilService', 'ContactService', function($rootScope, $scope, $sce, queueService, httpService, utilService, contactService) {
-  $scope.meModel = {};
-  $scope.permissions = {
-      Zoom: {bit:1,enabled:false}
-  };
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, $sce, queueService, httpService, contactService, settingsService) {
+	$scope.meModel = {};
 
 	$scope.player = {
 		position: 0,
@@ -13,7 +10,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
-  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = [
+
+  var reset_order = function(){
+  	return [
       {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
       , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
       , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
@@ -21,7 +20,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
       , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
       , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
       , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
-  ];
+  	];
+  };
+
+  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = reset_order();
+
+  
 
   if ($scope.updatedNavbar != $scope.appIcons){
     $scope.appIcons = $scope.updatedNavbar;
@@ -78,25 +82,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
           }
       }
 
-      var permissions = parseInt($scope.meModel.personal_permissions);
-      
-      for(perm in $scope.permissions){
-
-          $scope.permissions[perm].enabled = utilService.isEnabled(
-              permissions,
-              $scope.permissions[perm].bit
-          )
-
-          for(app in $scope.appIcons){
-              if($scope.appIcons[app].key == perm){
-                  $scope.appIcons[app].enabled = 1;//$scope.permissions[perm].enabled;
-              }
-          }
-
-      }
-
   });
-
+  
+	// enable or disable icons based on permissions
+	settingsService.getPermissions().then(function(data) {
+		for (i = 0; i < $scope.appIcons.length; i++) {
+			if ($scope.appIcons[i].key == 'CallCenter' && !data.showCallCenter)
+				$scope.appIcons[i].enabled = 0;
+			
+			// if ($scope.appIcons[i].key == 'Zoom' && !data.showVideoCollab)
+		}
+	});
 
 	$scope.getAvatar = function() {
 		return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
@@ -221,6 +217,24 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
                 }
             }
         } 
+    });
+
+    $scope.$on("reset_app", function(event,data){
+    	$scope.appIcons = reset_order();
+    });
+
+    $scope.$on("settings_updated",function(event,data){
+    	for(item in $scope.appIcons){
+    		key = $scope.appIcons[item].key;
+
+    		switch(key){
+    			case 'Box':
+    				$scope.appIcons[item].enabled = data["hudmw_box_enabled"] == "true" ? 1 : 0;
+    				break;
+    			default:
+    				break;
+    		}
+    	}
     });
 
 	$scope.logout = function() {

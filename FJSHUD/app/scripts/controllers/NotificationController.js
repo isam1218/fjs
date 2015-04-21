@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
-	function($scope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
+	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.notifications = [];
@@ -11,10 +11,28 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
+	
+	if (localStorage.recent === undefined)
+		localStorage.recent = '{}';
+
+	$scope.recent = JSON.parse(localStorage.recent);
+
 	myHttpService.getFeed('quickinbox');
+
+	$scope.storeRecent = function(xpid){
+		$scope.recent = JSON.parse(localStorage.recent);
+		$scope.recent[xpid] = {
+			type: 'contact',
+			time: new Date().getTime()
+		};
+		localStorage.recent = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {info: xpid});
+	};
+
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);
-	}
+	};
+
 	$scope.getMessage = function(message){
 
 		switch(message.type){
@@ -30,7 +48,8 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 
 		
 		}
-	}
+	};
+
 	$scope.convertTime = function(time){
 		var date = new Date(time);
 		var currentDate = new Date();
@@ -56,7 +75,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 				return weekday[date.getDay()] + " " + (Hour).toString() + ":" + minutes + " am";
 			}
 		}
-	}
+	};
 
 	$scope.remove_notification = function(xpid){
 		for(i = 0; i < $scope.notifications.length; i++){
@@ -72,7 +91,8 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			}	
 		}
 		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
-	}
+	};
+
 	$scope.get_new_notifications= function(){
 		new_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
@@ -90,7 +110,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		});
 
 		return new_notifications;
-	}
+	};
 
 
 	$scope.get_away_notifications= function(){
@@ -98,7 +118,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			return item.receivedStatus == "away"; 
 		});
 		return away_notifications;
-	}
+	};
 
 	$scope.get_old_notifications= function(){
 		old_notifications = $scope.notifications.filter(function(item){
@@ -108,7 +128,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		});
 
 		return old_notifications;
-	}
+	};
 	
 	$scope.remove_all = function(){
 
@@ -118,28 +138,31 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		myHttpService.sendAction('quickinbox','removeAll');
 			
 		$scope.showOverlay(false);
-	}
+	};
 
 	$scope.go_to_notification_chat = function(message){
-		var context = message.context;
-		var xpid = context.split(':')[1];
+		if (message.context === undefined){
+			var xpid = message.xpid;
+		} else {
+			var context = message.context;
+			var xpid = context.split(':')[1];
+		}
 		$location.path("/" + message.audience + "/" + xpid + "/chat");
 		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
-	}
-
+	};
 
 	$scope.endCall = function(xpid){
 		phoneService.hangUp(xpid);
-	}
-
+	};
 
 	$scope.holdCall = function(xpid,isHeld){
 		phoneService.holdCall(xpid,isHeld);
 		if(!isHeld){
 			$scope.onHold = false;
 		}
-	}
+	};
+
 	$scope.acceptCall = function(xpid){
 		for(call in $scope.calls){
 			if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
@@ -147,10 +170,11 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			}
 		}
 		phoneService.acceptCall(xpid);
-	}
+	};
+
 	$scope.makeCall = function(phone){
 		phoneService.makeCall(phone);
-	}
+	};
 
 	$scope.showOverlay = function(show) {
 		if (!show)
@@ -160,6 +184,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		else
 			$scope.overlay = 'groups';
 	};
+
 	$scope.$on('calls_updated',function(event,data){
 		$scope.calls = {};
 		var displayDesktopAlert = false;
@@ -252,12 +277,12 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 
 	$scope.playVm = function(xpid){
 		phoneService.playVm(xpid);
-	}
+	};
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
 		phoneService.showCallControls(currentCall);
-	}
+	};
 
 	var displayNotification = function(){
 		element = document.getElementById("CallAlert");
@@ -268,7 +293,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
 			element.style.display="none";
 		  }
-	}
+	};
 
 	$scope.$on('phone_event',function(event,data){
 		phoneEvent = data.event;
@@ -300,7 +325,6 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 		
   		if(data){
 			data.sort(function(a,b){
-				// recent notifications up top; down to oldest at the bottom...
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
@@ -343,6 +367,9 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 						}
 					}
 				}
+				$scope.notifications.sort(function(a, b){
+					return b.time - a.time;
+				});
 			}else{
 				for(index in data){
 					var notification = data[index];
@@ -372,7 +399,7 @@ hudweb.controller('NotificationController', ['$scope', 'HttpService', '$routePar
 					}
 				}
 			}
-		}
+		};
 
 		var playChatNotification = false;
 

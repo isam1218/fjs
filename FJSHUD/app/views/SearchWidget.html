@@ -33,7 +33,7 @@
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 					
-					<div class="ListRowContent">
+					<div class="ListRowContent" dockable="contact">
 						<div class="ListRowTitle">
 							<div class="name">
 								<strong>{{ ::contact.displayName }}</strong>
@@ -72,7 +72,7 @@
 						</div>
 						<div class="AvatarInteractable"></div>
 					</div>
-					<div class="ListRowContent">
+					<div class="ListRowContent" dockable="group">
 						<div class="ListRowTitle">
 							<div class="name">
 								<strong>{{ ::group.name }}</strong>
@@ -105,7 +105,7 @@
 						
                         <div class="AvatarInteractable"></div>
                     </div>
-                    <div class="ListRowContent">
+                    <div class="ListRowContent" dockable="conference">
                         <div class="ListRowTitle">
                             <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
                             <span class="link" ng-if="conference.location">at {{::conference.location}}</span>
@@ -151,7 +151,7 @@
 						</div>
 						<div class="AvatarInteractable"></div>
 					</div>
-					<div class="ListRowContent">
+					<div class="ListRowContent" dockable="queue">
 						<div class="ListRowTitle">
 							<div class="name">
 								<strong>{{ ::queue.name }}</strong>

@@ -18,19 +18,21 @@
             <div class="vmlabelheader"> {{::verbage.no_voicemails}} </div> 
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
         </div>
-        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy: selectedSort.type: selectedSort.desc track by voicemail.xpid"> 
-            
-            <div class="vmavatarsection AvatarNormal" > 
-                    <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy:selectedVoice.type:selectedVoice.desc track by voicemail.xpid"> 
+            <div class="vmavatarsection AvatarNormal" context-menu="voicemail.fullProfile"> 
+                <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
+				<div class="AvatarInteractable"></div>
             </div>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                     <div class="displayName">
 						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}<em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
-							{{ ::voicemail.displayName + ' <' + voicemail.phone + '>' }}
+							{{ ::voicemail.displayName + ' <' }} {{::voicemail.fullProfile.primaryExtension + '>' }}
                         </p>
                         <div class="vmalternate">
+                            <!-- <div class="vmtime">{{ ::voicemail.date | date: 'yyyy MMMM d, h:mm a' }} </div> -->
+                            <!--<div class="vmtime">{{ formatDate(voicemail)}}</div>-->
                             <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM d, h:mm a':fon_lang_code }} </div>
                             <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(voicemail.phone)"></input>
                         </div>

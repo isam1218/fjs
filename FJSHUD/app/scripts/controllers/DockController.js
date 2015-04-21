@@ -1,4 +1,4 @@
-hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $filter, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 
 	$scope.gadgets = {};
 
@@ -19,28 +19,27 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 		$rootScope.$broadcast('recentAdded', {info: xpid});
 	};
 	
-	$scope.$on('settings_updated', function(event, data) {
-		// enable/disable grid layout
-		if (data.use_column_layout == 'true') {
-			$timeout(function() {
-				$('#DockPanel').sortable({
-					revert: 1,
-					handle: '.Header, .Content'
-				});
-			}, 100);
-		}
-		else {						
-			try {
-				$('#DockPanel').sortable('disable');
-			}
-			catch(e) { }
-		}
-				
-		$scope.gadgets = {};
-		
+	$scope.$on('settings_updated', function(event, data) {		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
 			for (key in data) {
+				// check for dupes
+				var found = false;
+				
+				for (g in $scope.gadgets) {
+					for (i = 0; i < $scope.gadgets[g].length; i++) {
+						if (key == $scope.gadgets[g][i].name) {
+							found = true;
+							break;
+						}
+					}
+					
+					if (found) break;
+				}
+				
+				if (found) continue;
+				
+				// add new
 				if (key.indexOf('GadgetConfig') != -1) {
 					// gadget element
 					var gadget = {
@@ -68,15 +67,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 							break;
 						case 'GadgetUserQueues':
 							gadget.data = queueService.getMyQueues();
-							
-							angular.forEach(gadget.data.queues, function(obj) {
-								for (i = 0; i < obj.members.length; i++) {
-									// we only care about ourselves
-									if (obj.members[i].contactId == $rootScope.myPid)
-										obj.me = obj.members[i];
-								}
-							});
-							
 							break;
 					}
 					
@@ -84,7 +74,54 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 						$scope.gadgets[gadget.value.factoryId].push(gadget);
 				}
 			}
+			
+			// enable/disable grid layout
+			if (data.use_column_layout == 'true') {
+				$timeout(function() {
+					$('#InnerDock .Gadget').draggable('disable');
+				
+					if ($('#InnerDock').hasClass('ui-sortable'))
+						$('#InnerDock').sortable('enable');
+					else {
+						$('#InnerDock').sortable({
+							revert: 1,
+							handle: '.Header, .Content',
+							containment: '#InnerDock',
+							start: function(event, ui) {
+								// visual cues
+								$('#DockPanel').addClass('Moving');
+								$(ui.item).addClass('ui-draggable-dragging');
+							},
+							stop: function(event, ui) {
+								$('#DockPanel').removeClass('Moving');
+								$(ui.item).removeClass('ui-draggable-dragging');
+							}
+						});
+					}
+				}, 100);
+			}
+			else {		
+				$('#InnerDock .Gadget').draggable('enable');
+				
+				if ($('#InnerDock').hasClass('ui-sortable'))
+					$('#InnerDock').sortable('disable');
+			}
 		});
+	});
+	
+	$scope.$on('delete_gadget', function(event, data) {
+		// remove from fdp
+		httpService.sendAction('settings', 'delete', {name: data});
+		
+		// remove from ui
+		for (g in $scope.gadgets) {
+			for (i = 0; i < $scope.gadgets[g].length; i++) {
+				if (data == $scope.gadgets[g][i].name) {
+					$scope.gadgets[g].splice(i, 1);
+					return;
+				}
+			}
+		}
 	});
 	
 	$scope.getContact = function(xpid) {
@@ -114,7 +151,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 	$scope.$on('parkedcalls_updated',function(event,data){
 		if(data){
 			for(parkedCall in data){
-				if(data[parkedCall]. xef001type == "delete"){
+				if(data[parkedCall].xef001type == "delete"){
 					//delete $scope.parkedCalls[data[parkedCall.xpid]];
 					for (i = 0; i < $scope.parkedCalls.length;i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
@@ -123,7 +160,15 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 					}
 				
 				}else{
-					$scope.parkedCalls.push(data[parkedCall]);
+					var toAdd = true;
+					for (i = 0; i < $scope.parkedCalls.length;i++){
+						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
+							toAdd = false;
+						}
+					}
+					if(toAdd){
+						$scope.parkedCalls.push(data[parkedCall]);
+					}
 				}
 			}
 		}
@@ -141,11 +186,5 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$filter', '
 		httpService.sendAction("conferences", "joinContact", params);
 				
 		$location.path('/conference/' + conference.xpid);
-	};
-	
-	$scope.timeElapsed = function(t) {
-		// format date
-		var date = new Date().getTime();
-		return $filter('date')(date - t, 'm:ss');
 	};
 }]);

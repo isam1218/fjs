@@ -82,9 +82,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		// check if in dock
 		settingsService.getSettings().then(function(data) {
 			$scope.canDock = true;
+			var regex = new RegExp($scope.xpid + '$', 'g'); // end of string
 			
 			for (key in data) {
-				if (key.indexOf('GadgetConfig') != -1 && key.indexOf($scope.xpid) != -1) {
+				if (key.indexOf('GadgetConfig') != -1 && key.match(regex)) {
 					$scope.canDock = false;
 					break;
 				}
@@ -112,7 +113,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			httpService.sendAction('settings', 'update', data);
 		}
 		else {
-			httpService.sendAction('settings', 'delete', {name: 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.xpid});
+			// send to dock controller
+			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.xpid);
 		}
 	};
 	

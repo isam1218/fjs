@@ -1,5 +1,5 @@
 <div class="ToolBar">
-        <div class="LocationSelector " style="float: right;margin-top: 5px;text-align: center;">
+        <div class="LocationSelector " style="float: right;margin-top: 5px;text-align: center; width: 30%;">
                       <!--<select> </select>-->
             <div class="SelectBox" data-ng-click="showPagePopup($event, $element)">
                 <div class="SelectBoxText">
@@ -22,11 +22,9 @@
             </div>
 
             <!--ng-repeat= "member in members | filter: {displayName:query}"-->
-            <a href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection" style="height:50px;margin:auto" 
-            ng-repeat="member in pageMembers"
-            > 
+            <a href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection" style="height:50px;margin:auto" ng-repeat="member in members = (pageMembers | filter: membersOn)"> 
             
-                <div class="vmavatarsection Avatar AvatarNormal" > 
+                <div class="vmavatarsection Avatar AvatarNormal" context-menu="member"> 
                     <img class="AvatarNoBorder" ng-src="getMeAvatarUrl(member.xpid)" onerror="this.src='img/Generic-Avatar-28.png'"/>
                 </div>
 
@@ -49,5 +47,6 @@
                     
                 </div>
             </a>
+            <p ng-if="members.length == 0" style="font-size:12px;margin:10px" >This tab shows group call members. No members available at this moment</p>
         </div>
     </div>

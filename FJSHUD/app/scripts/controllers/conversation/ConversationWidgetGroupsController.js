@@ -6,6 +6,21 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     $scope.contactId = $routeParams.contactId;
     $scope.query = "";
     $scope.add = {};
+
+    if (localStorage.recent === undefined)
+        localStorage.recent = '{}'
+
+    $scope.recent = JSON.parse(localStorage.recent);
+
+    $scope.storeRecentGroup = function(xpid){
+        $scope.recent = JSON.parse(localStorage.recent);
+        $scope.recent[xpid] = {
+            type: 'group',
+            time: new Date().getTime()
+        };
+        localStorage.recent = JSON.stringify($scope.recent);
+        $rootScope.$broadcast('recentAdded', {info: xpid});
+    }
 	
     // pull updates from service
     $scope.$on('groups_updated',function(event,data) {

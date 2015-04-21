@@ -186,6 +186,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 							}
 							else
 								queues[i].loggedOutMembers++;
+							
+							// attach "me" status to parent object
+							if (queues[i].members[j].contactId == $rootScope.myPid)
+								queues[i].me = queues[i].members[j];
 						}
 					}
 				}

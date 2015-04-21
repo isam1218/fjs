@@ -1,4 +1,4 @@
-hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout', function($scope, $http, myHttpService,phoneService,$routeParam,$contactService,$filter,$timeout) {
+hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $http, myHttpService,phoneService,$routeParam,$contactService,$filter,$timeout,settingService) {
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -11,10 +11,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var queues = [];
     var callId = $routeParam.callId;
     $scope.avatar ={};
-    //$scope.locations = []
+    
+    //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
+    
+    $scope.currentCall = phoneService.getCallDetail(callId);
     if($scope.currentCall){
         $scope.currentCall.isHeld = false;
-        updateTime();
     }
 
     $scope.phoneState = phoneService.getPhoneState();
@@ -67,7 +69,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.recentSelectSort = 'Date';
     myHttpService.getFeed('me');
-    myHttpService.getFeed('settings');
     myHttpService.getFeed('queues');
     myHttpService.getFeed('locations');
     myHttpService.getFeed('calllog');   
@@ -252,6 +253,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         $scope.update_settings('HUDw_AppModel_search','delete');
         $scope.update_settings('HUDw_AppModel_zoom','delete');
         $scope.update_settings('HUDw_AppModel_box','delete');
+        data = {};
+        settingService.reset_app_menu();
     }
     
     update_settings = function(){
@@ -391,6 +394,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
         myHttpService.sendAction("weblauncher","update",data);
     }
+	
+	// grab settings from service (prevents conflict with dock)
+	settingService.getSettings().then(function(data) {
+		$scope.settings = settings = data;
+		update_queues();
+        update_settings();
+	});
     
     $scope.$on('settings_updated',function(event,data){
         if (data){
@@ -541,6 +551,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
         data.screen = screen;
         data.call = $scope.currentCall;
+        data.close = true;
+        
         $scope.showOverlay(true, 'CallStatusOverlay', data);
     }
    
@@ -730,6 +742,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         }
     };
 
+    $scope.callKeyPress = function($event){
+        if ($event.keyCode == 13 && !$event.shiftKey) {
+            $scope.makeCall($scope.call_obj.phoneNumber);
+            $event.preventDefault();
+        }
+    }
+
     $scope.parkCall = function(currentCall){
        call =  phoneService.getCall(currentCall.contactId);
         phoneService.parkCall(currentCall.xpid);
@@ -755,6 +774,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
         }
     };
+
+    $scope.$on('make_phone_call',function(event,data){
+        $scope.callKeyPress(data);
+    });
+    
     $scope.$on('calls_updated',function(event,data){
         $scope.calls = {};
         if(data){

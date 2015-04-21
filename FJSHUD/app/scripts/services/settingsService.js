@@ -1,11 +1,13 @@
 hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactService', function($q, $rootScope, httpService,contactService) {	
-	var deferred = $q.defer();
+	var deferSettings = $q.defer();
+	var deferPermissions = $q.defer();
 	var settings = {};
+	var permissions = {};
 	var weblaunchers = [];
 	var weblauncher_variables = [];
 	
 	if(localStorage.fon_lang_code){
-		var code = localStorage.fon_lang_code.split(".")[1]
+		var code = localStorage.fon_lang_code.split(".")[1];
 		$rootScope.verbage = fjs.i18n[code];
 		$rootScope.fon_lang_code = code;
 		if(!$rootScope.verbage){
@@ -17,19 +19,33 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 	
 	this.getSettings = function() {
 		// waits until data is present before sending back
-		return deferred.promise;
+		return deferSettings.promise;
 	};
 
 	this.getSetting = function(setting_key){
 		return settings[setting_key];
-	}
+	};
+	
+	this.getPermissions = function() {
+		// waits until data is present before sending back
+		return deferPermissions.promise;
+	};
+	
+	this.getPermission = function(key) {
+		return permissions[key];
+	};
 
 	this.getActiveWebLauncher = function(){
 		return weblaunchers.filter(function(item){
 			return item.id == settings['hudmw_launcher_config_id'];
 		})[0];
-	}
-		
+	};
+	
+	this.reset_app_menu = function(){
+		data = {};
+		$rootScope.$broadcast('reset_app',data);
+	};
+	
 	this.formatWebString = function(url,call){
 		var val = $rootScope.meModel;
 		var me = contactService.getContact($rootScope.meModel.my_pid);
@@ -48,11 +64,25 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		url = url.replace('%%password%%','');
 		url = url.replace('%%caller_number_raw%%',clean_number);
 		return url;
-	}
+	};
 
 	/**
 		SYNCING
 	*/
+	
+	$rootScope.$on('me_synced', function(event, data) {
+		// grab license permissions
+		for (i = 0; i < data.length; i++) {
+			if (data[i].propertyKey == 'personal_permissions') {
+				// look at fj repository > MyPermissions.java for reference
+				permissions.showCallCenter = ((data[i].propertyValue & (1 << 10)) == 0);
+				permissions.showVideoCollab = ((data[i].propertyValue & (1 << 1)) == 0);
+				
+				deferPermissions.resolve(permissions);
+				break;
+			}
+		}
+	});
 
 	$rootScope.$on('settings_synced', function(event, data) {
 		settings = {};
@@ -61,8 +91,8 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		for (key in data)
 			settings[data[key].key] = data[key].value;
 		
-		deferred = $q.defer();
-		deferred.resolve(settings);
+		deferSettings = $q.defer();
+		deferSettings.resolve(settings);
 		
 		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 	});

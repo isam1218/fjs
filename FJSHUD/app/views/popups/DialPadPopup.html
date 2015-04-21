@@ -1,4 +1,4 @@
-<div class="MenuWindow" data-ng-style="currentPopup.position">
+<div class="MenuWindow" tabindex="1" data-ng-style="currentPopup.position" ng-keypress="makePhoneCall('dialpad',$event)">
     <div class="dialpad">
          <div class="dialpadrow">
             <div class="XButton DialPadBtn" ng-click="broadcastDial(1)"> 

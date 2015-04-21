@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="query" class="Search" type="search" placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" class="Search" type="search" placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
@@ -18,18 +18,19 @@
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{::message.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'">
                 <div class="AvatarInteractable AvatarForeground"></div>
             </div>
-            <div class="time">{{::message.created | date: 'h:mm a'}}</div>
+            <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code}}</div>
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
             <div class="ListMessageHeader" ng-hide="hideDisplay(message, $index)" >
                 <em>...{{::verbage.from}}</em>
                 <span class="ListMessageHeaderName">{{::message.fullProfile.displayName}}</span>
-                <div class="time">{{::formatDate(message)}}</div>
+                <div class="time">{{::message.created | fondate:'MMMM d YYYY':fon_lang_code}}</div>
+            
             </div>
             <div class="ChatMessageItem AttachmentsHolder">
-                <div class="ListMessageText" ng-bind-html="message.message | highlight:query"></div>
+                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)">
-                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url)}}"></img>                 
+                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}"></img>                 
                     <p> {{ attachment.fileName }}</p>
                 </div> 
             </div>
@@ -48,9 +49,9 @@
 <div class="ChatInputBox" ng-if="enableChat">	
 	<div class="ChatAlertOptions" ng-if="showAlerts">
 		<div class="Left">
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="3" /> {{::verbage.all_agents}}
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="1" /> {{::verbage.logged_in}}
-			<input type="radio" ng-model="alertStatus" name="alertStatus" value="2" /> {{::verbage.Logged_out}}
+    <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
+			<input type="radio" ng-model="chat.status" name="alertStatus" value="1" /> {{::verbage.logged_in}}
+			<input type="radio" ng-model="chat.status" name="alertStatus" value="2" /> {{::verbage.Logged_out}}
 		</div>
 		<div class="Right">
 			{{ 150 - message.length }} {{::verbage.characters_left}}

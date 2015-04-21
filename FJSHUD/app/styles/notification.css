@@ -101,7 +101,8 @@
 }
 .NotificationHeader .firstHeaderTitle {
   position: relative;
-  bottom: -1.3em;
+  /* bottom: -1.3em;*/
+  bottom: -1.2em;
   right: -1px;
 }
 .NotificationDivider {
@@ -111,7 +112,7 @@
 }
 .NotificationDivider.firstHeaderDivider {
   background-color: #999;
-  background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));
+  /*background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));*/
   height: 2.3em;
 }
 .NotificationDivider.firstHeaderDivider img {
@@ -168,11 +169,10 @@
   margin-bottom: 10px;
 }
 .NotificationZoomBtn span.XButton {
-  width: 30%;
+  /*width: 30%;*/
+  width: auto;
   font-size: 0.8rem;
-}
-.NotificationZoomBtn span.XButton.XButtonGreen {
-  width: 45%;
+  /*&.XButtonGreen{width: 45%;}*/
 }
 .Messages {
   position: relative;
@@ -180,6 +180,7 @@
   font-style: normal;
   font-size: 1em;
   background-image: url("../img/XTile-Widget.png");
+  padding-bottom: 20px;
 }
 .Messages:not(:first-child) {
   margin-top: -18px;

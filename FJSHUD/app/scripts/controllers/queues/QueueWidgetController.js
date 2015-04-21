@@ -6,7 +6,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.sortReverse = false;
 	
 	// for chat
-	$scope.enableChat = true;
+	$scope.enableChat = false;
 	$scope.enableFileShare = true;
     
     $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
@@ -23,12 +23,27 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     httpService.getFeed('queue_stat_calls');    
     
     $scope.$on('queues_updated', function(event, data) {
+        // all queues
         var queues = data.queues;
-		
+
         for (i = 0; i < queues.length; i++) {
             if (queues[i].xpid == $scope.queueId) {
                 $scope.queue = queues[i];
             }
         }
+        
+        // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
+        var myQueues = data.mine;
+        for (var j = 0; j < myQueues.length; j++){
+            if (myQueues[j].xpid === $scope.queueId){
+                $scope.enableChat = true;
+                $scope.enableFileShare = true;
+            } else {
+                $scope.enableChat = false;
+                $scope.enableFileShare = false;
+            }
+        }
+
+
     });
 }]);

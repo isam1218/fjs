@@ -77,6 +77,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			call.hangUp();
 		}else{
 			delete xpid2Sip[xpid];
+			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 		}
 	}
 
@@ -85,6 +86,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		call = sipCalls[sip_id];
 		if(call){
 			call.hold = isHeld;
+		}else{
+			if(isHeld){
+				httpService.sendAction('mycalls','transferToHold',{mycallId:xpid})
+			}else{
+				httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid})
+			}
+			
 		}
 	}
 
@@ -513,13 +521,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			call.dtmf(entry);
 		}	
 	}
-
+	/*this returns the call object provided by the phone plugin which gives you control over the call such 
+	holding the call resuming the call and ending the call
+	*/
 	this.getCall = function(xpid){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
 		return call;
 	}
-	
+	/**
+		this method will return meta data about a call 
+	*/
+	this.getCallDetail = function(xpid){
+		return callsDetails[xpid];
+	}
+
 	this.getCallByContactId = function(contactId){
 		for(call in callsDetails){
 			if(callsDetails[call].contactId){

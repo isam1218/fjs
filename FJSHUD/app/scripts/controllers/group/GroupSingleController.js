@@ -9,8 +9,8 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 	$scope.targetType = "f.conversation.chat";
 	$scope.feed = "groups";
 
-    $scope.enableChat = true;
-    $scope.enableFileShare = true;
+  $scope.enableChat = false;
+  $scope.enableFileShare = false;
 	$scope.messages = [];
 
 
@@ -24,9 +24,17 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 				break;
 			}
 		}
-				
+		
 		$scope.isMine = groupService.isMine($scope.groupID);		
 	});
+
+	if ($scope.isMine){
+		$scope.enableChat = true;
+		$scope.enableFileShare = true;
+	} else {
+		$scope.enableChat = false;
+		$scope.enableFileShare = false;
+	}
 	
 	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
 	{upper: $scope.verbage.members, lower: 'members'}, 
@@ -35,9 +43,22 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 	{upper: $scope.verbage.recordings, lower: 'recordings'}];
 
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
-	
+
+	$scope.deptHeaderDisplay = function(groupType){
+		if (groupType === 0){
+			return true;
+		}
+	};
+
+	$scope.groupHeaderDisplay = function(groupType){
+		// if not a dept -> display 'group'
+		if (groupType !== 0){
+			return true;
+		}
+	};
+
 	// display avatar for group member
-    $scope.getAvatarUrl = function(index) {
+  $scope.getAvatarUrl = function(index) {
 		if ($scope.group && $scope.group.members) {
 			if ($scope.group.members[index] !== undefined) {
 				var xpid = $scope.group.members[index].contactId;
@@ -47,9 +68,9 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 				return 'img/Generic-Avatar-28.png';
 
 		}
-    };
+  };
 	
-    $scope.$on("$destroy", function() {
-	
-    });
+  $scope.$on("$destroy", function() {
+
+  });
 }]);
