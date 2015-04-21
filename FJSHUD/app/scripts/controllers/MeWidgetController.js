@@ -2,8 +2,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
-    var CALL_ON_HOLD = 3
-    var CALL_IN_PROGRESS = 2
+    var CALL_ON_HOLD = 3;
+    var CALL_IN_PROGRESS = 2;
 
 
 
@@ -357,14 +357,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     }
 
 
-    update_queues = function(){
-        for(queue in $scope.queues){
-            $scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[queue].xpid] == "true";
-            $scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[queue].xpid] == "true";
-            $scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[queue].xpid] == "true";
-            $scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[queue].xpid] == "true";
-        }
-    }
+    var update_queues = function(){
+		if ($scope.settings) {
+			for(queue in $scope.queues){
+				$scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[queue].xpid] == "true";
+				$scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[queue].xpid] == "true";
+				$scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[queue].xpid] == "true";
+				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[queue].xpid] == "true";
+			}
+		}
+    };
 
     $scope.update_queue_settings = function(type,isActive){
         for(queue in $scope.queues){
