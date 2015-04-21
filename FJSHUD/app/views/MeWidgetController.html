@@ -144,7 +144,6 @@
                   
                   <div  class="RecentCallLogs">                   
                     <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
-                      <!--<div class="RecentCallsHeader RecentDate">{{ formatDate(calllog)}} </div>-->
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D h:mm a':fon_lang_code}} </div>
 
