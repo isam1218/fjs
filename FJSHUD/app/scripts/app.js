@@ -8,7 +8,7 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'flow',
     'react',
-    'ui.sortable'
+	'ui.sortable'
 ]);
 
 hudweb.config(function ($routeProvider) {
