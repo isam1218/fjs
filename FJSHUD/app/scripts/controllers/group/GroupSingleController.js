@@ -13,6 +13,20 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
   $scope.enableFileShare = false;
 	$scope.messages = [];
 
+	$scope.tabFilter = function(){
+		return function(tab){
+			if (tab.lower === 'chat'){
+				// if not my group -> return false and filter out the chat tab
+				$scope.isMine = groupService.isMine($scope.groupID);
+				if ($scope.isMine){
+					return true;
+				} else {
+					return false;
+				}
+			}
+			return true;
+		};
+	};
 
 	$scope.$on('groups_updated', function(event, data) {
 		var groups = data.groups;
@@ -25,7 +39,8 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 			}
 		}
 		
-		$scope.isMine = groupService.isMine($scope.groupID);		
+		$scope.isMine = groupService.isMine($scope.groupID);
+		// console.log('groups - ', groups);
 	});
 
 	if ($scope.isMine){
