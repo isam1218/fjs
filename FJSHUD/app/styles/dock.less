@@ -10,8 +10,8 @@
   overflow-y: hidden;
   
   &.Moving {
+    border: 1px dashed #358503;
     border-width: 1px;
-    border-image: url("../img/marching-ants.gif") 8 repeat repeat;
     -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
     -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
   }
@@ -95,7 +95,7 @@
 	}
 
 	&.NoFixedHeight {
-		height: auto !important;
+		height: initial !important;
 	}
 	
 	&:hover {
@@ -156,6 +156,7 @@
 		display: flex;
 		flex-direction: column;
 		overflow-y: auto;
+		min-height: 6em;
 		
 		.SubHeader {
 			background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);

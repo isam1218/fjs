@@ -11,6 +11,8 @@ hudweb.directive('resizer', ['HttpService', function(httpService) {
 			
 			element.bind('mousedown', function() {
 				document.body.onmousemove = function(e) {
+					element.parent().removeClass('NoFixedHeight');
+					
 					// prevent getting too big
 					var rect = document.getElementById('DockPanel').getBoundingClientRect();
 					
