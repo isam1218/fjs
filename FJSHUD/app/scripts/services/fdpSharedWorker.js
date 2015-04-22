@@ -84,12 +84,13 @@ function sync_request(f){
 				else {
 					for (key in synced_data[feed]) {
 						// full replace
-						if (synced_data[feed][key].xef001type == 'F')
+						if (synced_data[feed][key].xef001type == 'F'){
 							if(data_obj[feed]){
 								data_obj[feed][key].items = synced_data[feed][key].items;
 							}else{
 								data_obj[feed] = synced_data[feed];
 							}
+						}
 						// update individually
 						else {
 							for (i = 0; i < synced_data[feed][key].items.length; i++) {
@@ -105,6 +106,8 @@ function sync_request(f){
 								}else{
 									//recreate the object mapping for synced feed in shareworker
 									newItem = false;
+									data_obj[feed] = synced_data[feed];
+
 								}
 								
 								
