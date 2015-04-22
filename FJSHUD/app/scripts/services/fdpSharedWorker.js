@@ -85,19 +85,28 @@ function sync_request(f){
 					for (key in synced_data[feed]) {
 						// full replace
 						if (synced_data[feed][key].xef001type == 'F')
-							data_obj[feed][key].items = synced_data[feed][key].items;
+							if(data_obj[feed]){
+								data_obj[feed][key].items = synced_data[feed][key].items;
+							}else{
+								data_obj[feed] = synced_data[feed];
+							}
 						// update individually
 						else {
 							for (i = 0; i < synced_data[feed][key].items.length; i++) {
 								var newItem = true;
-								
-								for (j = 0; j < data_obj[feed][key].items.length; j++) {
-									if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
-										data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
-										newItem = false;
-										break;
-									}
+								if(data_obj[feed]){
+									for (j = 0; j < data_obj[feed][key].items.length; j++) {
+										if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
+											data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
+											newItem = false;
+											break;
+										}
+									}	
+								}else{
+									//recreate the object mapping for synced feed in shareworker
+									newItem = false;
 								}
+								
 								
 								if (newItem)
 									data_obj[feed][key].items.push(synced_data[feed][key].items[i]);

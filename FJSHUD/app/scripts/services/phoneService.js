@@ -704,6 +704,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}
             	}	
             }
+
+            if($rootScope.meModel){
+            	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
+            }
         }
     });
 
