@@ -75,7 +75,9 @@
   width: 100%;
   display: block;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   text-decoration: none;
   
   .vmcallbtn{
@@ -142,6 +144,7 @@
 
   .ListRowContent {
     flex: 1;
+	-webkit-flex: 1;
     border-left: solid 1px #DEE1E5;
 	overflow: hidden;
   }
@@ -155,6 +158,7 @@
     white-space: nowrap;
 	width: 55%;
 	flex: 1;
+	-webkit-flex: 1;
     
     .name {
       strong {
@@ -212,8 +216,11 @@
 
 .Groups .ListRow > div {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   
   .Members {
     padding: 1em 1em 0 0;
@@ -377,7 +384,9 @@
 
 .ListMessage {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   margin: .5em 0 1em 2%;
   width: 97%;
   color: #999;
@@ -393,6 +402,7 @@
   .ListMessageContent {
     margin-left: .5em;
     flex: 1;
+	-webkit-flex: 1;
   }
   
   .ChatMessageItem {

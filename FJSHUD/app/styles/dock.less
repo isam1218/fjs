@@ -1,6 +1,7 @@
 .DockPanel {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -69,7 +70,9 @@
 .Gadget {
 	position: relative;
 	display: inline-flex;
+	display: -webkit-inline-flex;
 	flex-direction: column;
+	-webkit-flex-direction: column;
 	border-radius: 5px;
 	border: 1px solid #aaa;
 	overflow: hidden;
@@ -109,7 +112,9 @@
 		white-space: nowrap;
 		font-size: .8em;
 		display: flex;
+		display: -webkit-flex;
 		flex-direction: row;
+		-webkit-flex-direction: row;
 	
 		& > .Avatar {
 			font-size: 1.25em;
@@ -128,6 +133,7 @@
 			margin-left: .5em;
 			overflow: hidden;
 			flex: 1;
+			-webkit-flex: 1;
 			
 			div {
 				overflow: hidden;
@@ -153,8 +159,11 @@
 
 	.Content {
 		flex: 1;
+		-webkit-flex: 1;
 		display: flex;
+		display: -webkit-flex;
 		flex-direction: column;
+		-webkit-flex-direction: column;
 		overflow-y: auto;
 		min-height: 6em;
 		
@@ -172,6 +181,7 @@
 		
 		.List {
 			flex: 1;
+			-webkit-flex: 1;
 			background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
 		
 			.ListRow {

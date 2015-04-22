@@ -1,7 +1,9 @@
 .Widget.Queues {
   .ListView {
     display: flex;
+	display: -webkit-flex;
 	flex-direction: column;
+	-webkit-flex-direction: column;
 	font-size: .9em;
   }
   
@@ -12,6 +14,7 @@
   .QueueList {
     flex: 1 1 0;
 	-ms-flex: 1;
+	-webkit-flex: 1;
 	overflow-y: auto;
 	padding: .5em 2.5%;
 	
@@ -95,7 +98,9 @@
 	  white-space: nowrap;
 	  font-size: .9em;
 	  display: flex;
+	  display: -webkit-flex;
 	  flex-direction: row;
+	  -webkit-flex-direction: row;
 	  
 	  & > div {
 	    display: inline-block;
@@ -105,6 +110,7 @@
 	  .Title {
 		margin-left: .5em;
 		flex: 1;
+		-webkit-flex: 1;
 		
 		div {
 		  overflow: hidden;
@@ -228,6 +234,7 @@
 	
 	.Table {
 	  flex: 1;
+	  -webkit-flex: 1;
 	  overflow-y: auto;
 	}
 	
@@ -358,7 +365,9 @@
 	  
   .ActiveCall {
     display: flex;
+	display: -webkit-flex;
     flex-direction: row;
+	-webkit-flex-direction: row;
 	font-size: .9em;
 	padding: .5em;
 	
@@ -375,14 +384,18 @@
     .Info {
       position: relative;
       flex: 1;
+	  -webkit-flex: 1;
       border-top-left-radius: 1.5em;
       border-bottom-left-radius: 1.5em;
       border: 1px solid #999;
       padding: .2em;
       margin-right: 1em;
 	  display: flex;
+	  display: -webkit-flex;
 	  flex-direction: row;
+	  -webkit-flex-direction: row;
 	  align-items: center;
+	  -webkit-align-items: center;
     
       .Arrow {
   	    position: absolute;
@@ -404,6 +417,7 @@
 	  
 	  .Time {
 	    flex: 1;
+		-webkit-flex: 1;
 		text-align: right;
 	  }
     }
