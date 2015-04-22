@@ -607,11 +607,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         $scope.currentCall.isHeld =isHeld == 'True';
     }
     $scope.makeCall = function(number){
-        if($scope.locations[$scope.meModel['current_location']].locationType == 'w'){
-                phoneService.makeCall(number);
-        }else{
-            myHttpService.sendAction('me','callTo',{phoneNumber: number});
-        }
+        phoneService.makeCall(number);
     }
 
     $scope.endCall = function(call){

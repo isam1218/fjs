@@ -1,4 +1,4 @@
-hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', function($scope, $rootScope, $routeParams, $location, httpService, contactService, conferenceService, queueService) {
+hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService','PhoneService', function($scope, $rootScope, $routeParams, $location, httpService, contactService, conferenceService, queueService,phoneService) {
 	$scope.rec = this;
 	$scope.rec.query = '';
 	$scope.recordings = [];
@@ -102,8 +102,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	
 	$scope.callNumber = function(e, number) {
 		e.stopPropagation();
-		
-		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+		phoneService.makeCall(number);
 	};
 	
 	$scope.joinConference = function(e, xpid) {

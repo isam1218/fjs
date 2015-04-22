@@ -19,6 +19,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isAlertShown = true;
 	var voicemails = {};
 	var weblauncher = {};
+	var locations = {};
 	//fjs.CONFIG.SERVER.serverURL 
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
@@ -96,10 +97,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	}
 
-	makeCall = function(phoneNumber){
-		if(phone && phoneNumber != ""){
-			console.log("calling" + phoneNumber);
-			phone.makeCall(phoneNumber)
+	makeCall = function(number){
+		if(phone && number != ""){
+			if($rootScope.meModel.location.locationType == 'w'){
+				phone.makeCall(number)
+			}else{
+				httpService.sendAction('me', 'callTo', {phoneNumber: number});
+			}
 		}
 	}
 
@@ -678,8 +682,34 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             for(medata in data){
                 $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
             }
+			
+			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
+            /*for(i in locations){
+            	if($rootScope.meModel.current_location == locations[i].xpid){
+					$rootScope.meModel.location = locations[i];
+				}
+            }*/
+
         }
 	});
+
+	$rootScope.$on('locations_synced', function(event,data){
+        if(data){
+            if($.isEmptyObject(locations)){
+            	for(index in data){
+					locations[data[index].xpid] = data[index];
+					if(data[index].xpid == $rootScope.meModel.current_location){
+						$rootScope.meModel.location = data[index];
+						break;	
+					}
+            	}	
+            }
+
+            if($rootScope.meModel){
+            	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
+            }
+        }
+    });
 
 	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
