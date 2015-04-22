@@ -10,6 +10,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	$scope.upload = {};
 	$scope.loading = true;
 	$scope.displayHeader = true;
+	$scope.filteredMessages = [];
 	
 	// set chat data
 	if ($routeParams.contactId) {
@@ -261,21 +262,29 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		}
 	}, 600);
 
-	$scope.hideDisplay = function(message, index){
-		var currentMessage = $scope.messages[index];
-		var previousMessage;
-		if(index != 0){
-			previousMessage = $scope.messages[index - 1];
+	$scope.nameDisplay = function(message, index){
+		var curMsg = $scope.filteredMessages[index];
+		var curMsgDate = new Date(curMsg.created);
+		var prvMsg;
+		if (index !== 0){
+			prvMsg = $scope.filteredMessages[index-1];
+			var prvMsgDate = new Date(prvMsg.created);
 		}
-		
-		// if current msg's owner is the SAME AS owner of previous msg --> return true upon ng-hide --> do NOT display
-		if(previousMessage){
-			if (currentMessage.from === previousMessage.from){
+		// if very 1st message --> display name
+		if (index === 0){
+			return true;
+		} else {
+			// curmsgOwner === prvMsgOwner --> do not display
+			if (curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
+				return false;
+			} else if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid === prvMsg.fullProfile.xpid){
+				// if same msg owner on the same day --> do not display
+				return false;
+			} else {
+				// otherwise display
 				return true;
-			}	
+			}
 		}
-		
-		return false;
 	};
 
 	$scope.$on("$destroy", function() {
