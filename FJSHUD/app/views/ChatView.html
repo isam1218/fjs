@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="chat.query" class="Search" type="search" placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" class="Search" type="search" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
@@ -59,7 +59,7 @@
 	</div>
 	
 	<div class="ChatInputFields">
-		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : -1}}"></textarea>
+		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>{{::verbage.send}}</span></div>
 	</div>
 </div>

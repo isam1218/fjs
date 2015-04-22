@@ -381,10 +381,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	            "feed": feed
 	        });
     	}else{
-    		var data = {};
 			if(localStorage.data_obj){
-				data = JSON.parse(localStorage.data_obj);
-				$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', data[feed]));
+				var data = JSON.parse(localStorage.data_obj);
+				
+				$rootScope.$evalAsync(function() {
+					$rootScope.$broadcast(feed + '_synced', data[feed]);
+				});
 			}
 		}
     };

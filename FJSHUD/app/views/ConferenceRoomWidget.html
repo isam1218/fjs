@@ -46,7 +46,7 @@
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" placeholder="{{verbage.search}}" />
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
                     </div>
                     <div class="SearchInputBoxStateButton">
                         <div class="SearchInputBoxStateButtonIcon"></div>

@@ -2,7 +2,7 @@
 	<input class="SearchBox" type="search"
         ng-model="query"
         x-webkit-speech=""
-        placeholder="{{::verbage.search}}" />
+        ng-attr-placeholder="{{::verbage.search}}" />
 		
   <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
