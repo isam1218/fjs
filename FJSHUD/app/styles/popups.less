@@ -28,7 +28,9 @@
 	min-height: 300px;
 	padding: 1em;
 	display: flex;
+	display: -webkit-flex;
 	flex-direction: column;
+	-webkit-flex-direction: column;
 	
 	.Close {
 	  position: absolute;
@@ -44,6 +46,7 @@
 	
 	.Sections {
 	  flex: 1;
+	  -webkit-flex: 1;
 	  overflow-y: auto;
 	  height:inherit;
 	  overflow-x: hidden;
@@ -232,7 +235,8 @@
 	
 	.FileInfo {
 	  display:inline-block; 
-	  flex:1;
+	  flex: 1;
+	  -webkit-flex: 1;
 	  margin-left: .5em;
 	}
 	
