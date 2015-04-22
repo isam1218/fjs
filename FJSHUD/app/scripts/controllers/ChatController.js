@@ -17,7 +17,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		chat.name = $scope.contact.displayName;
 		chat.audience = 'contact';
 		chat.targetId = $routeParams.contactId;
-		chat.type = 'f.conversation.wall';
+		chat.type = 'f.conversation.chat';
 	}
 	else if ($routeParams.conferenceId) {
 		chat.name = $scope.conference.name;
