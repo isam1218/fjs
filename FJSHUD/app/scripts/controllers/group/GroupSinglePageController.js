@@ -74,10 +74,22 @@ hudweb.controller('GroupSinglePageController', ['$scope','$rootScope','$routePar
         	
 			for (member in members){
 			   var contact = contactService.getContact(members[member].contactId);        		
-			   contact.location_type = locations[members[member].contactId].locationType; 			   
+			   contact.location_type = locations[members[member].contactId].locationType; 
+			   var contact_exists = false;
+			   var pageMembers = $scope.pageMembers;
+			   
+			   for(i = 0; i < pageMembers.length; i++)
+				{
+					if($scope.pageMembers[i].xpid == contact.xpid)
+					{
+						contact_exists = true;
+						$scope.pageMembers[i] = contact;
+					}	
+					else
+						$scope.pageMembers.push(contact);		
+				}					   
 			}
-			
-			$scope.pageMembers.push(contact);				            
+						            
         }                
     });
     
@@ -110,7 +122,6 @@ hudweb.controller('GroupSinglePageController', ['$scope','$rootScope','$routePar
     $scope.callGroup = function(numPrefix){
     	if($scope.group.extension){
 			phoneService.makeCall(numPrefix + $scope.group.extension);
-    	}   
-    	$rootScope.$evalAsync($rootScope.$broadcast('groups_updated', groupService.formatData()));
+    	}      
     }
 }]);
