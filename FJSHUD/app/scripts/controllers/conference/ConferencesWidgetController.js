@@ -9,9 +9,9 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	});
 
 	$scope.sort_options = [
-		{display_name: $scope.verbage.sort_room_by_location}, 
-		{display_name: $scope.verbage.sort_by_room_number}, 
-		{display_name: $scope.verbage.sort_by_activity}
+		{display_name: $scope.verbage.sort_room_by_location, type:'location',desc:true}, 
+		{display_name: $scope.verbage.sort_by_room_number, type:'roomNumber',desc:true}, 
+		{display_name: $scope.verbage.sort_by_activity, type:'members.length',desc:true}
 	];
 	
 	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
