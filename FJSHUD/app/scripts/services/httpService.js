@@ -351,7 +351,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         var authURL = fjs.CONFIG.SERVER.loginURL
             + '/oauth/authorize'
             + "?response_type=token"
-            + "&redirect_uri=" + encodeURIComponent(location.href)
+            + "&redirect_uri=" + encodeURIComponent(location.href.replace(location.hash, ''))
             + "&display=page"
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
@@ -360,6 +360,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		delete localStorage.authTicket;
 		delete localStorage.nodeID;
 		delete localStorage.data_obj;
+		
+		// shut off web worker
+		if (worker.port)
+			worker.port.close();
+		else
+			worker.terminate();
+		
 		location.href = authURL;
 	};
 	
@@ -374,10 +381,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	            "feed": feed
 	        });
     	}else{
-    		var data = {};
 			if(localStorage.data_obj){
-				data = JSON.parse(localStorage.data_obj);
-				$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', data[feed]));
+				var data = JSON.parse(localStorage.data_obj);
+				
+				$rootScope.$evalAsync(function() {
+					$rootScope.$broadcast(feed + '_synced', data[feed]);
+				});
 			}
 		}
     };

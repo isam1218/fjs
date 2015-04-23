@@ -1,4 +1,4 @@
-hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService', function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService) {	
+hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService','PhoneService', function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService,phoneService) {	
 	$scope.calllog = this;
 	$scope.calllog.query = '';
 	$scope.calls = [];
@@ -73,7 +73,7 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
     };
 	
 	$scope.makeCall = function(number) {
-		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+		phoneService.makeCall(number);
 	};
 
 }]);

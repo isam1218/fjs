@@ -22,7 +22,7 @@
 	
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-            <span ng-repeat="tab in tabs">
+            <span ng-repeat="tab in tabs | filter: tabFilter()">
                 <a href="#/group/{{ ::groupID + '/' + tab.lower}}"   class="WidgetTabBarButton Ready" ng-class="selected == tab.lower ? 'fj-selected-item' : ''">
                     <div class="inner">{{ ::tab.upper }}</div>
                     <div class="arrow"></div>

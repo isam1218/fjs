@@ -1,13 +1,15 @@
-hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', function($scope, $rootScope, $routeParams, httpService, queueService) {
+hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.sortReverse = false;
-	
+    var myQueues = queueService.getMyQueues();
+
 	// for chat
 	$scope.enableChat = false;
-	$scope.enableFileShare = true;
+	$scope.enableFileShare = false;
+    $scope.showAlerts = false;
     
     $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
     {upper: $scope.verbage.stats_tab, lower: 'stats'}, 
@@ -20,7 +22,33 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
     
     httpService.getFeed('queues');
-    httpService.getFeed('queue_stat_calls');    
+    httpService.getFeed('queue_stat_calls');
+
+    $scope.tabFilter = function(){
+        return function(tab){
+            if (tab.lower === 'chat'){
+                // if not my queue -> return false and filter out the chat tab
+                for (var i = 0; i < myQueues.queues.length; i++){
+                    var single = myQueues.queues[i];
+                    if (single.xpid === $scope.queueId){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        };
+    };
+
+    settingsService.getPermissions().then(function(data) {
+    // console.log('permissions - ', data); 
+        if (data.showAlerts){
+            $scope.showAlerts = true;
+        } else {
+            $scope.showAlerts = false;
+        }
+    });
     
     $scope.$on('queues_updated', function(event, data) {
         // all queues

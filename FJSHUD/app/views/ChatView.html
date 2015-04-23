@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="chat.query" class="Search" type="search" placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" class="Search" type="search" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
@@ -12,16 +12,16 @@
 </div>
 		
 <div class="ListViewContent" id="ListViewContent">
-    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'"ng-repeat="message in messages | orderBy: 'created' track by message.xpid">
+    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid">
         <div class="ListMessageLeft">
-            <div class="Avatar AvatarSmall" ng-hide="hideDisplay(message, $index)"  ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}" context-menu="message.fullProfile">
+            <div class="Avatar AvatarSmall"  ng-if="nameDisplay(message, $index)" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}" context-menu="message.fullProfile">
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{::message.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'">
                 <div class="AvatarInteractable AvatarForeground"></div>
             </div>
             <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code}}</div>
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
-            <div class="ListMessageHeader" ng-hide="hideDisplay(message, $index)" >
+            <div class="ListMessageHeader"  ng-if="nameDisplay(message, $index)" >
                 <em>...{{::verbage.from}}</em>
                 <span class="ListMessageHeaderName">{{::message.fullProfile.displayName}}</span>
                 <div class="time">{{::message.created | fondate:'MMMM d YYYY':fon_lang_code}}</div>
@@ -59,7 +59,7 @@
 	</div>
 	
 	<div class="ChatInputFields">
-		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : -1}}"></textarea>
+		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>{{::verbage.send}}</span></div>
 	</div>
 </div>

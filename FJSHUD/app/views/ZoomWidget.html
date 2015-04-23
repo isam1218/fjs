@@ -40,7 +40,7 @@
             <div class="JoinMeetingSection"> 
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
+                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" ng-attr-placeholder="{{::verbage.meeting_id}}" />
                     </div>
                 </div>
                 <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
@@ -59,7 +59,7 @@
                 <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_screen_share_only}}</button>
                 <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
                 <div class="Add SearchInputBox">
-					<input type="search" class="SearchBox" placeholder="{{::verbage.add_someone}}" contact-search />
+					<input type="search" class="SearchBox" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
                 </div>
             </div>
 

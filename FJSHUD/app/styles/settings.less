@@ -46,8 +46,11 @@
      }
      .SettingsPanel{
        flex: 1;
+	   -webkit-flex: 1;
        display: flex;
+	   display: -webkit-flex;
        flex-direction: column;
+	   -webkit-flex-direction: column;
 		
        &.DialogContentMainBlock_List {
          left: 0px;
@@ -1117,6 +1120,7 @@ div.NewCall{
 
   .SortHeader {
     display: flex;
+	display: -webkit-flex;
   }
 
   .SortButton {
@@ -1125,6 +1129,7 @@ div.NewCall{
 
   .OtherQueueLine {
     display: flex;
+	display: -webkit-flex;
   }
 
   .QueueButtonToggle {

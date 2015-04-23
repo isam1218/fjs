@@ -40,10 +40,13 @@
 
   </head>
   <body data-ng-controller="MainController"  flow-prevent-drop>
-
-      <!--<div id="AppLoading"> </div>-->
-
-
+    <div id="AppLoading" ng-if="!loaded.all">
+		<div ng-cloak>
+			<div>{{::verbage.loading}}...</div>
+			<img src="img/ajax-loader.gif" />
+		</div>
+    </div>
+	
 	<div id="App">
 		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
 
@@ -53,10 +56,10 @@
 
 				<div class="LeftBarTop">
 					<div class="ContactSearch">
-						<input ng-show="tab != 'favorites'" type="search" class="Search" placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" />
+						<input ng-show="tab != 'favorites'" type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" />
 						<input ng-show="tab != 'favorites'" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 
-						<input ng-show="tab == 'favorites'" type="search" class="Search" placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+						<input ng-show="tab == 'favorites'" type="search" class="Search" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
 					</div>
 
 					<div class="WidgetTabBar">
@@ -102,7 +105,7 @@
 				<div class="Notifications" ng-include="'views/Notifications.html'" ng-controller="NotificationController"></div>
 
 				<div class="Phone">
-					<input type="text" class="Number" placeholder="{{::verbage.phone_number}}" ng-model="number" />
+					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" />
 					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number)"/>
 				</div>
 			</div>
@@ -112,13 +115,6 @@
 			<div id="DockPanel" class="DockPanel" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
 		</div>
 	</div>
-
-    <div id="AppLoading" ng-if="!loaded.all">
-		<div ng-cloak>
-			<div>{{::verbage.loading}}...</div>
-			<img src="img/ajax-loader.gif" />
-		</div>
-    </div>
 
 	<div  ng-include="currentPopup.url"></div>
 	<div ng-include="overlay.url" ng-if="overlay.show"></div>
@@ -162,7 +158,6 @@
     <script src="scripts/filters/highlightTextFilter.js"></script>
     <script src="scripts/filters/durationFilter.js"></script>
      <script src="scripts/filters/dateFilter.js"></script>
-    <!--<script src="scripts/react/CallRecordingList.js"></script>-->
 	
 	<!--directives-->
 	<script src="scripts/directives/searchDirective.js"></script>
