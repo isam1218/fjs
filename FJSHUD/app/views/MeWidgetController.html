@@ -148,8 +148,8 @@
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D h:mm a':fon_lang_code}} </div>
 
                       
-                      <div class="RecentCallsHeader RecentFromTo call" ng-click="makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
-                      <div class="RecentCallsHeader RecentFromTo call" ng-click="makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
+                      <div class="RecentCallsHeader RecentFromTo call" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
+                      <div class="RecentCallsHeader RecentFromTo call" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
                       <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
                     </div>
                     <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id111" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
