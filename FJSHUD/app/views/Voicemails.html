@@ -1,5 +1,5 @@
     <div class="ToolBar" >
-		<input type="{{::verbage.search}}" class="SearchBox" placeholder="{{::verbage.search}}" data-ng-model="tester.query" ng-model-options="{debounce: 100}"/>              
+		<input type="{{::verbage.search}}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="tester.query" ng-model-options="{debounce: 100}"/>              
       <!--   <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
                     ng-options="sort_option.display_name for sort_option in sort_options"
                 ng-change="sortBy(selectedSort)"
