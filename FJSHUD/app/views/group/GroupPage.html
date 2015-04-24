@@ -31,10 +31,10 @@
                 <div class="vminfo"> 
                     <div class="displayName">
                         <p class="ListDisplayName">
-                            <span> {{ member.displayName }} </span>
+                            <span> {{::member.displayName }} </span>
                         </p>
                         <div class="vmalternate">
-                           <div class="vmtime">#{{ member.primaryExtension }}</div>
+                           <div class="vmtime">#{{::member.primaryExtension }}</div>
                            <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(member.primaryExtension)"></input>
 
                         </div>

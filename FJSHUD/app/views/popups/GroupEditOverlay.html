@@ -47,7 +47,7 @@
 							<div class="ListRowTitle">
 								<strong>{{ contact.displayName }}</strong>
 								<br/>
-								#{{ contact.primaryExtension }}
+								#{{ ::contact.primaryExtension }}
 							</div>
 						</div>
 						<input type="button" value="{{::verbage.delete_word}}" class="Delete" ng-show="!closing" ng-click="removeUser(contact)" />

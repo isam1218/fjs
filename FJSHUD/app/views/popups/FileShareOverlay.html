@@ -85,7 +85,7 @@
                         <div class="FileInfo" ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' ">
                             <div style="margin-top:0px;margin-left:5px">
                                 <p style="margin-top:0px">{{download.fileName}}</p>
-                                <p> {{ download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>
+                                <p> {{ ::download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>
                             </div>
                         </div>
                     </div>
