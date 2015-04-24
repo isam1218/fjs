@@ -358,20 +358,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
 
     var update_queues = function(){
-		if ($scope.settings) {
-			for(queue in $scope.queues){
-				$scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[queue].xpid] == "true";
-				$scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[queue].xpid] == "true";
-				$scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[queue].xpid] == "true";
-				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[queue].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[queue].xpid] == "true";
+		if ($scope.settings && $scope.queues) {
+			for (var i = 0, len = $scope.queues.length; i < len; i++) {
+				$scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[i].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[i].xpid] == "true";
+				$scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid] == "true";
+				$scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[i].xpid] == "true";
+				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid] == "true";
 			}
 		}
     };
 
     $scope.update_queue_settings = function(type,isActive){
-        for(queue in $scope.queues){
-            $scope.settings[type +$scope.queues[queue].xpid] = isActive;
-            $scope.update_settings(type+$scope.queues[queue].xpid,'update',isActive);    
+        for (var i = 0, len = $scope.queues.length; i < len; i++) {
+            $scope.settings[type +$scope.queues[i].xpid] = isActive;
+            $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive);    
         }
     }
     $scope.currentWebLauncher = {};
@@ -653,8 +653,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.$on('me_synced', function(event,data){
         if(data){
             var me = {};
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+			for (var i = 0, len = data.length; i < len; i++) {
+                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
             }
         }
     });
@@ -662,8 +662,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid] = data[index];
+            for (var i = 0, len = data.length; i < len; i++) {
+                $scope.locations[data[i].xpid] = data[i];
             }
         }
     });
@@ -780,7 +780,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var icon_version;
     $scope.$on("fdpImage_synced",function(event,data){
         if(data){
-            for(i in data){
+            for (var i = 0, len = data.length; i < len; i++) {
                 if(data[i].xpid == $scope.meModel.my_pid){
                     icon_version = data[i].xef001iver;
                 }
@@ -813,17 +813,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 			var language_id;
 			$scope.languages = data;
 		     if(localStorage.fon_lang_code){
-                for(language in $scope.languages){
-                    if($scope.languages[language].code == localStorage.fon_lang_code){
-                        $scope.languageSelect = $scope.languages[language];
+				for (var i = 0, len = $scope.languages.length; i < len; i++) {
+                    if($scope.languages[i].code == localStorage.fon_lang_code){
+                        $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
                         break;
                     }
                 }
              }else{
-                for(language in $scope.languages){
-                    if($scope.languages[language].xpid == settings.hudw_lang){
-                        $scope.languageSelect = $scope.languages[language];
+                for (var i = 0, len = data.length; i < len; i++) {
+                    if($scope.languages[i].xpid == settings.hudw_lang){
+                        $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
                         break;
                     }
