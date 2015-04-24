@@ -7,7 +7,7 @@
         </div>
         <div class="WidgetHeaderTitle">
 			{{contact.displayName}} 
-			<span ng-if="contact.primaryExtension">({{contact.primaryExtension}})</span>
+			<span ng-if="contact.primaryExtension">({{::contact.primaryExtension}})</span>
 			<br/>
             <div class="ListRowStatusIcon XIcon-QueueStatus-{{ contact.queue_status }}"></div>
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
@@ -23,7 +23,7 @@
                     <div class="CallerName">{{contact.call.displayName}}</div>
                     <div class="CallDuration">{{call.duration}}</div>
                     <br>
-                    <div class="CallExtension">{{contact.call.phone}} </div>
+                    <div class="CallExtension">{{::contact.call.phone}} </div>
                 </div>
             </div>
             <div class="CallerPhone"></div>

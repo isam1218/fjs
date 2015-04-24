@@ -19,9 +19,9 @@
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 					<div class="Name">
-						<strong>{{ onCall.displayName }}</strong>
+						<strong>{{ ::onCall.displayName }}</strong>
 						<br/>
-						x{{ onCall.primaryExtension }}
+						x{{ ::onCall.primaryExtension }}
 					</div>
 					
 					<div class="Barging" ng-if="onCall.call.barge > 0">{{::verbage.barging}}</div>
@@ -41,9 +41,9 @@
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 					<div class="Name">
-						<strong>{{ onCall.call.displayName }}</strong>
+						<strong>{{ ::onCall.call.displayName }}</strong>
 						<br/>
-						{{ onCall.call.phone }}
+						{{ ::onCall.call.phone }}
 					</div>
 					
 					<div class="Time">{{ timeElapsed }}</div>

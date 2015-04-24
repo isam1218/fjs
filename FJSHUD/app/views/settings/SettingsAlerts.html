@@ -10,10 +10,10 @@
         > <label>{{::verbage.show_alerts}}</label> </div>
       	<div class="Dialog-settings-row"><input type="checkbox"
           ng-model="alertOnBusy" ng-click="update_settings('hudmw_show_alerts_in_busy_mode','update',alertOnBusy)" 
-        > <label>{{verbage.show_status_when_busy}}</label> </div>
+        > <label>{{::verbage.show_status_when_busy}}</label> </div>
       	<div class="Dialog-settings-row"><input type="checkbox"
           ng-model="alertOnAlways" ng-click="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" 
-        > <label>{{verbage.show_when_app_in_focus}}</label> </div>
+        > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
       	<div class="Dialog-settings-row"><input type="button" value="{{verbage.reset_alert_position}}"></div>
       </div>
        
@@ -48,12 +48,12 @@
         <div class="ListPageHeaderText">{{::verbage.display_for}}</div>
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="all" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" > <label>{{::verbage.all_my_calls}}</label> </div>
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="known" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" > <label>{{::verbage.only_for_known_numbers}}</label> </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)"> <label>{{verbage.never_display}}</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)"> <label>{{::verbage.never_display}}</label> </div>
         
-        <div class="ListPageHeaderText">{{verbage.duration}}</div>
+        <div class="ListPageHeaderText">{{::verbage.duration}}</div>
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="entire"
          ng-change="update_settings('alert_call_duration','update',alertDuration)"
-        > <label></label>{{verbage.entire_call_recommended}} </div>
+        > <label></label>{{::verbage.entire_call_recommended}} </div>
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="while_ringing"
           ng-change="update_settings('alert_call_duration','update',alertDuration)"
         > <label>{{::verbage.while_phone_is_ringing}}</label> </div>
