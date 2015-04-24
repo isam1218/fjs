@@ -59,11 +59,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		var downloadables = [];
 		var current = 0;
 		
-		for(i = 0; i < $scope.messages.length; i++){
+		for(var i = 0, iLen = $scope.messages.length; i < len; i++){
 			if ($scope.messages[i].data && $scope.messages[i].data.attachment) {
 				var attachments = $scope.messages[i].data.attachment;
 				
-				for(a = 0; a < attachments.length; a++) {
+				for(var a = 0, aLen = attachments.length; a < aLen; a++) {
 					var tempAttach = attachments[a];
 					tempAttach.created = $scope.messages[i].created;
 					
@@ -114,12 +114,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	$scope.$on('streamevent_synced', function(event, data) {
 		var found = false;
 		
-		for (key in data) {
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			// prevent duplicates
 			var dupe = false;
 			
-			for (i = 0; i < $scope.messages.length; i++) {
-				if (data[key].xpid == $scope.messages[i].xpid) {
+			for (var m = 0, mLen = $scope.messages.length; m < mLen; m++) {
+				if (data[i].xpid == $scope.messages[m].xpid) {
 					dupe = true;
 					break;
 				}
@@ -127,7 +127,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 
 			if (dupe) continue;
 			
-			var from = data[key].from.replace('contacts:', '');
+			var from = data[i].from.replace('contacts:', '');
 			
 			if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
 				if (from == $scope.meModel.my_pid){
@@ -141,10 +141,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 			}
 
 			// only attach messages related to this page
-			var context = data[key].context.split(":")[1];
+			var context = data[i].context.split(":")[1];
 			
-			if (data[key].type == chat.type && context == chat.targetId) {
-				$scope.messages.push(data[key]);
+			if (data[i].type == chat.type && context == chat.targetId) {
+				$scope.messages.push(data[i]);
 				found = true;
 			}
 		}
@@ -206,7 +206,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		if ($scope.chat.query != '' && spans.length > 0) {				
 			var searchIndex = -1;
 			
-			for (i = 0; i < spans.length; i++) {
+			for (var i = 0, len = spans.length; i < len; i++) {
 				if (spans[i].className.indexOf('found') != -1)
 					searchIndex = i;
 				
@@ -232,7 +232,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	var addDetails = function() {
 		// wait for sync to catch up
 		contactService.getContacts().then(function() {
-			for (i = 0; i < $scope.messages.length; i++) {
+			for (var i = 0, len = $scope.messages.length; i < len; i++) {
 				$scope.messages[i].fullProfile = contactService.getContact($scope.messages[i].from.replace('contacts:', ''));
 			}
 		});

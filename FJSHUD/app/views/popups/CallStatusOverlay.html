@@ -19,9 +19,9 @@
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 					<div class="Name">
-						<strong>{{ onCall.displayName }}</strong>
+						<strong>{{ ::onCall.displayName }}</strong>
 						<br/>
-						x{{ onCall.primaryExtension }}
+						x{{ ::onCall.primaryExtension }}
 					</div>
 					
 					<div class="Barging" ng-if="onCall.call.barge > 0">{{::verbage.barging}}</div>
@@ -41,9 +41,9 @@
 						<div class="AvatarForeground AvatarInteractable"></div>
 					</div>
 					<div class="Name">
-						<strong>{{ onCall.call.displayName }}</strong>
+						<strong>{{ ::onCall.call.displayName }}</strong>
 						<br/>
-						{{ onCall.call.phone }}
+						{{ ::onCall.call.phone }}
 					</div>
 					
 					<div class="Time">{{ timeElapsed }}</div>
@@ -124,7 +124,7 @@
 			<div class="Section" ng-show="!transferTo">
 				<div>
 					<h4>{{::verbage.destination}}</h4>
-					<input type="search" class="Search" ng-model="tranQuery" ng-attr-placeholder="{{::verbage.search}}" />
+					<input type="search" class="Search" ng-model="tranQuery" placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" />
 				</div>
 				<div class="Banner upper">{{::verbage.contacts}}</div>
 				<div class="Members">

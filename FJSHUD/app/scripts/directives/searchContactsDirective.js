@@ -49,7 +49,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 					inset.append(headerTitle);
 					
 					// look for match
-					for (c in contacts) {
+					for (var c = 0, len = contacts.length; c < len; c++) {
 						if (contacts[c].primaryExtension && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1) {
 							// add to div
 							var line = makeLine(contacts[c]);

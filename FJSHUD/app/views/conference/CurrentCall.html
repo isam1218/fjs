@@ -13,7 +13,7 @@
 
         <div class="Add SearchInputBox" style="top:20px">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="search" contact-search conference="true" ng-attr-placeholder="{{::verbage.add_someone}}" data-ng-model="query"></div>
+                <input class="SearchInputBoxInput" type="search" contact-search conference="true" placeholder="{{verbage.add_someone}}" data-ng-model="query" ng-model-options="{debounce: 100}"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -33,7 +33,7 @@
 		<div class="ListRowContent" dockable="member.fullProfile"> 
 			<div class="ListRowTitle">
 				<div class="name">
-					<span> {{ member.displayName }} </span>
+					<span> {{ ::member.displayName }} </span>
 					<div class="footnote">
 						<div class="XIconSetMic QueueStatus IconDisplay"></div>
 						<div class="ListRowStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>

@@ -1,6 +1,6 @@
 <div class="ToolBar">
         <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="query"></div>
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" placeholder="{{::verbage.search}}" data-ng-model="query" ng-model-options="{debounce: 100}"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -24,7 +24,7 @@
 
                 <div class="ListRowContent"> 
                     <div class="ListRowTitle">
-                        <span> {{ member.displayName }} </span>
+                        <span> {{ ::member.displayName }} </span>
 						<br/>
                         <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.queue_status }}"></div>
                         <div class="QueueStatus IconDisplay" ng-class="member.hud_status == 'available' ? 'XIcon-ChatStatus-Available' : 'XIcon-ChatStatus-offline' " ></div>

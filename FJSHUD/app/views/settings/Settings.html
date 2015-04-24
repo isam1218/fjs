@@ -1,6 +1,6 @@
           <div class="ListSection">
-            <div class="ListSectionHeaderTitle">{{verbage.interface_word}}</div>
-            <div class="ListSectionBody">{{verbage.application_tuning}}</div>
+            <div class="ListSectionHeaderTitle">{{::verbage.interface_word}}</div>
+            <div class="ListSectionBody">{{::verbage.application_tuning}}</div>
           </div>
           <div class="ListPage">
             <div class="ListPageHeader"></div>
@@ -87,7 +87,7 @@
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <div class="lblSelect">{{verbage.call_log_size}}:</div>
+              <div class="lblSelect">{{::verbage.call_log_size}}:</div>
               <select
               ng-model="callLogSizeSelected"
               ng-options="callLogSize.label for callLogSize in callLogSizeOptions"

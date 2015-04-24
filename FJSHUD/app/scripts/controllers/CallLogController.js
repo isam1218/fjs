@@ -18,15 +18,17 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 	queueService.getQueues().then(function() {
 		httpService.getFeed('calllog');
 
-		$scope.$on('calllog_synced', function(event, data) {			
-			angular.forEach(data, function(obj) {
+		$scope.$on('calllog_synced', function(event, data) {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				var match = false;
 				
-				for (i = 0; i < $scope.calls.length; i++) {
-					// update or delete
-					if ($scope.calls[i].xpid == obj.xpid) {
-						if (obj.xef001type == 'delete')
-							$scope.calls.splice(i, 1);
+				for (var c = 0, cLen = $scope.calls.length; c < cLen; c++) {
+					// update or delete existing
+					if ($scope.calls[c].xpid == data[i].xpid) {
+						if (data[i].xef001type == 'delete') {
+							$scope.calls.splice(c, 1);
+							cLen--;
+						}
 						
 						match = true;
 						break;
@@ -34,20 +36,20 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 				}
 				
 				// add new
-				if (!match) {
-					$scope.calls.push(obj);
+				if (!match && data[i].xef001type != 'delete') {
+					$scope.calls.push(data[i]);
 					
 					// add contextual menu info
-					if (obj.contactId !== undefined)
-						$scope.calls[$scope.calls.length-1].fullProfile = contactService.getContact(obj.contactId);
-					else if (obj.queueId !== undefined)
-						$scope.calls[$scope.calls.length-1].fullProfile = queueService.getQueue(obj.queueId);
-					else if (obj.departmentId !== undefined)
-						$scope.calls[$scope.calls.length-1].fullProfile = groupService.getGroup(obj.departmentId);
-					else if (obj.conferenceId !== undefined)
-						$scope.calls[$scope.calls.length-1].fullProfile = conferenceService.getConference(obj.conferenceId);
+					if (data[i].contactId !== undefined)
+						$scope.calls[$scope.calls.length-1].fullProfile = contactService.getContact(data[i].contactId);
+					else if (data[i].queueId !== undefined)
+						$scope.calls[$scope.calls.length-1].fullProfile = queueService.getQueue(data[i].queueId);
+					else if (data[i].departmentId !== undefined)
+						$scope.calls[$scope.calls.length-1].fullProfile = groupService.getGroup(data[i].departmentId);
+					else if (data[i].conferenceId !== undefined)
+						$scope.calls[$scope.calls.length-1].fullProfile = conferenceService.getConference(data[i].conferenceId);
 				}
-			});
+			}
 		});
 	});
 	

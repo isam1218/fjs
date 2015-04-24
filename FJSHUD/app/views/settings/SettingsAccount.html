@@ -49,11 +49,11 @@
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.display_name">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{verbage.email}}:</label>
+              <label class="queueBlock">{{::verbage.email}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="email" ng-model="meModel.email">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{verbage.mobile}}:</label>
+              <label class="queueBlock">{{::verbage.mobile}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.mobile">
             </div>
             <div class="Dialog-settings-row">
@@ -61,7 +61,7 @@
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_vm_box">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{verbage.business_phone}}:</label>
+              <label class="queueBlock">{{::verbage.business_phone}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.business_phone">
             </div>
             <div class="Dialog-settings-row">
@@ -77,7 +77,7 @@
               <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.my_jid">
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{verbage.my_department}}:</label>
+              <label class="queueBlock">{{::verbage.my_department}}:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" ng-model="department">
             </div>
           </div>

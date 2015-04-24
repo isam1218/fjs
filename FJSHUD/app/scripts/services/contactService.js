@@ -3,9 +3,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	var contacts = [];
 	
 	this.getContact = function(xpid) {
-		var i = 0;
-
-		for (i = 0; i < contacts.length; i++) {
+		for (var i = 0, len = contacts.length; i < len; i++) {
 			if (contacts[i].xpid == xpid)
 				return contacts[i];
 		}
@@ -26,15 +24,18 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		contacts = data;
 		deferred.resolve(contacts);
 		
-		for (i = 0; i < contacts.length; i++) {
-			// add avatar function
-			contacts[i].getAvatar = function(size) {
-				return httpService.get_avatar(this.xpid, size, size); 
-			};
-			
+		for (var i = 0, len = contacts.length; i < len; i++) {
 			// contact was deleted
-			if (contacts[i].xef001type == 'delete')
+			if (contacts[i].xef001type == 'delete') {
 				contacts.splice(i, 1);
+				len--;
+			}
+			else {
+				// add avatar function
+				contacts[i].getAvatar = function(size) {
+					return httpService.get_avatar(this.xpid, size, size); 
+				};
+			}
 		}
 		
 		// let other feeds push update
@@ -43,15 +44,16 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
-		for (key in data) {
-			for (i = 0; i < contacts.length; i++) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				// set contact's status
-				if (contacts[i].xpid == data[key].xpid) {
-					contacts[i].contact_status = data[key];
-					contacts[i].hud_status = data[key].xmpp;
-					contacts[i].queue_status = data[key].queueStatus;
-					contacts[i].custom_status = data[key].xmppCustom;
-					contacts[i].device_status = data[key].deviceStatus;
+				if (contacts[c].xpid == data[i].xpid) {
+					contacts[c].contact_status = data[i];
+					contacts[c].hud_status = data[i].xmpp;
+					contacts[c].queue_status = data[i].queueStatus;
+					contacts[c].custom_status = data[i].xmppCustom;
+					contacts[c].device_status = data[i].deviceStatus;
+					
 					break;
 				}
 			}
@@ -62,13 +64,15 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	});
 	
 	$rootScope.$on('all_calls_updated', function(event, data) {
-		for (i = 0; i < contacts.length; i++) {
+		for (var i = 0, iLen = contacts.length; i < iLen; i++) {
 			contacts[i].call = null;
 			
 			// find caller
 			for (key in data) {
-				if (contacts[i].xpid == data[key].xpid)
+				if (contacts[i].xpid == data[key].xpid) {
 					contacts[i].call = data[key];
+					break;
+				}
 			}
 			
 			if (contacts[i].call) {
@@ -77,7 +81,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				// find people barging call
 				for (key in data) {
 					if (data[key].barge > 0 && data[key].xpid != contacts[i].xpid && (data[key].contactId == contacts[i].call.xpid || data[key].contactId == contacts[i].call.contactId)) {
-						for (c = 0; c < contacts.length; c++) {
+						for (var c = 0, cLen = contacts.length; c < cLen; c++) {
 							if (contacts[c].xpid == data[key].xpid) {
 								contacts[i].call.bargers.push(contacts[c]);
 								break;

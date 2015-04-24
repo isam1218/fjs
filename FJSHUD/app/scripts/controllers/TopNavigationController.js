@@ -75,18 +75,16 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 
 
   $scope.$on('me_synced', function(event,data){
-
       if(data){
-          for(medata in data){
-              $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+          for(var i = 0, len = data.length; i < len; i++){
+              $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
           }
       }
-
   });
   
 	// enable or disable icons based on permissions
 	settingsService.getPermissions().then(function(data) {
-		for (i = 0; i < $scope.appIcons.length; i++) {
+		for (var i = 0, len = $scope.appIcons.length; i < len; i++) {
 			if ($scope.appIcons[i].key == 'CallCenter' && !data.showCallCenter)
 				$scope.appIcons[i].enabled = 0;
 			
@@ -211,7 +209,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 	var icon_version;
     $scope.$on("fdpImage_synced",function(event,data){
         if(data){
-            for(i in data){
+            for(var i = 0, len = data.length; i < len; i++){
                 if(data[i].xpid == $rootScope.myPid){
                     icon_version = data[i].xef001iver;
                 }
@@ -224,7 +222,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     });
 
     $scope.$on("settings_updated",function(event,data){
-    	for (i = 0; i < $scope.appIcons.length; i++) {
+    	for (var i = 0, len = $scope.appIcons.length; i < len; i++) {
     		var key = $scope.appIcons[i].key;
 
     		switch(key){
