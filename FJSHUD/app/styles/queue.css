@@ -3,7 +3,9 @@
 }
 .Widget.Queues .ListView {
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
   font-size: .9em;
 }
 .Widget.Queues .CallLog .ListView {
@@ -11,6 +13,8 @@
 }
 .Widget.Queues .QueueList {
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   padding: .5em 2.5%;
 }
@@ -82,7 +86,9 @@
   white-space: nowrap;
   font-size: .9em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .Widget.Queues .Block .Header > div {
   display: inline-block;
@@ -91,6 +97,7 @@
 .Widget.Queues .Block .Header .Title {
   margin-left: .5em;
   flex: 1;
+  -webkit-flex: 1;
 }
 .Widget.Queues .Block .Header .Title div {
   overflow: hidden;
@@ -196,6 +203,7 @@
 }
 .Widget.Queues .QueueStatTable .Table {
   flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
 }
 .Widget.Queues .QueueStatTable .Agent:nth-child(even) .Row,
@@ -317,7 +325,9 @@
 }
 .Widget.Queues .ActiveCall {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   font-size: .9em;
   padding: .5em;
 }
@@ -332,14 +342,18 @@
 .Widget.Queues .ActiveCall .Info {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   border-top-left-radius: 1.5em;
   border-bottom-left-radius: 1.5em;
   border: 1px solid #999;
   padding: .2em;
   margin-right: 1em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   align-items: center;
+  -webkit-align-items: center;
 }
 .Widget.Queues .ActiveCall .Info .Arrow {
   position: absolute;
@@ -359,6 +373,7 @@
 }
 .Widget.Queues .ActiveCall .Info .Time {
   flex: 1;
+  -webkit-flex: 1;
   text-align: right;
 }
 .Widget.Queues .desc_arrow {

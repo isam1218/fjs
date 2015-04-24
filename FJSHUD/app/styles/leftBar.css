@@ -5,7 +5,9 @@
   background-color: white;
   border: 1px solid #ccc;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .LeftBar .RoundedTop {
   position: absolute;
@@ -21,7 +23,9 @@
 }
 .LeftBar .ContactSearch {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   width: 100%;
 }
 .LeftBar .ContactSearch .Search {
@@ -45,12 +49,17 @@
 .LeftBar .Contacts,
 .LeftBar .Groups {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .LeftBar .Contacts .ContactList,
 .LeftBar .Groups .ContactList {
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   min-height: 60px;
   margin-top: 10px;
@@ -117,6 +126,7 @@
 }
 .LeftBar .Phone {
   display: flex;
+  display: -webkit-flex;
   width: 100%;
   padding: 5px 10px 5px 5px;
   z-index: 100;

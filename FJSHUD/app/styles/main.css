@@ -187,7 +187,9 @@ p {
   width: 100%;
   height: 100px;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   border-bottom: 1px solid white;
   box-shadow: 0 -1px 1px #cccccc inset;
 }
@@ -299,6 +301,7 @@ p {
 .TopBarMeStatus {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
   font-size: .9em;
@@ -378,8 +381,11 @@ p {
 }
 .TopBarVoicemailControls .Progress {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   align-items: center;
+  -webkit-align-items: center;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -403,6 +409,7 @@ p {
   border-bottom: 1px solid gray;
   height: 1px;
   flex: 1;
+  -webkit-flex: 1;
 }
 .TopBarVoicemailControls .Progress .Bar div {
   position: absolute;
@@ -454,7 +461,9 @@ p {
   background-color: white;
   border: 1px solid #ccc;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .LeftBar .RoundedTop {
   position: absolute;
@@ -470,7 +479,9 @@ p {
 }
 .LeftBar .ContactSearch {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   width: 100%;
 }
 .LeftBar .ContactSearch .Search {
@@ -494,12 +505,17 @@ p {
 .LeftBar .Contacts,
 .LeftBar .Groups {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .LeftBar .Contacts .ContactList,
 .LeftBar .Groups .ContactList {
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   min-height: 60px;
   margin-top: 10px;
@@ -566,6 +582,7 @@ p {
 }
 .LeftBar .Phone {
   display: flex;
+  display: -webkit-flex;
   width: 100%;
   padding: 5px 10px 5px 5px;
   z-index: 100;
@@ -591,6 +608,7 @@ p {
 .DockPanel {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -600,8 +618,8 @@ p {
   overflow-y: hidden;
 }
 .DockPanel.Moving {
+  border: 1px dashed #358503;
   border-width: 1px;
-  border-image: url("../img/marching-ants.gif") 8 repeat repeat;
   -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
 }
@@ -651,7 +669,9 @@ p {
 .Gadget {
   position: relative;
   display: inline-flex;
+  display: -webkit-inline-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
   border-radius: 5px;
   border: 1px solid #aaa;
   overflow: hidden;
@@ -675,7 +695,7 @@ p {
   display: none;
 }
 .Gadget.NoFixedHeight {
-  height: auto !important;
+  height: initial !important;
 }
 .Gadget:hover {
   box-shadow: 0 0 8px gray;
@@ -687,7 +707,9 @@ p {
   white-space: nowrap;
   font-size: .8em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .Gadget .Header > .Avatar {
   font-size: 1.25em;
@@ -703,6 +725,7 @@ p {
   margin-left: .5em;
   overflow: hidden;
   flex: 1;
+  -webkit-flex: 1;
 }
 .Gadget .Header .Title div {
   overflow: hidden;
@@ -723,9 +746,13 @@ p {
 }
 .Gadget .Content {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
   overflow-y: auto;
+  min-height: 6em;
 }
 .Gadget .Content .SubHeader {
   background: linear-gradient(to bottom, #d4d4d5, #d9d9da);
@@ -740,6 +767,7 @@ p {
 }
 .Gadget .Content .List {
   flex: 1;
+  -webkit-flex: 1;
   background: linear-gradient(to bottom, #dcdcdc, #eaeaeb);
 }
 .Gadget .Content .List .ListRow {
@@ -824,21 +852,32 @@ p {
   border: solid 1px #ccc;
   z-index: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .Widget .WidgetTabContent {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
   position: relative;
   width: 100%;
 }
 .Widget .ListView {
   position: relative;
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   width: 100%;
   margin-top: 10px;
+}
+.Widget .ListView .vmsection.last {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 .Widget .SearchInputBox {
   width: 30%;
@@ -862,8 +901,11 @@ p {
   left: 0;
   right: 0;
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .WidgetHeaderTitle {
   font-size: 1em;
@@ -1047,8 +1089,11 @@ p {
 }
 .WidgetMe .Preferences-Holder .SettingsPanel {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
   left: 0px;
@@ -2051,12 +2096,14 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Preferences-Holder .SortHeader {
   display: flex;
+  display: -webkit-flex;
 }
 .Preferences-Holder .SortButton {
   width: 150px;
 }
 .Preferences-Holder .OtherQueueLine {
   display: flex;
+  display: -webkit-flex;
 }
 .Preferences-Holder .QueueButtonToggle {
   width: 28px;
@@ -2128,14 +2175,18 @@ div.NewCall .XButton.XButtonNormal {
 }
 .CallLog .ListRow {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   align-items: center;
+  -webkit-align-items: center;
   font-size: .9em;
   width: 100%;
   cursor: default !important;
 }
 .CallLog .ListRow > div {
   flex: 1;
+  -webkit-flex: 1;
   display: inline-block;
   vertical-align: middle;
   text-align: left;
@@ -2154,12 +2205,14 @@ div.NewCall .XButton.XButtonNormal {
   text-overflow: ellipsis;
   overflow: hidden;
   flex: 3;
+  -webkit-flex: 3;
   color: #009cff;
 }
 .CallLog .ListRow > div.Phone {
   text-decoration: underline;
   color: #333;
   flex: 2;
+  -webkit-flex: 2;
 }
 .CallLog .ListRow > div.Phone span {
   white-space: nowrap;
@@ -2167,9 +2220,11 @@ div.NewCall .XButton.XButtonNormal {
 }
 .CallLog .ListRow > div.Duration {
   flex: 1;
+  -webkit-flex: 1;
 }
 .CallLog .ListRow > div.Date {
   flex: 3;
+  -webkit-flex: 3;
   white-space: nowrap;
 }
 .CallLog .ListRow > div.Type {
@@ -2441,7 +2496,9 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .ListView {
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
   font-size: .9em;
 }
 .Widget.Queues .CallLog .ListView {
@@ -2449,6 +2506,8 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .QueueList {
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   padding: .5em 2.5%;
 }
@@ -2520,7 +2579,9 @@ div.NewCall .XButton.XButtonNormal {
   white-space: nowrap;
   font-size: .9em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .Widget.Queues .Block .Header > div {
   display: inline-block;
@@ -2529,6 +2590,7 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Queues .Block .Header .Title {
   margin-left: .5em;
   flex: 1;
+  -webkit-flex: 1;
 }
 .Widget.Queues .Block .Header .Title div {
   overflow: hidden;
@@ -2634,6 +2696,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .QueueStatTable .Table {
   flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
 }
 .Widget.Queues .QueueStatTable .Agent:nth-child(even) .Row,
@@ -2755,7 +2818,9 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .ActiveCall {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   font-size: .9em;
   padding: .5em;
 }
@@ -2770,14 +2835,18 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Queues .ActiveCall .Info {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   border-top-left-radius: 1.5em;
   border-bottom-left-radius: 1.5em;
   border: 1px solid #999;
   padding: .2em;
   margin-right: 1em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   align-items: center;
+  -webkit-align-items: center;
 }
 .Widget.Queues .ActiveCall .Info .Arrow {
   position: absolute;
@@ -2797,6 +2866,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .ActiveCall .Info .Time {
   flex: 1;
+  -webkit-flex: 1;
   text-align: right;
 }
 .Widget.Queues .desc_arrow {
@@ -2922,16 +2992,21 @@ div.NewCall .XButton.XButtonNormal {
 #WidgetSearch .SearchPanel {
   margin-top: 10px;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 #WidgetSearch .SearchInputBox {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   margin: -4px 10px 0 0;
 }
 #WidgetSearch .SearchResults {
   margin-top: 10px;
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
 }
 #WidgetSearch .SearchResults h4 {
@@ -2961,6 +3036,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 #WidgetSearch .SearchResults .ListRowStatus {
   flex: .5;
+  -webkit-flex: .5;
   padding: .5em 1em 0 0;
   text-align: right;
 }
@@ -3018,6 +3094,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ZoomRowTitle {
   flex: 2;
+  -webkit-flex: 2;
   font-size: .75em;
   text-decoration: none;
   color: #555;
@@ -3070,7 +3147,8 @@ div.NewCall .XButton.XButtonNormal {
   margin-top: 10px;
 }
 .Widget.Conversation .ListView {
-  margin-top: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .Widget.Conversation .WidgetHeader {
   top: 0;
@@ -3232,11 +3310,16 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ChatView {
   flex-direction: column;
+  -webkit-flex-direction: column;
   display: flex;
+  display: -webkit-flex;
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
 }
 .ChatView .ListViewContent {
   flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 5px;
@@ -3258,15 +3341,20 @@ div.NewCall .XButton.XButtonNormal {
   font-size: .8em;
   margin-bottom: 5px;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .ChatInputBox .ChatAlertOptions .Right {
   flex: 1;
+  -webkit-flex: 1;
   text-align: right;
 }
 .ChatInputBox .ChatInputFields {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
   margin-right: 10px;
@@ -3280,6 +3368,7 @@ div.NewCall .XButton.XButtonNormal {
   overflow: auto;
   background-color: #fff;
   flex: 1;
+  -webkit-flex: 1;
 }
 .ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
   position: relative;
@@ -3486,7 +3575,9 @@ div.NewCall .XButton.XButtonNormal {
   width: 100%;
   display: block;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   text-decoration: none;
 }
 .ListRow .vmcallbtn {
@@ -3545,6 +3636,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListRow .ListRowContent {
   flex: 1;
+  -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
 }
@@ -3557,6 +3649,7 @@ div.NewCall .XButton.XButtonNormal {
   white-space: nowrap;
   width: 55%;
   flex: 1;
+  -webkit-flex: 1;
 }
 .ListRow .ListRowTitle .name strong {
   overflow: hidden;
@@ -3610,8 +3703,11 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Groups .ListRow > div {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .Groups .ListRow > div .Members {
   padding: 1em 1em 0 0;
@@ -3761,7 +3857,9 @@ div.NewCall .XButton.XButtonNormal {
 /* chats */
 .ListMessage {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   margin: .5em 0 1em 2%;
   width: 97%;
   color: #999;
@@ -3774,6 +3872,7 @@ div.NewCall .XButton.XButtonNormal {
 .ListMessage .ListMessageContent {
   margin-left: .5em;
   flex: 1;
+  -webkit-flex: 1;
 }
 .ListMessage .ChatMessageItem {
   color: #222;
@@ -3822,6 +3921,7 @@ input[type="search"],
 input[type="tel"] {
   border-radius: 2px;
   outline: none;
+  -webkit-appearance: none;
 }
 .XButton {
   position: relative;
@@ -4099,6 +4199,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 0.688em;
 }
 .SelectBoxSettings {
   width: 195px;
@@ -4107,6 +4208,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .SelectBoxText .InnerIco {
   color: #719d24;
+  margin-left: 10px;
 }
 .SelectBoxArrow {
   top: 12px;
@@ -4270,6 +4372,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Avatar img {
   width: 100%;
   height: 100%;
+  border: 0;
 }
 .Avatar .GroupAvatarItem {
   width: 50%;
@@ -4413,7 +4516,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   min-height: 300px;
   padding: 1em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .Overlay .Foreground .Close {
   position: absolute;
@@ -4428,6 +4533,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .Overlay .Foreground .Sections {
   flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   height: inherit;
   overflow-x: hidden;
@@ -4609,6 +4715,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Overlay .AttachmentDownload .FileInfo {
   display: inline-block;
   flex: 1;
+  -webkit-flex: 1;
   margin-left: .5em;
 }
 .Overlay .AttachmentDownload .Selected {
@@ -4888,6 +4995,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
+  flex: 1;
   -webkit-box-flex: 1;
   padding-left: 10px;
 }
@@ -5050,7 +5158,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   min-height: 300px;
   padding: 1em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .NotificationZoomBtn {
   margin-top: 10px;
@@ -5086,7 +5196,9 @@ a.Messages {
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .vmsection:hover .displayName .vmtime {
   visibility: hidden;
@@ -5111,6 +5223,7 @@ a.Messages {
 }
 .vmsection .vminfo {
   flex: 1;
+  -webkit-flex: 1;
   position: relative;
   padding-left: 10px;
   display: block;
@@ -5309,11 +5422,16 @@ a.Messages {
 }
 .LeftBar .Recent {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .LeftBar .Recent .ContactList {
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
   min-height: 60px;
   margin-top: 10px;

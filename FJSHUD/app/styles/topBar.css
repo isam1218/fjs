@@ -3,7 +3,9 @@
   width: 100%;
   height: 100px;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   border-bottom: 1px solid white;
   box-shadow: 0 -1px 1px #cccccc inset;
 }
@@ -115,6 +117,7 @@
 .TopBarMeStatus {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
   font-size: .9em;
@@ -194,8 +197,11 @@
 }
 .TopBarVoicemailControls .Progress {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   align-items: center;
+  -webkit-align-items: center;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -219,6 +225,7 @@
   border-bottom: 1px solid gray;
   height: 1px;
   flex: 1;
+  -webkit-flex: 1;
 }
 .TopBarVoicemailControls .Progress .Bar div {
   position: absolute;

@@ -46,8 +46,11 @@
 }
 .WidgetMe .Preferences-Holder .SettingsPanel {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List {
   left: 0px;
@@ -1050,12 +1053,14 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Preferences-Holder .SortHeader {
   display: flex;
+  display: -webkit-flex;
 }
 .Preferences-Holder .SortButton {
   width: 150px;
 }
 .Preferences-Holder .OtherQueueLine {
   display: flex;
+  display: -webkit-flex;
 }
 .Preferences-Holder .QueueButtonToggle {
   width: 28px;

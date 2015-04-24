@@ -23,6 +23,7 @@ input[type="search"],
 input[type="tel"] {
   border-radius: 2px;
   outline: none;
+  -webkit-appearance: none;
 }
 .XButton {
   position: relative;
@@ -300,6 +301,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 0.688em;
 }
 .SelectBoxSettings {
   width: 195px;
@@ -308,6 +310,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .SelectBoxText .InnerIco {
   color: #719d24;
+  margin-left: 10px;
 }
 .SelectBoxArrow {
   top: 12px;

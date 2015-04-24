@@ -1,5 +1,6 @@
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
+  flex: 1;
   -webkit-box-flex: 1;
   padding-left: 10px;
 }
@@ -162,7 +163,9 @@
   min-height: 300px;
   padding: 1em;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .NotificationZoomBtn {
   margin-top: 10px;

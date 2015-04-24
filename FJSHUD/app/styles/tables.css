@@ -65,7 +65,9 @@
   width: 100%;
   display: block;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   text-decoration: none;
 }
 .ListRow .vmcallbtn {
@@ -124,6 +126,7 @@
 }
 .ListRow .ListRowContent {
   flex: 1;
+  -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
 }
@@ -136,6 +139,7 @@
   white-space: nowrap;
   width: 55%;
   flex: 1;
+  -webkit-flex: 1;
 }
 .ListRow .ListRowTitle .name strong {
   overflow: hidden;
@@ -189,8 +193,11 @@
 }
 .Groups .ListRow > div {
   flex: 1;
+  -webkit-flex: 1;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 .Groups .ListRow > div .Members {
   padding: 1em 1em 0 0;
@@ -340,7 +347,9 @@
 /* chats */
 .ListMessage {
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
   margin: .5em 0 1em 2%;
   width: 97%;
   color: #999;
@@ -353,6 +362,7 @@
 .ListMessage .ListMessageContent {
   margin-left: .5em;
   flex: 1;
+  -webkit-flex: 1;
 }
 .ListMessage .ChatMessageItem {
   color: #222;

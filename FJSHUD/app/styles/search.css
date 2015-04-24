@@ -103,16 +103,21 @@
 #WidgetSearch .SearchPanel {
   margin-top: 10px;
   display: flex;
+  display: -webkit-flex;
   flex-direction: row;
+  -webkit-flex-direction: row;
 }
 #WidgetSearch .SearchInputBox {
   position: relative;
   flex: 1;
+  -webkit-flex: 1;
   margin: -4px 10px 0 0;
 }
 #WidgetSearch .SearchResults {
   margin-top: 10px;
   flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
 }
 #WidgetSearch .SearchResults h4 {
@@ -142,6 +147,7 @@
 }
 #WidgetSearch .SearchResults .ListRowStatus {
   flex: .5;
+  -webkit-flex: .5;
   padding: .5em 1em 0 0;
   text-align: right;
 }

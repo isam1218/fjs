@@ -55,10 +55,10 @@ hudweb.controller('GroupSinglePageController', ['$scope','$routeParams','PhoneSe
         return false;
     };
     
-    $scope.membersOn = function (item) { 
-       return (item.device_status == 'o' && item.hud_status == 'available');        	
-    };
-
+    $scope.membersOn = function (item) {         
+    	return (typeof item.call != 'undefined' && typeof item.call != 'null' && item.hud_status == 'available');
+    };             
+    
     $scope.$on("groups_updated", function(event,data){
     	$scope.group = groupService.getGroup($scope.groupId);
     	var members = $scope.group.members;  	
