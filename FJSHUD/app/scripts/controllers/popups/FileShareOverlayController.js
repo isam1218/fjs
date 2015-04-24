@@ -37,7 +37,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpSer
         var data = {
             'action':'sendWallEvent',
             'a.targetId': $scope.targetId,
-            'a.type':'f.conversation.wall',
+            'a.type':'f.conversation.chat',
             'a.xpid':"",
             'a.archive':$scope.selectedArchiveOption.value,
             'a.retainKeys':"",

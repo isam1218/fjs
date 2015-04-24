@@ -8,7 +8,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	$scope.$on('callrecording_synced', function(event, data) {
 		$scope.recordings = [];
 		
-		for (i = 0; i < data.length; i++) {
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			// conferences
 			if ($routeParams.conferenceId) {
 				if (data[i].conferenceId == $routeParams.conferenceId) {
@@ -27,7 +27,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 			}
 			// groups
 			else if ($routeParams.groupId && $scope.group) {
-				for (m = 0; m < $scope.group.members.length; m++) {
+				for (var m = 0, mLen = $scope.group.members.length; m < mLen; m++) {
 					var member = $scope.group.members[m];
 					
 					// member was involved somehow

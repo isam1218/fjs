@@ -41,6 +41,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	
 	$scope.$on('voicemailbox_synced', function(event, data) {
 		$scope.voicemails = [];
+		
 		// single group widget
 		if ($routeParams.groupId) {
 			var group = groupService.getGroup($routeParams.groupId);
@@ -56,23 +57,23 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 			$scope.emptyVoiceLabel = 'anyone else';
 		
 		// populate voicemails according to page
-		for (key in data) {
-			data[key].fullProfile = contactService.getContact(data[key].contactId);
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			data[i].fullProfile = contactService.getContact(data[i].contactId);
 			
 			if (group) {
-				for (i = 0; i < group.members.length; i++) {
-					if (data[key].contactId == group.members[i].contactId)
-						$scope.voicemails.push(data[key]);
+				for (var g = 0, gLen = group.members.length; g < gLen; g++) {
+					if (data[i].contactId == group.members[g].contactId) {
+						$scope.voicemails.push(data[i]);
+						break;
+					}
 				}
 			}
 			else if (contact) {
-				if (data[key].contactId == contact.xpid)
-					$scope.voicemails.push(data[key]);
+				if (data[i].contactId == contact.xpid)
+					$scope.voicemails.push(data[i]);
 			}
-			else{
-				if(data[key].xef001type != "delete")
-					$scope.voicemails.push(data[key]);
-				
+			else if (data[i].xef001type != "delete") {
+				$scope.voicemails.push(data[i]);
 			}
 		}
 	});
