@@ -6,7 +6,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 	var mine = null;
 	
 	this.getGroup = function(xpid) {
-		for (i = 0; i < groups.length; i++) {
+		for (var i = 0, len = groups.length; i < len; i++) {
 			if (groups[i].xpid == xpid)
 				return groups[i];
 		}
@@ -35,14 +35,14 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 
 	var doesMemberExist = function(group,contact){
 		if(group.members){
-			for(member in group.members){
-				if(group.members[member].contactId  == contact.contactId){
+			for(var m = 0, len = group.members.length; m < len; m++){
+				if (group.members[m].contactId == contact.contactId){
 					return true;
 				}
 			}
-
-			return false;
 		}
+
+		return false;
 	};
 	
 	var formatData = function() {
@@ -63,7 +63,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 		groups = data;
 		deferred.resolve(groups);
 			
-		for (i = 0; i < groups.length; i++) {
+		for (var i = 0, len = groups.length; i < len; i++) {
 			// find favorites group
 			if (groups[i].name.toLowerCase() == 'favorites')
 				favoriteID = groups[i].xpid;
@@ -78,6 +78,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
 				}
+				else
+					return 'img/Generic-Avatar-' + size + '.png';
 			};
 		}
 		
@@ -86,39 +88,50 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {
-		for (key in data) {			
-			for (i = 0; i < groups.length; i++) {
-				if (!groups[i].members)
-					groups[i].members = [];
-			
-				// add member to groups
-				if (data[key].groupId == groups[i].xpid) {
-					if(!doesMemberExist(groups[i],data[key])){
-						groups[i].members.push(data[key]);
-					}
-					// add to favorites object
-					if (data[key].groupId == favoriteID)
-						favorites[data[key].contactId] = 1;
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			// delete member
+			if (data[i].xef001type == 'delete') {
+				for (var g = 0, gLen = groups.length; g < gLen; g++) {
+					var group = groups[g];
 					
-					// mark as mine
-					if (!mine && data[key].contactId == $rootScope.myPid)
-						mine = groups[i];
-						
-					break;
-				}
-				// delete member
-				else if (data[key].xef001type == 'delete') {
-					for (m = 0; m < groups[i].members.length; m++) {
-						if (data[key].xpid == groups[i].members[m].xpid) {
+					// no members, so skip to next
+					if (!group.members)
+						continue;
+				
+					for (var m = 0, mLen = group.members.length; m < mLen; m++) {
+						if (data[i].xpid == group.members[m].xpid) {
 							// was this a favorite?
-							if (groups[i].xpid == favoriteID)
-								delete favorites[groups[i].members[m].contactId];
+							if (group.xpid == favoriteID)
+								delete favorites[group.members[m].contactId];
 								
 							// delete from main group regardless
-							groups[i].members.splice(m, 1);
+							group.members.splice(m, 1);
 							
 							break;
 						}
+					}
+				}
+			}
+			// add member
+			else {
+				for (var g = 0, gLen = groups.length; g < gLen; g++) {
+					if (!groups[g].members)
+						groups[g].members = [];
+				
+					// add member to groups
+					if (data[i].groupId == groups[g].xpid) {
+						if (!doesMemberExist(groups[g],data[i]))
+							groups[g].members.push(data[i]);
+						
+						// add to favorites object
+						if (data[i].groupId == favoriteID)
+							favorites[data[i].contactId] = 1;
+						
+						// mark as mine
+						if (!mine && data[i].contactId == $rootScope.myPid)
+							mine = groups[g];
+							
+						break;
 					}
 				}
 			}

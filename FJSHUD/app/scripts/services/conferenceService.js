@@ -3,11 +3,13 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	var conferences = [];	
 
 	this.getConference = function(conferenceId){
-		for(conference in conferences){
-			if(conferences[conference].xpid == conferenceId){
-				return conferences[conference];
+		for (var i = 0, len = conferences.length; i < len; i++) {
+			if(conferences[i].xpid == conferenceId){
+				return conferences[i];
 			}
 		}
+		
+		return null;
 	};
 	
 	this.getConferences = function() {
@@ -17,8 +19,8 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 
  	var conferenceHasMember = function(conference,contactId){
  		if(conference.members){
- 			for(member in conference.members){
- 				if(conference.members[member].contactId == contactId){
+ 			for (var i = 0, len = conference.members.length; i < len; i++) {
+ 				if(conference.members[i].contactId == contactId){
  					return true;
  				}
  			}
@@ -28,16 +30,15 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	};
 
 	var containsConferenceRecording = function(conference, callrecording){
-		callrecordings = conference.callrecordings;
-		exist = false;
-		for(callrecording in callrecordings){
-			if(callrecordings[callrecording].xpid == callrecording.xpid){
-				exist = true;
-				return exist;
+		var callrecordings = conference.callrecordings;
+		
+		for (var i = 0, len = callrecordings.length; i < len; i++) {
+			if(callrecordings[i].xpid == callrecording.xpid){
+				return true;
 			}
 		}
 
-		return exist;
+		return false;
 	};
 	
 	/**
@@ -49,7 +50,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 		deferred.resolve(conferences);
 				
 		// add avatar function
-		for (i = 0; i < conferences.length; i++) {
+		for (var i = 0, len = conferences.length; i < len; i++) {
 			conferences[i].getAvatar = function(index, size) {
 				if (this.members) {
 					if (this.members[index] !== undefined) {
@@ -72,26 +73,37 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
-		for(conference in conferences){
-			conferenceTemp = conferences[conference];
-			if(!conferences[conference].members){
-				 conferences[conference].members = [];	
-			}
-			for(key in data){
-
-				if(data[key].xef001type == "delete"){
-
-					if(conferences[conference].members && conferences[conference].members.length > 0){
-						for( i in conferenceTemp.members){
-							if(conferenceTemp.members[i].xpid == data[key].xpid){
-								conferences[conference].members.splice(i,1);
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			// member dropped out
+			if (data[i].xef001type == 'delete') {
+				for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+					var conference = conferences[c];
+					
+					if (conference.members && conference.members.length > 0) {
+						// find member and remove
+						for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
+							if (conference.members[m].xpid == data[i].xpid) {
+								conference.members.splice(m, 1);
+								break;
 							}
 						}
 					}
-
-				}else if(data[key].fdpConferenceId == conferences[conference].xpid){
-					if(!conferenceHasMember(conferences[conference],data[key].contactId)){
-						conferences[conference].members.push(data[key]);
+				}
+			}
+			// member joined
+			else {
+				for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+					var conference = conferences[c];
+					
+					if (!conference.members)
+						conference.members = [];
+					
+					if (data[i].fdpConferenceId == conferences[c].xpid) {
+						// isn't already in
+						if (!conferenceHasMember(conferences[c], data[i].contactId))
+							conferences[c].members.push(data[i]);
+						
+						break;
 					}
 				}
 			}
@@ -102,23 +114,26 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	});
 
 	$rootScope.$on("server_synced",function(event,data){
-		for(conference in conferences){
-			conferences[conference].location = "";
-			for(key in data){
-				if(data[key].xpid == conferences[conference].serverNumber){
-					conferences[conference].location = data[key].name;
+		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+			conferences[c].location = "";
+			
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if (data[i].xpid == conferences[c].serverNumber){
+					conferences[c].location = data[i].name;
+					break;
 				}
 			}
 		}
+		
 		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
-
 	});
 
 	$rootScope.$on("conferencestatus_synced",function(event,data){
-		for(conference in conferences){
-			for(key in data){
-				if(data[key].xpid == conferences[conference].xpid){
-					conferences[conference].status = data[key];
+		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if(data[i].xpid == conferences[c].xpid){
+					conferences[c].status = data[i];
+					break;
 				}
 			}
 		}
@@ -127,14 +142,15 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	});
 
 	$rootScope.$on("conferencerecording_synced",function(event,data){
-		for(conference in conferences){
-			conferences[conference].callrecordings = [];
+		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+			conferences[c].callrecordings = [];
 			
-			for(key in data){
-				if(data[key].conferenceId == conferences[conference].xpid){
-					if(!containsConferenceRecording(conferences[conference], data[key])){
-						conferences[conference].callrecordings.push(data[key]);
-					}
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if (data[i].conferenceId == conferences[c].xpid){
+					if (!containsConferenceRecording(conferences[c], data[i]))
+						conferences[c].callrecordings.push(data[i]);
+					
+					break;
 				}
 			}
 		}
@@ -143,10 +159,12 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	});
 	
 	$rootScope.$on("conferencepermissions_synced", function(event, data) {
-		for (i = 0; i < conferences.length; i++) {
-			for (key in data) {
-				if (data[key].xpid == conferences[i].xpid)
-					conferences[i].permissions = data[key].permissions;
+		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if (data[i].xpid == conferences[c].xpid) {
+					conferences[c].permissions = data[i].permissions;
+					break;
+				}
 			}
 		}
 		
