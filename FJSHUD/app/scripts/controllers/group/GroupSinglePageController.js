@@ -1,5 +1,5 @@
-hudweb.controller('GroupSinglePageController', ['$scope','$rootScope','$routeParams','PhoneService','GroupService','ContactService','HttpService', 
-	function($scope, $rootScope,$routeParams,phoneService,groupService,contactService,httpService) {
+hudweb.controller('GroupSinglePageController', ['$scope','$routeParams','PhoneService','GroupService','ContactService','HttpService', 
+	function($scope,$routeParams,phoneService,groupService,contactService,httpService) {
 	
 	 var context = this;
 	 $scope.groupId = $routeParams.groupId;
@@ -10,11 +10,7 @@ hudweb.controller('GroupSinglePageController', ['$scope','$rootScope','$routePar
 	 $scope.callTestFunction = function(){
 	 	console.log("success");
 	 }
-	 $scope.locations = {};
-	 
-	 httpService.getFeed("locations");
-	 httpService.getFeed("location_status");
-	 httpService.getFeed('group_page_member');
+	 httpService.getFeed('group_page_member')
 
 	 this.getElementOffset = function(element) {
         if(element != undefined)
@@ -59,48 +55,10 @@ hudweb.controller('GroupSinglePageController', ['$scope','$rootScope','$routePar
         return false;
     };
     
-    $scope.membersOn = function (item) { 
-       return (item.location_type == 'o' && item.hud_status == 'available');        	
-    }; 
+    $scope.membersOn = function (item) {         
+    	return (typeof item.call != 'undefined' && typeof item.call != 'null' && item.hud_status == 'available');
+    };             
     
-    $scope.$on('locations_synced', function(event,data){
-        if(data && data.length > 0){         	
-            for(index in data){
-            	$scope.locations[data[index].xpid] = data[index];
-            }
-            
-            $scope.group = groupService.getGroup($scope.groupId);
-        	var members = $scope.group.members;        	
-        	
-			for (member in members){
-			   var contact = contactService.getContact(members[member].contactId);        		
-			   contact.location_type = locations[members[member].contactId].locationType; 
-			   var contact_exists = false;
-			   var pageMembers = $scope.pageMembers;
-			   
-			   for(i = 0; i < pageMembers.length; i++)
-				{
-					if($scope.pageMembers[i].xpid == contact.xpid)
-					{
-						contact_exists = true;
-						$scope.pageMembers[i] = contact;
-					}	
-					else
-						$scope.pageMembers.push(contact);		
-				}					   
-			}
-						            
-        }                
-    });
-    
-    $scope.$on('location_status_synced', function(event,data){
-        if(data && data.length > 0){          	        	
-            for(index in data){
-            	$scope.locations[data[index].xpid].status = data[index];
-            }               
-        }       
-    });
-
     $scope.$on("groups_updated", function(event,data){
     	$scope.group = groupService.getGroup($scope.groupId);
     	var members = $scope.group.members;  	
@@ -122,6 +80,6 @@ hudweb.controller('GroupSinglePageController', ['$scope','$rootScope','$routePar
     $scope.callGroup = function(numPrefix){
     	if($scope.group.extension){
 			phoneService.makeCall(numPrefix + $scope.group.extension);
-    	}      
+    	}    	
     }
 }]);
