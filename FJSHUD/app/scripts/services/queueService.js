@@ -65,7 +65,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 
 	$rootScope.$on("queues_synced", function (event, data) {
 		queues = data;
-
+		// console.log('queues = ', queues);
 		// add avatar function
 		for (i = 0; i < queues.length; i++) {
 			queues[i].getAvatar = function (index, size) {
@@ -83,6 +83,19 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 		httpService.getFeed('queue_stat_calls');
 		httpService.getFeed('queue_call');
 		httpService.getFeed('queue_members');
+		httpService.getFeed('queuepermissions');
+	});
+
+	$rootScope.$on('queuepermissions_synced', function (event, data){
+		for (i = 0; i < queues.length; i++){
+			for (var j = 0; j < data.length; j++){
+				if (data[j].xpid == queues[i].xpid){
+					queues[i].permissions = data[j];
+				}
+				
+			}
+		}
+		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 
 	$rootScope.$on("queue_stat_calls_synced", function (event, data) {
@@ -92,6 +105,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	
 		for (i = 0; i < queues.length; i++) {
 			for (key in data) {
+				// console.log('!!! - ', data);
 				if (data[key].xpid == queues[i].xpid) {
 					queues[i].info = data[key];
 			
@@ -132,6 +146,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	
 		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
+
+	// $rootScope.$on('queuepermissions_synced', function(event, data){
+	// 	for (i = 0; i < queues.length; i++){
+
+	// 	}
+	// })
 	
 	/**
 		MEMBER DATA

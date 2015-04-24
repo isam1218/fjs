@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService) {
+hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', 'UtilService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService, utilService) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
@@ -9,7 +9,9 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	// for chat
 	$scope.enableChat = false;
 	$scope.enableFileShare = false;
+    // for alerts
     $scope.showAlerts = false;
+    $scope.enableAlertBroadcast = false;
     
     $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
     {upper: $scope.verbage.stats_tab, lower: 'stats'}, 
@@ -23,18 +25,37 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     
     httpService.getFeed('queues');
     httpService.getFeed('queue_stat_calls');
+    httpService.getFeed('queuepermissions');
 
     $scope.tabFilter = function(){
         return function(tab){
             if (tab.lower === 'chat'){
                 // if not my queue -> return false and filter out the chat tab
-                for (var i = 0; i < myQueues.queues.length; i++){
-                    var single = myQueues.queues[i];
-                    if (single.xpid === $scope.queueId){
-                        return true;
-                    } else {
-                        return false;
-                    }
+                if (myQueues.queues.length > 0){
+                    for (var i = 0; i < myQueues.queues.length; i++){
+                        var single = myQueues.queues[i];
+                        if (single.xpid === $scope.queueId){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }                    
+                } else {
+                    return false;
+                }
+            }
+            if (tab.lower === 'alerts'){
+                if (myQueues.queues.length > 0){
+                    for (var i = 0; i < myQueues.queues.length; i++){
+                        var single = myQueues.queues[i];
+                        if (single.xpid === $scope.queueId){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }                                    
+                } else {
+                    return false;
                 }
             }
             return true;
@@ -42,7 +63,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     };
 
     settingsService.getPermissions().then(function(data) {
-    // console.log('permissions - ', data); 
         if (data.showAlerts){
             $scope.showAlerts = true;
         } else {
@@ -52,8 +72,8 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     
     $scope.$on('queues_updated', function(event, data) {
         // all queues
+        
         var queues = data.queues;
-
         for (i = 0; i < queues.length; i++) {
             if (queues[i].xpid == $scope.queueId) {
                 $scope.queue = queues[i];
@@ -62,16 +82,19 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         
         // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
         var myQueues = data.mine;
+
         for (var j = 0; j < myQueues.length; j++){
-            if (myQueues[j].xpid === $scope.queueId){
+            var myPermission = myQueues[j].permissions.permissions;
+            if (myQueues[j].xpid === $scope.queueId && (myPermission === 0)){
+                $scope.enableAlertBroadcast = true;
                 $scope.enableChat = true;
                 $scope.enableFileShare = true;
-            } else {
-                $scope.enableChat = false;
-                $scope.enableFileShare = false;
+            } else if (myQueues[j].xpid === $scope.queueId && (myPermission !== 0)){
+                $scope.enableAlertBroadcast = false;
+                $scope.enableChat = true;
+                $scope.enableFileShare = true;
             }
         }
-
-
     });
+
 }]);
