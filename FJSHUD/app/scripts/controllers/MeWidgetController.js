@@ -714,6 +714,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.callKeyPress = function($event){
         if ($event.keyCode == 13 && !$event.shiftKey) {
             $scope.makeCall($scope.call_obj.phoneNumber);
+            $scope.call_obj.phoneNumber = '';
             $event.preventDefault();
         }
     }
@@ -746,6 +747,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.$on('make_phone_call',function(event,data){
         $scope.callKeyPress(data);
+
     });
     
     $scope.$on('calls_updated',function(event,data){
