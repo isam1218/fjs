@@ -606,25 +606,28 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(data[i].xef001type == "delete"){
 					var call = callsDetails[data[i].xpid];
 					if(call){
-						if(call.incoming){
-							if(weblauncher.inboundHangupAuto){
-									url = weblauncher.inboundHangup;
-									url = settingsService.formatWebString(url,call);
-									if(weblauncher.inboundHangupSilent){
-										$.ajax(url,{});
-									}else{
-										window.open(url, "_blank");
-									}
-							}
-						}else{
-							if(weblauncher.outboundHangupAuto){
-									url = weblauncher.outboundHangup;
-									url = settingsService.formatWebString(url,call);
-									if(weblauncher.outboundHangupSilent){
-										$.ajax(url,{});
-									}else{
-										window.open(url, "_blank");
-									}		
+						
+						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+							if(call.incoming){
+								if(weblauncher.inboundHangupAuto){
+										url = weblauncher.inboundHangup;
+										url = settingsService.formatWebString(url,call);
+										if(weblauncher.inboundHangupSilent){
+											$.ajax(url,{});
+										}else{
+											window.open(url, "_blank");
+										}
+								}
+							}else{
+								if(weblauncher.outboundHangupAuto){
+										url = weblauncher.outboundHangup;
+										url = settingsService.formatWebString(url,call);
+										if(weblauncher.outboundHangupSilent){
+											$.ajax(url,{});
+										}else{
+											window.open(url, "_blank");
+										}		
+								}
 							}
 						}
 						delete callsDetails[data[i].xpid];
@@ -633,26 +636,29 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 				}else{
 					callsDetails[data[i].xpid] = data[i];
-					if(data[i].state == 2){
-						if(data[i].incoming){
-							if(weblauncher.inboundAuto){
-									url = weblauncher.inbound;
-									url = settingsService.formatWebString(url,data[i]);
-									if(weblauncher.inboundSilent){
-										$.ajax(url,{});
-									}else{
-										window.open(url, "_blank");
-									}
-							}
-						}else{
-							if(weblauncher.outboundAuto){
-									url = weblauncher.outbound;
-									url = settingsService.formatWebString(url,data[i]);
-									if(weblauncher.outboundSilent){
-										$.ajax(url,{});
-									}else{
-										window.open(url, "_blank");
-									}
+					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+
+							if(data[i].incoming){
+								if(weblauncher.inboundAuto){
+										url = weblauncher.inbound;
+										url = settingsService.formatWebString(url,data[i]);
+										if(weblauncher.inboundSilent){
+											$.ajax(url,{});
+										}else{
+											window.open(url, "_blank");
+										}
+								}
+							}else{
+								if(weblauncher.outboundAuto){
+										url = weblauncher.outbound;
+										url = settingsService.formatWebString(url,data[i]);
+										if(weblauncher.outboundSilent){
+											$.ajax(url,{});
+										}else{
+											window.open(url, "_blank");
+										}
+								}
 							}
 						}					
 					}
