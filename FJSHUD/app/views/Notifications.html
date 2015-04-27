@@ -16,7 +16,7 @@
 			<div class="Messages" ng-repeat="message in todaysNotifications">			
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
-								<div class="NotificationClose" ng-click="remove_notification(message.senderId)"></div>
+								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
 					</div>
@@ -87,7 +87,7 @@
 					
 					<div class="NotificationHeader"> 
 							<div class="NotificationHeaderBackground"> 
-								<div class="NotificationClose" ng-click="remove_notification(message.senderId)"></div>
+								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
 					</div>
