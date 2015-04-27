@@ -59,7 +59,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		var downloadables = [];
 		var current = 0;
 		
-		for(var i = 0, iLen = $scope.messages.length; i < len; i++){
+		for(var i = 0, iLen = $scope.messages.length; i < iLen; i++){
 			if ($scope.messages[i].data && $scope.messages[i].data.attachment) {
 				var attachments = $scope.messages[i].data.attachment;
 				
