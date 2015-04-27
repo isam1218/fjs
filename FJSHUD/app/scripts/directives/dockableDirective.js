@@ -8,20 +8,6 @@ hudweb.directive('dockable', ['HttpService', '$parse', function(httpService, $pa
 			var obj = $parse(attrs.dockable)(scope);
 			var type;
 			
-			// get type
-			if (obj.firstName !== undefined)
-				type = 'Contact';
-			else if (obj.loggedInMembers !== undefined)
-				type = 'QueueStat';
-			else if (obj.roomNumber !== undefined)
-				type = 'ConferenceRoom';
-			else if (obj.parkExt !== undefined)
-				type = 'ParkedCall';
-			else if (obj.name)
-				type = 'Group';
-			else
-				return;
-			
 			$(element).draggable({
 				helper: function() {
 					// create visible element
@@ -30,7 +16,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', function(httpService, $pa
 					var title = $('<div class="Title"></div>');
 					
 					// single
-					if (type == 'Contact') {
+					if (obj.firstName !== undefined) {
 						$(header).append('<div class="Avatar AvatarNormal"><img class="AvatarImgPH" src="' + obj.getAvatar(28) + '" onerror="' + defaultImage + '" /></div>');
 						
 						$(title).append('<div>' + obj.displayName + '</div><div><div class="ListRowStatusIcon XIcon-QueueStatus-' + obj.queue_status + '"></div><div class="ListRowStatusIcon XIcon-ChatStatus-' + (obj.hud_status || 'offline') + '"></div></div>');
@@ -48,6 +34,19 @@ hudweb.directive('dockable', ['HttpService', '$parse', function(httpService, $pa
 				cursorAt: { top: 25, left: 25 },
 				zIndex: 50,
 				appendTo: 'body',
+				start: function() {
+					// get type of object
+					if (obj.firstName !== undefined)
+						type = 'Contact';
+					else if (obj.loggedInMembers !== undefined)
+						type = 'QueueStat';
+					else if (obj.roomNumber !== undefined)
+						type = 'ConferenceRoom';
+					else if (obj.parkExt !== undefined)
+						type = 'ParkedCall';
+					else
+						type = 'Group';
+				},
 				drag: function(event, ui) {
 					var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
