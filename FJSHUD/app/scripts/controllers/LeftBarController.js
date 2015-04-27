@@ -18,6 +18,7 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
             case 'dialpad':
                 if ($event.keyCode == 13 && !$event.shiftKey) {
                     $scope.makeCall($scope.number);
+                    $scope.number = '';
                     $event.preventDefault();
                 }
                 break;
