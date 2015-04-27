@@ -18,4 +18,18 @@ fjs.CONFIG = {
             'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
             'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers',
             'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalls','mycalldetails','i18n_langs']
+    , 
+    CALL_STATES:{
+        CALL_UNKNOWN:-1,
+        CALL_RINGING:0,
+        CALL_ACCEPTED:2,
+        CALL_HOLD:3,
+    }, 
+    CALL_TYPES:{
+        GROUP_CALL:1,
+        CONFERENCE_CALL:0,
+        INDIVIDUAL_CALL:2,
+        EXTERNAL_CALL:5,
+        CALL_MENU:6,
+    },
 };
