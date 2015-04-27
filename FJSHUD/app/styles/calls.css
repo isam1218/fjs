@@ -215,6 +215,11 @@
   width: 25%;
   text-align: center;
 }
+.RecentCallSection .RecentFromTo.call {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #91B139;
+}
 .RecentCallSection .RecentDur {
   width: 14%;
   text-align: center;
