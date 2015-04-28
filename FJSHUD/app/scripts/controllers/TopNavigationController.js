@@ -13,13 +13,13 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 
   var reset_order = function(){
   	return [
-      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
-      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
-      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
-      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
-      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
-      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
-      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
+      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1, locked: true}
+      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1, locked: false}
+      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1, locked: false}
+      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1, locked: false}
+      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1, locked: false}
+      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1, locked: false}
+      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1, locked: false}
   	];
   };
 
@@ -68,7 +68,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     stop: function(e, ui){
       // save changed-order to localStorage
       localStorage.setItem('savedNavbarOrder', JSON.stringify($scope.appIcons));      
-    }
+    },
+    items: "a:not(.not-sortable)"
   };
 
   var player; // html element

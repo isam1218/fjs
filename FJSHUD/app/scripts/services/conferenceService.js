@@ -46,25 +46,69 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 	*/
 
 	$rootScope.$on("conferences_synced",function(event, data){
-		conferences = data;
-		deferred.resolve(conferences);
+		// first time
+		if (conferences.length == 0) {
+			conferences = data;
+			deferred.resolve(conferences);
 				
-		// add avatar function
-		for (var i = 0, len = conferences.length; i < len; i++) {
-			conferences[i].getAvatar = function(index, size) {
-				if (this.members) {
-					if (this.members[index] !== undefined) {
-						var xpid = this.members[index].contactId;
-						return httpService.get_avatar(xpid, size, size);
+			// add avatar function
+			for (var i = 0, len = conferences.length; i < len; i++) {
+				conferences[i].getAvatar = function(index, size) {
+					if (this.members) {
+						if (this.members[index] !== undefined) {
+							var xpid = this.members[index].contactId;
+							return httpService.get_avatar(xpid, size, size);
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
 					}
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
+				};
+			}
+		}
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+					
+				for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+					if (conferences[c].xpid == data[i].xpid) {
+						// conference was deleted
+						if (data[i].xef001type == 'delete') {
+							conferences.splice(c, 1);
+							cLen--;
+						}
+						// regular update
+						else
+							angular.extend(conferences[c], data[i]);
+						
+						match = true;
+						break;
+					}
 				}
-				else
-					return 'img/Generic-Avatar-' + size + '.png';
-			};
+				
+				// add new conference
+				if (!match) {
+					conferences.push(data[i]);
+					
+					// add avatar
+					conferences[conferences.length-1].getAvatar = function (index, size) {
+						if (this.members) {
+							if (this.members[index] !== undefined) {
+								var xpid = this.members[index].contactId;
+								return httpService.get_avatar(xpid, size, size);
+							}
+							else
+								return 'img/Generic-Avatar-' + size + '.png';
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
+					};
+				}
+			}
 		}
 		
+		// retrieve child data
 		httpService.getFeed('conferencemembers');
 		httpService.getFeed('server');
 		httpService.getFeed('conferencestatus');
