@@ -19,34 +19,33 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 	
 		// search contacts by display name or primary extension
 		contactService.getContacts().then(function(data) {
-			for (key in data) {
-				if (data[key].displayName.toLowerCase().indexOf(query) != -1 || data[key].primaryExtension.indexOf(query) != -1)
-					$scope.contacts.push(data[key]);
+			for (var i = 0, len = data.length; i < len; i++) {
+				if (data[i].displayName.toLowerCase().indexOf(query) != -1 || data[i].primaryExtension.indexOf(query) != -1)
+					$scope.contacts.push(data[i]);
 			}
 		});
 		
 		// search groups by name or description or extension number
 		groupService.getGroups().then(function(data) {
-			for (key in data) {
-				// console.log('key - ', data[key]);
-				if (data[key].name.toLowerCase().indexOf(query) != -1 || data[key].description.toLowerCase().indexOf(query) != -1 || data[key].extension.indexOf(query) != -1)
-					$scope.groups.push(data[key]);
+			for (var i = 0, len = data.length; i < len; i++) {
+				if (data[i].name.toLowerCase().indexOf(query) != -1 || data[i].description.toLowerCase().indexOf(query) != -1 || data[i].extension.indexOf(query) != -1)
+					$scope.groups.push(data[i]);
 			}
 		});
 		
 		// search queues by name
-		queueService.getQueues().then(function(data) {
-			for (key in data) {
-				if (data[key].name.toLowerCase().indexOf(query) != -1)
-					$scope.queues.push(data[key]);
+		queueService.getQueues().then(function(data) {			
+			for (var i = 0, len = data.length; i < len; i++) {
+				if (data[i].name.toLowerCase().indexOf(query) != -1)
+					$scope.queues.push(data[i]);
 			}
 		});
 		
 		// search conferences by name
 		conferenceService.getConferences().then(function(data) {
-			for (key in data) {
-				if (data[key].name.toLowerCase().indexOf(query) != -1)
-					$scope.conferences.push(data[key]);
+			for (var i = 0, len = data.length; i < len; i++) {
+				if (data[i].name.toLowerCase().indexOf(query) != -1)
+					$scope.conferences.push(data[i]);
 			}
 		});
 	};
