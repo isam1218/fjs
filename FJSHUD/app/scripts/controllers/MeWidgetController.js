@@ -5,7 +5,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var CALL_ON_HOLD = 3;
     var CALL_IN_PROGRESS = 2;
 
-
+    var soundManager;
 
     var settings = {};
     var queues = [];
@@ -55,14 +55,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     */
         //$scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
     $scope.tabs = [
-    {label:$scope.verbage.general,option:'General'},
-    {label:$scope.verbage.phone,option:'Phone'},
-    {label:$scope.verbage.web_launcher,option:'Web Launcher'},
-    {label:$scope.verbage.queues,option:'Queues'},
-    {label:$scope.verbage.my_account,option:'Account'},
-    {label:$scope.verbage.alerts,option:'Alerts'},
-    {label:$scope.verbage.cp,option:'CP'},
-    {label:$scope.verbage.about,option:'About'},
+    {label:$scope.verbage.general,option:'General',isActive:true},
+    {label:$scope.verbage.phone,option:'Phone',isActive:true},
+    {label:$scope.verbage.web_launcher,option:'Web Launcher',isActive:true},
+    {label:$scope.verbage.queues,option:'Queues',isActive:true},
+    {label:$scope.verbage.my_account,option:'Account',isActive:true},
+    {label:$scope.verbage.alerts,option:'Alerts',isActive:true},
+    {label:$scope.verbage.cp,option:'CP',isActive:true},
+    {label:$scope.verbage.about,option:'About',isActive:true},
     ];
 
     $scope.selected = $scope.tabs[0];
@@ -82,8 +82,59 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         console.log(urlHash);
     }
 
+    var phonePromise = phoneService.getDevices();
+    
+    phonePromise.then(function(data){
+        
+        if(!phoneService.isPhoneActive()){
+            for(i in $scope.tabs){
+                if($scope.tabs[i].option == 'Phone'){
+                    $scope.tabs[i].isActive = false;
+                    break;
+                }
+            }
+        }
+        
+            $scope.inputDevices = data.filter(function(item){
+                return item.input_count > 0;
+            });
+            soundManager = phoneService.getSoundManager();
+            
+            $scope.selectedInput = $scope.inputDevices.filter(function(item){
+                 return item.id == soundManager.inpdefid; 
+            })[0];
+            
 
+            $scope.outputDevices = data.filter(function(item){
+                return item.output_count > 0;
+            });
+            
+            $scope.selectedOutput = $scope.outputDevices.filter(function(item){
+                 return item.id == soundManager.outdefid; 
+            })[0];
+            
+            $scope.selectedRingput = $scope.outputDevices.filter(function(item){
+                 return item.id == soundManager.ringdefid; 
+            })[0];
+        
+    });
 
+    $scope.updateAudioSettings = function(value, type){
+        switch(type){
+            case 'Ring':
+                phoneService.getSoundManager().ringdefid = value;   
+                break;
+            case 'Input':
+                phoneService.getSoundManager().inpdefid = value;   
+                break;
+            case 'Output':
+                phoneService.getSoundManager().outdefid = value;   
+                break;
+        }
+    }
+
+    
+    
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
@@ -557,27 +608,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         
         $scope.showOverlay(true, 'CallStatusOverlay', data);
     }
-   
-    $scope.formatDuration = function(calllog){
-        var date = new Date(calllog.duration)
-        var seconds = date.getSeconds();
-        var minutes;
-        if(seconds > 60){
-            minutes = parseInt(seconds/60) 
-            seconds = seconds - (60*minutes);
-        }
-
-        if(seconds < 10){
-            seconds = "0" + seconds;
-        }
-        if(minutes){
-            return minutes + ":" + seconds;
-        }else{
-            return "00:" + seconds;
-        }
-        
-    }
-
     $scope.formatIncoming = function(calllog,type){
         switch(type){
             case "From":

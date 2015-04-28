@@ -150,7 +150,8 @@
                       
                       <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
                       <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
-                      <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
+                      <div class="RecentCallsHeader RecentDur">{{ calllog.duration | duration }} </div>
+                    
                     </div>
                     <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id111" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
                       <div class="fj-ui-scrollerFr-decoration"></div>
@@ -164,7 +165,7 @@
               <div class="fj-vbox-space Preferences-Holder">
 	              <div class="WidgetSectionTitle">{{verbage.preferences}}</div>	              
 		              <div class="WidgetTabBar">
-		                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+		                <a href="" ng-repeat="tab in tabs" ng-show="tab.isActive" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
 		                  <div class="inner HeaderLabel">{{ tab.label }}</div>
 		                  <div class="arrow"></div>
 		                </a>
