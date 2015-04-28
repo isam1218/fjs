@@ -52,9 +52,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	};
 
 	var formatData = function () {
-		if (queues.length > 0 && queues[0].members)
-			deferred.resolve(queues);
-		
 		// format data that controller needs
 		return {
 			queues: queues,
@@ -68,24 +65,69 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	*/
 
 	$rootScope.$on("queues_synced", function (event, data) {
-		queues = data;
-		// console.log('queues = ', queues);
-		// add avatar function
-		for (var i = 0, len = queues.length; i < len; i++) {
-			queues[i].getAvatar = function (index, size) {
-				if (this.members) {
-					if (this.members[index] !== undefined) {
-						var xpid = this.members[index].contactId;
-						return httpService.get_avatar(xpid, size, size);
+		// first time
+		if (queues.length == 0) {
+			queues = data;
+			deferred.resolve(queues);
+			
+			// add avatars
+			for (var i = 0, len = queues.length; i < len; i++) {
+				queues[i].getAvatar = function (index, size) {
+					if (this.members) {
+						if (this.members[index] !== undefined) {
+							var xpid = this.members[index].contactId;
+							return httpService.get_avatar(xpid, size, size);
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
 					}
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
-				}
-				else
-					return 'img/Generic-Avatar-' + size + '.png';
-			};
+				};
+			}
 		}
-	
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+					
+				for (var q = 0, qLen = queues.length; q < qLen; q++) {
+					if (queues[q].xpid == data[i].xpid) {
+						// queue was deleted
+						if (data[i].xef001type == 'delete') {
+							queues.splice(q, 1);
+							qLen--;
+						}
+						// regular update
+						else
+							angular.extend(queues[q], data[i]);
+						
+						match = true;
+						break;
+					}
+				}
+				
+				// add new queue
+				if (!match) {
+					queues.push(data[i]);
+					
+					// add avatar
+					queues[queues.length-1].getAvatar = function (index, size) {
+						if (this.members) {
+							if (this.members[index] !== undefined) {
+								var xpid = this.members[index].contactId;
+								return httpService.get_avatar(xpid, size, size);
+							}
+							else
+								return 'img/Generic-Avatar-' + size + '.png';
+						}
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
+					};
+				}
+			}
+		}
+		
+		// retrieve child data	
 		httpService.getFeed('queue_stat_calls');
 		httpService.getFeed('queue_call');
 		httpService.getFeed('queue_members');
@@ -153,12 +195,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	
 		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
-
-	// $rootScope.$on('queuepermissions_synced', function(event, data){
-	// 	for (i = 0; i < queues.length; i++){
-
-	// 	}
-	// })
 	
 	/**
 		MEMBER DATA
@@ -166,7 +202,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 
 	$rootScope.$on("queue_members_synced", function (event, data) {
 		if (queues.length > 0){
-			mine = [];
+			mine.splice(0, mine.length);
 		
 			for (var q = 0, qLen = queues.length; q < qLen; q++) {
 				queues[q].members = [];
