@@ -7,6 +7,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.reasons = {};
 	$scope.canDock = true;
 	
+	$scope.enableCallLater = true;
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
 		var data = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
@@ -89,6 +90,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 					$scope.canDock = false;
 					break;
 				}
+				$scope.enableCallLater = data['busy_ring_back']  == 'true';
 			}
 		});
 	});
@@ -137,6 +139,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.callNumber = function(number) {
 		phoneService.makeCall(number);
 	};
+
+	$scope.callLater = function(){
+		httpService.sendAction('contacts', 'callLater', {toContactId: $scope.contact.xpid});
+		
+	}
 	
 	$scope.takeCall = function(){
 		httpService.sendAction('parkedcalls','transferFromPark',{parkedCallId:$scope.parkedCall.xpid,contactId:$scope.meModel.my_pid});
