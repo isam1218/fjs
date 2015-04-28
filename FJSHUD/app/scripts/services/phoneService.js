@@ -244,6 +244,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			 }
             //isRegistered = true;
 			soundManager = session.soundManager;
+			var devices = soundManager.devs;
 			spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
 			micVolume = settingsService.getSetting('hudmw_webphone_mic');
 			if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){

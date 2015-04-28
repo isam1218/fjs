@@ -22,6 +22,7 @@ hudweb.filter('fondate', function() {
     	{
     		return "yesterday " + moment(milliseconds).lang(locale_code).format('hh:mm a');
     	}else{
+            //return moment(new Date(milliseconds)).format(dateformat);
     		return moment(milliseconds).lang(locale_code).format(dateformat);
     	}
     	

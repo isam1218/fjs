@@ -24,7 +24,7 @@
             <div class="ListMessageHeader"  ng-if="nameDisplay(message, $index)" >
                 <em>...{{::verbage.from}}</em>
                 <span class="ListMessageHeaderName">{{::message.fullProfile.xpid == meModel.my_pid ? 'Me' : message.fullProfile.displayName}}</span>
-                <div class="time">{{::message.created | fondate:'MMMM d YYYY':fon_lang_code}}</div>
+                <div class="time">{{::message.created | fondate:'MMMM D YYYY':fon_lang_code}}</div>
             
             </div>
             <div class="ChatMessageItem AttachmentsHolder">

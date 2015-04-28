@@ -68,7 +68,7 @@
 					<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
 				</div>
 				<div class="Duration"> {{ ::call.duration | duration }}</div>
-				<div class="Date"> {{ ::call.startedAt |  fondate:'MMMM d, h:mm a':fon_lang_code }}</div>
+				<div class="Date"> {{ ::call.startedAt |  fondate:'MMMM D, hh:mm a':fon_lang_code }}</div>
     			<div class="Type">
 					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ ::call.incoming ? 'Incoming' : 'Outbound' }}"></div>
 				</div>
