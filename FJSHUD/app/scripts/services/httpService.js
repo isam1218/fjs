@@ -435,7 +435,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         } else {
             return "img/Generic-Avatar-Small.png";
         }
-	}
+	};
 	
 	this.get_audio = function(key) {
 		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
@@ -446,7 +446,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     	if(xkeyUrl){
     		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID + "&" + fileName + '&d';
     	}
-    }
+    };
     
     this.upload_attachment = function(data,attachments) {
         var params = {
@@ -542,6 +542,45 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		.then(function(response) {
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 	
+			for (key in data) {
+				// create xpid for each record
+				for (i = 0; i < data[key].items.length; i++)
+					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
+				
+				// send items back to controller
+				deferred.resolve(data[key]);
+			}
+		});
+		
+		return deferred.promise;
+	};
+	
+	// retrieve call log history
+	this.getCallLog = function(feed, xpid) {
+		var deferred = $q.defer();
+		
+		// format request object
+		var params = {
+			alt: 'j',
+			's.limit': 60,
+			'sh.filter': '{"key":{"feedName":"' + feed + '","xpid":"' + xpid + '"},"filter_id":"' + feed + ':' + xpid + '"}',
+			'sh.versions': '0:0@' + xpid.split('_')[0] + ':0'
+		};
+	
+		$http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/history/calllog",
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+authTicket,
+				'node': nodeID,
+			},
+			transformResponse: false
+		})
+		.then(function(response) {
+			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
+
 			for (key in data) {
 				// create xpid for each record
 				for (i = 0; i < data[key].items.length; i++)
