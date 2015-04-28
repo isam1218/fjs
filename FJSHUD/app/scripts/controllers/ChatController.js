@@ -12,6 +12,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
   $scope.enableAlertBroadcast = true;	
+
 	// set chat data
 	if ($routeParams.contactId) {
 		chat.name = $scope.contact.displayName;
@@ -226,7 +227,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		}
 	};
 
-	
 
 	// apply name and avatar
 	var addDetails = function() {
