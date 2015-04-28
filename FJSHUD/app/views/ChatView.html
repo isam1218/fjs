@@ -46,7 +46,8 @@
     </div>
 </div>
 
-<div class="ChatInputBox" ng-if="enableChat; enableAlertBroadcast">	
+<!-- ng-if="enableChat; enableAlertBroadcast" -->
+<div class="ChatInputBox" >	
 	<div class="ChatAlertOptions" ng-if="showAlerts">
 		<div class="Left">
     <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
@@ -58,7 +59,8 @@
 		</div>
 	</div>
 	
-	<div class="ChatInputFields" ng-if="enableAlertBroadcast">
+    <!-- ng-if="enableAlertBroadcast" -->
+	<div class="ChatInputFields" >
 		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>{{::verbage.send}}</span></div>
 	</div>

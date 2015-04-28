@@ -13,7 +13,7 @@
      </div>       
 	<div class="NotificationMessages LeftBarNotifications">
 		<!--<react-component name="notification" props='notifications'/>-->		   
-			<div class="Messages" ng-repeat="message in todaysNotifications">			
+			<div class="Messages" ng-repeat="message in todaysNotifications" >			
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -30,7 +30,7 @@
 					</div>
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
 						
-						<div class="LeftBarNotificationAvatarSection " style="display:inline-block" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"> 
+						<div class="LeftBarNotificationAvatarSection " style="display:inline-block" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" context-menu="message.fullProfile"> 
 							<img class="NotificationAvatar CallAvatar "  
 								ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'"
 								ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
@@ -94,7 +94,7 @@
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
-						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"> 
+						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" context-menu="message.fullProfile"> 
 							<img class="NotificationAvatar CallAvatar"ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'" 
 
 							ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>

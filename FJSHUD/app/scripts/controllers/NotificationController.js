@@ -11,6 +11,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
+
 	
 	if (localStorage.recent === undefined)
 		localStorage.recent = '{}';
@@ -304,7 +305,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				for(index in data){
 					isNotificationAdded = false;
 					var notification = data[index];
-					
+					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
 							if(notification.type == 'q-alert-rotation'){
 								notification.label = $scope.verbage.long_waiting_call;;
@@ -346,6 +347,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			}else{
 				for(index in data){
 					var notification = data[index];
+					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){
 								notification.label = $scope.verbage.long_waiting_call;
@@ -410,15 +412,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			return false;
 		});
 
+
 		if(playChatNotification){
 			phoneService.playSound("received");
 		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-			// console.log('notifications order - ', $scope.todaysNotifications);
 			return b.time - a.time; 
-		});					
-       
+		});
+			       
 		$scope.$watch(function(scope){
 			if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
 				$scope.showNotificationBody = false;
