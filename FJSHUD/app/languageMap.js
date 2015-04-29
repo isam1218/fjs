@@ -513,6 +513,8 @@ fjs.i18n = {
      search_by_room_or_person:'Search by room or person',
        attach_files_to_share:'Attach files to share',
       schedule_move_to_trash:'Schedule move to trash',
+      Call_Later:'Call Later',
+      Skip:'Skip',
     
   },
 
@@ -1019,11 +1021,11 @@ fjs.i18n = {
       call_management:'Call Management',
       call_members:'Call Members',
       contacts_talking:'These contacts are talking',
-      barging:'Baring',
-      barge:'Barge',
+      barging:'Barging',
+      barge:'はしけ',
       transfer:'転送',
-      whisper:'Whisper',
-      monitor:'Monitor',
+      whisper:'低語する',
+      monitor:'モニター',
       barged_by:'Barged By',
       contacts_barge_call:'Contacts who barge the call',
       call_transfer:'転送',
@@ -1044,6 +1046,9 @@ fjs.i18n = {
       join_me_as_well:'Join me as well',
       transfer_to_conference_room:'会議室への転送',
      search_by_room_or_person:'Search by room or person',
+      Call_Later:'後で呼び出し',
+      Skip:'スキップ',
+ 
 
   },
   

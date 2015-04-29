@@ -58,7 +58,7 @@
 
 		<a class="Button" href="" ng-show="enableCallLater" ng-click="callLater()">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Call Later</span>
+			<span>{{::verbage.Call_Later}}</span>
 		</a>
 		
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
@@ -191,7 +191,7 @@
 		<a class="Button" href="" ng-show="enableCallLater" ng-click="callLater()">
 			<div class="ListRowActionButtonCall"></div>
 			<!--<span>{{::verbage.Call}}</span>-->
-			<span> Call Later</span>
+			<span> {{::verbage.Call_Later}}</span>
 		</a>
 		
 

@@ -59,7 +59,7 @@
 							</div>
 							
 							<div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back' && showNotificationBody">
-								<span class="XButton" ng-click="remove_notification(message.xpid);">Skip</span>
+								<span class="XButton" ng-click="remove_notification(message.xpid);">{{::verbage.Skip}}</span>
 								<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
 							</div>
 							
@@ -164,6 +164,6 @@
 		</div>
 		
 </div>
-<div id="CallAlert" ng-include="'views/nativealerts/CallAlert.html'"></div>
+<div id="CallAlert" style="display:none" ng-include="'views/nativealerts/CallAlert.html'"></div>
 
 
