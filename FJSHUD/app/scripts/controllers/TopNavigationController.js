@@ -10,7 +10,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
-  $scope.appIcons;
+  $scope.appIcons = [];
 
   var reset_order = function(){
   	return [
@@ -177,6 +177,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		$scope.voicemail = data.fullProfile ? data.fullProfile : contactService.getContact(data.contactId);
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
+		$scope.player.position = 0;
+		$scope.player.progress = 0;
 		
 		// update hidden audio element
 		var source = document.getElementById('voicemail_player_source');
@@ -189,7 +191,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		player.onloadeddata = function() {
 			$scope.player.loaded = true;
 			$scope.player.playing = true;
-			$scope.player.position = 0;
 			$scope.$safeApply();
 			
 			player.play();
