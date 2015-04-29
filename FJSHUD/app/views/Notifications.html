@@ -57,6 +57,12 @@
 								<span class="XButton" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
 								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
 							</div>
+							
+							<div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back' && showNotificationBody">
+								<span class="XButton" ng-click="remove_notification(message.xpid);">{{::verbage.Skip}}</span>
+								<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
+							</div>
+							
 							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue' && showNotificationBody">
 								<span class="XButton" >{{::verbage.Show}}</span>
 							</a>
@@ -158,6 +164,6 @@
 		</div>
 		
 </div>
-<div id="CallAlert" ng-include="'views/nativealerts/CallAlert.html'"></div>
+<div id="CallAlert" style="display:none" ng-include="'views/nativealerts/CallAlert.html'"></div>
 
 
