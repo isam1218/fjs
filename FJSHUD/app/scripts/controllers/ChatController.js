@@ -8,8 +8,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
-	$scope.test = {};
-	$scope.test.flow;
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
