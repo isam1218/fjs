@@ -4,7 +4,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.tester = {};
     $scope.tester.query = "";
     $scope.meModel = {};
-    var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
@@ -14,17 +13,11 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     ];
 
     $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
-    // console.log('upon initial load- 1) LS.saved_voice_option is -  ', localStorage.saved_voice_option);
-    // console.log('upon initial load- 2) $scope.selectedVoice is - ', $scope.selectedVoice);
 
     $scope.sortBy = function(selectedVoice){
-        // console.log('selectedVoice passed into sortBy is - ', selectedVoice);
         $scope.selectedVoice = selectedVoice;
-        // console.log('*$scope.selcetdVoice after assignment - ', $scope.selectedVoice);
         localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);
-        // console.log('*LS.saved_voice_option is - ', localStorage.saved_voice_option);
     };
-
 
     $scope.actions = [
 		{display_name:$scope.verbage.action, type:"unknown"},
@@ -84,26 +77,18 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     };
 
     $scope.handleVoiceMailAction = function(type){
-        // console.log('currentAction is ', $scope.actionObj.currentAction);
-        // console.log('selectedAction is ', $scope.actionObj.selectedAction);
         $scope.actionObj.selectedAction = $scope.actions[0];
         switch(type){
             case "read":
                 $scope.actionObj.currentAction = $scope.actions[1];
-                // console.log('2:currentAction is 2-', $scope.actionObj.currentAction);
-                // console.log('**:selectedAction is **', $scope.actionObj.selectedAction);
                 MarkReadVoiceMails(true);
                 break;
             case "unread":
                 $scope.actionObj.currentAction = $scope.actions[2];
-                // console.log('3:currentAction is 3-', $scope.actionObj.currentAction);
-                // console.log('**selectedAction is **', $scope.actionObj.selectedAction);
                 MarkReadVoiceMails(false);
                 break;
             case "delete":
                 $scope.actionObj.currentAction = $scope.actions[3];
-                // console.log('4:currentAction is 4-', $scope.actionObj.currentAction);
-                // console.log('**selectedAction is **', $scope.actionObj.selectedAction);
                 DeleteReadVoiceMails();
                 break;
         }
