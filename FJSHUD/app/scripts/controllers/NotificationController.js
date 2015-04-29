@@ -11,9 +11,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
-
+	$scope.phoneSessionEnabled = false;
+	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+	phoneService.getDevices().then(function(data){
+		$scope.phoneSessionEnabled = true;
+	});
 	
-	if (localStorage.recent === undefined)
+   if (localStorage.recent === undefined)
 		localStorage.recent = '{}';
 
 	$scope.recent = JSON.parse(localStorage.recent);
@@ -150,7 +154,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		phoneService.makeCall(phone);
 	};
 
-	$scope.showOverlay = function(show) {
+	$scope.showNotificationOverlay = function(show) {
 		if (!show)
 			$scope.overlay = '';
 		else if ($scope.tab != 'groups')
@@ -158,6 +162,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		else
 			$scope.overlay = 'groups';
 	};
+
 
 	$scope.$on('calls_updated',function(event,data){
 		$scope.calls = {};

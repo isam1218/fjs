@@ -70,13 +70,49 @@
 				</div>
 
 			</div>
+
+			<div class="Messages" style="cursor:hand;cursor:pointer;" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">
+				<a ng-href="{{ pluginDownloadUrl}}" style="text-decoration:none; color:inherit">			
+					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
+							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
+								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+							</div>
+							
+					</div>
+					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0};">
+					    <img />
+					   <div ng-if="$index == 0"> 
+					    <div class="Icon" ng-show="!showHeader"></div>
+				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
+				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ notifications.length + ' events' }} </div>
+				       </div>             
+					</div>
+					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
+						
+						<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+							<div class="AvatarWarningSmall"></div>
+						</div>
+					
+						<div class="LeftBarNotificationMessageSection" > 
+							<div>
+								<div style="font-weight:bold;font-size:.7em;height: 2.5em;"><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
+								<div ></div>
+
+								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>Click to download & Install</div>
+							</div>
+							
+						</div>
+				</div>
+				</a>
+			</div>
+
 	</div>
 </div>
 
 <div ng-show="$parent.overlay == 'notifications'" class="Overlay">
-	<div ng-click="showOverlay(false)" class="Background"></div>
+	<div ng-click="showNotificationOverlay(false)" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="showOverlay(false)" class="Close">x</div>
+		<div ng-click="showNotificationOverlay(false)" class="Close">x</div>
 		
 		<div class="Header NotificationSectionHeader">
 			<div class="NotificationSectionHeaderImage"></div>
@@ -138,7 +174,7 @@
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>
-			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showOverlay(false)" />
+			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showNotificationOverlay(false)" />
 			<input type="button" class="XButton XButtonRed" value="{{::verbage.clear_all}}" ng-click="remove_all()" />
 		</div>
 	</div>

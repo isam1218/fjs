@@ -14,7 +14,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var tabMap = undefined;
 	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
-
+	var appVersion = navigator.appVersion;
+	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
+	
 	var feeds = fjs.CONFIG.FEEDS;
 
     var VERSIONS_PATH = "/v1/versions";

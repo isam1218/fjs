@@ -53,7 +53,7 @@
   display: inline-block;
   min-width: 48%;
   /*max-width: 300px;*/
-  max_width: 100%;
+  max_width: 48%;
   vertical-align: top;
   font-size: .9em;
   height: inherit;
@@ -380,7 +380,7 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
