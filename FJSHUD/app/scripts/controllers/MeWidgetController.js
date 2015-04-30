@@ -246,7 +246,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     {id:3,value:30,label:'30 items'},
     {id:4,value:40,label:'40 items'},
     {id:5,value:50,label:'50 items'},
-    {id:6,value:60,label:'60 items'}];
+    {id:6,value:60,label:'60 items'},
+     {id:7,value:70,label:'70 items'},
+    {id:8,value:80,label:'80 items'},
+    {id:9,value:90,label:'90 items'},
+    {id:10,value:100,label:'100 items'}];
     $scope.callLogSizeSelected;
 
     $scope.autoAwayOptions = [{id:1,value:30000,label:'30 Seconds'},

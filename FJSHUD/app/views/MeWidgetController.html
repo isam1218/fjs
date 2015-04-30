@@ -143,7 +143,7 @@
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
-                    <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
+                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value" class="RecentCallRow"> 
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D hh:mm a':fon_lang_code}} </div>
 
