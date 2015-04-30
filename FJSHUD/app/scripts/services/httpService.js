@@ -116,7 +116,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                    synced_data = event.data.data;
 
                         if (synced_data.me){
-                          initialPid = synced_data.me[15].propertyValue;
+                          for (var i = 0, len = synced_data.me.length; i < len; i++){
+                            if (synced_data.me[i].propertyKey === "my_pid"){
+                              initialPid = synced_data.me[i].propertyValue;
+                              break;
+                            }
+                          }
                           
                           // save to both LS and to $rootScope
                           $rootScope.myPid = initialPid;
