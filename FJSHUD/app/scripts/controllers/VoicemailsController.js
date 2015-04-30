@@ -1,4 +1,7 @@
 hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'UtilService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, utilService) {
+    var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
+    var addedPid;
+    var localPid;
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
@@ -12,9 +15,14 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         {display_name:$scope.verbage.sort_read_status, type:"readStatusNum", desc: false}
     ];
 
+    $scope.$on('pidAdded', function(event, data){
+        addedPid = data.info;
+    });
+
     $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
 
     $scope.sortBy = function(selectedVoice){
+        localPid = JSON.parse(localStorage.me);
         $scope.selectedVoice = selectedVoice;
         localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);
     };

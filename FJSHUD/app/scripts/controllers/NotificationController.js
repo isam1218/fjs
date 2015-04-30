@@ -2,6 +2,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
 
 	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	var addedPid;
+	var localPid;
 	$scope.notifications = [];
 	$scope.calls = {};
 	$scope.inCall = false;
@@ -17,20 +19,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		$scope.phoneSessionEnabled = true;
 	});
 	
-   if (localStorage.recent === undefined)
-		localStorage.recent = '{}';
-
-	$scope.recent = JSON.parse(localStorage.recent);
-
+	$scope.$on('pidAdded', function(event, data){
+		addedPid = data.info;
+		if (localStorage['recents_of_' + addedPid] === undefined){
+			localStorage['recents_of_' + addedPid] = '{}';
+		}
+		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+	});
+	
 	myHttpService.getFeed('quickinbox');
 
 	$scope.storeRecent = function(xpid){
-		$scope.recent = JSON.parse(localStorage.recent);
+		localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
 		$scope.recent[xpid] = {
 			type: 'contact',
 			time: new Date().getTime()
 		};
-		localStorage.recent = JSON.stringify($scope.recent);
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
 		$rootScope.$broadcast('recentAdded', {info: xpid});
 	};
 

@@ -5,6 +5,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var CALL_ON_HOLD = 3;
     var CALL_IN_PROGRESS = 2;
 
+
     var soundManager;
 
     var settings = {};
@@ -184,10 +185,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
-        // console.log('showLocationsPopup: context - ', context);
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        // console.log('scope.showPopup - ', $scope);
         $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y});
         return false;
     };

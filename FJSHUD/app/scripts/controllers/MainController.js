@@ -2,11 +2,11 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 	$rootScope.myPid = null;
 	$rootScope.loaded = {all: false};
 	
-    $scope.number = "";
-    $scope.currentPopup = {};
-    $scope.currentPopup.url = null;
-    $scope.currentPopup.x = 0;
-    $scope.currentPopup.y = 0;
+  $scope.number = "";
+  $scope.currentPopup = {};
+  $scope.currentPopup.url = null;
+  $scope.currentPopup.x = 0;
+  $scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 
 	$scope.overlay = {
@@ -54,7 +54,15 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 		if (!$rootScope.myPid) {
 			for (key in data) {
 				if (data[key].propertyKey == 'my_pid') {
+          var tmpPid = data[key].propertyValue;
 					$rootScope.myPid = data[key].propertyValue;
+          $rootScope.$broadcast('pidAdded', {info: tmpPid});
+
+          var initialPid = data[key].propertyValue
+          if (localStorage[initialPid] === undefined){
+            localStorage[initialPid] = '{}';
+          }
+
 					break;
 				}
 			}

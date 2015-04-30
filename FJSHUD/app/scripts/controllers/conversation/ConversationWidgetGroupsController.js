@@ -1,5 +1,6 @@
 hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'UtilService', function($scope, $routeParams,$rootScope,myHttpService,groupService,utils) {
     var context = this;
+    var addedPid;
     $scope.contactGroups = [];
     $scope.sharedGroups = [];
     $scope.meModel = {};
@@ -7,18 +8,22 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     $scope.query = "";
     $scope.add = {};
 
-    if (localStorage.recent === undefined)
-        localStorage.recent = '{}'
-
-    $scope.recent = JSON.parse(localStorage.recent);
+    $scope.$on('pidAdded', function(event, data){
+        addedPid = data.info;
+        if (localStorage['recents_of_' + addedPid] === undefined){
+            localStorage['recents_of_' + addedPid] = '{}';
+        }
+        $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+    });
 
     $scope.storeRecentGroup = function(xpid){
-        $scope.recent = JSON.parse(localStorage.recent);
+        var localPid = JSON.parse(localStorage.me);
+        $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
         $scope.recent[xpid] = {
             type: 'group',
             time: new Date().getTime()
         };
-        localStorage.recent = JSON.stringify($scope.recent);
+        localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
         $rootScope.$broadcast('recentAdded', {info: xpid});
     }
 	
@@ -33,7 +38,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     });
 
     myHttpService.getFeed("me");
-    //myHttpService.getFeed("groups");
+    // myHttpService.getFeed("groups");
 
     myHttpService.getFeed("groupcontacts");
 
@@ -100,7 +105,6 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     };
 
      $scope.getAvatarUrl = function(group, index) {
-        
         if(group.members){
             if (group.members[index] !== undefined) {
                 var xpid = group.members[index];
@@ -109,7 +113,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             else
                 return 'img/Generic-Avatar-14.png';
 
-        }
+        } 
     };
 
         
