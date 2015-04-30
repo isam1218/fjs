@@ -47,6 +47,20 @@
   bottom: 0;
   right: 0;
 }
+.AvatarWarningSmall {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -230px;
+}
+.DownloadIcon {
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("../img/XApp-Icons.png") no-repeat 0px 0px;
+}
 .CallAvatar {
   border-radius: 1em;
   overflow: hidden;

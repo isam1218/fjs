@@ -7,7 +7,8 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
     $scope.currentPopup.url = null;
     $scope.currentPopup.x = 0;
     $scope.currentPopup.y = 0;
-	
+	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+
 	$scope.overlay = {
 		show: false,
 		url: '',

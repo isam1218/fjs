@@ -37,22 +37,33 @@
     <div class="ListPageHeader"></div>
     <div class="Dialog-settings-row">
       <div class="lblSelect">{{::verbage.input_devices}}: </div>
-      <select class="fj-hbox SelectBox SelectBoxSettings">
-        <option value="4"><span>Built-in Microph</span></option>
+      <select class="fj-hbox SelectBox SelectBoxSettings"
+          ng-model="selectedInput"
+          ng-options="inputDevice.name for inputDevice in inputDevices"
+          ng-change="updateAudioSettings(selectedInput.id,'Input')"
+      >
       </select>
 
     </div>
     <div class="Dialog-settings-row">
       <div class="lblSelect">{{::verbage.output_devices}}: </div>
-      <select class="fj-hbox SelectBox SelectBoxSettings">
-        <option value="4">Built-in Output</option>
+      <select class="fj-hbox SelectBox SelectBoxSettings"
+         ng-model="selectedOutput"
+          ng-options="outputDevice.name for outputDevice in outputDevices"
+          ng-change="updateAudioSettings(selectedOutput.id,'Output')"
+   
+      >
       </select>
 
       </div>
       <div class="Dialog-settings-row">
         <div class="lblSelect">{{::verbage.ring_devices}}: </div>
-        <select class="fj-hbox SelectBox SelectBoxSettings">
-          <option value="4">Built-in Output</option>
+        <select class="fj-hbox SelectBox SelectBoxSettings"
+             ng-model="selectedRingput"
+            ng-options="outputDevice.name for outputDevice in outputDevices"
+               ng-change="updateAudioSettings(selectedRingput.id,'Ring')"
+   
+        >
         </select>
 
       </div>

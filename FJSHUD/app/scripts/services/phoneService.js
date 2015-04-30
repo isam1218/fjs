@@ -1,9 +1,11 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', function($q, $rootScope, httpService,$compile,$location,settingsService) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
 
 	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
 
 	var phonePlugin = document.getElementById('phone');
 	var version = phonePlugin.version;
+	var deferred = $q.defer();
+	var devices = [];
 	var session;
 	var alertPlugin;
 	var phone;
@@ -17,6 +19,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.meModel = {};
 	var isRegistered = false;
 	var isAlertShown = true;
+
 	var voicemails = {};
 	var weblauncher = {};
 	var locations = {};
@@ -70,6 +73,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			soundManager.microphone = sensitivity;
 		}
 	}
+
+	
 
 	hangUp = function(xpid){
 		sip_id = xpid2Sip[xpid];
@@ -244,7 +249,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			 }
             //isRegistered = true;
 			soundManager = session.soundManager;
-			var devices = soundManager.devs;
+			devices = soundManager.devs;
+			deferred.resolve(devices);
 			spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
 			micVolume = settingsService.getSetting('hudmw_webphone_mic');
 			if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
@@ -410,6 +416,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	//this.removeNotification();
     }
 
+    onSoundDeviceChanged = function(event){
+    	console.log(event);
+    }
+
     setupListeners = function(){
     	if(phone){
     		if(phone.attachEvent){
@@ -425,11 +435,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		if(alertPlugin.attachEvent){
     			alertPlugin.attachEvent("onAlert",onAlert);
     			alertPlugin.attachEvent("ononAlertMouseEvent",onAlertMouseEvent);
-    		
-
     		}else{
     			alertPlugin.addEventListener("Alert",onAlert,false);
     			alertPlugin.addEventListener("onAlertMouseEvent",onAlertMouseEvent,false);
+    		}
+    	}
+
+    	if(soundManager){
+    		if(soundManager.attachEvent){
+    			soundManager.attachEvent('onSoundDeviceChanged',onSoundDeviceChanged);
+    		}else{
+    			soundManager.addEventListener('SoundDevicesChanged', onSoundDeviceChanged);
     		}
     	}
     }
@@ -525,6 +541,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 			call.dtmf(entry);
 		}	
+	}
+
+	this.getDevices = function(){
+		return deferred.promise;	
+	}
+
+	this.isPhoneActive = function(){
+		if(session){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	/*this returns the call object provided by the phone plugin which gives you control over the call such 
 	holding the call resuming the call and ending the call

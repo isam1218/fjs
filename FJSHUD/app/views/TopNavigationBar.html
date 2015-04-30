@@ -2,7 +2,7 @@
 
 <div class="TopBarIcons">
 	<div class="DragDropList" ui-sortable="sortableOptions" ng-model="appIcons">
-		<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: 1}">
+		<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: 1}" ng-class="{'not-sortable': icon.locked}">
 			<div class="Avatar AvatarNormal TopBarItemAppIcon" ng-show="icon.key == 'Me'">
 				<img class="AvatarImgPH" data-ng-src="{{ getAvatar() }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 			</div>
@@ -54,7 +54,7 @@
 		</div>
 		
 		<audio id="voicemail_player">
-			<source id="voicemail_player_source" src="" />
+			<source id="voicemail_player_source" type="audio/mp3"></source>
 		</audio>
 	</div>
 

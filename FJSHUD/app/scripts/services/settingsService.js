@@ -84,9 +84,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		}
 	});
 
-	$rootScope.$on('settings_synced', function(event, data) {
-		settings = {};
-		
+	$rootScope.$on('settings_synced', function(event, data) {		
 		// convert to object
 		for (key in data)
 			settings[data[key].key] = data[key].value;

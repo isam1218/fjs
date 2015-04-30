@@ -12,7 +12,11 @@
 </div>
 		
 <div class="ListViewContent" id="ListViewContent">
-    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid">
+   
+    <div  flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop style="position:absolute; width:100%; height:100%;"> 
+
+    </div>
+    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid"   >
         <div class="ListMessageLeft">
             <div class="Avatar AvatarSmall"  ng-if="nameDisplay(message, $index)" ng-class="{'CallAvatar CallAvatar_Office':(message.type == 'call' || message.type == 'voicemail')}" context-menu="message.fullProfile">
                 <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{::message.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'">
@@ -27,9 +31,9 @@
                 <div class="time">{{::message.created | fondate:'MMMM D YYYY':fon_lang_code}}</div>
             
             </div>
-            <div class="ChatMessageItem AttachmentsHolder">
+            <div class="ChatMessageItem AttachmentsHolder" flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop >
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
-                <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)">
+                <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
                     <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}"></img>                 
                     <p> {{ attachment.fileName }}</p>
                 </div> 
@@ -47,7 +51,7 @@
 </div>
 
 <!-- ng-if="enableChat; enableAlertBroadcast" -->
-<div class="ChatInputBox" >	
+<div class="ChatInputBox"  >	
 	<div class="ChatAlertOptions" ng-if="showAlerts">
 		<div class="Left">
     <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
@@ -60,7 +64,7 @@
 	</div>
 	
     <!-- ng-if="enableAlertBroadcast" -->
-	<div class="ChatInputFields" >
+	<div class="ChatInputFields" flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop>
 		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()" ><span>{{::verbage.send}}</span></div>
 	</div>

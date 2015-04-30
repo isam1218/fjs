@@ -10,54 +10,121 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		progress: 0
 	};
 
+  $scope.appIcons = [];
 
   var reset_order = function(){
   	return [
-      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1}
-      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1}
-      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1}
-      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1}
-      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1}
-      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1}
-      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1}
+      {title:$scope.verbage.me, url:"#/settings", key:"Me",enabled:1, locked: true}
+      , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog",enabled:1, locked: false}
+      , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", enabled:1, locked: false}
+      , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1, locked: false}
+      , {title:$scope.verbage.search, url:"#/search", key:"Search",enabled:1, locked: false}
+      , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom",enabled:1, locked: false}
+      , {title:$scope.verbage.box, url:"#/box", key:"Box",enabled:1, locked: false}
   	];
   };
 
-  $scope.updatedNavbar = localStorage.savedNavbarOrder ? JSON.parse(localStorage.savedNavbarOrder) : $scope.appIcons = reset_order();
+  // STEP-B
+  var setVerbage = function(){
+    if ($scope.updatedNavbar != $scope.appIcons){
+      $scope.appIcons = $scope.updatedNavbar;
+      for(i in $scope.appIcons){
+      	var key = $scope.appIcons[i].key;
 
-  
+      	switch(key){
+      		case 'Me':
+      			$scope.appIcons[i].title = $scope.verbage.me;
+      			break;
+      		case 'CallLog':
+      			$scope.appIcons[i].title = $scope.verbage.call_and_recordings;
+      			break;
+      		case 'Conferences':
+      			$scope.appIcons[i].title = $scope.verbage.conferencing;
+      			break;
+      		case 'CallCenter':
+      			$scope.appIcons[i].title = $scope.verbage.callcenter;
+      			break;
+      		case 'Search':
+      			$scope.appIcons[i].title = $scope.verbage.search;
+      			break;
+      		case 'Zoom':
+      			$scope.appIcons[i].title = $scope.verbage.zoom;
+      			break;
+      		case 'Box':
+      			$scope.appIcons[i].title = $scope.verbage.box;
+      			break;
+      	}
 
-  if ($scope.updatedNavbar != $scope.appIcons){
-    $scope.appIcons = $scope.updatedNavbar;
-    for(i in $scope.appIcons){
-    	var key = $scope.appIcons[i].key;
-
-    	switch(key){
-    		case 'Me':
-    			$scope.appIcons[i].title = $scope.verbage.me;
-    			break;
-    		case 'CallLog':
-    			$scope.appIcons[i].title = $scope.verbage.call_and_recordings;
-    			break;
-    		case 'Conferences':
-    			$scope.appIcons[i].title = $scope.verbage.conferencing;
-    			break;
-    		case 'CallCenter':
-    			$scope.appIcons[i].title = $scope.verbage.callcenter;
-    			break;
-    		case 'Search':
-    			$scope.appIcons[i].title = $scope.verbage.search;
-    			break;
-    		case 'Zoom':
-    			$scope.appIcons[i].title =$scope.verbage.zoom;
-    			break;
-    		case 'Box':
-    			$scope.appIcons[i].title = $scope.verbage.box;
-    			break;
-    	}
-
+      }
     }
+  };
+
+  if (localStorage.savedNavbarOrder){
+    // load yesterday's LocalStorage-snapshot
+    var loadedNavbarOrder = JSON.parse(localStorage.savedNavbarOrder);
+    var callFlag = false;
+    var callIdx;
+    // find out if CC existed/enabled in yesterday's snapshot, if so --> set flag and save idx
+    for (var i = 0, len = loadedNavbarOrder.length; i < len; i++){
+      var single = loadedNavbarOrder[i];
+      if (single.key == "CallCenter"){
+        // if call center is enabled
+        if (single.enabled === 1){
+          callFlag = true;
+          callIdx = i;
+          break;          
+        } else {
+          callIdx = i;
+        }
+      }
+    }
+    // if callCenter did not exist yesterday (no CC-permissions yesterday)...
+    if (!callFlag){
+      // check if CC perm was granted last nite...
+      settingsService.getPermissions().then(function(data){
+        // if no CC granted last nite...
+        if (!data.showCallCenter){
+          // just use yesterday's snapshot as is
+          $scope.updatedNavbar = loadedNavbarOrder;
+          // STEP-B
+          setVerbage();
+        } else if (data.showCallCenter){
+        // yes CC permissions were granted last nite...
+          // re-enable CC icon at original CC-position (idx 3)
+          // re-enable...
+          loadedNavbarOrder.splice(callIdx, 1, {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:1, locked: false}); 
+          $scope.updatedNavbar = loadedNavbarOrder;
+          // STEP-B
+          setVerbage();
+        }
+      });
+    // otherwise if yes CC existed yesterday...
+    } else if (callFlag){
+      // check if CC perm was granted last nite...
+      settingsService.getPermissions().then(function(data){
+        // if CC revoked last nite...
+        if (!data.showCallCenter){
+          // disable CC-icon from navbar
+          // disable... (aka switch out callcenter w/ enabled prop set to 1 for CC with enabled prop set to 0)
+          loadedNavbarOrder.splice(callIdx, 1, {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter",enabled:0, locked: false});
+          $scope.updatedNavbar = loadedNavbarOrder;
+          // STEP-B  
+          setVerbage();
+        } else if (data.showCallCenter){
+        // if CC not revoked last nite
+          // load yesterday's snapshot as is
+          $scope.updatedNavbar = loadedNavbarOrder;
+          // STEP-B
+          setVerbage();
+        }
+      });
+    }
+  } else {
+    // if no LocalStorage snapshot exists, just load default order
+    $scope.updatedNavbar = $scope.appIcons = reset_order();
+    setVerbage();
   }
+
 
   $scope.sortableOptions = {
     placeholder: "ui-state-highlight",
@@ -67,8 +134,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     'ui-floating': true,
     stop: function(e, ui){
       // save changed-order to localStorage
-      localStorage.setItem('savedNavbarOrder', JSON.stringify($scope.appIcons));      
-    }
+      localStorage.setItem('savedNavbarOrder', JSON.stringify($scope.appIcons));
+    },
+    items: "a:not(.not-sortable)"
   };
 
   var player; // html element
@@ -84,9 +152,10 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
   
 	// enable or disable icons based on permissions
 	settingsService.getPermissions().then(function(data) {
+    console.log('scc - ', data);
 		for (var i = 0, len = $scope.appIcons.length; i < len; i++) {
 			if ($scope.appIcons[i].key == 'CallCenter' && !data.showCallCenter)
-				$scope.appIcons[i].enabled = 0;
+        $scope.appIcons[i].enabled = 0;
 			
 			// if ($scope.appIcons[i].key == 'Zoom' && !data.showVideoCollab)
 		}
@@ -108,6 +177,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		$scope.voicemail = data.fullProfile ? data.fullProfile : contactService.getContact(data.contactId);
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
+		$scope.player.position = 0;
+		$scope.player.progress = 0;
 		
 		// update hidden audio element
 		var source = document.getElementById('voicemail_player_source');
@@ -120,7 +191,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 		player.onloadeddata = function() {
 			$scope.player.loaded = true;
 			$scope.player.playing = true;
-			$scope.player.position = 0;
 			$scope.$safeApply();
 			
 			player.play();
@@ -207,33 +277,34 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 	};
 	
 	var icon_version;
-    $scope.$on("fdpImage_synced",function(event,data){
-        if(data){
-            for(var i = 0, len = data.length; i < len; i++){
-                if(data[i].xpid == $rootScope.myPid){
-                    icon_version = data[i].xef001iver;
-                }
-            }
-        } 
-    });
 
-    $scope.$on("reset_app", function(event,data){
-    	$scope.appIcons = reset_order();
-    });
+  $scope.$on("fdpImage_synced",function(event,data){
+      if(data){
+          for(var i = 0, len = data.length; i < len; i++){
+              if(data[i].xpid == $rootScope.myPid){
+                  icon_version = data[i].xef001iver;
+              }
+          }
+      } 
+  });
 
-    $scope.$on("settings_updated",function(event,data){
-    	for (var i = 0, len = $scope.appIcons.length; i < len; i++) {
-    		var key = $scope.appIcons[i].key;
+  $scope.$on("reset_app", function(event,data){
+  	$scope.appIcons = reset_order();
+  });
 
-    		switch(key){
-    			case 'Box':
-    				$scope.appIcons[i].enabled = data["hudmw_box_enabled"] == "true" ? 1 : 0;
-    				break;
-    			default:
-    				break;
-    		}
-    	}
-    });
+  $scope.$on("settings_updated",function(event,data){
+  	for (var i = 0, len = $scope.appIcons.length; i < len; i++) {
+  		var key = $scope.appIcons[i].key;
+
+  		switch(key){
+  			case 'Box':
+  				$scope.appIcons[i].enabled = data["hudmw_box_enabled"] == "true" ? 1 : 0;
+  				break;
+  			default:
+  				break;
+  		}
+  	}
+  });
 
 	$scope.logout = function() {
 		httpService.logout();

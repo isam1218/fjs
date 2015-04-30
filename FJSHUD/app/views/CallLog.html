@@ -74,7 +74,9 @@
 				</div>
 			</div>
 			
-			<div class="Empty" ng-if="calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
+			<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
+			
+			<div class="Empty" ng-if="!loading && calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
 		</div>
 	</div>
 </div>
