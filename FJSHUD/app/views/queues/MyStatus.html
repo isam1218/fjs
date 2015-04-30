@@ -18,21 +18,7 @@
 
 <div class="QueueList">
 	<div class="ListRow" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]" dockable="queue">	
-		<div class="Avatar AvatarNormal" context-menu="queue">
-			<div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
-			<div class="AvatarInteractable"></div>
-		</div>
+		<avatar profile="queue"></avatar>
 
 		<div class="ListRowContent">
 			<div class="ListRowTitle">

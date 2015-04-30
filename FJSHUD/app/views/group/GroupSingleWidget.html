@@ -1,20 +1,6 @@
 <div class="Widget Conversation Group">
     <div class="WidgetHeader">
-        <div class="ConversationAvatarSection Avatar AvatarNormal" context-menu="group">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(0) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(1) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(2) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-				<img class="GroupAvatarItemImg" data-ng-src="{{ ::getAvatarUrl(3) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="AvatarInteractable"></div>
-        </div>
+        <avatar profile="group"></avatar>
 		
         <div ng-if="deptHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.department}} "{{ ::group.name }}"</div>
         <div ng-if="groupHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}} "{{ ::group.name }}"</div>

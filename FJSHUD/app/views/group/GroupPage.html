@@ -24,9 +24,7 @@
             <!--ng-repeat= "member in members | filter: {displayName:query}"-->
             <a href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members = (pageMembers | filter: membersOn)"> 
             
-                <div class="vmavatarsection Avatar AvatarNormal" context-menu="member"> 
-                    <img class="AvatarNoBorder" ng-src="getMeAvatarUrl(member.xpid)" onerror="this.src='img/Generic-Avatar-28.png'"/>
-                </div>
+                <avatar profile="member"></avatar>
 
                 <div class="vminfo"> 
                     <div class="displayName">

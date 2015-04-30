@@ -95,10 +95,7 @@
 						<div class="Time" timer="member.call.startedAt"></div>
 					</div>
 								
-					<div class="Avatar AvatarNormal" context-menu="member.fullProfile">
-						<img class="AvatarImgPH" data-ng-src="{{::member.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="member.fullProfile"></avatar>
 				</div>
 				<div class="Empty" ng-if="!member.call.startedAt">{{::verbage.no_calls}}</div>
 			</div>

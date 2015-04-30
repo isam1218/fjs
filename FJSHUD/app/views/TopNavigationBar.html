@@ -16,9 +16,7 @@
 	<div class="TopBarVoicemailControls" ng-show="voicemail">		
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		<div class="Caller">
-			<div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
-				<img class="AvatarImgPH" ng-src="{{voicemail.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
+			<avatar profile="voicemail.fullProfile" type="4"></avatar>
 			<div class="Details">
 				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
 				<strong>{{ voicemail.displayName || voicemail.name }}</strong>

@@ -22,21 +22,7 @@
 <div ng-if="viewIcon" class="QueueList">
 	<div class="Block" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid" dockable="queue">
 		<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecentQueue(queue.xpid)" class="Header">
-			<div class="Avatar AvatarNormal" context-menu="queue">
-				<div class="GroupAvatarItem GroupAvatarItem_0">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="GroupAvatarItem GroupAvatarItem_1">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="GroupAvatarItem GroupAvatarItem_2">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="GroupAvatarItem GroupAvatarItem_3">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="AvatarInteractable"></div>
-			</div>
+			<avatar profile="queue"></avatar>
 			<div class="Title">
 				<div class="Name">{{ ::queue.name }}</div>
 				<div class="Agents">{{::verbage.agents}}: {{ queue.info.active + ' / ' + queue.loggedInMembers + ' / ' + queue.members.length }}</div>

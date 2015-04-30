@@ -40,9 +40,7 @@
 				
 				<div class="Members">
 					<div ng-repeat="contact in add.contacts" class="ListRow">
-						<div class="Avatar AvatarNormal">
-							<img ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						</div>
+						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<strong>{{ contact.displayName }}</strong>

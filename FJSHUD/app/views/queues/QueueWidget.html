@@ -1,23 +1,7 @@
 <div class="Widget Queues" id="WidgetCallCenter">
 
   <div class="WidgetHeader">
-    <div class="Avatar AvatarNormal">
-      <div class="AvatarImgPH GroupAvatarShowDefault-false">
-        <div class="GroupAvatarItem GroupAvatarItem_0">
-			<img class="GroupAvatarItemImg" ng-src="{{::queue.getAvatar(0, 28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-        <div class="GroupAvatarItem GroupAvatarItem_1">
-			<img class="GroupAvatarItemImg" ng-src="{{::queue.getAvatar(1, 28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-        <div class="GroupAvatarItem GroupAvatarItem_2">
-			<img class="GroupAvatarItemImg" ng-src="{{::queue.getAvatar(2, 28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-        <div class="GroupAvatarItem GroupAvatarItem_3">
-			<img class="GroupAvatarItemImg" ng-src="{{::queue.getAvatar(3, 28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-		</div>
-      </div>
-      <div class="AvatarForeground AvatarInteractable"></div>
-    </div>
+    <avatar profile="queue"></avatar>
     <div class="WidgetHeaderTitle Single"><span>{{::queue.name}}</span></div>
 	
     <div class="WidgetStat">
