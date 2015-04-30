@@ -1,4 +1,4 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($rootScope, $q, httpService) {
+hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', function ($rootScope, $q, contactService, httpService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
@@ -198,6 +198,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 				for (var i = 0, iLen = data.length; i < iLen; i++) {		
 					// add to member list
 					if (data[i].queueId == queues[q].xpid) {
+						data[i].fullProfile = contactService.getContact(data[i].contactId);
 						queues[q].members.push(data[i]);
 			
 						// mark as mine

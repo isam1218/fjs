@@ -45,7 +45,6 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
 			}
 		  }
 		  
-		  member.fullProfile = contactService.getContact(member.contactId);  
 		  $scope.queueMembers.push(member);
 		}
 	}

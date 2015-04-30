@@ -87,8 +87,18 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 			*/
 			
 			// context menu doesn't apply to everyone, sorry
-			if ((attrs.widget && (attrs.widget == 'context' || attrs.widget == 'zoom')) || obj.xpid == $rootScope.myPid)
+			if (obj.xpid == $rootScope.myPid)
 				return;
+			else if (attrs.widget) {
+				// still interactable
+				if (attrs.widget == 'callstatus') {
+					element.append('<div class="AvatarForeground AvatarInteractable"></div>');
+					
+					return;
+				}
+				else if (attrs.widget == 'context' || attrs.widget == 'zoom')
+					return;
+			}
 			
 			// add arrow to indicate menu
 			element.append('<div class="AvatarForeground AvatarInteractable"></div>');

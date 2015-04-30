@@ -1,4 +1,4 @@
-hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {
 	var deferred = $q.defer();
 	var conferences = [];	
 
@@ -132,8 +132,10 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 					
 					if (data[i].fdpConferenceId == conferences[c].xpid) {
 						// isn't already in
-						if (!conferenceHasMember(conferences[c], data[i].contactId))
+						if (!conferenceHasMember(conferences[c], data[i].contactId)) {
+							data[i].fullProfile = contactService.getContact(data[i].contactId);
 							conferences[c].members.push(data[i]);
+						}
 						
 						break;
 					}

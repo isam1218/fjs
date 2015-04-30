@@ -1,4 +1,4 @@
-hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $http, myHttpService,phoneService,$routeParam,$contactService,$filter,$timeout,settingService) {
+hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingService) {
     var context = this;
 
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -599,7 +599,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
         $scope.recentSelectSort = sortType;
   }
     $scope.showCallOvery = function(screen){
-        var data = $contactService.getContact($scope.meModel.my_pid);
+        var data = contactService.getContact($scope.meModel.my_pid);
         if(!data){
             data = {};
             data.displayName = $scope.currentCall.displayName;
@@ -706,7 +706,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
          $scope.currentCall = currentCall;
         if($scope.currentCall){
             if($scope.currentCall.contactId){
-                contact = $contactService.getContact(currentCall.contactId);
+                var contact = contactService.getContact(currentCall.contactId);
                 currentCall.contact = contact;
             }
         }
