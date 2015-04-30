@@ -7,8 +7,27 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
     $scope.sort;
     $scope.queues = [];
     $scope.query = "";
-    
+    var localPid;
+    var addedPid;
 
+    $scope.$on('pidAdded', function(event, data){
+        addedPid = data.info;
+        if (localStorage['recents_of_' + addedPid] === undefined){
+            localStorage['recents_of_' + addedPid] = '{}';
+        }
+        $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+    });
+    
+    $scope.storeRecentQueue = function(xpid){
+        var localPid = JSON.parse(localStorage.me);
+        $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+        $scope.recent[xpid] = {
+            type: 'queue',
+            time: new Date().getTime()
+        };
+        localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+        $rootScope.$broadcast('recentAdded', {info: xpid});
+    };
 
     $scope.getAvatarUrl = function(queue, index) {
         

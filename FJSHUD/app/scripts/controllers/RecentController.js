@@ -1,13 +1,25 @@
 hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService){
   
-  $scope.merged = []
+  var addedPid;
+  var localPid;
   $scope.totalContacts = [];
   $scope.totalGroups = [];
   $scope.totalQueues = [];
   $scope.totalConferences = [];
   $scope.recent;
-  localStorage.recent ? $scope.recent = JSON.parse(localStorage.recent) : {};
-  // console.log('recent - ', $scope.recent);
+
+  $scope.$on('pidAdded', function(event, data){
+    addedPid = data.info;
+    if (localStorage['recents_of_' + addedPid] === undefined){
+      localStorage['recents_of_' + addedPid] = '{}'
+    }
+    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+  });
+
+  $scope.$on('recentAdded', function(event, data){
+    localPid = JSON.parse(localStorage.me);
+    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+  });
 
   $scope.$on('contacts_updated', function(event, data){
     $scope.totalContacts = data;
@@ -28,9 +40,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     });
   }();
 
-  $scope.$on('recentAdded', function(event, data){
-    $scope.recent = JSON.parse(localStorage.recent);
-  });
 
   $scope.recentFilter = function(){
     // console.log('in recent filter! $scope.recent is - ', $scope.recent);
