@@ -30,11 +30,12 @@
 					</div>
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
 						
-						<div class="LeftBarNotificationAvatarSection " style="display:inline-block" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" context-menu="message.fullProfile"> 
-							<img class="NotificationAvatar CallAvatar "  
-								ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'"
-								ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-						</div>
+						<avatar 
+							class="LeftBarNotificationAvatarSection"
+							ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" 
+							profile="message.fullProfile" 
+							type="{{message.audience == 'queue' ? 3 : 4}}">
+						</avatar>
 					
 						<div class="LeftBarNotificationMessageSection" > 
 							<div ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">
@@ -100,11 +101,12 @@
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
-						<div class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" context-menu="message.fullProfile"> 
-							<img class="NotificationAvatar CallAvatar"ng-class="message.audience == 'queue' ? 'CallAvatar_Queue' : 'CallAvatar_External'" 
-
-							ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-						</div>
+						<avatar 
+							class="LeftBarNotificationAvatarSection"
+							ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"
+							profile="message.fullProfile"
+							type="{{message.audience == 'queue' ? 3 : 4}}">
+						</avatar>
 					
 						<div class="LeftBarNotificationMessageSection"> 
 							

@@ -1,10 +1,6 @@
 <div class="Widget Conversation">
     <div class="WidgetHeader">
-        <div class="Avatar AvatarNormal" context-menu="contact">
-            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH"
-                 data-ng-src="{{contact.getAvatar(32)}}">
-            <div class="AvatarForeground AvatarInteractable"></div>
-        </div>
+        <avatar profile="contact"></avatar>
         <div class="WidgetHeaderTitle">
 			{{contact.displayName}} 
 			<span ng-if="contact.primaryExtension">({{::contact.primaryExtension}})</span>
@@ -15,10 +11,7 @@
 		</div>
         <div class="WidgetHeaderCallStatus">
             <div ng-if="contact.call">
-                <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">
-                    <img class="AvatarImgPH" data-ng-src="{{targetCallContact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-                    <div class="AvatarForeground AvatarInteractable"></div>
-                </div>
+				<avatar profile="targetCallContact" type="{{contact.call.type}}"></avatar>
                 <div class="CallLineTop">
                     <div class="CallerName">{{contact.call.displayName}}</div>
                     <div class="CallDuration">{{call.duration}}</div>
