@@ -9,7 +9,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
         {display_name:$scope.verbage.sort_newest_first, type:"date", desc: true},
         {display_name:$scope.verbage.sort_oldest_first, type:"date", desc: false},
-        {display_name:$scope.verbage.sort_read_status, type:"readStatus", desc: false}
+        {display_name:$scope.verbage.sort_read_status, type:"readStatusNum", desc: false}
     ];
 
     $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
