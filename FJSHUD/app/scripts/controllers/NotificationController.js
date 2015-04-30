@@ -285,7 +285,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				$scope.onHold = false;
 				break;
 			case "openNot":
-				$scope.$parent.overlay ='notifications'
+				$scope.$parent.overlay ='notifications';
 				break;
 
 		}

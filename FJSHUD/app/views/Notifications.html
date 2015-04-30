@@ -31,10 +31,10 @@
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
 						
 						<avatar 
-							class="LeftBarNotificationAvatarSection"
+							class="LeftBarNotificationAvatarSection NotificationAvatar"
 							ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" 
 							profile="message.fullProfile" 
-							type="{{message.audience == 'queue' ? 3 : 4}}">
+							type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 						</avatar>
 					
 						<div class="LeftBarNotificationMessageSection" > 
@@ -102,10 +102,10 @@
 					<div class="NotificationSection"> 
 						
 						<avatar 
-							class="LeftBarNotificationAvatarSection"
+							class="LeftBarNotificationAvatarSection NotificationAvatar"
 							ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"
 							profile="message.fullProfile"
-							type="{{message.audience == 'queue' ? 3 : 4}}">
+							type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 						</avatar>
 					
 						<div class="LeftBarNotificationMessageSection"> 

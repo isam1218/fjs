@@ -4,7 +4,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 	var current;
 	
 	// used as <avatar profile="object" widget="tabName" type="{{callType}}"></avatar>
-	// where widget and call are optional
+	// where widget and type are optional
 	return {
 		restrict: 'E',
 		replace: true,
@@ -54,6 +54,14 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 				
 				for (var i = 0; i < 4; i++)
 					loadImage(element.find('.GroupAvatarItem_' + i + ' img'), obj.getAvatar(i, 28));
+			}
+			
+			// set up watchers for avatars that may change
+			if (attrs.widget && attrs.widget == 'context') {
+				scope.$watch($parse(attrs.profile), function (newObj) {
+					showSingle();
+					loadImage(element.find('img'), newObj.getAvatar(28));
+				});
 			}
 			
 			function showSingle() {
