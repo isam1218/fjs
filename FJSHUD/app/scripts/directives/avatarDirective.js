@@ -11,6 +11,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 		template: '<div class="Avatar"></div>',
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
+			var profile;
 			
 			/**
 				AVATAR IMAGES
@@ -41,19 +42,21 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 				
 				return;
 			}
+			else
+				profile = obj.fullProfile ? obj.fullProfile : obj;
 			
 			// single vs group
-			if (obj.firstName !== undefined) {
+			if (profile.firstName !== undefined) {
 				showSingle();
-				loadImage(element.find('img'), obj.getAvatar(28));
+				loadImage(element.find('img'), profile.getAvatar(28));
 			}
-			else if (obj.parkExt !== undefined)
+			else if (profile.parkExt !== undefined)
 				showSingle();
 			else {
 				showGroup();
 				
 				for (var i = 0; i < 4; i++)
-					loadImage(element.find('.GroupAvatarItem_' + i + ' img'), obj.getAvatar(i, 28));
+					loadImage(element.find('.GroupAvatarItem_' + i + ' img'), profile.getAvatar(i, 28));
 			}
 			
 			// set up watchers for avatars that may change
@@ -87,7 +90,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 			*/
 			
 			// context menu doesn't apply to everyone, sorry
-			if (obj.xpid == $rootScope.myPid)
+			if (profile.xpid == $rootScope.myPid)
 				return;
 			else if (attrs.widget) {
 				// still interactable

@@ -31,9 +31,9 @@
 </div>
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
-	<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
+	<a class="Button" href="" ng-show="widget == 'recordings' || widget == 'voicemails'" ng-click="deleteRecording()">
 		<div class="ListRowActionButtonRemove"></div>
-		<span>{{::delete_word}}</span>
+		<span>{{::verbage.delete_word}}</span>
 	</a>
 		
 	<div ng-if="type == 'Contact'">

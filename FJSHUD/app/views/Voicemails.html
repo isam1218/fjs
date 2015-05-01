@@ -14,7 +14,7 @@
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
         </div>
         <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
-			<avatar profile="voicemail.fullProfile" type="4"></avatar>
+			<avatar profile="voicemail" widget="'voicemails'" type="4"></avatar>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                 <div class="displayName">

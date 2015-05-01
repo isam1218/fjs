@@ -20,7 +20,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		};
 		
 		// remember parent xpid to delete records
-		if (res.widget == 'recordings')
+		if (res.widget == 'recordings' || res.widget == 'voicemails')
 			$scope.targetID = res.obj.xpid;
 		
 		// get type
@@ -144,7 +144,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.deleteRecording = function() {
-		httpService.sendAction('callrecording', 'remove', {id: $scope.targetID});
+		if ($scope.widget == 'recordings')
+			httpService.sendAction('callrecording', 'remove', {id: $scope.targetID});
+		else
+			httpService.sendAction('voicemailbox', 'delete', {id: $scope.targetID});
 	};
 	
 	$scope.callNumber = function(number) {
