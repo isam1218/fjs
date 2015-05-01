@@ -5,6 +5,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     var CALL_ON_HOLD = 3;
     var CALL_IN_PROGRESS = 2;
 
+
     var soundManager;
 
     var settings = {};
@@ -184,10 +185,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
-        // console.log('showLocationsPopup: context - ', context);
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        // console.log('scope.showPopup - ', $scope);
         $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y});
         return false;
     };
@@ -247,7 +246,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     {id:3,value:30,label:'30 items'},
     {id:4,value:40,label:'40 items'},
     {id:5,value:50,label:'50 items'},
-    {id:6,value:60,label:'60 items'}];
+    {id:6,value:60,label:'60 items'},
+     {id:7,value:70,label:'70 items'},
+    {id:8,value:80,label:'80 items'},
+    {id:9,value:90,label:'90 items'},
+    {id:10,value:100,label:'100 items'}];
     $scope.callLogSizeSelected;
 
     $scope.autoAwayOptions = [{id:1,value:30000,label:'30 Seconds'},

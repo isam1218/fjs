@@ -1,4 +1,5 @@
-hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService','PhoneService', function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService,phoneService) {	
+hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService','PhoneService','SettingsService', 
+	function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService,phoneService,settingsService) {	
 	$scope.calllog = this;
 	$scope.calllog.query = '';
 	$scope.calls = [];
@@ -19,7 +20,11 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 			updateCallLog(data.items);
 		});
 	}
+	$scope.logSize = settingsService.getSetting('recent_call_history_length') || 100;
 	
+	settingsService.getSettings().then(function(data){
+		$scope.logSize = data['recent_call_history_length']; 
+	});
 	// wait for sync before polling updates
 	queueService.getQueues().then(function() {
 		httpService.getFeed('calllog');

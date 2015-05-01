@@ -2,10 +2,7 @@
 
 	<link rel="stylesheet" href="{{path}}/styles/main.css">
 	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact" style="background-color:#F7F4F4">			
-			<div class="Avatar AvatarNormal" style="width:2.4em;height:2.4em;display:inline-block;float:left" context-menu="contact">
-				<img class="AvatarImgPH" src="{{::path}}/img/Generic-Avatar-Small.png" />
-				<div class="AvatarForeground AvatarInteractable"></div>
-			</div>
+			<avatar style="width:2.4em;height:2.4em;display:inline-block;float:left" profile="contact"></avatar>
 			
 			<div class="ListRowContent">
 				<div class="NotificationTitle">
@@ -18,10 +15,11 @@
 				</div>
 				
 				<div class="CallStatus">
-					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
-						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='{{path}}/img/Generic-Avatar-28.png'" />
-						<div class="AvatarInteractable AvatarForeground"></div>
-					</div>
+					<avatar 
+						ng-if="contact.call.startedAt" 
+						ng-click="showCallStatus($event, contact)" 
+						profile="contact" 
+						type="{{contact.call.type}}"></avatar>
 				</div>
 				
 				<div class="">
@@ -80,9 +78,7 @@
 					<div class="NotificationDivider"><img /></div>
 					<div class="NotificationSection"> 
 						
-						<div class="LeftBarNotificationAvatarSection chatNotification" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
-							<img class="NotificationAvatar"  ng-src="{{getAvatar(message.senderId)}}" onerror="this.src='{{path}}/img/Generic-Avatar-28.png'"/>
-						</div>
+						<avatar profile="message.fullProfile" class="LeftBarNotificationAvatarSection" ng-click="go_to_notification_chat(message.senderId,message.xpid)"></avatar>
 					
 						<div class="LeftBarNotificationMessageSection chatNotification" ng-click="go_to_notification_chat(message.senderId,message.xpid)"> 
 							<a href="#/contact?{{message.senderId}}" style="text-decoration:none"> 

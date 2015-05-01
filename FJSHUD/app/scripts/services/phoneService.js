@@ -117,6 +117,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		call = sipCalls[sip_id];
 		if(call){
 			call.accept();	
+		}else{
+			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 		}
 	}
 

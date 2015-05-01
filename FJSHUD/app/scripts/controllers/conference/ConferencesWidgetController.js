@@ -3,6 +3,8 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.query = '';
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
 	$scope.sortBy = 'location';
+	var addedPid;
+	var localPid;
 	
 	conferenceService.getConferences().then(function(data) {
 		$scope.conferences = data;
@@ -16,29 +18,32 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	
 	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
 
-	if (localStorage.recent === undefined)
-		localStorage.recent = '{}';
-
-	$scope.recent = JSON.parse(localStorage.recent);
+	$scope.$on('pidAdded', function(event, data){
+		addedPid = data.info;
+		if (localStorage['recents_of_' + addedPid] === undefined){
+			localStorage['recents_of_' + addedPid] = '{}';
+		}
+		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+	});
 
 	$scope.sortedBy = function(selectedConference){
+		localPid = JSON.parse(localStorage.me);
 		$scope.selectedConference = selectedConference;
 		localStorage.conf_option = JSON.stringify($scope.selectedConference);
 	};
 
 	$scope.storeRecentConference = function(confXpid){
-		$scope.recent = JSON.parse(localStorage.recent);
+		localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
 		$scope.recent[confXpid] = {
 			type: 'conference',
 			time: new Date().getTime()
 		};
-		localStorage.recent = JSON.stringify($scope.recent);
-		// console.log('*storeRecentConference - ', $scope.recent);
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
 		$rootScope.$broadcast('recentAdded', {info: confXpid});
 	};
 
 	$scope.enableChat = true;
-
 
 	// get data from sync
 	$scope.$on('conferences_updated', function(event, data) {

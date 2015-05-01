@@ -63,22 +63,7 @@
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
                     <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid">
-                        <div class="ConferenceAvatarSection Avatar AvatarNormal" context-menu="conference">
-                            <div class="GroupAvatarItem GroupAvatarItem_0">
-								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-                            <div class="GroupAvatarItem GroupAvatarItem_1">
-								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-                            <div class="GroupAvatarItem GroupAvatarItem_2">
-								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							<div class="GroupAvatarItem GroupAvatarItem_3">
-								<img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							
-                            <div class="AvatarInteractable"></div>
-                        </div>
+                        <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
                                 <div class="name"> {{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
@@ -98,10 +83,7 @@
 						
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
-                                <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office" context-menu="member.fullProfile">
-                                    <img class="AvatarImgPH" data-ng-src="{{getAvatarUrl(conference, $index)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-                                    <div class="AvatarInteractable"></div>
-                                </div>
+                                <avatar profile="member.fullProfile" type="4"></avatar>
                                 <div class="first-name">{{member.displayName}}</div>
                             </div>
                         </div>

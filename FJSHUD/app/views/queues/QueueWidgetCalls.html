@@ -31,10 +31,7 @@
 				</div>
 							
 				<div class="Agent" ng-if="call.agent">
-					<div class="Avatar AvatarNormal" context-menu="call.agent">
-						<img class="AvatarImgPH" data-ng-src="{{::call.agent.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="call.agent"></avatar>
 					<div>{{ call.agent.displayName }}</div>
 				</div>
 			</div>
@@ -68,10 +65,7 @@
 				</div>
 							
 				<div class="Agent">
-					<div class="Avatar AvatarNormal" context-menu="call.agent">
-						<img class="AvatarImgPH" data-ng-src="{{::call.agent.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="call.agent"></avatar>
 					<div>{{ call.agent.displayName }}</div>
 				</div>
 			</div>

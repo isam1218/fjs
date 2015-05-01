@@ -72,14 +72,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 			
 				// add avatars
 				groups[i].getAvatar = function(index, size) {
-					if (this.members) {
-						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
-							return httpService.get_avatar(xpid, size, size);
-						}
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					}
+					if (this.members && this.members[index] !== undefined)
+						return httpService.get_avatar(this.members[index].contactId, size, size);
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
 				};
@@ -124,14 +118,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 					
 					// add avatar
 					groups[groups.length-1].getAvatar = function(index, size) {
-						if (this.members) {
-							if (this.members[index] !== undefined) {
-								var xpid = this.members[index].contactId;
-								return httpService.get_avatar(xpid, size, size);
-							}
-							else
-								return 'img/Generic-Avatar-' + size + '.png';
-						}
+						if (this.members && this.members[index] !== undefined)
+							return httpService.get_avatar(this.members[index].contactId, size, size);
 						else
 							return 'img/Generic-Avatar-' + size + '.png';
 					};

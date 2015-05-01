@@ -99,6 +99,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	
 
 	var worker = undefined;
+  var initialPid;
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
@@ -114,6 +115,26 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
 		                    synced_data = event.data.data;
 
+                        if (synced_data.me){
+                          for (var i = 0, len = synced_data.me.length; i < len; i++){
+                            if (synced_data.me[i].propertyKey === "my_pid"){
+                              initialPid = synced_data.me[i].propertyValue;
+                              break;
+                            }
+                          }
+                          
+                          // save to both LS and to $rootScope
+                          $rootScope.myPid = initialPid;
+                          $rootScope.$broadcast('pidAdded', {info: initialPid});
+
+                          if (localStorage[initialPid] === undefined){
+                            localStorage[initialPid] = '{}';
+                          }                        
+                          localStorage.me = JSON.stringify(initialPid);
+                          
+                        }
+                        
+
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
 								for (feed in synced_data) {
@@ -127,6 +148,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
+            delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
 						delete localStorage.data_obj;
@@ -205,6 +227,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
+            delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
 						delete localStorage.data_obj;
@@ -311,6 +334,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		.success(function(response) {
 			nodeID = response.match(/node=([^\n]+)/)[1];
 			localStorage.nodeID = nodeID;
+
 			
 			// start shared worker
 			authorizeWorker();
@@ -325,12 +349,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 					break;
 				case 402:
 					//alert("bad authentication");
+          delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					$rootScope.$broadcast('no_license', undefined);
 
 					break;
 				default:
+          delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					attemptLogin();
@@ -358,7 +384,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
             + "&revoke_token=" + authTicket;
-			
+		
+    delete localStorage.me;	
 		delete localStorage.authTicket;
 		delete localStorage.nodeID;
 		delete localStorage.data_obj;
@@ -420,23 +447,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         });
         //.post(requestURL,params);
     };
-    
-    this.get_avatar = function(pid, width, height) {
-		return get_avatar(pid,width,height,undefined);
-    };
 
     this.get_avatar = function(pid,width,height,xversion){
-
-    	if (pid) {
-            if(xversion){
-            	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + "&xver=" + xversion;
-    		}else{
-    			return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID ;
-    		}
-            
-        } else {
+    	if (pid)
+           	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + (xversion ? '&xver=' + xversion : '');
+		else
             return "img/Generic-Avatar-Small.png";
-        }
 	};
 	
 	this.get_audio = function(key) {

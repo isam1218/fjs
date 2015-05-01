@@ -7,7 +7,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.reasons = {};
 	$scope.canDock = true;
 	
-	$scope.enableCallLater = true;
+	$scope.enableCallLater = false;
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
 		var data = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
@@ -27,6 +27,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		if (data.firstName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.contact = data;
+			if($scope.contact.call){
+				$scope.enableCallLater = true;
+			}else{
+				$scope.enableCallLater = false;
+			}
 			$scope.name = data.displayName;
 			$scope.isFavorite = groupService.isFavorite(data.xpid);
 		}
@@ -65,6 +70,12 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			if ($scope.contact == null) {
 				$scope.name = "private";
 				$scope.canDock = false;
+			}else{
+				if($scope.contact.call){
+					$scope.enableCallLater = true;
+				}else{
+					$scope.enableCallLater = false;
+				}
 			}
 			$scope.parkedCall = data; 
 		}
@@ -90,7 +101,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 					$scope.canDock = false;
 					break;
 				}
-				$scope.enableCallLater = data['busy_ring_back']  == 'true';
+				//$scope.enableCallLater = data['busy_ring_back']  == 'true';
 			}
 		});
 	});

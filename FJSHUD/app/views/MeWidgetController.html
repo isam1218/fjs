@@ -2,8 +2,7 @@
     <div class="WidgetHeader">
         <div class="WidgetHeaderTitle">{{ meModel.display_name }}</div>
         <div class="Avatar AvatarBig">
-            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl(90,90)}}">
-            <div class="AvatarForeground AvatarStatic"></div>
+            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl(90,90)}}" />
         </div>
         <div class="MeInfoBlock">
                <div class="MeInfoBlock-column">
@@ -44,12 +43,8 @@
               <div class="CurrentCall"  ng-if="currentCall != null">
                 <div class="WidgetSectionTitle">{{verbage.current_call}} {{currentCall.startedAt | duration}} </div>
                 <div class="LeftSide"> 
-                  <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
-                      <div class="Avatar AvatarSmall CallAvatar CallAvatar_External">
-                        <img class="AvatarImgPH" ng-src="{{ currentCall.contact ? currentCall.contact.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'"
-                         />
-                        <div class="AvatarForeground AvatarInteractable"></div>
-                      </div>
+                  <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >  
+					  <avatar profile="currentCall.contact" type="{{currentCall.contact.call.type || 11}}"></avatar>
                       
                       <div class="ListRowContent" style="border-left:none">
                         <div class="ListRowTitle">
@@ -143,7 +138,7 @@
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
-                    <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
+                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value" class="RecentCallRow"> 
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D hh:mm a':fon_lang_code}} </div>
 
