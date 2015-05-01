@@ -79,12 +79,12 @@
 		
 			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type == 4" ng-click="changeScreen('conference')" />
+			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type <= 4" ng-click="changeScreen('conference')" />
 		</div>
 	</div>
 	
 	<!-- transfer call -->
-	<div class="Foreground" ng-show="screen == 'transfer'">
+	<div class="Foreground" ng-if="screen == 'transfer'">
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
@@ -130,7 +130,7 @@
 				</div>
 			</div>
 			
-			<div class="Section" ng-show="transferTo">
+			<div class="Section" ng-if="transferTo">
 				<div>
 					<h4>{{::verbage.office_destination}}</h4>
 					<em>{{::verbage.call_transfer_destination}}</em>
@@ -140,7 +140,7 @@
 						<avatar profile="transferTo"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<strong>{{ ::transferTo.displayName }}</strong>
+								<strong>{{ transferTo.displayName }}</strong>
 								<br/>
 								<div class="ListRowStatusIcon XIcon-QueueStatus-{{transferTo.queue_status}}"></div>
 								<div class="ListRowStatusIcon XIcon-ChatStatus-{{transferTo.hud_status || 'offline' }}"></div>
@@ -169,7 +169,7 @@
 	</div>
 	
 	<!-- conferencing -->
-	<div class="Foreground" ng-show="screen == 'conference'">
+	<div class="Foreground" ng-if="screen == 'conference'">
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
@@ -195,7 +195,7 @@
 						</div>
 					</div>
 					<div class="ListRow">
-						<avatar profile="onCall.call"></avatar>
+						<avatar profile="onCall.call.fullProfile"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name">

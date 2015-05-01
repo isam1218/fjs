@@ -181,14 +181,12 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		var emails = [];
 		
 		// get all addresses from members
-		angular.forEach(group.members, function(obj) {
-			if (obj.contactId != $rootScope.myPid) {
-				var contact = contactService.getContact(obj.contactId);
-				
-				if (contact.email)
-					emails.push(contact.email);
-			}
-		});
+		for (var i = 0; i < group.members.length; i++) {
+			var member = group.members[i];
+			
+			if (member.contactId != $rootScope.myPid && member.fullProfile && member.fullProfile.email)
+				emails.push(member.fullProfile.email);
+		}
 		
 		window.open('mailto:' + emails.join(';'));
 	};

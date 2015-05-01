@@ -25,13 +25,6 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 			$scope.members = $scope.group.members;
 		}
 		
-		if($scope.members){
-			for(member in $scope.members){
-				contact = contactService.getContact($scope.members[member].contactId);
-				$scope.members[member] = contact;
-				$scope.members[member].contactId = contact.xpid;
-			}
-		}
 		$scope.isMine = groupService.isMine($scope.groupId);		
 	});
 
