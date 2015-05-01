@@ -29,14 +29,15 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.totalConferences = data;
   });
 
-  var groupAndQueueGetter = function(){
+  $scope.$on('queues_updated', function(event, data){
+    $scope.totalQueues = data.queues;
+  });
+
+  var groupGetter = function(){
     var totalGroups = groupService.getGroups();
     var totalQueues = queueService.getQueues();
     return totalGroups.then(function(result1){
       $scope.totalGroups = result1;
-      totalQueues.then(function(result2){
-        $scope.totalQueues = result2;
-      });
     });
   }();
 
