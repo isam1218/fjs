@@ -1,6 +1,6 @@
 <div class="ToolBar">
         <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="query" ng-model-options="{debounce: 100}"></div>
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query" ng-model-options="{debounce: 100}"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -16,7 +16,7 @@
 
  <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
-            <a  href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" ng-repeat= "member in members | filter: {displayName:query}"> 
+            <a  href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat= "member in members | filter: searchFilter() track by member.xpid"> 
             
                 <avatar profile="member.fullProfile"></avatar>
 

@@ -1,5 +1,7 @@
 hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'HttpService', function ($scope, $rootScope, contactService, httpService) {
   var addedPid;
+  $scope.que = {};
+  $scope.que.query = '';
   $scope.query = "";
   $scope.selectedSort = "displayName";
 
@@ -40,6 +42,14 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
 		}
 	}
   });
+
+  $scope.searchFilter = function(){
+    var query = $scope.que.query;
+    return function(member){
+      if (member.displayName.toLowerCase().indexOf(query) != -1 || member.primaryExtension.indexOf(query) != -1)
+        return true;
+    };
+  };
 
   $scope.$on("$destroy", function () {
 
