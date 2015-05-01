@@ -172,13 +172,25 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 	
 	$rootScope.$on('queue_call_synced', function(event, data) {
+		var now = new Date().getTime();
+		
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
 			queues[q].calls = [];
+			queues[q].longestWait = now;
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
-				if (data[i].queueId == queues[q].xpid)
+				if (data[i].queueId == queues[q].xpid) {
 					queues[q].calls.push(data[i]);
+					
+					// find longest wait/hold
+					if (data[i].startedAt < queues[q].longestWait)
+						queues[q].longestWait = data[i].startedAt;
+				}
 			}
+			
+			// no change, so set to zero
+			if (queues[q].longestWait == now)
+				queues[q].longestWait = 0;
 		}
 	
 		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));

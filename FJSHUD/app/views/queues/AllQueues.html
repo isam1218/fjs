@@ -77,9 +77,9 @@
 				<span>{{::verbage.avg_talk}}</span>		
 				<div ng-if="sortColumn == 'info.avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.abandon + info.completed')">
-				<span>{{::verbage.total}}</span>		
-				<div ng-if="sortColumn == 'info.abandon + info.completed'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+			<div ng-click="setSort('longestWait')">
+				<span>{{::verbage.hold}}</span>		
+				<div ng-if="sortColumn == 'longestWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 			<div ng-click="setSort('info.abandonPercent')">
 				<span>{{::verbage.abandoned}}</span>		
@@ -96,7 +96,10 @@
 				<div>{{ queue.info.waiting}}</div>
 				<div>{{ queue.info.esa*1000 | duration}}</div>
 				<div>{{ queue.info.avgTalk*1000 | duration}}</div>
-				<div>{{ queue.info.abandon + queue.info.completed }}</div>
+				<div>
+					<span ng-if="queue.longestWait > 0" timer="queue.longestWait"></span>
+					<span ng-if="queue.longestWait == 0">00:00</span>
+				</div>
 				<div>{{ queue.info.abandonPercent }}%</div>
 				<div>{{ queue.info.active }}</div>
 			</a>
