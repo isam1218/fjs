@@ -4,8 +4,6 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
 	$scope.query = "";
-	httpService.getFeed("groupcontacts");
-	httpService.getFeed("contactstatus");
 	$scope.sort_options = [
 	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
     {name:$scope.verbage.sort_by_call_status,id:2, type:'call_status'},
@@ -30,18 +28,7 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 
 	$scope.callExtension= function(extension){
 		phoneService.makeCall(extension);
-	}
-	$scope.$on("contacts_updated", function(event,data){
-		for(index in $scope.members){
-			for(key in data){
-				if(data[key].xpid == $scope.members[index].xpid){
-					$scope.members[index] = data[key];
-					$scope.members[index].contactId = data[key].xpid;
-					break;	
-				}
-			}
-		}
-	});
+	};
 
 	$scope.sortBy = function(type){
 		switch(type){

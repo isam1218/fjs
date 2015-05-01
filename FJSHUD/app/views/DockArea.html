@@ -95,15 +95,15 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.xpid}}" ng-click="storeRecent(member.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
-					<avatar profile="member"></avatar>
+				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
+					<avatar profile="member.fullProfile"></avatar>
 				
-					<div class="ListRowContent" dockable="member">
+					<div class="ListRowContent" dockable="member.fullProfile">
 						<div class="ListRowTitle">
-							{{ ::member.displayName }}
+							{{ ::member.fullProfile.displayName }}
 							<br/>
-							<div class="IconDisplay XIcon-ChatStatus-{{member.hud_status || 'offline' }}"></div>
-							{{verbage[member.hud_status] || verbage['offline']}}
+							<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+							{{verbage[member.fullProfile.hud_status] || verbage['offline']}}
 						</div>
 					</div>
 				</a>
@@ -128,16 +128,16 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.xpid}}" ng-click="storeRecent(member.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" ng-init="member = getContact(member.contactId)">
-					<avatar profile="member"></avatar>
+				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
+					<avatar profile="member.fullProfile"></avatar>
 				
-					<div class="ListRowContent" dockable="member">
+					<div class="ListRowContent" dockable="member.fullProfile">
 						<div class="ListRowTitle">
-							{{ ::member.displayName }}
+							{{ ::member.fullProfile.displayName }}
 							<br/>
-							{{ ::member.primaryExtension }}
+							{{ ::member.fullProfile.primaryExtension }}
 						</div>
-						<div class="ListRowStatus" timer="member.call.startedAt"></div>
+						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt"></div>
 					</div>
 				</a>
 				

@@ -11,10 +11,10 @@
 		</div>
         <div class="WidgetHeaderCallStatus">
             <div ng-if="contact.call">
-				<avatar profile="targetCallContact" type="{{contact.call.type}}"></avatar>
+				<avatar profile="contact.call.fullProfile" type="{{contact.call.type}}"></avatar>
                 <div class="CallLineTop">
                     <div class="CallerName">{{contact.call.displayName}}</div>
-                    <div class="CallDuration">{{call.duration}}</div>
+                    <div class="CallDuration" timer="contact.call.startedAt"></div>
                     <br>
                     <div class="CallExtension">{{::contact.call.phone}} </div>
                 </div>

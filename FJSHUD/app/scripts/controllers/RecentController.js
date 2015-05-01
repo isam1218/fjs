@@ -21,7 +21,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
   });
 
-  $scope.$on('contacts_updated', function(event, data){
+  contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;
   });
 

@@ -15,7 +15,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	});
 	
 	// pull contact updates from service
-	$scope.$on('contacts_updated', function(event, data) {
+	contactService.getContacts().then(function(data) {
 		$scope.contacts = data;	
 	});
 	
