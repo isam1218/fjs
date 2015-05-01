@@ -61,6 +61,14 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 			}
 		};
 	};
+
+  $scope.searchFilter = function(){
+    return function(group){
+      if (group.name.toLowerCase().indexOf($scope.$parent.query) != -1 || group.extension.indexOf($scope.$parent.query) != -1){
+        return true;
+      }
+    }
+  };
 	
 	$scope.getOwner = function(group) {
 		if (group.ownerId == $rootScope.myPid)

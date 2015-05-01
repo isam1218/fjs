@@ -35,7 +35,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 
   var groupGetter = function(){
     var totalGroups = groupService.getGroups();
-    var totalQueues = queueService.getQueues();
     return totalGroups.then(function(result1){
       $scope.totalGroups = result1;
     });
@@ -51,6 +50,30 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       if ($scope.recent[currentXpid] !== undefined){
         // attach a sorting timestamp
         item.timestamp = $scope.recent[currentXpid]['time'];
+        return true;
+      }
+    };
+  };
+
+  $scope.searchRecentContactFilter = function(){
+    return function(contact){
+      if (contact.displayName.toLowerCase().indexOf($scope.$parent.query) != -1 || contact.primaryExtension.indexOf($scope.$parent.query) != -1){
+        return true;
+      }
+    };
+  };
+
+  $scope.searchRecentGroupFilter = function(){
+    return function(group){
+      if (group.name.toLowerCase().indexOf($scope.$parent.query) != -1 || group.extension.indexOf($scope.$parent.query) != -1){
+        return true;
+      }
+    };
+  };
+
+  $scope.searchRecentConfFilter = function(){
+    return function(conf){
+      if (conf.extensionNumber.indexOf($scope.$parent.query) != -1 || conf.name.toLowerCase().indexOf($scope.$parent.query) != -1){
         return true;
       }
     };

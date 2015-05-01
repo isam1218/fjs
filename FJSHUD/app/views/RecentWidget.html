@@ -1,7 +1,7 @@
 <div class="ContactList">
     <h4>{{::verbage.recent_contacts}}</h4>
     <em>{{::verbage.contact_name_status}}</em>
-    <a href="#/contact/{{contact.xpid}}" data-ng-repeat="contact in totalContacts |filter: {displayName: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+    <a href="#/contact/{{contact.xpid}}" data-ng-repeat="contact in totalContacts |filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<avatar profile="contact"></avatar>
         
         <div class="ListRowContent" dockable="contact">
@@ -32,7 +32,7 @@
 
     <h4>{{::verbage.recent_groups}}</h4>
     <em>{{::verbage.recent_group_name_members}}</em>
-    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
         <avatar profile="group"></avatar>
         <div class="ListRowContent" dockable="group">
             <div class="ListRowTitle">
@@ -64,7 +64,7 @@
 
     <h4>{{::verbage.recent_conferences}}</h4>
     <em>{{::verbage.recent_conference_room_extension}}</em>
-    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: recentFilter() | orderBy: customSort(): customReverse() track by conference.xpid">
+    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() track by conference.xpid">
         <avatar profile="conference"></avatar>
         <div class="ListRowContent" dockable="conference">
             <div class="ListRowTitle">
