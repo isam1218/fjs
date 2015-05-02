@@ -52,12 +52,16 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
 
   $scope.$on('pidAdded', function(event, data){
     addedPid = data.info;
+    var ccPermissionFlag = false;
+    var vidPermissionFlag = false;
     // if no saved navbar order for this user
     if (localStorage['navbar_of_' + addedPid] === undefined){
       // use default order
       settingsService.getPermissions().then(function(data) {
         // console.log('scc - ', data);
         if (data.showCallCenter && !data.showVideoCollab){
+          ccPermissionFlag = true;
+          localStorage['ccPerm_of_' + addedPid] = JSON.stringify(ccPermissionFlag);
           $scope.appIcons = $scope.updatedNavbar = 
            [
             {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
@@ -78,6 +82,10 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
               ];
           localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
         } else if (data.showCallCenter && data.showVideoCollab){
+          ccPermissionFlag = true;
+          localStorage['ccPerm_of_' + addedPid] = JSON.stringify(ccPermissionFlag);
+          vidPermissionFlag = true;
+          localStorage['vidPerm_of_' + addedPid] = JSON.stringify(vidPermissionFlag);
           $scope.appIcons = $scope.updatedNavbar = [
                     {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
                     , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
@@ -89,6 +97,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
                   ];
           localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
         } else if (!data.showCallCenter && data.showVideoCollab){
+          vidPermissionFlag = true;
+          localStorage['vidPerm_of_' + addedPid] = JSON.stringify(vidPermissionFlag);
           $scope.appIcons = $scope.updatedNavbar = [
                     {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
                     , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
@@ -102,6 +112,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
       });
     } else {
       // load user's saved navbar order
+      ccPermissionFlag = JSON.stringify(localStorage['ccPerm_of_' + addedPid]);
+      vidPermissionFlag = JSON.stringify(localStorage['vidPerm_of_' + addedPid]);
       var loadedNavbarOrder = JSON.parse(localStorage['navbar_of_' + addedPid]);
       var callFlag = false;
       var videoFlag = false;
@@ -111,35 +123,23 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
       for (var i = 0, len = loadedNavbarOrder.length; i < len; i++){
         var singleIcon = loadedNavbarOrder[i];
         // search for call center
-        if (singleIcon.key == 'CallCenter'){
-          if (singleIcon.enabled === 1){
-            callFlag = true;
-            callIdx = i;
-          } else {
-            callIdx = i;
-          }
-        }
+        if (singleIcon.key == 'CallCenter')
+          callIdx = i;
         // search for video
-        if (singleIcon.key == 'Zoom'){
-          if (singleIcon.enabled === 1){
-            videoFlag = true;
-            videoIdx = i;
-          } else {
-            videoIdx = i;
-          }
-        }
+        if (singleIcon.key == 'Zoom')
+          videoIdx = i;
       }
       // if callCenter did not exist yesterday (no CC-permissions yesterday)...
-      if (!callFlag){
+      if (!ccPermissionFlag){
         // check if CC perm was granted last nite...
         settingsService.getPermissions().then(function(data){
-          // if no CC granted last nite...
+          // if no CC granted last nite... aka no permission right now
           if (!data.showCallCenter){
             // just use yesterday's snapshot as is
             $scope.updatedNavbar = loadedNavbarOrder;
             setVerbage();
+            // otherwise if CC permissions were granted last nite... (no CC yesterday + permission yes rt now)
           } else if (data.showCallCenter){
-            // otherwise if CC permissions were granted last nite...
             // re-create CC icon at end of array (array.length)
             var endOfArray = loadedNavbarOrder.length;
             loadedNavbarOrder.splice(endOfArray, 0, {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter", locked: false});
@@ -148,7 +148,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
           }
         });
         // else CC did exist yesterday (had CC-permissions yesterday)
-      } else if (callFlag){
+      } else if (ccPermissionFlag){
         // check to see if CC permissions were revoked
         settingsService.getPermissions().then(function(data){
           // if revoked...
@@ -158,12 +158,13 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
             $scope.updatedNavbar = loadedNavbarOrder;
             setVerbage();
           } else if (data.showCallCenter){
+            // loop thru loadednavbarorder here to remove duplicates
             $scope.updatedNavbar = loadedNavbarOrder;
             setVerbage();
           }
         });
       }
-      if (!videoFlag){
+      if (!vidPermissionFlag){
         settingsService.getPermissions().then(function(data){
           if (!data.showVideoCollab){
             $scope.updatedNavbar = loadedNavbarOrder;
@@ -175,7 +176,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
             setVerbage();
           }
         });
-      } else if (videoFlag){
+      } else if (vidPermissionFlag){
         settingsService.getPermissions().then(function(data){
           if (!data.showVideoCollab){
             loadedNavbarOrder.splice(videoIdx, 1);
