@@ -103,6 +103,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}
 
 	makeCall = function(number){
+		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 		if(phone && number != ""){
 			if($rootScope.meModel.location.locationType == 'w'){
 				phone.makeCall(number)
