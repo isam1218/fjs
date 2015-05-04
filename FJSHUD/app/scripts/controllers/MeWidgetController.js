@@ -213,7 +213,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             soundManager = phoneService.getSoundManager();
             
             $scope.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == soundManager.inpdefid; 
+                 return item.id == phoneService.getSelectedDevice('inpdefid');
             })[0];
             
 
@@ -222,11 +222,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             });
             
             $scope.selectedOutput = $scope.outputDevices.filter(function(item){
-                 return item.id == soundManager.outdefid; 
+                 return item.id == phoneService.getSelectedDevice('outdefid');
+
             })[0];
             
             $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                 return item.id == soundManager.ringdefid; 
+                return item.id == phoneService.getSelectedDevice('ringdefid');
             })[0];
 
             if($scope.selectedRingput == undefined){
@@ -242,7 +243,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.selectedInput = $scope.inputDevices[0];
                 $scope.updateAudioSettings($scope.selectedInput.id,'Input');
             }
-        
     });
 
     $scope.updateAudioSettings = function(value, type){
@@ -1029,17 +1029,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("key_press", function(event,data){
             dtmf_input = dtmf_input + data;
             $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-            phoneService.getDtmfToneGenerator().play(data);
+            phoneService.playTone(data,true);
             setTimeout(function(){
-                    phoneService.getDtmfToneGenerator().stop();
-                },200);
+                   phoneService.playTone(data,false);
+                },100);
 
             if($scope.currentCall){
                 
                 
-                var call = phoneService.getCall($scope.currentCall.xpid);
                 setTimeout(function(){
-                    call.dtmf(dtmf_input);
+                   phoneService.sendDtmf($scope.currentCall.xpid,dtmf_input);
                     dtmf_input = "";
                 },900);
             }
