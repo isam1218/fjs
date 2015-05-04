@@ -102,7 +102,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             soundManager = phoneService.getSoundManager();
             
             $scope.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == soundManager.inpdefid; 
+                 return item.id == phoneService.getSelectedDevice('inpdefid');
             })[0];
             
 
@@ -111,12 +111,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             });
             
             $scope.selectedOutput = $scope.outputDevices.filter(function(item){
-                 return item.id == soundManager.outdefid; 
+                 return item.id == phoneService.getSelectedDevice('outdefid');
+
             })[0];
             
             $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                 return item.id == soundManager.ringdefid; 
-            })[0];
+                 return item.id == phoneService.getSelectedDevice('ringdefid');
+             })[0];
         
     });
 
@@ -827,17 +828,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.$on("key_press", function(event,data){
             dtmf_input = dtmf_input + data;
             $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-            phoneService.getDtmfToneGenerator().play(data);
+            phoneService.playTone(data,true);
             setTimeout(function(){
-                    phoneService.getDtmfToneGenerator().stop();
-                },200)
+                    phoneService.playTone(data,false);
+                },100)
 
             if($scope.currentCall){
                 
                 
-                var call = phoneService.getCall($scope.currentCall.xpid);
                 setTimeout(function(){
-                    call.dtmf(dtmf_input);
+                   phoneService.sendDtmf($scope.currentCall.xpid,dtmf_input);
                     dtmf_input = "";
                 },900);
             }
