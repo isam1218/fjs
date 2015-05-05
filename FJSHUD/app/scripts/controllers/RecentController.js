@@ -95,10 +95,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     };
   };
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
   $scope.searchRecentContactFilter = function(){
     return function(contact){
       if (contact.displayName.toLowerCase().indexOf($scope.$parent.query) != -1 || contact.primaryExtension.indexOf($scope.$parent.query) != -1){
@@ -123,8 +119,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     };
   };
 
-<<<<<<< Updated upstream
-=======
   $scope.sort = function(field){
     if ($scope.sortField != field){
       $scope.sortField = field;
@@ -134,7 +128,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   };
 
->>>>>>> Stashed changes
   $scope.customSort = function(){
     return 'timestamp';
   };
