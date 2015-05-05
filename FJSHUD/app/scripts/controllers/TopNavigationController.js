@@ -220,7 +220,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
   };
   
-  $scope.$on('queues_updated', function(event, data) {
+  queueService.getQueues().then(function() {
+    $scope.queue = queueService.getMyQueues();
+  });
+  
+  // refresh
+  $scope.$on('queue_members_status_synced', function() {
     $scope.queue = queueService.getMyQueues();
   });
   

@@ -1,4 +1,4 @@
-hudweb.directive('dockable', ['HttpService', '$parse', function(httpService, $parse) {
+hudweb.directive('dockable', ['HttpService', '$parse', '$rootScope', function(httpService, $parse, $rootScope) {
 	var defaultImage = "this.src='img/Generic-Avatar-28.png'";
 	
 	return {
@@ -67,7 +67,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', function(httpService, $pa
 					var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 					// if inside dock, save it
-					if (ui.position.left >= rect.left && ui.position.top >= rect.top) {
+					if (obj.xpid != $rootScope.myPid && ui.position.left >= rect.left && ui.position.top >= rect.top) {
 						var data = {
 							name: 'GadgetConfig__empty_Gadget' + type + '_' + obj.xpid,
 							value: JSON.stringify({

@@ -73,7 +73,7 @@
 			
 			<div class="Details" ng-show="row[member.xpid]">
 				<div class="SubHeader">{{::verbage.other_queues}}</div>
-				<div class="Row" ng-repeat="other in member.otherQueues" ng-click="goToQueue(other.queue.xpid)">
+				<div class="Row" ng-repeat="other in member.otherQueues track by other.queue.xpid" ng-click="goToQueue(other.queue.xpid)">
 					<div>&nbsp;</div>
 					<div>&nbsp;</div>
 					<div>{{ ::other.queue.name }}</div>

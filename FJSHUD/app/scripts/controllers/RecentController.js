@@ -33,7 +33,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
   });
 
-  $scope.$on('contacts_updated', function(event, data){
+  contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;
 
     for (var i = 0; i < $scope.totalContacts.length; i++){
@@ -53,7 +53,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   });
 
-  $scope.$on('queues_updated', function(event, data){
+  queueService.getQueues().then(function(data) {
     $scope.totalQueues = data.queues;
 
     for (var k = 0; k < $scope.totalQueues.length; k++){

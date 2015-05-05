@@ -8,10 +8,6 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			contactService.getContacts().then(function(data) {
 				contacts = data;
 			});
-			
-			scope.$on('contacts_updated', function(event, data) {
-				contacts = data;
-			});
 	
 			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
