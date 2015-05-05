@@ -68,15 +68,15 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	// filter list down
 	$scope.customFilter = function() {
 		return function(conference) {
-			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)) {
-				if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1  || individualMember.primaryExtension.indexOf($scope.query) != -1){
-					return true;
+			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)){
+				if (!conference.members){
+					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
+						return true;
 				} else if (conference.members.length){
-					for (j = 0; j < conference.members.length; j++){
+					for (var j = 0; j < conference.members.length; j++){
 						var individualMember = conference.members[j];
-						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1){
+						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1 || individualMember.fullProfile.primaryExtension.indexOf($scope.query) != -1 || conference.extensionNumber.indexOf($scope.query) != -1)
 							return true;
-						}
 					}
 				}
 			}

@@ -13,11 +13,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		}
 		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
 	});
-
-	// if (localStorage.recent === undefined)
-	// 	localStorage.recent = '{}';
-	
-	// $scope.recent = JSON.parse(localStorage.recent);
 	
 	// pull contact updates from service
 	$scope.$on('contacts_updated', function(event, data) {
@@ -61,6 +56,15 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 							return true;
 						break;
 				}
+			}
+		};
+	};
+
+	$scope.searchFilter = function(){
+		var query = $scope.$parent.query;
+		return function(contact){
+			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
+				return true;
 			}
 		};
 	};

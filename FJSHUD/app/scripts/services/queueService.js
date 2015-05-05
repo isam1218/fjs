@@ -1,4 +1,4 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($rootScope, $q, httpService) {
+hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', function ($rootScope, $q, contactService, httpService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
@@ -73,14 +73,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 			// add avatars
 			for (var i = 0, len = queues.length; i < len; i++) {
 				queues[i].getAvatar = function (index, size) {
-					if (this.members) {
-						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
-							return httpService.get_avatar(xpid, size, size);
-						}
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					}
+					if (this.members && this.members[index] !== undefined)
+						return httpService.get_avatar(this.members[index].contactId, size, size);
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
 				};
@@ -112,14 +106,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 					
 					// add avatar
 					queues[queues.length-1].getAvatar = function (index, size) {
-						if (this.members) {
-							if (this.members[index] !== undefined) {
-								var xpid = this.members[index].contactId;
-								return httpService.get_avatar(xpid, size, size);
-							}
-							else
-								return 'img/Generic-Avatar-' + size + '.png';
-						}
+						if (this.members && this.members[index] !== undefined)
+							return httpService.get_avatar(this.members[index].contactId, size, size);
 						else
 							return 'img/Generic-Avatar-' + size + '.png';
 					};
@@ -184,13 +172,25 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 	});
 	
 	$rootScope.$on('queue_call_synced', function(event, data) {
+		var now = new Date().getTime();
+		
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
 			queues[q].calls = [];
+			queues[q].longestWait = now;
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
-				if (data[i].queueId == queues[q].xpid)
+				if (data[i].queueId == queues[q].xpid) {
 					queues[q].calls.push(data[i]);
+					
+					// find longest wait/hold
+					if (data[i].startedAt < queues[q].longestWait)
+						queues[q].longestWait = data[i].startedAt;
+				}
 			}
+			
+			// no change, so set to zero
+			if (queues[q].longestWait == now)
+				queues[q].longestWait = 0;
 		}
 	
 		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
@@ -210,6 +210,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'HttpService', function ($ro
 				for (var i = 0, iLen = data.length; i < iLen; i++) {		
 					// add to member list
 					if (data[i].queueId == queues[q].xpid) {
+						data[i].fullProfile = contactService.getContact(data[i].contactId);
 						queues[q].members.push(data[i]);
 			
 						// mark as mine

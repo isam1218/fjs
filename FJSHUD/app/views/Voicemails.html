@@ -13,11 +13,8 @@
             <div class="vmlabelheader"> {{::verbage.no_voicemails}} </div> 
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
         </div>
-        <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid"> 
-            <div class="vmavatarsection AvatarNormal" context-menu="voicemail.fullProfile"> 
-                <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-				<div class="AvatarInteractable"></div>
-            </div>
+        <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
+			<avatar profile="voicemail" widget="'voicemails'" type="4"></avatar>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                 <div class="displayName">

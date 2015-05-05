@@ -30,11 +30,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
     			$scope.enableChat = $scope.joined;
     			$scope.enableFileShare = $scope.joined;
     		}
-			
-			// get full profile for status, context-menu
-			angular.forEach($scope.conference.members, function(obj) {
-				obj.fullProfile = contactService.getContact(obj.contactId);
-			});
     		
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;

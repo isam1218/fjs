@@ -14,10 +14,7 @@
 					<em>{{::verbage.contacts_talking}}</em>
 				</div>
 				<div class="Contact">
-					<div class="Avatar AvatarNormal" context-menu="onCall">
-						<img class="AvatarImgPH" data-ng-src="{{ onCall.getAvatar(28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="onCall"></avatar>
 					<div class="Name">
 						<strong>{{ ::onCall.displayName }}</strong>
 						<br/>
@@ -29,17 +26,14 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
 					</div>
 				</div>
 				<div class="Contact">
-					<div class="Avatar AvatarNormal" context-menu="onCall.call">
-						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(onCall.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="onCall.call.fullProfile"></avatar>
 					<div class="Name">
 						<strong>{{ ::onCall.call.displayName }}</strong>
 						<br/>
@@ -49,10 +43,10 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
-						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.contactId)" ng-disabled="onCall.call.type != 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
 					</div>
 				</div>
 			</div>
@@ -65,10 +59,7 @@
 				
 				<div class="Bargers">
 					<div ng-repeat="barger in onCall.call.bargers" class="ListRow ListRow">
-						<div class="Avatar AvatarNormal" context-menu="barger">
-							<img class="AvatarImgPH" data-ng-src="{{::barger.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-							<div class="AvatarForeground AvatarInteractable"></div>
-						</div>
+						<avatar profile="barger"></avatar>
 			
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
@@ -88,12 +79,12 @@
 		
 			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
-			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type == 4" ng-click="changeScreen('conference')" />
+			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type <= 4" ng-click="changeScreen('conference')" />
 		</div>
 	</div>
 	
 	<!-- transfer call -->
-	<div class="Foreground" ng-show="screen == 'transfer'">
+	<div class="Foreground" ng-if="screen == 'transfer'">
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
@@ -107,10 +98,7 @@
 					<em>{{::verbage.transfer_selected_person}}</em>
 				</div>
 				<div class="Contact">
-					<div class="Avatar AvatarNormal">
-						<img class="AvatarImgPH" data-ng-src="{{ transferFrom.getAvatar ? transferFrom.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="transferFrom"></avatar>
 					<div class="Name">
 						<strong>{{ transferFrom.displayName }}</strong>
 						<br/>
@@ -129,10 +117,7 @@
 				<div class="Banner upper">{{::verbage.contacts}}</div>
 				<div class="Members">
 					<a href="" class="ListRow" ng-repeat="contact in contacts | filter: {displayName: tranQuery} track by contact.xpid" ng-click="selectDestination(contact)"> 
-						<div class="Avatar AvatarNormal">
-							<img class="AvatarImgPH" data-ng-src="{{::contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-							<div class="AvatarForeground AvatarInteractable"></div>
-						</div>
+						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<strong>{{ ::contact.displayName }}</strong>
@@ -145,20 +130,17 @@
 				</div>
 			</div>
 			
-			<div class="Section" ng-show="transferTo">
+			<div class="Section" ng-if="transferTo">
 				<div>
 					<h4>{{::verbage.office_destination}}</h4>
 					<em>{{::verbage.call_transfer_destination}}</em>
 				</div>
 				<div>
 					<a href="" class="ListRow"> 
-						<div class="Avatar AvatarNormal">
-							<img class="AvatarImgPH" data-ng-src="{{::transferTo.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-							<div class="AvatarForeground AvatarInteractable"></div>
-						</div>
+						<avatar profile="transferTo"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<strong>{{ ::transferTo.displayName }}</strong>
+								<strong>{{ transferTo.displayName }}</strong>
 								<br/>
 								<div class="ListRowStatusIcon XIcon-QueueStatus-{{transferTo.queue_status}}"></div>
 								<div class="ListRowStatusIcon XIcon-ChatStatus-{{transferTo.hud_status || 'offline' }}"></div>
@@ -187,7 +169,7 @@
 	</div>
 	
 	<!-- conferencing -->
-	<div class="Foreground" ng-show="screen == 'conference'">
+	<div class="Foreground" ng-if="screen == 'conference'">
 		<div ng-click="showOverlay(false)" class="Close">x</div>
 		
 		<div class="Header">
@@ -202,10 +184,7 @@
 				</div>
 				<div>
 					<div class="ListRow">
-						<div class="Avatar AvatarNormal">
-							<img class="AvatarImgPH" data-ng-src="{{::onCall.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-							<div class="AvatarForeground AvatarInteractable"></div>
-						</div>
+						<avatar profile="onCall"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name">
@@ -216,10 +195,7 @@
 						</div>
 					</div>
 					<div class="ListRow">
-						<div class="Avatar AvatarNormal">
-							<img class="AvatarImgPH" data-ng-src="{{::getCallStatusAvatar(onCall.call)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-							<div class="AvatarForeground AvatarInteractable"></div>
-						</div>
+						<avatar profile="onCall.call.fullProfile"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name">
@@ -246,22 +222,7 @@
 				</div>
 				<div class="Members">
                     <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: customConfFilter() track by conference.xpid" ng-click="selectConference(conference)">
-                        <div class="ConferenceAvatarSection Avatar AvatarNormal">
-                            <div class="GroupAvatarItem GroupAvatarItem_0" context-menu="conference">
-								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(0, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-                            <div class="GroupAvatarItem GroupAvatarItem_1">
-								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(1, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-                            <div class="GroupAvatarItem GroupAvatarItem_2">
-								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(2, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							<div class="GroupAvatarItem GroupAvatarItem_3">
-								<img class="GroupAvatarItemImg" ng-src="{{ conference.getAvatar(3, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							
-                            <div class="AvatarInteractable"></div>
-                        </div>
+						<avatar profile="conference"></avatar>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
                                 <div class="name"> {{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
@@ -287,22 +248,7 @@
 				
 				<div>
 					<a href="" class="ListRow ListRow-Conference">
-						<div class="ConferenceAvatarSection Avatar AvatarNormal">
-							<div class="GroupAvatarItem GroupAvatarItem_0">
-								<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(0, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							<div class="GroupAvatarItem GroupAvatarItem_1">
-								<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(1, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							<div class="GroupAvatarItem GroupAvatarItem_2">
-								<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(2, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							<div class="GroupAvatarItem GroupAvatarItem_3">
-								<img class="GroupAvatarItemImg" ng-src="{{ selectedConf.getAvatar(3, 14) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-							</div>
-							
-							<div class="AvatarInteractable"></div>
-						</div>
+						<avatar profile="selectedConf"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name"> {{::verbage.room}} # {{::selectedConf.roomNumber}} ({{::selectedConf.extensionNumber}})</div>

@@ -3,17 +3,21 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
+	$scope.grp = {};
+	$scope.grp.query = '';
 	$scope.query = "";
 	httpService.getFeed("groupcontacts");
 	httpService.getFeed("contactstatus");
+	
 	$scope.sort_options = [
 	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
     {name:$scope.verbage.sort_by_call_status,id:2, type:'call_status'},
     {name:$scope.verbage.sort_by_chat_status,id:3, type:'chat_status'},
-    ];
-    $scope.selectedSort = $scope.sort_options[0];
+  ];
+  
+  $scope.selectedSort = $scope.sort_options[0];
 
-    $scope.getAvatar = function(xpid) {
+  $scope.getAvatar = function(xpid) {
 		return httpService.get_avatar(xpid, 40, 40);
 	};
 	
@@ -25,13 +29,6 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 			$scope.members = $scope.group.members;
 		}
 		
-		if($scope.members){
-			for(member in $scope.members){
-				contact = contactService.getContact($scope.members[member].contactId);
-				$scope.members[member] = contact;
-				$scope.members[member].contactId = contact.xpid;
-			}
-		}
 		$scope.isMine = groupService.isMine($scope.groupId);		
 	});
 
@@ -77,6 +74,13 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 				break;
 		}
 		$scope.$safeApply();
+	}
 
+	$scope.searchFilter = function(){
+		var query = $scope.grp.query;
+		return function(member){
+			if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
+				return true;
+		};
 	}
 }]);

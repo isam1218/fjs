@@ -25,10 +25,7 @@
 <div class="ListView fj-scrollable"> 
 	<div class="ListRow" ng-repeat="member in conference.members" > 
 
-		<div class="CallAvatar CallAvatar_Office Avatar" context-menu="member.fullProfile"> 
-			<img class="vmavatar " ng-src="member.fullProfile.getAvatar(28)" onerror="this.src='img/Generic-Avatar-28.png'"/>
-			<div class="AvatarForeground AvatarInteractable"></div>
-		</div>
+		<avatar profile="member.fullProfile" type="4"></avatar>
 
 		<div class="ListRowContent" dockable="member.fullProfile"> 
 			<div class="ListRowTitle">

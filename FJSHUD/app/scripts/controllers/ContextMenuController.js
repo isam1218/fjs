@@ -20,7 +20,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		};
 		
 		// remember parent xpid to delete records
-		if (res.widget == 'recordings')
+		if (res.widget == 'recordings' || res.widget == 'voicemails')
 			$scope.targetID = res.obj.xpid;
 		
 		// get type
@@ -144,7 +144,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.deleteRecording = function() {
-		httpService.sendAction('callrecording', 'remove', {id: $scope.targetID});
+		if ($scope.widget == 'recordings')
+			httpService.sendAction('callrecording', 'remove', {id: $scope.targetID});
+		else
+			httpService.sendAction('voicemailbox', 'delete', {id: $scope.targetID});
 	};
 	
 	$scope.callNumber = function(number) {
@@ -181,14 +184,12 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		var emails = [];
 		
 		// get all addresses from members
-		angular.forEach(group.members, function(obj) {
-			if (obj.contactId != $rootScope.myPid) {
-				var contact = contactService.getContact(obj.contactId);
-				
-				if (contact.email)
-					emails.push(contact.email);
-			}
-		});
+		for (var i = 0; i < group.members.length; i++) {
+			var member = group.members[i];
+			
+			if (member.contactId != $rootScope.myPid && member.fullProfile && member.fullProfile.email)
+				emails.push(member.fullProfile.email);
+		}
 		
 		window.open('mailto:' + emails.join(';'));
 	};

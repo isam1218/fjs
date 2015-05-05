@@ -1,4 +1,4 @@
-hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {	
+hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {	
 	var deferred = $q.defer();
 	var groups = [];
 	var favorites = {};
@@ -72,14 +72,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 			
 				// add avatars
 				groups[i].getAvatar = function(index, size) {
-					if (this.members) {
-						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
-							return httpService.get_avatar(xpid, size, size);
-						}
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					}
+					if (this.members && this.members[index] !== undefined)
+						return httpService.get_avatar(this.members[index].contactId, size, size);
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
 				};
@@ -124,14 +118,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 					
 					// add avatar
 					groups[groups.length-1].getAvatar = function(index, size) {
-						if (this.members) {
-							if (this.members[index] !== undefined) {
-								var xpid = this.members[index].contactId;
-								return httpService.get_avatar(xpid, size, size);
-							}
-							else
-								return 'img/Generic-Avatar-' + size + '.png';
-						}
+						if (this.members && this.members[index] !== undefined)
+							return httpService.get_avatar(this.members[index].contactId, size, size);
 						else
 							return 'img/Generic-Avatar-' + size + '.png';
 					};
@@ -176,8 +164,10 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 				
 					// add member to groups
 					if (data[i].groupId == groups[g].xpid) {
-						if (!doesMemberExist(groups[g],data[i]))
+						if (!doesMemberExist(groups[g],data[i])) {
+							data[i].fullProfile = contactService.getContact(data[i].contactId);
 							groups[g].members.push(data[i]);
+						}
 						
 						// add to favorites object
 						if (data[i].groupId == favoriteID)

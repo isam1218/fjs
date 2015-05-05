@@ -1,8 +1,9 @@
 hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
 	var deferred = $q.defer();	
 	var contacts = [];
+	var service = this;
 	
-	this.getContact = function(xpid) {
+	service.getContact = function(xpid) {
 		for (var i = 0, len = contacts.length; i < len; i++) {
 			if (contacts[i].xpid == xpid)
 				return contacts[i];
@@ -11,7 +12,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		return null;
 	};
 	
-	this.getContacts = function() {
+	service.getContacts = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
@@ -98,6 +99,11 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			for (key in data) {
 				if (contacts[i].xpid == data[key].xpid) {
 					contacts[i].call = data[key];
+					
+					// attach full profile, if present
+					if (data[key].contactId)
+						contacts[i].call.fullProfile = service.getContact(data[key].contactId);
+					
 					break;
 				}
 			}

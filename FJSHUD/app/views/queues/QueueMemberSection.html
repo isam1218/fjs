@@ -1,10 +1,7 @@
 <a href="#contact/{{member.xpid}}" class="ListRow">
-  <div class="Avatar AvatarNormal" context-menu="member">
-    <img class="AvatarImgPH" data-ng-src="{{::member.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-    <div class="AvatarForeground AvatarInteractable"></div>
-  </div>
+  <avatar profile="member"></avatar>
+  
   <div class="ListRowContent" dockable="member">
-
     <div class="ListRowTitle">
 		<strong> {{ member.displayName}}</strong>
 		<br/>

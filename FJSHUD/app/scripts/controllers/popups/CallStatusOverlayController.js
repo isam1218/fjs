@@ -49,10 +49,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	$scope.contacts = [];
 
 	var updateTime = function() {
-		if ($scope.onCall.call && $scope.onCall.call.created) {
+		if ($scope.onCall.call && $scope.onCall.call.startedAt) {
 			// format date
 			var date = new Date().getTime();
-			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.created, 'mm:ss');
+			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.startedAt, 'mm:ss');
 			
 			// also get recorded time
 			if ($scope.onCall.call.record)

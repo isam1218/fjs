@@ -22,11 +22,8 @@
 <div class="ContactList">
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecentContact(contact.xpid)" data-ng-repeat="contact in contacts | filter: {displayName: $parent.$parent.query} | filter: customFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">			
-			<div class="Avatar AvatarNormal" context-menu="contact|$parent.tab">
-				<img class="AvatarImgPH" data-ng-src="{{::contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				<div class="AvatarForeground AvatarInteractable"></div>
-			</div>
+		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecentContact(contact.xpid)" data-ng-repeat="contact in contacts | filter: customFilter() | filter: searchFilter() |  orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">	
+			<avatar profile="contact" widget="$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
@@ -44,10 +41,13 @@
 				</div>
 				
 				<div class="CallStatus">
-					<div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
-						<img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarInteractable AvatarForeground"></div>
-					</div>
+					<avatar 
+						ng-if="contact.call.startedAt" 
+						ng-click="showCallStatus($event, contact)"
+						profile="contact.call.fullProfile"
+						widget="callstatus"
+						type="{{contact.call.type}}">
+					</avatar>
 				</div>				
 			</div>
 		</a>

@@ -1,6 +1,6 @@
 <div class="ToolBar">
         <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="query" ng-model-options="{debounce: 100}"></div>
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query" ng-model-options="{debounce: 100}"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -16,23 +16,21 @@
 
  <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
-            <a  href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" ng-repeat= "member in members | filter: {displayName:query}"> 
+            <a  href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat= "member in members | filter: searchFilter() track by member.xpid"> 
             
-                <div class="Avatar AvatarNormal" context-menu="member"> 
-                    <img class="AvatarNoBorder" ng-src="{{getAvatar(member.xpid)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-                </div>
+                <avatar profile="member.fullProfile"></avatar>
 
                 <div class="ListRowContent"> 
                     <div class="ListRowTitle">
-                        <span> {{ ::member.displayName }} </span>
+                        <span> {{ ::member.fullProfile.displayName }} </span>
 						<br/>
-                        <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.queue_status }}"></div>
-                        <div class="QueueStatus IconDisplay" ng-class="member.hud_status == 'available' ? 'XIcon-ChatStatus-Available' : 'XIcon-ChatStatus-offline' " ></div>
+                        <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
+                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
                     </div>
 					
                     <div class="vmalternate">
-                        <div class="vmtime">#{{ member.primaryExtension }}</div>
-                        <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(member.primaryExtension)"></input>
+                        <div class="vmtime">#{{ member.fullProfile.primaryExtension }}</div>
+                        <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(member.fullProfile.primaryExtension)"></input>
 
                     </div>
                     

@@ -116,7 +116,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                    synced_data = event.data.data;
 
                         if (synced_data.me){
-                          initialPid = synced_data.me[15].propertyValue;
+                          for (var i = 0, len = synced_data.me.length; i < len; i++){
+                            if (synced_data.me[i].propertyKey === "my_pid"){
+                              initialPid = synced_data.me[i].propertyValue;
+                              break;
+                            }
+                          }
                           
                           // save to both LS and to $rootScope
                           $rootScope.myPid = initialPid;
@@ -442,23 +447,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         });
         //.post(requestURL,params);
     };
-    
-    this.get_avatar = function(pid, width, height) {
-		return get_avatar(pid,width,height,undefined);
-    };
 
     this.get_avatar = function(pid,width,height,xversion){
-
-    	if (pid) {
-            if(xversion){
-            	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + "&xver=" + xversion;
-    		}else{
-    			return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID ;
-    		}
-            
-        } else {
+    	if (pid)
+           	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + (xversion ? '&xver=' + xversion : '');
+		else
             return "img/Generic-Avatar-Small.png";
-        }
 	};
 	
 	this.get_audio = function(key) {

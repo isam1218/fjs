@@ -15,6 +15,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.hasMessages = false;
 	$scope.phoneSessionEnabled = false;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+	
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
 	});
@@ -44,18 +45,19 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		return myHttpService.get_avatar(pid,40,40);
 	};
 
-	$scope.getMessage = function(message){
-
+	$scope.getMessage = function(message){       				
+		var messages = (message.message).split('\n');
+		
 		switch(message.type){
 
 			case "vm":
 				return "Voicemail from extension " + message.phone; 
 				break;
 			case "chat":
-				return message.message;
+				return messages;
 				break;
 			default:
-				return message.message;
+				return messages;
 
 		
 		}
@@ -296,7 +298,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				$scope.onHold = false;
 				break;
 			case "openNot":
-				$scope.$parent.overlay ='notifications'
+				$scope.$parent.overlay ='notifications';
 				break;
 
 		}

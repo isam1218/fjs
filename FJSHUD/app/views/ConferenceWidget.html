@@ -1,22 +1,6 @@
 <div class="fj-widget-area Widget Conversation">
     <div class="WidgetHeader">
-        <div class="ConferenceAvatarSection  ConferenceRecording Avatar" style="margin-bottom:5px">
-                <div class="GroupAvatarItem GroupAvatarItem_0">
-                    <img class="GroupAvatarItemImg" data-ng-src="{{ getAvatarUrl(0) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_1">
-                    <img class="GroupAvatarItemImg"
-                         data-ng-src="{{ getAvatarUrl(1) }}">
-                </div>
-                <div class="GroupAvatarItem GroupAvatarItem_2">
-                    <img class="GroupAvatarItemImg"
-                         data-ng-src="{{ getAvatarUrl(2) }}">
-                </div>
-               <div class="GroupAvatarItem GroupAvatarItem_3">
-                    <img class="GroupAvatarItemImg" data-ng-src="{{ getAvatarUrl(3) }}">
-                </div>
-               <div class="AvatarInteractable"></div>
-        </div>
+        <avatar profile="conference" style="margin-bottom:5px"></avatar>
         <div> 
             <div class="WidgetHeaderTitle Single" style="margin-left:5px">{{ conference.name}}</div>
             <div class="" style="left:4px;top: 2em;position: relative;">{{::verbage.free_room}}</div>

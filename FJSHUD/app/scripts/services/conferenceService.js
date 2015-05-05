@@ -1,4 +1,4 @@
-hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {
 	var deferred = $q.defer();
 	var conferences = [];	
 
@@ -54,14 +54,8 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 			// add avatar function
 			for (var i = 0, len = conferences.length; i < len; i++) {
 				conferences[i].getAvatar = function(index, size) {
-					if (this.members) {
-						if (this.members[index] !== undefined) {
-							var xpid = this.members[index].contactId;
-							return httpService.get_avatar(xpid, size, size);
-						}
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					}
+					if (this.members && this.members[index] !== undefined)
+						return httpService.get_avatar(this.members[index].contactId, size, size);
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
 				};
@@ -93,14 +87,8 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 					
 					// add avatar
 					conferences[conferences.length-1].getAvatar = function (index, size) {
-						if (this.members) {
-							if (this.members[index] !== undefined) {
-								var xpid = this.members[index].contactId;
-								return httpService.get_avatar(xpid, size, size);
-							}
-							else
-								return 'img/Generic-Avatar-' + size + '.png';
-						}
+						if (this.members && this.members[index] !== undefined)
+							return httpService.get_avatar(this.members[index].contactId, size, size);
 						else
 							return 'img/Generic-Avatar-' + size + '.png';
 					};
@@ -144,8 +132,10 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'HttpService', function
 					
 					if (data[i].fdpConferenceId == conferences[c].xpid) {
 						// isn't already in
-						if (!conferenceHasMember(conferences[c], data[i].contactId))
+						if (!conferenceHasMember(conferences[c], data[i].contactId)) {
+							data[i].fullProfile = contactService.getContact(data[i].contactId);
 							conferences[c].members.push(data[i]);
+						}
 						
 						break;
 					}

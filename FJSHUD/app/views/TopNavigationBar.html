@@ -2,7 +2,7 @@
 
 <div class="TopBarIcons">
 	<div class="DragDropList" ui-sortable="sortableOptions" ng-model="appIcons">
-		<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: 1}" ng-class="{'not-sortable': icon.locked}">
+		<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons" ng-class="{'not-sortable': icon.locked}">
 			<div class="Avatar AvatarNormal TopBarItemAppIcon" ng-show="icon.key == 'Me'">
 				<img class="AvatarImgPH" data-ng-src="{{ getAvatar() }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 			</div>
@@ -16,9 +16,7 @@
 	<div class="TopBarVoicemailControls" ng-show="voicemail">		
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		<div class="Caller">
-			<div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
-				<img class="AvatarImgPH" ng-src="{{voicemail.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
+			<avatar profile="voicemail.fullProfile" type="4"></avatar>
 			<div class="Details">
 				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
 				<strong>{{ voicemail.displayName || voicemail.name }}</strong>

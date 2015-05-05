@@ -13,8 +13,8 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
     {display_name: $scope.verbage.queue_active_calls, type: "info.active"}
   ];
   
-  // $scope.selectedQueue = $scope.queue_options[0];
   $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option) : $scope.queue_options[0];
+
   $scope.$on('pidAdded', function(event, data){
     addedPid = data.info;
     if (localStorage['recents_of_' + addedPid] === undefined){
