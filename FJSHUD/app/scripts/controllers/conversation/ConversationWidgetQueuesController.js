@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', 'HttpService', function($scope, $routeParams, $timeout, $filter, contactService,httpService) {    
+hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', 'QueueService', 'HttpService', function($scope, $routeParams, $timeout, $filter, contactService, queueService, httpService) {    
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactId);
     $scope.data = {};
@@ -48,6 +48,8 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
 
     $scope.queueLogoutAll = function(reasonId){
         httpService.sendAction("contacts", "agentLogoutAll", {contactId:$scope.contactId,reason:reasonId});
+		
+		$scope.log_out_option = '';
     }
 
     $scope.sort_options = [{name:$scope.verbage.queue_name, id:1,type:'name'},
@@ -126,43 +128,19 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
     }
 
     $scope.sort = $scope.sort_options[0];
-    
 
-    httpService.getFeed('queuelogoutreasons');
-    httpService.getFeed('queues');
-    httpService.getFeed('queue_members');
-    httpService.getFeed('queue_members_status');
-    httpService.getFeed('queue_stat_calls');
-    
-    $scope.$on('queuelogoutreasons_synced',function(event,data){
-    	$scope.log_out_reasons = [];
-    	$scope.log_out_reasons = data;
-    	$scope.log_out_reasons.push({name:$scope.verbage.logout_all});
-    	$scope.log_out_option = data[$scope.log_out_reasons.length - 1];
-    });
-
-    $scope.getChatStatus == function(){
-        
-    }
-
-    $scope.$on('queues_updated',function(event,data){
-    	queues = data.queues;
-        for(queue in queues){
-            if(queues[queue].members){
-                for(i = 0; i < queues[queue].members.length; i++){
-                   if(queues[queue].members[i].contactId == $scope.contactId){
-                        inQueue = false;
-                        queues[queue].status = queues[queue].members[i].status;
-                        for(scopeQueue in $scope.queues){
-                            if($scope.queues[scopeQueue].xpid == queues[queue].xpid){
-                                inQueue = true;
-                            }
-                        }
-                        if(!inQueue){
-                            $scope.queues.push(queues[queue]);
-                            inQueue = false;
-                        }
-                   } 
+    queueService.getQueues().then(function(data) {
+		$scope.log_out_reasons = data.reasons;
+		
+    	var queues = data.queues;
+		
+        for(var q = 0; q < queues.length; q++){
+            if(queues[q].members){
+                for(var i = 0; i < queues[q].members.length; i++){
+                   if(queues[q].members[i].contactId == $scope.contactId){
+                        queues[q].you = queues[q].members[i];
+                        $scope.queues.push(queues[q]);
+                   }
                 }
             }
         }

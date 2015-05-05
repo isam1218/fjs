@@ -1,10 +1,8 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'HttpService', function ($scope, $rootScope, contactService, httpService) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', function ($scope, $rootScope, contactService, queueService, httpService) {
   var addedPid;
   $scope.query = "";
   $scope.selectedSort = "displayName";
-
-  httpService.getFeed('queues');
-  httpService.getFeed('queue_stat_calls');
+  $scope.agents = [];
 
   $scope.$on('pidAdded', function(event, data){
     addedPid = data.info;
@@ -24,21 +22,27 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
     localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
     $rootScope.$broadcast('recentAdded', {info: xpid});
   };
-
-  $scope.$on('queues_updated', function (event, data) {
-    $scope.loggedInMembers = [];
-    $scope.loggedOutMembers = [];
-	
-	if ($scope.queue && $scope.queue.members && $scope.queue.members[0].status) {
-		for (var i = 0; i < $scope.queue.members.length; i++) {
-			var member = $scope.queue.members[i];
-			
-			if (member.status.status.indexOf('login') != -1)
-				$scope.loggedInMembers.push(contactService.getContact(member.contactId));
-			else
-				$scope.loggedOutMembers.push(contactService.getContact(member.contactId));
+  
+  $scope.statusFilter = function(status) {
+	return function(agent) {
+		if (status == 'in') {
+			if (agent.status && agent.status.status.indexOf('login') != -1)
+				return true;
 		}
-	}
+		else {
+			if (agent.status && agent.status.status.indexOf('login') == -1)
+				return true;
+		}
+	};
+  };
+
+  queueService.getQueues().then(function() {	
+	$scope.agents = $scope.queue.members;
+  });
+  
+  // refresh list
+  $scope.$on('queue_members_status_synced', function() {
+	$scope.agents = $scope.queue.members;
   });
 
   $scope.$on("$destroy", function () {

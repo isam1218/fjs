@@ -29,7 +29,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.totalConferences = data;
   });
 
-  $scope.$on('queues_updated', function(event, data){
+  queueService.getQueues().then(function(data) {
     $scope.totalQueues = data.queues;
   });
 

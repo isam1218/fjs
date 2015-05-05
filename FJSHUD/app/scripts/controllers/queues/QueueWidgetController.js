@@ -22,10 +22,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     {upper: $scope.verbage.alerts, lower: 'alerts'}];
 
     $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
-    
-    httpService.getFeed('queues');
-    httpService.getFeed('queue_stat_calls');
-    httpService.getFeed('queuepermissions');
 
     $scope.tabFilter = function(){
         return function(tab){
@@ -36,29 +32,22 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
                         var single = myQueues.queues[i];
                         if (single.xpid === $scope.queueId){
                             return true;
-                        } else {
-                            return false;
                         }
-                    }                    
-                } else {
-                    return false;
-                }
+                    }
+				}
             }
-            if (tab.lower === 'alerts'){
+            else if (tab.lower === 'alerts'){
                 if (myQueues.queues.length > 0){
                     for (var i = 0; i < myQueues.queues.length; i++){
                         var single = myQueues.queues[i];
                         if (single.xpid === $scope.queueId){
                             return true;
-                        } else {
-                            return false;
                         }
-                    }                                    
-                } else {
-                    return false;
-                }
+                    }    
+				}
             }
-            return true;
+			else
+				return true;
         };
     };
 
@@ -70,16 +59,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         }
     });
     
-    $scope.$on('queues_updated', function(event, data) {
-        // all queues
-        
-        var queues = data.queues;
-        for (i = 0; i < queues.length; i++) {
-            if (queues[i].xpid == $scope.queueId) {
-                $scope.queue = queues[i];
-            }
-        }
-        
+    queueService.getQueues().then(function(data) {
         // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
         var myQueues = data.mine;
 

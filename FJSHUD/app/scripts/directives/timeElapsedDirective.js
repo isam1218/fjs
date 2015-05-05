@@ -19,8 +19,10 @@ hudweb.directive('timer', ['$filter', '$interval', function($filter, $interval) 
 						updateDate();
 					}
 				}
-				else
+				else {
 					element.html('---');
+					$interval.cancel(loop);
+				}
 			});
 			
 			function updateDate() {

@@ -17,7 +17,7 @@
 
   <div 
 	ng-include="'views/queues/QueueMemberSection.html'"
-    data-ng-repeat="member in loggedInMembers | filter: {displayName: query} | orderBy: selectedSort" ng-click="storeRecentQueueMember(member.xpid)">
+    data-ng-repeat="member in agents | filter: statusFilter('in') | filter: {displayName: query} | orderBy: selectedSort" ng-click="storeRecentQueueMember(member.contactId)">
   </div>
 
   <div class="ListSection">
@@ -29,7 +29,7 @@
 
   <div
 	ng-include="'views/queues/QueueMemberSection.html'"
-    data-ng-repeat="member in loggedOutMembers | filter: {displayName: query} | orderBy: selectedSort" ng-click="storeRecentQueueMember(member.xpid)">
+    data-ng-repeat="member in agents | filter: statusFilter('out') | filter: {displayName: query} | orderBy: selectedSort" ng-click="storeRecentQueueMember(member.contactId)">
   </div>
 </div>
 
