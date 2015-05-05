@@ -14,7 +14,7 @@ html {
   background: #cccccc url(../img/bg.png);
   box-shadow: 0 4px 5px rgba(255, 255, 255, 0.3) inset;
   user-select: none;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 body.not-allowed,
 html.not-allowed {
@@ -187,6 +187,9 @@ p {
 }
 .not-sortable {
   cursor: default;
+}
+.loadmore {
+  color: #729C00;
 }
 .TopBar {
   position: relative;
@@ -5214,6 +5217,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 a.Messages {
   text-decoration: none;
+}
+.chatNotification {
+  cursor: pointer;
 }
 .displayName {
   font-size: 12px;
