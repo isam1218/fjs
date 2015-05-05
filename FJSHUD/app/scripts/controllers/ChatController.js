@@ -11,7 +11,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
-  $scope.enableAlertBroadcast = true;	
+  // $scope.enableAlertBroadcast = true;	
 
 	// set chat data
 	if ($routeParams.contactId) {

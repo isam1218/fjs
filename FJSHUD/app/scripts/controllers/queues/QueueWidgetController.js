@@ -3,6 +3,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
     $scope.sortField = "displayName";
+    $scope.conversationType = 'queue';
     $scope.sortReverse = false;
     var myQueues = queueService.getMyQueues();
 
@@ -12,6 +13,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     // for alerts
     $scope.showAlerts = false;
     $scope.enableAlertBroadcast = false;
+    $scope.enableTextInput = false;
     
     $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
     {upper: $scope.verbage.stats_tab, lower: 'stats'}, 
@@ -34,6 +36,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
                             return true;
                         }
                     }
+                    return false;
 				}
             }
             else if (tab.lower === 'alerts'){
@@ -43,38 +46,57 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
                         if (single.xpid === $scope.queueId){
                             return true;
                         }
-                    }    
+                    }
+                    return false;    
 				}
             }
 			else
 				return true;
         };
     };
-
-    settingsService.getPermissions().then(function(data) {
-        if (data.showAlerts){
-            $scope.showAlerts = true;
-        } else {
-            $scope.showAlerts = false;
-        }
-    });
     
     queueService.getQueues().then(function(data) {
         // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
         var myQueues = data.mine;
+        console.log('myq', data);
+        
+        // if not a member of any queues...
+        if (myQueues.length === 0){
+            $scope.enableAlertBroadcast = false;
+            $scope.enableChat = false;
+            $scope.enableFileShare = false;
+        }
 
+        // if a member of a queue...
         for (var j = 0; j < myQueues.length; j++){
             var myPermission = myQueues[j].permissions.permissions;
             if (myQueues[j].xpid === $scope.queueId && (myPermission === 0)){
+                // console.log('Im a member of this q + perm 0', myPermission);
                 $scope.enableAlertBroadcast = true;
                 $scope.enableChat = true;
+                $scope.enableTextInput = true;
                 $scope.enableFileShare = true;
             } else if (myQueues[j].xpid === $scope.queueId && (myPermission !== 0)){
+                // console.log('Im a member of this q + perm > 0', myPermission);
+                if ($routeParams.queueId && $routeParams.route === "chat"){
+                    $scope.enableAlertBroadcast = false;
+                    $scope.enableTextInput = true;
+                    $scope.enableChat = true;
+                    $scope.enableFileShare = true;
+                } else if ($routeParams.queueId && $routeParams.route === 'alerts'){
+                    $scope.enableAlertBroadcast = false;
+                    $scope.enableTextInput = false;
+                    $scope.enableChat = true;
+                    $scope.enableFileShare = true;
+                }
+            } else if (myQueues[j].xpid !== $scope.queueId){
+                // I'm not a member of this current queue in the for loop
+                // console.log('im not a member of this q', myPermission);
                 $scope.enableAlertBroadcast = false;
-                $scope.enableChat = true;
-                $scope.enableFileShare = true;
+                $scope.enableChat = false;
+                $scope.enableFileShare = false;
             }
-        }
+        } 
     });
 
 }]);

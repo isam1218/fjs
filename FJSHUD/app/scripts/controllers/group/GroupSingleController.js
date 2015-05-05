@@ -11,6 +11,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 
   $scope.enableChat = false;
   $scope.enableFileShare = false;
+  $scope.enableTextInput = false;
 	$scope.messages = [];
 
 	$scope.tabFilter = function(){
@@ -40,15 +41,18 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 		}
 		
 		$scope.isMine = groupService.isMine($scope.groupID);
-		// console.log('groups - ', groups);
 	});
 
-	if ($scope.isMine){
-		$scope.enableChat = true;
-		$scope.enableFileShare = true;
-	} else {
-		$scope.enableChat = false;
-		$scope.enableFileShare = false;
+	if ($scope.conversationType == 'group'){
+		if ($scope.isMine){
+			$scope.enableChat = true;
+			$scope.enableTextInput = true;
+			$scope.enableFileShare = true;
+		} else {
+			$scope.enableChat = false;
+			$scope.enableTextInput = false;
+			$scope.enableFileShare = false;
+		}
 	}
 	
 	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
