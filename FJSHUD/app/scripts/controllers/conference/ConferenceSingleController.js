@@ -5,6 +5,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 
 	$scope.enableChat = true;
   $scope.joined = false;
+  $scope.enableTextInput = false;
   $scope.conference = conferenceService.getConference($scope.conferenceId);
     
 	httpService.getFeed("conferencestatus")
@@ -28,6 +29,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
    			if($scope.conference.status){
 				  $scope.joined = $scope.conference.status.isMeJoined;
     			$scope.enableChat = $scope.joined;
+          $scope.enableTextInput = $scope.joined;
     			$scope.enableFileShare = $scope.joined;
     		}
     		

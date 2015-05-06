@@ -301,11 +301,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		if (index === 0){
 			return true;
 		} else {
-			// curmsgOwner === prvMsgOwner --> do not display
-			if (curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
-				return false;
-			} else if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid === prvMsg.fullProfile.xpid){
-				// if same msg owner on the same day --> do not display
+			// if same msg owner on same day  --> do not display
+			if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
 				return false;
 			} else {
 				// otherwise display
