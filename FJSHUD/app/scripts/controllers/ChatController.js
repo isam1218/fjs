@@ -1,17 +1,15 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval', '$timeout','SettingsService',
-	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval, $timeout,settingsService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout','SettingsService',
+	function($scope,httpService, $routeParams,contactService,phoneService,$interval, $timeout,settingsService) {
 
 	var version = 0;
 	var scrollbox = {};
 	var chat = {}; // internal controller data
-	var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
-  // $scope.enableAlertBroadcast = true;	
 
 	// set chat data
 	if ($routeParams.contactId) {
