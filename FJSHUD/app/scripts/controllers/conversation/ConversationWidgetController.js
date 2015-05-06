@@ -6,8 +6,10 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$routeParams', 'Co
 	var CONFERENCE_CALL_TYPE = 0;
 	var CONTACT_CALL_TYPE = 4;
 
+    $scope.conversationType = 'conversation';
     $scope.enableChat = true;
     $scope.enableFileShare = true;
+    $scope.enableTextInput = true;
     $scope.call = {};
     $scope.targetId = $scope.contactID;
     $scope.targetAudience="contact";
