@@ -16,10 +16,9 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 	
 			$(element).draggable({
 				handle: '.Header, .List',
-				containment: '#InnerDock',
 				helper: 'clone',
+				appendTo: 'body',
 				scroll: false,
-				cursor: 'move',
 				cursorAt: { top: 25 },
 				zIndex: 50,
 				stack: '#InnerDock .Gadget',
@@ -27,29 +26,34 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				start: function() {
 					// show container area
 					$('#DockPanel').scrollLeft(0);
-					$('#DockPanel').addClass('Moving');
 					$(this).hide().addClass('Positioned');
 				},
 				stop: function(event, ui) {
 					$(event.toElement).one('click', function(e) {
 						e.preventDefault(); 
-					});
-					
-					$('#DockPanel').removeClass('Moving');
-					
-					// make sure dragged element matches helper position
-					$(this).show().css('top', ui.position.top + 'px').css('left', ui.position.left + 'px');
+					});	
+
+					$(this).show();
 					
 					var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
-					// save new position to db as percentage
-					scope.gadget.value.config.x = ui.position.left/rect.width * 100;
-					scope.gadget.value.config.y = ui.position.top/rect.height * 100;
-					
-					httpService.sendAction('settings', 'update', {
-						name: scope.gadget.name,
-						value: JSON.stringify(scope.gadget.value)
-					});
+					// if inside dock...
+					if (ui.position.left >= rect.left && ui.position.top >= rect.top) {
+						var top = ui.position.top - rect.top;
+						var left = ui.position.left - rect.left;
+						
+						// make sure dragged element matches helper position
+						$(this).css('top', top + 'px').css('left', left + 'px');
+						
+						// save new position to db as percentage
+						scope.gadget.value.config.x = left/rect.width * 100;
+						scope.gadget.value.config.y = top/rect.height * 100;
+						
+						httpService.sendAction('settings', 'update', {
+							name: scope.gadget.name,
+							value: JSON.stringify(scope.gadget.value)
+						});
+					}
 				}
 			});
 		}

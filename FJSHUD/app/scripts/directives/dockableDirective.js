@@ -6,9 +6,11 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$rootScope', function(ht
 		link: function(scope, element, attrs) {
 			// object to dock
 			var obj = $parse(attrs.dockable)(scope);
-			var type;
 			
 			$(element).draggable({
+				cursorAt: { top: 25, left: 25 },
+				zIndex: 50,
+				appendTo: 'body',
 				helper: function() {
 					// create visible element
 					var gadget = $('<div class="Gadget"></div>');
@@ -30,60 +32,8 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$rootScope', function(ht
 					
 					return $(gadget).append($(header).append($(title)));
 				},
-				cursor: 'move',
-				cursorAt: { top: 25, left: 25 },
-				zIndex: 50,
-				appendTo: 'body',
-				start: function() {
-					// get type of object
-					if (obj.firstName !== undefined)
-						type = 'Contact';
-					else if (obj.loggedInMembers !== undefined)
-						type = 'QueueStat';
-					else if (obj.roomNumber !== undefined)
-						type = 'ConferenceRoom';
-					else if (obj.parkExt !== undefined)
-						type = 'ParkedCall';
-					else
-						type = 'Group';
-				},
-				drag: function(event, ui) {
-					var rect = document.getElementById('InnerDock').getBoundingClientRect();
-					
-					// if inside dock, show droppable area
-					if (ui.position.left >= rect.left && ui.position.top >= rect.top) {
-						$('body').removeClass('not-allowed');
-						$('#DockPanel').addClass('Moving');
-					}
-					else {
-						$('body').addClass('not-allowed');
-						$('#DockPanel').removeClass('Moving');
-					}
-				},
-				stop: function(event, ui) {
-					$('body').removeClass('not-allowed');
-					$('#DockPanel').removeClass('Moving');
-					
-					var rect = document.getElementById('InnerDock').getBoundingClientRect();
-					
-					// if inside dock, save it
-					if (obj.xpid != $rootScope.myPid && ui.position.left >= rect.left && ui.position.top >= rect.top) {
-						var data = {
-							name: 'GadgetConfig__empty_Gadget' + type + '_' + obj.xpid,
-							value: JSON.stringify({
-								"contextId": "empty",
-								"factoryId": "Gadget" + type,
-								"entityId": obj.xpid,
-								"config": {
-									"x": (ui.position.left - rect.left)/rect.width*100, 
-									"y": (ui.position.top - rect.top)/rect.height*100
-								},
-								"index": 1
-							})
-						};
-						
-						httpService.sendAction('settings', 'update', data);
-					}
+				start: function(event, ui) {
+					$(ui.helper).addClass('not-allowed');
 				}
 			});
 		}
