@@ -90,15 +90,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						$('#InnerDock').sortable({
 							revert: 1,
 							handle: '.Header, .Content',
-							containment: '#InnerDock',
+							helper: 'clone',
+							appendTo: 'body',
+							cursorAt: { top: 25 },
 							start: function(event, ui) {
 								// visual cues
-								$('#DockPanel').addClass('Moving');
-								$(ui.item).addClass('ui-draggable-dragging');
-							},
-							stop: function(event, ui) {
-								$('#DockPanel').removeClass('Moving');
-								$(ui.item).removeClass('ui-draggable-dragging');
+								$(ui.helper).addClass('ui-draggable-dragging');
+								ui.placeholder.height(ui.helper[0].scrollHeight);
 							}
 						});
 					}
