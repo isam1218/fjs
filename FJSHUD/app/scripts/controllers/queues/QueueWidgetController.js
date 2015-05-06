@@ -58,7 +58,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     queueService.getQueues().then(function(data) {
         // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
         var myQueues = data.mine;
-        console.log('myq', data);
+        // console.log('myq', data);
         
         // if not a member of any queues...
         if (myQueues.length === 0){

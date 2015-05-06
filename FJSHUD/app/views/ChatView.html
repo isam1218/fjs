@@ -1,4 +1,4 @@
-<div class="ToolBar chatTop" ng-if="conversationType == 'group' && enableChat || conversationType == 'queue' && enableChat">
+<div class="ToolBar chatTop" ng-if="(conversationType == 'group' && enableChat) || (conversationType == 'queue' && enableChat) || (conversationType == 'conference' && enableChat)">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
         <input ng-model="chat.query" class="Search" type="search" ng-attr-placeholder="{{::verbage.search}}" />
@@ -16,7 +16,7 @@
     <div  flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop style="position:absolute; width:100%; height:100%;"> 
 
     </div>
-    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid"   >
+    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" ng-if="conversationType == 'conference' && joined">
         <div class="ListMessageLeft">
             <avatar ng-if="nameDisplay(message, $index)" profile="message.fullProfile"></avatar>
             <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code}}</div>
