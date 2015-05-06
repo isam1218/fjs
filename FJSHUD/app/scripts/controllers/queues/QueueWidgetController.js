@@ -58,7 +58,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     queueService.getQueues().then(function(data) {
         // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
         var myQueues = data.mine;
-        // console.log('myq', data);
         
         // if not a member of any queues...
         if (myQueues.length === 0){
@@ -70,9 +69,17 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         // if a member of a queue...
         for (var j = 0; j < myQueues.length; j++){
             var myPermission = myQueues[j].permissions.permissions;
-            if (myQueues[j].xpid === $scope.queueId && (myPermission === 0)){
-                // console.log('Im a member of this q + perm 0', myPermission);
+            if (myQueues[j].xpid === $scope.queueId && (myPermission === 0) && $routeParams.route === 'alerts'){
+                // I'm a member and i have alert broadcast permission and i'm on alerts tab
+                // console.log('Im a member of this q + perm 0 + alerts tab', myPermission);
                 $scope.enableAlertBroadcast = true;
+                $scope.enableChat = true;
+                $scope.enableTextInput = true;
+                $scope.enableFileShare = true;
+            } else if (myQueues[j].xpid === $scope.queueId && (myPermission === 0) && $routeParams.route === "chat"){
+                // im a member i have alert broadcast perm and im on chats tab
+                // console.log('Im a member of this q + perm 0 + chat tab', myPermission);
+                $scope.enableAlertBroadcast = false;
                 $scope.enableChat = true;
                 $scope.enableTextInput = true;
                 $scope.enableFileShare = true;

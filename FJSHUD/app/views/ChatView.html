@@ -48,7 +48,7 @@
 </div>
 
 <div class="ChatInputBox">	
-	<div class="ChatAlertOptions" ng-if="enableAlertBroadCast">
+	<div class="ChatAlertOptions" ng-if="conversationType === 'queue' && enableAlertBroadcast">
 		<div class="Left">
             <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
 			<input type="radio" ng-model="chat.status" name="alertStatus" value="1" /> {{::verbage.logged_in}}
