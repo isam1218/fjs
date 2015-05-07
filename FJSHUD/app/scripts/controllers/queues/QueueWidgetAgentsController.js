@@ -22,7 +22,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
       time: new Date().getTime()
     };
     localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {info: xpid});
+    $rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
   };
   
   $scope.statusFilter = function(status) {

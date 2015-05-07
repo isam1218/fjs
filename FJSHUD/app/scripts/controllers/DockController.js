@@ -20,7 +20,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			time: new Date().getTime()
 		};
 		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
 	};
 	
 	$scope.$on('settings_updated', function(event, data) {		

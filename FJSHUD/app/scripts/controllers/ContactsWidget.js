@@ -96,7 +96,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		};
 		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
 		// localStorage.recent = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
 	};
 	
 

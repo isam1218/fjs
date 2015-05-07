@@ -58,7 +58,7 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
       time: new Date().getTime()
     };
     localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {info: queueXpid});
+    $rootScope.$broadcast('recentAdded', {id: queueXpid, type: 'queue', time: new Date().getTime()});
   };
   
   $scope.resetStats = function() {

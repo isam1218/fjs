@@ -33,12 +33,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.storeRecent = function(xpid){
 		localPid = JSON.parse(localStorage.me);
 		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
 		$scope.recent[xpid] = {
 			type: 'contact',
 			time: new Date().getTime()
 		};
 		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
 	};
 
 	$scope.getAvatar = function(pid){

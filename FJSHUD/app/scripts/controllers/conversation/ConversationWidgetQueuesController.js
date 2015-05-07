@@ -26,7 +26,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams
             time: new Date().getTime()
         };
         localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-        $rootScope.$broadcast('recentAdded', {info: xpid});
+        $rootScope.$broadcast('recentAdded', {id: xpid, type: 'queue', time: new Date().getTime()});
     };
 
     $scope.getAvatarUrl = function(queue, index) {

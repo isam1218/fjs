@@ -88,7 +88,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
       time: new Date().getTime()
     };
     localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {info: groupXpid});
+    $rootScope.$broadcast('recentAdded', {id: groupXpid, type: 'group', time: new Date().getTime()});
   };
 
 }]);
