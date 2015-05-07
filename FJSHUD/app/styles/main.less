@@ -71,7 +71,7 @@ p {
 }
 
 .PanelWrapper {
-  position: relative;
+  position: absolute;
   padding: 0 10px 10px 10px;
   flex: 1;
   -webkit-flex: 1;
@@ -79,6 +79,8 @@ p {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
+  width: 100%;
+  height: 85%;
 }
 
 .col1{
@@ -220,13 +222,13 @@ p {
 @import "leftBar";
 @import "dock";
 @import "widget";
-  @import "settings";
-  @import "calls";
-  @import "conference";
-  @import "queue";
-  @import "search";
-  @import "video";
-  @import "conversation";
+@import "settings";
+@import "calls";
+@import "conference";
+@import "queue";
+@import "search";
+@import "video";
+@import "conversation";
 @import "tables";
 @import "buttons";
 @import "icons";
@@ -316,6 +318,10 @@ p {
      }
      
      .WidgetBody{
+       top: 150px;
+       position: absolute;
+     }
+  /*   .WidgetBody{
         position: relative !important;
         height: 20em !important;
         
@@ -323,7 +329,13 @@ p {
         
         .Preferences-Holder{height: 10em !important;}
      }
-     
+    
+     .Preferences-Holder{
+        /*height: 60% !important;
+        .SettingsPanel.DialogContentMainBlock_List {
+            height: 79% !important;
+        }
+     }*/
      .Avatar.AvatarBig{width: 19% !important;}
      
      .MeInfoBlock {width: 79% !important;}
@@ -504,6 +516,7 @@ p {
     background-color: transparent;
   }
   
+  .WidgetTabBar{ clear: both;}
   .Messages{        
           
         &:first-child{         

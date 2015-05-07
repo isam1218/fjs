@@ -5,17 +5,17 @@
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>{{::verbage.extension}}</span>
-			<div class="DirectionArrow"></div>
-		</div>
-		<div data-ng-click="sort('call.startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'call.startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>{{::verbage.call_status}}</span>
+			/<span>{{::verbage.extension}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
 		<div data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span>{{::verbage.hud_status}}</span>
+            <span>{{::verbage.hud_status}}</span>
+            <div class="DirectionArrow"></div>
+        </div>
+		<div data-ng-click="sort('call.startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'call.startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>{{::verbage.call_status}}</span>
 			<div class="DirectionArrow"></div>
-		</div>
+		</div>		
 	</div>
 </div>
 

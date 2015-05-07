@@ -16,6 +16,8 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
 			element.css('width', '100%');
+			if($(element).closest('.LeftBar').length > 0)
+				element.css('width', '95%');
 			
 			if($(element).closest('.ConferenceMembers').length == 0)
 				element.css('z-index', 100);								
