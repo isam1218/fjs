@@ -127,6 +127,7 @@ fjs.i18n = {
 		calls:'calls',
 		avg_wait:'Avg Wait',
 		avg_talk:'Avg Talk',
+    aban: 'Aband',
 		minutes:'minutes',
 		abandoned:'Abandoned',
 		avatar_upload: '写真 アップロード',
