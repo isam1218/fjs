@@ -1,7 +1,6 @@
 hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
 	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
 
-	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	var addedPid;
 	var localPid;
 	$scope.notifications = [];
