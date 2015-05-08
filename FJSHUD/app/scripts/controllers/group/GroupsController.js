@@ -55,7 +55,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 						}
 						break;
 					case 'others':
-						return (group.type == 4);
+						return (group.type == 4 && group.ownerId != $rootScope.myPid);
 						break;
 				}
 			}
