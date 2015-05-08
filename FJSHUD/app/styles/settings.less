@@ -28,7 +28,34 @@
        top: 150px;
        position: absolute;
        
-       .call-block{height: 45%; overflow-y: hidden;}
+       .call-block{
+        height: 45%; 
+        overflow-y: hidden;
+        .CurrentCall{
+            .LeftSide{
+                width: 50%;
+                .Dialog-settings-row{
+                    margin:10px 5px;
+                    
+                    input[type=range]{
+                        width: 70%;
+                        margin-bottom: -8px;
+                    }
+                }
+                .ListRowTitle > div{
+                    float: left;
+                    margin-left: -5px;
+                    clear: both;
+                }
+                .Avatar{
+                  margin-top: 8px;
+                }
+            }
+            .RightSide{
+                width: 48%;
+            }
+        }
+       }
     }     
    
      .MeInfoBlock-column textarea{height: 3em;}

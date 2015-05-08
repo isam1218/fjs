@@ -219,9 +219,39 @@ input[disabled], select[disabled],
 }
 .CurrentCallBtn
 {
-  margin: 10px 10px 0px 0px;
-  width:78px;
-  padding:0px;
+  margin: 10px 10px 0px 0px;   
+  height: 30px;
+  padding: 4px 3px 3px 3px;
+  float: left;
+  
+  &.disableButton{
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.5;
+  }   
+  
+  .XIcon24-Record-Off,
+  .XIcon24-Record-On{
+    top: 12px;
+  } 
+}
+
+div.CurrentCallBtn{    
+    &.dial{
+        padding:5px 10px;
+    }
+    &.record{
+        span{
+         margin-top: -3px;
+        }
+    }
+}
+
+input.CurrentCallBtn{
+    &.disableButton{
+        border: 1px solid #ddd;
+        background: #fff;
+    }
 }
 
 .CurrentCallBtnLong
@@ -272,7 +302,7 @@ input[disabled], select[disabled],
 .XIcon24-Record-Off{
   position: absolute;
   right: 12px;
-  top: 2px;
+  top: 2px;  
   margin-left: 5px;
   width: 16px;
   height: 24px;

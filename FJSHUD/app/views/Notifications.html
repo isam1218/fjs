@@ -190,12 +190,12 @@
 		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
-		<div ng-click="showCurrentCallControls(currentCall)" style="display:inline-block" class="CallStatusText"> 
-			<div style="font-weight:bold;font-size:14px">{{currentCall.displayName}}</div>
-			<div><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div></div>
+		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
+			<div class="memberName">{{currentCall.displayName}}</div>
+			<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div></div>
 		</div>
 		
-		<div style="float:right;display:inline-block;margin-top:5px">
+		<div class="controlButtons">
 			<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
 			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
 			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">{{::verbage.end}}</div>
