@@ -1,5 +1,5 @@
 .DockPanel {
-  position: relative;
+  /*position: relative;*/
   flex: 1;
   -webkit-flex: 1;
   margin-left: 10px;
@@ -7,8 +7,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: auto;
-  overflow-y: hidden;
+  /*overflow-x: auto;
+  overflow-y: hidden;*/
+  overflow: hidden;
 }
 .DockPanel.Moving {
   border: 1px dashed #358503;
@@ -51,14 +52,6 @@
   text-shadow: whiteSmoke 0 1px 0;
   text-align: center;
 }
-.DockPanel .Gadget .Header {
-  cursor: pointer;
-}
-.DockPanel .TopBarItemAppIcon.CallCenter {
-  position: relative;
-  top: 0;
-  left: 0;
-}
 .Gadget {
   position: relative;
   display: inline-flex;
@@ -83,6 +76,12 @@
   height: auto !important;
   box-shadow: 5px 5px 8px gray !important;
 }
+.Gadget.ui-draggable-dragging.not-allowed .Header {
+  cursor: not-allowed;
+}
+.Gadget.ui-draggable-dragging .Header {
+  cursor: move;
+}
 .Gadget.ui-draggable-dragging .Content,
 .Gadget.ui-draggable-dragging .Resizer {
   display: none;
@@ -94,6 +93,7 @@
   box-shadow: 0 0 8px gray;
 }
 .Gadget .Header {
+  cursor: pointer;
   background-color: #ECECEC;
   padding: .25em;
   text-decoration: none;
@@ -136,6 +136,11 @@
   text-align: center;
   padding: .25em;
   font-size: .8em;
+}
+.Gadget .Header .TopBarItemAppIcon.CallCenter {
+  position: relative;
+  top: 0;
+  left: 0;
 }
 .Gadget .Content {
   flex: 1;
@@ -198,4 +203,10 @@
   width: 24px;
   display: inline-block;
   vertical-align: middle;
+}
+.DroppableArea {
+  border: 1px dashed #358503;
+  border-width: 1px;
+  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
 }

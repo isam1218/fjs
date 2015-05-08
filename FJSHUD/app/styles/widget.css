@@ -3,8 +3,6 @@
   border-bottom: solid 1px #ccc;
   width: 95%;
   margin: 0 auto;
-  /* padding: .75em 0;
-  height: 3.4em;*/
   padding: .3em 0 .7em 0;
 }
 .ToolBar .XButton {
@@ -24,8 +22,7 @@
 .WidgetPanel {
   position: relative;
   margin: -40px 0 0 10px;
-  width: 36%;
-  min-width: 350px;
+  width: 500px;
 }
 .WidgetPanel .Widget {
   border-top-left-radius: 10px;
@@ -33,12 +30,13 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 1px 0 10px gray;
+  padding-top: 10px;
 }
 .Widget {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 500px;
   height: 100%;
   background-image: url(../img/XTile-Widget.png);
   border: solid 1px #ccc;
@@ -70,6 +68,12 @@
 .Widget .ListView .vmsection.last {
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
+}
+.Widget .ListView.ChatView.WithToolBar {
+  overflow: hidden;
+}
+.Widget .ListView.ChatView.WithToolBar .ListViewContent {
+  overflow-y: auto;
 }
 .Widget .SearchInputBox {
   width: 30%;
@@ -114,6 +118,15 @@
 }
 .WidgetHeaderTitle.Full {
   width: auto !important;
+}
+.WidgetHeaderTitle span.ChatStatus {
+  font-weight: normal !important;
+  font-size: 0.875em;
+}
+.WidgetHeaderTitle .XIcon-ChatStatus-offline,
+.WidgetHeaderTitle .XIcon-ChatStatus-away,
+.WidgetHeaderTitle .XIcon-ChatStatus-available {
+  margin-left: -5px;
 }
 .WidgetHeaderCallStatus .NoCallText {
   text-align: center;

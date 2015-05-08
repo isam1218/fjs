@@ -2,8 +2,9 @@
  
   .WidgetHeader {      
       padding:0 10px;
-      height: 22%;
-      width: 100%; 
+      /*height: 22%;*/
+      height: 75px;
+      width: 100%;           
    }
    .WidgetHeaderTitle {
       color: #333;    
@@ -16,20 +17,23 @@
       position:relative;
 	  display: block;
 	  width: 100%;
-      margin: 10px 0 0;
+      margin: 10px 0 0;            
     }
     .Avatar.AvatarBig{
       float: left;
 	  width: 5em;
 	  height: 5em;
     } 
-    .WidgetBody{      
-       height: 80%;       
+    .WidgetBody{                 
+      /* height: 80%;       
        top: 150px;
-       position: absolute;
+       position: absolute;*/
+       height: 78%;
+       max-height: 100%;
+       top: 73px;
        
        .call-block{
-        height: 45%; 
+        height: 50%; 
         overflow-y: hidden;
         .CurrentCall{
             .LeftSide{
@@ -56,17 +60,18 @@
             }
         }
        }
-    }     
+    }    
+
    
      .MeInfoBlock-column textarea{height: 3em;}
      
     .Preferences-Holder{
-      position: relative;
-      -webkit-box-flex: 1;
-      height: 42%;      
+      position: relative;     
+      height: 50%;  
       margin-top: 3px;
       display: inline-block;
       overflow: hidden;
+      padding-bottom: 70px;
            
      .WidgetTabBar{
         top: 0px;
@@ -78,7 +83,7 @@
        display: flex;
 	   display: -webkit-flex;
        flex-direction: column;
-	   -webkit-flex-direction: column;
+	   -webkit-flex-direction: column;	   
 		
        &.DialogContentMainBlock_List {
          left: 0px;
@@ -88,7 +93,9 @@
          position: relative;       
          border: none 0px;        
          background-image: url("../img/XTile-Widget.png");                 
-         height: 72%;
+         /*height: 81%;
+         height: 85%;*/
+         height: 95%;
          overflow-y: hidden;
          background-color: #f9f9f9;
          bottom: 0px;   
@@ -96,6 +103,9 @@
 		 & > div {
 		   overflow-y: auto;
 		   padding: 10px;
+		   height: 100%;
+		   width: 100%;
+		   
 		   &.padding{
 		    padding-bottom: 30px;
 		   }
@@ -946,7 +956,9 @@ div.NewCall{
     color: #666;
     padding-top: 4px;
     font-size: 11px;
+    font-size: .563em;
     display: block;
+    text-transform: uppercase;
   }
   .ListView {
     font-size: .9em;
