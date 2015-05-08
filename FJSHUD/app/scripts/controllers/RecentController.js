@@ -19,6 +19,10 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   var groupPageSize = 3;
   var queuePageSize = 3;
   var conferencePageSize = 3;
+  $scope.recentContactFlag = false;
+  $scope.recentGroupFlag = false;
+  $scope.recentQueueFlag = false;
+  $scope.recentConfFlag = false;
   var mostRecentContact;
   var mostRecentGroup;
   var mostRecentQueue;
@@ -38,12 +42,16 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       var singleEntry = $scope.recent[key];
       if ((singleEntry.type == 'contact' && mostRecentContact === undefined) || (singleEntry.type == 'contact' && singleEntry.time > mostRecentContact.time)){
         mostRecentContact = singleEntry;
+        $scope.recentContactFlag = true;
       } else if ((singleEntry.type == 'group' && mostRecentGroup === undefined) || (singleEntry.type == 'group' && singleEntry.time > mostRecentGroup.time)){
         mostRecentGroup = singleEntry;
+        $scope.recentGroupFlag = true;
       } else if ((singleEntry.type == 'queue' && mostRecentQueue === undefined) || (singleEntry.type == 'queue' && singleEntry.time > mostRecentQueue.time)){
         mostRecentQueue = singleEntry;
+        $scope.recentQueueFlag = true;
       } else if ((singleEntry.type == 'conference' && mostRecentConf === undefined) || (singleEntry.type == 'conference' && singleEntry.time > mostRecentConf.time)){
         mostRecentConf = singleEntry;
+        $scope.recentConfFlag = true;
       }      
     }
     // take the object w/ the most recent time from that section, and add that time as property to [groupedSections]
@@ -60,15 +68,19 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     switch(data.type){
       case "contact":
         $scope.groupedSections[0].lastTime = {time: data.time, type: data.type};
+        $scope.recentContactFlag = true;
         break;
       case "group":
         $scope.groupedSections[1].lastTime = {time: data.time, type: data.type};
+        $scope.recentGroupFlag = true;
         break;
       case "queue":
         $scope.groupedSections[2].lastTime = {time: data.time, type: data.type};
+        $scope.recentQueueFlag = true;
         break;
       case "conference":
         $scope.groupedSections[3].lastTime = {time: data.time, type: data.type};
+        $scope.recentConfFlag = true;
         break;
     }
   });

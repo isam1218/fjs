@@ -92,7 +92,7 @@
         <!-- need to sort based on most recently clicked at the top -->
         <div data-ng-repeat="section in groupedSections | orderBy:'-lastTime.time'">
             <!-- if its the contact section -> display the recent contacts div -->
-            <div ng-if="section.type === 'contact'">
+            <div ng-if="section.type === 'contact' && recentContactFlag">
                 <div class="RecentContacts">
                     <h4>{{::verbage.recent_contacts}}</h4>
                     <em>{{::verbage.contact_name_status}}</em>
@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div ng-if="section.type === 'group'">
+            <div ng-if="section.type === 'group' && recentGroupFlag">
                 <div class="RecentGroups">
                     <h4>{{::verbage.recent_groups}}</h4>
                     <em>{{::verbage.recent_group_name_members}}</em>
@@ -150,7 +150,7 @@
                 </div>
             </div>
 
-            <div ng-if="section.type === 'queue'">
+            <div ng-if="section.type === 'queue' && recentQueueFlag">
                 <div class="RecentQueues">
                     <h4>{{::verbage.recent_queues}}</h4>
                     <em>{{::verbage.recent_queue_name_status}}</em>
@@ -170,7 +170,7 @@
                 </div>
             </div>
 
-            <div ng-if="section.type === 'conference'">
+            <div ng-if="section.type === 'conference' && recentConfFlag">
                 <div class="RecentConferenes">
                     <h4>{{::verbage.recent_conferences}}</h4>
                     <em>{{::verbage.recent_conference_room_extension}}</em>
