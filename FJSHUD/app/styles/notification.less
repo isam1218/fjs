@@ -50,8 +50,41 @@
 			font-size:.8em;
 		}
 	}
-
-	
+}
+.CallStatusContainerInbound,
+.CallStatusContainerOutbound{  
+   .CallStatusIconContainer,
+   .CallStatusText{
+    float: left;             
+   }
+    
+   .CallStatusText{
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        display:inline-block;
+        clear: none;
+        top: 5px;
+        left: 10px; 
+        margin-bottom: 5px;                   
+                
+        .callStatus{
+            font-size: 12px;
+        }
+   }
+   .CallStatusIconContainer{      
+       margin: 5px 0px 5px 5px;
+      
+   }
+   .controlButtons{
+        float: right;
+        display: inline-block;
+        margin-top: 5px;
+            
+        .XButton{
+            font-size: 12px;            
+        }
+    }   	
 }
 
 .NotificationSectionHeader{
