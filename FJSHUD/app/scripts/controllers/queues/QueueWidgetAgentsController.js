@@ -25,29 +25,29 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
     $rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
   };
   
-  $scope.statusFilter = function(status) {
-	return function(agent) {
-		if (status == 'in') {
-			if (agent.status && agent.status.status.indexOf('login') != -1)
-				return true;
-		}
-		else {
-			if (agent.status && agent.status.status.indexOf('login') == -1)
-				return true;
-		}
-	};
+  $scope.statusFilter = function(status){
+    return function(agent){
+      if (status == 'in'){
+        if (agent.fullProfile.hud_status == 'available')
+          return true;
+      } else if (status == 'out'){
+        if (agent.fullProfile.hud_status == 'offline')
+          return true;
+      }
+    };
   };
 
   queueService.getQueues().then(function() {	
-	$scope.agents = $scope.queue.members;
+	   $scope.agents = $scope.queue.members;
   });
   
   // refresh list
   $scope.$on('queue_members_status_synced', function() {
-	$scope.agents = $scope.queue.members;
+	   $scope.agents = $scope.queue.members;
   });
 
   $scope.searchFilter = function(){
+    // console.log(que.query);
     var query = $scope.que.query;
     return function(member){
       if (member.displayName.toLowerCase().indexOf(query) != -1 || member.primaryExtension.indexOf(query) != -1)

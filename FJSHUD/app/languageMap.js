@@ -310,7 +310,7 @@ fjs.i18n = {
       login_all:'Login All',
       logout_all:'Logout All',
       logged_in:'Logged In',
-      Logged_out:'Logged Out',
+      logged_out:'Logged Out',
       logout:'Log Out',
       active:'Active',
       queue_name:'Queue Name',
