@@ -47,10 +47,9 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
   });
 
   $scope.searchFilter = function(){
-    // console.log(que.query);
-    var query = $scope.que.query;
+    var query = $scope.que.query.toLowerCase();
     return function(member){
-      if (member.displayName.toLowerCase().indexOf(query) != -1 || member.primaryExtension.indexOf(query) != -1)
+      if (query == '' || member.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
         return true;
     };
   };
