@@ -51,46 +51,15 @@
 		}
 	}
 }
-.CallStatusContainerInbound,
-.CallStatusContainerOutbound{
-	overflow: hidden;
-	
-   .CallStatusIconContainer,
-   .CallStatusText{
-    float: left;  
-    margin: 5px 0px 5px 5px;           
-   }
-    
-   .CallStatusText{
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        display:inline-block;
-        clear: none;        
-        margin-left: 10px;                       
-                        
-        .callStatus{
-            font-size: 12px;
-        }
-   }
-   
-   .controlButtons{
-        clear: both;
-        float: right;
-        display: inline-block;
-        margin-top: 5px;
-            
-        .XButton{
-            font-size: 12px;            
-        }
-    }   	
-}
+
 .CallStatusContainerInbound,
 .CallStatusContainerOutbound{  
     background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
     background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
     background: -moz-linear-gradient(center top , #E4F1F8, #DFEBF1);
     min-height: 50px;
+    overflow: hidden;
+    width: 100%;
 
    .CallStatusIconContainer,
    .CallStatusText{
@@ -114,7 +83,7 @@
         .memberName{
             font-weight:bold;
             font-size:14px;
-            margin-top: 15px;            
+            /*margin-top: 15px;*/            
         }
    }
    
