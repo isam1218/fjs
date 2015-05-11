@@ -170,16 +170,28 @@
   }
 }
 
+.cust_status{
+  float: right;
+}
 .TopBarVoicemailControls {
-  position: absolute;
-  top: 0;
-  left: 10px;
+  /*position: absolute;*/
+  position: relative;
+  float: right;
+  top: 0;  
+  background-color: #eee;
+  min-height: 100px;
   max-height: 100%;
+  background-color: transparent;
+  min-width: 400px;
+  max-width: 400px;
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
   font-size: .9em;
   z-index: 50;
+  clear: none;
+  margin-top: -80px;
+  margin-right: 100px;
   
   &:hover {
     max-height: 200%;
