@@ -125,7 +125,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 				return $scope.verbage.logged_in;
 				break;
 			case 'logout':
-				return $scope.verbage.Logged_out;
+				return $scope.verbage.logged_out;
 				break;
 		}
 	};
