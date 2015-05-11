@@ -26,15 +26,16 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
   };
   
   $scope.statusFilter = function(status){
-    return function(agent){
-      if (status == 'in'){
-        if (agent.fullProfile.hud_status == 'available')
-          return true;
-      } else if (status == 'out'){
-        if (agent.fullProfile.hud_status == 'offline')
-          return true;
-      }
-    };
+	return function(agent) {
+		if (status == 'in') {
+			if (agent.status && agent.status.status.indexOf('login') != -1)
+				return true;
+		}
+		else {
+			if (agent.status && agent.status.status.indexOf('login') == -1)
+				return true;
+		}
+	};
   };
 
   queueService.getQueues().then(function() {	
