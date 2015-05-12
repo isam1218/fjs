@@ -85,6 +85,38 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   });
 
+  $scope.storeRecent = function(xpid, type){
+    var localPid = JSON.parse(localStorage.me);
+    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+    switch(type){
+      case "contact":
+        $scope.recent[xpid] = {
+          type: 'contact',
+          time: new Date().getTime()
+        };
+        break;
+      case "group":
+        $scope.recent[xpid] = {
+          type: 'group',
+          time: new Date().getTime()
+        };
+        break;
+      case "queue":
+        $scope.recent[xpid] = {
+          type: 'queue',
+          time: new Date().getTime()
+        };
+        break;
+      case "conference":
+        $scope.recent[xpid] = {
+          type: 'conference',
+          time: new Date().getTime()
+        };
+        break;
+    }
+    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+    $rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
+  };
 
   contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;
