@@ -30,6 +30,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				conferenceService.getConferences().then(function(data) {
 					$scope.conferences = data;
 				});
+				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 	
 				$scope.screen = 'conference';
 				$scope.selectedConf = null;
