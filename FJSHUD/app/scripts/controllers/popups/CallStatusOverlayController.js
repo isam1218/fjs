@@ -1,12 +1,20 @@
 hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', function($scope, $filter, $timeout, $location, conferenceService, contactService, httpService) {
 	$scope.onCall = $scope.$parent.overlay.data;
+
+	$scope.timeElapsed = 0;
+	$scope.recordingElapsed = 0;
+	
+	$scope.confQuery = '';
+	$scope.tranQuery = '';
+	$scope.selectedConf = null;
+	$scope.addError = null;
+	$scope.contacts = [];
+	
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
-	if($scope.$parent.overlay.data.screen){
-		
+	
+	if($scope.$parent.overlay.data.screen){		
 		switch($scope.$parent.overlay.data.screen){
 			case 'transfer':
-				
-				
 				$scope.screen = 'transfer';
 				$scope.transferFrom = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 				$scope.transferTo = null;
@@ -36,23 +44,13 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		$scope.screen = 'call';
 	}
 
-
-
-
-	$scope.timeElapsed = 0;
-	$scope.recordingElapsed = 0;
-	
-	$scope.confQuery = '';
-	$scope.tranQuery = '';
-	$scope.selectedConf = null;
-	$scope.addError = null;
-	$scope.contacts = [];
-
 	var updateTime = function() {
-		if ($scope.onCall.call && $scope.onCall.call.startedAt) {
+		if ($scope.onCall.call) {
 			// format date
 			var date = new Date().getTime();
-			$scope.timeElapsed = $filter('date')(date - $scope.onCall.call.startedAt, 'mm:ss');
+			var startTime = $scope.onCall.call.startedAt ? $scope.onCall.call.startedAt : $scope.onCall.call.created;
+			
+			$scope.timeElapsed = $filter('date')(date - startTime, 'mm:ss');
 			
 			// also get recorded time
 			if ($scope.onCall.call.record)
