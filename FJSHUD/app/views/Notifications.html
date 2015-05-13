@@ -195,6 +195,8 @@
 			<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div></div>
 		</div>
 		
+		<div ng-if="currentCall.record">rec</div>
+		
 		<div class="controlButtons">
 			<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
 			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
