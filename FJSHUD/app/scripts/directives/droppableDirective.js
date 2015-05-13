@@ -7,6 +7,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 			// element can be dropped onto
 			$(element).droppable({
 				tolerance: 'pointer',
+				greedy: true,
 				over: function(event, ui) {
 					// find original draggable object
 					if (ui.draggable[0].attributes.dockable)
@@ -23,13 +24,13 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						type = 'QueueStat';
 					else if (obj.roomNumber !== undefined)
 						type = 'ConferenceRoom';
-					else if (obj.parkExt !== undefined)
-						type = 'ParkedCall';
 					else if (obj.name !== undefined)
 						type = 'Group';
+					else if (obj.record !== undefined)
+						type = 'Call';
 					
 					// allowed cases
-					if ($(this).hasClass('InnerDock') || (type == 'Contact' && scope.$parent.currentCall)) {
+					if ((type != 'Call' && $(this).hasClass('InnerDock')) || (type == 'Contact' && scope.$parent.currentCall) || (type == 'Call' && scope.gadget && scope.gadget.name == 'GadgetConfig__empty_GadgetParkedCalls_')) {
 						$(this).addClass('DroppableArea');
 						$(ui.helper).removeClass('not-allowed');
 					}
@@ -45,8 +46,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 				drop: function(event, ui) {
 					$(this).removeClass('DroppableArea');
 					
-					// dock
-					if ($(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
+					// dock new item
+					if (type != 'Call' && $(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
 						var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 						var data = {
@@ -65,7 +66,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						
 						httpService.sendAction('settings', 'update', data);
 					}
-					// current call
+					// start conference via active call
 					else if (type == 'Contact' && scope.$parent.currentCall) {
 						conferenceService.getConferences().then(function(data) {
 							var found = null;
@@ -105,6 +106,12 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 								
 								$location.path('/conference/' + found + '/currentcall');
 							}
+						});
+					}
+					// park call
+					else if (type == 'Call' && scope.gadget && scope.gadget.name.indexOf('GadgetParkedCalls') != -1) {
+						httpService.sendAction('mycalls', 'transferToPark', {
+							mycallId: obj.xpid
 						});
 					}
 				}
