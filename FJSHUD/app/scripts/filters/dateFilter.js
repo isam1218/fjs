@@ -1,5 +1,5 @@
 hudweb.filter('fondate', function() {
-    return function(milliseconds,dateformat,locale) {		
+    return function(milliseconds,dateformat,locale,chatSection) {		
 		
     	var todayTime = new Date().getTime();
     	var locale_code = 'en';
@@ -16,10 +16,15 @@ hudweb.filter('fondate', function() {
 
     	//will return different text depended on whether or not its today or yesterday otherwise return the full date with specified date format
     	
-    	if(moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
+        if (chatSection === 'list_message_left'){
+            return moment(milliseconds).lang(locale_code).format('hh:mm a');
+        } else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
+            return "Today";
+        } else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
+            return "Yesterday";
+        } else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
     		return "today " + moment(milliseconds).lang(locale_code).format('hh:mm a');
-    	}else if(moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day')))
-    	{
+    	}else if(moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
     		return "yesterday " + moment(milliseconds).lang(locale_code).format('hh:mm a');
     	}else{
             //return moment(new Date(milliseconds)).format(dateformat);
