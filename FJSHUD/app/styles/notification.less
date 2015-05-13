@@ -46,6 +46,9 @@
 		max-height: 4.2em;
 		padding-bottom: 20px;
 		//text-overflow:ellipsis;
+		max-height: 6em;
+		font-size: 13px;
+		color: #000;
 		p{
 			font-size:.8em;
 		}
@@ -91,9 +94,11 @@
         float: right;
         display: inline-block;
         margin-top: 5px;
+        padding-right: 3px;
             
         .XButton{
-            font-size: 13px;            
+            font-size: 13px;      
+            padding: 5px;      
         }
     }   	
 }
@@ -216,6 +221,11 @@
 	border:1px solid #3c9c00;
 	border-radius:2px;
 	-webkit-border-radius:2px;
+	
+	img{
+	   width: 28px;
+	   height: 28px;
+	}
 }
 
 .NotificationOverlay{
@@ -256,6 +266,32 @@
 	
 	&:not(:first-child) {
         margin-top: -18px;
+    }
+    &.alerts{
+        cursor:hand;
+        cursor:pointer;
+        .alert{
+            text-decoration:none; 
+            color:inherit;
+            pointer-events: none;
+            
+            .NotificationSection,
+            .NotificationHeader,
+            .NotificationDivider{
+                pointer-events:visible;
+            }
+        }
+        .NotificationSection > a{
+            text-decoration: none;
+            color: inherit;
+        }
+        .LeftBarNotificationMessageSection{
+            .alertMsg{
+                font-weight:bold;
+                font-size:.7em;
+                height: 2.5em;
+            }
+        }
     }
 
 }

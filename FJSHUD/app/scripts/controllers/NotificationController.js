@@ -13,11 +13,43 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
 	$scope.phoneSessionEnabled = false;
-	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];	
+	$scope.cssTop = 0;
+	$scope.showLastMessageBody = false;
 	
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
+		$scope.showLastMessageBody = true;
 	});
+	
+	$scope.getCssTop = function(index){
+		
+		if(typeof index != 'undefined')
+		{						
+			if(index > 0)
+			{					
+				if(index > 1)			
+					$scope.cssTop = 15 + ((index -1) * 25);	
+				else
+					$scope.cssTop = 15;
+				
+				return {'top': '-' + $scope.cssTop +'px'};			
+			}
+			else
+			{	
+				$scope.cssTop = 0;			
+				return {'top':  $scope.cssTop +'px'};
+			}
+		}
+	};
+	
+	$scope.setTopPosition = function(ev, flag){
+		var el = ev.target;
+		if(flag)//go up
+		  $(el).css('top', '-40px');
+		else 
+		  $(el).removeAttr('style');	
+	};
 	
 	$scope.$on('pidAdded', function(event, data){
 		addedPid = data.info;
@@ -53,17 +85,42 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			case "vm":
 				return "Voicemail from extension " + message.phone; 
 				break;
+			case "missed-call":
+				return "Missed Call from extension " + message.phone;  
+				break;
+			case "warning":
+				return "Warning: " + messages; 
+				break;	
+			case "invite":
+				return "Invite from " + message.displayName +"("+message.phone+")";
+				break;
+			case "q-alert-rotation":
+				return "Queue alert rotation.";
+				break;	
+			case "q-alert-abandoned":
+				return "Abandoned call from " + message.phone;
+				break;
+			case "busy-ring-back":
+				return message.phone + " is busy. Please try again";
+				break;	
+			case "wall":	
 			case "chat":
+			case "gchat":	
 				return messages;
 				break;
 			default:
 				return messages;
-
-		
+			    break;						
 		}
 	};
 
-	$scope.remove_notification = function(xpid){
+	$scope.remove_notification = function(xpid, ev){
+		var el = angular.element(ev.target);
+		if(xpid == '' && typeof el != 'undefined'){
+			$(el).closest('a').remove();
+			$scope.phoneSessionEnabled =  true;
+			$scope.showLastMessageBody = true;
+		}
 		for(i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
 				$scope.notifications.splice(i,1);
@@ -76,7 +133,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				break;
 			}	
 		}
-		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
+		if(xpid && xpid != '')
+			myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
 	};
 
 	$scope.get_new_notifications= function(){

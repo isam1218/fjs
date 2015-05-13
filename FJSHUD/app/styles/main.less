@@ -300,6 +300,9 @@ p {
                    
      } 
     .WidgetMe{
+      .WidgetBody {
+        top: 160px !important;
+      }
      .WidgetHeader{
         height: 8.438em !important;
         position: absolute !important;
@@ -411,6 +414,15 @@ p {
                 .XButton.XSortButton{
                     margin-top: 0px !important;
                 }
+                select.XButton{
+                    height: 2em;
+                    padding-top: 3px;
+                    padding-left: 0.5em !important;
+                }
+                .QueueButtonToggle{
+                    height: 1.9em;
+                    padding: 0 5px;
+                }
                 
                 img.x{
                     top: 10px !important;
@@ -441,7 +453,8 @@ p {
         
          .XButton{            
             font-size: 0.625em !important;
-            height: 2.90em !important;            
+            height: 2.90em !important;   
+            width: 33.8%;         
           }
           
          .SearchInputBox{
@@ -538,6 +551,9 @@ p {
         {
            top: -3px !important;
         }
+        .LeftBarNotifications{
+            width: 298px;
+        }       
    }
   }
   
@@ -575,9 +591,18 @@ p {
      
      &.halfHeight{
         overflow: hidden;
-        height: 1.5em;
+        /*height: 1.5em;*/
          &.firstsection{
             height: 1.8em;
+         }
+         
+         .NotificationAvatar{
+           width: 30px;
+           height: 30px;
+           img{
+            width: 28px;
+            height: 28px;
+           } 
          }
      }
   }
@@ -605,5 +630,12 @@ p {
     .NotificationMessage {
         padding-left: 5px;
     }
-  }    
+  }   
+  &.MyStatus{
+        .ToolBar{
+            select.XButton {
+                padding-left: 0.5em !important;
+            }
+        }
+    } 
 }
