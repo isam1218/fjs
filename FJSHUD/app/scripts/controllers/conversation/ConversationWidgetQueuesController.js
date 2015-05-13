@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$routeParams', '$timeout', '$filter', 'ContactService', 'QueueService', 'HttpService', function($scope, $routeParams, $timeout, $filter, contactService, queueService, httpService) {    
+hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope', '$routeParams', '$timeout', '$filter', 'ContactService', 'QueueService', 'HttpService', function($scope, $rootScope, $routeParams, $timeout, $filter, contactService, queueService, httpService) {    
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactId);
     $scope.data = {};
