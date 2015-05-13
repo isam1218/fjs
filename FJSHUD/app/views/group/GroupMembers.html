@@ -16,11 +16,11 @@
 
  <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
-            <a  href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat= "member in members | filter: searchFilter() track by member.xpid"> 
+            <a  href="#/contact/{{ ::member.fullProfile.xpid }}" ng-click="storeRecentContact(member.fullProfile.xpid)" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat= "member in group.members | filter: searchFilter() track by member.xpid">
             
                 <avatar profile="member.fullProfile"></avatar>
 
-                <div class="ListRowContent"> 
+                <div class="ListRowContent" dockable="member.fullProfile"> 
                     <div class="ListRowTitle">
                         <span> {{ ::member.fullProfile.displayName }} </span>
 						<br/>

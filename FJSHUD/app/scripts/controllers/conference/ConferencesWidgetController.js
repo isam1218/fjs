@@ -40,7 +40,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 			time: new Date().getTime()
 		};
 		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: confXpid});
+		$rootScope.$broadcast('recentAdded', {id: confXpid, type: 'conference', time: new Date().getTime()});
 	};
 
 	$scope.enableChat = true;

@@ -1,7 +1,6 @@
 hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpService','SettingsService', function ($scope, $rootScope, httpService,settingsService) {  
   var addedPid;
   var localPid;
-  httpService.getFeed('queues');
 
   $scope.queue_options = [
     {display_name: $scope.verbage.queue_name, type: "name"},
@@ -59,7 +58,7 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
       time: new Date().getTime()
     };
     localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {info: queueXpid});
+    $rootScope.$broadcast('recentAdded', {id: queueXpid, type: 'queue', time: new Date().getTime()});
   };
   
   $scope.resetStats = function() {

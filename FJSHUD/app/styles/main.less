@@ -15,17 +15,7 @@ body, html {
   box-shadow: 0 4px 5px rgba(255,255,255,0.3) inset;
   user-select: none;
   overflow: hidden;
-  
-  &.not-allowed { cursor: not-allowed !important; }
 }
-
-/*a {
-  color: gray;
-}*/
-
-/*a.Messages{
-  color:white;
-}*/
 
 p {
   font-size: 11px;
@@ -71,7 +61,7 @@ p {
 }
 
 .PanelWrapper {
-  position: relative;
+  position: absolute;
   padding: 0 10px 10px 10px;
   flex: 1;
   -webkit-flex: 1;
@@ -79,6 +69,8 @@ p {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
+  width: 100%;
+  height: 85%;
 }
 
 .col1{
@@ -218,26 +210,33 @@ p {
 
 .loadmore {
   color: #729C00;
+  margin: 0 auto;
+  display: block;
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 @import "topBar";
 @import "leftBar";
 @import "dock";
 @import "widget";
-  @import "settings";
-  @import "calls";
-  @import "conference";
-  @import "queue";
-  @import "search";
-  @import "video";
-  @import "conversation";
+@import "settings";
+@import "calls";
+@import "conference";
+@import "queue";
+@import "search";
+@import "video";
+@import "conversation";
 @import "tables";
 @import "buttons";
 @import "icons";
 @import "popups";
+@import "nativeAlert";
 @import "notification";
 @import "voicemail";
-@import "nativeAlert";
 @import "queue";
 @import "media";
 
@@ -320,6 +319,10 @@ p {
      }
      
      .WidgetBody{
+       top: 150px;
+       position: absolute;
+     }
+  /*   .WidgetBody{
         position: relative !important;
         height: 20em !important;
         
@@ -327,12 +330,26 @@ p {
         
         .Preferences-Holder{height: 10em !important;}
      }
-     
+    
+     .Preferences-Holder{
+        /*height: 60% !important;
+        .SettingsPanel.DialogContentMainBlock_List {
+            height: 79% !important;
+        }
+     }*/
      .Avatar.AvatarBig{width: 19% !important;}
      
      .MeInfoBlock {width: 79% !important;}
     } 
     
+    element {
+}
+.ChatInputBox .ChatInputFields .text.ChatInputBoxInput { height: 3.5em !important; }
+.ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {          
+            height: 2.5em !important;
+            padding-top: 10px !important;
+}
+
     .WidgetBody{        
         
          .SearchInputBox{
@@ -350,12 +367,17 @@ p {
                 font-size: 0.688em !important;
                 /*height: 2.6em !important; */           
              }
-             
-             select.XButtonDropDown, .XButton{
-                float: right !important;
-                height: 2.7em;            
-             } 
-             
+             &.fj-stream{ 
+                 .XButton{
+                    float: right !important;
+                    height: 1.9em !important;                         
+                 } 
+                 select.XButton, select.XButtonDropDown{
+                    height: 2.3em !important;
+                    width: 22% !important;
+                    float: right !important;
+                 }
+             }
              .ChatSearch{
                 top: 0px !important;
                 img.x{
@@ -448,9 +470,21 @@ p {
     }         
     .Conversation{
     
-      .ToolBar{
-      
+      .ToolBar{        
+         
          img.x{top: 10px; right: 12px;}
+         
+         .XButton {
+           height: 2.2em !important;
+         }
+         .XButtonNormal{
+            height: 1.9em !important;
+         }
+         select.XButton, select.XButtonDropDown{
+           width: 32%;
+           height: 2em;
+           padding-top: 3px !important;
+         }
          
          input[type=search].SearchBox{           
             width: 30% !important;
@@ -458,10 +492,13 @@ p {
          
          .XButton.XSortButton{
             margin-top: 0 !important;
-         }
+         }        
          
          &.chatTop{
-         
+          .XButton {
+               height: 2.2em !important;
+          }
+              
           .ChatSearch{
             width: 64% !important;
             top: 0 !important!;
@@ -508,6 +545,7 @@ p {
     background-color: transparent;
   }
   
+  .WidgetTabBar{ clear: both;}
   .Messages{        
           
         &:first-child{         

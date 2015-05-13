@@ -1,14 +1,15 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
-	function($scope, $routeParams, groupService, contactService, httpService,phoneService) {
+hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
+	function($scope, $rootScope, $routeParams, groupService, contactService, httpService,phoneService) {
+	var addedPid;
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
 	$scope.grp = {};
 	$scope.grp.query = '';
 	$scope.query = "";
+
 	httpService.getFeed("groupcontacts");
-	httpService.getFeed("contactstatus");
-	
+
 	$scope.sort_options = [
 	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
     {name:$scope.verbage.sort_by_call_status,id:2, type:'call_status'},
@@ -16,6 +17,27 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
   ];
   
   $scope.selectedSort = $scope.sort_options[0];
+
+  $scope.$on('pidAdded', function(event, data){
+  	addedPid = data.info;
+  	if (localStorage['recents_of_' + addedPid] === undefined){
+  		localStorage['recents_of_' + addedPid] = '{}';
+  	}
+  	$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+  });
+
+  $scope.storeRecentContact = function(xpid){
+		var localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// $scope.recent = JSON.parse(localStorage.recent);		
+		$scope.recent[xpid] = {
+			type: 'contact',
+			time:  new Date().getTime()
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+		// localStorage.recent = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
+  };
 
   $scope.getAvatar = function(xpid) {
 		return httpService.get_avatar(xpid, 40, 40);
@@ -34,18 +56,7 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 
 	$scope.callExtension= function(extension){
 		phoneService.makeCall(extension);
-	}
-	$scope.$on("contacts_updated", function(event,data){
-		for(index in $scope.members){
-			for(key in data){
-				if(data[key].xpid == $scope.members[index].xpid){
-					$scope.members[index] = data[key];
-					$scope.members[index].contactId = data[key].xpid;
-					break;	
-				}
-			}
-		}
-	});
+	};
 
 	$scope.sortBy = function(type){
 		switch(type){

@@ -20,7 +20,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			time: new Date().getTime()
 		};
 		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
 	};
 	
 	$scope.$on('settings_updated', function(event, data) {		
@@ -90,15 +90,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						$('#InnerDock').sortable({
 							revert: 1,
 							handle: '.Header, .Content',
-							containment: '#InnerDock',
+							helper: 'clone',
+							appendTo: 'body',
+							cursorAt: { top: 25 },
 							start: function(event, ui) {
 								// visual cues
-								$('#DockPanel').addClass('Moving');
-								$(ui.item).addClass('ui-draggable-dragging');
-							},
-							stop: function(event, ui) {
-								$('#DockPanel').removeClass('Moving');
-								$(ui.item).removeClass('ui-draggable-dragging');
+								$(ui.helper).addClass('ui-draggable-dragging');
+								ui.placeholder.height(ui.helper[0].scrollHeight);
 							}
 						});
 					}

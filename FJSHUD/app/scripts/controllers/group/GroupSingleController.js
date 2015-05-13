@@ -11,6 +11,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 
   $scope.enableChat = false;
   $scope.enableFileShare = false;
+  $scope.enableTextInput = false;
 	$scope.messages = [];
 
 	$scope.tabFilter = function(){
@@ -30,7 +31,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 
 	$scope.$on('groups_updated', function(event, data) {
 		var groups = data.groups;
-		
+
 		// find this group
 		for (i in groups) {
 			if (groups[i].xpid == $scope.groupID) {
@@ -40,15 +41,18 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 		}
 		
 		$scope.isMine = groupService.isMine($scope.groupID);
-		// console.log('groups - ', groups);
 	});
 
-	if ($scope.isMine){
-		$scope.enableChat = true;
-		$scope.enableFileShare = true;
-	} else {
-		$scope.enableChat = false;
-		$scope.enableFileShare = false;
+	if ($scope.conversationType == 'group'){
+		if ($scope.isMine){
+			$scope.enableChat = true;
+			$scope.enableTextInput = true;
+			$scope.enableFileShare = true;
+		} else {
+			$scope.enableChat = false;
+			$scope.enableTextInput = false;
+			$scope.enableFileShare = false;
+		}
 	}
 	
 	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
@@ -65,11 +69,14 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 		}
 	};
 
-	$scope.groupHeaderDisplay = function(groupType){
-		// if not a dept -> display 'group'
-		if (groupType !== 0){
+	$scope.nonVisibleTeamHeaderDisplay = function(groupType){
+		if (groupType !== 0 && groupType === 2)
 			return true;
-		}
+	}
+
+	$scope.publicTeamHeaderDisplay = function(groupType){
+		if (groupType !== 0 && groupType === 4)
+			return true;
 	};
 
 	// display avatar for group member

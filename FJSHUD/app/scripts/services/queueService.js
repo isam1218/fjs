@@ -56,7 +56,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 		return {
 			queues: queues,
 			mine: mine,
-			total: total
+			total: total,
+			reasons: reasons
 		};
 	};
 	
@@ -68,10 +69,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 		// first time
 		if (queues.length == 0) {
 			queues = data;
-			deferred.resolve(queues);
 			
-			// add avatars
+			// add child data
 			for (var i = 0, len = queues.length; i < len; i++) {
+				queues[i].calls = [];
+				queues[i].members = [];
+				
 				queues[i].getAvatar = function (index, size) {
 					if (this.members && this.members[index] !== undefined)
 						return httpService.get_avatar(this.members[index].contactId, size, size);
@@ -131,7 +134,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				
 			}
 		}
-		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 
 	$rootScope.$on("queue_stat_calls_synced", function (event, data) {
@@ -168,32 +170,39 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 		}
 	
 		$rootScope.loaded.queues = true;
-		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 	
 	$rootScope.$on('queue_call_synced', function(event, data) {
-		var now = new Date().getTime();
-		
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
-			queues[q].calls = [];
-			queues[q].longestWait = now;
+			queues[q].calls.splice(0, queues[q].calls.length);
+			queues[q].longestWait = new Date().getTime();
+			queues[q].longestActive = new Date().getTime();
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if (data[i].queueId == queues[q].xpid) {
 					queues[q].calls.push(data[i]);
 					
-					// find longest wait/hold
-					if (data[i].startedAt < queues[q].longestWait)
-						queues[q].longestWait = data[i].startedAt;
+					// find longest active/hold
+					if (data[i].taken) {
+						if (data[i].startedAt < queues[q].longestActive)
+							queues[q].longestActive = data[i].startedAt;
+					}
+					else if (data[i].startedAt < queues[q].longestWait)
+							queues[q].longestWait = data[i].startedAt;
+						
+					// attach ringing agent
+					if (data[i].agentContactId)
+						data[i].agent = contactService.getContact(data[i].agentContactId);
 				}
 			}
 			
 			// no change, so set to zero
-			if (queues[q].longestWait == now)
+			if (queues[q].longestWait == new Date().getTime())
 				queues[q].longestWait = 0;
+			
+			if (queues[q].longestActive == new Date().getTime())
+				queues[q].longestActive = 0;
 		}
-	
-		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 	
 	/**
@@ -205,7 +214,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			mine.splice(0, mine.length);
 		
 			for (var q = 0, qLen = queues.length; q < qLen; q++) {
-				queues[q].members = [];
+				queues[q].members.splice(0, queues[q].members.length);
 				
 				for (var i = 0, iLen = data.length; i < iLen; i++) {		
 					// add to member list
@@ -220,7 +229,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 			}
 		
+			// pull member child data
 			httpService.getFeed('queue_members_status');
+			httpService.getFeed('queue_members_stat');
+			httpService.getFeed('queuemembercalls');
+			
+			deferred.resolve(formatData());
 		}
 	});
 
@@ -266,8 +280,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 			}
 		}
-
-		httpService.getFeed('queue_members_stat');
 	});
 	
 	$rootScope.$on('queue_members_stat_synced', function(event, data) {
@@ -295,9 +307,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 			}
 		}
-	
-		httpService.getFeed('queuemembercalls');
-		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 
 	$rootScope.$on("queuemembercalls_synced", function (event, data) {
@@ -316,8 +325,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 			}
 		}
-	
-		$rootScope.$evalAsync($rootScope.$broadcast('queues_updated', formatData()));
 	});
 	
 	$rootScope.$on('queuelogoutreasons_synced', function(event, data) {

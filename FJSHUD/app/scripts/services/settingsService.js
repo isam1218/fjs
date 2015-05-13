@@ -77,14 +77,19 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				// look at fj repository > MyPermissions.java for reference
 				permissions.showCallCenter = ((data[i].propertyValue & (1 << 10)) == 0);
 				permissions.showVideoCollab = ((data[i].propertyValue & (1 << 1)) == 0);
-				
+				permissions.recordingEnabled = ((data[i].propertyValue & (1 << 14)) == 0);
+				permissions.deleteMyRecordingEnabled = ((data[i].propertyValue & (1 << 15)) == 0);
+				permissions.deleteOtherRecordingEnabled = ((data[i].propertyValue & (1 << 16)) == 0);
+				console.log('perms - ', permissions);
 				deferPermissions.resolve(permissions);
 				break;
 			}
 		}
 	});
 
-	$rootScope.$on('settings_synced', function(event, data) {		
+	$rootScope.$on('settings_synced', function(event, data) {	
+		settings = angular.copy({});
+		
 		// convert to object
 		for (key in data)
 			settings[data[key].key] = data[key].value;

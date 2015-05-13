@@ -148,7 +148,7 @@
 					
 						<div class="LeftBarNotificationMessageSection"> 
 							
-							<div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'dddd hh:mm a':fon_lang_code    }} </div></div> 
+							<div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D, hh:mm a':fon_lang_code    }} </div></div> 
                             <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 							<div class="NotificationMessage"><p>{{ getMessage(message) }} </p> </div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
@@ -186,16 +186,16 @@
 </div>
 
 
-<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall">
+<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall" droppable>
 		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>
-		<div ng-click="showCurrentCallControls(currentCall)" style="display:inline-block" class="CallStatusText"> 
-			<div style="font-weight:bold;font-size:14px">{{currentCall.displayName}}</div>
-			<div><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div></div>
+		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
+			<div class="memberName">{{currentCall.displayName}}</div>
+			<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div></div>
 		</div>
 		
-		<div style="float:right;display:inline-block;margin-top:5px">
+		<div class="controlButtons">
 			<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
 			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
 			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">{{::verbage.end}}</div>

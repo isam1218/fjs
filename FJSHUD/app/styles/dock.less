@@ -1,5 +1,5 @@
 .DockPanel {
-  position: relative;
+  /*position: relative;*/
   flex: 1;
   -webkit-flex: 1;
   margin-left: 10px;
@@ -20,7 +20,8 @@
   .InnerDock {
     position: absolute;
 	height: 100%;
-	width: 100%;
+	/*width: 100%;*/
+	width: 39%;
     column-width: 170px;
     -webkit-column-width: 170px;
     -moz-column-width: 170px;
@@ -35,36 +36,27 @@
     }
   }
 
-  .GadgetStatusText {
-  		text-overflow: ellipsis;
-  		overflow: hidden;
-  		white-space: nowrap;
-  		font-size: 11px;
-  		cursor: pointer;
-  }
 
-  .ListSectionGadget {
-	  height: 20px;
-	  border-top: solid 1px #aaa;
-	  border-bottom: solid 1px #fff;
-	  background-image: -webkit-gradient(linear, top left, bottom left, from(#CFCFCF), color-stop(0.3, #E2E2E2), to(#EEE));
-	  font-size: 12px;
-	  font-weight: bold;
-	  line-height: 20px;
-	  color: #888;
-	  text-shadow: whiteSmoke 0 1px 0;
-	  text-align: center;
+	.GadgetStatusText {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		font-size: 11px;
+		cursor: pointer;
 	}
-	
-  .Gadget .Header {
-	cursor: pointer;
-  }
-  
-  .TopBarItemAppIcon.CallCenter {
-    position: relative;
-	top: 0;
-	left: 0;
-  }
+
+	.ListSectionGadget {
+		height: 20px;
+		border-top: solid 1px #aaa;
+		border-bottom: solid 1px #fff;
+		background-image: -webkit-gradient(linear, top left, bottom left, from(#CFCFCF), color-stop(0.3, #E2E2E2), to(#EEE));
+		font-size: 12px;
+		font-weight: bold;
+		line-height: 20px;
+		color: #888;
+		text-shadow: whiteSmoke 0 1px 0;
+		text-align: center;
+	}
 }
   
 .Gadget {
@@ -92,6 +84,14 @@
 		height: auto !important;
 		box-shadow: 5px 5px 8px gray !important;
 		
+		&.not-allowed .Header {
+			cursor: not-allowed;
+		}
+		
+		.Header {
+			cursor: move;
+		}
+		
 		.Content, .Resizer {
 			display: none;
 		}
@@ -106,6 +106,7 @@
 	}
 
 	.Header {
+	    cursor: pointer;
 		background-color: #ECECEC;
 		padding: .25em;
 		text-decoration: none;
@@ -155,6 +156,12 @@
 				font-size: .8em;
 			}
 		}
+  
+        .TopBarItemAppIcon.CallCenter {
+			position: relative;
+			top: 0;
+			left: 0;
+        }
 	}
 
 	.Content {
@@ -228,4 +235,11 @@
 			vertical-align: middle;
 		}
 	}
+}
+  
+.DroppableArea {
+	border: 1px dashed #358503;
+	border-width: 1px;
+	-moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+	-webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
 }

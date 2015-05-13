@@ -1,6 +1,7 @@
 .WidgetMe .WidgetHeader {
   padding: 0 10px;
-  height: 22%;
+  /*height: 22%;*/
+  height: 75px;
   width: 100%;
 }
 .WidgetMe .WidgetHeaderTitle {
@@ -22,24 +23,48 @@
   height: 5em;
 }
 .WidgetMe .WidgetBody {
-  height: 80%;
-  top: 150px;
-  position: absolute;
+  /* height: 80%;       
+       top: 150px;
+       position: absolute;*/
+  height: 78%;
+  max-height: 100%;
+  top: 73px;
 }
 .WidgetMe .WidgetBody .call-block {
-  height: 45%;
+  height: 50%;
   overflow-y: hidden;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide {
+  width: 50%;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row {
+  margin: 10px 5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row input[type=range] {
+  width: 70%;
+  margin-bottom: -8px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle > div {
+  float: left;
+  margin-left: -5px;
+  clear: both;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar {
+  margin-top: 8px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
+  width: 48%;
 }
 .WidgetMe .MeInfoBlock-column textarea {
   height: 3em;
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
-  -webkit-box-flex: 1;
-  height: 42%;
+  height: 50%;
   margin-top: 3px;
   display: inline-block;
   overflow: hidden;
+  padding-bottom: 70px;
 }
 .WidgetMe .Preferences-Holder .WidgetTabBar {
   top: 0px;
@@ -60,7 +85,9 @@
   position: relative;
   border: none 0px;
   background-image: url("../img/XTile-Widget.png");
-  height: 72%;
+  /*height: 81%;
+         height: 85%;*/
+  height: 95%;
   overflow-y: hidden;
   background-color: #f9f9f9;
   bottom: 0px;
@@ -68,6 +95,8 @@
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div {
   overflow-y: auto;
   padding: 10px;
+  height: 100%;
+  width: 100%;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div.padding {
   padding-bottom: 30px;
@@ -431,8 +460,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -853,7 +882,9 @@ div.NewCall .XButton.XButtonNormal {
   color: #666;
   padding-top: 4px;
   font-size: 11px;
+  font-size: .563em;
   display: block;
+  text-transform: uppercase;
 }
 .Preferences-Holder .ListView {
   font-size: .9em;

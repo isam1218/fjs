@@ -13,6 +13,25 @@
 </div>
 
 <div class="TopBarMeStatus">
+    <div class="cust_status">
+        <div class="XButton Logout" ng-click="logout()">
+            <div class="icon"></div>
+            <span>{{::verbage.sign_out}}</span>
+        </div>
+    
+        <div class="Status">
+            <div ng-if="queue.queues && queue.queues.length > 0">
+                {{::verbage.me}} {{ queue.loggedIn > 0 ? 'in (' + queue.loggedIn + ')' : 'out (' + queue.queues.length + ')' }}
+                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ meModel.queue_agent_status }}"></div>
+            </div>
+            <div ng-if="!queue.queues || queue.queues.length == 0" class="ListRowStatusIcon XIcon-QueueStatus-"></div>
+            
+            <div class="hud_status">
+                {{ meModel.chat_status ? (meModel.chat_status == 'dnd' ? verbage['busy'] : verbage[meModel.chat_status]) : verbage.offline }}
+                <div class="ListRowStatusIcon XIcon-ChatStatus-{{ meModel.chat_status || 'offline' }}"></div>
+            </div>
+        </div>
+    </div>
 	<div class="TopBarVoicemailControls" ng-show="voicemail">		
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		<div class="Caller">
@@ -54,23 +73,5 @@
 		<audio id="voicemail_player">
 			<source id="voicemail_player_source" type="audio/mp3"></source>
 		</audio>
-	</div>
-
-	<div class="XButton Logout" ng-click="logout()">
-		<div class="icon"></div>
-		<span>{{::verbage.sign_out}}</span>
-	</div>
-
-	<div class="Status">
-		<div ng-if="queue.queues && queue.queues.length > 0">
-			{{::verbage.me}} {{ queue.loggedIn > 0 ? 'in (' + queue.loggedIn + ')' : 'out (' + queue.queues.length + ')' }}
-			<div class="ListRowStatusIcon XIcon-QueueStatus-{{ meModel.queue_agent_status }}"></div>
-		</div>
-		<div ng-if="!queue.queues || queue.queues.length == 0" class="ListRowStatusIcon XIcon-QueueStatus-"></div>
-		
-		<div class="hud_status">
-			{{ meModel.chat_status ? (meModel.chat_status == 'dnd' ? verbage['busy'] : verbage[meModel.chat_status]) : verbage.offline }}
-			<div class="ListRowStatusIcon XIcon-ChatStatus-{{ meModel.chat_status || 'offline' }}"></div>
-		</div>
-	</div>
+	</div>    
 </div>

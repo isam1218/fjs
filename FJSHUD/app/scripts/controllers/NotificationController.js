@@ -1,7 +1,6 @@
 hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
 	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
 
-	var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	var addedPid;
 	var localPid;
 	$scope.notifications = [];
@@ -33,12 +32,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.storeRecent = function(xpid){
 		localPid = JSON.parse(localStorage.me);
 		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
 		$scope.recent[xpid] = {
 			type: 'contact',
 			time: new Date().getTime()
 		};
 		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
 	};
 
 	$scope.getAvatar = function(pid){
@@ -327,12 +327,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
 								notification.label =$scope.verbage.voicemail;
-							}else if(notification.type == 'wall'){
+							}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-								notification.label = 'missed call'
+                 notification.label = 'missed call';
 							}else if(notification.type == 'busy-ring-back'){
-								notification.label = 'is now available for call'
+                notification.label = 'is now available for call';
 								notification.message= "User is free for call";
 							}
 					if(notification.audience == "conference"){
@@ -372,12 +372,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 								notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
 								notification.label = $scope.verbage.voicemail;
-					}else if(notification.type == 'wall'){
+					}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-						notification.label = 'missed call'
+                notification.label = 'missed call';
 					}else if(notification.type == 'busy-ring-back'){
-						notification.label = 'is now available for call'
+            notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}
@@ -422,9 +422,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
 						return false;
 					else{
-						if(item.type == 'wall'){
+						if(item.type == 'wall' || item.type == 'chat'){
 							playChatNotification = true;
 						}
+						
 						return true;
 					}
 			}

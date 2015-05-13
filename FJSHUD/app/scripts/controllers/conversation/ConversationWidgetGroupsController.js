@@ -24,7 +24,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             time: new Date().getTime()
         };
         localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-        $rootScope.$broadcast('recentAdded', {info: xpid});
+        $rootScope.$broadcast('recentAdded', {id: xpid, type: 'group', time: new Date().getTime()});
     }
 	
     // pull updates from service

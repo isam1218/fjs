@@ -1,4 +1,14 @@
-hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpService', function($scope, $location, httpService) {
+hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 'HttpService', function($scope, $location, $sce, httpService) {
+	$scope.showEmbed = false;
+	
+	var toggleEmbed = function() {
+		// show or hide iframe viewer
+		if ($scope.currentDownload.fileName.match(/\.pdf$/i))
+			$scope.showEmbed = true;
+		else
+			$scope.showEmbed = false;
+	};
+	
 	if ($scope.$parent.overlay.data.audience) {
 		$scope.toName = $scope.$parent.overlay.data.name;
 		$scope.targetId = $scope.$parent.overlay.data.xpid;
@@ -7,6 +17,8 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpSer
 	else {
 		$scope.downloadables = $scope.$parent.overlay.data.downloadables;
 		$scope.currentDownload = $scope.downloadables[$scope.$parent.overlay.data.current];
+		
+		toggleEmbed();
 	}
 
     $scope.archiveOptions = [
@@ -25,6 +37,11 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpSer
     $scope.getAttachment = function(url,fileName){
     	return httpService.get_attachment(url);
     };
+	
+	$scope.getEmbedURL = function(url) {
+		// sanitize url for iframe embedding
+		return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true');
+	};
 
     $scope.uploadAttachments = function($files){
       	$files[0];
@@ -48,7 +65,8 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpSer
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "1_0",
             "_archive": $scope.selectedArchiveOption.value,
-        }
+        };
+		
         httpService.upload_attachment(data,fileList);
 		
         this.message = "";
@@ -62,7 +80,8 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', 'HttpSer
 
 	$scope.selectCurrentDownload = function(download){
 		$scope.currentDownload = download;
-		$scope.$safeApply();
+		
+		toggleEmbed();
 	};
 
 	$scope.getOffsetDownload = function(index){

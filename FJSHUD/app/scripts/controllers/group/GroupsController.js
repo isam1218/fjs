@@ -55,7 +55,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 						}
 						break;
 					case 'others':
-						return (group.type == 4);
+						return (group.type == 4 && group.ownerId != $rootScope.myPid);
 						break;
 				}
 			}
@@ -88,7 +88,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
       time: new Date().getTime()
     };
     localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {info: groupXpid});
+    $rootScope.$broadcast('recentAdded', {id: groupXpid, type: 'group', time: new Date().getTime()});
   };
 
 }]);
