@@ -15,18 +15,25 @@
   top: 0;
   right: 0;
   left: 0;
+  padding: 0 10px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
-  margin: .05em 0 .25em .7em;
-  width: 45%;
+  margin: .05em .1em 0.7em 0.7em;
+  width: 40%;
   max-width: 300px;
+  height: 50px;
+  padding: 5px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div {
   text-align: center;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div {
-  display: inline-block;
+  /*display: inline-block;*/
   margin-bottom: 1px;
+}
+.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div.NoCallIcon {
+  clear: both;
+  margin: 0 auto;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .Avatar {
   top: 1px;
@@ -245,7 +252,7 @@
 .ChatMessageItem {
   position: relative;
   left: 10px;
-  width: 100%;
+  width: 99%;
   min-height: 26px;
 }
 .ChatMessageItem:not(:last-child) {

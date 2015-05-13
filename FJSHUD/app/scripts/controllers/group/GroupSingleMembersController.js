@@ -1,19 +1,45 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
-	function($scope, $routeParams, groupService, contactService, httpService,phoneService) {
+hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
+	function($scope, $rootScope, $routeParams, groupService, contactService, httpService,phoneService) {
+	var addedPid;
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
+	$scope.grp = {};
+	$scope.grp.query = '';
 	$scope.query = "";
+
 	httpService.getFeed("groupcontacts");
-	httpService.getFeed("contactstatus");
+
 	$scope.sort_options = [
 	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
     {name:$scope.verbage.sort_by_call_status,id:2, type:'call_status'},
     {name:$scope.verbage.sort_by_chat_status,id:3, type:'chat_status'},
-    ];
-    $scope.selectedSort = $scope.sort_options[0];
+  ];
+  
+  $scope.selectedSort = $scope.sort_options[0];
 
-    $scope.getAvatar = function(xpid) {
+  $scope.$on('pidAdded', function(event, data){
+  	addedPid = data.info;
+  	if (localStorage['recents_of_' + addedPid] === undefined){
+  		localStorage['recents_of_' + addedPid] = '{}';
+  	}
+  	$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+  });
+
+  $scope.storeRecentContact = function(xpid){
+		var localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// $scope.recent = JSON.parse(localStorage.recent);		
+		$scope.recent[xpid] = {
+			type: 'contact',
+			time:  new Date().getTime()
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+		// localStorage.recent = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
+  };
+
+  $scope.getAvatar = function(xpid) {
 		return httpService.get_avatar(xpid, 40, 40);
 	};
 	
@@ -25,30 +51,12 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 			$scope.members = $scope.group.members;
 		}
 		
-		if($scope.members){
-			for(member in $scope.members){
-				contact = contactService.getContact($scope.members[member].contactId);
-				$scope.members[member] = contact;
-				$scope.members[member].contactId = contact.xpid;
-			}
-		}
 		$scope.isMine = groupService.isMine($scope.groupId);		
 	});
 
 	$scope.callExtension= function(extension){
 		phoneService.makeCall(extension);
-	}
-	$scope.$on("contacts_updated", function(event,data){
-		for(index in $scope.members){
-			for(key in data){
-				if(data[key].xpid == $scope.members[index].xpid){
-					$scope.members[index] = data[key];
-					$scope.members[index].contactId = data[key].xpid;
-					break;	
-				}
-			}
-		}
-	});
+	};
 
 	$scope.sortBy = function(type){
 		switch(type){
@@ -77,6 +85,13 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
 				break;
 		}
 		$scope.$safeApply();
+	}
 
+	$scope.searchFilter = function(){
+		var query = $scope.grp.query;
+		return function(member){
+			if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
+				return true;
+		};
 	}
 }]);

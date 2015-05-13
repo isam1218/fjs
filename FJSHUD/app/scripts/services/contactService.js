@@ -1,8 +1,9 @@
 hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
 	var deferred = $q.defer();	
 	var contacts = [];
+	var service = this;
 	
-	this.getContact = function(xpid) {
+	service.getContact = function(xpid) {
 		for (var i = 0, len = contacts.length; i < len; i++) {
 			if (contacts[i].xpid == xpid)
 				return contacts[i];
@@ -11,7 +12,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		return null;
 	};
 	
-	this.getContacts = function() {
+	service.getContacts = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
@@ -21,24 +22,51 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	*/
 
 	$rootScope.$on('contacts_synced', function(event, data) {
-		contacts = data;
-		deferred.resolve(contacts);
-		
-		for (var i = 0, len = contacts.length; i < len; i++) {
-			// contact was deleted
-			if (contacts[i].xef001type == 'delete') {
-				contacts.splice(i, 1);
-				len--;
-			}
-			else {
-				// add avatar function
+		// first time
+		if (contacts.length == 0) {
+			contacts = data;
+			deferred.resolve(contacts);
+			
+			// add avatars
+			for (var i = 0, len = contacts.length; i < len; i++) {
 				contacts[i].getAvatar = function(size) {
 					return httpService.get_avatar(this.xpid, size, size); 
 				};
 			}
 		}
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+					
+				for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+					if (contacts[c].xpid == data[i].xpid) {
+						// contact was deleted
+						if (data[i].xef001type == 'delete') {
+							contacts.splice(c, 1);
+							cLen--;
+						}
+						// regular update
+						else
+							angular.extend(contacts[c], data[i]);
+						
+						match = true;
+						break;
+					}
+				}
+				
+				// add new contact
+				if (!match) {
+					contacts.push(data[i]);
+					
+					// add avatar
+					contacts[contacts.length-1].getAvatar = function(size) {
+						return httpService.get_avatar(this.xpid, size, size); 
+					};
+				}
+			}
+		}
 		
-		// let other feeds push update
+		// retrieve child data
 		httpService.getFeed('contactstatus');
 		httpService.getFeed('calls');
 	});
@@ -60,7 +88,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		}
 		
 		$rootScope.loaded.contacts = true;
-		$rootScope.$evalAsync($rootScope.$broadcast('contacts_updated', contacts));
 	});
 	
 	$rootScope.$on('all_calls_updated', function(event, data) {
@@ -71,6 +98,11 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			for (key in data) {
 				if (contacts[i].xpid == data[key].xpid) {
 					contacts[i].call = data[key];
+					
+					// attach full profile, if present
+					if (data[key].contactId)
+						contacts[i].call.fullProfile = service.getContact(data[key].contactId);
+					
 					break;
 				}
 			}
@@ -91,7 +123,5 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				}
 			}
 		}
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('contacts_updated', contacts));
 	});
 }]);

@@ -3,6 +3,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
     $scope.sortField = "displayName";
+    $scope.conversationType = 'queue';
     $scope.sortReverse = false;
     var myQueues = queueService.getMyQueues();
 
@@ -12,6 +13,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     // for alerts
     $scope.showAlerts = false;
     $scope.enableAlertBroadcast = false;
+    $scope.enableTextInput = false;
     
     $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
     {upper: $scope.verbage.stats_tab, lower: 'stats'}, 
@@ -22,10 +24,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     {upper: $scope.verbage.alerts, lower: 'alerts'}];
 
     $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
-    
-    httpService.getFeed('queues');
-    httpService.getFeed('queue_stat_calls');
-    httpService.getFeed('queuepermissions');
 
     $scope.tabFilter = function(){
         return function(tab){
@@ -36,65 +34,76 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
                         var single = myQueues.queues[i];
                         if (single.xpid === $scope.queueId){
                             return true;
-                        } else {
-                            return false;
                         }
-                    }                    
-                } else {
+                    }
                     return false;
-                }
+				}
             }
-            if (tab.lower === 'alerts'){
+            else if (tab.lower === 'alerts'){
                 if (myQueues.queues.length > 0){
                     for (var i = 0; i < myQueues.queues.length; i++){
                         var single = myQueues.queues[i];
                         if (single.xpid === $scope.queueId){
                             return true;
-                        } else {
-                            return false;
                         }
-                    }                                    
-                } else {
-                    return false;
-                }
+                    }
+                    return false;    
+				}
             }
-            return true;
+			else
+				return true;
         };
     };
-
-    settingsService.getPermissions().then(function(data) {
-        if (data.showAlerts){
-            $scope.showAlerts = true;
-        } else {
-            $scope.showAlerts = false;
-        }
-    });
     
-    $scope.$on('queues_updated', function(event, data) {
-        // all queues
-        
-        var queues = data.queues;
-        for (i = 0; i < queues.length; i++) {
-            if (queues[i].xpid == $scope.queueId) {
-                $scope.queue = queues[i];
-            }
-        }
-        
+    queueService.getQueues().then(function(data) {
         // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
         var myQueues = data.mine;
+        
+        // if not a member of any queues...
+        if (myQueues.length === 0){
+            $scope.enableAlertBroadcast = false;
+            $scope.enableChat = false;
+            $scope.enableFileShare = false;
+        }
 
+        // if a member of a queue...
         for (var j = 0; j < myQueues.length; j++){
             var myPermission = myQueues[j].permissions.permissions;
-            if (myQueues[j].xpid === $scope.queueId && (myPermission === 0)){
+            if (myQueues[j].xpid === $scope.queueId && (myPermission === 0) && $routeParams.route === 'alerts'){
+                // I'm a member and i have alert broadcast permission and i'm on alerts tab
+                // console.log('Im a member of this q + perm 0 + alerts tab', myPermission);
                 $scope.enableAlertBroadcast = true;
                 $scope.enableChat = true;
+                $scope.enableTextInput = true;
                 $scope.enableFileShare = true;
-            } else if (myQueues[j].xpid === $scope.queueId && (myPermission !== 0)){
+            } else if (myQueues[j].xpid === $scope.queueId && (myPermission === 0) && $routeParams.route === "chat"){
+                // im a member i have alert broadcast perm and im on chats tab
+                // console.log('Im a member of this q + perm 0 + chat tab', myPermission);
                 $scope.enableAlertBroadcast = false;
                 $scope.enableChat = true;
+                $scope.enableTextInput = true;
                 $scope.enableFileShare = true;
+            } else if (myQueues[j].xpid === $scope.queueId && (myPermission !== 0)){
+                // console.log('Im a member of this q + perm > 0', myPermission);
+                if ($routeParams.queueId && $routeParams.route === "chat"){
+                    $scope.enableAlertBroadcast = false;
+                    $scope.enableTextInput = true;
+                    $scope.enableChat = true;
+                    $scope.enableFileShare = true;
+                } else if ($routeParams.queueId && $routeParams.route === 'alerts'){
+                    $scope.enableAlertBroadcast = false;
+                    $scope.enableTextInput = false;
+                    $scope.enableChat = true;
+                    $scope.enableFileShare = true;
+                }
+            } else if (myQueues[j].xpid !== $scope.queueId){
+                // I'm not a member of this current queue in the for loop
+                // console.log('im not a member of this q', myPermission);
+                $scope.enableAlertBroadcast = false;
+                $scope.enableChat = false;
+                $scope.enableFileShare = false;
             }
-        }
+        } 
     });
 
 }]);

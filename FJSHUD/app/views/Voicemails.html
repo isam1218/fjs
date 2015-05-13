@@ -1,10 +1,5 @@
     <div class="ToolBar" >
-		<input type="{{::verbage.search}}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="tester.query" ng-model-options="{debounce: 100}"/>              
-      <!--   <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
-                    ng-options="sort_option.display_name for sort_option in sort_options"
-                ng-change="sortBy(selectedSort)"
-        > 
-        </select>  -->           
+		<input type="search" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="tester.query" ng-model-options="{debounce: 100}"/>
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedVoice" ng-options="voice_option.display_name for voice_option in voice_options track by voice_option.display_name" ng-change="sortBy(selectedVoice)">
         </select>
         <select class="XButton XButtonNormal XButtonDropDown disabled-false" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
@@ -18,28 +13,24 @@
             <div class="vmlabelheader"> {{::verbage.no_voicemails}} </div> 
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
         </div>
-        <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | orderBy:selectedVoice.type:selectedVoice.desc track by voicemail.xpid"> 
-            <div class="vmavatarsection AvatarNormal" context-menu="voicemail.fullProfile"> 
-                <img class="vmavatar " ng-src="{{getMeAvatarUrl(voicemail.contactId,50,50)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-				<div class="AvatarInteractable"></div>
-            </div>
+        <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
+			<avatar profile="voicemail" widget="'voicemails'" type="4"></avatar>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
-                    <div class="displayName">
-						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}<em>
-						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
-							{{ ::voicemail.displayName + ' <' }} {{::voicemail.fullProfile.primaryExtension + '>' }}
-                        </p>
-                        <div class="vmalternate">
-                            <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM D, hh:mm a':fon_lang_code }} </div>
-                            <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(voicemail.phone)"></input>
-                        </div>
-                    </div> 
-                    <div class="footnote">
-                        <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
-                        <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
+                <div class="displayName">
+					<em>{{ ::voicemail.phone == meModel.primary_vm_box ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}</em>
+					<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_vm_box ? 'bold' : 'normal'}">
+						{{ ::voicemail.displayName + ' <' + voicemail.fullProfile.primaryExtension + '>' }}
+                    </p>
+                    <div class="vmalternate">
+                        <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM D, hh:mm a':fon_lang_code }} </div>
+                        <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(voicemail.phone)"></input>
                     </div>
-                    
+                </div> 
+                <div class="footnote">
+                    <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
+                    <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
+                </div>
             </div>
         </div>
     </div>

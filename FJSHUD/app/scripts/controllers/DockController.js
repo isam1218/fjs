@@ -1,22 +1,26 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 
+	var addedPid;
+	var localPid;
 	$scope.gadgets = {};
 
-	if (localStorage.recent === undefined)
-		localStorage.recent = '{}';
-
-	$scope.recent = JSON.parse(localStorage.recent);
+	$scope.$on('pidAdded', function(event, data){
+		addedPid = data.info;
+		if (localStorage['recents_of_' + addedPid] === undefined){
+			localStorage['recents_of_' + addedPid] = '{}';
+		}
+		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+	});
 
 	$scope.storeRecent = function(xpid, type){
-		$scope.recent = JSON.parse(localStorage.recent);
+		localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
 		$scope.recent[xpid] = {
 			type: type,
 			time: new Date().getTime()
-		}
-		localStorage.recent = JSON.stringify($scope.recent);
-		// console.log('*storeRecent - ', $scope.recent);
-		// broadcast
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
 	};
 	
 	$scope.$on('settings_updated', function(event, data) {		
@@ -86,15 +90,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						$('#InnerDock').sortable({
 							revert: 1,
 							handle: '.Header, .Content',
-							containment: '#InnerDock',
+							helper: 'clone',
+							appendTo: 'body',
+							cursorAt: { top: 25 },
 							start: function(event, ui) {
 								// visual cues
-								$('#DockPanel').addClass('Moving');
-								$(ui.item).addClass('ui-draggable-dragging');
-							},
-							stop: function(event, ui) {
-								$('#DockPanel').removeClass('Moving');
-								$(ui.item).removeClass('ui-draggable-dragging');
+								$(ui.helper).addClass('ui-draggable-dragging');
+								ui.placeholder.height(ui.helper[0].scrollHeight);
 							}
 						});
 					}

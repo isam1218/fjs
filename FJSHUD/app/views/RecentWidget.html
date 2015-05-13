@@ -1,138 +1,207 @@
+<div class="ListLineContent Header LeftContactsColumns">
+    <div>
+        <div data-ng-click="sort('timeline')" class="ListLineContentCell Name {{(sortField == 'timeline' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+            <span>Timeline</span>
+            <div class="DirectionArrow"></div>
+        </div>
+        <div data-ng-click="sort('grouped')"  class="ListLineContentCell HudStatus {{(sortField == 'grouped' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+            <span>Grouped</span>
+            <div class="DirectionArrow"></div>
+        </div>
+    </div>
+</div>
+
 <div class="ContactList">
-    <h4>{{::verbage.recent_contacts}}</h4>
-    <em>{{::verbage.contact_name_status}}</em>
-    <a href="#/contact/{{contact.xpid}}" data-ng-repeat="contact in totalContacts |filter: {displayName: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="Avatar AvatarNormal" context-menu="contact|$parent.tab">
-            <img class="AvatarImgPH" data-ng-src="{{::contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            <div class="AvatarForeground AvatarInteractable"></div>
-        </div>
-        
-        <div class="ListRowContent" dockable="contact">
-            <div class="ListRowTitle">
-                <div class="name">
-                    <strong>{{ contact.displayName || contact.name }}</strong>
-                    <span>#{{ ::contact.primaryExtension || contact.extension }}</span>
-                </div>
-            </div>
+    <div class='timeline' ng-if="sortField =='timeline'">
+        <a href="#/{{item.recent_type}}/{{item.xpid}}" ng-click="storeRecent(item.xpid, item.recent_type)" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: customSort(): customReverse() track by item.xpid" class="ListRowFirst ListRow ListRow-Contact">
             
-            <div class="ListRowStatus">
-                <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
-                <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
-                <br/>
-                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
-            </div>
-            
-            <div class="CallStatus">
-                <div ng-if="contact.call.startedAt" ng-click="showCallStatus($event, contact)" class="Avatar AvatarSmall CallAvatar CallAvatar_{{ contact.call.type == 11 ? 'External' : 'Office' }}">
-                    <img class="AvatarImgPH" ng-src="{{ getCallStatusAvatar(contact.call) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-                    <div class="AvatarInteractable AvatarForeground"></div>
+            <avatar profile="item" ng-if="item.recent_type == 'contact'"></avatar>
+            <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'contact'">
+                <div class="ListRowTitle">
+                    <div class="name">
+                        <strong>{{ item.displayName || item.name }}</strong>
+                        <span>#{{ ::item.primaryExtension || item.extension }}</span>
+                    </div>
                 </div>
-            </div>              
-        </div>
-    </a>
-
-    <h4>{{::verbage.recent_groups}}</h4>
-    <em>{{::verbage.recent_group_name_members}}</em>
-    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
-        <div class="Avatar AvatarNormal" context-menu="group">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::group.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="AvatarInteractable"></div>
-        </div>
-        <div class="ListRowContent" dockable="group">
-            <div class="ListRowTitle">
-                <div class="name">
-                    <strong>{{ group.name }}</strong>
-                    <span class="details">
-                        {{ ::group.extension ? '#' + group.extension : getOwner(group) }}
-                    </span>
-                </div>
-            </div>
-            <div class="ListRowStatus Members">{{ group.members.length }}</div>
-        </div>
-    </a>
-
-    <h4>{{::verbage.recent_queues}}</h4>
-    <em>{{::verbage.recent_queue_name_status}}</em>
-    <a href="#/queue/{{queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" ng-repeat="queue in totalQueues | filter: recentFilter() | orderBy: customSort(): customReverse() track by queue.xpid"> 
-        <div class="Avatar AvatarNormal" context-menu="queue">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-                <img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-            </div>
-            <div class="AvatarInteractable"></div>
-        </div>
-    
-        <div class="ListRowContent" dockable="queue">
-            <div class="ListRowTitle">
-                {{ ::queue.name }}
-                <br/>
-                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
-                {{ queueStatusLabel(queue.me.status.status) }}
-            </div>
-        </div>
-    </a>
-
-    <h4>{{::verbage.recent_conferences}}</h4>
-    <em>{{::verbage.recent_conference_room_extension}}</em>
-    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: recentFilter() | orderBy: customSort(): customReverse() track by conference.xpid">
-        <div class="ConferenceAvatarSection Avatar AvatarNormal" context-menu="conference">
-            <div class="GroupAvatarItem GroupAvatarItem_0">
-                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 0) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_1">
-                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 1) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_2">
-                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 2) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            <div class="GroupAvatarItem GroupAvatarItem_3">
-                <img class="GroupAvatarItemImg" ng-src="{{ getAvatarUrl(conference, 3) }}" onerror="this.src='img/Generic-Avatar-14.png'" />
-            </div>
-            
-            <div class="AvatarInteractable"></div>
-        </div>
-        <div class="ListRowContent" dockable="conference">
-            <div class="ListRowTitle">
-                <div class="name"> {{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
-                
-                <div data-ng-if="conference.members.length == 0">
-                    <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-                   {{::verbage.free_room}}
-                </div>                            
-                <div data-ng-if="conference.members.length > 0">
-                    <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-                    {{conference.members.length}} {{::members_on_call}}
+                <div class="ListRowStatus">
+                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
+                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{item.queue_status}}" ></div>
+                    <br/>
+                    <div class="ListRowStatusText" >{{item.hud_status || 'offline'}}</div>
                 </div> 
+                <div class="CallStatus">
+                    <avatar 
+                        ng-if="item.call.startedAt" 
+                        ng-click="showCallStatus($event, item)" 
+                        profile="item.call.fullProfile" 
+                        widget="callstatus"
+                        type="{{item.call.type}}">
+                    </avatar>
+                </div>              
             </div>
-        
-        <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
-            <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
-                <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
-                    <img class="AvatarImgPH" data-ng-src="{{getAvatarUrl(conference, $index)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-                    <div class="AvatarInteractable"></div>
+            
+            <avatar profile="item" ng-if="item.recent_type == 'group'"></avatar>
+            <div class="ListRowContent" dockable="item" ng-if="item.recent_type =='group'">
+                <div class="ListRowTitle">
+                    <div class="name">
+                        <strong>{{ item.name }}</strong>
+                        <span class="details">
+                            {{ ::item.extension ? '#' + item.extension : getOwner(item) }}
+                        </span>
+                    </div>
                 </div>
-                <div class="first-name">{{member.displayName}}</div>
+                <div class="ListRowStatus Members">{{ item.members.length }}</div>
+            </div>
+
+            <avatar profile="item" ng-if="item.recent_type == 'queue'"></avatar>
+            <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'queue'">
+                <div class="ListRowTitle">
+                    <strong>{{ ::item.name }}</strong>
+                    <br/>
+                    <div class="ListRowStatusIcon XIcon-QueueStatus-{{ item.me.status.status }}"></div>
+                    {{ queueStatusLabel(item.me.status.status) }}
+                </div>
+            </div>            
+
+            <avatar profile="item" ng-if="item.recent_type == 'conference'"></avatar>
+            <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'conference'">
+                <div class="ListRowTitle">
+                    <div class="name"> <strong>{{::verbage.room}} # {{::item.roomNumber}}</strong> ({{::item.extensionNumber}})</div>
+                    <div data-ng-if="item.members.length == 0">
+                        <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
+                       {{::verbage.free_room}}
+                    </div>                            
+                    <div data-ng-if="item.members.length > 0">
+                        <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
+                        {{item.members.length}} {{::members_on_call}}
+                    </div> 
+                </div>
+                <div data-fj-local-id="membersList" data-ng-if="item.members.length > 0" class="ListRow-Conference-Members">
+                    <div class="conferences-room-item-member" data-ng-repeat="member in item.members">
+                        <avatar profile="member.fullProfile" type="4"></avatar>
+                        <div class="first-name">{{member.displayName}}</div>
+                    </div>
+                </div>
+            </div>
+            
+        </a>
+    </div>
+
+    <div class='grouped' ng-if="sortField == 'grouped'">
+
+        <!-- need to sort based on most recently clicked at the top -->
+        <div data-ng-repeat="section in groupedSections | orderBy:'-lastTime.time'">
+            <!-- if its the contact section -> display the recent contacts div -->
+            <div ng-if="section.type === 'contact' && recentContactFlag">
+                <div class="RecentContacts">
+                    <h4>{{::verbage.recent_contacts}}</h4>
+                    <em>{{::verbage.contact_name_status}}</em>
+                    <a href="#/contact/{{contact.xpid}}" ng-click="storeRecent(contact.xpid, 'contact')" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+                        <avatar profile="contact"></avatar>
+                        
+                        <div class="ListRowContent" dockable="contact">
+                            <div class="ListRowTitle">
+                                <div class="name">
+                                    <strong>{{ contact.displayName || contact.name }}</strong>
+                                    <span>#{{ ::contact.primaryExtension || contact.extension }}</span>
+                                </div>
+                            </div>
+                            <div class="ListRowStatus">
+                                <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                                <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
+                                <br/>
+                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+                            </div> 
+                            
+                            <div class="CallStatus">
+                                <avatar 
+                                    ng-if="contact.call.startedAt" 
+                                    ng-click="showCallStatus($event, contact)" 
+                                    profile="contact.call.fullProfile" 
+                                    widget="callstatus"
+                                    type="{{contact.call.type}}">
+                                </avatar>
+                            </div>              
+                        </div>
+                    </a>
+                    <button class="loadmore" ng-show="hasMoreContactsToLoad()" ng-click="loadMoreContacts()"><strong>LOAD MORE</strong></button>
+                </div>
+            </div>
+
+            <div ng-if="section.type === 'group' && recentGroupFlag">
+                <div class="RecentGroups">
+                    <h4>{{::verbage.recent_groups}}</h4>
+                    <em>{{::verbage.recent_group_name_members}}</em>
+                    <a href="#/group/{{::group.xpid}}" ng-click="storeRecent(group.xpid, 'group')" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+                        <avatar profile="group"></avatar>
+                        <div class="ListRowContent" dockable="group">
+                            <div class="ListRowTitle">
+                                <div class="name">
+                                    <strong>{{ group.name }}</strong>
+                                    <span class="details">
+                                        {{ ::group.extension ? '#' + group.extension : getOwner(group) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ListRowStatus Members">{{ group.members.length }}</div>
+                        </div>
+                    </a>
+                    <button class="loadmore" ng-show="hasMoreGroupsToLoad()" ng-click="loadMoreGroups()"><strong>LOAD MORE</strong></button>
+                </div>
+            </div>
+
+            <div ng-if="section.type === 'queue' && recentQueueFlag">
+                <div class="RecentQueues">
+                    <h4>{{::verbage.recent_queues}}</h4>
+                    <em>{{::verbage.recent_queue_name_status}}</em>
+                    <a href="#/queue/{{queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" ng-click="storeRecent(queue.xpid, 'queue')" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: queuesLimit() track by queue.xpid"> 
+                        <avatar profile="queue"></avatar>
+                    
+                        <div class="ListRowContent" dockable="queue">
+                            <div class="ListRowTitle">
+                                <strong>{{ ::queue.name }}</strong>
+                                <br/>
+                                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+                                {{ queueStatusLabel(queue.me.status.status) }}
+                            </div>
+                        </div>
+                    </a>
+                    <button class="loadmore" ng-show="hasMoreQueuesToLoad()" ng-click="loadMoreQueues()"><strong>LOAD MORE</strong></button>
+                </div>
+            </div>
+
+            <div ng-if="section.type === 'conference' && recentConfFlag">
+                <div class="RecentConferenes">
+                    <h4>{{::verbage.recent_conferences}}</h4>
+                    <em>{{::verbage.recent_conference_room_extension}}</em>
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" ng-click="storeRecent(conference.xpid, 'conference')" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: conferencesLimit() track by conference.xpid">
+                        <avatar profile="conference"></avatar>
+                        <div class="ListRowContent" dockable="conference">
+                            <div class="ListRowTitle">
+                                <div class="name"> <strong>{{::verbage.room}} # {{::conference.roomNumber}}</strong> ({{::conference.extensionNumber}})</div>
+                                
+                                <div data-ng-if="conference.members.length == 0">
+                                    <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
+                                   {{::verbage.free_room}}
+                                </div>                            
+                                <div data-ng-if="conference.members.length > 0">
+                                    <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
+                                    {{conference.members.length}} {{::members_on_call}}
+                                </div> 
+                            </div>
+                        
+                            <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
+                                <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
+                                    <avatar profile="member.fullProfile" type="4"></avatar>
+                                    <div class="first-name">{{member.displayName}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <button class="loadmore" ng-show="hasMoreConferencesToLoad()" ng-click="loadMoreConferences()"><strong>LOAD MORE</strong></button>
+                </div>
             </div>
         </div>
-        </div>
-    </a>
+
+    </div>
 </div>

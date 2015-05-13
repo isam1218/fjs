@@ -1,48 +1,47 @@
-hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', function($scope, $rootScope, $routeParams, httpService, contactService) {
+hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', function($scope, $rootScope, $routeParams, httpService, contactService, queueService) {
 	$scope.queueId = $routeParams.queueId;
 	$scope.query = "";
 	
-	$scope.callsWaiting = [];
-	$scope.callsActive = [];
-	$scope.showWaiting = true;
-	$scope.showActive = true;
+	$scope.callsWaiting = 0;
+	$scope.callsActive = 0;
 	$scope.longestWait = 0;
 	$scope.longestActive = 0;
+	$scope.showWaiting = true;
+	$scope.showActive = true;
 	
-	httpService.getFeed('queues');
+	$scope.filterActive = function(active) {
+		return function(call) {
+			if (active && call.taken)
+				return true;
+			else if (!active && !call.taken)
+				return true;
+		}
+	};
 	
-	$scope.$on('queues_updated', function(event, data) {
-		var queues = data.queues;
-		
-		$scope.callsWaiting = [];
-		$scope.callsActive = [];
+	// listen for updates
+	$scope.$watch('queue.calls', function() {
+		$scope.callsWaiting = 0;
+		$scope.callsActive = 0;
 		$scope.longestWait = new Date().getTime();
 		$scope.longestActive = new Date().getTime();
 		
-		for (i = 0; i < queues.length; i++) {
-			if (queues[i].xpid == $scope.queueId && queues[i].calls) {
-				var calls = queues[i].calls;
+		for (var i = 0; i < $scope.queue.calls.length; i++) {
+			// active calls
+			if ($scope.queue.calls[i].taken) {
+				$scope.callsActive++;
 				
-				// find calls for this queue
-				for (c = 0; c < calls.length; c++) {
-					// attach ringing agent
-					if (calls[c].agentContactId)
-						calls[c].agent = contactService.getContact(calls[c].agentContactId);
-					
-					if (calls[c].taken) {
-						$scope.callsActive.push(calls[c]);
+				// find longest				
+				if ($scope.queue.calls[i].startedAt < $scope.longestActive)
+					$scope.longestActive = $scope.queue.calls[i].startedAt;
+			}
+			// waiting
+			else {
+				$scope.callsWaiting++;
 						
-						if (calls[c].startedAt < $scope.longestActive)
-							$scope.longestActive = calls[c].startedAt;
-					}
-					else {
-						$scope.callsWaiting.push(calls[c]);
-						
-						if (calls[c].startedAt < $scope.longestWait)
-							$scope.longestWait = calls[c].startedAt;
-					}
-				}
+				// find longest				
+				if ($scope.queue.calls[i].startedAt < $scope.longestWait)
+					$scope.longestWait = $scope.queue.calls[i].startedAt;
 			}
 		}
-	});
+	}, true);
 }]);

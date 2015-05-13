@@ -1,10 +1,6 @@
 <div class="Widget Conversation">
     <div class="WidgetHeader">
-        <div class="Avatar AvatarNormal" context-menu="contact">
-            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH"
-                 data-ng-src="{{contact.getAvatar(32)}}">
-            <div class="AvatarForeground AvatarInteractable"></div>
-        </div>
+        <avatar profile="contact"></avatar>
         <div class="WidgetHeaderTitle">
 			{{contact.displayName}} 
 			<span ng-if="contact.primaryExtension">({{::contact.primaryExtension}})</span>
@@ -15,21 +11,18 @@
 		</div>
         <div class="WidgetHeaderCallStatus">
             <div ng-if="contact.call">
-                <div ng-class="'CallAvatar_'+contact.getCallType()" class="Avatar AvatarSmall CallAvatar">
-                    <img class="AvatarImgPH" data-ng-src="{{targetCallContact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'"/>
-                    <div class="AvatarForeground AvatarInteractable"></div>
-                </div>
+				<avatar profile="contact.call.fullProfile" type="{{contact.call.type}}"></avatar>
                 <div class="CallLineTop">
                     <div class="CallerName">{{contact.call.displayName}}</div>
-                    <div class="CallDuration">{{call.duration}}</div>
+                    <div class="CallDuration" timer="contact.call.startedAt"></div>
                     <br>
                     <div class="CallExtension">{{::contact.call.phone}} </div>
                 </div>
             </div>
             <div class="CallerPhone"></div>
-            <div ng-if="!contact.call">
-                <div class="NoCallIcon"></div>
+            <div ng-if="!contact.call">                
                 <div class="NoCallText">{{::verbage.no_active_call}}</div>
+                <div class="NoCallIcon"></div>
             </div>
         </div>
     </div>
@@ -46,7 +39,7 @@
 		<!-- ng-views -->
         <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" 
 			ng-include="'views/ChatView.html'" 
-			ng-controller="ChatController"></div>
+			ng-controller="ChatController" ></div>
 			
         <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent" 
 			ng-include="'views/Voicemails.html'"

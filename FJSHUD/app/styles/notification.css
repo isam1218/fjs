@@ -48,6 +48,37 @@
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
 }
+.CallStatusContainerInbound .CallStatusIconContainer,
+.CallStatusContainerOutbound .CallStatusIconContainer,
+.CallStatusContainerInbound .CallStatusText,
+.CallStatusContainerOutbound .CallStatusText {
+  float: left;
+  margin: 5px 0px 5px 5px;
+}
+.CallStatusContainerInbound .CallStatusText,
+.CallStatusContainerOutbound .CallStatusText {
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  clear: none;
+  margin-left: 10px;
+}
+.CallStatusContainerInbound .CallStatusText .callStatus,
+.CallStatusContainerOutbound .CallStatusText .callStatus {
+  font-size: 12px;
+}
+.CallStatusContainerInbound .controlButtons,
+.CallStatusContainerOutbound .controlButtons {
+  clear: both;
+  float: right;
+  display: inline-block;
+  margin-top: 5px;
+}
+.CallStatusContainerInbound .controlButtons .XButton,
+.CallStatusContainerOutbound .controlButtons .XButton {
+  font-size: 12px;
+}
 .NotificationSectionHeader {
   display: inline-block;
   text-align: center;
@@ -190,4 +221,7 @@
 }
 a.Messages {
   text-decoration: none;
+}
+.chatNotification {
+  cursor: pointer;
 }

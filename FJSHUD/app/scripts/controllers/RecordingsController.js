@@ -89,7 +89,8 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 		var query = $scope.rec.query.toLowerCase();
 		
 		return function(rec) {
-			if (query == '' || (rec.fullProfile && ((rec.fullProfile.displayName && rec.fullProfile.displayName.toLowerCase().indexOf(query) != -1) || (rec.fullProfile.name && rec.fullProfile.name.toLowerCase().indexOf(query) != -1))))
+			// console.log('rec - ', rec);
+			if (query == '' || (rec.fullProfile && ((rec.fullProfile.displayName && rec.fullProfile.displayName.toLowerCase().indexOf(query) != -1) || (rec.fullProfile.name && rec.fullProfile.name.toLowerCase().indexOf(query) != -1))) || (rec.callerPhone.indexOf($scope.rec.query) != -1) || (rec.calleePhone.indexOf($scope.rec.query) != -1))
 				return true;
 		};
 	};

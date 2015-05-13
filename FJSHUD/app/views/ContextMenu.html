@@ -3,9 +3,7 @@
 <div class="TopRow">
 	<div class="Contact" ng-if="type == 'Contact'">
 		<div>
-			<div class="Avatar AvatarNormal">
-				<img class="AvatarImgPH" data-ng-src="{{contact.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			</div>
+			<avatar profile="contact" widget="context"></avatar>
 			<div>
 				{{ contact.displayName }}
 				<br/>
@@ -33,9 +31,9 @@
 </div>
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
-	<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
+	<a class="Button" href="" ng-show="widget == 'recordings' || widget == 'voicemails'" ng-click="deleteRecording()">
 		<div class="ListRowActionButtonRemove"></div>
-		<span>{{::delete_word}}</span>
+		<span>{{::verbage.delete_word}}</span>
 	</a>
 		
 	<div ng-if="type == 'Contact'">
@@ -55,6 +53,12 @@
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call}}</span>
 		</a>
+
+		<a class="Button" href="" ng-show="enableCallLater" ng-click="callLater()">
+			<div class="ListRowActionButtonCall"></div>
+			<span>{{::verbage.Call_Later}}</span>
+		</a>
+		
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
@@ -181,9 +185,17 @@
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call}}</span>
 		</a>
+		
+		<a class="Button" href="" ng-show="enableCallLater" ng-click="callLater()">
+			<div class="ListRowActionButtonCall"></div>
+			<!--<span>{{::verbage.Call}}</span>-->
+			<span> {{::verbage.Call_Later}}</span>
+		</a>
+		
+
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
-			<span>{{::verbage.intercom}}</span>
+			<span>{{::verbage.Intercom}}</span>
 		</a>
 		<a class="Button" href="" ng-show="contact.primaryExtension" ng-click="callInternal('callVoicemail')">
 			<div class="ListRowActionButtonVoicemail"></div>
@@ -203,7 +215,7 @@
 		</a>
 	</div>
 	
-	<div ng-show="name">
+	<div ng-show="name && name != 'private'">
 		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 			<div class="ListRowActionButtonDock"></div>
 			<span>{{::verbage.dock}}</span>

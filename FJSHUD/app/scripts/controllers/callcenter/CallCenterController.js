@@ -8,7 +8,7 @@ hudweb.controller('CallCenterController', ['$scope', '$routeParams', 'HttpServic
 
 	$scope.total = {};
 	
-	$scope.$on('queues_updated', function (event, data) {
+	queueService.getQueues().then(function(data) {
 		// show all or my queues
 		if ($scope.selected == 'allqueues')
 			$scope.queues = data.queues;

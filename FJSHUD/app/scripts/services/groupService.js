@@ -1,4 +1,4 @@
-hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {	
+hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {	
 	var deferred = $q.defer();
 	var groups = [];
 	var favorites = {};
@@ -60,29 +60,73 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 	*/
 
 	$rootScope.$on('groups_synced', function(event, data) {
-		groups = data;
-		deferred.resolve(groups);
-			
-		for (var i = 0, len = groups.length; i < len; i++) {
-			// find favorites group
-			if (groups[i].name.toLowerCase() == 'favorites')
-				favoriteID = groups[i].xpid;
+		// first time
+		if (groups.length == 0) {
+			groups = data;
+			deferred.resolve(groups);
 				
-			// add avatar function
-			groups[i].getAvatar = function(index, size) {
-				if (this.members) {
-					if (this.members[index] !== undefined) {
-						var xpid = this.members[index].contactId;
-						return httpService.get_avatar(xpid, size, size);
-					}
+			for (var i = 0, len = groups.length; i < len; i++) {
+				// find favorites group
+				if (groups[i].name.toLowerCase() == 'favorites')
+					favoriteID = groups[i].xpid;
+			
+				// add avatars
+				groups[i].getAvatar = function(index, size) {
+					if (this.members && this.members[index] !== undefined)
+						return httpService.get_avatar(this.members[index].contactId, size, size);
 					else
 						return 'img/Generic-Avatar-' + size + '.png';
-				}
-				else
-					return 'img/Generic-Avatar-' + size + '.png';
-			};
+				};
+			}
 		}
-		
+		else {
+			// look for removals
+			for (var g = 0, gLen = groups.length; g < gLen; g++) {
+				var match = false;
+				
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					if (groups[g].xpid == data[i].xpid) {
+						match = true;
+						break;
+					}
+				}
+				
+				// no match, so delete
+				if (!match) {
+					groups.splice(g, 1);
+					gLen--;
+				}
+			}
+			
+			// update or add
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+					
+				for (var g = 0, gLen = groups.length; g < gLen; g++) {
+					// existing group
+					if (groups[g].xpid == data[i].xpid) {
+						angular.extend(groups[g], data[i]);
+						
+						match = true;
+						break;
+					}
+				}
+				
+				// new group
+				if (!match) {
+					groups.push(data[i]);
+					
+					// add avatar
+					groups[groups.length-1].getAvatar = function(index, size) {
+						if (this.members && this.members[index] !== undefined)
+							return httpService.get_avatar(this.members[index].contactId, size, size);
+						else
+							return 'img/Generic-Avatar-' + size + '.png';
+					};
+				}
+			}
+		}
+			
 		// populate members via different feed
 		httpService.getFeed('groupcontacts');
 	});
@@ -120,15 +164,16 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'HttpService', function($q, 
 				
 					// add member to groups
 					if (data[i].groupId == groups[g].xpid) {
-						if (!doesMemberExist(groups[g],data[i]))
+						if (!doesMemberExist(groups[g],data[i])) {
+							data[i].fullProfile = contactService.getContact(data[i].contactId);
 							groups[g].members.push(data[i]);
+						}
 						
 						// add to favorites object
 						if (data[i].groupId == favoriteID)
 							favorites[data[i].contactId] = 1;
-						
 						// mark as mine
-						if (!mine && data[i].contactId == $rootScope.myPid)
+						else if (!mine && data[i].contactId == $rootScope.myPid)
 							mine = groups[g];
 							
 						break;

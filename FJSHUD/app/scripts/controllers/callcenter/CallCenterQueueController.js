@@ -1,5 +1,6 @@
 hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpService','SettingsService', function ($scope, $rootScope, httpService,settingsService) {  
-  httpService.getFeed('queues');
+  var addedPid;
+  var localPid;
 
   $scope.queue_options = [
     {display_name: $scope.verbage.queue_name, type: "name"},
@@ -11,24 +12,24 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
     {display_name: $scope.verbage.queue_active_calls, type: "info.active"}
   ];
   
-  $scope.selectedQueue = $scope.queue_options[0];
-  // $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option) : $scope.queue_options[0];
+  $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option) : $scope.queue_options[0];
 
-  $scope.sortColumn = $scope.selectedQueue.type;
+  $scope.$on('pidAdded', function(event, data){
+    addedPid = data.info;
+    if (localStorage['recents_of_' + addedPid] === undefined){
+      localStorage['recents_of_' + addedPid] = '{}';
+    }
+    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+  });
+
   $scope.isAscending = false;
+  $scope.sortColumn = $scope.selectedQueue.type;
   
   $scope.queueThresholds = {};
   $scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
   $scope.queueThresholds.avg_wait = parseInt(settingsService.getSetting('queueAvgWaitThreshold'));
   $scope.queueThresholds.avg_talk = parseInt(settingsService.getSetting('queueAvgTalkThresholdThreshold'));
   $scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
-
-  if (localStorage.recent === undefined)
-    localStorage.recent = '{}';
-
-  // $scope.recent === undefined ? JSON.parse(localStorage.recent) : {};
-  // $scope.recent === undefined ? JSON.parse(localStorage.recent) : $scope.recent;
-  $scope.recent = JSON.parse(localStorage.recent);
   
   // default view
   if ($scope.selected == 'My Queue')
@@ -37,26 +38,27 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
 	  $scope.viewIcon = true;
   
   $scope.setSort = function(queueSelectionType, queueSelection) {
-	if ($scope.sortColumn == queueSelectionType)
-	  $scope.isAscending = !$scope.isAscending;
-    else if (queueSelectionType == 'name')
-	  $scope.isAscending = false;
-    else
-	  $scope.isAscending = true;
-	
-	$scope.sortColumn = queueSelectionType;
-  localStorage.queue_option = JSON.stringify(queueSelection);
+  	localPid = JSON.parse(localStorage.me);
+    if ($scope.sortColumn == queueSelectionType)
+  	  $scope.isAscending = !$scope.isAscending;
+      else if (queueSelectionType == 'name')
+  	  $scope.isAscending = false;
+      else
+  	  $scope.isAscending = true;
+  	
+  	$scope.sortColumn = queueSelectionType;
+    localStorage.queue_option = JSON.stringify(queueSelection);
   };
 
   $scope.storeRecentQueue = function(queueXpid){
-    $scope.recent = JSON.parse(localStorage.recent);
+    localPid = JSON.parse(localStorage.me);
+    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
     $scope.recent[queueXpid] = {
       type: 'queue',
       time: new Date().getTime()
     };
-    localStorage.recent = JSON.stringify($scope.recent);
-    // console.log('*storeRecentQueue - ', $scope.recent);
-    $rootScope.$broadcast('recentAdded', {info: queueXpid});
+    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+    $rootScope.$broadcast('recentAdded', {id: queueXpid, type: 'queue', time: new Date().getTime()});
   };
   
   $scope.resetStats = function() {

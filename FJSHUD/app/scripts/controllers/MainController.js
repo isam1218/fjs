@@ -2,12 +2,13 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 	$rootScope.myPid = null;
 	$rootScope.loaded = {all: false};
 	
-    $scope.number = "";
-    $scope.currentPopup = {};
-    $scope.currentPopup.url = null;
-    $scope.currentPopup.x = 0;
-    $scope.currentPopup.y = 0;
-	
+  $scope.number = "";
+  $scope.currentPopup = {};
+  $scope.currentPopup.url = null;
+  $scope.currentPopup.x = 0;
+  $scope.currentPopup.y = 0;
+	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+
 	$scope.overlay = {
 		show: false,
 		url: '',
@@ -53,7 +54,15 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 		if (!$rootScope.myPid) {
 			for (key in data) {
 				if (data[key].propertyKey == 'my_pid') {
+          var tmpPid = data[key].propertyValue;
 					$rootScope.myPid = data[key].propertyValue;
+          $rootScope.$broadcast('pidAdded', {info: tmpPid});
+
+          var initialPid = data[key].propertyValue
+          if (localStorage[initialPid] === undefined){
+            localStorage[initialPid] = '{}';
+          }
+
 					break;
 				}
 			}
@@ -96,11 +105,9 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         }
         else if($scope.currentPopup.url != "views/popups/"+data.key+".html") {
             $scope.currentPopup.url = "views/popups/" + data.key + ".html";
-            console.log('mainctrl: scope.currentpopup.url - ', $scope.currentPopup.url);
         }
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
-        console.log('mainctrl: scope.currentpopup - ', $scope.currentPopup);
     };
 	
 	$scope.showOverlay = function(show, url, data) {
@@ -118,7 +125,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 				return $scope.verbage.logged_in;
 				break;
 			case 'logout':
-				return $scope.verbage.Logged_out;
+				return $scope.verbage.logged_out;
 				break;
 		}
 	};

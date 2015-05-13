@@ -40,28 +40,9 @@
 
 	<div class="ListView">	
 		<div>
-			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | orderBy:sortField:sortReverse track by call.xpid">
+			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | limitTo:logSize | filter: customFilter() | orderBy:sortField:sortReverse track by call.xpid">
 				<div>
-					<!-- single vs group avatar -->
-					<div ng-if="!call.fullProfile || call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ ::call.type <= 4 ? 'Office' : 'External' }}" context-menu="call.fullProfile">
-						<img class="AvatarImgPH" ng-src="{{ ::call.fullProfile ? call.fullProfile.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarInteractable" ng-if="call.fullProfile"></div>
-					</div>
-					<div ng-if="call.fullProfile && !call.fullProfile.firstName" class="Avatar CallAvatar CallAvatar_{{ ::call.fullProfile.loggedInMembers !== undefined ? 'Queue' : 'Office' }}" context-menu="call.fullProfile">
-						<div class="GroupAvatarItem GroupAvatarItem_0">
-							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						</div>
-						<div class="GroupAvatarItem GroupAvatarItem_1">
-							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						</div>
-						<div class="GroupAvatarItem GroupAvatarItem_2">
-							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						</div>
-						<div class="GroupAvatarItem GroupAvatarItem_3">
-							<img class="GroupAvatarItemImg" data-ng-src="{{ ::call.fullProfile.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						</div>
-						<div class="AvatarInteractable"></div>
-					</div>
+					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
 				</div>
 				<div class="Name"> {{ ::call.displayName }}</div>
 				<div class="Phone">
@@ -74,7 +55,9 @@
 				</div>
 			</div>
 			
-			<div class="Empty" ng-if="calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
+			<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
+			
+			<div class="Empty" ng-if="!loading && calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
 		</div>
 	</div>
 </div>

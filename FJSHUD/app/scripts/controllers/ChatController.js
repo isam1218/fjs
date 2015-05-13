@@ -1,17 +1,15 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'UtilService', 'ContactService', 'PhoneService','$interval', '$timeout','SettingsService',
-	function($scope,httpService, $routeParams,utilService,contactService,phoneService,$interval, $timeout,settingsService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout','SettingsService',
+	function($scope,httpService, $routeParams,contactService,phoneService,$interval, $timeout,settingsService) {
 
 	var version = 0;
 	var scrollbox = {};
 	var chat = {}; // internal controller data
-	var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
-  $scope.enableAlertBroadcast = true;	
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -87,6 +85,33 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		return httpService.get_attachment(url,fileName);
 	};
 	
+
+	$scope.uploadAttachments = function($files){
+      	fileList = [];
+		
+      	fileList.push($files.file);
+      	
+		
+        var data = {
+            'action':'sendWallEvent',
+            'a.targetId': $routeParams.contactId,
+            'a.type':'f.conversation.chat',
+            'a.xpid':"",
+            'a.archive':0,
+            'a.retainKeys':"",
+            'a.message': '',
+            'a.callback':'postToParent',
+            'a.audience':chat.audience,
+            'alt':"",
+            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
+            "a.taskId": "2_5",
+            "_archive":0,
+        }
+        httpService.upload_attachment(data,fileList);
+		
+        $scope.upload.flow.cancel();
+    
+    };
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
 		if (scrollbox.scrollHeight)
@@ -270,11 +295,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 		if (index === 0){
 			return true;
 		} else {
-			// curmsgOwner === prvMsgOwner --> do not display
-			if (curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
-				return false;
-			} else if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid === prvMsg.fullProfile.xpid){
-				// if same msg owner on the same day --> do not display
+			// if same msg owner on same day  --> do not display
+			if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
 				return false;
 			} else {
 				// otherwise display

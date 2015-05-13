@@ -22,21 +22,7 @@
 <div ng-if="viewIcon" class="QueueList">
 	<div class="Block" ng-repeat="queue in queues | filter: query | orderBy: sortColumn: isAscending track by queue.xpid" dockable="queue">
 		<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecentQueue(queue.xpid)" class="Header">
-			<div class="Avatar AvatarNormal" context-menu="queue">
-				<div class="GroupAvatarItem GroupAvatarItem_0">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(0, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="GroupAvatarItem GroupAvatarItem_1">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(1, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="GroupAvatarItem GroupAvatarItem_2">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(2, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="GroupAvatarItem GroupAvatarItem_3">
-					<img class="GroupAvatarItemImg" data-ng-src="{{ ::queue.getAvatar(3, 28) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-				</div>
-				<div class="AvatarInteractable"></div>
-			</div>
+			<avatar profile="queue"></avatar>
 			<div class="Title">
 				<div class="Name">{{ ::queue.name }}</div>
 				<div class="Agents">{{::verbage.agents}}: {{ queue.info.active + ' / ' + queue.loggedInMembers + ' / ' + queue.members.length }}</div>
@@ -75,31 +61,31 @@
 <div ng-if="!viewIcon" class="QueueList">
 	<div class="Grid">
 		<div class="Header">
-			<div ng-click="setSort('name')">
+			<div ng-click="setSort('name', selectedQueue)">
 				<span>{{::verbage.queue_name}}</span>
 				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.waiting')">
+			<div ng-click="setSort('info.waiting', selectedQueue)">
 				<span>{{::verbage.waiting}}</span>		
 				<div ng-if="sortColumn == 'info.waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.esa')">
+			<div ng-click="setSort('info.esa', selectedQueue)">
 				<span>{{::verbage.avg_wait}}</span>		
 				<div ng-if="sortColumn == 'info.esa'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.avgTalk')">
+			<div ng-click="setSort('info.avgTalk', selectedQueue)">
 				<span>{{::verbage.avg_talk}}</span>		
 				<div ng-if="sortColumn == 'info.avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.abandon + info.completed')">
-				<span>{{::verbage.total}}</span>		
-				<div ng-if="sortColumn == 'info.abandon + info.completed'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+			<div ng-click="setSort('longestWait', selectedQueue)">
+				<span>{{::verbage.hold}}</span>		
+				<div ng-if="sortColumn == 'longestWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.abandonPercent')">
+			<div ng-click="setSort('info.abandonPercent', selectedQueue)">
 				<span>{{::verbage.abandoned}}</span>		
 				<div ng-if="sortColumn == 'info.abandonPercent'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.active')">
+			<div ng-click="setSort('info.active', selectedQueue)">
 				<span>{{::verbage.active}}</span>		
 				<div ng-if="sortColumn == 'info.active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
@@ -110,7 +96,10 @@
 				<div>{{ queue.info.waiting}}</div>
 				<div>{{ queue.info.esa*1000 | duration}}</div>
 				<div>{{ queue.info.avgTalk*1000 | duration}}</div>
-				<div>{{ queue.info.abandon + queue.info.completed }}</div>
+				<div>
+					<span ng-if="queue.longestWait > 0" timer="queue.longestWait"></span>
+					<span ng-if="queue.longestWait == 0">00:00</span>
+				</div>
 				<div>{{ queue.info.abandonPercent }}%</div>
 				<div>{{ queue.info.active }}</div>
 			</a>

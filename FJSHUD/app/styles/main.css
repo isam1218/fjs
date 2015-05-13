@@ -14,14 +14,7 @@ html {
   background: #cccccc url(../img/bg.png);
   box-shadow: 0 4px 5px rgba(255, 255, 255, 0.3) inset;
   user-select: none;
-  overflow-x: hidden;
-}
-body.not-allowed,
-html.not-allowed {
-  cursor: not-allowed !important;
-}
-a {
-  color: gray;
+  overflow: hidden;
 }
 p {
   font-size: 11px;
@@ -61,7 +54,7 @@ p {
   -webkit-flex-direction: column;
 }
 .PanelWrapper {
-  position: relative;
+  position: absolute;
   padding: 0 10px 10px 10px;
   flex: 1;
   -webkit-flex: 1;
@@ -69,6 +62,8 @@ p {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
+  width: 100%;
+  height: 85%;
 }
 .col1 {
   width: 180px;
@@ -182,14 +177,28 @@ p {
   border-style: dashed;
   border-width: 1px;
 }
+.not-sortable {
+  cursor: default;
+}
+.loadmore {
+  color: #729C00;
+  margin: 0 auto;
+  display: block;
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .TopBar {
   position: relative;
   width: 100%;
   height: 100px;
-  display: flex;
+  min-width: 1000px;
+  /*display: flex;
   display: -webkit-flex;
   flex-direction: row;
-  -webkit-flex-direction: row;
+  -webkit-flex-direction: row;*/
   border-bottom: 1px solid white;
   box-shadow: 0 -1px 1px #cccccc inset;
 }
@@ -202,13 +211,17 @@ p {
 .TopBarLogo {
   background: url("../img/FonalityLogo.png") no-repeat;
   margin: 5px 0 0 10px;
-  width: 21%;
-  min-width: 250px;
+  width: 300px;
+  float: left;
+  display: block;
+  height: 90px;
 }
 .TopBarIcons {
-  width: 36%;
-  min-width: 350px;
-  margin-left: 10px;
+  margin-left: 0px;
+  float: left;
+  clear: none;
+  display: block;
+  height: 90px;
 }
 .TopBarIcons .Avatar {
   margin: 5px;
@@ -306,6 +319,8 @@ p {
   text-align: right;
   font-size: .9em;
   white-space: nowrap;
+  width: 110px;
+  float: right;
 }
 .TopBarMeStatus .Logout {
   font-size: .8em;
@@ -456,14 +471,14 @@ p {
 }
 .LeftBar {
   position: relative;
-  width: 21%;
-  min-width: 250px;
+  max-width: 300px;
+  min-width: 300px;
   background-color: white;
   border: 1px solid #ccc;
-  display: flex;
-  display: -webkit-flex;
+  float: left;
+  flex: 1;
   flex-direction: column;
-  -webkit-flex-direction: column;
+  display: flex;
 }
 .LeftBar .RoundedTop {
   position: absolute;
@@ -478,11 +493,12 @@ p {
   box-shadow: 0px 1px 1px #ccc inset;
 }
 .LeftBar .ContactSearch {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: row;
-  -webkit-flex-direction: row;
-  width: 100%;
+  /* display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	-webkit-flex-direction: row;
+	width: 100%;*/
+  width: 300px;
 }
 .LeftBar .ContactSearch .Search {
   color: #729c00;
@@ -502,23 +518,50 @@ p {
   text-align: center;
   padding: 0;
 }
+.LeftBar .LeftContactsColumns.Header .Extension {
+  left: -3px;
+  margin-left: 0px;
+  padding-left: 0px;
+}
 .LeftBar .Contacts,
 .LeftBar .Groups {
   flex: 1;
   -webkit-flex: 1;
+  -ms-flex: 1;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
+  /*overflow-y: auto;  */
+  overflow: hidden;
+  position: relative;
+  height: 100%;
 }
 .LeftBar .Contacts .ContactList,
 .LeftBar .Groups .ContactList {
   flex: 1 1 0;
   -ms-flex: 1;
   -webkit-flex: 1;
+  /*margin-top: 10px;*/
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.LeftBar .Contacts .ContactList .LeftBarTabContentList,
+.LeftBar .Groups .ContactList .LeftBarTabContentList {
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  /*display: flex;
+          display: -webkit-flex;*/
+  display: block;
+  flex: 1 1 0;
+  -ms-flex: 1;
+  -webkit-flex: 1;
   overflow-y: auto;
-  min-height: 60px;
-  margin-top: 10px;
+  overflow-x: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 .LeftBar .Contacts .ContactList h4,
 .LeftBar .Groups .ContactList h4 {
@@ -532,6 +575,9 @@ p {
   margin: 0 0 .5em .5em;
   font-size: .8em;
   display: block;
+}
+.LeftBar .Groups .ContactList {
+  overflow-y: auto;
 }
 .LeftBar .Notifications {
   position: relative;
@@ -606,7 +652,7 @@ p {
   }
 }
 .DockPanel {
-  position: relative;
+  /*position: relative;*/
   flex: 1;
   -webkit-flex: 1;
   margin-left: 10px;
@@ -614,8 +660,9 @@ p {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: auto;
-  overflow-y: hidden;
+  /*overflow-x: auto;
+  overflow-y: hidden;*/
+  overflow: hidden;
 }
 .DockPanel.Moving {
   border: 1px dashed #358503;
@@ -658,14 +705,6 @@ p {
   text-shadow: whiteSmoke 0 1px 0;
   text-align: center;
 }
-.DockPanel .Gadget .Header {
-  cursor: pointer;
-}
-.DockPanel .TopBarItemAppIcon.CallCenter {
-  position: relative;
-  top: 0;
-  left: 0;
-}
 .Gadget {
   position: relative;
   display: inline-flex;
@@ -690,6 +729,12 @@ p {
   height: auto !important;
   box-shadow: 5px 5px 8px gray !important;
 }
+.Gadget.ui-draggable-dragging.not-allowed .Header {
+  cursor: not-allowed;
+}
+.Gadget.ui-draggable-dragging .Header {
+  cursor: move;
+}
 .Gadget.ui-draggable-dragging .Content,
 .Gadget.ui-draggable-dragging .Resizer {
   display: none;
@@ -701,6 +746,7 @@ p {
   box-shadow: 0 0 8px gray;
 }
 .Gadget .Header {
+  cursor: pointer;
   background-color: #ECECEC;
   padding: .25em;
   text-decoration: none;
@@ -743,6 +789,11 @@ p {
   text-align: center;
   padding: .25em;
   font-size: .8em;
+}
+.Gadget .Header .TopBarItemAppIcon.CallCenter {
+  position: relative;
+  top: 0;
+  left: 0;
 }
 .Gadget .Content {
   flex: 1;
@@ -806,13 +857,17 @@ p {
   display: inline-block;
   vertical-align: middle;
 }
+.DroppableArea {
+  border: 1px dashed #358503;
+  border-width: 1px;
+  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+}
 .ToolBar {
   position: relative;
   border-bottom: solid 1px #ccc;
   width: 95%;
   margin: 0 auto;
-  /* padding: .75em 0;
-  height: 3.4em;*/
   padding: .3em 0 .7em 0;
 }
 .ToolBar .XButton {
@@ -832,8 +887,7 @@ p {
 .WidgetPanel {
   position: relative;
   margin: -40px 0 0 10px;
-  width: 36%;
-  min-width: 350px;
+  width: 500px;
 }
 .WidgetPanel .Widget {
   border-top-left-radius: 10px;
@@ -841,12 +895,13 @@ p {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 1px 0 10px gray;
+  padding-top: 10px;
 }
 .Widget {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 500px;
   height: 100%;
   background-image: url(../img/XTile-Widget.png);
   border: solid 1px #ccc;
@@ -878,6 +933,12 @@ p {
 .Widget .ListView .vmsection.last {
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
+}
+.Widget .ListView.ChatView.WithToolBar {
+  overflow: hidden;
+}
+.Widget .ListView.ChatView.WithToolBar .ListViewContent {
+  overflow-y: auto;
 }
 .Widget .SearchInputBox {
   width: 30%;
@@ -922,6 +983,15 @@ p {
 }
 .WidgetHeaderTitle.Full {
   width: auto !important;
+}
+.WidgetHeaderTitle span.ChatStatus {
+  font-weight: normal !important;
+  font-size: 0.875em;
+}
+.WidgetHeaderTitle .XIcon-ChatStatus-offline,
+.WidgetHeaderTitle .XIcon-ChatStatus-away,
+.WidgetHeaderTitle .XIcon-ChatStatus-available {
+  margin-left: -5px;
 }
 .WidgetHeaderCallStatus .NoCallText {
   text-align: center;
@@ -1043,7 +1113,8 @@ p {
 }
 .WidgetMe .WidgetHeader {
   padding: 0 10px;
-  height: 22%;
+  /*height: 22%;*/
+  height: 75px;
   width: 100%;
 }
 .WidgetMe .WidgetHeaderTitle {
@@ -1065,24 +1136,48 @@ p {
   height: 5em;
 }
 .WidgetMe .WidgetBody {
-  height: 80%;
-  top: 150px;
-  position: absolute;
+  /* height: 80%;       
+       top: 150px;
+       position: absolute;*/
+  height: 78%;
+  max-height: 100%;
+  top: 73px;
 }
 .WidgetMe .WidgetBody .call-block {
-  height: 45%;
+  height: 50%;
   overflow-y: hidden;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide {
+  width: 50%;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row {
+  margin: 10px 5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row input[type=range] {
+  width: 70%;
+  margin-bottom: -8px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle > div {
+  float: left;
+  margin-left: -5px;
+  clear: both;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar {
+  margin-top: 8px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
+  width: 48%;
 }
 .WidgetMe .MeInfoBlock-column textarea {
   height: 3em;
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
-  -webkit-box-flex: 1;
-  height: 42%;
+  height: 50%;
   margin-top: 3px;
   display: inline-block;
   overflow: hidden;
+  padding-bottom: 70px;
 }
 .WidgetMe .Preferences-Holder .WidgetTabBar {
   top: 0px;
@@ -1103,7 +1198,9 @@ p {
   position: relative;
   border: none 0px;
   background-image: url("../img/XTile-Widget.png");
-  height: 72%;
+  /*height: 81%;
+         height: 85%;*/
+  height: 95%;
   overflow-y: hidden;
   background-color: #f9f9f9;
   bottom: 0px;
@@ -1111,6 +1208,8 @@ p {
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div {
   overflow-y: auto;
   padding: 10px;
+  height: 100%;
+  width: 100%;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div.padding {
   padding-bottom: 30px;
@@ -1474,8 +1573,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -1896,7 +1995,9 @@ div.NewCall .XButton.XButtonNormal {
   color: #666;
   padding-top: 4px;
   font-size: 11px;
+  font-size: .563em;
   display: block;
+  text-transform: uppercase;
 }
 .Preferences-Holder .ListView {
   font-size: .9em;
@@ -2245,7 +2346,8 @@ div.NewCall .XButton.XButtonNormal {
 .RecentCallSection {
   font-size: .7em;
   padding: 10px 0;
-  height: 50%;
+  /*height: 50%;*/
+  height: 66%;
 }
 .RecentCallSection .RecentCallColumnHeaders {
   padding: 6px 10px;
@@ -3163,18 +3265,25 @@ div.NewCall .XButton.XButtonNormal {
   top: 0;
   right: 0;
   left: 0;
+  padding: 0 10px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
-  margin: .05em 0 .25em .7em;
-  width: 45%;
+  margin: .05em .1em 0.7em 0.7em;
+  width: 40%;
   max-width: 300px;
+  height: 50px;
+  padding: 5px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div {
   text-align: center;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div {
-  display: inline-block;
+  /*display: inline-block;*/
   margin-bottom: 1px;
+}
+.Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div.NoCallIcon {
+  clear: both;
+  margin: 0 auto;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus .Avatar {
   top: 1px;
@@ -3393,7 +3502,7 @@ div.NewCall .XButton.XButtonNormal {
 .ChatMessageItem {
   position: relative;
   left: 10px;
-  width: 100%;
+  width: 99%;
   min-height: 26px;
 }
 .ChatMessageItem:not(:last-child) {
@@ -3525,7 +3634,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListLineContent.Header {
   background-color: #fff;
-  width: auto;
+  /*width: auto;*/
   position: relative;
   border-bottom: solid 1px #999;
 }
@@ -3547,9 +3656,19 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  /*font-size: .7em;*/
-  font-size: .688em;
+  /*font-size: .7em;
+  font-size: .688em;*/
+  font-size: 11px;
+  font-size: .563em;
+  text-transform: uppercase;
   line-height: 2.5em;
+}
+.ListLineContent.Header .ListLineContentCell.CallStatus,
+.ListLineContent.Header .ListLineContentCell.HudStatus {
+  float: right;
+}
+.ListLineContent.Header .ListLineContentCell.HudStatus {
+  margin-right: 25px;
 }
 .DirectionArrow {
   position: relative;
@@ -3652,7 +3771,8 @@ div.NewCall .XButton.XButtonNormal {
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
-  font-size: .75em;
+  /*font-size: .75em;*/
+  font-size: 12px;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
@@ -4098,8 +4218,28 @@ select[disabled] {
 }
 .CurrentCallBtn {
   margin: 10px 10px 0px 0px;
-  width: 78px;
-  padding: 0px;
+  height: 30px;
+  padding: 4px 3px 3px 3px;
+  float: left;
+}
+.CurrentCallBtn.disableButton {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.CurrentCallBtn .XIcon24-Record-Off,
+.CurrentCallBtn .XIcon24-Record-On {
+  top: 12px;
+}
+div.CurrentCallBtn.dial {
+  padding: 5px 10px;
+}
+div.CurrentCallBtn.record span {
+  margin-top: -3px;
+}
+input.CurrentCallBtn.disableButton {
+  border: 1px solid #ddd;
+  background: #fff;
 }
 .CurrentCallBtnLong {
   margin: 10px 10px 0px 0px;
@@ -4192,9 +4332,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-image: linear-gradient(#fefefe, #ebebeb);
   border: 1px solid rgba(0, 0, 0, 0.2);
   vertical-align: middle;
-  /*line-height: 2em;*/
-  font-weight: bold;
-  /*font-size: 11px;*/
   position: relative;
   cursor: pointer;
 }
@@ -4208,7 +4345,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.688em;
+  /*font-size: 0.688em;*/
+  font-size: 11px;
 }
 .SelectBoxSettings {
   width: 195px;
@@ -4404,6 +4542,20 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   bottom: 0;
   right: 0;
 }
+.AvatarWarningSmall {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -230px;
+}
+.DownloadIcon {
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("../img/XApp-Icons.png") no-repeat 0px 0px;
+}
 .CallAvatar {
   border-radius: 1em;
   overflow: hidden;
@@ -4551,7 +4703,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: inline-block;
   min-width: 48%;
   /*max-width: 300px;*/
-  max_width: 100%;
+  max_width: 48%;
   vertical-align: top;
   font-size: .9em;
   height: inherit;
@@ -4878,7 +5030,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -5002,6 +5154,25 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   top: 3px;
 }
+.CallStatusContainerOutbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+}
+.CallStatusContainerInbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+}
+.CallStatusIconContainer {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #0093f0;
+  border-radius: 30px;
+  text-align: center;
+  display: inline-block;
+}
+.CallStatusIconContainer .CallStatusIcon {
+  width: 40px;
+  height: 40px;
+  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+}
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
   flex: 1;
@@ -5051,6 +5222,37 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
+}
+.CallStatusContainerInbound .CallStatusIconContainer,
+.CallStatusContainerOutbound .CallStatusIconContainer,
+.CallStatusContainerInbound .CallStatusText,
+.CallStatusContainerOutbound .CallStatusText {
+  float: left;
+  margin: 5px 0px 5px 5px;
+}
+.CallStatusContainerInbound .CallStatusText,
+.CallStatusContainerOutbound .CallStatusText {
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  clear: none;
+  margin-left: 10px;
+}
+.CallStatusContainerInbound .CallStatusText .callStatus,
+.CallStatusContainerOutbound .CallStatusText .callStatus {
+  font-size: 12px;
+}
+.CallStatusContainerInbound .controlButtons,
+.CallStatusContainerOutbound .controlButtons {
+  clear: both;
+  float: right;
+  display: inline-block;
+  margin-top: 5px;
+}
+.CallStatusContainerInbound .controlButtons .XButton,
+.CallStatusContainerOutbound .controlButtons .XButton {
+  font-size: 12px;
 }
 .NotificationSectionHeader {
   display: inline-block;
@@ -5194,6 +5396,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 a.Messages {
   text-decoration: none;
+}
+.chatNotification {
+  cursor: pointer;
 }
 .displayName {
   font-size: 12px;
@@ -5395,38 +5600,638 @@ a.Messages {
 .vmlabel .vmnomessage {
   font-size: 12px;
 }
-.CallStatusContainerOutbound {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-}
-.CallStatusContainerInbound {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
-}
-.CallStatusIconContainer {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #0093f0;
-  border-radius: 30px;
-  text-align: center;
-  display: inline-block;
-}
-.CallStatusIconContainer .CallStatusIcon {
-  width: 40px;
-  height: 40px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
-}
-.CallStatusText {
-  font-size: .7em;
-  top: -13px;
-  position: relative;
-}
-@media screen and (max-width: 1200px) {
+/*@media screen and (max-width: 1200px) {
   body {
     font-size: .9em;
   }
 }
+
 @media screen and (max-width: 900px) {
   body {
     font-size: .8em;
+  }
+}*/
+.WidgetMe {
+  /*Recent Call center */
+}
+@media screen and (min-height: 354px) and (max-height: 360px) {
+  .WidgetMe .WidgetBody {
+    height: 48%;
+  }
+}
+@media screen and (min-height: 361px) and (max-height: 375px) {
+  .WidgetMe .WidgetBody {
+    height: 50%;
+  }
+}
+@media screen and (min-height: 376px) and (max-height: 381px) {
+  .WidgetMe .WidgetBody {
+    height: 51%;
+  }
+}
+@media screen and (min-height: 382px) and (max-height: 387px) {
+  .WidgetMe .WidgetBody {
+    height: 52%;
+  }
+}
+@media screen and (min-height: 388px) and (max-height: 397px) {
+  .WidgetMe .WidgetBody {
+    height: 54%;
+  }
+}
+@media screen and (min-height: 398px) and (max-height: 407px) {
+  .WidgetMe .WidgetBody {
+    height: 55%;
+  }
+}
+@media screen and (min-height: 408px) and (max-height: 417px) {
+  .WidgetMe .WidgetBody {
+    height: 56%;
+  }
+}
+@media screen and (min-height: 418px) and (max-height: 425px) {
+  .WidgetMe .WidgetBody {
+    height: 57%;
+  }
+}
+@media screen and (min-height: 426px) and (max-height: 434px) {
+  .WidgetMe .WidgetBody {
+    height: 58%;
+  }
+}
+@media screen and (min-height: 435px) and (max-height: 448px) {
+  .WidgetMe .WidgetBody {
+    height: 59%;
+  }
+}
+@media screen and (min-height: 449px) and (max-height: 455px) {
+  .WidgetMe .WidgetBody {
+    height: 60%;
+  }
+}
+@media screen and (min-height: 456px) and (max-height: 465px) {
+  .WidgetMe .WidgetBody {
+    height: 61%;
+  }
+}
+@media screen and (min-height: 466px) and (max-height: 474px) {
+  .WidgetMe .WidgetBody {
+    height: 62%;
+  }
+}
+@media screen and (min-height: 475px) and (max-height: 484px) {
+  .WidgetMe .WidgetBody {
+    height: 63.2%;
+  }
+}
+@media screen and (min-height: 485px) and (max-height: 499px) {
+  .WidgetMe .WidgetBody {
+    height: 64%;
+  }
+}
+@media screen and (min-height: 500px) and (max-height: 509px) {
+  .WidgetMe .WidgetBody {
+    height: 64.5%;
+  }
+}
+@media screen and (min-height: 510px) and (max-height: 518px) {
+  .WidgetMe .WidgetBody {
+    height: 66%;
+  }
+}
+@media screen and (min-height: 519px) and (max-height: 532px) {
+  .WidgetMe .WidgetBody {
+    height: 67%;
+  }
+}
+@media screen and (min-height: 519px) and (max-height: 532px) {
+  .WidgetMe .WidgetBody {
+    height: 67%;
+  }
+}
+@media screen and (min-height: 533px) and (max-height: 545px) {
+  .WidgetMe .WidgetBody {
+    height: 68%;
+  }
+}
+@media screen and (min-height: 546px) and (max-height: 556px) {
+  .WidgetMe .WidgetBody {
+    height: 69%;
+  }
+}
+@media screen and (min-height: 557px) and (max-height: 572px) {
+  .WidgetMe .WidgetBody {
+    height: 69.7%;
+  }
+}
+@media screen and (min-height: 574px) and (max-height: 593px) {
+  .WidgetMe .WidgetBody {
+    height: 71.2%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 38%;
+  }
+}
+@media screen and (min-height: 594px) and (max-height: 604px) {
+  .WidgetMe .WidgetBody {
+    height: 72%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 40%;
+  }
+}
+@media screen and (min-height: 605px) and (max-height: 617px) {
+  .WidgetMe .WidgetBody {
+    height: 72.6%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 42.5%;
+  }
+}
+@media screen and (min-height: 618px) and (max-height: 627px) {
+  .WidgetMe .WidgetBody {
+    height: 73.3%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 42.5%;
+  }
+}
+@media screen and (min-height: 628px) and (max-height: 637px) {
+  .WidgetMe .WidgetBody {
+    height: 73.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 44%;
+  }
+}
+@media screen and (min-height: 638px) and (max-height: 649px) {
+  .WidgetMe .WidgetBody {
+    height: 74%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 45.6%;
+  }
+}
+@media screen and (min-height: 650px) and (max-height: 666px) {
+  .WidgetMe .WidgetBody {
+    height: 74.6%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 46.7%;
+  }
+}
+@media screen and (min-height: 667px) and (max-height: 678px) {
+  .WidgetMe .WidgetBody {
+    height: 75%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 48%;
+  }
+}
+@media screen and (min-height: 677px) and (max-height: 689px) {
+  .WidgetMe .WidgetBody {
+    height: 75.7%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 49%;
+  }
+}
+@media screen and (min-height: 690px) and (max-height: 699px) {
+  .WidgetMe .WidgetBody {
+    height: 76%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 50%;
+  }
+}
+@media screen and (min-height: 700px) and (max-height: 709px) {
+  .WidgetMe .WidgetBody {
+    height: 76.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 50.5%;
+  }
+}
+@media screen and (min-height: 710px) and (max-height: 719px) {
+  .WidgetMe .WidgetBody {
+    height: 76.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 51%;
+  }
+}
+@media screen and (min-height: 720px) and (max-height: 722px) {
+  .WidgetMe .WidgetBody {
+    height: 77%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 52%;
+  }
+}
+@media screen and (min-height: 723px) and (max-height: 734px) {
+  .WidgetMe .WidgetBody {
+    height: 77.3%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 53%;
+  }
+}
+@media screen and (min-height: 735px) and (max-height: 744px) {
+  .WidgetMe .WidgetBody {
+    height: 77.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 53.5%;
+  }
+}
+@media screen and (min-height: 745px) and (max-height: 760px) {
+  .WidgetMe .WidgetBody {
+    height: 78%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 55%;
+  }
+}
+@media screen and (min-height: 761px) and (max-height: 779px) {
+  .WidgetMe .WidgetBody {
+    height: 78.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 56%;
+  }
+}
+@media screen and (min-height: 780px) and (max-height: 799px) {
+  .WidgetMe .WidgetBody {
+    height: 78.8%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 56.5%;
+  }
+}
+@media screen and (min-height: 800px) and (max-height: 829px) {
+  .WidgetMe .WidgetBody {
+    height: 79.9%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 59%;
+  }
+}
+@media screen and (min-height: 830px) and (max-height: 845px) {
+  .WidgetMe .WidgetBody {
+    height: 80.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 61%;
+  }
+}
+@media screen and (min-height: 846px) and (max-height: 854px) {
+  .WidgetMe .WidgetBody {
+    height: 80.8%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 61.5%;
+  }
+}
+@media screen and (min-height: 855px) and (max-height: 870px) {
+  .WidgetMe .WidgetBody {
+    height: 81%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 62%;
+  }
+}
+@media screen and (min-height: 871px) and (max-height: 899px) {
+  .WidgetMe .WidgetBody {
+    height: 81.6%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 64%;
+  }
+}
+@media screen and (min-height: 900px) and (max-height: 912px) {
+  .WidgetMe .WidgetBody {
+    height: 82%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 64.6%;
+  }
+}
+@media screen and (min-height: 913px) and (max-height: 924px) {
+  .WidgetMe .WidgetBody {
+    height: 82.2%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 65%;
+  }
+}
+@media screen and (min-height: 925px) and (max-height: 934px) {
+  .WidgetMe .WidgetBody {
+    height: 82.5%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 65.2%;
+  }
+}
+@media screen and (min-height: 935px) and (max-height: 951px) {
+  .WidgetMe .WidgetBody {
+    height: 82.7%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 66%;
+  }
+}
+@media screen and (min-height: 952px) and (max-height: 969px) {
+  .WidgetMe .WidgetBody {
+    height: 83.4%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 67%;
+  }
+}
+@media screen and (min-height: 970px) and (max-height: 999px) {
+  .WidgetMe .WidgetBody {
+    height: 83.8%;
+  }
+  .WidgetMe .WidgetBody .RecentCallSection {
+    height: 68.6%;
+  }
+}
+@media screen and (min-height: 570px) and (max-height: 574px) {
+  .WidgetMe .RecentCallSection {
+    height: 35%;
+  }
+}
+@media screen and (min-height: 563px) and (max-height: 569px) {
+  .WidgetMe .RecentCallSection {
+    height: 34%;
+  }
+}
+@media screen and (min-height: 557px) and (max-height: 562px) {
+  .WidgetMe .RecentCallSection {
+    height: 33%;
+  }
+}
+@media screen and (min-height: 555px) and (max-height: 556px) {
+  .WidgetMe .RecentCallSection {
+    height: 32%;
+  }
+}
+@media screen and (min-height: 550px) and (max-height: 554px) {
+  .WidgetMe .RecentCallSection {
+    height: 31%;
+  }
+}
+@media screen and (min-height: 548px) and (max-height: 549px) {
+  .WidgetMe .RecentCallSection {
+    height: 30%;
+  }
+}
+@media screen and (min-height: 546px) and (max-height: 547px) {
+  .WidgetMe .RecentCallSection {
+    height: 29%;
+  }
+}
+@media screen and (min-height: 544px) and (max-height: 545px) {
+  .WidgetMe .RecentCallSection {
+    height: 28%;
+  }
+}
+@media screen and (min-height: 542px) and (max-height: 543px) {
+  .WidgetMe .RecentCallSection {
+    height: 27%;
+  }
+}
+@media screen and (min-height: 540px) and (max-height: 541px) {
+  .WidgetMe .RecentCallSection {
+    height: 26%;
+  }
+}
+@media screen and (min-height: 538px) and (max-height: 539px) {
+  .WidgetMe .RecentCallSection {
+    height: 25%;
+  }
+}
+@media screen and (min-height: 536px) and (max-height: 537px) {
+  .WidgetMe .RecentCallSection {
+    height: 24%;
+  }
+}
+@media screen and (min-height: 534px) and (max-height: 535px) {
+  .WidgetMe .RecentCallSection {
+    height: 23%;
+  }
+}
+@media screen and (min-height: 532px) and (max-height: 533px) {
+  .WidgetMe .RecentCallSection {
+    height: 22%;
+  }
+}
+/** firefox **/
+@supports (-moz-appearance:meterbar) {
+  @media screen and (min-height: 557px) and (max-height: 572px) {
+    .WidgetMe .WidgetBody {
+      height: 70.6%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 32%;
+    }
+  }
+  @media screen and (min-height: 574px) and (max-height: 593px) {
+    .WidgetMe .WidgetBody {
+      height: 72%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 34%;
+    }
+  }
+  @media screen and (min-height: 594px) and (max-height: 604px) {
+    .WidgetMe .WidgetBody {
+      height: 72.6%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 39%;
+    }
+  }
+  @media screen and (min-height: 605px) and (max-height: 617px) {
+    .WidgetMe .WidgetBody {
+      height: 73.2%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 40%;
+    }
+  }
+  @media screen and (min-height: 618px) and (max-height: 627px) {
+    .WidgetMe .WidgetBody {
+      height: 73.7%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 41%;
+    }
+  }
+  @media screen and (min-height: 628px) and (max-height: 637px) {
+    .WidgetMe .WidgetBody {
+      height: 74.2%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 42%;
+    }
+  }
+  @media screen and (min-height: 638px) and (max-height: 649px) {
+    .WidgetMe .WidgetBody {
+      height: 74.5%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 43%;
+    }
+  }
+  @media screen and (min-height: 650px) and (max-height: 666px) {
+    .WidgetMe .WidgetBody {
+      height: 75%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 45%;
+    }
+  }
+  @media screen and (min-height: 667px) and (max-height: 678px) {
+    .WidgetMe .WidgetBody {
+      height: 75.8%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 46%;
+    }
+  }
+  @media screen and (min-height: 677px) and (max-height: 689px) {
+    .WidgetMe .WidgetBody {
+      height: 76.2%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 47.2%;
+    }
+  }
+  @media screen and (min-height: 690px) and (max-height: 699px) {
+    .WidgetMe .WidgetBody {
+      height: 76.5%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 49%;
+    }
+  }
+  @media screen and (min-height: 700px) and (max-height: 709px) {
+    .WidgetMe .WidgetBody {
+      height: 77.2%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 49.3%;
+    }
+  }
+  @media screen and (min-height: 710px) and (max-height: 719px) {
+    .WidgetMe .WidgetBody {
+      height: 77%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 50%;
+    }
+  }
+  @media screen and (min-height: 720px) and (max-height: 721px) {
+    .WidgetMe .WidgetBody {
+      height: 77.5%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 51%;
+    }
+  }
+  @media screen and (min-height: 723px) and (max-height: 734px) {
+    .WidgetMe .WidgetBody {
+      height: 77.5%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 52%;
+    }
+  }
+  @media screen and (min-height: 735px) and (max-height: 744px) {
+    .WidgetMe .WidgetBody {
+      height: 78%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 52.5%;
+    }
+  }
+  @media screen and (min-height: 745px) and (max-height: 760px) {
+    .WidgetMe .WidgetBody {
+      height: 78.8%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 54%;
+    }
+  }
+  @media screen and (min-height: 761px) and (max-height: 779px) {
+    .WidgetMe .WidgetBody {
+      height: 79.3%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 54.8%;
+    }
+  }
+  @media screen and (min-height: 780px) and (max-height: 799px) {
+    .WidgetMe .WidgetBody {
+      height: 79.8%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 56.4%;
+    }
+  }
+  @media screen and (min-height: 800px) and (max-height: 829px) {
+    .WidgetMe .WidgetBody {
+      height: 80.2%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 57%;
+    }
+  }
+  @media screen and (min-height: 830px) and (max-height: 845px) {
+    .WidgetMe .WidgetBody {
+      height: 80.8%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 59%;
+    }
+  }
+  @media screen and (min-height: 846px) and (max-height: 854px) {
+    .WidgetMe .WidgetBody {
+      height: 81%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 59.2%;
+    }
+  }
+  @media screen and (min-height: 855px) and (max-height: 870px) {
+    .WidgetMe .WidgetBody {
+      height: 81.5%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 60.5%;
+    }
+  }
+  @media screen and (min-height: 871px) and (max-height: 899px) {
+    .WidgetMe .WidgetBody {
+      height: 82.2%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 62%;
+    }
+  }
+  @media screen and (min-height: 900px) and (max-height: 912px) {
+    .WidgetMe .WidgetBody {
+      height: 82.5%;
+    }
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 62.2%;
+    }
+  }
+  @media screen and (min-height: 952px) and (max-height: 969px) {
+    .WidgetMe .WidgetBody .RecentCallSection {
+      height: 65.3%;
+    }
   }
 }
 .LeftBar .Recent {
@@ -5479,6 +6284,23 @@ a.Messages {
     top: 19px;
     z-index: 101;
   }
+  .WidgetMe {
+    /*   .WidgetBody{
+        position: relative !important;
+        height: 20em !important;
+        
+        .call-block{height: 12em !important;}
+        
+        .Preferences-Holder{height: 10em !important;}
+     }
+    
+     .Preferences-Holder{
+        /*height: 60% !important;
+        .SettingsPanel.DialogContentMainBlock_List {
+            height: 79% !important;
+        }
+     }*/
+  }
   .WidgetMe .WidgetHeader {
     height: 8.438em !important;
     position: absolute !important;
@@ -5496,14 +6318,8 @@ a.Messages {
     height: 5.625em;
   }
   .WidgetMe .WidgetBody {
-    position: relative !important;
-    height: 20em !important;
-  }
-  .WidgetMe .WidgetBody .call-block {
-    height: 12em !important;
-  }
-  .WidgetMe .WidgetBody .Preferences-Holder {
-    height: 10em !important;
+    top: 150px;
+    position: absolute;
   }
   .WidgetMe .Avatar.AvatarBig {
     width: 19% !important;
@@ -5642,6 +6458,9 @@ a.Messages {
   }
   .LeftBarNotificationSection {
     background-color: transparent;
+  }
+  .WidgetTabBar {
+    clear: both;
   }
   .Messages:first-child {
     clear: both;

@@ -6,8 +6,8 @@
 <div class="QueueList CallList">
 	<div class="Header">
 		<div class="ListSectionHeaderTitle">{{::verbage.in_queue}}</div>
-		<em ng-if="callsWaiting.length > 0">
-			{{ callsWaiting.length }} {{::verbage.calls_in_queue_longest_wait}}
+		<em ng-if="callsWaiting > 0">
+			{{ callsWaiting }} {{::verbage.calls_in_queue_longest_wait}}
 			<span timer="longestWait"></span>
 		</em>
 		
@@ -15,11 +15,11 @@
 	</div>
 	
 	<div ng-if="showWaiting">
-		<div class="Empty" ng-if="callsWaiting.length == 0">
+		<div class="Empty" ng-if="callsWaiting == 0">
 			{{::verbage.nobody_is_waiting}}
 		</div>
 	  
-		<div ng-repeat="call in callsWaiting | filter: {displayName: query}">
+		<div ng-repeat="call in queue.calls | filter: filterActive(false) | filter: {displayName: query}">
 			<div class="ActiveCall">
 				<div class="Info">
 					<div class="Arrow" ng-if="call.agent"></div>
@@ -31,11 +31,8 @@
 				</div>
 							
 				<div class="Agent" ng-if="call.agent">
-					<div class="Avatar AvatarNormal" context-menu="call.agent">
-						<img class="AvatarImgPH" data-ng-src="{{::call.agent.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
-					<div>{{ call.agent.displayName }}</div>
+					<avatar profile="call.agent"></avatar>
+					<div>{{ ::call.agent.displayName }}</div>
 				</div>
 			</div>
 		</div>
@@ -43,8 +40,8 @@
 
 	<div class="Header">
 		<div class="ListSectionHeaderTitle">{{::verbage.active_calls_answered}}</div>
-		<em ng-if="callsActive.length > 0">
-			{{ callsActive.length }} {{::verbage.active_calls_in_queue_longest_wait}}
+		<em ng-if="callsActive > 0">
+			{{ callsActive }} {{::verbage.active_calls_in_queue_longest_wait}}
 			<span timer="longestActive"></span>
 		</em>
 		
@@ -52,11 +49,11 @@
 	</div>
   
 	<div ng-if="showActive">
-		<div class="Empty" ng-if="callsActive.length == 0">
+		<div class="Empty" ng-if="callsActive == 0">
 			{{::verbage.no_active_calls}}
 		</div>
 	  
-		<div ng-repeat="call in callsActive | filter: {agent: {displayName: query}}">
+		<div ng-repeat="call in queue.calls | filter: filterActive(true) | filter: {agent: {displayName: query}}">
 			<div class="ActiveCall">
 				<div class="Info">
 					<div class="Arrow"></div>
@@ -68,11 +65,8 @@
 				</div>
 							
 				<div class="Agent">
-					<div class="Avatar AvatarNormal" context-menu="call.agent">
-						<img class="AvatarImgPH" data-ng-src="{{::call.agent.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
-					<div>{{ call.agent.displayName }}</div>
+					<avatar profile="call.agent"></avatar>
+					<div>{{ ::call.agent.displayName }}</div>
 				</div>
 			</div>
 		</div>

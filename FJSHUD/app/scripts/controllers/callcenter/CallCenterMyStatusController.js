@@ -1,16 +1,12 @@
-hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'HttpService', function($scope, $rootScope, httpService) {
+hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'HttpService', 'QueueService', function($scope, $rootScope, httpService, queueService) {
 	$scope.mystatus = this;
 	$scope.mystatus.logoutReason = '';
 	$scope.checkboxes = {};
 	$scope.disableLogout = true;
 	$scope.disableLogin = true;
-	$scope.reasons = [];
 	
-	httpService.getFeed('queues');
-	httpService.getFeed('queuelogoutreasons');
-	
-	$scope.$on('queuelogoutreasons_synced', function(event, data) {
-		$scope.reasons = data;
+	queueService.getQueues().then(function(data) {
+		$scope.reasons = data.reasons;
 	});
 	
 	// enable/disable action buttons

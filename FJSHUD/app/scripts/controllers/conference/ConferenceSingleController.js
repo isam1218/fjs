@@ -4,8 +4,9 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
 	$scope.conferenceId = $routeParams.conferenceId;
 
 	$scope.enableChat = true;
-    $scope.joined = false;
-    $scope.conference = conferenceService.getConference($scope.conferenceId);
+  $scope.joined = false;
+  $scope.enableTextInput = false;
+  $scope.conference = conferenceService.getConference($scope.conferenceId);
     
 	httpService.getFeed("conferencestatus")
 	httpService.getFeed("conferencemembers");
@@ -20,21 +21,17 @@ hudweb.controller('ConferenceSingleController', ['$scope', 'ConferenceService', 
   $scope.tabs = [{upper: $scope.verbage.current_call, lower: 'currentcall'}, 
   {upper: $scope.verbage.chat, lower: 'chat'}, {upper: $scope.verbage.recordings, lower: 'recordings'}];
 
-  $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower
+  $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 
 	$scope.$on("conferences_updated", function(event,data){
    		$scope.conference = conferenceService.getConference($scope.conferenceId);
    		if($scope.conference){
    			if($scope.conference.status){
-				$scope.joined = $scope.conference.status.isMeJoined;
+				  $scope.joined = $scope.conference.status.isMeJoined;
     			$scope.enableChat = $scope.joined;
+          $scope.enableTextInput = $scope.joined;
     			$scope.enableFileShare = $scope.joined;
     		}
-			
-			// get full profile for status, context-menu
-			angular.forEach($scope.conference.members, function(obj) {
-				obj.fullProfile = contactService.getContact(obj.contactId);
-			});
     		
     		if($scope.conference.callrecordings){
     			$scope.callrecordings = $scope.conference.callrecordings;

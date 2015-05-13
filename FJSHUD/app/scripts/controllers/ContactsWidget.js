@@ -1,23 +1,27 @@
 hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
+	var addedPid;
   $scope.query = "";
   $scope.sortField = "displayName";
   $scope.sortReverse = false;
   $scope.contacts = [];
 	$scope.favorites = {};
-	
-	if (localStorage.recent === undefined)
-		localStorage.recent = '{}';
-	
-	$scope.recent = JSON.parse(localStorage.recent);
+
+	$scope.$on('pidAdded', function(event, data){
+		addedPid = data.info;
+		if (localStorage['recents_of_' + addedPid] === undefined){
+			localStorage['recents_of_' + addedPid] = '{}';
+		}
+		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+	});
 	
 	// pull contact updates from service
-	$scope.$on('contacts_updated', function(event, data) {
+	contactService.getContacts().then(function(data) {
 		$scope.contacts = data;	
 	});
 	
 	// pull group updates from service
 	$scope.$on('groups_updated', function(event, data) {
-		$scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : [];
+		// $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : [];
 		$scope.favorites = data.favorites;
 	});
 
@@ -55,6 +59,15 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 			}
 		};
 	};
+
+	$scope.searchFilter = function(){
+		var query = $scope.$parent.query;
+		return function(contact){
+			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
+				return true;
+			}
+		};
+	};
 	
 	$scope.customSort = function() {
 		// recent list doesn't have a sort field
@@ -74,14 +87,16 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	
 	// record most recent contacts
 	$scope.storeRecentContact = function(xpid){
-		$scope.recent = JSON.parse(localStorage.recent);		
+		var localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// $scope.recent = JSON.parse(localStorage.recent);		
 		$scope.recent[xpid] = {
 			type: 'contact',
 			time:  new Date().getTime()
 		};
-		localStorage.recent = JSON.stringify($scope.recent);
-		// console.log('*storeRecentContact - ', $scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: xpid});
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+		// localStorage.recent = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
 	};
 	
 

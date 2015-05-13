@@ -73,7 +73,7 @@
 			
 			<div class="Details" ng-show="row[member.xpid]">
 				<div class="SubHeader">{{::verbage.other_queues}}</div>
-				<div class="Row" ng-repeat="other in member.otherQueues" ng-click="goToQueue(other.queue.xpid)">
+				<div class="Row" ng-repeat="other in member.otherQueues track by other.queue.xpid" ng-click="goToQueue(other.queue.xpid)">
 					<div>&nbsp;</div>
 					<div>&nbsp;</div>
 					<div>{{ ::other.queue.name }}</div>
@@ -95,10 +95,7 @@
 						<div class="Time" timer="member.call.startedAt"></div>
 					</div>
 								
-					<div class="Avatar AvatarNormal" context-menu="member.fullProfile">
-						<img class="AvatarImgPH" data-ng-src="{{::member.fullProfile.getAvatar(28)}}" onerror="this.src='img/Generic-Avatar-28.png'" />
-						<div class="AvatarForeground AvatarInteractable"></div>
-					</div>
+					<avatar profile="member.fullProfile"></avatar>
 				</div>
 				<div class="Empty" ng-if="!member.call.startedAt">{{::verbage.no_calls}}</div>
 			</div>

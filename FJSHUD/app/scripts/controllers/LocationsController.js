@@ -20,9 +20,13 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
          */
         var currentLocation;
 
-         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
-             currentLocation = $scope.locations[$scope.meModel["current_location"]];
-             return currentLocation.name+" ("+currentLocation.phone+")";
+        if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
+        	currentLocation = $scope.locations[$scope.meModel["current_location"]];
+             
+             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w')
+            	 return currentLocation.name+" ("+ currentLocation.phone+")";
+             else
+            	 return currentLocation.name;
          }
          else {
              return "Loading...";

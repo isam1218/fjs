@@ -3,6 +3,8 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.query = '';
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
 	$scope.sortBy = 'location';
+	var addedPid;
+	var localPid;
 	
 	conferenceService.getConferences().then(function(data) {
 		$scope.conferences = data;
@@ -16,29 +18,32 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	
 	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
 
-	if (localStorage.recent === undefined)
-		localStorage.recent = '{}';
-
-	$scope.recent = JSON.parse(localStorage.recent);
+	$scope.$on('pidAdded', function(event, data){
+		addedPid = data.info;
+		if (localStorage['recents_of_' + addedPid] === undefined){
+			localStorage['recents_of_' + addedPid] = '{}';
+		}
+		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+	});
 
 	$scope.sortedBy = function(selectedConference){
+		localPid = JSON.parse(localStorage.me);
 		$scope.selectedConference = selectedConference;
 		localStorage.conf_option = JSON.stringify($scope.selectedConference);
 	};
 
 	$scope.storeRecentConference = function(confXpid){
-		$scope.recent = JSON.parse(localStorage.recent);
+		localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
 		$scope.recent[confXpid] = {
 			type: 'conference',
 			time: new Date().getTime()
 		};
-		localStorage.recent = JSON.stringify($scope.recent);
-		// console.log('*storeRecentConference - ', $scope.recent);
-		$rootScope.$broadcast('recentAdded', {info: confXpid});
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {id: confXpid, type: 'conference', time: new Date().getTime()});
 	};
 
 	$scope.enableChat = true;
-
 
 	// get data from sync
 	$scope.$on('conferences_updated', function(event, data) {
@@ -63,15 +68,15 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	// filter list down
 	$scope.customFilter = function() {
 		return function(conference) {
-			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)) {
-				if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1  || individualMember.primaryExtension.indexOf($scope.query) != -1){
-					return true;
+			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)){
+				if (!conference.members){
+					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
+						return true;
 				} else if (conference.members.length){
-					for (j = 0; j < conference.members.length; j++){
+					for (var j = 0; j < conference.members.length; j++){
 						var individualMember = conference.members[j];
-						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1){
+						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1 || individualMember.fullProfile.primaryExtension.indexOf($scope.query) != -1 || conference.extensionNumber.indexOf($scope.query) != -1)
 							return true;
-						}
 					}
 				}
 			}

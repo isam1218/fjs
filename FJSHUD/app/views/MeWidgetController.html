@@ -2,8 +2,7 @@
     <div class="WidgetHeader">
         <div class="WidgetHeaderTitle">{{ meModel.display_name }}</div>
         <div class="Avatar AvatarBig">
-            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl(90,90)}}">
-            <div class="AvatarForeground AvatarStatic"></div>
+            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl(90,90)}}" />
         </div>
         <div class="MeInfoBlock">
                <div class="MeInfoBlock-column">
@@ -38,18 +37,14 @@
 
 
             <div class="WidgetBody"> 
-             <div class="call-block">                           
+             <div class="call-block" style="height: 50%;">                           
              <!--  ng-if="currentCall != null"-->
 
               <div class="CurrentCall"  ng-if="currentCall != null">
                 <div class="WidgetSectionTitle">{{verbage.current_call}} {{currentCall.startedAt | duration}} </div>
                 <div class="LeftSide"> 
-                  <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >      
-                      <div class="Avatar AvatarSmall CallAvatar CallAvatar_External">
-                        <img class="AvatarImgPH" ng-src="{{ currentCall.contact ? currentCall.contact.getAvatar(28) : 'img/Generic-Avatar-28.png' }}" onerror="this.src='img/Generic-Avatar-28.png'"
-                         />
-                        <div class="AvatarForeground AvatarInteractable"></div>
-                      </div>
+                  <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >  
+					  <avatar profile="currentCall.contact" type="{{currentCall.type || 11}}"></avatar>
                       
                       <div class="ListRowContent" style="border-left:none">
                         <div class="ListRowTitle">
@@ -84,29 +79,29 @@
                 <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
                   </div>
                 </div>
-                <div class="RightSide"> 
+                <div class="RightSide">                            
                   <div class="row_buttons"> 
-                    <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('transfer',currentCall)"><span>{{verbage.transfer}}</span></button> 
-                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-click="showCallOvery('conference',currentCall)"><span>{{verbage.conf_room}}</span></button> 
-                <div class="XButton CurrentCallBtn" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>{{::verbage.Mute}}</span></div>
-                <div class="XButton CurrentCallBtn" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
+                    <button  class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-disabled="currentCall.type == 0 || currentCall.state != 2" ng-click="showCallOvery('transfer',currentCall)"><span>{{verbage.transfer}}</span></button> 
+                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-disabled="currentCall.type == 0 || currentCall.state != 2" ng-click="showCallOvery('conference',currentCall)"><span>{{verbage.conf_room}}</span></button> 
+                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>{{::verbage.Mute}}</span></div>
+                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
                   </div>
                   <div class="row_buttons">
-                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button> 
-                    <div class="XButton CurrentCallBtn" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
+                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-disabled="currentCall.type == 0 || currentCall.state != 2"" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button> 
+                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
 
-                    <div class="XButton CurrentCallBtn" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
-                    <div class=" SelectBox XButton CurrentCallBtn" data-ng-click="showLocationsPopup($event, $element)">  
+                    <div class="XButton CurrentCallBtn record ng-class:{'disableButton': currentCall.state != 2}" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
+                    <div class=" SelectBox XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}"  data-ng-click="showLocationsPopup($event, $element)">  
                       <div class="SelectBoxText">
                                 <span>{{::verbage.move}}</span>
                                 </div>
                     </div> 
                   <div>
-                  <div class="row_buttons">
-                    <div class="XButton CurrentCallBtn" data-ng-click="showDialPad($event)"> # </div> 
-                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"> {{::verbage.end}} </div> 
+	                  <div class="row_buttons">
+	                    <div class="XButton dial CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" data-ng-click="showDialPad($event)"> # </div> 
+	                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"> {{::verbage.end}} </div> 
+	                  </div>
                   </div>
-                </div>
                 </div>
               </div>           
               </div>
@@ -143,14 +138,15 @@
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
-                    <div ng-repeat="calllog in calllogs" class="RecentCallRow"> 
+                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value" class="RecentCallRow"> 
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D hh:mm a':fon_lang_code}} </div>
 
                       
                       <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
                       <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
-                      <div class="RecentCallsHeader RecentDur">{{ formatDuration(calllog)}} </div>
+                      <div class="RecentCallsHeader RecentDur">{{ calllog.duration | duration }} </div>
+                    
                     </div>
                     <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id111" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
                       <div class="fj-ui-scrollerFr-decoration"></div>
@@ -164,7 +160,7 @@
               <div class="fj-vbox-space Preferences-Holder">
 	              <div class="WidgetSectionTitle">{{verbage.preferences}}</div>	              
 		              <div class="WidgetTabBar">
-		                <a href="" ng-repeat="tab in tabs" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+		                <a href="" ng-repeat="tab in tabs" ng-show="tab.isActive" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
 		                  <div class="inner HeaderLabel">{{ tab.label }}</div>
 		                  <div class="arrow"></div>
 		                </a>

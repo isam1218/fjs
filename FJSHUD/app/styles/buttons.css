@@ -191,8 +191,28 @@ select[disabled] {
 }
 .CurrentCallBtn {
   margin: 10px 10px 0px 0px;
-  width: 78px;
-  padding: 0px;
+  height: 30px;
+  padding: 4px 3px 3px 3px;
+  float: left;
+}
+.CurrentCallBtn.disableButton {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.CurrentCallBtn .XIcon24-Record-Off,
+.CurrentCallBtn .XIcon24-Record-On {
+  top: 12px;
+}
+div.CurrentCallBtn.dial {
+  padding: 5px 10px;
+}
+div.CurrentCallBtn.record span {
+  margin-top: -3px;
+}
+input.CurrentCallBtn.disableButton {
+  border: 1px solid #ddd;
+  background: #fff;
 }
 .CurrentCallBtnLong {
   margin: 10px 10px 0px 0px;
@@ -285,9 +305,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-image: linear-gradient(#fefefe, #ebebeb);
   border: 1px solid rgba(0, 0, 0, 0.2);
   vertical-align: middle;
-  /*line-height: 2em;*/
-  font-weight: bold;
-  /*font-size: 11px;*/
   position: relative;
   cursor: pointer;
 }
@@ -301,7 +318,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.688em;
+  /*font-size: 0.688em;*/
+  font-size: 11px;
 }
 .SelectBoxSettings {
   width: 195px;
