@@ -24,10 +24,16 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$rootScope', function(ht
 						$(title).append('<div>' + obj.displayName + '</div><div><div class="ListRowStatusIcon XIcon-QueueStatus-' + obj.queue_status + '"></div><div class="ListRowStatusIcon XIcon-ChatStatus-' + (obj.hud_status || 'offline') + '"></div></div>');
 					}
 					// group
-					else {
+					else if (obj.name !== undefined) {
 						$(header).append('<div class="Avatar AvatarNormal"><div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg" src="' + obj.getAvatar(0, 28) + '" onerror="' + defaultImage + '" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg" src="' + obj.getAvatar(1, 28) + '" onerror="' + defaultImage + '" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg" src="' + obj.getAvatar(2, 28) + '" onerror="' + defaultImage + '" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg" src="' + obj.getAvatar(3, 28) + '" onerror="' + defaultImage + '" /></div><div class="AvatarInteractable"></div></div>');
 						
 						$(title).append('<div>' + obj.name + '</div>');
+					}
+					// most likely a call
+					else {
+						$(header).append('<div class="Avatar AvatarNormal"><img class="AvatarImgPH" src="' + obj.fullProfile.getAvatar(28) + '" onerror="' + defaultImage + '" /></div>');
+						
+						$(title).append('<div>' + obj.displayName + '</div><div>' + obj.phone + '</div>');
 					}
 					
 					return $(gadget).append($(header).append($(title)));
