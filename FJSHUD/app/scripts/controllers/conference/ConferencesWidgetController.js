@@ -1,11 +1,37 @@
 hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
-	$scope.tab = 'my';
 	$scope.query = '';
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
 	$scope.sortBy = 'location';
 	var addedPid;
 	var localPid;
+
+  var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
+      if (!$scope.globalXpid){
+          $scope.globalXpid = newVal;
+              $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+              getXpidInC();
+      } else {
+          getXpidInC();
+      }
+  });
+
+  $scope.$on('pidAdded', function(event, data){
+      $scope.globalXpid = data.info;
+      $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+  });
 	
+	$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+
+  $scope.saveCTab = function(tabType){
+  	if (tabType === 1){
+  		$scope.tab = 'my';
+  		localStorage['ConfWidget_tab_of_' + $scope.globalXpid] = JSON.stringify($scope.tab);
+  	} else if (tabType === 2){
+  		$scope.tab = 'all';
+  		localStorage['ConfWidget_tab_of_' + $scope.globalXpid] = JSON.stringify($scope.tab);
+  	}
+  };
+
 	conferenceService.getConferences().then(function(data) {
 		$scope.conferences = data;
 	});

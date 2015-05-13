@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpService', 'GroupService', function($scope, $routeParams, myHttpService, groupService) {
+hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', function($scope, $rootScope, $routeParams, myHttpService, groupService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -13,6 +13,64 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
   $scope.enableFileShare = false;
   $scope.enableTextInput = false;
 	$scope.messages = [];
+
+	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
+	{upper: $scope.verbage.members, lower: 'members'}, 
+	{upper: $scope.verbage.voicemail, lower: 'voicemails'}, 
+	{upper: $scope.verbage.page, lower: 'page'}, 
+	{upper: $scope.verbage.recordings, lower: 'recordings'}];
+
+  var getXpidInG = $rootScope.$watch('myPid', function(newVal, oldVal){
+      if (!$scope.globalXpid){
+          $scope.globalXpid = newVal;
+              $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+              $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+              getXpidInG();
+      } else {
+          getXpidInG();
+      }
+  });
+
+  $scope.$on('pidAdded', function(event, data){
+      $scope.globalXpid = data.info;
+      $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+      $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+  });
+
+  $scope.saveGTab = function(tab, index){
+      switch(tab){
+          case "chat":
+              $scope.selected = $scope.tabs[0].lower;
+              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+              $scope.toggleObject = {item: index};
+              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
+          case "members":
+              $scope.selected = $scope.tabs[1].lower;
+              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+              $scope.toggleObject = {item: index};
+              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
+          case "voicemails":
+              $scope.selected = $scope.tabs[2].lower;
+              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+              $scope.toggleObject = {item: index};
+              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
+          case "page":
+              $scope.selected = $scope.tabs[3].lower;
+              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+              $scope.toggleObject = {item: index};
+              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
+          case "recordings":
+              $scope.selected = $scope.tabs[4].lower;
+              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+              $scope.toggleObject = {item: index};
+              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
+      }
+  }; 
 
 	$scope.tabFilter = function(){
 		return function(tab){
@@ -55,11 +113,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$routeParams', 'HttpServi
 		}
 	}
 	
-	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
-	{upper: $scope.verbage.members, lower: 'members'}, 
-	{upper: $scope.verbage.voicemail, lower: 'voicemails'}, 
-	{upper: $scope.verbage.page, lower: 'page'}, 
-	{upper: $scope.verbage.recordings, lower: 'recordings'}];
 
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 

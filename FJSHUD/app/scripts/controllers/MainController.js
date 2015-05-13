@@ -86,6 +86,15 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 			getMyPid();
 	});
 
+  var getMyXpid = $rootScope.$watch('myPid', function(newVal, oldVal){
+    if (!$scope.gloablXpid){
+      $scope.globalXpid = newVal;
+      getMyXpid();      
+    } else {
+      getMyXpid();
+    }
+  });
+
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
         $scope.currentPopup.x = 0;
