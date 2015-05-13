@@ -32,6 +32,20 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         }
     };
 	
+	var activityTimeout = null;
+	
+	// wake status
+	document.onmousemove = function() {
+		if (!activityTimeout) {
+			myHttpService.sendAction('useractivity', 'reportActivity', {});
+			
+			// prevent ajax call from firing too often
+			activityTimeout = setTimeout(function() {
+				activityTimeout = null;
+			}, 10000);
+		}
+	};
+	
 	// wait to show app
 	var loadWatch = $rootScope.$watch('loaded', function(data) {
 		var count = 0;
@@ -81,7 +95,8 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 
     $scope.broadcastDial = function(key){
         $scope.$broadcast("key_press",key);
-    }
+    };
+	
     $scope.makePhoneCall = function(type,$event){
     	switch(type){
     		case 'dialpad':
@@ -91,12 +106,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 				}
 				break;
     	}
-    }
-
-    $scope.getAvatar = function(pid,width,height){
-        return myHttpService.get_avatar(pid,40,40);
-    }
-
+    };
 
     $scope.showPopup = function(data) {
         if(!data.key) {

@@ -385,12 +385,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
 								notification.label =$scope.verbage.voicemail;
-							}else if(notification.type == 'wall'){
+							}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-								notification.label = 'missed call'
+                 notification.label = 'missed call';
 							}else if(notification.type == 'busy-ring-back'){
-								notification.label = 'is now available for call'
+                notification.label = 'is now available for call';
 								notification.message= "User is free for call";
 							}
 					if(notification.audience == "conference"){
@@ -430,12 +430,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 								notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
 								notification.label = $scope.verbage.voicemail;
-					}else if(notification.type == 'wall'){
+					}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-						notification.label = 'missed call'
+                notification.label = 'missed call';
 					}else if(notification.type == 'busy-ring-back'){
-						notification.label = 'is now available for call'
+            notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}
@@ -480,9 +480,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
 						return false;
 					else{
-						if(item.type == 'wall'){
+						if(item.type == 'wall' || item.type == 'chat'){
 							playChatNotification = true;
 						}
+						
 						return true;
 					}
 			}

@@ -1,5 +1,6 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
-	function($scope, $routeParams, groupService, contactService, httpService,phoneService) {
+hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
+	function($scope, $rootScope, $routeParams, groupService, contactService, httpService,phoneService) {
+	var addedPid;
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = [];
@@ -16,6 +17,27 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$routeParams', 'Gr
   ];
   
   $scope.selectedSort = $scope.sort_options[0];
+
+  $scope.$on('pidAdded', function(event, data){
+  	addedPid = data.info;
+  	if (localStorage['recents_of_' + addedPid] === undefined){
+  		localStorage['recents_of_' + addedPid] = '{}';
+  	}
+  	$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+  });
+
+  $scope.storeRecentContact = function(xpid){
+		var localPid = JSON.parse(localStorage.me);
+		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// $scope.recent = JSON.parse(localStorage.recent);		
+		$scope.recent[xpid] = {
+			type: 'contact',
+			time:  new Date().getTime()
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+		// localStorage.recent = JSON.stringify($scope.recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
+  };
 
   $scope.getAvatar = function(xpid) {
 		return httpService.get_avatar(xpid, 40, 40);
