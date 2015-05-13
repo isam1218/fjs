@@ -65,22 +65,29 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		url = url.replace('%%caller_number_raw%%',clean_number);
 		return url;
 	};
+	
+	var isEnabled = function(permission, bit) {
+		return ((permission & (1 << bit)) == 0);
+	};
 
 	/**
 		SYNCING
 	*/
 	
 	$rootScope.$on('me_synced', function(event, data) {
-		// grab license permissions
-		for (i = 0; i < data.length; i++) {
+		for (var i = 0, len = data.length; i < len; i++) {
+			// look at fj repository > MyPermissions.java for reference
 			if (data[i].propertyKey == 'personal_permissions') {
-				// look at fj repository > MyPermissions.java for reference
-				permissions.showCallCenter = ((data[i].propertyValue & (1 << 10)) == 0);
-				permissions.showVideoCollab = ((data[i].propertyValue & (1 << 1)) == 0);
-				permissions.recordingEnabled = ((data[i].propertyValue & (1 << 14)) == 0);
-				permissions.deleteMyRecordingEnabled = ((data[i].propertyValue & (1 << 15)) == 0);
-				permissions.deleteOtherRecordingEnabled = ((data[i].propertyValue & (1 << 16)) == 0);
-				console.log('perms - ', permissions);
+				// licenses
+				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+
+				// group permissions
+				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
+				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
+				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
+				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
+				
 				deferPermissions.resolve(permissions);
 				break;
 			}

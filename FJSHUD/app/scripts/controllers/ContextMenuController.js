@@ -4,20 +4,24 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.type;
 	$scope.name;
 	$scope.widget;
-	$scope.reasons = {};
-	$scope.canDock = true;
-	
+	$scope.canDock = true;	
 	$scope.enableCallLater = false;
+	$scope.reasons = {
+		list: [],
+		show: false,
+	};
+	
+	queueService.getQueues().then(function(data) {
+		$scope.reasons.list = data.reasons;
+	});
+	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
 		var data = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
 		
 		$scope.widget = res.widget;		
 		$scope.xpid = data.xpid;
-		$scope.reasons = {
-			list: [],
-			show: false
-		};
+		$scope.reasons.show = false;
 		
 		// remember parent xpid to delete records
 		if (res.widget == 'recordings' || res.widget == 'voicemails')
@@ -39,7 +43,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			$scope.type = 'QueueStat';
 			$scope.name = data.name;
 			$scope.queue = {};
-			$scope.reasons.list = queueService.getReasons();
 			
 			angular.forEach(queueService.getMyQueues().queues, function(obj) {
 				// user is in this queue
