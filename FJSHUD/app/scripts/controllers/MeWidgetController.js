@@ -579,14 +579,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('calllog_synced',function(event,data){
         if(data){
             $scope.calllogs = data;
+            $scope.calllogs.sort(function(a,b){
+                return b.startedAt - a.startedAt;
+            });
         }
     });
-
     $scope.sortCallLog = function(sortType){
         switch(sortType){
             case "Date":
                 if($scope.isAscending){
-                    
                     $scope.calllogs.sort(function(a,b){
                         return b.startedAt - a.startedAt;
                     }); 
