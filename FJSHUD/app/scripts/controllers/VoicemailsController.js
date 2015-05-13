@@ -40,9 +40,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	httpService.getFeed('me');
 	httpService.getFeed('voicemailbox');
 	
-	$scope.$on('voicemailbox_synced', function(event, data) {
-		$scope.voicemails = [];
-		
+	$scope.$on('voicemailbox_synced', function(event, data) {		
 		// single group widget
 		if ($routeParams.groupId) {
 			var group = groupService.getGroup($routeParams.groupId);
@@ -57,32 +55,46 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		else
 			$scope.emptyVoiceLabel = 'anyone else';
 		
-		// populate voicemails according to page
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			data[i].fullProfile = contactService.getContact(data[i].contactId);
+			var match = false;
 			
-			if (group) {
-				for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-					if (data[i].contactId == group.members[g].contactId) {
-						$scope.voicemails.push(data[i]);
-						break;
+			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
+				// find and update or delete
+				if ($scope.voicemails[v].xpid == data[i].xpid) {
+					if (data[i].xef001type == 'delete') {
+						$scope.voicemails.splice(v, 1);
+						vLen--;
 					}
+					else
+						$scope.voicemails[v].readStatus = data[i].readStatus;
+					
+					match = true;
+					break;
 				}
 			}
-			else if (contact) {
-				if (data[i].contactId == contact.xpid)
+			
+			if (!match && data[i].xef001type != 'delete') {
+				data[i].fullProfile = contactService.getContact(data[i].contactId);
+				
+				// populate voicemails according to page
+				if (group) {
+					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
+						if (data[i].contactId == group.members[g].contactId) {
+							$scope.voicemails.push(data[i]);
+							break;
+						}
+					}
+				}
+				else if (contact) {
+					if (data[i].contactId == contact.xpid)
+						$scope.voicemails.push(data[i]);
+				}
+				else {
 					$scope.voicemails.push(data[i]);
-			}
-			else if (data[i].xef001type != "delete") {
-				$scope.voicemails.push(data[i]);
+				}
 			}
 		}
 	});
-
-	
-	$scope.getMeAvatarUrl = function(xpid,width,height){
-        return httpService.get_avatar(xpid,width,height);
-    };
 
     $scope.handleVoiceMailAction = function(type){
         $scope.actionObj.selectedAction = $scope.actions[0];
@@ -105,7 +117,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.voiceFilter = function(){
         var query = $scope.tester.query.toLowerCase();
         return function(voicemail){
-            console.log('vm - ', voicemail);
             if (voicemail.displayName.toLowerCase().indexOf(query) !== -1 || voicemail.phone.indexOf(query) !== -1 || voicemail.fullProfile.primaryExtension.indexOf(query) !== -1){
                 return true;
             }
