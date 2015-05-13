@@ -330,9 +330,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 							}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-								notification.label = 'missed call'
+                 notification.label = 'missed call';
 							}else if(notification.type == 'busy-ring-back'){
-								notification.label = 'is now available for call'
+                notification.label = 'is now available for call';
 								notification.message= "User is free for call";
 							}
 					if(notification.audience == "conference"){
@@ -375,9 +375,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-						notification.label = 'missed call'
+                notification.label = 'missed call';
 					}else if(notification.type == 'busy-ring-back'){
-						notification.label = 'is now available for call'
+            notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}
