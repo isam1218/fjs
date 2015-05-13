@@ -58,7 +58,7 @@
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call' && showNotificationBody">
 								<span class="XButton chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
-								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
+								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone); remove_notification(message.xpid)">{{::verbage.Call}}</span>	
 							</div>
 							
 							<div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back' && showNotificationBody">
