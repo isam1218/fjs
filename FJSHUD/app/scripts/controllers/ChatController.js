@@ -135,10 +135,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Ut
 					if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
 						phoneService.playSound("sent");
 				}
-				else{
-					if(settingsService.getSetting('hudmw_chat_sound_received') == 'true')
-						phoneService.playSound("received");
-				}
 			}
 
 			// only attach messages related to this page
