@@ -186,7 +186,7 @@
 </div>
 
 
-<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall" dockable="currentCall" droppable>
+<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall" dockable="currentCall" droppable="Contact">
 		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 			<div class="CallStatusIcon"> </div>
 		</div>

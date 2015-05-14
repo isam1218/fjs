@@ -22,7 +22,7 @@
 <div class="ContactList">
 	<!--<div id="ContactsList" contacts-list></div>-->
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecentContact(contact.xpid)" data-ng-repeat="contact in contacts | filter: customFilter() | filter: searchFilter() |  orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">	
+		<a href="#contact/{{::contact.xpid}}" ng-click="storeRecentContact(contact.xpid)" data-ng-repeat="contact in contacts | filter: customFilter() | filter: searchFilter() |  orderBy: customSort(): customReverse() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">	
 			<avatar profile="contact" widget="$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
@@ -42,7 +42,7 @@
 				
 				<div class="CallStatus">
 					<avatar 
-						ng-if="contact.call.startedAt" 
+						ng-if="contact.call" 
 						ng-click="showCallStatus($event, contact)"
 						profile="contact.call.fullProfile"
 						widget="callstatus"
