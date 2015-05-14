@@ -102,7 +102,7 @@
 					ng-controller="RecentController">
 				</div>
 
-				<div class="Notifications" ng-include="'views/Notifications.html'" ng-controller="NotificationController" ng-mouseover="setTopPosition($event, true)" ng-mouseleave="setTopPosition($event, false)"></div>
+				<div class="Notifications" ng-include="'views/Notifications.html'" ng-controller="NotificationController"></div><!--  ng-mouseover="setTopPosition($event, true)" ng-mouseleave="setTopPosition($event, false)" -->
 
 				<div class="Phone">
 					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" 

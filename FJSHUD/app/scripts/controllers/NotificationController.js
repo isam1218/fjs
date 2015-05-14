@@ -13,43 +13,81 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
 	$scope.phoneSessionEnabled = false;
+	$scope.totalMessagesDisplayed = 4;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];	
 	$scope.cssTop = 0;
+	$scope.expand = false;
+	$scope.alertTop = 182;
 	$scope.showLastMessageBody = false;
+	$scope.lastMessage = false;
+	var nua = navigator.userAgent;
+	var browser = nua.match(/(chrome|safari|firefox|msie)/i);
+	//if not found, default to IE mode
+	browser = browser && browser[0] ? browser[0] : "MSIE";
+	var isSWSupport = browser == "Chrome" || browser == "Firefox";
+	var isIE = browser == "MSIE";	
+	var appVersion = navigator.appVersion;	
 	
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
 		$scope.showLastMessageBody = true;
+		$scope.totalMessagesDisplayed = 5;
 	});
 	
-	$scope.getCssTop = function(index){
-		
-		if(typeof index != 'undefined')
+	$scope.getCssTop = function(index, flag, alertTop){
+	  	
+	  if(!flag)
+	  {	  
+		if(typeof index != 'undefined' && index != '')
 		{						
 			if(index > 0)
 			{					
-				if(index > 1)			
-					$scope.cssTop = 15 + ((index -1) * 25);	
+				if(index > 1)	
+				{	
+					switch(browser)
+					{
+					 case "Firefox": $scope.cssTop = index * 8;
+					 				 break;
+					 case "Chrome":  $scope.cssTop = index * 5;
+					                  break;
+					}					
+				}
 				else
-					$scope.cssTop = 15;
+				{	
+					switch(browser)
+					{
+					 case "Firefox": $scope.cssTop = 8;
+					 				 break;
+					 case "Chrome":  $scope.cssTop = 5;
+					 				 break;
+					}					
+					
+				}
+				
 				
 				return {'top': '-' + $scope.cssTop +'px'};			
 			}
 			else
 			{	
 				$scope.cssTop = 0;			
-				return {'top':  $scope.cssTop +'px'};
-			}
+				return {'top':  $scope.cssTop +'px'};					
+			}			
 		}
-	};
-	
-	$scope.setTopPosition = function(ev, flag){
-		var el = ev.target;
-		if(flag)//go up
-		  $(el).css('top', '-40px');
-		else 
-		  $(el).removeAttr('style');	
-	};
+		else
+		{	
+			if(alertTop)
+			{
+				
+				if(browser == "Chrome")
+					return {'top': '-45px'};	
+			}
+		}	
+	  }
+	  else
+	  { 		 
+		  return {'top': ''};
+	  }	  
+	};	
 	
 	$scope.$on('pidAdded', function(event, data){
 		addedPid = data.info;
@@ -89,7 +127,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				return "Missed Call from extension " + message.phone;  
 				break;
 			case "warning":
-				return "Warning: " + messages; 
+				return "Warning: " + message; 
 				break;	
 			case "invite":
 				return "Invite from " + message.displayName +"("+message.phone+")";
@@ -120,6 +158,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			$(el).closest('a').remove();
 			$scope.phoneSessionEnabled =  true;
 			$scope.showLastMessageBody = true;
+			$scope.totalMessagesDisplayed = 5;
 		}
 		for(i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){

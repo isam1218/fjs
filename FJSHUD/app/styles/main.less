@@ -9,7 +9,6 @@ body, html {
   padding: 0;
   margin: 0;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
-  /*font-size: 1em;*/
   color: #555;
   background: #ccc url(../img/bg.png);
   box-shadow: 0 4px 5px rgba(255,255,255,0.3) inset;
@@ -325,21 +324,7 @@ p {
        top: 150px;
        position: absolute;
      }
-  /*   .WidgetBody{
-        position: relative !important;
-        height: 20em !important;
-        
-        .call-block{height: 12em !important;}
-        
-        .Preferences-Holder{height: 10em !important;}
-     }
-    
-     .Preferences-Holder{
-        /*height: 60% !important;
-        .SettingsPanel.DialogContentMainBlock_List {
-            height: 79% !important;
-        }
-     }*/
+
      .Avatar.AvatarBig{width: 19% !important;}
      
      .MeInfoBlock {width: 79% !important;}
@@ -537,8 +522,7 @@ p {
         }
      } 
      .XButton span{
-        vertical-align: top;        
-        /*top: -3px; */  
+        vertical-align: top;               
     }
     
   /******* notifications **********/
@@ -587,24 +571,11 @@ p {
     
      &.firstsection{
         top: -4px;        
-     }
+     } 
      
-     &.halfHeight{
-        overflow: hidden;
-        /*height: 1.5em;*/
-         &.firstsection{
-            height: 1.8em;
-         }
-         
-         .NotificationAvatar{
-           width: 30px;
-           height: 30px;
-           img{
-            width: 28px;
-            height: 28px;
-           } 
-         }
-     }
+     &.alertSection{
+        height: 3em;
+    }           
   }
   
   .LeftBarNotificationMessageSection{
@@ -622,6 +593,7 @@ p {
         position: relative;
         left: 5px;
         top: -5px;
+        width: 100%;
     }
     .NotificationTime{
         right: 0;
@@ -629,6 +601,7 @@ p {
     
     .NotificationMessage {
         padding-left: 5px;
+        height: 6em;
     }
   }   
   &.MyStatus{
