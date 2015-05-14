@@ -42,56 +42,37 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 
     myHttpService.getFeed("groupcontacts");
 
-
     var update_groups = function(){
-        var isMember = false;
-        var isShared = false;
-
+        $scope.sharedGroups = [];
+        $scope.contactGroups = [];
         for (var j = 0; j < $scope.groups.length; j++){
-            // iterating thru array of groups...
-
-            // take each group (each group has a 'members' property)
-            // singleGroup = {members: [{},{},{}]}
             var singleGroup = $scope.groups[j];
-
-            // take each member in that group...
-            // members = [{},{},{}]
             var members = singleGroup.members;
-
+            var clickedOnIsAMember = false;
+            var imAMember = false
             for (var k = 0; k < members.length; k++){
-            // for each member obj in the group...
                 var singleMember = members[k];
-
-                // if the member's contact id matches the scope's contact id
-                if (singleMember.contactId === $scope.contactId){
-                    // console.log('$scope is --- ', $scope);
-                    // console.log('$SCOPE.CONTACTID IS - ', $scope.contactId)
-                    // then profile clicked on ($scope) is a member of that group
-                    isMember = true;
+                // if the group-member's xpid matches the clicked on member's contact id
+                if (singleMember.fullProfile.xpid == $scope.contactId){
+                    clickedOnIsAMember = true;
                 }
-
-                // if the contact id of that member matches the USER/scope-meModel's pid...
-                if (singleMember.contactId === $scope.meModel.my_pid){
-                    // console.log('$SCOPE.MEMODEL.MY_PID IS - ', $scope.meModel.my_pid)
-                    // then current user is a member of that group 
-                    isShared = true;
+                // if the contact id of the group-member matches my USER/scope-meModel's pid...
+                if (singleMember.fullProfile.xpid === $scope.meModel.my_pid){
+                    // then current user is a member of that group
+                    imAMember = true;
                 }
             }
-
-            // console.log('$SHAREDGROUPS CONSISTS OF - ', $scope.sharedGroups)
-            if (isMember && isShared){
+            if (clickedOnIsAMember && imAMember){
                 if (!isGroupIn(singleGroup, $scope.sharedGroups)){
-
                     // scope and current user are both members of the group
                     $scope.sharedGroups.push(singleGroup);
                 }
-            } else if (isMember){
+            } else if (clickedOnIsAMember){
                 if (!isGroupIn(singleGroup, $scope.contactGroups)){
                     $scope.contactGroups.push(singleGroup);
                 }
             }
         }
-
     };
 
     var isGroupIn = function(groupToInsert, groups){
