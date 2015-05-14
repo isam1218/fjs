@@ -11,12 +11,18 @@
         ng-options="sort_option.name for sort_option in sort_options"
         ng-change="sortQueues(sort.type)"
         ></select>
-        <select class="XButton XButtonNormal" 
+
+<!--         <select class="XButton XButtonNormal" 
               class="fj-hbox SelectBox SelectBoxSettings" ng-model='log_out_option'
               ng-options="log_out_reason.name for log_out_reason in log_out_reasons"
               ng-change="queueLogoutAll(log_out_option.xpid)">
 			<option value="">{{::verbage.logout_all}}</option>
         </select>
+ -->        
+        <select class="XButton XButtonNormal" class="fj-hbox SelectBox SelectBoxSettings" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons" ng-change="handleLogoutAction(actionObj.selectedAction.xpid)">
+            <option value="">{{::verbage.logout_all}}</option>
+        </select>
+
         <div class="XButton XButtonNormal" ng-click="queueLoginAll()" ><span>{{::verbage.login_all}}</span></div>
     </div>
 
