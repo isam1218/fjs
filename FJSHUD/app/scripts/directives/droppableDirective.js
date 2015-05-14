@@ -1,8 +1,12 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, $parse, $location, $rootScope) {	
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, $parse, $location, $rootScope) {
+	var timeout;
+	
+	// used as droppable="Type,Type,Type"
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			var obj, type;
+			var drops = attrs.droppable.split(',');
 			
 			// element can be dropped onto
 			$(element).droppable({
@@ -29,25 +33,27 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					else if (obj.record !== undefined)
 						type = 'Call';
 					
-					// allowed cases
-					if ((type != 'Call' && $(this).hasClass('InnerDock')) || (type == 'Contact' && scope.$parent.currentCall) || (type == 'Call' && scope.gadget && scope.gadget.name == 'GadgetConfig__empty_GadgetParkedCalls_')) {
+					// check for allowed cases
+					if (drops.indexOf(type) != -1) {
 						$(this).addClass('DroppableArea');
 						$(ui.helper).removeClass('not-allowed');
-					}
-					else {
-						$(this).removeClass('DroppableArea');
-						$(ui.helper).addClass('not-allowed');
 					}
 				},
 				out: function(event, ui) {
 					$(this).removeClass('DroppableArea');
-					$(ui.helper).addClass('not-allowed');
+					
+					if ($('.DroppableArea').length == 0)
+						$(ui.helper).addClass('not-allowed');
 				},
 				drop: function(event, ui) {
 					$(this).removeClass('DroppableArea');
 					
+					// re-check basic criteria
+					if (timeout || drops.indexOf(type) == -1)
+						return;
+					
 					// dock new item
-					if (type != 'Call' && $(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
+					if ($(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
 						var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 						var data = {
@@ -67,7 +73,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						httpService.sendAction('settings', 'update', data);
 					}
 					// start conference via active call
-					else if (type == 'Contact' && scope.$parent.currentCall) {
+					else if (scope.$parent.currentCall) {
 						conferenceService.getConferences().then(function(data) {
 							var found = null;
 							var len = data.length;
@@ -108,12 +114,53 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							}
 						});
 					}
+					// join conference normally
+					else if (scope.conference || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
+						var xpid = scope.conference ? scope.conference.xpid : scope.gadget.data.xpid;
+						
+						if (type == 'Contact') {
+							httpService.sendAction('conferences', 'joinContact', {
+								conferenceId: xpid,
+								contactId: obj.fullProfile ? obj.fullProfile.xpid : obj.xpid,
+							});
+						}
+						else {
+							httpService.sendAction('mycalls', 'transferToConference', {
+								mycallId: obj.xpid,
+								conferenceId: xpid,
+							});
+						
+							$location.path('/conference/' + xpid + '/currentcall');
+						}
+					}
 					// park call
-					else if (type == 'Call' && scope.gadget && scope.gadget.name.indexOf('GadgetParkedCalls') != -1) {
+					else if (scope.gadget && scope.gadget.name.indexOf('GadgetParkedCalls') != -1) {
 						httpService.sendAction('mycalls', 'transferToPark', {
 							mycallId: obj.xpid
 						});
 					}
+					// transfer call
+					else {
+						// contact id comes from multiple places
+						var xpid;
+						
+						if (scope.contact)
+							xpid = scope.contact.xpid;
+						else if (scope.member)
+							xpid = scope.member.contactId;
+						else if (scope.gadget)
+							xpid = scope.gadget.data.xpid;
+						
+						httpService.sendAction('calls', 'transferToContact', {
+							fromContactId: $rootScope.myPid,
+							toContactId: xpid
+						});
+					}
+					
+					// prevent sibling overlap
+					timeout = setTimeout(function() {
+						timeout = null;
+					}, 100);
 				}
 			});
 		}

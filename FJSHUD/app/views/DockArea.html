@@ -1,4 +1,4 @@
-<div id="InnerDock" class="InnerDock" droppable>
+<div id="InnerDock" class="InnerDock" droppable="Contact,Group,ConferenceRoom,QueueStat">
 	<!-- standard gadgets -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetUserQueues" dragger>
 		<a href="#/callcenter" class="Header">
@@ -38,7 +38,7 @@
 		<resizer></resizer>
 	</div>
 
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable dragger>
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
 		<div class="Header Single">
 			<avatar profile="4"></avatar>
 			<div class="Title">
@@ -68,7 +68,7 @@
 	</div>
 
 	<!-- contacts -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" dragger>
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" droppable="Call" dragger>
 		<a href="#/contact/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'contact')" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
@@ -95,7 +95,7 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
+				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" droppable="Call">
 					<avatar profile="member.fullProfile"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
@@ -114,7 +114,7 @@
 	</div>
 
 	<!-- conferences -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" dragger>
+	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
 		<a href="#/conference/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'conference')" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">

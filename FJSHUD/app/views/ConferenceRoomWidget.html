@@ -62,7 +62,7 @@
 						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid">
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid" droppable="Contact,Call">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
