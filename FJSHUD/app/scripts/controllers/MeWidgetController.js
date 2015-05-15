@@ -27,12 +27,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          */
         var currentLocation;
 
-        if($scope.settings && $scope.settings["current_location"])
-   	    {
-        	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
-   	    }	 
-        else
-   		{
+         
+        
          if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
         	 
              if($scope.meModel["current_location"])
@@ -44,10 +40,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
              
              return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
          }
-         else {        	         	 
+         else { 
+        	 if($scope.settings && $scope.settings["current_location"])
+        	    {
+             	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
+        	 }
+        	 else
               return "Loading...";
          }
-   		}
+   		
     };
 
     $scope.setCurrentLocation = function(location){
