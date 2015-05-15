@@ -27,8 +27,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         var currentLocation;
 
 
-         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
-             currentLocation = $scope.locations[$scope.meModel["current_location"]];
+         if(($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) || $scope.settings["current_location"]) {             
+             if($scope.meModel["current_location"])
+         		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
+             
+             currentLocation = $scope.locations[$scope.meModel["current_location"]] || $scope.settings["current_location"]
+             ;
              if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w')
             	 return currentLocation.shortName+" ("+currentLocation.phone+")";
              else
@@ -398,6 +402,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
         }
         if(settings){
+        	
             if(settings.hudw_lang){
                 /*language = $scope.languages.filter(function(item){
                 return (item.value== settings['hudw_lang']);
@@ -486,7 +491,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }   
             if($scope.meModel.fdp_version){
                 $scope.fdpVersion = $scope.meModel["fdp_version"];
-            }
+            }            
         }
         $scope.$safeApply();
     }
