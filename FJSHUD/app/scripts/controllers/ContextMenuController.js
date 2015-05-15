@@ -70,7 +70,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		}
 		else {
 			$scope.type = null;
-			return;
+			$scope.profile = null;
 		}
 		
 		// check if in dock
@@ -133,12 +133,15 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			httpService.sendAction('voicemailbox', 'delete', {id: $scope.original.xpid});
 	};
 	
+	$scope.markAsRead = function(read) {
+		httpService.sendAction("voicemailbox", "setReadStatusAll", {
+			read: read, 
+			ids: $scope.original.xpid
+		});
+	};
+	
 	$scope.callNumber = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-	};
-
-	$scope.callLater = function(){
-		httpService.sendAction('contacts', 'callLater', {toContactId: $scope.profile.xpid});
 	};
 	
 	$scope.takeCall = function(){
