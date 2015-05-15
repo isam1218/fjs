@@ -26,7 +26,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          */
         var currentLocation;
 
-
          if(($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) || $scope.settings["current_location"]) {             
              if($scope.meModel["current_location"])
          		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
