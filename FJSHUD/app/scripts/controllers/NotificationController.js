@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
-	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','NotificationService', 
+	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,nservice){
 
 	var addedPid;
 	var localPid;
@@ -212,18 +212,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 							displayDesktopAlert = false;
 						}
 						break;
-						
 				}
-
-				
-
-								
 			}
-			//}
-
-			//entire state = 0
-			//while_ringing
-
 
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
@@ -248,17 +238,29 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		element = document.getElementById("CallAlert");
        	
        	if(displayDesktopAlert){
-			if(element != null){
-       			element.style.display="block";
+			if(nservice.isEnabled()){
+					for (i in $scope.calls){
+				 		var data = {
+					  			"notificationId": $scope.calls[i].xpid, 
+					  			"leftButtonText" : "Decline",
+					  			"rightButtonText" : "Accept",
+					  			"leftButtonId" : "CALL_DECLINED",
+					  			"rightButtonId" : "CALL_ACCEPTED",
+					  			"leftButtonEnabled" : "true",
+					  			"rightButtonEnabled" : $scope.calls[i].incoming ? "true" : "false",
+					  			"callerName" : $scope.calls[i].displayName, 
+					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outgoind call for",
+					  			"callCategory" : $scope.calls[i].contactId ? "Internal" : "External",
+					  			"muted" : $scope.calls[i].mute ? "1" : "0",
+					  			"record" : $scope.calls[i].record ? "1" : "0"
+						}
+						phoneService.displayWebphoneNotification(data,"INCOMING_CALL");
+					}
+			}else{
+				displayNotification();
 			}
 
-			$scope.$safeApply();
-		
-			if(element != null){
-				content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-				element.style.display="none";
-			}	
+
 		}
 	});
 
@@ -453,8 +455,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		   	  $scope.hasMessages = true;	  
 		});		
 			
-		$scope.$safeApply();
 		if(displayDesktopAlert){
+
+			 /*var data = {
+					  "notificationId":"3938", 
+					  "leftButtonText" : "Decline",
+					  "rightButtonText" : "Accept",
+					  "leftButtonId" : "CALL_DECLINED",
+					  "rightButtonId" : "CALL_ACCEPTED",
+					  "leftButtonEnabled" : "True",
+					  "rightButtonEnabled" : "True",
+					  "callerName" : "Kobe Bryant", 
+					  "callStatus" :"Incoming call for",
+					  "callCategory" : "External",
+					  "muted" : "1",
+					  "record" : "1"
+				}
+
+			nservice.sendData(data);*/
 			displayNotification();
 		}				
     });		
