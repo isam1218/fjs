@@ -20,28 +20,41 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
+    
     $scope.getCurrentLocationTitle = function() {
         /**
          * @type {{name:string. phone:string}}
          */
         var currentLocation;
 
-         if(($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) || $scope.settings["current_location"]) {             
+        if($scope.settings["current_location"])
+   	    {
+        	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
+   	    }	 
+        else
+   		{
+         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
+        	 
              if($scope.meModel["current_location"])
          		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
              
-             currentLocation = $scope.locations[$scope.meModel["current_location"]] || $scope.settings["current_location"]
-             ;
-             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w')
-            	 return currentLocation.shortName+" ("+currentLocation.phone+")";
-             else
-            	 return currentLocation.shortName;           
+             return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
          }
-         else {
-             return "Loading...";
+         else {        	         	 
+              return "Loading...";
          }
+   		}
     };
 
+    $scope.setCurrentLocation = function(location){
+    	var current_location = location;
+       
+        if(current_location.locationType != 'a' && current_location.locationType != 'w')
+       	 return current_location.shortName+" ("+current_location.phone+")";
+        else
+       	 return current_location.shortName; 
+    };
+    
     var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
     var Weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
