@@ -1,31 +1,37 @@
-hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'ContactService', 'HttpService', function($scope, $rootScope, contactService, httpService) {
+hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'ContactService', 'HttpService', 'GroupService', function($scope, $rootScope, contactService, httpService, groupService) {
 	$scope.add = {type: 2, contacts: []};
-	
+	$scope.editing = false;
+	console.log('scope find userIsOwner located in GroupInfo Controller - ', $scope);
+
 	contactService.getContacts().then(function(data) {
 		// add user as first group member
 		$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
 	
-		// existing data
-		if ($scope.$parent.overlay.data) {
-			if ($scope.$parent.overlay.data.name) {
-				var group = $scope.$parent.overlay.data;
-				$scope.editing = true;
-				
-				$scope.add.groupId = group.xpid;
-				$scope.add.name = group.name;
-				$scope.add.description = group.description;
-				$scope.add.type = group.type;
-				
-				angular.forEach(group.members, function(obj) {
-					// avoid adding self again
-					if (obj.contactId != $rootScope.myPid)
-						$scope.add.contacts.push(contactService.getContact(obj.contactId));
-				});
+		var curGroup = groupService.getGroup($rootScope.groupInfoId);
+
+		// if no current group cuz haven't visited the group info page
+		if (!curGroup){
+			// no current group but creating a new group w/ user
+			$scope.add.contacts[1] = contactService.getContact($scope.$parent.overlay.data);
+		} else {
+			for (var i = 0; i < curGroup.members.length; i++){
+				// if user is a member of the group clicked on...
+				if ($rootScope.myPid === curGroup.members[i].fullProfile.xpid){
+					$scope.editing = true;
+					console.log('match!', $scope.editing);
+					var group = curGroup;
+					$scope.add.groupId = group.xpid;
+					$scope.add.name = group.name;
+					$scope.add.description = group.description;
+					$scope.add.type = group.type;
+					angular.forEach(group.members, function(obj) {
+						// avoid adding self again
+						if (obj.contactId != $rootScope.myPid)
+							$scope.add.contacts.push(contactService.getContact(obj.contactId));
+					});
+				}
 			}
-			// new group with specific user
-			else
-				$scope.add.contacts[1] = contactService.getContact($scope.$parent.overlay.data);
-		}
+		}	
 	});
 	
 	$scope.searchContact = function(contact) {
@@ -58,8 +64,13 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 		
 		// comma separated list
 		$scope.add.contactIds = '';
-		for (i = 0; i < $scope.add.contacts.length; i++)
-			$scope.add.contactIds += $scope.add.contacts[i].xpid + ',';
+		console.log('$scope.add.contacts - ', $scope.add);
+		for (var i = 0; i < $scope.add.contacts.length; i++){
+			if ($scope.add.contacts[i] != null){
+				$scope.add.contactIds += $scope.add.contacts[i].xpid + ',';
+			}
+		}
+
 		delete $scope.add.contacts;
 		
 		// save

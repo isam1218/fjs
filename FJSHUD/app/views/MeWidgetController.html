@@ -87,7 +87,7 @@
                     <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
                   </div>
                   <div class="row_buttons">
-                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-disabled="currentCall.type == 0 || currentCall.state != 2"" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button> 
+                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-disabled="currentCall.type == 0 || currentCall.state != 2" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button> 
                     <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2}" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
 
                     <div class="XButton CurrentCallBtn record ng-class:{'disableButton': currentCall.state != 2}" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
@@ -160,7 +160,7 @@
               <div class="fj-vbox-space Preferences-Holder">
 	              <div class="WidgetSectionTitle">{{verbage.preferences}}</div>	              
 		              <div class="WidgetTabBar">
-		                <a href="" ng-repeat="tab in tabs" ng-show="tab.isActive" ng-click="$parent.selected = tab" class="WidgetTabBarButton Ready" ng-class="selected == tab ? 'fj-selected-item' : ''">
+		                <a href="" ng-repeat="tab in tabs" ng-show="tab.isActive" ng-click="saveMeTab(tab.option, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
 		                  <div class="inner HeaderLabel">{{ tab.label }}</div>
 		                  <div class="arrow"></div>
 		                </a>

@@ -27,7 +27,7 @@
 		
 			<div ng-if="contacts.length > 0">
 				<h4>{{::verbage.contacts}}</h4>
-				<a href="#/contact/{{ ::contact.xpid }}" ng-repeat="contact in contacts track by contact.xpid" class="ListRow">		
+				<a href="#/contact/{{ ::contact.xpid }}" ng-repeat="contact in contacts track by contact.xpid" class="ListRow" droppable="Call">		
 					<avatar profile="contact"></avatar>
 					
 					<div class="ListRowContent" dockable="contact">
@@ -72,7 +72,7 @@
 			
 			<div ng-if="conferences.length > 0">
 				<h4>{{::verbage.Conferences}}</h4>
-				<a href="#/conference/{{ ::conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow">
+				<a href="#/conference/{{ ::conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow" droppable="Contact,Call">
 					<avatar profile="conference"></avatar>
 					
                     <div class="ListRowContent" dockable="conference">

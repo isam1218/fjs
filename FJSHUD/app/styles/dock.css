@@ -7,9 +7,8 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  /*overflow-x: auto;
-  overflow-y: hidden;*/
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .DockPanel.Moving {
   border: 1px dashed #358503;
@@ -20,7 +19,8 @@
 .DockPanel .InnerDock {
   position: absolute;
   height: 100%;
-  width: 100%;
+  /*width: 100%;*/
+  width: 39%;
   column-width: 170px;
   -webkit-column-width: 170px;
   -moz-column-width: 170px;
@@ -205,8 +205,8 @@
   vertical-align: middle;
 }
 .DroppableArea {
-  border: 1px dashed #358503;
-  border-width: 1px;
-  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
-  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  border: 1px dashed #358503 !important;
+  border-width: 1px !important;
+  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
+  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }

@@ -23,7 +23,69 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     {upper: $scope.verbage.recordings, lower: 'recordings'}, 
     {upper: $scope.verbage.alerts, lower: 'alerts'}];
 
-    $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
+    var getXpidInQ = $rootScope.$watch('myPid', function(newVal, oldVal){
+        if (!$scope.globalXpid){
+            $scope.globalXpid = newVal;
+                $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+                $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+                getXpidInQ();
+        } else {
+            getXpidInQ();
+        }
+    });
+
+    $scope.$on('pidAdded', function(event, data){
+        $scope.globalXpid = data.info;
+        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0}; 
+    });
+
+    $scope.saveQTab = function(tab, index){
+        switch(tab){
+            case "agents":
+                $scope.selected = $scope.tabs[0].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+            case "stats":
+                $scope.selected = $scope.tabs[1].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+            case "calls":
+                $scope.selected = $scope.tabs[2].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+            case "chat":
+                $scope.selected = $scope.tabs[3].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+            case "calllog":
+                $scope.selected = $scope.tabs[4].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+            case "recordings":
+                $scope.selected = $scope.tabs[5].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+            case "alerts":
+                $scope.selected = $scope.tabs[6].lower;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+        }
+    }; 
 
     $scope.tabFilter = function(){
         return function(tab){

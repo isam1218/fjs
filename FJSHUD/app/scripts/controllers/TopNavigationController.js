@@ -1,6 +1,9 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, $sce, queueService, httpService, contactService, settingsService) {
-	var addedPid;
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$interval', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, $sce, $interval, queueService, httpService, contactService, settingsService) {
+  var addedPid;
   var localPid;
+  var player; // html element
+  var loadCheck;
+  
   $scope.meModel = {};
 
 	$scope.player = {
@@ -204,9 +207,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     items: "a:not(.not-sortable)"
   };
 
-  var player; // html element
-
-
   $scope.$on('me_synced', function(event,data){
       if(data){
           for(var i = 0, len = data.length; i < len; i++){
@@ -234,6 +234,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
   */
   
   $scope.$on('play_voicemail', function(event, data) {
+	$interval.cancel(loadCheck);
+	  
     $scope.voicemail = data.fullProfile ? data.fullProfile : contactService.getContact(data.contactId);
     $scope.player.loaded = false;
     $scope.player.duration = data.duration;
@@ -247,6 +249,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', 'Q
     
     player = document.getElementById('voicemail_player');
     player.load();
+	
+	// fail catch
+	loadCheck = $interval(function() {
+		if (isNaN(player.duration))
+			player.load();
+		else
+			$interval.cancel(loadCheck);
+	}, 1000);
     
     player.onloadeddata = function() {
       $scope.player.loaded = true;

@@ -122,7 +122,8 @@
 .RecentCallSection {
   font-size: .7em;
   padding: 10px 0;
-  height: 50%;
+  /*height: 50%;*/
+  height: 66%;
 }
 .RecentCallSection .RecentCallColumnHeaders {
   padding: 6px 10px;

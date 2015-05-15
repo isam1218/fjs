@@ -1,17 +1,15 @@
-hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingService) {
+    var addedPid;
     var context = this;
-
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
     var CALL_ON_HOLD = 3;
     var CALL_IN_PROGRESS = 2;
-
-
     var soundManager;
-
     var settings = {};
     var queues = [];
     var callId = $routeParam.callId;
     $scope.avatar ={};
+
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     
@@ -22,27 +20,45 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
 
     $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
+    
     $scope.getCurrentLocationTitle = function() {
         /**
          * @type {{name:string. phone:string}}
          */
         var currentLocation;
 
-
-         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
-             currentLocation = $scope.locations[$scope.meModel["current_location"]];
-             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w')
-            	 return currentLocation.name+" ("+currentLocation.phone+")";
-             else
-            	 return currentLocation.name;
+        if($scope.settings && $scope.settings["current_location"])
+   	    {
+        	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
+   	    }	 
+        else
+   		{
+         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
+        	 
+             if($scope.meModel["current_location"])
+             {	
+            	if(!$scope.settings) 
+            		$scope.settings = {};
+         		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
+             }
              
-            // return currentLocation.name+" ("+currentLocation.phone+")";
+             return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
          }
-         else {
-             return "Loading...";
+         else {        	         	 
+              return "Loading...";
          }
+   		}
     };
 
+    $scope.setCurrentLocation = function(location){
+    	var current_location = location;
+       
+        if(current_location.locationType != 'a' && current_location.locationType != 'w')
+       	 return current_location.shortName+" ("+current_location.phone+")";
+        else
+       	 return current_location.shortName; 
+    };
+    
     var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
     var Weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -59,7 +75,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     * used to determine what tab is selected in the me widget controller
     *
     */
-        //$scope.tabs = ['General','Phone','Web Launcher', 'Queues', 'Account','Alerts', 'CP', 'About'];
     $scope.tabs = [
     {label:$scope.verbage.general,option:'General',isActive:true},
     {label:$scope.verbage.phone,option:'Phone',isActive:true},
@@ -71,7 +86,88 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     {label:$scope.verbage.about,option:'About',isActive:true},
     ];
 
-    $scope.selected = $scope.tabs[0];
+    var getXpidInMe = $rootScope.$watch('myPid', function(newVal, oldVal){
+        console.log('1');
+        if (!$scope.globalXpid){
+            $scope.globalXpid = newVal;
+            $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
+            $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+            getXpidInMe();
+        } else {
+            getXpidInMe();
+        }
+    });
+
+    $scope.$on('pidAdded', function(event, data){
+        console.log('2');
+        $scope.globalXpid = data.info;
+        $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
+        $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+    });
+
+    $scope.saveMeTab = function(tab, index){
+        switch(tab){
+            case "General":
+                console.log('general');
+                $scope.selected = $scope.tabs[0];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "Phone":
+                $scope.selected = $scope.tabs[1];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "Web Launcher":
+                $scope.selected = $scope.tabs[2];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "Queues":
+                $scope.selected = $scope.tabs[3];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "Account":
+                $scope.selected = $scope.tabs[4];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "Alerts":
+                $scope.selected = $scope.tabs[5];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "CP":
+                $scope.selected = $scope.tabs[6];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+            case "About":
+                console.log('');
+                $scope.selected = $scope.tabs[7];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;
+        }
+    };
+    
 
     $scope.recentSelectSort = 'Date';
     myHttpService.getFeed('me');
@@ -323,6 +419,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
         }
         if(settings){
+        	
             if(settings.hudw_lang){
                 /*language = $scope.languages.filter(function(item){
                 return (item.value== settings['hudw_lang']);
@@ -411,7 +508,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
             }   
             if($scope.meModel.fdp_version){
                 $scope.fdpVersion = $scope.meModel["fdp_version"];
-            }
+            }            
         }
         $scope.$safeApply();
     }
@@ -502,14 +599,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
     $scope.$on('calllog_synced',function(event,data){
         if(data){
             $scope.calllogs = data;
+            $scope.calllogs.sort(function(a,b){
+                return b.startedAt - a.startedAt;
+            });
         }
     });
-
     $scope.sortCallLog = function(sortType){
         switch(sortType){
             case "Date":
                 if($scope.isAscending){
-                    
                     $scope.calllogs.sort(function(a,b){
                         return b.startedAt - a.startedAt;
                     }); 
