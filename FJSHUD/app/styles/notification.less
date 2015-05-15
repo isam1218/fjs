@@ -37,9 +37,7 @@
 	}
 
 	.NotificationMessage{
-		width:100%;
-		/*white-space: pre;
-		word-wrap:break-word;*/
+		width:100%;	
 		font-family: Arial,Tahoma,'Helvetica Neue',Helvetica,sans-serif;
 		position:relative;
 		overflow:hidden;
@@ -64,7 +62,15 @@
    .CallStatusIconContainer,
    .CallStatusText{
     float: left;  
-    margin: 5px 0px 5px 5px;           
+    margin: 5px 0px 5px 5px;    
+    cursor: pointer;
+    pointer-events: auto;     
+   }
+   .CallStatusIconContainer{
+    .CallStatusIcon{
+        cursor: pointer;
+        pointer-events: auto; 
+    }
    }
     
    .CallStatusText{
@@ -82,8 +88,7 @@
         }
         .memberName{
             font-weight:bold;
-            font-size:14px;
-            /*margin-top: 15px;*/            
+            font-size:14px;                 
         }
    }
    
@@ -93,7 +98,8 @@
         margin-top: 5px;
             
         .XButton{
-            font-size: 13px;            
+            font-size: 13px;  
+            pointer-events: auto;           
         }
     }   	
 }
@@ -238,17 +244,14 @@
 .NotificationZoomBtn{
 	margin-top:10px;
 	margin-bottom:10px;
-	span.XButton{
-	   /*width: 30%;*/
+	span.XButton{	   
 	   width: auto;
-	   font-size: 0.8rem;
-	   /*&.XButtonGreen{width: 45%;}*/
+	   font-size: 0.8rem;	   
 	}
 }
 
 .Messages{
-	position: relative;
-	/*min-height: 50px;*/
+	position: relative;	
 	font-style:normal;
 	font-size:1em;
 	background-image:url("../img/XTile-Widget.png");
