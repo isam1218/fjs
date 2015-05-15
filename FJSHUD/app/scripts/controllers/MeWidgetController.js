@@ -32,9 +32,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$http', 'HttpService','Phone
          if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
              currentLocation = $scope.locations[$scope.meModel["current_location"]];
              if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w')
-            	 return currentLocation.name+" ("+currentLocation.phone+")";
+            	 return currentLocation.shortName+" ("+currentLocation.phone+")";
              else
-            	 return currentLocation.name;
+            	 return currentLocation.shortName;
              
             // return currentLocation.name+" ("+currentLocation.phone+")";
          }
