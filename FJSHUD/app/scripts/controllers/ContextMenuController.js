@@ -1,109 +1,92 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService','PhoneService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService,phoneService) {
-	$scope.xpid;
-	$scope.targetID;
-	$scope.type;
-	$scope.name;
-	$scope.widget;
-	$scope.reasons = {};
-	$scope.canDock = true;
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService) {
+	// original object/member vs full profile
+	$scope.original;
+	$scope.profile;
 	
-	$scope.enableCallLater = false;
+	$scope.type;
+	$scope.widget;
+	$scope.context;
+	
+	$scope.myQueue;
+	$scope.agentLogin = false;
+	$scope.canDock = true;	
+	$scope.reasons = {
+		list: [],
+		show: false,
+	};
+	
+	queueService.getQueues().then(function(data) {
+		$scope.reasons.list = data.reasons;
+	});
+	
+	// permissions
+	settingsService.getPermissions().then(function(data) {
+		$scope.agentLogin = data.enableAgentLogin;
+	});
+	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
-		var data = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
+		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;		
+		$scope.original = res.obj;
+		$scope.context = res.context;
+		$scope.widget = res.widget;
 		
-		$scope.widget = res.widget;		
-		$scope.xpid = data.xpid;
-		$scope.reasons = {
-			list: [],
-			show: false
-		};
-		
-		// remember parent xpid to delete records
-		if (res.widget == 'recordings' || res.widget == 'voicemails')
-			$scope.targetID = res.obj.xpid;
+		$scope.reasons.show = false;
+		$scope.myQueue = false;
 		
 		// get type
-		if (data.firstName !== undefined) {
+		if ($scope.profile.firstName) {
 			$scope.type = 'Contact';
-			$scope.contact = data;
-			if($scope.contact.call){
-				$scope.enableCallLater = true;
-			}else{
-				$scope.enableCallLater = false;
-			}
-			$scope.name = data.displayName;
-			$scope.isFavorite = groupService.isFavorite(data.xpid);
+			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
-		else if (data.loggedInMembers !== undefined) {
+		else if ($scope.profile.loggedInMembers) {
 			$scope.type = 'QueueStat';
-			$scope.name = data.name;
-			$scope.queue = {};
-			$scope.reasons.list = queueService.getReasons();
 			
-			angular.forEach(queueService.getMyQueues().queues, function(obj) {
-				// user is in this queue
-				if (obj.xpid == $scope.xpid) {					
-					for (i = 0; i < obj.members.length; i++) {
-						// find user's member ID
-						if (obj.members[i].contactId == $rootScope.myPid) {
-							$scope.queue.memberID = obj.members[i].xpid;
-						
-							// user is logged in but not permanently
-							if (obj.members[i].status.status.indexOf('permanent') != -1)
-								$scope.queue.status = 'permanent';
-							else if (obj.members[i].status.status.indexOf('login') != -1)
-								$scope.queue.status = 'login';
-						}
-					}
-				}
-			});
-		}
-		else if (data.roomNumber !== undefined) {
-			$scope.type = 'ConferenceRoom';
-			$scope.conference = data;
-			$scope.name = data.name;
-		}
-		else if (data.parkExt !== undefined) {
-			$scope.type = 'ParkedCall';
-			$scope.contact = contactService.getContact(data.callerContactId);
-			if ($scope.contact == null) {
-				$scope.name = "private";
-				$scope.canDock = false;
-			}else{
-				if($scope.contact.call){
-					$scope.enableCallLater = true;
-				}else{
-					$scope.enableCallLater = false;
+			for (var i = 0, len = $scope.profile.members.length; i < len; i++) {
+				var member = $scope.profile.members[i];
+				
+				// find user's member ID
+				if ($scope.widget == 'conversation' && member.contactId == $scope.context.xpid)
+					$scope.original = member;
+				
+				if (member.contactId == $rootScope.myPid) {
+					$scope.myQueue = true;
+					
+					if ($scope.widget != 'conversation')
+						$scope.original = member;
 				}
 			}
-			$scope.parkedCall = data; 
 		}
-		else if (data.name) {
+		else if ($scope.profile.roomNumber) {
+			$scope.type = 'ConferenceRoom';
+		}
+		else if ($scope.profile.parkExt) {
+			$scope.type = 'ParkedCall';
+			$scope.profile = contactService.getContact($scope.original.callerContactId);
+		}
+		else if ($scope.profile.name) {
 			$scope.type = 'Group';
-			$scope.group = data;
-			$scope.name = data.name;
-			$scope.isMine = groupService.isMine(data.xpid);
+			$scope.isMine = groupService.isMine($scope.profile.xpid);
 		}
 		else {
 			$scope.type = null;
-			$scope.name = null;
 			return;
 		}
 		
 		// check if in dock
-		settingsService.getSettings().then(function(data) {
-			$scope.canDock = true;
-			var regex = new RegExp($scope.xpid + '$', 'g'); // end of string
-			
-			for (key in data) {
-				if (key.indexOf('GadgetConfig') != -1 && key.match(regex)) {
-					$scope.canDock = false;
-					break;
+		if ($scope.profile) {
+			settingsService.getSettings().then(function(data) {
+				$scope.canDock = true;
+				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string
+				
+				for (key in data) {
+					if (key.indexOf('GadgetConfig') != -1 && key.match(regex)) {
+						$scope.canDock = false;
+						break;
+					}
 				}
-				//$scope.enableCallLater = data['busy_ring_back']  == 'true';
-			}
-		});
+			});
+		}
 	});
 	
 	/**
@@ -113,11 +96,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.dockItem = function(add) {
 		if (add) {
 			var data = {
-				name: 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.xpid,
+				name: 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.profile.xpid,
 				value: JSON.stringify({
 					"contextId": "empty",
 					"factoryId": "Gadget" + $scope.type,
-					"entityId": $scope.xpid,
+					"entityId": $scope.profile.xpid,
 					"config": {"x": 0, "y": 0},
 					"index": 1
 				})
@@ -127,40 +110,42 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		}
 		else {
 			// send to dock controller
-			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.xpid);
+			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.profile.xpid);
 		}
 	};
 	
 	$scope.editContact = function() {
-		$scope.showOverlay(true, 'ContactEditOverlay', $scope.contact);
+		$scope.showOverlay(true, 'ContactEditOverlay', $scope.profile);
 	};
 	
 	$scope.editGroup = function() {
-		$scope.showOverlay(true, 'GroupEditOverlay', $scope.group);
+		$scope.showOverlay(true, 'GroupEditOverlay', $scope.profile);
 	};
 	
 	$scope.removeFavorite = function() {
-		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.contact.xpid});
+		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.profile.xpid});
 	};
 	
 	$scope.deleteRecording = function() {
 		if ($scope.widget == 'recordings')
-			httpService.sendAction('callrecording', 'remove', {id: $scope.targetID});
+			httpService.sendAction('callrecording', 'remove', {id: $scope.original.xpid});
 		else
-			httpService.sendAction('voicemailbox', 'delete', {id: $scope.targetID});
+			httpService.sendAction('voicemailbox', 'delete', {id: $scope.original.xpid});
 	};
 	
 	$scope.callNumber = function(number) {
-		phoneService.makeCall(number);
+		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
 
 	$scope.callLater = function(){
-		httpService.sendAction('contacts', 'callLater', {toContactId: $scope.contact.xpid});
-		
-	}
+		httpService.sendAction('contacts', 'callLater', {toContactId: $scope.profile.xpid});
+	};
 	
 	$scope.takeCall = function(){
-		httpService.sendAction('parkedcalls','transferFromPark',{parkedCallId:$scope.parkedCall.xpid,contactId:$scope.meModel.my_pid});
+		httpService.sendAction('parkedcalls','transferFromPark', {
+			parkedCallId: $scope.original.xpid,
+			contactId: $rootScope.myPid
+		});
 	};	
 
 	// generic function for any internal calls (page, intercom, voicemail, etc.)
@@ -177,7 +162,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		}
 		// single user
 		else
-			httpService.sendAction('contacts', action, {toContactId: $scope.xpid});
+			httpService.sendAction('contacts', action, {toContactId: $scope.profile.xpid});
 	};
 	
 	$scope.sendGroupMail = function(group) {
@@ -196,45 +181,45 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	$scope.fileShare = function() {
 		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
-			name: $scope.name,
+			name: $scope.profile.displayName || $scope.profile.name,
 			audience: $scope.type.split(/(?=[A-Z])/)[0].toLowerCase(),
-			xpid: $scope.xpid
+			xpid: $scope.profile.xpid
 		});
 	};
 
 	$scope.loginQueue = function() {
-		httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.queue.memberID});
+		httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.original.xpid});
 	};
 	
 	$scope.logoutQueue = function(reason) {
 		httpService.sendAction('queue_members', 'agentLogout', {
-			memberId: $scope.queue.memberID, 
+			memberId: $scope.original.xpid, 
 			reason: reason
 		});
 	};
 	
 	$scope.resetQueue = function() {
-		var doIt = confirm('Are you sure you want to reset statistics for queue ' + $scope.name + '?');
+		var doIt = confirm('Are you sure you want to reset statistics for queue ' + $scope.profile.name + '?');
 		
 		if (doIt)
-			httpService.sendAction('queues', 'resetStatistics', {queueId: $scope.xpid});
+			httpService.sendAction('queues', 'resetStatistics', {queueId: $scope.profile.xpid});
 	};
 	
 	$scope.joinConference = function(join) {
 		if (join) {
 			var params = {
-				conferenceId: $scope.xpid,
+				conferenceId: $scope.profile.xpid,
 				contactId: $rootScope.myPid,
 			};
 			httpService.sendAction("conferences", "joinContact", params);
 					
-			$location.path('/conference/' + $scope.xpid + '/currentcall');
+			$location.path('/conference/' + $scope.profile.xpid + '/currentcall');
 		}
 		else
-			httpService.sendAction("conferences", "leave", {conferenceId: $scope.xpid});
+			httpService.sendAction("conferences", "leave", {conferenceId: $scope.profile.xpid});
 	};
 	
 	$scope.recordConference = function(record) {		
-		httpService.sendAction("conferences", record ? "startRecord" : "stopRecord", {conferenceId: $scope.xpid});
+		httpService.sendAction("conferences", record ? "startRecord" : "stopRecord", {conferenceId: $scope.profile.xpid});
 	};
 }]);

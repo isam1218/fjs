@@ -14,13 +14,14 @@
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
         </div>
         <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
-			<avatar profile="voicemail" widget="'voicemails'" type="4"></avatar>
+			<avatar ng-if="voicemail.phone != meModel.primary_vm_box" profile="voicemail" context="voicemails" type="4"></avatar>
+			<avatar ng-if="voicemail.phone == meModel.primary_vm_box" profile="myProfile" context="voicemails" type="4"></avatar>
 
             <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
                 <div class="displayName">
 					<em>{{ ::voicemail.phone == meModel.primary_vm_box ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}</em>
 					<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_vm_box ? 'bold' : 'normal'}">
-						{{ ::voicemail.displayName + ' <' + voicemail.fullProfile.primaryExtension + '>' }}
+						{{ ::voicemail.displayName + ' <' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '>' }}
                     </p>
                     <div class="vmalternate">
                         <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM D, hh:mm a':fon_lang_code }} </div>

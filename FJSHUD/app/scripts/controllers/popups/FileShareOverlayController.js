@@ -73,9 +73,8 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
         $scope.upload.flow.cancel();
         $scope.$parent.showOverlay(false);
 		
-		// go to chat page if not already there
-		if ($location.path().indexOf($scope.audience) == -1)
-			$location.path('/' + $scope.audience + '/' + $scope.targetId);
+		// go to chat page
+		$location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
     };
 
 	$scope.selectCurrentDownload = function(download){

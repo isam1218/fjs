@@ -1,5 +1,4 @@
 hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'UtilService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, utilService) {
-    var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
     var addedPid;
     var localPid;
     $scope.voicemails = [];     
@@ -7,6 +6,11 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.tester = {};
     $scope.tester.query = "";
     $scope.meModel = {};
+	
+	// user's profile for their own voicemails
+	contactService.getContacts().then(function() {
+		$scope.myProfile = contactService.getContact($rootScope.myPid);
+	});
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
