@@ -343,16 +343,28 @@ p {
 .TopBarMeStatus .Status .hud_status {
   text-transform: capitalize;
 }
+.cust_status {
+  float: right;
+}
 .TopBarVoicemailControls {
-  position: absolute;
+  /*position: absolute;*/
+  position: relative;
+  float: right;
   top: 0;
-  left: 10px;
+  background-color: #eee;
+  min-height: 100px;
   max-height: 100%;
+  background-color: transparent;
+  min-width: 400px;
+  max-width: 400px;
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
   font-size: .9em;
   z-index: 50;
+  clear: none;
+  margin-top: -80px;
+  margin-right: 100px;
 }
 .TopBarVoicemailControls:hover {
   max-height: 200%;
@@ -599,6 +611,7 @@ p {
   transition: 1s;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
+  font-size: 12px;
 }
 .LeftBar .Notifications .TitleBar > *,
 .LeftBar .Notifications .NotificationDivider > div > * {
@@ -660,9 +673,8 @@ p {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  /*overflow-x: auto;
-  overflow-y: hidden;*/
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .DockPanel.Moving {
   border: 1px dashed #358503;
@@ -673,7 +685,8 @@ p {
 .DockPanel .InnerDock {
   position: absolute;
   height: 100%;
-  width: 100%;
+  /*width: 100%;*/
+  width: 39%;
   column-width: 170px;
   -webkit-column-width: 170px;
   -moz-column-width: 170px;
@@ -858,10 +871,10 @@ p {
   vertical-align: middle;
 }
 .DroppableArea {
-  border: 1px dashed #358503;
-  border-width: 1px;
-  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
-  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+  border: 1px dashed #358503 !important;
+  border-width: 1px !important;
+  -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
+  -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
 .ToolBar {
   position: relative;
@@ -4225,11 +4238,13 @@ select[disabled] {
 .CurrentCallBtn.disableButton {
   cursor: default;
   pointer-events: none;
-  opacity: 0.5;
 }
 .CurrentCallBtn .XIcon24-Record-Off,
 .CurrentCallBtn .XIcon24-Record-On {
   top: 12px;
+}
+div.CurrentCallBtn {
+  opacity: 0.5;
 }
 div.CurrentCallBtn.dial {
   padding: 5px 10px;
@@ -5223,6 +5238,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
 }
+.CallStatusContainerInbound,
+.CallStatusContainerOutbound {
+  background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
+  background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+  background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
+  min-height: 50px;
+  overflow: hidden;
+  width: 100%;
+}
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
 .CallStatusContainerInbound .CallStatusText,
@@ -5241,18 +5265,24 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus {
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: normal;
+}
+.CallStatusContainerInbound .CallStatusText .memberName,
+.CallStatusContainerOutbound .CallStatusText .memberName {
+  font-weight: bold;
+  font-size: 14px;
+  /*margin-top: 15px;*/
 }
 .CallStatusContainerInbound .controlButtons,
 .CallStatusContainerOutbound .controlButtons {
-  clear: both;
   float: right;
   display: inline-block;
   margin-top: 5px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {
-  font-size: 12px;
+  font-size: 13px;
 }
 .NotificationSectionHeader {
   display: inline-block;
@@ -6327,6 +6357,13 @@ a.Messages {
   .WidgetMe .MeInfoBlock {
     width: 79% !important;
   }
+  .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
+    height: 3.5em !important;
+  }
+  .ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
+    height: 2.5em !important;
+    padding-top: 10px !important;
+  }
   .WidgetBody .SearchInputBox {
     width: 30% !important;
     float: left;
@@ -6339,10 +6376,15 @@ a.Messages {
     font-size: 0.688em !important;
     /*height: 2.6em !important; */
   }
-  .WidgetBody .ToolBar select.XButtonDropDown,
-  .WidgetBody .ToolBar .XButton {
+  .WidgetBody .ToolBar.fj-stream .XButton {
     float: right !important;
-    height: 2.7em;
+    height: 1.9em !important;
+  }
+  .WidgetBody .ToolBar.fj-stream select.XButton,
+  .WidgetBody .ToolBar.fj-stream select.XButtonDropDown {
+    height: 2.3em !important;
+    width: 22% !important;
+    float: right !important;
   }
   .WidgetBody .ToolBar .ChatSearch {
     top: 0px !important;
@@ -6417,11 +6459,26 @@ a.Messages {
     top: 10px;
     right: 12px;
   }
+  .Conversation .ToolBar .XButton {
+    height: 2.2em !important;
+  }
+  .Conversation .ToolBar .XButtonNormal {
+    height: 1.9em !important;
+  }
+  .Conversation .ToolBar select.XButton,
+  .Conversation .ToolBar select.XButtonDropDown {
+    width: 32%;
+    height: 2em;
+    padding-top: 3px !important;
+  }
   .Conversation .ToolBar input[type=search].SearchBox {
     width: 30% !important;
   }
   .Conversation .ToolBar .XButton.XSortButton {
     margin-top: 0 !important;
+  }
+  .Conversation .ToolBar.chatTop .XButton {
+    height: 2.2em !important;
   }
   .Conversation .ToolBar.chatTop .ChatSearch {
     width: 64% !important;

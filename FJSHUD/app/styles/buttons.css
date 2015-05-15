@@ -198,11 +198,13 @@ select[disabled] {
 .CurrentCallBtn.disableButton {
   cursor: default;
   pointer-events: none;
-  opacity: 0.5;
 }
 .CurrentCallBtn .XIcon24-Record-Off,
 .CurrentCallBtn .XIcon24-Record-On {
   top: 12px;
+}
+div.CurrentCallBtn {
+  opacity: 0.5;
 }
 div.CurrentCallBtn.dial {
   padding: 5px 10px;
