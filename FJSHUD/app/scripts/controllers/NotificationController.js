@@ -13,7 +13,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
 	$scope.phoneSessionEnabled = false;
-	$scope.totalMessagesDisplayed = 4;
+	$scope.totalMessagesDisplayed = -4;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];	
 	$scope.cssTop = 0;
 	$scope.expand = false;
@@ -31,7 +31,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
 		$scope.showLastMessageBody = true;
-		$scope.totalMessagesDisplayed = 5;
+		$scope.totalMessagesDisplayed = -5;
 	});
 	
 	$scope.getCssTop = function(index, flag, alertTop){
@@ -69,25 +69,71 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			}
 			else
 			{	
-				$scope.cssTop = 0;			
-				return {'top':  $scope.cssTop +'px'};					
+				$scope.cssTop = 0;	
+				if(alertTop)
+				{
+					
+					if(browser == "Chrome")
+						return {'top': '-45px'};	
+				}
+				else
+					return {'top':  $scope.cssTop +'px'};					
 			}			
 		}
 		else
 		{	
-			if(alertTop)
+			if(alertTop && $scope.hasMessages && browser == "Chrome")
 			{
-				
-				if(browser == "Chrome")
-					return {'top': '-45px'};	
+				if($scope.hasMessages)				
+						return {'top': '-45px'};
+				else					
+					    return {'padding-bottom': '20px'};
 			}
 		}	
 	  }
 	  else
-	  { 		 
-		  return {'top': ''};
+	  { 
+		  if(alertTop && browser == "Chrome")
+			  return {'top': '', 'padding-bottom': '20px'};
+		  else	  
+			  return {'top': ''};
 	  }	  
 	};	
+	
+	
+	$scope.setNotificationSectionHeight = function(hover){
+			
+		var el = $('.LeftBarNotificationSection.notificationsSection');
+		var msgSection = $(el).find('.LeftBarNotifications');
+		var messages = $(el).find('.Messages');
+		var el_height = 0;
+			
+		if(browser == "Chrome")
+		{	
+			$.each(messages, function(){
+				el_height += $(this).height();
+			});
+			el_height += 50;
+		}	
+		else
+		{
+			el_height = $(el).height();	
+		}			
+
+		if(el_height > $( document ).height())
+			el_height = $( document ).height();
+		
+		if(hover)
+		{	
+			$(msgSection).height(el_height);
+			$(el).height(el_height);
+		}	
+		else
+		{	
+			$(msgSection).height('');
+			$(el).height('');
+		}				
+	};
 	
 	$scope.$on('pidAdded', function(event, data){
 		addedPid = data.info;
@@ -158,7 +204,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			$(el).closest('a').remove();
 			$scope.phoneSessionEnabled =  true;
 			$scope.showLastMessageBody = true;
-			$scope.totalMessagesDisplayed = 5;
+			$scope.totalMessagesDisplayed = -5;
 		}
 		for(i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
@@ -535,7 +581,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-			return b.time - a.time; 
+			return a.time - b.time; 
 		});
 			       
 		$scope.$watch(function(scope){

@@ -4,6 +4,7 @@
 	flex: 1;
 	-webkit-box-flex: 1;
 	padding-left:10px;
+	
 	.NotificationDisplayName{
 		height: 2.5em;
 		text-overflow: ellipsis;
@@ -43,10 +44,10 @@
 		font-family: Arial,Tahoma,'Helvetica Neue',Helvetica,sans-serif;
 		position:relative;
 		overflow:hidden;
-		height: 5.8em;
-		/*padding-bottom: 20px;*/
-		//text-overflow:ellipsis;
-		/*max-height: 6em;*/
+		/*height: 5.8em;	*/
+		max-height: 5.8em;
+		height: auto;	
+		//text-overflow:ellipsis;		
 		font-size: 13px;
 		color: #000;
 		/*padding-top: 5px;*/
@@ -119,8 +120,7 @@
 .NotificationMessages{	
 	overflow-y: auto;
 	overflow-x:hidden;
-	background-image:url("../img/XTile-Widget.png");
-	/*background: transparent;*/
+	background-image:url("../img/XTile-Widget.png");	
 	overflow: hidden;
 }
 
@@ -132,9 +132,29 @@
 .LeftBarNotificationSection{
     background-color: #999;
     background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#888));
-    border-bottom: solid 1px #777;
+    border-bottom: solid 1px #777;    
+        
     &:hover{
-        background: transparent;
+        background: transparent;  
+        position: absolute;
+        bottom: 0;       
+        width: 298px;             
+         
+        .LeftBarNotifications{
+           overflow-y: auto;                                                    
+        }
+       
+      /*.alerts{
+        cursor:hand;
+        cursor:pointer;
+        position: absolute;        
+        bottom: 0;
+        max-width: 298px;
+        width: 100%;;
+        margin-bottom: 0px;
+        clear: both;
+        z-index: 2000;
+       }*/
     }
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications{	
@@ -283,8 +303,8 @@
 	background-image:url("../img/XTile-Widget.png");	
        	
     &.alerts{
-        cursor:hand;
-        cursor:pointer;
+/*     height: 5em; */     
+     
         .alert{
             text-decoration:none; 
             color:inherit;
@@ -302,15 +322,25 @@
             display: block;
         }
         .LeftBarNotificationMessageSection{
-            left: 40px;
+            /*left: 40px;*/
             position: relative;
             float: left;
             display: block;
-            .alertMsg{
-                font-weight:bold;
-                font-size:.7em;
-                height: 2.5em;
-                padding-left: 5px;
+            
+            a{
+                text-decoration: none;
+                color: #222;
+               
+                .alertMsg{
+                    font-weight:bold;
+                    font-size:.7em;
+                    height: 2.5em;
+                    padding-left: 5px;
+                    
+                  & > div:not(:NotificationMessage){
+                    height: 10px;
+                  }
+                }
             }
         }
     }

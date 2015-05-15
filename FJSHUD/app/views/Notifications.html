@@ -1,5 +1,5 @@
-<div class="LeftBarNotificationSection notificationsSection" ng-mouseover="showNotificationBody = true; showHeader = true;expand = true" ng-mouseleave="showHeader = false; showNotificationBody = todaysNotifications.length > 3 ? false:true; expand = false">
-	<div class="TitleBar noNotifications" ng-show="!hasMessages && phoneSessionEnabled">
+<div class="LeftBarNotificationSection notificationsSection" ng-mouseover="showNotificationBody = true; showHeader = true;expand = true; setNotificationSectionHeight(true);" ng-mouseleave="showHeader = false; showNotificationBody = todaysNotifications.length > 3 ? false:true; expand = false; setNotificationSectionHeight(false);"  scroll-notifications-to-bottom>
+     <div class="TitleBar noNotifications" ng-show="!hasMessages && phoneSessionEnabled">
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
@@ -12,8 +12,8 @@
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
      </div>  
        
-	<div class="NotificationMessages LeftBarNotifications">		<!-- phoneSessionEnabled ? limitTo: -5 : limitTo: -4 -->    
-			<div class="Messages" ng-repeat="message in todaysNotifications | limitTo: totalMessagesDisplayed" ng-init="getCssTop($index, false); $last ? lastMessage = true : lastMessage = false" ng-style="getCssTop($index, expand)">								
+	<div class="NotificationMessages LeftBarNotifications">	
+			<div class="Messages ng-class:{'lastMsg':  $last && phoneSessionEnabled}" ng-repeat="message in todaysNotifications | limitTo: totalMessagesDisplayed" ng-init="getCssTop($index, false); $last ? lastMessage = true : lastMessage = false" ng-style="getCssTop($index, expand)">								
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -28,7 +28,7 @@
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ notifications.length + ' events' }} </div>
 				       </div>             
 					</div>
-					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader && !lastMessage};" > <!-- , 'lastMessage':lastMessage -->
+					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader && !lastMessage};" > 
 			
 						<avatar 
 							class="LeftBarNotificationAvatarSection NotificationAvatar"
@@ -40,9 +40,9 @@
 						<div class="LeftBarNotificationMessageSection" > 
 							<div ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" class="chatNotification">
 								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
-								<div class="NotificationType" ng-show="showNotificationBody">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> <!--  ng-hide="$index == $last && !showLastMessageBody" -->
+								<div class="NotificationType" ng-show="showNotificationBody">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
 								{{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
-								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom><!--  ng-hide="$index == $last && !showLastMessageBody" -->
+								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>
 								  <span ng-if="message.message.length > 1" ng-repeat="messageToDisplay in getMessage(message) track by $index">{{ messageToDisplay }}<br/></span>
 								  <span ng-if="message.message.length <= 1" ng-init="messageToDisplay = getMessage(message)">{{ messageToDisplay }}<br/></span>
 								</div> 
@@ -74,7 +74,7 @@
 				</div>
 
 			</div>
-
+<!--  ng-class:{'hovered': expand == true} -->
 			<div class="Messages alerts" ng-if="!phoneSessionEnabled"  ng-init="getCssTop('', false, true)" ng-style="getCssTop('', expand, true)">			
 				<div class="alert">
 					<div class="NotificationHeader ng-class:{'firstHeader': todaysNotifications.length == 0};"> 
@@ -91,7 +91,7 @@
 				        <div class="Event" ng-show="(notifications.length > 0 && !showHeader) || todaysNotifications.length == 0"> {{ notifications.length + ' events' }} </div>
 				       </div>             
 					</div>
-					<div class="NotificationSection alertSection ng-class:{'firstsection': todaysNotifications.length == 0};" ng-click="showOverlay(true,'DownloadPlugin',{})"> <!-- , 'halfHeight': !showHeader -->
+					<div class="NotificationSection alertSection ng-class:{'firstsection': todaysNotifications.length == 0};" ng-click="showOverlay(true,'DownloadPlugin',{})"> 
 						<a ng-href="{{ pluginDownloadUrl}}">
 							<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 								<div class="AvatarWarningSmall"></div>
@@ -99,10 +99,10 @@
 						
 							<div class="LeftBarNotificationMessageSection" > 
 								<div>
-									<div class="alertMsg"><span>Browser Plugin</span></span><!--  <div class="NotificationTime">{{   }} </div>--></div> 
+									<div class="alertMsg"><span>Browser Plugin</span></span>
 									<div ></div>
 	
-									<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>Click to download & Install</div>
+									<div class="NotificationMessage">Click to download & Install</div>
 								</div>
 								
 							</div>
