@@ -3,15 +3,21 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 	var timer;
 	var current;
 	
-	// used as <avatar profile="object" widget="tabName" type="{{callType}}"></avatar>
-	// where widget and type are optional
+	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar>
+	// where context and type are optional
 	return {
 		restrict: 'E',
 		replace: true,
 		template: '<div class="Avatar"></div>',
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
-			var profile;
+			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
+			var context, widget;
+			
+			if (attrs.context) {
+				widget = attrs.context.split(':')[0];
+				context = attrs.context.split(':')[1];
+			}
 			
 			/**
 				AVATAR IMAGES
@@ -23,7 +29,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 				
 				if (attrs.type == 3)
 					classy += 'Queue';
-				else if (attrs.type <= 4)
+				else if ((profile && profile.displayName) || attrs.type == 4 || attrs.type == 0)
 					classy += 'Office';
 				else
 					classy += 'External';
@@ -34,7 +40,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 				element.addClass('AvatarNormal');
 			
 			// not a valid object, but still show an avatar
-			if (!obj || !obj.xpid) {
+			if (!profile || !profile.xpid) {
 				if (attrs.profile && attrs.profile == 4)
 					showGroup();
 				else
@@ -42,25 +48,22 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 				
 				return;
 			}
-			else
-				profile = obj.fullProfile ? obj.fullProfile : obj;
-			
 			// single vs group
-			if (profile.firstName !== undefined) {
+			else if (profile.firstName) {
 				showSingle();
 				loadImage(element.find('img'), profile.getAvatar(28));
 			}
-			else if (profile.parkExt !== undefined)
-				showSingle();
-			else {
+			else if (profile.name) {
 				showGroup();
 				
 				for (var i = 0; i < 4; i++)
 					loadImage(element.find('.GroupAvatarItem_' + i + ' img'), profile.getAvatar(i, 28));
 			}
+			else
+				showSingle();
 			
 			// set up watchers for avatars that may change
-			if (attrs.widget && attrs.widget == 'context') {
+			if (widget == 'context') {
 				scope.$watch($parse(attrs.profile), function (newObj) {
 					showSingle();
 					loadImage(element.find('img'), newObj.getAvatar(28));
@@ -92,14 +95,14 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 			// context menu doesn't apply to everyone, sorry
 			if (profile.xpid == $rootScope.myPid)
 				return;
-			else if (attrs.widget) {
+			else if (widget) {
 				// still interactable
-				if (attrs.widget == 'callstatus') {
+				if (widget == 'callstatus') {
 					element.append('<div class="AvatarForeground AvatarInteractable"></div>');
 					
 					return;
 				}
-				else if (attrs.widget == 'context' || attrs.widget == 'zoom')
+				else if (widget == 'context' || widget == 'zoom')
 					return;
 			}
 			
@@ -157,7 +160,8 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 				// send data to controller		
 				var data = {
 					obj: obj,
-					widget: attrs.widget ? $parse(attrs.widget)(scope) : null
+					widget: widget,
+					context: context ? $parse(context)(scope) : null
 				};
 				
 				$rootScope.$broadcast('contextMenu', data);
