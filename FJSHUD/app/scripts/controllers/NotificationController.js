@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService', 
-  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', 
+  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
 
   var playChatNotification = false;
   var displayDesktopAlert = true;
@@ -508,28 +508,53 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			}
 		}	
        	
-	
-		if(displayDesktopAlert){
-	       	$scope.displayAlert = true;
-			$timeout(displayNotification, 1500);
-		}else{
-			$scope.displayAlert = true;
-			$timeout(function(){
-				var element = document.getElementById("Alert");
-				if(element){
-					var content = element.innerHTML;
-					phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-					
-				}
-				element = null;
-				$scope.displayAlert = false;
-			},2500);
-		}
-		
-       	if($scope.inCall && !$.isEmptyObject($scope.callObj))
-       		$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
-       	else
-       		$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
+		$scope.inCall = Object.keys($scope.calls).length > 0;
+
+		$scope.isRinging = true;
+		element = document.getElementById("CallAlert");
+       	
+    if(displayDesktopAlert){
+			if(nservice.isEnabled()){
+					for (i in $scope.calls){
+				 		var data = {
+					  			"notificationId": $scope.calls[i].xpid, 
+					  			"leftButtonText" : "Decline",
+					  			"rightButtonText" : "Accept",
+					  			"leftButtonId" : "CALL_DECLINED",
+					  			"rightButtonId" : "CALL_ACCEPTED",
+					  			"leftButtonEnabled" : "true",
+					  			"rightButtonEnabled" : $scope.calls[i].incoming ? "true" : "false",
+					  			"callerName" : $scope.calls[i].displayName, 
+					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outgoind call for",
+					  			"callCategory" : $scope.calls[i].contactId ? "Internal" : "External",
+					  			"muted" : $scope.calls[i].mute ? "1" : "0",
+					  			"record" : $scope.calls[i].record ? "1" : "0"
+						}
+						phoneService.displayWebphoneNotification(data,"INCOMING_CALL");
+					}
+			}else{
+        $scope.displayAlert = true;
+        $timeout(displayNotification, 1500);
+			}
+    }else{
+       $scope.displayAlert = true;
+      $timeout(function(){
+        var element = document.getElementById("Alert");
+        if(element){
+          var content = element.innerHTML;
+          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+          
+        }
+        element = null;
+        $scope.displayAlert = false;
+        },2500);
+    }
+
+    if($scope.inCall && !$.isEmptyObject($scope.callObj))
+        $('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
+    else
+        $('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
+
 	});
 
 	$scope.playVm = function(xpid){
@@ -863,7 +888,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					}
 				}
 			}
-		};
+		
 
 		 
 

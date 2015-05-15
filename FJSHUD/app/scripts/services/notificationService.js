@@ -8,16 +8,26 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			notifyPipe = new WebSocket('wss://webphone.fonality.com:10843');
 			notifyPipe.onopen = function () {
            		
-
+				notifyPipe.send("INIT " + JSON.stringify({
+  						"sessionId" : "49393",
+  						"pageTitle" : "Fonality",
+  						"browser" : "Chrome",
+  						"contactName" : $rootScope.meModel.display_name,
+  						"contactImageUrl" : httpService.get_avatar($rootScope.meModel.my_pid,28,28,0)
+  
+				}));
            	
            		enabled = true;
            	};
 
            	notifyPipe.onmessage = function (evt) {
-            	console.error(evt);
-
+				var response;
             	if(evt.data == "OK"){
             		return ;
+            	}else{
+					response = JSON.parse(evt.data);
+					console.log(response);
+					$rootScope.$broadcast("notification_action",response);
             	}
             };
 			
@@ -39,12 +49,14 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			return enabled;
 		};
 
-		this.sendData = function(data,retry){
+		
+
+		sendData =  function(data,retry,type){
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
 				if(notifyPipe.readyState == 1){
-					notifyPipe.send(data);
+					notifyPipe.send(type + " "+ JSON.stringify(data));
 				}else{
 					if(retry > 3){
 						setTimeout(sendData(data,retry),5000);
@@ -54,6 +66,16 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
 			}
 		};
+	
+		this.dismiss = function(type,id){
+			
+			sendData({"notificationType":type, "notificationId":id },0,"DISMISS");	
+			
+		};
+
+		this.sendData = sendData;
+		
+
 
 
 
