@@ -42,11 +42,11 @@
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
 		</a>
-		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
+		<a class="Button" href="" ng-show="agentLogin && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
 		</a>
-		<a class="Button Logout" href="" ng-show="original.status.status == 'login'" ng-click="reasons.show = true">
+		<a class="Button Logout" href="" ng-show="agentLogin && original.status.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>
@@ -132,11 +132,11 @@
 		
 	<!-- queue -->
 	<div ng-if="type == 'QueueStat'">
-		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
+		<a class="Button" href="" ng-show="(!context || agentLogin) && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
 		</a>
-		<a class="Button Logout" href="" ng-show="original.status.status == 'login'" ng-click="reasons.show = true">
+		<a class="Button Logout" href="" ng-show="(!context || agentLogin) && original.status.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>

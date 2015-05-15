@@ -6,7 +6,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.type;
 	$scope.widget;
 	$scope.context;
+	
 	$scope.myQueue;
+	$scope.agentLogin = false;
 	$scope.canDock = true;	
 	$scope.reasons = {
 		list: [],
@@ -15,6 +17,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	queueService.getQueues().then(function(data) {
 		$scope.reasons.list = data.reasons;
+	});
+	
+	// permissions
+	settingsService.getPermissions().then(function(data) {
+		$scope.agentLogin = data.enableAgentLogin;
 	});
 	
 	// populate contact info from directive
