@@ -140,6 +140,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		});
 	};
 	
+	$scope.deleteAttachment = function() {
+		httpService.sendAction("streamevent", "deleteEvent", {xpid: $scope.original.xpid});
+	};
+	
 	$scope.callNumber = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
