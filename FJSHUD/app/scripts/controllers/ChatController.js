@@ -146,6 +146,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			
 			for (var m = 0, mLen = $scope.messages.length; m < mLen; m++) {
 				if (data[i].xpid == $scope.messages[m].xpid) {
+					// attachment was deleted
+					if (data[i].xef001type == 'delete') {
+						$scope.messages.splice(m, 1);
+						mLen--;
+					}
+					
 					dupe = true;
 					break;
 				}

@@ -93,9 +93,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			*/
 			
 			// context menu doesn't apply to everyone, sorry
-			if (profile.xpid == $rootScope.myPid)
-				return;
-			else if (widget) {
+			if (widget) {
 				// still interactable
 				if (widget == 'callstatus') {
 					element.append('<div class="AvatarForeground AvatarInteractable"></div>');
