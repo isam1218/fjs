@@ -18,7 +18,9 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 	{upper: $scope.verbage.members, lower: 'members'}, 
 	{upper: $scope.verbage.voicemail, lower: 'voicemails'}, 
 	{upper: $scope.verbage.page, lower: 'page'}, 
-	{upper: $scope.verbage.recordings, lower: 'recordings'}];
+	{upper: $scope.verbage.recordings, lower: 'recordings'},
+  {upper: $scope.verbage.group_info, lower: 'info'}
+  ];
 
   var getXpidInG = $rootScope.$watch('myPid', function(newVal, oldVal){
       if (!$scope.globalXpid){
@@ -69,20 +71,54 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
               $scope.toggleObject = {item: index};
               localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
               break;
+          case "info":
+              $scope.selected = $scope.tabs[5].lower;
+              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+              $scope.toggleObject = {item: index};
+              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
       }
   }; 
 
 	$scope.tabFilter = function(){
 		return function(tab){
 			if (tab.lower === 'chat'){
-				// if not my group -> return false and filter out the chat tab
+				// if not my group -> return false and filter out chat (and chat tab)
+        for (var i = 0; i < $scope.group.members.length; i++){
+          if ($scope.group.members[i].fullProfile.xpid === $rootScope.meModel.my_pid){
+            $scope.enableChat = true;
+            $scope.enableTextInput = true;
+            $scope.enableFileShare = true;
+            return true;
+          }
+        }
 				$scope.isMine = groupService.isMine($scope.groupID);
 				if ($scope.isMine){
+          $scope.enableChat = true;
+          $scope.enableTextInput = true;
+          $scope.enableFileShare = true;
 					return true;
 				} else {
+          $scope.enableChat = false;
+          $scope.enableTextInput = false;
+          $scope.enableFileShare = false;
 					return false;
 				}
 			}
+      if (tab.lower === 'info'){
+        if ($scope.group.type !== 0){
+          return true;
+        } else {
+          return false;
+        }
+      }
+      if (tab.lower === 'page'){
+        if ($scope.group.type === 0){
+          return true;
+        } else {
+          return false;
+        }
+      }
 			return true;
 		};
 	};
@@ -100,20 +136,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 		
 		$scope.isMine = groupService.isMine($scope.groupID);
 	});
-
-	if ($scope.conversationType == 'group'){
-		if ($scope.isMine){
-			$scope.enableChat = true;
-			$scope.enableTextInput = true;
-			$scope.enableFileShare = true;
-		} else {
-			$scope.enableChat = false;
-			$scope.enableTextInput = false;
-			$scope.enableFileShare = false;
-		}
-	}
 	
-
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 
 	$scope.deptHeaderDisplay = function(groupType){

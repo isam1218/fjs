@@ -1,6 +1,15 @@
-hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpService','SettingsService', function ($scope, $rootScope, httpService,settingsService) {  
+hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpService', 'SettingsService', 'QueueService', function ($scope, $rootScope, httpService, settingsService, queueService) {  
   var addedPid;
   var localPid;
+
+  queueService.getQueues().then(function(data) {
+    // show all or my queues
+    if ($scope.selected == 'allqueues')
+      $scope.queues = data.queues;  
+    else if ($scope.selected == 'myqueue')
+      $scope.queues = data.mine;
+    $scope.total = data.total;
+  });
 
   $scope.queue_options = [
     {display_name: $scope.verbage.queue_name, type: "name"},

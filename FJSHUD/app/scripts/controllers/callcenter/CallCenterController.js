@@ -52,9 +52,11 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 	
 	queueService.getQueues().then(function(data) {
 		// show all or my queues
+		console.log('my qs -', data.mine);
+		console.log('all qs - ', data.queues);
 		if ($scope.selected == 'allqueues')
-			$scope.queues = data.queues;
-		else
+			$scope.queues = data.queues;	
+		else if ($scope.selected == 'myqueue')
 			$scope.queues = data.mine;
 		
 		$scope.total = data.total;
