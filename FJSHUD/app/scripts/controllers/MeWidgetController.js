@@ -27,7 +27,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          */
         var currentLocation;
 
-        if($scope.settings["current_location"])
+        if($scope.settings && $scope.settings["current_location"])
    	    {
         	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
    	    }	 
@@ -36,7 +36,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
         	 
              if($scope.meModel["current_location"])
+             {	
+            	if(!$scope.settings) 
+            		$scope.settings = {};
          		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
+             }
              
              return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
          }
