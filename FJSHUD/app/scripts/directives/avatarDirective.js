@@ -1,4 +1,4 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootScope, $parse, $timeout) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', function($rootScope, $parse, $timeout, settingsService) {
 	var url = location.href.replace(location.hash, '');
 	var timer;
 	var current;
@@ -138,7 +138,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', function($rootSc
 						overlay.bind('mouseenter', function(e) {
 							$timeout.cancel(timer);
 						});
-					}, 500);
+					}, settingsService.getSetting('avatar_hover_delay')*1000);
 				}
 				else if (current != element) {
 					// hovered over a new avatar
