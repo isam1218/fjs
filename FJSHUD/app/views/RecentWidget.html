@@ -27,7 +27,7 @@
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{item.queue_status}}" ></div>
                     <br/>
-                    <div class="ListRowStatusText" >{{item.hud_status || 'offline'}}</div>
+                    <div class="ListRowStatusText" >{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}</div><!-- {{item.hud_status || 'offline'}} -->
                 </div> 
                 <div class="CallStatus">
                     <avatar 
