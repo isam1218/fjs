@@ -88,7 +88,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     ];
 
     var getXpidInMe = $rootScope.$watch('myPid', function(newVal, oldVal){
-        console.log('1');
         if (!$scope.globalXpid){
             $scope.globalXpid = newVal;
             $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
@@ -100,7 +99,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
 
     $scope.$on('pidAdded', function(event, data){
-        console.log('2');
         $scope.globalXpid = data.info;
         $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
         $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};

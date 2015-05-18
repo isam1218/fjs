@@ -6,19 +6,9 @@
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <select class="XButton XButtonNormal"
-        class="fj-hbox SelectBox SelectBoxSettings" ng-model='sort'
-        ng-options="sort_option.name for sort_option in sort_options"
-        ng-change="sortQueues(sort.type)"
-        ></select>
-
-<!--         <select class="XButton XButtonNormal" 
-              class="fj-hbox SelectBox SelectBoxSettings" ng-model='log_out_option'
-              ng-options="log_out_reason.name for log_out_reason in log_out_reasons"
-              ng-change="queueLogoutAll(log_out_option.xpid)">
-			<option value="">{{::verbage.logout_all}}</option>
+        <select class="XButton XButtonNormal" class="fj-hbox SelectBox SelectBoxSettings" ng-model="selectedConversationQueueOption" ng-options="sort_option.name for sort_option in sort_options track by sort_option.name" ng-change="sortConversationQueue(selectedConversationQueueOption)">
         </select>
- -->        
+ 
         <select class="XButton XButtonNormal" class="fj-hbox SelectBox SelectBoxSettings" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons" ng-change="handleLogoutAction(actionObj.selectedAction.xpid)">
             <option value="">{{::verbage.logout_all}}</option>
         </select>

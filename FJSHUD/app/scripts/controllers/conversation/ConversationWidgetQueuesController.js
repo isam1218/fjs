@@ -170,55 +170,55 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     {name:$scope.verbage.queue_active_calls, id:7, type:'active'}
     ];
 
+    $scope.selectedConversationQueueOption = localStorage.selectedConversationQueueOption ? JSON.parse(localStorage.selectedConversationQueueOption) : $scope.sort_options[0];
 
-
-    $scope.sortQueues = function(type){
-
-        switch(type){
-
-            case 'name':
+    $scope.sortConversationQueue = function(queueSelection){
+        $scope.selectedConversationQueueOption = queueSelection;
+        switch(queueSelection.type){
+            case "name":
                 $scope.queues.sort(function(a,b){
-                        return a.name.localeCompare(b.name);
-                }); 
+                    return a.name.localeCompare(b.name);
+                });                    
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'waiting':
                 $scope.queues.sort(function(a,b){
-                    return a.info.waiting - b.info.waiting;
+                    return b.info.waiting - a.info.waiting;
                 }); 
-            
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'avgwaiting':
                 $scope.queues.sort(function(a,b){
-                    return a.info.waiting - b.info.waiting;
+                    return b.info.esa - a.info.esa;
                 }); 
-           
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
-            case 'avgtalk':
+            case "avgtalk":
                 $scope.queues.sort(function(a,b){
-                    return a.info.avgTalk - b.info.avgTalk;
-                }); 
-           
+                    return b.info.avgTalk - a.info.avgTalk;
+                });
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'total':
                 $scope.queues.sort(function(a,b){
-                    return (a.info.waiting + a.info.abandoned + a.info.active) - (b.info.waiting + b.info.abandoned + b.info.active);
+                    return (b.info.completed + b.info.abandon + b.info.active) - (a.info.completed + a.info.abandon + a.info.active);
                 }); 
-           
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'abandoned':
                 $scope.queues.sort(function(a,b){
-                    return  a.info.abandoned  -  b.info.abandoned ;
+                    return  b.info.abandonPercent - a.info.abandonPercent;
                 }); 
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'active':
                 $scope.queues.sort(function(a,b){
-                    return  a.info.active  -  b.info.active ;
-                }); 
-            
+                    return  b.info.active - a.info.active ;
+                });
+                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
         }
-    }
-
+    };
 
     status = $scope.contact.hud_status;
     switch(status){
@@ -255,6 +255,46 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
                 }
             }
         }
+
+        // need to set the sort option upon initial load
+        switch($scope.selectedConversationQueueOption.type){
+            case "name":
+                $scope.queues.sort(function(a,b){
+                    return a.name.localeCompare(b.name);
+                });
+                break;
+            case 'waiting':
+                $scope.queues.sort(function(a,b){
+                    return b.info.waiting - a.info.waiting;
+                }); 
+                break;
+            case 'avgwaiting':
+                $scope.queues.sort(function(a,b){
+                    return b.info.esa - a.info.esa;
+                }); 
+                break;
+            case "avgtalk":
+                $scope.queues.sort(function(a,b){
+                    return b.info.avgTalk - a.info.avgTalk;
+                });
+                break;
+            case 'total':
+                $scope.queues.sort(function(a,b){
+                    return (b.info.completed + b.info.abandon + b.info.active) - (a.info.completed + a.info.abandon + a.info.active);
+                }); 
+                break;
+            case 'abandoned':
+                $scope.queues.sort(function(a,b){
+                    return b.info.abandonPercent - a.info.abandonPercent;
+                })
+                break;
+            case 'active':
+                $scope.queues.sort(function(a,b){
+                    return  b.info.active - a.info.active ;
+                });
+                break;
+        }
+
     });
     
 }]);
