@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
-	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
+	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
 
 	var addedPid;
 	var localPid;
@@ -14,6 +14,57 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.hasMessages = false;
 	$scope.phoneSessionEnabled = false;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+	$scope.showTimer = false;
+	//$scope.minutes = 0;
+	//$scope.seconds = 0;
+	$scope.stopTime;	
+	$scope.callObj = {};
+	
+	
+	// used to update the UI
+    $scope.updateTime = function(id) {    //id	
+    	//var element = $('#callNotification_'+id);
+    	
+    	var secondsText = '';
+    	var minutesText = '';   
+    	var hoursText = '';
+    	
+    	$scope.callObj[id].seconds++;  
+	  	if($scope.callObj[id].seconds == 60)
+	  	{
+	  		$scope.callObj[id].seconds = 0;
+	  		$scope.callObj[id].minutes++;
+	  	}
+	  	if($scope.callObj[id].minutes == 60)
+	  	{
+	  		$scope.callObj[id].seconds = 0;
+	  		$scope.callObj[id].minutes = 0;
+	  		$scope.callObj[id].hours++;
+	  	}	
+	  	//seconds
+	  	if($scope.callObj[id].seconds < 10)
+	  		secondsText = ':0'+$scope.callObj[id].seconds;
+	  	else
+	  		secondsText = ':'+$scope.callObj[id].seconds;
+	  	//minutes
+	  	if($scope.callObj[id].minutes < 10)
+	  		minutesText = '0'+$scope.callObj[id].minutes;
+	  	else
+	  		minutesText = $scope.callObj[id].minutes;
+	  	//hours
+	  	if($scope.callObj[id].hours < 10)
+	  		hoursText = '0'+$scope.callObj[id].hours+":";
+	  	else
+	  		hoursText = $scope.callObj[id].hours+":";
+	  	
+	  	if($scope.callObj[id].hours == 0)
+	  		hoursText='';
+	  	
+	  	$scope.callObj[id].secondsText = secondsText;
+	  	$scope.callObj[id].minutesText = minutesText;  
+	  	$scope.callObj[id].hoursText = hoursText;
+	     // $(element).find('.MyCallBlock_Duration').text($scope.minutesText+":"+$scope.secondsText);
+    }       
 	
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
@@ -176,7 +227,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		$scope.calls = {};
 		var displayDesktopAlert = false;
 		var toDisplayFor = settingsService.getSetting('alert_call_display_for');
-		var alertDuration = settingsService.getSetting('alert_call_duration');
+		var alertDuration = settingsService.getSetting('alert_call_duration');			
+		
 		if(data){
 
 			for (i in data){
@@ -261,6 +313,36 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				element.style.display="none";
 			}	
 		}
+       	
+       	if(!$.isEmptyObject(data))
+		{	
+		   var xpid = '';
+		   for(k in data)
+		   {
+				xpid = k;
+		   }
+		   if(typeof $scope.callObj[xpid] == "undefined")
+		   {	   
+			   $scope.callObj[xpid] = {};
+			   $scope.callObj[xpid].minutes = 0;
+			   $scope.callObj[xpid].seconds = 0;
+			   $scope.callObj[xpid].hours = 0;			   			   		
+		   }
+		   if($scope.callObj[xpid].seconds == 0 && 
+			  $scope.callObj[xpid].minutes == 0 && 
+			  $scope.callObj[xpid].hours == 0)
+		   {	   
+			   $scope.callObj[xpid].stopTime = $interval(function(){
+				   $scope.updateTime(xpid);
+			   }, 1000);
+		   }	   
+		}	
+		else
+		{				
+			$interval.cancel($scope.callObj[xpid].stopTime);
+			$scope.callObj[xpid]= {};			
+		}	
+		
 	});
 
 	$scope.playVm = function(xpid){
