@@ -8,7 +8,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.context;
 	
 	$scope.myQueue;
-	$scope.agentLogin = false;
 	$scope.canDock = true;	
 	$scope.reasons = {
 		list: [],
@@ -21,7 +20,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	// permissions
 	settingsService.getPermissions().then(function(data) {
-		$scope.agentLogin = data.enableAgentLogin;
+		$scope.canLoginAgent = data.enableAgentLogin;
+		$scope.canRecord = data.recordingEnabled;
 	});
 	
 	// populate contact info from directive
