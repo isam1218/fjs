@@ -71,6 +71,12 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 
 		delete $scope.add.contacts;
 		
+		var deletedGroupMessage = $scope.add.message;
+		var groupName = $scope.add.name;
+		var deletedMessageIntro = "GOODBYE " + groupName + "!  "; 
+		var finalDeletedGroupMessage = deletedMessageIntro + deletedGroupMessage;
+		$scope.add.message = finalDeletedGroupMessage;
+
 		// save
 		httpService.sendAction('groups', $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup'), $scope.add);
 		
