@@ -1,4 +1,4 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $timeout) {
 	$scope.query = '';
 	$scope.totals = {occupied: 0, talking: 0, all: 0};
 	$scope.sortBy = 'location';
@@ -30,6 +30,47 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
   		$scope.tab = 'all';
   		localStorage['ConfWidget_tab_of_' + $scope.globalXpid] = JSON.stringify($scope.tab);
   	}
+  };
+
+  httpService.getFeed('settings');
+
+  $scope.$on('settings_updated', function(event, data){
+      if (data['hudmw_searchautoclear'] == ''){
+          autoClearOn = false;
+          if (autoClearOn && $scope.query != ''){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                  $scope.clearSearch($scope.autoClearTime);          
+              } else if (autoClearOn){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              } else if (!autoClearOn){
+                  $scope.autoClearTime = undefined;
+              }
+      }
+      else if (data['hudmw_searchautoclear'] == 'true'){
+          autoClearOn = true;
+          if (autoClearOn && $scope.query != ''){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              $scope.clearSearch($scope.autoClearTime);          
+          } else if (autoClearOn){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+          } else if (!autoClearOn){
+              $scope.autoClearTime = undefined;
+          }
+      }        
+  });
+
+  var currentTimer = 0;
+
+  $scope.clearSearch = function(autoClearTime){
+      if (autoClearTime){
+          var timeParsed = parseInt(autoClearTime + '000');
+          $timeout.cancel(currentTimer);
+          currentTimer = $timeout(function(){
+              $scope.query = '';
+          }, timeParsed);         
+      } else if (!autoClearTime){
+          return;
+      }
   };
 
 	conferenceService.getConferences().then(function(data) {
