@@ -1,13 +1,49 @@
-hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', function($scope, myHttpService,phoneService) {
+hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService', 'SettingsService', function($scope, httpService, phoneService, settingsService) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
 	$scope.number = "";
 	$scope.locations = [];
+    $scope.autoClearTime;
+    $scope.autoClearOn;
+
+    httpService.getFeed('settings');
 
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
-    }
+    };
+
+    $scope.$on('settings_updated', function(event, data){
+        if (data['hudmw_searchautoclear'] == ''){
+            autoClearOn = false;
+        }
+        else if (data['hudmw_searchautoclear'] == 'true'){
+            autoClearOn = true;
+        }
+        if (autoClearOn && $scope.query != ''){
+            $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+            $scope.clearSearch($scope.autoClearTime);          
+        } else if (autoClearOn){
+            $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+        } else if (!autoClearOn){
+            $scope.autoClearTime = undefined;
+        }
+    });
+
+    var currentTimer = 0;
+
+    $scope.clearSearch = function(autoClearTime){
+        if (autoClearTime){
+            var timeParsed = parseInt(autoClearTime + '00');
+            // console.log('time parsed - ', timeParsed);
+            clearTimeout(currentTimer);
+            currentTimer = setTimeout(function(){
+                $scope.query = '';
+            }, timeParsed);            
+        } else if (!autoClearTime){
+            return;
+        }
+    };
 
     $scope.makePhoneCall = function(type,$event){
         switch(type){
@@ -19,7 +55,7 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService','PhoneService', 
                 }
                 break;
         }
-    }
+    };
 
     $scope.$on('locations_synced', function(event,data){
         if(data){

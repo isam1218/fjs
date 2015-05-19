@@ -389,6 +389,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 localStorage.fon_lang_code = model.code;
                 location.reload();
                 break;
+            case 'hudmw_searchautoclear':
+                myHttpService.updateSettings(type, action, model);
+                break;
+            case 'hudmw_searchautocleardelay':
+                myHttpService.updateSettings(type, action, model.value);
+                break;
             default:
                 myHttpService.updateSettings(type,action,model); 
             
