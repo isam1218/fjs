@@ -103,11 +103,11 @@
 			<div class="ListRowActionButtonLeave"></div>
 			<span>Kick</span>
 		</a>
-		<a class="Button" href="" ng-show="agentLogin && original.status.status == 'logout'" ng-click="loginQueue()">
+		<a class="Button" href="" ng-show="canLoginAgent && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
 		</a>
-		<a class="Button Logout" href="" ng-show="agentLogin && original.status.status == 'login'" ng-click="reasons.show = true">
+		<a class="Button Logout" href="" ng-show="canLoginAgent && original.status.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>
@@ -193,11 +193,11 @@
 		
 	<!-- queue -->
 	<div ng-if="type == 'QueueStat'">
-		<a class="Button" href="" ng-show="(!context || agentLogin) && original.status.status == 'logout'" ng-click="loginQueue()">
+		<a class="Button" href="" ng-show="(!context || canLoginAgent) && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
 		</a>
-		<a class="Button Logout" href="" ng-show="(!context || agentLogin) && original.status.status == 'login'" ng-click="reasons.show = true">
+		<a class="Button Logout" href="" ng-show="(!context || canLoginAgent) && original.status.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>
@@ -225,11 +225,11 @@
 			<div class="ListRowActionButtonLeave"></div>
 			<span>{{::verbage.leave}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.status.isMeJoined && !profile.status.recorded" ng-click="recordConference(true)">
+		<a class="Button" href="" ng-show="canRecord && profile.members.length > 0 && !profile.status.recorded" ng-click="recordConference(true)">
 			<div class="ListRowActionButtonRecord"></div>
 			<span>{{::verbage.start}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.status.isMeJoined && profile.status.recorded" ng-click="recordConference(false)">
+		<a class="Button" href="" ng-show="canRecord && profile.members.length > 0 && profile.status.recorded" ng-click="recordConference(false)">
 			<div class="ListRowActionButtonRecord"></div>
 			<span>{{::verbage.stop}}</span>
 		</a>
@@ -237,7 +237,7 @@
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.status.isMeJoined" ng-click="sendGroupMail(profile)">
+		<a class="Button" href="" ng-show="profile.members.length > 0" ng-click="sendGroupMail(profile)">
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
 		</a>

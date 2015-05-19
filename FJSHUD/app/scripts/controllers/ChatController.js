@@ -90,7 +90,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
       	fileList = [];
 		
       	fileList.push($files.file);
-      	
 		
         var data = {
             'action':'sendWallEvent',
@@ -106,12 +105,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "2_5",
             "_archive":0,
-        }
+        };
+		
         httpService.upload_attachment(data,fileList);
 		
         $scope.upload.flow.cancel();
     
     };
+	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
 		if (scrollbox.scrollHeight)
@@ -171,7 +172,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			if (data[i].type == chat.type && context == chat.targetId) {
+			if (data[i].type.replace('.auto', '') == chat.type && context == chat.targetId) {
 				$scope.messages.push(data[i]);
 				found = true;
 			}
