@@ -22,25 +22,22 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	
 	
 	// used to update the UI
-    $scope.updateTime = function(id) {    //id	
-    	//var element = $('#callNotification_'+id);
+    $scope.updateTime = function(id) {    	
+		
+    	var time = new Date().getTime() - $scope.callObj[id].start;
+    	time = time/1000;
+    	$scope.callObj[id].seconds = Math.floor(time % 60);
+    	time = time/60; 
+    	$scope.callObj[id].minutes = Math.floor(time % 60);
+    	time = time/60; 
+    	$scope.callObj[id].hours = Math.floor(time % 24);  
+    	$scope.callObj[id].hours.days = Math.floor(time/24);
     	
     	var secondsText = '';
     	var minutesText = '';   
     	var hoursText = '';
-    	
-    	$scope.callObj[id].seconds++;  
-	  	if($scope.callObj[id].seconds == 60)
-	  	{
-	  		$scope.callObj[id].seconds = 0;
-	  		$scope.callObj[id].minutes++;
-	  	}
-	  	if($scope.callObj[id].minutes == 60)
-	  	{
-	  		$scope.callObj[id].seconds = 0;
-	  		$scope.callObj[id].minutes = 0;
-	  		$scope.callObj[id].hours++;
-	  	}	
+    	var daysText = '';
+    	   	
 	  	//seconds
 	  	if($scope.callObj[id].seconds < 10)
 	  		secondsText = ':0'+$scope.callObj[id].seconds;
@@ -57,13 +54,18 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	  	else
 	  		hoursText = $scope.callObj[id].hours+":";
 	  	
-	  	if($scope.callObj[id].hours == 0)
+	  	if($scope.callObj[id].hours <= 0)
 	  		hoursText='';
+	  	
+	  	if($scope.callObj[id].days <= 0)
+	  		daysText = '';
+	  	else
+	  		daysText = $scope.callObj[id].days +" days ";
 	  	
 	  	$scope.callObj[id].secondsText = secondsText;
 	  	$scope.callObj[id].minutesText = minutesText;  
-	  	$scope.callObj[id].hoursText = hoursText;
-	     // $(element).find('.MyCallBlock_Duration').text($scope.minutesText+":"+$scope.secondsText);
+	  	$scope.callObj[id].hoursText = hoursText;	  
+	  	$scope.callObj[id].daysText = daysText;
     }       
 	
 	phoneService.getDevices().then(function(data){
@@ -326,11 +328,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			   $scope.callObj[xpid] = {};
 			   $scope.callObj[xpid].minutes = 0;
 			   $scope.callObj[xpid].seconds = 0;
-			   $scope.callObj[xpid].hours = 0;			   			   		
+			   $scope.callObj[xpid].hours = 0;	
+			   $scope.callObj[xpid].days = 0;
+			   $scope.callObj[xpid].start = new Date().getTime();			   
 		   }
 		   if($scope.callObj[xpid].seconds == 0 && 
 			  $scope.callObj[xpid].minutes == 0 && 
-			  $scope.callObj[xpid].hours == 0)
+			  $scope.callObj[xpid].hours == 0 &&
+			  $scope.callObj[xpid].days == 0)
 		   {	   
 			   $scope.callObj[xpid].stopTime = $interval(function(){
 				   $scope.updateTime(xpid);
