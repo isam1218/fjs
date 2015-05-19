@@ -149,7 +149,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.takeCall = function(){
-		httpService.sendAction('parkedcalls','transferFromPark', {
+		httpService.sendAction('parkedcalls', 'transferFromPark', {
 			parkedCallId: $scope.original.xpid,
 			contactId: $rootScope.myPid
 		});
@@ -213,20 +213,32 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.joinConference = function(join) {
+		var xpid = $scope.type == 'ConferenceRoom' ? $scope.profile.xpid : $scope.context.xpid;
+		
 		if (join) {
 			var params = {
-				conferenceId: $scope.profile.xpid,
+				conferenceId: xpid,
 				contactId: $rootScope.myPid,
 			};
 			httpService.sendAction("conferences", "joinContact", params);
 					
-			$location.path('/conference/' + $scope.profile.xpid + '/currentcall');
+			$location.path('/conference/' + xpid + '/currentcall');
 		}
 		else
-			httpService.sendAction("conferences", "leave", {conferenceId: $scope.profile.xpid});
+			httpService.sendAction("conferences", "leave", {conferenceId: xpid});
+	};
+	
+	$scope.kickMember = function() {
+		httpService.sendAction('conferencemembers', 'kickMember', {memberId: $scope.original.xpid});
 	};
 	
 	$scope.recordConference = function(record) {		
 		httpService.sendAction("conferences", record ? "startRecord" : "stopRecord", {conferenceId: $scope.profile.xpid});
+	};
+	
+	$scope.muteUser = function(mute) {
+		httpService.sendAction('conferences', mute ? 'muteMember' : 'unmuteMember', {
+			memberId: $scope.original.xpid
+		});
 	};
 }]);

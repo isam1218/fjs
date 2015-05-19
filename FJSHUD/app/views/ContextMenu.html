@@ -55,6 +55,18 @@
 	
 	<!-- myself -->
 	<div ng-if="profile.xpid == myPid && type == 'Contact'">
+		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
+			<div class="ListRowActionButtonMute"></div>
+			<span>Mute</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && original.muted" ng-click="muteUser(false)">
+			<div class="ListRowActionButtonUnmute"></div>
+			<span>Unmute</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && context.status.isMeJoined" ng-click="joinConference(false)">
+			<div class="ListRowActionButtonLeave"></div>
+			<span>{{::verbage.leave}}</span>
+		</a>
 		<a class="Button" href="" ng-show="widget == 'chat' && original.data.attachment" ng-click="deleteAttachment()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
@@ -78,6 +90,18 @@
 		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
+			<div class="ListRowActionButtonMute"></div>
+			<span>Mute</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && original.muted" ng-click="muteUser(false)">
+			<div class="ListRowActionButtonUnmute"></div>
+			<span>Unmute</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0" ng-click="kickMember()">
+			<div class="ListRowActionButtonLeave"></div>
+			<span>Kick</span>
 		</a>
 		<a class="Button" href="" ng-show="agentLogin && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
