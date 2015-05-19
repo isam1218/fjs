@@ -144,7 +144,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
 	$scope.holdCall = function(xpid,isHeld){
 		phoneService.holdCall(xpid,isHeld);
+		
+		
+
 		if(!isHeld){
+			for(call in $scope.calls){
+				if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
+					$scope.holdCall($scope.calls[call].xpid,true);
+				}
+			}
 			$scope.onHold = false;
 		}
 	};
@@ -152,7 +160,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	$scope.acceptCall = function(xpid){
 		for(call in $scope.calls){
 			if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
-				$scope.holdCall($scope.calls[call].xpid);
+				$scope.holdCall($scope.calls[call].xpid,true);
 			}
 		}
 		phoneService.acceptCall(xpid);
