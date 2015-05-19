@@ -1,4 +1,4 @@
-hudweb.service('ConferenceService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService', function($q, $rootScope, $location, contactService, httpService) {
 	var deferred = $q.defer();
 	var conferences = [];	
 
@@ -135,6 +135,10 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', 'ContactService', 'Http
 						if (!conferenceHasMember(conferences[c], data[i].contactId)) {
 							data[i].fullProfile = contactService.getContact(data[i].contactId);
 							conferences[c].members.push(data[i]);
+							if($rootScope.myPid == data[i].contactId)
+							{						
+								$location.path('/conference/' + data[i].fdpConferenceId);
+							}	
 						}
 						
 						break;
