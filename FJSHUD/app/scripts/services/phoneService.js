@@ -166,7 +166,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		if(call){
 			if(context.webphone){
-				messageSoftphone({a : 'hangUp', value : call.sip_id});
+				//messageSoftphone({a : 'hangUp', value : call.sip_id});
+				httpService.sendAction('mycalls','hangup',{mycallId:xpid});
+
 			}else{
 				call.hangUp();
 			}
@@ -181,7 +183,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var call = context.getCall(xpid);
 		if(call){
 			if(context.webphone){
-				messageSoftphone({a : 'hold', value : call.sip_id});
+				//messageSoftphone({a : 'hold', value : call.sip_id});
+				if(isHeld){
+           			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+				}else{
+           			httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+				}
+			
 			}else{
 				call.hold = isHeld;
 			}
@@ -196,7 +204,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var makeCall = function(number){
-		
 		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
 			return;
 		}
@@ -216,14 +223,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			httpService.sendAction('me', 'callTo', {phoneNumber: number});
 			
 		}		
-    }
+    };
 
 	var acceptCall = function(xpid){
 		var call = context.getCall(xpid);
 		if(context.webphone)context.webphone.send(JSON.stringify({a : 'accept', value : xpid}));
 		if(call){
 			call.accept();
-
 		}else{
 			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 		}
@@ -444,6 +450,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         }
 	};
 
+
+
 	onNetworkStatus = function(st){
    	};
 
@@ -663,6 +671,29 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     var onSoundDeviceChanged = function(event){
     };
 
+    var getWSVersion = function(){
+    	var webphone = new WebSocket('wss://webphone.fonality.com:10443/version');
+		webphone.onopen = function(e){
+			console.log(e);
+		}
+		webphone.onclose = function(e){
+			console.log(e);
+		}
+
+		webphone.onerror = function(e){
+			console.log(e);
+		}
+
+		webphone.onmessage = function(e){
+			console.log(e);
+			if(e.data){
+				context.version = e.data;	
+				initWS();
+				webphone.close();
+			}
+		}
+	}
+
     var initWS = function(){
     	 if(context.webphone || session){
     	 	setTimeout(initWS(),5000);
@@ -709,9 +740,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 		context.webphone.send(JSON.stringify({a : 'ringdevs', value : devId}));
                     }
             	}
+
+            	$rootScope.$broadcast('phone_event',{event:"enabled"});
+
 		}
 		context.webphone.onclose = function(e){
 				context.webphone = false;
+				
+            	$rootScope.$broadcast('phone_event',{event:"disabled"});
+
 				context.getSessionStatus = function() {return 0};
 				context.getPhoneStatus = function() {return 5};
 			    setTimeout(function(){initWS()}, 500);
@@ -832,7 +869,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             }
         }
 		if(!context.webphone && $rootScope.meModel.my_pid){
-			initWS();
+			//initWS();
+        	getWSVersion();
         	nservice.initNSService();
         }
 
@@ -973,16 +1011,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	this.isPhoneActive = function(){
 		
-		if(context.webphone && context.webphone.readyState == 1){
+		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : (phonePlugin.getSession ? 'old_webphone' : false);
+		/*if(context.webphone && context.webphone.readyState == 1){
 			return context.getPhoneStatus() == 1; 	
 		}
 		if(phonePlugin.getSession){
 			return true;
 		}else{
 			return false;
-		}
+		}*/
 	};
 
+	this.getVersion = function(){
+		return context.version ? context.version : (version ? version : 'undefined');
+	}
 	/*this returns the call object provided by the phone plugin which gives you control over the call such 
 	holding the call resuming the call and ending the call
 	*/

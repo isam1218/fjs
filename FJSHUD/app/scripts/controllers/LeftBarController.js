@@ -28,9 +28,7 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
-		
 		storageService.saveRecentByPhone(number);
-		
 		$scope.number = '';
     };
 

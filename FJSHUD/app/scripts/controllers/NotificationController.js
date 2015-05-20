@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', 
   function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
 
@@ -601,6 +602,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				$scope.displayAlert = true;
 				$timeout(displayNotification
 						, 1500);
+				break;
+			case "enabled":
+				$scope.phoneSessionEnabled = true;
+				break;
+			case "disabled":
+				$scope.phoneSessionEnabled = false;
 				break;
 
 

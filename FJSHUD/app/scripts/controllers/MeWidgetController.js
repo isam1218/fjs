@@ -17,7 +17,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
-    
+    $scope.pluginVersion = phoneService.getVersion();
+
     $scope.currentCall = phoneService.getCallDetail(callId);
   
 
@@ -1083,8 +1084,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.$on('phone_event',function(event,data){
         if(data){
-            if(data.event == 'state'){
-                $scope.phoneState = data.registration;
+            var e = data.event;
+            switch(e){
+                case 'state':
+                     $scope.phoneState = data.registration;
+                case "enabled":
+                    $scope.pluginVersion = phoneService.getVersion();
+                    break;
             }
             if(data.event == 'onclose'){
 
