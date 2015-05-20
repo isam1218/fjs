@@ -20,10 +20,22 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 	};
 	
 	this.isMine = function(xpid) {
-		if (mine)
-			return (xpid == mine.xpid);
-		else
-			return false;
+		if (mine && mine.xpid == xpid)
+			return true;
+		else {
+			for (var g = 0, gLen = groups.length; g < gLen; g++) {
+				var group = groups[g];
+				
+				if (group.xpid == xpid) {
+					for (var m = 0, mLen = group.members.length; m < mLen; m++) {
+						if (group.members[m].contactId == $rootScope.myPid)
+							return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	};
 	
 	this.isFavorite = function(xpid) {

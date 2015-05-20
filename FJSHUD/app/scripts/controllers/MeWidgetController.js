@@ -27,12 +27,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          */
         var currentLocation;
 
-        if($scope.settings && $scope.settings["current_location"])
-   	    {
-        	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
-   	    }	 
-        else
-   		{
+         
+        
          if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
         	 
              if($scope.meModel["current_location"])
@@ -44,10 +40,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
              
              return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
          }
-         else {        	         	 
+         else { 
+        	 if($scope.settings && $scope.settings["current_location"])
+        	    {
+             	return $scope.setCurrentLocation($scope.settings["current_location"]);   		   
+        	 }
+        	 else
               return "Loading...";
          }
-   		}
+   		
     };
 
     $scope.setCurrentLocation = function(location){
@@ -87,7 +88,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     ];
 
     var getXpidInMe = $rootScope.$watch('myPid', function(newVal, oldVal){
-        console.log('1');
         if (!$scope.globalXpid){
             $scope.globalXpid = newVal;
             $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
@@ -99,7 +99,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
 
     $scope.$on('pidAdded', function(event, data){
-        console.log('2');
         $scope.globalXpid = data.info;
         $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
         $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
@@ -390,6 +389,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 myHttpService.updateSettings(type,action,model.xpid); 
                 localStorage.fon_lang_code = model.code;
                 location.reload();
+                break;
+            case 'hudmw_searchautoclear':
+                myHttpService.updateSettings(type, action, model);
+                break;
+            case 'hudmw_searchautocleardelay':
+                myHttpService.updateSettings(type, action, model.value);
                 break;
             default:
                 myHttpService.updateSettings(type,action,model); 

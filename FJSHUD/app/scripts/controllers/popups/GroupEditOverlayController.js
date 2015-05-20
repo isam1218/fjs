@@ -1,7 +1,6 @@
 hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'ContactService', 'HttpService', 'GroupService', function($scope, $rootScope, contactService, httpService, groupService) {
 	$scope.add = {type: 2, contacts: []};
 	$scope.editing = false;
-	console.log('scope find userIsOwner located in GroupInfo Controller - ', $scope);
 
 	contactService.getContacts().then(function(data) {
 		// add user as first group member
@@ -64,7 +63,6 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 		
 		// comma separated list
 		$scope.add.contactIds = '';
-		console.log('$scope.add.contacts - ', $scope.add);
 		for (var i = 0; i < $scope.add.contacts.length; i++){
 			if ($scope.add.contacts[i] != null){
 				$scope.add.contactIds += $scope.add.contacts[i].xpid + ',';

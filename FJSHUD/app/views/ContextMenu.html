@@ -31,13 +31,50 @@
 </div>
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
+	<!-- delete -->
 	<a class="Button" href="" ng-show="widget == 'recordings' || widget == 'voicemails'" ng-click="deleteRecording()">
 		<div class="ListRowActionButtonRemove"></div>
 		<span>{{::verbage.delete_word}}</span>
 	</a>
 		
+	<!-- voicemails -->
+	<div ng-if="widget == 'voicemails'">
+		<a class="Button" href="" ng-show="!original.readStatus" ng-click="markAsRead(true)">
+			<div class="ListRowActionButtonRead"></div>
+			<span>Read</span>
+		</a>
+		<a class="Button" href="" ng-show="original.readStatus" ng-click="markAsRead(false)">
+			<div class="ListRowActionButtonUnread"></div>
+			<span>Unread</span>
+		</a>
+		<a class="Button" href="" ng-show="!profile && original.phone" ng-click="callNumber(original.phone)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>Call Back</span>
+		</a>
+	</div>
+	
+	<!-- myself -->
+	<div ng-if="profile.xpid == myPid && type == 'Contact'">
+		<a class="Button" href="" ng-show="widget == 'chat' && original.data.attachment" ng-click="deleteAttachment()">
+			<div class="ListRowActionButtonRemove"></div>
+			<span>{{::verbage.delete_word}}</span>
+		</a>
+		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
+			<div class="ListRowActionButtonLogin"></div>
+			<span>{{::verbage.login}}</span>
+		</a>
+		<a class="Button Logout" href="" ng-show="original.status.status == 'login'" ng-click="reasons.show = true">
+			<div class="ListRowActionButtonLogout"></div>
+			<span>{{::verbage.logout}}</span>
+		</a>
+		<a class="Button" href="" ng-click="callInternal('callVoicemail')">
+			<div class="ListRowActionButtonVoicemail"></div>
+			<span>{{::verbage.voicemail}}</span>
+		</a>
+	</div>
+		
 	<!-- contact -->
-	<div ng-if="type == 'Contact' || type == 'ParkedCall'">
+	<div ng-if="(profile.xpid != myPid && type == 'Contact') || type == 'ParkedCall'">
 		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
@@ -67,7 +104,7 @@
 			<span>{{::verbage.Call}}</span>
 		</a>
 
-		<a class="Button" href="" ng-show="profile.call" ng-click="callLater()">
+		<a class="Button" href="" ng-show="profile.call" ng-click="callInternal('callLater')">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call_Later}}</span>
 		</a>
@@ -186,7 +223,8 @@
 		</a>
 	</div>
 	
-	<div ng-show="profile.displayName || profile.name">
+	<!-- dockable -->
+	<div ng-show="profile.xpid != myPid && (profile.displayName || profile.name)">
 		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 			<div class="ListRowActionButtonDock"></div>
 			<span>{{::verbage.dock}}</span>

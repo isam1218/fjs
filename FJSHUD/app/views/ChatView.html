@@ -18,7 +18,7 @@
     </div>
     <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" ng-hide="conversationType == 'conference' && !joined">
         <div class="ListMessageLeft">
-            <avatar ng-if="nameDisplay(message, $index)" profile="message.fullProfile"></avatar>
+            <avatar ng-if="nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
             <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code:'list_message_left'}}</div>
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
