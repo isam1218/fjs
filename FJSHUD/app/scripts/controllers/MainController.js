@@ -100,6 +100,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         $scope.currentPopup.x = 0;
         $scope.currentPopup.y = 0;
         $scope.currentPopup.model = null;
+        $scope.currentPopup.target = null;
     };
 
     $scope.broadcastDial = function(key){
@@ -117,7 +118,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
     	}
     };
 
-    $scope.showPopup = function(data) {
+    $scope.showPopup = function(data, target) {
         if(!data.key) {
             $scope.currentPopup.url = null;
             return;
@@ -127,6 +128,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         }
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
+        $scope.currentPopup.target = $(target).attr("type") ? $(target).attr("type") : '';
     };
 	
 	$scope.showOverlay = function(show, url, data) {

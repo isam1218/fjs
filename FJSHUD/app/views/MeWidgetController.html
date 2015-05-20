@@ -78,7 +78,7 @@
                 <div class="XButton XButtonToggleSmall " ng-class="volume.spkVol == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="update_settings('hudmw_webphone_speaker','update',0)"></div>
                 <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
                   </div>
-                </div>
+                </div>               
                 <div class="RightSide">                            
                   <div class="row_buttons"> 
                     <button  class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('transfer',currentCall)"><span>{{verbage.transfer}}</span></button> 
@@ -91,7 +91,7 @@
                     <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
 
                     <div class="XButton CurrentCallBtn record ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-class="currentCall.record ? 'XButtonRecordOn':''" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
-                    <div class=" SelectBox XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}"  data-ng-click="showLocationsPopup($event, $element)">  
+                    <div class=" SelectBox XButton ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3, 'CurrentCallBtn': currentCall.state != 2 && currentCall.state != 3}" type="move" data-ng-click="showLocationsPopup($event, $element, true)">  
                       <div class="SelectBoxText">
                                 <span>{{::verbage.move}}</span>
                                 </div>

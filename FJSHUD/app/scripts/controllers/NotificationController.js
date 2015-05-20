@@ -352,8 +352,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}	
 		else
 		{				
-			$interval.cancel($scope.callObj[xpid].stopTime);
-			$scope.callObj[xpid]= {};			
+			if($scope.callObj[xpid])
+			{
+				$interval.cancel($scope.callObj[xpid].stopTime);
+				$scope.callObj[xpid]= {};		
+			}
 		}	
 		
 	});
