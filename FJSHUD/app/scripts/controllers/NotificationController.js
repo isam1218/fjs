@@ -66,10 +66,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	     // $(element).find('.MyCallBlock_Duration').text($scope.minutesText+":"+$scope.secondsText);
     }       
 	
-	phoneService.getDevices().then(function(data){
-		$scope.phoneSessionEnabled = true;
-	});
-	
+	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
+
 	$scope.$on('pidAdded', function(event, data){
 		addedPid = data.info;
 		if (localStorage['recents_of_' + addedPid] === undefined){
@@ -392,6 +390,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 				break;
 			case "openNot":
 				$scope.$parent.overlay ='notifications';
+				break;
+			case "enabled":
+				$scope.phoneSessionEnabled = true;
+				break;
+			case "disabled":
+				$scope.phoneSessionEnabled = false;
 				break;
 
 		}

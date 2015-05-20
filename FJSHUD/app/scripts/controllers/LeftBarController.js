@@ -20,7 +20,7 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService',
         else if (data['hudmw_searchautoclear'] == 'true'){
             $scope.autoClearOn = true;
         }
-        if (autoClearOn && $scope.query != ''){
+        if ($scope.autoClearOn && $scope.query != ''){
             $scope.autoClearTime = data['hudmw_searchautocleardelay'];
             $scope.clearSearch($scope.autoClearTime);          
         } else if ($scope.autoClearOn){
