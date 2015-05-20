@@ -82,9 +82,16 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};
 
 	$scope.getAttachment = function(url,fileName){
-		return httpService.get_attachment(url,fileName);
-	};
-	
+		// show image as is
+		if (fileName.match(/\.(png|jpg|jpeg|gif)$/i))
+			return httpService.get_attachment(url,fileName);
+		// show document image
+		else if (fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
+			return 'img/XIcon-PreviewDocument.png';
+		// show mysterious image
+		else
+			return 'img/XIcon-UnknownDocument.png';
+	};	
 
 	$scope.uploadAttachments = function($files){
       	fileList = [];
