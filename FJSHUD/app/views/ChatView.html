@@ -29,7 +29,7 @@
             
             </div>
             <div class="ChatMessageItem AttachmentsHolder" flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop >
-                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
+                <div class="ListMessageText" ng-bind-html="message.message | links | highlight:chat.query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
                     <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}" onerror="this.src='img/XIcon-PreviewDocument.png'" />               
                     <p> {{ attachment.fileName }}</p>
