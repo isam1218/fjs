@@ -119,6 +119,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.editGroup = function() {
+		$rootScope.groupEdit = true;
+		$rootScope.groupInfoId = $scope.profile.xpid;
 		$scope.showOverlay(true, 'GroupEditOverlay', $scope.profile);
 	};
 	

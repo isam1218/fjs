@@ -10,4 +10,8 @@ hudweb.controller('GroupInfoController', ['$scope', '$routeParams', '$rootScope'
   if ($rootScope.myPid === curGroup.ownerId)
     $scope.userIsOwner = true;
 
+  $scope.setEdit = function(){
+    $rootScope.groupEdit = true;
+  };
+
 }]);

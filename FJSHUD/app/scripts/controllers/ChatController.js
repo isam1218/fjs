@@ -172,7 +172,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			if (data[i].type.replace('.auto', '') == chat.type && context == chat.targetId) {
+			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
 				$scope.messages.push(data[i]);
 				found = true;
 			}
