@@ -4,11 +4,10 @@
             <span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span>
         </div>
         <div class="SelectBoxArrow"></div>
-    </div>
-    {{currentPopup.target}}
+    </div>   
     <div class="MenuContent">
         <div class="MenuSection">
-             <div class="MenuItem" data-ng-click="(currentPopup.target == null || currentPopup.target == '') ? setLocation(location.xpid) : moveLocation(location.xpid)" data-ng-class="{'selected':location.xpid == getCurrentLocationId()}" data-ng-repeat="location in locations">
+             <div class="MenuItem" data-ng-click="(currentPopup.target == null || currentPopup.target == '') ? setLocation(location.xpid) : moveLocation(location.xpid)" data-ng-class="{'selected':location.xpid == getCurrentLocationId()}" data-ng-repeat="location in locations">                
                 <div class="SelectedIcon"></div>
                 <div class="MenuItemText">{{ ::location.name }} <span ng-if="location.locationType != 'a' && location.locationType != 'w'">({{ ::location.phone }})</span></div>
                 <div class="MenuItemTextStatus">{{ location.status.deviceStatus=='r' && 'registered' || 'unregistered' }}</div>
