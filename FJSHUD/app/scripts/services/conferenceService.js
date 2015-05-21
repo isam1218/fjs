@@ -1,8 +1,11 @@
 hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService', function($q, $rootScope, $location, contactService, httpService) {
+	var service = this;
 	var deferred = $q.defer();
-	var conferences = [];	
+	
+	var conferences = [];
+	var totals = {occupied: 0, talking: 0, all: 0};
 
-	this.getConference = function(conferenceId){
+	service.getConference = function(conferenceId){
 		for (var i = 0, len = conferences.length; i < len; i++) {
 			if(conferences[i].xpid == conferenceId){
 				return conferences[i];
@@ -12,12 +15,12 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 		return null;
 	};
 	
-	this.getConferences = function() {
+	service.getConferences = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
 
- 	var conferenceHasMember = function(conference,contactId){
+ 	service.isMember = function(conference,contactId){
  		if(conference.members){
  			for (var i = 0, len = conference.members.length; i < len; i++) {
  				if(conference.members[i].contactId == contactId){
@@ -28,17 +31,13 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 
  		return false;
 	};
-
-	var containsConferenceRecording = function(conference, callrecording){
-		var callrecordings = conference.callrecordings;
-		
-		for (var i = 0, len = callrecordings.length; i < len; i++) {
-			if(callrecordings[i].xpid == callrecording.xpid){
-				return true;
-			}
-		}
-
-		return false;
+	
+	var formatData = function() {
+		// format data that controller needs
+		return {
+			conferences: conferences,
+			totals: totals
+		};
 	};
 	
 	/**
@@ -49,10 +48,12 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 		// first time
 		if (conferences.length == 0) {
 			conferences = data;
-			deferred.resolve(conferences);
+			deferred.resolve(formatData());
 				
 			// add avatar function
 			for (var i = 0, len = conferences.length; i < len; i++) {
+				conferences[i].members = [];
+				
 				conferences[i].getAvatar = function(index, size) {
 					if (this.members && this.members[index] !== undefined)
 						return httpService.get_avatar(this.members[index].contactId, size, size);
@@ -100,55 +101,65 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 		httpService.getFeed('conferencemembers');
 		httpService.getFeed('server');
 		httpService.getFeed('conferencestatus');
-		httpService.getFeed('conferencerecording');
 		httpService.getFeed('conferencepermissions');
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			// member dropped out
-			if (data[i].xef001type == 'delete') {
-				for (var c = 0, cLen = conferences.length; c < cLen; c++) {
-					var conference = conferences[c];
-					
-					if (conference.members && conference.members.length > 0) {
-						// find member and remove
-						for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
-							if (conference.members[m].xpid == data[i].xpid) {
-								conference.members.splice(m, 1);
-								break;
-							}
+		totals.occupied = 0;
+		totals.talking = 0;
+		totals.all = 0;
+		
+		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
+			var conference = conferences[c];
+			
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				// member dropped out
+				if (data[i].xef001type == 'delete') {
+					for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
+						if (conference.members[m].xpid == data[i].xpid) {
+							conference.members.splice(m, 1);
+							data.splice(i, 1);
+							iLen--;
+							
+							break;
 						}
 					}
 				}
-			}
-			// member joined
-			else {
-				for (var c = 0, cLen = conferences.length; c < cLen; c++) {
-					var conference = conferences[c];
-					
-					if (!conference.members)
-						conference.members = [];
-					
-					if (data[i].fdpConferenceId == conferences[c].xpid) {
-						// isn't already in
-						if (!conferenceHasMember(conferences[c], data[i].contactId)) {
-							data[i].fullProfile = contactService.getContact(data[i].contactId);
-							conferences[c].members.push(data[i]);
-							if($rootScope.myPid == data[i].contactId)
-							{						
-								$location.path('/conference/' + data[i].fdpConferenceId);
-							}	
-						}
+				// member exists
+				else if (data[i].fdpConferenceId == conference.xpid) {	
+					totals.all++;
+							
+					if (!data[i].muted)
+						totals.talking++;
 						
-						break;
+					var match = false;
+					
+					// update or add
+					for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
+						if (conference.members[m].xpid == data[i].xpid) {
+							conference.members[m] = angular.extend(conference.members[m], data[i]);
+							
+							match = true;
+							break;
+						}
+					}
+					
+					if (!match) {
+						data[i].fullProfile = contactService.getContact(data[i].contactId);
+						conferences[c].members.push(data[i]);
+								
+						// redirect self
+						if ($rootScope.myPid == data[i].contactId)
+							$location.path('/conference/' + data[i].fdpConferenceId);
 					}
 				}
 			}
+			
+			if (conference.members.length > 0)
+				totals.occupied++;
 		}
 		
 		$rootScope.loaded.conferences = true;
-		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 
 	$rootScope.$on("server_synced",function(event,data){
@@ -162,8 +173,6 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 				}
 			}
 		}
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 
 	$rootScope.$on("conferencestatus_synced",function(event,data){
@@ -175,25 +184,6 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 				}
 			}
 		}
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
-	});
-
-	$rootScope.$on("conferencerecording_synced",function(event,data){
-		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
-			conferences[c].callrecordings = [];
-			
-			for (var i = 0, iLen = data.length; i < iLen; i++) {
-				if (data[i].conferenceId == conferences[c].xpid){
-					if (!containsConferenceRecording(conferences[c], data[i]))
-						conferences[c].callrecordings.push(data[i]);
-					
-					break;
-				}
-			}
-		}
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 	
 	$rootScope.$on("conferencepermissions_synced", function(event, data) {
@@ -205,7 +195,5 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 				}
 			}
 		}
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('conferences_updated', conferences));
 	});
 }]);

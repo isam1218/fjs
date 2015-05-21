@@ -75,13 +75,14 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					// start conference via active call
 					else if (scope.$parent.currentCall) {
 						conferenceService.getConferences().then(function(data) {
+							var conferences = data.conferences;
 							var found = null;
-							var len = data.length;
+							var len = conferences.length;
 							
 							// find first empty room on same server
 							for (var i = 0; i < len; i++) {
-								if (data[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!data[i].members || data[i].members.length == 0)) {
-									found = data[i].xpid;
+								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!conferences[i].members || conferences[i].members.length == 0)) {
+									found = conferences[i].xpid;
 									break;
 								}
 							}
@@ -90,8 +91,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							if (!found) {
 								for (var i = 0; i < len; i++) {
 									// find first room on same server
-									if (!data[i].members || data[i].members.length == 0) {
-										found = data[i].xpid;
+									if (!conferences[i].members || conferences[i].members.length == 0) {
+										found = conferences[i].xpid;
 										break;
 									}
 								}

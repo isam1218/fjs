@@ -43,9 +43,11 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 		
 		// search conferences by name
 		conferenceService.getConferences().then(function(data) {
-			for (var i = 0, len = data.length; i < len; i++) {
-				if (data[i].name.toLowerCase().indexOf(query) != -1)
-					$scope.conferences.push(data[i]);
+			var conferences = data.conferences;
+			
+			for (var i = 0, len = conferences.length; i < len; i++) {
+				if (conferences[i].name.toLowerCase().indexOf(query) != -1)
+					$scope.conferences.push(conferences[i]);
 			}
 		});
 	};

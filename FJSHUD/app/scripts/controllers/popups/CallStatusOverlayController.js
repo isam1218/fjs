@@ -28,7 +28,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				break;
 			case 'conference':
 				conferenceService.getConferences().then(function(data) {
-					$scope.conferences = data;
+					$scope.conferences = data.conferences;
 				});
 				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 	
@@ -107,7 +107,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		
 		if (screen == 'conference') {
 			conferenceService.getConferences().then(function(data) {
-				$scope.conferences = data;
+				$scope.conferences = data.conferences;
 			});
 	
 			$scope.confQuery = '';
