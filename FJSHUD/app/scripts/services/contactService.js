@@ -101,7 +101,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 					
 					// attach full profile, if present
 					if (data[key].contactId)
-						contacts[i].call.fullProfile = service.getContact(data[key].contactId);
+						contacts[i].call.fullProfile = angular.copy(service.getContact(data[key].contactId));
 					
 					break;
 				}
