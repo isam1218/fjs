@@ -82,21 +82,41 @@
    }
     
    .CallStatusText{
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
         cursor: pointer;
         display:inline-block;
         clear: none;        
-        margin-left: 10px;                                         
+        margin-left: 10px;                                              
                         
         .callStatus{
-            font-size: 11px;
-            font-weight: normal;                                            
+            font-size: 10px;
+            font-weight: normal;  
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;                      
         }
         .memberName{
-            font-weight:bold;
-            font-size:14px;
-            float: left;                 
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: bold;
+            text-shadow: 0px 1px 0px #EEE;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            
+            .MyCallBlock_Rec {
+                position: absolute;
+                background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
+                width: 36px;
+                height: 19px;
+                display: none;                
+                right: 35%;
+                margin-top: -15px;
+                &.true {
+                    display: block;
+                }
+            }                
         }
    }
    
@@ -107,7 +127,11 @@
             
         .XButton{
             font-size: 13px;  
-            pointer-events: auto;           
+            pointer-events: auto;        
+            
+            &.record, &.SelectBox[type=move]{
+                top: 10px;
+            }   
         }
     }   	
 }

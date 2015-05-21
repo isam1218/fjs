@@ -185,12 +185,12 @@
 
 </div>
 
-	<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">							
+	<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">										
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 					<div class="CallStatusIcon"> </div>
 				</div>
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
-					<div class="memberName">{{currentCall.displayName}}</div>
+					<div class="memberName">{{currentCall.displayName}} <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
 					<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 				</div>
 				
