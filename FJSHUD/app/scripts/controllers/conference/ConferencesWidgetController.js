@@ -1,6 +1,6 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $timeout) {
 	$scope.query = '';
-	$scope.totals = {occupied: 0, talking: 0, all: 0};
+	$scope.totals = {};
 	$scope.sortBy = 'location';
 	var addedPid;
 	var localPid;
@@ -32,60 +32,63 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
   	}
   };
 
+  httpService.getFeed('settings');
+
+  $scope.$on('settings_updated', function(event, data){
+      if (data['hudmw_searchautoclear'] == ''){
+          autoClearOn = false;
+          if (autoClearOn && $scope.query != ''){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                  $scope.clearSearch($scope.autoClearTime);          
+              } else if (autoClearOn){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              } else if (!autoClearOn){
+                  $scope.autoClearTime = undefined;
+              }
+      }
+      else if (data['hudmw_searchautoclear'] == 'true'){
+          autoClearOn = true;
+          if (autoClearOn && $scope.query != ''){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              $scope.clearSearch($scope.autoClearTime);          
+          } else if (autoClearOn){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+          } else if (!autoClearOn){
+              $scope.autoClearTime = undefined;
+          }
+      }        
+  });
+
+  var currentTimer = 0;
+
+  $scope.clearSearch = function(autoClearTime){
+      if (autoClearTime){
+          var timeParsed = parseInt(autoClearTime + '000');
+          $timeout.cancel(currentTimer);
+          currentTimer = $timeout(function(){
+              $scope.query = '';
+          }, timeParsed);         
+      } else if (!autoClearTime){
+          return;
+      }
+  };
+
 	conferenceService.getConferences().then(function(data) {
-    $scope.conferences = data;
-    // switch($scope.selectedConf.display_name){
-    //   case "Sort By Location":
-    //     $scope.conferences.sort(function(a,b){
-    //       return a.location.localeCompare(b.location);
-    //     });
-    //     // localStorage.selectedConfOption = JSON.stringify(selection);
-    //     break;
-    //   case "Sort By Room number":
-    //     $scope.conferences.sort(function(a,b){
-    //       return a.roomNumber - b.roomNumber;
-    //     });
-    //     // localStorage.selectedConfOption = JSON.stringify(selection);
-    //     break;
-    //   case "Sort By Activity":
-    //     $scope.conferences.sort(function(a,b){
-    //       return a.status.membersCount - b.status.membersCount;
-    //     });
-    //     // localStorage.selectedConfOption = JSON.stringify(selection);
-    //     break;      
-    // }
+		$scope.conferences = data.conferences;
+		$scope.totals = data.totals;
 	});
 
 	$scope.sort_options = [
-		{display_name: $scope.verbage.sort_room_by_location}, 
-		{display_name: $scope.verbage.sort_by_room_number}, 
-		{display_name: $scope.verbage.sort_by_activity}
+		{display_name: $scope.verbage.sort_room_by_location, type: 'location', desc: false}, 
+		{display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
+		{display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
 	];
 	
   $scope.selectedConf = localStorage.selectedConfOption ? JSON.parse(localStorage.selectedConfOption) : $scope.sort_options[0];
 
   $scope.sortConf = function(selection){
+	localStorage.selectedConfOption = JSON.stringify(selection);
     $scope.selectedConf = selection;
-    switch(selection.display_name){
-      case "Sort By Location":
-        $scope.conferences.sort(function(a,b){
-          return a.location.localeCompare(b.location);
-        });
-        localStorage.selectedConfOption = JSON.stringify(selection);
-        break;
-      case "Sort By Room number":
-        $scope.conferences.sort(function(a,b){
-          return a.roomNumber - b.roomNumber;
-        });
-        localStorage.selectedConfOption = JSON.stringify(selection);
-        break;
-      case "Sort By Activity":
-        $scope.conferences.sort(function(a,b){
-          return a.status.membersCount - b.status.membersCount;
-        });
-        localStorage.selectedConfOption = JSON.stringify(selection);
-        break
-    }
   };
 
 	$scope.$on('pidAdded', function(event, data){
@@ -108,53 +111,15 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	};
 
 	$scope.enableChat = true;
-
-	// get data from sync
-	$scope.$on('conferences_updated', function(event, data) {
-		$scope.conferences = data;
-		
-		// update totals
-		$scope.totals = {occupied: 0, talking: 0, all: 0};
-		
-		for (i = 0; i < $scope.conferences.length; i++) {
-			if ($scope.conferences[i].members && $scope.conferences[i].members.length > 0) {
-				$scope.totals.occupied++;
-				$scope.totals.all += $scope.conferences[i].members.length;
-				
-				for (m = 0; m < $scope.conferences[i].members.length; m++) {
-					if (!$scope.conferences[i].members[m].muted)
-						$scope.totals.talking++;
-				}
-			}
-		}
-    // set upon initial load
-    switch($scope.selectedConf.display_name){
-      case "Sort By Location":
-        $scope.conferences.sort(function(a,b){
-          return a.location.localeCompare(b.location);
-        });
-        break;
-      case "Sort By Room number":
-        $scope.conferences.sort(function(a,b){
-          return a.roomNumber - b.roomNumber;
-        });
-        break;
-      case "Sort By Activity":
-        $scope.conferences.sort(function(a,b){
-          return a.status.membersCount - b.status.membersCount;
-        });
-        break;      
-    }
-	});
 	
 	// filter list down
 	$scope.customFilter = function() {
 		return function(conference) {
 			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)){
-				if (!conference.members){
+				if (conference.members.length == 0){
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
 						return true;
-				} else if (conference.members.length){
+				} else {
 					for (var j = 0; j < conference.members.length; j++){
 						var individualMember = conference.members[j];
 						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1 || individualMember.fullProfile.primaryExtension.indexOf($scope.query) != -1 || conference.extensionNumber.indexOf($scope.query) != -1)
@@ -164,14 +129,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 			}
 		};
 	};
-	
-	$scope.getSingleAvatarUrl = function(xpid){
-    	if(xpid){
-    		return httpService.get_avatar(xpid,14,14);
-    	}else{
-    		return 'img/Generic-Avatar-14.png';
-    	}
-    };
 	
 	$scope.findRoom = function() {	
 		var found = null;
@@ -232,17 +189,4 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 	});
-
-    $scope.getAvatarUrl = function(conference, index) {
-        if (conference.members) {
-            if (conference.members[index] !== undefined) {
-                var xpid = conference.members[index].contactId;
-                return httpService.get_avatar(xpid,28,28);
-            }
-            else
-                return 'img/Generic-Avatar-28.png';
-        }
-        else
-            return 'img/Generic-Avatar-28.png';
-    };
 }]);

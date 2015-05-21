@@ -22,8 +22,7 @@
                         <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-click="update(selectedArchiveOption)">{{archive.name}}</input>
                     </div>
                 </div>
-            </div>
-            
+            </div>            
             
             <div class="Section">
                 <div >
@@ -64,12 +63,16 @@
         <div class="Sections" >
             <div class="Section">
                 <div style="background-color:#FFF;height:inherit">
-					<img class="CurrentDownload" ng-src="{{getAttachment(currentDownload.url)}}" ng-if="!showEmbed" />
+					<!-- embed types -->
+					<img class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
 					
-					<iframe class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="showEmbed"></iframe>
+					<iframe class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'doc' || embedType == 'text'"></iframe>
+					
+					<video class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'video'" controls>Your browser doesn't support HTML5 video.</video>
+					
+					<audio class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'audio'" controls>Your browser doesn't support HTML5 audio.</audio>
                 </div>
-            </div>
-            
+            </div>            
             
             <div class="Section">
                 <div style="margin-bottom:10px">
@@ -82,11 +85,11 @@
                 <div class="AttachmentDownload">
                     <div ng-repeat="download in downloadables" class="ListRow Small Downloadables" ng-click="selectCurrentDownload(download)">
                         <div style="display:inline-block;width:40px" class="Center"> 
-                            <img class="AvatarSmall Center" ng-src="{{getAttachment(download.url)}}" onerror="this.src='img/XIcon-PreviewDocument.png'" />
+                            <img class="AvatarSmall Center" ng-src="{{::getPreviewIcon(download.url, download.fileName)}}" />
                         </div>
                         <div class="FileInfo" ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' ">
                             <div style="margin-top:0px;margin-left:5px">
-                                <p style="margin-top:0px">{{download.fileName}}</p>
+                                <p style="margin-top:0px">{{::download.fileName}}</p>
                                 <p> {{ ::download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>
                             </div>
                         </div>
@@ -98,7 +101,7 @@
         <div class="Footer">
             <input type="button" class="XButton" value="{{::verbage.Previous}}" ng-click="getOffsetDownload(-1)" />
             <input type="button" class="XButton" value="{{::verbage.Next}}" ng-click="getOffsetDownload(1)" />
-            <a type="button" href="{{getAttachment(currentDownload.url,currentDownload.fileName)}}" target="_blank" class="XButton XButtonBlue" download value="{{::verbage.share_message_and_files}}">{{::verbage.download_current}}</a>
+            <a type="button" href="{{getDownloadURL(currentDownload.url)}}" target="_blank" class="XButton XButtonBlue" download value="{{::verbage.share_message_and_files}}">{{::verbage.download_current}}</a>
 
         </div>
     </div>

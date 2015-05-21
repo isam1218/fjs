@@ -289,7 +289,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y});
+        $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y}, eventTarget);
         return false;
     };
 

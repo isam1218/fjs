@@ -129,7 +129,7 @@
 			
 			<div class="List">
 				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
-					<avatar profile="member.fullProfile"></avatar>
+					<avatar profile="member" context="conference:gadget.data"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
 						<div class="ListRowTitle">

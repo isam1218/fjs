@@ -1,10 +1,12 @@
-hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'UtilService', function($scope, $routeParams,$rootScope,myHttpService,groupService,utils) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'UtilService', 'SettingsService', '$timeout', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, utils, settingsService, $timeout, httpService) {
     var context = this;
     var addedPid;
     $scope.contactGroups = [];
     $scope.sharedGroups = [];
     $scope.meModel = {};
     $scope.contactId = $routeParams.contactId;
+    $scope.que = {};
+    $scope.que.query = '';
     $scope.query = "";
     $scope.add = {};
 
@@ -41,6 +43,47 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
     // myHttpService.getFeed("groups");
 
     myHttpService.getFeed("groupcontacts");
+
+    httpService.getFeed('settings');
+
+    $scope.$on('settings_updated', function(event, data){
+        if (data['hudmw_searchautoclear'] == ''){
+            autoClearOn = false;
+            if (autoClearOn && $scope.que.query != ''){
+                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                    $scope.clearSearch($scope.autoClearTime);          
+                } else if (autoClearOn){
+                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                } else if (!autoClearOn){
+                    $scope.autoClearTime = undefined;
+                }
+        }
+        else if (data['hudmw_searchautoclear'] == 'true'){
+            autoClearOn = true;
+            if (autoClearOn && $scope.que.query != ''){
+                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                $scope.clearSearch($scope.autoClearTime);          
+            } else if (autoClearOn){
+                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+            } else if (!autoClearOn){
+                $scope.autoClearTime = undefined;
+            }
+        }
+    });
+
+    var currentTimer = 0;
+
+    $scope.clearSearch = function(autoClearTime){
+        if (autoClearTime){
+            var timeParsed = parseInt(autoClearTime + '000');
+            $timeout.cancel(currentTimer);
+            currentTimer = $timeout(function(){
+                $scope.que.query = '';
+            }, timeParsed);         
+        } else if (!autoClearTime){
+            return;
+        }
+    };
 
     var update_groups = function(){
         $scope.sharedGroups = [];

@@ -8,16 +8,13 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 	
 		var curGroup = groupService.getGroup($rootScope.groupInfoId);
 
-		// if no current group cuz haven't visited the group info page
-		if (!curGroup){
-			// no current group but creating a new group w/ user
+		if (!$rootScope.groupEdit){
 			$scope.add.contacts[1] = contactService.getContact($scope.$parent.overlay.data);
 		} else {
 			for (var i = 0; i < curGroup.members.length; i++){
 				// if user is a member of the group clicked on...
 				if ($rootScope.myPid === curGroup.members[i].fullProfile.xpid){
 					$scope.editing = true;
-					console.log('match!', $scope.editing);
 					var group = curGroup;
 					$scope.add.groupId = group.xpid;
 					$scope.add.name = group.name;
@@ -30,7 +27,9 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 					});
 				}
 			}
-		}	
+			$rootScope.groupEdit = false;		
+		}
+
 	});
 	
 	$scope.searchContact = function(contact) {
@@ -71,6 +70,12 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 
 		delete $scope.add.contacts;
 		
+		var deletedGroupMessage = $scope.add.message;
+		var groupName = $scope.add.name;
+		var deletedMessageIntro = "GOODBYE " + groupName + "!  "; 
+		var finalDeletedGroupMessage = deletedMessageIntro + deletedGroupMessage;
+		$scope.add.message = finalDeletedGroupMessage;
+
 		// save
 		httpService.sendAction('groups', $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup'), $scope.add);
 		

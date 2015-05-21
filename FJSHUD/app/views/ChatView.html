@@ -13,7 +13,7 @@
 		
 <div class="ListViewContent" id="ListViewContent">
    
-    <div  flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop style="position:absolute; width:100%; height:100%;"> 
+    <div  flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop class="attachmentDrag"> 
 
     </div>
     <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" ng-hide="conversationType == 'conference' && !joined">
@@ -29,9 +29,9 @@
             
             </div>
             <div class="ChatMessageItem AttachmentsHolder" flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop >
-                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
+                <div class="ListMessageText" ng-bind-html="message.message | links | highlight:chat.query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
-                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}" onerror="this.src='img/XIcon-PreviewDocument.png'" />               
+                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}" />               
                     <p> {{ attachment.fileName }}</p>
                 </div> 
             </div>

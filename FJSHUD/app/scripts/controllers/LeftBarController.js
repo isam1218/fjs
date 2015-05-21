@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService', 'SettingsService', function($scope, httpService, phoneService, settingsService) {
+hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService', 'SettingsService', '$timeout', function($scope, httpService, phoneService, settingsService, $timeout) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
@@ -7,11 +7,12 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService',
     $scope.autoClearTime;
     $scope.autoClearOn;
 
-    httpService.getFeed('settings');
 
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
     };
+
+    httpService.getFeed('settings');
 
     $scope.$on('settings_updated', function(event, data){
         if (data['hudmw_searchautoclear'] == ''){
@@ -34,12 +35,11 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService',
 
     $scope.clearSearch = function(autoClearTime){
         if (autoClearTime){
-            var timeParsed = parseInt(autoClearTime + '00');
-            // console.log('time parsed - ', timeParsed);
-            clearTimeout(currentTimer);
-            currentTimer = setTimeout(function(){
+            var timeParsed = parseInt(autoClearTime + '000');
+            $timeout.cancel(currentTimer);
+            currentTimer = $timeout(function(){
                 $scope.query = '';
-            }, timeParsed);            
+            }, timeParsed);         
         } else if (!autoClearTime){
             return;
         }

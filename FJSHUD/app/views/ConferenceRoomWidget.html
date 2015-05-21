@@ -45,7 +45,7 @@
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-keypress="clearSearch(autoClearTime)"/>
                     </div>
                     <div class="SearchInputBoxStateButton">
                         <div class="SearchInputBoxStateButtonIcon"></div>
@@ -61,7 +61,7 @@
 						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid" droppable="Contact,Call">
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: selectedConf.type: selectedConf.desc track by conference.xpid" droppable="Contact,Call">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
@@ -82,7 +82,7 @@
 						
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
-                                <avatar profile="member.fullProfile" type="4"></avatar>
+                                <avatar profile="member" type="4" context="conference:conference"></avatar>
                                 <div class="first-name">{{member.displayName}}</div>
                             </div>
                         </div>

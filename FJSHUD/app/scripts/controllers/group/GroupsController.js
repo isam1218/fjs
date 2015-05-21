@@ -66,7 +66,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
     var query = $scope.$parent.query;
     return function(group){
       // console.log('group - ', group);
-      if (group.name.toLowerCase().indexOf(query) != -1 || group.extension.indexOf(query) != -1)
+      if ((group.name || group.extension) && (group.name.toLowerCase().indexOf(query) != -1 || group.extension.indexOf(query) != -1))
         return true;
       if (group.members.length > 0){
         for (var i = 0; i < group.members.length; i++){

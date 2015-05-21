@@ -82,15 +82,21 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};
 
 	$scope.getAttachment = function(url,fileName){
-		return httpService.get_attachment(url,fileName);
-	};
-	
+		// show image as is
+		if (fileName.match(/\.(png|jpg|jpeg|gif)$/i))
+			return httpService.get_attachment(url,fileName);
+		// show document image
+		else if (fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
+			return 'img/XIcon-PreviewDocument.png';
+		// show mysterious image
+		else
+			return 'img/XIcon-UnknownDocument.png';
+	};	
 
 	$scope.uploadAttachments = function($files){
       	fileList = [];
 		
       	fileList.push($files.file);
-      	
 		
         var data = {
             'action':'sendWallEvent',
@@ -106,12 +112,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "2_5",
             "_archive":0,
-        }
+        };
+		
         httpService.upload_attachment(data,fileList);
 		
         $scope.upload.flow.cancel();
     
     };
+	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
 		if (scrollbox.scrollHeight)
@@ -171,7 +179,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			if (data[i].type == chat.type && context == chat.targetId) {
+			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
 				$scope.messages.push(data[i]);
 				found = true;
 			}

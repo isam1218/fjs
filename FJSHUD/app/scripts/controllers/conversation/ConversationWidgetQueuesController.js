@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope', '$routeParams', '$timeout', '$filter', 'ContactService', 'QueueService', 'HttpService', function($scope, $rootScope, $routeParams, $timeout, $filter, contactService, queueService, httpService) {    
+hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope', '$routeParams', '$timeout', '$filter', 'ContactService', 'QueueService', 'HttpService', 'SettingsService', function($scope, $rootScope, $routeParams, $timeout, $filter, contactService, queueService, httpService, settingsService) {    
     $scope.contactId = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactId);
     $scope.data = {};
@@ -6,9 +6,51 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.log_out_option;
     $scope.sort;
     $scope.queues = [];
-    $scope.query = "";
+    $scope.que = {};
+    $scope.que.query = '';
     var localPid;
     var addedPid;
+
+    httpService.getFeed('settings');
+
+    $scope.$on('settings_updated', function(event, data){
+        if (data['hudmw_searchautoclear'] == ''){
+            autoClearOn = false;
+            if (autoClearOn && $scope.que.query != ''){
+                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                    $scope.clearSearch($scope.autoClearTime);          
+                } else if (autoClearOn){
+                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                } else if (!autoClearOn){
+                    $scope.autoClearTime = undefined;
+                }
+        }
+        else if (data['hudmw_searchautoclear'] == 'true'){
+            autoClearOn = true;
+            if (autoClearOn && $scope.que.query != ''){
+                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                $scope.clearSearch($scope.autoClearTime);          
+            } else if (autoClearOn){
+                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+            } else if (!autoClearOn){
+                $scope.autoClearTime = undefined;
+            }
+        }        
+    });
+
+    var currentTimer = 0;
+
+    $scope.clearSearch = function(autoClearTime){
+        if (autoClearTime){
+            var timeParsed = parseInt(autoClearTime + '000');
+            $timeout.cancel(currentTimer);
+            currentTimer = $timeout(function(){
+                $scope.que.query = '';
+            }, timeParsed);         
+        } else if (!autoClearTime){
+            return;
+        }
+    };
 
     $scope.$on('pidAdded', function(event, data){
         addedPid = data.info;

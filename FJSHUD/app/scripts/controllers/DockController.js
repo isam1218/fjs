@@ -129,20 +129,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.getContact = function(xpid) {
 		return contactService.getContact(xpid);
 	};
-	
-	$scope.$on('conferences_updated', function(event, data) {
-		if (!$scope.gadgets.GadgetConferenceRoom)
-			return;
-			
-		for (key in data) {
-			for (i = 0; i < $scope.gadgets.GadgetConferenceRoom.length; i++) {
-				if (data[key].xpid == $scope.gadgets.GadgetConferenceRoom[i].xpid) {
-					$scope.gadgets.GadgetConferenceRoom[i] = data[key];
-					break;
-				}
-			}
-		}
-	});
 
 	$scope.isObjectEmpty = function(object){
 		return !$.isEmptyObject(object);

@@ -101,7 +101,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		for (key in data)
 			settings[data[key].key] = data[key].value;
 		
-		deferSettings = $q.defer();
 		deferSettings.resolve(settings);
 		
 		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));

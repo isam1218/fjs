@@ -128,8 +128,8 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   });
 
-  $scope.$on('conferences_updated', function(event, data){
-    $scope.totalConferences = data;
+  conferenceService.getConferences().then(function(data) {
+    $scope.totalConferences = data.conferences;
 
     for (var j = 0; j < $scope.totalConferences.length; j++){
       var singleConference = $scope.totalConferences[j];

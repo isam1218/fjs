@@ -1,4 +1,4 @@
-hudweb.controller('LocationsController',['$scope','$element','HttpService',function($scope, $element,httpService) {
+hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','HttpService',function($scope, $routeParams, $element,httpService) {
     //fjs.ui.Controller.call(this, $scope);
 
     /*
@@ -11,6 +11,12 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
     $scope.meModel = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
+        $scope.onBodyClick();
+    };
+    
+    $scope.moveLocation = function(locationId){
+    	var callId = $routeParams.callId;
+        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":$scope.meModel["current_location"] = locationId, "variance": "native", "options": "0"});
         $scope.onBodyClick();
     };
     
