@@ -215,7 +215,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		old_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
 			today = new Date();
-			return date.getDate() != today.getDate() && item.receivedStatus != "away"; 
+			return date.getTime() < today.getTime() && item.receivedStatus != "away"; 
 		});
         if(old_notifications.length > 0)
            $scope.hasOldNotifications = true; 
