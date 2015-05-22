@@ -68,8 +68,8 @@ hudweb.controller('LeftBarController', ['$scope', 'HttpService', 'PhoneService',
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid] = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid] = data[i];
             }
         }
     });

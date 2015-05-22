@@ -22,7 +22,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   var setVerbage = function(){
     if ($scope.updatedNavbar != $scope.appIcons){
       $scope.appIcons = $scope.updatedNavbar;
-      for(i in $scope.appIcons){
+      for (var i = 0; i < $scope.appIcons.length; i++) {
         var key = $scope.appIcons[i].key;
 
         switch(key){
