@@ -1,4 +1,4 @@
-hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'UtilService', 'SettingsService', '$timeout', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, utilService, settingsService, $timeout) {
+hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, settingsService, $timeout) {
     var addedPid;
     var localPid;
     $scope.voicemails = [];     

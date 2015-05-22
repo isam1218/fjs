@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'UtilService', 'SettingsService', '$timeout', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, utils, settingsService, $timeout, httpService) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'SettingsService', '$timeout', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, settingsService, $timeout, httpService) {
     var context = this;
     var addedPid;
 	var favoriteID;
