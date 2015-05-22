@@ -1,14 +1,35 @@
 hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'UtilService', 'SettingsService', '$timeout', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, utils, settingsService, $timeout, httpService) {
     var context = this;
     var addedPid;
-    $scope.contactGroups = [];
-    $scope.sharedGroups = [];
-    $scope.meModel = {};
+	var favoriteID;
+	
     $scope.contactId = $routeParams.contactId;
+    $scope.groups = [];
+	$scope.userGroup;
     $scope.que = {};
     $scope.que.query = '';
     $scope.query = "";
-    $scope.add = {};
+	
+	groupService.getGroups().then(function(data) {
+		$scope.groups = data.groups;
+		favoriteID = data.favoriteID;
+		
+		// find user's department
+		var groups = $scope.groups;
+		
+		for (var i = 0, len = groups.length; i < len; i++) {
+			if (!groups[i].ownerId) {
+				for (var m = 0, mLen = groups[i].members.length; m < mLen; m++) {
+					if (groups[i].members[m].contactId == $scope.contactId) {
+						$scope.userGroup = groups[i];
+						break;
+					}
+				}
+			}
+			
+			if ($scope.userGroup) break;
+		}
+	});
 
     $scope.$on('pidAdded', function(event, data){
         addedPid = data.info;
@@ -27,22 +48,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
         };
         localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
         $rootScope.$broadcast('recentAdded', {id: xpid, type: 'group', time: new Date().getTime()});
-    }
-	
-    // pull updates from service
-    $scope.$on('groups_updated',function(event,data) {
-        $scope.groups = data.groups;
-        $scope.groups = $scope.groups.filter(function(item){
-            return item.members && item.members.length > 0;
-        });
-       $scope.mine = data.mine;
-       update_groups();
-    });
-
-    myHttpService.getFeed("me");
-    // myHttpService.getFeed("groups");
-
-    myHttpService.getFeed("groupcontacts");
+    };
 
     httpService.getFeed('settings');
 
@@ -84,77 +90,24 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
             return;
         }
     };
-
-    var update_groups = function(){
-        $scope.sharedGroups = [];
-        $scope.contactGroups = [];
-        for (var j = 0; j < $scope.groups.length; j++){
-            var singleGroup = $scope.groups[j];
-            var members = singleGroup.members;
-            var clickedOnIsAMember = false;
-            var imAMember = false
-            for (var k = 0; k < members.length; k++){
-                var singleMember = members[k];
-                // if the group-member's xpid matches the clicked on member's contact id
-                if (singleMember.fullProfile.xpid == $scope.contactId){
-                    clickedOnIsAMember = true;
-                }
-                // if the contact id of the group-member matches my USER/scope-meModel's pid...
-                if (singleMember.fullProfile.xpid === $scope.meModel.my_pid){
-                    // then current user is a member of that group
-                    imAMember = true;
-                }
-            }
-            if (clickedOnIsAMember && imAMember){
-                if (!isGroupIn(singleGroup, $scope.sharedGroups)){
-                    // scope and current user are both members of the group
-                    $scope.sharedGroups.push(singleGroup);
-                }
-            } else if (clickedOnIsAMember){
-                if (!isGroupIn(singleGroup, $scope.contactGroups)){
-                    $scope.contactGroups.push(singleGroup);
-                }
-            }
-        }
-    };
-
-    var isGroupIn = function(groupToInsert, groups){
-        groupExist = false;
-        for(group in groups){
-            if(groupToInsert.xpid == groups[group].xpid){
-                groupExist = true;
-            }
-        }
-        return groupExist;
-    };
-
-     $scope.getAvatarUrl = function(group, index) {
-        if(group.members){
-            if (group.members[index] !== undefined) {
-                var xpid = group.members[index];
-                return myHttpService.get_avatar(xpid,14,14);
-            }
-            else
-                return 'img/Generic-Avatar-14.png';
-
-        } 
-    };
-
-        
-    var filterGroup = function(){
-        return function(group){
-            return group.hasContact(context.contactId) && !group.isFavorite();
-        };
-    };
-    //fjs.ui.GroupsTab.call(this, $scope, $routeParams, dataManager, filterGroup);
+	
+	$scope.customFilter = function() {
+		var query = $scope.que.query.toLowerCase();
+		
+		return function(group) {
+			if (group.xpid != favoriteID && group != $scope.userGroup && groupService.isMember(group, $scope.contactId) && groupService.isMine(group.xpid)) {
+				if (query == '' || group.name.toLowerCase().indexOf(query) != -1)
+					return true;
+			}
+		};
+	};
+	
+	$scope.isTheirGroup = function() {
+		if ($scope.userGroup && $scope.userGroup.name.toLowerCase().indexOf($scope.que.query.toLowerCase()) != -1)
+			return true;
+	};
+	
     $scope.$on("$destroy", function() {
-    });
-
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
+		
     });
 }]);

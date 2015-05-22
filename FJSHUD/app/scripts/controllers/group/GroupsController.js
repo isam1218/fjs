@@ -16,12 +16,11 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
   });
 
   // pull group updates from service, including groups from local storage
-  $scope.$on('groups_updated', function(event, data) {
+  groupService.getGroups().then(function(data) {
     $scope.groups = data.groups;
     $scope.mine = data.mine;
     $scope.favoriteID = data.favoriteID;
-
-	});
+  });
 	
   $scope.sort = function(field) {
       if($scope.sortField!=field) {

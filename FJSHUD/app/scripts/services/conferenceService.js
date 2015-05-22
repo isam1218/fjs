@@ -86,6 +86,8 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 				if (!match) {
 					conferences.push(data[i]);
 					
+					conferences[conferences.length-1].members = [];
+					
 					// add avatar
 					conferences[conferences.length-1].getAvatar = function (index, size) {
 						if (this.members && this.members[index] !== undefined)

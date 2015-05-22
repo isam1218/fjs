@@ -1,49 +1,39 @@
 <div class="ToolBar">
         <div class="LocationSelector " style="float: right;margin-top: 5px;text-align: center; width: 30%;">
-                      <!--<select> </select>-->
-            <div class="SelectBox" data-ng-click="showPagePopup($event, $element)">
-                <div class="SelectBoxText">
-                    <span class="InnerIco"></span>&nbsp;<span>{{::verbage.Call}}</span>
-                </div>
-                <div class="SelectBoxArrow"></div>
-            </div>
+            <select class="SelectBox" ng-model="action.selected" ng-options="option.text for option in callOptions track by option.type" ng-change="makeCall(action.selected.type)"></select>
         </div>
 </div>
 
-<div class="ListView fj-scrollable page"> 
-        
+<div class="ListView fj-scrollable page">   
+        <p style="font-size:12px;margin:10px" ng-if="group.originator == ''"> {{::verbage.tab_shows_group_call_members}} </p>
 
-        <p ng-if="pageMembers.length == 0" style="font-size:12px;margin:10px" > {{::verbage.tab_shows_group_call_members}} </p>
-
-        <div ng-if="pageMembers.length > 0">
+        <div ng-if="group.originator != ''">
             <div id="" style="margin:10px;padding:5px;width:97%;background-color:#EDEDED"> 
-                <div style="color:#009cff;font-weight:bold;font-size:.7em">{{group.name}} {{ ::verbage.group_page}}</div>
-                <i style="margin-top:0px;font-size:.7em">{{::verbage.created_by }} {{groupCallOriginator.displayName}}</i>
+                <div style="color:#009cff;font-weight:bold;font-size:.7em">{{::group.name}} {{ ::verbage.group_page}}</div>
+                <i style="margin-top:0px;font-size:.7em">{{::verbage.created_by }} {{group.originator}}</i>
             </div>
 
             <!--ng-repeat= "member in members | filter: {displayName:query}"-->
-            <a href="#/contact/{{ ::member.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members = (pageMembers | filter: membersOn)"> 
+            <a href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members | filter: {onPage: true} track by member.xpid"> 
             
                 <avatar profile="member"></avatar>
 
                 <div class="vminfo"> 
                     <div class="displayName">
                         <p class="ListDisplayName">
-                            <span> {{::member.displayName }} </span>
+                            <span> {{::member.fullProfile.displayName }} </span>
                         </p>
                         <div class="vmalternate">
-                           <div class="vmtime1">#{{ member.primaryExtension }}</div>
-                           <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(member.primaryExtension)"></input>
+                           <div class="vmtime1">#{{ ::member.fullProfile.primaryExtension }}</div>
+                           <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(member.fullProfile.primaryExtension)"></input>
                         </div>
                     </div> 
                     <div class="footnote">
-                        <!--<div class="QueueStatus IconDisplay " ng-class="member.queue_status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-'"></div>-->
-                        <div class="QueueStatus IconDisplay" ng-class="member.hud_status == 'available' ? 'XIcon-ChatStatus-Available' : 'XIcon-ChatStatus-offline' " ></div>
-                        <div class="ListRowStatusText">{{verbage[member.hud_status]}}</div>
+                        <div class="QueueStatus IconDisplay XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+                        <div class="ListRowStatusText">{{verbage[member.fullProfile.hud_status]}}</div>
                     </div>
                     
                 </div>
             </a>
-            <p ng-if="members.length == 0" style="font-size:12px;margin:10px" >This tab shows group call members. No members available at this moment</p>
         </div>
     </div>

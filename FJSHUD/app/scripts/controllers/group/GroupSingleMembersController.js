@@ -3,12 +3,10 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 	var addedPid;
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
-	$scope.members = [];
+	$scope.members = $scope.group.members;
 	$scope.grp = {};
 	$scope.grp.query = '';
 	$scope.query = "";
-
-	httpService.getFeed("groupcontacts");
 
 	$scope.sort_options = [
 	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
@@ -38,21 +36,6 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 		// localStorage.recent = JSON.stringify($scope.recent);
 		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
   };
-
-  $scope.getAvatar = function(xpid) {
-		return httpService.get_avatar(xpid, 40, 40);
-	};
-	
-	$scope.$on('groups_updated', function(event, data) {
-			
-		$scope.group = groupService.getGroup($scope.groupId);
-		
-		if($scope.group){
-			$scope.members = $scope.group.members;
-		}
-		
-		$scope.isMine = groupService.isMine($scope.groupId);		
-	});
 
 	$scope.callExtension= function(extension){
 		phoneService.makeCall(extension);
