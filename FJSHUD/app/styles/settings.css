@@ -50,23 +50,24 @@
   margin-top: 8px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
-  width: 48%;
+  width: 50%;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
   clear: both;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
-  width: 75px;
+  width: 74px;
   height: 24px;
   float: left;
   clear: none;
+  font-size: 12px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
-  top: 10px;
+  top: 0px;
   left: 0px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
-  top: 10px;
+  top: 0px;
   left: 5px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
@@ -473,8 +474,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;
