@@ -188,7 +188,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     phonePromise.then(function(data){
         
         if(!phoneService.isPhoneActive()){
-            for(i in $scope.tabs){
+            for (var i = 0; i < $scope.tabs.length; i++) {
                 if($scope.tabs[i].option == 'Phone'){
                     $scope.tabs[i].isActive = false;
                     break;

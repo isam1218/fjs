@@ -66,16 +66,16 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 	// store user's xpid globally
 	var getMyPid = $scope.$on('me_synced', function(event, data) {
 		if (!$rootScope.myPid) {
-			for (key in data) {
-				if (data[key].propertyKey == 'my_pid') {
-          var tmpPid = data[key].propertyValue;
-					$rootScope.myPid = data[key].propertyValue;
-          $rootScope.$broadcast('pidAdded', {info: tmpPid});
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].propertyKey == 'my_pid') {
+					var tmpPid = data[i].propertyValue;
+					$rootScope.myPid = data[i].propertyValue;
+					$rootScope.$broadcast('pidAdded', {info: tmpPid});
 
-          var initialPid = data[key].propertyValue
-          if (localStorage[initialPid] === undefined){
-            localStorage[initialPid] = '{}';
-          }
+					var initialPid = data[i].propertyValue;
+					if (localStorage[initialPid] === undefined){
+						localStorage[initialPid] = '{}';
+					}
 
 					break;
 				}

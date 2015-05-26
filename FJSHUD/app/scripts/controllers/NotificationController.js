@@ -220,7 +220,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		old_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
 			today = new Date();
-			return date.getDate() != today.getDate() && item.receivedStatus != "away"; 
+			return date.getTime() < today.getTime() && date.getDate() < today.getDate() && item.receivedStatus != "away"; 
 		});
         if(old_notifications.length > 0)
            $scope.hasOldNotifications = true; 
@@ -503,9 +503,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
-				for(var index = 0; index < data.length; index++){
+				for (var i = 0; i < data.length; i++) {
 					isNotificationAdded = false;
-					var notification = data[index];
+					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
 							if(notification.type == 'q-alert-rotation'){
@@ -556,8 +556,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					return b.time - a.time;
 				});
 			}else{
-				for(index in data){
-					var notification = data[index];
+				for (var i = 0; i < data.length; i++) {
+					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){

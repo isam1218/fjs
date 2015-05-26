@@ -13,7 +13,7 @@ fjs.CONFIG = {
     , FEEDS:['me', 'contacts', 'locations', 
             'settings', 'location_status', 'queue_members', 'queuemembercalls', 
             'calls', 'calldetails', 'groups', 'grouppermissions', 'groupcontacts', 
-            'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_call',
+            'server', 'contactpermissions', 'contactstatus', 'fdpImage', 'queue_members_stat', 'queue_call', 'group_page_member',
             'queue_members_status', 'queues', 'queuemessagestats', 'queuepermissions', 'queue_stat_calls', 
             'queue_stat_members', 'chatsmiles', 'weblauncher', 'weblaunchervariables', 'queuelogoutreasons', 
             'streamevent','calllog','quickinbox','recent_talks','voicemailbox','conferences','conferencemembers',

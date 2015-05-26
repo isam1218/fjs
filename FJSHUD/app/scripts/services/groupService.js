@@ -1,11 +1,13 @@
-hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {	
+hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {
+	var service = this;
 	var deferred = $q.defer();
+	
 	var groups = [];
 	var favorites = {};
 	var favoriteID;
-	var mine = null;
+	var mine;
 	
-	this.getGroup = function(xpid) {
+	service.getGroup = function(xpid) {
 		for (var i = 0, len = groups.length; i < len; i++) {
 			if (groups[i].xpid == xpid)
 				return groups[i];
@@ -14,12 +16,12 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		return null;
 	};
 	
-	this.getGroups = function() {
+	service.getGroups = function() {
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
 	
-	this.isMine = function(xpid) {
+	service.isMine = function(xpid) {
 		if (mine && mine.xpid == xpid)
 			return true;
 		else {
@@ -38,17 +40,17 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		return false;
 	};
 	
-	this.isFavorite = function(xpid) {
+	service.isFavorite = function(xpid) {
 		if (favorites[xpid])
 			return true;
 		else
 			return false;
 	};
 
-	var doesMemberExist = function(group,contact){
+	service.isMember = function(group,contact){
 		if(group.members){
 			for(var m = 0, len = group.members.length; m < len; m++){
-				if (group.members[m].contactId == contact.contactId){
+				if (group.members[m].contactId == contact || group.members[m].contactId == contact.contactId){
 					return true;
 				}
 			}
@@ -75,9 +77,11 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		// first time
 		if (groups.length == 0) {
 			groups = data;
-			deferred.resolve(groups);
 				
 			for (var i = 0, len = groups.length; i < len; i++) {
+				groups[i].members = [];
+				groups[i].originator = '';
+				
 				// find favorites group
 				if (groups[i].name.toLowerCase() == 'favorites')
 					favoriteID = groups[i].xpid;
@@ -128,6 +132,9 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 				if (!match) {
 					groups.push(data[i]);
 					
+					groups[groups.length-1].members = [];
+					groups[groups.length-1].originator = '';
+					
 					// add avatar
 					groups[groups.length-1].getAvatar = function(index, size) {
 						if (this.members && this.members[index] !== undefined)
@@ -141,6 +148,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 			
 		// populate members via different feed
 		httpService.getFeed('groupcontacts');
+		httpService.getFeed('group_page_member');
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {
@@ -149,10 +157,6 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 			if (data[i].xef001type == 'delete') {
 				for (var g = 0, gLen = groups.length; g < gLen; g++) {
 					var group = groups[g];
-					
-					// no members, so skip to next
-					if (!group.members)
-						continue;
 				
 					for (var m = 0, mLen = group.members.length; m < mLen; m++) {
 						if (data[i].xpid == group.members[m].xpid) {
@@ -170,13 +174,10 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 			}
 			// add member
 			else {
-				for (var g = 0, gLen = groups.length; g < gLen; g++) {
-					if (!groups[g].members)
-						groups[g].members = [];
-				
+				for (var g = 0, gLen = groups.length; g < gLen; g++) {				
 					// add member to groups
 					if (data[i].groupId == groups[g].xpid) {
-						if (!doesMemberExist(groups[g],data[i])) {
+						if (!service.isMember(groups[g], data[i])) {
 							data[i].fullProfile = contactService.getContact(data[i].contactId);
 							groups[g].members.push(data[i]);
 						}
@@ -185,9 +186,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 						if (data[i].groupId == favoriteID)
 							favorites[data[i].contactId] = 1;
 						// mark as mine
-						else if (!mine && data[i].contactId == $rootScope.myPid)
+						else if (!mine && !groups[g].ownerId && data[i].contactId == $rootScope.myPid)
 							mine = groups[g];
-							
 						break;
 					}
 				}
@@ -195,6 +195,31 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		}
 		
 		$rootScope.loaded.groups = true;
-		$rootScope.$evalAsync($rootScope.$broadcast('groups_updated', formatData()));
+		deferred.resolve(formatData());
+	});
+	
+	$rootScope.$on('group_page_member_synced', function(event, data) {		
+		for (var g = 0, gLen = groups.length; g < gLen; g++) {
+			var group = groups[g];
+			group.originator = '';
+			
+			for (var m = 0, mLen = group.members.length; m < mLen; m++) {
+				var member = group.members[m];
+				member.onPage = false;
+				
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					// is contact involved in page
+					if (data[i].groupId == group.xpid) {
+						// mark originator (may not be a member of this group)
+						if (group.originator == '' && data[i].originator)
+							group.originator = contactService.getContact(data[i].contactId).displayName;
+						
+						// is member and on page
+						if (member.fullProfile.xpid == data[i].contactId)
+							member.onPage = true;
+					}
+				}
+			}
+		}
 	});
 }]);

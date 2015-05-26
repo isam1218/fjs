@@ -47,8 +47,8 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     $scope.$on('me_synced', function(event,data){
         if(data){
             var me = {};
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+            for (var i = 0; i < data.length; i++) {
+                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
             }
         }
 
@@ -57,18 +57,17 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid] = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid] = data[i];
             }
         }
-        //console.log('locationsctrl: scope.locations - ', $scope.locations);
     });
 
      $scope.$on('location_status_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid].status = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid].status = data[i];
             }
         }
 

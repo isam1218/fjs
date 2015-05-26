@@ -31,14 +31,18 @@
 </div>
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
-	<!-- delete -->
-	<a class="Button" href="" ng-show="widget == 'recordings' || widget == 'voicemails'" ng-click="deleteRecording()">
+	<!-- recordings -->
+	<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
 		<div class="ListRowActionButtonRemove"></div>
 		<span>{{::verbage.delete_word}}</span>
 	</a>
 		
 	<!-- voicemails -->
-	<div ng-if="widget == 'voicemails'">
+	<div ng-if="widget == 'voicemails' && profile.xpid != myPid">
+		<a class="Button" href="" ng-click="deleteRecording()">
+			<div class="ListRowActionButtonRemove"></div>
+			<span>{{::verbage.delete_word}}</span>
+		</a>
 		<a class="Button" href="" ng-show="!original.readStatus" ng-click="markAsRead(true)">
 			<div class="ListRowActionButtonRead"></div>
 			<span>Read</span>
@@ -49,7 +53,7 @@
 		</a>
 		<a class="Button" href="" ng-show="!profile && original.phone" ng-click="callNumber(original.phone)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Call Back</span>
+			<span>{{::verbage.call_back}}</span>
 		</a>
 	</div>
 	
@@ -57,7 +61,7 @@
 	<div ng-if="profile.xpid == myPid && type == 'Contact'">
 		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
 			<div class="ListRowActionButtonMute"></div>
-			<span>Mute</span>
+			<span>{{::verbage.Mute}}</span>
 		</a>
 		<a class="Button" href="" ng-show="widget == 'conference' && original.muted" ng-click="muteUser(false)">
 			<div class="ListRowActionButtonUnmute"></div>
@@ -93,7 +97,7 @@
 		</a>
 		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
 			<div class="ListRowActionButtonMute"></div>
-			<span>Mute</span>
+			<span>{{::verbage.Mute}}</span>
 		</a>
 		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && original.muted" ng-click="muteUser(false)">
 			<div class="ListRowActionButtonUnmute"></div>
