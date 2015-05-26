@@ -168,14 +168,14 @@
 		              </div>
 		         
 		              <div class="SettingsPanel DialogContentMainBlock_List">
-						<div ng-show="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
-						<div ng-show="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
-						<div ng-show="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
-						<div ng-show="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
-						<div ng-show="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
-						<div ng-show="selected.option == 'CP'" class="fj-content padding" ng-include="'views/settings/SettingsCP.html'"></div>
-						<div ng-show="selected.option == 'About'" class="fj-content padding" ng-include="'views/settings/SettingsAbout.html'"></div>
-						<div ng-show="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
+						<div ng-if="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
+						<div ng-if="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
+						<div ng-if="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
+						<div ng-if="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
+						<div ng-if="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
+						<div ng-if="selected.option == 'CP'" class="fj-content padding" ng-include="'views/settings/SettingsCP.html'"></div>
+						<div ng-if="selected.option == 'About'" class="fj-content padding" ng-include="'views/settings/SettingsAbout.html'"></div>
+						<div ng-if="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
 					  </div> 	                
 	            </div>
 	        </div>  
