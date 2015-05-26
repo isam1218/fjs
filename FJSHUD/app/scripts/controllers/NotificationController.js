@@ -18,6 +18,19 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	$scope.phoneSessionEnabled = false;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 	$scope.showTimer = false;
+	$scope.hasNewNotifications = false;
+	$scope.hasAwayNotifications = false;
+	$scope.hasOldNotifications = false;
+	$scope.newNotificationsLength = 0;
+	$scope.awayNotificationsLength = 0;
+	$scope.oldNotificationsLength = 0;
+	$scope.newNotifications = [];
+	$scope.awayNotifications = [];
+	$scope.oldNotifications = [];
+	
+	$scope.showNew = true;
+	$scope.showAway = true;
+	$scope.showOld = true;
 	//$scope.minutes = 0;
 	//$scope.seconds = 0;
 	$scope.stopTime;	
@@ -101,13 +114,19 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 	$scope.getMessage = function(message){       				
 		var messages = (message.message).split('\n');
+		if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
+			messages="";
 		
 		switch(message.type){
 
 			case "vm":
 				return "Voicemail from extension " + message.phone; 
 				break;
+			case 'missed-call':	
+				return "Missed call from extension " + message.phone; 
+				break;
 			case "chat":
+			case "gchat":	
 				return messages;
 				break;
 			default:
@@ -133,6 +152,28 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
 	};
 
+	$scope.showNotifications = function(flag)
+	{
+		
+		switch(flag){
+		  case 'new': if(!$scope.showNew)
+			  			$scope.showNew = true;
+		              else
+		            	$scope.showNew = false;  
+		              break;
+		  case 'away': if(!$scope.showAway)
+			  			$scope.showAway = true;
+		               else
+		            	$scope.showAway = false;
+		               break;
+		  case 'old':  if(!$scope.showOld)
+			  			$scope.showOld = true;
+		               else
+		            	$scope.showOld = false;
+		               break;
+		}
+	};
+	
 	$scope.get_new_notifications= function(){
 		new_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
@@ -148,7 +189,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 			return toReturn; 
 		});
-
+        if(new_notifications.length > 0 )
+        	$scope.hasNewNotifications = true;
+        
+        $scope.newNotificationsLength = new_notifications.length;    	
+        $scope.newNotifications = new_notifications;
+    	
 		return new_notifications;
 	};
 
@@ -157,6 +203,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		away_notifications = $scope.notifications.filter(function(item){
 			return item.receivedStatus == "away"; 
 		});
+		if(away_notifications.length > 0)
+			$scope.hasAwayNotifications = true;
+		
+		$scope.awayNotificationsLength = away_notifications.length;
+		$scope.awayNotifications = away_notifications;
+    	
 		return away_notifications;
 	};
 
@@ -164,10 +216,46 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		old_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
 			today = new Date();
-			return date.getDate() != today.getDate() && item.receivedStatus != "away"; 
+			return date.getTime() < today.getTime() && item.receivedStatus != "away"; 
 		});
-
+        if(old_notifications.length > 0)
+           $scope.hasOldNotifications = true; 
+        
+    	$scope.oldNotificationsLength = old_notifications.length;
+    	$scope.oldNotifications = old_notifications;
+    	
 		return old_notifications;
+	};
+	
+	$scope.removeOldNotifications = function()
+	{		
+		
+		for(nNum = 0; nNum < $scope.notifications.length; nNum++){
+			
+		  var notification_xpid = 	$scope.notifications[nNum].xpid;
+		  
+			for(nIndex=0; nIndex < $scope.oldNotifications.length; nIndex++) 
+	        {	
+				if($scope.oldNotifications[nIndex].xpid == notification_xpid)
+				{																	
+					myHttpService.sendAction('quickinbox','remove',{'pid': $scope.oldNotifications[nIndex].xpid});
+					$scope.notifications.splice(nNum,1);
+					$scope.oldNotifications.splice(nIndex,1);
+					
+					if($scope.oldNotifications.length == 0)
+					{	
+					  $scope.hasOldNotifications = false;	
+					  $scope.oldNotifications = [];					
+					}
+					
+				}
+				if(!$scope.hasNewNotifications && 
+				   !$scope.hasAwayNotifications && 
+				   !$scope.hasOldNotifications)
+					$scope.showNotificationOverlay(false);
+				
+	        }
+		}				
 	};
 	
 	$scope.remove_all = function(){
@@ -226,7 +314,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 	$scope.showNotificationOverlay = function(show) {
 		if (!show)
+		{	
 			$scope.overlay = '';
+			if($scope.hasOldNotifications)
+			if($scope.hasNewNotifications) 	
+			 $scope.showNew = true;
+			if($scope.hasAwayNotifications)
+				$scope.showAway = true;
+			if($scope.hasOldNotifications)
+				$scope.showOld = true;
+		}	
 		else if ($scope.tab != 'groups')
 			$scope.overlay = 'contacts';
 		else
@@ -446,9 +543,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
-				for(index in data){
+				for (var i = 0; i < data.length; i++) {
 					isNotificationAdded = false;
-					var notification = data[index];
+					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
 							if(notification.type == 'q-alert-rotation'){
@@ -493,8 +590,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					return b.time - a.time;
 				});
 			}else{
-				for(index in data){
-					var notification = data[index];
+				for (var i = 0; i < data.length; i++) {
+					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){

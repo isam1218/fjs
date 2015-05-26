@@ -371,6 +371,9 @@ fjs.i18n = {
       sort_by_chat_status:'Sort By Chat Status',
       /****Phone Notifications ***/
       clear_all:'Clear All',
+      clear: 'Clear', 
+      show: 'Show',
+      hide: 'Hide',
       /***page**/
       page:'Page',
       group_page:'Group Page',

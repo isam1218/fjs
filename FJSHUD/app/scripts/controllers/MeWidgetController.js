@@ -1,4 +1,4 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService) {
     var addedPid;
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -198,7 +198,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     phonePromise.then(function(data){
         
         if(!phoneService.isPhoneActive()){
-            for(i in $scope.tabs){
+            for (var i = 0; i < $scope.tabs.length; i++) {
                 if($scope.tabs[i].option == 'Phone'){
                     $scope.tabs[i].isActive = false;
                     break;
@@ -344,7 +344,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.hoverDelaySelected;
 
     $scope.searchAutoClear;
-    $scope.enableBox;
+    $scope.boxObj = {};
+    $scope.boxObj.enableBox;
     $scope.enableSound;
     $scope.soundOnChatMsgReceived;
     $scope.soundOnSentMsg;
@@ -406,6 +407,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             case 'hudmw_searchautocleardelay':
                 myHttpService.updateSettings(type, action, model.value);
                 break;
+            case 'hudmw_box_enabled':
+                if (!$scope.boxObj.enableBox)
+                    $scope.boxObj.enableBox;
+                else
+                    !$scope.boxObj.enableBox
+                settingsService.enable_box();
+                myHttpService.updateSettings(type, action, model);
+                break;
             default:
                 myHttpService.updateSettings(type,action,model); 
             
@@ -425,8 +434,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.update_settings('HUDw_AppModel_zoom','delete');
         $scope.update_settings('HUDw_AppModel_box','delete');
         data = {};
-        settingService.reset_app_menu();
-    }
+        $scope.boxObj.enableBox = true;
+        settingsService.reset_app_menu();
+    };
+
     
     update_settings = function(){
         if($scope.meModel.my_jid){
@@ -487,7 +498,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.alertDuration = settings['alert_call_duration'];
 
             $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
-            $scope.enableBox=settings['hudmw_box_enabled'] == "true";
+            $scope.boxObj.enableBox=settings['hudmw_box_enabled'] == "true";
             $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
             $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
             $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
@@ -570,7 +581,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     }
 	
 	// grab settings from service (prevents conflict with dock)
-	settingService.getSettings().then(function(data) {
+	settingsService.getSettings().then(function(data) {
 		$scope.settings = settings = data;
 		update_queues();
         update_settings();

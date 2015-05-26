@@ -199,12 +199,14 @@ select[disabled] {
   cursor: default;
   pointer-events: none;
 }
-.CurrentCallBtn .XIcon24-Record-Off,
 .CurrentCallBtn .XIcon24-Record-On {
   float: right;
-  /*margin: 10px;*/
-  right: 0px;
-  top: -10px;
+  right: 12px;
+  top: 2px;
+}
+.CurrentCallBtn .XIcon24-Record-Off {
+  right: 12px;
+  top: 1px;
 }
 div.CurrentCallBtn {
   opacity: 0.5;
