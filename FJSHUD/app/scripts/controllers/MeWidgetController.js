@@ -15,7 +15,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.avatar ={};
 
-    
+    $scope.avatar ={};
+    $scope.phoneType = false;
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     $scope.pluginVersion = phoneService.getVersion();
 
@@ -196,7 +197,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
     }
 
-
     phonePromise.then(function(data){
         
         if(!phoneService.isPhoneActive()){
@@ -208,7 +208,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         }
         
-            $scope.inputDevices = data.filter(function(item){
+            $scope.inputDevices = data.devices.filter(function(item){
                 return item.input_count > 0;
             });
             soundManager = phoneService.getSoundManager();
@@ -218,7 +218,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             })[0];
             
 
-            $scope.outputDevices = data.filter(function(item){
+            $scope.outputDevices = data.devices.filter(function(item){
                 return item.output_count > 0;
             });
             
@@ -799,9 +799,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
-		
 		storageService.saveRecentByPhone(number);
-		
 		$scope.call_obj.phoneNumber = '';
     };
 
@@ -903,6 +901,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                myHttpService.sendAction('mycalls', action, {mycallId: $scope.currentCall.xpid});
                 
             }
+        }
+    };
+
+    $scope.callKeyPress = function($event){
+        if ($event.keyCode == 13 && !$event.shiftKey) {
+            $scope.makeCall($scope.call_obj.phoneNumber);
+            $scope.call_obj.phoneNumber = '';
+            $event.preventDefault();
         }
     };
 
@@ -1087,15 +1093,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             var e = data.event;
             switch(e){
                 case 'state':
-                     $scope.phoneState = data.registration;
+                    $scope.phoneState = data.registration;
+                    $scope.phoneType = phoneService.isPhoneActive();
+                    for(i in $scope.tabs){
+                            if($scope.tabs[i].option == 'Phone'){
+                                $scope.tabs[i].isActive = ($scope.phoneType == 'new_webphone' || $scope.phoneType == 'old_webphone') ? true : false;
+                                break;
+                            }
+                    }
+                    break;
                 case "enabled":
                     $scope.pluginVersion = phoneService.getVersion();
                     break;
             }
-            if(data.event == 'onclose'){
 
-
-            }
         }
     });
     
