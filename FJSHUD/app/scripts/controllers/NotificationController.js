@@ -15,6 +15,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.phoneSessionEnabled = false;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 	$scope.showTimer = false;
+	$scope.notifications_to_display = '';
+	$scope.new_notifications_to_display = '';
+	$scope.away_notifications_to_display = '';
+	$scope.old_notifications_to_display = '';
+	$scope.message_section_notifications = ''
 	$scope.hasNewNotifications = false;
 	$scope.hasAwayNotifications = false;
 	$scope.hasOldNotifications = false;
@@ -112,7 +117,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	$scope.getMessage = function(message){       				
-		var messages = (message.message).split('\n');
+		var messages = message.message && message.message != null && message.message != "" ? (message.message).split('\n') : '';
 		if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
 			messages="";
 		
@@ -228,33 +233,21 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	
 	$scope.removeOldNotifications = function()
 	{		
-		
-		for(nNum = 0; nNum < $scope.notifications.length; nNum++){
-			
-		  var notification_xpid = 	$scope.notifications[nNum].xpid;
 		  
-			for(nIndex=0; nIndex < $scope.oldNotifications.length; nIndex++) 
-	        {	
-				if($scope.oldNotifications[nIndex].xpid == notification_xpid)
-				{																	
-					myHttpService.sendAction('quickinbox','remove',{'pid': $scope.oldNotifications[nIndex].xpid});
-					$scope.notifications.splice(nNum,1);
-					$scope.oldNotifications.splice(nIndex,1);
-					
-					if($scope.oldNotifications.length == 0)
-					{	
-					  $scope.hasOldNotifications = false;	
-					  $scope.oldNotifications = [];					
-					}
-					
-				}
-				if(!$scope.hasNewNotifications && 
-				   !$scope.hasAwayNotifications && 
-				   !$scope.hasOldNotifications)
-					$scope.showNotificationOverlay(false);
-				
-	        }
-		}				
+		while($scope.oldNotifications.length > 0)
+		{
+			var nIndex_xpid = $scope.oldNotifications[0].xpid;				
+		    myHttpService.sendAction('quickinbox','remove',{'pid': nIndex_xpid});
+		    $scope.oldNotifications.splice(0,1);
+		}	
+		
+		$scope.hasOldNotifications = false;	
+		$scope.oldNotifications = [];					
+											
+		if(!$scope.hasNewNotifications && 
+		   !$scope.hasAwayNotifications && 
+		   !$scope.hasOldNotifications)
+			$scope.showNotificationOverlay(false);				
 	};
 	
 	$scope.remove_all = function(){
