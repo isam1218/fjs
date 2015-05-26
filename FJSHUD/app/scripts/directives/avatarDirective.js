@@ -85,6 +85,12 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				// replace default image with loaded image
 				angular.element(img).bind('load', function () {
 					angular.element(el).attr("src", img.src);
+					angular.element(this).unbind();
+				});
+				
+				// make sure to kill event listeners
+				angular.element(img).bind('error', function () {
+					angular.element(this).unbind();
 				});
 			}
 			

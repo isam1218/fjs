@@ -122,20 +122,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 			return true;
 		};
 	};
-
-	$scope.$on('groups_updated', function(event, data) {
-		var groups = data.groups;
-
-		// find this group
-		for (i in groups) {
-			if (groups[i].xpid == $scope.groupID) {
-				$scope.group = groups[i];
-				break;
-			}
-		}
-		
-		$scope.isMine = groupService.isMine($scope.groupID);
-	});
 	
 	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
 

@@ -1,5 +1,5 @@
-hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'UtilService', 'ContactService', 'PhoneService',
-	function($scope, $rootScope, conferenceService, httpService, $routeParams, $location, utilService, contactService, phoneService) {
+hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'ContactService', 'PhoneService',
+	function($scope, $rootScope, conferenceService, httpService, $routeParams, $location, contactService, phoneService) {
 	$scope.conversationType = 'conference';
 	
 	$scope.conferenceId = $routeParams.conferenceId;

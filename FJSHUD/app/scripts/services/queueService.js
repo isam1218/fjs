@@ -107,6 +107,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				if (!match) {
 					queues.push(data[i]);
 					
+					queues[queues.length-1].calls = [];
+					queues[queues.length-1].members = [];
+					
 					// add avatar
 					queues[queues.length-1].getAvatar = function (index, size) {
 						if (this.members && this.members[index] !== undefined)
