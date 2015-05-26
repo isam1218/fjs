@@ -82,7 +82,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	  	$scope.callObj[id].minutesText = minutesText;  
 	  	$scope.callObj[id].hoursText = hoursText;	  
 	  	$scope.callObj[id].daysText = daysText;
-    }       
+    };       
 	
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 
@@ -440,7 +440,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					  			"callCategory" : $scope.calls[i].contactId ? "Internal" : "External",
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0"
-						}
+						};
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL");
 					}
 			}else{
@@ -606,6 +606,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 								notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
                 				notification.label = 'missed call';
+                				missedCalls.push(notification);
+
 					}else if(notification.type == 'busy-ring-back'){
             					notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
@@ -684,42 +686,35 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		});		
 			
 		if(displayDesktopAlert){
-
+			//nservice.isEnabled(
+			if(true){
+		
 			 for (var i = 0; i < missedCalls.length;i++){
 			 	 var missedCall = missedCalls[i];
 			 	 var data = {
-			 	 	"notificationId":"3938", 
+			 	 	"notificationId": missedCall.senderId ? missedCall.senderId  : missedCall.phone, 
   					"leftButtonText" : "Chat",
   					"rightButtonText" : "Call",
   					"leftButtonId" : "CHAT_REQUEST",
   					"rightButtonId" : "CALL_REQUEST",
   					"leftButtonEnabled" : "true",
   					"rightButtonEnabled" : "true",
-  					"callerName" : "Kobe Bryant", 
+  					"callerName" : missedCall.displayName, 
   					"callMessage" :"...you have a missed call",
   					"callLocation" : "External",
   					"callDate" : "Today, 1:03pm",
-   					"phoneStatus" : "mute"
-			 	 }
+   					//"phoneStatus" : "mute"
+			 	 };
+
+			 	 phoneService.displayWebphoneNotification(data,"MISSED_CALL");
+
 
 			 }
-			 /*var data = {
-					  "notificationId":"3938", 
-					  "leftButtonText" : "Decline",
-					  "rightButtonText" : "Accept",
-					  "leftButtonId" : "CALL_DECLINED",
-					  "rightButtonId" : "CALL_ACCEPTED",
-					  "leftButtonEnabled" : "True",
-					  "rightButtonEnabled" : "True",
-					  "callerName" : "Kobe Bryant", 
-					  "callStatus" :"Incoming call for",
-					  "callCategory" : "External",
-					  "muted" : "1",
-					  "record" : "1"
-				}
+			}else{
+				displayNotification();
+			}
 
-			nservice.sendData(data);*/
-			displayNotification();
+			//nservice.sendData(data);*/
 		}				
     });		
 }]);

@@ -83,7 +83,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		for (var i = 0, len = data.length; i < len; i++) {
 			// look at fj repository > MyPermissions.java for reference
 			if (data[i].propertyKey == 'personal_permissions') {
-				console.error('prop value - ', data[i].propertyValue);
 				
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);

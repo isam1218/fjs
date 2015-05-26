@@ -64,7 +64,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		return "xxx".replace(/[x]/g,function(c){
 			return c == 'x' ? Math.random().toString(16).substr(2,2) : c
 		});
-	}
+	};
 
 	var assignTab = function(){
 		
@@ -94,7 +94,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
-	}
+	};
 
 	
 
@@ -597,6 +597,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 			transformResponse: false
 		})
 		.then(function(response) {
+			
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 
 			for (key in data) {
