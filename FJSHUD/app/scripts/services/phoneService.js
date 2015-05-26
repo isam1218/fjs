@@ -109,6 +109,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				httpService.sendAction('me', 'callTo', {phoneNumber: number});
 			}
+		}else{
+			httpService.sendAction('me', 'callTo', {phoneNumber: number});
 		}
 	};
 
