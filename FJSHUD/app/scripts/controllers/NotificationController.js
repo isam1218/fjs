@@ -5,6 +5,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	var localPid;
 	$scope.notifications = [];
 	$scope.calls = {};
+	phoneService.getMyCalls().then(function(data){
+		$scope.calls = data.mycalls;
+	});
 	$scope.inCall = false;
 	$scope.inRinging = false;
 	$scope.path = $location.absUrl().split("#")[0];
@@ -232,7 +235,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 
 	$scope.$on('calls_updated',function(event,data){
-		$scope.calls = {};
+		//$scope.calls = {};
 		var displayDesktopAlert = false;
 		var toDisplayFor = settingsService.getSetting('alert_call_display_for');
 		var alertDuration = settingsService.getSetting('alert_call_duration');			
@@ -240,8 +243,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		if(data){
 
 			for (i in data){
-				$scope.calls[data[i].contactId] = data[i];
-				$scope.calls[data[i].contactId].fullProfile = contactService.getContact(data[i].contactId);
+				//$scope.calls[data[i].contactId] = data[i];
+				//$scope.calls[data[i].contactId].fullProfile = contactService.getContact(data[i].contactId);
 				
 
 				switch(toDisplayFor){
@@ -301,14 +304,40 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
        	if(displayDesktopAlert){
 			if(nservice.isEnabled()){
 					for (i in $scope.calls){
-				 		var data = {
+				 		var data = {};
+						var left_buttonText;
+						var right_buttonText;
+						var left_buttonID;
+						var right_buttonID;
+						var right_buttonEnabled;
+						if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+							left_buttonText = $scope.calls[i].incoming ? "Decline" : "Cancel";
+							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
+							left_buttonID = "CALL_DECLINED";
+							right_buttonID = "CALL_ACCEPTED";
+							right_buttonEnabled = $scope.calls[i].incoming ? "true" : "false";
+						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+							left_buttonText = "END";
+							right_buttonText = "HOLD";	
+							left_buttonID = "CALL_DECLINED";
+							right_buttonID = "CALL_ON_HOLD";
+							right_buttonEnabled = "true";
+						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
+							left_buttonText = "END";
+							right_buttonText = "TALK";	
+							left_buttonID = "CALL_DECLINED";
+							right_buttonID = "CALL_ON_RESUME";
+							right_buttonEnabled = "true";
+							
+						}
+				 		data = {
 					  			"notificationId": $scope.calls[i].xpid, 
-					  			"leftButtonText" : "Decline",
-					  			"rightButtonText" : "Accept",
-					  			"leftButtonId" : "CALL_DECLINED",
-					  			"rightButtonId" : "CALL_ACCEPTED",
+					  			"leftButtonText" : left_buttonText,
+					  			"rightButtonText" : right_buttonText,
+					  			"leftButtonId" : left_buttonID,
+					  			"rightButtonId" : right_buttonID,
 					  			"leftButtonEnabled" : "true",
-					  			"rightButtonEnabled" : $scope.calls[i].incoming ? "true" : "false",
+					  			"rightButtonEnabled" : right_buttonEnabled,
 					  			"callerName" : $scope.calls[i].displayName, 
 					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outgoind call for",
 					  			"callCategory" : $scope.calls[i].contactId ? "Internal" : "External",
@@ -320,8 +349,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 			}else{
 				displayNotification();
 			}
-
-
 		}
        	
        	if(!$.isEmptyObject(data))
@@ -413,7 +440,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 	$scope.$on('quickinbox_synced', function(event,data){
 		var displayDesktopAlert = true;
-		
+		var missedCalls = [];
   		if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -435,9 +462,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 							}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-                 notification.label = 'missed call';
+                 				notification.label = 'missed call';
+                 				missedCalls.push(notification);
 							}else if(notification.type == 'busy-ring-back'){
-                notification.label = 'is now available for call';
+                				notification.label = 'is now available for call';
 								notification.message= "User is free for call";
 							}
 					if(notification.audience == "conference"){
@@ -480,9 +508,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-                notification.label = 'missed call';
+                				notification.label = 'missed call';
 					}else if(notification.type == 'busy-ring-back'){
-            notification.label = 'is now available for call';
+            					notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}
@@ -560,6 +588,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 			
 		if(displayDesktopAlert){
 
+			 for (var i = 0; i < missedCalls.length;i++){
+			 	 var missedCall = missedCalls[i];
+			 	 var data = {
+			 	 	"notificationId":"3938", 
+  					"leftButtonText" : "Chat",
+  					"rightButtonText" : "Call",
+  					"leftButtonId" : "CHAT_REQUEST",
+  					"rightButtonId" : "CALL_REQUEST",
+  					"leftButtonEnabled" : "true",
+  					"rightButtonEnabled" : "true",
+  					"callerName" : "Kobe Bryant", 
+  					"callMessage" :"...you have a missed call",
+  					"callLocation" : "External",
+  					"callDate" : "Today, 1:03pm",
+   					"phoneStatus" : "mute"
+			 	 }
+
+			 }
 			 /*var data = {
 					  "notificationId":"3938", 
 					  "leftButtonText" : "Decline",

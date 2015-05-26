@@ -8,9 +8,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var settings = {};
     var queues = [];
     var callId = $routeParam.callId;
-    $scope.avatar ={};
 
-    
+    $scope.avatar ={};
+    $scope.phoneType = false;
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     $scope.pluginVersion = phoneService.getVersion();
 
@@ -186,6 +186,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     var phonePromise = phoneService.getDevices();
     
+    if(!phoneService.isPhoneActive()){
+            for(i in $scope.tabs){
+                if($scope.tabs[i].option == 'Phone'){
+                    $scope.tabs[i].isActive = false;
+                    break;
+                }
+            }
+        }
+
     phonePromise.then(function(data){
         
         if(!phoneService.isPhoneActive()){
@@ -197,7 +206,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         }
         
-            $scope.inputDevices = data.filter(function(item){
+            $scope.inputDevices = data.devices.filter(function(item){
                 return item.input_count > 0;
             });
             soundManager = phoneService.getSoundManager();
@@ -207,7 +216,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             })[0];
             
 
-            $scope.outputDevices = data.filter(function(item){
+            $scope.outputDevices = data.devices.filter(function(item){
                 return item.output_count > 0;
             });
             
@@ -748,14 +757,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.holdCall = function(call,isHeld){
         phoneService.holdCall(call.xpid,isHeld == 'True');
         $scope.currentCall.isHeld =isHeld == 'True';
-    }
+    };
+
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
-    }
+    };
 
     $scope.endCall = function(call){
         phoneService.hangUp(call.xpid);
-    }
+    };
 
      $scope.hangup = function(){
         
@@ -769,7 +779,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }else{
             myHttpService.sendAction('me','callTo',{phoneNumber: number});
         }
-    }
+    };
 
     
     $scope.$on('weblauncher_updated', function(event,data){
@@ -860,18 +870,18 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.call_obj.phoneNumber = '';
             $event.preventDefault();
         }
-    }
+    };
 
     $scope.parkCall = function(currentCall){
        call =  phoneService.getCall(currentCall.contactId);
         phoneService.parkCall(currentCall.xpid);
-    }
+    };
 
     $scope.muteCall = function(){
        phoneService.setVolume(0);
        $scope.volume.spkVol = 0;
 
-    }
+    };
 
     var updateTime = function() {
         if ($scope.currentCall && $scope.currentCall.startedAt) {
@@ -982,11 +992,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             var e = data.event;
             switch(e){
                 case 'state':
-                     $scope.phoneState = data.registration;
+                    $scope.phoneState = data.registration;
+                    $scope.phoneType = phoneService.isPhoneActive();
+                    for(i in $scope.tabs){
+                            if($scope.tabs[i].option == 'Phone'){
+                                $scope.tabs[i].isActive = ($scope.phoneType == 'new_webphone' || $scope.phoneType == 'old_webphone') ? true : false;
+                                break;
+                            }
+                    }
+                    break;
                 case "enabled":
                     $scope.pluginVersion = phoneService.getVersion();
                     break;
             }
+            $scope.$safeApply();
         }
     });
     

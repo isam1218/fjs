@@ -70,7 +70,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 	
-
 	registerPhone = function(isRegistered){
 		
 		messageSoftphone({a : 'reg', value : isRegistered});
@@ -101,7 +100,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	
+	var formatData = function() {
+		// format data that controller needs
+		return {
+			mycalls: callsDetails,
+			devices: devices,
+			//totals: totals
+		};
+	};
+	this.getMyCalls = function(){
+		return deferred.promise;
+	}
 
 	hangUp = function(xpid){
 		sip_id = xpid2Sip[xpid];
@@ -341,7 +350,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             //isRegistered = true;
 			soundManager = session.soundManager;
 			devices = soundManager.devs;
-			deferred.resolve(devices);
+			deferred.resolve(formatData());
 			spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
 			micVolume = settingsService.getSetting('hudmw_webphone_mic');
 			if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
@@ -585,7 +594,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
             	$rootScope.$broadcast('phone_event',{event:"enabled"});
 
-		}
+		};
 		context.webphone.onclose = function(e){
 				context.webphone = false;
 				
@@ -594,11 +603,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				context.getSessionStatus = function() {return 0};
 				context.getPhoneStatus = function() {return 5};
 			    setTimeout(function(){initWS()}, 500);
-    	}
+    	};
 		context.webphone.onerror = function(e){
 			if(context.webphone)context.webphone.close();
 
-		}
+		};
 		context.webphone.onmessage = function(e){
 			
 			try
@@ -620,19 +629,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			  if (msg.phone_status!=undefined)
     			  {
        				var ps = parseInt(msg.phone_status, 10);
-    				isRegistered = ps == 1;
-    				data = {
-						event:'state',
-						registration: isRegistered,
-					}
-					$rootScope.$broadcast('phone_event',data);
-	
+    				
+					if(phone == undefined){
+						isRegistered = ps == 1;
+						data = {
+							event:'state',
+							registration: isRegistered,
+						}
+						$rootScope.$broadcast('phone_event',data);
+
+					}	
+    				
     				context.getPhoneStatus = function(){return ps};
     			  }
     			  if (msg.devices!=undefined)
     			  {
     			  		devices = msg.devices;
-						deferred.resolve(devices);
+						deferred.resolve(formatData());
 						context.getDevices = function() {return msg.devices};
 		          }
     			  if (msg.inpdevs!=undefined)
@@ -666,7 +679,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			  }
     			  if(msg.status!=undefined)thus.onCallStateChanged(msg);
     		  } catch (ex) {console.log(e.data)}
-		}
+		}; 
 
     };
 
@@ -1014,6 +1027,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 
+		deferred.resolve(formatData());
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
 
@@ -1027,6 +1041,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					acceptCall(data.notificationId);
 					break;
 				case 'CHAT_REQUEST':
+					break;
+				case 'CALL_ON_HOLD':
+					//holdCall(data.notificationId,);
 					break;
 			}
 		}
