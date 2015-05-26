@@ -139,14 +139,14 @@
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
-                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value" class="RecentCallRow"> 
+                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value track by calllog.xpid" class="RecentCallRow"> 
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D hh:mm a':fon_lang_code}} </div>
 
                       
-                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
-                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
-                      <div class="RecentCallsHeader RecentDur">{{ calllog.duration | duration }} </div>
+                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="::calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ ::formatIncoming(calllog,'From') }} </div>
+                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="::!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ ::formatIncoming(calllog,'To') }} </div>
+                      <div class="RecentCallsHeader RecentDur">{{ ::calllog.duration | duration }} </div>
                     
                     </div>
                     <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id111" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
@@ -168,14 +168,14 @@
 		              </div>
 		         
 		              <div class="SettingsPanel DialogContentMainBlock_List">
-						<div ng-show="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
-						<div ng-show="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
-						<div ng-show="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
-						<div ng-show="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
-						<div ng-show="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
-						<div ng-show="selected.option == 'CP'" class="fj-content padding" ng-include="'views/settings/SettingsCP.html'"></div>
-						<div ng-show="selected.option == 'About'" class="fj-content padding" ng-include="'views/settings/SettingsAbout.html'"></div>
-						<div ng-show="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
+						<div ng-if="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
+						<div ng-if="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
+						<div ng-if="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
+						<div ng-if="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
+						<div ng-if="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
+						<div ng-if="selected.option == 'CP'" class="fj-content padding" ng-include="'views/settings/SettingsCP.html'"></div>
+						<div ng-if="selected.option == 'About'" class="fj-content padding" ng-include="'views/settings/SettingsAbout.html'"></div>
+						<div ng-if="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
 					  </div> 	                
 	            </div>
 	        </div>  
