@@ -503,7 +503,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
-				for(index in data){
+				for(var index = 0; index < data.length; index++){
 					isNotificationAdded = false;
 					var notification = data[index];
 					notification.fullProfile = contactService.getContact(notification.senderId);
@@ -543,6 +543,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 							$scope.notifications.push(notification);
 						}
+					}else if(notification.xef001type == "delete"){
+						for(i = 0; i < $scope.notifications.length;i++){
+							if($scope.notifications[i].xpid == notification.xpid){
+								$scope.notifications.splice(i,1);
+								break;	
+							}
+						}
 					}
 				}
 				$scope.notifications.sort(function(a, b){
@@ -578,7 +585,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 					if(notification.xef001type != "delete"){
 						$scope.notifications.push(notification);
-						
 					}
 				}
 			}
