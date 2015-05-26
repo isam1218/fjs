@@ -682,25 +682,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     var getWSVersion = function(){
     	var webphone = new WebSocket('wss://webphone.fonality.com:10443/version');
-		webphone.onopen = function(e){
-			console.log(e);
-		}
-		webphone.onclose = function(e){
-			console.log(e);
-		}
+		webphone.onopen = function(e){};
+		webphone.onclose = function(e){};
 
-		webphone.onerror = function(e){
-			console.log(e);
-		}
+		webphone.onerror = function(e){};
 
 		webphone.onmessage = function(e){
-			console.log(e);
 			if(e.data){
 				context.version = e.data;	
 				initWS();
 				webphone.close();
 			}
-		}
+		};
 	}
 
     var initWS = function(){
@@ -1324,8 +1317,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case 'CHAT_REQUEST':
 					break;
+				case 'CALL_REQUEST':
+					break;
 				case 'CALL_ON_HOLD':
-					//holdCall(data.notificationId,);
+					holdCall(data.notificationId,true);
+				case 'CALL_ON_RESUME':
+					holdCall(data.notificationId,false);
 					break;
 			}
 		}

@@ -90,11 +90,19 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 		SYNCING
 	*/
 	
+<<<<<<< HEAD
 	$rootScope.$on('me_synced', function(event,data){
         for(var i = 0, len = data.length; i < len; i++){
             $rootScope.meModel[data[i].propertyKey] = data[i].propertyValue;
 			
 			if(data[i].propertyKey == 'personal_permissions'){			
+=======
+	$rootScope.$on('me_synced', function(event, data) {
+		for (var i = 0, len = data.length; i < len; i++) {
+			// look at fj repository > MyPermissions.java for reference
+			if (data[i].propertyKey == 'personal_permissions') {
+				
+>>>>>>> @clnielsen HUDF-290 addded holding and resuming call and added more semicolons
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record

@@ -1,5 +1,4 @@
 <<<<<<< HEAD
-<<<<<<< HEAD
 hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', 
   function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
 
@@ -491,233 +490,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			   $scope.callObj[xpid].hours = 0;	
 			   $scope.callObj[xpid].days = 0;
 			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());
-=======
-hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','NotificationService', 
-	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,nservice){
-
-	var addedPid;
-	var localPid;
-	$scope.notifications = [];
-	$scope.calls = {};
-	phoneService.getMyCalls().then(function(data){
-		$scope.calls = data.mycalls;
-	});
-	$scope.inCall = false;
-	$scope.inRinging = false;
-	$scope.path = $location.absUrl().split("#")[0];
-	$scope.messageLimit = 300;
-	$scope.showNotificationBody = true;
-	$scope.showHeader = false;	
-	$scope.hasMessages = false;
-	$scope.phoneSessionEnabled = false;
-	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
-	$scope.showTimer = false;
-	//$scope.minutes = 0;
-	//$scope.seconds = 0;
-	$scope.stopTime;	
-	$scope.callObj = {};
-	
-	
-	// used to update the UI
-    $scope.updateTime = function(id) {    	
-		
-    	var time = new Date().getTime() - $scope.callObj[id].start;
-    	time = time/1000;
-    	$scope.callObj[id].seconds = Math.floor(time % 60);
-    	time = time/60; 
-    	$scope.callObj[id].minutes = Math.floor(time % 60);
-    	time = time/60; 
-    	$scope.callObj[id].hours = Math.floor(time % 24);  
-    	$scope.callObj[id].hours.days = Math.floor(time/24);
-    	
-    	var secondsText = '';
-    	var minutesText = '';   
-    	var hoursText = '';
-    	var daysText = '';
-    	   	
-	  	//seconds
-	  	if($scope.callObj[id].seconds < 10)
-	  		secondsText = ':0'+$scope.callObj[id].seconds;
-	  	else
-	  		secondsText = ':'+$scope.callObj[id].seconds;
-	  	//minutes
-	  	if($scope.callObj[id].minutes < 10)
-	  		minutesText = '0'+$scope.callObj[id].minutes;
-	  	else
-	  		minutesText = $scope.callObj[id].minutes;
-	  	//hours
-	  	if($scope.callObj[id].hours < 10)
-	  		hoursText = '0'+$scope.callObj[id].hours+":";
-	  	else
-	  		hoursText = $scope.callObj[id].hours+":";
-	  	
-	  	if($scope.callObj[id].hours <= 0)
-	  		hoursText='';
-	  	
-	  	if($scope.callObj[id].days <= 0)
-	  		daysText = '';
-	  	else
-	  		daysText = $scope.callObj[id].days +" days ";
-	  	
-	  	$scope.callObj[id].secondsText = secondsText;
-	  	$scope.callObj[id].minutesText = minutesText;  
-	  	$scope.callObj[id].hoursText = hoursText;	  
-	  	$scope.callObj[id].daysText = daysText;
-    }       
-	
-	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
-
-	$scope.$on('pidAdded', function(event, data){
-		addedPid = data.info;
-		if (localStorage['recents_of_' + addedPid] === undefined){
-			localStorage['recents_of_' + addedPid] = '{}';
-		}
-		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-	});
-	
-	myHttpService.getFeed('quickinbox');
-
-	$scope.storeRecent = function(xpid){
-		localPid = JSON.parse(localStorage.me);
-		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
-		$scope.recent[xpid] = {
-			type: 'contact',
-			time: new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
-	};
-
-	$scope.getAvatar = function(pid){
-		return myHttpService.get_avatar(pid,40,40);
-	};
-
-	$scope.getMessage = function(message){       				
-		var messages = (message.message).split('\n');
-		
-		switch(message.type){
-
-			case "vm":
-				return "Voicemail from extension " + message.phone; 
-				break;
-			case "chat":
-				return messages;
-				break;
-			default:
-				return messages;
-
-		
-		}
-	};
-
-	$scope.remove_notification = function(xpid){
-		for(i = 0; i < $scope.notifications.length; i++){
-			if($scope.notifications[i].xpid == xpid){
-				$scope.notifications.splice(i,1);
-				break;
-			}
-		}
-		for(i = 0; i < $scope.todaysNotifications.length; i++){
-			if($scope.todaysNotifications[i].xpid == xpid){
-				$scope.todaysNotifications.splice(i,1);
-				break;
-			}	
-		}
-		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
-	};
-
-	$scope.get_new_notifications= function(){
-		new_notifications = $scope.notifications.filter(function(item){
-			date = new Date(item.time);
-			today = new Date();
-			toReturn = false;
-			if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-				if(date.getDate() == today.getDate()){
-					if(item.receivedStatus != "away"){
-						toReturn = true;
-					}
-				}
-			}
-
-			return toReturn; 
-		});
-
-		return new_notifications;
-	};
-
-
-	$scope.get_away_notifications= function(){
-		away_notifications = $scope.notifications.filter(function(item){
-			return item.receivedStatus == "away"; 
-		});
-		return away_notifications;
-	};
-
-	$scope.get_old_notifications= function(){
-		old_notifications = $scope.notifications.filter(function(item){
-			date = new Date(item.time);
-			today = new Date();
-			return date.getDate() != today.getDate() && item.receivedStatus != "away"; 
-		});
-
-		return old_notifications;
-	};
-	
-	$scope.remove_all = function(){
-
-		$scope.notifications = [];
-		$scope.todaysNotifications = [];
-
-		myHttpService.sendAction('quickinbox','removeAll');
-			
-		$scope.showOverlay(false);
-	};
-
-	$scope.go_to_notification_chat = function(message){
-		if (message.context === undefined){
-			var xpid = message.xpid;
-		} else {
-			var context = message.context;
-			var xpid = context.split(':')[1];
-		}
-		$location.path("/" + message.audience + "/" + xpid + "/chat");
-		$scope.remove_notification(message.xpid);
-		$scope.showOverlay(false);
-	};
-
-	$scope.endCall = function(xpid){
-		phoneService.hangUp(xpid);
-	};
-
-	$scope.holdCall = function(xpid,isHeld){
-		phoneService.holdCall(xpid,isHeld);
-		
-		
-
-		if(!isHeld){
-			for(call in $scope.calls){
-				if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
-					$scope.holdCall($scope.calls[call].xpid,true);
-				}
-			}
-			$scope.onHold = false;
-		}
-	};
-
-	$scope.acceptCall = function(xpid){
-		for(call in $scope.calls){
-			if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
-				$scope.holdCall($scope.calls[call].xpid,true);
-			}
-		}
-		phoneService.acceptCall(xpid);
-	};
-
-	$scope.makeCall = function(phone){
-		phoneService.makeCall(phone);
-	};
->>>>>>> @clnielsen changed code for plugin detection
 
 		   }
 		   if($scope.callObj[xpid].seconds == 0 && 
@@ -730,75 +502,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		   }	   
 		}	
 		else
-<<<<<<< HEAD
 		{				
 			if($scope.callObj[xpid])
 			{
 				$scope.callObj[xpid]= {};		
-=======
-			$scope.overlay = 'groups';
-	};
-
-
-	$scope.$on('calls_updated',function(event,data){
-		//$scope.calls = {};
-		var displayDesktopAlert = false;
-		var toDisplayFor = settingsService.getSetting('alert_call_display_for');
-		var alertDuration = settingsService.getSetting('alert_call_duration');			
-		
-		if(data){
-
-			for (i in data){
-				//$scope.calls[data[i].contactId] = data[i];
-				//$scope.calls[data[i].contactId].fullProfile = contactService.getContact(data[i].contactId);
-				
-
-				switch(toDisplayFor){
-					case 'never':
-						break;
-					case 'all':
-						if(data[i].incoming){
-							if(settingsService.getSetting('alert_call_incoming') == 'true'){
-								displayDesktopAlert = true;
-							}
-						}else{
-							if(settingsService.getSetting('alert_call_outgoing') == 'true'){
-								displayDesktopAlert = true;
-							}
-						}
-						break;
-					case 'known':
-						if(data[i].contactId){
-							if(data[i].incoming){
-								if(settingsService.getSetting('alert_call_incoming') == 'true'){
-									displayDesktopAlert = true;
-								}
-							}else{
-								if(settingsService.getSetting('alert_call_outgoing') == 'true'){
-									displayDesktopAlert = true;
-								}
-							}	
-						}else{
-							displayDesktopAlert = false;
-						}
-						break;
-				}
-			}
-
-			me = $scope.meModel;
-			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
-		}
-		$scope.activeCall = {};
-	
-		if(alertDuration == 'while_ringing'){
-			if($scope.currentCall){
-
-				if($scope.currentCall.state != 0){
-					$scope.activeCall.displayCall = false;
-				}else{
-					$scope.activeCall.displayCall = true;
-				}
->>>>>>> @clnielsen changed code for plugin detection
 			}
 		}	
        	
@@ -849,14 +556,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					  			"callCategory" : $scope.calls[i].contactId ? "Internal" : "External",
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0"
-						}
+						};
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL");
 					}
 			}else{
         $scope.displayAlert = true;
         $timeout(displayNotification, 1500);
 			}
-<<<<<<< HEAD
     }else{
        $scope.displayAlert = true;
       $timeout(function(){
@@ -876,45 +582,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
     else
         $('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
 
-=======
-		}
-       	
-       	if(!$.isEmptyObject(data))
-		{	
-		   var xpid = '';
-		   for(k in data)
-		   {
-				xpid = k;
-		   }
-		   if(typeof $scope.callObj[xpid] == "undefined")
-		   {	   
-			   $scope.callObj[xpid] = {};
-			   $scope.callObj[xpid].minutes = 0;
-			   $scope.callObj[xpid].seconds = 0;
-			   $scope.callObj[xpid].hours = 0;	
-			   $scope.callObj[xpid].days = 0;
-			   $scope.callObj[xpid].start = new Date().getTime();			   
-		   }
-		   if($scope.callObj[xpid].seconds == 0 && 
-			  $scope.callObj[xpid].minutes == 0 && 
-			  $scope.callObj[xpid].hours == 0 &&
-			  $scope.callObj[xpid].days == 0)
-		   {	   
-			   $scope.callObj[xpid].stopTime = $interval(function(){
-				   $scope.updateTime(xpid);
-			   }, 1000);
-		   }	   
-		}	
-		else
-		{				
-			if($scope.callObj[xpid])
-			{
-				$interval.cancel($scope.callObj[xpid].stopTime);
-				$scope.callObj[xpid]= {};		
-			}
-		}	
-		
->>>>>>> @clnielsen changed code for plugin detection
 	});
 
 	$scope.playVm = function(xpid){
@@ -1121,13 +788,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	};
 
 	$scope.$on('quickinbox_synced', function(event,data){
-<<<<<<< HEAD
-		displayDesktopAlert = true;
 
-=======
 		var displayDesktopAlert = true;
 		var missedCalls = [];
->>>>>>> @clnielsen changed code for plugin detection
   		if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -1164,12 +827,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 							}else if(notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-<<<<<<< HEAD
-                				notification.label = 'missed call';
-=======
                  				notification.label = 'missed call';
                  				missedCalls.push(notification);
->>>>>>> @clnielsen changed code for plugin detection
 							}else if(notification.type == 'busy-ring-back'){
                 				notification.label = 'is now available for call';
 								notification.message= "User is free for call";
@@ -1239,15 +898,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					}else if(notification.type == 'chat'){
 						notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-<<<<<<< HEAD
-            			notification.label = 'missed call';
-					}else if(notification.type == 'busy-ring-back'){
-            			notification.label = 'is now available for call';
-=======
                 				notification.label = 'missed call';
+                				missedCalls.push(notification);
+
 					}else if(notification.type == 'busy-ring-back'){
             					notification.label = 'is now available for call';
->>>>>>> @clnielsen changed code for plugin detection
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}else if(notification.type == "description"){
@@ -1278,7 +933,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 			return a.time - b.time; 
 		});
 			       
-<<<<<<< HEAD
 		if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
 			$scope.showNotificationBody = false;
 		}else{
@@ -1289,54 +943,34 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		else
 		   	$scope.hasMessages = true;	
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
-=======
-		$scope.$watch(function(scope){
-			if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
-				$scope.showNotificationBody = false;
-			}else{
-				$scope.showNotificationBody = true;
-			}
-			if(!$scope.todaysNotifications || $scope.todaysNotifications.length == 0)
-			  $scope.hasMessages = false;
-			else
-		   	  $scope.hasMessages = true;	  
-		});		
+
 			
 		if(displayDesktopAlert){
-
+			//nservice.isEnabled(
+			if(true){
+		
 			 for (var i = 0; i < missedCalls.length;i++){
 			 	 var missedCall = missedCalls[i];
 			 	 var data = {
-			 	 	"notificationId":"3938", 
+			 	 	"notificationId": missedCall.senderId ? missedCall.senderId  : missedCall.phone, 
   					"leftButtonText" : "Chat",
   					"rightButtonText" : "Call",
   					"leftButtonId" : "CHAT_REQUEST",
   					"rightButtonId" : "CALL_REQUEST",
   					"leftButtonEnabled" : "true",
   					"rightButtonEnabled" : "true",
-  					"callerName" : "Kobe Bryant", 
+  					"callerName" : missedCall.displayName, 
   					"callMessage" :"...you have a missed call",
   					"callLocation" : "External",
   					"callDate" : "Today, 1:03pm",
-   					"phoneStatus" : "mute"
-			 	 }
+   					//"phoneStatus" : "mute"
+			 	 };
+
+			 	 phoneService.displayWebphoneNotification(data,"MISSED_CALL");
+
 
 			 }
-			 /*var data = {
-					  "notificationId":"3938", 
-					  "leftButtonText" : "Decline",
-					  "rightButtonText" : "Accept",
-					  "leftButtonId" : "CALL_DECLINED",
-					  "rightButtonId" : "CALL_ACCEPTED",
-					  "leftButtonEnabled" : "True",
-					  "rightButtonEnabled" : "True",
-					  "callerName" : "Kobe Bryant", 
-					  "callStatus" :"Incoming call for",
-					  "callCategory" : "External",
-					  "muted" : "1",
-					  "record" : "1"
-				}
->>>>>>> @clnielsen changed code for plugin detection
-
-	});		
+	   }
+      }				
+    });		
 }]);

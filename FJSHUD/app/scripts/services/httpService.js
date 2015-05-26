@@ -672,6 +672,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			transformResponse: false
 		})
 		.then(function(response) {
+			
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 
 			for (var key in data) {

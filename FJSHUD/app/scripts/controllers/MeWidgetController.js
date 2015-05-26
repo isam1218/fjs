@@ -183,7 +183,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     myHttpService.getFeed('weblauncher');    
     myHttpService.getFeed('weblaunchervariables');
     myHttpService.getFeed('i18n_langs');
-   
 
     var phonePromise = phoneService.getDevices();
     
@@ -313,7 +312,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
       else if(target.parentNode) {
           return this.getEventHandlerElement(target.parentNode, event);
       }
-};
+    };
 
     $scope.showLocationsPopup = function(e) {
         e.stopPropagation();
@@ -435,7 +434,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
 
     };
-	
     $scope.volume = {};
     $scope.volume.micVol;
     $scope.volume.spkVol;
@@ -575,7 +573,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive ? "true" : "false");    
         }
     };
-
     $scope.currentWebLauncher = {};
 
     $scope.update_weblauncher_settings = function(){
@@ -608,6 +605,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             weblauncherTimeout = undefined;
         }, 500, false);
     };
+	
+	// grab settings from service (prevents conflict with dock)
+	settingsService.getSettings().then(function(data) {
+		$scope.settings = settings = data;
+		update_queues();
+        update_settings();
+	});
     
     $scope.$on('settings_updated',function(event,data){
         if (data){
@@ -634,7 +638,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         myHttpService.update_avatar(data);
     };
 
-     $scope.$on('contacts_synced', function(event, data) {
+    $scope.$on('contacts_synced', function(event, data) {
         
         if(data && data != undefined){
             var meUser = data.filter(function(item){
