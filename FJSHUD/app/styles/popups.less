@@ -19,6 +19,24 @@
         color: #555;
         float: left;
     }
+    
+    .Messages{
+        background: url('') #fff !important;
+        /*padding-bottom:8px !important;*/
+        padding-bottom: 0 !important;
+        margin-top: 0px;
+        
+        .AvatarWarningSmall{
+            left: 5px;
+            top: 10px;
+        }
+        .NotificationAvatar{
+            top: 10px !important;
+        }
+        .LeftBarNotificationMessageSection{
+            margin-left: 5px;
+        }
+    }
     .XButton.header{
         float: right;
         margin-right: 5px;
@@ -46,7 +64,7 @@
       padding-top: 1em;
       text-align: right;
       position: absolute;
-      width: 95.5%;
+      width: 94%;
       bottom: 10px;
     }
     .notifications_section{             
@@ -59,11 +77,24 @@
         
         .Messages{
             overflow: hidden;
-            .NotificationHeader, .NotificationDivider{ margin-top: 16px;}/*margin-top: 20px;*/
+            .NotificationHeader, .NotificationDivider{ margin-top: 16px;}
             .NotificationHeader{
                 margin-right: -1px;
             }
         }        
+    }
+    .Messages.plugins{
+        margin-top: 20px;
+        border-bottom: 1px solid #ccc;
+        cursor:hand;
+        cursor:pointer;
+        
+        .NotificationDivider{
+            margin-top: 14px;
+        }
+        .NotificationHeaderBackground{
+            bottom: 14px;
+        }
     }
     .NotificationMessages{       
         border: 1px solid #ccc;        
@@ -94,6 +125,7 @@
     }
     .Foreground{   
       width: 40%;    
+      background: url('') #ffffff !important;
       .footer{
         border-top: none 0px !important;
       }
