@@ -9,9 +9,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 	$scope.query = "";
 
 	$scope.sort_options = [
-	{name:$scope.verbage.sort_by_name, id:1,type:'name'},
-    {name:$scope.verbage.sort_by_call_status,id:2, type:'call_status'},
-    {name:$scope.verbage.sort_by_chat_status,id:3, type:'chat_status'},
+	{name:$scope.verbage.sort_by_name, id:1,type:'fullProfile.displayName'},
+    {name:$scope.verbage.sort_by_call_status,id:2, type:'fullProfile.call'},
+    {name:$scope.verbage.sort_by_chat_status,id:3, type:'fullProfile.hud_status'},
   ];
   
   $scope.selectedSort = $scope.sort_options[0];
@@ -40,35 +40,17 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 	$scope.callExtension= function(extension){
 		phoneService.makeCall(extension);
 	};
-
-	$scope.sortBy = function(type){
-		switch(type){
-			case 'name':
-				$scope.members.sort(function(a,b){
-					b.displayName.localeCompare(a.displayName);
-				});	
-				break;
-			case 'call_status':
-				$scope.members.sort(function(a,b){
-					if(b.queue_status == "login"){
-						return 1;
-					}else{
-						return -1;
-					}
-				});	
-				break;
-			case 'chat_status':
-				$scope.members.sort(function(a,b){
-					if(b.hud_status == "available"){
-						return 1;
-					}else{
-						return -1;
-					}
-				});
-				break;
-		}
-		$scope.$safeApply();
-	}
+	
+	$scope.showCallStatus = function($event, contact) {
+		$event.stopPropagation();
+        $event.preventDefault();
+		
+		// permission?
+		if (contact.call.type == 0)
+			return;
+	
+		$scope.showOverlay(true, 'CallStatusOverlay', contact);
+	};
 
 	$scope.searchFilter = function(){
 		var query = $scope.grp.query;
@@ -76,5 +58,5 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 			if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
 				return true;
 		};
-	}
+	};
 }]);
