@@ -18,12 +18,12 @@
         </div>
 
         <!-- ng-views -->
-        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'"
+        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" include-once="views/ChatView.html"
         ng-controller="ChatController"
         ></div>
-        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
+        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" include-once="views/conference/CurrentCall.html"
         ></div>
-        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
         
     </div>
 
