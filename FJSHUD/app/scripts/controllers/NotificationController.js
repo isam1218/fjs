@@ -30,9 +30,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.awayNotifications = [];
 	$scope.oldNotifications = [];
 	
-	$scope.showNew = true;
-	$scope.showAway = true;
-	$scope.showOld = true;
+	$scope.showNew = false;
+	$scope.showAway = false;
+	$scope.showOld = false;
 	//$scope.minutes = 0;
 	//$scope.seconds = 0;
 	$scope.stopTime;	
@@ -140,6 +140,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 	};
 
+	$scope.getNotificationsLength = function(length)
+	{
+		var length = $scope.phoneSessionEnabled ? length : length + 1;
+		
+		return length;
+	};
+	
 	$scope.remove_notification = function(xpid){
 		for(i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
@@ -271,6 +278,20 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
 	};
+	
+	$scope.showQueue = function(message)
+    {
+		var xpid = message.xpid;
+		var queue = queueService.getQueue(xpid);
+		if(queue.info.abandon == 1)
+		{	
+			$location.path("/" + message.audience + "/" + xpid + "/stats");
+		}
+		else
+		{
+			$location.path("/" + message.audience + "/" + xpid + "/calls");
+		}	
+    };	
 
 	$scope.endCall = function(xpid){
 		phoneService.hangUp(xpid);
@@ -310,11 +331,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			$scope.overlay = '';
 			if($scope.hasOldNotifications)
 			if($scope.hasNewNotifications) 	
-			 $scope.showNew = true;
+			 $scope.showNew = false;
 			if($scope.hasAwayNotifications)
-				$scope.showAway = true;
+				$scope.showAway = false;
 			if($scope.hasOldNotifications)
-				$scope.showOld = true;
+				$scope.showOld = false;
 		}	
 		else if ($scope.tab != 'groups')
 			$scope.overlay = 'contacts';
@@ -538,10 +559,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 								break;	
 							}
 						}
-						if(!isNotificationAdded){
-							
+						if(!isNotificationAdded){							
 
-							$scope.notifications.push(notification);
+							$scope.notifications.push(notification);							
 						}
 					}else if(notification.xef001type == "delete"){
 						for(i = 0; i < $scope.notifications.length;i++){
