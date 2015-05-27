@@ -328,8 +328,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showNotificationOverlay = function(show) {
 		if (!show)
 		{	
-			$scope.overlay = '';
-			if($scope.hasOldNotifications)
+			$scope.overlay = '';			
 			if($scope.hasNewNotifications) 	
 			 $scope.showNew = false;
 			if($scope.hasAwayNotifications)
