@@ -9,7 +9,7 @@
     </div>
     <div class="WidgetBody">
 		<div class="WidgetTabBar">
-            <span ng-repeat="tab in tabs">
+            <span ng-repeat="tab in tabs | filter: tabFilter()">
                 <a href="#/conference/{{ ::conferenceId + '/' +  tab.lower}}" ng-click="saveConfTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
                     <div class="inner">{{::tab.upper}}</div>
                     <div class="arrow"></div>
