@@ -78,6 +78,15 @@
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
 				</div>
 			</div>
+				
+			<div class="CallStatus" ng-if="gadget.data.call">
+				<avatar
+					ng-click="showCallStatus($event, gadget.data)"
+					profile="gadget.data.call.fullProfile"
+					context="callstatus"
+					type="{{::gadget.data.call.type}}">
+				</avatar>
+			</div>	
 		</a>
 	</div>
 
