@@ -134,13 +134,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
 	};
 
-
-
-	this.initializePhone = function(){
-		 phonePlugin = document.getElementById('phone');
-		// version = phonePlugin.version;
-	};
-
 	displayNotification = function(content, width,height){
 		
 		var displayNotification = false;
@@ -558,7 +551,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.isPhoneActive = function(){
-		if(session){
+		if(phonePlugin.getSession){
 			return true;
 		}else{
 			return false;
