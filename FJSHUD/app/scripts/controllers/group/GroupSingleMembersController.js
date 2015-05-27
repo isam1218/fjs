@@ -37,7 +37,10 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
   };
 
-	$scope.callExtension= function(extension){
+	$scope.callExtension= function($event, extension){
+		$event.stopPropagation();
+		$event.preventDefault();
+		
 		phoneService.makeCall(extension);
 	};
 	
