@@ -298,11 +298,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	}, 600);
 
 	$scope.nameDisplay = function(message, index){
-		var curMsg = $scope.filteredMessages[index];
+		var curMsg = $scope.$parent.filteredMessages[index];
 		var curMsgDate = new Date(curMsg.created);
 		var prvMsg;
 		if (index !== 0){
-			prvMsg = $scope.filteredMessages[index-1];
+			prvMsg = $scope.$parent.filteredMessages[index-1];
 			var prvMsgDate = new Date(prvMsg.created);
 		}
 		// if very 1st message --> display name
