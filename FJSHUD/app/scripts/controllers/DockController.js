@@ -3,7 +3,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	var addedPid;
 	var localPid;
 	$scope.gadgets = {};
-
+	$scope.upload_time = 0;
 	$scope.$on('pidAdded', function(event, data){
 		addedPid = data.info;
 		if (localStorage['recents_of_' + addedPid] === undefined){
@@ -28,6 +28,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		$scope.upload_progress = data.progress;	
 	},function(error){},function(data){
 		$scope.upload_progress = data.progress;
+		if(data.started){
+			$scope.upload_time = new Date().getTime();
+		}
 		if(data.progress == 100){
 			$timeout(function(){$scope.upload_progress = 0;},1000);
 		}	

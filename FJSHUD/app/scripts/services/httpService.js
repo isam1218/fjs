@@ -467,10 +467,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     };
     //this will return a promise to for file uploads
     this.get_upload_progress = function(){
-    	data = {
-			progress:upload_progress,
-		};
-		return deferred_progress.promise;
+    	return deferred_progress.promise;
     }
 
     this.upload_attachment = function(data,attachments) {
@@ -491,6 +488,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/streamevent?Authorization=" + authTicket + "&node=" + nodeID;
     	
     	var request = new XMLHttpRequest();
+    	 var upload_start = true;
 
     	//angular http does not have a way to report progress so I switched to using xhrrequest and the new HTML5 onprogress callback
 		request.upload.onprogress = function(evt){
@@ -499,10 +497,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 				var percentComplete = (evt.loaded/evt.total)*100;
 				var data = {
 					progress:percentComplete,
-					status: "IN_PROGRESS",
+					started: upload_start,
+
 				};
 
 				deferred_progress.notify(data);
+				upload_start = false;
 			}	
 		};
 		
@@ -523,21 +523,24 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             fd.append(field, data[field]);
         }
         var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
-    	
+    	var upload_start = true;
+        
         var request = new XMLHttpRequest();
 		request.upload.onprogress = function(evt){
 			if(evt.lengthComputable){
 				var percentComplete = (evt.loaded/evt.total)*100;
 				var data = {
 					progress:percentComplete,
+					started: upload_start,
 				};
 				deferred_progress.notify(data);
-				
+				upload_start = false;
 			}	
 		};
 		
 		request.open("POST",requestURL, true);
 		request.send(fd);
+		
 	};
   
 	// generic 'save' function
