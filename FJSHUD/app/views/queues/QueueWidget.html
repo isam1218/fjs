@@ -31,7 +31,7 @@
   <div class="WidgetBody">
     <div class="WidgetTabBar">
       <span ng-repeat="tab in tabs | filter: tabFilter()">
-        <a href="#/queue/{{ ::queueId + '/' + tab.lower}}" ng-click="saveQTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
+        <a href="#/queue/{{ ::queueId + '/' + tab.lower}}" ng-click="saveQTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index} tab.lower">
           <div class="inner">{{ ::tab.upper }}</div>
           <div class="arrow"></div>
         </a>

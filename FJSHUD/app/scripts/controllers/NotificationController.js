@@ -49,7 +49,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
     	$scope.callObj[id].minutes = Math.floor(time % 60);
     	time = time/60; 
     	$scope.callObj[id].hours = Math.floor(time % 24);  
-    	$scope.callObj[id].hours.days = Math.floor(time/24);
+    	$scope.callObj[id].days = Math.floor(time/24);
     	
     	var secondsText = '';
     	var minutesText = '';   
@@ -281,16 +281,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	
 	$scope.showQueue = function(message)
     {
-		var xpid = message.xpid;
-		var queue = queueService.getQueue(xpid);
-		if(queue.info.abandon == 1)
-		{	
-			$location.path("/" + message.audience + "/" + xpid + "/stats");
-		}
+		var qid = message.queueId;
+		
+		if(message.type == 'q-alert-abandoned')			
+			$location.path("/" + message.audience + "/" + qid + "/stats");		
 		else
 		{
-			$location.path("/" + message.audience + "/" + xpid + "/calls");
+			if(message.type == 'q-alert-rotation')
+			   $location.path("/" + message.audience + "/" + qid + "/calls");
 		}	
+		$scope.showNotificationOverlay(false);
     };	
 
 	$scope.endCall = function(xpid){
