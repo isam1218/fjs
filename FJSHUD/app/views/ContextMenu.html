@@ -127,7 +127,7 @@
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callNumber(profile.primaryExtension)">
+		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callNumber(profile.primaryExtension); storeRecentContact(profile.primaryExtension)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call}}</span>
 		</a>

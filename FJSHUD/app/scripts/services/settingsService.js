@@ -87,6 +87,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
 
 				// group permissions from MyPermissions.java
@@ -108,6 +109,14 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				break;
 			}
 		}
+	});
+
+	$rootScope.$on('callpermissions_synced', function(event, data){
+		console.error('callperm synced - ', data);
+	});
+
+	$rootScope.$on('queuecallpermissions_synced', function(event, data){
+		console.error('q call perm synced - ', data);
 	});
 	
 	$rootScope.$on('settings_synced', function(event, data) {
