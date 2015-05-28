@@ -12,7 +12,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
-	$scope.phoneSessionEnabled = false;
+	$scope.phoneSessionEnabled = true;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 	$scope.showTimer = false;
 	$scope.notifications_to_display = '';
@@ -38,7 +38,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.stopTime;	
 	$scope.callObj = {};
 	
-	
+	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 	// used to update the UI
     $scope.updateTime = function(id) {    	
 		

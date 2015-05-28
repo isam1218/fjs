@@ -161,10 +161,17 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			}
 		}
 	});
-
-	$scope.takeParkedCall = function(call){
+	
+	$scope.showCallStatus = function($event, contact) {
+		$event.stopPropagation();
+        $event.preventDefault();
 		
-	}
+		// permission?
+		if (contact.call.type == 0)
+			return;
+	
+		$scope.showOverlay(true, 'CallStatusOverlay', contact);
+	};
 
 	$scope.joinConference = function(conference) {
 		var params = {

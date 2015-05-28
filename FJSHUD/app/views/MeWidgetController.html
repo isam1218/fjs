@@ -110,7 +110,7 @@
               <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">{{verbage.place_a_call}}</div>
                 <input class="NewCall" ng-keypress="callKeyPress($event)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">                
-                <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
+                <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber); storeRecentContact(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
                 <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
               </div>              
                             
@@ -145,7 +145,7 @@
 
                       
                       <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="::calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ ::formatIncoming(calllog,'From') }} </div>
-                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="::!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ ::formatIncoming(calllog,'To') }} </div>
+                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}"  ng-click="recentCallToFunction(calllog)" ng-disabled="::!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ ::formatIncoming(calllog,'To') }} </div>
                       <div class="RecentCallsHeader RecentDur">{{ ::calllog.duration | duration }} </div>
                     
                     </div>
@@ -168,14 +168,14 @@
 		              </div>
 		         
 		              <div class="SettingsPanel DialogContentMainBlock_List">
-						<div ng-if="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
-						<div ng-if="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
-						<div ng-if="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
-						<div ng-if="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
-						<div ng-if="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
-						<div ng-if="selected.option == 'CP'" class="fj-content padding" ng-include="'views/settings/SettingsCP.html'"></div>
-						<div ng-if="selected.option == 'About'" class="fj-content padding" ng-include="'views/settings/SettingsAbout.html'"></div>
-						<div ng-if="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
+						<div ng-if="selected.option == 'General'" class="fj-content" include-once="views/settings/Settings.html" ></div>
+						<div ng-if="selected.option == 'Web Launcher'" class="fj-content" include-once="views/settings/SettingsWebLauncer.html"></div>
+						<div ng-if="selected.option == 'Queues'" class="fj-content" include-once="views/settings/SettingsQueues.html"></div>
+						<div ng-if="selected.option == 'Account'" class="fj-content" include-once="views/settings/SettingsAccount.html"></div>
+						<div ng-if="selected.option == 'Alerts'" class="fj-content" include-once="views/settings/SettingsAlerts.html"></div>
+						<div ng-if="selected.option == 'CP'" class="fj-content padding" include-once="views/settings/SettingsCP.html"></div>
+						<div ng-if="selected.option == 'About'" class="fj-content padding" include-once="views/settings/SettingsAbout.html"></div>
+						<div ng-if="selected.option == 'Phone'" class="fj-content" include-once="views/settings/SettingsPhone.html" ></div>
 					  </div> 	                
 	            </div>
 	        </div>  
