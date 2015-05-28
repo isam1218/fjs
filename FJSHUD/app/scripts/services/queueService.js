@@ -5,6 +5,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	var total = {};
 	var myLoggedIn = 0;
 	var reasons = [];
+	var selectedFlag = '';
 	
 	this.getQueue = function(xpid) {
 		for (var i = 0, len = queues.length; i < len; i++) {
@@ -49,6 +50,17 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	
 	this.getReasons = function() {
 		return reasons;
+	};
+	
+	this.setSelected = function(flag, name, qid){
+		selectedFlag = {};
+		selectedFlag.flag = flag;
+		selectedFlag.name = name;
+		selectedFlag.qid = qid;
+	};
+	
+	this.getSelected = function(){		
+		return selectedFlag;		
 	};
 
 	var formatData = function () {

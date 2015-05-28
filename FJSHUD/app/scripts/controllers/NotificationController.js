@@ -15,6 +15,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.phoneSessionEnabled = true;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 	$scope.showTimer = false;
+	$scope.selectedStatsTab = false;
+	$scope.selectedCallsTab = false;
 	$scope.notifications_to_display = '';
 	$scope.new_notifications_to_display = '';
 	$scope.away_notifications_to_display = '';
@@ -154,9 +156,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				break;
 			}
 		}
-		for(i = 0; i < $scope.todaysNotifications.length; i++){
-			if($scope.todaysNotifications[i].xpid == xpid){
-				$scope.todaysNotifications.splice(i,1);
+		for(j = 0; j < $scope.todaysNotifications.length; j++){
+			if($scope.todaysNotifications[j].xpid == xpid){
+				$scope.todaysNotifications.splice(j,1);
 				break;
 			}	
 		}
@@ -283,12 +285,22 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
     {
 		var qid = message.queueId;
 		
-		if(message.type == 'q-alert-abandoned')			
-			$location.path("/" + message.audience + "/" + qid + "/stats");		
+		$('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
+		
+		if(message.type == 'q-alert-abandoned')		
+		{
+			queueService.setSelected(true, 'stats', qid);
+			$location.path("/" + message.audience + "/" + qid + "/stats");							
+		}
 		else
 		{
 			if(message.type == 'q-alert-rotation')
+			{	
+			   queueService.setSelected(true, 'calls', qid);	
 			   $location.path("/" + message.audience + "/" + qid + "/calls");
+			   		  
+			}   
+			   
 		}	
 		$scope.showNotificationOverlay(false);
     };	
@@ -551,9 +563,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 
 					if(notification.xef001type != "delete"){
-						for(i = 0; i < $scope.notifications.length;i++){
-							if($scope.notifications[i].xpid == notification.xpid){
-								$scope.notifications.splice(i,1,notification);
+						for(l = 0; l < $scope.notifications.length;l++){
+							if($scope.notifications[l].xpid == notification.xpid){
+								$scope.notifications.splice(l,1,notification);
 								isNotificationAdded = true;
 								break;	
 							}
@@ -563,9 +575,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							$scope.notifications.push(notification);							
 						}
 					}else if(notification.xef001type == "delete"){
-						for(i = 0; i < $scope.notifications.length;i++){
-							if($scope.notifications[i].xpid == notification.xpid){
-								$scope.notifications.splice(i,1);
+						for(n = 0; n < $scope.notifications.length;n++){
+							if($scope.notifications[n].xpid == notification.xpid){
+								$scope.notifications.splice(n,1);
 								break;	
 							}
 						}
