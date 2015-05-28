@@ -10,7 +10,6 @@
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
 		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
     </div>
-			
 	<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
 		<avatar 
 			profile="member.fullProfile.call.fullProfile"
@@ -28,7 +27,6 @@
 		<div class="ListRowStatus">
 			<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
 		</div>
-		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension)"></input>
+		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension); storeRecentQueueMember(member.contactId)"></input>
 	</div>
-  </div>
 </a>

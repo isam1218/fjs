@@ -43,7 +43,7 @@
 			
             <div class="vmalternate" ng-if="!member.fullProfile.call">
                 <div class="vmtime">#{{ ::member.fullProfile.primaryExtension }}</div>
-                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension)"></input>
+                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension); storeRecentContact(member.fullProfile.xpid)"></input>
             </div>
             
         </div>

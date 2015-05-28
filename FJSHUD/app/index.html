@@ -108,7 +108,7 @@
 					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" 
 						ng-keypress="makePhoneCall('dialpad',$event)"
 					/>
-					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number)"/>
+					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number); storeRecentContact(number)"/>
 				</div>
 			</div>
 
