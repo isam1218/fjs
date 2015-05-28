@@ -148,13 +148,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 	
 	$scope.remove_notification = function(xpid){
-		for(i = 0; i < $scope.notifications.length; i++){
+		for(var i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
 				$scope.notifications.splice(i,1);
 				break;
 			}
 		}
-		for(i = 0; i < $scope.todaysNotifications.length; i++){
+		for(var i = 0; i < $scope.todaysNotifications.length; i++){
 			if($scope.todaysNotifications[i].xpid == xpid){
 				$scope.todaysNotifications.splice(i,1);
 				break;
@@ -551,9 +551,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 
 					if(notification.xef001type != "delete"){
-						for(i = 0; i < $scope.notifications.length;i++){
-							if($scope.notifications[i].xpid == notification.xpid){
-								$scope.notifications.splice(i,1,notification);
+						for(var j = 0; j < $scope.notifications.length; j++){
+							if($scope.notifications[j].xpid == notification.xpid){
+								$scope.notifications.splice(j,1,notification);
 								isNotificationAdded = true;
 								break;	
 							}
@@ -563,9 +563,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							$scope.notifications.push(notification);							
 						}
 					}else if(notification.xef001type == "delete"){
-						for(i = 0; i < $scope.notifications.length;i++){
-							if($scope.notifications[i].xpid == notification.xpid){
-								$scope.notifications.splice(i,1);
+						for(var j = 0; j < $scope.notifications.length; j++){
+							if($scope.notifications[j].xpid == notification.xpid){
+								$scope.notifications.splice(j,1);
 								break;	
 							}
 						}
