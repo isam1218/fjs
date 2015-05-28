@@ -83,9 +83,9 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		for (var i = 0, len = data.length; i < len; i++) {
 			// look at fj repository > MyPermissions.java for reference
 			if (data[i].propertyKey == 'personal_permissions') {
-				
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
 
 				// group permissions from MyPermissions.java
@@ -94,19 +94,27 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
 				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
 
-				// QUEUE PERMISSIONS... from QueuePermissions.java
-				permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
-				permissions.isViewQueueDetailsEnabled = isEnabled(data[i].propertyValue, 1);
-				// this is the same as showVideoCollab
+				// // QUEUE PERMISSIONS... from QueuePermissions.java
+				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
+				// permissions.isViewQueueDetailsEnabled = isEnabled(data[i].propertyValue, 1);
+				// // this is the same as showVideoCollab
 
-				// Call Permission from CallPermissions.java
-				permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
+				// // Call Permission from CallPermissions.java
+				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				
 
 				deferPermissions.resolve(permissions);
 				break;
 			}
 		}
+	});
+
+	$rootScope.$on('callpermissions_synced', function(event, data){
+		console.error('callperm synced - ', data);
+	});
+
+	$rootScope.$on('queuecallpermissions_synced', function(event, data){
+		console.error('q call perm synced - ', data);
 	});
 	
 	$rootScope.$on('settings_synced', function(event, data) {

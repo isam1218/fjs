@@ -15,9 +15,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
-	$scope.phoneSessionEnabled = false;
+	$scope.phoneSessionEnabled = true;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 	$scope.showTimer = false;
+	$scope.notifications_to_display = '';
+	$scope.new_notifications_to_display = '';
+	$scope.away_notifications_to_display = '';
+	$scope.old_notifications_to_display = '';
+	$scope.message_section_notifications = ''
 	$scope.hasNewNotifications = false;
 	$scope.hasAwayNotifications = false;
 	$scope.hasOldNotifications = false;
@@ -28,15 +33,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	$scope.awayNotifications = [];
 	$scope.oldNotifications = [];
 	
-	$scope.showNew = true;
-	$scope.showAway = true;
-	$scope.showOld = true;
+	$scope.showNew = false;
+	$scope.showAway = false;
+	$scope.showOld = false;
 	//$scope.minutes = 0;
 	//$scope.seconds = 0;
 	$scope.stopTime;	
 	$scope.callObj = {};
 	
-	
+	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 	// used to update the UI
     $scope.updateTime = function(id) {    	
 		
@@ -113,7 +118,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	};
 
 	$scope.getMessage = function(message){       				
-		var messages = (message.message).split('\n');
+		var messages = message.message && message.message != null && message.message != "" ? (message.message).split('\n') : '';
 		if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
 			messages="";
 		
@@ -136,6 +141,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		}
 	};
 
+	$scope.getNotificationsLength = function(length)
+	{
+		var length = $scope.phoneSessionEnabled ? length : length + 1;
+		
+		return length;
+	};
+	
 	$scope.remove_notification = function(xpid){
 		for(i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
@@ -216,7 +228,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		old_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
 			today = new Date();
-			return date.getTime() < today.getTime() && item.receivedStatus != "away"; 
+			return date.getTime() < today.getTime() && date.getDate() < today.getDate() && item.receivedStatus != "away"; 
 		});
         if(old_notifications.length > 0)
            $scope.hasOldNotifications = true; 
@@ -229,33 +241,21 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	
 	$scope.removeOldNotifications = function()
 	{		
-		
-		for(nNum = 0; nNum < $scope.notifications.length; nNum++){
-			
-		  var notification_xpid = 	$scope.notifications[nNum].xpid;
 		  
-			for(nIndex=0; nIndex < $scope.oldNotifications.length; nIndex++) 
-	        {	
-				if($scope.oldNotifications[nIndex].xpid == notification_xpid)
-				{																	
-					myHttpService.sendAction('quickinbox','remove',{'pid': $scope.oldNotifications[nIndex].xpid});
-					$scope.notifications.splice(nNum,1);
-					$scope.oldNotifications.splice(nIndex,1);
-					
-					if($scope.oldNotifications.length == 0)
-					{	
-					  $scope.hasOldNotifications = false;	
-					  $scope.oldNotifications = [];					
-					}
-					
-				}
-				if(!$scope.hasNewNotifications && 
-				   !$scope.hasAwayNotifications && 
-				   !$scope.hasOldNotifications)
-					$scope.showNotificationOverlay(false);
-				
-	        }
-		}				
+		while($scope.oldNotifications.length > 0)
+		{
+			var nIndex_xpid = $scope.oldNotifications[0].xpid;				
+		    myHttpService.sendAction('quickinbox','remove',{'pid': nIndex_xpid});
+		    $scope.oldNotifications.splice(0,1);
+		}	
+		
+		$scope.hasOldNotifications = false;	
+		$scope.oldNotifications = [];					
+											
+		if(!$scope.hasNewNotifications && 
+		   !$scope.hasAwayNotifications && 
+		   !$scope.hasOldNotifications)
+			$scope.showNotificationOverlay(false);				
 	};
 	
 	$scope.remove_all = function(){
@@ -279,6 +279,20 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
 	};
+	
+	$scope.showQueue = function(message)
+    {
+		var xpid = message.xpid;
+		var queue = queueService.getQueue(xpid);
+		if(queue.info.abandon == 1)
+		{	
+			$location.path("/" + message.audience + "/" + xpid + "/stats");
+		}
+		else
+		{
+			$location.path("/" + message.audience + "/" + xpid + "/calls");
+		}	
+    };	
 
 	$scope.endCall = function(xpid){
 		phoneService.hangUp(xpid);
@@ -315,14 +329,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	$scope.showNotificationOverlay = function(show) {
 		if (!show)
 		{	
-			$scope.overlay = '';
-			if($scope.hasOldNotifications)
+			$scope.overlay = '';			
 			if($scope.hasNewNotifications) 	
-			 $scope.showNew = true;
+			 $scope.showNew = false;
 			if($scope.hasAwayNotifications)
-				$scope.showAway = true;
+				$scope.showAway = false;
 			if($scope.hasOldNotifications)
-				$scope.showOld = true;
+				$scope.showOld = false;
 		}	
 		else if ($scope.tab != 'groups')
 			$scope.overlay = 'contacts';
@@ -579,10 +592,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 								break;	
 							}
 						}
-						if(!isNotificationAdded){
-							
+						if(!isNotificationAdded){							
 
-							$scope.notifications.push(notification);
+							$scope.notifications.push(notification);							
+						}
+					}else if(notification.xef001type == "delete"){
+						for(i = 0; i < $scope.notifications.length;i++){
+							if($scope.notifications[i].xpid == notification.xpid){
+								$scope.notifications.splice(i,1);
+								break;	
+							}
 						}
 					}
 				}
@@ -621,7 +640,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					}
 					if(notification.xef001type != "delete"){
 						$scope.notifications.push(notification);
-						
 					}
 				}
 			}

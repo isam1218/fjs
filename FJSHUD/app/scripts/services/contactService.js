@@ -30,7 +30,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			// add avatars
 			for (var i = 0, len = contacts.length; i < len; i++) {
 				contacts[i].getAvatar = function(size) {
-					return httpService.get_avatar(this.xpid, size, size); 
+					return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
 				};
 			}
 		}
@@ -60,7 +60,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 					
 					// add avatar
 					contacts[contacts.length-1].getAvatar = function(size) {
-						return httpService.get_avatar(this.xpid, size, size); 
+						return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
 					};
 				}
 			}
@@ -124,4 +124,16 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			}
 		}
 	});
+	
+    $rootScope.$on("fdpImage_synced", function(event,data) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				// update avatar version
+				if (data[i].xpid == contacts[c].xpid) {
+					contacts[c].icon_version = data[i].xef001iver;
+					break;
+				}
+			}
+		}
+    });
 }]);

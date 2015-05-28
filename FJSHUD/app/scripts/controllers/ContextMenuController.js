@@ -149,6 +149,33 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.callNumber = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
+
+  $scope.storeRecentContact = function(phoneNumber){
+    var localPid = JSON.parse(localStorage.me);
+    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+    var dialedXpid;
+    var contactMatch = false;
+    contactService.getContacts().then(function(data){
+      for (var i = 0; i < data.length; i++){
+        var singleContact = data[i];
+        if (phoneNumber == singleContact.primaryExtension || phoneNumber == singleContact.phoneBusiness || phoneNumber == singleContact.phoneMobile){
+        	dialedXpid = singleContact.xpid;
+          contactMatch = true;
+          break;
+        }
+      }
+      if (contactMatch){
+      	$scope.recent[dialedXpid] = {
+        	type: 'contact',
+          time: new Date().getTime()
+        };
+        localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+        $rootScope.$broadcast('recentAdded', {id: dialedXpid, type: 'contact', time: new Date().getTime()});
+      } else if (!contactMatch){
+      	return;
+      }
+    });
+  };
 	
 	$scope.takeCall = function(){
 		httpService.sendAction('parkedcalls', 'transferFromPark', {

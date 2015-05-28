@@ -38,13 +38,13 @@
 
     <!-- ng-views -->
     <div ng-if="selected == 'myqueue'" class="ListView WithToolBar"
-         ng-include="'views/queues/AllQueues.html'" 
+         include-once="views/queues/AllQueues.html" 
 		 ng-controller="CallCenterQueueController"></div>
     <div ng-if="selected == 'allqueues'" class="ListView WithToolBar"
-         ng-include="'views/queues/AllQueues.html'" 
+         include-once="views/queues/AllQueues.html" 
 		 ng-controller="CallCenterQueueController"></div>
     <div ng-if="selected == 'mystatus'" class="MyStatus ListView WithToolBar"
-         ng-include="'views/queues/MyStatus.html'" 
+         include-once="views/queues/MyStatus.html" 
 		 ng-controller="CallCenterMyStatusController"></div>
   </div>
 

@@ -47,6 +47,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 
 	var updateTime = function() {
 		if ($scope.onCall.call) {
+			// console.error('in update time | onCall obj - ', $scope.onCall);
 			// format date
 			var date = new Date().getTime();
 			var startTime = $scope.onCall.call.startedAt ? $scope.onCall.call.startedAt : $scope.onCall.call.created;

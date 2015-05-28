@@ -89,31 +89,39 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 
     $scope.tabFilter = function(){
         return function(tab){
-            if (tab.lower === 'chat'){
-                // if not my queue -> return false and filter out the chat tab
-                if (myQueues.queues.length > 0){
-                    for (var i = 0; i < myQueues.queues.length; i++){
-                        var single = myQueues.queues[i];
-                        if (single.xpid === $scope.queueId){
-                            return true;
+            switch(tab.lower){
+                case 'chat':
+                    // if not my queue -> return false and filter out the chat tab
+                    if (myQueues.queues.length > 0){
+                        for (var i = 0; i < myQueues.queues.length; i++){
+                            var single = myQueues.queues[i];
+                            if (single.xpid === $scope.queueId){
+                                return true;
+                            }
                         }
-                    }
-                    return false;
-				}
-            }
-            else if (tab.lower === 'alerts'){
-                if (myQueues.queues.length > 0){
-                    for (var i = 0; i < myQueues.queues.length; i++){
-                        var single = myQueues.queues[i];
-                        if (single.xpid === $scope.queueId){
-                            return true;
+                        return false;
+    				}
+                    break;
+                case 'alerts':
+                    if (myQueues.queues.length > 0){
+                        for (var i = 0; i < myQueues.queues.length; i++){
+                            var single = myQueues.queues[i];
+                            if (single.xpid === $scope.queueId){
+                                return true;
+                            }
                         }
-                    }
-                    return false;    
-				}
+                        return false;    
+    				}
+                    break;
+                case 'recordings':
+                    var recordingPerm = settingsService.getPermission('showCallCenter');
+                    if (recordingPerm)
+                      return true;
+                    else
+                      return false;
+                    break;
             }
-			else
-				return true;
+			return true;
         };
     };
     
