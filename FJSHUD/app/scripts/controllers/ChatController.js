@@ -310,11 +310,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			return true;
 		} else {
 			// if same msg owner on same day  --> do not display
-			if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
-				return false;
-			} else {
-				// otherwise display
-				return true;
+			if(curMsgDate && prvMsgDate){
+				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
+					return false;
+				} else {
+					// otherwise display
+					return true;
+				}
 			}
 		}
 	};
