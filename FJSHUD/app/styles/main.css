@@ -883,6 +883,58 @@ p {
   -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
+.FileUploadStatus {
+  margin-top: 100%;
+  border-top: 1px solid white;
+  box-shadow: inset 1 0 -1px 1px #cccccc;
+  position: relative;
+  z-index: 100;
+}
+.FileUploadStatus .text-style {
+  font-size: .7em;
+  font-weight: bold;
+}
+.FileUploadStatus .Gadget > div {
+  margin: 5px 0px 5px 10px;
+}
+.FileUploadStatus .progress_text {
+  text-align: center;
+}
+.FileUploadStatus .timer {
+  float: right;
+}
+.FileUploadStatus progress {
+  width: 90%;
+  margin-top: 10px;
+}
+.FileUploadStatus progress,
+.FileUploadStatus progress[role][aria-valuenow] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-size: auto;
+  border-radius: 50px;
+  height: .5em;
+  background: #000066 !important;
+  /* !important is needed by the polyfill */
+}
+.FileUploadStatus progress::-webkit-progress-bar {
+  -webkit-border-radius: 50px;
+}
+.FileUploadStatus progress {
+  color: #72E673;
+}
+.FileUploadStatus progress::-moz-progress-bar {
+  background: #72E673;
+  -moz-border-radius: 50px;
+}
+.FileUploadStatus progress::-webkit-progress-value {
+  background: #72E673;
+  -webkit-border-radius: 50px;
+}
+.FileUploadStatus progress[aria-valuenow]:before {
+  background: #72E673;
+}
 .ToolBar {
   position: relative;
   border-bottom: solid 1px #ccc;
@@ -1607,8 +1659,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -3851,6 +3903,15 @@ div.NewCall .XButton.XButtonNormal {
   float: right;
   margin-right: .5em;
 }
+.ListRow .CallStatus.Full {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 150px;
+}
+.ListRow .CallStatus.Full .Details {
+  display: inline-block;
+  font-size: 12px;
+}
 .Widget .ListRow,
 .LeftBar .ListRow,
 .Widget .vmsection,
@@ -4735,6 +4796,22 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   color: #555;
   float: left;
 }
+.Overlay.notifications .Messages {
+  background: url('') #ffffff !important;
+  /*padding-bottom:8px !important;*/
+  padding-bottom: 0 !important;
+  margin-top: 0px;
+}
+.Overlay.notifications .Messages .AvatarWarningSmall {
+  left: 5px;
+  top: 10px;
+}
+.Overlay.notifications .Messages .NotificationAvatar {
+  top: 10px !important;
+}
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection {
+  margin-left: 5px;
+}
 .Overlay.notifications .XButton.header {
   float: right;
   margin-right: 5px;
@@ -4761,7 +4838,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   padding-top: 1em;
   text-align: right;
   position: absolute;
-  width: 95.5%;
+  width: 94%;
   bottom: 10px;
 }
 .Overlay.notifications .notifications_section {
@@ -4774,7 +4851,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .Overlay.notifications .notifications_section .Messages {
   overflow: hidden;
-  /*margin-top: 20px;*/
 }
 .Overlay.notifications .notifications_section .Messages .NotificationHeader,
 .Overlay.notifications .notifications_section .Messages .NotificationDivider {
@@ -4783,10 +4859,22 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Overlay.notifications .notifications_section .Messages .NotificationHeader {
   margin-right: -1px;
 }
+.Overlay.notifications .Messages.plugins {
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+  cursor: hand;
+  cursor: pointer;
+}
+.Overlay.notifications .Messages.plugins .NotificationDivider {
+  margin-top: 14px;
+}
+.Overlay.notifications .Messages.plugins .NotificationHeaderBackground {
+  bottom: 14px;
+}
 .Overlay.notifications .NotificationMessages {
   border: 1px solid #ccc;
   position: absolute;
-  left: 5px;
+  /*left: 5px;*/
   right: 5px;
   top: 70px;
   bottom: 70px;
@@ -4794,6 +4882,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 40px;
+  width: 94%;
+  left: 15px;
 }
 .Overlay.notifications .NotificationMessages .overlayNotificationsSection:before {
   content: '';
@@ -4810,6 +4900,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .Overlay.notifications .Foreground {
   width: 40%;
+  background: url('') #ffffff !important;
 }
 .Overlay.notifications .Foreground .footer {
   border-top: none 0px !important;
@@ -5188,7 +5279,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;
@@ -5331,12 +5422,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 40px;
   background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
 }
-/*
-.CallStatusText{
-	font-size:.7em;
-	top:-13px;
-	position:relative;
-}*/
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
   flex: 1;
