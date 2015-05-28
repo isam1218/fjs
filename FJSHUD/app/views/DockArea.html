@@ -193,4 +193,19 @@
 			</div>
 		</div>
 	</div>
+
+	
 </div>
+<!--TODO move css externally-->
+<div class="FileUploadStatus" ng-show="upload_progress > 0"style="margin-top:100%;border-top: 1px solid white;box-shadow: inset 1 0 -1px 1px #cccccc ;">
+				<div style="text-align:center;font-size:.7em;font-weight: bold" ><span >Progress</span></div>
+	<div class="Gadget" >
+		<div style="margin:5px 0px 5px 10px;font-size:.7em;font-weight: bold">
+			<!--TODO add duration filter-->
+			<div style="float:right"> 00:00 </div>
+			<div> <span>Form Upload<span></div>
+			<progress style="width:90%;margin-top:10px" ng-value="upload_progress" max="100"> </progress>
+		</div>
+	</div>
+</div>
+

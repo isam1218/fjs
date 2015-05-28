@@ -16,9 +16,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	$rootScope.isIE = isIE;
 	var appVersion = navigator.appVersion;
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
-	
+	var upload_progress = 0;
 	var feeds = fjs.CONFIG.FEEDS;
-
+	var deferred_progress = $q.defer();
+	
     var VERSIONS_PATH = "/v1/versions";
         /**
          * Versionscache servlet URL
@@ -445,7 +446,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
                 'node': nodeID,
             }
         });
-        //.post(requestURL,params);
     };
 
     this.get_avatar = function(pid,width,height,xversion){
@@ -465,7 +465,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
     		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID + "&" + fileName + '&d';
     	}
     };
-    
+    //this will return a promise to for file uploads
+    this.get_upload_progress = function(){
+    	data = {
+			progress:upload_progress,
+		};
+		return deferred_progress.promise;
+    }
+
     this.upload_attachment = function(data,attachments) {
         var params = {
             'Authorization': authTicket,
@@ -482,13 +489,26 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
         }
 
         var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/streamevent?Authorization=" + authTicket + "&node=" + nodeID;
-    
-        $http.post(requestURL, fd, {
-            transformRequest: angular.identity,
-            headers: {
-                'Content-Type': undefined,
-            }
-        })
+    	
+    	var request = new XMLHttpRequest();
+
+    	//angular http does not have a way to report progress so I switched to using xhrrequest and the new HTML5 onprogress callback
+		request.upload.onprogress = function(evt){
+			if(evt.lengthComputable){
+				//calculate the percentage and do a notify (different from resolve since resolve only executes once)
+				var percentComplete = (evt.loaded/evt.total)*100;
+				var data = {
+					progress:percentComplete,
+					status: "IN_PROGRESS",
+				};
+
+				deferred_progress.notify(data);
+			}	
+		};
+		
+		request.open("POST",requestURL, true);
+		request.send(fd);
+       
     };
 
     this.update_avatar = function(data) {
@@ -503,14 +523,22 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             fd.append(field, data[field]);
         }
         var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
-    
-        $http.post(requestURL, fd, {
-            transformRequest: angular.identity,
-            headers: {
-                'Content-Type': undefined,
-            }
-        })
-    };
+    	
+        var request = new XMLHttpRequest();
+		request.upload.onprogress = function(evt){
+			if(evt.lengthComputable){
+				var percentComplete = (evt.loaded/evt.total)*100;
+				var data = {
+					progress:percentComplete,
+				};
+				deferred_progress.notify(data);
+				
+			}	
+		};
+		
+		request.open("POST",requestURL, true);
+		request.send(fd);
+	};
   
 	// generic 'save' function
 	this.sendAction = function(feed, action, data) {

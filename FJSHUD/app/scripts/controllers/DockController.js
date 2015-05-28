@@ -23,6 +23,34 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		$rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
 	};
 	
+	$scope.upload_progress = 0;
+	httpService.get_upload_progress().then(function(data){
+		$scope.upload_progress = data.progress;	
+	},function(error){},function(data){
+		$scope.upload_progress = data.progress;
+		if(data.progress == 100){
+			$timeout(function(){$scope.upload_progress = 0;},1000);
+		}	
+		
+	});
+
+	/*$scope.$on('file_upload_progress',function(event,data){
+		switch(data.status){
+			case "IN_PROGRESS":
+				$scope.upload_progress = data.percent;
+				console.debug("Progress" + $scope.upload_progress);
+				if(data.percent == 100){
+					$timeout(function(){
+						$scope.upload_progress = 0;
+					},1000);
+				}
+				break;
+			case "COMPLETED":
+				//$scope.upload_progress = 0;
+				break;
+		}
+	});*/
+
 	$scope.$on('settings_updated', function(event, data) {		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
