@@ -30,6 +30,19 @@
 	width: 100%;*/
 	width: 300px;
 	
+	span{
+       position: absolute; 
+       top: 10px;
+       left: 5px;  
+       width: 24px;  
+       height: 24px; 
+       z-index: 101;
+       background: url("../img/XIconSet-24x24.png?v=1432149616933") no-repeat -168px -24px;
+       &.favorites{              
+           background: url('../img/XIconSet-24x24.png?v=1432149616933') no-repeat -284px -24px;
+       }    
+     }
+      
     .Search {
       color: #729c00;
 	  border: 1px solid #729c00;
@@ -37,6 +50,10 @@
 	  padding: .5em;
 	  margin: .5em; 		  
 	  width: 70%; 
+	  padding-left: 20px;  	
+	  &.add{
+	   padding-left: 25px;  
+	  }  	  	  
     }
     
     .New {    	  
