@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
-	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout', 
+	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout){
 
 	var addedPid;
 	var localPid;
@@ -405,11 +405,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 								
 			}
-			//}
-
-			//entire state = 0
-			//while_ringing
-
+	
 
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
@@ -431,20 +427,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 
 		$scope.isRinging = true;
-		element = document.getElementById("CallAlert");
-       	
-       	if(displayDesktopAlert){
-			if(element != null){
-       			element.style.display="block";
-			}
-
-			$scope.$safeApply();
 		
-			if(element != null){
-				content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-				element.style.display="none";
-			}	
+       	if(displayDesktopAlert){
+			$timeout(displayNotification, 1000);
 		}
        	
        	if(!$.isEmptyObject(data))
@@ -684,7 +669,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			
 		$scope.$safeApply();
 		if(displayDesktopAlert){
-			displayNotification();
+			if($scope.todaysNotifications.length > 0){
+				$timeout(displayNotification, 1000);
+			}
+			//adding a second delay for the native notification to have the digest complete with the updated notifications
 		}				
     });		
 }]);
