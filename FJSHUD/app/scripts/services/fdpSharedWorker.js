@@ -167,15 +167,7 @@ function do_version_check(){
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
-		if (xmlhttp.status == 401) {
-			// authentication failed
-			for(i = 0; i < ports.length;i++){
-				ports[i].postMessage({
-					"action": "auth_failed"
-				});
-			}
-		}
-		else if (xmlhttp.status == 200){
+		if (xmlhttp.status == 200){
 			var changedFeeds = [];
             var params = xmlhttp.responseText.split(";");
 			
