@@ -79,22 +79,21 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		SYNCING
 	*/
 	
-	$rootScope.$on('me_synced', function(event, data) {
-		for (var i = 0, len = data.length; i < len; i++) {
+	$rootScope.$on('permissions_updated', function(event, data) {
 			// look at fj repository > MyPermissions.java for reference
-			if (data[i].propertyKey == 'personal_permissions') {
+		if (data.permissions) {
 				// console.error('!prop value - ', data[i].propertyValue);
 				
 				// licenses from MyPermissions.java
-				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				permissions.showCallCenter = isEnabled(data.permissions, 10);
 				// Call Center license determines whether or not a user can record
-				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+				permissions.showVideoCollab = isEnabled(data.permissions, 1);
 
 				// group permissions from MyPermissions.java
-				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
-				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
-				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
-				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
+				permissions.enableAgentLogin = isEnabled(data.permissions, 7);
+				permissions.recordingEnabled = isEnabled(data.permissions, 14);
+				permissions.deleteMyRecordingEnabled = isEnabled(data.permissions, 15);
+				permissions.deleteOtherRecordingEnabled = isEnabled(data.permissions, 16);
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
@@ -103,12 +102,10 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 
 				// // Call Permission from CallPermissions.java
 				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
-				
-
 				deferPermissions.resolve(permissions);
-				break;
-			}
+				
 		}
+		
 	});
 
 	$rootScope.$on('callpermissions_synced', function(event, data){

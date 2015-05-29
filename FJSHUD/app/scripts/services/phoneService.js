@@ -430,14 +430,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	$rootScope.$on('me_synced', function(event,data){
         if(data){
-            var me = {};
             for(medata in data){
-                meModel[data[medata].propertyKey] = data[medata].propertyValue;
+                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+				if(data[medata].propertyKey == 'personal_permissions'){
+					var permissions = {key:data[medata].propertyKey,permissions:data[medata].propertyValue};
+					$rootScope.$broadcast('permissions_updated',permissions);
+                }
             }
+			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
         }
 
-        if(phonePlugin && meModel && meModel.my_jid){
-        	username = meModel.my_jid.split("@")[0];
+        if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
+        	username = $rootScope.meModel.my_jid.split("@")[0];
 			if(!isRegistered && phonePlugin.getSession){
 				session = phonePlugin.getSession(username);
 				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
@@ -689,22 +693,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
 
-	$rootScope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-			
-			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
-            /*for(i in locations){
-            	if($rootScope.meModel.current_location == locations[i].xpid){
-					$rootScope.meModel.location = locations[i];
-				}
-            }*/
-
-        }
-	});
+	
 
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){

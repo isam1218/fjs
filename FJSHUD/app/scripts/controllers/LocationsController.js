@@ -44,16 +44,7 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
         return $scope.meModel["current_location"] && $scope.meModel["current_location"];
     }
 
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-            for (var i = 0; i < data.length; i++) {
-                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-            }
-        }
-
-    });
-
+   
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};

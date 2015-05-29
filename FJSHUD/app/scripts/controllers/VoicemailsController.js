@@ -196,14 +196,4 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: voicemail.xpid});
 	};
 
-   $scope.$on("me_synced",function(event,data){
-        if(data){
-            var me = {};
-            for (var i = 0; i < data.length; i++) {
-                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-            }
-        }
-		
-       $scope.$safeApply();
-    });
 }]);

@@ -851,15 +851,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     });
 
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-			for (var i = 0, len = data.length; i < len; i++) {
-                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-            }
-        }
-    });
-
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
