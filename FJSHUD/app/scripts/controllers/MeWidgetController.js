@@ -9,7 +9,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var queues = [];
     var callId = $routeParam.callId;
     $scope.avatar ={};
-
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     
@@ -27,8 +26,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          */
         var currentLocation;
 
-         
-        
          if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
         	 
              if($scope.meModel["current_location"])
@@ -66,7 +63,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.pbxtraVersion;
     $scope.hudserverVersion;
     $scope.fdpVersion;
-    $scope.meModel={};
     $scope.locations = {};
     $scope.call_obj = {};
     $scope.call_obj.phoneNumber = "";

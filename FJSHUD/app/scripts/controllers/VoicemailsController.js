@@ -5,7 +5,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
-    $scope.meModel = {};
 	
 	// user's profile for their own voicemails
 	contactService.getContacts().then(function() {

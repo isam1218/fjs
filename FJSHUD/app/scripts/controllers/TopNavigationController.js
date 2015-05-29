@@ -3,8 +3,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   var localPid;
   var player; // html element
   var loadCheck;
-  
-  $scope.meModel = {};
 
 	$scope.player = {
 		position: 0,

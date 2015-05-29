@@ -8,7 +8,6 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
     $scope.locations = {};
-    $scope.meModel = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
         $scope.onBodyClick();

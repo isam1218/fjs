@@ -438,7 +438,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 }
             }
 			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
-        }
+    }
 
         if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
         	username = $rootScope.meModel.my_jid.split("@")[0];
@@ -569,7 +569,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.isAlertShown = function(){
 		return isAlertShown;
 	};
-
+	
 	this.parkCall = function(call_id){
 		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
 	};
