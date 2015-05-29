@@ -409,10 +409,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected;
-    if($scope.meModel.my_jid){
-            $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
-            $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
-        }
+  
     $scope.update_settings = function(type,action,model){
         switch(type){
             case 'auto_away_timeout':

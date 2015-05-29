@@ -436,6 +436,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var permissions = {key:data[medata].propertyKey,permissions:data[medata].propertyValue};
 					$rootScope.$broadcast('permissions_updated',permissions);
                 }
+
+                if(data[medata].propertyKey == 'my_jid'){
+            		$rootScope.meModel.login = data[medata].propertyValue.split("@")[0];
+            		$rootScope.meModel.server = data[medata].propertyValue.split("@")[1];
+        
+                }
             }
 			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
     }
