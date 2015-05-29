@@ -34,7 +34,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 	
 	$scope.searchContact = function(contact) {
 		// prevent duplicates
-		for (i = 0; i < $scope.add.contacts.length; i++) {
+		for (var i = 0; i < $scope.add.contacts.length; i++) {
 			if ($scope.add.contacts[i] == contact)
 				return;
 		}
@@ -45,7 +45,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 	};
 	
 	$scope.removeUser = function(contact) {
-		for (i = 0; i < $scope.add.contacts.length; i++) {
+		for (var i = 0; i < $scope.add.contacts.length; i++) {
 			if ($scope.add.contacts[i] == contact) {
 				$scope.add.contacts.splice(i, 1);
 				break;

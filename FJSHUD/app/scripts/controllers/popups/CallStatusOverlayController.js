@@ -157,7 +157,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				return true;
 			// by member name
 			else if (conference.members) {
-				for (i = 0; i < conference.members.length; i++) {
+				for (var i = 0; i < conference.members.length; i++) {
 					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
 						return true;
 				}
