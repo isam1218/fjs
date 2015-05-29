@@ -55,9 +55,9 @@
 				<div class="RoundedTop"></div>
 
 				<div class="LeftBarTop">
-					<div class="ContactSearch">
-						<input ng-show="tab != 'favorites'" ng-hide="tab == 'recent'" type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"/>
-						<input ng-show="tab != 'favorites'" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+					<div class="ContactSearch">					
+						<input ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'recent' || tab == 'favorites" type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"/>
+						<input ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'recent' || tab == 'favorites" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 
 						<input ng-show="tab == 'favorites'" type="search" class="Search" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
 					</div>
