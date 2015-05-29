@@ -10,6 +10,7 @@
   /*width: auto;*/
   position: relative;
   border-bottom: solid 1px #999;
+  min-height: 25px;
   
     .ListLineContentCell {
       margin: 0 .5em;
@@ -208,6 +209,17 @@
   .CallStatus {
     float: right;
 	margin-right: .5em;
+	
+	&.Full {
+	  border: 1px solid #ccc;
+	  border-radius: 3px;
+	  width: 150px;
+	  
+	  .Details {
+	    display: inline-block;
+		font-size: 12px;
+	  }
+	}
   }
 } 
 

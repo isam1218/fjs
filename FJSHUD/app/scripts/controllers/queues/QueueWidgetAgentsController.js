@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', 'SettingsService', '$timeout', function ($scope, $rootScope, contactService, queueService, httpService, settingsService, $timeout) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', 'SettingsService', 'PhoneService', '$timeout', function ($scope, $rootScope, contactService, queueService, httpService, settingsService, phoneService, $timeout) {
   var addedPid;
   $scope.que = {};
   $scope.que.query = '';
@@ -95,6 +95,24 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
         return true;
     };
   };
+
+	$scope.callExtension = function($event, extension) {
+		$event.stopPropagation();
+		$event.preventDefault();
+		
+		phoneService.makeCall(extension);
+	};
+	
+	$scope.showCallStatus = function($event, contact) {
+		$event.stopPropagation();
+        $event.preventDefault();
+		
+		// permission?
+		if (contact.call.type == 0)
+			return;
+	
+		$scope.showOverlay(true, 'CallStatusOverlay', contact);
+	};
 
   $scope.$on("$destroy", function () {
 

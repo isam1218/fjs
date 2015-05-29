@@ -63,8 +63,8 @@ p {
 .PanelWrapper {
   position: absolute;
   padding: 0 10px 10px 10px;
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
@@ -162,7 +162,7 @@ p {
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  width:30%;
+  width:40%;
 }
 
 .BoxFramePH{
@@ -250,8 +250,8 @@ p {
 
 
 .LeftBar .Recent {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -260,8 +260,8 @@ p {
 
 .LeftBar .Recent .ContactList {
   flex: 1 1 0;
-  -ms-flex: 1;
-  -webkit-flex: 1;
+  -ms-flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   overflow-y: auto;
   min-height: 60px;
   margin-top: 10px;
@@ -327,24 +327,9 @@ p {
      }
      
      .WidgetBody{
-       top: 150px;
+       top: 160px;
        position: absolute;
      }
-  /*   .WidgetBody{
-        position: relative !important;
-        height: 20em !important;
-        
-        .call-block{height: 12em !important;}
-        
-        .Preferences-Holder{height: 10em !important;}
-     }
-    
-     .Preferences-Holder{
-        /*height: 60% !important;
-        .SettingsPanel.DialogContentMainBlock_List {
-            height: 79% !important;
-        }
-     }*/
      .Avatar.AvatarBig{width: 19% !important;}
      
      .MeInfoBlock {width: 79% !important;}
@@ -449,7 +434,8 @@ p {
         
          .XButton{            
             font-size: 0.625em !important;
-            height: 2.90em !important;            
+            height: 2.90em !important;    
+            width: 33.9% !important;        
           }
           
          .SearchInputBox{
@@ -614,13 +600,29 @@ p {
         padding-left: 5px;
     }
   }
+  .Overlay {
+    &.notifications{ 
+      .LeftBarNotificationMessageSection{
+         width: 90%;
+      }
+    }
+  }
   
+  .MyCallBlock_Rec {
+    right: 33% !important;;
+  }
   .XIcon24-Record-Off{
     margin: 10px;
   }  
   .CurrentCall{ 
       .RightSide{
-        width: 50% !important;    
+        .XButton{
+            width: 75px !important;   
+            &.CurrentCallBtnLong{
+                        width: 155px !important;
+            }                             
+        }
+                
        }
    }
   

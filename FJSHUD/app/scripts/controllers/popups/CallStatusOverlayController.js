@@ -28,7 +28,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				break;
 			case 'conference':
 				conferenceService.getConferences().then(function(data) {
-					$scope.conferences = data;
+					$scope.conferences = data.conferences;
 				});
 				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 	
@@ -47,6 +47,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 
 	var updateTime = function() {
 		if ($scope.onCall.call) {
+			// console.error('in update time | onCall obj - ', $scope.onCall);
 			// format date
 			var date = new Date().getTime();
 			var startTime = $scope.onCall.call.startedAt ? $scope.onCall.call.startedAt : $scope.onCall.call.created;
@@ -107,7 +108,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 		
 		if (screen == 'conference') {
 			conferenceService.getConferences().then(function(data) {
-				$scope.conferences = data;
+				$scope.conferences = data.conferences;
 			});
 	
 			$scope.confQuery = '';
@@ -156,7 +157,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				return true;
 			// by member name
 			else if (conference.members) {
-				for (i = 0; i < conference.members.length; i++) {
+				for (var i = 0; i < conference.members.length; i++) {
 					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
 						return true;
 				}

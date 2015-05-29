@@ -243,3 +243,66 @@
 	-moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 	-webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
+
+.FileUploadStatus{
+	margin-top:100%;
+	border-top: 1px solid white;
+	box-shadow: inset 1 0 -1px 1px #cccccc ;
+	position:relative;
+	z-index:100;
+	
+	.text-style{
+		font-size:.7em;
+		font-weight: bold
+		
+	}
+	.Gadget{
+		& > div{
+			margin:5px 0px 5px 10px;
+		}
+	}
+	.progress_text{
+		text-align:center;
+	}
+
+	.timer{
+		float:right;
+	}
+	
+	progress{
+		width:90%;
+		margin-top:10px
+	}
+
+	 progress,                   
+	progress[role][aria-valuenow] {   
+	    appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+     	background-size: auto;
+        border-radius:50px;
+		height:.5em;
+	   	background: #000066 !important; /* !important is needed by the polyfill */
+	}
+	progress::-webkit-progress-bar {
+	    -webkit-border-radius:50px;
+
+	}
+	progress {
+	    color: #72E673;
+	}
+	progress::-moz-progress-bar { 
+	    background: #72E673;   
+		-moz-border-radius:50px;
+	}
+	progress::-webkit-progress-value {
+	    background: #72E673;
+	   -webkit-border-radius:50px;
+
+	}
+	progress[aria-valuenow]:before  {
+	    background: #72E673;
+	}
+
+}
+

@@ -111,7 +111,7 @@
                 width: 36px;
                 height: 19px;
                 display: none;                
-                right: 35%;
+                right: 38%;
                 margin-top: -15px;
                 &.true {
                     display: block;
@@ -126,12 +126,17 @@
         margin-top: 5px;
             
         .XButton{
-            font-size: 13px;  
+            font-size: 11px;  
             pointer-events: auto;        
             
             &.record, &.SelectBox[type=move]{
                 top: 10px;
-            }   
+            }  
+            
+            &.disableButton{
+                pointer-events: none;
+                opacity: 0.5;
+            } 
         }
     }   	
 }

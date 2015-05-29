@@ -128,8 +128,8 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   });
 
-  $scope.$on('conferences_updated', function(event, data){
-    $scope.totalConferences = data;
+  conferenceService.getConferences().then(function(data) {
+    $scope.totalConferences = data.conferences;
 
     for (var j = 0; j < $scope.totalConferences.length; j++){
       var singleConference = $scope.totalConferences[j];
@@ -156,8 +156,8 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 
   var groupGetter = function(){
     var totalGroups = groupService.getGroups();
-    return totalGroups.then(function(result1){
-      $scope.totalGroups = result1;
+    return totalGroups.then(function(data){
+      $scope.totalGroups = data.groups;
 
       for (var l = 0; l < $scope.totalGroups.length; l++){
         var singleGroup = $scope.totalGroups[l];

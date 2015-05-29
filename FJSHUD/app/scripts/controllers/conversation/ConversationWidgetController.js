@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService','PhoneService','$filter','$timeout', function($scope, $rootScope, $routeParams, contactService,phoneService,$filter,$timeout) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'PhoneService', 'SettingsService', '$filter', '$timeout', function($scope, $rootScope, $routeParams, contactService, phoneService, settingsService ,$filter, $timeout) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);
 	$scope.messages = [];
@@ -79,7 +79,20 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
                 localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 break;
         }
-    }; 
+    };
+
+    $scope.tabFilter = function(){
+        return function(tab){
+            if (tab.lower == 'recordings'){
+                var recordingPerm = settingsService.getPermission('showCallCenter');
+                if (recordingPerm)
+                    return true;
+                else
+                    return false;
+            }
+            return true;
+        };
+  };
 
     function updateFavicon() {
         var link = document.getElementById("favicon");
@@ -87,7 +100,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
             link.href = $scope.contact.getAvatarUrl(32,32);
             document.title= $scope.contact.displayName;
         }
-    }
+    };
 
     $scope.$on("$destroy", function() {
 	

@@ -5,6 +5,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	var total = {};
 	var myLoggedIn = 0;
 	var reasons = [];
+	var selectedFlag = '';
 	
 	this.getQueue = function(xpid) {
 		for (var i = 0, len = queues.length; i < len; i++) {
@@ -49,6 +50,17 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	
 	this.getReasons = function() {
 		return reasons;
+	};
+	
+	this.setSelected = function(flag, name, qid){
+		selectedFlag = {};
+		selectedFlag.flag = flag;
+		selectedFlag.name = name;
+		selectedFlag.qid = qid;
+	};
+	
+	this.getSelected = function(){		
+		return selectedFlag;		
 	};
 
 	var formatData = function () {
@@ -107,6 +119,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				if (!match) {
 					queues.push(data[i]);
 					
+					queues[queues.length-1].calls = [];
+					queues[queues.length-1].members = [];
+					
 					// add avatar
 					queues[queues.length-1].getAvatar = function (index, size) {
 						if (this.members && this.members[index] !== undefined)
@@ -126,7 +141,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 
 	$rootScope.$on('queuepermissions_synced', function (event, data){
-		for (i = 0; i < queues.length; i++){
+		for (var i = 0; i < queues.length; i++){
 			for (var j = 0; j < data.length; j++){
 				if (data[j].xpid == queues[i].xpid){
 					queues[i].permissions = data[j];

@@ -3,8 +3,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   var localPid;
   var player; // html element
   var loadCheck;
-  
-  $scope.meModel = {};
 
 	$scope.player = {
 		position: 0,
@@ -22,7 +20,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   var setVerbage = function(){
     if ($scope.updatedNavbar != $scope.appIcons){
       $scope.appIcons = $scope.updatedNavbar;
-      for(i in $scope.appIcons){
+      for (var i = 0; i < $scope.appIcons.length; i++) {
         var key = $scope.appIcons[i].key;
 
         switch(key){
@@ -53,6 +51,62 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
     }
   };
 
+  var getUsersDefaultNavbarOrder = function(addedPid){
+    settingsService.getPermissions().then(function(data) {
+      // console.log('scc - ', data);
+      if (data.showCallCenter && !data.showVideoCollab){
+        ccPermissionFlag = true;
+        localStorage['ccPerm_of_' + addedPid] = JSON.stringify(ccPermissionFlag);
+        $scope.appIcons = $scope.updatedNavbar = 
+         [
+          {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
+          , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
+          , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
+          , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter", locked: false}
+          , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
+          , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
+        ];
+        localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
+      } else if (!data.showCallCenter && !data.showVideoCollab){
+        $scope.appIcons = $scope.updatedNavbar = [
+              {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
+              , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
+              , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
+              , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
+              , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
+            ];
+        localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
+      } else if (data.showCallCenter && data.showVideoCollab){
+        ccPermissionFlag = true;
+        localStorage['ccPerm_of_' + addedPid] = JSON.stringify(ccPermissionFlag);
+        vidPermissionFlag = true;
+        localStorage['vidPerm_of_' + addedPid] = JSON.stringify(vidPermissionFlag);
+        $scope.appIcons = $scope.updatedNavbar = [
+                  {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
+                  , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
+                  , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
+                  , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter", locked: false}
+                  , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
+                  , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom", locked: false}
+                  , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
+                ];
+        localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
+      } else if (!data.showCallCenter && data.showVideoCollab){
+        vidPermissionFlag = true;
+        localStorage['vidPerm_of_' + addedPid] = JSON.stringify(vidPermissionFlag);
+        $scope.appIcons = $scope.updatedNavbar = [
+                  {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
+                  , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
+                  , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
+                  , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
+                  , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom", locked: false}
+                  , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
+                ];
+        localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
+      }
+    });
+  };
+
   $scope.$on('pidAdded', function(event, data){
     addedPid = data.info;
     var ccPermissionFlag = false;
@@ -60,59 +114,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
     // if no saved navbar order for this user
     if (localStorage['navbar_of_' + addedPid] === undefined){
       // use default order
-      settingsService.getPermissions().then(function(data) {
-        // console.log('scc - ', data);
-        if (data.showCallCenter && !data.showVideoCollab){
-          ccPermissionFlag = true;
-          localStorage['ccPerm_of_' + addedPid] = JSON.stringify(ccPermissionFlag);
-          $scope.appIcons = $scope.updatedNavbar = 
-           [
-            {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
-            , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
-            , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
-            , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter", locked: false}
-            , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
-            , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
-          ];
-          localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
-        } else if (!data.showCallCenter && !data.showVideoCollab){
-          $scope.appIcons = $scope.updatedNavbar = [
-                {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
-                , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
-                , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
-                , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
-                , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
-              ];
-          localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
-        } else if (data.showCallCenter && data.showVideoCollab){
-          ccPermissionFlag = true;
-          localStorage['ccPerm_of_' + addedPid] = JSON.stringify(ccPermissionFlag);
-          vidPermissionFlag = true;
-          localStorage['vidPerm_of_' + addedPid] = JSON.stringify(vidPermissionFlag);
-          $scope.appIcons = $scope.updatedNavbar = [
-                    {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
-                    , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
-                    , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
-                    , {title:$scope.verbage.callcenter, url:"#/callcenter", key:"CallCenter", locked: false}
-                    , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
-                    , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom", locked: false}
-                    , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
-                  ];
-          localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
-        } else if (!data.showCallCenter && data.showVideoCollab){
-          vidPermissionFlag = true;
-          localStorage['vidPerm_of_' + addedPid] = JSON.stringify(vidPermissionFlag);
-          $scope.appIcons = $scope.updatedNavbar = [
-                    {title:$scope.verbage.me, url:"#/settings", key:"Me", locked: true}
-                    , {title:$scope.verbage.call_and_recordings, url:"#/calllog", key:"CallLog", locked: false}
-                    , {title:$scope.verbage.conferencing, url:"#/conferences", key:"Conferences", locked: false}
-                    , {title:$scope.verbage.search, url:"#/search", key:"Search", locked: false}
-                    , {title:$scope.verbage.zoom, url:"#/zoom", key:"Zoom", locked: false}
-                    , {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false}
-                  ];
-          localStorage['navbar_of_' + addedPid] = JSON.stringify($scope.appIcons);
-        }
-      });
+      getUsersDefaultNavbarOrder(addedPid);
     } else {
       // load user's saved navbar order
       ccPermissionFlag = JSON.stringify(localStorage['ccPerm_of_' + addedPid]);
@@ -207,14 +209,36 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
     items: "a:not(.not-sortable)"
   };
 
-  $scope.$on('me_synced', function(event,data){
-      if(data){
-          for(var i = 0, len = data.length; i < len; i++){
-              $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-          }
-      }
+ $rootScope.$on('reset_app_menu', function(data){
+    var pid = $rootScope.myPid;
+    getUsersDefaultNavbarOrder(pid);
   });
-  
+
+  $rootScope.$on('enable_box', function(data){
+    var pid = $rootScope.myPid;
+    $scope.appIcons = JSON.parse(localStorage['navbar_of_' + pid]);
+    var boxActivated = false;
+    var boxIndex;
+    // check if box is enabled or not...
+    for (var i = 0, iLen = $scope.appIcons.length; i < iLen; i++){
+      if ($scope.appIcons[i].key == 'Box'){
+        boxActivated = true;
+        boxIndex = i;
+        break;      
+      }
+    }
+    // if box is already enabled --> disable it
+    if (boxActivated){
+      $scope.appIcons.splice(boxIndex,1);
+      // save new Order to LS
+      localStorage['navbar_of_' + pid] = JSON.stringify($scope.appIcons);
+    } else if (!boxActivated){
+      // if box disabled -> enable it
+      var endOfArray = $scope.appIcons.length;
+      $scope.appIcons.splice(endOfArray, 0, {title:$scope.verbage.box, url:"#/box", key:"Box", locked: false});
+      localStorage['navbar_of_' + pid] = JSON.stringify($scope.appIcons);
+    }
+  });
 
   $scope.getAvatar = function() {
     return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);

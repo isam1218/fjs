@@ -84,12 +84,14 @@
                   <div class="row_buttons"> 
                     <button  class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('transfer',currentCall)"><span>{{verbage.transfer}}</span></button> 
                     <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)"><span>{{verbage.conf_room}}</span></button> 
-                    <!--  <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>{{::verbage.Mute}}</span></div> -->
-                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
-                  </div>
+                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>{{::verbage.Mute}}</span></div>
+                  </div> 
                   <div class="row_buttons"> 
+                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
                     <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button>                                     
                     <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
+                  </div>
+                  <div class="row_buttons"> 
                     <div class="XButton record ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3, 'CurrentCallBtn': currentCall.state != 2 && currentCall.state != 3, 'XButtonRecordOn': currentCall.record}" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
                     <div class=" SelectBox XButton ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3, 'CurrentCallBtn': currentCall.state != 2 && currentCall.state != 3}" type="move" data-ng-click="showLocationsPopup($event, $element, true)">  
                       <div class="SelectBoxText">
@@ -108,7 +110,7 @@
               <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">{{verbage.place_a_call}}</div>
                 <input class="NewCall" ng-keypress="callKeyPress($event)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">                
-                <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
+                <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber); storeRecentContact(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
                 <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
               </div>              
                             
@@ -137,14 +139,14 @@
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
-                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value" class="RecentCallRow"> 
+                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value track by calllog.xpid" class="RecentCallRow"> 
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D hh:mm a':fon_lang_code}} </div>
 
                       
-                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ formatIncoming(calllog,'From')}} </div>
-                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}" ng-click="calllog.incoming || makeCall(calllog.phone)" ng-disabled="!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ formatIncoming(calllog,'To')}} </div>
-                      <div class="RecentCallsHeader RecentDur">{{ calllog.duration | duration }} </div>
+                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':calllog.incoming}" ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-disabled="::calllog.incoming" ng-class="calllog.incoming ? 'dial' : ''">{{ ::formatIncoming(calllog,'From') }} </div>
+                      <div class="RecentCallsHeader RecentFromTo ng-class:{'call':!calllog.incoming}"  ng-click="recentCallToFunction(calllog)" ng-disabled="::!calllog.incoming" ng-class="calllog.incoming ? '' : 'dial'">{{ ::formatIncoming(calllog,'To') }} </div>
+                      <div class="RecentCallsHeader RecentDur">{{ ::calllog.duration | duration }} </div>
                     
                     </div>
                     <div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id111" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style="">
@@ -166,14 +168,14 @@
 		              </div>
 		         
 		              <div class="SettingsPanel DialogContentMainBlock_List">
-						<div ng-show="selected.option == 'General'" class="fj-content" ng-include="'views/settings/Settings.html'" ></div>
-						<div ng-show="selected.option == 'Web Launcher'" class="fj-content" ng-include="'views/settings/SettingsWebLauncer.html'"></div>
-						<div ng-show="selected.option == 'Queues'" class="fj-content" ng-include="'views/settings/SettingsQueues.html'"></div>
-						<div ng-show="selected.option == 'Account'" class="fj-content" ng-include="'views/settings/SettingsAccount.html'"></div>
-						<div ng-show="selected.option == 'Alerts'" class="fj-content" ng-include="'views/settings/SettingsAlerts.html'"></div>
-						<div ng-show="selected.option == 'CP'" class="fj-content padding" ng-include="'views/settings/SettingsCP.html'"></div>
-						<div ng-show="selected.option == 'About'" class="fj-content padding" ng-include="'views/settings/SettingsAbout.html'"></div>
-						<div ng-show="selected.option == 'Phone'" class="fj-content" ng-include="'views/settings/SettingsPhone.html'" ></div>
+						<div ng-if="selected.option == 'General'" class="fj-content" include-once="views/settings/Settings.html" ></div>
+						<div ng-if="selected.option == 'Web Launcher'" class="fj-content" include-once="views/settings/SettingsWebLauncer.html"></div>
+						<div ng-if="selected.option == 'Queues'" class="fj-content" include-once="views/settings/SettingsQueues.html"></div>
+						<div ng-if="selected.option == 'Account'" class="fj-content" include-once="views/settings/SettingsAccount.html"></div>
+						<div ng-if="selected.option == 'Alerts'" class="fj-content" include-once="views/settings/SettingsAlerts.html"></div>
+						<div ng-if="selected.option == 'CP'" class="fj-content padding" include-once="views/settings/SettingsCP.html"></div>
+						<div ng-if="selected.option == 'About'" class="fj-content padding" include-once="views/settings/SettingsAbout.html"></div>
+						<div ng-if="selected.option == 'Phone'" class="fj-content" include-once="views/settings/SettingsPhone.html" ></div>
 					  </div> 	                
 	            </div>
 	        </div>  

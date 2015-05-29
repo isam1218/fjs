@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
-	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout', 
+	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout){
 
 	var addedPid;
 	var localPid;
@@ -12,15 +12,35 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showNotificationBody = true;
 	$scope.showHeader = false;	
 	$scope.hasMessages = false;
-	$scope.phoneSessionEnabled = false;
+	$scope.phoneSessionEnabled = true;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 	$scope.showTimer = false;
+	$scope.selectedStatsTab = false;
+	$scope.selectedCallsTab = false;
+	$scope.notifications_to_display = '';
+	$scope.new_notifications_to_display = '';
+	$scope.away_notifications_to_display = '';
+	$scope.old_notifications_to_display = '';
+	$scope.message_section_notifications = ''
+	$scope.hasNewNotifications = false;
+	$scope.hasAwayNotifications = false;
+	$scope.hasOldNotifications = false;
+	$scope.newNotificationsLength = 0;
+	$scope.awayNotificationsLength = 0;
+	$scope.oldNotificationsLength = 0;
+	$scope.newNotifications = [];
+	$scope.awayNotifications = [];
+	$scope.oldNotifications = [];
+	
+	$scope.showNew = false;
+	$scope.showAway = false;
+	$scope.showOld = false;
 	//$scope.minutes = 0;
 	//$scope.seconds = 0;
 	$scope.stopTime;	
 	$scope.callObj = {};
 	
-	
+	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 	// used to update the UI
     $scope.updateTime = function(id) {    	
 		
@@ -31,7 +51,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
     	$scope.callObj[id].minutes = Math.floor(time % 60);
     	time = time/60; 
     	$scope.callObj[id].hours = Math.floor(time % 24);  
-    	$scope.callObj[id].hours.days = Math.floor(time/24);
+    	$scope.callObj[id].days = Math.floor(time/24);
     	
     	var secondsText = '';
     	var minutesText = '';   
@@ -99,14 +119,20 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	$scope.getMessage = function(message){       				
-		var messages = (message.message).split('\n');
+		var messages = message.message && message.message != null && message.message != "" ? (message.message).split('\n') : '';
+		if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
+			messages="";
 		
 		switch(message.type){
 
 			case "vm":
 				return "Voicemail from extension " + message.phone; 
 				break;
+			case 'missed-call':	
+				return "Missed call from extension " + message.phone; 
+				break;
 			case "chat":
+			case "gchat":	
 				return messages;
 				break;
 			default:
@@ -116,14 +142,22 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 	};
 
+	$scope.getNotificationsLength = function(length)
+	{
+		var length = $scope.phoneSessionEnabled ? length : length + 1;
+		
+		return length;
+	};
+	
 	$scope.remove_notification = function(xpid){
-		for(i = 0; i < $scope.notifications.length; i++){
+		for(var i = 0; i < $scope.notifications.length; i++){
 			if($scope.notifications[i].xpid == xpid){
 				$scope.notifications.splice(i,1);
 				break;
 			}
 		}
-		for(i = 0; i < $scope.todaysNotifications.length; i++){
+
+		for(var i = 0; i < $scope.todaysNotifications.length; i++){
 			if($scope.todaysNotifications[i].xpid == xpid){
 				$scope.todaysNotifications.splice(i,1);
 				break;
@@ -132,6 +166,28 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
 	};
 
+	$scope.showNotifications = function(flag)
+	{
+		
+		switch(flag){
+		  case 'new': if(!$scope.showNew)
+			  			$scope.showNew = true;
+		              else
+		            	$scope.showNew = false;  
+		              break;
+		  case 'away': if(!$scope.showAway)
+			  			$scope.showAway = true;
+		               else
+		            	$scope.showAway = false;
+		               break;
+		  case 'old':  if(!$scope.showOld)
+			  			$scope.showOld = true;
+		               else
+		            	$scope.showOld = false;
+		               break;
+		}
+	};
+	
 	$scope.get_new_notifications= function(){
 		new_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
@@ -147,7 +203,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 			return toReturn; 
 		});
-
+        if(new_notifications.length > 0 )
+        	$scope.hasNewNotifications = true;
+        
+        $scope.newNotificationsLength = new_notifications.length;    	
+        $scope.newNotifications = new_notifications;
+    	
 		return new_notifications;
 	};
 
@@ -156,6 +217,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		away_notifications = $scope.notifications.filter(function(item){
 			return item.receivedStatus == "away"; 
 		});
+		if(away_notifications.length > 0)
+			$scope.hasAwayNotifications = true;
+		
+		$scope.awayNotificationsLength = away_notifications.length;
+		$scope.awayNotifications = away_notifications;
+    	
 		return away_notifications;
 	};
 
@@ -163,10 +230,34 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		old_notifications = $scope.notifications.filter(function(item){
 			date = new Date(item.time);
 			today = new Date();
-			return date.getDate() != today.getDate() && item.receivedStatus != "away"; 
+			return date.getTime() < today.getTime() && date.getDate() < today.getDate() && item.receivedStatus != "away"; 
 		});
-
+        if(old_notifications.length > 0)
+           $scope.hasOldNotifications = true; 
+        
+    	$scope.oldNotificationsLength = old_notifications.length;
+    	$scope.oldNotifications = old_notifications;
+    	
 		return old_notifications;
+	};
+	
+	$scope.removeOldNotifications = function()
+	{		
+		  
+		while($scope.oldNotifications.length > 0)
+		{
+			var nIndex_xpid = $scope.oldNotifications[0].xpid;				
+		    myHttpService.sendAction('quickinbox','remove',{'pid': nIndex_xpid});
+		    $scope.oldNotifications.splice(0,1);
+		}	
+		
+		$scope.hasOldNotifications = false;	
+		$scope.oldNotifications = [];					
+											
+		if(!$scope.hasNewNotifications && 
+		   !$scope.hasAwayNotifications && 
+		   !$scope.hasOldNotifications)
+			$scope.showNotificationOverlay(false);				
 	};
 	
 	$scope.remove_all = function(){
@@ -190,6 +281,30 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
 	};
+	
+	$scope.showQueue = function(message)
+    {
+		var qid = message.queueId;
+		
+		$('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
+		
+		if(message.type == 'q-alert-abandoned')		
+		{
+			queueService.setSelected(true, 'stats', qid);
+			$location.path("/" + message.audience + "/" + qid + "/stats");							
+		}
+		else
+		{
+			if(message.type == 'q-alert-rotation')
+			{	
+			   queueService.setSelected(true, 'calls', qid);	
+			   $location.path("/" + message.audience + "/" + qid + "/calls");
+			   		  
+			}   
+			   
+		}	
+		$scope.showNotificationOverlay(false);
+    };	
 
 	$scope.endCall = function(xpid){
 		phoneService.hangUp(xpid);
@@ -225,7 +340,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 	$scope.showNotificationOverlay = function(show) {
 		if (!show)
-			$scope.overlay = '';
+		{	
+			$scope.overlay = '';			
+			if($scope.hasNewNotifications) 	
+			 $scope.showNew = false;
+			if($scope.hasAwayNotifications)
+				$scope.showAway = false;
+			if($scope.hasOldNotifications)
+				$scope.showOld = false;
+		}	
 		else if ($scope.tab != 'groups')
 			$scope.overlay = 'contacts';
 		else
@@ -282,11 +405,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 								
 			}
-			//}
-
-			//entire state = 0
-			//while_ringing
-
+	
 
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
@@ -308,20 +427,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 
 		$scope.isRinging = true;
-		element = document.getElementById("CallAlert");
-       	
-       	if(displayDesktopAlert){
-			if(element != null){
-       			element.style.display="block";
-			}
-
-			$scope.$safeApply();
 		
-			if(element != null){
-				content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-				element.style.display="none";
-			}	
+       	if(displayDesktopAlert){
+			$timeout(displayNotification, 1000);
 		}
        	
        	if(!$.isEmptyObject(data))
@@ -413,9 +521,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				return b.time - a.time;
 			});
 			if($scope.notifications && $scope.notifications.length > 0){
-				for(index in data){
+				for (var i = 0; i < data.length; i++) {
 					isNotificationAdded = false;
-					var notification = data[index];
+					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
 							if(notification.type == 'q-alert-rotation'){
@@ -441,17 +549,25 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 
 					if(notification.xef001type != "delete"){
-						for(i = 0; i < $scope.notifications.length;i++){
-							if($scope.notifications[i].xpid == notification.xpid){
-								$scope.notifications.splice(i,1,notification);
+
+						for(var j = 0; j < $scope.notifications.length; j++){
+							if($scope.notifications[j].xpid == notification.xpid){
+								$scope.notifications.splice(j,1,notification);
 								isNotificationAdded = true;
 								break;	
 							}
 						}
-						if(!isNotificationAdded){
-							
+						if(!isNotificationAdded){							
 
-							$scope.notifications.push(notification);
+							$scope.notifications.push(notification);							
+						}
+					}else if(notification.xef001type == "delete"){
+
+						for(var j = 0; j < $scope.notifications.length; j++){
+							if($scope.notifications[j].xpid == notification.xpid){
+								$scope.notifications.splice(j,1);
+								break;	
+							}
 						}
 					}
 				}
@@ -459,8 +575,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					return b.time - a.time;
 				});
 			}else{
-				for(index in data){
-					var notification = data[index];
+				for (var i = 0; i < data.length; i++) {
+					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){
@@ -488,7 +604,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 					if(notification.xef001type != "delete"){
 						$scope.notifications.push(notification);
-						
 					}
 				}
 			}
@@ -554,7 +669,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			
 		$scope.$safeApply();
 		if(displayDesktopAlert){
-			displayNotification();
+			if($scope.todaysNotifications.length > 0){
+				$timeout(displayNotification, 1000);
+			}
+			//adding a second delay for the native notification to have the digest complete with the updated notifications
 		}				
     });		
 }]);

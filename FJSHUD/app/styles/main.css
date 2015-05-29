@@ -142,7 +142,7 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 30%;
+  width: 40%;
 }
 .BoxFramePH {
   top: 66px;
@@ -883,6 +883,58 @@ p {
   -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
+.FileUploadStatus {
+  margin-top: 100%;
+  border-top: 1px solid white;
+  box-shadow: inset 1 0 -1px 1px #cccccc;
+  position: relative;
+  z-index: 100;
+}
+.FileUploadStatus .text-style {
+  font-size: .7em;
+  font-weight: bold;
+}
+.FileUploadStatus .Gadget > div {
+  margin: 5px 0px 5px 10px;
+}
+.FileUploadStatus .progress_text {
+  text-align: center;
+}
+.FileUploadStatus .timer {
+  float: right;
+}
+.FileUploadStatus progress {
+  width: 90%;
+  margin-top: 10px;
+}
+.FileUploadStatus progress,
+.FileUploadStatus progress[role][aria-valuenow] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-size: auto;
+  border-radius: 50px;
+  height: .5em;
+  background: #000066 !important;
+  /* !important is needed by the polyfill */
+}
+.FileUploadStatus progress::-webkit-progress-bar {
+  -webkit-border-radius: 50px;
+}
+.FileUploadStatus progress {
+  color: #72E673;
+}
+.FileUploadStatus progress::-moz-progress-bar {
+  background: #72E673;
+  -moz-border-radius: 50px;
+}
+.FileUploadStatus progress::-webkit-progress-value {
+  background: #72E673;
+  -webkit-border-radius: 50px;
+}
+.FileUploadStatus progress[aria-valuenow]:before {
+  background: #72E673;
+}
 .ToolBar {
   position: relative;
   border-bottom: solid 1px #ccc;
@@ -1183,23 +1235,24 @@ p {
   margin-top: 8px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
-  width: 48%;
+  width: 50%;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
   clear: both;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
-  width: 75px;
+  width: 74px;
   height: 24px;
   float: left;
   clear: none;
+  font-size: 12px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
-  top: 10px;
+  top: 0px;
   left: 0px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
-  top: 10px;
+  top: 0px;
   left: 5px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
@@ -3850,6 +3903,15 @@ div.NewCall .XButton.XButtonNormal {
   float: right;
   margin-right: .5em;
 }
+.ListRow .CallStatus.Full {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 150px;
+}
+.ListRow .CallStatus.Full .Details {
+  display: inline-block;
+  font-size: 12px;
+}
 .Widget .ListRow,
 .LeftBar .ListRow,
 .Widget .vmsection,
@@ -4276,12 +4338,14 @@ select[disabled] {
   cursor: default;
   pointer-events: none;
 }
-.CurrentCallBtn .XIcon24-Record-Off,
 .CurrentCallBtn .XIcon24-Record-On {
   float: right;
-  /*margin: 10px;*/
-  right: 0px;
-  top: -10px;
+  right: 12px;
+  top: 2px;
+}
+.CurrentCallBtn .XIcon24-Record-Off {
+  right: 12px;
+  top: 1px;
 }
 div.CurrentCallBtn {
   opacity: 0.5;
@@ -4644,7 +4708,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .XIcon-ChatStatus-Available,
 .XIcon-ChatStatus-available {
-  background-position: 0 0;
+  background-position: -6px -4px;
 }
 .XIcon-ChatStatus-Away,
 .XIcon-ChatStatus-away {
@@ -4707,7 +4771,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url("../img/XCallOperation.png") no-repeat -78px 0px;
 }
 .IconDisplay {
-  width: 24px;
+  width: 16px;
   height: 24px;
   display: inline-block;
   vertical-align: middle;
@@ -4719,6 +4783,127 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 100%;
   height: 100%;
   z-index: 100;
+}
+.Overlay.notifications .Conference-HeaderSubTitle {
+  font-size: 11px;
+  line-height: 18px;
+  width: 50%;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-style: italic;
+  color: #555;
+  float: left;
+}
+.Overlay.notifications .Messages {
+  background: url('') #ffffff !important;
+  /*padding-bottom:8px !important;*/
+  padding-bottom: 0 !important;
+  margin-top: 0px;
+}
+.Overlay.notifications .Messages .AvatarWarningSmall {
+  left: 5px;
+  top: 10px;
+}
+.Overlay.notifications .Messages .NotificationAvatar {
+  top: 10px !important;
+}
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection {
+  margin-left: 5px;
+}
+.Overlay.notifications .XButton.header {
+  float: right;
+  margin-right: 5px;
+  top: -10px;
+  height: 24px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.Overlay.notifications .NotificationMessage {
+  word-break: break-word;
+}
+.Overlay.notifications .notification_border {
+  border-bottom: 1px solid #ccc;
+  width: 98%;
+  margin: auto;
+  padding-top: 40px;
+  padding-bottom: 0px;
+}
+.Overlay.notifications .notification_border.lessPadding {
+  padding-top: 10px;
+}
+.Overlay.notifications .Foreground .Footer {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+  text-align: right;
+  position: absolute;
+  width: 94%;
+  bottom: 10px;
+}
+.Overlay.notifications .notifications_section {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  vertical-align: middle;
+  display: inline-block;
+  margin-top: 20px;
+}
+.Overlay.notifications .notifications_section .Messages {
+  overflow: hidden;
+}
+.Overlay.notifications .notifications_section .Messages .NotificationHeader,
+.Overlay.notifications .notifications_section .Messages .NotificationDivider {
+  margin-top: 16px;
+}
+.Overlay.notifications .notifications_section .Messages .NotificationHeader {
+  margin-right: -1px;
+}
+.Overlay.notifications .Messages.plugins {
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+  cursor: hand;
+  cursor: pointer;
+}
+.Overlay.notifications .Messages.plugins .NotificationDivider {
+  margin-top: 14px;
+}
+.Overlay.notifications .Messages.plugins .NotificationHeaderBackground {
+  bottom: 14px;
+}
+.Overlay.notifications .NotificationMessages {
+  border: 1px solid #ccc;
+  position: absolute;
+  /*left: 5px;*/
+  right: 5px;
+  top: 70px;
+  bottom: 70px;
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  width: 94%;
+  left: 15px;
+}
+.Overlay.notifications .NotificationMessages .overlayNotificationsSection:before {
+  content: '';
+  margin-right: -0.25em;
+  /* Adjusts for spacing */
+  vertical-align: middle;
+  display: inline-block;
+}
+.Overlay.notifications .NotificationMessages .NotificationTime {
+  right: 5px;
+}
+.Overlay.notifications .NotificationMessages .NotificationMessage {
+  max-height: inherit;
+}
+.Overlay.notifications .Foreground {
+  width: 40%;
+  background: url('') #ffffff !important;
+}
+.Overlay.notifications .Foreground .footer {
+  border-top: none 0px !important;
 }
 .Overlay .Background {
   background-color: black;
@@ -5350,7 +5535,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 36px;
   height: 19px;
   display: none;
-  right: 35%;
+  right: 38%;
   margin-top: -15px;
 }
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec.true,
@@ -5365,7 +5550,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {
-  font-size: 13px;
+  font-size: 11px;
   pointer-events: auto;
 }
 .CallStatusContainerInbound .controlButtons .XButton.record,
@@ -5373,6 +5558,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerInbound .controlButtons .XButton.SelectBox[type=move],
 .CallStatusContainerOutbound .controlButtons .XButton.SelectBox[type=move] {
   top: 10px;
+}
+.CallStatusContainerInbound .controlButtons .XButton.disableButton,
+.CallStatusContainerOutbound .controlButtons .XButton.disableButton {
+  pointer-events: none;
+  opacity: 0.5;
 }
 .NotificationSectionHeader {
   display: inline-block;
@@ -6401,23 +6591,6 @@ a.Messages {
     top: 19px;
     z-index: 101;
   }
-  .WidgetMe {
-    /*   .WidgetBody{
-        position: relative !important;
-        height: 20em !important;
-        
-        .call-block{height: 12em !important;}
-        
-        .Preferences-Holder{height: 10em !important;}
-     }
-    
-     .Preferences-Holder{
-        /*height: 60% !important;
-        .SettingsPanel.DialogContentMainBlock_List {
-            height: 79% !important;
-        }
-     }*/
-  }
   .WidgetMe .WidgetHeader {
     height: 8.438em !important;
     position: absolute !important;
@@ -6435,7 +6608,7 @@ a.Messages {
     height: 5.625em;
   }
   .WidgetMe .WidgetBody {
-    top: 150px;
+    top: 160px;
     position: absolute;
   }
   .WidgetMe .Avatar.AvatarBig {
@@ -6524,6 +6697,7 @@ a.Messages {
   .Conference .ToolBar .XButton {
     font-size: 0.625em !important;
     height: 2.90em !important;
+    width: 33.9% !important;
   }
   .Conference .ToolBar .SearchInputBox {
     width: 30% !important;
@@ -6657,10 +6831,19 @@ a.Messages {
   .LeftBarNotificationMessageSection .NotificationMessage {
     padding-left: 5px;
   }
+  .Overlay.notifications .LeftBarNotificationMessageSection {
+    width: 90%;
+  }
+  .MyCallBlock_Rec {
+    right: 33% !important;
+  }
   .XIcon24-Record-Off {
     margin: 10px;
   }
-  .CurrentCall .RightSide {
-    width: 50% !important;
+  .CurrentCall .RightSide .XButton {
+    width: 75px !important;
+  }
+  .CurrentCall .RightSide .XButton.CurrentCallBtnLong {
+    width: 155px !important;
   }
 }

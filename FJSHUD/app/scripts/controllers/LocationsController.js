@@ -8,7 +8,6 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
     $scope.locations = {};
-    $scope.meModel = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
         $scope.onBodyClick();
@@ -44,31 +43,21 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
         return $scope.meModel["current_location"] && $scope.meModel["current_location"];
     }
 
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
-
-    });
-
+   
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid] = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid] = data[i];
             }
         }
-        //console.log('locationsctrl: scope.locations - ', $scope.locations);
     });
 
      $scope.$on('location_status_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid].status = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid].status = data[i];
             }
         }
 
