@@ -3,15 +3,11 @@
 	<link rel="stylesheet" href="{{path}}/styles/main.css">
 	<a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact" style="background-color:#F7F4F4">			
 			<avatar style="width:2.4em;height:2.4em;display:inline-block;float:left" profile="contact"></avatar>
-			
 			<div class="ListRowContent">
 				<div class="NotificationTitle">
 					<div class="name">
-						
-					
 						<span style="font-size:12px"><strong>{{ ::meModel.display_name }}</strong><div onclick="window.location.replace('#/Close')" style="display:inline-block; width:24px; float:right"class="NotificationClose"></div></span>
 					</div>
-					
 				</div>
 				
 				<div class="CallStatus">
@@ -63,10 +59,7 @@
 		<a href="#/OpenNotifications"value="{{::verbage.Open}}" style="float:right;position: relative;display: inline-block;" class="XButton">{{::verbage.open}}</a>
 	</div>
 
-	<div class="NotificationMessages" style="min-height:150px">
-			
-		
-
+	<div class="NotificationMessages">
 			<div class="Messages" ng-repeat="message in todaysNotifications | limitTo: messageLimit">
 					<a href="#/contact?{{message.senderId}}" style="text-decoration:none">
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
@@ -81,11 +74,6 @@
 
 					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0};">
 						<img />
-						<div ng-if="$index == 0"> 
-					    <!--<div class="Icon" ng-show="!showHeader"></div>
-				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
-				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>-->
-				       </div> 
 					</div>
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};"> 
 						
