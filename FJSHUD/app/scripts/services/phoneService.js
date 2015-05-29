@@ -139,8 +139,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 
 			
-
-		if(alertPlugin && displayNotification){
+	if(alertPlugin && displayNotification){
 				alertPlugin.setAlertSize(width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
@@ -277,7 +276,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	activateBrowserTab();
     	
     	window.focus();
-    	if($rootScope.isIE){
+    	if(url.indexOf('#') === -1){
 
 			switch(url){
 	    		case '/Close':
