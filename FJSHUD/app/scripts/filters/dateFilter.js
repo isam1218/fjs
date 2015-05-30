@@ -1,7 +1,8 @@
-hudweb.filter('fondate', function() {
+hudweb.filter('fondate', ['NtpService', function(ntpService) {
     return function(milliseconds,dateformat,locale,chatSection) {		
 		
-    	var todayTime = new Date().getTime();
+        var offset = ntpService.fixTime();
+    	var todayTime = new Date(offset).getTime();
     	var locale_code = 'en';
     	
     	//this will switch the locale from our format to moment.js prefered locale code
@@ -34,4 +35,4 @@ hudweb.filter('fondate', function() {
     	}
     	
 	};
-});
+}]);
