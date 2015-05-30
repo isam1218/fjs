@@ -18,6 +18,22 @@
   color: #555;
   float: left;
 }
+.Overlay.notifications .Messages {
+  background: url('') #ffffff !important;
+  /*padding-bottom:8px !important;*/
+  padding-bottom: 0 !important;
+  margin-top: 0px;
+}
+.Overlay.notifications .Messages .AvatarWarningSmall {
+  left: 5px;
+  top: 10px;
+}
+.Overlay.notifications .Messages .NotificationAvatar {
+  top: 10px !important;
+}
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection {
+  margin-left: 5px;
+}
 .Overlay.notifications .XButton.header {
   float: right;
   margin-right: 5px;
@@ -44,7 +60,7 @@
   padding-top: 1em;
   text-align: right;
   position: absolute;
-  width: 95.5%;
+  width: 94%;
   bottom: 10px;
 }
 .Overlay.notifications .notifications_section {
@@ -57,7 +73,6 @@
 }
 .Overlay.notifications .notifications_section .Messages {
   overflow: hidden;
-  /*margin-top: 20px;*/
 }
 .Overlay.notifications .notifications_section .Messages .NotificationHeader,
 .Overlay.notifications .notifications_section .Messages .NotificationDivider {
@@ -66,10 +81,22 @@
 .Overlay.notifications .notifications_section .Messages .NotificationHeader {
   margin-right: -1px;
 }
+.Overlay.notifications .Messages.plugins {
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+  cursor: hand;
+  cursor: pointer;
+}
+.Overlay.notifications .Messages.plugins .NotificationDivider {
+  margin-top: 14px;
+}
+.Overlay.notifications .Messages.plugins .NotificationHeaderBackground {
+  bottom: 14px;
+}
 .Overlay.notifications .NotificationMessages {
   border: 1px solid #ccc;
   position: absolute;
-  left: 5px;
+  /*left: 5px;*/
   right: 5px;
   top: 70px;
   bottom: 70px;
@@ -77,6 +104,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 40px;
+  width: 94%;
+  left: 15px;
 }
 .Overlay.notifications .NotificationMessages .overlayNotificationsSection:before {
   content: '';
@@ -93,6 +122,7 @@
 }
 .Overlay.notifications .Foreground {
   width: 40%;
+  background: url('') #ffffff !important;
 }
 .Overlay.notifications .Foreground .footer {
   border-top: none 0px !important;
@@ -471,7 +501,7 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindowTitle {
   position: relative;

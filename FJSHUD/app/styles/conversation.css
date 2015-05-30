@@ -182,12 +182,12 @@
   display: flex;
   display: -webkit-flex;
   flex: 1 1 0;
-  -ms-flex: 1;
-  -webkit-flex: 1;
+  -ms-flex: 1 1 0;
+  -webkit-flex: 1 1 0;
 }
 .ChatView .ListViewContent {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 5px;
