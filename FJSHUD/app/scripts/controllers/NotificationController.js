@@ -44,8 +44,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	// used to update the UI
     $scope.updateTime = function(id) {    	
 			
-			var offset = ntpService.fixTime();		
-    	var time = new Date(offset).getTime() - $scope.callObj[id].start;
+			var time = ntpService.calibrateTime(new Date().getTime()) - $scope.callObj[id].start;
     	time = time/1000;
     	$scope.callObj[id].seconds = Math.floor(time % 60);
     	time = time/60; 

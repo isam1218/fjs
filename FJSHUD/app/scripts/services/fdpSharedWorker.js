@@ -10,6 +10,7 @@ var auth = undefined;
 
 var data_obj = {};
 var feeds = fjs.CONFIG.FEEDS;
+var timestamp_flag = false;
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -169,7 +170,18 @@ function do_version_check(){
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status == 200){
 			var changedFeeds = [];
-            var params = xmlhttp.responseText.split(";");
+      var params = xmlhttp.responseText.split(";");
+      console.error('sharedworker all params - ', params);
+      if (!timestamp_flag){
+	      for (var j = 0; j < ports.length; j++){
+					console.error('server side 1st time - ', params[0]);
+	      	ports[j].postMessage({
+	      		"action": "timestamp_created",
+	      		"data": params[0]
+	      	});
+	      }
+	      timestamp_flag = true;      	
+      }
 			
             for(var i = 2; i < params.length-1; i++)
 				changedFeeds.push(params[i]);
@@ -180,6 +192,7 @@ function do_version_check(){
 				setTimeout('do_version_check();', 500);
 		}
 		else{
+			console.error('2');
 			for(i = 0; i < ports.length;i++){
 				ports[i].postMessage({
 					"action": "auth_failed"

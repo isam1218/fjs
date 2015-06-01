@@ -1,4 +1,4 @@
-hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', function($scope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService) {
+hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService) {
 	$scope.onCall = $scope.$parent.overlay.data;
 
 	$scope.timeElapsed = 0;
@@ -47,13 +47,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 
 	var updateTime = function() {
 		if ($scope.onCall.call) {
-			// console.error('in update time | onCall obj - ', $scope.onCall);
-
-			var offset = ntpService.fixTime();
-			// format date
-			var date = new Date(offset).getTime();
+						
 			var startTime = $scope.onCall.call.startedAt ? $scope.onCall.call.startedAt : $scope.onCall.call.created;
-			
+			// format date			
+			var date = ntpService.calibrateTime(new Date().getTime());
+
 			$scope.timeElapsed = $filter('date')(date - startTime, 'mm:ss');
 			
 			// also get recorded time

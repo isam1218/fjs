@@ -190,9 +190,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	$rootScope.$on('queue_call_synced', function(event, data) {
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
 			queues[q].calls.splice(0, queues[q].calls.length);
-			var offset = ntpService.fixTime();
-			queues[q].longestWait = new Date(offset).getTime();
-			queues[q].longestActive = new Date(offset).getTime();
+			queues[q].longestWait = ntpService.calibrateTime(new Date().getTime());
+			queues[q].longestActive = ntpService.calibrateTime(new Date().getTime());
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if (data[i].queueId == queues[q].xpid) {

@@ -23,9 +23,9 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 	$scope.$watch('queue.calls', function() {
 		$scope.callsWaiting = 0;
 		$scope.callsActive = 0;
-    var offset = ntpService.fixTime();
-		$scope.longestWait = new Date(offset).getTime();
-		$scope.longestActive = new Date(offset).getTime();
+
+    $scope.longestWait = ntpService.calibrateTime(new Date().getTime());
+    $scope.longestActive = ntpService.calibrateTime(new Date().getTime());
 		
 		for (var i = 0; i < $scope.queue.calls.length; i++) {
 			// active calls

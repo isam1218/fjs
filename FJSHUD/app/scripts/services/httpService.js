@@ -19,6 +19,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var upload_progress = 0;
 	var feeds = fjs.CONFIG.FEEDS;
 	var deferred_progress = $q.defer();
+
+  var clientFirstTime = new Date().getTime();
+  
+
 	
     var VERSIONS_PATH = "/v1/versions";
         /**
@@ -148,14 +152,30 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "feed_request":
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
-					case "auth_failed":
-            delete localStorage.me;
-						delete localStorage.nodeID;
-						delete localStorage.authTicket;
-						delete localStorage.data_obj;
-						attemptLogin();
-						break;
-				}
+      					case "auth_failed":
+                  delete localStorage.me;
+      						delete localStorage.nodeID;
+      						delete localStorage.authTicket;
+      						delete localStorage.data_obj;
+      						attemptLogin();
+      						break;
+                case "timestamp_created":
+                  if (event.data.data){
+                    var serverFirstTime = event.data.data;
+                    if (serverFirstTime > clientFirstTime){
+                      // client time is ahead, server time behind
+                      $rootScope.timeSyncFirstPlace = 'client'; 
+                      $rootScope.timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
+                    } else if (clientFirstTime > serverFirstTime){
+                      // server time is ahead, client time behind
+                      $rootScope.timeSyncFirstPlace = 'server';
+                      $rootScope.timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
+                    } else {
+                      $rootScope.timeSyncFirstPlace = 'same';
+                      $rootScope.timeSyncDelta = 0;
+                    }
+                  }
+				    }
 		    }, false);
 
 		    worker.port.start();
