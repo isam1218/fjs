@@ -57,6 +57,22 @@
 		</a>
 	</div>
 	
+	<!-- queue calls -->
+	<div ng-if="widget == 'queue'">
+		<a class="Button" href="" ng-show="context.agent.xpid != myPid" ng-click="takeQueueCall()">
+			<div class="ListRowActionButtonTake"></div>
+			<span>To Me</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && !context.recorded" ng-click="recordQueueCall(true)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Start Rec</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && context.recorded" ng-click="recordQueueCall(false)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Stop Rec</span>
+		</a>
+	</div>
+	
 	<!-- myself -->
 	<div ng-if="profile.xpid == myPid && type == 'Contact'">
 		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
@@ -91,22 +107,26 @@
 		
 	<!-- contact -->
 	<div ng-if="(profile.xpid != myPid && type == 'Contact') || type == 'ParkedCall'">
-		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeCall()">
+		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeParkedCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
-			<div class="ListRowActionButtonMute"></div>
-			<span>{{::verbage.Mute}}</span>
-		</a>
-		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && original.muted" ng-click="muteUser(false)">
-			<div class="ListRowActionButtonUnmute"></div>
-			<span>Unmute</span>
-		</a>
-		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0" ng-click="kickMember()">
-			<div class="ListRowActionButtonLeave"></div>
-			<span>Kick</span>
-		</a>
+		
+		<div ng-if="widget == 'conference'">
+			<a class="Button" href="" ng-show="context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
+				<div class="ListRowActionButtonMute"></div>
+				<span>{{::verbage.Mute}}</span>
+			</a>
+			<a class="Button" href="" ng-show="context.permissions == 0 && original.muted" ng-click="muteUser(false)">
+				<div class="ListRowActionButtonUnmute"></div>
+				<span>Unmute</span>
+			</a>
+			<a class="Button" href="" ng-show="context.permissions == 0" ng-click="kickMember()">
+				<div class="ListRowActionButtonLeave"></div>
+				<span>Kick</span>
+			</a>
+		</div>
+		
 		<a class="Button" href="" ng-show="canLoginAgent && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
@@ -123,10 +143,12 @@
 			<div class="ListRowActionButtonEdit"></div>
 			<span>{{::verbage.Edit}}</span>
 		</a>
+		
 		<a class="Button" href="#/contact/{{profile.xpid}}/chat" ng-show="profile.primaryExtension">
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
 		</a>
+		
 		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callNumber(profile.primaryExtension); storeRecentContact(profile.primaryExtension)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call}}</span>
@@ -153,6 +175,22 @@
 			<div class="ListRowActionButtonMobile"></div>
 			<span>{{::verbage.mobile}}</span>
 		</a>
+		
+		<div ng-if="profile.call && profile.call.type > 0 && profile.xpid != myPid && (widget != 'queue' || profile.call.incoming)">
+			<a class="Button" href="" ng-click="bargeCall('barge')">
+				<div class="ListRowActionButtonBarge"></div>
+				<span>{{::verbage.barge}}</span>
+			</a>
+			<a class="Button" href="" ng-click="bargeCall('monitor')">
+				<div class="ListRowActionButtonMonitor"></div>
+				<span>{{::verbage.monitor}}</span>
+			</a>
+			<a class="Button" href="" ng-click="bargeCall('whisper')">
+				<div class="ListRowActionButtonWhisper"></div>
+				<span>{{::verbage.whisper}}</span>
+			</a>
+		</div>
+		
 		<a class="Button" href="mailto:{{ profile.email }}" target="_blank" ng-show="profile.email">
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
