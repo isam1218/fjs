@@ -492,7 +492,7 @@ fjs.i18n = {
       call_management:'Call Management',
       call_members:'Call Members',
       contacts_talking:'These contacts are talking',
-      barging:'Baring',
+      barging:'Barging',
       barge:'Barge',
       transfer:'Transfer',
       whisper:'Whisper',

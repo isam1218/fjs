@@ -197,6 +197,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				if (data[i].queueId == queues[q].xpid) {
 					queues[q].calls.push(data[i]);
 					
+					// attach profile
+					if (data[i].contactId)
+						queues[q].calls[queues[q].calls.length-1].fullProfile = contactService.getContact(data[i].contactId);
+					
 					// find longest active/hold
 					if (data[i].taken) {
 						if (data[i].startedAt < queues[q].longestActive)
