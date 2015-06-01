@@ -431,9 +431,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 phoneService.setVolume(model);
                 break;
             case 'hudw_lang':
-                myHttpService.updateSettings(type,action,model.xpid); 
-                localStorage.fon_lang_code = model.code;
-                location.reload();
+				if (model) {
+					myHttpService.updateSettings(type,action,model.xpid); 
+					localStorage.fon_lang_code = model.code;
+					location.reload();
+				}
                 break;
             case 'hudmw_searchautoclear':
                 myHttpService.updateSettings(type, action, model);
@@ -454,7 +456,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             
         }
 
-    }
+    };
+	
     $scope.volume = {};
     $scope.volume.micVol;
     $scope.volume.spkVol;
