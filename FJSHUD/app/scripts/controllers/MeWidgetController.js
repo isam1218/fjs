@@ -25,17 +25,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          * @type {{name:string. phone:string}}
          */
         var currentLocation;
-
-         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
-        	 
+        if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {        	 
+             currentLocation = $scope.locations[$scope.meModel["current_location"]];
+             
              if($scope.meModel["current_location"])
              {	
             	if(!$scope.settings) 
             		$scope.settings = {};
-         		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
+         		$scope.settings["current_location"] = currentLocation;
              }
              
-             return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
+             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w' && currentLocation.locationType != 'm')
+            	 return currentLocation.shortName+" ("+currentLocation.phone+")";
+             else
+            	 return currentLocation.shortName;                          
          }
          else { 
         	 if($scope.settings && $scope.settings["current_location"])

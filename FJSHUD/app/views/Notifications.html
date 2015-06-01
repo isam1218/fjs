@@ -2,14 +2,14 @@
 	<div class="TitleBar noNotifications" ng-show="!hasMessages">
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
-        <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
+        <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
      </div> 
 	 <div class="TitleBar hasButton"  ng-show="hasMessages" show-on-hover-parent>
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
-        <div class="Event" ng-show="notifications.length > 0" > - {{ notifications.length + ' ' + verbage.events }} </div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
+        <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
      </div>       
 	<div class="NotificationMessages LeftBarNotifications">
 		<!--<react-component name="notification" props='notifications'/>-->		   
@@ -25,7 +25,7 @@
 					   <div ng-if="$index == 0"> 
 					    <div class="Icon" ng-show="!showHeader"></div>
 				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
-				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ notifications.length + ' events' }} </div>
+				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
 					</div>
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
@@ -37,17 +37,18 @@
 							type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 						</avatar>
 					
-						<div class="LeftBarNotificationMessageSection" > 
+						<div class="LeftBarNotificationMessageSection" ng-init="message_section_notifications = getMessage(message)"> 
 							<div ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" class="chatNotification">
 								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div></div> 
 								<div class="NotificationType" ng-show="showNotificationBody">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
 								{{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
 								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>
-								  <span ng-repeat="messageToDisplay in getMessage(message)">{{ messageToDisplay }}<br/></span>
+								  <span ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index">{{ messageToDisplay }}<br/></span>
+								  <span ng-if="!message.message || message.message <= 1">{{ message_section_notifications }}</span>								  
 								</div> 
 							</div>
 							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom' && showNotificationBody">
-								<span class="XButton XButtonRed"> {{::verbage.Reject}}</span>
+								<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
 								<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">{{::verbage.accept}}</span>
 							
 							</div>
@@ -58,7 +59,7 @@
 
 							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call' && showNotificationBody">
 								<span class="XButton chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
-								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>	
+								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone); remove_notification(message.xpid)">{{::verbage.Call}}</span>	
 							</div>
 							
 							<div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back' && showNotificationBody">
@@ -66,8 +67,8 @@
 								<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
 							</div>
 							
-							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue' && showNotificationBody">
-								<span class="XButton" >{{::verbage.Show}}</span>
+							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue' && showNotificationBody  && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+								<span class="XButton" ng-click="showQueue(message)">{{::verbage.Show}}</span>
 							</a>
 						</div>
 				</div>
@@ -87,7 +88,7 @@
 					   <div ng-if="$index == 0"> 
 					    <div class="Icon" ng-show="!showHeader"></div>
 				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
-				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ notifications.length + ' events' }} </div>
+				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
 					</div>
 					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
@@ -112,7 +113,7 @@
 	</div>
 </div>
 
-<div ng-show="$parent.overlay == 'notifications'" class="Overlay">
+<div ng-show="overlay == 'notifications'" class="notifications Overlay">
 	<div ng-click="showNotificationOverlay(false)" class="Background"></div>
 	<div class="Foreground">
 		<div ng-click="showNotificationOverlay(false)" class="Close">x</div>
@@ -120,60 +121,201 @@
 		<div class="Header NotificationSectionHeader">
 			<div class="NotificationSectionHeaderImage"></div>
 			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.notifications}} </h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.new_word}}: {{get_new_notifications().length}} </h2> </div>
+			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.new_word}}: {{ getNotificationsLength(get_new_notifications().length)}} </h2> </div>
 			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.away}}: {{ get_away_notifications().length}}</h2> </div>
 			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.old}}:  {{ get_old_notifications().length}}</h2> </div>
 		
 		</div>
 		
-		<div class="Sections NotificationMessages" >
-			<div>
-				<div class="Messages" ng-repeat="message in notifications">
-					
-					<div class="NotificationHeader"> 
-							<div class="NotificationHeaderBackground"> 
-								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
-							</div>
-							
-					</div>
-					<div class="NotificationDivider"><img /></div>
-					<div class="NotificationSection"> 
+		<div class="NotificationMessages" >
+		
+		 <div class="Messages plugins" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">
+                <a ng-href="{{ pluginDownloadUrl}}" style="text-decoration:none; color:inherit">            
+                    <div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
+                            <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
+                                <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+                            </div>
+                            
+                    </div>
+                    <div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0};">
+                        <img />                       
+                       <div ng-if="$index == 0"> 
+                        <div class="Icon" ng-show="!showHeader"></div>
+                        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
+                        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events'}} </div>
+                       </div>             
+                    </div>
+                    <div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
+                        
+                        <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+                            <div class="AvatarWarningSmall"></div>
+                        </div>
+                    
+                        <div class="LeftBarNotificationMessageSection" > 
+                            <div>
+                                <div style="font-weight:bold;font-size:.7em;height: 2.5em;"><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
+                                <div ></div>
 
-						<avatar 
-							class="LeftBarNotificationAvatarSection NotificationAvatar"
-							ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"
-							profile="message.fullProfile"
-							type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
-						</avatar>
-					
-						<div class="LeftBarNotificationMessageSection"> 
-							
-							<div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
-                            <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
-							<div class="NotificationMessage"><p>{{ getMessage(message) }} </p> </div>
-							<div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
-								<span class="XButton XButtonRed" style="width:70px" > {{::verbage.Reject}}</span>
-								<span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
-							</div>
-							<div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
-								<span class="XButton" style="width:70px" > {{::verbage.Play}}</span>
-								<span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
-							</div>
-
-							<div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-                <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
-                <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
-							</div>
-							<div class="NotificationZoomBtn" ng-if="message.audience == 'queue'">
-								<span class="XButton" style="width:70px" >{{::verbage.Show}}</span>
-							</div>
-							
-
-						</div>
-				</div>
-
-				</div>
-			</div>
+                                <div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>Click to download & Install</div>
+                            </div>
+                            
+                        </div>
+                </div>
+                </a>
+            </div>
+		 	<div class="overlayNotificationsSection" ng-if="hasNewNotifications"> 	
+			<!--  <div class="Conference-HeaderTitle ng-binding" ng-if="hasNewNotifications">NEW ITEMS</div>
+			 <div class="Conference-HeaderSubTitle" ng-if="hasNewNotifications">You have {{newNotificationsLength}} new items.</div>
+			 <input type="button" class="XButton header"  ng-if="hasNewNotifications" ng-show="showNew" value="{{::verbage.show}}" ng-click="showNotifications('new')" /> 
+			 <input type="button" class="XButton header"  ng-if="hasNewNotifications" ng-show="!showNew" value="{{::verbage.hide}}" ng-click="showNotifications('new')" />	-->	 
+			 
+			 <div class="new_notifications notifications_section" ng-if="hasNewNotifications" ng-show="!showNew">								
+				<div class="Messages" ng-repeat="message in get_new_notifications()">              
+	                 <div class="NotificationHeader"> 
+	                        <div class="NotificationHeaderBackground"> 
+	                            <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+	                        </div>
+	                        
+	                 </div>
+	                 <div class="NotificationDivider"><img /></div>
+	                 <div class="NotificationSection"> 
+	
+	                    <avatar 
+	                        class="LeftBarNotificationAvatarSection NotificationAvatar"
+	                        ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"
+	                        profile="message.fullProfile"
+	                        type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
+	                    </avatar>	               
+	                    <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message)">                         
+	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
+	                           <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
+	                        <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="chat_sub_message in new_notifications_to_display track by $index">{{ chat_sub_message }} </p><p ng-if="!message.message || message.message <= 1">{{ new_notifications_to_display }} </p> </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+	                            <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
+	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
+	                        </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
+	                            <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
+	                            <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
+	                        </div>
+	
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
+	                           <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
+	                           <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
+	                        </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+	                            <span class="XButton" style="width:70px" ng-click="showQueue(message)">{{::verbage.Show}}</span>
+	                        </div>          
+	                    </div>
+	               </div>
+	
+	            </div>
+				
+			  </div>	
+			<div class="notification_border ng-class:{'lessPadding': !showNew}"></div>  
+		 </div>
+		 <div class="overlayNotificationsSection" ng-if="hasAwayNotifications">
+			 <div class="Conference-HeaderTitle" ng-if="hasAwayNotifications">WHILE YOU WERE AWAY</div> 
+			 <div class="Conference-HeaderSubTitle" ng-if="hasAwayNotifications">You have {{awayNotificationsLength}} unread events while you were away</div> 
+			 <input type="button" class="XButton header"  ng-if="hasAwayNotifications" ng-show="showAway" value="{{::verbage.show}}" ng-click="showNotifications('away')" /> 
+			 <input type="button" class="XButton header"  ng-if="hasAwayNotifications" ng-show="!showAway" value="{{::verbage.hide}}" ng-click="showNotifications('away')" />        
+			 
+			 <div class="away_notifications notifications_section"   ng-if="hasAwayNotifications" ng-show="!showAway">                          
+	            <div class="Messages" ng-repeat="message in get_away_notifications()">               
+	                 <div class="NotificationHeader"> 
+	                        <div class="NotificationHeaderBackground"> 
+	                            <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+	                        </div>
+	                        
+	                 </div>
+	                 <div class="NotificationDivider"><img /></div>
+	                 <div class="NotificationSection"> 
+	
+	                    <avatar 
+	                        class="LeftBarNotificationAvatarSection NotificationAvatar"
+	                        ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"
+	                        profile="message.fullProfile"
+	                        type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
+	                    </avatar>             	                
+	                    <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message)">                         
+	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
+	                           <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
+	                        <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="sub_message in away_notifications_to_display track by $index">{{ sub_message }} </p><p ng-if="!message.message || message.message <= 1">{{ away_notifications_to_display}} </p> </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+	                            <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
+	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
+	                        </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
+	                            <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
+	                            <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
+	                        </div>
+	
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
+	                           <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
+	                           <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
+	                        </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+	                            <span class="XButton" style="width:70px"  ng-click="showQueue(message)">{{::verbage.Show}}</span>
+	                        </div>          
+	                    </div>
+	               </div>
+	
+	            </div>         
+	          </div>
+	          <div class="notification_border ng-class:{'lessPadding': !showAway}"></div>
+         </div>
+         <div class="overlayNotificationsSection" ng-if="hasOldNotifications">             
+	         <div class="Conference-HeaderTitle ng-binding" ng-if="hasOldNotifications">OLD ITEMS</div>
+	         <div class="Conference-HeaderSubTitle" ng-if="hasOldNotifications">You have {{oldNotificationsLength}} old items</div> 
+	         <input type="button" class="XButton header"  ng-if="hasOldNotifications" ng-show="showOld" value="{{::verbage.show}}" ng-click="showNotifications('old')" /> 
+	         <input type="button" class="XButton header"  ng-if="hasOldNotifications" ng-show="!showOld" value="{{::verbage.hide}}" ng-click="showNotifications('old')" />
+	         <input type="button" class="XButton header"  ng-if="hasOldNotifications" value="{{::verbage.clear}}" ng-click="removeOldNotifications()" />
+	         
+			 <div class="old_notifications notifications_section" ng-if="hasOldNotifications" ng-show="!showOld">                        
+	            <div class="Messages" ng-repeat="message in get_old_notifications()">             
+	                 <div class="NotificationHeader"> 
+	                        <div class="NotificationHeaderBackground"> 
+	                            <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+	                        </div>
+	                        
+	                 </div>
+	                 <div class="NotificationDivider"><img /></div>
+	                 <div class="NotificationSection"> 
+	
+	                    <avatar 
+	                        class="LeftBarNotificationAvatarSection NotificationAvatar"
+	                        ng-click="go_to_notification_chat(message); storeRecent(message.senderId)"
+	                        profile="message.fullProfile"
+	                        type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
+	                    </avatar>            
+	               
+	                    <div class="LeftBarNotificationMessageSection" ng-init="old_notifications_to_display = getMessage(message)">                         
+	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
+	                           <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
+	                        <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="sub_message in old_notifications_to_display track by $index">{{ sub_message }} </p><p ng-if="!message.message || message.message <= 1">{{ old_notifications_to_display }} </p> </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+	                            <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
+	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
+	                        </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'vm'">
+	                            <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
+	                            <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
+	                        </div>
+	
+	                        <div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
+	                           <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{::verbage.chat}}</span>
+	                           <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
+	                        </div>
+	                        <div class="NotificationZoomBtn" ng-if="message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+	                            <span class="XButton" style="width:70px" ng-click="showQueue(message)">{{::verbage.Show}}</span>
+	                        </div>          
+	                    </div>
+	               </div>
+	
+	            </div>
+	            
+	          </div>	
+          </div>					
 		</div>
 		
 		<div class="Footer">
@@ -181,29 +323,28 @@
 			<input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showNotificationOverlay(false)" />
 			<input type="button" class="XButton XButtonRed" value="{{::verbage.clear_all}}" ng-click="remove_all()" />
 		</div>
+	 	
 	</div>
 
 </div>
 
-
-<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound' " ng-if="inCall" droppable>
-		<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
-			<div class="CallStatusIcon"> </div>
-		</div>
-		<div ng-click="showCurrentCallControls(currentCall)" style="display:inline-block" class="CallStatusText"> 
-			<div style="font-weight:bold;font-size:14px">{{currentCall.displayName}}</div>
-			<div><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div></div>
-		</div>
-		
-		<div style="float:right;display:inline-block;margin-top:5px">
-			<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
-			<div ng-click="holdCall(currentCall.xpid,true)" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
-			<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">{{::verbage.end}}</div>
-			<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</div>
-			<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</div>
-		</div>
-		
-</div>
-<div id="CallAlert" style="display:none" ng-include="'views/nativealerts/CallAlert.html'"></div>
+	<div ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">										
+				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
+					<div class="CallStatusIcon"> </div>
+				</div>
+				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
+					<div class="memberName">{{currentCall.displayName}} <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
+					<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
+				</div>				
+				<div class="controlButtons">
+					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
+					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
+					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">{{::verbage.end}}</div>
+					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</div>
+					<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</div>
+				</div>
+				
+	</div>	
+    <div id="CallAlert" style="display:none" include-once="views/nativealerts/CallAlert.html"></div>
 
 

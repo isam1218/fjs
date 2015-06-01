@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout', 
-	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService', 
+	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService){
 
 	var addedPid;
 	var localPid;
@@ -43,8 +43,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 	// used to update the UI
     $scope.updateTime = function(id) {    	
-		
-    	var time = new Date().getTime() - $scope.callObj[id].start;
+			
+			var offset = ntpService.fixTime();		
+    	var time = new Date(offset).getTime() - $scope.callObj[id].start;
     	time = time/1000;
     	$scope.callObj[id].seconds = Math.floor(time % 60);
     	time = time/60; 

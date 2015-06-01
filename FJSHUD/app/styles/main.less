@@ -525,6 +525,7 @@ p {
   /******* notifications **********/
   .LeftBar
   {
+    height: 99%;
    .Notifications
    {
         .TitleBar .XButton,
@@ -539,6 +540,9 @@ p {
     background-color: transparent;
   }
   
+  .Widget{
+    height: 97%;
+  } 
   .WidgetTabBar{ clear: both;}
   .Messages{        
           
@@ -624,6 +628,12 @@ p {
         }
                 
        }
+   }
+   .DockPanel { 
+     height: 100% !important;
+     .InnerDock {
+        width: 100% !important;
+     }
    }
   
 }

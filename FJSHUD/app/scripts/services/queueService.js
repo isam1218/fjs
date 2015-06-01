@@ -1,4 +1,4 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', function ($rootScope, $q, contactService, httpService) {
+hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', 'NtpService', function ($rootScope, $q, contactService, httpService, ntpService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
@@ -190,8 +190,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	$rootScope.$on('queue_call_synced', function(event, data) {
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
 			queues[q].calls.splice(0, queues[q].calls.length);
-			queues[q].longestWait = new Date().getTime();
-			queues[q].longestActive = new Date().getTime();
+			var offset = ntpService.fixTime();
+			queues[q].longestWait = new Date(offset).getTime();
+			queues[q].longestActive = new Date(offset).getTime();
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if (data[i].queueId == queues[q].xpid) {
