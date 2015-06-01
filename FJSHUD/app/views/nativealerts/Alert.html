@@ -31,7 +31,7 @@
 
 				window.dropEnabled=false;
 
-				window.isIE = /*@cc_on!@*/false;
+				window.isIE = /*@cc_on!@*/true;
 
 				document.oncontextmenu = function () { return false;};
 				window.oncontextmenu = function () { return false;};
@@ -44,42 +44,41 @@
 				    window.dropEnabled=false;
 				};
 
-				//function contentChanged() {
-				//};
+				function contentChanged() {
+				};
 
 				function addAlert(html)  {
-				    fj.alert.App.destroyScrolls();
-				    fj.alert.Duration.clear();
+				    //fj.alert.App.destroyScrolls();
+				    //fj.alert.Duration.clear();
 
 				    document.body.innerHTML = html;
 
 				//	fj.alert.App.update(html);
-				    fj.alert.App.checkSize();
-				    fj.alert.App.initScrolls();
-				    fj.alert.App.prepareBottomScrolls();
-				    fj.alert.Duration.start();
+				    //fj.alert.App.checkSize();
+				    //fj.alert.App.initScrolls();
+				    //fj.alert.App.prepareBottomScrolls();
+				    //fj.alert.Duration.start();
 
-
-				    if(/localhost/i.test(window.location.href) 
-				    		|| /ridgeline/i.test(window.location.href)) {
-				        var btnOpenConsole = document.createElement("button");
-				        btnOpenConsole.className = "btnOpenConsole";
-				        btnOpenConsole.onclick = function(){
+				    /* var btnOpenConsole = document.createElement("button");
+				      btnOpenConsole.className = "btnOpenConsole";
+				      btnOpenConsole.onclick = function(){
 				        	alert("devtools://open");
 				            window.location="devtools://open";
 				        };
-				       // document.body.appendChild(btnOpenConsole);
-				    }
+				        document.body.appendChild(btnOpenConsole);
+				    */
+
+				    
 				}
 
 				function alertScroll(x,y,dx) {
-				    var scrolls = fj.alert.App.__scrolls
+				    /*var scrolls = fj.alert.App.__scrolls
 				    for(var i=0; i <scrolls.length; i++) {
 				        scrolls[i].onWheel({wheelDelta:(-1*dx)});
-				    }
+				    }*/
 				}
 
-				(function(){
+				/*(function(){
 				    if(!fj.alert.App) {
 				        function updateNode( src,  dst, isChild)
 				        {
@@ -208,9 +207,9 @@
 				            }
 				        }
 				    }
-				})();
+				})();*/
 
-				(function(){
+				/*(function(){
 				    fj.alert.AlertEventManager = new Function();
 
 				    fj.alert.AlertEventManager.prototype.isChildOf = function(item, parent)
@@ -389,9 +388,9 @@
 
 				    fj.alert.AlertEventManager.getInstance();
 
-				})();
+				})();*/
 
-				var FormatUtils = {
+				/*var FormatUtils = {
 				    duration: {
 				        getFormattedDuration: function(timestamp) {
 				            var duration = (timestamp && new Date().getTime() - timestamp) || 0;
@@ -789,7 +788,7 @@
 
 				fj.Scrollable.prototype.scrollToPosition = function (position) {
 				    this.frame.scrollTop = position;
-				};
+				};*/
 		</script>
 	</head>
 	<body>

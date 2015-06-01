@@ -115,78 +115,26 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	hangUp = function(xpid){
 		sip_id = xpid2Sip[xpid];
 		call = sipCalls[sip_id];
-		if(call){
-			if(context.webphone){
-				//messageSoftphone({a : 'hangUp', value : call.sip_id});
-				httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-
-			}else{
-				call.hangUp();
-			}
-		}else{
-			delete xpid2Sip[xpid];
-			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-		}
+		delete xpid2Sip[xpid];
+		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
+		//}
 	};
 
 	holdCall = function(xpid,isHeld){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		if(call){
-			if(context.webphone){
-				//messageSoftphone({a : 'hold', value : call.sip_id});
-				if(isHeld){
-           			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-				}else{
-           			httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-				}
-			
-			}else{
-				call.hold = isHeld;
-			}
-			
+		if(isHeld){
+           	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-			if(isHeld){
-           		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-			}else{
-           		httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-			}
-			
+           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
 		}
 	};
 
-	makeCall = function(number){
-		
-		if($rootScope.meModel.location.locationType == 'w'){
-        	if(context.webphone && number)
-        	{	
-        		messageSoftphone({a : 'call', value : number});
-        	}else if(phone && number != ""){
-        		phone.makeCall(number);
-			}else{
-        		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-			}
-		}else{
-			httpService.sendAction('me', 'callTo', {phoneNumber: number});
-		}
+	makeCall = function(number){		
+		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
 
 	acceptCall = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		
-		if(call){
-			if(context.webphone){
-				//context.webphone.send(JSON.stringify({a : 'accept', value : sip_id }));
-				httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
-		
-			}else{
-				call.accept();	
-			}	
-		}else{
-			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
-		}
-
+		httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+	
 		for(i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 				holdCall(i,true);		
@@ -228,7 +176,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		
 			
-		if(alertPlugin && displayNotification){
+	if(alertPlugin && displayNotification){
 				alertPlugin.setAlertSize(width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
@@ -394,7 +342,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	activateBrowserTab();
     	
     	window.focus();
-    	if($rootScope.isIE){
+    	if(url.indexOf('#') === -1){
 
 			switch(url){
 	    		case '/Close':
@@ -701,11 +649,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	$rootScope.$on('me_synced', function(event,data){
         if(data){
-            var me = {};
             for(medata in data){
                 $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
+				if(data[medata].propertyKey == 'personal_permissions'){
+					var permissions = {key:data[medata].propertyKey,permissions:data[medata].propertyValue};
+					$rootScope.$broadcast('permissions_updated',permissions);
+                }
+
+                if(data[medata].propertyKey == 'my_jid'){
+            		$rootScope.meModel.login = data[medata].propertyValue.split("@")[0];
+            		$rootScope.meModel.server = data[medata].propertyValue.split("@")[1];
+        
+                }
             }
-        }
+			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
+    }
+		
 		if(!context.webphone && $rootScope.meModel.my_pid){
 			//initWS();
         	getWSVersion();
@@ -882,7 +841,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.isAlertShown = function(){
 		return isAlertShown;
 	};
-
+	
 	this.parkCall = function(call_id){
 		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
 	};
@@ -1030,6 +989,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 	});
+
 
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){

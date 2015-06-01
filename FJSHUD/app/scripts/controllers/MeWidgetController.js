@@ -11,6 +11,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.avatar ={};
     $scope.phoneType = false;
+    
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     $scope.pluginVersion = phoneService.getVersion();
 
@@ -27,19 +28,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          * @type {{name:string. phone:string}}
          */
         var currentLocation;
-
-         
-        
-         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
-        	 
+        if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {        	 
+             currentLocation = $scope.locations[$scope.meModel["current_location"]];
+             
              if($scope.meModel["current_location"])
              {	
             	if(!$scope.settings) 
             		$scope.settings = {};
-         		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
+         		$scope.settings["current_location"] = currentLocation;
              }
              
-             return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
+             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w' && currentLocation.locationType != 'm')
+            	 return currentLocation.shortName+" ("+currentLocation.phone+")";
+             else
+            	 return currentLocation.shortName;                          
          }
          else { 
         	 if($scope.settings && $scope.settings["current_location"])
@@ -67,7 +69,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.pbxtraVersion;
     $scope.hudserverVersion;
     $scope.fdpVersion;
-    $scope.meModel={};
     $scope.locations = {};
     $scope.call_obj = {};
     $scope.call_obj.phoneNumber = "";
@@ -408,10 +409,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected;
-    if($scope.meModel.my_jid){
-            $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
-            $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
-        }
+  
     $scope.update_settings = function(type,action,model){
         switch(type){
             case 'auto_away_timeout':
@@ -846,15 +844,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.weblaunchervariables = data;
         }
 
-    });
-
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-			for (var i = 0, len = data.length; i < len; i++) {
-                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-            }
-        }
     });
 
     $scope.$on('locations_synced', function(event,data){

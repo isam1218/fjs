@@ -1,4 +1,4 @@
-hudweb.directive('timer', ['$filter', '$interval', function($filter, $interval) {
+hudweb.directive('timer', ['$filter', '$interval', 'NtpService', function($filter, $interval, ntpService) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -10,7 +10,8 @@ hudweb.directive('timer', ['$filter', '$interval', function($filter, $interval) 
 			
 			// start counting immediately
 			if (attrs.timer == 'now') {
-				start = new Date();
+				var offset = ntpService.fixTime();
+				start = new Date(offset);
 				loop = $interval(updateDate, 1000);					
 				updateDate();
 			}
@@ -34,7 +35,8 @@ hudweb.directive('timer', ['$filter', '$interval', function($filter, $interval) 
 			}
 			
 			function updateDate() {
-				elapsed = new Date().getTime() - start.getTime();
+				var offset2 = ntpService.fixTime();
+				elapsed = new Date(offset2).getTime() - start.getTime();
 				element.html($filter('duration')(elapsed));
 			}
 			

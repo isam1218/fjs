@@ -134,7 +134,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		var found = null;
 		
 		// find first empty room on same server
-		for (i = 0; i < $scope.conferences.length; i++) {
+		for (var i = 0; i < $scope.conferences.length; i++) {
 			if ($scope.conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0)) {
 				found = $scope.conferences[i].xpid;
 				break;
@@ -143,7 +143,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		// try again for linked server
 		if (!found) {
-			for (i = 0; i < $scope.conferences.length; i++) {
+			for (var i = 0; i < $scope.conferences.length; i++) {
 				// find first room on same server
 				if (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0) {
 					found = $scope.conferences[i].xpid;

@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'SettingsService', '$timeout', function($scope, $rootScope, $routeParams, httpService, contactService, queueService, settingsService, $timeout) {
+hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'SettingsService', '$timeout', 'NtpService', function($scope, $rootScope, $routeParams, httpService, contactService, queueService, settingsService, $timeout, ntpService) {
 	$scope.queueId = $routeParams.queueId;
   $scope.que = {};
   $scope.que.query = '';
@@ -23,8 +23,9 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 	$scope.$watch('queue.calls', function() {
 		$scope.callsWaiting = 0;
 		$scope.callsActive = 0;
-		$scope.longestWait = new Date().getTime();
-		$scope.longestActive = new Date().getTime();
+    var offset = ntpService.fixTime();
+		$scope.longestWait = new Date(offset).getTime();
+		$scope.longestActive = new Date(offset).getTime();
 		
 		for (var i = 0; i < $scope.queue.calls.length; i++) {
 			// active calls

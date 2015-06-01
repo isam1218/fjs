@@ -1,7 +1,8 @@
-hudweb.filter('fondate', function() {
+hudweb.filter('fondate', ['NtpService', function(ntpService) {
     return function(milliseconds,dateformat,locale,chatSection) {		
 		
-    	var todayTime = new Date().getTime();
+        var offset = ntpService.fixTime();
+    	var todayTime = new Date(offset).getTime();
     	var locale_code = 'en';
     	
     	//this will switch the locale from our format to moment.js prefered locale code
@@ -24,12 +25,14 @@ hudweb.filter('fondate', function() {
             return "Yesterday";
         } else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
     		return "today " + moment(milliseconds).lang(locale_code).format('hh:mm a');
-    	}else if(moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
+    	} else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
     		return "yesterday " + moment(milliseconds).lang(locale_code).format('hh:mm a');
-    	}else{
+    	} else if (moment(milliseconds).startOf('year').isSame(moment(todayTime).startOf('year'))){
+            return moment(milliseconds).lang(locale_code).format("MMMM D, hh:mm a");
+        } else {
             //return moment(new Date(milliseconds)).format(dateformat);
     		return moment(milliseconds).lang(locale_code).format(dateformat);
     	}
     	
 	};
-});
+}]);

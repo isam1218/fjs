@@ -37,23 +37,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		
 	});
 
-	/*$scope.$on('file_upload_progress',function(event,data){
-		switch(data.status){
-			case "IN_PROGRESS":
-				$scope.upload_progress = data.percent;
-				console.debug("Progress" + $scope.upload_progress);
-				if(data.percent == 100){
-					$timeout(function(){
-						$scope.upload_progress = 0;
-					},1000);
-				}
-				break;
-			case "COMPLETED":
-				//$scope.upload_progress = 0;
-				break;
-		}
-	});*/
-
 	$scope.$on('settings_updated', function(event, data) {		
 		// wait for sync
 		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
@@ -62,7 +45,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				var found = false;
 				
 				for (g in $scope.gadgets) {
-					for (i = 0; i < $scope.gadgets[g].length; i++) {
+					for (var i = 0; i < $scope.gadgets[g].length; i++) {
 						if (key == $scope.gadgets[g][i].name) {
 							found = true;
 							break;
@@ -148,7 +131,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		
 		// remove from ui
 		for (g in $scope.gadgets) {
-			for (i = 0; i < $scope.gadgets[g].length; i++) {
+			for (var i = 0; i < $scope.gadgets[g].length; i++) {
 				if (data == $scope.gadgets[g][i].name) {
 					$scope.gadgets[g].splice(i, 1);
 					return;
@@ -172,7 +155,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			for(parkedCall in data){
 				if(data[parkedCall].xef001type == "delete"){
 					//delete $scope.parkedCalls[data[parkedCall.xpid]];
-					for (i = 0; i < $scope.parkedCalls.length;i++){
+					for (var i = 0; i < $scope.parkedCalls.length;i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
 							$scope.parkedCalls.splice(i,1);
 						}
@@ -180,7 +163,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				
 				}else{
 					var toAdd = true;
-					for (i = 0; i < $scope.parkedCalls.length;i++){
+					for (var i = 0; i < $scope.parkedCalls.length;i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
 							toAdd = false;
 						}

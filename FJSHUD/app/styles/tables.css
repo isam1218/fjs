@@ -9,6 +9,7 @@
   /*width: auto;*/
   position: relative;
   border-bottom: solid 1px #999;
+  min-height: 25px;
 }
 .ListLineContent.Header .ListLineContentCell {
   margin: 0 .5em;
@@ -183,6 +184,15 @@
 .ListRow .CallStatus {
   float: right;
   margin-right: .5em;
+}
+.ListRow .CallStatus.Full {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 150px;
+}
+.ListRow .CallStatus.Full .Details {
+  display: inline-block;
+  font-size: 12px;
 }
 .Widget .ListRow,
 .LeftBar .ListRow,
