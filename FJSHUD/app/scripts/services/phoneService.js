@@ -987,9 +987,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					holdCall(data.notificationId,false);
 					break;
 			}
+			focusBrowser();
 		}
 	});
 
+	var focusBrowser = function(){
+			nservice.sendData({message:"focus"},0,"FOCUS");
+	}
 
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){
