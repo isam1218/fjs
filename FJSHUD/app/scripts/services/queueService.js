@@ -216,10 +216,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			}
 			
 			// no change, so set to zero
-			if (queues[q].longestWait == new Date().getTime())
+			if (queues[q].longestWait == ntpService.calibrateTime(new Date().getTime()))
 				queues[q].longestWait = 0;
 			
-			if (queues[q].longestActive == new Date().getTime())
+			if (queues[q].longestActive == ntpService.calibrateTime(new Date().getTime()))
 				queues[q].longestActive = 0;
 		}
 	});
