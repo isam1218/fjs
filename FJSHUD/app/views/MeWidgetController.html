@@ -88,8 +88,8 @@
                   </div> 
                   <div class="row_buttons"> 
                     <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></div>  
-                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-if="!currentCall.isHeld" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button>                                     
-                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-if="currentCall.isHeld" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
+                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-if="currentCall.state == 2" ng-click="holdCall(currentCall,'True')"><span> {{::verbage.Hold}}</span></button>                                     
+                    <div class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</div> 
                   </div>
                   <div class="row_buttons"> 
                     <div class="XButton record ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3, 'CurrentCallBtn': currentCall.state != 2 && currentCall.state != 3, 'XButtonRecordOn': currentCall.record}" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 

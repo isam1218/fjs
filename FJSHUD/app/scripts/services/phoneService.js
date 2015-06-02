@@ -179,7 +179,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				removeNotification();
 				break;
 			case CALL_STATUS_CLOSED:
-				showCallControls(null);
+				data = {
+					event: 'onclose',
+					sipId: call.sip_id
+				}
+				//showCallControls(null);
 				removeNotification();
 				delete sipCalls[call.sip_id];
 				break;
