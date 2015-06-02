@@ -56,6 +56,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 		if (count >= 5) {
 			$timeout(function() {
 				$rootScope.loaded.all = true;
+				window.onbeforeunload = function(){
+					return "Are you sure you want to navigate away from this page?";
+				};
+
 			}, 500);
 			
 			// kill watcher
