@@ -1325,9 +1325,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					holdCall(data.notificationId,false);
 					break;
 			}
+			focusBrowser();
 		}
 	});
 
+<<<<<<< HEAD
+=======
+	var focusBrowser = function(){
+			nservice.sendData({message:"focus"},0,"FOCUS");
+	}
+
+>>>>>>> @clnielsen added refocusing with google chrome
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){
             if($.isEmptyObject(locations)){

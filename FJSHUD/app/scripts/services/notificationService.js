@@ -2,6 +2,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 	function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
 		var notifyPipe = false;
 		var enabled = false;
+		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
 		var initNSService = function(){
 			if(notifyPipe) return;
 
@@ -23,7 +24,10 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
            	notifyPipe.onmessage = function (evt) {
 				var response;
             	if(evt.data == "OK"){
-            		return ;
+            		if($rootScope.browser == "Chrome"){
+            			chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+					}
+            		return;
             	}else{
 					response = JSON.parse(evt.data);
 					console.log(response);
