@@ -171,10 +171,8 @@ function do_version_check(){
 		if (xmlhttp.status == 200){
 			var changedFeeds = [];
       var params = xmlhttp.responseText.split(";");
-      console.error('sharedworker all params - ', params);
       if (!timestamp_flag){
 	      for (var j = 0; j < ports.length; j++){
-					console.error('server side 1st time - ', params[0]);
 	      	ports[j].postMessage({
 	      		"action": "timestamp_created",
 	      		"data": params[0]
@@ -192,7 +190,6 @@ function do_version_check(){
 				setTimeout('do_version_check();', 500);
 		}
 		else{
-			console.error('2');
 			for(i = 0; i < ports.length;i++){
 				ports[i].postMessage({
 					"action": "auth_failed"

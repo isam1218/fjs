@@ -34,7 +34,7 @@ hudweb.directive('timer', ['$filter', '$interval', 'NtpService', function($filte
 			}
 			
 			function updateDate() {
-				elapsed = ntpService.calibrateTime(newDate().getTime()) - start;
+				elapsed = ntpService.calibrateTime(new Date().getTime()) - start;
 				element.html($filter('duration')(elapsed));
 			}
 			
