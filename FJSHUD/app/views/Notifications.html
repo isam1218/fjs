@@ -113,7 +113,7 @@
 	</div>
 </div>
 
-<div ng-show="overlay == 'notifications'" class="notifications Overlay">
+<div ng-if="overlay == 'notifications'" class="notifications Overlay">
 	<div ng-click="showNotificationOverlay(false)" class="Background"></div>
 	<div class="Foreground">
 		<div ng-click="showNotificationOverlay(false)" class="Close">x</div>
