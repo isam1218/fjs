@@ -20,7 +20,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isRegistered = false;
 	var isAlertShown = true;
 
-	var voicemails = {};
+	var voicemails = [];
 	var weblauncher = {};
 	var locations = {};
 	//fjs.CONFIG.SERVER.serverURL 
@@ -107,7 +107,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	playVm = function(xpid){
-		$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
+		for (var i = 0; i < voicemails.length; i++) {
+			if (voicemails[i].xpid == xpid) {
+				$rootScope.$broadcast('play_voicemail', voicemails[i]);
+				break;
+			}
+		}
 	};
 
 	displayNotification = function(content, width,height){
@@ -316,7 +321,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			$rootScope.$broadcast('phone_event',data);
 					break;
 				case '/PlayVM':
-					$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
+					playVm(xpid);
 					break;
 				case '/CallBack':
 					makeCall(xpid);
@@ -367,7 +372,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					removeNotification();
 					break;
 				case '#/PlayVM':
-					$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
+					playVm(xpid);
 					break;
 				case '#/CallBack':
 					makeCall(xpid);
@@ -430,21 +435,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	$rootScope.$on('me_synced', function(event,data){
         if(data){
-            for(medata in data){
-                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-				if(data[medata].propertyKey == 'personal_permissions'){
-					var permissions = {key:data[medata].propertyKey,permissions:data[medata].propertyValue};
-					$rootScope.$broadcast('permissions_updated',permissions);
+            for(var i = 0; i < data.length; i++){
+                $rootScope.meModel[data[i].propertyKey] = data[i].propertyValue;
+				if(data[i].propertyKey == 'personal_permissions'){
+					var permissions = {key:data[i].propertyKey,permissions:data[i].propertyValue};
                 }
 
-                if(data[medata].propertyKey == 'my_jid'){
-            		$rootScope.meModel.login = data[medata].propertyValue.split("@")[0];
-            		$rootScope.meModel.server = data[medata].propertyValue.split("@")[1];
+                if(data[i].propertyKey == 'my_jid'){
+            		$rootScope.meModel.login = data[i].propertyValue.split("@")[0];
+            		$rootScope.meModel.server = data[i].propertyValue.split("@")[1];
         
                 }
             }
 			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
-    }
+		}
 
         if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
         	username = $rootScope.meModel.my_jid.split("@")[0];
@@ -599,17 +603,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	httpService.getFeed('voicemailbox');
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
-		for(voicemail in data){
-			voicemails[data[voicemail].xpid]  = data[voicemail];
-		}
-		return;
+		voicemails = data;
 	});
-
-	$rootScope.$on("parkedcalls_synced",function(event,data){
-		$rootScope.$broadcast('parkedcalls_updated', data);
-	});
-
-	
 	
 	$rootScope.$on("mycalls_synced",function(event,data){
 		

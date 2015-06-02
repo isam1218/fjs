@@ -79,9 +79,10 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		SYNCING
 	*/
 	
-	$rootScope.$on('permissions_updated', function(event, data) {
+	$rootScope.$on('me_synced', function(event, data) {
+		for (var i = 0, len = data.length; i < len; i++) {
 			// look at fj repository > MyPermissions.java for reference
-		if (data.permissions) {
+			if (data[i].propertyKey == 'personal_permissions') {
 				// console.error('!prop value - ', data[i].propertyValue);
 				
 				// licenses from MyPermissions.java
@@ -103,9 +104,9 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				// // Call Permission from CallPermissions.java
 				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				deferPermissions.resolve(permissions);
-				
+				break;
+			}
 		}
-		
 	});
 
 	$rootScope.$on('callpermissions_synced', function(event, data){

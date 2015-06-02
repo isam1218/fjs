@@ -150,7 +150,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	
 	$scope.parkedCalls = [];
 	
-	$scope.$on('parkedcalls_updated',function(event,data){
+	$scope.$on('parkedcalls_synced',function(event,data){
 		if(data){
 			for(parkedCall in data){
 				if(data[parkedCall].xef001type == "delete"){
