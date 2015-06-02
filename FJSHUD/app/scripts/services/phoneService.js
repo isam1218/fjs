@@ -719,15 +719,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     });
 
 	$rootScope.$on("calldetails_synced",function(event,data){
+		var userBargePerm;
 		if(data){
 			for(i = 0; i < data.length; i ++){
 				if(callsDetails[data[i].xpid]){
 					callsDetails[data[i].xpid].details = data[i];
 				}
+				if(data[i].permissions == 1 || data[i].permissions == 15){
+					$rootScope.bargePermission = data[i].permissions;
+				}
 			}
 		}
 		$rootScope.$broadcast('calls_updated', callsDetails);
-
 		
 	});
 
