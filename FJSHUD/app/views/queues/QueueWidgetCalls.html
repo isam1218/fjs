@@ -22,7 +22,7 @@
 			<div class="ActiveCall">
 				<div class="Info">
 					<div class="Arrow" ng-if="call.agent"></div>
-					<avatar profile="call.fullProfile" context="queue:call" type="3"></avatar>
+					<avatar profile="call" context="queue:call" type="3"></avatar>
 					<div class="Name">{{ ::call.displayName + ' (' + call.phone + ')' }}</div>
 					<div class="Time" timer="call.startedAt"></div>
 				</div>
@@ -54,7 +54,7 @@
 			<div class="ActiveCall">
 				<div class="Info">
 					<div class="Arrow"></div>
-					<avatar profile="call.fullProfile" context="queue:call" type="3"></avatar>
+					<avatar profile="call" context="queue:call" type="3"></avatar>
 					<div class="Name">{{ ::call.displayName + ' (' + call.phone + ')' }}</div>
 					<div class="Time" timer="call.startedAt"></div>
 				</div>
