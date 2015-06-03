@@ -35,8 +35,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showNew = false;
 	$scope.showAway = false;
 	$scope.showOld = false;
-	//$scope.minutes = 0;
-	//$scope.seconds = 0;
+	
 	$scope.stopTime;	
 	$scope.callObj = {};
 	
@@ -86,8 +85,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	  	$scope.callObj[id].minutesText = minutesText;  
 	  	$scope.callObj[id].hoursText = hoursText;	  
 	  	$scope.callObj[id].daysText = daysText;
-    }       
-	
+    }     	    
+    
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
 	});
