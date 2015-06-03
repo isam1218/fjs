@@ -176,7 +176,7 @@
 			<span>{{::verbage.mobile}}</span>
 		</a>
 		
-		<div ng-if="profile.call && profile.call.type > 0 && profile.xpid != myPid && (widget != 'queue' || profile.call.incoming)">
+		<div ng-if="profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid && (widget != 'queue' || profile.call.incoming)">
 			<a class="Button" href="" ng-click="bargeCall('barge')">
 				<div class="ListRowActionButtonBarge"></div>
 				<span>{{::verbage.barge}}</span>
@@ -290,7 +290,7 @@
 	</div>
 	
 	<!-- dockable -->
-	<div ng-show="profile.xpid != myPid && (profile.displayName || profile.name)">
+	<div ng-show="profile.xpid != myPid && (profile.displayName !== undefined || profile.name !== undefined)">
 		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 			<div class="ListRowActionButtonDock"></div>
 			<span>{{::verbage.dock}}</span>
