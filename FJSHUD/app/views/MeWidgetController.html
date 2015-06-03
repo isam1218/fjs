@@ -1,6 +1,6 @@
 <div class="Widget WidgetMe">
     <div class="WidgetHeader">
-        <div class="WidgetHeaderTitle">{{ meModel.display_name }}</div>
+        <div class="WidgetHeaderTitle">{{ ::meModel.display_name }}</div>
         <div class="Avatar AvatarBig">
             <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl(90,90)}}" />
         </div>
@@ -49,7 +49,7 @@
                       <div class="ListRowContent" style="border-left:none">
                         <div class="ListRowTitle">
                           <div class="name">
-                            <span><strong>{{ currentCall.displayName }}</strong></span>
+                            <span><strong>{{ ::currentCall.displayName }}</strong></span>
                           </div>
                           <div class="ListRowStatus" >
                             <div class="ListRowStatusIcon" style="display: inline-block;">{{ currentCall.phone }}</div>

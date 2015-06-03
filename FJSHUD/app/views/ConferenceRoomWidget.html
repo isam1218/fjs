@@ -83,7 +83,7 @@
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
                                 <avatar profile="member" type="4" context="conference:conference"></avatar>
-                                <div class="first-name">{{member.displayName}}</div>
+                                <div class="first-name">{{::member.displayName}}</div>
                             </div>
                         </div>
                         </div>
