@@ -8,21 +8,13 @@ hudweb.directive('expandContractNotifications', function() {
         	browser = browser && browser[0] ? browser[0] : "MSIE";
         	var $scope = scope;
         	
-            $(element).on('hoverIntent mouseenter', function() {   
+            $(element).on('hoverIntent mouseenter', function() {              
             	$scope.showNotificationBody = true; 
             	$scope.showHeader = true;
-	       		 if(!hoverFlag){
-	       		       hoverFlag = true;		     		     
-	       		       var content = $(element).find('.NotificationSection:not(.last)'); 
-	       		       if(content.length <= 1)
-	       		       {
-	       		    	   if($(element).find('.TitleBar.noNotifications').length > 0)
-	       		    	   {
-	       		    		$(element).find('.TitleBar.noNotifications').show();
-	       		    	   }	   
-	       		       }
-	       		       else
-	       		       {	   
+            	var content = $(element).find('.NotificationSection:not(.last)');
+            	
+	       		 if(!hoverFlag && content.length > 0){
+	       		       hoverFlag = true;		     		     	       		       	       		         
 		       		       $.each(content, function(){               
 			       			    var targetHeight = $(this).find('.chatNotification').outerHeight();    	
 			       			    var origHeight = (browser == "Firefox") ? 18 : 15;
@@ -32,34 +24,25 @@ hudweb.directive('expandContractNotifications', function() {
 		       				    $(this).stop().animate({top: topPos, height: targetHeight }, animTime);			       			    
 			       			   
 			       		         $(this).addClass('open');  
-		       		       });  
-	       		       }
+		       		       }); 	       		      
 	       		       setTimeout(function(){ hoverFlag = false; }, animTime);
 	       		  }		
             });
             $(element).on('mouseleave', function() {
             	$scope.showNotificationBody = $scope.todaysNotifications.length > 3 ? false:true;
             	$scope.showHeader = false;
-            	var content = $(element).find('.NotificationSection:not(.last)'); 	
-            	if(content.length <= 1)
-    		    {
-    		    	   if($(element).find('.TitleBar.noNotifications').length > 0)
-    		    	   {
-    		    		   $(element).find('.TitleBar.noNotifications').hide();
-    		    	   }	   
-    		    }
-            	else
-            	{	
+            	var content = $(element).find('.NotificationSection:not(.last)');	
+            	if(content.length > 0){
 	        	    $.each(content, function(){		        
 	        	    	if(browser == "Firefox")				 
 	        				$(this).stop().animate({ top: 0, height: 18 }, animTime);	
 	        	    	else
 	        	    		$(this).stop().animate({top: 0, height: 15 }, animTime);           
 	        	        $(this).removeClass('open');          
-	        	    }); 
-            	}
-
+	        	    });            	
+     
         	    hoverFlag = false;  
+            	}
             });
        }
    };
