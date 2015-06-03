@@ -75,7 +75,7 @@
 
 			</div>
 
-			<div class="Messages" style="cursor:hand;cursor:pointer;" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">
+			<div class="Messages plugins" style="cursor:hand;cursor:pointer;" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">
 				<a ng-href="{{ pluginDownloadUrl}}" style="text-decoration:none; color:inherit">			
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
@@ -109,6 +109,38 @@
 				</div>
 				</a>
 			</div>
+			<div class="Messages webphone">                
+                    <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                            <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                                <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+                            </div>
+                            
+                    </div>
+                    <div class="NotificationDivider ng-class:{'firstHeaderDivider': phoneSessionEnabled && todaysNotifications.length == 0, 'noMessagess': todaysNotifications.length == 0}" >
+                        <img />
+                       <div ng-if="phoneSessionEnabled && todaysNotifications.length == 0"> 
+                        <div class="Icon" ng-show="!showHeader"></div>
+                        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
+                        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
+                       </div>             
+                    </div>
+                    <div class="NotificationSection webphone last ng-class:{'firstsection': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                        
+                        <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+                            <div class="AvatarWarningSmall"></div>
+                        </div>
+                    
+                        <div class="LeftBarNotificationMessageSection" > 
+                            <div class="chatNotification webphone">
+                                <div><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
+                                <div ></div>
+
+                                <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
+                            </div>
+                            
+                        </div>
+                 </div>               
+            </div>
 
 	</div>
 </div>
@@ -162,6 +194,38 @@
                         </div>
                 </div>
                 </a>
+            </div>
+            <div class="Messages webphone">                
+                    <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                            <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                                <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+                            </div>
+                            
+                    </div>
+                    <div class="NotificationDivider ng-class:{'firstHeaderDivider': phoneSessionEnabled && todaysNotifications.length == 0, 'noMessagess': todaysNotifications.length == 0}" >
+                        <img />
+                       <div ng-if="phoneSessionEnabled && todaysNotifications.length == 0"> 
+                        <div class="Icon" ng-show="!showHeader"></div>
+                        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
+                        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
+                       </div>             
+                    </div>
+                    <div class="NotificationSection webphone last ng-class:{'firstsection': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                        
+                        <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+                            <div class="AvatarWarningSmall"></div>
+                        </div>
+                    
+                        <div class="LeftBarNotificationMessageSection" > 
+                            <div class="chatNotification webphone">
+                                <div><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
+                                <div ></div>
+
+                                <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
+                            </div>
+                            
+                        </div>
+                 </div>               
             </div>
 		 	<div class="overlayNotificationsSection" ng-if="hasNewNotifications"> 	
 			<!--  <div class="Conference-HeaderTitle ng-binding" ng-if="hasNewNotifications">NEW ITEMS</div>
