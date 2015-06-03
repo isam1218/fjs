@@ -1,5 +1,5 @@
-<div class="LeftBarNotificationSection notificationsSection" expand-contract-notifications>
-	<div class="TitleBar ng-class:{'noNotifications': todaysNotifications.length == 0}" ng-show="!hasMessages">
+<div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}" expand-contract-notifications>
+	<div class="TitleBar" ng-show="!hasMessages">
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
@@ -90,7 +90,7 @@
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
 					</div>
-					<div class="NotificationSection  alert ng-class:{'firstsection': todaysNotifications.length == 0, 'last' : todaysNotifications.length == 0}};" > <!-- , 'halfHeight': !showHeader -->
+					<div class="NotificationSection  alert last ng-class:{'firstsection': todaysNotifications.length == 0, 'last' : todaysNotifications.length == 0}};" > <!-- , 'halfHeight': !showHeader -->
 						
 						<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 							<div class="AvatarWarningSmall"></div>
