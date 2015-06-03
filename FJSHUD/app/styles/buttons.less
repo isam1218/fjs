@@ -49,7 +49,7 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   span{
     vertical-align: middle;   
     position: relative;
-    font-size: .8rem;
+    font-size: 11px;
   }
   
   &:hover {
@@ -219,7 +219,7 @@ input[disabled], select[disabled],
 }
 .CurrentCallBtn
 {
-  margin: 10px 10px 0px 0px;   
+  margin: 10px 5px 10px 0px;   
   height: 30px;
   padding: 4px 3px 3px 3px;
   float: left;
@@ -228,12 +228,16 @@ input[disabled], select[disabled],
     cursor: default;
     pointer-events: none;
     
-  }   
-  
-  .XIcon24-Record-Off,
+  }     
   .XIcon24-Record-On{
-    top: 12px;
+    float: right;   
+    right: 12px;
+    top: 2px;
   } 
+  .XIcon24-Record-Off{
+    right: 12px;
+    top: 1px;
+  }
 }
 
 div.CurrentCallBtn{  
@@ -242,6 +246,8 @@ div.CurrentCallBtn{
         padding:5px 10px;
     }
     &.record{
+      top: 10px;
+      left: 0px;
         span{
          margin-top: -3px;
         }
@@ -300,32 +306,35 @@ input.CurrentCallBtn{
   box-shadow: 0px 0px 1px #DDD inset;
 }
 
-.XIcon24-Record-Off{
-  position: absolute;
-  right: 12px;
-  top: 2px;  
-  margin-left: 5px;
-  width: 16px;
-  height: 24px;
-  background:url(../img/XIconSet-24x24.png) no-repeat -192px 0px;
+.XButtonRecordOn{
+  border:1px solid #FF0000;
+  
+  span{
+     border-color: #F73F3F;
+  }
+}
+
+.XIcon24-Record-Off{  
+  right: 0px;
+  top: -10px;
+  background:url(../img/XIconSet-24x24.png) no-repeat -194px 0px;
     //background:url(img/XIconSet-24x24.png?v=1418381374907) no-repeat -96px 24px;
 
 }
-
-.XButtonRecordOn{
-  border:1px solid #FF0000;
+.XIcon24-Record-On{
+  left: 40px;
+  top: 2px;
+  background:url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
 }
 
+.XIcon24-Record-Off,
 .XIcon24-Record-On{
   position: absolute;
-  right: 12px;
-  top: 2px;
-  margin-left: 5px;
+  margin-left: 5px;  
   width: 16px;
-  height: 24px;
-  background:url(../img/XIconSet-24x24.png) no-repeat -72px -26px;;
+  height: 15px;
+  
 }
-
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
   width: 24px;

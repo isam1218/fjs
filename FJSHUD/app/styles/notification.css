@@ -1,8 +1,7 @@
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
-  flex: 1;
-  -webkit-box-flex: 1;
-  padding-left: 10px;
+  padding-left: 5px;
+  width: 86%;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
   height: 2.5em;
@@ -37,16 +36,26 @@
 }
 .LeftBarNotificationMessageSection .NotificationMessage {
   width: 100%;
-  /*white-space: pre;
-		word-wrap:break-word;*/
-  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
   overflow: hidden;
-  max-height: 4.2em;
-  padding-bottom: 20px;
+  color: #000;
+  font-size: 13px;
+  color: #222;
+  white-space: normal;
+  line-height: 15px;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
+}
+.CallStatusContainerInbound,
+.CallStatusContainerOutbound {
+  background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
+  background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+  background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
+  min-height: 50px;
+  overflow: hidden;
+  width: 100%;
+  padding-right: 5px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
@@ -54,10 +63,24 @@
 .CallStatusContainerOutbound .CallStatusText {
   float: left;
   margin: 5px 0px 5px 5px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.CallStatusContainerInbound .CallStatusIconContainer .CallStatusIcon,
+.CallStatusContainerOutbound .CallStatusIconContainer .CallStatusIcon {
+  cursor: pointer;
+  pointer-events: auto;
+}
+.CallStatusContainerInbound .MyCallBlock_Duration,
+.CallStatusContainerOutbound .MyCallBlock_Duration {
+  position: relative;
+  text-shadow: 0px 1px 0px #FFF;
+  clear: both;
+  top: 0;
 }
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
   display: inline-block;
@@ -66,18 +89,60 @@
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus {
+  font-size: 10px;
+  font-weight: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.CallStatusContainerInbound .CallStatusText .memberName,
+.CallStatusContainerOutbound .CallStatusText .memberName {
   font-size: 12px;
+  line-height: 15px;
+  font-weight: bold;
+  text-shadow: 0px 1px 0px #EEE;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec,
+.CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec {
+  position: absolute;
+  background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
+  width: 36px;
+  height: 19px;
+  display: none;
+  right: 38%;
+  margin-top: -15px;
+}
+.CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec.true,
+.CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec.true {
+  display: block;
 }
 .CallStatusContainerInbound .controlButtons,
 .CallStatusContainerOutbound .controlButtons {
-  clear: both;
   float: right;
   display: inline-block;
   margin-top: 5px;
+  padding-right: 3px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {
-  font-size: 12px;
+  font-size: 13px;
+  padding: 5px;
+  font-size: 11px;
+  pointer-events: auto;
+}
+.CallStatusContainerInbound .controlButtons .XButton.record,
+.CallStatusContainerOutbound .controlButtons .XButton.record,
+.CallStatusContainerInbound .controlButtons .XButton.SelectBox[type=move],
+.CallStatusContainerOutbound .controlButtons .XButton.SelectBox[type=move] {
+  top: 10px;
+}
+.CallStatusContainerInbound .controlButtons .XButton.disableButton,
+.CallStatusContainerOutbound .controlButtons .XButton.disableButton {
+  pointer-events: none;
+  opacity: 0.5;
 }
 .NotificationSectionHeader {
   display: inline-block;
@@ -94,9 +159,17 @@
   overflow-x: hidden;
   background-image: url("../img/XTile-Widget.png");
   background: transparent;
+  width: 100%;
+}
+.NotificationMessages.LeftBarNotifications.noMessages {
+  position: relative;
+  top: -5px;
 }
 .LeftBarNotifications {
   transition: 1s;
+}
+.TitleBar.noNotifications {
+  display: none;
 }
 .LeftBarNotificationSection {
   background-color: #999;
@@ -105,6 +178,23 @@
 }
 .LeftBarNotificationSection:hover {
   background: transparent;
+  position: absolute;
+  bottom: 0;
+  width: 298px;
+  /*.alerts{
+        cursor:hand;
+        cursor:pointer;
+        position: absolute;        
+        bottom: 0;
+        max-width: 298px;
+        width: 100%;;
+        margin-bottom: 0px;
+        clear: both;
+        z-index: 2000;
+       }*/
+}
+.LeftBarNotificationSection:hover .LeftBarNotifications {
+  overflow-y: auto;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;
@@ -116,16 +206,40 @@
   font-style: italic;
   font-color: #ccc;
   border-bottom: 1px solid #888;
+  width: 98%;
 }
 .NotificationSection {
   margin-top: 5px;
   -webkit-box-orient: horizontal;
   display: -webkit-box;
   padding-left: 5px;
+  overflow: hidden;
   width: 100%;
+  height: 15px;
+}
+.NotificationSection.last {
+  height: auto;
 }
 .NotificationSection.firstsection {
   margin-top: 10px;
+}
+.NotificationSection.alertSection {
+  height: 2.5em;
+}
+.NotificationSection.halfHeight {
+  overflow: hidden;
+  height: 1em;
+}
+.NotificationSection.halfHeight .NotificationAvatar {
+  width: 30px;
+  height: 30px;
+}
+.NotificationSection.halfHeight .NotificationAvatar img {
+  width: 28px;
+  height: 28px;
+}
+.NotificationSection.open {
+  height: auto;
 }
 .NotificationHeader {
   float: right;
@@ -133,7 +247,6 @@
 }
 .NotificationHeader .firstHeaderTitle {
   position: relative;
-  /* bottom: -1.3em;*/
   bottom: -1.2em;
   right: -1px;
 }
@@ -144,8 +257,10 @@
 }
 .NotificationDivider.firstHeaderDivider {
   background-color: #999;
-  /*background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));*/
   height: 2.3em;
+}
+.NotificationDivider.firstHeaderDivider.noMessagess {
+  margin-top: -1px;
 }
 .NotificationDivider.firstHeaderDivider img {
   display: none;
@@ -153,7 +268,7 @@
 .LeftBarNotificationAvatarSection {
   position: relative;
   width: 40px;
-  height: 100%;
+  height: 40px;
   border-right: solid 1px #eee;
   float: left;
 }
@@ -177,10 +292,16 @@
 }
 .NotificationAvatar {
   width: 40px;
+  height: 40px;
   margin: 0 auto;
   border: 1px solid #3c9c00;
   border-radius: 2px;
   -webkit-border-radius: 2px;
+}
+.NotificationAvatar img {
+  width: 28px;
+  height: 28px;
+  margin-top: 3px;
 }
 .NotificationOverlay {
   background-color: #fafafa;
@@ -203,25 +324,68 @@
   margin-bottom: 10px;
 }
 .NotificationZoomBtn span.XButton {
-  /*width: 30%;*/
   width: auto;
   font-size: 0.8rem;
-  /*&.XButtonGreen{width: 45%;}*/
 }
 .Messages {
   position: relative;
-  /*min-height: 50px;*/
   font-style: normal;
   font-size: 1em;
   background-image: url("../img/XTile-Widget.png");
   padding-bottom: 20px;
+  width: 100%;
+}
+.Messages.plugins,
+.Messages.webphone {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 .Messages:not(:first-child) {
   margin-top: -18px;
+}
+.Messages.alerts .alert {
+  text-decoration: none;
+  color: inherit;
+  pointer-events: none;
+}
+.Messages.alerts .alert .NotificationSection,
+.Messages.alerts .alert .NotificationHeader,
+.Messages.alerts .alert .NotificationDivider {
+  pointer-events: visible;
+}
+.Messages.alerts .NotificationSection > a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.Messages.alerts .LeftBarNotificationMessageSection {
+  /*left: 40px;*/
+  position: relative;
+  float: left;
+  display: block;
+}
+.Messages.alerts .LeftBarNotificationMessageSection a {
+  text-decoration: none;
+  color: #222;
+}
+.Messages.alerts .LeftBarNotificationMessageSection a .alertMsg {
+  font-weight: bold;
+  font-size: .7em;
+  height: 2.5em;
+  padding-left: 5px;
+}
+.Messages.alerts .LeftBarNotificationMessageSection a .alertMsg > div:not(:NotificationMessage) {
+  height: 10px;
 }
 a.Messages {
   text-decoration: none;
 }
 .chatNotification {
   cursor: pointer;
+}
+.chatNotification.plugins > div,
+.chatNotification.webphone > div {
+  font-weight: bold;
+  font-size: .7em;
 }

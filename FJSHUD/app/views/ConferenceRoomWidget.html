@@ -28,11 +28,11 @@
 	
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-            <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'my' ? 'fj-selected-item': ''" ng-click="tab = 'my'">
+            <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'my' ? 'fj-selected-item': ''" ng-click="saveCTab(1); tab = 'my'">
                 <div class="inner">{{::verbage.my_rooms}}</div>
                 <div class="arrow"></div>
             </a>
-            <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'all' ? 'fj-selected-item': ''" ng-click="tab = 'all'">
+            <a href="" class="WidgetTabBarButton Ready" ng-class="tab == 'all' ? 'fj-selected-item': ''" ng-click="saveCTab(2); tab = 'all'">
                 <div class="inner">{{::verbage.all_rooms}}</div>
                 <div class="arrow"></div>
             </a>
@@ -40,13 +40,12 @@
 		
         <div class="WidgetTabContent">
             <div class="ToolBar">
-                <select class="SelectBox XButton" ng-model="selectedConference" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortedBy(selectedConference)">
-                </select>
+                <select class="SelectBox XButton" ng-model="selectedConf" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortConf(selectedConf)"></select>
 
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-keypress="clearSearch(autoClearTime)"/>
                     </div>
                     <div class="SearchInputBoxStateButton">
                         <div class="SearchInputBoxStateButtonIcon"></div>
@@ -62,7 +61,7 @@
 						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: sortBy: (sortBy == 'members.length' ? true : false) track by conference.xpid">
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: selectedConf.type: selectedConf.desc track by conference.xpid" droppable="Contact,Call">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
@@ -83,7 +82,7 @@
 						
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
-                                <avatar profile="member.fullProfile" type="4"></avatar>
+                                <avatar profile="member" type="4" context="conference:conference"></avatar>
                                 <div class="first-name">{{member.displayName}}</div>
                             </div>
                         </div>

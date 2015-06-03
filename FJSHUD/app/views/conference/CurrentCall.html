@@ -8,7 +8,7 @@
 
 <div class="ToolBar" style="height:6em;"> 
     <div class="ConferenceMembers"> 
-        <div class="Conference-HeaderTitle">{{::verbage.conference_member}}}</div>
+        <div class="Conference-HeaderTitle">{{::verbage.conference_member}}</div>
         
 
         <div class="Add SearchInputBox" style="top:20px">
@@ -25,14 +25,14 @@
 <div class="ListView fj-scrollable"> 
 	<div class="ListRow" ng-repeat="member in conference.members" > 
 
-		<avatar profile="member.fullProfile" type="4"></avatar>
+		<avatar profile="member" type="4" context="conference:conference"></avatar>
 
 		<div class="ListRowContent" dockable="member.fullProfile"> 
 			<div class="ListRowTitle">
 				<div class="name">
 					<span> {{ ::member.displayName }} </span>
 					<div class="footnote">
-						<div class="XIconSetMic QueueStatus IconDisplay"></div>
+						<div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>						
 						<div class="ListRowStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
 						<div class="ListRowStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
 					</div>

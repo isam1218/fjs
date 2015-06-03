@@ -1,10 +1,51 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', function ($scope, $rootScope, contactService, queueService, httpService) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', 'SettingsService', 'PhoneService', '$timeout', function ($scope, $rootScope, contactService, queueService, httpService, settingsService, phoneService, $timeout) {
   var addedPid;
   $scope.que = {};
   $scope.que.query = '';
   $scope.query = "";
   $scope.selectedSort = "displayName";
   $scope.agents = [];
+
+  httpService.getFeed('settings');
+
+  $scope.$on('settings_updated', function(event, data){
+      if (data['hudmw_searchautoclear'] == ''){
+          autoClearOn = false;
+          if (autoClearOn && $scope.que.query != ''){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                  $scope.clearSearch($scope.autoClearTime);          
+              } else if (autoClearOn){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              } else if (!autoClearOn){
+                  $scope.autoClearTime = undefined;
+              }
+      }
+      else if (data['hudmw_searchautoclear'] == 'true'){
+          autoClearOn = true;
+          if (autoClearOn && $scope.que.query != ''){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              $scope.clearSearch($scope.autoClearTime);          
+          } else if (autoClearOn){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+          } else if (!autoClearOn){
+              $scope.autoClearTime = undefined;
+          }
+      }        
+  });
+
+  var currentTimer = 0;
+
+  $scope.clearSearch = function(autoClearTime){
+      if (autoClearTime){
+          var timeParsed = parseInt(autoClearTime + '000');
+          $timeout.cancel(currentTimer);
+          currentTimer = $timeout(function(){
+              $scope.que.query = '';
+          }, timeParsed);         
+      } else if (!autoClearTime){
+          return;
+      }
+  };
 
   $scope.$on('pidAdded', function(event, data){
     addedPid = data.info;
@@ -54,6 +95,24 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
         return true;
     };
   };
+
+	$scope.callExtension = function($event, extension) {
+		$event.stopPropagation();
+		$event.preventDefault();
+		
+		phoneService.makeCall(extension);
+	};
+	
+	$scope.showCallStatus = function($event, contact) {
+		$event.stopPropagation();
+        $event.preventDefault();
+		
+		// permission?
+		if (contact.call.type == 0)
+			return;
+	
+		$scope.showOverlay(true, 'CallStatusOverlay', contact);
+	};
 
   $scope.$on("$destroy", function () {
 

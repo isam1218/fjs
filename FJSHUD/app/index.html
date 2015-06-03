@@ -48,18 +48,18 @@
     </div>
 	
 	<div id="App">
-		<div class="TopBar" ng-include="'views/TopNavigationBar.html'" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
+		<div class="TopBar" include-once="views/TopNavigationBar.html" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
 
 		<div class="PanelWrapper" data-ng-click="onBodyClick()">
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
 				<div class="LeftBarTop">
-					<div class="ContactSearch">
-						<input ng-show="tab != 'favorites'" type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" />
-						<input ng-show="tab != 'favorites'" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+					<div class="ContactSearch">					
+						<input ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'recent' || tab == 'favorites'" type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"></input><span ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'recent' || tab == 'favorites'"></span>
+						<input ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'recent' || tab == 'favorites'" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 
-						<input ng-show="tab == 'favorites'" type="search" class="Search" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+						<input ng-show="tab == 'favorites'" type="search" class="Search add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget"></input><span class="favorites" ng-show="tab == 'favorites'"></span>
 					</div>
 
 					<div class="WidgetTabBar">
@@ -88,41 +88,40 @@
 
 				<div class="Contacts"
 					ng-hide="tab == 'recent' || tab == 'groups'"
-					ng-include="'views/ContactsWidget.html'"
+					include-once="views/ContactsWidget.html"
 					ng-controller="ContactsWidget">
 				</div>
 				<div class="Groups"
 					ng-show="tab == 'groups'"
-					ng-include="'views/GroupsWidget.html'"
+					include-once="views/GroupsWidget.html"
 					ng-controller="GroupsController">
 				</div>
 				<div class="Recent"
 					ng-show="tab == 'recent'"
-					ng-include="'views/RecentWidget.html'"
+					include-once="views/RecentWidget.html"
 					ng-controller="RecentController">
 				</div>
 
-				<div class="Notifications" ng-include="'views/Notifications.html'" ng-controller="NotificationController"></div><!--  ng-mouseover="setTopPosition($event, true)" ng-mouseleave="setTopPosition($event, false)" -->
-
+				<div class="Notifications" include-once="views/Notifications.html" ng-controller="NotificationController"></div>
 				<div class="Phone">
 					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" 
 						ng-keypress="makePhoneCall('dialpad',$event)"
 					/>
-					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number)"/>
+					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number); storeRecentContact(number)"/>
 				</div>
 			</div>
 
 			<div ng-view class="WidgetPanel"></div>
 
-			<div id="DockPanel" class="DockPanel" ng-include="'views/DockArea.html'" ng-controller="DockController"></div>
+			<div id="DockPanel" class="DockPanel" include-once="views/DockArea.html" ng-controller="DockController"></div>
 		</div>
 	</div>
 
-	<div  ng-include="currentPopup.url"></div>
+	<div ng-include="currentPopup.url"></div>
 	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
 	<div id="ContextMenu"
-		ng-include="'views/ContextMenu.html'"
+		include-once="views/ContextMenu.html"
 		ng-controller="ContextMenuController">
 	</div>
 
@@ -136,20 +135,18 @@
     <!--bower components-->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../bower_components/jquery-hoverIntent/jquery.hoverIntent.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
     <script src="../bower_components/react/react.js"></script>
     <script src="../bower_components/ngReact/ngReact.js"></script>
-    <script src="../bower_components/angular-resource/angular-resource.js"></script>
-    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/angular-ui-sortable/sortable.min.js"></script>
 
 	<script src="../bower_components/moment/moment.js"></script>
 	<script src="../bower_components/moment/locale/ja.js"></script>
-
+  
 
 	<!--config-->
     <script src="properties.js"></script>
@@ -160,6 +157,7 @@
     <script src="scripts/filters/highlightTextFilter.js"></script>
     <script src="scripts/filters/durationFilter.js"></script>
      <script src="scripts/filters/dateFilter.js"></script>
+     <script src="scripts/filters/linkFilter.js"></script>
 	<script src="scripts/filters/sortVoiceMailFilter.js"></script>
 	
 	<!--directives-->
@@ -172,8 +170,10 @@
     <script src="scripts/directives/dockDraggerDirective.js"></script>
     <script src="scripts/directives/dockResizerDirective.js"></script>
     <script src="scripts/directives/searchContactsDirective.js"></script>
-    <script src="scripts/directives/avatarDirective.js"></script>
+    <script src="scripts/directives/avatarDirective.js"></script>    
     <script src="scripts/directives/timeElapsedDirective.js"></script>    
+    <script src="scripts/directives/includeDirective.js"></script>
+    <script src="scripts/directives/expandContractNotificationsDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>
@@ -193,6 +193,7 @@
     <script src="scripts/controllers/group/GroupSingleController.js"></script>
     <script src="scripts/controllers/group/GroupSingleMembersController.js"></script>
     <script src="scripts/controllers/group/GroupSinglePageController.js"></script>
+    <script src="scripts/controllers/group/GroupInfoController.js"></script>
 
     <script src="scripts/controllers/conference/ConferencesWidgetController.js"></script>
     <script src="scripts/controllers/conference/ConferenceSingleController.js"></script>
@@ -231,5 +232,6 @@
     <script src="scripts/services/queueService.js"></script>
     <script src="scripts/services/conferenceService.js"></script>
     <script src="scripts/services/phoneService.js"></script>
+    <script src="scripts/services/ntpService.js"></script>
 </body>
 </html>

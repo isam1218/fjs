@@ -27,14 +27,14 @@
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{item.queue_status}}" ></div>
                     <br/>
-                    <div class="ListRowStatusText" >{{item.hud_status || 'offline'}}</div>
+                    <div class="ListRowStatusText" >{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}</div><!-- {{item.hud_status || 'offline'}} -->
                 </div> 
                 <div class="CallStatus">
                     <avatar 
                         ng-if="item.call.startedAt" 
                         ng-click="showCallStatus($event, item)" 
                         profile="item.call.fullProfile" 
-                        widget="callstatus"
+                        context="callstatus"
                         type="{{item.call.type}}">
                     </avatar>
                 </div>              
@@ -118,7 +118,7 @@
                                     ng-if="contact.call.startedAt" 
                                     ng-click="showCallStatus($event, contact)" 
                                     profile="contact.call.fullProfile" 
-                                    widget="callstatus"
+                                    context="callstatus"
                                     type="{{contact.call.type}}">
                                 </avatar>
                             </div>              

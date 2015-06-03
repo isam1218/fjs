@@ -10,7 +10,7 @@
     <div class="WidgetBody">
         <div class="WidgetTabBar">
             <span ng-repeat="tab in tabs | filter: tabFilter()">
-                <a href="#/group/{{ ::groupID + '/' + tab.lower}}"   class="WidgetTabBarButton Ready" ng-class="selected == tab.lower ? 'fj-selected-item' : ''">
+                <a href="#/group/{{ ::groupID + '/' + tab.lower}}" ng-click="saveGTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
                     <div class="inner">{{ ::tab.upper }}</div>
                     <div class="arrow"></div>
                 </a>
@@ -18,14 +18,16 @@
         </div>
 		
 		<!-- ng-views -->
-        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'" ng-controller="ChatController"></div>
+        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" include-once="views/ChatView.html" ng-controller="ChatController"></div>
         
-        <div ng-if="selected == 'members'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupMembers.html'" ng-controller="GroupSingleMembersController"></div>
+        <div ng-if="selected == 'members'" class="fj-content WidgetTabContent" include-once="views/group/GroupMembers.html" ng-controller="GroupSingleMembersController"></div>
         
-        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent" ng-include="'views/Voicemails.html'" ng-controller="VoicemailsController"></div>
+        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent" include-once="views/Voicemails.html" ng-controller="VoicemailsController"></div>
         
-        <div ng-if="selected == 'page'" class="fj-content WidgetTabContent" ng-include="'views/group/GroupPage.html'" ng-controller="GroupSinglePageController"></div>
+        <div ng-if="selected == 'page'" class="fj-content WidgetTabContent" include-once="views/group/GroupPage.html" ng-controller="GroupSinglePageController"></div>
         
-        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
+
+        <div ng-if="selected == 'info'" class="fj-content WidgetTabContent" include-once="views/GroupInfo.html" ng-controller="GroupInfoController"></div>
 	</div>
 </div>

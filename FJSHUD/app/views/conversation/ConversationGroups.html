@@ -1,7 +1,7 @@
     <div class="ToolBar">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}"></div>
+                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -10,32 +10,37 @@
     </div>
   
     <div class="ListView">
-    <div class="HeaderTitle" ng-show="contactGroups.length > 0 ">{{::verbage.department}}</div>
-    <div class="footnote"  ng-show="contactGroups.length > 0 "> {{::verbage.member_of_department}} </div>
-    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in contactGroups | filter: {name: query}" class="GroupRow ListRow ListRow-Contact" ng-click="storeRecentGroup(group.xpid)">
-        <avatar profile="group"></avatar>
-        <div class="ListRowContent">
-            <div class="ListRowTitle">
-                <div class="name">
-                    <b>{{ ::group.name }}</b>
-                    <span class="details">{{ ::group.members.length }}</span>
-                </div>
-            </div>
-        </div>
+	<div ng-show="isTheirGroup()">
+		<div class="HeaderTitle">{{::verbage.department}}</div>
+		<div class="footnote"> {{::verbage.member_of_department}} </div>
 		
-        <div class="ListRowStatus">#{{ ::group.extension }}</div>
-        <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(group.extension)"></input>
-    </a>
+		<a href="#/group/{{::userGroup.xpid}}" class="GroupRow ListRow ListRow-Contact" ng-click="storeRecentGroup(userGroup.xpid)">
+			<avatar profile="userGroup"></avatar>
+			<div class="ListRowContent">
+				<div class="ListRowTitle">
+					<div class="name">
+						<b>{{ ::userGroup.name }}</b>
+						<span class="details">{{ ::userGroup.members.length }} members</span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="ListRowStatus">#{{ ::userGroup.extension }}</div>
+			<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(userGroup.extension)"></input>
+		</a>
+	</div>
     
-    <div class="HeaderTitle" ng-show=" sharedGroups.length > 0 ">{{::verbage.our_teams}}</div>
-    <div class="footnote" ng-show=" sharedGroups.length > 0 "> {{::verbage.both_in_these_teams}} </div>
-    <a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in sharedGroups | filter: {name: query} | orderBy:sortField:sortReverse track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
+	<div ng-show="filteredResults.length > 0">
+		<div class="HeaderTitle">{{::verbage.our_teams}}</div>
+		<div class="footnote"> {{::verbage.both_in_these_teams}} </div>
+	</div>
+    <a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in filteredResults = (groups | filter: customFilter()) | orderBy: 'name' track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
         <avatar profile="group"></avatar>
         <div class="ListRowContent">
             <div class="ListRowTitle">
                 <div class="name">
                     <b>{{ ::group.name }}</b>
-                    <span class="details">{{ ::group.members.length }}</span>
+                    <span class="details">{{ ::group.members.length }} members</span>
                 </div>
             </div>
             <div class="ListRowStatus">#{{ ::group.extension }}</div>

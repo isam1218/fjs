@@ -1,6 +1,7 @@
-hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', function($scope, $rootScope, $routeParams, httpService, contactService, queueService) {
+hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'SettingsService', '$timeout', 'NtpService', function($scope, $rootScope, $routeParams, httpService, contactService, queueService, settingsService, $timeout, ntpService) {
 	$scope.queueId = $routeParams.queueId;
-	$scope.query = "";
+  $scope.que = {};
+  $scope.que.query = '';
 	
 	$scope.callsWaiting = 0;
 	$scope.callsActive = 0;
@@ -22,8 +23,9 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 	$scope.$watch('queue.calls', function() {
 		$scope.callsWaiting = 0;
 		$scope.callsActive = 0;
-		$scope.longestWait = new Date().getTime();
-		$scope.longestActive = new Date().getTime();
+
+    $scope.longestWait = ntpService.calibrateTime(new Date().getTime());
+    $scope.longestActive = ntpService.calibrateTime(new Date().getTime());
 		
 		for (var i = 0; i < $scope.queue.calls.length; i++) {
 			// active calls
@@ -44,4 +46,45 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 			}
 		}
 	}, true);
+
+  httpService.getFeed('settings');
+
+  $scope.$on('settings_updated', function(event, data){
+      if (data['hudmw_searchautoclear'] == ''){
+          autoClearOn = false;
+          if (autoClearOn && $scope.que.query != ''){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                  $scope.clearSearch($scope.autoClearTime);          
+              } else if (autoClearOn){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              } else if (!autoClearOn){
+                  $scope.autoClearTime = undefined;
+              }
+      }
+      else if (data['hudmw_searchautoclear'] == 'true'){
+          autoClearOn = true;
+          if (autoClearOn && $scope.que.query != ''){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              $scope.clearSearch($scope.autoClearTime);          
+          } else if (autoClearOn){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+          } else if (!autoClearOn){
+              $scope.autoClearTime = undefined;
+          }
+      }        
+  });
+
+  var currentTimer = 0;
+
+  $scope.clearSearch = function(autoClearTime){
+      if (autoClearTime){
+          var timeParsed = parseInt(autoClearTime + '000');
+          $timeout.cancel(currentTimer);
+          currentTimer = $timeout(function(){
+              $scope.que.query = '';
+          }, timeParsed);         
+      } else if (!autoClearTime){
+          return;
+      }
+  };
 }]);

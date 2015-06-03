@@ -1,5 +1,5 @@
 <div class="ToolBar">
-	<input type="search" class="SearchBox" ng-model="calllog.query" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" />
+	<input type="search" class="SearchBox" ng-model="calllog.query" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"/>
 </div>
 
 <div class="WidgetTabContent">

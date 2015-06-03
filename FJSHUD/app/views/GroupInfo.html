@@ -1,0 +1,9 @@
+    <div class="ToolBar">
+        <div ng-if="userIsOwner" class="XButton XButtonNormal" ng-click="showOverlay(true, 'GroupEditOverlay', groupInfoId); setEdit()"><span>Edit</span></div>
+    </div>
+  
+    <div class="ListView">
+    <div class="HeaderTitle">Description</div>
+    <div class="footnote">You can search by this text.</div>
+    <div class="TeamDescription">{{group.description}}</div>
+    

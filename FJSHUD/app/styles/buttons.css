@@ -52,7 +52,7 @@ input[type="tel"] {
 .XButton span {
   vertical-align: middle;
   position: relative;
-  font-size: .8rem;
+  font-size: 11px;
 }
 .XButton:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
@@ -190,7 +190,7 @@ select[disabled] {
   padding: 6px 5px;
 }
 .CurrentCallBtn {
-  margin: 10px 10px 0px 0px;
+  margin: 10px 5px 10px 0px;
   height: 30px;
   padding: 4px 3px 3px 3px;
   float: left;
@@ -198,14 +198,25 @@ select[disabled] {
 .CurrentCallBtn.disableButton {
   cursor: default;
   pointer-events: none;
-  opacity: 0.5;
 }
-.CurrentCallBtn .XIcon24-Record-Off,
 .CurrentCallBtn .XIcon24-Record-On {
-  top: 12px;
+  float: right;
+  right: 12px;
+  top: 2px;
+}
+.CurrentCallBtn .XIcon24-Record-Off {
+  right: 12px;
+  top: 1px;
+}
+div.CurrentCallBtn {
+  opacity: 0.5;
 }
 div.CurrentCallBtn.dial {
   padding: 5px 10px;
+}
+div.CurrentCallBtn.record {
+  top: 10px;
+  left: 0px;
 }
 div.CurrentCallBtn.record span {
   margin-top: -3px;
@@ -250,26 +261,28 @@ input.CurrentCallBtn.disableButton {
   border: solid 1px #C7C7C7;
   box-shadow: 0px 0px 1px #DDD inset;
 }
-.XIcon24-Record-Off {
-  position: absolute;
-  right: 12px;
-  top: 2px;
-  margin-left: 5px;
-  width: 16px;
-  height: 24px;
-  background: url(../img/XIconSet-24x24.png) no-repeat -192px 0px;
-}
 .XButtonRecordOn {
   border: 1px solid #FF0000;
 }
+.XButtonRecordOn span {
+  border-color: #F73F3F;
+}
+.XIcon24-Record-Off {
+  right: 0px;
+  top: -10px;
+  background: url(../img/XIconSet-24x24.png) no-repeat -194px 0px;
+}
+.XIcon24-Record-On {
+  left: 40px;
+  top: 2px;
+  background: url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
+}
+.XIcon24-Record-Off,
 .XIcon24-Record-On {
   position: absolute;
-  right: 12px;
-  top: 2px;
   margin-left: 5px;
   width: 16px;
-  height: 24px;
-  background: url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
+  height: 15px;
 }
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;

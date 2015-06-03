@@ -1,10 +1,5 @@
 <div class="ToolBar Queues">
-	<input class="SearchBox" type="search"
-        ng-model="query"
-        x-webkit-speech=""
-        ng-attr-placeholder="{{::verbage.search}}" 
-		ng-model-options="{debounce: 100}"
-        />
+	<input class="SearchBox" type="search" ng-model="que.query" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"/>
 		
   <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>

@@ -62,8 +62,8 @@ p {
 .PanelWrapper {
   position: absolute;
   padding: 0 10px 10px 10px;
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
@@ -161,7 +161,7 @@ p {
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  width:30%;
+  width:40%;
 }
 
 .BoxFramePH{
@@ -218,6 +218,14 @@ p {
   cursor: pointer;
 }
 
+.TeamDescription {
+  padding: 20px;
+  background-color: #fff;
+  -webkit-border-radius: 3px;
+  border: solid 1px #ddd;
+  -webkit-box-shadow: 0px 0px 1px #eee;
+}
+
 @import "topBar";
 @import "leftBar";
 @import "dock";
@@ -241,8 +249,8 @@ p {
 
 
 .LeftBar .Recent {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -251,8 +259,8 @@ p {
 
 .LeftBar .Recent .ContactList {
   flex: 1 1 0;
-  -ms-flex: 1;
-  -webkit-flex: 1;
+  -ms-flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   overflow-y: auto;
   min-height: 60px;
   margin-top: 10px;
@@ -321,10 +329,9 @@ p {
      }
      
      .WidgetBody{
-       top: 150px;
+       top: 160px;
        position: absolute;
      }
-
      .Avatar.AvatarBig{width: 19% !important;}
      
      .MeInfoBlock {width: 79% !important;}
@@ -438,8 +445,8 @@ p {
         
          .XButton{            
             font-size: 0.625em !important;
-            height: 2.90em !important;   
-            width: 33.8%;         
+            height: 2.90em !important;      
+            width: 33.9% !important;       
           }
           
          .SearchInputBox{
@@ -528,6 +535,7 @@ p {
   /******* notifications **********/
   .LeftBar
   {
+    height: 99%;
    .Notifications
    {
         .TitleBar .XButton,
@@ -545,6 +553,9 @@ p {
     background-color: transparent;
   }
   
+  .Widget{
+    height: 97%;
+  } 
   .WidgetTabBar{ clear: both;}
   .Messages{             
             
@@ -567,21 +578,27 @@ p {
     top: -10px;
     width: 100%;
     position: relative;
-    margin-top: 0px;    
+    margin-top: 0px;  
+    height: 18px;  
     
+    &.last{
+      height: auto;
+    }
      &.firstsection{
         top: -4px;        
-     } 
-     
+     }     
+
      &.alertSection{
         height: 3em;
-    }           
+    }          
+
   }
   
   .LeftBarNotificationMessageSection{
     float: left;
     padding-left: 0px;
     width: 82%;
+    clear: none;
     
     .NotificationDisplayName {
         padding-left: 5px; 
@@ -604,12 +621,44 @@ p {
         max-height: 6em;
         height: auto;
     }
-  }   
+ 
   &.MyStatus{
         .ToolBar{
             select.XButton {
                 padding-left: 0.5em !important;
             }
         }
-    } 
+    }    
+  }
+  .Overlay {
+    &.notifications{ 
+      .LeftBarNotificationMessageSection{
+         width: 90%;
+      }
+    }
+  }
+  
+  .MyCallBlock_Rec {
+    right: 33% !important;;
+  }
+  .XIcon24-Record-Off{
+    margin: 10px;
+  }  
+  .CurrentCall{ 
+      .RightSide{
+        .XButton{
+            width: 75px !important;   
+            &.CurrentCallBtnLong{
+                        width: 155px !important;
+            }                             
+        }
+                
+       }
+   }
+   .DockPanel { 
+     height: 100% !important;
+     .InnerDock {
+        width: 100% !important;
+     }
+   }  
 }

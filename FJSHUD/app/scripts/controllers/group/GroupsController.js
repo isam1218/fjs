@@ -16,12 +16,11 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
   });
 
   // pull group updates from service, including groups from local storage
-  $scope.$on('groups_updated', function(event, data) {
+  groupService.getGroups().then(function(data) {
     $scope.groups = data.groups;
     $scope.mine = data.mine;
     $scope.favoriteID = data.favoriteID;
-
-	});
+  });
 	
   $scope.sort = function(field) {
       if($scope.sortField!=field) {
@@ -65,8 +64,16 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
   $scope.searchFilter = function(){
     var query = $scope.$parent.query;
     return function(group){
-      if (group.name.toLowerCase().indexOf(query) != -1 || group.extension.indexOf(query) != -1)
+      // console.log('group - ', group);
+      if ((group.name || group.extension) && (group.name.toLowerCase().indexOf(query) != -1 || group.extension.indexOf(query) != -1))
         return true;
+      if (group.members.length > 0){
+        for (var i = 0; i < group.members.length; i++){
+          var singleMember = group.members[i].fullProfile;
+          if (singleMember.fullName.toLowerCase().indexOf(query) != -1 || singleMember.primaryExtension.indexOf(query) != -1 || singleMember.phoneMobile.indexOf(query) != -1)
+            return true;
+        }
+      }
     };
   };
 	

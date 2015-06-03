@@ -1,21 +1,24 @@
 <div class="ToolBar" >
-	<input type="search" class="SearchBox recording" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="rec.query" ng-model-options="{debounce: 100}" />
+	<input type="search" class="SearchBox recording" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="rec.query" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"/>
 </div>
 
 <div class="ListView fj-scrollable"> 
 	<div>
 		<div class="vmsection ng-class:{'last': $last}" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid">
-			<avatar profile="recording" widget="'recordings'" type="{{recording.type}}"></avatar>
+			<avatar profile="recording" context="recordings" type="{{::recording.type}}"></avatar>
 			<div class="vminfo" ng-click="playRecording(recording)"> 
 				<div class="displayName">
 					<em>{{::verbage.to}}...</em>
 					<p class="vmdisplay">
-						{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.callerPhone }}
+						{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.calleePhone }}
+						
+						&lt;{{ ::recording.calleePhone }}&gt;
 					</p>
 					<div class="vmalternate">
 						<div class="vmtime">{{ ::recording.created | fondate: 'MMMM D, hh:mm a':fon_lang_code }}</div>
-						<input ng-if="!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callNumber($event, recording.calleePhone)"></input>
-						<input ng-if="recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.join}}" ng-click="joinConference($event, recording.conferenceId)"></input>
+						
+						<input ng-if="::!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callNumber($event, recording.calleePhone)"></input>
+						<input ng-if="::recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.join}}" ng-click="joinConference($event, recording.conferenceId)"></input>
 					</div>
 				</div> 
 				<div class="footnote">

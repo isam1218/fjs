@@ -43,7 +43,12 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 	
 	this.reset_app_menu = function(){
 		data = {};
-		$rootScope.$broadcast('reset_app',data);
+		$rootScope.$broadcast('reset_app_menu', data);
+	};
+
+	this.enable_box = function(){
+		// console.error('in setting service');
+		$rootScope.$broadcast('enable_box', {});
 	};
 	
 	this.formatWebString = function(url,call){
@@ -65,36 +70,57 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		url = url.replace('%%caller_number_raw%%',clean_number);
 		return url;
 	};
+	
+	var isEnabled = function(permission, bit) {
+		return ((permission & (1 << bit)) == 0);
+	};
 
 	/**
 		SYNCING
 	*/
 	
-	$rootScope.$on('me_synced', function(event, data) {
-		// grab license permissions
-		for (i = 0; i < data.length; i++) {
-			if (data[i].propertyKey == 'personal_permissions') {
-				// look at fj repository > MyPermissions.java for reference
-				permissions.showCallCenter = ((data[i].propertyValue & (1 << 10)) == 0);
-				permissions.showVideoCollab = ((data[i].propertyValue & (1 << 1)) == 0);
-				permissions.recordingEnabled = ((data[i].propertyValue & (1 << 14)) == 0);
-				permissions.deleteMyRecordingEnabled = ((data[i].propertyValue & (1 << 15)) == 0);
-				permissions.deleteOtherRecordingEnabled = ((data[i].propertyValue & (1 << 16)) == 0);
-				console.log('perms - ', permissions);
+	$rootScope.$on('permissions_updated', function(event, data) {
+			// look at fj repository > MyPermissions.java for reference
+		if (data.permissions) {
+				// console.error('!prop value - ', data[i].propertyValue);
+				
+				// licenses from MyPermissions.java
+				permissions.showCallCenter = isEnabled(data.permissions, 10);
+				// Call Center license determines whether or not a user can record
+				permissions.showVideoCollab = isEnabled(data.permissions, 1);
+
+				// group permissions from MyPermissions.java
+				permissions.enableAgentLogin = isEnabled(data.permissions, 7);
+				permissions.recordingEnabled = isEnabled(data.permissions, 14);
+				permissions.deleteMyRecordingEnabled = isEnabled(data.permissions, 15);
+				permissions.deleteOtherRecordingEnabled = isEnabled(data.permissions, 16);
+
+				// // QUEUE PERMISSIONS... from QueuePermissions.java
+				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
+				// permissions.isViewQueueDetailsEnabled = isEnabled(data[i].propertyValue, 1);
+				// // this is the same as showVideoCollab
+
+				// // Call Permission from CallPermissions.java
+				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				deferPermissions.resolve(permissions);
-				break;
-			}
+				
 		}
+		
 	});
 
-	$rootScope.$on('settings_synced', function(event, data) {	
-		settings = angular.copy({});
-		
+	$rootScope.$on('callpermissions_synced', function(event, data){
+		console.error('callperm synced - ', data);
+	});
+
+	$rootScope.$on('queuecallpermissions_synced', function(event, data){
+		console.error('q call perm synced - ', data);
+	});
+	
+	$rootScope.$on('settings_synced', function(event, data) {
 		// convert to object
 		for (key in data)
 			settings[data[key].key] = data[key].value;
 		
-		deferSettings = $q.defer();
 		deferSettings.resolve(settings);
 		
 		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));

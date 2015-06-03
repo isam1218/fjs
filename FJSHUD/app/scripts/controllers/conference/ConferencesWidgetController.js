@@ -1,22 +1,95 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
-	$scope.tab = 'my';
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $timeout) {
 	$scope.query = '';
-	$scope.totals = {occupied: 0, talking: 0, all: 0};
+	$scope.totals = {};
 	$scope.sortBy = 'location';
 	var addedPid;
 	var localPid;
+
+  var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
+      if (!$scope.globalXpid){
+          $scope.globalXpid = newVal;
+              $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+              getXpidInC();
+      } else {
+          getXpidInC();
+      }
+  });
+
+  $scope.$on('pidAdded', function(event, data){
+      $scope.globalXpid = data.info;
+      $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+  });
 	
+	$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+
+  $scope.saveCTab = function(tabType){
+  	if (tabType === 1){
+  		$scope.tab = 'my';
+  		localStorage['ConfWidget_tab_of_' + $scope.globalXpid] = JSON.stringify($scope.tab);
+  	} else if (tabType === 2){
+  		$scope.tab = 'all';
+  		localStorage['ConfWidget_tab_of_' + $scope.globalXpid] = JSON.stringify($scope.tab);
+  	}
+  };
+
+  httpService.getFeed('settings');
+
+  $scope.$on('settings_updated', function(event, data){
+      if (data['hudmw_searchautoclear'] == ''){
+          autoClearOn = false;
+          if (autoClearOn && $scope.query != ''){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                  $scope.clearSearch($scope.autoClearTime);          
+              } else if (autoClearOn){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              } else if (!autoClearOn){
+                  $scope.autoClearTime = undefined;
+              }
+      }
+      else if (data['hudmw_searchautoclear'] == 'true'){
+          autoClearOn = true;
+          if (autoClearOn && $scope.query != ''){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              $scope.clearSearch($scope.autoClearTime);          
+          } else if (autoClearOn){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+          } else if (!autoClearOn){
+              $scope.autoClearTime = undefined;
+          }
+      }        
+  });
+
+  var currentTimer = 0;
+
+  $scope.clearSearch = function(autoClearTime){
+      if (autoClearTime){
+          var timeParsed = parseInt(autoClearTime + '000');
+          $timeout.cancel(currentTimer);
+          currentTimer = $timeout(function(){
+              $scope.query = '';
+          }, timeParsed);         
+      } else if (!autoClearTime){
+          return;
+      }
+  };
+
 	conferenceService.getConferences().then(function(data) {
-		$scope.conferences = data;
+		$scope.conferences = data.conferences;
+		$scope.totals = data.totals;
 	});
 
 	$scope.sort_options = [
-		{display_name: $scope.verbage.sort_room_by_location}, 
-		{display_name: $scope.verbage.sort_by_room_number}, 
-		{display_name: $scope.verbage.sort_by_activity}
+		{display_name: $scope.verbage.sort_room_by_location, type: 'location', desc: false}, 
+		{display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
+		{display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
 	];
 	
-	$scope.selectedConference = localStorage.conf_option ? JSON.parse(localStorage.conf_option) : $scope.sort_options[1];
+  $scope.selectedConf = localStorage.selectedConfOption ? JSON.parse(localStorage.selectedConfOption) : $scope.sort_options[0];
+
+  $scope.sortConf = function(selection){
+	localStorage.selectedConfOption = JSON.stringify(selection);
+    $scope.selectedConf = selection;
+  };
 
 	$scope.$on('pidAdded', function(event, data){
 		addedPid = data.info;
@@ -25,12 +98,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		}
 		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
 	});
-
-	$scope.sortedBy = function(selectedConference){
-		localPid = JSON.parse(localStorage.me);
-		$scope.selectedConference = selectedConference;
-		localStorage.conf_option = JSON.stringify($scope.selectedConference);
-	};
 
 	$scope.storeRecentConference = function(confXpid){
 		localPid = JSON.parse(localStorage.me);
@@ -44,35 +111,15 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	};
 
 	$scope.enableChat = true;
-
-	// get data from sync
-	$scope.$on('conferences_updated', function(event, data) {
-		$scope.conferences = data;
-		
-		// update totals
-		$scope.totals = {occupied: 0, talking: 0, all: 0};
-		
-		for (i = 0; i < $scope.conferences.length; i++) {
-			if ($scope.conferences[i].members && $scope.conferences[i].members.length > 0) {
-				$scope.totals.occupied++;
-				$scope.totals.all += $scope.conferences[i].members.length;
-				
-				for (m = 0; m < $scope.conferences[i].members.length; m++) {
-					if (!$scope.conferences[i].members[m].muted)
-						$scope.totals.talking++;
-				}
-			}
-		}
-	});
 	
 	// filter list down
 	$scope.customFilter = function() {
 		return function(conference) {
 			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)){
-				if (!conference.members){
+				if (conference.members.length == 0){
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
 						return true;
-				} else if (conference.members.length){
+				} else {
 					for (var j = 0; j < conference.members.length; j++){
 						var individualMember = conference.members[j];
 						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1 || individualMember.fullProfile.primaryExtension.indexOf($scope.query) != -1 || conference.extensionNumber.indexOf($scope.query) != -1)
@@ -83,19 +130,11 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		};
 	};
 	
-	$scope.getSingleAvatarUrl = function(xpid){
-    	if(xpid){
-    		return httpService.get_avatar(xpid,14,14);
-    	}else{
-    		return 'img/Generic-Avatar-14.png';
-    	}
-    };
-	
 	$scope.findRoom = function() {	
 		var found = null;
 		
 		// find first empty room on same server
-		for (i = 0; i < $scope.conferences.length; i++) {
+		for (var i = 0; i < $scope.conferences.length; i++) {
 			if ($scope.conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0)) {
 				found = $scope.conferences[i].xpid;
 				break;
@@ -104,7 +143,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		// try again for linked server
 		if (!found) {
-			for (i = 0; i < $scope.conferences.length; i++) {
+			for (var i = 0; i < $scope.conferences.length; i++) {
 				// find first room on same server
 				if (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0) {
 					found = $scope.conferences[i].xpid;
@@ -146,29 +185,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		if(data){
 			$scope.calls = data;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
-			
-			/*if(data.length > 0){
-				element = document.getElementById("CallAlert");
-         		element.style.display="block";
-		  		content = element.innerHTML;
-       	  		phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-          		element.style.display="none";
-			}*/
-
 		}
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 	});
-
-    $scope.getAvatarUrl = function(conference, index) {
-        if (conference.members) {
-            if (conference.members[index] !== undefined) {
-                var xpid = conference.members[index].contactId;
-                return httpService.get_avatar(xpid,28,28);
-            }
-            else
-                return 'img/Generic-Avatar-28.png';
-        }
-        else
-            return 'img/Generic-Avatar-28.png';
-    };
 }]);

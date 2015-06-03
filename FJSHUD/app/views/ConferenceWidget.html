@@ -1,4 +1,4 @@
-<div class="fj-widget-area Widget Conversation">
+<div class="fj-widget-area Widget Conversation" droppable="Contact,Call">
     <div class="WidgetHeader">
         <avatar profile="conference" style="margin-bottom:5px"></avatar>
         <div> 
@@ -9,8 +9,8 @@
     </div>
     <div class="WidgetBody">
 		<div class="WidgetTabBar">
-            <span ng-repeat="tab in tabs">
-                <a href="#/conference/{{ ::conferenceId + '/' +  tab.lower}}" class="WidgetTabBarButton Ready" ng-class="selected == tab.lower ? 'fj-selected-item': ''">
+            <span ng-repeat="tab in tabs | filter: tabFilter()">
+                <a href="#/conference/{{ ::conferenceId + '/' +  tab.lower}}" ng-click="saveConfTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
                     <div class="inner">{{::tab.upper}}</div>
                     <div class="arrow"></div>
                 </a>
@@ -18,12 +18,12 @@
         </div>
 
         <!-- ng-views -->
-        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" ng-include="'views/ChatView.html'"
+        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" include-once="views/ChatView.html"
         ng-controller="ChatController"
         ></div>
-        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" ng-include="'views/conference/CurrentCall.html'"
+        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" include-once="views/conference/CurrentCall.html"
         ></div>
-        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
         
     </div>
 

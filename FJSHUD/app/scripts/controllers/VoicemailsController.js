@@ -1,12 +1,56 @@
-hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'UtilService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, utilService) {
-    var Months = ['January','February','March','April','May','June','July','August','October','September','November','December'];
+hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, settingsService, $timeout) {
     var addedPid;
     var localPid;
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
-    $scope.meModel = {};
+	
+	// user's profile for their own voicemails
+	contactService.getContacts().then(function() {
+		$scope.myProfile = contactService.getContact($rootScope.myPid);
+	});
+
+    httpService.getFeed('settings');
+
+    $scope.$on('settings_updated', function(event, data){
+        if (data['hudmw_searchautoclear'] == ''){
+            autoClearOn = false;
+            if (autoClearOn && $scope.tester.query != ''){
+                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                    $scope.clearSearch($scope.autoClearTime);          
+                } else if (autoClearOn){
+                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                } else if (!autoClearOn){
+                    $scope.autoClearTime = undefined;
+                }
+        }
+        else if (data['hudmw_searchautoclear'] == 'true'){
+            autoClearOn = true;
+            if (autoClearOn && $scope.tester.query != ''){
+                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                $scope.clearSearch($scope.autoClearTime);          
+            } else if (autoClearOn){
+                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+            } else if (!autoClearOn){
+                $scope.autoClearTime = undefined;
+            }
+        }        
+    });
+
+    var currentTimer = 0;
+
+    $scope.clearSearch = function(autoClearTime){
+        if (autoClearTime){
+            var timeParsed = parseInt(autoClearTime + '000');
+            $timeout.cancel(currentTimer);
+            currentTimer = $timeout(function(){
+                $scope.tester.query = '';
+            }, timeParsed);         
+        } else if (!autoClearTime){
+            return;
+        }
+    };
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
@@ -40,9 +84,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	httpService.getFeed('me');
 	httpService.getFeed('voicemailbox');
 	
-	$scope.$on('voicemailbox_synced', function(event, data) {
-		$scope.voicemails = [];
-		
+	$scope.$on('voicemailbox_synced', function(event, data) {		
 		// single group widget
 		if ($routeParams.groupId) {
 			var group = groupService.getGroup($routeParams.groupId);
@@ -57,32 +99,46 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		else
 			$scope.emptyVoiceLabel = 'anyone else';
 		
-		// populate voicemails according to page
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			data[i].fullProfile = contactService.getContact(data[i].contactId);
+			var match = false;
 			
-			if (group) {
-				for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-					if (data[i].contactId == group.members[g].contactId) {
-						$scope.voicemails.push(data[i]);
-						break;
+			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
+				// find and update or delete
+				if ($scope.voicemails[v].xpid == data[i].xpid) {
+					if (data[i].xef001type == 'delete') {
+						$scope.voicemails.splice(v, 1);
+						vLen--;
 					}
+					else
+						$scope.voicemails[v].readStatus = data[i].readStatus;
+					
+					match = true;
+					break;
 				}
 			}
-			else if (contact) {
-				if (data[i].contactId == contact.xpid)
+			
+			if (!match && data[i].xef001type != 'delete') {
+				data[i].fullProfile = contactService.getContact(data[i].contactId);
+				
+				// populate voicemails according to page
+				if (group) {
+					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
+						if (data[i].contactId == group.members[g].contactId) {
+							$scope.voicemails.push(data[i]);
+							break;
+						}
+					}
+				}
+				else if (contact) {
+					if (data[i].contactId == contact.xpid)
+						$scope.voicemails.push(data[i]);
+				}
+				else {
 					$scope.voicemails.push(data[i]);
-			}
-			else if (data[i].xef001type != "delete") {
-				$scope.voicemails.push(data[i]);
+				}
 			}
 		}
 	});
-
-	
-	$scope.getMeAvatarUrl = function(xpid,width,height){
-        return httpService.get_avatar(xpid,width,height);
-    };
 
     $scope.handleVoiceMailAction = function(type){
         $scope.actionObj.selectedAction = $scope.actions[0];
@@ -105,7 +161,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.voiceFilter = function(){
         var query = $scope.tester.query.toLowerCase();
         return function(voicemail){
-            console.log('vm - ', voicemail);
             if (voicemail.displayName.toLowerCase().indexOf(query) !== -1 || voicemail.phone.indexOf(query) !== -1 || voicemail.fullProfile.primaryExtension.indexOf(query) !== -1){
                 return true;
             }
@@ -115,8 +170,8 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     var MarkReadVoiceMails = function(isRead){
         voicemailIds = "";
-        for(voicemail in $scope.voicemails){
-            xpid = $scope.voicemails[voicemail].xpid;
+        for (var i = 0; i < $scope.voicemails.length; i++) {
+            xpid = $scope.voicemails[i].xpid;
             voicemailIds = voicemailIds.concat(xpid.toString() + ",");
         }        
         httpService.sendAction("voicemailbox","setReadStatusAll",{'read':isRead, ids: voicemailIds});
@@ -124,9 +179,9 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     var DeleteReadVoiceMails = function(){
         voicemailIds = "";
-        for(voicemail in $scope.voicemails){
-            if($scope.voicemails[voicemail].readStatus){
-                xpid = $scope.voicemails[voicemail].xpid;
+        for (var i = 0; i < $scope.voicemails.length; i++) {
+            if($scope.voicemails[i].readStatus){
+                xpid = $scope.voicemails[i].xpid;
                 voicemailIds = voicemailIds.concat(xpid.toString() + ",");
             }
         }
@@ -140,14 +195,4 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: voicemail.xpid});
 	};
 
-   $scope.$on("me_synced",function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
-		
-       $scope.$safeApply();
-    });
 }]);

@@ -30,6 +30,19 @@
 	width: 100%;*/
 	width: 300px;
 	
+	span{
+       position: absolute; 
+       top: 10px;
+       left: 5px;  
+       width: 24px;  
+       height: 24px; 
+       z-index: 101;
+       background: url("../img/XIconSet-24x24.png?v=1432149616933") no-repeat -168px -24px;
+       &.favorites{              
+           background: url('../img/XIconSet-24x24.png?v=1432149616933') no-repeat -284px -24px;
+       }    
+     }
+      
     .Search {
       color: #729c00;
 	  border: 1px solid #729c00;
@@ -37,6 +50,10 @@
 	  padding: .5em;
 	  margin: .5em; 		  
 	  width: 70%; 
+	  padding-left: 20px;  	
+	  &.add{
+	   padding-left: 25px;  
+	  }  	  	  
     }
     
     .New {    	  
@@ -55,9 +72,9 @@
     .Extension{left: -3px; margin-left: 0px; padding-left: 0px;}
   }
   .Contacts, .Groups {
-    flex: 1;
-	-webkit-flex: 1;
-	-ms-flex: 1;
+    flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1 1 0;
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
@@ -113,13 +130,12 @@
     position: relative;    
     width: 100%;
     border-bottom-left-radius: 30px;
-    -webkit-border-bottom-left-radius: 30px;  
-      
-    -webkit-box-flex: 0;            
-          
-    & > div:first-child {    	  	
-    	transition: .25s;   	       	       	
-    } 		 	
+    -webkit-border-bottom-left-radius: 30px;    
+        
+    & > div:first-child {    	 	
+    	transition: .25s;
+	} 	
+
 	
 	.TitleBar, .NotificationDivider > div {
 	   width: 100%;

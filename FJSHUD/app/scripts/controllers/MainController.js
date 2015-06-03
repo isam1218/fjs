@@ -66,16 +66,16 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 	// store user's xpid globally
 	var getMyPid = $scope.$on('me_synced', function(event, data) {
 		if (!$rootScope.myPid) {
-			for (key in data) {
-				if (data[key].propertyKey == 'my_pid') {
-          var tmpPid = data[key].propertyValue;
-					$rootScope.myPid = data[key].propertyValue;
-          $rootScope.$broadcast('pidAdded', {info: tmpPid});
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].propertyKey == 'my_pid') {
+					var tmpPid = data[i].propertyValue;
+					$rootScope.myPid = data[i].propertyValue;
+					$rootScope.$broadcast('pidAdded', {info: tmpPid});
 
-          var initialPid = data[key].propertyValue
-          if (localStorage[initialPid] === undefined){
-            localStorage[initialPid] = '{}';
-          }
+					var initialPid = data[i].propertyValue;
+					if (localStorage[initialPid] === undefined){
+						localStorage[initialPid] = '{}';
+					}
 
 					break;
 				}
@@ -86,11 +86,21 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 			getMyPid();
 	});
 
+  var getMyXpid = $rootScope.$watch('myPid', function(newVal, oldVal){
+    if (!$scope.gloablXpid){
+      $scope.globalXpid = newVal;
+      getMyXpid();      
+    } else {
+      getMyXpid();
+    }
+  });
+
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
         $scope.currentPopup.x = 0;
         $scope.currentPopup.y = 0;
         $scope.currentPopup.model = null;
+        $scope.currentPopup.target = null;
     };
 
     $scope.broadcastDial = function(key){
@@ -108,7 +118,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
     	}
     };
 
-    $scope.showPopup = function(data) {
+    $scope.showPopup = function(data, target) {
         if(!data.key) {
             $scope.currentPopup.url = null;
             return;
@@ -118,6 +128,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         }
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
+        $scope.currentPopup.target = $(target).attr("type") ? $(target).attr("type") : '';
     };
 	
 	$scope.showOverlay = function(show, url, data) {

@@ -1,10 +1,11 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', function ($rootScope, $q, contactService, httpService) {
+hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', 'NtpService', function ($rootScope, $q, contactService, httpService, ntpService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
 	var total = {};
 	var myLoggedIn = 0;
 	var reasons = [];
+	var selectedFlag = '';
 	
 	this.getQueue = function(xpid) {
 		for (var i = 0, len = queues.length; i < len; i++) {
@@ -49,6 +50,17 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	
 	this.getReasons = function() {
 		return reasons;
+	};
+	
+	this.setSelected = function(flag, name, qid){
+		selectedFlag = {};
+		selectedFlag.flag = flag;
+		selectedFlag.name = name;
+		selectedFlag.qid = qid;
+	};
+	
+	this.getSelected = function(){		
+		return selectedFlag;		
 	};
 
 	var formatData = function () {
@@ -107,6 +119,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				if (!match) {
 					queues.push(data[i]);
 					
+					queues[queues.length-1].calls = [];
+					queues[queues.length-1].members = [];
+					
 					// add avatar
 					queues[queues.length-1].getAvatar = function (index, size) {
 						if (this.members && this.members[index] !== undefined)
@@ -126,7 +141,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 
 	$rootScope.$on('queuepermissions_synced', function (event, data){
-		for (i = 0; i < queues.length; i++){
+		for (var i = 0; i < queues.length; i++){
 			for (var j = 0; j < data.length; j++){
 				if (data[j].xpid == queues[i].xpid){
 					queues[i].permissions = data[j];
@@ -175,12 +190,16 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	$rootScope.$on('queue_call_synced', function(event, data) {
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
 			queues[q].calls.splice(0, queues[q].calls.length);
-			queues[q].longestWait = new Date().getTime();
-			queues[q].longestActive = new Date().getTime();
+			queues[q].longestWait = ntpService.calibrateTime(new Date().getTime());
+			queues[q].longestActive = ntpService.calibrateTime(new Date().getTime());
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if (data[i].queueId == queues[q].xpid) {
 					queues[q].calls.push(data[i]);
+					
+					// attach profile
+					if (data[i].contactId)
+						queues[q].calls[queues[q].calls.length-1].fullProfile = contactService.getContact(data[i].contactId);
 					
 					// find longest active/hold
 					if (data[i].taken) {
@@ -197,10 +216,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			}
 			
 			// no change, so set to zero
-			if (queues[q].longestWait == new Date().getTime())
+			if (queues[q].longestWait == ntpService.calibrateTime(new Date().getTime()))
 				queues[q].longestWait = 0;
 			
-			if (queues[q].longestActive == new Date().getTime())
+			if (queues[q].longestActive == ntpService.calibrateTime(new Date().getTime()))
 				queues[q].longestActive = 0;
 		}
 	});

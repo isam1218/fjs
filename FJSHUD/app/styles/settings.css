@@ -23,9 +23,6 @@
   height: 5em;
 }
 .WidgetMe .WidgetBody {
-  /* height: 80%;       
-       top: 150px;
-       position: absolute;*/
   height: 78%;
   max-height: 100%;
   top: 73px;
@@ -53,7 +50,28 @@
   margin-top: 8px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
-  width: 48%;
+  width: 50%;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
+  clear: both;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
+  width: 74px;
+  height: 24px;
+  float: left;
+  clear: none;
+  font-size: 12px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
+  top: 0px;
+  left: 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
+  top: 0px;
+  left: 5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
+  width: 155px;
 }
 .WidgetMe .MeInfoBlock-column textarea {
   height: 3em;
@@ -85,8 +103,6 @@
   position: relative;
   border: none 0px;
   background-image: url("../img/XTile-Widget.png");
-  /*height: 81%;
-         height: 85%;*/
   height: 95%;
   overflow-y: hidden;
   background-color: #f9f9f9;
@@ -152,7 +168,7 @@
   width: 98%;
 }
 .DialogSettingInput {
-  width: 40%;
+  width: 70%;
   border: solid 1px #C7C7C7;
   -webkit-user-select: text;
   -webkit-border-radius: 3px;
@@ -327,7 +343,7 @@
   white-space: nowrap;
 }
 .Dialog-settings-row {
-  margin: 10px 20px;
+  margin: 10px;
   min-height: 30px;
 }
 .ListPageHeaderText {
@@ -346,7 +362,7 @@ input.text.DialogFieldInput {
 }
 .queueBlock {
   float: none;
-  width: 90px;
+  width: 25%;
   display: inline-block;
 }
 span.inputBlock {
@@ -369,7 +385,6 @@ div.NewCall input.NewCall {
   margin-bottom: 4px;
   left: 10px;
   width: 60%;
-  /*height: 1.625em;*/
   border: 1px solid #c2c2c2;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -382,7 +397,6 @@ div.NewCall .XButton {
   position: relative;
   margin-left: 0.5em;
   top: 7px;
-  /*span{top: -4px;}*/
 }
 div.NewCall .XButton.XButtonGreen {
   margin-right: 1em;

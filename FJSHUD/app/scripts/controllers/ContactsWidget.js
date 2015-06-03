@@ -20,8 +20,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	});
 	
 	// pull group updates from service
-	$scope.$on('groups_updated', function(event, data) {
-		// $scope.recents = localStorage.recents ? JSON.parse(localStorage.recents) : [];
+	groupService.getGroups().then(function(data) {
 		$scope.favorites = data.favorites;
 	});
 
@@ -63,7 +62,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	$scope.searchFilter = function(){
 		var query = $scope.$parent.query;
 		return function(contact){
-			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
+			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1){
 				return true;
 			}
 		};

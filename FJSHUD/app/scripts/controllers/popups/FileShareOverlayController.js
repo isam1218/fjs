@@ -1,12 +1,27 @@
 hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 'HttpService', function($scope, $location, $sce, httpService) {
-	$scope.showEmbed = false;
+	$scope.embedType = 'img';
 	
-	var toggleEmbed = function() {
-		// show or hide iframe viewer
-		if ($scope.currentDownload.fileName.match(/\.pdf$/i))
-			$scope.showEmbed = true;
-		else
-			$scope.showEmbed = false;
+	var updateEmbed = function() {
+		var url = $scope.currentDownload.fileName;
+		
+		// google doc
+		if (url.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx)$/i))
+			$scope.embedType = 'doc';
+		// plain text
+		else if (url.match(/\.(txt|js)$/i))
+			$scope.embedType = 'text';
+		// img
+		else if (url.match(/\.(png|jpg|jpeg|gif)$/i))
+			$scope.embedType = 'img';
+		// video
+		else if (url.match(/\.mp4$/i))
+			$scope.embedType = 'video';
+		// audio
+		else if (url.match(/\.(mp3|wav)$/i))
+			$scope.embedType = 'audio';
+		// other
+		else 
+			$scope.embedType = 'misc';
 	};
 	
 	if ($scope.$parent.overlay.data.audience) {
@@ -18,7 +33,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 		$scope.downloadables = $scope.$parent.overlay.data.downloadables;
 		$scope.currentDownload = $scope.downloadables[$scope.$parent.overlay.data.current];
 		
-		toggleEmbed();
+		updateEmbed();
 	}
 
     $scope.archiveOptions = [
@@ -34,13 +49,28 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
     	$scope.selectedArchiveOption = archiveObject;
     };
 
-    $scope.getAttachment = function(url,fileName){
-    	return httpService.get_attachment(url);
+    $scope.getPreviewIcon = function(url, fileName){
+		// show image as is
+		if (fileName.match(/\.(png|jpg|jpeg|gif)$/i))
+			return httpService.get_attachment(url, fileName);
+		// show document image
+		else if (fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
+			return 'img/XIcon-PreviewDocument.png';
+		// show mysterious image
+		else
+			return 'img/XIcon-UnknownDocument.png';
     };
 	
 	$scope.getEmbedURL = function(url) {
 		// sanitize url for iframe embedding
-		return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true');
+		if ($scope.embedType == 'doc')
+			return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true');
+		else
+			return $sce.trustAsResourceUrl(httpService.get_attachment(url) + '?embedded=true');
+	};
+	
+	$scope.getDownloadURL = function(url) {
+		return httpService.get_attachment(url);
 	};
 
     $scope.uploadAttachments = function($files){
@@ -73,15 +103,14 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
         $scope.upload.flow.cancel();
         $scope.$parent.showOverlay(false);
 		
-		// go to chat page if not already there
-		if ($location.path().indexOf($scope.audience) == -1)
-			$location.path('/' + $scope.audience + '/' + $scope.targetId);
+		// go to chat page
+		$location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
     };
 
 	$scope.selectCurrentDownload = function(download){
 		$scope.currentDownload = download;
 		
-		toggleEmbed();
+		updateEmbed();
 	};
 
 	$scope.getOffsetDownload = function(index){
@@ -96,6 +125,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 
 		$scope.currentDownload = $scope.downloadables[nextIndex];
 		
+		updateEmbed();
 	};
 	
     $scope.$on("$destroy", function() {

@@ -1,4 +1,4 @@
-hudweb.controller('LocationsController',['$scope','$element','HttpService',function($scope, $element,httpService) {
+hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','HttpService',function($scope, $routeParams, $element,httpService) {
     //fjs.ui.Controller.call(this, $scope);
 
     /*
@@ -8,9 +8,14 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
     $scope.locations = {};
-    $scope.meModel = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
+        $scope.onBodyClick();
+    };
+    
+    $scope.moveLocation = function(locationId){
+    	var callId = $routeParams.callId;
+        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":$scope.meModel["current_location"] = locationId, "variance": "native", "options": "0"});
         $scope.onBodyClick();
     };
     
@@ -23,10 +28,10 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
         	currentLocation = $scope.locations[$scope.meModel["current_location"]];
              
-             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w')
-            	 return currentLocation.name+" ("+ currentLocation.phone+")";
+             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w' && currentLocation.locationType != 'm')
+            	 return currentLocation.shortName+" ("+ currentLocation.phone+")";
              else
-            	 return currentLocation.name;
+            	 return currentLocation.shortName;
          }
          else {
              return "Loading...";
@@ -38,31 +43,21 @@ hudweb.controller('LocationsController',['$scope','$element','HttpService',funct
         return $scope.meModel["current_location"] && $scope.meModel["current_location"];
     }
 
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
-
-    });
-
+   
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid] = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid] = data[i];
             }
         }
-        //console.log('locationsctrl: scope.locations - ', $scope.locations);
     });
 
      $scope.$on('location_status_synced', function(event,data){
         if(data){
             var me = {};
-            for(index in data){
-                $scope.locations[data[index].xpid].status = data[index];
+            for (var i = 0; i < data.length; i++) {
+                $scope.locations[data[i].xpid].status = data[i];
             }
         }
 

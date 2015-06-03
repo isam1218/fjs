@@ -1,6 +1,58 @@
-hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpService','SettingsService', function ($scope, $rootScope, httpService,settingsService) {  
+hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpService', 'SettingsService', 'QueueService', '$timeout', function ($scope, $rootScope, httpService, settingsService, queueService, $timeout) {  
   var addedPid;
   var localPid;
+  $scope.que = {};
+  $scope.que.query = '';
+
+  queueService.getQueues().then(function(data) {
+    // show all or my queues
+    if ($scope.selected == 'allqueues')
+      $scope.queues = data.queues;  
+    else if ($scope.selected == 'myqueue')
+      $scope.queues = data.mine;
+    $scope.total = data.total;
+  });
+
+  httpService.getFeed('settings');
+
+  $scope.$on('settings_updated', function(event, data){
+      if (data['hudmw_searchautoclear'] == ''){
+          autoClearOn = false;
+          if (autoClearOn && $scope.que.query != ''){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+                  $scope.clearSearch($scope.autoClearTime);          
+              } else if (autoClearOn){
+                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              } else if (!autoClearOn){
+                  $scope.autoClearTime = undefined;
+              }
+      }
+      else if (data['hudmw_searchautoclear'] == 'true'){
+          autoClearOn = true;
+          if (autoClearOn && $scope.que.query != ''){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+              $scope.clearSearch($scope.autoClearTime);          
+          } else if (autoClearOn){
+              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
+          } else if (!autoClearOn){
+              $scope.autoClearTime = undefined;
+          }
+      }        
+  });
+
+  var currentTimer = 0;
+
+  $scope.clearSearch = function(autoClearTime){
+      if (autoClearTime){
+          var timeParsed = parseInt(autoClearTime + '000');
+          $timeout.cancel(currentTimer);
+          currentTimer = $timeout(function(){
+              $scope.que.query = '';
+          }, timeParsed);         
+      } else if (!autoClearTime){
+          return;
+      }
+  };
 
   $scope.queue_options = [
     {display_name: $scope.verbage.queue_name, type: "name"},

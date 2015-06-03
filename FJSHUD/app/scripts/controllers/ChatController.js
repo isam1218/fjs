@@ -82,15 +82,21 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};
 
 	$scope.getAttachment = function(url,fileName){
-		return httpService.get_attachment(url,fileName);
-	};
-	
+		// show image as is
+		if (fileName.match(/\.(png|jpg|jpeg|gif)$/i))
+			return httpService.get_attachment(url,fileName);
+		// show document image
+		else if (fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
+			return 'img/XIcon-PreviewDocument.png';
+		// show mysterious image
+		else
+			return 'img/XIcon-UnknownDocument.png';
+	};	
 
 	$scope.uploadAttachments = function($files){
       	fileList = [];
 		
       	fileList.push($files.file);
-      	
 		
         var data = {
             'action':'sendWallEvent',
@@ -106,12 +112,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "2_5",
             "_archive":0,
-        }
+        };
+		
         httpService.upload_attachment(data,fileList);
 		
         $scope.upload.flow.cancel();
     
     };
+	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
 		if (scrollbox.scrollHeight)
@@ -146,6 +154,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			
 			for (var m = 0, mLen = $scope.messages.length; m < mLen; m++) {
 				if (data[i].xpid == $scope.messages[m].xpid) {
+					// attachment was deleted
+					if (data[i].xef001type == 'delete') {
+						$scope.messages.splice(m, 1);
+						mLen--;
+					}
+					
 					dupe = true;
 					break;
 				}
@@ -165,7 +179,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			if (data[i].type == chat.type && context == chat.targetId) {
+			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
 				$scope.messages.push(data[i]);
 				found = true;
 			}
@@ -284,11 +298,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	}, 600);
 
 	$scope.nameDisplay = function(message, index){
-		var curMsg = $scope.filteredMessages[index];
+		var curMsg = $scope.$parent.filteredMessages[index];
 		var curMsgDate = new Date(curMsg.created);
 		var prvMsg;
 		if (index !== 0){
-			prvMsg = $scope.filteredMessages[index-1];
+			prvMsg = $scope.$parent.filteredMessages[index-1];
 			var prvMsgDate = new Date(prvMsg.created);
 		}
 		// if very 1st message --> display name
@@ -296,11 +310,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			return true;
 		} else {
 			// if same msg owner on same day  --> do not display
-			if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
-				return false;
-			} else {
-				// otherwise display
-				return true;
+			if(curMsgDate && prvMsgDate){
+				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
+					return false;
+				} else {
+					// otherwise display
+					return true;
+				}
 			}
 		}
 	};
