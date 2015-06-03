@@ -314,6 +314,15 @@
 .ListRowActionButtonTake {
   background: url("../img/XApp-Icons.png") no-repeat -606px -5px;
 }
+.ListRowActionButtonBarge {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -60px;
+}
+.ListRowActionButtonMonitor {
+  background: url("../img/XActionSet-30x30.png") no-repeat -60px -60px;
+}
+.ListRowActionButtonWhisper {
+  background: url("../img/XActionSet-30x30.png") no-repeat -90px -60px;
+}
 .ListSectionHeaderTitle {
   color: #0093f0;
   font-size: 11px;

@@ -1,8 +1,10 @@
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
-  flex: 1;
-  -webkit-box-flex: 1;
-  padding-left: 10px;
+  /*flex: 1;
+	-webkit-box-flex: 1;*/
+  /*padding-left:10px;*/
+  padding-left: 5px;
+  width: 86%;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
   height: 2.5em;
@@ -37,11 +39,12 @@
 }
 .LeftBarNotificationMessageSection .NotificationMessage {
   width: 100%;
-  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
   overflow: hidden;
-  max-height: 4.2em;
-  padding-bottom: 20px;
+  font-size: 13px;
+  color: #222;
+  white-space: normal;
+  line-height: 15px;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
@@ -155,9 +158,18 @@
   overflow-x: hidden;
   background-image: url("../img/XTile-Widget.png");
   background: transparent;
+  /*overflow: hidden;*/
+  width: 100%;
+}
+.NotificationMessages.LeftBarNotifications.noMessages {
+  position: relative;
+  top: -5px;
 }
 .LeftBarNotifications {
   transition: 1s;
+}
+.TitleBar.noNotifications {
+  display: none;
 }
 .LeftBarNotificationSection {
   background-color: #999;
@@ -183,10 +195,19 @@
   -webkit-box-orient: horizontal;
   display: -webkit-box;
   padding-left: 5px;
+  overflow: hidden;
   width: 100%;
+  /*height: 30px;*/
+  height: 15px;
+}
+.NotificationSection.last {
+  height: auto;
 }
 .NotificationSection.firstsection {
   margin-top: 10px;
+}
+.NotificationSection.open {
+  height: auto;
 }
 .NotificationHeader {
   float: right;
@@ -208,13 +229,16 @@
   /*background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));*/
   height: 2.3em;
 }
+.NotificationDivider.firstHeaderDivider.noMessagess {
+  margin-top: -1px;
+}
 .NotificationDivider.firstHeaderDivider img {
   display: none;
 }
 .LeftBarNotificationAvatarSection {
   position: relative;
   width: 40px;
-  height: 100%;
+  height: 40px;
   border-right: solid 1px #eee;
   float: left;
 }
@@ -238,6 +262,7 @@
 }
 .NotificationAvatar {
   width: 40px;
+  height: 40px;
   margin: 0 auto;
   border: 1px solid #3c9c00;
   border-radius: 2px;
@@ -273,6 +298,13 @@
   font-size: 1em;
   background-image: url("../img/XTile-Widget.png");
   padding-bottom: 20px;
+  width: 100%;
+}
+.Messages.plugins,
+.Messages.webphone {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 .Messages:not(:first-child) {
   margin-top: -18px;
@@ -282,4 +314,9 @@ a.Messages {
 }
 .chatNotification {
   cursor: pointer;
+}
+.chatNotification.plugins > div,
+.chatNotification.webphone > div {
+  font-weight: bold;
+  font-size: .7em;
 }
