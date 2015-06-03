@@ -75,7 +75,7 @@
 			</div>
 
 			<div class="Messages plugins" ng-click="showOverlay(true,'DownloadPlugin',{});" ng-if="!phoneSessionEnabled">	<!-- ng-if="!phoneSessionEnabled"  -->		
-			  <a ng-href="{{ pluginDownloadUrl}}">
+			  <a href="{{pluginDownloadUrl}}" download target="_blank">
 					<div class="NotificationHeader ng-class:{'firstHeader': todaysNotifications.length == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': todaysNotifications.length == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
