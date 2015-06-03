@@ -75,10 +75,10 @@
 
 			</div>
 
-			<div class="Messages" style="cursor:hand;cursor:pointer;" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">
-				<a ng-href="{{ pluginDownloadUrl}}" style="text-decoration:none; color:inherit">			
-					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
-							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
+			<div class="Messages plugins" ng-click="showOverlay(true,'DownloadPlugin',{});" ng-if="!phoneSessionEnabled">	<!-- ng-if="!phoneSessionEnabled"  -->		
+			  <a href="{{pluginDownloadUrl}}" download target="_blank">
+					<div class="NotificationHeader ng-class:{'firstHeader': todaysNotifications.length == 0};"> 
+							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': todaysNotifications.length == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
