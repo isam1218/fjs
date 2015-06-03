@@ -9,14 +9,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var queues = [];
     var callId = $routeParam.callId;
     $scope.avatar ={};
-
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     
     $scope.currentCall = phoneService.getCallDetail(callId);
-    if($scope.currentCall){
-        $scope.currentCall.isHeld = false;
-    }
+  
 
     $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
@@ -26,19 +23,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          * @type {{name:string. phone:string}}
          */
         var currentLocation;
-
-         
-        
-         if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {  
-        	 
+        if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {        	 
+             currentLocation = $scope.locations[$scope.meModel["current_location"]];
+             
              if($scope.meModel["current_location"])
              {	
             	if(!$scope.settings) 
             		$scope.settings = {};
-         		$scope.settings["current_location"] = $scope.locations[$scope.meModel["current_location"]];
+         		$scope.settings["current_location"] = currentLocation;
              }
              
-             return $scope.setCurrentLocation($scope.locations[$scope.meModel["current_location"]]);    		          
+             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w' && currentLocation.locationType != 'm')
+            	 return currentLocation.shortName+" ("+currentLocation.phone+")";
+             else
+            	 return currentLocation.shortName;                          
          }
          else { 
         	 if($scope.settings && $scope.settings["current_location"])
@@ -66,7 +64,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.pbxtraVersion;
     $scope.hudserverVersion;
     $scope.fdpVersion;
-    $scope.meModel={};
     $scope.locations = {};
     $scope.call_obj = {};
     $scope.call_obj.phoneNumber = "";
@@ -413,10 +410,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     {id:8,value:1200000,label:'20 minutes'},
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected;
-    if($scope.meModel.my_jid){
-            $scope.meModel.login = meModel.itemsByKey.my_jid.propertyValue.split("@")[0];
-            $scope.meModel.server = meModel.itemsByKey.my_jid.propertyValue.split("@")[1];
-        }
+  
     $scope.update_settings = function(type,action,model){
         switch(type){
             case 'auto_away_timeout':
@@ -435,9 +429,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 phoneService.setVolume(model);
                 break;
             case 'hudw_lang':
-                myHttpService.updateSettings(type,action,model.xpid); 
-                localStorage.fon_lang_code = model.code;
-                location.reload();
+				if (model) {
+					myHttpService.updateSettings(type,action,model.xpid); 
+					localStorage.fon_lang_code = model.code;
+					location.reload();
+				}
                 break;
             case 'hudmw_searchautoclear':
                 myHttpService.updateSettings(type, action, model);
@@ -458,7 +454,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             
         }
 
-    }
+    };
+	
     $scope.volume = {};
     $scope.volume.micVol;
     $scope.volume.spkVol;
@@ -805,8 +802,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.holdCall = function(call,isHeld){
         phoneService.holdCall(call.xpid,isHeld == 'True');
-        $scope.currentCall.isHeld =isHeld == 'True';
     }
+
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
     }
@@ -849,15 +846,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.weblaunchervariables = data;
         }
 
-    });
-
-    $scope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-			for (var i = 0, len = data.length; i < len; i++) {
-                $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-            }
-        }
     });
 
     $scope.$on('locations_synced', function(event,data){
@@ -953,29 +941,34 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
     
     $scope.$on('calls_updated',function(event,data){
-        $scope.calls = {};
-        if(data){
+        $scope.calls = data;
+        var call_exist = false;
+
+        if(data && !$.isEmptyObject(data)){
             for (i in data){
                 if(data[i].xpid == $scope.meModel.my_pid){
                     $scope.calls[data[i].contactId] = data[i];
                 }
-            }
-            if($scope.currentCall){
-                if(data[i].sipId == $scope.currentCall.sipId){
-                    $scope.currentCall = data[i];
-                    if($scope.currentCall.state == CALL_ON_HOLD){
-                        $scope.currentCall.isHeld = true;
-                    }else{
-                        $scope.currentCall.isHeld = false;
+                if($scope.currentCall){
+                    if(data[i].sipId == $scope.currentCall.sipId){
+                        $scope.currentCall = data[i];
+                    }else if(data[i].phone == $scope.currentCall.phone){
+                        $scope.currentCall = data[i];
+                        call_exist = true;
                     }
                 }
             }
+            
             if($scope.calls[[callId]]){
                 $scope.currentCall = $scope.calls[$scope.callId];
-                 
             }else{
                 $scope.timeElapsed = "00:00";
             }
+        }else{
+            $scope.currentCall = null;
+        }
+        if(!data[$scope.currentCall.xpid]){
+            $scope.currentCall = null;
         }
         updateTime();
     });
@@ -1042,6 +1035,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             if(data.event == 'state'){
                 $scope.phoneState = data.registration;
             }
+            if(data.event == 'onclose'){
+
+
+            }
         }
     });
     
@@ -1053,7 +1050,5 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         update_queues();
     });
 
-      $scope.$on("calls_updated", function(event,data){
-         $scope.calls = data;
-       });
+      
 }]);

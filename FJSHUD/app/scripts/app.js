@@ -1,9 +1,6 @@
 'use strict';
 
 var hudweb = angular.module('fjshudApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
     'ngRoute',
     'ngSanitize',
     'flow',

@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 
-	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService', 
+	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService){
 
 	var addedPid;
 	var localPid;
@@ -35,16 +35,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showNew = false;
 	$scope.showAway = false;
 	$scope.showOld = false;
-	//$scope.minutes = 0;
-	//$scope.seconds = 0;
+	
 	$scope.stopTime;	
 	$scope.callObj = {};
 	
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 	// used to update the UI
     $scope.updateTime = function(id) {    	
-		
-    	var time = new Date().getTime() - $scope.callObj[id].start;
+			
+			var time = ntpService.calibrateTime(new Date().getTime()) - $scope.callObj[id].start;
     	time = time/1000;
     	$scope.callObj[id].seconds = Math.floor(time % 60);
     	time = time/60; 
@@ -86,8 +85,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	  	$scope.callObj[id].minutesText = minutesText;  
 	  	$scope.callObj[id].hoursText = hoursText;	  
 	  	$scope.callObj[id].daysText = daysText;
-    }       
-	
+    }     	    
+    
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
 	});
@@ -405,11 +404,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 								
 			}
-			//}
-
-			//entire state = 0
-			//while_ringing
-
+	
 
 			me = $scope.meModel;
 			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
@@ -431,20 +426,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 
 		$scope.isRinging = true;
-		element = document.getElementById("CallAlert");
-       	
-       	if(displayDesktopAlert){
-			if(element != null){
-       			element.style.display="block";
-			}
-
-			$scope.$safeApply();
 		
-			if(element != null){
-				content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-				element.style.display="none";
-			}	
+       	if(displayDesktopAlert){
+			$timeout(displayNotification, 1000);
 		}
        	
        	if(!$.isEmptyObject(data))
@@ -684,7 +668,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			
 		$scope.$safeApply();
 		if(displayDesktopAlert){
-			displayNotification();
+			if($scope.todaysNotifications.length > 0){
+				$timeout(displayNotification, 1000);
+			}
+			//adding a second delay for the native notification to have the digest complete with the updated notifications
 		}				
     });		
 }]);

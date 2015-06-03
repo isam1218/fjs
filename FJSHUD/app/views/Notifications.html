@@ -1,5 +1,5 @@
-<div class="LeftBarNotificationSection notificationsSection" ng-mouseover="showNotificationBody = true; showHeader = true" ng-mouseleave="showHeader = false; showNotificationBody = todaysNotifications.length > 3 ? false:true">
-	<div class="TitleBar noNotifications" ng-show="!hasMessages">
+<div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}" expand-contract-notifications>
+	<div class="TitleBar" ng-show="!hasMessages">
         <div class="Icon"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
@@ -11,16 +11,15 @@
         <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
      </div>       
-	<div class="NotificationMessages LeftBarNotifications">
-		<!--<react-component name="notification" props='notifications'/>-->		   
-			<div class="Messages" ng-repeat="message in todaysNotifications" >			
+	<div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">		<!--  ng-class:{'noMessages' : todaysNotifications.length == 0}" -->	   
+		 	<div class="Messages" ng-repeat="message in todaysNotifications" >			
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
 					</div>
-					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0};">
+					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
 					    <img />
 					   <div ng-if="$index == 0"> 
 					    <div class="Icon" ng-show="!showHeader"></div>
@@ -28,7 +27,7 @@
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
 					</div>
-					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
+					<div class="NotificationSection ng-class:{'firstsection': $index == 0};" ><!-- , 'last' : $last && phoneSessionEnabled -->
 			
 						<avatar 
 							class="LeftBarNotificationAvatarSection NotificationAvatar"
@@ -75,15 +74,15 @@
 
 			</div>
 
-			<div class="Messages plugins" style="cursor:hand;cursor:pointer;" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">
-				<a ng-href="{{ pluginDownloadUrl}}" style="text-decoration:none; color:inherit">			
-					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
-							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
+			<div class="Messages plugins" ng-click="showOverlay(true,'DownloadPlugin',{});" ng-if="!phoneSessionEnabled">	<!-- ng-if="!phoneSessionEnabled"  -->		
+			  <a href="{{pluginDownloadUrl}}" download target="_blank">
+					<div class="NotificationHeader ng-class:{'firstHeader': todaysNotifications.length == 0};"> 
+							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': todaysNotifications.length == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
 							
 					</div>
-					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0};">
+					<div class="NotificationDivider ng-class:{'firstHeaderDivider': todaysNotifications.length == 0, 'noMessagess': todaysNotifications.length == 0}">
 					    <img />
 					   <div ng-if="$index == 0"> 
 					    <div class="Icon" ng-show="!showHeader"></div>
@@ -91,18 +90,19 @@
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
 					</div>
-					<div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
+
+					<div class="NotificationSection  alert last ng-class:{'firstsection': todaysNotifications.length == 0, 'last' : todaysNotifications.length == 0}};" > <!-- , 'halfHeight': !showHeader -->
 						
 						<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 							<div class="AvatarWarningSmall"></div>
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection" > 
-							<div>
-								<div style="font-weight:bold;font-size:.7em;height: 2.5em;"><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
+							<div class="chatNotification plugins">
+								<div><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
 								<div ></div>
 
-								<div class="NotificationMessage"  ng-show="showNotificationBody" scroll-to-bottom>Click to download & Install</div>
+								<div class="NotificationMessage">Click to download & Install</div>
 							</div>
 							
 						</div>
@@ -145,7 +145,7 @@
 	</div>
 </div>
 
-<div ng-show="overlay == 'notifications'" class="notifications Overlay">
+<div ng-if="overlay == 'notifications'" class="notifications Overlay">
 	<div ng-click="showNotificationOverlay(false)" class="Background"></div>
 	<div class="Foreground">
 		<div ng-click="showNotificationOverlay(false)" class="Close">x</div>
@@ -177,7 +177,7 @@
                         <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events'}} </div>
                        </div>             
                     </div>
-                    <div class="NotificationSection ng-class:{'firstsection': $index == 0, 'halfHeight': !showHeader};" > 
+                    <div class="NotificationSection ng-class:{'firstsection': $index == 0};" > <!-- , 'halfHeight': !showHeader -->
                         
                         <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
                             <div class="AvatarWarningSmall"></div>
@@ -251,7 +251,7 @@
 	                        type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 	                    </avatar>	               
 	                    <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message)">                         
-	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D, hh:mm a':fon_lang_code    }} </div></div> 
+	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
 	                           <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 	                        <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="chat_sub_message in new_notifications_to_display track by $index">{{ chat_sub_message }} </p><p ng-if="!message.message || message.message <= 1">{{ new_notifications_to_display }} </p> </div>
 	                        <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
@@ -302,7 +302,7 @@
 	                        type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 	                    </avatar>             	                
 	                    <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message)">                         
-	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D, hh:mm a':fon_lang_code    }} </div></div> 
+	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
 	                           <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 	                        <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="sub_message in away_notifications_to_display track by $index">{{ sub_message }} </p><p ng-if="!message.message || message.message <= 1">{{ away_notifications_to_display}} </p> </div>
 	                        <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
@@ -354,7 +354,7 @@
 	                    </avatar>            
 	               
 	                    <div class="LeftBarNotificationMessageSection" ng-init="old_notifications_to_display = getMessage(message)">                         
-	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D, hh:mm a':fon_lang_code    }} </div></div> 
+	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
 	                           <div class="NotificationType">...{{ message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 	                        <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="sub_message in old_notifications_to_display track by $index">{{ sub_message }} </p><p ng-if="!message.message || message.message <= 1">{{ old_notifications_to_display }} </p> </div>
 	                        <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">

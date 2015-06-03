@@ -3,8 +3,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   var localPid;
   var player; // html element
   var loadCheck;
-  
-  $scope.meModel = {};
 
 	$scope.player = {
 		position: 0,
@@ -211,15 +209,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
     items: "a:not(.not-sortable)"
   };
 
-  $scope.$on('me_synced', function(event,data){
-      if(data){
-          for(var i = 0, len = data.length; i < len; i++){
-              $scope.meModel[data[i].propertyKey] = data[i].propertyValue;
-          }
-      }
-  });
-  
-  $rootScope.$on('reset_app_menu', function(data){
+ $rootScope.$on('reset_app_menu', function(data){
     var pid = $rootScope.myPid;
     getUsersDefaultNavbarOrder(pid);
   });

@@ -94,14 +94,6 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
         };
   };
 
-    function updateFavicon() {
-        var link = document.getElementById("favicon");
-        if(link) {
-            link.href = $scope.contact.getAvatarUrl(32,32);
-            document.title= $scope.contact.displayName;
-        }
-    };
-
     $scope.$on("$destroy", function() {
 	
     });
