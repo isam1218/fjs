@@ -110,13 +110,15 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 	});
 	
 	$rootScope.$on('settings_synced', function(event, data) {
-		// convert to object
-		for (key in data)
-			settings[data[key].key] = data[key].value;
-		
-		deferSettings.resolve(settings);
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
+		if (data.length > 0) {
+			// convert to object
+			for (key in data)
+				settings[data[key].key] = data[key].value;
+			
+			deferSettings.resolve(settings);
+			
+			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
+		}
 	});
 
 	$rootScope.$on('i18n_langs_synced',function(event,data){
