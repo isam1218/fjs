@@ -1,5 +1,5 @@
 <a href="#contact/{{::member.fullProfile.xpid}}" class="ListRow" droppable="Call">
-  <avatar profile="member" context="queue"></avatar>
+  <avatar profile="member"></avatar>
   
   <div class="ListRowContent" dockable="member.fullProfile">
     <div class="ListRowTitle">
@@ -10,9 +10,23 @@
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
 		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
     </div>
-    <div class="ListRowStatus">
-      <div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
-    </div>
-    <input style="float:right"class="vmcallbtn" type="button" value="Call" ng-click="callExtension(member.fullProfile.primaryExtension)"></input>
-  </div>
+	<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
+		<avatar 
+			profile="member.fullProfile.call.fullProfile"
+			context="callstatus"
+			type="{{::member.fullProfile.call.type}}">
+		</avatar>
+		<div class="Details">
+			<div class="Name">{{::member.fullProfile.call.displayName}}</div>
+			<div class="Phone">{{::member.fullProfile.call.phone}}</div>
+			<div class="Time" timer="member.fullProfile.call.startedAt"></div>
+		</div>
+	</div>
+			
+	<div ng-if="!member.fullProfile.call">
+		<div class="ListRowStatus">
+			<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
+		</div>
+		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension); storeRecentQueueMember(member.contactId)"></input>
+	</div>
 </a>

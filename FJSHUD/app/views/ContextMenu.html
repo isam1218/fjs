@@ -31,14 +31,18 @@
 </div>
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
-	<!-- delete -->
-	<a class="Button" href="" ng-show="widget == 'recordings' || widget == 'voicemails'" ng-click="deleteRecording()">
+	<!-- recordings -->
+	<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
 		<div class="ListRowActionButtonRemove"></div>
 		<span>{{::verbage.delete_word}}</span>
 	</a>
 		
 	<!-- voicemails -->
-	<div ng-if="widget == 'voicemails'">
+	<div ng-if="widget == 'voicemails' && profile.xpid != myPid">
+		<a class="Button" href="" ng-click="deleteRecording()">
+			<div class="ListRowActionButtonRemove"></div>
+			<span>{{::verbage.delete_word}}</span>
+		</a>
 		<a class="Button" href="" ng-show="!original.readStatus" ng-click="markAsRead(true)">
 			<div class="ListRowActionButtonRead"></div>
 			<span>Read</span>
@@ -49,7 +53,23 @@
 		</a>
 		<a class="Button" href="" ng-show="!profile && original.phone" ng-click="callNumber(original.phone)">
 			<div class="ListRowActionButtonCall"></div>
-			<span>Call Back</span>
+			<span>{{::verbage.call_back}}</span>
+		</a>
+	</div>
+	
+	<!-- queue calls -->
+	<div ng-if="widget == 'queue'">
+		<a class="Button" href="" ng-show="context.agent.xpid != myPid" ng-click="takeQueueCall()">
+			<div class="ListRowActionButtonTake"></div>
+			<span>To Me</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && !context.recorded" ng-click="recordQueueCall(true)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Start Rec</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && context.recorded" ng-click="recordQueueCall(false)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Stop Rec</span>
 		</a>
 	</div>
 	
@@ -57,7 +77,7 @@
 	<div ng-if="profile.xpid == myPid && type == 'Contact'">
 		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
 			<div class="ListRowActionButtonMute"></div>
-			<span>Mute</span>
+			<span>{{::verbage.Mute}}</span>
 		</a>
 		<a class="Button" href="" ng-show="widget == 'conference' && original.muted" ng-click="muteUser(false)">
 			<div class="ListRowActionButtonUnmute"></div>
@@ -87,22 +107,26 @@
 		
 	<!-- contact -->
 	<div ng-if="(profile.xpid != myPid && type == 'Contact') || type == 'ParkedCall'">
-		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeCall()">
+		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeParkedCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
-			<div class="ListRowActionButtonMute"></div>
-			<span>Mute</span>
-		</a>
-		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0 && original.muted" ng-click="muteUser(false)">
-			<div class="ListRowActionButtonUnmute"></div>
-			<span>Unmute</span>
-		</a>
-		<a class="Button" href="" ng-show="widget == 'conference' && context.permissions == 0" ng-click="kickMember()">
-			<div class="ListRowActionButtonLeave"></div>
-			<span>Kick</span>
-		</a>
+		
+		<div ng-if="widget == 'conference'">
+			<a class="Button" href="" ng-show="context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
+				<div class="ListRowActionButtonMute"></div>
+				<span>{{::verbage.Mute}}</span>
+			</a>
+			<a class="Button" href="" ng-show="context.permissions == 0 && original.muted" ng-click="muteUser(false)">
+				<div class="ListRowActionButtonUnmute"></div>
+				<span>Unmute</span>
+			</a>
+			<a class="Button" href="" ng-show="context.permissions == 0" ng-click="kickMember()">
+				<div class="ListRowActionButtonLeave"></div>
+				<span>Kick</span>
+			</a>
+		</div>
+		
 		<a class="Button" href="" ng-show="canLoginAgent && original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
@@ -119,11 +143,13 @@
 			<div class="ListRowActionButtonEdit"></div>
 			<span>{{::verbage.Edit}}</span>
 		</a>
+		
 		<a class="Button" href="#/contact/{{profile.xpid}}/chat" ng-show="profile.primaryExtension">
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callNumber(profile.primaryExtension)">
+		
+		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callNumber(profile.primaryExtension); storeRecentContact(profile.primaryExtension)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call}}</span>
 		</a>
@@ -149,6 +175,22 @@
 			<div class="ListRowActionButtonMobile"></div>
 			<span>{{::verbage.mobile}}</span>
 		</a>
+		
+		<div ng-if="profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid && (widget != 'queue' || profile.call.incoming)">
+			<a class="Button" href="" ng-click="bargeCall('barge')">
+				<div class="ListRowActionButtonBarge"></div>
+				<span>{{::verbage.barge}}</span>
+			</a>
+			<a class="Button" href="" ng-click="bargeCall('monitor')">
+				<div class="ListRowActionButtonMonitor"></div>
+				<span>{{::verbage.monitor}}</span>
+			</a>
+			<a class="Button" href="" ng-click="bargeCall('whisper')">
+				<div class="ListRowActionButtonWhisper"></div>
+				<span>{{::verbage.whisper}}</span>
+			</a>
+		</div>
+		
 		<a class="Button" href="mailto:{{ profile.email }}" target="_blank" ng-show="profile.email">
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
@@ -248,7 +290,7 @@
 	</div>
 	
 	<!-- dockable -->
-	<div ng-show="profile.xpid != myPid && (profile.displayName || profile.name)">
+	<div ng-show="profile.xpid != myPid && (profile.displayName !== undefined || profile.name !== undefined)">
 		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 			<div class="ListRowActionButtonDock"></div>
 			<span>{{::verbage.dock}}</span>

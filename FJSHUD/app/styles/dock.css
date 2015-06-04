@@ -1,7 +1,7 @@
 .DockPanel {
-  /*position: relative;*/
-  flex: 1;
-  -webkit-flex: 1;
+  position: relative;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -209,4 +209,56 @@
   border-width: 1px !important;
   -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
+}
+.FileUploadStatus {
+  margin-top: 100%;
+  border-top: 1px solid white;
+  box-shadow: inset 1 0 -1px 1px #cccccc;
+  position: relative;
+  z-index: 100;
+}
+.FileUploadStatus .text-style {
+  font-size: .7em;
+  font-weight: bold;
+}
+.FileUploadStatus .Gadget > div {
+  margin: 5px 0px 5px 10px;
+}
+.FileUploadStatus .progress_text {
+  text-align: center;
+}
+.FileUploadStatus .timer {
+  float: right;
+}
+.FileUploadStatus progress {
+  width: 90%;
+  margin-top: 10px;
+}
+.FileUploadStatus progress,
+.FileUploadStatus progress[role][aria-valuenow] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-size: auto;
+  border-radius: 50px;
+  height: .5em;
+  background: #000066 !important;
+  /* !important is needed by the polyfill */
+}
+.FileUploadStatus progress::-webkit-progress-bar {
+  -webkit-border-radius: 50px;
+}
+.FileUploadStatus progress {
+  color: #72E673;
+}
+.FileUploadStatus progress::-moz-progress-bar {
+  background: #72E673;
+  -moz-border-radius: 50px;
+}
+.FileUploadStatus progress::-webkit-progress-value {
+  background: #72E673;
+  -webkit-border-radius: 50px;
+}
+.FileUploadStatus progress[aria-valuenow]:before {
+  background: #72E673;
 }

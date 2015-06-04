@@ -1,61 +1,45 @@
 hudweb.directive('input', function() {
 	return {
-		restrict: 'E',		
+		restrict: 'E',
 		link: function(scope, element, attrs) {
-			
-		  if(attrs.type == 'search')
-		  {	  
-			if(navigator.userAgent.indexOf('Firefox') != -1)
-			{				
-				// search input
-				element.on('keyup change mouseover mouseenter', function(e) {											
-						if(element.val() != '')
-						{
-							if($(element).parent().find('.x').length == 0)
-							{
-							 scope.$apply(function (e) {
-								var xImg = angular.element('<img class="x" src="img/clear.png"/>');
-								if($(element).closest('.ConferenceMembers').length > 0)
-									element.parent().append(xImg);
-								else
-									element.after(xImg);
-								var el = element;
-								xImg.bind('click', function(e){
-									scope.$apply(function () {				
-									    $(el).parent().find('.x').remove();	
-										el.val('');
-									});
-									e.stopPropagation();
-								});																	
-							 });	
-							}
+			// only for searchboxes and firefoxes
+			if (attrs.type == 'search' && navigator.userAgent.indexOf('Firefox') != -1) {
+				var xImg = angular.element('<img class="x" src="img/clear.png"/>');
+				
+				xImg.bind('click', function(e) {
+					e.stopPropagation();
+					
+					$(this).hide();
+					
+					scope.$evalAsync(function() {
+						scope.$eval(attrs.ngModel + ' = "";');
+					});
+				});	
+				
+				element.on('keyup change mouseover mouseenter', function(e) {
+					if (element.val() != '') {
+						if ($(element).parent().find('.x').length == 0) {
+							if ($(element).closest('.ConferenceMembers').length > 0)
+								element.parent().append(xImg);
+							else
+								element.after(xImg);
 						}
 						else
-						{
-							scope.$apply(function () {
-								$(element).parent().find('.x').remove();
-							});
-						}				
-					e.stopPropagation();
+							$(element).parent().find('.x').show();
+					}
+					else
+						$(element).parent().find('.x').hide();
 				});
 				
-				$(element).parent().on('mouseleave', function(e) {						
-					scope.$apply(function () {
-						$(element).parent().find('.x').remove();		
-					});
-					e.stopPropagation();					
-				});	
-			
-				$('a, input[type=button]').on('click mouseover mouseenter', function(e){
-					scope.$apply(function () {
-						$(element).parent().find('.x').remove();	
-						if(e.type == 'click')
-							element.val('');
-					});
-					e.stopPropagation();
+				element.on('mouseleave', function(e) {
+					if (e.relatedTarget.className != 'x')
+						$(element).parent().find('.x').hide();
+				});
+				
+				scope.$on('$destroy', function() {
+					xImg.unbind().remove();
 				});
 			}
-		  }
 		}			
 	};	
 });

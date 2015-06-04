@@ -5,7 +5,7 @@
     </div>
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-            <span ng-repeat="tab in tabs">
+            <span ng-repeat="tab in tabs | filter: tabFilter()">
                 <a href="#/calllog/{{ ::tab.lower }}" class="WidgetTabBarButton Ready" ng-click="saveCRTab(tab.lower, $index)" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
                     <div class="inner">{{ ::tab.upper }}</div>
                     <div class="arrow"></div>
@@ -14,9 +14,9 @@
         </div>
 			
 		<!-- ng-view -->
-        <div ng-if="selected == 'calllog'" class="fj-content WidgetTabContent" ng-include="'views/CallLog.html'" ng-controller="CallLogController"></div>
-        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent vmails" ng-include="'views/Voicemails.html'" ng-controller="VoicemailsController"></div>
-        <div ng-if="selected == 'recordings'" class="voicemail fj-content WidgetTabContent vmails" ng-include="'views/Recordings.html'" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'calllog'" class="fj-content WidgetTabContent" include-once="views/CallLog.html" ng-controller="CallLogController"></div>
+        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Voicemails.html" ng-controller="VoicemailsController"></div>
+        <div ng-if="selected == 'recordings'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
     </div>
 
 </div>

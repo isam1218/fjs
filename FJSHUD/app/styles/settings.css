@@ -50,23 +50,24 @@
   margin-top: 8px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
-  width: 48%;
+  width: 50%;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
   clear: both;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
-  width: 75px;
+  width: 74px;
   height: 24px;
   float: left;
   clear: none;
+  font-size: 12px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
-  top: 10px;
+  top: 0px;
   left: 0px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
-  top: 10px;
+  top: 0px;
   left: 5px;
 }
 .WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {

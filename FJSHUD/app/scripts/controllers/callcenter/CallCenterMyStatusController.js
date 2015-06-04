@@ -16,7 +16,7 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 		
 		for (xpid in $scope.checkboxes) {
 			if ($scope.checkboxes[xpid]) {
-				for (i = 0; i < $scope.queues.length; i++) {
+				for (var i = 0; i < $scope.queues.length; i++) {
 					if ($scope.queues[i].xpid == xpid) {
 						if ($scope.queues[i].me.status.status == 'login')
 							$scope.disableLogout = false;

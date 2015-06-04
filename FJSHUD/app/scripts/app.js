@@ -1,14 +1,10 @@
 'use strict';
 
 var hudweb = angular.module('fjshudApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
     'ngRoute',
     'ngSanitize',
     'flow',
-    'react',
-	'ui.sortable'
+    'react'
 ]);
 
 hudweb.config(function ($routeProvider) {

@@ -38,9 +38,9 @@
             <div class="Dialog-settings-row">
               <label>
                 <input
-                ng-model="enableBox"
-                ng-change="update_settings('hudmw_box_enabled','update',enableBox)"
-                name="boxing" type="checkbox" value="true" >{{::verbage.enable_box}}
+                ng-model="boxObj.enableBox"
+                ng-change="update_settings('hudmw_box_enabled','update',boxObj.enableBox)"
+                name="boxing" type="checkbox"  >{{::verbage.enable_box}}
               </label>
             </div>
             <div class="Dialog-settings-row AppsReset">
@@ -52,9 +52,9 @@
           </div>
           <div class="ListSection">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{verbage.sounds}}</div>
+              <div class="ListSectionHeaderTitle">{{::verbage.sounds}}</div>
             </div>
-            <div class="ListSectionBody">{{verbage.sound_settings_general_desc}}</div>
+            <div class="ListSectionBody">{{::verbage.sound_settings_general_desc}}</div>
           </div>
           <div class="ListPage">
             <div class="Dialog-settings-row">

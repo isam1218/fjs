@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', function($scope, $rootScope, $routeParams, myHttpService, groupService) {
+hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'SettingsService', function($scope, $rootScope, $routeParams, myHttpService, groupService, settingsService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -22,123 +22,83 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   {upper: $scope.verbage.group_info, lower: 'info'}
   ];
 
-  var getXpidInG = $rootScope.$watch('myPid', function(newVal, oldVal){
-      if (!$scope.globalXpid){
-          $scope.globalXpid = newVal;
-              $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-              $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-              getXpidInG();
-      } else {
-          getXpidInG();
-      }
+  $scope.setFromLocalStorage = function(val){
+    $scope.globalXpid = val;
+    $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+    $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+  };
+
+  var getXpidInG = $rootScope.$watch('myPid', function(newVal){
+    if (!$scope.globalXpid){
+      $scope.setFromLocalStorage(newVal);
+        getXpidInG();
+    } else {
+        getXpidInG();
+    }
   });
 
   $scope.$on('pidAdded', function(event, data){
-      $scope.globalXpid = data.info;
-      $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-      $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+    $scope.setFromLocalStorage(data.info);      
   });
 
   $scope.saveGTab = function(tab, index){
-      switch(tab){
-          case "chat":
-              $scope.selected = $scope.tabs[0].lower;
-              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "members":
-              $scope.selected = $scope.tabs[1].lower;
-              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "voicemails":
-              $scope.selected = $scope.tabs[2].lower;
-              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "page":
-              $scope.selected = $scope.tabs[3].lower;
-              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "recordings":
-              $scope.selected = $scope.tabs[4].lower;
-              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "info":
-              $scope.selected = $scope.tabs[5].lower;
-              localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-      }
-  }; 
+    $scope.selected = $scope.tabs[index].lower;
+    $scope.toggleObject = {item: index};
+    localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+    localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+  };
 
 	$scope.tabFilter = function(){
 		return function(tab){
-			if (tab.lower === 'chat'){
-				// if not my group -> return false and filter out chat (and chat tab)
-        for (var i = 0; i < $scope.group.members.length; i++){
-          if ($scope.group.members[i].fullProfile.xpid === $rootScope.meModel.my_pid){
+      switch(tab.lower){
+        case "chat":
+          // if not my group -> return false and filter out chat (and chat tab)
+          for (var i = 0; i < $scope.group.members.length; i++){
+            if ($scope.group.members[i].fullProfile.xpid === $rootScope.meModel.my_pid){
+              $scope.enableChat = true;
+              $scope.enableTextInput = true;
+              $scope.enableFileShare = true;
+              return true;
+            }
+          }
+          $scope.isMine = groupService.isMine($scope.groupID);
+          if ($scope.isMine){
             $scope.enableChat = true;
             $scope.enableTextInput = true;
             $scope.enableFileShare = true;
             return true;
+          } else {
+            $scope.enableChat = false;
+            $scope.enableTextInput = false;
+            $scope.enableFileShare = false;
+            $scope.selected = $scope.tabs[1].lower
+            return false;
           }
-        }
-				$scope.isMine = groupService.isMine($scope.groupID);
-				if ($scope.isMine){
-          $scope.enableChat = true;
-          $scope.enableTextInput = true;
-          $scope.enableFileShare = true;
-					return true;
-				} else {
-          $scope.enableChat = false;
-          $scope.enableTextInput = false;
-          $scope.enableFileShare = false;
-					return false;
-				}
-			}
-      if (tab.lower === 'info'){
-        if ($scope.group.type !== 0){
-          return true;
-        } else {
-          return false;
-        }
+          break;
+        case "info":
+          if ($scope.group.type !== 0)
+            return true;
+          else 
+            return false;
+          break;
+        case "page":
+          if ($scope.group.type === 0)
+            return true;
+          else 
+            return false;
+          break;
+        case "recordings":
+          var recordingPerm = settingsService.getPermission('showCallCenter');
+          if (recordingPerm)
+            return true;
+          else
+            return false;
+          break;
       }
-      if (tab.lower === 'page'){
-        if ($scope.group.type === 0){
-          return true;
-        } else {
-          return false;
-        }
-      }
-			return true;
+      return true;
 		};
 	};
-
-	$scope.$on('groups_updated', function(event, data) {
-		var groups = data.groups;
-
-		// find this group
-		for (i in groups) {
-			if (groups[i].xpid == $scope.groupID) {
-				$scope.group = groups[i];
-				break;
-			}
-		}
-		
-		$scope.isMine = groupService.isMine($scope.groupID);
-	});
 	
-	$scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
-
 	$scope.deptHeaderDisplay = function(groupType){
 		if (groupType === 0){
 			return true;

@@ -371,6 +371,9 @@ fjs.i18n = {
       sort_by_chat_status:'Sort By Chat Status',
       /****Phone Notifications ***/
       clear_all:'Clear All',
+      clear: 'Clear', 
+      show: 'Show',
+      hide: 'Hide',
       /***page**/
       page:'Page',
       group_page:'Group Page',
@@ -489,7 +492,7 @@ fjs.i18n = {
       call_management:'Call Management',
       call_members:'Call Members',
       contacts_talking:'These contacts are talking',
-      barging:'Baring',
+      barging:'Barging',
       barge:'Barge',
       transfer:'Transfer',
       whisper:'Whisper',

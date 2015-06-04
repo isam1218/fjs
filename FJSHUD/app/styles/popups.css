@@ -6,6 +6,127 @@
   height: 100%;
   z-index: 100;
 }
+.Overlay.notifications .Conference-HeaderSubTitle {
+  font-size: 11px;
+  line-height: 18px;
+  width: 50%;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-style: italic;
+  color: #555;
+  float: left;
+}
+.Overlay.notifications .Messages {
+  background: url('') #ffffff !important;
+  /*padding-bottom:8px !important;*/
+  padding-bottom: 0 !important;
+  margin-top: 0px;
+}
+.Overlay.notifications .Messages .AvatarWarningSmall {
+  left: 5px;
+  top: 10px;
+}
+.Overlay.notifications .Messages .NotificationAvatar {
+  top: 10px !important;
+}
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection {
+  margin-left: 5px;
+}
+.Overlay.notifications .XButton.header {
+  float: right;
+  margin-right: 5px;
+  top: -10px;
+  height: 24px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.Overlay.notifications .NotificationMessage {
+  word-break: break-word;
+}
+.Overlay.notifications .notification_border {
+  border-bottom: 1px solid #ccc;
+  width: 98%;
+  margin: auto;
+  padding-top: 40px;
+  padding-bottom: 0px;
+}
+.Overlay.notifications .notification_border.lessPadding {
+  padding-top: 10px;
+}
+.Overlay.notifications .Foreground .Footer {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+  text-align: right;
+  position: absolute;
+  width: 94%;
+  bottom: 10px;
+}
+.Overlay.notifications .notifications_section {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  vertical-align: middle;
+  display: inline-block;
+  margin-top: 20px;
+}
+.Overlay.notifications .notifications_section .Messages {
+  overflow: hidden;
+}
+.Overlay.notifications .notifications_section .Messages .NotificationHeader,
+.Overlay.notifications .notifications_section .Messages .NotificationDivider {
+  margin-top: 16px;
+}
+.Overlay.notifications .notifications_section .Messages .NotificationHeader {
+  margin-right: -1px;
+}
+.Overlay.notifications .Messages.plugins {
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+  cursor: hand;
+  cursor: pointer;
+}
+.Overlay.notifications .Messages.plugins .NotificationDivider {
+  margin-top: 14px;
+}
+.Overlay.notifications .Messages.plugins .NotificationHeaderBackground {
+  bottom: 14px;
+}
+.Overlay.notifications .NotificationMessages {
+  border: 1px solid #ccc;
+  position: absolute;
+  /*left: 5px;*/
+  right: 5px;
+  top: 70px;
+  bottom: 70px;
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  width: 94%;
+  left: 15px;
+}
+.Overlay.notifications .NotificationMessages .overlayNotificationsSection:before {
+  content: '';
+  margin-right: -0.25em;
+  /* Adjusts for spacing */
+  vertical-align: middle;
+  display: inline-block;
+}
+.Overlay.notifications .NotificationMessages .NotificationTime {
+  right: 5px;
+}
+.Overlay.notifications .NotificationMessages .NotificationMessage {
+  max-height: inherit;
+}
+.Overlay.notifications .Foreground {
+  width: 40%;
+  background: url('') #ffffff !important;
+}
+.Overlay.notifications .Foreground .footer {
+  border-top: none 0px !important;
+}
 .Overlay .Background {
   background-color: black;
   opacity: .5;
@@ -324,7 +445,8 @@
   border-top: 1px solid #ccc;
   margin-top: .25em;
 }
-#ContextMenu .BottomRow.Actions > div {
+#ContextMenu .BottomRow.Actions > div,
+#ContextMenu .BottomRow.Actions > div > div {
   display: inline;
 }
 #ContextMenu .BottomRow.Actions .Button {

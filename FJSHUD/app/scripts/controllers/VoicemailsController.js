@@ -1,11 +1,10 @@
-hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'UtilService', 'SettingsService', '$timeout', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, utilService, settingsService, $timeout) {
+hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, settingsService, $timeout) {
     var addedPid;
     var localPid;
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
-    $scope.meModel = {};
 	
 	// user's profile for their own voicemails
 	contactService.getContacts().then(function() {
@@ -171,8 +170,8 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     var MarkReadVoiceMails = function(isRead){
         voicemailIds = "";
-        for(voicemail in $scope.voicemails){
-            xpid = $scope.voicemails[voicemail].xpid;
+        for (var i = 0; i < $scope.voicemails.length; i++) {
+            xpid = $scope.voicemails[i].xpid;
             voicemailIds = voicemailIds.concat(xpid.toString() + ",");
         }        
         httpService.sendAction("voicemailbox","setReadStatusAll",{'read':isRead, ids: voicemailIds});
@@ -180,9 +179,9 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     var DeleteReadVoiceMails = function(){
         voicemailIds = "";
-        for(voicemail in $scope.voicemails){
-            if($scope.voicemails[voicemail].readStatus){
-                xpid = $scope.voicemails[voicemail].xpid;
+        for (var i = 0; i < $scope.voicemails.length; i++) {
+            if($scope.voicemails[i].readStatus){
+                xpid = $scope.voicemails[i].xpid;
                 voicemailIds = voicemailIds.concat(xpid.toString() + ",");
             }
         }
@@ -196,14 +195,4 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: voicemail.xpid});
 	};
 
-   $scope.$on("me_synced",function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $scope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
-		
-       $scope.$safeApply();
-    });
 }]);

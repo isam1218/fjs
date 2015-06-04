@@ -298,11 +298,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	}, 600);
 
 	$scope.nameDisplay = function(message, index){
-		var curMsg = $scope.filteredMessages[index];
+		var curMsg = $scope.$parent.filteredMessages[index];
 		var curMsgDate = new Date(curMsg.created);
 		var prvMsg;
 		if (index !== 0){
-			prvMsg = $scope.filteredMessages[index-1];
+			prvMsg = $scope.$parent.filteredMessages[index-1];
 			var prvMsgDate = new Date(prvMsg.created);
 		}
 		// if very 1st message --> display name
@@ -310,11 +310,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			return true;
 		} else {
 			// if same msg owner on same day  --> do not display
-			if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
-				return false;
-			} else {
-				// otherwise display
-				return true;
+			if(curMsgDate && prvMsgDate){
+				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
+					return false;
+				} else {
+					// otherwise display
+					return true;
+				}
 			}
 		}
 	};

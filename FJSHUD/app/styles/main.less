@@ -63,8 +63,8 @@ p {
 .PanelWrapper {
   position: absolute;
   padding: 0 10px 10px 10px;
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
@@ -162,7 +162,7 @@ p {
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  width:30%;
+  width:40%;
 }
 
 .BoxFramePH{
@@ -250,8 +250,8 @@ p {
 
 
 .LeftBar .Recent {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -260,8 +260,8 @@ p {
 
 .LeftBar .Recent .ContactList {
   flex: 1 1 0;
-  -ms-flex: 1;
-  -webkit-flex: 1;
+  -ms-flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   overflow-y: auto;
   min-height: 60px;
   margin-top: 10px;
@@ -525,6 +525,7 @@ p {
   /******* notifications **********/
   .LeftBar
   {
+    height: 99%;
    .Notifications
    {
         .TitleBar .XButton,
@@ -539,6 +540,9 @@ p {
     background-color: transparent;
   }
   
+  .Widget{
+    height: 97%;
+  } 
   .WidgetTabBar{ clear: both;}
   .Messages{        
           
@@ -561,25 +565,35 @@ p {
     top: -10px;
     width: 100%;
     position: relative;
-    margin-top: 0px;    
+    margin-top: 0px;  
+    height: 18px;  
+    
+    &.last{
+      height: auto;
+      
+      &.alert{
+        margin-top: 15px;
+      }
+    }
     
      &.firstsection{
         top: -4px;        
      }
      
-     &.halfHeight{
+     /*&.halfHeight{
         overflow: hidden;
         height: 1.5em;
          &.firstsection{
             height: 1.8em;
          }
-     }
+     }*/
   }
   
   .LeftBarNotificationMessageSection{
     float: left;
     padding-left: 0px;
     width: 82%;
+    clear: none;
     
     .NotificationDisplayName {
         padding-left: 5px; 
@@ -599,6 +613,14 @@ p {
     .NotificationMessage {
         padding-left: 5px;
     }
+    
+  }
+  .Overlay {
+    &.notifications{ 
+      .LeftBarNotificationMessageSection{
+         width: 90%;
+      }
+    }
   }
   
   .MyCallBlock_Rec {
@@ -617,6 +639,9 @@ p {
         }
                 
        }
+   }
+   .DockPanel { 
+     height: 100% !important;     
    }
   
 }

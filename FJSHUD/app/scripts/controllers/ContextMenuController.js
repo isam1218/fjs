@@ -149,13 +149,46 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	$scope.callNumber = function(number) {
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
 	};
+
+  $scope.storeRecentContact = function(phoneNumber){
+    var localPid = JSON.parse(localStorage.me);
+    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+    var dialedXpid;
+    var contactMatch = false;
+    contactService.getContacts().then(function(data){
+      for (var i = 0; i < data.length; i++){
+        var singleContact = data[i];
+        if (phoneNumber == singleContact.primaryExtension || phoneNumber == singleContact.phoneBusiness || phoneNumber == singleContact.phoneMobile){
+        	dialedXpid = singleContact.xpid;
+          contactMatch = true;
+          break;
+        }
+      }
+      if (contactMatch){
+      	$scope.recent[dialedXpid] = {
+        	type: 'contact',
+          time: new Date().getTime()
+        };
+        localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+        $rootScope.$broadcast('recentAdded', {id: dialedXpid, type: 'contact', time: new Date().getTime()});
+      } else if (!contactMatch){
+      	return;
+      }
+    });
+  };
 	
-	$scope.takeCall = function(){
+	$scope.takeParkedCall = function(){
 		httpService.sendAction('parkedcalls', 'transferFromPark', {
 			parkedCallId: $scope.original.xpid,
 			contactId: $rootScope.myPid
 		});
-	};	
+	};
+	
+	$scope.takeQueueCall = function() {
+		httpService.sendAction('queue_call', 'transferToMe', {
+			queueCallId: $scope.context.xpid
+		});
+	};
 
 	// generic function for any internal calls (page, intercom, voicemail, etc.)
 	$scope.callInternal = function(action, group) {
@@ -172,6 +205,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		// single user
 		else
 			httpService.sendAction('contacts', action, {toContactId: $scope.profile.xpid});
+	};
+	
+	$scope.bargeCall = function(action) {
+		httpService.sendAction('contacts', action + 'Call', {contactId: $scope.profile.xpid});
 	};
 	
 	$scope.sendGroupMail = function(group) {
@@ -236,6 +273,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	$scope.recordConference = function(record) {		
 		httpService.sendAction("conferences", record ? "startRecord" : "stopRecord", {conferenceId: $scope.profile.xpid});
+	};
+	
+	$scope.recordQueueCall = function(record) {		
+		httpService.sendAction("queue_call", record ? "startRecord" : "stopRecord", {queueCallId: $scope.context.xpid});
 	};
 	
 	$scope.muteUser = function(mute) {

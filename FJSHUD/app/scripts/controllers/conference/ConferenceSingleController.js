@@ -1,5 +1,5 @@
-hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'UtilService', 'ContactService', 'PhoneService',
-	function($scope, $rootScope, conferenceService, httpService, $routeParams, $location, utilService, contactService, phoneService) {
+hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'ContactService', 'PhoneService', 'SettingsService',
+	function($scope, $rootScope, conferenceService, httpService, $routeParams, $location, contactService, phoneService, settingsService) {
 	$scope.conversationType = 'conference';
 	
 	$scope.conferenceId = $routeParams.conferenceId;
@@ -68,9 +68,22 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
               localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
               break;
       }
-  }; 
+  };
 
-   	$scope.searchContact = function(contact){
+  $scope.tabFilter = function(){
+    return function(tab){
+      if (tab.lower == 'recordings'){
+        var recordingPerm = settingsService.getPermission('showCallCenter');
+        if (recordingPerm)
+          return true;
+        else
+          return false;
+      }
+      return true;
+    };
+  };
+
+  $scope.searchContact = function(contact){
 		if(contact){
 			params = {
 				conferenceId: $scope.conferenceId,
@@ -81,8 +94,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 		}
 	};
 
-   	$scope.joinConference = function(){
-
+  $scope.joinConference = function(){
 		if($scope.joined){
 			params = {
 				conferenceId:$scope.conferenceId

@@ -10,6 +10,7 @@ var auth = undefined;
 
 var data_obj = {};
 var feeds = fjs.CONFIG.FEEDS;
+var timestamp_flag = false;
 
 onconnect = function(event){
 	var port = event.ports[0];
@@ -56,7 +57,7 @@ function format_array(feed) {
 	for (key in feed) {
 		if (feed[key].items.length > 0) {
 			// create xpid for each record
-			for (i = 0; i < feed[key].items.length; i++)
+			for (var i = 0; i < feed[key].items.length; i++)
 				feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
 				
 			arr = arr.concat(feed[key].items);
@@ -68,7 +69,7 @@ function format_array(feed) {
 
 function sync_request(f){			
 	var newFeeds = '';
-	for (i = 0; i < f.length; i++)
+	for (var i = 0; i < f.length; i++)
 		newFeeds += '&' + f[i] + '=';
 	
 	var request = new httpRequest();
@@ -93,10 +94,10 @@ function sync_request(f){
 						}
 						// update individually
 						else {
-							for (i = 0; i < synced_data[feed][key].items.length; i++) {
+							for (var i = 0; i < synced_data[feed][key].items.length; i++) {
 								var newItem = true;
 								if(data_obj[feed]){
-									for (j = 0; j < data_obj[feed][key].items.length; j++) {
+									for (var j = 0; j < data_obj[feed][key].items.length; j++) {
 										if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
 											data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
 											newItem = false;
@@ -127,7 +128,7 @@ function sync_request(f){
 						data_obj['callerrecording'][key] = {items: []};
 						data_obj['conferencerecording'][key] = {items: []};
 					
-						for (i = 0; i < synced_data[feed][key].items.length; i++) {
+						for (var i = 0; i < synced_data[feed][key].items.length; i++) {
 							if (synced_data[feed][key].items[i].conferenceId)
 								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
 							else
@@ -147,7 +148,7 @@ function sync_request(f){
 				"data": synced_data
 			};
 			
-			for (i = 0; i < ports.length; i++)
+			for (var i = 0; i < ports.length; i++)
 				ports[i].postMessage(sync_response);
 				
 			synced = true;
@@ -161,23 +162,24 @@ function sync_request(f){
 function do_version_check(){
 	var newFeeds ='';
 
-	for (i = 0; i < feeds.length; i++)
+	for (var i = 0; i < feeds.length; i++)
 		newFeeds += '&' + feeds[i] + '=';
 			
 	var request = new httpRequest();
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds,"POST",{},header,function(xmlhttp){
-		if (xmlhttp.status == 401) {
-			// authentication failed
-			for(i = 0; i < ports.length;i++){
-				ports[i].postMessage({
-					"action": "auth_failed"
-				});
-			}
-		}
-		else if (xmlhttp.status == 200){
+		if (xmlhttp.status == 200){
 			var changedFeeds = [];
-            var params = xmlhttp.responseText.split(";");
+      var params = xmlhttp.responseText.split(";");
+      if (!timestamp_flag){
+	      for (var j = 0; j < ports.length; j++){
+	      	ports[j].postMessage({
+	      		"action": "timestamp_created",
+	      		"data": params[0]
+	      	});
+	      }
+	      timestamp_flag = true;      	
+      }
 			
             for(var i = 2; i < params.length-1; i++)
 				changedFeeds.push(params[i]);
