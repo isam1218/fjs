@@ -44,7 +44,7 @@
 		</div>
 		<div style="float:right;display:inline-block;margin-top:5px" class="controlButtons">
 			<a href="#/CancelCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_RINGING" class="XButton" value="{{::verbage.cancel}}" onclick="window.close()">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
-			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD "class="XButton">{{::verbage.end}}</a>
+			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.end}}</a>
 
 			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton"  onclick="window.close()"  ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0">{{::verbage.hold}}</a>
 			
