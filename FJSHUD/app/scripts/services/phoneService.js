@@ -56,9 +56,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	registerPhone = function(isRegistered){
 		if(phone){
-			if(phone.status != REG_STATUS_ONLINE){
-				phone.register(isRegistered);
-			}
+			phone.register(isRegistered);
 		}
 	};
 
