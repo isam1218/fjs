@@ -38,7 +38,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	
 	$scope.stopTime;	
 	$scope.callObj = {};
-	
+	$scope.anotherDevice = false;
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
 	// used to update the UI
     $scope.updateTime = function(id) {    	
@@ -212,6 +212,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 
+
 	$scope.get_away_notifications= function(){
 		away_notifications = $scope.notifications.filter(function(item){
 			return item.receivedStatus == "away"; 
@@ -354,6 +355,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			$scope.overlay = 'groups';
 	};
 
+	$scope.$on('settings_updated',function(event,data){
+		if(data['instanceId']){
+			console.debug("client_id " + localStorage.instance_id + " instance_id " + data['instanceId']);
+			if(data['instanceId'] != localStorage.instance_id){
+				$scope.anotherDevice = true;
+			}
+		}
+	});
 
 	$scope.$on('calls_updated',function(event,data){
 		$scope.calls = {};

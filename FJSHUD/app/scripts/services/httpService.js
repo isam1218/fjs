@@ -324,17 +324,28 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&redirect_uri=" + encodeURIComponent(location.href)
             + "&display=page"
             + "&client_id=web.hud.fonality.com"
+            + "&instance_id=" + localStorage.instance_id
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
 		location.href = authURL;
 	};
 	
+	// get instance_id token
+	if (/instance_id/ig.test(location.href)) {
+		instance_id = location.href.match(/instance_id=([^&]+)/)[1];
+		localStorage.instance_id = instance_id;
+	}
+
 	// get authorization token
 	if (/access_token/ig.test(location.href)) {
 		authTicket = location.href.match(/access_token=([^&]+)/)[1];
 		localStorage.authTicket = authTicket;
 		$location.hash('');
 	}
+
+
+
+
 	else if (localStorage.authTicket === undefined)
 		attemptLogin();
 	else
@@ -405,12 +416,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
             + "&revoke_token=" + authTicket;
-		
-    delete localStorage.me;	
-		delete localStorage.authTicket;
-		delete localStorage.nodeID;
-		delete localStorage.data_obj;
-		
+		localStorage.removeItem("me");
+    	localStorage.removeItem("authTicket");
+    	localStorage.removeItem("nodeID");
+    	localStorage.removeItem("data_obj");
+    	localStorage.removeItem("instance_id");
+    	
 		// shut off web worker
 		if (worker.port)
 			worker.port.close();

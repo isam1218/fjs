@@ -109,7 +109,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="Messages webphone">                
+			<div class="Messages webphone" ng-if="anotherDevice">                
                     <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
