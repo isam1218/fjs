@@ -31,7 +31,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
          * @protected
          */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-     window.onbeforeunload = function(){
+    window.onunload = function(){
      	//return "Are you sure you want to close the window";
      	if(localStorage.fon_tabs){
      		tabMap = JSON.parse(localStorage.fon_tabs);
@@ -48,10 +48,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 				localStorage.fon_tabs = JSON.stringify(tabMap);		
 			}	
 
-			return;
- 
     	}
-	}
+	};
 
 
      //when unloading reassign master tab 
@@ -183,8 +181,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 	}else{
 		
-		assignTab();
+		if(localStorage.tabclosed == "true"){
+			localStorage.removeItem('fon_tabs');
+			localStorage.removeItem('data_obj');
+		}
 		
+		localStorage.tabclosed = "false";
+		
+		assignTab();
 		
 		if(Object.keys(tabMap).length > 1){
 			window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
