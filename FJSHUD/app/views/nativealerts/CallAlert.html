@@ -47,12 +47,14 @@
 			<div  style="font-weight:bold;font-size:11px">{{currentCall.displayName}}</div>
 			<div><div>outbound on call</div></div>
 		</div>
-		<div style="float:right;display:inline-block;margin-top:5px">
-			<a href="#/CancelCall?{{currentCall.xpid}}" ng-if="isRinging" class="XButton" value="{{::verbage.cancel}}" onclick="window.close()">{{::verbage.cancel}}</a>
-			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="!isRinging && !onHold" class="XButton"  onclick="window.close()">{{::verbage.hold}}</a>
-			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="!isRinging && !onHold" class="XButton">{{::verbage.end}}</a>
-			<a href="#/ResumeCall?{{currentCall.xpid}}" ng-if="onHold" class="XButton">{{::verbate.talk}}</a>
-			<a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && isRinging"  class="XButton">{{::verbage.accept}}</a>
+		<div style="float:right;display:inline-block;margin-top:5px" class="controlButtons">
+			<a href="#/CancelCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_RINGING" class="XButton" value="{{::verbage.cancel}}" onclick="window.close()">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
+			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD "class="XButton">{{::verbage.end}}</a>
+
+			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton"  onclick="window.close()"  ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0">{{::verbage.hold}}</a>
+			
+			<a href="#/ResumeCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_HOLD" class="XButton">{{::verbate.talk}}</a>
+			<a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING"  class="XButton">{{::verbage.accept}}</a>
 		</div>
 	</div>
 	<div style="margin:0px 0px 0px 0px;background-color: gray;color: white;padding: .25em;">
