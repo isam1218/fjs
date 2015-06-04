@@ -1,12 +1,12 @@
 <div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}" expand-contract-notifications>
 	<div class="TitleBar" ng-show="!hasMessages">
-        <div class="Icon"></div>
+        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
      </div> 
 	 <div class="TitleBar hasButton"  ng-show="hasMessages" show-on-hover-parent>
-        <div class="Icon"></div>
+        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
@@ -22,7 +22,7 @@
 					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
 					    <img />
 					   <div ng-if="$index == 0"> 
-					    <div class="Icon" ng-show="!showHeader"></div>
+					    <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'" ng-show="!showHeader"></div>
 				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             

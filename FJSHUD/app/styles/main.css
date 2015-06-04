@@ -653,11 +653,17 @@ p {
   float: right;
   top: -1px;
 }
-.LeftBar .Notifications .TitleBar .Icon,
-.LeftBar .Notifications .NotificationDivider > div .Icon {
+.LeftBar .Notifications .TitleBar .NoNotificationIcon,
+.LeftBar .Notifications .NotificationDivider > div .NoNotificationIcon {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+}
+.LeftBar .Notifications .TitleBar .HasNotificationIcon,
+.LeftBar .Notifications .NotificationDivider > div .HasNotificationIcon {
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -72px -72px;
 }
 .LeftBar .Notifications .NotificationDivider:not(.firstHeaderDivider) > div {
   border-left: 1px solid #ccc;
@@ -6928,8 +6934,5 @@ a.Messages {
   }
   .DockPanel {
     height: 100% !important;
-  }
-  .DockPanel .InnerDock {
-    width: 100% !important;
   }
 }
