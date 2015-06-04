@@ -415,7 +415,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&display=page"
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
-            + "&revoke_token=" + authTicket;
+            + "&revoke_token=" + authTicket
+            + "&instance_id=" + localStorage.instance_id;
 		localStorage.removeItem("me");
     	localStorage.removeItem("authTicket");
     	localStorage.removeItem("nodeID");

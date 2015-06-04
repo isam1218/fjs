@@ -3,7 +3,7 @@ fjs.i18n = {
     /******global*****/
     contacts:'Contacts',
     Groups:'Groups',
-    group: 'group',
+    group: 'Group',
     Conferences:'Conferences',
     queues:'Queues',
     member:'member(s)',
@@ -13,7 +13,7 @@ fjs.i18n = {
     Call:'Call',
     chat:'Chat',
     recordings:'Recordings',
-    cancel:'cancel',
+    cancel:'Cancel',
     select:'Select',
     clear_selection:'Clear Selection',
     
@@ -34,8 +34,8 @@ fjs.i18n = {
 		available: 'available',
 		away:'away',
 		busy:'busy',
-		favorites: 'favorites',
-		external: 'external',
+		favorites: 'Favorites',
+		external: 'External',
         team: 'Team',
 		public_team: 'Public Team',
         my_department: 'My Department',
