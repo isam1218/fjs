@@ -216,11 +216,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     myHttpService.getFeed('weblauncher');    
     myHttpService.getFeed('weblaunchervariables');
     myHttpService.getFeed('i18n_langs');
-    
-
-    this.onAlertClicked = function(urlHash){
-        console.log(urlHash);
-    }
+   
 
     var phonePromise = phoneService.getDevices();
     
@@ -640,7 +636,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
 
         myHttpService.sendAction("weblauncher","update",data);
-    }
+    };
 
     $scope.update_weblauncher = function(){
         if(weblauncherTimeout){
@@ -650,7 +646,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.update_weblauncher_settings();
             weblauncherTimeout = undefined;
         },500);
-    }
+    };
 	
 
 
