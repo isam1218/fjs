@@ -485,7 +485,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.update_settings(type,'update',value);
             queueThresholdUpdateTimeout = undefined;
         },500);
-    }
+    };
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
