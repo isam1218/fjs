@@ -1,4 +1,4 @@
-hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactService', function($q, $rootScope, httpService,contactService) {	
+hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService','ContactService', function($q, $timeout, $rootScope, httpService,contactService) {	
 	var deferSettings = $q.defer();
 	var deferPermissions = $q.defer();
 	var settings = {};
@@ -118,6 +118,18 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 			deferSettings.resolve(settings);
 			
 			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
+			
+			// load app for first time
+			if (!$rootScope.loaded) {
+				$timeout(function() {
+					$rootScope.loaded = true;
+					
+					// stupid warning
+					window.onbeforeunload = function(){
+						return "Are you sure you want to navigate away from this page?";
+					};
+				}, 2000);
+			}
 		}
 	});
 

@@ -138,13 +138,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
                           localStorage.me = JSON.stringify(initialPid);
                           
                         }
-                        
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
 								for (feed in synced_data) {
 									if (synced_data[feed].length > 0)
-										$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
 								}
 							});
 		                }
@@ -232,16 +231,19 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                    }else{
 		                    	data_obj = JSON.parse(localStorage.data_obj);
 		                    }
+							
 		                    // send data to other controllers
-		                    for (feed in synced_data) {
-		                        if(!$.isEmptyObject(data_obj)){
-		                        	data_obj[feed] = synced_data[feed];
-		                        	localStorage.data_obj = JSON.stringify(data_obj);
-		                        }
-
-		                        if (synced_data[feed].length > 0)
-		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-		                    }
+							$rootScope.$evalAsync(function() {
+								for (feed in synced_data) {
+									if(!$.isEmptyObject(data_obj)){
+										data_obj[feed] = synced_data[feed];
+										localStorage.data_obj = JSON.stringify(data_obj);
+									}
+									
+									if (synced_data[feed].length > 0)
+										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+								}
+							});
 		                }
 		                break;
 		            case "feed_request":
