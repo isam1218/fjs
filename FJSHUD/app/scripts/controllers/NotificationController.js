@@ -536,8 +536,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	});
 
 	var addTodaysNotifications = function(item){
-		currentDate = new Date();
-		itemDate = new Date(item.time);
+    	var today = moment(ntpService.calibrateTime(new Date().getTime()));
+		var itemDate = moment(item.time);
 		var contactId = $routeParam.contactId;
 		if(item.queueId){
 			queue = queueService.getQueue(item.queueId);
@@ -552,20 +552,19 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			}	
 		}
 
-		if(currentDate.getFullYear() == itemDate.getFullYear() &&
-			  currentDate.getMonth() == itemDate.getMonth() &&
-			  currentDate.getDate() == itemDate.getDate()){			
-				if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
-					return false;
-				else{
-					$scope.todaysNotifications.push(item);
-					if(item.type == 'wall' || item.type == 'chat'){
-						playChatNotification = true;
+		if(itemDate.startOf('day').isSame(today.startOf('day'))){
+			if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
+			{return false;
+			}else{
+				$scope.todaysNotifications.push(item);
+				if(item.type == 'wall' || item.type == 'chat'){
+					playChatNotification = true;
 
-					}
 				}
+			}
 		}
-	}
+		
+	};
 
 	$scope.$on('quickinbox_synced', function(event,data){
 		//var playChatNotification = false;

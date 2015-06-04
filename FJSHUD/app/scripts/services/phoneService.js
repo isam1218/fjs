@@ -62,6 +62,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+
+	activatePhone = function(){
+		if(settingsService.getSetting('instanceId') != localStorage.instance_id){
+			registerPhone(false);
+		}else{
+			registerPhone(true);
+		}	
+	}; 
+
 	setVolume = function(volume){
 		if(soundManager){
 			soundManager.speaker = volume;
@@ -233,6 +242,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
+				activatePhone();
 			 }
             //isRegistered = true;
 			soundManager = session.soundManager;
