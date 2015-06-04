@@ -160,8 +160,6 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 			if (conference.members.length > 0)
 				totals.occupied++;
 		}
-		
-		$rootScope.loaded.conferences = true;
 	});
 
 	$rootScope.$on("server_synced",function(event,data){
