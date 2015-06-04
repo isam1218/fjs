@@ -1,4 +1,5 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService) {
     var addedPid;
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -8,7 +9,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var settings = {};
     var queues = [];
     var callId = $routeParam.callId;
+    var queueThresholdUpdateTimeout;
     $scope.avatar ={};
+
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     
@@ -473,6 +476,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.volume.micVol;
     $scope.volume.spkVol;
     $scope.queueSummaryStats = {};
+
+    $scope.update_queue_treshold = function(type,value){
+        if(queueThresholdUpdateTimeout){
+            $timeout.cancel(queueThresholdUpdateTimeout);
+        }
+        queueThresholdUpdateTimeout = $timeout(function(){
+            $scope.update_settings(type,'update',value);
+            queueThresholdUpdateTimeout = undefined;
+        },500);
+    };
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');

@@ -107,6 +107,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	};
 	
 	$scope.showCallStatus = function($event, contact) {
+		// console.error('call status contact - ', contact);
 		$event.stopPropagation();
         $event.preventDefault();
 		

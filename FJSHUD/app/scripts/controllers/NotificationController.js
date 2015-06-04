@@ -3,6 +3,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 	var addedPid;
 	var localPid;
+	var playChatNotification = false;
+	var displayDesktopAlert = true;
+		
 	$scope.notifications = [];
 	$scope.calls = {};
 	$scope.inCall = false;
@@ -31,7 +34,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.newNotifications = [];
 	$scope.awayNotifications = [];
 	$scope.oldNotifications = [];
-	
+	$scope.notifications = [];
+	$scope.todaysNotifications = [];
+
 	$scope.showNew = false;
 	$scope.showAway = false;
 	$scope.showOld = false;
@@ -356,7 +361,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	$scope.$on('settings_updated',function(event,data){
-		if(data['instanceId']){
+		if(data['instanceId'] != undefined){
 			console.debug("client_id " + localStorage.instance_id + " instance_id " + data['instanceId']);
 			if(data['instanceId'] != localStorage.instance_id){
 				$scope.anotherDevice = true;
@@ -530,9 +535,42 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.$safeApply();
 	});
 
+	var addTodaysNotifications = function(item){
+		currentDate = new Date();
+		itemDate = new Date(item.time);
+		var contactId = $routeParam.contactId;
+		if(item.queueId){
+			queue = queueService.getQueue(item.queueId);
+			if(queue){
+				item.displayName = queue.name;
+			}
+				
+		}
+		if(settingsService.getSetting('alert_vm_show_new') != 'true'){
+			if(item.type == 'vm'){
+				displayDesktopAlert = false;
+			}	
+		}
+
+		if(currentDate.getFullYear() == itemDate.getFullYear() &&
+			  currentDate.getMonth() == itemDate.getMonth() &&
+			  currentDate.getDate() == itemDate.getDate()){			
+				if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
+					return false;
+				else{
+					$scope.todaysNotifications.push(item);
+					if(item.type == 'wall' || item.type == 'chat'){
+						playChatNotification = true;
+
+					}
+				}
+		}
+	}
+
 	$scope.$on('quickinbox_synced', function(event,data){
-		var displayDesktopAlert = true;
-		
+		//var playChatNotification = false;
+		displayDesktopAlert = true;
+  		
   		if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -554,9 +592,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-                 notification.label = 'missed call';
+                 				notification.label = 'missed call';
 							}else if(notification.type == 'busy-ring-back'){
-                notification.label = 'is now available for call';
+                				notification.label = 'is now available for call';
 								notification.message= "User is free for call";
 							}
 					if(notification.audience == "conference"){
@@ -575,14 +613,22 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							}
 						}
 						if(!isNotificationAdded){							
-
-							$scope.notifications.push(notification);							
+							$scope.notifications.push(notification);
+							addTodaysNotifications(notification);
+							
 						}
 					}else if(notification.xef001type == "delete"){
 
 						for(var j = 0; j < $scope.notifications.length; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
 								$scope.notifications.splice(j,1);
+								break;	
+							}
+						}
+
+						for(var j = 0; j < $scope.todaysNotifications.length; j++){
+							if($scope.todaysNotifications[j].xpid == notification.xpid){
+								$scope.todaysNotifications.splice(j,1);
 								break;	
 							}
 						}
@@ -597,23 +643,22 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){
-								notification.label = $scope.verbage.long_waiting_call;
+						notification.label = $scope.verbage.long_waiting_call;
 					}else if(notification.type == 'q-alert-abandoned'){
-								notification.label = 'abandoned call';
+						notification.label = 'abandoned call';
 					}else if(notification.type == 'gchat'){
-								notification.label = "group chat to";
+						notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
-								notification.label = $scope.verbage.voicemail;
+						notification.label = $scope.verbage.voicemail;
 					}else if(notification.type == 'wall' || notification.type == 'chat'){
-								notification.label = 'chat message';
+						notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-                notification.label = 'missed call';
+                		notification.label = 'missed call';
 					}else if(notification.type == 'busy-ring-back'){
-            notification.label = 'is now available for call';
+            			notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}
-
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
 						var conference = conferenceService.getConference(xpid);
@@ -621,51 +666,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 					if(notification.xef001type != "delete"){
 						$scope.notifications.push(notification);
+						addTodaysNotifications(notification);
 					}
 				}
 			}
 		};
 
-		var playChatNotification = false;
-
-		$scope.todaysNotifications = $scope.notifications.filter(function(item){
-			currentDate = new Date();
-			itemDate = new Date(item.time);
-			var contactId = $routeParam.contactId;
-			if(item.queueId){
-				queue = queueService.getQueue(item.queueId);
-				if(queue){
-					item.displayName = queue.name;
-				}
-				
-			}
-			
-			
-			if(settingsService.getSetting('alert_vm_show_new') != 'true'){
-				if(item.type == 'vm'){
-					displayDesktopAlert = false;
-				}	
-			}
-
-			if(currentDate.getFullYear() == itemDate.getFullYear() &&
-			   currentDate.getMonth() == itemDate.getMonth() &&
-			   currentDate.getDate() == itemDate.getDate()){			
-					if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
-						return false;
-					else{
-						if(item.type == 'wall' || item.type == 'chat'){
-							playChatNotification = true;
-						}
-						
-						return true;
-					}
-			}
-			return false;
-		});
-
-
 		if(playChatNotification){
 			phoneService.playSound("received");
+			playChatNotification = false;
 		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
