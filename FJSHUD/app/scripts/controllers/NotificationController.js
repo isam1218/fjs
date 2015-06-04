@@ -360,8 +360,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			console.debug("client_id " + localStorage.instance_id + " instance_id " + data['instanceId']);
 			if(data['instanceId'] != localStorage.instance_id){
 				$scope.anotherDevice = true;
+				phoneService.registerPhone(false);
 			}else{
 				$scope.anotherDevice = false;
+				phoneService.registerPhone(true);
+			
 			}
 		}
 	});

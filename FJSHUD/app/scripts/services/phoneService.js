@@ -244,7 +244,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				soundManager.speaker = parseFloat(spkVolume);
 				soundManager.microphone = parseFloat(micVolume);
 			}
-			registerPhone(true);
+			//registerPhone(true);
 			
          } else if (session_status.status == 1) {
                 isRegistered = false;
@@ -700,7 +700,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-
+	this.registerPhone = registerPhone;
+	
 	var storeIncomingCallToRecent = function(incomingCallerXpid){
 		var localPid = JSON.parse(localStorage.me);
 		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
