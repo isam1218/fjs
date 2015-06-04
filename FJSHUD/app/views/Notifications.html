@@ -109,7 +109,7 @@
 				</div>
 				</a>
 			</div>
-			<!-- <div class="Messages webphone">                
+			 <!--<div class="Messages webphone">                
                     <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -369,7 +369,7 @@
 					<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 				</div>				
 				<div class="controlButtons">
-					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
+					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">{{::verbage.end}}</div>
 					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</div>
