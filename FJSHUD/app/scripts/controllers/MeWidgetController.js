@@ -446,7 +446,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     $scope.boxObj.enableBox;
                 else
                     !$scope.boxObj.enableBox
-                settingsService.enable_box();
                 myHttpService.updateSettings(type, action, model);
                 break;
             default:
