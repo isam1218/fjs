@@ -263,6 +263,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.selectedRingput = $scope.outputDevices.filter(function(item){
                  return item.id == soundManager.ringdefid; 
             })[0];
+
+            if($scope.selectedRingput == undefined){
+                $scope.selectedRingput = $scope.outputDevices[0];
+                $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+            }
+
+            if($scope.selectedOutput == undefined){
+                $scope.selectedOutput = $scope.outputDevices[0];
+                $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+            }
+           if($scope.selectedInput == undefined){
+                $scope.selectedInput = $scope.inputDevices[0];
+                $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+            }
         
     });
 
