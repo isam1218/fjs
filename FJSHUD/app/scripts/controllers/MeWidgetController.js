@@ -10,6 +10,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var queues = [];
     var callId = $routeParam.callId;
     var queueThresholdUpdateTimeout;
+    var weblauncherTimeout;
     $scope.avatar ={};
 
     
@@ -640,7 +641,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
         myHttpService.sendAction("weblauncher","update",data);
     }
+
+    $scope.update_weblauncher = function(){
+        if(weblauncherTimeout){
+            $timeout.cancel(weblauncherTimeout);
+        }
+        weblauncherTimeout = $timeout(function(){
+            $scope.update_weblauncher_settings();
+            weblauncherTimeout = undefined;
+        },500);
+    }
 	
+
+
 	// grab settings from service (prevents conflict with dock)
 	settingsService.getSettings().then(function(data) {
 		$scope.settings = settings = data;

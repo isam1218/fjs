@@ -45,7 +45,7 @@
             </div>
             <input type="text" name="outbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outbound"
             ng-disabled="currentWebLauncher.id != 'user_default'"
-            ng-change="update_weblauncher_settings()"
+            ng-change="update_weblauncher()"
             
             >
           </div>
@@ -65,7 +65,7 @@
             </div>
             <input type="text" name="outbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outboundHangup"
             ng-disabled="currentWebLauncher.id != 'user_default'"
-            ng-change="update_weblauncher_settings()"
+            ng-change="update_weblauncher()"
             
             >
           </div>
@@ -92,7 +92,7 @@
             </div>
             <input type="text" name="inbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inbound"
             ng-disabled="currentWebLauncher.id != 'user_default'"
-            ng-change="update_weblauncher_settings()"
+            ng-change="update_weblauncher()"
             >
           </div>
           <div class="Dialog-settings-row">
@@ -110,7 +110,7 @@
             </div>
             <input type="text" name="inbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inboundHangup"
             ng-disabled="currentWebLauncher.id != 'user_default'"
-            ng-change="update_weblauncher_settings()"
+            ng-change="update_weblauncher()"
             
             >
           </div>
