@@ -677,7 +677,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		} 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-			return b.time - a.time; 
+			return a.time - b.time; 
 		});
 			       
 		$scope.$watch(function(scope){
