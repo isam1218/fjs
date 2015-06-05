@@ -581,7 +581,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
+			if(contactId && contactId != null && contactId == item.senderId)
 			{return false;
 			}else{
 				$scope.todaysNotifications.push(item);
