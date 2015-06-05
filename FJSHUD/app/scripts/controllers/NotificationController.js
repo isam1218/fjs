@@ -72,7 +72,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	// used to update the UI
     $scope.updateTime = function(id) {    	
 			
-			var time = ntpService.calibrateTime(new Date().getTime()) - $scope.callObj[id].start;
+		var time = ntpService.calibrateTime(new Date().getTime()) - $scope.callObj[id].start;
     	time = time/1000;
     	$scope.callObj[id].seconds = Math.floor(time % 60);
     	time = time/60; 
@@ -492,7 +492,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			   $scope.callObj[xpid].seconds = 0;
 			   $scope.callObj[xpid].hours = 0;	
 			   $scope.callObj[xpid].days = 0;
-			   $scope.callObj[xpid].start = new Date().getTime();			   
+			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());			   
 		   }
 		   if($scope.callObj[xpid].seconds == 0 && 
 			  $scope.callObj[xpid].minutes == 0 && 
