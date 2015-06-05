@@ -207,12 +207,15 @@
 					</div>
 				</div>
 				
-				<div>
-					<h4>{{::verbage.Options}}</h4>
-					<em>{{::verbage.add_yourself_to_conference}}</em>
+				<div ng-show="onCall.xpid != myPid && onCall.call.fullProfile.xpid != myPid">
+					<div>
+						<h4>{{::verbage.Options}}</h4>
+						<em>{{::verbage.add_yourself_to_conference}}</em>
+					</div>
+					
+					<input type="checkbox" ng-model="meToo.me" /> 
+					{{::verbage.join_me_as_well}}
 				</div>
-				
-				<input type="checkbox" ng-model="meToo.me" /> {{::verbage.join_me_as_well}}
 			</div>
 			
 			<div class="Section" ng-show="!selectedConf">
