@@ -294,6 +294,9 @@ p {
 .TopBarItemAppIcon.Search {
   background-position: 73.5% 0;
 }
+.TopBarItemAppIcon.Intellinote {
+  background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
+}
 .TopBarItemMe .TopBarItemAppIcon {
   background-image: none;
 }
@@ -3596,6 +3599,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
   margin-right: 10px;
+  font-size: .95em;
   /*height:auto;
 	  min-height: 16px;
 	  max-height: 200px;
@@ -4498,6 +4502,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   vertical-align: middle;
   position: relative;
   cursor: pointer;
+}
+.SelectBox.HideFirst option:first-child {
+  display: none;
 }
 .SelectBox:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
@@ -5523,7 +5530,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 100%;
   padding-right: 5px;
   position: absolute;
-  bottom: 26px;
+  /*bottom: 26px;*/
+  bottom: 1px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
@@ -5658,12 +5666,22 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: absolute;
   bottom: 0px;
 }
-.LeftBarNotificationSection.withCalls {
-  bottom: 54px;
-}
 .LeftBarNotificationSection:hover,
 .LeftBarNotificationSection.noMessages {
   background: transparent;
+}
+.LeftBarNotificationSection.noMessages {
+  bottom: 0px;
+}
+.LeftBarNotificationSection.noMessages .NotificationMessages {
+  padding-bottom: 0px;
+  bottom: 0px;
+}
+.LeftBarNotificationSection.noMessages .TitleBar {
+  margin-bottom: 0px;
+}
+.LeftBarNotificationSection.withCalls {
+  bottom: 50px !important;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;

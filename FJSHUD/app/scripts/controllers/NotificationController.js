@@ -566,7 +566,23 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	var addTodaysNotifications = function(item){
     	var today = moment(ntpService.calibrateTime(new Date().getTime()));
 		var itemDate = moment(item.time);
-		var contactId = $routeParam.contactId;
+		var context = item.context.split(":")[0];
+		var contextId = item.context.split(":")[1];
+		var targetId;
+		
+		switch(context){
+			case "groups":
+				targetId = $routeParam.groupId;
+				break;
+			case "contacts":
+				targetId = $routeParam.contactId;
+				break;
+			case "conferences":
+				targetId = $routeParam.conferenceId;
+				break;
+		}
+
+
 		if(item.queueId){
 			queue = queueService.getQueue(item.queueId);
 			if(queue){
@@ -581,7 +597,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			if(contactId && contactId != null && contactId == item.senderId)
+			if(targetId != undefined && targetId == contextId)
 			{return false;
 			}else{
 				$scope.todaysNotifications.push(item);
@@ -598,6 +614,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		//var playChatNotification = false;
 		displayDesktopAlert = true;
   		
+
+
   		if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;

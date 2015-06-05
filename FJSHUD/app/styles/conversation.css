@@ -231,6 +231,7 @@
 }
 .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
   margin-right: 10px;
+  font-size: .95em;
   /*height:auto;
 	  min-height: 16px;
 	  max-height: 200px;
