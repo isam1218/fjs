@@ -369,13 +369,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         return imageUrl;
     };
 
-    $scope.somechild = "views/testTemplate.html";
-    $scope.languages = [{id:1,label: 'United States (English)',value: '0_5'},
-    {id:2,value: '0_3',label: 'Chinese Simplied',},
-    {id:3,value: '0_1',label: 'English(Australia)',},
-    {id:4,value: '0_4',label: 'Espanol',},
-    {id:5,value: '0_9',label: 'Francais',}];
-    $scope.languageSelect = $scope.languages[0];
+    $scope.languages;
+    $scope.languageSelect;
 
     $scope.autoClearSettingOptions = [{id:1,value:30,label:'30 seconds'},
     {id:2,value:25,label:'25 Seconds'},
@@ -1051,9 +1046,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('i18n_updated',function(event,data){
 		if(data){
 			var language_id;
+			var default_language;
 			$scope.languages = data;
 		     if(localStorage.fon_lang_code){
 				for (var i = 0, len = $scope.languages.length; i < len; i++) {
+                    
+                    
                     if($scope.languages[i].code == localStorage.fon_lang_code){
                         $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
@@ -1062,12 +1060,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
              }else{
                 for (var i = 0, len = data.length; i < len; i++) {
+                    if($scope.languages[i].code == "lang.us"){
+                           default_language = $scope.languages[i];
+                    }
+
                     if($scope.languages[i].xpid == settings.hudw_lang){
                         $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
                         break;
                     }
                 }    
+             }
+             if($scope.languageSelect == undefined){
+                 $scope.languageSelect = default_language;
+                 myHttpService.updateSettings('hudw_lang','update',$scope.languageSelect.xpid); 
+
              }
         }
 	});
