@@ -35,7 +35,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		$scope.myQueue = false;
 		
 		// get type
-		if ($scope.profile.firstName) {
+		if ($scope.profile.firstName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
