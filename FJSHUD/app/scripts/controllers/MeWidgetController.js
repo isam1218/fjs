@@ -964,12 +964,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }else{
                 $scope.timeElapsed = "00:00";
             }
+            
+            if($scope.currentCall && !data[$scope.currentCall.xpid]){
+                $scope.currentCall = null;
+            }
         }else{
             $scope.currentCall = null;
         }
+        /*
         if(!data[$scope.currentCall.xpid]){
             $scope.currentCall = null;
-        }
+        }*/
         updateTime();
     });
     

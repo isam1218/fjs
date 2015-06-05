@@ -45,8 +45,8 @@
 		overflow:hidden;
 		font-size: 13px;
 		color: #222;
-		white-space: normal;
-		line-height: 15px;		
+		white-space: normal;		
+		max-height: 75px;	
 		//text-overflow:ellipsis;
 		p{
 			font-size:.8em;
@@ -63,6 +63,8 @@
     overflow: hidden;
     width: 100%;
     padding-right: 5px;
+    position: absolute;
+    bottom: 26px;
 
    .CallStatusIconContainer,
    .CallStatusText{
@@ -158,28 +160,52 @@
 
 
 .NotificationMessages{	
-	overflow-y: auto;
-	overflow-x:hidden;
+	overflow:hidden;
 	background-image:url("../img/XTile-Widget.png");
-	background: transparent;
-	/*overflow: hidden;*/
-	width: 100%;	
+	/*background: transparent;	*/
+	width: 100%;		
+	padding-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	
+	.scroller{
+	  max-height: 430px;   	  
+      padding-top: 0px;
+      
+      &:hover{
+       overflow-y: auto;
+       overflow-x:hidden;
+      }
+      .firstMessage{
+        margin-top: -16px;
+      }
+	}
 }
-.NotificationMessages.LeftBarNotifications.noMessages{
-    position: relative;
+.NotificationMessages.LeftBarNotifications.noMessages{   
      top: -5px;
 }
 
 .LeftBarNotifications{		
 	transition: 1s;		
 }
-.TitleBar.noNotifications{
-  display: none;
+
+.TitleBar{
+  margin-bottom: 10px;
+  &.noNotifications{
+   display: none;
+  }
 }
 .LeftBarNotificationSection{
     background-color: #999;
     background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#888));
     border-bottom: solid 1px #777;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    
+    &.withCalls{
+      bottom: 54px;
+    }
     
     &:hover, &.noMessages{
         background: transparent;
@@ -204,17 +230,13 @@
 	display:-webkit-box;
 	padding-left: 5px;
 	overflow: hidden;
-	width: 100%;
-	/*height: 30px;*/
-	height: 15px;
+	width: 83%;	
+	height: 0px;
+	padding-bottom: 10px;
 	
 	&.last{
 	  height: auto;
-	}
-	
-	&.firstsection{
-	   margin-top: 10px;
-	}
+	}	
 }
 .NotificationSection.open {
   height: auto;
@@ -317,17 +339,18 @@
 	font-style:normal;
 	font-size:1em;
 	background-image:url("../img/XTile-Widget.png");
-	padding-bottom: 20px;
+	/*padding-bottom: 20px;*/
 	width: 100%;
 	&.plugins, &.webphone{
 	   cursor:pointer;
 	   text-decoration:none;
 	   color:inherit;
-	}
-	&:not(:first-child) {
-        margin-top: -18px;
-    }
-
+	   .content{
+	       font-weight:bold;
+	       font-size:.7em;
+	       height: 2.5em;
+	   }
+	}	
 }
 a.Messages{
 	
