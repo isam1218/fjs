@@ -13,51 +13,81 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
 		progress: 0
 	};
 
-  $scope.appIcons;
-
-  var enableIcon = function(addedIconKey){
-    for (var i = 0; i < $scope.appIcons.length; i++){
-      var currentIcon = $scope.appIcons[i];
-      if (currentIcon.key === addedIconKey)
-        currentIcon.enabled = 1;
-    }
-  };
-
-  var disableIcon = function(iconToRemoveKey){
-    for (var i = 0; i < $scope.appIcons.length; i++){
-      var currentIcon = $scope.appIcons[i];
-      if (currentIcon.key === iconToRemoveKey)
-        currentIcon.enabled = 0;
-    }
-  };
-
-  var loadNavbar = function(){
     // To INTEGRATE, add new navbar icons HERE...
     $scope.appIcons = [
-        {title:"Me", url:"#/settings", key:"Me", enabled:1, title: $scope.verbage.me}
-        , {title:"Calls and Recordings", url:"#/calllog", key:"CallLog", enabled:1, title: $scope.verbage.call_and_recordings}
-        , {title:"Conferencing", url:"#/conferences", key:"Conferences", enabled:1, title: $scope.verbage.conferencing}
-        , {title:"Call Center", url:"#/callcenter", key:"CallCenter", enabled:1, title: $scope.verbage.callcenter}
-        , {title:"Search", url:"#/search", key:"Search", enabled:1, title: $scope.verbage.search}
-        , {title:"Box", url:"#/box", key:"Box", enabled:1, title: $scope.verbage.box}
-        , {title:"Video Collaboration", url:"#/zoom", key:"Zoom", enabled:1, title: $scope.verbage.zoom}
-        // ***Intellinote integration here***
+        {
+			url:"#/settings", 
+			key:"Me", 
+			enabled:true, 
+			title: $scope.verbage.me
+		},
+		{
+			url:"#/calllog", 
+			key:"CallLog", 
+			enabled:true, 
+			title: $scope.verbage.call_and_recordings
+		},
+		{
+			url:"#/conferences", 
+			key:"Conferences", 
+			enabled:true, 
+			title: $scope.verbage.conferencing
+		},
+		{
+			url:"#/callcenter", 
+			key:"CallCenter", 
+			enabled:false, 
+			title: $scope.verbage.callcenter
+		},
+		{
+			url:"#/search", 
+			key:"Search", 
+			enabled:true, 
+			title: $scope.verbage.search
+		},
+		{
+			url:"#/box", 
+			key:"Box", 
+			enabled:false, 
+			title: $scope.verbage.box
+		},
+		{
+			url:"#/zoom", 
+			key:"Zoom", 
+			enabled:false, 
+			title: $scope.verbage.zoom
+		},
+		{
+			url:"#/intellinote", 
+			key:"Intellinote", 
+			enabled:false, 
+			title: "Intellinote"
+		}
     ];
-    // take into account licenses (disable icon if user does not have license)...
-    settingsService.getPermissions().then(function(data) {
-      if (!data.showVideoCollab)
-        disableIcon("Zoom");
-      if (!data.showCallCenter)
-        disableIcon("CallCenter");
-    });
-  }();
+	
+	$scope.$on('me_synced', function() {
+		settingsService.getPermissions().then(function(data) {
+			for (var i = 0; i < $scope.appIcons.length; i++) {
+				// toggle permission-based icons
+				if ($scope.appIcons[i].key == 'Intellinote')
+					$scope.appIcons[i].enabled = data.showIntellinote;
+				else if ($scope.appIcons[i].key == 'Zoom')
+					$scope.appIcons[i].enabled = data.showVideoCollab;
+				else if ($scope.appIcons[i].key == 'CallCenter')
+					$scope.appIcons[i].enabled = data.showCallCenter;
+			}
+		});
+	});
 
-  $scope.$on('settings_updated', function(event, data){
-    if (data['hudmw_box_enabled'])
-      enableIcon('Box');
-    else
-      disableIcon('Box');
-  });
+	$scope.$on('settings_updated', function(event, data){
+		for (var i = 0; i < $scope.appIcons.length; i++) {
+			// toggle box icon
+			if ($scope.appIcons[i].key == 'Box') {
+				$scope.appIcons[i].enabled = data['hudmw_box_enabled'];
+				break;
+			}
+		}
+	});
 
   $scope.getAvatar = function() {
     return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);

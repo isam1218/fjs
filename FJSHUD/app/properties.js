@@ -3,12 +3,14 @@ var fjs = {};
 fjs.CONFIG = {
     SERVER: {
         serverURL: "https://dev4.fon9.com:8081"
-        , loginURL: "https://dev4.fon9.com:5501"
-      //  serverURL: "https://huc-dev.fonality.com:8081"
-      //, loginURL: "https://huc-dev.fonality.com:5501"
+		, loginURL: "https://dev4.fon9.com:5501"
+//      serverURL: "https://lb-stage3.fonality.com:446"
+//      , loginURL: "https://lb-stage3.fonality.com:444"
+//      serverURL: "https://huc-dev.fonality.com:8081"
+//      , loginURL: "https://huc-dev.fonality.com:5501"
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
-//       serverURL: "https://huc-qa.fonality.com:8080"
-//        , loginURL: "https://huc-qa.fonality.com:5501"
+//      serverURL: "https://huc-qa.fonality.com:8080"
+//      , loginURL: "https://huc-qa.fonality.com:5501"
     }
     , FEEDS:['me', 'contacts', 'locations', 
             'settings', 'location_status', 'queue_members', 'queuemembercalls', 

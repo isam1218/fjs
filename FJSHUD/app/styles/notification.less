@@ -64,7 +64,8 @@
     width: 100%;
     padding-right: 5px;
     position: absolute;
-    bottom: 26px;
+    /*bottom: 26px;*/
+    bottom: 1px;
 
    .CallStatusIconContainer,
    .CallStatusText{
@@ -200,15 +201,25 @@
     border-bottom: solid 1px #777;
     width: 100%;
     position: absolute;
-    bottom: 0px;
-    
-    &.withCalls{
-      bottom: 54px;
-    }
+    bottom: 0px;        
     
     &:hover, &.noMessages{
         background: transparent;
-    }     
+    }  
+    &.noMessages{       
+       bottom: 0px;
+       
+       .NotificationMessages{
+         padding-bottom: 0px;
+         bottom: 0px;
+       }
+      .TitleBar{
+        margin-bottom: 0px;
+      }
+    }   
+    &.withCalls{
+      bottom: 50px !important;
+    }
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications{	
 	visibility:visible;
