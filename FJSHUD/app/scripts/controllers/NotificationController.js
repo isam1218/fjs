@@ -307,7 +307,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			   		  
 			}   
 			   
-		}	
+		}
 		$scope.showNotificationOverlay(false);
     };	
 
@@ -584,6 +584,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 								notification.label = $scope.verbage.long_waiting_call;;
 							}else if(notification.type == 'q-alert-abandoned'){
 								notification.label = 'abandoned call';
+								notification.message = "";
 							}else if(notification.type == 'gchat'){
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
@@ -645,6 +646,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						notification.label = $scope.verbage.long_waiting_call;
 					}else if(notification.type == 'q-alert-abandoned'){
 						notification.label = 'abandoned call';
+						notification.message = "";
 					}else if(notification.type == 'gchat'){
 						notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
