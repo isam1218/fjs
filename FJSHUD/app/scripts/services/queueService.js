@@ -183,8 +183,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				};
 			}
 		}
-	
-		$rootScope.loaded.queues = true;
 	});
 	
 	$rootScope.$on('queue_call_synced', function(event, data) {

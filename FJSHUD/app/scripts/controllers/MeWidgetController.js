@@ -1,4 +1,5 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService) {
     var addedPid;
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
@@ -8,7 +9,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var settings = {};
     var queues = [];
     var callId = $routeParam.callId;
+    var queueThresholdUpdateTimeout;
+    var weblauncherTimeout;
     $scope.avatar ={};
+
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     
@@ -212,11 +216,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     myHttpService.getFeed('weblauncher');    
     myHttpService.getFeed('weblaunchervariables');
     myHttpService.getFeed('i18n_langs');
-    
-
-    this.onAlertClicked = function(urlHash){
-        console.log(urlHash);
-    }
+   
 
     var phonePromise = phoneService.getDevices();
     
@@ -263,6 +263,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.selectedRingput = $scope.outputDevices.filter(function(item){
                  return item.id == soundManager.ringdefid; 
             })[0];
+
+            if($scope.selectedRingput == undefined){
+                $scope.selectedRingput = $scope.outputDevices[0];
+                $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+            }
+
+            if($scope.selectedOutput == undefined){
+                $scope.selectedOutput = $scope.outputDevices[0];
+                $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+            }
+           if($scope.selectedInput == undefined){
+                $scope.selectedInput = $scope.inputDevices[0];
+                $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+            }
         
     });
 
@@ -355,13 +369,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         return imageUrl;
     };
 
-    $scope.somechild = "views/testTemplate.html";
-    $scope.languages = [{id:1,label: 'United States (English)',value: '0_5'},
-    {id:2,value: '0_3',label: 'Chinese Simplied',},
-    {id:3,value: '0_1',label: 'English(Australia)',},
-    {id:4,value: '0_4',label: 'Espanol',},
-    {id:5,value: '0_9',label: 'Francais',}];
-    $scope.languageSelect = $scope.languages[0];
+    $scope.languages;
+    $scope.languageSelect;
 
     $scope.autoClearSettingOptions = [{id:1,value:30,label:'30 seconds'},
     {id:2,value:25,label:'25 Seconds'},
@@ -446,7 +455,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     $scope.boxObj.enableBox;
                 else
                     !$scope.boxObj.enableBox
-                settingsService.enable_box();
                 myHttpService.updateSettings(type, action, model);
                 break;
             default:
@@ -460,6 +468,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.volume.micVol;
     $scope.volume.spkVol;
     $scope.queueSummaryStats = {};
+
+    $scope.update_queue_treshold = function(type,value){
+        if(queueThresholdUpdateTimeout){
+            $timeout.cancel(queueThresholdUpdateTimeout);
+        }
+        queueThresholdUpdateTimeout = $timeout(function(){
+            $scope.update_settings(type,'update',value);
+            queueThresholdUpdateTimeout = undefined;
+        },500);
+    };
 
     $scope.reset_app_menu = function(){
         $scope.update_settings('HUDw_AppModel_callLog','delete');
@@ -613,8 +631,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
 
         myHttpService.sendAction("weblauncher","update",data);
-    }
+    };
+
+    $scope.update_weblauncher = function(){
+        if(weblauncherTimeout){
+            $timeout.cancel(weblauncherTimeout);
+        }
+        weblauncherTimeout = $timeout(function(){
+            $scope.update_weblauncher_settings();
+            weblauncherTimeout = undefined;
+        },500);
+    };
 	
+
+
 	// grab settings from service (prevents conflict with dock)
 	settingsService.getSettings().then(function(data) {
 		$scope.settings = settings = data;
@@ -835,6 +865,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             })
             if (activeWebLauncher.length > 0){
                 $scope.currentWebLauncher = activeWebLauncher[0];
+            }else{
+                //if no web launcher is set find the default web launcher and set it for the user
+                for(var i = 0; i < data.length;i++){
+                    if(data[i].id == "user_default"){
+                        $scope.currentWebLauncher = data[i];
+                        $scope.update_settings('hudmw_launcher_config_id','update',currentWebLauncher.id)
+                    }
+                }
             };
 
             $scope.weblauncher_profiles = data;
@@ -1008,9 +1046,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('i18n_updated',function(event,data){
 		if(data){
 			var language_id;
+			var default_language;
 			$scope.languages = data;
 		     if(localStorage.fon_lang_code){
 				for (var i = 0, len = $scope.languages.length; i < len; i++) {
+                    
+                    
                     if($scope.languages[i].code == localStorage.fon_lang_code){
                         $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
@@ -1019,12 +1060,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
              }else{
                 for (var i = 0, len = data.length; i < len; i++) {
+                    if($scope.languages[i].code == "lang.us"){
+                           default_language = $scope.languages[i];
+                    }
+
                     if($scope.languages[i].xpid == settings.hudw_lang){
                         $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
                         break;
                     }
                 }    
+             }
+             if($scope.languageSelect == undefined){
+                 $scope.languageSelect = default_language;
+                 myHttpService.updateSettings('hudw_lang','update',$scope.languageSelect.xpid); 
+
              }
         }
 	});

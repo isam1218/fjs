@@ -40,7 +40,7 @@
 
   </head>
   <body data-ng-controller="MainController"  flow-prevent-drop>
-    <div id="AppLoading" ng-if="!loaded.all">
+    <div id="AppLoading" ng-if="!loaded">
 		<div ng-cloak>
 			<div>{{::verbage.loading}}...</div>
 			<img src="img/ajax-loader.gif" />
@@ -80,7 +80,7 @@
 							<div class="arrow"></div>
 						</a>
 						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.group}}</div>
+							<div class="inner">{{::verbage.Groups}}</div>
 							<div class="arrow"></div>
 						</a>
 					</div>
@@ -143,7 +143,6 @@
     <script src="../bower_components/ngReact/ngReact.js"></script>
     <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
-    <script src="../bower_components/angular-ui-sortable/sortable.min.js"></script>
 
 	<script src="../bower_components/moment/moment.js"></script>
 	<script src="../bower_components/moment/locale/ja.js"></script>

@@ -194,7 +194,6 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 			}
 		}
 		
-		$rootScope.loaded.groups = true;
 		deferred.resolve(formatData());
 	});
 	

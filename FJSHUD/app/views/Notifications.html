@@ -1,12 +1,12 @@
 <div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}" expand-contract-notifications>
 	<div class="TitleBar" ng-show="!hasMessages">
-        <div class="Icon"></div>
+        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
      </div> 
 	 <div class="TitleBar hasButton"  ng-show="hasMessages" show-on-hover-parent>
-        <div class="Icon"></div>
+        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
@@ -22,7 +22,7 @@
 					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
 					    <img />
 					   <div ng-if="$index == 0"> 
-					    <div class="Icon" ng-show="!showHeader"></div>
+					    <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'" ng-show="!showHeader"></div>
 				        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
 				        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
@@ -109,8 +109,8 @@
 				</div>
 				</a>
 			</div>
-			<!-- <div class="Messages webphone">                
-                    <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+			<div class="Messages webphone" ng-if="anotherDevice" ng-click="activatePhone()">                
+			        <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
                             </div>
@@ -140,7 +140,7 @@
                             
                         </div>
                  </div>               
-            </div> -->
+            </div>
 
 	</div>
 </div>
@@ -194,6 +194,38 @@
                         </div>
                 </div>
                 </a>
+            </div>
+            <div class="Messages webphone">                
+                    <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                            <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                                <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+                            </div>
+                            
+                    </div>
+                    <div class="NotificationDivider ng-class:{'firstHeaderDivider': phoneSessionEnabled && todaysNotifications.length == 0, 'noMessagess': todaysNotifications.length == 0}" >
+                        <img />
+                       <div ng-if="phoneSessionEnabled && todaysNotifications.length == 0"> 
+                        <div class="Icon" ng-show="!showHeader"></div>
+                        <div ng-show="!showHeader">{{::verbage.notifications}}  </div>
+                        <div class="Event" ng-show="notifications.length > 0 && !showHeader"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
+                       </div>             
+                    </div>
+                    <div class="NotificationSection webphone last ng-class:{'firstsection': phoneSessionEnabled && todaysNotifications.length == 0}"> 
+                        
+                        <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+                            <div class="AvatarWarningSmall"></div>
+                        </div>
+                    
+                        <div class="LeftBarNotificationMessageSection" > 
+                            <div class="chatNotification webphone">
+                                <div><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
+                                <div ></div>
+
+                                <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
+                            </div>
+                            
+                        </div>
+                 </div>               
             </div>
 		 	<div class="overlayNotificationsSection" ng-if="hasNewNotifications"> 	
 			<!--  <div class="Conference-HeaderTitle ng-binding" ng-if="hasNewNotifications">NEW ITEMS</div>
@@ -369,9 +401,10 @@
 					<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 				</div>				
 				<div class="controlButtons">
-					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.cancel}}</div>
+					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</div>
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
-					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD ">{{::verbage.end}}</div>
+					
 					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</div>
 					<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</div>
 				</div>
