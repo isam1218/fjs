@@ -33,10 +33,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.oldNotificationsLength = 0;
 	$scope.newNotifications = [];
 	$scope.awayNotifications = [];
-	$scope.oldNotifications = [];
-	$scope.notifications = [];
+	$scope.oldNotifications = [];	
 	$scope.todaysNotifications = [];
-
+	$scope.numshowing = 0;
+	$scope.totalTodaysNotifications = 0;
+	$scope.showing = 4;
+	$scope.showAllNotifications = false;
 	$scope.showNew = false;
 	$scope.showAway = false;
 	$scope.showOld = false;
@@ -44,7 +46,29 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.stopTime;	
 	$scope.callObj = {};
 	$scope.anotherDevice = false;
-	$scope.phoneSessionEnabled = phoneService.isPhoneActive();
+	
+	$scope.phoneSessionEnabled = phoneService.isPhoneActive();	
+	
+	$scope.showHideElements = function(index){
+		var showing = 4;
+		if(!$scope.phoneSessionEnabled || $scope.anotherDevice)
+			showing = 3;
+		if(!$scope.phoneSessionEnabled && $scope.anotherDevice)
+			showing = 2;
+		
+		$scope.showing = showing;
+		
+		if(!$scope.showAllNotifications)
+		{	
+			if(index > showing)
+				return false;
+			else
+			    return true;
+		}
+	
+		return true;
+	};
+
 	// used to update the UI
     $scope.updateTime = function(id) {    	
 			
@@ -488,7 +512,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				$scope.callObj[xpid]= {};		
 			}
 		}	
-		
+       	
+       	if($scope.inCall && !$.isEmptyObject($scope.callObj))
+       		$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
+       	else
+       		$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
 	});
 
 	$scope.playVm = function(xpid){
@@ -553,7 +581,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			if(contactId && contactId != null && contactId == item.senderId && item.type == 'wall')
+			if(contactId && contactId != null && contactId == item.senderId)
 			{return false;
 			}else{
 				$scope.todaysNotifications.push(item);
@@ -691,7 +719,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			if(!$scope.todaysNotifications || $scope.todaysNotifications.length == 0)
 			  $scope.hasMessages = false;
 			else
-		   	  $scope.hasMessages = true;	  
+		   	  $scope.hasMessages = true;	
+			
+			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 		});		
 			
 		$scope.$safeApply();

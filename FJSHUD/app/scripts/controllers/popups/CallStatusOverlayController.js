@@ -56,8 +56,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.timeElapsed = $filter('date')(date - startTime, 'mm:ss');
 			
 			// also get recorded time
-			if ($scope.onCall.call.record)
-				$scope.recordingElapsed = $filter('date')(date - localStorage.recordedAt, 'mm:ss');
+			if ($scope.onCall.call.recorded)
+				$scope.recordingElapsed = $filter('date')(date - JSON.parse(localStorage.recordedAt), 'mm:ss');
 		
 			// increment
 			if ($scope.$parent.overlay.show)
@@ -82,15 +82,17 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.recordCall = function() {
 		var action = '';
-		
 		if (!$scope.onCall.call.recorded) {
+			$scope.onCall.call.recorded = true;
 			$scope.recordingElapsed = '00:00';
-			localStorage.recordedAt = new Date().getTime();
+			localStorage.recordedAt = JSON.stringify(ntpService.calibrateTime(new Date().getTime()));
 			action = 'startCallRecording';
+			updateTime();
 		}
-		else
+		else{
+			$scope.onCall.call.recorded = false;
 			action = 'stopCallRecording';
-			
+		}
 		httpService.sendAction('contacts', action, {contactId: $scope.onCall.xpid});
 	};
 	
@@ -114,7 +116,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 			$scope.confQuery = '';
 			$scope.selectedConf = null;
-			$scope.meToo = 0;
+			$scope.meToo = {};
+			$scope.meToo.me;
 		}
 		else if (screen == 'transfer') {
 			$scope.transferFrom = contactService.getContact(xpid);
@@ -173,9 +176,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				contactId: $scope.onCall.xpid
 			});
 			
-			// me, too?
-			if ($scope.meToo) {
-				httpService.sendAction('conferences', 'joinContact', {conferenceId: $scope.selectedConf.xpid});
+			if ($scope.meToo.me) {
+				httpService.sendAction('conferences', 'joinContact', {conferenceId: $scope.selectedConf.xpid, contactId: $rootScope.myPid});
 			}
 			
 			// close and redirect

@@ -77,7 +77,7 @@
 		<div class="Footer">
 			<div class="Error" ng-show="onCall.call.recorded">{{ recordingElapsed }}</div>
 		
-			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" />
+			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" ng-model="onCall.call.recorded" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
 			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type <= 4" ng-click="changeScreen('conference')" />
 		</div>
@@ -212,7 +212,7 @@
 					<em>{{::verbage.add_yourself_to_conference}}</em>
 				</div>
 				
-				<input type="checkbox" ng-model="meToo" ng-true-value="1" ng-false-value="0" /> {{::verbage.join_me_as_well}}
+				<input type="checkbox" ng-model="meToo.me" /> {{::verbage.join_me_as_well}}
 			</div>
 			
 			<div class="Section" ng-show="!selectedConf">

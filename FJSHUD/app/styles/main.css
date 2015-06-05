@@ -620,6 +620,10 @@ p {
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
   /*-webkit-box-flex: 0;*/
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  z-index: 150;
 }
 .LeftBar .Notifications > div:first-child {
   /*font-size: .9em;*/
@@ -677,6 +681,8 @@ p {
   background-color: #fff;
   border: solid 1px #eee;
   min-height: 2.5em;
+  position: absolute;
+  bottom: 0;
 }
 .LeftBar .Phone .Number {
   width: 70%;
@@ -5502,7 +5508,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-size: 13px;
   color: #222;
   white-space: normal;
-  line-height: 15px;
+  max-height: 75px;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
@@ -5516,6 +5522,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   width: 100%;
   padding-right: 5px;
+  position: absolute;
+  bottom: 26px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
@@ -5612,19 +5620,32 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: inline-block;
 }
 .NotificationMessages {
+  overflow: hidden;
+  background-image: url("../img/XTile-Widget.png");
+  /*background: transparent;	*/
+  width: 100%;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.NotificationMessages .scroller {
+  padding-top: 0px;
+}
+.NotificationMessages .scroller:hover {
   overflow-y: auto;
   overflow-x: hidden;
-  background-image: url("../img/XTile-Widget.png");
-  background: transparent;
-  /*overflow: hidden;*/
-  width: 100%;
+}
+.NotificationMessages .scroller .firstMessage {
+  margin-top: -16px;
 }
 .NotificationMessages.LeftBarNotifications.noMessages {
-  position: relative;
   top: -5px;
 }
 .LeftBarNotifications {
   transition: 1s;
+}
+.TitleBar {
+  margin-bottom: 10px;
 }
 .TitleBar.noNotifications {
   display: none;
@@ -5633,6 +5654,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-color: #999;
   background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));
   border-bottom: solid 1px #777;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+}
+.LeftBarNotificationSection.withCalls {
+  bottom: 54px;
 }
 .LeftBarNotificationSection:hover,
 .LeftBarNotificationSection.noMessages {
@@ -5655,15 +5682,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: -webkit-box;
   padding-left: 5px;
   overflow: hidden;
-  width: 100%;
-  /*height: 30px;*/
-  height: 15px;
+  width: 83%;
+  height: 0px;
+  padding-bottom: 10px;
 }
 .NotificationSection.last {
   height: auto;
-}
-.NotificationSection.firstsection {
-  margin-top: 10px;
 }
 .NotificationSection.open {
   height: auto;
@@ -5756,7 +5780,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-style: normal;
   font-size: 1em;
   background-image: url("../img/XTile-Widget.png");
-  padding-bottom: 20px;
+  /*padding-bottom: 20px;*/
   width: 100%;
 }
 .Messages.plugins,
@@ -5765,8 +5789,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   text-decoration: none;
   color: inherit;
 }
-.Messages:not(:first-child) {
-  margin-top: -18px;
+.Messages.plugins .content,
+.Messages.webphone .content {
+  font-weight: bold;
+  font-size: .7em;
+  height: 2.5em;
 }
 a.Messages {
   text-decoration: none;
@@ -6845,6 +6872,9 @@ a.Messages {
   .LeftBar {
     height: 99%;
   }
+  .LeftBar .Notifications {
+    /*bottom: 16px;*/
+  }
   .LeftBar .Notifications .TitleBar .XButton,
   .LeftBar .Notifications .NotificationDivider > div .XButton {
     top: -3px !important;
@@ -6876,7 +6906,9 @@ a.Messages {
     width: 100%;
     position: relative;
     margin-top: 0px;
-    height: 18px;
+    height: 15px;
+    padding-bottom: 10px;
+    margin-bottom: -10px;
     /*&.halfHeight{
         overflow: hidden;
         height: 1.5em;
@@ -6892,7 +6924,13 @@ a.Messages {
     margin-top: 15px;
   }
   .NotificationSection.firstsection {
-    top: -4px;
+    top: 0px;
+    padding-top: 3px;
+    margin-bottom: 0px;
+  }
+  .NotificationSection:not(.firstsection) {
+    top: -10px;
+    margin-bottom: -12px;
   }
   .LeftBarNotificationMessageSection {
     float: left;
@@ -6934,5 +6972,8 @@ a.Messages {
   }
   .DockPanel {
     height: 100% !important;
+  }
+  .DockPanel .InnerDock {
+    width: 100% !important;
   }
 }

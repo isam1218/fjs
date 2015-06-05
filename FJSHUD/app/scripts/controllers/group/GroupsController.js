@@ -61,6 +61,17 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 		};
 	};
 
+  var parseContact = function(phoneNumber){
+    var parsedNumber = '';
+    for (var i = 0; i < phoneNumber.length; i++){
+      var character = phoneNumber[i];
+      if (character >= 0 && character <= 9){
+        parsedNumber += character;
+      }
+    }
+    return parsedNumber;
+  };
+
   $scope.searchFilter = function(){
     var query = $scope.$parent.query;
     return function(group){
@@ -70,7 +81,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
       if (group.members.length > 0){
         for (var i = 0; i < group.members.length; i++){
           var singleMember = group.members[i].fullProfile;
-          if (singleMember.fullName.toLowerCase().indexOf(query) != -1 || singleMember.primaryExtension.indexOf(query) != -1 || singleMember.phoneMobile.indexOf(query) != -1)
+          if (singleMember.fullName.toLowerCase().indexOf(query) != -1 || singleMember.primaryExtension.indexOf(query) != -1 || parseContact(singleMember.primaryExtension).indexOf(query) != -1 || singleMember.phoneMobile.indexOf(query) != -1 || parseContact(singleMember.phoneMobile).indexOf(query) != -1)
             return true;
         }
       }
