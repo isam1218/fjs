@@ -106,7 +106,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					return;
 				}
-				else if (widget == 'context' || widget == 'zoom')
+				else if (widget == 'context' || widget == 'drag' || widget == 'zoom')
 					return;
 			}
 			
