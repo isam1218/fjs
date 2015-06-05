@@ -88,6 +88,11 @@ hudweb.config(function ($routeProvider) {
 		{
 			templateUrl: 'views/BoxWidget.html'
 		})
+		.when('/intellinote',
+		{
+			templateUrl: 'views/Intellinote.html',
+			controller: 'IntellinoteController'
+		})
 		.otherwise({
 			redirectTo: '/settings'
 		});
