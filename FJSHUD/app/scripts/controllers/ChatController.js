@@ -100,7 +100,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		
         var data = {
             'action':'sendWallEvent',
-            'a.targetId': $routeParams.contactId,
+            'a.targetId': chat.targetId,
             'a.type':'f.conversation.chat',
             'a.xpid':"",
             'a.archive':0,
