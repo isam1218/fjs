@@ -59,10 +59,22 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		};
 	};
 
+	var parseContact = function(phoneNumber){
+		var parsedNumber = '';
+		for (var i = 0; i < phoneNumber.length; i++){
+			var character = phoneNumber[i];
+			if (character >= 0 && character <= 9){
+				parsedNumber += character;
+			}
+		}
+		return parsedNumber;
+	};
+	
 	$scope.searchFilter = function(){
 		var query = $scope.$parent.query;
+		// console.error('* - ', parsedQuery);
 		return function(contact){
-			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1){
+			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || parseContact(contact.primaryExtension).indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || parseContact(contact.phoneMobile).indexOf(query) != -1){
 				return true;
 			}
 		};
