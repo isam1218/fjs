@@ -9,9 +9,8 @@
         <div class="MenuSection">
              <div class="MenuItem" data-ng-click="(currentPopup.target == null || currentPopup.target == '') ? setLocation(location.xpid) : moveLocation(location.xpid)" data-ng-class="{'selected':location.xpid == getCurrentLocationId()}" data-ng-repeat="location in locations">                              
                 <div class="SelectedIcon"></div>
-                <div class="MenuItemText">{{ ::location.name }} <span ng-if="location.locationType != 'a' && location.locationType != 'w' && location.locationType != 'm'">({{ ::location.phone }})</span></div>
-                <div class="MenuItemTextStatus">{{ (location.status.deviceStatus=='r' || location.locationType == 'm') ? 'registered' : 'unregistered' }}</div>
-
+                <div class="MenuItemText">{{ ::location.name }} <span ng-if="location.locationType != 'a' && location.locationType != 'w'">({{ ::location.phone }})</span></div>
+                <div class="MenuItemTextStatus">{{ location.status.deviceStatus=='r' && 'registered' || 'unregistered' }}</div>
              </div>
         </div>
     </div>

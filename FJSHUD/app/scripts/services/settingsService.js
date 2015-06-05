@@ -83,18 +83,18 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		for (var i = 0, len = data.length; i < len; i++) {
 			// look at fj repository > MyPermissions.java for reference
 			if (data[i].propertyKey == 'personal_permissions') {
-				// console.error('!prop value - ', data[i].propertyValue);
+				// console.error('!permission prop value -> ', data[i].propertyValue);
 				
 				// licenses from MyPermissions.java
-				permissions.showCallCenter = isEnabled(data.permissions, 10);
+				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
-				permissions.showVideoCollab = isEnabled(data.permissions, 1);
+				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
 
 				// group permissions from MyPermissions.java
-				permissions.enableAgentLogin = isEnabled(data.permissions, 7);
-				permissions.recordingEnabled = isEnabled(data.permissions, 14);
-				permissions.deleteMyRecordingEnabled = isEnabled(data.permissions, 15);
-				permissions.deleteOtherRecordingEnabled = isEnabled(data.permissions, 16);
+				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
+				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
+				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
+				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
@@ -107,14 +107,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				break;
 			}
 		}
-	});
-
-	$rootScope.$on('callpermissions_synced', function(event, data){
-		console.error('callperm synced - ', data);
-	});
-
-	$rootScope.$on('queuecallpermissions_synced', function(event, data){
-		console.error('q call perm synced - ', data);
 	});
 	
 	$rootScope.$on('settings_synced', function(event, data) {

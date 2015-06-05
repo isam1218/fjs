@@ -43,9 +43,11 @@
 			<div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 		</div>
 		<div style="float:right;display:inline-block;margin-top:5px" class="controlButtons">
-			<a href="#/CancelCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_RINGING" class="XButton" value="{{::verbage.cancel}}" onclick="window.close()">{{::verbage.cancel}}</a>
-			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton"  onclick="window.close()">{{::verbage.hold}}</a>
+			<a href="#/CancelCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_RINGING" class="XButton" value="{{::verbage.cancel}}" onclick="window.close()">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
 			<a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_ACCEPTED || currentCall.state == callState.CALL_HOLD "class="XButton">{{::verbage.end}}</a>
+
+			<a href="#/HoldCall?{{currentCall.xpid}}"  ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton"  onclick="window.close()"  ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0">{{::verbage.hold}}</a>
+			
 			<a href="#/ResumeCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_HOLD" class="XButton">{{::verbate.talk}}</a>
 			<a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING"  class="XButton">{{::verbage.accept}}</a>
 		</div>
