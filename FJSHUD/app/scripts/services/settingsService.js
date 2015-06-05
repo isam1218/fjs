@@ -112,9 +112,13 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 	
 	$rootScope.$on('settings_synced', function(event, data) {
 		if (data.length > 0) {
-			// convert to object
-			for (key in data)
-				settings[data[key].key] = data[key].value;
+			// clear old object (but retain reference)
+			for (var key in settings)
+				delete settings[key];
+			
+			// convert new object
+			for (var i = 0, len = data.length; i < len; i++)
+				settings[data[i].key] = data[i].value;
 			
 			deferSettings.resolve(settings);
 			
