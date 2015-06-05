@@ -73,7 +73,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
   };
 
   $scope.searchFilter = function(){
-    var query = $scope.$parent.query;
+    var query = $scope.$parent.query.toLowerCase();
     return function(group){
       // console.log('group - ', group);
       if ((group.name || group.extension) && (group.name.toLowerCase().indexOf(query) != -1 || group.extension.indexOf(query) != -1))
