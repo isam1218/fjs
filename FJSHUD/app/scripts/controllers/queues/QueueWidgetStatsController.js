@@ -35,9 +35,12 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
 					for (var m = 0; m < queues[q].members.length; m++) {
 						if (queues[q].members[m].contactId == member.contactId) {
 							// attach queue and agent stats
+							var loggedin = queues[q].members[m];
 							member.otherQueues.push({
 								queue: queues[q],
-								stats: queues[q].members[m].stats
+								stats: queues[q].members[m].stats,
+								status: queues[q].members[m].status,
+								
 							});
 						}
 					}
