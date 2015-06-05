@@ -130,6 +130,10 @@
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
   /*-webkit-box-flex: 0;*/
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  z-index: 150;
 }
 .LeftBar .Notifications > div:first-child {
   /*font-size: .9em;*/
@@ -187,6 +191,8 @@
   background-color: #fff;
   border: solid 1px #eee;
   min-height: 2.5em;
+  position: absolute;
+  bottom: 0;
 }
 .LeftBar .Phone .Number {
   width: 70%;

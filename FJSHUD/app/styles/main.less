@@ -528,6 +528,7 @@ p {
     height: 99%;
    .Notifications
    {
+        /*bottom: 16px;*/
         .TitleBar .XButton,
         .NotificationDivider > div .XButton
         {
@@ -566,7 +567,9 @@ p {
     width: 100%;
     position: relative;
     margin-top: 0px;  
-    height: 18px;  
+    height: 15px;  
+    padding-bottom: 10px;
+    margin-bottom: -10px;
     
     &.last{
       height: auto;
@@ -577,9 +580,15 @@ p {
     }
     
      &.firstsection{
-        top: -4px;        
+        top: 0px;  
+        padding-top: 3px;      
+        margin-bottom: 0px;
      }
      
+     &:not(.firstsection){
+       top: -10px;
+       margin-bottom: -12px;
+     }
      /*&.halfHeight{
         overflow: hidden;
         height: 1.5em;
@@ -641,7 +650,10 @@ p {
        }
    }
    .DockPanel { 
-     height: 100% !important;     
+     height: 100% !important;
+     .InnerDock {
+        width: 100% !important;
+     }
    }
   
 }
