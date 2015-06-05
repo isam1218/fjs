@@ -993,12 +993,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }else if(data[i].phone == $scope.currentCall.phone){
                         $scope.currentCall = data[i];
                         call_exist = true;
+                    }else if(data[i].xpid == $scope.currentCall.xpid){
+                        $scope.currentCall = data[i];
                     }
                 }
             }
             
             if($scope.calls[[callId]]){
-                $scope.currentCall = $scope.calls[$scope.callId];
+                $scope.currentCall = $scope.calls[callId];
             }else{
                 $scope.timeElapsed = "00:00";
             }
@@ -1076,7 +1078,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }
                 }    
              }
-             if($scope.languageSelect == undefined){
+             if($scope.languageSelect == undefined && default_language != undefined){
                  $scope.languageSelect = default_language;
                  myHttpService.updateSettings('hudw_lang','update',$scope.languageSelect.xpid); 
 
