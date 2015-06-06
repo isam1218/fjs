@@ -66,7 +66,7 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 
   $scope.getRef = function(member, myself){
     if (member.contactId == myself)
-      return '#/group/' + groupId;
+      return '#/group/' + $scope.groupId;
     else
       return "#/contact/" + member.contactId;
   };
