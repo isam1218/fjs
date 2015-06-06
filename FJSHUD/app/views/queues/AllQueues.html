@@ -15,7 +15,7 @@
 <div class="ListViewTopSpace"></div>
 
 <div ng-if="viewIcon" class="QueueList">
-	<div class="Block" ng-repeat="queue in queues | filter: query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
+	<div class="Block" ng-repeat="queue in queues | filter: que.query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
 		<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecentQueue(queue.xpid)" class="Header">
 			<avatar profile="queue"></avatar>
 			<div class="Title">
