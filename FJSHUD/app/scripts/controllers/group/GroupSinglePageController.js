@@ -2,6 +2,7 @@ hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeP
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = $scope.group.members;
+	// console.error('group page members - ', $scope.members);
 	$scope.action = {};
 	 
 	$scope.callOptions = [
@@ -13,6 +14,15 @@ hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeP
 	
 	$scope.action.selected = $scope.callOptions[0];
 	
+	$scope.memberFilter = function(){
+		return function(member){
+			if (member.contactId == $rootScope.myPid)
+				return false;
+			else 
+				return true;
+		};
+	};
+
 	// call action was selected
 	$scope.makeCall = function(type) {
 		httpService.sendAction('groups', type, {

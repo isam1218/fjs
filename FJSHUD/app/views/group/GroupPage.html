@@ -14,7 +14,7 @@
             </div>
 
             <!--ng-repeat= "member in members | filter: {displayName:query}"-->
-            <a href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members | filter: {onPage: true} track by member.xpid"> 
+            <a href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members | filter: memberFilter() track by member.xpid"> 
             
                 <avatar profile="member"></avatar>
 
