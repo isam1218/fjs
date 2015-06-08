@@ -129,7 +129,11 @@
   width: 100%;
   border-bottom-left-radius: 30px;
   -webkit-border-bottom-left-radius: 30px;
-  -webkit-box-flex: 0;
+  /*-webkit-box-flex: 0;*/
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  z-index: 150;
 }
 .LeftBar .Notifications > div:first-child {
   /*font-size: .9em;*/
@@ -163,11 +167,17 @@
   float: right;
   top: -1px;
 }
-.LeftBar .Notifications .TitleBar .Icon,
-.LeftBar .Notifications .NotificationDivider > div .Icon {
+.LeftBar .Notifications .TitleBar .NoNotificationIcon,
+.LeftBar .Notifications .NotificationDivider > div .NoNotificationIcon {
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+}
+.LeftBar .Notifications .TitleBar .HasNotificationIcon,
+.LeftBar .Notifications .NotificationDivider > div .HasNotificationIcon {
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -72px -72px;
 }
 .LeftBar .Notifications .NotificationDivider:not(.firstHeaderDivider) > div {
   border-left: 1px solid #ccc;
@@ -181,6 +191,8 @@
   background-color: #fff;
   border: solid 1px #eee;
   min-height: 2.5em;
+  position: absolute;
+  bottom: 0;
 }
 .LeftBar .Phone .Number {
   width: 70%;

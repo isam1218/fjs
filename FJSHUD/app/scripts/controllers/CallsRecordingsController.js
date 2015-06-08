@@ -1,25 +1,25 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'SettingsService', 'NtpService', function($scope, $rootScope, $routeParams, $location, settingsService, ntpService) {
+hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'SettingsService', function($scope, $rootScope, $routeParams, $location, settingsService) {
 	// routing
 	$scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'}];
 	
-
-  // var offset = ntpService.fixTime();
-  // var adjustedTime = new Date(offset);
-  // var regularTime = new Date();
-
-  // console.error('ntp - ', moment(adjustedTime).lang('en').format('hh:mm:ss:SSS a'));
-  // console.error('reg - ', moment(regularTime).lang('en').format('hh:mm:ss:SSS a'));
-  
-  // console.error('fixTime - ', ntpService.fixTime());
-  // console.error('ajusted time - ', adjustedTime.valueOf());
-  
-  // console.error('new Date() - ', new Date());
-  // console.error('new Date(milliseconds) - ', new Date(5000));
-
   $scope.setFromLocalStorage = function(val){
     $scope.globalXpid = val;
-    $scope.selected = localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-    $scope.toggleObject = localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+    if($routeParams.route != undefined){
+            $scope.selected = $routeParams.route;
+            localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+
+            for(var i = 0; i < $scope.tabs.length;i++){
+              if($scope.tabs[i].lower == $routeParams.route){
+                $scope.toggleObject = {item: i};
+                localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                break;
+              }
+            }
+    }else{
+
+      $scope.selected = localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+      $scope.toggleObject = localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+    }
   };
 
   var getXpidInCR = $rootScope.$watch('myPid', function(newVal){

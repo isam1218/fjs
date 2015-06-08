@@ -26,9 +26,9 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="bargePermission != 1" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="bargePermission != 1" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="bargePermission != 1" />
 						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
 					</div>
 				</div>
@@ -43,9 +43,9 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="bargePermission != 1" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="bargePermission != 1" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="bargePermission != 1" />
 						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 		<div class="Footer">
 			<div class="Error" ng-show="onCall.call.recorded">{{ recordingElapsed }}</div>
 		
-			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" />
+			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" ng-model="onCall.call.recorded" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
 			<input type="button" class="XButton" value="Conferencing" ng-show="onCall.call.type <= 4" ng-click="changeScreen('conference')" />
 		</div>
@@ -207,12 +207,15 @@
 					</div>
 				</div>
 				
-				<div>
-					<h4>{{::verbage.Options}}</h4>
-					<em>{{::verbage.add_yourself_to_conference}}</em>
+				<div ng-show="onCall.xpid != myPid && onCall.call.fullProfile.xpid != myPid">
+					<div>
+						<h4>{{::verbage.Options}}</h4>
+						<em>{{::verbage.add_yourself_to_conference}}</em>
+					</div>
+					
+					<input type="checkbox" ng-model="meToo.me" /> 
+					{{::verbage.join_me_as_well}}
 				</div>
-				
-				<input type="checkbox" ng-model="meToo" ng-true-value="1" ng-false-value="0" /> {{::verbage.join_me_as_well}}
 			</div>
 			
 			<div class="Section" ng-show="!selectedConf">

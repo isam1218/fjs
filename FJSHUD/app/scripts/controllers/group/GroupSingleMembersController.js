@@ -7,9 +7,10 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 	$scope.grp = {};
 	$scope.grp.query = '';
 	$scope.query = "";
+  $scope.myself = $rootScope.myPid;
 
-	$scope.sort_options = [
-	{name:$scope.verbage.sort_by_name, id:1,type:'fullProfile.displayName'},
+  $scope.sort_options = [
+  {name:$scope.verbage.sort_by_name, id:1,type:'fullProfile.displayName'},
     {name:$scope.verbage.sort_by_call_status,id:2, type:'fullProfile.call'},
     {name:$scope.verbage.sort_by_chat_status,id:3, type:'fullProfile.hud_status'},
   ];
@@ -17,49 +18,57 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
   $scope.selectedSort = $scope.sort_options[0];
 
   $scope.$on('pidAdded', function(event, data){
-  	addedPid = data.info;
-  	if (localStorage['recents_of_' + addedPid] === undefined){
-  		localStorage['recents_of_' + addedPid] = '{}';
-  	}
-  	$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+    addedPid = data.info;
+    if (localStorage['recents_of_' + addedPid] === undefined){
+      localStorage['recents_of_' + addedPid] = '{}';
+    }
+    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
   });
 
   $scope.storeRecentContact = function(xpid){
-		var localPid = JSON.parse(localStorage.me);
-		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		// $scope.recent = JSON.parse(localStorage.recent);		
-		$scope.recent[xpid] = {
-			type: 'contact',
-			time:  new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		// localStorage.recent = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
+    var localPid = JSON.parse(localStorage.me);
+    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
+    // $scope.recent = JSON.parse(localStorage.recent);   
+    $scope.recent[xpid] = {
+      type: 'contact',
+      time:  new Date().getTime()
+    };
+    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
+    // localStorage.recent = JSON.stringify($scope.recent);
+    $rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
   };
 
-	$scope.callExtension= function($event, extension){
-		$event.stopPropagation();
-		$event.preventDefault();
-		
-		phoneService.makeCall(extension);
-	};
-	
-	$scope.showCallStatus = function($event, contact) {
-		$event.stopPropagation();
+  $scope.callExtension= function($event, extension){
+    $event.stopPropagation();
+    $event.preventDefault();
+    
+    phoneService.makeCall(extension);
+  };
+  
+  $scope.showCallStatus = function($event, contact) {
+    $event.stopPropagation();
         $event.preventDefault();
-		
-		// permission?
-		if (contact.call.type == 0)
-			return;
-	
-		$scope.showOverlay(true, 'CallStatusOverlay', contact);
-	};
+    
+    // permission?
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+      return;
+  
+    $scope.showOverlay(true, 'CallStatusOverlay', contact);
+  };
 
-	$scope.searchFilter = function(){
-		var query = $scope.grp.query;
-		return function(member){
-			if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
-				return true;
-		};
-	};
+  $scope.searchFilter = function(){
+    var query = $scope.grp.query;
+    return function(member){
+      if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
+        return true;
+    };
+  };
+
+  $scope.getRef = function(member, myself){
+    if (member.contactId == myself)
+      return '#/group/' + $scope.groupId;
+    else
+      return "#/contact/" + member.contactId;
+  };
+
 }]);

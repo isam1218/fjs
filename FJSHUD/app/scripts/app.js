@@ -1,14 +1,10 @@
 'use strict';
 
 var hudweb = angular.module('fjshudApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
     'ngRoute',
     'ngSanitize',
     'flow',
-    'react',
-	'ui.sortable'
+    'react'
 ]);
 
 hudweb.config(function ($routeProvider) {
@@ -91,6 +87,11 @@ hudweb.config(function ($routeProvider) {
 		.when('/box',
 		{
 			templateUrl: 'views/BoxWidget.html'
+		})
+		.when('/intellinote',
+		{
+			templateUrl: 'views/Intellinote.html',
+			controller: 'IntellinoteController'
 		})
 		.otherwise({
 			redirectTo: '/settings'

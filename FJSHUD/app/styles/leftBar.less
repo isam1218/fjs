@@ -131,7 +131,11 @@
     width: 100%;
     border-bottom-left-radius: 30px;
     -webkit-border-bottom-left-radius: 30px;
-    -webkit-box-flex: 0;
+    /*-webkit-box-flex: 0;*/
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    z-index: 150;
     
     & > div:first-child {
     	/*font-size: .9em;*/    	
@@ -165,10 +169,16 @@
 	    top: -1px;
 	  }
 	  
-	  .Icon {
+	  .NoNotificationIcon {
 	    width: 24px;
 	    height: 24px;
 	    background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+	  }
+	  .HasNotificationIcon{
+	  	width: 24px;
+	    height: 24px;
+	    background: url("../img/XIconSet-24x24.png") no-repeat -72px -72px;
+	  	
 	  }
 	}
 	
@@ -186,6 +196,8 @@
     background-color: #fff;
     border: solid 1px #eee;
     min-height: 2.5em;
+    position: absolute;
+    bottom: 0;
 	
 	.Number {	    
       width: 70%;

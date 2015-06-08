@@ -445,7 +445,8 @@
   border-top: 1px solid #ccc;
   margin-top: .25em;
 }
-#ContextMenu .BottomRow.Actions > div {
+#ContextMenu .BottomRow.Actions > div,
+#ContextMenu .BottomRow.Actions > div > div {
   display: inline;
 }
 #ContextMenu .BottomRow.Actions .Button {

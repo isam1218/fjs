@@ -73,16 +73,31 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
       }
   };
 
+  var serverCount = 0;
+  var currentServer;
+
 	conferenceService.getConferences().then(function(data) {
 		$scope.conferences = data.conferences;
 		$scope.totals = data.totals;
-	});
-
-	$scope.sort_options = [
-		{display_name: $scope.verbage.sort_room_by_location, type: 'location', desc: false}, 
-		{display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
-		{display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
-	];
+    for (var i = 0; i < data.conferences.length; i++){
+      if (currentServer != data.conferences[i].serverNumber){
+        serverCount++;
+        currentServer = data.conferences[i].serverNumber;
+      }
+    }
+    if (serverCount > 1){
+      $scope.sort_options = [
+        {display_name: $scope.verbage.sort_room_by_location, type: 'location', desc: false}, 
+        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
+        {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
+      ];
+    } else {
+      $scope.sort_options = [
+        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
+        {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
+      ];      
+    }
+  });
 	
   $scope.selectedConf = localStorage.selectedConfOption ? JSON.parse(localStorage.selectedConfOption) : $scope.sort_options[0];
 

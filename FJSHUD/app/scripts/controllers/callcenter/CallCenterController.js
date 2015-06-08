@@ -8,9 +8,22 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
   var getXpidInCC = $rootScope.$watch('myPid', function(newVal, oldVal){
   	if (!$scope.globalXpid){
   		$scope.globalXpid = newVal;
+		if($routeParams.route != undefined){
+	  		$scope.selected = $routeParams.route;
+	  		localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+			for(var i = 0; i < $scope.tabs.length;i++){
+	  			if($scope.tabs[i].lower == $routeParams.route){
+	  				$scope.toggleObject = {item: i};
+	  				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+
+	           break;
+	  			}
+	  		}
+		}else{
 			$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
 			$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
 			getXpidInCC();
+  		}
   	} else {
   		getXpidInCC();
   	}
@@ -18,8 +31,10 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 
   $scope.$on('pidAdded', function(event, data){
   	$scope.globalXpid = data.info;
-		$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-		$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+  	
+	$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+	$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+  	
   });
 
 	$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
@@ -52,8 +67,8 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 	
 	queueService.getQueues().then(function(data) {
 		// show all or my queues
-		console.log('my qs -', data.mine);
-		console.log('all qs - ', data.queues);
+		// console.log('my qs -', data.mine);
+		// console.log('all qs - ', data.queues);
 		if ($scope.selected == 'allqueues')
 			$scope.queues = data.queues;	
 		else if ($scope.selected == 'myqueue')

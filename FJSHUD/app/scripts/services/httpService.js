@@ -19,6 +19,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var upload_progress = 0;
 	var feeds = fjs.CONFIG.FEEDS;
 	var deferred_progress = $q.defer();
+
+  var clientFirstTime = new Date().getTime();
+  
+
 	
     var VERSIONS_PATH = "/v1/versions";
         /**
@@ -27,7 +31,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
          * @protected
          */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-     window.onbeforeunload = function(){
+    window.onunload = function(){
      	//return "Are you sure you want to close the window";
      	if(localStorage.fon_tabs){
      		tabMap = JSON.parse(localStorage.fon_tabs);
@@ -44,10 +48,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 				localStorage.fon_tabs = JSON.stringify(tabMap);		
 			}	
 
-			return;
- 
     	}
-	}
+	};
 
 
      //when unloading reassign master tab 
@@ -134,13 +136,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
                           localStorage.me = JSON.stringify(initialPid);
                           
                         }
-                        
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
 								for (feed in synced_data) {
 									if (synced_data[feed].length > 0)
-										$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
 								}
 							});
 		                }
@@ -148,14 +149,30 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "feed_request":
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
-					case "auth_failed":
-            delete localStorage.me;
-						delete localStorage.nodeID;
-						delete localStorage.authTicket;
-						delete localStorage.data_obj;
-						attemptLogin();
-						break;
-				}
+      					case "auth_failed":
+                  delete localStorage.me;
+      						delete localStorage.nodeID;
+      						delete localStorage.authTicket;
+      						delete localStorage.data_obj;
+      						attemptLogin();
+      						break;
+                case "timestamp_created":
+                  if (event.data.data){
+                    var serverFirstTime = event.data.data;
+                    if (serverFirstTime > clientFirstTime){
+                      // client time is ahead, server time behind
+                      $rootScope.timeSyncFirstPlace = 'client'; 
+                      $rootScope.timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
+                    } else if (clientFirstTime > serverFirstTime){
+                      // server time is ahead, client time behind
+                      $rootScope.timeSyncFirstPlace = 'server';
+                      $rootScope.timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
+                    } else {
+                      $rootScope.timeSyncFirstPlace = 'same';
+                      $rootScope.timeSyncDelta = 0;
+                    }
+                  }
+				    }
 		    }, false);
 
 		    worker.port.start();
@@ -164,8 +181,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 	}else{
 		
-		assignTab();
+		if(localStorage.tabclosed == "true"){
+			localStorage.removeItem('fon_tabs');
+			localStorage.removeItem('data_obj');
+		}
 		
+		localStorage.tabclosed = "false";
+		
+		assignTab();
 		
 		if(Object.keys(tabMap).length > 1){
 			window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
@@ -212,16 +235,19 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                    }else{
 		                    	data_obj = JSON.parse(localStorage.data_obj);
 		                    }
+							
 		                    // send data to other controllers
-		                    for (feed in synced_data) {
-		                        if(!$.isEmptyObject(data_obj)){
-		                        	data_obj[feed] = synced_data[feed];
-		                        	localStorage.data_obj = JSON.stringify(data_obj);
-		                        }
-
-		                        if (synced_data[feed].length > 0)
-		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-		                    }
+							$rootScope.$evalAsync(function() {
+								for (feed in synced_data) {
+									if(!$.isEmptyObject(data_obj)){
+										data_obj[feed] = synced_data[feed];
+										localStorage.data_obj = JSON.stringify(data_obj);
+									}
+									
+									if (synced_data[feed].length > 0)
+										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+								}
+							});
 		                }
 		                break;
 		            case "feed_request":
@@ -304,17 +330,28 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&redirect_uri=" + encodeURIComponent(location.href)
             + "&display=page"
             + "&client_id=web.hud.fonality.com"
+            + "&instance_id=" + localStorage.instance_id
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
 		location.href = authURL;
 	};
 	
+	// get instance_id token
+	if (/instance_id/ig.test(location.href)) {
+		instance_id = location.href.match(/instance_id=([^&]+)/)[1];
+		localStorage.instance_id = instance_id;
+	}
+
 	// get authorization token
 	if (/access_token/ig.test(location.href)) {
 		authTicket = location.href.match(/access_token=([^&]+)/)[1];
 		localStorage.authTicket = authTicket;
 		$location.hash('');
 	}
+
+
+
+
 	else if (localStorage.authTicket === undefined)
 		attemptLogin();
 	else
@@ -384,13 +421,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&display=page"
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
-            + "&revoke_token=" + authTicket;
-		
-    delete localStorage.me;	
-		delete localStorage.authTicket;
-		delete localStorage.nodeID;
-		delete localStorage.data_obj;
-		
+            + "&revoke_token=" + authTicket
+            + "&instance_id=" + localStorage.instance_id;
+		localStorage.removeItem("me");
+    	localStorage.removeItem("authTicket");
+    	localStorage.removeItem("nodeID");
+    	localStorage.removeItem("data_obj");
+    	localStorage.removeItem("instance_id");
+    	
 		// shut off web worker
 		if (worker.port)
 			worker.port.close();

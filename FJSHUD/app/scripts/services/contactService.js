@@ -86,8 +86,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				}
 			}
 		}
-		
-		$rootScope.loaded.contacts = true;
 	});
 	
 	$rootScope.$on('all_calls_updated', function(event, data) {

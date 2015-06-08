@@ -1,8 +1,7 @@
 hudweb.filter('fondate', ['NtpService', function(ntpService) {
     return function(milliseconds,dateformat,locale,chatSection) {		
 		
-        var offset = ntpService.fixTime();
-    	var todayTime = new Date(offset).getTime();
+    	var todayTime = ntpService.calibrateTime(new Date().getTime());
     	var locale_code = 'en';
     	
     	//this will switch the locale from our format to moment.js prefered locale code

@@ -150,7 +150,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	
 	$scope.parkedCalls = [];
 	
-	$scope.$on('parkedcalls_updated',function(event,data){
+	$scope.$on('parkedcalls_synced',function(event,data){
 		if(data){
 			for(parkedCall in data){
 				if(data[parkedCall].xef001type == "delete"){
@@ -181,7 +181,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
         $event.preventDefault();
 		
 		// permission?
-		if (contact.call.type == 0)
+		if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
 			return;
 	
 		$scope.showOverlay(true, 'CallStatusOverlay', contact);

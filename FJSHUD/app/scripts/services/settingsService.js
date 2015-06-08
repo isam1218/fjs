@@ -1,4 +1,4 @@
-hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactService', function($q, $rootScope, httpService,contactService) {	
+hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService','ContactService', function($q, $timeout, $rootScope, httpService,contactService) {	
 	var deferSettings = $q.defer();
 	var deferPermissions = $q.defer();
 	var settings = {};
@@ -79,21 +79,23 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 		SYNCING
 	*/
 	
-	$rootScope.$on('permissions_updated', function(event, data) {
+	$rootScope.$on('me_synced', function(event, data) {
+		for (var i = 0, len = data.length; i < len; i++) {
 			// look at fj repository > MyPermissions.java for reference
-		if (data.permissions) {
-				// console.error('!prop value - ', data[i].propertyValue);
+			if (data[i].propertyKey == 'personal_permissions') {
+				// console.error('!permission prop value -> ', data[i].propertyValue);
 				
 				// licenses from MyPermissions.java
-				permissions.showCallCenter = isEnabled(data.permissions, 10);
+				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
-				permissions.showVideoCollab = isEnabled(data.permissions, 1);
+				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+				permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
 
 				// group permissions from MyPermissions.java
-				permissions.enableAgentLogin = isEnabled(data.permissions, 7);
-				permissions.recordingEnabled = isEnabled(data.permissions, 14);
-				permissions.deleteMyRecordingEnabled = isEnabled(data.permissions, 15);
-				permissions.deleteOtherRecordingEnabled = isEnabled(data.permissions, 16);
+				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
+				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
+				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
+				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
@@ -103,27 +105,40 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService','ContactSer
 				// // Call Permission from CallPermissions.java
 				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				deferPermissions.resolve(permissions);
-				
+				break;
+			}
 		}
-		
-	});
-
-	$rootScope.$on('callpermissions_synced', function(event, data){
-		console.error('callperm synced - ', data);
-	});
-
-	$rootScope.$on('queuecallpermissions_synced', function(event, data){
-		console.error('q call perm synced - ', data);
 	});
 	
 	$rootScope.$on('settings_synced', function(event, data) {
-		// convert to object
-		for (key in data)
-			settings[data[key].key] = data[key].value;
-		
-		deferSettings.resolve(settings);
-		
-		$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
+		if (data.length > 0) {
+			// clear old object (but retain reference)
+			for (var key in settings)
+				delete settings[key];
+			
+			// convert new object
+			for (var i = 0, len = data.length; i < len; i++)
+				settings[data[i].key] = data[i].value;
+			
+			deferSettings.resolve(settings);
+			
+			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
+			
+			// load app for first time
+			if (!$rootScope.loaded) {
+				$timeout(function() {
+					$rootScope.loaded = true;
+					
+					// stupid warning
+					window.onbeforeunload = function(){
+						if(localStorage.tabclosed){
+							localStorage.tabclosed = "true";
+						}
+						return "Are you sure you want to navigate away from this page?";
+					};
+				}, 2000);
+			}
+		}
 	});
 
 	$rootScope.$on('i18n_langs_synced',function(event,data){

@@ -1,6 +1,6 @@
 hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpService','PhoneService', function($rootScope, $scope, $timeout, myHttpService, phoneService) {
 	$rootScope.myPid = null;
-	$rootScope.loaded = {all: false};
+	$rootScope.loaded = false;
 	
   $scope.number = "";
   $scope.currentPopup = {};
@@ -45,23 +45,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 			}, 10000);
 		}
 	};
-	
-	// wait to show app
-	var loadWatch = $rootScope.$watch('loaded', function(data) {
-		var count = 0;
-		
-		for (key in data)
-			count++;
-		
-		if (count >= 5) {
-			$timeout(function() {
-				$rootScope.loaded.all = true;
-			}, 500);
-			
-			// kill watcher
-			loadWatch();
-		}
-	}, true);
 
 	// store user's xpid globally
 	var getMyPid = $scope.$on('me_synced', function(event, data) {

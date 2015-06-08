@@ -98,6 +98,11 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				
 				return line;
 			}
+			
+			scope.$on('$destroy', function() {
+				$document.unbind('click');
+				overlay.remove();
+			});
 		}
 	};
 }]);

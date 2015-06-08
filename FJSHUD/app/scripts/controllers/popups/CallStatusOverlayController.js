@@ -1,4 +1,4 @@
-hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', function($scope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService) {
+hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService) {
 	$scope.onCall = $scope.$parent.overlay.data;
 
 	$scope.timeElapsed = 0;
@@ -9,6 +9,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	$scope.selectedConf = null;
 	$scope.addError = null;
 	$scope.contacts = [];
+	$scope.bargePermission = $rootScope.bargePermission;
 	
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
@@ -47,18 +48,16 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 
 	var updateTime = function() {
 		if ($scope.onCall.call) {
-			// console.error('in update time | onCall obj - ', $scope.onCall);
-
-			var offset = ntpService.fixTime();
-			// format date
-			var date = new Date(offset).getTime();
+						
 			var startTime = $scope.onCall.call.startedAt ? $scope.onCall.call.startedAt : $scope.onCall.call.created;
-			
+			// format date			
+			var date = ntpService.calibrateTime(new Date().getTime());
+
 			$scope.timeElapsed = $filter('date')(date - startTime, 'mm:ss');
 			
 			// also get recorded time
-			if ($scope.onCall.call.record)
-				$scope.recordingElapsed = $filter('date')(date - localStorage.recordedAt, 'mm:ss');
+			if ($scope.onCall.call.recorded)
+				$scope.recordingElapsed = $filter('date')(date - JSON.parse(localStorage.recordedAt), 'mm:ss');
 		
 			// increment
 			if ($scope.$parent.overlay.show)
@@ -83,15 +82,17 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	
 	$scope.recordCall = function() {
 		var action = '';
-		
 		if (!$scope.onCall.call.recorded) {
+			$scope.onCall.call.recorded = true;
 			$scope.recordingElapsed = '00:00';
-			localStorage.recordedAt = new Date().getTime();
+			localStorage.recordedAt = JSON.stringify(ntpService.calibrateTime(new Date().getTime()));
 			action = 'startCallRecording';
+			updateTime();
 		}
-		else
+		else{
+			$scope.onCall.call.recorded = false;
 			action = 'stopCallRecording';
-			
+		}
 		httpService.sendAction('contacts', action, {contactId: $scope.onCall.xpid});
 	};
 	
@@ -115,7 +116,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 	
 			$scope.confQuery = '';
 			$scope.selectedConf = null;
-			$scope.meToo = 0;
+			$scope.meToo = {};
+			$scope.meToo.me;
 		}
 		else if (screen == 'transfer') {
 			$scope.transferFrom = contactService.getContact(xpid);
@@ -174,9 +176,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 				contactId: $scope.onCall.xpid
 			});
 			
-			// me, too?
-			if ($scope.meToo) {
-				httpService.sendAction('conferences', 'joinContact', {conferenceId: $scope.selectedConf.xpid});
+			if ($scope.meToo.me) {
+				httpService.sendAction('conferences', 'joinContact', {conferenceId: $scope.selectedConf.xpid, contactId: $rootScope.myPid});
 			}
 			
 			// close and redirect
@@ -187,7 +188,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$filter', '$timeout
 			$scope.addError = 'Select conference room';
 	};
 
-    $scope.$on("$destroy", function() {
+  $scope.$on("$destroy", function() {
 		updateTime = null;
-    });
+  });
 }]);
