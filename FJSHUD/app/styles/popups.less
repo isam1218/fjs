@@ -434,7 +434,15 @@
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
-  white-space: nowrap;
+  min-width: 200px;
+  
+  &.NoWrap {
+    visibility: hidden;
+	
+    .BottomRow { 
+      white-space: nowrap; 
+    }
+  }
   
   .Arrow {
     position: absolute;
@@ -456,6 +464,8 @@
   }
   
   .TopRow {
+    white-space: nowrap;
+	
 	& > div > div:not(:last-child) {
 	  border-right: 1px solid #ccc;
 	  margin-right: .5em;

@@ -181,7 +181,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			
 			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
 				$scope.messages.push(data[i]);
-				found = true;
+				found = true;				
 			}
 		}
 		
@@ -269,6 +269,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		contactService.getContacts().then(function() {
 			for (var i = 0, len = $scope.messages.length; i < len; i++) {
 				$scope.messages[i].fullProfile = contactService.getContact($scope.messages[i].from.replace('contacts:', ''));
+				if ($scope.messages[i].type == 'f.conversation.chat.group.remove'){
+					$scope.messages[i].message = "<strong>Goodbye " + $scope.messages[i].data.groupId + "!</strong><br />" + $scope.messages[i].message;
+				}
 			}
 		});
 	};

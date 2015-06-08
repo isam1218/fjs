@@ -51,8 +51,22 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     
     $scope.setFromLocalStorage = function(val){
     	$scope.globalXpid = val;
-        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] : $scope.tabs[0].lower;
-        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};        
+        
+        if($routeParams.route != undefined){
+            $scope.selected = $routeParams.route;
+            localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = $scope.selected; 
+            for(var i = 0; i < $scope.tabs.length;i++){
+                if($scope.tabs[i].lower == $routeParams.route){
+                    $scope.toggleObject = {item: i};
+                    localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);       
+                    break;
+                }
+            }
+        }else{
+            $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] : $scope.tabs[0].lower;
+            $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};        
+            
+        }
     };
     
     var getXpidInQ = $rootScope.$watch('myPid', function(newVal){

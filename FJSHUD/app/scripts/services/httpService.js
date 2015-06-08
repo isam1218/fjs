@@ -103,12 +103,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 
 	var worker = undefined;
   var initialPid;
+ 
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
 		    worker.port.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
+		            	updateSettings('instanceId','update',localStorage.instance_id); 
+
 		                worker.port.postMessage({
 		                    "action": "sync"
 		                });
@@ -199,6 +202,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		        switch (event.data.action) {
 		            case "init":
 		            	tabMap = JSON.parse(localStorage.fon_tabs);
+		           		updateSettings('instanceId','update',localStorage.instance_id); 
+
 						if(tabMap[tabId].isMaster){
 							worker.postMessage({
 		                    	"action": "sync",
@@ -459,8 +464,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
     };
     
-    this.updateSettings = function(type, action, model) {
-        var params = {
+    var updateSettings = function(type,action,model){
+    	var params = {
             'a.name': type,
             't': 'web',
             'action': action
@@ -485,6 +490,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             }
         });
     };
+    
+    this.updateSettings = updateSettings;
 
     this.get_avatar = function(pid,width,height,xversion){
     	if (pid)

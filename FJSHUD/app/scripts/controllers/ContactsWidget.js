@@ -71,7 +71,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 	};
 	
 	$scope.searchFilter = function(){
-		var query = $scope.$parent.query;
+		var query = $scope.$parent.query.toLowerCase();
 		// console.error('* - ', parsedQuery);
 		return function(contact){
 			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || parseContact(contact.primaryExtension).indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || parseContact(contact.phoneMobile).indexOf(query) != -1){

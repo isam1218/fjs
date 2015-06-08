@@ -1,6 +1,6 @@
 <div class="ToolBar">
         <div class="LocationSelector " style="float: right;margin-top: 5px;text-align: center; width: 30%;">
-            <select class="SelectBox" ng-model="action.selected" ng-options="option.text for option in callOptions track by option.type" ng-change="makeCall(action.selected.type)"></select>
+            <select class="SelectBox HideFirst" ng-model="action.selected" ng-options="option.text for option in callOptions track by option.type" ng-change="makeCall(action.selected.type)"></select>
         </div>
 </div>
 
@@ -14,7 +14,7 @@
             </div>
 
             <!--ng-repeat= "member in members | filter: {displayName:query}"-->
-            <a href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members | filter: {onPage: true} track by member.xpid"> 
+            <a href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members | filter: memberFilter() track by member.xpid"> 
             
                 <avatar profile="member"></avatar>
 

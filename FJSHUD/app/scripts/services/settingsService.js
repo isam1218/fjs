@@ -89,6 +89,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+				permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
 
 				// group permissions from MyPermissions.java
 				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
@@ -111,9 +112,13 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 	
 	$rootScope.$on('settings_synced', function(event, data) {
 		if (data.length > 0) {
-			// convert to object
-			for (key in data)
-				settings[data[key].key] = data[key].value;
+			// clear old object (but retain reference)
+			for (var key in settings)
+				delete settings[key];
+			
+			// convert new object
+			for (var i = 0, len = data.length; i < len; i++)
+				settings[data[i].key] = data[i].value;
 			
 			deferSettings.resolve(settings);
 			

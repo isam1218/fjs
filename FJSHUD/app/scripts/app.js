@@ -41,12 +41,12 @@ hudweb.config(function ($routeProvider) {
 		})
 		.when('/conferences', 
 		{
-			templateUrl: 'views/ConferenceRoomWidget.html',
+			templateUrl: 'views/conference/AllConferenceRooms.html',
 			controller: 'ConferencesWidgetController'
 		})
 		.when('/conference/:conferenceId/:route?', 
 		{
-			templateUrl: 'views/ConferenceWidget.html',
+			templateUrl: 'views/conference/ConferenceWidget.html',
 			controller: 'ConferenceSingleController',
 			resolve: {
 				resolve: function (ConferenceService) {
@@ -87,6 +87,11 @@ hudweb.config(function ($routeProvider) {
 		.when('/box',
 		{
 			templateUrl: 'views/BoxWidget.html'
+		})
+		.when('/intellinote',
+		{
+			templateUrl: 'views/Intellinote.html',
+			controller: 'IntellinoteController'
 		})
 		.otherwise({
 			redirectTo: '/settings'

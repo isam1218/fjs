@@ -5,6 +5,8 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
   $scope.query = "";
   $scope.selectedSort = "displayName";
   $scope.agents = [];
+  $scope.myself = $rootScope.myPid;
+  var queueId = $scope.$parent.$parent.queueId;
 
   httpService.getFeed('settings');
 
@@ -67,25 +69,25 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
   };
   
   $scope.statusFilter = function(status){
-	return function(agent) {
-		if (status == 'in') {
-			if (agent.status && agent.status.status.indexOf('login') != -1)
-				return true;
-		}
-		else {
-			if (agent.status && agent.status.status.indexOf('login') == -1)
-				return true;
-		}
-	};
+  return function(agent) {
+    if (status == 'in') {
+      if (agent.status && agent.status.status.indexOf('login') != -1)
+        return true;
+    }
+    else {
+      if (agent.status && agent.status.status.indexOf('login') == -1)
+        return true;
+    }
+  };
   };
 
-  queueService.getQueues().then(function() {	
-	   $scope.agents = $scope.queue.members;
+  queueService.getQueues().then(function() {  
+     $scope.agents = $scope.queue.members;
   });
   
   // refresh list
   $scope.$on('queue_members_status_synced', function() {
-	   $scope.agents = $scope.queue.members;
+     $scope.agents = $scope.queue.members;
   });
 
   $scope.searchFilter = function(){
@@ -96,23 +98,30 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
     };
   };
 
-	$scope.callExtension = function($event, extension) {
-		$event.stopPropagation();
-		$event.preventDefault();
-		
-		phoneService.makeCall(extension);
-	};
-	
-	$scope.showCallStatus = function($event, contact) {
-		$event.stopPropagation();
+  $scope.callExtension = function($event, extension) {
+    $event.stopPropagation();
+    $event.preventDefault();
+    
+    phoneService.makeCall(extension);
+  };
+  
+  $scope.showCallStatus = function($event, contact) {
+    $event.stopPropagation();
         $event.preventDefault();
-		
-		// permission?
-		if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
-			return;
-	
-		$scope.showOverlay(true, 'CallStatusOverlay', contact);
-	};
+    
+    // permission?
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+      return;
+  
+    $scope.showOverlay(true, 'CallStatusOverlay', contact);
+  };
+
+  $scope.getRef = function(member, myself){
+    if (member.contactId == myself)
+      return '#/queue/' + queueId;
+    else
+      return '#/contact/' + member.contactId;
+  };
 
   $scope.$on("$destroy", function () {
 

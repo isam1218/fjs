@@ -566,7 +566,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	var addTodaysNotifications = function(item){
     	var today = moment(ntpService.calibrateTime(new Date().getTime()));
 		var itemDate = moment(item.time);
-		var contactId = $routeParam.contactId;
+		var context = item.context.split(":")[0];
+		var contextId = item.context.split(":")[1];
+		var isAdded = false;
+		var targetId;
+		
+		switch(context){
+			case "groups":
+				targetId = $routeParam.groupId;
+				break;
+			case "contacts":
+				targetId = $routeParam.contactId;
+				break;
+			case "conferences":
+				targetId = $routeParam.conferenceId;
+				break;
+		}
+
+
 		if(item.queueId){
 			queue = queueService.getQueue(item.queueId);
 			if(queue){
@@ -581,10 +598,21 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			if(contactId && contactId != null && contactId == item.senderId)
+			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat")
 			{return false;
 			}else{
-				$scope.todaysNotifications.push(item);
+
+				for(var j = 0; j < $scope.todaysNotifications.length; j++){
+						if($scope.todaysNotifications[j].xpid == item.xpid){
+						$scope.todaysNotifications.splice(j,1,item);
+						isAdded = true;
+						break;	
+					}
+				}
+				if(!isAdded){
+					$scope.todaysNotifications.push(item);
+					
+				}
 				if(item.type == 'wall' || item.type == 'chat'){
 					playChatNotification = true;
 
@@ -598,6 +626,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		//var playChatNotification = false;
 		displayDesktopAlert = true;
   		
+
+
   		if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -636,15 +666,17 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						for(var j = 0; j < $scope.notifications.length; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
 								$scope.notifications.splice(j,1,notification);
+
 								isNotificationAdded = true;
 								break;	
 							}
 						}
 						if(!isNotificationAdded){							
 							$scope.notifications.push(notification);
-							addTodaysNotifications(notification);
 							
 						}
+						addTodaysNotifications(notification);
+
 					}else if(notification.xef001type == "delete"){
 
 						for(var j = 0; j < $scope.notifications.length; j++){
