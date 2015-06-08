@@ -241,6 +241,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				removeNotification();
          		setupListeners();
 				activatePhone();
+
 			 }
             //isRegistered = true;
 			soundManager = session.soundManager;
