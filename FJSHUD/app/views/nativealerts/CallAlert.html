@@ -1,11 +1,6 @@
 <link rel="stylesheet" href="{{path}}/styles/main.css">  
 <div id="CallAlert">    	
-  <a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact">
-    
-	<div class="Avatar AvatarNormal"><img src="getAvatar(contact.xpid)" onerror="this.src='img/Generic-Avatar-28.png'" class="AvatarImgPH">
-	   <div class="AvatarForeground AvatarInteractable"></div>
-	</div>
-	
+  <a href="#contact/{{::contact.xpid}}"  class="ListRowFirst ListRow ListRow-Contact">   		
 	<div class="ListRowContent">
 		<div class="NotificationTitle">
 			<div class="name">
@@ -14,11 +9,14 @@
 		</div>
 		
 		<div class="CallStatus">
-			<avatar 
+			<!-- <avatar 
 				ng-if="contact.call.startedAt" 
 				ng-click="showCallStatus($event, contact)" 
 				profile="contact" 
-				type="{{contact.call.type}}"></avatar>
+				type="{{contact.call.type}}"></avatar> -->
+				<div class="Avatar AvatarNormal"><img src="getAvatar(contact.xpid)" onerror="this.src='img/Generic-Avatar-28.png'" class="AvatarImgPH">
+                <div class="AvatarForeground AvatarInteractable"></div>
+    </div>
 		</div>
 		
 		<div class="body">
@@ -98,12 +96,12 @@
                </div>
                
                <div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back'">
-                   <span class="XButton" ng-click="#/RemoveNotification?{{message.xpid}}">{{::verbage.Skip}}</span>
-                   <span class="XButton XButtonGreen" ng-click="#/CallBack?{{message.fullProfile.primaryExtension}}">{{::verbage.Call}}</span>  
+                   <a class="XButton" href="#/RemoveNotification?{{message.xpid}}">{{::verbage.Skip}}</a>
+                   <a class="XButton XButtonGreen" href="#/CallBack?{{message.fullProfile.primaryExtension}}">{{::verbage.Call}}</a>  
                </div>
                
                <a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
-                   <span class="XButton" ng-click="showQueue(message)">{{::verbage.Show}}</span>
+                   <a class="XButton" href="#/showQueue?{{message.queueId}}&{{message.audience}}&{{message.type}}">{{::verbage.Show}}</a>
                </a>
                             
                             
