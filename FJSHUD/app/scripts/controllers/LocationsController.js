@@ -1,4 +1,4 @@
-hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','HttpService',function($scope, $routeParams, $element,httpService) {
+hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','HttpService','PhoneService',function($scope, $routeParams, $element,httpService,phoneService) {
     //fjs.ui.Controller.call(this, $scope);
 
     /*
@@ -58,6 +58,10 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
             var me = {};
             for (var i = 0; i < data.length; i++) {
                 $scope.locations[data[i].xpid].status = data[i];
+                if($scope.locations[data[i].xpid].locationType == 'w'){
+                    var state = phoneService.getPhoneState();
+                    $scope.locations[data[i].xpid].status.deviceStatus = state ? 'r' : 'u';
+                }
             }
         }
 
