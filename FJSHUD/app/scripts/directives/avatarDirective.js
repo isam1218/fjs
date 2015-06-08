@@ -160,7 +160,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					hideOverlay(500);
 			});
 			
-			function showOverlay() {
+			function showOverlay() {				
 				// send data to controller		
 				var data = {
 					obj: obj,
@@ -171,24 +171,31 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				$rootScope.$broadcast('contextMenu', data);
 				
 				$timeout(function() {
-					// position pop-pop
-					overlay.css('left', (rect.left + rect.width/2) + 'px');
-					overlay.css('top', (rect.top + rect.height/2) + 'px');
+					// position pop-pop				
+					overlay.addClass('NoWrap');
+					
 					overlay.css('display', 'block');
 					overlay.css('width', 'auto');
+					overlay.css('top', (rect.top + rect.height/2) + 'px');
 					
-					// switch sides
 					var oRect = overlay[0].getBoundingClientRect();
 					
-					if (rect.left + rect.width/2 + oRect.width >= window.innerWidth) {
-						arrow.removeClass('Left').addClass('Right');
-						overlay.css('left', (rect.left - oRect.width) + 'px');
-					}
-					else
+					// can fit on right side
+					if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {
+						overlay.css('left', (rect.left + rect.width/2) + 'px');
+						overlay.css('right', 'auto');
 						arrow.removeClass('Right').addClass('Left');
+					}
+					// can fit on left side
+					else {
+						overlay.css('right', (window.innerWidth - rect.left - rect.width/2) + 'px');
+						overlay.css('left', 'auto');
+						arrow.removeClass('Left').addClass('Right');
+					}
 					
 					// set width for logout reasons
-					overlay.css('width', oRect.width + 'px');
+					overlay.removeClass('NoWrap');
+					overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
 			
 					// button clicks
 					angular.element(buttons).bind('click', function(e) {
