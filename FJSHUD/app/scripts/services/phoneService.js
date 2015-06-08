@@ -286,9 +286,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     var onAlert = function(urlhash){
     	console.log("AlertClicked: " + urlhash);
-    	arguments = urlhash.split("?");
-    	url = arguments[0];
-    	xpid = arguments[1];
+    	var arguments = urlhash.split("?");
+    	var url = arguments[0];
+    	var query = arguments[1];
+    	var queryArray = query.split('&');
+    	var xpid = queryArray[0];    	
     	
     	activateBrowserTab();
     	
@@ -345,6 +347,28 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					//$rootScope.$apply();
 					removeNotification();
 					break;
+				case '/RemoveNotification':
+				    remove_notification(xpid);
+					break;
+				case '/goToChat':
+					var audience = queryArray[1];
+					goToNotificationChat(xpid, audience); 
+					break;	
+				case '/callAndRemove':
+					var phone = queryArray[1];
+					makeCall(phone); 
+					remove_notification(xpid); 
+					break;	
+				case '/getPlugins':
+					showOverlay(true,'DownloadPlugin',{});
+					window.open(xpid,'_blank');
+					break;	
+				case '/activatePhone':
+					activatePhone();
+					break;	
+				case '/showCallControlls':
+					showCurrentCallControls(xpid);
+					break;
 			}
     	}else{
     		switch(url){
@@ -395,7 +419,28 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					//$rootScope.$apply();
 					removeNotification();
 					break;
-
+				case '#/RemoveNotification':
+				    remove_notification(xpid);
+					break;	
+				case '#/goToChat':
+					var audience = queryArray[1];
+					goToNotificationChat(xpid, audience); 
+					break;	
+				case '#/callAndRemove':
+					var phone = queryArray[1];
+					makeCall(phone); 
+					remove_notification(xpid); 
+					break;	
+				case '#/getPlugins':
+					showOverlay(true,'DownloadPlugin',{});
+					window.open(xpid,'_blank');
+					break;	
+				case '#/activatePhone':
+					activatePhone();
+					break;
+				case '#/showCallControlls':
+					showCurrentCallControls(xpid);
+					break;
 	    	}
     	}
 	};
@@ -406,7 +451,45 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			alertPlugin.removeAlert();
 		}
 	};
+	
+	var remove_notification = function(xpid){		
+		HttpService.sendAction('quickinbox','remove',{'pid':xpid});
+		//$rootScope.$broadcast('quickinbox_synced', data);
+	};
+	
+	var goToNotificationChat = function(xpid, audience){		
+		$location.path("/" + audience + "/" + xpid + "/chat");
+		remove_notification(xpid);
+		showOverlay(false);
+		
+		storeRecent(xpid);
+	};
+	
+	var storeRecent = function(xpid){
+		localPid = JSON.parse(localStorage.me);
+		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
+		recent[xpid] = {
+			type: 'contact',
+			time: new Date().getTime()
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify(recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
+	};
 
+	var getAvatar = function(pid){
+		return HttpService.get_avatar(pid,40,40);
+	};
+	
+	var activatePhone = function(){
+		   myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
+	}
+	
+	var showCurrentCallControls = function(currentCall){
+		$location.path("settings/callid/"+currentCall.xpid);
+		phoneService.showCallControls(currentCall);
+	};
+	
     onAlertMouseEvent = function(event,x,y){
     	//this.removeNotification();
     };

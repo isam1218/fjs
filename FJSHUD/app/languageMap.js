@@ -350,7 +350,7 @@ fjs.i18n = {
 
 
       sign_out:'Sign out',
-
+      remove: 'Remove',
       Message:'Message',
       message_individual:'This chat message will be sent to each team member individually.',
       Security:'Security',
