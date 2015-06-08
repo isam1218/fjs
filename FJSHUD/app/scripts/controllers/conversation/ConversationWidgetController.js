@@ -25,10 +25,24 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 	
     var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
         if (!$scope.globalXpid){
-            $scope.globalXpid = newVal;
+            
+            if($routeParams.route != undefined){
+                $scope.selected = $routeParams.route;
+				localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+
+                for(var i = 0; i < $scope.tabs.length;i++){
+                    if($scope.tabs[i].lower == $routeParams.route){
+                        $scope.toggleObject = {item: i};
+                        localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                    }
+                }
+            }else{
+                $scope.globalXpid = newVal;
                 $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
                 $scope.toggleObject = localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-                getXpidInC();
+            }
+
+            getXpidInC();
         } else {
             getXpidInC();
         }
