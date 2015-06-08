@@ -568,6 +568,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		var itemDate = moment(item.time);
 		var context = item.context.split(":")[0];
 		var contextId = item.context.split(":")[1];
+		var isAdded = false;
 		var targetId;
 		
 		switch(context){
@@ -597,10 +598,21 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			if(targetId != undefined && targetId == contextId)
+			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat")
 			{return false;
 			}else{
-				$scope.todaysNotifications.push(item);
+
+				for(var j = 0; j < $scope.todaysNotifications.length; j++){
+						if($scope.todaysNotifications[j].xpid == item.xpid){
+						$scope.todaysNotifications.splice(j,1,item);
+						isAdded = true;
+						break;	
+					}
+				}
+				if(!isAdded){
+					$scope.todaysNotifications.push(item);
+					
+				}
 				if(item.type == 'wall' || item.type == 'chat'){
 					playChatNotification = true;
 
@@ -654,15 +666,17 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						for(var j = 0; j < $scope.notifications.length; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
 								$scope.notifications.splice(j,1,notification);
+
 								isNotificationAdded = true;
 								break;	
 							}
 						}
 						if(!isNotificationAdded){							
 							$scope.notifications.push(notification);
-							addTodaysNotifications(notification);
 							
 						}
+						addTodaysNotifications(notification);
+
 					}else if(notification.xef001type == "delete"){
 
 						for(var j = 0; j < $scope.notifications.length; j++){
