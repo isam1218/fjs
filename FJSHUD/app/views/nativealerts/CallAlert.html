@@ -46,15 +46,15 @@
        
          <div class="Messages" ng-repeat="message in todaysNotifications"> 
            
-            <div class="NotificationHeader ng-class:{'firstHeader': $index == 0}; firstHeader"> 
-	         <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0}; firstHeaderTitle">	           
+            <div class="NotificationHeader ng-class:{'firstHeader': $index == 0}"> 
+	         <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0}">	           
 	           <a href="#/RemoveNotification?{{message.xpid}}" value="{{::verbage.Remove}}" class="NotificationClose"></a>
 	        </div> 	             
 	       </div>
 	       
-	       <div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0} firstHeaderDivider"></div>
+	       <div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}"></div>
 		   
-		   <div class="NotificationSection ng-class:{'firstsection': $index == 0">
+		   <div class="NotificationSection ng-class:{'firstsection': $index == 0}">
 		   
 		      <a class="LeftBarNotificationAvatarSection NotificationAvatar Avatar CallAvatar CallAvatar_Office" href="#/goToChat?{{message.xpid}}&{{message.audience}}" type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 		          <img class="AvatarImgPH" src="getAvatar(message.xpid)" onerror="this.src='img/Generic-Avatar-28.png'">
@@ -63,7 +63,7 @@
 		      <div class="LeftBarNotificationMessageSection" ng-init="message_section_notifications = getMessage(message)"> 
 		      
 		        <a  href="#/goToChat?{{message.xpid}}&{{message.audience}}" class="chatNotification">
-		         <div class="NotificationDisplayName" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'">
+		         <div class="NotificationDisplayName" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'}">
 		          <span ng-if="message.displayName">{{ message.displayName}}</span>
 		          <div class="NotificationTime"> </div>
 		         </div> 
