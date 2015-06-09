@@ -52,8 +52,17 @@
   position: absolute;
   top: 10px;
   left: 5px;
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
+  
+  &.Avatar{ 
+    img {
+        width: 36px !important;
+        height: 36px !important;
+        margin: 1px !important;
+    }
+    
+  }
   
   &:not(.Avatar) {
 	background: url("../img/XApp-Icons.png") no-repeat 0 0;
@@ -140,14 +149,12 @@
   flex: 1;
   -webkit-flex: 1;
   padding: 5px 10px 0 0;
-  text-align: right;
-  font-size: .9em;
+  text-align: right;  
   white-space: nowrap;
   width: 110px;
   float: right;
   
-  .Logout {  
-    font-size: .8em;
+  .Logout {     
 	padding-left: 24px;
 	
 	.icon {
@@ -157,12 +164,16 @@
 	  position: absolute;
 	  left: 0;
 	  top: 1px;
-	}
+	}	
   }
   
-  .Status {
+  .XButton span{
+    width: 58px;
+  }
+  .Status {   
     margin-top: 5px;
-	
+    font-size: 12px;
+      	
 	* {
 	  vertical-align: middle;
 	}
@@ -191,7 +202,7 @@
   text-align: left;
   padding: 10px 20px;
   font-size: .9em;
-  z-index: 50;
+  z-index: 0;
   clear: none;
   margin-top: -80px;
   margin-right: 100px;
