@@ -31,24 +31,23 @@
 						<strong>{{ ::contact.displayName || contact.name }}</strong>
 						<span>#{{ ::contact.primaryExtension || contact.extension }}</span>
 					</div>
-				</div>
-				
+				</div>																
 				<div class="ListRowStatus">
-					<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
-					<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
-					<br/>					
-					<div class="ListRowStatusText">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}</div>
-				</div>
-				
-				<div class="CallStatus">
-					<avatar 
-						ng-if="contact.call" 
-						ng-click="showCallStatus($event, contact)"
-						profile="contact.call.fullProfile"
-						context="callstatus"
-						type="{{contact.call.type}}">
-					</avatar>
-				</div>				
+                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
+                    <br/>                   
+                    <div class="ListRowStatusText">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{contact.call ? ' + on call' : ''}}</div>
+                </div>	
+                
+                <div class="CallStatus" ng-if="contact.call">
+                    <avatar 
+                        ng-if="contact.call" 
+                        ng-click="showCallStatus($event, contact)"
+                        profile="contact.call.fullProfile"
+                        context="callstatus"
+                        type="{{contact.call.type}}">
+                    </avatar>
+                </div>  		
 			</div>
 		</a>
 	</div>

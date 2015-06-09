@@ -4,7 +4,7 @@
 	<div class="Contact" ng-if="type == 'Contact'">
 		<div>
 			<avatar profile="profile" context="context"></avatar>
-			<div>
+			<div class="info">
 				{{ profile.displayName }}
 				<br/>
 				<div class="ListRowStatusIcon XIcon-QueueStatus-{{profile.queue_status}}"></div>
@@ -13,15 +13,15 @@
 		</div>
 		
 		<div class="Numbers">
-			<div>{{::verbage.email}}:</div> {{ profile.email }}
+			<div>email:</div> <span>{{ profile.email }}</span>
 			<br/>
-			<div>ext:</div> {{ profile.primaryExtension }}
+			<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
 		</div>
 		
 		<div class="Numbers">
-			<div>{{::verbage.mobile}}:</div> {{ profile.phoneMobile }}
+			<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
 			<br/>
-			<div>{{::verbage.phone}}:</div> {{ profile.phoneBusiness }}
+			<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
 		</div>
 	</div>
 	

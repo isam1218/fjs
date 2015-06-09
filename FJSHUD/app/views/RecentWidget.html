@@ -27,9 +27,9 @@
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{item.queue_status}}" ></div>
                     <br/>
-                    <div class="ListRowStatusText" >{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}</div><!-- {{item.hud_status || 'offline'}} -->
+                    <div class="ListRowStatusText" >{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}{{item.call ? ' + on call' : ''}}</div><!-- {{item.hud_status || 'offline'}} -->
                 </div> 
-                <div class="CallStatus">
+                <div class="CallStatus" ng-if="item.call.startedAt">
                     <avatar 
                         ng-if="item.call.startedAt" 
                         ng-click="showCallStatus($event, item)" 
@@ -50,7 +50,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="ListRowStatus Members">{{ item.members.length }}</div>
+                <!-- <div class="ListRowStatus Members">{{ item.members.length }}</div>-->
             </div>
 
             <avatar profile="item" ng-if="item.recent_type == 'queue'"></avatar>
@@ -110,10 +110,10 @@
                                 <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                                 <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                                 <br/>
-                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}</div>
+                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}{{contact.call ? ' + on call' : ''}}</div>
                             </div> 
                             
-                            <div class="CallStatus">
+                            <div class="CallStatus" ng-if="contact.call.startedAt">
                                 <avatar 
                                     ng-if="contact.call.startedAt" 
                                     ng-click="showCallStatus($event, contact)" 
@@ -143,7 +143,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ListRowStatus Members">{{ group.members.length }}</div>
+                            <!-- <div class="ListRowStatus Members">{{ group.members.length }}</div> -->
                         </div>
                     </a>
                     <button class="loadmore" ng-show="hasMoreGroupsToLoad()" ng-click="loadMoreGroups()"><strong>LOAD MORE</strong></button>
