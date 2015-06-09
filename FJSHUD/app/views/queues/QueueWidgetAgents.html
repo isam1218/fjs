@@ -17,7 +17,7 @@
 
   <div 
 	include-once="views/queues/QueueMemberSection.html"
-    data-ng-repeat="member in agents | filter: statusFilter('in') | filter: searchFilter() | orderBy: selectedSort" ng-click="storeRecentQueueMember(member.contactId)">
+    data-ng-repeat="member in agents | filter: statusFilter('in') | filter: searchFilter() | orderBy: selectedSort">
   </div>
 
   <div class="ListSection">
@@ -29,7 +29,7 @@
 
   <div
 	include-once="views/queues/QueueMemberSection.html"
-    data-ng-repeat="member in agents | filter: statusFilter('out') | filter: searchFilter() | orderBy: selectedSort" ng-click="storeRecentQueueMember(member.contactId)">
+    data-ng-repeat="member in agents | filter: statusFilter('out') | filter: searchFilter() | orderBy: selectedSort">
   </div>
 </div>
 

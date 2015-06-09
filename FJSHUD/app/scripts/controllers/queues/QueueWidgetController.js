@@ -1,11 +1,14 @@
-hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService) {
+hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService, storageService) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.conversationType = 'queue';
     $scope.sortReverse = false;
-    var myQueues = queueService.getMyQueues();    
+    var myQueues = queueService.getMyQueues();
+	
+	// store recent
+	storageService.saveRecent('queue', $scope.queueId);
 
 	// for chat
 	$scope.enableChat = false;
@@ -76,10 +79,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         } else {
             getXpidInQ();
         }
-    });
-
-    $scope.$on('pidAdded', function(event, data){
-    	$scope.setFromLocalStorage(data.info);
     });
 
     $scope.saveQTab = function(tab, index){      	

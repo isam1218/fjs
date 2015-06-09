@@ -102,7 +102,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	
 
 	var worker = undefined;
-  var initialPid;
+	
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
@@ -117,25 +117,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                if (event.data.data) {
 
 		                    synced_data = event.data.data;
-
-                        if (synced_data.me){
-                          for (var i = 0, len = synced_data.me.length; i < len; i++){
-                            if (synced_data.me[i].propertyKey === "my_pid"){
-                              initialPid = synced_data.me[i].propertyValue;
-                              break;
-                            }
-                          }
-                          
-                          // save to both LS and to $rootScope
-                          $rootScope.myPid = initialPid;
-                          $rootScope.$broadcast('pidAdded', {info: initialPid});
-
-                          if (localStorage[initialPid] === undefined){
-                            localStorage[initialPid] = '{}';
-                          }                        
-                          localStorage.me = JSON.stringify(initialPid);
-                          
-                        }
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {

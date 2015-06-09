@@ -17,7 +17,7 @@
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <a ng-href="{{getRef(member, myself)}}" ng-click="storeRecentContact(member.fullProfile.xpid)" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
+    <a ng-href="{{getRef(member, myself)}}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
         <avatar profile="member.fullProfile"></avatar>
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
@@ -43,7 +43,7 @@
 			
             <div class="vmalternate" ng-if="!member.fullProfile.call">
                 <div class="vmtime">#{{ ::member.fullProfile.primaryExtension }}</div>
-                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension); storeRecentContact(member.fullProfile.xpid)"></input>
+                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
             </div>
             
         </div>

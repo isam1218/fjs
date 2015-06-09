@@ -1,8 +1,6 @@
 hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService', 
 	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService){
 
-	var addedPid;
-	var localPid;
 	var playChatNotification = false;
 	var displayDesktopAlert = true;
 		
@@ -120,27 +118,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.phoneSessionEnabled = true;
 	});
 	
-	$scope.$on('pidAdded', function(event, data){
-		addedPid = data.info;
-		if (localStorage['recents_of_' + addedPid] === undefined){
-			localStorage['recents_of_' + addedPid] = '{}';
-		}
-		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-	});
-	
 	myHttpService.getFeed('quickinbox');
-
-	$scope.storeRecent = function(xpid){
-		localPid = JSON.parse(localStorage.me);
-		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
-		$scope.recent[xpid] = {
-			type: 'contact',
-			time: new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
-	};
 
 	$scope.getAvatar = function(pid){
 		return myHttpService.get_avatar(pid,40,40);

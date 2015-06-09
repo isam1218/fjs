@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'SettingsService', function($scope, $rootScope, $routeParams, myHttpService, groupService, settingsService) {
+hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, myHttpService, groupService, settingsService, storageService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -22,8 +22,8 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   {upper: $scope.verbage.group_info, lower: 'info'}
   ];
 	
-	
- 
+	// store recent
+	storageService.saveRecent('group', $scope.groupID);
 
   var getXpidInG = $rootScope.$watch('myPid', function(newVal, oldVal){
       if (!$scope.globalXpid){
@@ -46,12 +46,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
       } else {
           getXpidInG();
       }
-  });
-
-  $scope.$on('pidAdded', function(event, data){
-      $scope.globalXpid = data.info;
-      $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-      $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
   });
 
   $scope.saveGTab = function(tab, index){

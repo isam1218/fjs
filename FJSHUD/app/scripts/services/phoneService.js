@@ -1,4 +1,4 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService', '$q', function($q, $rootScope, httpService,$compile,$location,settingsService, storageService, $q) {
 
 	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
 
@@ -703,25 +703,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 		if (data[0].incoming){
-			storeIncomingCallToRecent(data[0].contactId);
+			storageService.saveRecent('contact', data[0].contactId);
 		}
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-	this.registerPhone = registerPhone;
-	
-	var storeIncomingCallToRecent = function(incomingCallerXpid){
-		var localPid = JSON.parse(localStorage.me);
-		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		recent[incomingCallerXpid] = {
-			type: 'contact',
-			time: new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify(recent);
-		$rootScope.$broadcast('recentAdded', {id: incomingCallerXpid, type: 'contact', time: new Date().getTime()});
-	};
-
-	
+	this.registerPhone = registerPhone;	
 
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){

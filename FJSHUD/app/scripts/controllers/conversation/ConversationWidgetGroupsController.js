@@ -1,6 +1,5 @@
 hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'SettingsService', '$timeout', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, settingsService, $timeout, httpService) {
     var context = this;
-    var addedPid;
 	var favoriteID;
 	
     $scope.contactId = $routeParams.contactId;
@@ -30,25 +29,6 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 			if ($scope.userGroup) break;
 		}
 	});
-
-    $scope.$on('pidAdded', function(event, data){
-        addedPid = data.info;
-        if (localStorage['recents_of_' + addedPid] === undefined){
-            localStorage['recents_of_' + addedPid] = '{}';
-        }
-        $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-    });
-
-    $scope.storeRecentGroup = function(xpid){
-        var localPid = JSON.parse(localStorage.me);
-        $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-        $scope.recent[xpid] = {
-            type: 'group',
-            time: new Date().getTime()
-        };
-        localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-        $rootScope.$broadcast('recentAdded', {id: xpid, type: 'group', time: new Date().getTime()});
-    };
 
     httpService.getFeed('settings');
 
