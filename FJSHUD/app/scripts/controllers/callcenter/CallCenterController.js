@@ -29,14 +29,6 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
   	}
   });
 
-  $scope.$on('pidAdded', function(event, data){
-  	$scope.globalXpid = data.info;
-  	
-	$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-	$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-  	
-  });
-
 	$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
 	$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
 

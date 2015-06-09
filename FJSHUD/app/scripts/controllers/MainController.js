@@ -51,15 +51,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 		if (!$rootScope.myPid) {
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].propertyKey == 'my_pid') {
-					var tmpPid = data[i].propertyValue;
 					$rootScope.myPid = data[i].propertyValue;
-					$rootScope.$broadcast('pidAdded', {info: tmpPid});
-
-					var initialPid = data[i].propertyValue;
-					if (localStorage[initialPid] === undefined){
-						localStorage[initialPid] = '{}';
-					}
-
 					break;
 				}
 			}

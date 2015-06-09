@@ -1,7 +1,10 @@
-hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'PhoneService', 'SettingsService', '$filter', '$timeout', function($scope, $rootScope, $routeParams, contactService, phoneService, settingsService ,$filter, $timeout) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'PhoneService', 'SettingsService', 'StorageService', '$filter', '$timeout', function($scope, $rootScope, $routeParams, contactService, phoneService, settingsService, storageService, $filter, $timeout) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);
 	$scope.messages = [];
+	
+	// store recent
+	storageService.saveRecent('contact', $scope.contactID);
 	
 	var CONFERENCE_CALL_TYPE = 0;
 	var CONTACT_CALL_TYPE = 4;
@@ -46,12 +49,6 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
         } else {
             getXpidInC();
         }
-    });
-
-    $scope.$on('pidAdded', function(event, data){
-        $scope.globalXpid = data.info;
-        $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-        $scope.toggleObject = localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0}; 
     });
 
     $scope.saveCTab = function(tab, index){

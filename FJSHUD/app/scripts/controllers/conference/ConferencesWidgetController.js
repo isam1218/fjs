@@ -2,8 +2,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
-	var addedPid;
-	var localPid;
 
   var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
       if (!$scope.globalXpid){
@@ -13,11 +11,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
       } else {
           getXpidInC();
       }
-  });
-
-  $scope.$on('pidAdded', function(event, data){
-      $scope.globalXpid = data.info;
-      $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
   });
 	
 	$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
@@ -97,33 +90,14 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
         {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
       ];      
     }
-  });
 	
-  $scope.selectedConf = localStorage.selectedConfOption ? JSON.parse(localStorage.selectedConfOption) : $scope.sort_options[0];
+    $scope.selectedConf = localStorage.selectedConfOption ? JSON.parse(localStorage.selectedConfOption) : $scope.sort_options[0];
+  });
 
   $scope.sortConf = function(selection){
 	localStorage.selectedConfOption = JSON.stringify(selection);
     $scope.selectedConf = selection;
   };
-
-	$scope.$on('pidAdded', function(event, data){
-		addedPid = data.info;
-		if (localStorage['recents_of_' + addedPid] === undefined){
-			localStorage['recents_of_' + addedPid] = '{}';
-		}
-		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-	});
-
-	$scope.storeRecentConference = function(confXpid){
-		localPid = JSON.parse(localStorage.me);
-		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		$scope.recent[confXpid] = {
-			type: 'conference',
-			time: new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {id: confXpid, type: 'conference', time: new Date().getTime()});
-	};
 
 	$scope.enableChat = true;
 	

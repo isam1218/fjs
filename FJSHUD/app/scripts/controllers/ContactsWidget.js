@@ -1,18 +1,9 @@
 hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
-	var addedPid;
   $scope.query = "";
   $scope.sortField = "displayName";
   $scope.sortReverse = false;
   $scope.contacts = [];
 	$scope.favorites = {};
-
-	$scope.$on('pidAdded', function(event, data){
-		addedPid = data.info;
-		if (localStorage['recents_of_' + addedPid] === undefined){
-			localStorage['recents_of_' + addedPid] = '{}';
-		}
-		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-	});
 	
 	// pull contact updates from service
 	contactService.getContacts().then(function(data) {
@@ -58,64 +49,16 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 			}
 		};
 	};
-
-	var parseContact = function(phoneNumber){
-		var parsedNumber = '';
-		for (var i = 0; i < phoneNumber.length; i++){
-			var character = phoneNumber[i];
-			if (character >= 0 && character <= 9){
-				parsedNumber += character;
-			}
-		}
-		return parsedNumber;
-	};
 	
 	$scope.searchFilter = function(){
 		var query = $scope.$parent.query.toLowerCase();
-		// console.error('* - ', parsedQuery);
-		return function(contact){
-			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || parseContact(contact.primaryExtension).indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || parseContact(contact.phoneMobile).indexOf(query) != -1){
-				return true;
-			}
-		};
-	};
-	
-	$scope.customSort = function() {
-		// recent list doesn't have a sort field
-		if ($scope.$parent.tab == 'recent')
-			return 'timestamp';
-		else
-			return $scope.sortField;
-	};
-	
-	$scope.customReverse = function() {
-		// recent list is always reversed
-		if ($scope.$parent.tab == 'recent')
-			return true;
-		else
-			return $scope.sortReverse;
-	};
-	
-	// record most recent contacts
-	$scope.storeRecentContact = function(xpid){
-		var localPid = JSON.parse(localStorage.me);
-		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		// $scope.recent = JSON.parse(localStorage.recent);		
-		$scope.recent[xpid] = {
-			type: 'contact',
-			time:  new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		// localStorage.recent = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
-	};
-	
 
-	$scope.getCallStatusAvatar = function(call) {
-		if (call && call.contactId)
-			return myHttpService.get_avatar(call.contactId, 28, 28);
-		else
-			return 'img/Generic-Avatar-28.png';
+		return function(contact){
+			if (query == '')
+				return true;
+			else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+				return true;
+		};
 	};
 	
 	$scope.showCallStatus = function($event, contact) {

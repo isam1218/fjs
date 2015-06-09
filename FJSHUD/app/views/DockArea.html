@@ -14,7 +14,7 @@
 			<div class="SubHeader">{{::verbage.my_queue}}</div>
 			
 			<div class="List">
-				<a href="#/queue/{{::queue.xpid}}" ng-click="storeRecent(queue.xpid, 'queue')" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">
+				<a href="#/queue/{{::queue.xpid}}" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">
 					<avatar profile="queue"></avatar>
 				
 					<div class="ListRowContent" dockable="queue">
@@ -69,7 +69,7 @@
 
 	<!-- contacts -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" droppable="Call" dragger>
-		<a href="#/contact/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'contact')" class="Header Single">
+		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div>{{ ::gadget.data.displayName }}</div>
@@ -92,7 +92,7 @@
 
 	<!-- groups -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
-		<a href="#/group/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'group')" class="Header">
+		<a href="#/group/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div>{{ ::gadget.data.name }}</div>
@@ -104,7 +104,7 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" droppable="Call">
+				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" droppable="Call">
 					<avatar profile="member.fullProfile"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
@@ -124,7 +124,7 @@
 
 	<!-- conferences -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
-		<a href="#/conference/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'conference')" class="Header">
+		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
@@ -137,7 +137,7 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.fullProfile.xpid}}" ng-click="storeRecent(member.fullProfile.xpid, 'contact')" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
+				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
 					<avatar profile="member" context="conference:gadget.data"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
@@ -164,7 +164,7 @@
 
 	<!-- queues -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
-		<a href="#/queue/{{::gadget.data.xpid}}" ng-click="storeRecent(gadget.data.xpid, 'queue')" class="Header">
+		<a href="#/queue/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="Name">{{ ::gadget.data.name }}</div>

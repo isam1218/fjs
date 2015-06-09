@@ -1,27 +1,6 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
-
-	var addedPid;
-	var localPid;
 	$scope.gadgets = {};
 	$scope.upload_time = 0;
-	$scope.$on('pidAdded', function(event, data){
-		addedPid = data.info;
-		if (localStorage['recents_of_' + addedPid] === undefined){
-			localStorage['recents_of_' + addedPid] = '{}';
-		}
-		$scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-	});
-
-	$scope.storeRecent = function(xpid, type){
-		localPid = JSON.parse(localStorage.me);
-		$scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		$scope.recent[xpid] = {
-			type: type,
-			time: new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-		$rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
-	};
 	
 	$scope.upload_progress = 0;
 	httpService.get_upload_progress().then(function(data){

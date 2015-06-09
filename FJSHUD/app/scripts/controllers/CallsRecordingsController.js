@@ -31,10 +31,6 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     }
   });
 
-  $scope.$on('pidAdded', function(event, data){
-    $scope.setFromLocalStorage(data.info);
-  });
-
   $scope.selected = localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
   $scope.toggleObject = localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
   
