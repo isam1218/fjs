@@ -6,6 +6,11 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
+	
+	$scope.setTab = function(tab) {
+		$scope.tab = tab;
+		$scope.query = '';
+	};
 
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);

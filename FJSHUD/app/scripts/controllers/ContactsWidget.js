@@ -49,33 +49,16 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 			}
 		};
 	};
-
-	var parseContact = function(phoneNumber){
-		var parsedNumber = '';
-		for (var i = 0; i < phoneNumber.length; i++){
-			var character = phoneNumber[i];
-			if (character >= 0 && character <= 9){
-				parsedNumber += character;
-			}
-		}
-		return parsedNumber;
-	};
 	
 	$scope.searchFilter = function(){
 		var query = $scope.$parent.query.toLowerCase();
 
 		return function(contact){
-			if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || parseContact(contact.primaryExtension).indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || parseContact(contact.phoneMobile).indexOf(query) != -1){
+			if (query == '')
 				return true;
-			}
+			else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+				return true;
 		};
-	};
-
-	$scope.getCallStatusAvatar = function(call) {
-		if (call && call.contactId)
-			return myHttpService.get_avatar(call.contactId, 28, 28);
-		else
-			return 'img/Generic-Avatar-28.png';
 	};
 	
 	$scope.showCallStatus = function($event, contact) {
