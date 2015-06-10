@@ -39,7 +39,7 @@
 
 
   </head>
-  <body data-ng-controller="MainController"  flow-prevent-drop>
+  <body data-ng-controller="MainController" ng-model-options="{debounce: 200}" flow-prevent-drop>
     <div id="AppLoading" ng-if="!loaded">
 		<div ng-cloak>
 			<div>{{::verbage.loading}}...</div>
@@ -57,7 +57,7 @@
 				<div class="LeftBarTop">
 					<div class="ContactSearch">
 						<div ng-show=" tab != 'favorites' && tab != 'recent'">
-							<input type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)" />
+							<input type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-keypress="clearSearch(autoClearTime)" />
 							<span></span>
 							
 							<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
