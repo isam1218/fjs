@@ -26,50 +26,19 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     {upper: $scope.verbage.recordings, lower: 'recordings'}, 
     {upper: $scope.verbage.alerts, lower: 'alerts'}];
 
-    $scope.selectFlag = false;
-    $scope.selected = $scope.tabs[0].lower;
     $scope.toggleObject = {};
     $scope.toggleObject.item = 0;
     $scope.tabObj = {};
-         
-    $scope.getSelectedTab = function(tab, index){
-    	var flagObj = queueService.getSelected();   
-    	$scope.selectFlag = false;    	
-    	
-    	if(flagObj != '' && flagObj.name == $scope.tabs[index].lower)
-    	{    		
-            $scope.selectFlag = true;
-            $scope.toggleObject = {item: index};
-            $scope.selected = $scope.tabs[index].lower;
-            
-            localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = flagObj.name;  		            
-            localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);                                   
-    	}
-    	return $scope.selectFlag;
-    };
-    
+             
     $scope.isString = function(item) {
         return angular.isString(item);
-    },
+    };
     
+    // as soon as have user's pid, load user's default tab selection from LS
     $scope.setFromLocalStorage = function(val){
-    	$scope.globalXpid = val;
-        
-        if($routeParams.route != undefined){
-            $scope.selected = $routeParams.route;
-            localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = $scope.selected; 
-            for(var i = 0; i < $scope.tabs.length;i++){
-                if($scope.tabs[i].lower == $routeParams.route){
-                    $scope.toggleObject = {item: i};
-                    localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);       
-                    break;
-                }
-            }
-        }else{
-            $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] : $scope.tabs[0].lower;
-            $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};        
-            
-        }
+        $scope.globalXpid = val;
+        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] : $scope.tabs[0].lower;
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};        
     };
     
     var getXpidInQ = $rootScope.$watch('myPid', function(newVal){
@@ -81,13 +50,15 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         }
     });
 
+    // save user's last selected tab to LS
     $scope.saveQTab = function(tab, index){      	
-        $scope.selected = $scope.tabs[index].lower;
+        $scope.selected = tab;
         $scope.toggleObject = {item: index};
-        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = $scope.selected;        
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);       
     };      
     
+    // filters out the display of certain queue tabs per user's permissions
     $scope.tabFilter = function(){
         return function(tab){        	        	
             switch(tab.lower){
@@ -166,7 +137,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	            else
 	            {
 	            	// I'm not a member of this current queue in the for loop
-	                // console.log('im not a member of this q', myPermission);
 	                $scope.enableAlertBroadcast = false;
 	                $scope.enableChat = false;
 	                $scope.enableFileShare = false;
