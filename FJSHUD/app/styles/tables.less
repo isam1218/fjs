@@ -45,6 +45,10 @@
           &.CallStatus, &.HudStatus{
             float: right;
           }
+          
+          &.CallStatus.external{
+            right: 80px;
+          }
           &.HudStatus{
             margin-right: 25px;
           }
@@ -192,6 +196,14 @@
 	max-width: 55%;
 	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+    
+    .external{
+      float: left;
+      
+      &.ListRowStatusIcon{
+         margin-top: -5px;
+      }
+    }
     
     .name {
       strong {

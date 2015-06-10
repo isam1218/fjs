@@ -4,15 +4,15 @@
 			<span>{{::verbage.name}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
-		<div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div  ng-if="$parent.tab != 'external'" data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
 			/<span>{{::verbage.extension}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
-		<div data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div  ng-if="$parent.tab != 'external'" data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
             <span>{{::verbage.hud_status}}</span>
             <div class="DirectionArrow"></div>
         </div>
-		<div data-ng-click="sort('call.startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'call.startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div data-ng-click="sort('call.startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'call.startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}} ng-class:{'external': $parent.tab == 'external'}">
 			<span>{{::verbage.call_status}}</span>
 			<div class="DirectionArrow"></div>
 		</div>		
@@ -29,10 +29,12 @@
 				<div class="ListRowTitle">
 					<div class="name">
 						<strong>{{ ::contact.displayName || contact.name }}</strong>
-						<span>#{{ ::contact.primaryExtension || contact.extension }}</span>
+						<span ng-if="$parent.tab != 'external'">#{{ ::contact.primaryExtension || contact.extension }}</span>
+						<div ng-if="$parent.tab == 'external'" class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+						<div ng-if="$parent.tab == 'external'" class="ListRowStatusText external">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{contact.call ? ' + on call' : ''}}</div>
 					</div>
 				</div>																
-				<div class="ListRowStatus">
+				<div class="ListRowStatus" ng-if="$parent.tab != 'external'">
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                     <br/>                   

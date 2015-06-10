@@ -19,16 +19,11 @@
             <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'contact'">
                 <div class="ListRowTitle">
                     <div class="name">
-                        <strong>{{ item.displayName || item.name }}</strong>
-                        <span>#{{ ::item.primaryExtension || item.extension }}</span>
+                        <strong>{{ item.displayName || item.name }}</strong>                       
+                       <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                        <div class="ListRowStatusText external">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{contact.call ? ' + on call' : ''}}</div>
                     </div>
-                </div>
-                <div class="ListRowStatus">
-                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
-                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{item.queue_status}}" ></div>
-                    <br/>
-                    <div class="ListRowStatusText" >{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}{{item.call ? ' + on call' : ''}}</div><!-- {{item.hud_status || 'offline'}} -->
-                </div> 
+                </div>                
                 <div class="CallStatus" ng-if="item.call.startedAt">
                     <avatar 
                         ng-if="item.call.startedAt" 
