@@ -1,5 +1,5 @@
 <div class="ToolBar ">
-  <input type="search" class="SearchBox" ng-model="que.query" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"/>
+  <input type="search" class="SearchBox" ng-model="que.query" ng-attr-placeholder="{{::verbage.search}}" ng-keypress="clearSearch(autoClearTime)"/>
     <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort">
 		<option value="displayName">{{::verbage.sort_by_name}}</option>
 		<option value="queue_status">{{::verbage.sort_by_call_status}}</option>

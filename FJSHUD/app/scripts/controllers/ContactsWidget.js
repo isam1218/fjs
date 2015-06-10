@@ -1,8 +1,8 @@
 hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
-  $scope.query = "";
-  $scope.sortField = "displayName";
-  $scope.sortReverse = false;
-  $scope.contacts = [];
+	$scope.query = "";
+	$scope.sortField = "displayName";
+	$scope.sortReverse = false;
+	$scope.contacts = [];
 	$scope.favorites = {};
 	
 	// pull contact updates from service
@@ -50,15 +50,13 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		};
 	};
 	
-	$scope.searchFilter = function(){
+	$scope.searchFilter = function(contact){
 		var query = $scope.$parent.query.toLowerCase();
 
-		return function(contact){
-			if (query == '')
-				return true;
-			else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
-				return true;
-		};
+		if (query == '')
+			return true;
+		else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+			return true;
 	};
 	
 	$scope.showCallStatus = function($event, contact) {

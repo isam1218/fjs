@@ -136,7 +136,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 						}
 						return "Are you sure you want to navigate away from this page?";
 					};
-				}, 2000);
+				}, 5000);
 			}
 		}
 	});

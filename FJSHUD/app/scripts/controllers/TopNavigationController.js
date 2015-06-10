@@ -213,6 +213,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   };
   
   $scope.closePlayer = function() {
+	$interval.cancel(loadCheck);
     $scope.voicemail = null;
     player.pause();
   };

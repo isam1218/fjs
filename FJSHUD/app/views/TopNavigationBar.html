@@ -31,10 +31,11 @@
             </div>
         </div>
     </div>
-	<div class="TopBarVoicemailControls" ng-show="voicemail">		
+	
+	<div class="TopBarVoicemailControls" ng-if="voicemail">		
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		<div class="Caller">
-			<avatar profile="voicemail.fullProfile" type="4"></avatar>
+			<avatar profile="voicemail" type="4"></avatar>
 			<div class="Details">
 				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
 				<strong>{{ voicemail.displayName || voicemail.name }}</strong>
@@ -68,9 +69,9 @@
 				<div class="MediaPlayerVolumeUp" ng-click="changeVolume(.2)"></div>
 			</div>
 		</div>
+	</div>  
 		
-		<audio id="voicemail_player">
-			<source id="voicemail_player_source" type="audio/mp3"></source>
-		</audio>
-	</div>    
+	<audio id="voicemail_player">
+		<source id="voicemail_player_source" type="audio/mp3"></source>
+	</audio>	
 </div>
