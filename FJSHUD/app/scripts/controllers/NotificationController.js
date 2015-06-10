@@ -579,8 +579,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat")
-			{return false;
+			// if user is in chat conversation w/ other contact already (convo on screen), don't display notification...
+			if (item.senderId == $routeParam.contactId){
+				return false;
+			}
+			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
+			
+				return false;
+			
 			}else{
 
 				for(var j = 0; j < $scope.todaysNotifications.length; j++){

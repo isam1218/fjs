@@ -130,7 +130,7 @@ fjs.i18n = {
 		avg_talk:'Avg Talk',
         aban: 'Aband',
 		minutes:'minutes',
-		abandoned:'Abandoned',
+		abandoned:'Aband',
 		avatar_upload: '写真 アップロード',
     	first_name:	'First name',
      	last_name:	'Last Name',
