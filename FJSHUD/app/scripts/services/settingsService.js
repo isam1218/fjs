@@ -129,13 +129,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				$timeout(function() {
 					$rootScope.loaded = true;
 					
-					// stupid warning
-					window.onbeforeunload = function(){
-						if(localStorage.tabclosed){
-							localStorage.tabclosed = "true";
-						}
-						return "Are you sure you want to navigate away from this page?";
-					};
+					httpService.setUnload();
 				}, 5000);
 			}
 		}

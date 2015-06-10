@@ -747,7 +747,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 		});		
 			
-		$scope.$safeApply();
 		if(displayDesktopAlert){
 			if($scope.todaysNotifications.length > 0){
 				$timeout(displayNotification, 1000);
