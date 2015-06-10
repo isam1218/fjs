@@ -231,12 +231,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var sessionStatus = function(session_status){
 		if (session_status.status == 0 && !isRegistered) {
-            ("Session ready");
             
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
 				phone = session.phone;
-         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html"
+         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html";
          		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
