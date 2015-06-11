@@ -627,6 +627,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					playChatNotification = true;
 
 				}
+				if(displayDesktopAlert){
+					if($scope.todaysNotifications.length > 0){
+						$scope.displayAlert = true;
+						$timeout(displayNotification
+						, 500);
+					}
+					//adding a second delay for the native notification to have the digest complete with the updated notifications
+				}	
 			}
 		}
 		
@@ -770,13 +778,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 		});		
 			
-		if(displayDesktopAlert){
-			if($scope.todaysNotifications.length > 0){
-				$scope.displayAlert = true;
-				$timeout(displayNotification
-				, 500);
-			}
-			//adding a second delay for the native notification to have the digest complete with the updated notifications
-		}				
+					
     });		
 }]);
