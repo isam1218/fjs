@@ -364,7 +364,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 	$scope.$on('settings_updated',function(event,data){
 		if(data['instanceId'] != undefined){
-			console.debug("client_id " + localStorage.instance_id + " instance_id " + data['instanceId']);
 			if(data['instanceId'] != localStorage.instance_id){
 				$scope.anotherDevice = true;
 				phoneService.registerPhone(false);
@@ -537,8 +536,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				break;
 
 		}
-
-		$scope.$safeApply();
 	});
 
 	var addTodaysNotifications = function(item){

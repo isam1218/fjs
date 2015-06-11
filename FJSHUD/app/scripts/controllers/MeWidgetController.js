@@ -821,7 +821,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     }
 
     
-    $scope.$on('weblauncher_updated', function(event,data){
+    $scope.$on('weblauncher_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
             activeWebLauncher = data.filter(function(item){
@@ -1013,7 +1013,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         
     });
-    $scope.$on('i18n_updated',function(event,data){
+    $scope.$on('i18n_synced',function(event,data){
 		if(data){
 			var language_id;
 			var default_language;

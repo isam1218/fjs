@@ -1,4 +1,4 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $timeout) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', '$timeout', function($rootScope, $scope, $location, conferenceService, httpService, $timeout) {
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
