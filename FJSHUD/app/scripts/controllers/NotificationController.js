@@ -528,10 +528,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		phoneService.showCallControls(currentCall);
 	};
 
+	$scope.$watch('meContact', function(){
+		$scope.meContact = $rootScope.meContact;
+	});
+
 	var displayNotification = function(){
-		element = document.getElementById("CallAlert");
+		console.log($scope.meContact);
+		element = document.getElementById("Alert");
 		if(element){
 			element.style.display="block";
+			//element.setAttribute('style','display:block');
 			content = element.innerHTML;
 			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
 			element.style.display="none";
@@ -555,7 +561,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				$scope.onHold = false;
 				break;
 			case "openNot":
-				$scope.$parent.overlay ='notifications';
+				$scope.overlay ='notifications';
 				break;
 
 		}
@@ -566,8 +572,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	var addTodaysNotifications = function(item){
     	var today = moment(ntpService.calibrateTime(new Date().getTime()));
 		var itemDate = moment(item.time);
-		var context = item.context.split(":")[0];
-		var contextId = item.context.split(":")[1];
+		var context;
+		var contextId;
+		if(item.context){
+			context = item.context.split(":")[0];
+		 	contextId = item.context.split(":")[1];
+		
+		}
 		var isAdded = false;
 		var targetId;
 		

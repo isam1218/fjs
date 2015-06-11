@@ -1,8 +1,12 @@
 hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
 
-	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
+	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="onload" value="onloadedplugin" /></object>'
 
-	var phonePlugin = document.getElementById('phone');
+	//$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
+	$("body").append($compile(pluginHtml)($rootScope));
+	
+
+	var phonePlugin = document.getElementById('fonalityPhone');
 	var version = phonePlugin.version;
 	var deferred = $q.defer();
 	var devices = [];
@@ -290,9 +294,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	var arguments = urlhash.split("?");
     	var url = arguments[0];
     	var query = arguments[1];
-    	var queryArray = query.split('&');
-    	var xpid = queryArray[0];    	
-    	
+    	var queryArray;
+    	var id;
+		if(query){
+			queryArray = query.split('&');
+			xpid = queryArray[0];
+    	}
     	activateBrowserTab();
     	
     	window.focus();
@@ -466,7 +473,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	var remove_notification = function(xpid){		
-		HttpService.sendAction('quickinbox','remove',{'pid':xpid});
+		httpService.sendAction('quickinbox','remove',{'pid':xpid});
 		//$rootScope.$broadcast('quickinbox_synced', data);
 	};
 	
@@ -495,7 +502,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	var activatePhone = function(){
-		   myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
+		   httpService.updateSettings('instanceId','update',localStorage.instance_id); 
 	}
 	
 	var showCurrentCallControls = function(currentCall){
@@ -588,12 +595,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
 					
 				if(session.attachEvent){
-					session.attachEvent("onStatus", this.sessionStatus);
-	                session.attachEvent("onNetworkStatus", this.onNetworkStatus);
+					session.attachEvent("onStatus", sessionStatus);
+	                session.attachEvent("onNetworkStatus", onNetworkStatus);
 
 				}else{
 					 session.addEventListener("Status",sessionStatus, false);
-	               	 session.addEventListener("NetworkStatus", this.onNetworkStatus);
+	               	 session.addEventListener("NetworkStatus", onNetworkStatus);
 				}
 
 				if(session.status == 0){
