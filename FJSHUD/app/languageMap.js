@@ -34,6 +34,7 @@ fjs.i18n = {
 		available: 'available',
 		away:'away',
 		busy:'busy',
+		dnd: 'do not disturb',
 		favorites: 'Favorites',
 		external: 'External',
         team: 'Team',
