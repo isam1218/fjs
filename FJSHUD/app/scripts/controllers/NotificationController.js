@@ -284,7 +284,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			var context = message.context;
 			var xpid = context.split(':')[1];
 		}
-		$location.path("/" + message.audience + "/" + xpid + "/chat");
+		
+		var tab = message.type == 'q-broadcast' ? '/alerts' : '/chat';
+		
+		$location.path("/" + message.audience + "/" + xpid + tab);
 		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
 	};
