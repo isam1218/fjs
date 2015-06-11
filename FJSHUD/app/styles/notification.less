@@ -181,9 +181,6 @@
       }
 	}
 }
-.NotificationMessages.LeftBarNotifications.noMessages{   
-     top: -5px;
-}
 
 .LeftBarNotifications{		
 	transition: 1s;		
@@ -212,6 +209,7 @@
        .NotificationMessages{
          padding-bottom: 0px;
          bottom: 0px;
+         top: -5px;
        }
       .TitleBar{
         margin-bottom: 0px;
@@ -220,6 +218,10 @@
     &.withCalls{
       bottom: 50px !important;
     }
+}
+
+.NotificationMessages.LeftBarNotifications.noMessages{   
+      top: -5px;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications{	
 	visibility:visible;

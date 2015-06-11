@@ -17,7 +17,7 @@
 		<div class="dept">{{::verbage.my_department_collaborate}}</div>
 	</div>
    </div>	
-	<a href="#/group/{{::mine.xpid}}" ng-click="storeRecentGroup(group.xpid)" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#/group/{{::mine.xpid}}" ng-if="mine" class="ListRowFirst ListRow ListRow-Contact">
 		<div include-once="views/GroupsRow.html" ng-init="group = mine"></div>
 	</a>
 	<div class="group_title">
@@ -26,7 +26,7 @@
 		<div class="dept">{{::verbage.other_departments}}</div>
 	 </div>
 	</div>
-	<a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in groups | filter: customFilter('all') | filter: searchFilter() |orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: customFilter('all') | filter: searchFilter() |orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div include-once="views/GroupsRow.html"></div>
 	</a>
 	<div class="group_title">
@@ -35,7 +35,7 @@
 	   <div class="dept">{{::verbage.teams_managed_by_me}}</div>
 	 </div>
 	</div>
-	<a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('mine') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('mine') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div include-once="views/GroupsRow.html"></div>
 	</a>
 	<div class="group_title">
@@ -44,7 +44,7 @@
 	   <div class="dept">{{::verbage.member_of_teams}}</div>
 	</div>
    </div>
-	<a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('shared') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('shared') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div include-once="views/GroupsRow.html"></div>
 	</a>
 	<div class="group_title">
@@ -53,7 +53,8 @@
 		<div class="dept">{{::verbage.teams_visible_to_everyone}}</div>
 	</div>
    </div>
-	<a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('others') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+	<a href="#group/{{::group.xpid}}" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('others') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+
 		<div include-once="views/GroupsRow.html"></div>
 	</a>
    </div>

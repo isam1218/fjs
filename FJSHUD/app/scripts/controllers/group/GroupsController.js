@@ -5,15 +5,6 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
   $scope.groups = [];
 	$scope.mine = null;
 	$scope.favoriteID = null;
-  var addedPid;
-
-  $scope.$on('pidAdded', function(event, data){
-    addedPid = data.info;
-    if (localStorage['recents_of_' + addedPid] === undefined){
-      localStorage['recents_of_' + addedPid] = '{}';
-    }
-    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-  });
 
   // pull group updates from service, including groups from local storage
   groupService.getGroups().then(function(data) {
@@ -96,17 +87,5 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 			return (contact ? 'owner: ' + contact.displayName : '');
 		}
 	};
-
-  // store most recent groups into local Storage
-  $scope.storeRecentGroup = function(groupXpid){
-    var localPid = JSON.parse(localStorage.me);
-    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-    $scope.recent[groupXpid] = {
-      type: 'group',
-      time: new Date().getTime()
-    };
-    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {id: groupXpid, type: 'group', time: new Date().getTime()});
-  };
 
 }]);

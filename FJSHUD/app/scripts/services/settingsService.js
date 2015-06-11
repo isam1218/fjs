@@ -129,38 +129,9 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				$timeout(function() {
 					$rootScope.loaded = true;
 					
-					// stupid warning
-					window.onbeforeunload = function(){
-						if(localStorage.tabclosed){
-							localStorage.tabclosed = "true";
-						}
-						return "Are you sure you want to navigate away from this page?";
-					};
-				}, 2000);
+					httpService.setUnload();
+				}, 5000);
 			}
 		}
 	});
-
-	$rootScope.$on('i18n_langs_synced',function(event,data){
-		if(data){
-			
-		}
-		$rootScope.$evalAsync($rootScope.$broadcast('i18n_updated', data));
-	
-	});
-
-	$rootScope.$on('weblaunchervariables_synced', function(event,data){
-        if(data){
-            weblauncher_variables = data;
-        }
-
-    });
-
-	$rootScope.$on('weblauncher_synced', function(event,data){
-        if(data){
-           weblaunchers = data;
-           $rootScope.$evalAsync($rootScope.$broadcast('weblauncher_updated', weblaunchers));
-	
-        }
-    });
 }]);

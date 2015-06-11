@@ -31,36 +31,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
          * @protected
          */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-    window.onunload = function(){
-     	//return "Are you sure you want to close the window";
-     	if(localStorage.fon_tabs){
-     		tabMap = JSON.parse(localStorage.fon_tabs);
-			delete tabMap[tabId];
-
-			if($.isEmptyObject(tabMap)){
-				localStorage.removeItem('fon_tabs');
-				localStorage.removeItem('data_obj');
-			}else{
-				for(tab in tabMap){
-					tabMap[tabId].isMaster = true;
-					break;
-				}
-				localStorage.fon_tabs = JSON.stringify(tabMap);		
-			}	
-
-    	}
-	};
-
-
-     //when unloading reassign master tab 
-     /*window.onunload  = function(){
-     	    
-     	
-     }*/
-     	
-		//return "Are you sure you want to navigate away from this page?";
-
-     
 	
 	//method that generates a random guid for the tab
 	var genGuid = function(){
@@ -102,8 +72,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	
 
 	var worker = undefined;
-  var initialPid;
- 
+	
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
@@ -120,25 +89,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                if (event.data.data) {
 
 		                    synced_data = event.data.data;
-
-                        if (synced_data.me){
-                          for (var i = 0, len = synced_data.me.length; i < len; i++){
-                            if (synced_data.me[i].propertyKey === "my_pid"){
-                              initialPid = synced_data.me[i].propertyValue;
-                              break;
-                            }
-                          }
-                          
-                          // save to both LS and to $rootScope
-                          $rootScope.myPid = initialPid;
-                          $rootScope.$broadcast('pidAdded', {info: initialPid});
-
-                          if (localStorage[initialPid] === undefined){
-                            localStorage[initialPid] = '{}';
-                          }                        
-                          localStorage.me = JSON.stringify(initialPid);
-                          
-                        }
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
@@ -428,6 +378,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&lang=eng"
             + "&revoke_token=" + authTicket
             + "&instance_id=" + localStorage.instance_id;
+			
 		localStorage.removeItem("me");
     	localStorage.removeItem("authTicket");
     	localStorage.removeItem("nodeID");
@@ -440,9 +391,26 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		else
 			worker.terminate();
 		
+		window.onbeforeunload = null;
+		
 		location.href = authURL;
 	};
 	
+	this.setUnload = function() {			
+		// stupid warning
+		window.onbeforeunload = function() {
+			if (localStorage.tabclosed)
+				localStorage.tabclosed = "true";
+    	
+			// shut off web worker
+			if (worker.port)
+				worker.port.close();
+			else
+				worker.terminate();
+			
+			return "Are you sure you want to navigate away from this page?";
+		};
+	};
 
 	/*
 	 if there is sharedworker support then it will get the data from the sharedwebworker otherwise it will check localstorage for the data

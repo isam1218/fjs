@@ -59,7 +59,8 @@
   width: 100%;
   padding-right: 5px;
   position: absolute;
-  bottom: 26px;
+  /*bottom: 26px;*/
+  bottom: 1px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
@@ -174,9 +175,6 @@
 .NotificationMessages .scroller .firstMessage {
   margin-top: -16px;
 }
-.NotificationMessages.LeftBarNotifications.noMessages {
-  top: -5px;
-}
 .LeftBarNotifications {
   transition: 1s;
 }
@@ -194,12 +192,26 @@
   position: absolute;
   bottom: 0px;
 }
-.LeftBarNotificationSection.withCalls {
-  bottom: 54px;
-}
 .LeftBarNotificationSection:hover,
 .LeftBarNotificationSection.noMessages {
   background: transparent;
+}
+.LeftBarNotificationSection.noMessages {
+  bottom: 0px;
+}
+.LeftBarNotificationSection.noMessages .NotificationMessages {
+  padding-bottom: 0px;
+  bottom: 0px;
+  top: -5px;
+}
+.LeftBarNotificationSection.noMessages .TitleBar {
+  margin-bottom: 0px;
+}
+.LeftBarNotificationSection.withCalls {
+  bottom: 50px !important;
+}
+.NotificationMessages.LeftBarNotifications.noMessages {
+  top: -5px;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;

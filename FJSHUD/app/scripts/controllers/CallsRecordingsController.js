@@ -1,4 +1,4 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'SettingsService', function($scope, $rootScope, $routeParams, $location, settingsService) {
+hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService', function($scope, $rootScope, $routeParams, settingsService) {
 	// routing
 	$scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'}];
 	
@@ -29,10 +29,6 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     } else {
       getXpidInCR();
     }
-  });
-
-  $scope.$on('pidAdded', function(event, data){
-    $scope.setFromLocalStorage(data.info);
   });
 
   $scope.selected = localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;

@@ -410,6 +410,12 @@
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
+  min-width: 200px;
+}
+#ContextMenu.NoWrap {
+  visibility: hidden;
+}
+#ContextMenu.NoWrap .BottomRow {
   white-space: nowrap;
 }
 #ContextMenu .Arrow {
@@ -428,6 +434,9 @@
   right: -10px;
   border-left: 10px solid #ededee;
 }
+#ContextMenu .TopRow {
+  white-space: nowrap;
+}
 #ContextMenu .TopRow > div > div:not(:last-child) {
   border-right: 1px solid #ccc;
   margin-right: .5em;
@@ -436,6 +445,15 @@
 #ContextMenu .TopRow div {
   display: inline-block;
   vertical-align: top;
+  font-size: 11px;
+  color: #999;
+}
+#ContextMenu .TopRow div.Contact .info {
+  font-size: 12px;
+  font-weight: bold;
+}
+#ContextMenu .TopRow div.Contact .Numbers span {
+  font-weight: bold;
 }
 #ContextMenu .TopRow .Numbers div {
   min-width: 3em;
@@ -461,10 +479,11 @@
   height: 32px;
 }
 #ContextMenu .BottomRow.Actions .Button span {
-  font-size: .8em;
+  font-size: 11px;
   padding: 0 1em;
   border: 1px solid #ededee;
   border-radius: 10px;
+  font-weight: bold;
 }
 #ContextMenu .BottomRow.Actions .Button:hover span {
   border: 1px solid gray;

@@ -1,14 +1,12 @@
-hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService){
+hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService){
   
-  var addedPid;
-  var localPid;
   $scope.totalContacts = [];
   $scope.totalGroups = [];
   $scope.totalQueues = [];
   $scope.totalConferences = [];
   $scope.combined = {};
   $scope.totalCombined = [];
-  $scope.recent;
+  $scope.recent = storageService.getRecents();
   $scope.sortField = "timeline";
   $scope.sectionSortField = 'time';
   var contactPagesShown = 1;
@@ -31,12 +29,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.groupedSections = [{type: 'contact', lastTime: {}},{type: 'group', lastTime: {}},{type: 'queue', lastTime: {}},{type: 'conference', lastTime: {}}];
 
   // retrieve saved recents from LS (if any), then grab the most recent entry from each grouping (contact, group, queue, conf) and assign as prop to the items in groupedSections array
-  $scope.$on('pidAdded', function(event, data){
-    addedPid = data.info;
-    if (localStorage['recents_of_' + addedPid] === undefined){
-      localStorage['recents_of_' + addedPid] = '{}'
-    }
-    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
+  $scope.$watch('recent', function() {
     // grab the most recent item for each section
     for (var key in $scope.recent){
       var singleEntry = $scope.recent[key];
@@ -59,64 +52,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.groupedSections[1].lastTime = mostRecentGroup;
     $scope.groupedSections[2].lastTime = mostRecentQueue;
     $scope.groupedSections[3].lastTime = mostRecentConf;
-  });
-
-  // if a new recent is added, load the newly saved recents from LS, then modify the last time property in groupedSections to reflect the change
-  $scope.$on('recentAdded', function(event, data){
-    localPid = JSON.parse(localStorage.me);
-    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-    switch(data.type){
-      case "contact":
-        $scope.groupedSections[0].lastTime = {time: data.time, type: data.type};
-        $scope.recentContactFlag = true;
-        break;
-      case "group":
-        $scope.groupedSections[1].lastTime = {time: data.time, type: data.type};
-        $scope.recentGroupFlag = true;
-        break;
-      case "queue":
-        $scope.groupedSections[2].lastTime = {time: data.time, type: data.type};
-        $scope.recentQueueFlag = true;
-        break;
-      case "conference":
-        $scope.groupedSections[3].lastTime = {time: data.time, type: data.type};
-        $scope.recentConfFlag = true;
-        break;
-    }
-  });
-
-  $scope.storeRecent = function(xpid, type){
-    var localPid = JSON.parse(localStorage.me);
-    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-    switch(type){
-      case "contact":
-        $scope.recent[xpid] = {
-          type: 'contact',
-          time: new Date().getTime()
-        };
-        break;
-      case "group":
-        $scope.recent[xpid] = {
-          type: 'group',
-          time: new Date().getTime()
-        };
-        break;
-      case "queue":
-        $scope.recent[xpid] = {
-          type: 'queue',
-          time: new Date().getTime()
-        };
-        break;
-      case "conference":
-        $scope.recent[xpid] = {
-          type: 'conference',
-          time: new Date().getTime()
-        };
-        break;
-    }
-    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {id: xpid, type: type, time: new Date().getTime()});
-  };
+  }, true);
 
   contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;
@@ -138,6 +74,19 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   });
 
+  var groupGetter = function(){
+    var totalGroups = groupService.getGroups();
+    return totalGroups.then(function(data){
+      $scope.totalGroups = data.groups;
+
+      for (var l = 0; l < $scope.totalGroups.length; l++){
+        var singleGroup = $scope.totalGroups[l];
+        singleGroup.recent_type = 'group';
+        $scope.combined[singleGroup.xpid] = singleGroup;
+      }
+    });
+  }();
+
   var queueGetter = function(){
     return queueService.getQueues().then(function(data) {
       $scope.totalQueues = data.queues;
@@ -154,26 +103,13 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     });    
   }();
 
-  var groupGetter = function(){
-    var totalGroups = groupService.getGroups();
-    return totalGroups.then(function(data){
-      $scope.totalGroups = data.groups;
-
-      for (var l = 0; l < $scope.totalGroups.length; l++){
-        var singleGroup = $scope.totalGroups[l];
-        singleGroup.recent_type = 'group';
-        $scope.combined[singleGroup.xpid] = singleGroup;
-      }
-    });
-  }();
-
   $scope.recentFilter = function(){
     // console.log('in recent filter! $scope.recent is - ', $scope.recent);
     return function(item){
       // grab merged item's xpid
       var currentXpid = item.xpid;
       // if the recent contact matches an item in the merged array (if it exists)
-      if ($scope.recent[currentXpid] !== undefined){
+      if ($scope.recent && $scope.recent[currentXpid] !== undefined){
         // attach a sorting timestamp
         item.timestamp = $scope.recent[currentXpid]['time'];
         return true;

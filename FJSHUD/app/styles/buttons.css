@@ -321,6 +321,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   cursor: pointer;
 }
+.SelectBox.HideFirst option:first-child {
+  display: none;
+}
 .SelectBox:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);
   border: 1px solid rgba(0, 0, 0, 0.3);

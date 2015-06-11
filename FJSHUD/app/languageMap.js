@@ -34,6 +34,7 @@ fjs.i18n = {
 		available: 'available',
 		away:'away',
 		busy:'busy',
+		dnd: 'do not disturb',
 		favorites: 'Favorites',
 		external: 'External',
         team: 'Team',
@@ -130,7 +131,7 @@ fjs.i18n = {
 		avg_talk:'Avg Talk',
         aban: 'Aband',
 		minutes:'minutes',
-		abandoned:'Abandoned',
+		abandoned:'Aband',
 		avatar_upload: '写真 アップロード',
     	first_name:	'First name',
      	last_name:	'Last Name',
@@ -350,7 +351,7 @@ fjs.i18n = {
 
 
       sign_out:'Sign out',
-
+      remove: 'Remove',
       Message:'Message',
       message_individual:'This chat message will be sent to each team member individually.',
       Security:'Security',

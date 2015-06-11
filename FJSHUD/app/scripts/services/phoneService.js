@@ -1,8 +1,12 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService', '$q', function($q, $rootScope, httpService,$compile,$location,settingsService, storageService, $q) {
 
-	$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
+	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="onload" value="onloadedplugin" /></object>'
 
-	var phonePlugin = document.getElementById('phone');
+	//$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
+	$("body").append($compile(pluginHtml)($rootScope));
+	
+
+	var phonePlugin = document.getElementById('fonalityPhone');
 	var version = phonePlugin.version;
 	var deferred = $q.defer();
 	var devices = [];
@@ -23,6 +27,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var voicemails = [];
 	var weblauncher = {};
 	var locations = {};
+	var alertPosition = {};
+	alertPosition.x = 0;
+	alertPosition.y = 0;
 	//fjs.CONFIG.SERVER.serverURL 
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
@@ -152,7 +159,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 			
 	if(alertPlugin && displayNotification){
-				alertPlugin.setAlertSize(width,height);
+
+				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
@@ -204,7 +212,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		  
         
         if(!$.isEmptyObject(data)){
-          $rootScope.$broadcast('phone_event',data);
+          $rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 		}
 	};
 
@@ -221,7 +229,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					event:'state',
 					registration: isRegistered,
 				}
-				$rootScope.$broadcast('phone_event',data);
+				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 	
             }
     };
@@ -231,12 +239,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var sessionStatus = function(session_status){
 		if (session_status.status == 0 && !isRegistered) {
-            ("Session ready");
             
             if(!alertPlugin && !phone){
             	alertPlugin = session.alertAPI;
 				phone = session.phone;
-         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html"
+         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html";
          		alertPlugin.initAlert(url);
 				removeNotification();
          		setupListeners();
@@ -267,6 +274,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         //console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
     };
 
+    var onLocationChanged = function(x,y){
+    	alertPosition.x = x;
+    	alertPosition.y = y;
+    }
+
     var activateBrowserTab = function(tabId){
 
     	switch($rootScope.browser){
@@ -287,10 +299,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     var onAlert = function(urlhash){
     	console.log("AlertClicked: " + urlhash);
-    	arguments = urlhash.split("?");
-    	url = arguments[0];
-    	xpid = arguments[1];
-    	
+    	var arguments = urlhash.split("?");
+    	var url = arguments[0];
+    	var query = arguments[1];
+    	var queryArray;
+    	var id;
+		if(query){
+			queryArray = query.split('&');
+			xpid = queryArray[0];
+    	}
     	activateBrowserTab();
     	
     	window.focus();
@@ -313,7 +330,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event: 'resume'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
 	    		case '/AcceptCall':
@@ -331,7 +348,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event:'openNot'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '/PlayVM':
 					playVm(xpid);
@@ -345,6 +362,34 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					$location.replace();
 					//$rootScope.$apply();
 					removeNotification();
+					break;
+				case '/RemoveNotification':
+				    remove_notification(xpid);
+					break;
+				case '/goToChat':
+					var audience = queryArray[1];
+					goToNotificationChat(xpid, audience); 
+					break;	
+				case '/callAndRemove':
+					var phone = queryArray[1];
+					makeCall(phone); 
+					remove_notification(xpid); 
+					break;	
+				case '/getPlugins':
+					showOverlay(true,'DownloadPlugin',{});
+					window.open(xpid,'_blank');
+					break;	
+				case '/activatePhone':
+					activatePhone();
+					break;	
+				case '/showCallControlls':
+					showCurrentCallControls(xpid);
+					break;
+				case '/showQueue':
+					var queueId = queryArray[0];
+					var audience = queryArray[1];
+					var type = queryArray[2];
+					showQueue(queueId,audience, type);
 					break;
 			}
     	}else{
@@ -365,7 +410,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event: 'resume'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
 	    		case '#/AcceptCall':
@@ -375,7 +420,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event:'openNot'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '#/AcceptZoom':
 					window.open(xpid,'_blank');
@@ -396,7 +441,37 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					//$rootScope.$apply();
 					removeNotification();
 					break;
-
+				case '#/RemoveNotification':
+				    remove_notification(xpid);
+					break;	
+				case '#/goToChat':
+					var context = queryArray[0];
+					var audience = context.split(":")[0];
+					var xpid = context.split(":")[1];
+					var messagexpid = queryArray[1];
+					goToNotificationChat(xpid, audience,messagexpid); 
+					break;	
+				case '#/callAndRemove':
+					var phone = queryArray[1];
+					makeCall(phone); 
+					remove_notification(xpid); 
+					break;	
+				case '#/getPlugins':
+					showOverlay(true,'DownloadPlugin',{});
+					window.open(xpid,'_blank');
+					break;	
+				case '#/activatePhone':
+					activatePhone();
+					break;
+				case '#/showCallControlls':
+					showCurrentCallControls(xpid);
+					break;
+				case '#/showQueue':
+					var queueId = queryArray[0];
+					var audience = queryArray[1];
+					var type = queryArray[2];
+					showQueue(queueId,audience, type);
+					break;
 	    	}
     	}
 	};
@@ -407,7 +482,79 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			alertPlugin.removeAlert();
 		}
 	};
+	
+	var remove_notification = function(xpid){		
+		httpService.sendAction('quickinbox','remove',{'pid':xpid});
+		//$rootScope.$broadcast('quickinbox_synced', data);
+	};
+	
+	var goToNotificationChat = function(xpid, audience,mxpid){		
+		
+		switch(audience){
+			case 'contacts':
+				audience = "contact";
+				break;
+			case 'groups':
+				audience = "group";
+				break;
+		}
 
+		$location.path("/" + audience + "/" + xpid + "/chat");
+		
+		remove_notification(mxpid);
+		//showOverlay(false);
+		
+		//storeRecent(xpid);
+	};
+	
+	var storeRecent = function(xpid){
+		localPid = JSON.parse(localStorage.me);
+		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
+		recent[xpid] = {
+			type: 'contact',
+			time: new Date().getTime()
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify(recent);
+		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
+	};
+
+	var getAvatar = function(pid){
+		return HttpService.get_avatar(pid,40,40);
+	};
+	
+	var activatePhone = function(){
+		   httpService.updateSettings('instanceId','update',localStorage.instance_id); 
+	}
+	
+	var showCurrentCallControls = function(currentCall){
+		$location.path("settings/callid/"+currentCall.xpid);
+		phoneService.showCallControls(currentCall);
+	};
+	
+	var showQueue = function(qid, audience, type)
+    {
+		//var qid = message.queueId;
+		
+		$('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
+		
+		if(message.type == 'q-alert-abandoned')		
+		{
+			queueService.setSelected(true, 'stats', qid);
+			$location.path("/" + audience + "/" + qid + "/stats");							
+		}
+		else
+		{
+			if(type == 'q-alert-rotation')
+			{	
+			   queueService.setSelected(true, 'calls', qid);	
+			   $location.path("/" + audience + "/" + qid + "/calls");
+			   		  
+			}   
+			   
+		}
+		$scope.showNotificationOverlay(false);
+    };	
     onAlertMouseEvent = function(event,x,y){
     	//this.removeNotification();
     };
@@ -431,9 +578,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		if(alertPlugin.attachEvent){
     			alertPlugin.attachEvent("onAlert",onAlert);
     			alertPlugin.attachEvent("ononAlertMouseEvent",onAlertMouseEvent);
+    			alertPlugin.attachEvent("ononLocationChanged", onLocationChanged);
     		}else{
     			alertPlugin.addEventListener("Alert",onAlert,false);
     			alertPlugin.addEventListener("onAlertMouseEvent",onAlertMouseEvent,false);
+    			alertPlugin.addEventListener("onLocationChanged", onLocationChanged,false);
+    		
     		}
     	}
 
@@ -470,12 +620,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
 					
 				if(session.attachEvent){
-					session.attachEvent("onStatus", this.sessionStatus);
-	                session.attachEvent("onNetworkStatus", this.onNetworkStatus);
+					session.attachEvent("onStatus", sessionStatus);
+	                session.attachEvent("onNetworkStatus", onNetworkStatus);
 
 				}else{
 					 session.addEventListener("Status",sessionStatus, false);
-	               	 session.addEventListener("NetworkStatus", this.onNetworkStatus);
+	               	 session.addEventListener("NetworkStatus", onNetworkStatus);
 				}
 
 				if(session.status == 0){
@@ -704,25 +854,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 		if (data[0].incoming){
-			storeIncomingCallToRecent(data[0].contactId);
+			storageService.saveRecent('contact', data[0].contactId);
 		}
 
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-	this.registerPhone = registerPhone;
-	
-	var storeIncomingCallToRecent = function(incomingCallerXpid){
-		var localPid = JSON.parse(localStorage.me);
-		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
-		recent[incomingCallerXpid] = {
-			type: 'contact',
-			time: new Date().getTime()
-		};
-		localStorage['recents_of_' + localPid] = JSON.stringify(recent);
-		$rootScope.$broadcast('recentAdded', {id: incomingCallerXpid, type: 'contact', time: new Date().getTime()});
-	};
-
-	
+	this.registerPhone = registerPhone;	
 
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){

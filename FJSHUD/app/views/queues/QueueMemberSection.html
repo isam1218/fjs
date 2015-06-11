@@ -27,6 +27,6 @@
 		<div class="ListRowStatus">
 			<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
 		</div>
-		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension); storeRecentQueueMember(member.contactId)"></input>
+		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
 	</div>
 </a>

@@ -1,6 +1,6 @@
 <div class="ToolBar">
         <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query" ng-model-options="{debounce: 100}"></div>
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -17,7 +17,7 @@
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <a ng-href="{{getRef(member, myself)}}" ng-click="storeRecentContact(member.fullProfile.xpid)" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
+    <a ng-href="{{getRef(member, myself)}}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
         <avatar profile="member.fullProfile"></avatar>
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
@@ -26,6 +26,7 @@
 				<br/>
                 <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
                 <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+				{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}
             </div>
 			
 			<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
@@ -43,7 +44,7 @@
 			
             <div class="vmalternate" ng-if="!member.fullProfile.call">
                 <div class="vmtime">#{{ ::member.fullProfile.primaryExtension }}</div>
-                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile.primaryExtension); storeRecentContact(member.fullProfile.xpid)"></input>
+                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
             </div>
             
         </div>

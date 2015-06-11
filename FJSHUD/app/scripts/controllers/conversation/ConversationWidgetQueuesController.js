@@ -8,8 +8,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.queues = [];
     $scope.que = {};
     $scope.que.query = '';
-    var localPid;
-    var addedPid;
 
     httpService.getFeed('settings');
 
@@ -50,25 +48,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
         } else if (!autoClearTime){
             return;
         }
-    };
-
-    $scope.$on('pidAdded', function(event, data){
-        addedPid = data.info;
-        if (localStorage['recents_of_' + addedPid] === undefined){
-            localStorage['recents_of_' + addedPid] = '{}';
-        }
-        $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-    });
-    
-    $scope.storeRecentQueue = function(xpid){
-        var localPid = JSON.parse(localStorage.me);
-        $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-        $scope.recent[xpid] = {
-            type: 'queue',
-            time: new Date().getTime()
-        };
-        localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-        $rootScope.$broadcast('recentAdded', {id: xpid, type: 'queue', time: new Date().getTime()});
     };
 
     $scope.getAvatarUrl = function(queue, index) {

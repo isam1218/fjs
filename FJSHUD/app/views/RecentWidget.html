@@ -12,10 +12,11 @@
 </div>
 <div class="ContactList">
     <div class='timeline' ng-if="sortField =='timeline'">
-        <a href="#/{{item.recent_type}}/{{item.xpid}}" ng-click="storeRecent(item.xpid, item.recent_type)" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: customSort(): customReverse() track by item.xpid" class="ListRowFirst ListRow ListRow-Contact">
-           <!-- {{ item }} -->
-            <avatar profile="item" ng-if="item.recent_type == 'contact'"></avatar>
-            <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'contact'">
+        <a href="#/{{::item.recent_type}}/{{::item.xpid}}" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: customSort(): customReverse() track by item.xpid" class="ListRowFirst ListRow ListRow-Contact">            
+            <avatar profile="item"></avatar>
+			
+            <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'contact'">
+
                 <div class="ListRowTitle">
                     <div class="name">
                         <strong>{{ item.displayName || item.name }}</strong>                       
@@ -29,13 +30,12 @@
                         ng-click="showCallStatus($event, item)" 
                         profile="item.call.fullProfile" 
                         context="callstatus"
-                        type="{{item.call.type}}">
+                        type="{{::item.call.type}}">
                     </avatar>
                 </div>              
             </div>
             
-            <avatar profile="item" ng-if="item.recent_type == 'group'"></avatar>
-            <div class="ListRowContent" dockable="item" ng-if="item.recent_type =='group'">
+            <div class="ListRowContent" dockable="item" ng-if="::item.recent_type =='group'">
                 <div class="ListRowTitle">
                     <div class="name">
                         <strong>{{ item.name }}</strong>
@@ -48,8 +48,7 @@
                 <!-- <div class="ListRowStatus Members">{{ item.members.length }}</div>-->
             </div>
 
-            <avatar profile="item" ng-if="item.recent_type == 'queue'"></avatar>
-            <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'queue'">
+            <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'queue'">
                 <div class="ListRowTitle">
                     <strong>Q:{{ ::item.name }}</strong>
                     <br/>
@@ -59,8 +58,7 @@
                 </div>
             </div>            
 
-            <avatar profile="item" ng-if="item.recent_type == 'conference'"></avatar>
-            <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'conference'">
+            <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'conference'">
                 <div class="ListRowTitle">
                     <div class="name"> <strong>{{::verbage.room}} # {{::item.roomNumber}}</strong> ({{::item.extensionNumber}})</div>
                     <div data-ng-if="item.members.length == 0">
@@ -92,7 +90,7 @@
                 <div class="RecentContacts">
                     <h4>{{::verbage.recent_contacts}}</h4>
                     <em>{{::verbage.contact_name_status}}</em>
-                    <a href="#/contact/{{contact.xpid}}" ng-click="storeRecent(contact.xpid, 'contact')" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+                    <a href="#/contact/{{::contact.xpid}}" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
                         <avatar profile="contact"></avatar>
                         
                         <div class="ListRowContent" dockable="contact">
@@ -128,7 +126,7 @@
                 <div class="RecentGroups">
                     <h4>{{::verbage.recent_groups}}</h4>
                     <em>{{::verbage.recent_group_name_members}}</em>
-                    <a href="#/group/{{::group.xpid}}" ng-click="storeRecent(group.xpid, 'group')" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+                    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
                         <avatar profile="group"></avatar>
                         <div class="ListRowContent" dockable="group">
                             <div class="ListRowTitle">
@@ -150,7 +148,7 @@
                 <div class="RecentQueues">
                     <h4>{{::verbage.recent_queues}}</h4>
                     <em>{{::verbage.recent_queue_name_status}}</em>
-                    <a href="#/queue/{{queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" ng-click="storeRecent(queue.xpid, 'queue')" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: queuesLimit() track by queue.xpid"> 
+                    <a href="#/queue/{{::queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: queuesLimit() track by queue.xpid"> 
                         <avatar profile="queue"></avatar>
                     
                         <div class="ListRowContent" dockable="queue">
@@ -170,7 +168,7 @@
                 <div class="RecentConferenes">
                     <h4>{{::verbage.recent_conferences}}</h4>
                     <em>{{::verbage.recent_conference_room_extension}}</em>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" ng-click="storeRecent(conference.xpid, 'conference')" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: conferencesLimit() track by conference.xpid">
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: conferencesLimit() track by conference.xpid">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">

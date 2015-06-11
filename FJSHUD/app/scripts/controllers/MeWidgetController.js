@@ -1,6 +1,5 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 
-    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService) {
-    var addedPid;
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService) {
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
     var CALL_ON_HOLD = 3;
@@ -99,12 +98,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
 
-    $scope.$on('pidAdded', function(event, data){
-        $scope.globalXpid = data.info;
-        $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
-        $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-    });
-
     $scope.saveMeTab = function(tab, index){
         switch(tab){
             case "General":
@@ -167,43 +160,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 break;
         }
     };
-    
-    // search if phone # dialed belongs to a contact then add to recents if it does
-    $scope.storeRecentContact = function(phoneNumber){
-        var localPid = JSON.parse(localStorage.me);
-        $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-        var dialedXpid;
-        var contactMatch = false;
-        contactService.getContacts().then(function(data){
-            // it's gonna be either primaryExtension, phoneBusiness or phoneMobile
-            for (var i = 0; i < data.length; i++){
-                var singleContact = data[i];
-                if (phoneNumber == singleContact.primaryExtension || phoneNumber == singleContact.phoneBusiness || phoneNumber == singleContact.phoneMobile){
-                    dialedXpid = singleContact.xpid;
-                    contactMatch = true;
-                    break;
-                }
-            }
-            // if the phone number dialed matches a contact, save contact to recent
-            if (contactMatch){
-                $scope.recent[dialedXpid] = {
-                    type: 'contact',
-                    time: new Date().getTime()
-                };
-                localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-                $rootScope.$broadcast('recentAdded', {id: dialedXpid, type: 'contact', time: new Date().getTime()});
-            } else if (!contactMatch){
-                return;
-            }
-        });
-    };
 
     $scope.recentCallToFunction = function(calllog){
         if (calllog.incoming)
             return calllog.incoming;
         else {
             $scope.makeCall(calllog.phone);
-            $scope.storeRecentContact(calllog.phone);
         }
     };
 
@@ -836,6 +798,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
+		
+		storageService.saveRecentByPhone(number);
     }
 
     $scope.endCall = function(call){
@@ -857,7 +821,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     }
 
     
-    $scope.$on('weblauncher_updated', function(event,data){
+    $scope.$on('weblauncher_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
             activeWebLauncher = data.filter(function(item){
@@ -941,7 +905,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.callKeyPress = function($event){
         if ($event.keyCode == 13 && !$event.shiftKey) {
             $scope.makeCall($scope.call_obj.phoneNumber);
-            $scope.storeRecentContact($scope.call_obj.phoneNumber);
             $scope.call_obj.phoneNumber = '';
             $event.preventDefault();
         }
@@ -1050,7 +1013,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         
     });
-    $scope.$on('i18n_updated',function(event,data){
+    $scope.$on('i18n_synced',function(event,data){
 		if(data){
 			var language_id;
 			var default_language;

@@ -8,6 +8,38 @@
   flex: 1;
   flex-direction: column;
   display: flex;
+  height: 100%;
+  /* .Recent {
+      flex: 1 1 0;
+      -webkit-flex: 1 1 0;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      -webkit-flex-direction: column;      
+      overflow: hidden;
+      
+      .ContactList {
+          flex: 1 1 0;
+          -ms-flex: 1 1 0;
+          -webkit-flex: 1 1 0;
+          overflow-y: auto;
+          min-height: 60px;
+          
+          h4 {
+              margin: .5em 0 0 .5em;
+              color: #0093f0;
+              font-variant: small-caps;
+              font-size: .9em;
+              
+              & + em {
+                  margin: 0 0 .5em .5em;
+                  font-size: .8em;
+                  display: block;
+              }
+          }
+          
+      }
+  }  */
 }
 .LeftBar .RoundedTop {
   position: absolute;
@@ -20,6 +52,9 @@
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   box-shadow: 0px 1px 1px #ccc inset;
+}
+.LeftBar .LeftBarTop .WidgetTabBar {
+  background: url() transparent !important;
 }
 .LeftBar .ContactSearch {
   /* display: flex;
@@ -69,7 +104,8 @@
   padding-left: 0px;
 }
 .LeftBar .Contacts,
-.LeftBar .Groups {
+.LeftBar .Groups,
+.LeftBar .Recent {
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
   -ms-flex: 1 1 0;
@@ -77,27 +113,93 @@
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  /*overflow-y: auto;  */
   overflow: hidden;
   position: relative;
-  height: 100%;
+  moin-height: 50%;
 }
 .LeftBar .Contacts .ContactList,
-.LeftBar .Groups .ContactList {
+.LeftBar .Groups .ContactList,
+.LeftBar .Recent .ContactList {
   flex: 1 1 0;
   -ms-flex: 1;
   -webkit-flex: 1;
-  /*margin-top: 10px;*/
   position: relative;
   width: 100%;
   overflow: hidden;
 }
+.LeftBar .Contacts .ContactList .ListRowContent .name span.details,
+.LeftBar .Groups .ContactList .ListRowContent .name span.details,
+.LeftBar .Recent .ContactList .ListRowContent .name span.details {
+  margin-top: 2px;
+}
+.LeftBar .Contacts .ContactList .group_title,
+.LeftBar .Groups .ContactList .group_title,
+.LeftBar .Recent .ContactList .group_title {
+  min-height: 40px;
+  background-color: #f9f9f9;
+  vertical-align: middle;
+  border-bottom: solid 1px #eee;
+}
+.LeftBar .Contacts .ContactList .group_title .group_header,
+.LeftBar .Groups .ContactList .group_title .group_header,
+.LeftBar .Recent .ContactList .group_title .group_header {
+  position: relative;
+  font-size: 12px;
+  font-weight: bold;
+  height: 20px;
+  vertical-align: middle;
+}
+.LeftBar .Contacts .ContactList .group_title .group_header .group,
+.LeftBar .Groups .ContactList .group_title .group_header .group,
+.LeftBar .Recent .ContactList .group_title .group_header .group {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 29px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.LeftBar .Contacts .ContactList .group_title .group_header .dept,
+.LeftBar .Groups .ContactList .group_title .group_header .dept,
+.LeftBar .Recent .ContactList .group_title .group_header .dept {
+  color: #555;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: normal;
+  margin-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+.LeftBar .Contacts .ContactList a.ListRow,
+.LeftBar .Groups .ContactList a.ListRow,
+.LeftBar .Recent .ContactList a.ListRow {
+  background-color: #fff;
+}
+.LeftBar .Contacts .ContactList a.ListRow .Members,
+.LeftBar .Groups .ContactList a.ListRow .Members,
+.LeftBar .Recent .ContactList a.ListRow .Members {
+  top: 2px;
+  height: 24px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0px;
+}
 .LeftBar .Contacts .ContactList .LeftBarTabContentList,
-.LeftBar .Groups .ContactList .LeftBarTabContentList {
+.LeftBar .Groups .ContactList .LeftBarTabContentList,
+.LeftBar .Recent .ContactList .LeftBarTabContentList,
+.LeftBar .Contacts .ContactList .timeline,
+.LeftBar .Groups .ContactList .timeline,
+.LeftBar .Recent .ContactList .timeline {
   flex-direction: column;
   -webkit-flex-direction: column;
-  /*display: flex;
-          display: -webkit-flex;*/
   display: block;
   flex: 1 1 0;
   -ms-flex: 1;
@@ -106,22 +208,27 @@
   overflow-x: hidden;
   position: absolute;
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
 }
 .LeftBar .Contacts .ContactList h4,
-.LeftBar .Groups .ContactList h4 {
+.LeftBar .Groups .ContactList h4,
+.LeftBar .Recent .ContactList h4 {
   margin: .5em 0 0 .5em;
   color: #0093f0;
   font-variant: small-caps;
   font-size: .9em;
 }
 .LeftBar .Contacts .ContactList h4 + em,
-.LeftBar .Groups .ContactList h4 + em {
+.LeftBar .Groups .ContactList h4 + em,
+.LeftBar .Recent .ContactList h4 + em {
   margin: 0 0 .5em .5em;
   font-size: .8em;
   display: block;
 }
 .LeftBar .Groups .ContactList {
+  overflow-y: auto;
+}
+.LeftBar .Recent .ContactList .timeline {
   overflow-y: auto;
 }
 .LeftBar .Notifications {

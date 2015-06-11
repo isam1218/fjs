@@ -1,5 +1,4 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', 'SettingsService', 'PhoneService', '$timeout', function ($scope, $rootScope, contactService, queueService, httpService, settingsService, phoneService, $timeout) {
-  var addedPid;
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', 'SettingsService', 'StorageService', '$timeout', function ($scope, $rootScope, contactService, queueService, httpService, settingsService, storageService, $timeout) {
   $scope.que = {};
   $scope.que.query = '';
   $scope.query = "";
@@ -48,25 +47,6 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
           return;
       }
   };
-
-  $scope.$on('pidAdded', function(event, data){
-    addedPid = data.info;
-    if (localStorage['recents_of_' + addedPid] === undefined){
-      localStorage['recents_of_' + addedPid] = '{}';
-    }
-    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-  });
-
-  $scope.storeRecentQueueMember = function(xpid){
-    var localPid = JSON.parse(localStorage.me);
-    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-    $scope.recent[xpid] = {
-      type: 'contact',
-      time: new Date().getTime()
-    };
-    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
-  };
   
   $scope.statusFilter = function(status){
   return function(agent) {
@@ -98,11 +78,13 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Conta
     };
   };
 
-  $scope.callExtension = function($event, extension) {
+  $scope.callExtension = function($event, contact) {
     $event.stopPropagation();
     $event.preventDefault();
     
-    phoneService.makeCall(extension);
+	httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+	
+	storageService.saveRecent('contact', contact.xpid);
   };
   
   $scope.showCallStatus = function($event, contact) {

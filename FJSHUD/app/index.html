@@ -14,7 +14,7 @@
 				uv.async=true;
 				uv.src='//widget.uservoice.com/Tn3xl4wYXZ7m5rjTNJnOQ.js';
 				var s=document.getElementsByTagName('script')[0];
-				s.parentNode.insertBefore(uv,s)
+				s.parentNode.insertBefore(uv,s);
 			})();
 		</script>
 		<script type="text/javascript">
@@ -39,7 +39,7 @@
 
 
   </head>
-  <body data-ng-controller="MainController"  flow-prevent-drop>
+  <body data-ng-controller="MainController" ng-model-options="{debounce: 200}" flow-prevent-drop>
     <div id="AppLoading" ng-if="!loaded">
 		<div ng-cloak>
 			<div>{{::verbage.loading}}...</div>
@@ -55,6 +55,7 @@
 				<div class="RoundedTop"></div>
 
 				<div class="LeftBarTop">
+
 					<div class="ContactSearch">							
 						<input ng-show="tab != 'all' && tab != 'favorites' && tab != 'recent'" type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"></input><span ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'recent' || tab == 'favorites'"></span>
 						<input ng-show="tab != 'favorites' && tab != 'recent'" ng-hide="tab == 'all' || tab == 'recent' || tab == 'favorites'" type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />                        
@@ -62,19 +63,19 @@
 						<input ng-show="tab == 'favorites'" type="search" class="Search add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget"></input><span class="favorites" ng-show="tab == 'favorites'"></span>
 					</div>
 					<div class="WidgetTabBar">
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'all'" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
 							<div class="inner">{{::verbage.all}}</div>
 							<div class="arrow"></div>
 						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'favorites'; query = ''" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
 							<div class="inner">{{::verbage.favorites}}</div>
 							<div class="arrow"></div>
 						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'recent'" ng-class="$safeApply(); tab == 'recent' ? 'fj-selected-item' : ''">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
 							<div class="inner">{{::verbage.recent}}</div>
 							<div class="arrow"></div>
 						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'external'" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
+						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
 							<div class="inner">{{::verbage.external}}</div>
 							<div class="arrow"></div>
 						</a>
@@ -86,28 +87,28 @@
 				</div>
 
 				<div class="Contacts"
-					ng-hide="tab == 'recent' || tab == 'groups'"
+					ng-if="tab != 'recent' && tab != 'groups'"
 					include-once="views/ContactsWidget.html"
 					ng-controller="ContactsWidget">
 				</div>
 				<div class="Groups"
-					ng-show="tab == 'groups'"
+					ng-if="tab == 'groups'"
 					include-once="views/GroupsWidget.html"
 					ng-controller="GroupsController">
 				</div>
 				<div class="Recent"
-					ng-show="tab == 'recent'"
+					ng-if="tab == 'recent'"
 					include-once="views/RecentWidget.html"
 					ng-controller="RecentController">
 				</div>
 
 				<div class="Notifications" include-once="views/Notifications.html" ng-controller="NotificationController"></div>
-
+                
 				<div class="Phone">
 					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" 
 						ng-keypress="makePhoneCall('dialpad',$event)"
 					/>
-					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number); storeRecentContact(number)"/>
+					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number)"/>
 				</div>
 			</div>
 
@@ -138,8 +139,6 @@
     <script src="../bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
-    <script src="../bower_components/react/react.js"></script>
-    <script src="../bower_components/ngReact/ngReact.js"></script>
     <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
 
@@ -229,7 +228,7 @@
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/groupService.js"></script>
     <script src="scripts/services/contactService.js"></script>
-    <script src="scripts/services/utilService.js"></script>
+    <script src="scripts/services/storageService.js"></script>
     <script src="scripts/services/queueService.js"></script>
     <script src="scripts/services/conferenceService.js"></script>
     <script src="scripts/services/phoneService.js"></script>
