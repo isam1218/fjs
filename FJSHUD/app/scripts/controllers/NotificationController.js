@@ -600,9 +600,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			// if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
 			if (item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
 				return false;
-			else if (groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+			else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
 				return false;
-			else if (queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+			else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
 				return false;
 
 
