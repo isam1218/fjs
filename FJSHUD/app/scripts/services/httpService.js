@@ -53,18 +53,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 
 		//if the tabmap is empty or not defined in localstorage then initialize the tab map is set the current tab as the master tab
-		if(tabMap != undefined){
+		/*if(tabMap != undefined){
 			tabMap[tabId] = { 
 				isMaster:false,
 				isSynced:false
 			}
-		}else{
+		}else{*/
 			tabMap = {};
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
 			}
-		}
+		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
 	}
@@ -160,12 +160,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                    	to_sync: true,
 		                	});	
 						}else{
-							synced_data = JSON.parse(localStorage.data_obj);
-							for(feed in synced_data){
-								if (synced_data[feed].length > 0)
-		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+
+							if(localStorage.data_obj != undefined){
+								synced_data = JSON.parse(localStorage.data_obj);
+								for(feed in synced_data){
+									if (synced_data[feed].length > 0)
+			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								}
 							}
-							
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
@@ -229,11 +231,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 							
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
 							if(!tabMap[tabId].isSynced){
-								synced_data = JSON.parse(localStorage.data_obj);
-								for(feed in synced_data){
-									if (synced_data[feed].length > 0)
-		
-		                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								if(localStorage.data_obj != undefined){
+
+
+									synced_data = JSON.parse(localStorage.data_obj);
+									for(feed in synced_data){
+										if (synced_data[feed].length > 0)
+			
+			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									}
 								}
 
 								tabMap[tabId].isSynced = true;	

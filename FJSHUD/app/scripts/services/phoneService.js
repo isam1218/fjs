@@ -367,8 +367,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				    remove_notification(xpid);
 					break;
 				case '/goToChat':
-					var audience = queryArray[1];
-					goToNotificationChat(xpid, audience); 
+					var context = queryArray[0];
+					var audience = context.split(":")[0];
+					var xpid = context.split(":")[1];
+					var messagexpid = queryArray[1];
+					goToNotificationChat(xpid, audience,messagexpid); 
 					break;	
 				case '/callAndRemove':
 					var phone = queryArray[1];
