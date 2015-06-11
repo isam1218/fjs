@@ -27,6 +27,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var voicemails = [];
 	var weblauncher = {};
 	var locations = {};
+	var alertPosition = {};
+	alertPosition.x = 0;
+	alertPosition.y = 0;
 	//fjs.CONFIG.SERVER.serverURL 
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
@@ -157,7 +160,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			
 	if(alertPlugin && displayNotification){
 
-				alertPlugin.setAlertBounds(0,0,width,height);
+				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
@@ -270,6 +273,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	onNetworkStatus = function(st){
         //console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
     };
+
+    var onLocationChanged = function(x,y){
+    	alertPosition.x = x;
+    	alertPosition.y = y;
+    }
 
     var activateBrowserTab = function(tabId){
 
@@ -570,9 +578,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		if(alertPlugin.attachEvent){
     			alertPlugin.attachEvent("onAlert",onAlert);
     			alertPlugin.attachEvent("ononAlertMouseEvent",onAlertMouseEvent);
+    			alertPlugin.attachEvent("ononLocationChanged", onLocationChanged);
     		}else{
     			alertPlugin.addEventListener("Alert",onAlert,false);
     			alertPlugin.addEventListener("onAlertMouseEvent",onAlertMouseEvent,false);
+    			alertPlugin.addEventListener("onLocationChanged", onLocationChanged,false);
+    		
     		}
     	}
 
