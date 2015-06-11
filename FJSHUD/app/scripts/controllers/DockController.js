@@ -1,4 +1,6 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
+	var column;
+	
 	$scope.gadgets = {};
 	$scope.upload_time = 0;
 	
@@ -15,92 +17,103 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		}	
 		
 	});
-
-	$scope.$on('settings_updated', function(event, data) {		
-		// wait for sync
-		$q.all([contactService.getContacts(), queueService.getQueues()]).then(function() {
-			for (key in data) {
-				// check for dupes
-				var found = false;
-				
-				for (g in $scope.gadgets) {
-					for (var i = 0; i < $scope.gadgets[g].length; i++) {
-						if (key == $scope.gadgets[g][i].name) {
-							found = true;
-							break;
-						}
+	
+	var updateDock = function(data) {
+		for (key in data) {
+			// check for dupes
+			var found = false;
+			
+			for (g in $scope.gadgets) {
+				for (var i = 0; i < $scope.gadgets[g].length; i++) {
+					if (key == $scope.gadgets[g][i].name) {
+						found = true;
+						break;
 					}
-					
-					if (found) break;
 				}
 				
-				if (found) continue;
-				
-				// add new
-				if (key.indexOf('GadgetConfig') != -1) {
-					// gadget element
-					var gadget = {
-						name: key,
-						value: JSON.parse(data[key]),
-						data: {}
-					};
-					
-					// create new array for each type of gadget
-					if ($scope.gadgets[gadget.value.factoryId] === undefined)
-						$scope.gadgets[gadget.value.factoryId] = [];
-					
-					switch (gadget.value.factoryId) {
-						case 'GadgetContact':
-							gadget.data = contactService.getContact(gadget.value.entityId);
-							break;
-						case 'GadgetGroup':
-							gadget.data = groupService.getGroup(gadget.value.entityId);
-							break;
-						case 'GadgetConferenceRoom':
-							gadget.data = conferenceService.getConference(gadget.value.entityId);							
-							break;
-						case 'GadgetQueueStat':
-							gadget.data = queueService.getQueue(gadget.value.entityId);
-							break;
-						case 'GadgetUserQueues':
-							gadget.data = queueService.getMyQueues();
-							break;
-					}
-					
-					if (gadget.data)
-						$scope.gadgets[gadget.value.factoryId].push(gadget);
-				}
+				if (found) break;
 			}
 			
-			// enable/disable grid layout
-			if (data.use_column_layout == 'true') {
-				$timeout(function() {
-					$('#InnerDock .Gadget').draggable('disable');
+			if (found) continue;
+			
+			// add new
+			if (key.indexOf('GadgetConfig') != -1) {
+				// gadget element
+				var gadget = {
+					name: key,
+					value: JSON.parse(data[key]),
+					data: {}
+				};
 				
-					if ($('#InnerDock').hasClass('ui-sortable'))
-						$('#InnerDock').sortable('enable');
-					else {
-						$('#InnerDock').sortable({
-							revert: 1,
-							handle: '.Header, .Content',
-							helper: 'clone',
-							appendTo: 'body',
-							cursorAt: { top: 25 },
-							start: function(event, ui) {
-								// visual cues
-								$(ui.helper).addClass('ui-draggable-dragging');
-								ui.placeholder.height(ui.helper[0].scrollHeight);
-							}
-						});
-					}
-				}, 100);
+				// create new array for each type of gadget
+				if ($scope.gadgets[gadget.value.factoryId] === undefined)
+					$scope.gadgets[gadget.value.factoryId] = [];
+				
+				switch (gadget.value.factoryId) {
+					case 'GadgetContact':
+						gadget.data = contactService.getContact(gadget.value.entityId);
+						break;
+					case 'GadgetGroup':
+						gadget.data = groupService.getGroup(gadget.value.entityId);
+						break;
+					case 'GadgetConferenceRoom':
+						gadget.data = conferenceService.getConference(gadget.value.entityId);							
+						break;
+					case 'GadgetQueueStat':
+						gadget.data = queueService.getQueue(gadget.value.entityId);
+						break;
+					case 'GadgetUserQueues':
+						gadget.data = queueService.getMyQueues();
+						break;
+				}
+				
+				if (gadget.data)
+					$scope.gadgets[gadget.value.factoryId].push(gadget);
 			}
-			else {		
-				$('#InnerDock .Gadget').draggable('enable');
+		}
+		
+		// enable/disable grid layout
+		if (!column && data.use_column_layout == 'true') {
+			$timeout(function() {
+				column = true;
 				
+				$('#InnerDock .Gadget').draggable('disable');
+			
 				if ($('#InnerDock').hasClass('ui-sortable'))
-					$('#InnerDock').sortable('disable');
-			}
+					$('#InnerDock').sortable('enable');
+				else {
+					$('#InnerDock').sortable({
+						revert: 1,
+						handle: '.Header, .Content',
+						helper: 'clone',
+						appendTo: 'body',
+						cursorAt: { top: 25 },
+						start: function(event, ui) {
+							// visual cues
+							$(ui.helper).addClass('ui-draggable-dragging');
+							ui.placeholder.height(ui.helper[0].scrollHeight);
+						}
+					});
+				}
+			}, 100);
+		}
+		else if ((column || column === undefined) && data.use_column_layout != 'true') {
+			column = false;
+			
+			$('#InnerDock .Gadget').draggable('enable');
+			
+			if ($('#InnerDock').hasClass('ui-sortable'))
+				$('#InnerDock').sortable('disable');
+		}
+	};
+
+	// initial sync
+	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {
+		updateDock(data[0]);
+		
+		// normal updates
+		$scope.$on('settings_updated', function(event, data) {
+			updateDock(data);
 		});
 	});
 	

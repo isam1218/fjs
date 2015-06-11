@@ -204,7 +204,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		  
         
         if(!$.isEmptyObject(data)){
-          $rootScope.$broadcast('phone_event',data);
+          $rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 		}
 	};
 
@@ -221,7 +221,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					event:'state',
 					registration: isRegistered,
 				}
-				$rootScope.$broadcast('phone_event',data);
+				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 	
             }
     };
@@ -312,7 +312,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event: 'resume'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
 	    		case '/AcceptCall':
@@ -330,7 +330,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event:'openNot'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '/PlayVM':
 					playVm(xpid);
@@ -364,7 +364,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event: 'resume'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
 	    		case '#/AcceptCall':
@@ -374,7 +374,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			data = {
 	    				event:'openNot'
 	    			}
-	    			$rootScope.$broadcast('phone_event',data);
+	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '#/AcceptZoom':
 					window.open(xpid,'_blank');
