@@ -142,8 +142,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					displayNotification = true;	
 				
 			}else{
+				if(!tabInFocus){
+						displayNotification = true;	
+				
+				}
 				if(document.visibilityState == "hidden"){
-					displayNotification = true;	
+						displayNotification = true;	
+
 				}		
 			}
 
