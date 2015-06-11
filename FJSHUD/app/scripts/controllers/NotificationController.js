@@ -556,12 +556,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 		var isAdded = false;
 		var targetId;
+		var groupContextId;
+		var queueContextId;
 		
 		if (context){
 			var context = item.context.split(":")[0];
 			var contextId = item.context.split(":")[1];
 			switch(context){
 				case "groups":
+					// console.error('context - ', contextId);
+					groupContextId = contextId;
 					targetId = $routeParam.groupId;
 					break;
 				case "contacts":
@@ -569,6 +573,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					break;
 				case "conferences":
 					targetId = $routeParam.conferenceId;
+					break;
+				case "queues":
+					queueContextId = contextId;
 					break;
 			}
 			
@@ -589,10 +596,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			// if user is in chat conversation w/ other contact already (convo on screen), don't display notification...
-			if (item.senderId == $routeParam.contactId){
+			
+			// if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
+			if (item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
 				return false;
-			}
+			else if (groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+				return false;
+			else if (queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+				return false;
+
+
 			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
 			
 				return false;
