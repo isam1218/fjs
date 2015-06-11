@@ -147,15 +147,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}		
 			}
 
-
-			if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-				if($rootScope.meModel.chat_status == 'busy'){
+			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
+				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
 					displayNotification = true;
 				}else{
 					displayNotification = false;
 				}
 			}
 		}
+		
 
 			
 	if(alertPlugin && displayNotification){
@@ -277,7 +277,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     var onLocationChanged = function(x,y){
     	alertPosition.x = x;
     	alertPosition.y = y;
-    }
+    };
 
     var activateBrowserTab = function(tabId){
 

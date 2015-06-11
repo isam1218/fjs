@@ -6,13 +6,13 @@
       <div class="ListSectionBody">{{::verbage.configure_desktop_alerts}}</div>
       <div class="ListPage">
       	<div class="Dialog-settings-row"><input type="checkbox"
-          ng-model="alertShow" ng-click="update_settings('alert_show','update',alertShow)" 
+          ng-model="alertShow" ng-change="update_settings('alert_show','update',alertShow)" 
         > <label>{{::verbage.show_alerts}}</label> </div>
       	<div class="Dialog-settings-row"><input type="checkbox"
-          ng-model="alertOnBusy" ng-click="update_settings('hudmw_show_alerts_in_busy_mode','update',alertOnBusy)" 
+          ng-model="settings.alertOnBusy" ng-change="update_settings('hudmw_show_alerts_in_busy_mode','update',settings.alertOnBusy)" 
         > <label>{{::verbage.show_status_when_busy}}</label> </div>
       	<div class="Dialog-settings-row"><input type="checkbox"
-          ng-model="alertOnAlways" ng-click="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" 
+          ng-model="alertOnAlways" ng-change="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" 
         > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
       	<div class="Dialog-settings-row"><input type="button" value="{{::verbage.reset_alert_position}}"></div>
       </div>
@@ -25,7 +25,7 @@
       <div class="ListSectionBody">{{::verbage.configure_desktop_alerts}}</div>
       <div class="ListPage">
       	<div class="Dialog-settings-row"><input type="checkbox"
-           ng-model="alertShowVM" ng-click="update_settings('alert_vm_show_new','update',alertShowVM)" 
+           ng-model="alertShowVM" ng-change="update_settings('alert_vm_show_new','update',alertShowVM)" 
         > <label>{{::verbage.show_when_new_voicemail}}</label> </div>
       </div>
        
@@ -38,10 +38,10 @@
 	<div class="ListSectionBody">{{::verbage.configure_call_desktop_alerts}}</div>
       <div class="ListPage">
         <div class="ListPageHeaderText">{{::verbage.type}}</div>
-        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowIncoming" ng-click="update_settings('alert_call_incoming','update',alertShowIncoming)"> 
+        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowIncoming" ng-change="update_settings('alert_call_incoming','update',alertShowIncoming)"> 
 
         <label>{{::verbage.incoming_calls}}</label> </div>
-        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowOutgoing" ng-click="update_settings('alert_call_outgoing','update',alertShowOutgoing)" > 
+        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowOutgoing" ng-change="update_settings('alert_call_outgoing','update',alertShowOutgoing)" > 
 
         <label>{{::verbage.outbound_calls}}</label> </div>
         
