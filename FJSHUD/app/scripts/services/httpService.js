@@ -209,7 +209,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
-            delete localStorage.me;
+						delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
 						delete localStorage.data_obj;
@@ -288,6 +288,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&instance_id=" + localStorage.instance_id
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
+			
+		window.onbeforeunload = null;
 		location.href = authURL;
 	};
 	
@@ -303,10 +305,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		localStorage.authTicket = authTicket;
 		$location.hash('');
 	}
-
-
-
-
 	else if (localStorage.authTicket === undefined)
 		attemptLogin();
 	else
@@ -342,14 +340,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 					break;
 				case 402:
 					//alert("bad authentication");
-          delete localStorage.me;
+					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					$rootScope.$broadcast('no_license', undefined);
 
 					break;
 				default:
-          delete localStorage.me;
+					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					attemptLogin();
@@ -391,8 +389,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		else
 			worker.terminate();
 		
-		window.onbeforeunload = null;
-		
+		window.onbeforeunload = null;		
 		location.href = authURL;
 	};
 	
