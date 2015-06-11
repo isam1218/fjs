@@ -391,6 +391,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		else
 			worker.terminate();
 		
+		window.onbeforeunload = null;
+		
 		location.href = authURL;
 	};
 	
