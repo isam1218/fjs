@@ -156,7 +156,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 			
 	if(alertPlugin && displayNotification){
-				alertPlugin.setAlertSize(width,height);
+
+				alertPlugin.setAlertBounds(0,0,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
