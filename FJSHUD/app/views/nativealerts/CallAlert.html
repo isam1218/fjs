@@ -11,15 +11,6 @@
         <span>{{ ::meModel.display_name }}</span>
       </div>
     </div>
-    
-    <div class="CallStatus">
-      <avatar 
-        ng-if="contact.call.startedAt" 
-        ng-click="showCallStatus($event, contact)" 
-        profile="meContact"
-        type="{{contact.call.type}}"></avatar>
-    </div>
-    
     <div class="body">
       <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{meModel.queue_agent_status}}">
         <div class="status-icon-inner"></div>
@@ -48,7 +39,7 @@
          <a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
          <a href="#/EndCall?{{currentCall.xpid}}" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</a>
          <a href="#/HoldCall?{{currentCall.xpid}}&false" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</a>
-         <a href="#/HoldCall?{{currentCall.xpid}}&true" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</a>
+         <a href="#/ResumeCall?{{currentCall.xpid}}&true" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</a>
          <a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</a>
          
      </div>
@@ -62,13 +53,7 @@
         <div class="Event ng-binding" ng-show="notifications.length > 0">  - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
         <input type="button" value="Open" class="XButton" onclick="window.location.replace('#/OpenNotifications')">
        </div>
-       <!--<div class="TitleBar hasButton" ng-show="hasMessages" show-on-hover-parent="" style="display: none;">
-        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'" class="HasNotificationIcon"></div>
-        <div class="ng-binding">Notifications</div>
-        <div class="Event ng-binding" ng-show="notifications.length > 0"> - 13 events</div>
-        <input type="button" value="Open" class="XButton" ng-click="overlay ='notifications'">
-       </div> -->
-    
+      
        <div class="scroller ng-class:{'single': todaysNotifications.length == 1}">    
      <!---->
         <div class="Messages ng-scope" ng-repeat="message in todaysNotifications" ng-show="showHideElements($index)">
@@ -82,23 +67,18 @@
     </div>
 
     <div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
-     <img>
-    <!-- <div class="headerText ng-scope" ng-if="$index == 0" style="display: block;"> 
-     <div class="Icon HasNotificationIcon" ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
-     <div class="ng-binding">Notifications  </div>
-     <div class="Event ng-binding" ng-show="notifications.length > 0"> 13 events</div>
-    </div> --><!-- end ngIf: $index == 0 -->             
    </div>
    
-         <div class="NotificationSection firstsection" style="top: 0px; height: 0px;">
-      
-     <avatar class="LeftBarNotificationAvatarSection NotificationAvatar Avatar CallAvatar CallAvatar_Office" ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" profile="message.fullProfile" type="4"><img class="AvatarImgPH" src="http://localhost:9900/app/img/Generic-Avatar-28.png"><div class="AvatarForeground AvatarInteractable"></div></avatar>
-          
+      <div class="NotificationSection firstsection" style="top: 0px; height: 0px;">
+   
+     <avatar class="LeftBarNotificationAvatarSection NotificationAvatar Avatar CallAvatar CallAvatar_Office" profile="message.fullProfile" type="4"><div class="AvatarForeground AvatarInteractable"></div></avatar>
      <div class="LeftBarNotificationMessageSection" ng-init="message_section_notifications = getMessage(message)"> 
-      <div ng-click="go_to_notification_chat(message); storeRecent(message.senderId)" class="chatNotification">
+      <a href="#/goToChat?{{message.context}}&{{message.xpid}}">
+      <div  class="chatNotification">
        <div class="NotificationDisplayName" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'">
              <span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div>
-       </div> 
+    </div> 
+    </a>
        <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
                 {{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
                 <div class="NotificationMessage " scroll-to-bottom=""> 
@@ -118,7 +98,7 @@
                </div>
 
                <div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
-                   <a class="XButton chatNotification" href="#/goToChat?{{message.xpid}}&{{message.audience}}">{{::verbage.chat}}</a>
+                   <a class="XButton chatNotification" href="#/goToChat?{{message.context}}&{{message.xpid}}">{{::verbage.chat}}</a>
                    <a class="XButton XButtonGreen" href="#/callAndRemove?{{message.xpid}}&{{message.phone}}">{{::verbage.Call}}</a>  
                </div>
                
@@ -167,7 +147,7 @@
 
             
 
-      <div class="Messages webphone ng-scope" ng-if="anotherDevice" ng-click="activatePhone()">                
+      <div class="Messages webphone ng-scope" ng-if="anotherDevice" >                
               <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}">
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>

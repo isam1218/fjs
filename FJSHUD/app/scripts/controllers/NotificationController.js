@@ -42,7 +42,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showNew = false;
 	$scope.showAway = false;
 	$scope.showOld = false;
-	
+	$scope.displayAlert = false;
 	$scope.stopTime;	
 	$scope.callObj = {};
 	$scope.anotherDevice = false;
@@ -475,6 +475,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.isRinging = true;
 		
        	if(displayDesktopAlert){
+       		$scope.displayAlert = true;
 			$timeout(displayNotification, 1000);
 		}
        	
@@ -528,20 +529,19 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		phoneService.showCallControls(currentCall);
 	};
 
-	$scope.$watch('meContact', function(){
-		$scope.meContact = $rootScope.meContact;
-	});
-
 	var displayNotification = function(){
 		console.log($scope.meContact);
+
 		element = document.getElementById("Alert");
 		if(element){
-			element.style.display="block";
+			//element.style.display="block";
 			//element.setAttribute('style','display:block');
 			content = element.innerHTML;
 			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-			element.style.display="none";
+			//element.style.display="none";
+			
 		  }
+		 $scope.displayAlert = false;
 	};
 
 	$scope.$on('phone_event',function(event,data){
@@ -770,7 +770,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.$safeApply();
 		if(displayDesktopAlert){
 			if($scope.todaysNotifications.length > 0){
-				$timeout(displayNotification, 1000);
+				$scope.displayAlert = true;
+				$timeout(displayNotification
+				, 500);
 			}
 			//adding a second delay for the native notification to have the digest complete with the updated notifications
 		}				

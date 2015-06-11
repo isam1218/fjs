@@ -437,8 +437,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				    remove_notification(xpid);
 					break;	
 				case '#/goToChat':
-					var audience = queryArray[1];
-					goToNotificationChat(xpid, audience); 
+					var context = queryArray[0];
+					var audience = context.split(":")[0];
+					var xpid = context.split(":")[1];
+					var messagexpid = queryArray[1];
+					goToNotificationChat(xpid, audience,messagexpid); 
 					break;	
 				case '#/callAndRemove':
 					var phone = queryArray[1];
@@ -477,12 +480,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		//$rootScope.$broadcast('quickinbox_synced', data);
 	};
 	
-	var goToNotificationChat = function(xpid, audience){		
-		$location.path("/" + audience + "/" + xpid + "/chat");
-		remove_notification(xpid);
-		showOverlay(false);
+	var goToNotificationChat = function(xpid, audience,mxpid){		
 		
-		storeRecent(xpid);
+		switch(audience){
+			case 'contacts':
+				audience = "contact";
+				break;
+			case 'groups':
+				audience = "group";
+				break;
+		}
+
+		$location.path("/" + audience + "/" + xpid + "/chat");
+		
+		remove_notification(mxpid);
+		//showOverlay(false);
+		
+		//storeRecent(xpid);
 	};
 	
 	var storeRecent = function(xpid){
