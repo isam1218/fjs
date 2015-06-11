@@ -149,6 +149,7 @@
             
 
       <div class="Messages webphone ng-scope" ng-if="anotherDevice" >                
+              <a href="#/activatePhone">
               <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}">
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -159,6 +160,8 @@
                         <img>
                        <!-- ngIf: phoneSessionEnabled && todaysNotifications.length == 0 -->             
                     </div>
+
+              </a>
                     <div class="NotificationSection webphone last ng-class:{'firstsection': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}"> 
                         
                         <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
@@ -174,7 +177,8 @@
                             </div>
                             
                         </div>
-                 </div>               
+                 </div>  
+                            
             </div><!-- end ngIf: anotherDevice --> 
          </div>    
   </div>

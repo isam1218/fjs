@@ -211,7 +211,7 @@
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
 .FileUploadStatus {
-  margin-top: 100%;
+  margin-top: 90%;
   border-top: 1px solid white;
   box-shadow: inset 1 0 -1px 1px #cccccc;
   position: relative;
