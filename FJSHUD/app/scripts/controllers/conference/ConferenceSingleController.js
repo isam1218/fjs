@@ -1,5 +1,5 @@
-hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'ContactService', 'PhoneService', 'SettingsService',
-	function($scope, $rootScope, conferenceService, httpService, $routeParams, $location, contactService, phoneService, settingsService) {
+hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', '$location', 'ContactService', 'PhoneService', 'SettingsService', 'StorageService',
+	function($scope, $rootScope, conferenceService, httpService, $routeParams, $location, contactService, phoneService, settingsService, storageService) {
 	$scope.conversationType = 'conference';
 	
 	$scope.conferenceId = $routeParams.conferenceId;
@@ -8,6 +8,9 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
     $scope.enableChat = $scope.joined;
     $scope.enableTextInput = $scope.joined;
     $scope.enableFileShare = $scope.joined;
+	
+	// store recent
+	storageService.saveRecent('conference', $scope.conferenceId);
 	
 	// update permission to view chat
 	$scope.$on('conferencestatus_synced', function(event, data) {
@@ -51,12 +54,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
           getXpidInConf();
       }
   });  
-
-  $scope.$on('pidAdded', function(event, data){
-      $scope.globalXpid = data.info;
-      $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-      $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-  });
   
   // $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
   $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;

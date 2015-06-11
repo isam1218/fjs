@@ -10,13 +10,13 @@ hudweb.directive('expandContractNotifications', function() {
         	
             $(element).on('hoverIntent mouseenter', function() {              
             	$scope.showNotificationBody = true;            	
-            	var content = $(element).find('.NotificationSection:not(.last)');
+            	var content = $(element).find('.LeftBar .NotificationSection:not(.last)');
             	//set the max height of the expanded notifications
             	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .RoundedTop').outerHeight() - $('.LeftBar .LeftBarTop').outerHeight() - 10;
-            	$('.NotificationMessages .scroller').css('max-height', topParentHeight);
+            	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight);
             	
 	       		if(!hoverFlag && content.length > 0){
-	       			$('.NotificationDivider.firstHeaderDivider .headerText').hide();
+	       			$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').hide();
 	       			$scope.$safeApply(function(){
 	       			   $scope.showAllNotifications = true;
 	       			});   
@@ -44,9 +44,9 @@ hudweb.directive('expandContractNotifications', function() {
             $(element).on('mouseleave', function() {
             	$scope.showNotificationBody = $scope.todaysNotifications.length > 3 ? false:true;
             	
-            	$('.NotificationDivider.firstHeaderDivider .headerText').show();
+            	$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').show();
             	var content = $(element).find('.NotificationSection:not(.last)');
-            	$('.NotificationMessages .scroller').css('max-height', '');
+            	$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
             	
             	$scope.$safeApply(function(){
             	   $scope.showAllNotifications = false;    

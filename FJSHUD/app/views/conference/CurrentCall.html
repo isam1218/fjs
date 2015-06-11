@@ -13,7 +13,7 @@
 
         <div class="Add SearchInputBox" style="top:20px">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" type="search" contact-search conference="true" ng-attr-placeholder="{{::verbage.add_someone}}" data-ng-model="query" ng-model-options="{debounce: 100}"></div>
+                <input class="SearchInputBoxInput" type="search" contact-search conference="true" ng-attr-placeholder="{{::verbage.add_someone}}" data-ng-model="query"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -31,16 +31,21 @@
 			<div class="ListRowTitle">
 				<div class="name">
 					<span> {{ ::member.displayName }} </span>
-					<div class="footnote">
+					<div>
 						<div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>						
 						<div class="ListRowStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
 						<div class="ListRowStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+						{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}
 					</div>
 				</div> 
 			</div>
 			
 			<div class="ListRowStatus">
 				<div class="vmtime" timer="member.started"></div>
+				<div ng-if="member.ring">
+					<img src="img/XLoading.gif" />
+					joining...
+				</div>
 			</div>
 		</div>
     </div>

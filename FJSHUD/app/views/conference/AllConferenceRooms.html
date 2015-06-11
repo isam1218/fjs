@@ -61,7 +61,7 @@
 						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" ng-click="storeRecentConference(conference.xpid)" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: selectedConf.type: selectedConf.desc track by conference.xpid" droppable="Contact,Call">
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: selectedConf.type: selectedConf.desc track by conference.xpid" droppable="Contact,Call">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
@@ -83,7 +83,7 @@
                         <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
                             <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
                                 <avatar profile="member" type="4" context="conference:conference"></avatar>
-                                <div class="first-name">{{member.displayName}}</div>
+                                <div class="first-name">{{::member.displayName}}</div>
                             </div>
                         </div>
                         </div>

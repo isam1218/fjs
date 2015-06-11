@@ -1,6 +1,4 @@
 hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$interval', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, $sce, $interval, queueService, httpService, contactService, settingsService) {
-  var addedPid;
-  var localPid;
   var player; // html element
   var loadCheck;
 
@@ -215,6 +213,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
   };
   
   $scope.closePlayer = function() {
+	$interval.cancel(loadCheck);
     $scope.voicemail = null;
     player.pause();
   };

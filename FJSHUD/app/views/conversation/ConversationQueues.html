@@ -1,7 +1,7 @@
   <div class="ToolBar fj-stream">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"></div>
+                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-keypress="clearSearch(autoClearTime)"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -19,7 +19,7 @@
 
     <div class="ContactList">
 	
-    <a href="#/queue/{{::queue.xpid}}" data-ng-repeat="queue in queues | filter: {name: query}" class="GroupRow ListRow ListRow-Contact" ng-click="storeRecentQueue(queue.xpid)">
+    <a href="#/queue/{{::queue.xpid}}" data-ng-repeat="queue in queues | filter: {name: query}" class="GroupRow ListRow ListRow-Contact">
         <avatar profile="queue" context="conversation:contact"></avatar>
         <div class="ListRowContent">
             <div class="ListRowTitle">

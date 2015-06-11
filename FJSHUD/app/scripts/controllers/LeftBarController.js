@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'ContactService', '$timeout', function($scope, $rootScope, httpService, phoneService, settingsService, contactService, $timeout) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', function($scope, $rootScope, httpService, phoneService, settingsService, storageService, $timeout) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
@@ -6,40 +6,16 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
-
+	
+	$scope.setTab = function(tab) {
+		$scope.tab = tab;
+		$scope.query = '';
+	};
 
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
-    };
-
-    // search if phone # dialed belongs to a contact then add to recents if it does
-    $scope.storeRecentContact = function(phoneNumber){
-        var localPid = JSON.parse(localStorage.me);
-        $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-        var dialedXpid;
-        var contactMatch = false;
-        contactService.getContacts().then(function(data){
-            // it's gonna be either primaryExtension, phoneBusiness or phoneMobile
-            for (var i = 0; i < data.length; i++){
-                var singleContact = data[i];
-                if (phoneNumber == singleContact.primaryExtension || phoneNumber == singleContact.phoneBusiness || phoneNumber == singleContact.phoneMobile){
-                    dialedXpid = singleContact.xpid;
-                    contactMatch = true;
-                    break;
-                }
-            }
-            // if the phone number dialed matches a contact, save contact to recent
-            if (contactMatch){
-                $scope.recent[dialedXpid] = {
-                    type: 'contact',
-                    time: new Date().getTime()
-                };
-                localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-                $rootScope.$broadcast('recentAdded', {id: dialedXpid, type: 'contact', time: new Date().getTime()});
-            } else if (!contactMatch){
-                return;
-            }
-        });
+		
+		storageService.saveRecentByPhone(number);
     };
 
     httpService.getFeed('settings');
@@ -80,7 +56,6 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
             case 'dialpad':
                 if ($event.keyCode == 13 && !$event.shiftKey) {
                     $scope.makeCall($scope.number);
-                    $scope.storeRecentContact($scope.number);
                     $scope.number = '';
                     $event.preventDefault();
                 }

@@ -31,36 +31,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
          * @protected
          */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-    window.onunload = function(){
-     	//return "Are you sure you want to close the window";
-     	if(localStorage.fon_tabs){
-     		tabMap = JSON.parse(localStorage.fon_tabs);
-			delete tabMap[tabId];
-
-			if($.isEmptyObject(tabMap)){
-				localStorage.removeItem('fon_tabs');
-				localStorage.removeItem('data_obj');
-			}else{
-				for(tab in tabMap){
-					tabMap[tabId].isMaster = true;
-					break;
-				}
-				localStorage.fon_tabs = JSON.stringify(tabMap);		
-			}	
-
-    	}
-	};
-
-
-     //when unloading reassign master tab 
-     /*window.onunload  = function(){
-     	    
-     	
-     }*/
-     	
-		//return "Are you sure you want to navigate away from this page?";
-
-     
 	
 	//method that generates a random guid for the tab
 	var genGuid = function(){
@@ -83,18 +53,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 
 		//if the tabmap is empty or not defined in localstorage then initialize the tab map is set the current tab as the master tab
-		if(tabMap != undefined){
+		/*if(tabMap != undefined){
 			tabMap[tabId] = { 
 				isMaster:false,
 				isSynced:false
 			}
-		}else{
+		}else{*/
 			tabMap = {};
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
 			}
-		}
+		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
 	};
@@ -102,13 +72,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	
 
 	var worker = undefined;
-  var initialPid;
+	
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
 		    worker.port.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
+		            	updateSettings('instanceId','update',localStorage.instance_id); 
+
 		                worker.port.postMessage({
 		                    "action": "sync"
 		                });
@@ -117,25 +89,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                if (event.data.data) {
 
 		                    synced_data = event.data.data;
-
-                        if (synced_data.me){
-                          for (var i = 0, len = synced_data.me.length; i < len; i++){
-                            if (synced_data.me[i].propertyKey === "my_pid"){
-                              initialPid = synced_data.me[i].propertyValue;
-                              break;
-                            }
-                          }
-                          
-                          // save to both LS and to $rootScope
-                          $rootScope.myPid = initialPid;
-                          $rootScope.$broadcast('pidAdded', {info: initialPid});
-
-                          if (localStorage[initialPid] === undefined){
-                            localStorage[initialPid] = '{}';
-                          }                        
-                          localStorage.me = JSON.stringify(initialPid);
-                          
-                        }
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
@@ -199,18 +152,22 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		        switch (event.data.action) {
 		            case "init":
 		            	tabMap = JSON.parse(localStorage.fon_tabs);
+		           		updateSettings('instanceId','update',localStorage.instance_id); 
+
 						if(tabMap[tabId].isMaster){
 							worker.postMessage({
 		                    	"action": "sync",
 		                    	to_sync: true,
 		                	});	
 						}else{
-							synced_data = JSON.parse(localStorage.data_obj);
-							for(feed in synced_data){
-								if (synced_data[feed].length > 0)
-		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+
+							if(localStorage.data_obj != undefined){
+								synced_data = JSON.parse(localStorage.data_obj);
+								for(feed in synced_data){
+									if (synced_data[feed].length > 0)
+			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								}
 							}
-							
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
@@ -254,7 +211,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
-            delete localStorage.me;
+						delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
 						delete localStorage.data_obj;
@@ -274,11 +231,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 							
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
 							if(!tabMap[tabId].isSynced){
-								synced_data = JSON.parse(localStorage.data_obj);
-								for(feed in synced_data){
-									if (synced_data[feed].length > 0)
-		
-		                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								if(localStorage.data_obj != undefined){
+
+
+									synced_data = JSON.parse(localStorage.data_obj);
+									for(feed in synced_data){
+										if (synced_data[feed].length > 0)
+			
+			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									}
 								}
 
 								tabMap[tabId].isSynced = true;	
@@ -333,6 +294,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&instance_id=" + localStorage.instance_id
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
+			
+		window.onbeforeunload = null;
 		location.href = authURL;
 	};
 	
@@ -348,10 +311,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		localStorage.authTicket = authTicket;
 		$location.hash('');
 	}
-
-
-
-
 	else if (localStorage.authTicket === undefined)
 		attemptLogin();
 	else
@@ -387,14 +346,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 					break;
 				case 402:
 					//alert("bad authentication");
-          delete localStorage.me;
+					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					$rootScope.$broadcast('no_license', undefined);
 
 					break;
 				default:
-          delete localStorage.me;
+					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					attemptLogin();
@@ -423,6 +382,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&lang=eng"
             + "&revoke_token=" + authTicket
             + "&instance_id=" + localStorage.instance_id;
+			
 		localStorage.removeItem("me");
     	localStorage.removeItem("authTicket");
     	localStorage.removeItem("nodeID");
@@ -435,9 +395,25 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		else
 			worker.terminate();
 		
+		window.onbeforeunload = null;		
 		location.href = authURL;
 	};
 	
+	this.setUnload = function() {			
+		// stupid warning
+		window.onbeforeunload = function() {
+			if (localStorage.tabclosed)
+				localStorage.tabclosed = "true";
+    	
+			// shut off web worker
+			if (worker.port)
+				worker.port.close();
+			else
+				worker.terminate();
+			
+			return "Are you sure you want to navigate away from this page?";
+		};
+	};
 
 	/*
 	 if there is sharedworker support then it will get the data from the sharedwebworker otherwise it will check localstorage for the data
@@ -459,8 +435,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
     };
     
-    this.updateSettings = function(type, action, model) {
-        var params = {
+    var updateSettings = function(type,action,model){
+    	var params = {
             'a.name': type,
             't': 'web',
             'action': action
@@ -485,6 +461,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             }
         });
     };
+    
+    this.updateSettings = updateSettings;
 
     this.get_avatar = function(pid,width,height,xversion){
     	if (pid)

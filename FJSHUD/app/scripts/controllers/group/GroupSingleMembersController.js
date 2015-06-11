@@ -1,6 +1,5 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService','PhoneService', 
-	function($scope, $rootScope, $routeParams, groupService, contactService, httpService,phoneService) {
-	var addedPid;
+hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService', 
+	function($scope, $rootScope, $routeParams, groupService, contactService, httpService, storageService) {
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = $scope.group.members;
@@ -17,32 +16,13 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
   
   $scope.selectedSort = $scope.sort_options[0];
 
-  $scope.$on('pidAdded', function(event, data){
-    addedPid = data.info;
-    if (localStorage['recents_of_' + addedPid] === undefined){
-      localStorage['recents_of_' + addedPid] = '{}';
-    }
-    $scope.recent = JSON.parse(localStorage['recents_of_' + addedPid]);
-  });
-
-  $scope.storeRecentContact = function(xpid){
-    var localPid = JSON.parse(localStorage.me);
-    $scope.recent = JSON.parse(localStorage['recents_of_' + localPid]);
-    // $scope.recent = JSON.parse(localStorage.recent);   
-    $scope.recent[xpid] = {
-      type: 'contact',
-      time:  new Date().getTime()
-    };
-    localStorage['recents_of_' + localPid] = JSON.stringify($scope.recent);
-    // localStorage.recent = JSON.stringify($scope.recent);
-    $rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
-  };
-
-  $scope.callExtension= function($event, extension){
+  $scope.callExtension = function($event, contact){
     $event.stopPropagation();
     $event.preventDefault();
-    
-    phoneService.makeCall(extension);
+	
+	httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+	
+	storageService.saveRecent('contact', contact.xpid);
   };
   
   $scope.showCallStatus = function($event, contact) {

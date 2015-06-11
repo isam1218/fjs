@@ -1,7 +1,7 @@
     <div class="ToolBar">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-model-options="{debounce: 100}" ng-keypress="clearSearch(autoClearTime)"></div>
+                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-keypress="clearSearch(autoClearTime)"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
@@ -14,7 +14,7 @@
 		<div class="HeaderTitle">{{::verbage.department}}</div>
 		<div class="footnote"> {{::verbage.member_of_department}} </div>
 		
-		<a href="#/group/{{::userGroup.xpid}}" class="GroupRow ListRow ListRow-Contact" ng-click="storeRecentGroup(userGroup.xpid)">
+		<a href="#/group/{{::userGroup.xpid}}" class="GroupRow ListRow ListRow-Contact">
 			<avatar profile="userGroup"></avatar>
 			<div class="ListRowContent">
 				<div class="ListRowTitle">
@@ -34,7 +34,7 @@
 		<div class="HeaderTitle">{{::verbage.our_teams}}</div>
 		<div class="footnote"> {{::verbage.both_in_these_teams}} </div>
 	</div>
-    <a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in filteredResults = (groups | filter: customFilter()) | orderBy: 'name' track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
+    <a href="#group/{{::group.xpid}}" data-ng-repeat="group in filteredResults = (groups | filter: customFilter()) | orderBy: 'name' track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
         <avatar profile="group"></avatar>
         <div class="ListRowContent">
             <div class="ListRowTitle">
