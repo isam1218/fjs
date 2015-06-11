@@ -1,5 +1,5 @@
 <div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}"  expand-contract-notifications>
- <div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">     
+ <div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}" get-scroll-height>     
 	<div class="TitleBar" ng-show="!hasMessages">
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
@@ -13,7 +13,7 @@
         <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
      </div>    	
    <div class="scroller">  	
-	       <div class="Messages" ng-repeat="message in todaysNotifications" ng-show="showHideElements($index)">			
+	       <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
 					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
 							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>

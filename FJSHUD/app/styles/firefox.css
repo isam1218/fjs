@@ -1,0 +1,319 @@
+@supports (-moz-appearance:meterbar) {
+  input[type="search"] {
+    float: left;
+  }
+  .SearchBox {
+    padding: .5em .5em .5em 2.3em !important;
+  }
+  img.x {
+    width: 7px;
+    height: 7px;
+    border: 0px none;
+    display: inline-block;
+    position: relative;
+    right: 15px;
+    top: 12px;
+    float: left;
+    cursor: pointer;
+  }
+  .TopBarMeStatus .Logout {
+    padding: 1px 14px 3px 13px !important;
+  }
+  .TopBarMeStatus .Logout .icon {
+    top: 0 !important;
+  }
+  .TopBarMeStatus .XButton span {
+    top: 3px !important;
+  }
+  .LeftBarTop img.x {
+    right: 24px;
+    top: 19px;
+    z-index: 101;
+  }
+  .WidgetMe .WidgetHeader {
+    height: 8.438em !important;
+    position: absolute !important;
+  }
+  .WidgetMe .WidgetHeader > div {
+    display: inline-block;
+  }
+  .WidgetMe .WidgetHeader .WidgetHeaderTitle {
+    height: 2.4em !important;
+    line-height: 2.4em !important;
+    margin: 0 !important;
+  }
+  .WidgetMe .WidgetHeader .Avatar.AvatarBig,
+  .WidgetMe .WidgetHeader .MeInfoBlock {
+    height: 5.625em;
+  }
+  .WidgetMe .WidgetBody {
+    top: 160px;
+    position: absolute;
+  }
+  .WidgetMe .Avatar.AvatarBig {
+    width: 19% !important;
+  }
+  .WidgetMe .MeInfoBlock {
+    width: 79% !important;
+  }
+  .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
+    height: 3.5em !important;
+  }
+  .ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
+    height: 2.5em !important;
+    padding-top: 10px !important;
+  }
+  .WidgetBody .SearchInputBox {
+    width: 30% !important;
+    float: left;
+  }
+  .WidgetBody .SearchInputBoxInputHolder {
+    width: 78% !important;
+  }
+  .WidgetBody .ToolBar input[type=search] {
+    width: 30%;
+    font-size: 0.688em !important;
+    /*height: 2.6em !important; */
+  }
+  .WidgetBody .ToolBar.fj-stream .XButton {
+    float: right !important;
+    height: 1.9em !important;
+  }
+  .WidgetBody .ToolBar.fj-stream select.XButton,
+  .WidgetBody .ToolBar.fj-stream select.XButtonDropDown {
+    height: 2.3em !important;
+    width: 22% !important;
+    float: right !important;
+  }
+  .WidgetBody .ToolBar .ChatSearch {
+    top: 0px !important;
+  }
+  .WidgetBody .ToolBar .ChatSearch img.x {
+    top: 10px !important;
+  }
+  .WidgetBody .ToolBar .ChatSearch .Search {
+    margin-top: 0px;
+    width: 63% !important;
+    height: 2.38em !important;
+  }
+  .WidgetBody .ToolBar .SearchInputBox {
+    width: 30% !important;
+    float: left;
+  }
+  .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder {
+    width: 82% !important;
+  }
+  .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder input[type=search] {
+    height: 2.40em !important;
+    width: 94% !important;
+  }
+  .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder img.x {
+    top: 10px !important;
+  }
+  .WidgetBody .ToolBar.Queues .XButton.XSortButton {
+    margin-top: 0px !important;
+  }
+  .WidgetBody .ToolBar.Queues img.x {
+    top: 10px !important;
+  }
+  .WidgetBody .ToolBar.Queues input[type="search"] {
+    width: 20em !important;
+  }
+  .SearchInputBoxInputHolder {
+    height: 100% !important;
+    width: 82%  !important;
+    right: 0px  !important;
+    top: 0px !important;
+  }
+  .SearchInputBoxInputHolder img.x {
+    float: right;
+    right: 8px;
+  }
+  .Conference img.x {
+    top: 10px;
+    right: 15%;
+  }
+  .Conference .ToolBar .XButton {
+    font-size: 0.625em !important;
+    height: 2.90em !important;
+    width: 33.9% !important;
+  }
+  .Conference .ToolBar .SearchInputBox {
+    width: 30% !important;
+    float: left;
+  }
+  .Conference .ToolBar .SearchInputBoxInputHolder {
+    width: 84% !important;
+  }
+  .Conference .ToolBar .SearchInputBoxInputHolder input[type=search] {
+    width: 92% !important;
+    font-size: 0.688em !important;
+  }
+  .ConferenceMembers img.x {
+    float: right;
+    right: 8px;
+    top: -18px;
+    position: relative;
+  }
+  .Conversation .ToolBar img.x {
+    top: 10px;
+    right: 12px;
+  }
+  .Conversation .ToolBar .XButton {
+    height: 2.2em !important;
+  }
+  .Conversation .ToolBar .XButtonNormal {
+    height: 1.9em !important;
+  }
+  .Conversation .ToolBar select.XButton,
+  .Conversation .ToolBar select.XButtonDropDown {
+    width: 32%;
+    height: 2em;
+    padding-top: 3px !important;
+  }
+  .Conversation .ToolBar input[type=search].SearchBox {
+    width: 30% !important;
+  }
+  .Conversation .ToolBar .XButton.XSortButton {
+    margin-top: 0 !important;
+  }
+  .Conversation .ToolBar.chatTop .XButton {
+    height: 2.2em !important;
+  }
+  .Conversation .ToolBar.chatTop .ChatSearch {
+    width: 64% !important;
+    top: 0 !important!;
+  }
+  .Conversation .ToolBar.chatTop .ChatSearch .SearchIcon {
+    float: left;
+  }
+  .Conversation .ToolBar.chatTop .ChatSearch img.x {
+    right: 10px;
+  }
+  .Conversation .ToolBar.chatTop .ChatSearch .Arrows {
+    float: right;
+    width: 24%;
+  }
+  .Conversation .ToolBar.chatTop .ChatSearch input[type=search].SearchBox {
+    height: 2.4em !important;
+    margin-top: 0 !important;
+    top: 0 !important;
+    width: 62% !important;
+    float: left;
+  }
+  .Conversation .voicemail .ToolBar img.x {
+    right: 16px;
+  }
+  .XButton span {
+    vertical-align: top;
+    /*top: -3px; */
+  }
+  /******* notifications **********/
+  .LeftBar {
+    height: 99%;
+  }
+  .LeftBar .Notifications {
+    /*bottom: 16px;*/
+  }
+  .LeftBar .Notifications .TitleBar .XButton,
+  .LeftBar .Notifications .NotificationDivider > div .XButton {
+    top: -3px !important;
+  }
+  .LeftBarNotificationSection {
+    background-color: transparent;
+  }
+  .Widget {
+    height: 97%;
+  }
+  .WidgetTabBar {
+    clear: both;
+  }
+  .Messages:first-child {
+    clear: both;
+  }
+  .Messages:not(:first-child) {
+    margin-top: 0;
+    clear: both;
+  }
+  .NotificationHeader {
+    position: relative;
+    z-index: 100;
+    top: 0;
+  }
+  .NotificationSection {
+    float: left;
+    top: -10px;
+    width: 100%;
+    position: relative;
+    margin-top: 0px;
+    height: 15px;
+    padding-bottom: 10px;
+    margin-bottom: -10px;
+    /*&.halfHeight{
+        overflow: hidden;
+        height: 1.5em;
+         &.firstsection{
+            height: 1.8em;
+         }
+     }*/
+  }
+  .NotificationSection.last {
+    height: auto;
+  }
+  .NotificationSection.last.alert {
+    margin-top: 15px;
+  }
+  .NotificationSection.firstsection {
+    top: 0px;
+    padding-top: 3px;
+    margin-bottom: 0px;
+  }
+  .NotificationSection:not(.firstsection) {
+    top: -10px;
+    margin-bottom: -12px;
+  }
+  .LeftBarNotificationMessageSection {
+    float: left;
+    padding-left: 0px;
+    width: 82%;
+    clear: none;
+  }
+  .LeftBarNotificationMessageSection .NotificationDisplayName {
+    padding-left: 5px;
+  }
+  .LeftBarNotificationMessageSection .NotificationDisplayName span {
+    width: auto !important;
+  }
+  .LeftBarNotificationMessageSection .NotificationType {
+    position: relative;
+    left: 5px;
+    top: -5px;
+  }
+  .LeftBarNotificationMessageSection .NotificationTime {
+    right: 0;
+  }
+  .LeftBarNotificationMessageSection .NotificationMessage {
+    padding-left: 5px;
+  }
+  .Overlay.notifications .LeftBarNotificationMessageSection {
+    width: 90%;
+  }
+  .MyCallBlock_Rec {
+    right: 33% !important;
+  }
+  .XIcon24-Record-Off {
+    margin: 10px;
+  }
+  .CurrentCall .RightSide .XButton {
+    width: 75px !important;
+  }
+  .CurrentCall .RightSide .XButton.CurrentCallBtnLong {
+    width: 155px !important;
+  }
+  .DockPanel {
+    height: 100% !important;
+  }
+  .DockPanel .InnerDock {
+    width: 100% !important;
+  }
+}

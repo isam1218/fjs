@@ -321,5 +321,21 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
         return 'img/Generic-Avatar-28.png';
     }
   };
+  
+  $scope.deptHeaderDisplay = function(groupType){
+		if (groupType === 0){
+			return true;
+		}
+  };
+
+  $scope.nonVisibleTeamHeaderDisplay = function(groupType){
+		if (groupType !== 0 && groupType === 2)
+			return true;
+  }
+
+  $scope.publicTeamHeaderDisplay = function(groupType){
+		if (groupType !== 0 && groupType === 4)
+			return true;
+  };
 
 }]);

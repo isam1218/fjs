@@ -10,6 +10,7 @@
 </div>
 
 <div class="ContactList">
+  <div class="LeftBarTabContentList">
    <div class="group_title">
     <div class="group_header">
 		<div class="group">{{::verbage.my_department}}</div>
@@ -55,4 +56,5 @@
 	<a href="#group/{{::group.xpid}}" ng-click="storeRecentGroup(group.xpid)" data-ng-repeat="group in groups | filter: searchFilter() | filter: customFilter('others') | orderBy:sortField:sortReverse track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
 		<div include-once="views/GroupsRow.html"></div>
 	</a>
+   </div>
 </div>

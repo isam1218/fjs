@@ -10,11 +10,10 @@
         </div>
     </div>
 </div>
-
 <div class="ContactList">
     <div class='timeline' ng-if="sortField =='timeline'">
         <a href="#/{{item.recent_type}}/{{item.xpid}}" ng-click="storeRecent(item.xpid, item.recent_type)" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: customSort(): customReverse() track by item.xpid" class="ListRowFirst ListRow ListRow-Contact">
-            
+           <!-- {{ item }} -->
             <avatar profile="item" ng-if="item.recent_type == 'contact'"></avatar>
             <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'contact'">
                 <div class="ListRowTitle">
@@ -40,9 +39,10 @@
                 <div class="ListRowTitle">
                     <div class="name">
                         <strong>{{ item.name }}</strong>
-                        <span class="details">
-                            {{ ::item.extension ? '#' + item.extension : getOwner(item) }}
-                        </span>
+                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>                       
+                            <span class="details" ng-if="deptHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
+					        <span class="details" ng-if="nonVisibleTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
+					        <span class="details" ng-if="publicTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>                       
                     </div>
                 </div>
                 <!-- <div class="ListRowStatus Members">{{ item.members.length }}</div>-->
@@ -51,10 +51,11 @@
             <avatar profile="item" ng-if="item.recent_type == 'queue'"></avatar>
             <div class="ListRowContent" dockable="item" ng-if="item.recent_type == 'queue'">
                 <div class="ListRowTitle">
-                    <strong>{{ ::item.name }}</strong>
+                    <strong>Q:{{ ::item.name }}</strong>
                     <br/>
-                    <div class="ListRowStatusIcon XIcon-QueueStatus-{{ item.me.status.status }}"></div>
-                    {{ queueStatusLabel(item.me.status.status) }}
+                    <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                    <!-- {{ queueStatusLabel(item.me.status.status) }} -->
+                    {{ ::item.name }}
                 </div>
             </div>            
 
