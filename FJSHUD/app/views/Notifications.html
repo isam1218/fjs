@@ -399,8 +399,8 @@
 					<div class="CallStatusIcon"> </div>
 				</div>
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
-					<div class="memberName">{{::currentCall.displayName}} <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
-					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
+					<div class="memberName">{{currentCall.displayName}} <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
+					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 				</div>				
 				<div class="controlButtons">
 					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>

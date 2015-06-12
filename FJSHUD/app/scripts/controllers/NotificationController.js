@@ -473,13 +473,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			   $scope.callObj[xpid].seconds = 0;
 			   $scope.callObj[xpid].hours = 0;	
 			   $scope.callObj[xpid].days = 0;
-			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());			   
+			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());
+
 		   }
 		   if($scope.callObj[xpid].seconds == 0 && 
 			  $scope.callObj[xpid].minutes == 0 && 
 			  $scope.callObj[xpid].hours == 0 &&
 			  $scope.callObj[xpid].days == 0)
 		   {	   
+		   		//the nativeTime is for the native Alert as it requires its own time and does its own calculations for the duration 
+		   	   $scope.callObj[xpid].nativeTime = new Date().getTime();
 			   $scope.callObj[xpid].stopTime = $interval(function(){
 				   $scope.updateTime(xpid);
 			   }, 1000);
@@ -510,15 +513,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	var displayNotification = function(){
-		//console.log($scope.meContact);
 
 		element = document.getElementById("Alert");
 		if(element){
-			//element.style.display="block";
-			//element.setAttribute('style','display:block');
 			content = element.innerHTML;
 			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-			//element.style.display="none";
 			
 		  }
 		 $scope.displayAlert = false;
