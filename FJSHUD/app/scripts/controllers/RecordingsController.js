@@ -1,10 +1,9 @@
-hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', 'PhoneService', 'SettingsService', '$timeout', function($scope, $rootScope, $routeParams, $location, httpService, contactService, conferenceService, queueService, phoneService, settingsService, $timeout) {
+hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', 'PhoneService', function($scope, $rootScope, $routeParams, $location, httpService, contactService, conferenceService, queueService, phoneService) {
 	$scope.rec = this;
 	$scope.rec.query = '';
 	$scope.recordings = [];
 	
 	httpService.getFeed('callrecording');
-	httpService.getFeed('settings');
 
 	$scope.$on('callrecording_synced', function(event, data) {
 		$scope.recordings = [];
@@ -85,45 +84,6 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 			}
 		}
 	});
-	
-  $scope.$on('settings_updated', function(event, data){
-      if (data['hudmw_searchautoclear'] == ''){
-          autoClearOn = false;
-          if (autoClearOn && $scope.rec.query != ''){
-                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                  $scope.clearSearch($scope.autoClearTime);          
-              } else if (autoClearOn){
-                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-              } else if (!autoClearOn){
-                  $scope.autoClearTime = undefined;
-              }
-      }
-      else if (data['hudmw_searchautoclear'] == 'true'){
-          autoClearOn = true;
-          if (autoClearOn && $scope.rec.query != ''){
-              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-              $scope.clearSearch($scope.autoClearTime);          
-          } else if (autoClearOn){
-              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-          } else if (!autoClearOn){
-              $scope.autoClearTime = undefined;
-          }
-      }        
-  });
-
-  var currentTimer = 0;
-
-  $scope.clearSearch = function(autoClearTime){
-      if (autoClearTime){
-          var timeParsed = parseInt(autoClearTime + '000');
-          $timeout.cancel(currentTimer);
-          currentTimer = $timeout(function(){
-              $scope.rec.query = '';
-          }, timeParsed);         
-      } else if (!autoClearTime){
-          return;
-      }
-  };
 
 	$scope.customFilter = function() {
 		var query = $scope.rec.query.toLowerCase();

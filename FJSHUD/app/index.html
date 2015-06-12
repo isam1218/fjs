@@ -57,7 +57,7 @@
 				<div class="LeftBarTop">
 					<div class="ContactSearch">
 						<div ng-show=" tab != 'favorites' && tab != 'recent'">
-							<input type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" ng-keypress="clearSearch(autoClearTime)" />
+							<input type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
 							<span></span>
 							
 							<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
