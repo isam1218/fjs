@@ -33,30 +33,34 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.isString = function(item) {
         return angular.isString(item);
     };
-
-    // as soon as have user's pid, load user's default tab selection from LS
-    $scope.setFromLocalStorage = function(val){
-        $scope.globalXpid = val;
-		$scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-    };
+    
+    if ($routeParams.route != undefined){
+        $scope.selected = $routeParams.route;
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        for (var i = 0; i < $scope.tabs.length; i++){
+            if ($scope.tabs[i].lower == $routeParams.route){
+                $scope.toggleObject = {item: i};
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+                break;
+            }
+        }
+    } else {
+        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : $scope.tabs[0].lower;
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};            
+    }
 
     $scope.saveQTab = function(tab, index){
         $scope.selected = tab;
         $scope.toggleObject = {item: index};
-        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-        localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);               
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);               
     };
     
-    var getXpidInQ = $rootScope.$watch('myPid', function(newVal){
-        if (!$scope.globalXpid){
-        	$scope.setFromLocalStorage(newVal);
-        	getXpidInQ();
-        } else {
-            getXpidInQ();
-        }
-    });   
-    
+    var recordingPerm;
+    settingsService.getPermissions().then(function(data){
+        recordingPerm = data.showCallCenter;
+    });
+
     // filters out the display of certain queue tabs per user's permissions
     $scope.tabFilter = function(){
         return function(tab){        	        	
@@ -75,7 +79,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     				}
                     break;                
                 case 'recordings':
-                    var recordingPerm = settingsService.getPermission('showCallCenter');
                     if (recordingPerm)
                       return true;
                     else
