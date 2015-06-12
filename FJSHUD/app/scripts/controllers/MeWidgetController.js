@@ -821,9 +821,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     }
 
     
-    $scope.$on('weblauncher_synced', function(event,data){
+    settingsService.getWl().then(function(data){
         if(data){
-            $scope.weblaunchervariables = data;
             activeWebLauncher = data.filter(function(item){
                 return item.id == settings['hudmw_launcher_config_id'];
             })
@@ -842,7 +841,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.weblauncher_profiles = data;
         }
     });
-    
+
     $scope.$on('weblaunchervariables_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
