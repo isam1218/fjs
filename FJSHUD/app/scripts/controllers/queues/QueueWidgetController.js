@@ -33,27 +33,19 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.isString = function(item) {
         return angular.isString(item);
     };
-    
+
     // as soon as have user's pid, load user's default tab selection from LS
     $scope.setFromLocalStorage = function(val){
         $scope.globalXpid = val;
-		
-        if($routeParams.route != undefined){
-			$scope.selected = $routeParams.route;
-			localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-		  
-			for(var i = 0; i < $scope.tabs.length;i++){
-				if($scope.tabs[i].lower == $routeParams.route){
-					$scope.toggleObject = {item: i};
-					localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject); 
-					break;
-				}
-			}
-        }
-		else {
-			$scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] : $scope.tabs[0].lower;
-			$scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};        
-		}
+		$scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+    };
+
+    $scope.saveQTab = function(tab, index){
+        $scope.selected = tab;
+        $scope.toggleObject = {item: index};
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+        localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);               
     };
     
     var getXpidInQ = $rootScope.$watch('myPid', function(newVal){
@@ -63,15 +55,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         } else {
             getXpidInQ();
         }
-    });
-
-    // save user's last selected tab to LS
-    $scope.saveQTab = function(tab, index){      	
-        $scope.selected = tab;
-        $scope.toggleObject = {item: index};
-        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-        localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);       
-    };      
+    });   
     
     // filters out the display of certain queue tabs per user's permissions
     $scope.tabFilter = function(){

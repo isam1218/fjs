@@ -4,7 +4,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.timeElapsed = 0;
 	$scope.recordingElapsed = 0;
 	
-	$scope.confQuery = '';
+	$scope.conf = this;
+	$scope.conf.query = '';
+	$scope.confQuery = this;
+	$scope.confQuery.query = '';
 	$scope.tranQuery = '';
 	$scope.selectedConf = null;
 	$scope.addError = null;
@@ -152,22 +155,25 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.selectedConf = conference;
 	};
 	
-	$scope.customConfFilter = function() {
-		var query = $scope.confQuery.toLowerCase();
-		
-		return function(conference) {
-			// by conference name
-			if ($scope.confQuery == '' || conference.extensionNumber.indexOf(query) != -1)
+	$scope.conferenceFilter = function(){
+		var query = $scope.conf.query.toLowerCase();
+		return function(conference){
+			if (query == '' || conference.extensionNumber.indexOf(query) != 1){
 				return true;
-			// by member name
-			else if (conference.members) {
-				for (var i = 0; i < conference.members.length; i++) {
+			}
+			else if (conference.members){
+				for (var i = 0; i < conference.members.length; i++){
 					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
 						return true;
 				}
 			}
 		};
 	};
+
+	$scope.conFilter = function(conference){
+		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
+	};
+
 	
 	$scope.joinConference = function() {
 		if ($scope.selectedConf) {

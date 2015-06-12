@@ -39,21 +39,22 @@
     </div>
    
     <!-- ng-views -->
-    <div ng-if="selected == 'agents' || toggleObject.item == 0" class="ListView WithToolBar" 
+    <div ng-if="selected == 'agents'" class="ListView WithToolBar" 
 		include-once="views/queues/QueueWidgetAgents.html" ng-controller="QueueWidgetAgentsController"></div>
-    <div ng-if="selected == 'stats' || toggleObject.item == 1" class="ListView WithToolBar"
+    <div ng-if="selected == 'stats'" class="ListView WithToolBar"
          include-once="views/queues/QueueWidgetStats.html" ng-controller="QueueWidgetStatsController"></div>
-    <div ng-if="selected == 'calls' || toggleObject.item == 2" class="ListView WithToolBar"
+    <div ng-if="selected == 'calls'" class="ListView WithToolBar"
          include-once="views/queues/QueueWidgetCalls.html" ng-controller="QueueWidgetCallsController"></div>
-    <div ng-if="selected == 'chat' || toggleObject.item == 3" class="ListView ChatView"
+    <div ng-if="selected == 'chat'" class="ListView ChatView"
          include-once="views/ChatView.html" ng-controller="ChatController"></div>
-    <div ng-if="selected == 'calllog' || toggleObject.item == 4" class="ListView CallLog"
+    <div ng-if="selected == 'calllog'" class="ListView CallLog"
          include-once="views/CallLog.html" ng-controller="CallLogController"></div>
-    <div ng-if="selected == 'recordings' || toggleObject.item == 5" class="ListView WithToolBar"
+    <div ng-if="selected == 'recordings'" class="ListView WithToolBar"
          include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
-    <div ng-if="selected == 'alerts' || toggleObject.item == 6" class="ListView ChatView"
+    <div ng-if="selected == 'alerts'" class="ListView ChatView"
          include-once="views/ChatView.html" ng-controller="ChatController"></div>
 
   </div>
+
 
 </div>
