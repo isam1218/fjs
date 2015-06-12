@@ -7,8 +7,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 	var permissions = {};
 	var weblaunchers = [];
 	var weblauncher_variables = [];
-	var locations = {};
-	
+	var locations = {};	
 
 	if(localStorage.fon_lang_code){
 		var code = localStorage.fon_lang_code.split(".")[1];
@@ -61,8 +60,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 	
 	this.getWl = function(){
 		return deferWl.promise;
-	}
-
+	};
 
 	this.formatWebString = function(url,call){
 		var val = $rootScope.meModel;
@@ -91,53 +89,48 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 	/**
 		SYNCING
 	*/
+	
 	$rootScope.$on('me_synced', function(event,data){
-        if(data){
-            for(var i = 0; i < data.length; i++){
-                $rootScope.meModel[data[i].propertyKey] = data[i].propertyValue;
-				if(data[i].propertyKey == 'personal_permissions'){
-					var permissions = {key:data[i].propertyKey,permissions:data[i].propertyValue};
-                	// console.error('!permission prop value -> ', data[i].propertyValue);
-				
-				// licenses from MyPermissions.java
-					permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
-						// Call Center license determines whether or not a user can record
-					permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
-					permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
-
-						// group permissions from MyPermissions.java
-					permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
-					permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
-					permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
-					permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
-
-						// // QUEUE PERMISSIONS... from QueuePermissions.java
-						// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
-						// permissions.isViewQueueDetailsEnabled = isEnabled(data[i].propertyValue, 1);
-						// // this is the same as showVideoCollab
-
-						// // Call Permission from CallPermissions.java
-						// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
-					deferPermissions.resolve(permissions);
-
-                }
-
-                if(data[i].propertyKey == 'my_jid'){
-            		$rootScope.meModel.login = data[i].propertyValue.split("@")[0];
-            		$rootScope.meModel.server = data[i].propertyValue.split("@")[1];
-        
-                }
-            }
-
-			$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
+        for(var i = 0, len = data.length; i < len; i++){
+            $rootScope.meModel[data[i].propertyKey] = data[i].propertyValue;
 			
-            if($rootScope.meModel.login){
-        		deferMe.resolve($rootScope.meModel);
-		    }
-		}
-		
-        
+			if(data[i].propertyKey == 'personal_permissions'){			
+				// licenses from MyPermissions.java
+				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				// Call Center license determines whether or not a user can record
+				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);
 
+				// group permissions from MyPermissions.java
+				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
+				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
+				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
+				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
+
+				// // QUEUE PERMISSIONS... from QueuePermissions.java
+				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
+				// permissions.isViewQueueDetailsEnabled = isEnabled(data[i].propertyValue, 1);
+				// // this is the same as showVideoCollab
+
+				// // Call Permission from CallPermissions.java
+				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
+				deferPermissions.resolve(permissions);
+            }
+			// assign other useful goodies
+			else if (data[i].propertyKey == 'my_pid') {
+				$rootScope.myPid = data[i].propertyValue;
+			}
+			else if (data[i].propertyKey == 'my_jid'){
+        		$rootScope.meModel.login = data[i].propertyValue.split("@")[0];
+        		$rootScope.meModel.server = data[i].propertyValue.split("@")[1];
+            }
+        }
+
+		$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
+		
+        if($rootScope.meModel.login){
+        	deferMe.resolve($rootScope.meModel);
+		}
     });
 
     $rootScope.$on('weblauncher_synced', function(event,data){
@@ -148,20 +141,16 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
     });
 	
 	$rootScope.$on('locations_synced', function(event,data){
-        if(data){
-            if($.isEmptyObject(locations)){
-            	for(index in data){
-					locations[data[index].xpid] = data[index];
-					if(data[index].xpid == $rootScope.meModel.current_location){
-						$rootScope.meModel.location = data[index];
-						break;	
-					}
-            	}	
-            }
+        for(var i = 0; i < data.length; i++){
+			locations[data[i].xpid] = data[i];
+			if(data[i].xpid == $rootScope.meModel.current_location){
+				$rootScope.meModel.location = data[i];
+				break;	
+			}
+        }
 
-            if($rootScope.meModel){
-            	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
-            }
+        if($rootScope.meModel){
+        	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
         }
     });
 
