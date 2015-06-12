@@ -834,7 +834,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 for(var i = 0; i < data.length;i++){
                     if(data[i].id == "user_default"){
                         $scope.currentWebLauncher = data[i];
-                        $scope.update_settings('hudmw_launcher_config_id','update',currentWebLauncher.id);
+                        $scope.update_settings('hudmw_launcher_config_id','update',$scope.currentWebLauncher.id);
                     }
                 }
             };
