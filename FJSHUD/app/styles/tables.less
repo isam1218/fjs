@@ -183,12 +183,12 @@
 	-webkit-flex: 1;
     border-left: solid 1px #DEE1E5;
 	overflow: hidden;
+	max-height: 40px;
   }
   
   .ListRowTitle {
     float: left;
-    padding: .5em;
-    /*font-size: .75em;*/
+    padding: .5em;    
     font-size: 12px;
     text-decoration: none;
     color: #555;
@@ -196,12 +196,12 @@
 	max-width: 55%;
 	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+	margin-top: -3px;
     
-    .status{
-       /*margin-top: -5px; */
+    .status{      
        margin-left: -5px; 
-       &.queue{
-         margin-top: 0;
+       &.conference{
+         margin-top: -5px;
        }
     }
     span.desc{
