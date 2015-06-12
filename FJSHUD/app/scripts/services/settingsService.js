@@ -123,15 +123,6 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 			deferSettings.resolve(settings);
 			
 			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
-			
-			// load app for first time
-			if (!$rootScope.loaded) {
-				$timeout(function() {
-					$rootScope.loaded = true;
-					
-					httpService.setUnload();
-				}, 5000);
-			}
 		}
 	});
 }]);

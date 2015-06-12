@@ -1,12 +1,12 @@
-hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpService','PhoneService', function($rootScope, $scope, $timeout, myHttpService, phoneService) {
+hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, myHttpService, settingsService, contactService) {
 	$rootScope.myPid = null;
 	$rootScope.loaded = false;
 	
-  $scope.number = "";
-  $scope.currentPopup = {};
-  $scope.currentPopup.url = null;
-  $scope.currentPopup.x = 0;
-  $scope.currentPopup.y = 0;
+	$scope.number = "";
+	$scope.currentPopup = {};
+	$scope.currentPopup.url = null;
+	$scope.currentPopup.x = 0;
+	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
 
 	$scope.overlay = {
@@ -32,6 +32,15 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
         }
     };
 	
+	$q.all([settingsService.getSettings(), contactService.getContacts()]).then(function() {
+		// show app
+		$timeout(function() {
+			$rootScope.loaded = true;
+			
+			myHttpService.setUnload();
+		}, 5000);
+	});
+	
 	var activityTimeout = null;
 	
 	// wake status
@@ -52,6 +61,9 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].propertyKey == 'my_pid') {
 					$rootScope.myPid = data[i].propertyValue;
+					$scope.globalXpid = $rootScope.myPid;
+					
+					getMyPid();
 					break;
 				}
 			}
@@ -60,15 +72,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', 'HttpSe
 			// remove watcher
 			getMyPid();
 	});
-
-  var getMyXpid = $rootScope.$watch('myPid', function(newVal, oldVal){
-    if (!$scope.gloablXpid){
-      $scope.globalXpid = newVal;
-      getMyXpid();      
-    } else {
-      getMyXpid();
-    }
-  });
 
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
