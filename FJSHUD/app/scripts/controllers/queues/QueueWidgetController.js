@@ -152,7 +152,8 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	            else
 	            {
 	            	// I'm not a member of this current queue in the for loop
-	                $scope.enableAlertBroadcast = false;
+	                $scope.enableTextInput = false;
+                    $scope.enableAlertBroadcast = false;
 	                $scope.enableChat = false;
 	                $scope.enableFileShare = false;
 	            }		            
