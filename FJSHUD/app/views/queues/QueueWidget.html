@@ -30,12 +30,48 @@
 
   <div class="WidgetBody">
     <div class="WidgetTabBar">
-      <span ng-repeat="tab in tabs | filter: tabFilter()" >      
-        <a href="#/queue/{{ ::queueId + '/' + tab.lower}}" ng-click="saveQTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
-          <div class="inner">{{ ::tab.upper }}</div>
-          <div class="arrow"></div>
-        </a>
-      </span>     
+        <span>
+          <a href="#/queue/{{ ::queueId + '/agents'}}" ng-click="saveQTab('agents', 0)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 0}">
+            <div class="inner">{{tabs[0].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/stats'}}" ng-click="saveQTab('stats', 1)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 1}">
+            <div class="inner">{{tabs[1].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/calls'}}" ng-click="saveQTab('calls', 2)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 2}">
+            <div class="inner">{{tabs[2].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/chat'}}" ng-click="saveQTab('chat', 3)" ng-show="chatPermission" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 3}">
+            <div class="inner">{{tabs[3].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/calllog'}}" ng-click="saveQTab('calllog', 4)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 4}">
+            <div class="inner">{{tabs[4].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/recordings'}}" ng-click="saveQTab('recordings', 5)" ng-show="recordingPermission" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 5}">
+            <div class="inner">{{tabs[5].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/alerts'}}" ng-click="saveQTab('alerts', 6)" ng-show="chatPermission" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 6}">
+            <div class="inner">{{tabs[6].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
     </div>
    
     <!-- ng-views -->
