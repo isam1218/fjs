@@ -284,7 +284,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			var context = message.context;
 			var xpid = context.split(':')[1];
 		}
-		$location.path("/" + message.audience + "/" + xpid + "/chat");
+		
+		var tab = message.type == 'q-broadcast' ? '/alerts' : '/chat';
+		
+		$location.path("/" + message.audience + "/" + xpid + tab);
 		$scope.remove_notification(message.xpid);
 		$scope.showOverlay(false);
 	};
@@ -556,12 +559,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 		var isAdded = false;
 		var targetId;
+		var groupContextId;
+		var queueContextId;
 		
 		if (context){
 			var context = item.context.split(":")[0];
 			var contextId = item.context.split(":")[1];
 			switch(context){
 				case "groups":
+					// console.error('context - ', contextId);
+					groupContextId = contextId;
 					targetId = $routeParam.groupId;
 					break;
 				case "contacts":
@@ -569,6 +576,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					break;
 				case "conferences":
 					targetId = $routeParam.conferenceId;
+					break;
+				case "queues":
+					queueContextId = contextId;
 					break;
 			}
 			
@@ -589,10 +599,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
-			// if user is in chat conversation w/ other contact already (convo on screen), don't display notification...
-			if (item.senderId == $routeParam.contactId){
+			
+			// if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
+			if (item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
 				return false;
-			}
+			else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+				return false;
+			else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+				return false;
+
+
 			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
 			
 				return false;
@@ -614,6 +630,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					playChatNotification = true;
 
 				}
+				if(displayDesktopAlert){
+					if($scope.todaysNotifications.length > 0){
+						$scope.displayAlert = true;
+						$timeout(displayNotification
+						, 500);
+					}
+					//adding a second delay for the native notification to have the digest complete with the updated notifications
+				}	
 			}
 		}
 		
@@ -757,13 +781,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 		});		
 			
-		if(displayDesktopAlert){
-			if($scope.todaysNotifications.length > 0){
-				$scope.displayAlert = true;
-				$timeout(displayNotification
-				, 500);
-			}
-			//adding a second delay for the native notification to have the digest complete with the updated notifications
-		}				
+					
     });		
 }]);

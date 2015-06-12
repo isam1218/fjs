@@ -80,14 +80,14 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
     }
     if (serverCount > 1){
       $scope.sort_options = [
-        {display_name: $scope.verbage.sort_room_by_location, type: 'location', desc: false}, 
-        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
-        {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
+        {display_name: $scope.verbage.sort_room_by_location, type: 'location'}, 
+        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber'}, 
+        {display_name: $scope.verbage.sort_by_activity, type: '-members.length'}
       ];
     } else {
       $scope.sort_options = [
-        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
-        {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
+        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber'}, 
+        {display_name: $scope.verbage.sort_by_activity, type: '-members.length'}
       ];      
     }
 	

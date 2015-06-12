@@ -508,7 +508,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.alertShowIncoming = settings['alert_call_incoming'] == "true";
             $scope.alertShowOutgoing = settings['alert_call_outgoing'] == "true";
             $scope.alertOnAlways = settings['hudmw_show_alerts_always'] == "true";
-            $scope.alertOnBusy = settings['hudmw_show_alerts_in_busy_mode'] == "true";
+            $scope.settings.alertOnBusy = settings['hudmw_show_alerts_in_busy_mode'] == "true";
             $scope.alertDisplayFor = settings['alert_call_display_for'];
             $scope.alertDuration = settings['alert_call_duration'];
 
@@ -1013,7 +1013,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         
     });
-    $scope.$on('i18n_synced',function(event,data){
+    $scope.$on('i18n_langs_synced',function(event,data){
 		if(data){
 			var language_id;
 			var default_language;

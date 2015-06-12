@@ -53,18 +53,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		}
 
 		//if the tabmap is empty or not defined in localstorage then initialize the tab map is set the current tab as the master tab
-		if(tabMap != undefined){
+		/*if(tabMap != undefined){
 			tabMap[tabId] = { 
 				isMaster:false,
 				isSynced:false
 			}
-		}else{
+		}else{*/
 			tabMap = {};
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
 			}
-		}
+		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
 	}
@@ -160,12 +160,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                    	to_sync: true,
 		                	});	
 						}else{
-							synced_data = JSON.parse(localStorage.data_obj);
-							for(feed in synced_data){
-								if (synced_data[feed].length > 0)
-		                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+
+							if(localStorage.data_obj != undefined){
+								synced_data = JSON.parse(localStorage.data_obj);
+								for(feed in synced_data){
+									if (synced_data[feed].length > 0)
+			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								}
 							}
-							
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
@@ -209,7 +211,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
-            delete localStorage.me;
+						delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
 						delete localStorage.data_obj;
@@ -229,11 +231,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 							
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
 							if(!tabMap[tabId].isSynced){
-								synced_data = JSON.parse(localStorage.data_obj);
-								for(feed in synced_data){
-									if (synced_data[feed].length > 0)
-		
-		                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								if(localStorage.data_obj != undefined){
+
+
+									synced_data = JSON.parse(localStorage.data_obj);
+									for(feed in synced_data){
+										if (synced_data[feed].length > 0)
+			
+			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									}
 								}
 
 								tabMap[tabId].isSynced = true;	
@@ -288,6 +294,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
             + "&instance_id=" + localStorage.instance_id
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
+			
+		window.onbeforeunload = null;
 		location.href = authURL;
 	};
 	
@@ -303,10 +311,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		localStorage.authTicket = authTicket;
 		$location.hash('');
 	}
-
-
-
-
 	else if (localStorage.authTicket === undefined)
 		attemptLogin();
 	else
@@ -342,14 +346,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 					break;
 				case 402:
 					//alert("bad authentication");
-          delete localStorage.me;
+					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					$rootScope.$broadcast('no_license', undefined);
 
 					break;
 				default:
-          delete localStorage.me;
+					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
 					attemptLogin();
@@ -391,8 +395,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		else
 			worker.terminate();
 		
-		window.onbeforeunload = null;
-		
+		window.onbeforeunload = null;		
 		location.href = authURL;
 	};
 	

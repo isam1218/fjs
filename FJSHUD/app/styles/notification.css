@@ -54,12 +54,11 @@
   background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
   background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
-  min-height: 50px;
+  min-height: 40px;
   overflow: hidden;
   width: 100%;
   padding-right: 5px;
   position: absolute;
-  /*bottom: 26px;*/
   bottom: 1px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
@@ -80,17 +79,19 @@
 .CallStatusContainerOutbound .MyCallBlock_Duration {
   position: relative;
   text-shadow: 0px 1px 0px #FFF;
-  clear: both;
+  clear: none;
+  float: right;
   top: 0;
 }
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   display: inline-block;
   clear: none;
   margin-left: 10px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus {
@@ -99,6 +100,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.CallStatusContainerInbound .CallStatusText .callStatus .onCall,
+.CallStatusContainerOutbound .CallStatusText .callStatus .onCall {
+  float: left;
 }
 .CallStatusContainerInbound .CallStatusText .memberName,
 .CallStatusContainerOutbound .CallStatusText .memberName {
@@ -128,7 +133,7 @@
 .CallStatusContainerOutbound .controlButtons {
   float: right;
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {

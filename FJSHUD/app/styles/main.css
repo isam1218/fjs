@@ -1031,7 +1031,7 @@ p {
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
 .FileUploadStatus {
-  margin-top: 100%;
+  margin-top: 90%;
   border-top: 1px solid white;
   box-shadow: inset 1 0 -1px 1px #cccccc;
   position: relative;
@@ -2702,7 +2702,7 @@ div.NewCall .XButton.XButtonNormal {
   padding: 5px 0px;
 }
 .Conference .ToolBar .SearchInputBox {
-  width: 26%;
+  width: 27%;
 }
 .Conference.fj-widget-area .ToolBar {
   margin-top: 5px;
@@ -2750,6 +2750,15 @@ div.NewCall .XButton.XButtonNormal {
 .ListRow-Conference-Members {
   clear: both;
   position: relative;
+  /*
+  &.status{
+      display: block;
+      width: 36px;
+      float: right;
+      top: 0px;
+      position: absolute;
+      right: 0;
+  }*/
 }
 .conferences-room-item-member {
   width: 62px;
@@ -4030,11 +4039,11 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
+  max-height: 40px;
 }
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
-  /*font-size: .75em;*/
   font-size: 12px;
   text-decoration: none;
   color: #555;
@@ -4042,6 +4051,18 @@ div.NewCall .XButton.XButtonNormal {
   max-width: 55%;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+  margin-top: -3px;
+}
+.ListRow .ListRowTitle .status {
+  margin-left: -5px;
+}
+.ListRow .ListRowTitle .status.conference {
+  margin-top: -5px;
+}
+.ListRow .ListRowTitle span.desc {
+  font-size: 10px;
+  color: gray;
+  margin-top: 2px;
 }
 .ListRow .ListRowTitle .external {
   float: left;
@@ -4384,7 +4405,7 @@ input[type="tel"] {
   display: inline-block;
   /*height: 2.5em;*/
   margin: 0;
-  padding: 5px 10px;
+  padding: 5px;
   text-align: center;
   /*line-height: 2.4em;*/
   text-decoration: none;
@@ -5652,17 +5673,19 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
 }
 .CallStatusIconContainer {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border: 3px solid #0093f0;
   border-radius: 30px;
   text-align: center;
   display: inline-block;
 }
 .CallStatusIconContainer .CallStatusIcon {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+  margin-left: -5px;
+  margin-top: -5px;
 }
 /*
 .CallStatusText{
@@ -5852,12 +5875,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
   background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
-  min-height: 50px;
+  min-height: 40px;
   overflow: hidden;
   width: 100%;
   padding-right: 5px;
   position: absolute;
-  /*bottom: 26px;*/
   bottom: 1px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
@@ -5878,17 +5900,19 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerOutbound .MyCallBlock_Duration {
   position: relative;
   text-shadow: 0px 1px 0px #FFF;
-  clear: both;
+  clear: none;
+  float: right;
   top: 0;
 }
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   display: inline-block;
   clear: none;
   margin-left: 10px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus {
@@ -5897,6 +5921,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.CallStatusContainerInbound .CallStatusText .callStatus .onCall,
+.CallStatusContainerOutbound .CallStatusText .callStatus .onCall {
+  float: left;
 }
 .CallStatusContainerInbound .CallStatusText .memberName,
 .CallStatusContainerOutbound .CallStatusText .memberName {
@@ -5926,7 +5954,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerOutbound .controlButtons {
   float: right;
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {

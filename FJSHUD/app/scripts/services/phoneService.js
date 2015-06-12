@@ -142,20 +142,25 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					displayNotification = true;	
 				
 			}else{
+				if(!tabInFocus){
+						displayNotification = true;	
+				
+				}
 				if(document.visibilityState == "hidden"){
-					displayNotification = true;	
+						displayNotification = true;	
+
 				}		
 			}
 
-
-			if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-				if($rootScope.meModel.chat_status == 'busy'){
+			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
+				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
 					displayNotification = true;
 				}else{
 					displayNotification = false;
 				}
 			}
 		}
+		
 
 			
 	if(alertPlugin && displayNotification){
@@ -277,7 +282,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     var onLocationChanged = function(x,y){
     	alertPosition.x = x;
     	alertPosition.y = y;
-    }
+    };
 
     var activateBrowserTab = function(tabId){
 
@@ -367,8 +372,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				    remove_notification(xpid);
 					break;
 				case '/goToChat':
-					var audience = queryArray[1];
-					goToNotificationChat(xpid, audience); 
+					var context = queryArray[0];
+					var audience = context.split(":")[0];
+					var xpid = context.split(":")[1];
+					var messagexpid = queryArray[1];
+					goToNotificationChat(xpid, audience,messagexpid); 
 					break;	
 				case '/callAndRemove':
 					var phone = queryArray[1];

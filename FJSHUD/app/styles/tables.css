@@ -158,11 +158,11 @@
   -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
+  max-height: 40px;
 }
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
-  /*font-size: .75em;*/
   font-size: 12px;
   text-decoration: none;
   color: #555;
@@ -170,6 +170,18 @@
   max-width: 55%;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+  margin-top: -3px;
+}
+.ListRow .ListRowTitle .status {
+  margin-left: -5px;
+}
+.ListRow .ListRowTitle .status.conference {
+  margin-top: -5px;
+}
+.ListRow .ListRowTitle span.desc {
+  font-size: 10px;
+  color: gray;
+  margin-top: 2px;
 }
 .ListRow .ListRowTitle .external {
   float: left;
