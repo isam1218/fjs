@@ -1,4 +1,4 @@
-hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'SettingsService', '$timeout', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, settingsService, $timeout) {
+hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService) {
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
@@ -8,47 +8,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	contactService.getContacts().then(function() {
 		$scope.myProfile = contactService.getContact($rootScope.myPid);
 	});
-
-    httpService.getFeed('settings');
-
-    $scope.$on('settings_updated', function(event, data){
-        if (data['hudmw_searchautoclear'] == ''){
-            autoClearOn = false;
-            if (autoClearOn && $scope.tester.query != ''){
-                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                    $scope.clearSearch($scope.autoClearTime);          
-                } else if (autoClearOn){
-                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                } else if (!autoClearOn){
-                    $scope.autoClearTime = undefined;
-                }
-        }
-        else if (data['hudmw_searchautoclear'] == 'true'){
-            autoClearOn = true;
-            if (autoClearOn && $scope.tester.query != ''){
-                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                $scope.clearSearch($scope.autoClearTime);          
-            } else if (autoClearOn){
-                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-            } else if (!autoClearOn){
-                $scope.autoClearTime = undefined;
-            }
-        }        
-    });
-
-    var currentTimer = 0;
-
-    $scope.clearSearch = function(autoClearTime){
-        if (autoClearTime){
-            var timeParsed = parseInt(autoClearTime + '000');
-            $timeout.cancel(currentTimer);
-            currentTimer = $timeout(function(){
-                $scope.tester.query = '';
-            }, timeParsed);         
-        } else if (!autoClearTime){
-            return;
-        }
-    };
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
