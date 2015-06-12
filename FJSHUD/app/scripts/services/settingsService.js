@@ -2,6 +2,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 	var deferSettings = $q.defer();
 	var deferPermissions = $q.defer();
 	var deferMe = $q.defer();
+	var deferWl = $q.defer();
 	var settings = {};
 	var permissions = {};
 	var weblaunchers = [];
@@ -58,6 +59,11 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 		return deferMe.promise;	
 	};
 	
+	this.getWl = function(){
+		return deferWl.promise;
+	}
+
+
 	this.formatWebString = function(url,call){
 		var val = $rootScope.meModel;
 		var me = contactService.getContact($rootScope.meModel.my_pid);
@@ -132,6 +138,13 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 		
         
 
+    });
+
+    $rootScope.$on('weblauncher_synced', function(event,data){
+    	if(data && data.length > 0){
+			weblaunchers = data;
+			deferWl.resolve(weblaunchers);
+		}
     });
 	
 	$rootScope.$on('locations_synced', function(event,data){

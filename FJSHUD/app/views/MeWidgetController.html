@@ -41,7 +41,7 @@
              <!--  ng-if="currentCall != null"-->
 
               <div class="CurrentCall"  ng-if="currentCall != null">
-                <div class="WidgetSectionTitle">{{::verbage.current_call}} {{currentCall.startedAt | duration}} </div>
+                <div class="WidgetSectionTitle">{{::verbage.current_call}} <span timer="currentCall.startedAt ? currentCall.startedAt : currentCall.created"> </span> </div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >  
 					  <avatar profile="currentCall.contact" type="{{currentCall.type || 11}}"></avatar>
@@ -103,7 +103,7 @@
                   </div>
                   <div class="row_buttons"> 
                     <div class="XButton dial CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" data-ng-click="showDialPad($event)"> <span>#</span></div> 
-                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"><span>{{:: currentCall.state == 0 ? verbage.decline : verbage.end}}</span></div>
+                    <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"><span>{{currentCall.state == 0 ? verbage.decline : verbage.end}}</span></div>
                   </div>   
                  
               </div>           
