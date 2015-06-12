@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="fjshudApp">
+<html class="no-js" ng-app="fjshudApp" watch-window-resize>
   <head>
     <meta charset="utf-8">
     <title>Fonality HUDWeb</title>
@@ -48,7 +48,7 @@
     </div>
 	
 	<div id="App">
-		<div class="TopBar" include-once="views/TopNavigationBar.html" data-ng-click="onBodyClick()" ng-controller="TopNavigationController"></div>
+		<div class="TopBar" include-once="views/TopNavigationBar.html" ng-mouseleave="showDropdown = false; showHideiconsDropdown()" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
 
 		<div class="PanelWrapper" data-ng-click="onBodyClick()">
 			<div class="LeftBar" ng-controller="LeftBarController">
@@ -159,6 +159,7 @@
 	<script src="scripts/filters/sortVoiceMailFilter.js"></script>
 	
 	<!--directives-->
+	<script src="scripts/directives/windowResizeDirective.js"></script>
 	<script src="scripts/directives/searchDirective.js"></script>
 	<script src="scripts/directives/scrollDirective.js"></script>
 	<script src="scripts/directives/showOnHoverParentDirective.js"></script>
@@ -173,6 +174,7 @@
     <script src="scripts/directives/includeDirective.js"></script>
     <script src="scripts/directives/expandContractNotificationsDirective.js"></script>
     <script src="scripts/directives/leftBarListScrollHeightDirective.js"></script>
+    <script src="scripts/directives/topNavBehaviorDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>
@@ -233,5 +235,9 @@
     <script src="scripts/services/conferenceService.js"></script>
     <script src="scripts/services/phoneService.js"></script>
     <script src="scripts/services/ntpService.js"></script>
+    <script src="scripts/services/detectBrowserService.js"></script>
+    
+    <!-- factory -->
+    <script src="scripts/factory/windowDimensionsFactory.js"></script>
 </body>
 </html>
