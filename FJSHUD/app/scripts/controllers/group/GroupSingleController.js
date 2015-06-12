@@ -25,29 +25,33 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 	// store recent
 	storageService.saveRecent('group', $scope.groupID);
 
-  // as soon as have user's pid, load user's default tab selection from LS
-  $scope.setFromLS = function(val){
-    $scope.globalXpid = val;
-    $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.isMine ? $scope.tabs[0].lower : $scope.tabs[1].lower;
-    $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-  };
-
-  var getXpidInG = $rootScope.$watch('myPid', function(newVal, oldVal){
-      if (!$scope.globalXpid){
-        $scope.setFromLS(newVal);
-        getXpidInG();
-      } else {
-        getXpidInG();
+  if ($routeParams.route != undefined){
+    $scope.selected = $routeParams.route;
+    localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+    for (var i = 0; i < $scope.tabs.length; i++){
+      if ($scope.tabs[i].lower == $routeParams.route){
+        $scope.toggleObject = {item: i};
+        localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+        break;
       }
-  });
+    } 
+  } else {
+    $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? $scope.tabs[0].lower : $scope.tabs[1].lower;
+    $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};      
+  }
 
   // save user's last selected tab to LS
   $scope.saveGTab = function(tab, index){
       $scope.selected = tab;
-      $scope.toggleObject = {item: index};
+      $scope.toggleObject.item = index;
       localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
       localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
   }; 
+
+  var recordingPerm;
+  settingsService.getPermissions().then(function(data){
+    recordingPerm = data.showCallCenter;
+  });
 
   // filters out the display of certain group tabs per user's permissions
 	$scope.tabFilter = function(){
@@ -85,7 +89,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
             return false;
           break;
         case "recordings":
-          var recordingPerm = settingsService.getPermission('showCallCenter');
           if (recordingPerm)
             return true;
           else
