@@ -20,7 +20,10 @@
 				background-color: #ccc;
 				font-size:.9em;
 			}
+
+
 		</style>
+	
 		<script> 
 				window.fj={alert:{}};
 
@@ -50,16 +53,21 @@
 
 
 				   document.body.innerHTML = html;
+				   /*document.getElementById("body").innerHTML = html;
+				   
 
-				    /* var btnOpenConsole = document.createElement("button");
+				   var develop =  document.getElementById('developzone');
+				     var btnOpenConsole = document.createElement("button");
 				      btnOpenConsole.className = "btnOpenConsole";
 				      btnOpenConsole.onclick = function(){
 				        	alert("devtools://open");
 				            window.location="devtools://open";
 				        };
-				        document.body.appendChild(btnOpenConsole);
-				    */
-				//	fj.alert.App.update(html);
+
+				     develop.appendChild(btnOpenConsole);*/
+				      //document.body.appendChild(btnOpenConsole);
+				    
+					//fj.alert.App.update(html);
 				    //fj.alert.App.checkSize();
 				    //fj.alert.App.initScrolls();
 				    //fj.alert.App.prepareBottomScrolls();
@@ -70,13 +78,13 @@
 				}
 
 				function alertScroll(x,y,dx) {
-				    /*var scrolls = fj.alert.App.__scrolls
+				    var scrolls = fj.alert.App.__scrolls
 				    for(var i=0; i <scrolls.length; i++) {
 				        scrolls[i].onWheel({wheelDelta:(-1*dx)});
-				    }*/
+				    }
 				}
 
-				/*(function(){
+				(function(){
 				    if(!fj.alert.App) {
 				        function updateNode( src,  dst, isChild)
 				        {
@@ -205,9 +213,9 @@
 				            }
 				        }
 				    }
-				})();*/
+				})();
 
-				/*(function(){
+				(function(){
 				    fj.alert.AlertEventManager = new Function();
 
 				    fj.alert.AlertEventManager.prototype.isChildOf = function(item, parent)
@@ -386,9 +394,9 @@
 
 				    fj.alert.AlertEventManager.getInstance();
 
-				})();*/
+				})();
 
-				/*var FormatUtils = {
+				var FormatUtils = {
 				    duration: {
 				        getFormattedDuration: function(timestamp) {
 				            var duration = (timestamp && new Date().getTime() - timestamp) || 0;
@@ -786,10 +794,15 @@
 
 				fj.Scrollable.prototype.scrollToPosition = function (position) {
 				    this.frame.scrollTop = position;
-				};*/
+				};
 		</script>
 	</head>
 	<body>
+		<div id="developzone"> </div>
+
+		<div id="body"> </div>
 		
 	</body>
+
+
 </html>
