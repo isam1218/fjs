@@ -6,12 +6,26 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
+    $scope.contentHeight;
+    $scope.RecentTabHeight;  
 	
 	$scope.setTab = function(tab) {
 		$scope.tab = tab;
 		$scope.query = '';
-	};
+	};		
 
+	$scope.$on('NotificationsheightChanged', function(event, data){	
+		if(data)
+		{	
+			//all other tabs
+			$scope.contentHeight = data;
+			$scope.RecentTabHeight = data;				
+			//recent tab
+			var recentHeaderHeight = $('.Recent .ListLineContent.Header').outerHeight(); 
+			$scope.RecentTabHeight += (recentHeaderHeight + 35);			
+		}
+	});
+	
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
 		

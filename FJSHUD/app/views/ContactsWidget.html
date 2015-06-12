@@ -19,9 +19,9 @@
 	</div>
 </div>
 
-<div class="ContactList">
+<div class="ContactList" ng-style="{'height': contentHeight}">
 	<!--<div id="ContactsList" contacts-list></div>-->
-	<div class="LeftBarTabContentList">
+	<div class="LeftBarTabContentList" ng-style="{'height': contentHeight}">
 		<a href="#contact/{{::contact.xpid}}" data-ng-repeat="contact in contacts | filter: customFilter() | orderBy: sortField: sortReverse track by contact.xpid" ng-show="searchFilter(contact)" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			

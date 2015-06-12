@@ -507,7 +507,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	var displayNotification = function(){
-		console.log($scope.meContact);
+		//console.log($scope.meContact);
 
 		element = document.getElementById("Alert");
 		if(element){
