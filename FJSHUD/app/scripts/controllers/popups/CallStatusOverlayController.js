@@ -13,7 +13,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.addError = null;
 	$scope.contacts = [];
 	$scope.bargePermission = $rootScope.bargePermission;
-	
+
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
 	if($scope.$parent.overlay.data.screen){		
