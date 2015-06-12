@@ -55,24 +55,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		}
 	};
 
-	// store user's xpid globally
-	var getMyPid = $scope.$on('me_synced', function(event, data) {
-		if (!$rootScope.myPid) {
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].propertyKey == 'my_pid') {
-					$rootScope.myPid = data[i].propertyValue;
-					$scope.globalXpid = $rootScope.myPid;
-					
-					getMyPid();
-					break;
-				}
-			}
-		}
-		else
-			// remove watcher
-			getMyPid();
-	});
-
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;
         $scope.currentPopup.x = 0;
