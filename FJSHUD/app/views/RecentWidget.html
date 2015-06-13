@@ -19,10 +19,10 @@
 
                 <div class="ListRowTitle">
                     <div class="name">
-                        <strong>{{ item.displayName || item.name }}</strong>  
+                        <strong>{{ ::item.displayName || item.name }}</strong>  
                         <div class="status">                     
-	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
-	                        <span class="desc">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{contact.call ? ' + on call' : ''}}</span>
+	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
+	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{item.call ? ' + on call' : ''}}</span>
                         </div>
                     </div>
                 </div>                
@@ -42,7 +42,7 @@
                     <div class="name">
                         <strong>{{ item.name }}</strong>
                         <div class="status">
-	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>                       
+	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>                       
 	                        <span class="details" ng-if="deptHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
 						    <span class="details" ng-if="nonVisibleTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
 						    <span class="details" ng-if="publicTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
