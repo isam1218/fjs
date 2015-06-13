@@ -54,11 +54,34 @@
 	}		
 }
 
+.CallStatusContainerOutbound {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+
+}
+.CallStatusContainerInbound {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+
+}
+
+.CallStatusIconContainer {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #0093f0;
+  border-radius: 30px;
+  text-align: center;
+  display: inline-block;
+}
+.CallStatusIconContainer .CallStatusIcon {
+  width: 40px;
+  height: 40px;
+  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+}
+
 .CallStatusContainerInbound,
 .CallStatusContainerOutbound{  
-    background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
-    background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-    background: -moz-linear-gradient(center top , #E4F1F8, #DFEBF1);
+    //background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
+    //background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+    //background: -moz-linear-gradient(center top , #E4F1F8, #DFEBF1);
     min-height: 40px;
     overflow: hidden;
     width: 100%;

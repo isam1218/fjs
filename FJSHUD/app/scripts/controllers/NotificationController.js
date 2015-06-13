@@ -387,7 +387,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		var displayDesktopAlert = false;
 		var toDisplayFor = settingsService.getSetting('alert_call_display_for');
 		var alertDuration = settingsService.getSetting('alert_call_duration');			
-		
+		if(!phoneService.getPhoneState() && $rootScope.meModel.location.locationType == 'w'){
+			return;
+		}
+
 		if(data){
 
 			for (i in data){
