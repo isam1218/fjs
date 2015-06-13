@@ -45,7 +45,7 @@
   height: 96px;
   width: 50px;
   cursor: pointer;
-  vertical-align: top;
+  vertical-align: top;  
 }
 
 .TopBarItemAppIcon {
@@ -69,51 +69,149 @@
   }
 }
 
+/* /// icons dropdown /// */
+
+.TopBar2ItemAppIcon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("../img/XApp-Icons.png?v=1425679800685") no-repeat 0px 0px;
+}
+.DropDownMoreList {
+  position: absolute;
+  top: 91px;
+  right: -20px;
+  max-height: 300px;
+  min-height: 50px;
+  width: 300px;
+  background-color: #f3f3f3;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+  text-align: center;
+  z-index: 1000; 
+  display: none;
+
+  .DropDownMoreListScrollable {
+      position: relative;
+      top: 0px;
+      max-height: 300px;
+      
+      .dropdownView{
+          position: relative;
+          max-height: 300px;
+          top: 0px;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
+          overflow-x: hidden;
+          overflow-y: auto;
+          
+          #apps{
+              /*overflow-y: auto;
+              overflow-x: hidden;*/
+              
+              .TopBar2MenuItemApp {
+                  position: relative;
+                  height: 60px;
+                  width: 100%;
+                  cursor: pointer;
+                  pointer-events: auto;
+                  display: inline-block;
+                  
+                  .TopBar2MenuItemName {
+                      position: absolute;
+                      top: 15px;
+                      left: 60px;
+                      right: 0px;
+                      height: 30px;
+                      line-height: 30px;
+                      font-family: "Arial";
+                      text-align: left;
+                      font-size: 12px;
+                      color: #999;
+                      transition: All 0.3s ease;
+                      -webkit-transition: All 0.3s ease;
+                      overflow: hidden;
+                      pointer-events: none;                     
+                      
+                  }
+                  
+              }
+         }
+      }
+  }
+}
+/* /// END - icons dropdown /// */
+
 .TopBarItemAppIcon.Home {
   background-position : 0 0;
 }
-.TopBarItemAppIcon.Contacts {
+.TopBarItemAppIcon.Contacts,
+.TopBar2ItemAppIcon.Contacts {
   background-position : 5.25% 0;
   top:13px;
 }
-.TopBarItemAppIcon.Workgroups {
+.TopBarItemAppIcon.Workgroups,
+.TopBar2ItemAppIcon.Workgroups {
   background-position : -80px 0;
 }
-.TopBarItemAppIcon.Departments {
+.TopBarItemAppIcon.Departments,
+.TopBar2ItemAppIcon.Departments {
   background-position : -120px 0;
 }
-.TopBarItemAppIcon.Favorites {
+.TopBarItemAppIcon.Favorites,
+.TopBar2ItemAppIcon.Favorites {
   background-position : -160px 0;
 }
-.TopBarItemAppIcon.CallLog {
+.TopBarItemAppIcon.CallLog,
+.TopBar2ItemAppIcon.CallLog {
   background-position : 26.5% 0;
 }
-.TopBarItemAppIcon.Share {
+.TopBarItemAppIcon.Share,
+.TopBar2ItemAppIcon.Share {
   background-position : -640px 0;
 }
-.TopBarItemAppIcon.CallCenter {
+.TopBarItemAppIcon.CallCenter,
+.TopBar2ItemAppIcon.CallCenter {
   background-position : 37% 0;
 }
-.TopBarItemAppIcon.CallRecords {
+.TopBarItemAppIcon.CallRecords,
+.TopBar2ItemAppIcon.CallRecords {
   background-position : -320px 0;
 }
-.TopBarItemAppIcon.Voicemails {
+.TopBarItemAppIcon.Voicemails,
+.TopBar2ItemAppIcon.Voicemails {
   background-position : -360px 0;
 }
-.TopBarItemAppIcon.Conferences {
+.TopBarItemAppIcon.Conferences,
+.TopBar2ItemAppIcon.Conferences {
   background-position : 52.75% 0;
 }
-.TopBarItemAppIcon.Box {
+.TopBarItemAppIcon.Box,
+.TopBar2ItemAppIcon.Box {
   background-position : 57.9% -1px;
 }
-.TopBarItemAppIcon.Zoom {
+.TopBarItemAppIcon.Zoom,
+.TopBar2ItemAppIcon.Zoom {
   background-position : 63.1% 0;
 }
-.TopBarItemAppIcon.Search {
+.TopBarItemAppIcon.Search,
+.TopBar2ItemAppIcon.Search {
   background-position : 73.5% 0;
 }
-.TopBarItemAppIcon.Intellinote {
+.TopBarItemAppIcon.Intellinote,
+.TopBar2ItemAppIcon.Intellinote {
   background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.more{
+  background-position: -280px -40px;
+  position: relative;
+  display: inline-block;
+  height: 96px;
+  width: 50px;
+  vertical-align: top;
 }
 
 .TopBarItemMe .TopBarItemAppIcon{
