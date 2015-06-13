@@ -244,12 +244,17 @@
 	-webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
 
+
+
+
+
 .FileUploadStatus{
-	margin-top:90%;
+	top:80%;
 	border-top: 1px solid white;
 	box-shadow: inset 1 0 -1px 1px #cccccc ;
 	position:relative;
 	z-index:100;
+	vertical-align:top;
 	
 	.text-style{
 		font-size:.7em;
@@ -304,5 +309,11 @@
 	    background: #72E673;
 	}
 
+}
+
+@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
+	.FileUploadStatus{
+		margin-top:80%;
+	}
 }
 
