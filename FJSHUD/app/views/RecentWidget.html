@@ -176,13 +176,13 @@
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
-                                <div class="name"> <strong>{{::verbage.room}} # {{::conference.roomNumber}}</strong> ({{::conference.extensionNumber}})</div>
+                                <div class="name"> <strong>{{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</strong></div>
                                 
-                                <div data-ng-if="conference.members.length == 0" class="status">
+                                <div data-ng-if="conference.members.length == 0" class="status conference">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
                                     <span class="desc">{{::verbage.free_room}}</span>
                                 </div>                            
-                                <div data-ng-if="conference.members.length > 0" class="status">
+                                <div data-ng-if="conference.members.length > 0" class="status conference">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
                                     <span class="desc">{{conference.members.length}} {{::verbage.members_on_call}}</span>
                                 </div> 
