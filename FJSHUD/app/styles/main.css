@@ -606,29 +606,29 @@ p {
       display: flex;
       display: -webkit-flex;
       flex-direction: column;
-      -webkit-flex-direction: column;      
+      -webkit-flex-direction: column;
       overflow: hidden;
-      
+
       .ContactList {
           flex: 1 1 0;
           -ms-flex: 1 1 0;
           -webkit-flex: 1 1 0;
           overflow-y: auto;
           min-height: 60px;
-          
+
           h4 {
               margin: .5em 0 0 .5em;
               color: #0093f0;
               font-variant: small-caps;
               font-size: .9em;
-              
+
               & + em {
                   margin: 0 0 .5em .5em;
                   font-size: .8em;
                   display: block;
               }
           }
-          
+
       }
   }  */
 }
@@ -712,7 +712,7 @@ p {
 .LeftBar .Groups .ContactList,
 .LeftBar .Recent .ContactList {
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   position: relative;
   width: 100%;
@@ -793,7 +793,7 @@ p {
   -webkit-flex-direction: column;
   display: block;
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -911,6 +911,7 @@ p {
   position: relative;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+  -ms-flex: 1 1;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -933,6 +934,7 @@ p {
   column-width: 170px;
   -webkit-column-width: 170px;
   -moz-column-width: 170px;
+  -ms-column-width: 170px;
   column-gap: 5px;
   -webkit-column-gap: 5px;
   -moz-column-gap: 5px;
@@ -3458,7 +3460,7 @@ div.NewCall .XButton.XButtonNormal {
 #WidgetSearch .SearchResults {
   margin-top: 10px;
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   overflow-y: auto;
 }
