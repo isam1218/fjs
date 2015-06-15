@@ -564,12 +564,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid] == "true";
 			}
 		}
+		$scope.$safeApply();
     };
 
     $scope.update_queue_settings = function(type,isActive){
         for (var i = 0, len = $scope.queues.length; i < len; i++) {
             $scope.settings[type +$scope.queues[i].xpid] = isActive;
-            $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive);    
+            $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive ? "true" : "false");    
         }
     }
     $scope.currentWebLauncher = {};
@@ -1065,6 +1066,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
+            $scope.queues = $scope.queues.sort(function(a,b){
+                if(a.name < b.name){return -1;}
+                else if(a.name > b.name){return 1;}
+                else { return 0;}
+            });
         }
         update_queues();
     });

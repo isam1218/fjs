@@ -603,13 +603,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
 			
 			// if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-			if (item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+			if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+				$scope.remove_notification(item.xpid);				
 				return false;
-			else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+			}else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+				$scope.remove_notification(item.xpid);				
 				return false;
-			else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat'))
+			}else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+				$scope.remove_notification(item.xpid);				
 				return false;
-
+			}
 
 			if(targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
 			
@@ -636,7 +639,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					if($scope.todaysNotifications.length > 0){
 						$scope.displayAlert = true;
 						$timeout(displayNotification
-						, 500);
+						, 1500);
 					}
 					//adding a second delay for the native notification to have the digest complete with the updated notifications
 				}	
@@ -681,6 +684,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 								notification.label = 'abandoned call';
 								notification.message = "";
 								$timeout(deleteNotification(notification), 60000);
+							}else if(notification.type == 'q-broadcast'){
+								notification.label = 'broadcast message';
 							}else if(notification.type == 'gchat'){
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
@@ -688,9 +693,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							}else if(notification.type == 'wall' || notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
-                notification.label = 'missed call';
+                				notification.label = 'missed call';
 							}else if(notification.type == 'busy-ring-back'){
-                notification.label = 'is now available for call';
+                				notification.label = 'is now available for call';
 								notification.message= "User is free for call";
 							}
 					if(notification.audience == "conference"){
@@ -734,6 +739,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						notification.label = 'abandoned call';
 						notification.message = "";
 						$timeout(deleteNotification(notification), 60000);
+					}else if(notification.type == 'q-broadcast'){
+						notification.label = 'broadcast message';
 					}else if(notification.type == 'gchat'){
 						notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
@@ -741,9 +748,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}else if(notification.type == 'wall' || notification.type == 'chat'){
 						notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
-            notification.label = 'missed call';
+            			notification.label = 'missed call';
 					}else if(notification.type == 'busy-ring-back'){
-            notification.label = 'is now available for call';
+            			notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
 					}
