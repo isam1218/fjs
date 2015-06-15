@@ -20,10 +20,15 @@
     </style>
     <div   class="Background"></div>
     <div class="Foreground">
-        <div ng-click="showOverlay(false)" class="Close">x</div>
+        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->
+        <div ng-click="showOverlay(false)" class="Close">
+           <div class="CloseIcon2"></div>
+        </div>
         
         <div class="Header">
-            <span><div id="dialogheadicon"></div>  <h2 id="header_label">Fonality Browser Plugin Installation</h2></span>
+          <div class="headerIcon plugin"></div>          
+          <div class="HeaderTitle">Fonality Browser Plugin Installation</div>
+            <!-- <span><div id="dialogheadicon"></div>  <h2 id="header_label">Fonality Browser Plugin Installation</h2></span> -->
         </div>
         
         <div class="Sections">

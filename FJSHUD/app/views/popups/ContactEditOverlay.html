@@ -1,10 +1,15 @@
 <div class="Overlay" ng-controller="ContactEditOverlayController">
 	<div ng-click="showOverlay(false)" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="showOverlay(false)" class="Close">x</div>
+		<!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->
+        <div ng-click="showOverlay(false)" class="Close">
+           <div class="CloseIcon2"></div>
+        </div>		
 		
 		<div class="Header">
-			<h2>{{ editing ? verbage.edit_contact : verbage.add_a_new_contact }}</h2>
+		  <div class="headerIcon contactEdit"></div>
+          <div class="HeaderTitle">{{ editing ? verbage.edit_contact : verbage.add_a_new_contact }}</div>
+			<!-- <h2>{{ editing ? verbage.edit_contact : verbage.add_a_new_contact }}</h2> -->
 		</div>
 		
 		<div class="Sections">

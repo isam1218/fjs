@@ -2,10 +2,15 @@
     <div ng-click="showOverlay(false)" class="Background"></div>
 	
     <div class="Foreground" ng-if="audience">
-        <div ng-click="showOverlay(false)" class="Close">x</div>
+        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->
+        <div ng-click="showOverlay(false)" class="Close">
+           <div class="CloseIcon2"></div>
+        </div>
         
         <div class="Header">
-            <h2>{{::verbage.file_share_to}}<span style="color:#729c00">{{ toName }}</span></h2>
+            <div class="headerIcon share"></div>
+            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>
+           <!-- <h2>{{::verbage.file_share_to}}<span style="color:#729c00">{{ toName }}</span></h2> -->
         </div>
         
         <div class="Sections">
