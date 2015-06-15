@@ -117,6 +117,17 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     };
   };
 
+  $scope.showCallStatus = function($event, contact) {
+    $event.stopPropagation();
+        $event.preventDefault();
+    
+    // permission?
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+      return;
+  
+    $scope.showOverlay(true, 'CallStatusOverlay', contact);
+  };
+
   $scope.sort = function(field){
     if ($scope.sortField != field){
       $scope.sortField = field;
