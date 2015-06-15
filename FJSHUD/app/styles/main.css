@@ -831,7 +831,7 @@ p {
   position: absolute;
   bottom: 40px;
   display: flex;
-  z-index: 150;
+  z-index: 99;
 }
 .LeftBar .Notifications > div:first-child {
   /*font-size: .9em;*/
@@ -911,7 +911,7 @@ p {
   position: relative;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
-  -ms-flex: 1 1;
+  -ms-flex: 1 1 auto;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -929,12 +929,10 @@ p {
 .DockPanel .InnerDock {
   position: absolute;
   height: 100%;
-  /*width: 100%;*/
   width: 39%;
   column-width: 170px;
   -webkit-column-width: 170px;
   -moz-column-width: 170px;
-  -ms-column-width: 170px;
   column-gap: 5px;
   -webkit-column-gap: 5px;
   -moz-column-gap: 5px;

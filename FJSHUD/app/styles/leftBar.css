@@ -15,29 +15,29 @@
       display: flex;
       display: -webkit-flex;
       flex-direction: column;
-      -webkit-flex-direction: column;      
+      -webkit-flex-direction: column;
       overflow: hidden;
-      
+
       .ContactList {
           flex: 1 1 0;
           -ms-flex: 1 1 0;
           -webkit-flex: 1 1 0;
           overflow-y: auto;
           min-height: 60px;
-          
+
           h4 {
               margin: .5em 0 0 .5em;
               color: #0093f0;
               font-variant: small-caps;
               font-size: .9em;
-              
+
               & + em {
                   margin: 0 0 .5em .5em;
                   font-size: .8em;
                   display: block;
               }
           }
-          
+
       }
   }  */
 }
@@ -121,7 +121,7 @@
 .LeftBar .Groups .ContactList,
 .LeftBar .Recent .ContactList {
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   position: relative;
   width: 100%;
@@ -202,7 +202,7 @@
   -webkit-flex-direction: column;
   display: block;
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -240,7 +240,7 @@
   position: absolute;
   bottom: 40px;
   display: flex;
-  z-index: 150;
+  z-index: 99;
 }
 .LeftBar .Notifications > div:first-child {
   /*font-size: .9em;*/
