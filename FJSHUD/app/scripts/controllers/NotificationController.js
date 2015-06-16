@@ -701,6 +701,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							}else if(notification.type == 'busy-ring-back'){
                 				notification.label = 'is now available for call';
 								notification.message= "User is free for call";
+							}else if(notification.type == "description"){
+								notification.label = "chat message"
+								notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
 							}
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
@@ -757,6 +760,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
             			notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;
 						notification.message= "User is free for call";
+					}else if(notification.type == "description"){
+						notification.label = "chat message"
+						notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
+						
 					}
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
@@ -780,19 +787,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			return a.time - b.time; 
 		});
 			       
-		$scope.$watch(function(scope){
-			if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
-				$scope.showNotificationBody = false;
-			}else{
-				$scope.showNotificationBody = true;
-			}
-			if(!$scope.todaysNotifications || $scope.todaysNotifications.length == 0)
-			  $scope.hasMessages = false;
-			else
+		if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
+			$scope.showNotificationBody = false;
+		}else{
+			$scope.showNotificationBody = true;
+		}
+		if(!$scope.todaysNotifications || $scope.todaysNotifications.length == 0)
+			 $scope.hasMessages = false;
+		else
 		   	$scope.hasMessages = true;	
-			
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
-		});		
 			
 					
     });		
