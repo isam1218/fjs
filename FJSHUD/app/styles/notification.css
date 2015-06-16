@@ -320,21 +320,8 @@
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
-.NotificationOverlay {
-  background-color: #fafafa;
-  box-shadow: 0 0 50px #333;
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  height: 80%;
-  min-width: 300px;
-  min-height: 300px;
-  padding: 1em;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+.overlayNotificationsSection .NotificationSection {
+  height: auto;
 }
 .NotificationZoomBtn {
   margin-top: 10px;

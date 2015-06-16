@@ -131,8 +131,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	var makeCall = function(number){		
+	var makeCall = function(number){
+		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
+			return;
+		}
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+				
 	};
 
 	var acceptCall = function(xpid){
@@ -776,7 +780,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var call = callsDetails[data[i].xpid];
 					if(call){
 						
-						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
 							if(call.incoming){
 								if(weblauncher.inboundHangupAuto){
 										url = weblauncher.inboundHangup;
@@ -806,7 +810,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}else{
 					callsDetails[data[i].xpid] = data[i];
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
 
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
