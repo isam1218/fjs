@@ -554,7 +554,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	});
 
 	var addTodaysNotifications = function(item){
-    var today = moment(ntpService.calibrateTime(new Date().getTime()));
+    	playChatNotification = false;
+    	var today = moment(ntpService.calibrateTime(new Date().getTime()));
 		var itemDate = moment(item.time);
 		var context;
 		var contextId;
@@ -664,6 +665,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				$scope.todaysNotifications.splice(j,1);
 				break;	
 			}
+		}
+		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+			$timeout(displayNotification, 1500);		
+		}else{
+			phoneService.removeNotification();
 		}
 	};
 
