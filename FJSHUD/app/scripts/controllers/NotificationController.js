@@ -500,6 +500,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			}
 		}	
        	
+		if($.isEmptyObject($scope.calls)){
+			phoneService.removeNotification();
+		}
+
        	if($scope.inCall && !$.isEmptyObject($scope.callObj))
        		$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
        	else

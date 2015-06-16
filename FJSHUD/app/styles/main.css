@@ -885,7 +885,7 @@ p {
   display: -webkit-flex;
   width: 100%;
   padding: 5px 10px 5px 5px;
-  z-index: 100;
+  /* z-index: 99; */
   background-color: #fff;
   border: solid 1px #eee;
   min-height: 2.5em;
@@ -5116,7 +5116,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 100;
+  z-index: 140;
 }
 .Overlay.notifications .Conference-HeaderSubTitle {
   font-size: 11px;
@@ -5247,6 +5247,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   left: 0;
   width: 100%;
   height: 100%;
+  /* z-index: 100; */
 }
 .Overlay .Foreground {
   background-color: #fafafa;
@@ -6079,21 +6080,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
-.NotificationOverlay {
-  background-color: #fafafa;
-  box-shadow: 0 0 50px #333;
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  height: 80%;
-  min-width: 300px;
-  min-height: 300px;
-  padding: 1em;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+.overlayNotificationsSection .NotificationSection {
+  height: auto;
 }
 .NotificationZoomBtn {
   margin-top: 10px;
