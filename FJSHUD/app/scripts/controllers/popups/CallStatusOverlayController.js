@@ -8,7 +8,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.conf.query = '';
 	$scope.confQuery = this;
 	$scope.confQuery.query = '';
-	$scope.tranQuery = '';
+	$scope.transfer = this;
+	$scope.transfer.search = '';
 	$scope.selectedConf = null;
 	$scope.addError = null;
 	$scope.contacts = [];
@@ -173,6 +174,16 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.conFilter = function(conference){
 		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
 	};
+
+	$scope.transferFilter = function(){
+		var query = $scope.transfer.search;
+		return function(contact){
+			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1)
+				return true;
+			else
+				return false;
+		};
+	}
 
 	$scope.isStatusUndefined = function(conference){
 		// conferences w/o the status property can't be joined and will break the overlay...
