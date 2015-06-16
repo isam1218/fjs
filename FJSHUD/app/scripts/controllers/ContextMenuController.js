@@ -1,4 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', 'StorageService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService, storageService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
+	function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService, storageService,phoneService) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -147,8 +148,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.callNumber = function(number) {
-		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-		
+		//httpService.sendAction('me', 'callTo', {phoneNumber: number});
+		phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 	};
 	

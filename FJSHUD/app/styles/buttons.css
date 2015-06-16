@@ -30,7 +30,7 @@ input[type="tel"] {
   display: inline-block;
   /*height: 2.5em;*/
   margin: 0;
-  padding: 5px 10px;
+  padding: 5px;
   text-align: center;
   /*line-height: 2.4em;*/
   text-decoration: none;
@@ -320,6 +320,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   vertical-align: middle;
   position: relative;
   cursor: pointer;
+}
+.SelectBox.HideFirst option:first-child {
+  display: none;
 }
 .SelectBox:hover {
   background: #fefefe linear-gradient(#fefefe, #dddddd);

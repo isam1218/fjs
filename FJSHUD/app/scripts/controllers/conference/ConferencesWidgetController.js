@@ -1,4 +1,4 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', '$timeout', function($rootScope, $scope, $location, conferenceService, httpService, $timeout) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
@@ -25,47 +25,6 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
   	}
   };
 
-  httpService.getFeed('settings');
-
-  $scope.$on('settings_updated', function(event, data){
-      if (data['hudmw_searchautoclear'] == ''){
-          autoClearOn = false;
-          if (autoClearOn && $scope.query != ''){
-                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                  $scope.clearSearch($scope.autoClearTime);          
-              } else if (autoClearOn){
-                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-              } else if (!autoClearOn){
-                  $scope.autoClearTime = undefined;
-              }
-      }
-      else if (data['hudmw_searchautoclear'] == 'true'){
-          autoClearOn = true;
-          if (autoClearOn && $scope.query != ''){
-              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-              $scope.clearSearch($scope.autoClearTime);          
-          } else if (autoClearOn){
-              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-          } else if (!autoClearOn){
-              $scope.autoClearTime = undefined;
-          }
-      }        
-  });
-
-  var currentTimer = 0;
-
-  $scope.clearSearch = function(autoClearTime){
-      if (autoClearTime){
-          var timeParsed = parseInt(autoClearTime + '000');
-          $timeout.cancel(currentTimer);
-          currentTimer = $timeout(function(){
-              $scope.query = '';
-          }, timeParsed);         
-      } else if (!autoClearTime){
-          return;
-      }
-  };
-
   var serverCount = 0;
   var currentServer;
 
@@ -80,14 +39,14 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
     }
     if (serverCount > 1){
       $scope.sort_options = [
-        {display_name: $scope.verbage.sort_room_by_location, type: 'location', desc: false}, 
-        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
-        {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
+        {display_name: $scope.verbage.sort_room_by_location, type: 'location'}, 
+        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber'}, 
+        {display_name: $scope.verbage.sort_by_activity, type: '-members.length'}
       ];
     } else {
       $scope.sort_options = [
-        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber', desc: false}, 
-        {display_name: $scope.verbage.sort_by_activity, type: 'members.length', desc: true}
+        {display_name: $scope.verbage.sort_by_room_number, type: 'roomNumber'}, 
+        {display_name: $scope.verbage.sort_by_activity, type: '-members.length'}
       ];      
     }
 	

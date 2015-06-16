@@ -1,5 +1,155 @@
 
-<link rel="stylesheet" href="{{path}}/styles/main.css">  
+<link rel="stylesheet" ng-href="{{path}}/styles/main.css">
+    <style>
+    @font-face {
+  font-family: Comic Sans;
+  src: url(../../styles/fonts/LDFComicSans.ttf);
+}
+
+a.CallStatusText{
+  text-decoration: none;
+  font-size:.7em;
+  position:relative;
+  color:#555;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+
+}
+#Alert {
+  position: static;
+}
+#CallAlert {
+  width: 300px;
+  font-size: 1em;
+  background: url() #ffffff;
+}
+#CallAlert div.CallStatusContainerOutbound {
+  position: relative;
+  margin-bottom: 8px;
+}
+#CallAlert div.CallStatusContainerOutbound .CallStatusIconContainer {
+  border: 1px solid #0093f0;
+}
+#CallAlert div.CallStatusContainerOutbound .controlButtons .PhoneButton {
+  width: 50px;
+  height: 25px;
+  text-align: center;
+  padding: 5px 0px;
+}
+#CallAlert div.CallStatusContainerOutbound .CallStatusText .callStatus {
+  font-size: 10px;
+  font-weight: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#CallAlert .Notifications {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+#CallAlert .Notifications .TitleBar {
+  margin-bottom: 0px;
+}
+#CallAlert .Notifications .TitleBar.hasButton {
+  display: none;
+}
+#CallAlert .Notifications .TitleBar .XButton {
+  float: right;
+  top: -5px;
+}
+#CallAlert .Notifications .TitleBar,
+#CallAlert .Notifications .NotificationDivider > div {
+  width: 101%;
+  background-color: #999;
+  color: white;
+  padding: .25em;
+  transition: 1s;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  font-size: 12px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+#CallAlert .Notifications .TitleBar .NoNotificationIcon,
+#CallAlert .Notifications .NotificationDivider > div .NoNotificationIcon {
+  width: 24px;
+  height: 24px;
+  background: url("../../img/XIconSet-24x24.png") no-repeat -48px -72px;
+}
+#CallAlert .Notifications .TitleBar .HasNotificationIcon,
+#CallAlert .Notifications .NotificationDivider > div .HasNotificationIcon {
+  width: 24px;
+  height: 24px;
+  background: url("../../img/XIconSet-24x24.png") no-repeat -72px -72px;
+}
+#CallAlert .Notifications .TitleBar > *,
+#CallAlert .Notifications .NotificationDivider > div > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+#CallAlert .Notifications .NotificationMessages {
+  padding-bottom: 0px;
+}
+#CallAlert .Notifications .NotificationMessages .scroller {
+  padding-top: 0px;
+  width:100%;
+  max-height:497px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#CallAlert .Notifications .NotificationMessages .scroller .Messages {
+  width: 100%;
+  max-height: 500px;
+  padding-bottom:20px;
+}
+#CallAlert .Notifications .NotificationMessages .scroller .Messages:first-child {
+  top: -10px;
+}
+#CallAlert .Notifications .NotificationMessages .scroller .Messages .NotificationSection {
+  height: auto !important;
+  width: 100% !important;
+}
+#CallAlert .LeftBarNotificationSection {
+  position: static;
+}
+#CallAlert a.ListRow-Contact.ListRowFirst {
+  background-color: #F7F4F4;
+  padding: 10px;
+  color: #aaa;
+  font-size: 14px;
+}
+#CallAlert a.ListRow-Contact.ListRowFirst.ListRowFirst .Avatar {
+  width: 40px;
+  height: 40px;
+  top: -2px;
+}
+
+#CallAlert a.ListRow-Contact.ListRowFirst.ListRowFirst .close {
+  width: 24px;
+  height: 24px;
+  margin: -3px auto 0 auto;
+  cursor: pointer;
+  background: url("../../img/XIconSet-24x24.png") no-repeat -24px -24px;
+}
+
+#CallAlert a.ListRow-Contact.ListRowFirst .NotificationTitle .name span {
+  font-family: Comic Sans;
+  font-size: 14px;
+}
+#CallAlert a.ListRow-Contact.ListRowFirst .ListRowContent {
+  border-left: 0px none;
+  margin-left: 15px;
+}
+#CallAlert a.ListRow-Contact.ListRowFirst .ListRowContent .CallStatus {
+  float: right;
+  margin-right: .5em;
+}
+#CallAlert a.ListRow-Contact.ListRowFirst .ListRowContent .body .ListRowStatusText {
+  display: inline-block;
+}
+
+  </style>
+
 
 <div id="CallAlert">    
   <a ng-href="#contact/{{::meModel.my_pid}}"  class="ListRowFirst ListRow ListRow-Contact">     
@@ -23,6 +173,7 @@
     </div>
    </div>
         <div onclick="window.location.replace('#/Close')" class="close"></div>
+
   </a>
   
 
@@ -33,9 +184,9 @@
    
      <a href="#/showCallControlls?{{currentCall}}" class="CallStatusText"> 
          <div class="memberName">{{currentCall.displayName}}<div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
-         <div class="callStatus"><div>{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}}</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
+         <div class="callStatus">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} <span>&nbsp;</span> <span class="MyCallBlock_Duration" data-duration="{{callObj[currentCall.xpid].nativeTime}}"></span></div>
      </a>                 
-    
+    <!--{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}-->
   <div class="controlButtons">
          <a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
          <a href="#/EndCall?{{currentCall.xpid}}" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</a>
@@ -55,20 +206,18 @@
         <input type="button" value="Open" class="XButton" onclick="window.location.replace('#/OpenNotifications')">
        </div>
       
-       <div class="scroller ng-class:{'single': todaysNotifications.length == 1}">    
-     <!---->
+       <div class="scroller ng-class:{'single': todaysNotifications.length == 1}" fj-scrollable>    
         <div class="Messages ng-scope" ng-repeat="message in todaysNotifications" ng-show="showHideElements($index)">
       
-    <div class="NotificationHeader ng-class:{'firstHeader': $index == 0}"> 
-      <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0}"> 
-        <a href="#/RemoveNotification?{{message.xpid}}">
-           <div class="NotificationClose"> </div>
-         </a> 
-      </div>    
-    </div>
+          <div class="NotificationHeader ng-class:{'firstHeader': $index == 0}"> 
+            <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0}"> 
+              <a href="#/RemoveNotification?{{message.xpid}}">
+                 <div class="NotificationClose"> </div>
+               </a> 
+            </div>    
+          </div>
 
-    <div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
-   </div>
+          <div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}"></div>
    
       <div class="NotificationSection firstsection" style="top: 0px; height: 0px;">
    
@@ -81,7 +230,7 @@
     </div> 
     </a>
        <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
-                {{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
+                {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}</span></div>
                 <div class="NotificationMessage " scroll-to-bottom=""> 
                   <span ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index">{{ messageToDisplay }}<br/></span>
                   <span ng-if="!message.message || message.message <= 1">{{ message_section_notifications }}</span>
@@ -149,6 +298,7 @@
             
 
       <div class="Messages webphone ng-scope" ng-if="anotherDevice" >                
+              <a href="#/activatePhone">
               <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}">
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -157,8 +307,9 @@
                     </div>
                     <div class="NotificationDivider ng-class:{'firstHeaderDivider': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0, 'noMessagess': todaysNotifications.length == 0}">
                         <img>
-                       <!-- ngIf: phoneSessionEnabled && todaysNotifications.length == 0 -->             
                     </div>
+
+              </a>
                     <div class="NotificationSection webphone last ng-class:{'firstsection': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0}"> 
                         
                         <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
@@ -174,11 +325,13 @@
                             </div>
                             
                         </div>
-                 </div>               
-            </div><!-- end ngIf: anotherDevice --> 
-         </div>    
+                 </div>  
+                            
+            </div>
+    </div> <!--close scroller -->   
   </div>
   </div>
+
 
 
 

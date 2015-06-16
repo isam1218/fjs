@@ -1,5 +1,5 @@
-hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService', 'PhoneService', 'SettingsService', '$timeout',
-	function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService, phoneService, settingsService, $timeout) {	
+hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService', 'PhoneService', 'SettingsService',
+	function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService, phoneService, settingsService) {	
 	$scope.calllog = this;
 	$scope.calllog.query = '';
 	$scope.calls = [];
@@ -25,51 +25,10 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 			updateCallLog(data.items);
 		});
 	}
-  
-  httpService.getFeed('settings');
 	
 	settingsService.getSettings().then(function(data){
 		$scope.logSize = data['recent_call_history_length'] || 100; 
 	});
-
-  $scope.$on('settings_updated', function(event, data){
-      if (data['hudmw_searchautoclear'] == ''){
-          autoClearOn = false;
-          if (autoClearOn && $scope.calllog.query != ''){
-                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                  $scope.clearSearch($scope.autoClearTime);          
-              } else if (autoClearOn){
-                  $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-              } else if (!autoClearOn){
-                  $scope.autoClearTime = undefined;
-              }
-      }
-      else if (data['hudmw_searchautoclear'] == 'true'){
-          autoClearOn = true;
-          if (autoClearOn && $scope.calllog.query != ''){
-              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-              $scope.clearSearch($scope.autoClearTime);          
-          } else if (autoClearOn){
-              $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-          } else if (!autoClearOn){
-              $scope.autoClearTime = undefined;
-          }
-      }        
-  });
-
-  var currentTimer = 0;
-
-  $scope.clearSearch = function(autoClearTime){
-      if (autoClearTime){
-          var timeParsed = parseInt(autoClearTime + '000');
-          $timeout.cancel(currentTimer);
-          currentTimer = $timeout(function(){
-              $scope.calllog.query = '';
-          }, timeParsed);         
-      } else if (!autoClearTime){
-          return;
-      }
-  };
 
 	// wait for sync before polling updates
 	queueService.getQueues().then(function() {

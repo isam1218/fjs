@@ -38,5 +38,5 @@ fjs.CONFIG = {
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
     },
-    DEBUG_LEVEL:'DEBUG',
+    DEBUG:true,
 };

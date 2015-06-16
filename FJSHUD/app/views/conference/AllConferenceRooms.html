@@ -45,7 +45,7 @@
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" ng-keypress="clearSearch(autoClearTime)"/>
+                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
                     </div>
                     <div class="SearchInputBoxStateButton">
                         <div class="SearchInputBoxStateButtonIcon"></div>
@@ -61,7 +61,7 @@
 						
                         <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
                     </div>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: selectedConf.type: selectedConf.desc track by conference.xpid" droppable="Contact,Call">
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: [selectedConf.type, 'location'] track by conference.xpid" droppable="Contact,Call">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">

@@ -49,17 +49,33 @@
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
 }
+.CallStatusContainerOutbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+}
+.CallStatusContainerInbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+}
+.CallStatusIconContainer {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #0093f0;
+  border-radius: 30px;
+  text-align: center;
+  display: inline-block;
+}
+.CallStatusIconContainer .CallStatusIcon {
+  width: 40px;
+  height: 40px;
+  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+}
 .CallStatusContainerInbound,
 .CallStatusContainerOutbound {
-  background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
-  background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-  background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
-  min-height: 50px;
+  min-height: 40px;
   overflow: hidden;
   width: 100%;
   padding-right: 5px;
   position: absolute;
-  bottom: 26px;
+  bottom: 1px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
@@ -79,17 +95,19 @@
 .CallStatusContainerOutbound .MyCallBlock_Duration {
   position: relative;
   text-shadow: 0px 1px 0px #FFF;
-  clear: both;
+  clear: none;
+  float: right;
   top: 0;
 }
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   display: inline-block;
   clear: none;
   margin-left: 10px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus {
@@ -98,6 +116,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.CallStatusContainerInbound .CallStatusText .callStatus .onCall,
+.CallStatusContainerOutbound .CallStatusText .callStatus .onCall {
+  float: left;
 }
 .CallStatusContainerInbound .CallStatusText .memberName,
 .CallStatusContainerOutbound .CallStatusText .memberName {
@@ -127,7 +149,7 @@
 .CallStatusContainerOutbound .controlButtons {
   float: right;
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {
@@ -174,9 +196,6 @@
 .NotificationMessages .scroller .firstMessage {
   margin-top: -16px;
 }
-.NotificationMessages.LeftBarNotifications.noMessages {
-  top: -5px;
-}
 .LeftBarNotifications {
   transition: 1s;
 }
@@ -194,12 +213,26 @@
   position: absolute;
   bottom: 0px;
 }
-.LeftBarNotificationSection.withCalls {
-  bottom: 54px;
-}
 .LeftBarNotificationSection:hover,
 .LeftBarNotificationSection.noMessages {
   background: transparent;
+}
+.LeftBarNotificationSection.noMessages {
+  bottom: 0px;
+}
+.LeftBarNotificationSection.noMessages .NotificationMessages {
+  padding-bottom: 0px;
+  bottom: 0px;
+  top: -5px;
+}
+.LeftBarNotificationSection.noMessages .TitleBar {
+  margin-bottom: 0px;
+}
+.LeftBarNotificationSection.withCalls {
+  bottom: 45px !important;
+}
+.NotificationMessages.LeftBarNotifications.noMessages {
+  top: -5px;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;
@@ -287,21 +320,8 @@
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
-.NotificationOverlay {
-  background-color: #fafafa;
-  box-shadow: 0 0 50px #333;
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  height: 80%;
-  min-width: 300px;
-  min-height: 300px;
-  padding: 1em;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+.overlayNotificationsSection .NotificationSection {
+  height: auto;
 }
 .NotificationZoomBtn {
   margin-top: 10px;

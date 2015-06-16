@@ -43,6 +43,12 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
     	{name: "in a Week", taskId:"2_5", value:604800000},
     ];
 
+    if(fjs.CONFIG.DEBUG){
+    	$scope.archiveOptions.push({
+    		name:"5 minutes",taskId:"2_7", value:30000
+    	});
+    }
+
     $scope.selectedArchiveOption = $scope.archiveOptions[0];
     
 	$scope.update = function(archiveObject){

@@ -117,6 +117,17 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     };
   };
 
+  $scope.showCallStatus = function($event, contact) {
+    $event.stopPropagation();
+        $event.preventDefault();
+    
+    // permission?
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+      return;
+  
+    $scope.showOverlay(true, 'CallStatusOverlay', contact);
+  };
+
   $scope.sort = function(field){
     if ($scope.sortField != field){
       $scope.sortField = field;
@@ -256,6 +267,22 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     } else {
         return 'img/Generic-Avatar-28.png';
     }
+  };
+  
+  $scope.deptHeaderDisplay = function(groupType){
+		if (groupType === 0){
+			return true;
+		}
+  };
+
+  $scope.nonVisibleTeamHeaderDisplay = function(groupType){
+		if (groupType !== 0 && groupType === 2)
+			return true;
+  }
+
+  $scope.publicTeamHeaderDisplay = function(groupType){
+		if (groupType !== 0 && groupType === 4)
+			return true;
   };
 
 }]);

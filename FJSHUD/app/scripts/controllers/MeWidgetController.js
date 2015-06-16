@@ -563,12 +563,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid] == "true";
 			}
 		}
+		$scope.$safeApply();
     };
 
     $scope.update_queue_settings = function(type,isActive){
         for (var i = 0, len = $scope.queues.length; i < len; i++) {
             $scope.settings[type +$scope.queues[i].xpid] = isActive;
-            $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive);    
+            $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive ? "true" : "false");    
         }
     };
     $scope.currentWebLauncher = {};
@@ -825,9 +826,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     
-    $scope.$on('weblauncher_synced', function(event,data){
+    settingsService.getWl().then(function(data){
         if(data){
-            $scope.weblaunchervariables = data;
             activeWebLauncher = data.filter(function(item){
                 return item.id == settings['hudmw_launcher_config_id'];
             })
@@ -838,7 +838,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 for(var i = 0; i < data.length;i++){
                     if(data[i].id == "user_default"){
                         $scope.currentWebLauncher = data[i];
-                        $scope.update_settings('hudmw_launcher_config_id','update',currentWebLauncher.id);
+                        $scope.update_settings('hudmw_launcher_config_id','update',$scope.currentWebLauncher.id);
                     }
                 }
             };
@@ -846,7 +846,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.weblauncher_profiles = data;
         }
     });
-    
+
     $scope.$on('weblaunchervariables_synced', function(event,data){
         if(data){
             $scope.weblaunchervariables = data;
@@ -1078,6 +1078,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
+            $scope.queues = $scope.queues.sort(function(a,b){
+                if(a.name < b.name){return -1;}
+                else if(a.name > b.name){return 1;}
+                else { return 0;}
+            });
         }
         update_queues();
     });

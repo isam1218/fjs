@@ -14,87 +14,66 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   $scope.enableTextInput = false;
 	$scope.messages = [];
 
-	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat'}, 
-	{upper: $scope.verbage.members, lower: 'members'}, 
-	{upper: $scope.verbage.voicemail, lower: 'voicemails'}, 
-	{upper: $scope.verbage.page, lower: 'page'}, 
-	{upper: $scope.verbage.recordings, lower: 'recordings'},
-  {upper: $scope.verbage.group_info, lower: 'info'}
+	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat', idx: 0}, 
+	{upper: $scope.verbage.members, lower: 'members', idx: 1}, 
+	{upper: $scope.verbage.voicemail, lower: 'voicemails', idx: 2}, 
+	{upper: $scope.verbage.page, lower: 'page', idx: 3}, 
+	{upper: $scope.verbage.recordings, lower: 'recordings', idx: 4},
+  {upper: $scope.verbage.group_info, lower: 'info', idx: 5}
   ];
 	
 	// store recent
 	storageService.saveRecent('group', $scope.groupID);
 
-  // as soon as have user's pid, load user's default tab selection from LS
-  $scope.setFromLS = function(val){
-    $scope.globalXpid = val;
-    $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid]) : $scope.isMine ? $scope.tabs[0].lower : $scope.tabs[1].lower;
-    $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-  };
+  $scope.chatTabEnabled;
+  if ($scope.isMine){
+    $scope.enableChat = true;
+    $scope.enableTextInput = true;
+    $scope.enableFileShare = true;
+    $scope.chatTabEnabled = true;
+  } else {
+    $scope.enableChat = false;
+    $scope.enableTextInput = false;
+    $scope.enableFileShare = false;
+    $scope.chatTabEnabled = false;
+  }
 
-  var getXpidInG = $rootScope.$watch('myPid', function(newVal, oldVal){
-      if (!$scope.globalXpid){
-        $scope.setFromLS(newVal);
-        getXpidInG();
-      } else {
-        getXpidInG();
-      }
+  $scope.recordingPerm;
+  settingsService.getPermissions().then(function(data){
+    $scope.recordingPerm = data.showCallCenter;
   });
+
+  $scope.infoTab = false;
+  $scope.pageTab = false;
+  if ($scope.group.type != 0){
+    $scope.infoTab = true;
+  } else {
+    $scope.pageTab = true;
+  }
+
+  if ($routeParams.route != undefined){
+    $scope.selected = $routeParams.route;
+    localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+    for (var i = 0; i < $scope.tabs.length; i++){
+      if ($scope.tabs[i].lower == $routeParams.route){
+        $scope.toggleObject = $scope.tabs[i].idx;
+        localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+        break;
+      }
+    } 
+  } else {
+    $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? 'chat' : 'members';
+    $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : $scope.isMine ? 0 : 1;
+  }
 
   // save user's last selected tab to LS
   $scope.saveGTab = function(tab, index){
       $scope.selected = tab;
-      $scope.toggleObject = {item: index};
+      $scope.toggleObject = index;
       localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
       localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
   }; 
 
-  // filters out the display of certain group tabs per user's permissions
-	$scope.tabFilter = function(){
-		return function(tab){
-      switch(tab.lower){
-        case "chat":
-          $scope.isMine = groupService.isMine($scope.groupID);
-          if ($scope.isMine){
-            $scope.enableChat = true;
-            $scope.enableTextInput = true;
-            $scope.enableFileShare = true;
-            return true;
-          } else {
-            $scope.enableChat = false;
-            $scope.enableTextInput = false;
-            $scope.enableFileShare = false;
-            return false;
-          }
-          break;
-        case "voicemails":
-          return true;
-          break;
-        case "info":
-          if ($scope.group.type !== 0){
-            return true;
-          }
-          else {
-            return false;
-          }
-          break;
-        case "page":
-          if ($scope.group.type === 0)
-            return true;
-          else 
-            return false;
-          break;
-        case "recordings":
-          var recordingPerm = settingsService.getPermission('showCallCenter');
-          if (recordingPerm)
-            return true;
-          else
-            return false;
-          break;
-      }
-      return true;
-		};
-	};
 	
 	$scope.deptHeaderDisplay = function(groupType){
 		if (groupType === 0){

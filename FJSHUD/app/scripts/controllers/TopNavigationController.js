@@ -1,8 +1,40 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$interval', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, $sce, $interval, queueService, httpService, contactService, settingsService) {
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDimensions', '$sce', '$interval', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, windowDimensions, $sce, $interval, queueService, httpService, contactService, settingsService) {
   var player; // html element
   var loadCheck;
-
-	$scope.player = {
+  $scope.showDropdown = false;
+  $scope.smallScreen = false;
+  //Initialize window width 
+  $scope.windowWidth  = windowDimensions.width();
+  $scope.moreIcon = $('.TopBar .TopBarIcons .TopBarItemApp.more');
+  //initialize the window width flag
+  if($scope.windowWidth <= 1195)
+	  $scope.smallScreen = true;
+  else
+	  $scope.smallScreen = false;
+  
+  //show or hide the navigation icons dropdown for small screen
+  $scope.showHideiconsDropdown = function(isClicked)
+  {
+	  if(isClicked)
+	   $scope.showDropdown ? $scope.showDropdown = false : $scope.showDropdown = true;
+	  else
+	   $scope.showDropdown = false;  
+	  
+	  if($scope.showDropdown)
+		  $('#DropDownMoreList').show();
+	  else
+		  $('#DropDownMoreList').hide();
+  };
+  
+  //show or hide nav icons based on browser size and display of voicemail widget
+  $scope.showNavIcon = function(icon){
+	  if(icon.key != 'Me' && $scope.voicemail && $scope.smallScreen)
+		  return false;
+	  
+	  return true;	  		  		  		    
+  };
+  
+  $scope.player = {
 		position: 0,
 		duration: 0,
 		loaded: false,
@@ -160,6 +192,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', '$sce', '$
       $scope.player.playing = true;
       $scope.$safeApply();
     };
+    
+    if($(document).width() <= 1195)
+   	 $scope.smallScreen = true;  
+   	else
+   	 $scope.smallScreen = false;
+    
+    //'more' section
+    if($scope.voicemail && $scope.smallScreen)
+    	$($scope.moreIcon).show();
+    else
+    	$($scope.moreIcon).hide();
   });
   
   $scope.playAudio = function() {

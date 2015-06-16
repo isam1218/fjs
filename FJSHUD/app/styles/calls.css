@@ -17,7 +17,7 @@
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 23% !important;
+  width: 30% !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
   width: 15% !important;
@@ -77,6 +77,9 @@
 }
 .CallLog .ListRow > div .CallAvatar {
   cursor: pointer;
+  /*.CallAvatar_Office {          
+          margin: 1px 1px 0px 1px;
+        }*/
 }
 .CallLog .ListRow > div:not(:first-child):not(.Name) {
   font-size: .8em;

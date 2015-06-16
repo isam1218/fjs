@@ -245,57 +245,151 @@ p {
   position: absolute;
   top: 10px;
   left: 5px;
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
+}
+.TopBarItemAppIcon.Avatar img {
+  width: 36px !important;
+  height: 36px !important;
+  margin: 1px !important;
 }
 .TopBarItemAppIcon:not(.Avatar) {
   background: url("../img/XApp-Icons.png") no-repeat 0 0;
 }
+/* /// icons dropdown /// */
+.TopBar2ItemAppIcon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("../img/XApp-Icons.png?v=1425679800685") no-repeat 0px 0px;
+}
+.DropDownMoreList {
+  position: absolute;
+  top: 91px;
+  right: -20px;
+  max-height: 300px;
+  min-height: 50px;
+  width: 300px;
+  background-color: #f3f3f3;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  z-index: 1000;
+  display: none;
+}
+.DropDownMoreList .DropDownMoreListScrollable {
+  position: relative;
+  top: 0px;
+  max-height: 300px;
+}
+.DropDownMoreList .DropDownMoreListScrollable .dropdownView {
+  position: relative;
+  max-height: 300px;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.DropDownMoreList .DropDownMoreListScrollable .dropdownView #apps {
+  /*overflow-y: auto;
+              overflow-x: hidden;*/
+}
+.DropDownMoreList .DropDownMoreListScrollable .dropdownView #apps .TopBar2MenuItemApp {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  cursor: pointer;
+  pointer-events: auto;
+  display: inline-block;
+}
+.DropDownMoreList .DropDownMoreListScrollable .dropdownView #apps .TopBar2MenuItemApp .TopBar2MenuItemName {
+  position: absolute;
+  top: 15px;
+  left: 60px;
+  right: 0px;
+  height: 30px;
+  line-height: 30px;
+  font-family: "Arial";
+  text-align: left;
+  font-size: 12px;
+  color: #999;
+  transition: All 0.3s ease;
+  -webkit-transition: All 0.3s ease;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* /// END - icons dropdown /// */
 .TopBarItemAppIcon.Home {
   background-position: 0 0;
 }
-.TopBarItemAppIcon.Contacts {
+.TopBarItemAppIcon.Contacts,
+.TopBar2ItemAppIcon.Contacts {
   background-position: 5.25% 0;
   top: 13px;
 }
-.TopBarItemAppIcon.Workgroups {
+.TopBarItemAppIcon.Workgroups,
+.TopBar2ItemAppIcon.Workgroups {
   background-position: -80px 0;
 }
-.TopBarItemAppIcon.Departments {
+.TopBarItemAppIcon.Departments,
+.TopBar2ItemAppIcon.Departments {
   background-position: -120px 0;
 }
-.TopBarItemAppIcon.Favorites {
+.TopBarItemAppIcon.Favorites,
+.TopBar2ItemAppIcon.Favorites {
   background-position: -160px 0;
 }
-.TopBarItemAppIcon.CallLog {
+.TopBarItemAppIcon.CallLog,
+.TopBar2ItemAppIcon.CallLog {
   background-position: 26.5% 0;
 }
-.TopBarItemAppIcon.Share {
+.TopBarItemAppIcon.Share,
+.TopBar2ItemAppIcon.Share {
   background-position: -640px 0;
 }
-.TopBarItemAppIcon.CallCenter {
+.TopBarItemAppIcon.CallCenter,
+.TopBar2ItemAppIcon.CallCenter {
   background-position: 37% 0;
 }
-.TopBarItemAppIcon.CallRecords {
+.TopBarItemAppIcon.CallRecords,
+.TopBar2ItemAppIcon.CallRecords {
   background-position: -320px 0;
 }
-.TopBarItemAppIcon.Voicemails {
+.TopBarItemAppIcon.Voicemails,
+.TopBar2ItemAppIcon.Voicemails {
   background-position: -360px 0;
 }
-.TopBarItemAppIcon.Conferences {
+.TopBarItemAppIcon.Conferences,
+.TopBar2ItemAppIcon.Conferences {
   background-position: 52.75% 0;
 }
-.TopBarItemAppIcon.Box {
+.TopBarItemAppIcon.Box,
+.TopBar2ItemAppIcon.Box {
   background-position: 57.9% -1px;
 }
-.TopBarItemAppIcon.Zoom {
+.TopBarItemAppIcon.Zoom,
+.TopBar2ItemAppIcon.Zoom {
   background-position: 63.1% 0;
 }
-.TopBarItemAppIcon.Search {
+.TopBarItemAppIcon.Search,
+.TopBar2ItemAppIcon.Search {
   background-position: 73.5% 0;
 }
-.TopBarItemAppIcon.Intellinote {
+.TopBarItemAppIcon.Intellinote,
+.TopBar2ItemAppIcon.Intellinote {
   background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.more {
+  background-position: -280px -40px;
+  position: relative;
+  display: inline-block;
+  height: 96px;
+  width: 50px;
+  vertical-align: top;
 }
 .TopBarItemMe .TopBarItemAppIcon {
   background-image: none;
@@ -327,14 +421,13 @@ p {
   -webkit-flex: 1;
   padding: 5px 10px 0 0;
   text-align: right;
-  font-size: .9em;
   white-space: nowrap;
   width: 110px;
   float: right;
 }
 .TopBarMeStatus .Logout {
-  font-size: .8em;
-  padding-left: 24px;
+  /*padding-left: 24px;*/
+  padding: 3px 14px 4px 14px;
 }
 .TopBarMeStatus .Logout .icon {
   background: url("../img/XIconSet-24x24.png") no-repeat -336px -24px;
@@ -344,8 +437,13 @@ p {
   left: 0;
   top: 1px;
 }
+.TopBarMeStatus .XButton span {
+  /*width: 58px;*/
+  left: 8px;
+}
 .TopBarMeStatus .Status {
   margin-top: 5px;
+  font-size: 12px;
 }
 .TopBarMeStatus .Status * {
   vertical-align: middle;
@@ -371,7 +469,7 @@ p {
   text-align: left;
   padding: 10px 20px;
   font-size: .9em;
-  z-index: 50;
+  z-index: 0;
   clear: none;
   margin-top: -80px;
   margin-right: 100px;
@@ -501,6 +599,38 @@ p {
   flex: 1;
   flex-direction: column;
   display: flex;
+  height: 100%;
+  /* .Recent {
+      flex: 1 1 0;
+      -webkit-flex: 1 1 0;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      -webkit-flex-direction: column;
+      overflow: hidden;
+
+      .ContactList {
+          flex: 1 1 0;
+          -ms-flex: 1 1 0;
+          -webkit-flex: 1 1 0;
+          overflow-y: auto;
+          min-height: 60px;
+
+          h4 {
+              margin: .5em 0 0 .5em;
+              color: #0093f0;
+              font-variant: small-caps;
+              font-size: .9em;
+
+              & + em {
+                  margin: 0 0 .5em .5em;
+                  font-size: .8em;
+                  display: block;
+              }
+          }
+
+      }
+  }  */
 }
 .LeftBar .RoundedTop {
   position: absolute;
@@ -513,6 +643,9 @@ p {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   box-shadow: 0px 1px 1px #ccc inset;
+}
+.LeftBar .LeftBarTop .WidgetTabBar {
+  background: url() transparent !important;
 }
 .LeftBar .ContactSearch {
   /* display: flex;
@@ -562,7 +695,8 @@ p {
   padding-left: 0px;
 }
 .LeftBar .Contacts,
-.LeftBar .Groups {
+.LeftBar .Groups,
+.LeftBar .Recent {
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
   -ms-flex: 1 1 0;
@@ -570,51 +704,122 @@ p {
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  /*overflow-y: auto;  */
   overflow: hidden;
   position: relative;
-  height: 100%;
+  moin-height: 50%;
 }
 .LeftBar .Contacts .ContactList,
-.LeftBar .Groups .ContactList {
+.LeftBar .Groups .ContactList,
+.LeftBar .Recent .ContactList {
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
-  /*margin-top: 10px;*/
   position: relative;
   width: 100%;
   overflow: hidden;
 }
+.LeftBar .Contacts .ContactList .ListRowContent .name span.details,
+.LeftBar .Groups .ContactList .ListRowContent .name span.details,
+.LeftBar .Recent .ContactList .ListRowContent .name span.details {
+  margin-top: 2px;
+}
+.LeftBar .Contacts .ContactList .group_title,
+.LeftBar .Groups .ContactList .group_title,
+.LeftBar .Recent .ContactList .group_title {
+  min-height: 40px;
+  background-color: #f9f9f9;
+  vertical-align: middle;
+  border-bottom: solid 1px #eee;
+}
+.LeftBar .Contacts .ContactList .group_title .group_header,
+.LeftBar .Groups .ContactList .group_title .group_header,
+.LeftBar .Recent .ContactList .group_title .group_header {
+  position: relative;
+  font-size: 12px;
+  font-weight: bold;
+  height: 20px;
+  vertical-align: middle;
+}
+.LeftBar .Contacts .ContactList .group_title .group_header .group,
+.LeftBar .Groups .ContactList .group_title .group_header .group,
+.LeftBar .Recent .ContactList .group_title .group_header .group {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 29px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.LeftBar .Contacts .ContactList .group_title .group_header .dept,
+.LeftBar .Groups .ContactList .group_title .group_header .dept,
+.LeftBar .Recent .ContactList .group_title .group_header .dept {
+  color: #555;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: normal;
+  margin-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+.LeftBar .Contacts .ContactList a.ListRow,
+.LeftBar .Groups .ContactList a.ListRow,
+.LeftBar .Recent .ContactList a.ListRow {
+  background-color: #fff;
+}
+.LeftBar .Contacts .ContactList a.ListRow .Members,
+.LeftBar .Groups .ContactList a.ListRow .Members,
+.LeftBar .Recent .ContactList a.ListRow .Members {
+  top: 2px;
+  height: 24px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0px;
+}
 .LeftBar .Contacts .ContactList .LeftBarTabContentList,
-.LeftBar .Groups .ContactList .LeftBarTabContentList {
+.LeftBar .Groups .ContactList .LeftBarTabContentList,
+.LeftBar .Recent .ContactList .LeftBarTabContentList,
+.LeftBar .Contacts .ContactList .timeline,
+.LeftBar .Groups .ContactList .timeline,
+.LeftBar .Recent .ContactList .timeline {
   flex-direction: column;
   -webkit-flex-direction: column;
-  /*display: flex;
-          display: -webkit-flex;*/
   display: block;
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   position: absolute;
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
 }
 .LeftBar .Contacts .ContactList h4,
-.LeftBar .Groups .ContactList h4 {
+.LeftBar .Groups .ContactList h4,
+.LeftBar .Recent .ContactList h4 {
   margin: .5em 0 0 .5em;
   color: #0093f0;
   font-variant: small-caps;
   font-size: .9em;
 }
 .LeftBar .Contacts .ContactList h4 + em,
-.LeftBar .Groups .ContactList h4 + em {
+.LeftBar .Groups .ContactList h4 + em,
+.LeftBar .Recent .ContactList h4 + em {
   margin: 0 0 .5em .5em;
   font-size: .8em;
   display: block;
 }
 .LeftBar .Groups .ContactList {
+  overflow-y: auto;
+}
+.LeftBar .Recent .ContactList .timeline {
   overflow-y: auto;
 }
 .LeftBar .Notifications {
@@ -626,7 +831,7 @@ p {
   position: absolute;
   bottom: 40px;
   display: flex;
-  z-index: 150;
+  z-index: 99;
 }
 .LeftBar .Notifications > div:first-child {
   /*font-size: .9em;*/
@@ -680,7 +885,7 @@ p {
   display: -webkit-flex;
   width: 100%;
   padding: 5px 10px 5px 5px;
-  z-index: 100;
+  /* z-index: 99; */
   background-color: #fff;
   border: solid 1px #eee;
   min-height: 2.5em;
@@ -706,6 +911,7 @@ p {
   position: relative;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+  -ms-flex: 1 1 auto;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -723,7 +929,6 @@ p {
 .DockPanel .InnerDock {
   position: absolute;
   height: 100%;
-  /*width: 100%;*/
   width: 39%;
   column-width: 170px;
   -webkit-column-width: 170px;
@@ -915,11 +1120,12 @@ p {
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
 .FileUploadStatus {
-  margin-top: 100%;
+  top: 80%;
   border-top: 1px solid white;
   box-shadow: inset 1 0 -1px 1px #cccccc;
   position: relative;
   z-index: 100;
+  vertical-align: top;
 }
 .FileUploadStatus .text-style {
   font-size: .7em;
@@ -965,6 +1171,11 @@ p {
 }
 .FileUploadStatus progress[aria-valuenow]:before {
   background: #72E673;
+}
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .FileUploadStatus {
+    margin-top: 80%;
+  }
 }
 .ToolBar {
   position: relative;
@@ -1173,6 +1384,7 @@ p {
   background: #fefefe linear-gradient(#fefefe, #eeeeee);
   user-select: none;
   -webkit-user-select: none;
+  height: 35px;
 }
 .WidgetTabBarButton {
   position: relative;
@@ -1203,7 +1415,7 @@ p {
 .WidgetTabBarButton .arrow {
   display: none;
   position: absolute;
-  bottom: 0;
+  bottom: 2px;
   left: 50%;
   margin-left: -7px;
   width: 0;
@@ -2358,7 +2570,7 @@ div.NewCall .XButton.XButtonNormal {
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 23% !important;
+  width: 30% !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
   width: 15% !important;
@@ -2418,6 +2630,9 @@ div.NewCall .XButton.XButtonNormal {
 }
 .CallLog .ListRow > div .CallAvatar {
   cursor: pointer;
+  /*.CallAvatar_Office {          
+          margin: 1px 1px 0px 1px;
+        }*/
 }
 .CallLog .ListRow > div:not(:first-child):not(.Name) {
   font-size: .8em;
@@ -2582,7 +2797,7 @@ div.NewCall .XButton.XButtonNormal {
   padding: 5px 0px;
 }
 .Conference .ToolBar .SearchInputBox {
-  width: 26%;
+  width: 27%;
 }
 .Conference.fj-widget-area .ToolBar {
   margin-top: 5px;
@@ -2630,6 +2845,15 @@ div.NewCall .XButton.XButtonNormal {
 .ListRow-Conference-Members {
   clear: both;
   position: relative;
+  /*
+  &.status{
+      display: block;
+      width: 36px;
+      float: right;
+      top: 0px;
+      position: absolute;
+      right: 0;
+  }*/
 }
 .conferences-room-item-member {
   width: 62px;
@@ -3234,7 +3458,7 @@ div.NewCall .XButton.XButtonNormal {
 #WidgetSearch .SearchResults {
   margin-top: 10px;
   flex: 1 1 0;
-  -ms-flex: 1;
+  -ms-flex: 1 1 0;
   -webkit-flex: 1;
   overflow-y: auto;
 }
@@ -3779,18 +4003,22 @@ div.NewCall .XButton.XButtonNormal {
   overflow: hidden;
   max-width: 7em;
 }
+.ListLineContent.Header {
+  height: 28px;
+  vertical-align: bottom;
+}
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  /*font-size: .7em;
-  font-size: .688em;*/
-  font-size: 11px;
-  font-size: .563em;
+  font-size: 9px;
   text-transform: uppercase;
-  line-height: 2.5em;
+  line-height: 3em;
 }
 .ListLineContent.Header .ListLineContentCell.CallStatus,
 .ListLineContent.Header .ListLineContentCell.HudStatus {
   float: right;
+}
+.ListLineContent.Header .ListLineContentCell.CallStatus.external {
+  right: 80px;
 }
 .ListLineContent.Header .ListLineContentCell.HudStatus {
   margin-right: 25px;
@@ -3885,25 +4113,57 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListRow .Avatar {
   margin: .25em;
-  margin-right: .45em;
+  /*margin-right: .45em;*/
+  width: 34px;
+  height: 34px;
+}
+.ListRow .Avatar img {
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+}
+.ListRow .Avatar img.GroupAvatarItemImg {
+  width: 100%;
+  height: 100%;
+}
+.ListRow .Avatar.CallAvatar_Office img {
+  margin: 0px;
 }
 .ListRow .ListRowContent {
   flex: 1;
   -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
+  max-height: 40px;
 }
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
-  /*font-size: .75em;*/
   font-size: 12px;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
-  width: 55%;
-  flex: 1;
-  -webkit-flex: 1;
+  max-width: 55%;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  margin-top: -3px;
+}
+.ListRow .ListRowTitle .status {
+  margin-left: -5px;
+}
+.ListRow .ListRowTitle .status.conference {
+  margin-top: -5px;
+}
+.ListRow .ListRowTitle span.desc {
+  font-size: 10px;
+  color: gray;
+  margin-top: 2px;
+}
+.ListRow .ListRowTitle .external {
+  float: left;
+}
+.ListRow .ListRowTitle .external.ListRowStatusIcon {
+  margin-top: -5px;
 }
 .ListRow .ListRowTitle .name strong {
   overflow: hidden;
@@ -3914,6 +4174,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListRow .ListRowTitle .name span {
   color: gray;
+  font-size: 10px;
 }
 .ListRow .ListRowStatus {
   float: right;
@@ -3932,10 +4193,25 @@ div.NewCall .XButton.XButtonNormal {
   display: inline-block;
   position: relative;
   top: -10px;
+  font-size: 10px;
+}
+.ListRow .ListRowStatus .ListRowStatusText {
+  top: -15px;
+  text-overflow: ellipsis;
+  max-width: 8em;
+  /*min-width: 2em;*/
+  white-space: nowrap;
+  overflow: hidden;
 }
 .ListRow .CallStatus {
   float: right;
-  margin-right: .5em;
+  /*margin-right: .5em;*/
+  margin: 2px .5em 2px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  height: 38px;
+  width: 38px;
 }
 .ListRow .CallStatus.Full {
   border: 1px solid #ccc;
@@ -3945,6 +4221,9 @@ div.NewCall .XButton.XButtonNormal {
 .ListRow .CallStatus.Full .Details {
   display: inline-block;
   font-size: 12px;
+}
+.ListRow .CallStatus .Avatar {
+  margin: 1px !important;
 }
 .Widget .ListRow,
 .LeftBar .ListRow,
@@ -4153,6 +4432,15 @@ div.NewCall .XButton.XButtonNormal {
   margin-top: 1em;
   font-size: .7em;
 }
+.ListMessage .Avatar {
+  width: 34px;
+  height: 34px;
+}
+.ListMessage .Avatar img {
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+}
 .ListMessage .ListMessageContent {
   margin-left: .5em;
   flex: 1;
@@ -4212,7 +4500,7 @@ input[type="tel"] {
   display: inline-block;
   /*height: 2.5em;*/
   margin: 0;
-  padding: 5px 10px;
+  padding: 5px;
   text-align: center;
   /*line-height: 2.4em;*/
   text-decoration: none;
@@ -4828,7 +5116,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 100;
+  z-index: 140;
 }
 .Overlay.notifications .Conference-HeaderSubTitle {
   font-size: 11px;
@@ -4959,6 +5247,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   left: 0;
   width: 100%;
   height: 100%;
+  /* z-index: 100; */
 }
 .Overlay .Foreground {
   background-color: #fafafa;
@@ -5234,6 +5523,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
+  min-width: 200px;
+}
+#ContextMenu.NoWrap {
+  visibility: hidden;
+}
+#ContextMenu.NoWrap .BottomRow {
   white-space: nowrap;
 }
 #ContextMenu .Arrow {
@@ -5252,6 +5547,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   right: -10px;
   border-left: 10px solid #ededee;
 }
+#ContextMenu .TopRow {
+  white-space: nowrap;
+}
 #ContextMenu .TopRow > div > div:not(:last-child) {
   border-right: 1px solid #ccc;
   margin-right: .5em;
@@ -5260,6 +5558,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 #ContextMenu .TopRow div {
   display: inline-block;
   vertical-align: top;
+  font-size: 11px;
+  color: #999;
+}
+#ContextMenu .TopRow div.Contact .info {
+  font-size: 12px;
+  font-weight: bold;
+}
+#ContextMenu .TopRow div.Contact .Numbers span {
+  font-weight: bold;
 }
 #ContextMenu .TopRow .Numbers div {
   min-width: 3em;
@@ -5285,10 +5592,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 32px;
 }
 #ContextMenu .BottomRow.Actions .Button span {
-  font-size: .8em;
+  font-size: 11px;
   padding: 0 1em;
   border: 1px solid #ededee;
   border-radius: 10px;
+  font-weight: bold;
 }
 #ContextMenu .BottomRow.Actions .Button:hover span {
   border: 1px solid gray;
@@ -5450,25 +5758,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   top: 3px;
 }
-.CallStatusContainerOutbound {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-}
-.CallStatusContainerInbound {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
-}
-.CallStatusIconContainer {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #0093f0;
-  border-radius: 30px;
-  text-align: center;
-  display: inline-block;
-}
-.CallStatusIconContainer .CallStatusIcon {
-  width: 40px;
-  height: 40px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
-}
 .LeftBarNotificationMessageSection {
   border-left: solid 1px #eee;
   /*flex: 1;
@@ -5520,17 +5809,32 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
 }
+.CallStatusContainerOutbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+}
+.CallStatusContainerInbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+}
+.CallStatusIconContainer {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #0093f0;
+  border-radius: 30px;
+  text-align: center;
+  display: inline-block;
+}
+.CallStatusIconContainer .CallStatusIcon {
+  width: 40px;
+  height: 40px;
+  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+}
 .CallStatusContainerInbound,
 .CallStatusContainerOutbound {
-  background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
-  background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-  background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
-  min-height: 50px;
+  min-height: 40px;
   overflow: hidden;
   width: 100%;
   padding-right: 5px;
   position: absolute;
-  /*bottom: 26px;*/
   bottom: 1px;
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
@@ -5551,17 +5855,19 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerOutbound .MyCallBlock_Duration {
   position: relative;
   text-shadow: 0px 1px 0px #FFF;
-  clear: both;
+  clear: none;
+  float: right;
   top: 0;
 }
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   display: inline-block;
   clear: none;
   margin-left: 10px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus {
@@ -5570,6 +5876,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.CallStatusContainerInbound .CallStatusText .callStatus .onCall,
+.CallStatusContainerOutbound .CallStatusText .callStatus .onCall {
+  float: left;
 }
 .CallStatusContainerInbound .CallStatusText .memberName,
 .CallStatusContainerOutbound .CallStatusText .memberName {
@@ -5599,7 +5909,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerOutbound .controlButtons {
   float: right;
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
 .CallStatusContainerOutbound .controlButtons .XButton {
@@ -5646,9 +5956,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .NotificationMessages .scroller .firstMessage {
   margin-top: -16px;
 }
-.NotificationMessages.LeftBarNotifications.noMessages {
-  top: -5px;
-}
 .LeftBarNotifications {
   transition: 1s;
 }
@@ -5676,12 +5983,16 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .LeftBarNotificationSection.noMessages .NotificationMessages {
   padding-bottom: 0px;
   bottom: 0px;
+  top: -5px;
 }
 .LeftBarNotificationSection.noMessages .TitleBar {
   margin-bottom: 0px;
 }
 .LeftBarNotificationSection.withCalls {
-  bottom: 50px !important;
+  bottom: 45px !important;
+}
+.NotificationMessages.LeftBarNotifications.noMessages {
+  top: -5px;
 }
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;
@@ -5769,21 +6080,8 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
-.NotificationOverlay {
-  background-color: #fafafa;
-  box-shadow: 0 0 50px #333;
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  height: 80%;
-  min-width: 300px;
-  min-height: 300px;
-  padding: 1em;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+.overlayNotificationsSection .NotificationSection {
+  height: auto;
 }
 .NotificationZoomBtn {
   margin-top: 10px;
@@ -6658,33 +6956,6 @@ a.Messages {
     }
   }
 }
-.LeftBar .Recent {
-  flex: 1 1 0;
-  -webkit-flex: 1 1 0;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
-}
-.LeftBar .Recent .ContactList {
-  flex: 1 1 0;
-  -ms-flex: 1 1 0;
-  -webkit-flex: 1 1 0;
-  overflow-y: auto;
-  min-height: 60px;
-  margin-top: 10px;
-}
-.LeftBar .Recent .ContactList h4 {
-  margin: .5em 0 0 .5em;
-  color: #0093f0;
-  font-variant: small-caps;
-  font-size: .9em;
-}
-.LeftBar .Recent .ContactList h4 + em {
-  margin: 0 0 .5em .5em;
-  font-size: .8em;
-  display: block;
-}
 @supports (-moz-appearance:meterbar) {
   input[type="search"] {
     float: left;
@@ -6702,6 +6973,15 @@ a.Messages {
     top: 12px;
     float: left;
     cursor: pointer;
+  }
+  .TopBarMeStatus .Logout {
+    padding: 1px 14px 3px 13px !important;
+  }
+  .TopBarMeStatus .Logout .icon {
+    top: 0 !important;
+  }
+  .TopBarMeStatus .XButton span {
+    top: 3px !important;
   }
   .LeftBarTop img.x {
     right: 24px;

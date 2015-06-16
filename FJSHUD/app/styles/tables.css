@@ -27,18 +27,22 @@
   overflow: hidden;
   max-width: 7em;
 }
+.ListLineContent.Header {
+  height: 28px;
+  vertical-align: bottom;
+}
 .ListLineContent.Header .ListLineContentCell {
   color: #666;
-  /*font-size: .7em;
-  font-size: .688em;*/
-  font-size: 11px;
-  font-size: .563em;
+  font-size: 9px;
   text-transform: uppercase;
-  line-height: 2.5em;
+  line-height: 3em;
 }
 .ListLineContent.Header .ListLineContentCell.CallStatus,
 .ListLineContent.Header .ListLineContentCell.HudStatus {
   float: right;
+}
+.ListLineContent.Header .ListLineContentCell.CallStatus.external {
+  right: 80px;
 }
 .ListLineContent.Header .ListLineContentCell.HudStatus {
   margin-right: 25px;
@@ -133,25 +137,57 @@
 }
 .ListRow .Avatar {
   margin: .25em;
-  margin-right: .45em;
+  /*margin-right: .45em;*/
+  width: 34px;
+  height: 34px;
+}
+.ListRow .Avatar img {
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+}
+.ListRow .Avatar img.GroupAvatarItemImg {
+  width: 100%;
+  height: 100%;
+}
+.ListRow .Avatar.CallAvatar_Office img {
+  margin: 0px;
 }
 .ListRow .ListRowContent {
   flex: 1;
   -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
+  max-height: 40px;
 }
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
-  /*font-size: .75em;*/
   font-size: 12px;
   text-decoration: none;
   color: #555;
   white-space: nowrap;
-  width: 55%;
-  flex: 1;
-  -webkit-flex: 1;
+  max-width: 55%;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  margin-top: -3px;
+}
+.ListRow .ListRowTitle .status {
+  margin-left: -5px;
+}
+.ListRow .ListRowTitle .status.conference {
+  margin-top: -5px;
+}
+.ListRow .ListRowTitle span.desc {
+  font-size: 10px;
+  color: gray;
+  margin-top: 2px;
+}
+.ListRow .ListRowTitle .external {
+  float: left;
+}
+.ListRow .ListRowTitle .external.ListRowStatusIcon {
+  margin-top: -5px;
 }
 .ListRow .ListRowTitle .name strong {
   overflow: hidden;
@@ -162,6 +198,7 @@
 }
 .ListRow .ListRowTitle .name span {
   color: gray;
+  font-size: 10px;
 }
 .ListRow .ListRowStatus {
   float: right;
@@ -180,10 +217,25 @@
   display: inline-block;
   position: relative;
   top: -10px;
+  font-size: 10px;
+}
+.ListRow .ListRowStatus .ListRowStatusText {
+  top: -15px;
+  text-overflow: ellipsis;
+  max-width: 8em;
+  /*min-width: 2em;*/
+  white-space: nowrap;
+  overflow: hidden;
 }
 .ListRow .CallStatus {
   float: right;
-  margin-right: .5em;
+  /*margin-right: .5em;*/
+  margin: 2px .5em 2px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  height: 38px;
+  width: 38px;
 }
 .ListRow .CallStatus.Full {
   border: 1px solid #ccc;
@@ -193,6 +245,9 @@
 .ListRow .CallStatus.Full .Details {
   display: inline-block;
   font-size: 12px;
+}
+.ListRow .CallStatus .Avatar {
+  margin: 1px !important;
 }
 .Widget .ListRow,
 .LeftBar .ListRow,
@@ -400,6 +455,15 @@
 .ListMessage .ListMessageLeft .time {
   margin-top: 1em;
   font-size: .7em;
+}
+.ListMessage .Avatar {
+  width: 34px;
+  height: 34px;
+}
+.ListMessage .Avatar img {
+  width: 30px;
+  height: 30px;
+  margin: 1px;
 }
 .ListMessage .ListMessageContent {
   margin-left: .5em;

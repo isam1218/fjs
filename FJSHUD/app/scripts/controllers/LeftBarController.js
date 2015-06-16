@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', function($scope, $rootScope, httpService, phoneService, settingsService, storageService, $timeout) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'StorageService', function($scope, $rootScope, httpService, phoneService, storageService) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
@@ -6,12 +6,26 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
+    $scope.contentHeight;
+    $scope.RecentTabHeight;  
 	
 	$scope.setTab = function(tab) {
 		$scope.tab = tab;
 		$scope.query = '';
-	};
+	};		
 
+	$scope.$on('NotificationsheightChanged', function(event, data){	
+		if(data)
+		{	
+			//all other tabs
+			$scope.contentHeight = data;
+			$scope.RecentTabHeight = data;				
+			//recent tab
+			var recentHeaderHeight = $('.Recent .ListLineContent.Header').outerHeight(); 
+			$scope.RecentTabHeight += (recentHeaderHeight + 35);			
+		}
+	});
+	
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
 		

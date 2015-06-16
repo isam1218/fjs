@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'SettingsService', '$timeout', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, settingsService, $timeout, httpService) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', '$rootScope', 'HttpService', 'GroupService', 'HttpService', function($scope, $routeParams, $rootScope, myHttpService, groupService, httpService) {
     var context = this;
 	var favoriteID;
 	
@@ -29,47 +29,6 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 			if ($scope.userGroup) break;
 		}
 	});
-
-    httpService.getFeed('settings');
-
-    $scope.$on('settings_updated', function(event, data){
-        if (data['hudmw_searchautoclear'] == ''){
-            autoClearOn = false;
-            if (autoClearOn && $scope.que.query != ''){
-                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                    $scope.clearSearch($scope.autoClearTime);          
-                } else if (autoClearOn){
-                    $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                } else if (!autoClearOn){
-                    $scope.autoClearTime = undefined;
-                }
-        }
-        else if (data['hudmw_searchautoclear'] == 'true'){
-            autoClearOn = true;
-            if (autoClearOn && $scope.que.query != ''){
-                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-                $scope.clearSearch($scope.autoClearTime);          
-            } else if (autoClearOn){
-                $scope.autoClearTime = data['hudmw_searchautocleardelay'];
-            } else if (!autoClearOn){
-                $scope.autoClearTime = undefined;
-            }
-        }
-    });
-
-    var currentTimer = 0;
-
-    $scope.clearSearch = function(autoClearTime){
-        if (autoClearTime){
-            var timeParsed = parseInt(autoClearTime + '000');
-            $timeout.cancel(currentTimer);
-            currentTimer = $timeout(function(){
-                $scope.que.query = '';
-            }, timeParsed);         
-        } else if (!autoClearTime){
-            return;
-        }
-    };
 	
 	$scope.customFilter = function() {
 		var query = $scope.que.query.toLowerCase();

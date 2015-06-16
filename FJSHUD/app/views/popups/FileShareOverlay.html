@@ -19,7 +19,7 @@
                     <h4 class="upper">{{::verbage.auto_delete}}</h4>
                     <div>{{::verbage.schedule_move_to_trash}} </div>
                     <div ng-repeat="archive in archiveOptions" class="AutoDelete"> 
-                        <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-click="update(selectedArchiveOption)">{{archive.name}}</input>
+                        <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-change="update(selectedArchiveOption)">{{archive.name}}</input>
                     </div>
                 </div>
             </div>            

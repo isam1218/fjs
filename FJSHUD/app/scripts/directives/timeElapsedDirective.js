@@ -6,13 +6,13 @@ hudweb.directive('timer', ['$filter', '$interval', 'NtpService', function($filte
 			timer: '=timer'
 		},
 		link: function(scope, element, attrs) {
-			var loop, start, elapsed;
-			
+			var loop, start, elapsed,calibrate;
+			calibrate = true;
 			// start counting immediately
 			if (attrs.timer == 'now') {
 				
 				start = new Date();
-
+				calibrate = false;
 				loop = $interval(updateDate, 1000);					
 				updateDate();
 			}
@@ -37,8 +37,11 @@ hudweb.directive('timer', ['$filter', '$interval', 'NtpService', function($filte
 			}
 			
 			function updateDate() {
-
-				elapsed = ntpService.calibrateTime(new Date().getTime()) - start;
+				if(calibrate){
+					elapsed = ntpService.calibrateTime(new Date().getTime()) - start;
+				}else{
+					elapsed = new Date().getTime() - start;
+				}
 				
 				element.html($filter('duration')(elapsed));
 			}
