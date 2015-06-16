@@ -571,22 +571,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		
 		$('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
 		
-		if(message.type == 'q-alert-abandoned')		
+		if(type == 'q-alert-abandoned')		
 		{
-			queueService.setSelected(true, 'stats', qid);
+			//queueService.setSelected(true, 'stats', qid);
 			$location.path("/" + audience + "/" + qid + "/stats");							
 		}
 		else
 		{
 			if(type == 'q-alert-rotation')
 			{	
-			   queueService.setSelected(true, 'calls', qid);	
 			   $location.path("/" + audience + "/" + qid + "/calls");
 			   		  
 			}   
 			   
 		}
-		$scope.showNotificationOverlay(false);
     };	
     onAlertMouseEvent = function(event,x,y){
     	//this.removeNotification();

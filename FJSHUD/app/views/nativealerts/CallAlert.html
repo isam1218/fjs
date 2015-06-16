@@ -99,7 +99,7 @@ a.CallStatusText{
 }
 #CallAlert .Notifications .NotificationMessages .scroller .Messages {
   width: 100%;
-  height: 176;
+  max-height: 500px;
   padding-bottom:20px;
 }
 #CallAlert .Notifications .NotificationMessages .scroller .Messages:first-child {
@@ -230,7 +230,7 @@ a.CallStatusText{
     </div> 
     </a>
        <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
-                {{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
+                {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}</span></div>
                 <div class="NotificationMessage " scroll-to-bottom=""> 
                   <span ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index">{{ messageToDisplay }}<br/></span>
                   <span ng-if="!message.message || message.message <= 1">{{ message_section_notifications }}</span>
