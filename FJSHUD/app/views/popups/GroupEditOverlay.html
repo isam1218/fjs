@@ -34,7 +34,7 @@
 				<div>
 					<h4>{{::verbage.members}}</h4>
 					<div class="ContactSearchHolder" ng-show="!closing">
-						<input type="search" class="XInputText" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+						<input type="search" ng-model-options="{debounce: 200}" class="XInputText" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
 					</div>
 				</div>
 				

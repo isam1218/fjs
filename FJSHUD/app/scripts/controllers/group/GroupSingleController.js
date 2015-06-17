@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, myHttpService, groupService, settingsService, storageService) {
+hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, groupService, settingsService, storageService) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -90,20 +90,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 		if (groupType !== 0 && groupType === 4)
 			return true;
 	};
-
-	// display avatar for group member
-  $scope.getAvatarUrl = function(index) {
-		if ($scope.group && $scope.group.members) {
-			if ($scope.group.members[index] !== undefined) {
-				var xpid = $scope.group.members[index].contactId;
-				return myHttpService.get_avatar(xpid, 28, 28);
-			}
-			else
-				return 'img/Generic-Avatar-28.png';
-
-		}
-  };
-
   
   $scope.$on("$destroy", function() {
 

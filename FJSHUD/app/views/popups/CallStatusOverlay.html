@@ -112,7 +112,7 @@
 			<div class="Section" ng-show="!transferTo">
 				<div>
 					<h4>{{::verbage.destination}}</h4>
-					<input type="search" class="Search" ng-model="transfer.search" ng-attr-placeholder="{{::verbage.search}}" />
+					<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-model="transfer.search" ng-attr-placeholder="{{::verbage.search}}" />
 				</div>
 				<div class="Banner upper">{{::verbage.contacts}}</div>
 				<div class="Members">
@@ -221,7 +221,7 @@
 			<div class="Section" ng-show="!selectedConf">
 				<div>
 					<h4>{{::verbage.conference_room}}</h4>
-					<input type="search" class="Search" ng-model="conf.query" ng-attr-placeholder="{{::verbage.search_by_room_or_person}}" />
+					<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-model="conf.query" ng-attr-placeholder="{{::verbage.search_by_room_or_person}}" />
 				</div>
 				<div class="Members">
                     <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: isStatusUndefined | filter: conFilter track by conference.xpid" ng-click="selectConference(conference)">

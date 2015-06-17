@@ -1,5 +1,5 @@
     <div class="ToolBar" >
-		<input type="search" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="tester.query" />
+		<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="tester.query" />
         <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedVoice" ng-options="voice_option.display_name for voice_option in voice_options track by voice_option.display_name" ng-change="sortBy(selectedVoice)">
         </select>
         <select class="XButton SelectBox HideFirst" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
