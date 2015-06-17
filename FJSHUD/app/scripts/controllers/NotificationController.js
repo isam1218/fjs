@@ -313,6 +313,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			}   
 			   
 		}
+		$scope.remove_notification(message.xpid);
 		$scope.showNotificationOverlay(false);
     };	
 
