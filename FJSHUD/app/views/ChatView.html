@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop" ng-if="(conversationType == 'group' && enableChat) || (conversationType == 'queue' && enableChat) || (conversationType == 'conference' && enableChat) || (conversationType == 'conversation' && enableChat)">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="chat.query" class="Search" type="search" ng-attr-placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" class="Search" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
