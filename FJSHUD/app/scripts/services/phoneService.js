@@ -426,7 +426,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var queueId = queryArray[0];
 					var audience = queryArray[1];
 					var type = queryArray[2];
-					showQueue(queueId,audience, type);
+					var messagexpid = queryArray[3];
+					showQueue(queueId,audience, type,messagexpid);
 					break;
 			}
     	}else{
@@ -507,7 +508,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var queueId = queryArray[0];
 					var audience = queryArray[1];
 					var type = queryArray[2];
-					showQueue(queueId,audience, type);
+					var messagexpid = queryArray[3];
+					showQueue(queueId,audience, type,messagexpid);
+					
 					break;
 	    	}
     	}
@@ -569,15 +572,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		phoneService.showCallControls(currentCall);
 	};
 	
-	var showQueue = function(qid, audience, type)
+	var showQueue = function(qid, audience, type,messagexpid)
     {
-		//var qid = message.queueId;
 		
 		$('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
 		
 		if(type == 'q-alert-abandoned')		
 		{
-			//queueService.setSelected(true, 'stats', qid);
 			$location.path("/" + audience + "/" + qid + "/stats");							
 		}
 		else
@@ -587,8 +588,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			   $location.path("/" + audience + "/" + qid + "/calls");
 			   		  
 			}   
-			   
 		}
+		remove_notification(messagexpid);
     };	
     onAlertMouseEvent = function(event,x,y){
     	//this.removeNotification();
