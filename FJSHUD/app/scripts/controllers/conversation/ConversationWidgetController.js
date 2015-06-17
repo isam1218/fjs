@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'PhoneService', 'SettingsService', 'StorageService', '$filter', '$timeout', function($scope, $rootScope, $routeParams, contactService, phoneService, settingsService, storageService, $filter, $timeout) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, contactService, settingsService, storageService) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);
 	$scope.messages = [];

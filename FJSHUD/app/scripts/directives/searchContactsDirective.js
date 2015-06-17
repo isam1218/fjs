@@ -12,6 +12,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
 			element.css('width', '100%');
+
 			if($(element).closest('.LeftBar').length > 0)
 				element.css('width', '95%');
 			
@@ -27,7 +28,6 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			
 			var headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
 
-			var note = angular.element('<div></div>');
 			if(attrs.conference =="true"){
 				headerTitle = angular.element('<div class="Header">Join to conference</div>')
 				if($(element).closest('.ConferenceMembers').length > 0)
@@ -62,6 +62,12 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 					overlay.bind('click', function(e) {
 						e.stopPropagation();
 					});
+			
+					// close overlay for reals
+					$document.bind('click', function(e) {
+						element.val('');
+						overlay.remove();
+					});
 				}
 			});
 			
@@ -73,12 +79,6 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			element.bind('search', function(e) {
 				if (element.val().length == 0)
 					overlay.remove();
-			});
-			
-			// close overlay
-			$document.bind('click', function(e) {
-				element.val('');
-				overlay.remove();
 			});
 			
 			// fill row content
@@ -101,7 +101,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			
 			scope.$on('$destroy', function() {
 				$document.unbind('click');
-				overlay.remove();
+				overlay.unbind().remove();
 			});
 		}
 	};
