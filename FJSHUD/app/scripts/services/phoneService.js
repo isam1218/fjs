@@ -677,14 +677,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playSound= function(sound_key){
 		var audio = $('audio.send')
 
-		switch(sound_key){
-			case 'received':
-				$("audio.received")[0].play();
-				break;
-			case 'sent':
-				
-				$("audio.send")[0].play();
-				break;
+		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
+			switch(sound_key){
+				case 'received':
+					if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
+						$("audio.received")[0].play();
+					}
+					break;
+				case 'sent':
+					if(settingsService.getSetting('hudmw_chat_sound_sent') ==  "true"){
+						$("audio.send")[0].play();
+					}
+					break;
+			}
 		}
 	};
 
