@@ -29,7 +29,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
         if (!$scope.globalXpid){
             
-            if($routeParams.route != undefined){
+            if($routeParams.route != undefined ){
                 $scope.selected = $routeParams.route;
 				localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
 
@@ -101,6 +101,31 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
                 else
                     return false;
             }
+
+            switch(tab.lower){
+                case "chat":
+                    if($scope.contact.primaryExtension == ''){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    break;
+                case "groups":
+                    if($scope.contact.primaryExtension == ''){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    break;
+                case "queues":
+                    if($scope.contact.primaryExtension == ''){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    break;
+            }
+
             return true;
         };
   };
