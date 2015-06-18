@@ -6,6 +6,7 @@ var node = undefined;
 var auth = undefined;
 var feeds = fjs.CONFIG.FEEDS;
 var data_obj = {};
+var timestamp_flag = false;
 
 var is_dirty = false;
 
@@ -67,50 +68,57 @@ function format_array(feed) {
 function should_sync(){
 	self.postMessage({
 		action:'should_sync',
-	})
+	});
 }
 
 function version_check (){
-		var newFeeds ='';
+	var newFeeds ='';
 
-		for (i = 0; i < feeds.length; i++)
-			newFeeds += '&' + feeds[i] + '=';
-
-			
+	for (i = 0; i < feeds.length; i++)
+		newFeeds += '&' + feeds[i] + '=';
+	
+	var request = new httpRequest();
+	var requestUrl = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) + "?t=web" + newFeeds;
+	
+	var header = {
+		"Authorization":auth,
+    	"node":node,
+	};
 		
-		
-		var request = new httpRequest();
-		var requestUrl = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) + "?t=web" + newFeeds
-		
-			var header = {
-				"Authorization":auth,
-    	  		"node":node,
-			}
-		request.makeRequest(requestUrl,"POST",{},header,function(xmlhttp){
+	request.makeRequest(requestUrl,"POST",{},header,function(xmlhttp){
 				 
-				console.log(xmlhttp.responseText);
-				 if (xmlhttp.status == 200){
-					var changedFeeds = [];
-		            var params = xmlhttp.responseText.split(";");
-					
-		            for(var i = 2; i < params.length-1; i++)
-						changedFeeds.push(params[i]);
-						
-					if (changedFeeds.length > 0)
-		               	sync_request(changedFeeds);
-		            else
-		            	setTimeout('should_sync();', 500);
-				}else{
-					//delete localStorage.nodeID;
-					//delete localStorage.authTicket;
-					//attemptLogin();
-					self.postMessage({
-						action:'auth_failed'
-					})
-					setTimeout('should_sync();', 500);
-				}
+		if (xmlhttp.status == 200){
+			var changedFeeds = [];
+		       var params = xmlhttp.responseText.split(";");
+		
+			if (!timestamp_flag){
+				self.postMessage({
+					"action": "timestamp_created",
+					"data": params[0]
+				});
+				
+				timestamp_flag = true;      	
+			}
 			
-		});
+		    for(var i = 2; i < params.length-1; i++)
+				changedFeeds.push(params[i]);
+				
+			if (changedFeeds.length > 0)
+		        sync_request(changedFeeds);
+		    else
+		       	setTimeout('should_sync();', 500);
+		}else{
+			//delete localStorage.nodeID;
+			//delete localStorage.authTicket;
+			//attemptLogin();
+			self.postMessage({
+				action:'auth_failed'
+			});
+			
+			setTimeout('should_sync();', 500);
+		}
+			
+	});
 }
 
 var sync_request = function(f){			
