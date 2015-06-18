@@ -34,8 +34,7 @@ hudweb.directive('getScrollHeight', ['$rootScope',function($rootScope) {
 						  $rootScope.$broadcast('NotificationsheightChanged', list_height);
 		               							  
                       }
-                  },
-                  true);                		      		    	     
+                  });                		      		    	     
 		}
 	};
 }]);

@@ -49,11 +49,27 @@
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
 }
+.CallStatusContainerOutbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+}
+.CallStatusContainerInbound {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+}
+.CallStatusIconContainer {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #0093f0;
+  border-radius: 30px;
+  text-align: center;
+  display: inline-block;
+}
+.CallStatusIconContainer .CallStatusIcon {
+  width: 40px;
+  height: 40px;
+  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+}
 .CallStatusContainerInbound,
 .CallStatusContainerOutbound {
-  background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
-  background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-  background: -moz-linear-gradient(center top, #e4f1f8, #dfebf1);
   min-height: 40px;
   overflow: hidden;
   width: 100%;
@@ -213,7 +229,7 @@
   margin-bottom: 0px;
 }
 .LeftBarNotificationSection.withCalls {
-  bottom: 50px !important;
+  bottom: 45px !important;
 }
 .NotificationMessages.LeftBarNotifications.noMessages {
   top: -5px;
@@ -304,21 +320,8 @@
   border-radius: 2px;
   -webkit-border-radius: 2px;
 }
-.NotificationOverlay {
-  background-color: #fafafa;
-  box-shadow: 0 0 50px #333;
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  height: 80%;
-  min-width: 300px;
-  min-height: 300px;
-  padding: 1em;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+.overlayNotificationsSection .NotificationSection {
+  height: auto;
 }
 .NotificationZoomBtn {
   margin-top: 10px;

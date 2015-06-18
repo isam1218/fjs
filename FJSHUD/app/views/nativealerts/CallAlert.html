@@ -3,26 +3,7 @@
     <style>
     @font-face {
   font-family: Comic Sans;
-  src: url(fonts/LDFComicSans.ttf);
-}
-.CallStatusContainerOutbound {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-}
-.CallStatusContainerInbound {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
-}
-.CallStatusIconContainer {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #0093f0;
-  border-radius: 30px;
-  text-align: center;
-  display: inline-block;
-}
-.CallStatusIconContainer .CallStatusIcon {
-  width: 40px;
-  height: 40px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+  src: url(../../styles/fonts/LDFComicSans.ttf);
 }
 
 a.CallStatusText{
@@ -38,7 +19,6 @@ a.CallStatusText{
 }
 #CallAlert {
   width: 300px;
-  max-height: 300px;
   font-size: 1em;
   background: url() #ffffff;
 }
@@ -94,13 +74,13 @@ a.CallStatusText{
 #CallAlert .Notifications .NotificationDivider > div .NoNotificationIcon {
   width: 24px;
   height: 24px;
-  background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+  background: url("../../img/XIconSet-24x24.png") no-repeat -48px -72px;
 }
 #CallAlert .Notifications .TitleBar .HasNotificationIcon,
 #CallAlert .Notifications .NotificationDivider > div .HasNotificationIcon {
   width: 24px;
   height: 24px;
-  background: url("../img/XIconSet-24x24.png") no-repeat -72px -72px;
+  background: url("../../img/XIconSet-24x24.png") no-repeat -72px -72px;
 }
 #CallAlert .Notifications .TitleBar > *,
 #CallAlert .Notifications .NotificationDivider > div > * {
@@ -112,14 +92,15 @@ a.CallStatusText{
 }
 #CallAlert .Notifications .NotificationMessages .scroller {
   padding-top: 0px;
-  min-height: 200px;
-  max-height: 700px;
   width:100%;
+  max-height:497px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 #CallAlert .Notifications .NotificationMessages .scroller .Messages {
   width: 100%;
+  max-height: 500px;
+  padding-bottom:20px;
 }
 #CallAlert .Notifications .NotificationMessages .scroller .Messages:first-child {
   top: -10px;
@@ -141,6 +122,14 @@ a.CallStatusText{
   width: 40px;
   height: 40px;
   top: -2px;
+}
+
+#CallAlert a.ListRow-Contact.ListRowFirst.ListRowFirst .close {
+  width: 24px;
+  height: 24px;
+  margin: -3px auto 0 auto;
+  cursor: pointer;
+  background: url("../../img/XIconSet-24x24.png") no-repeat -24px -24px;
 }
 
 #CallAlert a.ListRow-Contact.ListRowFirst .NotificationTitle .name span {
@@ -207,18 +196,17 @@ a.CallStatusText{
          
      </div>
 </div>
-    <div class="Notifications ng-scope"><div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}" expand-contract-notifications="">
+    <div class="Notifications ng-scope"><div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}">
 
       <div class="NotificationMessages LeftBarNotifications ">     
        <div class="TitleBar" ng-show="!hasMessages">
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
-        <div class="ng-binding">{{::verbage.notifications}}</div>
-        <div class="Event ng-binding" ng-show="notifications.length > 0">  - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+        <div >{{::verbage.notifications}}</div>
+        <div class="Event" ng-show="notifications.length > 0">  - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
         <input type="button" value="Open" class="XButton" onclick="window.location.replace('#/OpenNotifications')">
        </div>
       
-       <div class="scroller ng-class:{'single': todaysNotifications.length == 1}">    
-     <!---->
+       <div class="scroller ng-class:{'single': todaysNotifications.length == 1}" fj-scrollable>    
         <div class="Messages ng-scope" ng-repeat="message in todaysNotifications" ng-show="showHideElements($index)">
       
           <div class="NotificationHeader ng-class:{'firstHeader': $index == 0}"> 
@@ -238,39 +226,39 @@ a.CallStatusText{
       <a href="#/goToChat?{{message.context}}&{{message.xpid}}">
       <div  class="chatNotification">
        <div class="NotificationDisplayName" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'">
-             <span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div>
+             <span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div>
     </div> 
     </a>
-       <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
-                {{ message.audience == 'group' ? message.title : 'Room #' + message.conference.roomNumber + '(' + message.conference.extensionNumber + ')'}}</span></div>
+       <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="::message.type == 'gchat'"> 
+                {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}</span></div>
                 <div class="NotificationMessage " scroll-to-bottom=""> 
-                  <span ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index">{{ messageToDisplay }}<br/></span>
-                  <span ng-if="!message.message || message.message <= 1">{{ message_section_notifications }}</span>
+                  <div ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index" ng-bind-html="messageToDisplay" >{{ messageToDisplay }}<br/></div>
+                  <div ng-if="!message.message || message.message <= 1" ng-bind-html="message_section_notifications">{{ message_section_notifications }}</div>
                                
                 </div> 
               </div>
               
-               <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                    <a class="XButton XButtonRed" href="#/RemoveNotification?{{message.xpid}}"> {{::verbage.Reject}}</a>
                    <a class="XButton XButtonGreen" href="#/AcceptCall?{{message.senderId}}">{{::verbage.accept}}</a>               
                </div>
-               <div class="NotificationZoomBtn" ng-if="message.type == 'vm'"> 
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
                    <a class="XButton" href="#/PlayVM?{{message.vmId}}"> {{::verbage.Play}}</a>
                    <a class="XButton XButtonGreen" href="#/CallBack?{{message.phone}}">{{::verbage.call_back}}</a>
                </div>
 
-               <div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
                    <a class="XButton chatNotification" href="#/goToChat?{{message.context}}&{{message.xpid}}">{{::verbage.chat}}</a>
                    <a class="XButton XButtonGreen" href="#/callAndRemove?{{message.xpid}}&{{message.phone}}">{{::verbage.Call}}</a>  
                </div>
                
-               <div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back'">
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
                    <a class="XButton" href="#/RemoveNotification?{{message.xpid}}">{{::verbage.Skip}}</a>
                    <a class="XButton XButtonGreen" href="#/CallBack?{{message.fullProfile.primaryExtension}}">{{::verbage.Call}}</a>  
                </div>
                
-               <div class="NotificationZoomBtn" ng-if="message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
-                   <a class="XButton" href="#/showQueue?{{message.queueId}}&{{message.audience}}&{{message.type}}">{{::verbage.Show}}</a>
+               <div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+                   <a class="XButton" href="#/showQueue?{{message.queueId}}&{{message.audience}}&{{message.type}}&{{message.xpid}}">{{::verbage.Show}}</a>
                </div>
 
             </div>
@@ -319,7 +307,6 @@ a.CallStatusText{
                     </div>
                     <div class="NotificationDivider ng-class:{'firstHeaderDivider': phoneSessionEnabled &amp;&amp; todaysNotifications.length == 0, 'noMessagess': todaysNotifications.length == 0}">
                         <img>
-                       <!-- ngIf: phoneSessionEnabled && todaysNotifications.length == 0 -->             
                     </div>
 
               </a>
@@ -340,8 +327,8 @@ a.CallStatusText{
                         </div>
                  </div>  
                             
-            </div><!-- end ngIf: anotherDevice --> 
-         </div>    
+            </div>
+    </div> <!--close scroller -->   
   </div>
   </div>
 

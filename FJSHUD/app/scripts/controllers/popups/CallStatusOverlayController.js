@@ -8,12 +8,13 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.conf.query = '';
 	$scope.confQuery = this;
 	$scope.confQuery.query = '';
-	$scope.tranQuery = '';
+	$scope.transfer = this;
+	$scope.transfer.search = '';
 	$scope.selectedConf = null;
 	$scope.addError = null;
 	$scope.contacts = [];
 	$scope.bargePermission = $rootScope.bargePermission;
-	
+
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
 	if($scope.$parent.overlay.data.screen){		
@@ -140,10 +141,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.transferCall = function() {
 		if ($scope.transferTo) {
-			httpService.sendAction('calls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-				fromContactId: $scope.transferFrom.xpid,
-				toContactId: $scope.transferTo.xpid
-			});
+
+			if($scope.transferFrom.call){
+				httpService.sendAction('calls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					fromContactId: $scope.transferFrom.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+			}else{
+				httpService.sendAction('mycalls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					mycallId: $scope.transferFrom.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+
+			}
+			
 			
 			$scope.showOverlay(false);
 		}
@@ -172,6 +183,21 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 
 	$scope.conFilter = function(conference){
 		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
+	};
+
+	$scope.transferFilter = function(){
+		var query = $scope.transfer.search.toLowerCase();
+		return function(contact){
+			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1)
+				return true;
+			else
+				return false;
+		};
+	}
+
+	$scope.isStatusUndefined = function(conference){
+		// conferences w/o the status property can't be joined and will break the overlay...
+		return conference.status !== undefined;
 	};
 
 	

@@ -1,5 +1,5 @@
 <div class="ToolBar">
-	<input type="search" class="SearchBox" ng-model="que.query" ng-attr-placeholder="{{::verbage.search}}" />
+	<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-model="que.query" ng-attr-placeholder="{{::verbage.search}}" />
 </div>
 
 <div class="QueueList CallList">

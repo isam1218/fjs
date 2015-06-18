@@ -2,16 +2,46 @@
     <div class="WidgetHeader">
         <avatar profile="group"></avatar>
 		
-        <div ng-if="deptHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.department}} "{{ ::group.name }}"</div>
-        <div ng-if="nonVisibleTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.team}} "{{ ::group.name }}"</div>
-        <div ng-if="publicTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}} "{{ ::group.name }}"</div>
+        <div ng-if="::deptHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.department}} "<span  ng-bind-html="group.name"></span>"</div>
+        <div ng-if="nonVisibleTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.team}} " <span ng-bind-html="group.name"> </span>"</div>
+        <div ng-if="publicTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}} "<span  ng-bind-html="group.name"></span>"</div>
     </div>
 	
     <div class="WidgetBody">
         <div class="WidgetTabBar">
-            <span ng-repeat="tab in tabs | filter: tabFilter()">
-                <a href="#/group/{{ ::groupID + '/' + tab.lower}}" ng-click="saveGTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
-                    <div class="inner">{{ ::tab.upper }}</div>
+            <span>
+                <a href="#/group/{{ ::groupID + '/chat' }}" ng-click="saveGTab('chat', 0)" ng-show="chatTabEnabled" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 0}">
+                    <div class="inner">{{ ::tabs[0].upper}}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
+            <span>
+                <a href="#/group/{{ ::groupID + '/members'}}" ng-click="saveGTab('members', 1)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 1}">
+                    <div class="inner">{{ ::tabs[1].upper}}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
+            <span>
+                <a href="#/group/{{ ::groupID + '/voicemails' }}" ng-click="saveGTab('voicemails', 2)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 2}">
+                    <div class="inner">{{:: tabs[2].upper}}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
+            <span>
+                <a href="#/group/{{ ::groupID + '/page' }}" ng-click="saveGTab('page', 3)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 3}">
+                    <div class="inner">{{:: tabs[3].upper}}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
+            <span>
+                <a href="#/group/{{ ::groupID + '/recordings' }}" ng-click="saveGTab('recordings', 4)" ng-show="recordingPerm" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 4}">
+                    <div class="inner">{{::tabs[4].upper}}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
+            <span>
+                <a href="#/group/{{ ::groupID + '/info' }}" ng-click="saveGTab('info', 0)" ng-show="infoTab" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 5}">
+                    <div class="inner">{{::tabs[5].upper}}</div>
                     <div class="arrow"></div>
                 </a>
             </span>

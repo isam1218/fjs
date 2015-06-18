@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'ContactService', 'QueueService', 'HttpService', 'StorageService', function ($scope, $rootScope, contactService, queueService, httpService, storageService) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', function ($scope, $rootScope, queueService, httpService, storageService) {
   $scope.que = {};
   $scope.que.query = '';
   $scope.query = "";

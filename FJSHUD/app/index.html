@@ -39,8 +39,8 @@
 
 
   </head>
-  <body data-ng-controller="MainController" ng-model-options="{debounce: 200}" flow-prevent-drop>
-    <div id="AppLoading" ng-if="!loaded">
+  <body data-ng-controller="MainController" flow-prevent-drop>
+    <div id="AppLoading">
 		<div ng-cloak>
 			<div>{{::verbage.loading}}...</div>
 			<img src="img/ajax-loader.gif" />
@@ -57,14 +57,14 @@
 				<div class="LeftBarTop">
 					<div class="ContactSearch">
 						<div ng-show=" tab != 'favorites' && tab != 'recent'">
-							<input type="search" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
+							<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
 							<span></span>
 							
 							<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 						</div>
 						
 						<div ng-show="tab == 'favorites'">
-							<input type="search" class="Search add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+							<input type="search" ng-model-options="{debounce: 200}" class="Search add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
 							<span class="favorites"></span>
 						</div>
 					</div>

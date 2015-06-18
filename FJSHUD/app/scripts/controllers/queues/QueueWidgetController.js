@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService, storageService) {
+hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, queueService, settingsService, storageService) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
@@ -18,75 +18,62 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.enableAlertBroadcast = false;
     $scope.enableTextInput = false;
     
-    $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents'}, 
-    {upper: $scope.verbage.stats_tab, lower: 'stats'}, 
-    {upper: $scope.verbage.calls_tab, lower: 'calls'}, 
-    {upper: $scope.verbage.chat, lower: 'chat'}, 
-    {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
-    {upper: $scope.verbage.recordings, lower: 'recordings'}, 
-    {upper: $scope.verbage.alerts, lower: 'alerts'}];
+    $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents', idx: 0}, 
+    {upper: $scope.verbage.stats_tab, lower: 'stats', idx: 1}, 
+    {upper: $scope.verbage.calls_tab, lower: 'calls', idx: 2}, 
+    {upper: $scope.verbage.chat, lower: 'chat', idx: 3}, 
+    {upper: $scope.verbage.call_log_tab, lower: 'calllog', idx: 4}, 
+    {upper: $scope.verbage.recordings, lower: 'recordings', idx: 5}, 
+    {upper: $scope.verbage.alerts, lower: 'alerts', idx: 6}];
 
     $scope.toggleObject = {};
-    $scope.toggleObject.item = 0;
     $scope.tabObj = {};
              
     $scope.isString = function(item) {
         return angular.isString(item);
     };
-    
+
+
+    $scope.recordingPermission;
+    $scope.chatPermission = false;
+
+    settingsService.getPermissions().then(function(data){
+        $scope.recordingPermission = data.showCallCenter;
+    });
+
+    if (myQueues.queues.length > 0){
+        for (var i = 0; i < myQueues.queues.length; i++){
+            var single = myQueues.queues[i];
+            if (single.xpid === $scope.queueId){
+                $scope.chatPermission = true;
+                break;
+            }
+        }
+    } else {
+        $scope.chatPermission = false;
+    }
+
     if ($routeParams.route != undefined){
         $scope.selected = $routeParams.route;
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         for (var i = 0; i < $scope.tabs.length; i++){
             if ($scope.tabs[i].lower == $routeParams.route){
-                $scope.toggleObject = {item: i};
+                $scope.toggleObject = $scope.tabs[i].idx;
                 localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
                 break;
             }
         }
     } else {
-        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : $scope.tabs[0].lower;
-        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};            
+        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
     }
+
 
     $scope.saveQTab = function(tab, index){
         $scope.selected = tab;
-        $scope.toggleObject = {item: index};
+        $scope.toggleObject = index;
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);               
-    };
-    
-    var recordingPerm;
-    settingsService.getPermissions().then(function(data){
-        recordingPerm = data.showCallCenter;
-    });
-
-    // filters out the display of certain queue tabs per user's permissions
-    $scope.tabFilter = function(){
-        return function(tab){        	        	
-            switch(tab.lower){
-                case 'chat':
-                case 'alerts':
-                    // if not my queue -> return false and filter out the chat tab
-                    if (myQueues.queues.length > 0){
-                        for (var i = 0; i < myQueues.queues.length; i++){
-                            var single = myQueues.queues[i];
-                            if (single.xpid === $scope.queueId){
-                                return true;
-                            }
-                        }
-                        return false;
-    				}
-                    break;                
-                case 'recordings':
-                    if (recordingPerm)
-                      return true;
-                    else
-                      return false;
-                    break;
-            }
-			return true;
-        };
     };
     
     queueService.getQueues().then(function(data) {

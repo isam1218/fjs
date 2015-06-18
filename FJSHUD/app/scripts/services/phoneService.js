@@ -131,8 +131,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	var makeCall = function(number){		
+	var makeCall = function(number){
+		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
+			return;
+		}
 		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+				
 	};
 
 	var acceptCall = function(xpid){
@@ -422,7 +426,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var queueId = queryArray[0];
 					var audience = queryArray[1];
 					var type = queryArray[2];
-					showQueue(queueId,audience, type);
+					var messagexpid = queryArray[3];
+					showQueue(queueId,audience, type,messagexpid);
 					break;
 			}
     	}else{
@@ -503,7 +508,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var queueId = queryArray[0];
 					var audience = queryArray[1];
 					var type = queryArray[2];
-					showQueue(queueId,audience, type);
+					var messagexpid = queryArray[3];
+					showQueue(queueId,audience, type,messagexpid);
+					
 					break;
 	    	}
     	}
@@ -565,28 +572,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		phoneService.showCallControls(currentCall);
 	};
 	
-	var showQueue = function(qid, audience, type)
+	var showQueue = function(qid, audience, type,messagexpid)
     {
-		//var qid = message.queueId;
 		
 		$('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
 		
-		if(message.type == 'q-alert-abandoned')		
+		if(type == 'q-alert-abandoned')		
 		{
-			queueService.setSelected(true, 'stats', qid);
 			$location.path("/" + audience + "/" + qid + "/stats");							
 		}
 		else
 		{
 			if(type == 'q-alert-rotation')
 			{	
-			   queueService.setSelected(true, 'calls', qid);	
 			   $location.path("/" + audience + "/" + qid + "/calls");
 			   		  
 			}   
-			   
 		}
-		$scope.showNotificationOverlay(false);
+		remove_notification(messagexpid);
     };	
     onAlertMouseEvent = function(event,x,y){
     	//this.removeNotification();
@@ -674,14 +677,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playSound= function(sound_key){
 		var audio = $('audio.send')
 
-		switch(sound_key){
-			case 'received':
-				$("audio.received")[0].play();
-				break;
-			case 'sent':
-				
-				$("audio.send")[0].play();
-				break;
+		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
+			switch(sound_key){
+				case 'received':
+					if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
+						$("audio.received")[0].play();
+					}
+					break;
+				case 'sent':
+					if(settingsService.getSetting('hudmw_chat_sound_sent') ==  "true"){
+						$("audio.send")[0].play();
+					}
+					break;
+			}
 		}
 	};
 
@@ -778,7 +786,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var call = callsDetails[data[i].xpid];
 					if(call){
 						
-						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
 							if(call.incoming){
 								if(weblauncher.inboundHangupAuto){
 										url = weblauncher.inboundHangup;
@@ -808,7 +816,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}else{
 					callsDetails[data[i].xpid] = data[i];
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
 
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
@@ -862,12 +870,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.$on("calldetails_synced",function(event,data){
 		var userBargePerm;
 		if(data){
-			for(i = 0; i < data.length; i ++){
+			for(var i = 0; i < data.length; i++){
+				$rootScope.bargePermission = data[i].permissions;
 				if(callsDetails[data[i].xpid]){
 					callsDetails[data[i].xpid].details = data[i];
-				}
-				if(data[i].permissions == 1 || data[i].permissions == 15){
-					$rootScope.bargePermission = data[i].permissions;
 				}
 			}
 		}

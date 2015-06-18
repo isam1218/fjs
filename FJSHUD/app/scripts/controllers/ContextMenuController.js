@@ -1,4 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', 'StorageService', function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService, storageService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
+	function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService, storageService,phoneService) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -39,7 +40,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			$scope.type = 'Contact';
 			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
-		else if ($scope.profile.loggedInMembers) {
+		else if ($scope.profile.loggedInMembers !== undefined) {
 			$scope.type = 'QueueStat';
 			
 			for (var i = 0, len = $scope.profile.members.length; i < len; i++) {
@@ -57,14 +58,14 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 				}
 			}
 		}
-		else if ($scope.profile.roomNumber) {
+		else if ($scope.profile.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
 		}
-		else if ($scope.profile.parkExt) {
+		else if ($scope.profile.parkExt !== undefined) {
 			$scope.type = 'ParkedCall';
 			$scope.profile = contactService.getContact($scope.original.callerContactId);
 		}
-		else if ($scope.profile.name) {
+		else if ($scope.profile.name !== undefined) {
 			$scope.type = 'Group';
 			$scope.isMine = groupService.isMine($scope.profile.xpid);
 		}
@@ -119,8 +120,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.editGroup = function() {
-		$rootScope.groupEdit = true;
-		$rootScope.groupInfoId = $scope.profile.xpid;
 		$scope.showOverlay(true, 'GroupEditOverlay', $scope.profile);
 	};
 	
@@ -147,8 +146,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.callNumber = function(number) {
-		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-		
+		//httpService.sendAction('me', 'callTo', {phoneNumber: number});
+		phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 	};
 	

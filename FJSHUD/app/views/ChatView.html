@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop" ng-if="(conversationType == 'group' && enableChat) || (conversationType == 'queue' && enableChat) || (conversationType == 'conference' && enableChat) || (conversationType == 'conversation' && enableChat)">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="chat.query" class="Search" type="search" ng-attr-placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" class="Search" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
@@ -16,13 +16,13 @@
     <div  flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop class="attachmentDrag"> 
 
     </div>
-    <div class="ListMessage" ng-class="message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid">
+    <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid">
         <div class="ListMessageLeft">
-            <avatar ng-if="nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
+            <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
             <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code:'list_message_left'}}</div>
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
-            <div class="ListMessageHeader"  ng-if="nameDisplay(message, $index)" >
+            <div class="ListMessageHeader"  ng-if="::nameDisplay(message, $index)" >
                 <em>...{{::verbage.from}}</em>
                 <span class="ListMessageHeaderName">{{::message.fullProfile.xpid == meModel.my_pid ? 'Me' : message.fullProfile.displayName}}</span>
                 <div class="time">{{::message.created | fondate:'MMMM D YYYY':fon_lang_code:'list_message_header'}}</div>
@@ -30,9 +30,9 @@
             </div>
             <div class="ChatMessageItem AttachmentsHolder" flow-init flow-name="upload.flow" flow-file-added="uploadAttachments($file)" flow-drop >
                 <div class="ListMessageText" ng-bind-html="message.message | links | highlight:chat.query"></div>
-                <div class="AttachmentContainer" ng-repeat="attachment in message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
-                    <img class="AttachmentImg" ng-src="{{getAttachment(attachment.url,attachment.fileName)}}" />               
-                    <p> {{ attachment.fileName }}</p>
+                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
+                    <img class="AttachmentImg" ng-src="{{::getAttachment(attachment.url,attachment.fileName)}}" />               
+                    <p> {{ ::attachment.fileName }}</p>
                 </div> 
             </div>
         </div>

@@ -2,6 +2,7 @@
   position: relative;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+  -ms-flex: 1 1 auto;
   margin-left: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -19,7 +20,6 @@
 .DockPanel .InnerDock {
   position: absolute;
   height: 100%;
-  /*width: 100%;*/
   width: 39%;
   column-width: 170px;
   -webkit-column-width: 170px;
@@ -211,11 +211,12 @@
   -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat !important;
 }
 .FileUploadStatus {
-  margin-top: 90%;
+  top: 80%;
   border-top: 1px solid white;
   box-shadow: inset 1 0 -1px 1px #cccccc;
   position: relative;
   z-index: 100;
+  vertical-align: top;
 }
 .FileUploadStatus .text-style {
   font-size: .7em;
@@ -261,4 +262,9 @@
 }
 .FileUploadStatus progress[aria-valuenow]:before {
   background: #72E673;
+}
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .FileUploadStatus {
+    margin-top: 80%;
+  }
 }

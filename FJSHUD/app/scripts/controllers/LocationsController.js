@@ -48,7 +48,9 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
         if(data){
             var me = {};
             for (var i = 0; i < data.length; i++) {
-                $scope.locations[data[i].xpid] = data[i];
+                if(data[i].locationType != 'a'){
+                     $scope.locations[data[i].xpid] = data[i];
+                }
             }
         }
     });
@@ -57,10 +59,12 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
         if(data){
             var me = {};
             for (var i = 0; i < data.length; i++) {
-                $scope.locations[data[i].xpid].status = data[i];
-                if($scope.locations[data[i].xpid].locationType == 'w'){
-                    var state = phoneService.getPhoneState();
-                    $scope.locations[data[i].xpid].status.deviceStatus = state ? 'r' : 'u';
+                if($scope.locations[data[i].xpid]){
+                    $scope.locations[data[i].xpid].status = data[i];
+                    if($scope.locations[data[i].xpid].locationType == 'w'){
+                        var state = phoneService.getPhoneState();
+                        $scope.locations[data[i].xpid].status.deviceStatus = state ? 'r' : 'u';
+                    }
                 }
             }
         }

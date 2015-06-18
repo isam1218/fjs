@@ -3,7 +3,7 @@
 <div class="ListRowContent" dockable="group">
     <div class="ListRowTitle">
         <div class="name">
-            <strong>{{ group.name }}</strong>
+            <strong ng-bind-html="group.name"></strong>
             <span class="details">
 				{{ ::group.extension ? '#' + group.extension : getOwner(group) }}
 			</span>
