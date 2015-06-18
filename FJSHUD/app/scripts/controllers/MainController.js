@@ -1,6 +1,5 @@
 hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, myHttpService, settingsService, contactService) {
 	$rootScope.myPid = null;
-	$rootScope.loaded = false;
 	
 	$scope.number = "";
 	$scope.currentPopup = {};
@@ -32,28 +31,28 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         }
     };
 	
+	var activityTimeout;
+	
 	$q.all([settingsService.getSettings(), contactService.getContacts()]).then(function() {
 		// show app
 		$timeout(function() {
-			$rootScope.loaded = true;
+			angular.element(document.getElementById('AppLoading')).remove();
 			
 			myHttpService.setUnload();
-		}, 5000);
+	
+			// wake status
+			document.onmousemove = function() {
+				if (!activityTimeout) {
+					myHttpService.sendAction('useractivity', 'reportActivity', {});
+					
+					// prevent ajax call from firing too often
+					activityTimeout = setTimeout(function() {
+						activityTimeout = null;
+					}, 10000);
+				}
+			};
+		}, 3000);
 	});
-	
-	var activityTimeout = null;
-	
-	// wake status
-	document.onmousemove = function() {
-		if (!activityTimeout) {
-			myHttpService.sendAction('useractivity', 'reportActivity', {});
-			
-			// prevent ajax call from firing too often
-			activityTimeout = setTimeout(function() {
-				activityTimeout = null;
-			}, 10000);
-		}
-	};
 
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;

@@ -88,7 +88,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "sync_completed":
 		                if (event.data.data) {
 
-		                    synced_data = event.data.data;
+		                    var synced_data = event.data.data;
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
@@ -177,7 +177,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "sync_completed":
 		                if (event.data.data) {
 		                	var data_obj = {};
-		                    synced_data = event.data.data;
+		                    var synced_data = event.data.data;
 		                  	tabMap = JSON.parse(localStorage.fon_tabs);
 		                  	if(tabMap[tabId].isMaster){
 								for(tab in tabMap){
