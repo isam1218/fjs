@@ -27,11 +27,11 @@
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
 					<div class="name" ng-if="::contact.primaryExtension">
-						<strong>{{ ::contact.displayName }}</strong>
+						<strong ng-bind-html="::contact.displayName">{{ ::contact.displayName }}</strong>
 						<span>#{{ ::contact.primaryExtension }}</span>
 					</div>
-					<div class="name" ng-if="::!contact.primaryExtension">
-						<strong>{{ contact.displayName }}</strong>
+					<div class="name" ng-if="::!contact.primaryExtension" >
+						<strong ng-bind-html="::contact.displayName">{{ ::  contact.displayName }}</strong>
 					</div>
 				</div>	
 				

@@ -19,7 +19,7 @@
 			<div class="ListRowContent">
 				<div class="ListRowTitle">
 					<div class="name">
-						<b>{{ ::userGroup.name }}</b>
+						<b ng-bind-html="::userGroup.name">{{ ::userGroup.name }}</b>
 						<span class="details">{{ ::userGroup.members.length }} members</span>
 					</div>
 				</div>
@@ -39,7 +39,7 @@
         <div class="ListRowContent">
             <div class="ListRowTitle">
                 <div class="name">
-                    <b>{{ ::group.name }}</b>
+                    <b ng-bind-html="::group.name"></b>
                     <span class="details">{{ ::group.members.length }} members</span>
                 </div>
             </div>

@@ -11,7 +11,7 @@
     <div class="ListView fj-scrollable"> 
         <div class="vmlabel" ng-if="voicemails.length == 0"> 
             <div class="vmlabelheader"> {{::verbage.no_voicemails}} </div> 
-            <div class="vmnomessage"> {{::verbage.no_voicemails_between}} {{ emptyVoiceLabel }} </div>
+            <div class="vmnomessage"> {{::verbage.no_voicemails_between}} <span ng-html-bind="emptyVoiceLabel">{{emptyVoiceLabel}}</span></div>
         </div>
         <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
 			<avatar ng-if="voicemail.phone != meModel.primary_extension" profile="voicemail" context="voicemails" type="4"></avatar>
