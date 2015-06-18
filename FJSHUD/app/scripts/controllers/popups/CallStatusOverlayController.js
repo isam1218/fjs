@@ -186,7 +186,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.transferFilter = function(){
-		var query = $scope.transfer.search;
+		var query = $scope.transfer.search.toLowerCase();
 		return function(contact){
 			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1)
 				return true;
