@@ -1,6 +1,6 @@
 <div class="ToolBar">
         <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query"></div>
+            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query"></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>

@@ -1,4 +1,4 @@
-hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', function($http, $rootScope, $location, $q){
+hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpService', function($http, $rootScope, $location, $q, ntpService){
 	/**
 		Detect Current Browser
 	*/
@@ -19,10 +19,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 	var upload_progress = 0;
 	var feeds = fjs.CONFIG.FEEDS;
 	var deferred_progress = $q.defer();
-
-  var clientFirstTime = new Date().getTime();
-  
-
 	
     var VERSIONS_PATH = "/v1/versions";
         /**
@@ -88,7 +84,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "sync_completed":
 		                if (event.data.data) {
 
-		                    synced_data = event.data.data;
+		                    var synced_data = event.data.data;
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
@@ -102,30 +98,19 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "feed_request":
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
-      					case "auth_failed":
-                  delete localStorage.me;
-      						delete localStorage.nodeID;
-      						delete localStorage.authTicket;
-      						delete localStorage.data_obj;
-      						attemptLogin();
-      						break;
-                case "timestamp_created":
-                  if (event.data.data){
-                    var serverFirstTime = event.data.data;
-                    if (serverFirstTime > clientFirstTime){
-                      // client time is ahead, server time behind
-                      $rootScope.timeSyncFirstPlace = 'client'; 
-                      $rootScope.timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
-                    } else if (clientFirstTime > serverFirstTime){
-                      // server time is ahead, client time behind
-                      $rootScope.timeSyncFirstPlace = 'server';
-                      $rootScope.timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
-                    } else {
-                      $rootScope.timeSyncFirstPlace = 'same';
-                      $rootScope.timeSyncDelta = 0;
-                    }
-                  }
-				    }
+      				case "auth_failed":
+						delete localStorage.me;
+      					delete localStorage.nodeID;
+      					delete localStorage.authTicket;
+      					delete localStorage.data_obj;
+      					attemptLogin();
+      					break;
+					case "timestamp_created":
+						if (event.data.data)
+							ntpService.syncTime(event.data.data);
+						
+						break;
+				}
 		    }, false);
 
 		    worker.port.start();
@@ -177,7 +162,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 		            case "sync_completed":
 		                if (event.data.data) {
 		                	var data_obj = {};
-		                    synced_data = event.data.data;
+		                    var synced_data = event.data.data;
 		                  	tabMap = JSON.parse(localStorage.fon_tabs);
 		                  	if(tabMap[tabId].isMaster){
 								for(tab in tabMap){
@@ -217,6 +202,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', functio
 						delete localStorage.data_obj;
 						delete localStorage.fon_tabs;
 						attemptLogin();
+						break;
+					case "timestamp_created":
+						if (event.data.data)
+							ntpService.syncTime(event.data.data);
+						
 						break;
 					case "should_sync":
 						

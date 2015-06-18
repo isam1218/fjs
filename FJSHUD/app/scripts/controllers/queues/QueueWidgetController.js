@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, httpService, queueService, settingsService, storageService) {
+hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, queueService, settingsService, storageService) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
 	$scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";

@@ -4,7 +4,7 @@
 			<div class="SearchInputBox">
 				<div class="SearchInputBoxInputHolder">
 					<input class="SearchInputBoxInput"
-						   type="search" x-webkit-speech=""
+						   type="search" ng-model-options="{debounce: 200}" x-webkit-speech=""
 						   data-ng-model="query" 
 						   ng-click="clearSearch()" ng-keydown="onKeyDown($event)"
 						   ng-attr-placeholder="{{::verbage.type_for_results}}"

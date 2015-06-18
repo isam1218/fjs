@@ -5,7 +5,7 @@
 		<div>
 			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
-				{{ profile.displayName }}
+				<span ng-bind-html="profile.displayName"></span>
 				<br/>
 				<div class="ListRowStatusIcon XIcon-QueueStatus-{{profile.queue_status}}"></div>
 				<div class="ListRowStatusIcon XIcon-ChatStatus-{{profile.hud_status || 'offline' }}"></div>

@@ -141,10 +141,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.transferCall = function() {
 		if ($scope.transferTo) {
-			httpService.sendAction('calls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-				fromContactId: $scope.transferFrom.xpid,
-				toContactId: $scope.transferTo.xpid
-			});
+
+			if($scope.transferFrom.call){
+				httpService.sendAction('calls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					fromContactId: $scope.transferFrom.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+			}else{
+				httpService.sendAction('mycalls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					mycallId: $scope.transferFrom.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+
+			}
+			
 			
 			$scope.showOverlay(false);
 		}
@@ -176,7 +186,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.transferFilter = function(){
-		var query = $scope.transfer.search;
+		var query = $scope.transfer.search.toLowerCase();
 		return function(contact){
 			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1)
 				return true;

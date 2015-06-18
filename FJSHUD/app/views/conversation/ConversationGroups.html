@@ -1,12 +1,12 @@
     <div class="ToolBar">
         <div class="SearchInputBox">
             <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" /></div>
+                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" /></div>
             <div class="SearchInputBoxStateButton">
                 <div class="SearchInputBoxStateButtonIcon"></div>
             </div>
         </div>
-        <div class="XButton XButtonNormal" ng-click="showOverlay(true, 'GroupEditOverlay', contactId)"><span>{{::verbage.new_word}}</span></div>
+        <div class="XButton XButtonNormal" ng-click="showOverlay(true, 'GroupEditOverlay', contact)"><span>{{::verbage.new_word}}</span></div>
     </div>
   
     <div class="ListView">
@@ -19,7 +19,7 @@
 			<div class="ListRowContent">
 				<div class="ListRowTitle">
 					<div class="name">
-						<b>{{ ::userGroup.name }}</b>
+						<b ng-bind-html="::userGroup.name">{{ ::userGroup.name }}</b>
 						<span class="details">{{ ::userGroup.members.length }} members</span>
 					</div>
 				</div>
@@ -39,7 +39,7 @@
         <div class="ListRowContent">
             <div class="ListRowTitle">
                 <div class="name">
-                    <b>{{ ::group.name }}</b>
+                    <b ng-bind-html="::group.name"></b>
                     <span class="details">{{ ::group.members.length }} members</span>
                 </div>
             </div>

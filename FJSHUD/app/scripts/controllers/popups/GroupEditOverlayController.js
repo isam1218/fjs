@@ -1,36 +1,32 @@
-hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'ContactService', 'HttpService', 'GroupService', function($scope, $rootScope, contactService, httpService, groupService) {
+hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$routeParams', '$location', 'ContactService', 'HttpService', 'GroupService', function($scope, $rootScope, $routeParams, $location, contactService, httpService, groupService) {
 	$scope.add = {type: 2, contacts: []};
 	$scope.editing = false;
 
-	contactService.getContacts().then(function(data) {
-		// add user as first group member
-		$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
+	// add user as first group member
+	$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
 	
-		var curGroup = groupService.getGroup($rootScope.groupInfoId);
-
-		if (!$rootScope.groupEdit){
-			$scope.add.contacts[1] = contactService.getContact($scope.$parent.overlay.data);
-		} else {
-			for (var i = 0; i < curGroup.members.length; i++){
-				// if user is a member of the group clicked on...
-				if ($rootScope.myPid === curGroup.members[i].fullProfile.xpid){
-					$scope.editing = true;
-					var group = curGroup;
-					$scope.add.groupId = group.xpid;
-					$scope.add.name = group.name;
-					$scope.add.description = group.description;
-					$scope.add.type = group.type;
-					angular.forEach(group.members, function(obj) {
-						// avoid adding self again
-						if (obj.contactId != $rootScope.myPid)
-							$scope.add.contacts.push(contactService.getContact(obj.contactId));
-					});
-				}
+	// grab data from showOverlay()
+	if ($scope.$parent.overlay.data) {
+		var data = $scope.$parent.overlay.data;
+		
+		// individual contact
+		if (data.firstName)
+			$scope.add.contacts[1] = data;
+		// group edit
+		else {
+			$scope.editing = true;
+			$scope.add.groupId = data.xpid;
+			$scope.add.name = data.name;
+			$scope.add.description = data.description;
+			$scope.add.type = data.type;
+			
+			for (var i = 0; i < data.members.length; i++) {
+				// avoid adding self again
+				if (data.members[i].contactId != $rootScope.myPid)
+					$scope.add.contacts.push(contactService.getContact(data.members[i].contactId));
 			}
-			$rootScope.groupEdit = false;		
 		}
-
-	});
+	}
 	
 	$scope.searchContact = function(contact) {
 		// prevent duplicates
@@ -74,10 +70,13 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', 'Contac
 		var groupName = $scope.add.name;
 		var deletedMessageIntro = "GOODBYE " + groupName + "!  "; 
 		var finalDeletedGroupMessage = deletedMessageIntro + deletedGroupMessage;
-		// $scope.add.message = finalDeletedGroupMessage;
 
 		// save
 		httpService.sendAction('groups', $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup'), $scope.add);
+		
+		// change location
+		if ($scope.closing && $routeParams.groupId && $routeParams.groupId == $scope.add.groupId)
+			$location.path('/settings/');
 		
 		$scope.showOverlay(false);
 	};

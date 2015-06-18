@@ -26,9 +26,12 @@
 			
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
-					<div class="name">
-						<strong>{{ ::contact.displayName || contact.name }}</strong>
-						<span ng-if="::contact.primaryExtension != ''">#{{ ::contact.primaryExtension }}</span>
+					<div class="name" ng-if="::contact.primaryExtension">
+						<strong ng-bind-html="::contact.displayName">{{ ::contact.displayName }}</strong>
+						<span>#{{ ::contact.primaryExtension }}</span>
+					</div>
+					<div class="name" ng-if="::!contact.primaryExtension" >
+						<strong ng-bind-html="::contact.displayName">{{ ::  contact.displayName }}</strong>
 					</div>
 				</div>	
 				

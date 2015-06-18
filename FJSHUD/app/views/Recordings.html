@@ -1,5 +1,5 @@
 <div class="ToolBar" >
-	<input type="search" class="SearchBox recording" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="rec.query" />
+	<input type="search" ng-model-options="{debounce: 200}" class="SearchBox recording" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="rec.query" />
 </div>
 
 <div class="ListView fj-scrollable"> 

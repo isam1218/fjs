@@ -196,13 +196,13 @@ a.CallStatusText{
          
      </div>
 </div>
-    <div class="Notifications ng-scope"><div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}" expand-contract-notifications="">
+    <div class="Notifications ng-scope"><div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}">
 
       <div class="NotificationMessages LeftBarNotifications ">     
        <div class="TitleBar" ng-show="!hasMessages">
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
-        <div class="ng-binding">{{::verbage.notifications}}</div>
-        <div class="Event ng-binding" ng-show="notifications.length > 0">  - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+        <div >{{::verbage.notifications}}</div>
+        <div class="Event" ng-show="notifications.length > 0">  - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
         <input type="button" value="Open" class="XButton" onclick="window.location.replace('#/OpenNotifications')">
        </div>
       
@@ -226,39 +226,39 @@ a.CallStatusText{
       <a href="#/goToChat?{{message.context}}&{{message.xpid}}">
       <div  class="chatNotification">
        <div class="NotificationDisplayName" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'">
-             <span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div>
+             <span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{  convertTime(message.time) }} </div>
     </div> 
     </a>
-       <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'"> 
+       <div class="NotificationType">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="::message.type == 'gchat'"> 
                 {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}</span></div>
                 <div class="NotificationMessage " scroll-to-bottom=""> 
-                  <span ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index">{{ messageToDisplay }}<br/></span>
-                  <span ng-if="!message.message || message.message <= 1">{{ message_section_notifications }}</span>
+                  <div ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index" ng-bind-html="messageToDisplay" >{{ messageToDisplay }}<br/></div>
+                  <div ng-if="!message.message || message.message <= 1" ng-bind-html="message_section_notifications">{{ message_section_notifications }}</div>
                                
                 </div> 
               </div>
               
-               <div class="NotificationZoomBtn" ng-if="message.type == 'zoom'">
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                    <a class="XButton XButtonRed" href="#/RemoveNotification?{{message.xpid}}"> {{::verbage.Reject}}</a>
                    <a class="XButton XButtonGreen" href="#/AcceptCall?{{message.senderId}}">{{::verbage.accept}}</a>               
                </div>
-               <div class="NotificationZoomBtn" ng-if="message.type == 'vm'"> 
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
                    <a class="XButton" href="#/PlayVM?{{message.vmId}}"> {{::verbage.Play}}</a>
                    <a class="XButton XButtonGreen" href="#/CallBack?{{message.phone}}">{{::verbage.call_back}}</a>
                </div>
 
-               <div class="NotificationZoomBtn" ng-if="message.type == 'missed-call'">
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
                    <a class="XButton chatNotification" href="#/goToChat?{{message.context}}&{{message.xpid}}">{{::verbage.chat}}</a>
                    <a class="XButton XButtonGreen" href="#/callAndRemove?{{message.xpid}}&{{message.phone}}">{{::verbage.Call}}</a>  
                </div>
                
-               <div class="NotificationZoomBtn" ng-if="message.type == 'busy-ring-back'">
+               <div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
                    <a class="XButton" href="#/RemoveNotification?{{message.xpid}}">{{::verbage.Skip}}</a>
                    <a class="XButton XButtonGreen" href="#/CallBack?{{message.fullProfile.primaryExtension}}">{{::verbage.Call}}</a>  
                </div>
                
-               <div class="NotificationZoomBtn" ng-if="message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
-                   <a class="XButton" href="#/showQueue?{{message.queueId}}&{{message.audience}}&{{message.type}}">{{::verbage.Show}}</a>
+               <div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+                   <a class="XButton" href="#/showQueue?{{message.queueId}}&{{message.audience}}&{{message.type}}&{{message.xpid}}">{{::verbage.Show}}</a>
                </div>
 
             </div>
