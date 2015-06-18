@@ -111,7 +111,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="Messages webphone" ng-if="anotherDevice" ng-click="activatePhone()">                
+			<div class="Messages webphone" ng-if="anotherDevice" ng-click="$parent.activatePhone()">                
 			        <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}">
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -150,14 +150,17 @@
 <div ng-if="overlay == 'notifications'" class="notifications Overlay">
 	<div ng-click="showNotificationOverlay(false)" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="showNotificationOverlay(false)" class="Close">x</div>
-		
+		<!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->        		
 		<div class="Header NotificationSectionHeader">
-			<div class="NotificationSectionHeaderImage"></div>
-			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.notifications}} </h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.new_word}}: {{ getNotificationsLength(get_new_notifications().length)}} </h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.away}}: {{ get_away_notifications().length}}</h2> </div>
-			<div class="NotificationHeaderTitle"> <h2>  {{::verbage.old}}:  {{ get_old_notifications().length}}</h2> </div>
+		    <div ng-click="showNotificationOverlay(false)" class="Close">
+	           <div class="CloseIcon2"></div>
+	        </div>
+			<!-- <div class="NotificationSectionHeaderImage"></div> -->
+			<div class="headerIcon notifications"></div>                                   
+			<div class="HeaderTitle">{{::verbage.notifications}}</div>
+			<div class="HeaderTitle">{{::verbage.new_word}}: {{ getNotificationsLength(get_new_notifications().length)}} </div>
+			<div class="HeaderTitle">{{::verbage.away}}: {{ get_away_notifications().length}} </div>
+			<div class="HeaderTitle"> {{::verbage.old}}:  {{ get_old_notifications().length}} </div>
 		
 		</div>
 		
@@ -197,7 +200,7 @@
                 </div>
                 </a>
             </div>
-            <div class="Messages webphone">                
+            <div class="Messages webphone" ng-if="anotherDevice" ng-click="activatePhone()">                
                     <div class="NotificationHeader ng-class:{'firstHeader': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                             <div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': phoneSessionEnabled && todaysNotifications.length == 0}"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
