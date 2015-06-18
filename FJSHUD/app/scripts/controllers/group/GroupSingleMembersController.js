@@ -37,9 +37,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
   };
 
   $scope.searchFilter = function(){
-    var query = $scope.grp.query;
+    var query = $scope.grp.query.toLowerCase();
     return function(member){
-      if (member.fullProfile.displayName.toLowerCase().indexOf(query.toLowerCase()) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
+      if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
         return true;
     };
   };
