@@ -2,9 +2,9 @@
     <div class="WidgetHeader">
         <avatar profile="group"></avatar>
 		
-        <div ng-if="deptHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.department}} "{{ ::group.name }}"</div>
-        <div ng-if="nonVisibleTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.team}} "{{ ::group.name }}"</div>
-        <div ng-if="publicTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}} "{{ ::group.name }}"</div>
+        <div ng-if="::deptHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.department}} "{{ ::group.name }}"</div>
+        <div ng-if="nonVisibleTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.team}} "{{ group.name }}"</div>
+        <div ng-if="publicTeamHeaderDisplay(group.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}} "{{ group.name }}"</div>
     </div>
 	
     <div class="WidgetBody">
