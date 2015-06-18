@@ -16,22 +16,25 @@ hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeP
 	
 	$scope.memberFilter = function(){
 		return function(member){
-			if (member.contactId == $rootScope.myPid)
+			if (member.contactId == $rootScope.myPid || !member.onPage){
 				return false;
-			else 
+			}else{
 				return true;
+			} 
 		};
 	};
 
 	// call action was selected
 	$scope.makeCall = function(type) {
+		$scope.action.selected = $scope.callOptions[0];
+	
 		if (type && type != '') {
+	
 			httpService.sendAction('groups', type, {
 				contactId: $rootScope.myPid,
 				groupId: $scope.groupId
 			});
 			
-			$scope.action.selected = $scope.callOptions[0];
 		}
 	};
 }]);
