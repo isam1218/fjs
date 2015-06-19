@@ -23,6 +23,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var callsDetails = {};
 	var allCallDetails = {};
 	$rootScope.meModel = {};
+	$rootScope.bargeObj = {};
 	var isRegistered = false;
 	var isAlertShown = true;
 
@@ -632,8 +633,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	}
     };
 
+	var isEnabled = function(permission, bit) {
+		return ((permission & (1 << bit)) == 0);
+	};
 	
-
 	this.displayNotification = displayNotification;
 
 
@@ -865,20 +868,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	});
 	this.registerPhone = registerPhone;	
 
-	
-
 	$rootScope.$on("calldetails_synced",function(event,data){
-		var userBargePerm;
 		if(data){
 			for(var i = 0; i < data.length; i++){
-				$rootScope.bargePermission = data[i].permissions;
+				if (data[i].xpid)
+					$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
 				if(callsDetails[data[i].xpid]){
 					callsDetails[data[i].xpid].details = data[i];
 				}
 			}
-		}
-		$rootScope.$broadcast('calls_updated', callsDetails);
-		
+		}		
 	});
+
 
 }]);
