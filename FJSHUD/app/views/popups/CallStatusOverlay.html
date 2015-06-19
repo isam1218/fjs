@@ -11,13 +11,13 @@
 			<!-- <h2>{{::verbage.call_management}}</h2>-->
 		</div>
 		
-		<div class="Sections">
+		<div class="Sections callStatus">
 			<div class="Section">
 				<div>
-					<h4>{{::verbage.call_members}}</h4>
-					<em>{{::verbage.contacts_talking}}</em>
+					<h4 class="upper">{{::verbage.call_members}}</h4>
+					<p>{{::verbage.contacts_talking}}</p>
 				</div>
-				<div class="Contact">
+				<div class="Contact top">
 					<avatar profile="onCall"></avatar>
 					<div class="Name">
 						<strong>{{ ::onCall.displayName }}</strong>
@@ -57,8 +57,8 @@
 			
 			<div class="Section">
 				<div>
-					<h4>{{::verbage.barged_by}}</h4>
-					<em>{{::verbage.contacts_barge_call}}</em>
+					<h4 class="upper">{{::verbage.barged_by}}</h4>
+					<p>{{::verbage.contacts_barge_call}}</p>
 				</div>
 				
 				<div class="Bargers">
@@ -102,8 +102,8 @@
 		<div class="Sections">
 			<div class="Section">
 				<div>
-					<h4>{{::verbage.contact_to_transfer}}</h4>
-					<em>{{::verbage.transfer_selected_person}}</em>
+					<h4 class="upper">{{::verbage.contact_to_transfer}}</h4>
+					<p>{{::verbage.transfer_selected_person}}</p>
 				</div>
 				<div class="Contact">
 					<avatar profile="transferFrom"></avatar>
@@ -118,8 +118,8 @@
 			</div>
 			
 			<div class="Section" ng-show="!transferTo">
-				<div>
-					<h4>{{::verbage.destination}}</h4>
+				<div class="transferSearch">
+					<h4 class="upper">{{::verbage.destination}}</h4>
 					<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-model="transfer.search" ng-attr-placeholder="{{::verbage.search}}" />
 				</div>
 				<div class="Banner upper">{{::verbage.contacts}}</div>
@@ -140,8 +140,8 @@
 			
 			<div class="Section" ng-if="transferTo">
 				<div>
-					<h4>{{::verbage.office_destination}}</h4>
-					<em>{{::verbage.call_transfer_destination}}</em>
+					<h4 class="upper">{{::verbage.office_destination}}</h4>
+					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
 				<div>
 					<a href="" class="ListRow"> 
@@ -157,8 +157,8 @@
 					</a>
 				</div>
 				<div>
-					<h4>{{::verbage.transfer_options}}</h4>
-					<em>{{::verbage.call_transfer_destination}}</em>
+					<h4 class="upper">{{::verbage.transfer_options}}</h4>
+					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
 				<div>
 					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="1" ng-false-value="0" /> {{::verbage.primary_extension}}
@@ -191,8 +191,8 @@
 		<div class="Sections">
 			<div class="Section">
 				<div>
-					<h4>{{::verbage.contact_to_transfer}}</h4>
-					<em>{{::verbage.contacts_will_be_transfered_to_conference}}</em>
+					<h4 class="upper">{{::verbage.contact_to_transfer}}</h4>
+					<p>{{::verbage.contacts_will_be_transfered_to_conference}}</p>
 				</div>
 				<div>
 					<div class="ListRow">
@@ -221,8 +221,8 @@
 				
 				<div ng-show="onCall.xpid != myPid && onCall.call.fullProfile.xpid != myPid">
 					<div>
-						<h4>{{::verbage.Options}}</h4>
-						<em>{{::verbage.add_yourself_to_conference}}</em>
+						<h4 class="upper">{{::verbage.Options}}</h4>
+						<p>{{::verbage.add_yourself_to_conference}}</p>
 					</div>
 					
 					<input type="checkbox" ng-model="meToo.me" /> 
@@ -232,7 +232,7 @@
 			
 			<div class="Section" ng-show="!selectedConf">
 				<div>
-					<h4>{{::verbage.conference_room}}</h4>
+					<h4 class="upper">{{::verbage.conference_room}}</h4>
 					<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-model="conf.query" ng-attr-placeholder="{{::verbage.search_by_room_or_person}}" />
 				</div>
 				<div class="Members">
@@ -258,7 +258,7 @@
 			
 			<div class="Section" ng-show="selectedConf">
 				<div>
-					<h4>{{::verbage.destination}}</h4>
+					<h4 class="upper">{{::verbage.destination}}</h4>
 				</div>
 				
 				<div>
@@ -286,8 +286,8 @@
 				</div>
 				
 				<div>
-					<h4>{{::verbage.are_you_ready}}?</h4>
-					<em>{{::verbage.call_transfer_to_conference}}</em>
+					<h4 class="upper">{{::verbage.are_you_ready}}?</h4>
+					<p>{{::verbage.call_transfer_to_conference}}</p>
 				</div>
 			</div>
 		</div>

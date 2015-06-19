@@ -1,0 +1,34 @@
+<div class="Overlay"> <!--  style="z-index:1200" -->  
+    <div   class="Background"></div>
+    <div class="Foreground">
+        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->                
+        <div class="Header">
+          <div ng-click="showOverlay(false)" class="Close">
+           <div class="CloseIcon2"></div>
+          </div>
+          <div class="headerIcon network"></div>          
+          <div class="HeaderTitle">We are so sorry, but we have network problems</div>           
+        </div>
+        
+        <div class="Sections">
+            <div class="Section">
+                 <div>
+                    <input type="checkbox" name="softphone"/><lable id="softphoneLabel">Fonality Web softphone</lable>
+                    <span id="softPhoneReason"></</span>
+                    <input type="checkbox" name="cloud"/><lable id="cloudLabel">Fonality Cloud Services</lable>
+                    <span id="cloudReason"></</span>
+                    <input type="checkbox" name="server"/><lable id="serverLabel">PBX server</lable>
+                    <span id="serverReason"></</span>
+                </div>
+            </div>
+            
+            <div class="Section">
+                <div class="network"></div>
+            </div>
+        </div>
+        
+        <div class="Footer">                                      
+            <input type="button" class="XButton XButtonRed" value="Close" ng-click="showOverlay(false)" />           
+        </div>
+    </div>
+</div>

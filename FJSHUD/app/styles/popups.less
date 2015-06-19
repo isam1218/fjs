@@ -20,6 +20,10 @@
         float: left;
     }
     
+    .HeaderTitle{
+        left: -5px !important;
+    }
+    
     .Messages{
         background: url('') #fff !important;
         /*padding-bottom:8px !important;*/
@@ -37,6 +41,8 @@
             margin-left: 5px;
         }
     }
+    
+    
     .XButton.header{
         float: right;
         margin-right: 5px;
@@ -191,6 +197,20 @@
 	  padding-top: 10px;
 	  padding-bottom: 20px;
 	  
+	  &.callStatus{	
+	    
+	      .Section{
+	      
+	         .Contact{
+	           margin-bottom: 0px !important;
+	           
+	           &.top{
+	               margin-bottom: 20px !important;
+	           }
+	         }	         	         
+	      }
+	  }	  
+	  
 	  #attachments{
 	       .XButton{
 	           float:right;
@@ -220,6 +240,12 @@
 	  font-size: .9em;
 	  height:inherit;
 	  
+	   .network{
+	     background: url("../img/Network-Problems.png?v=1425679800685") no-repeat -0px -0px;
+	     width: 504px;
+	     height: 323px;	     
+	   }
+	  
 	  .visibility{
 	   font-size: 12px;
 	   
@@ -245,6 +271,10 @@
 	  
 	  & > div {
 		margin-bottom: .5em;
+		
+		&.transferSearch{
+		   margin-bottom: 0px;
+        }
 	  }
 	  
 	  & > div > * {
@@ -298,6 +328,9 @@
 		.Buttons {
 			margin: 2em 0 .5em 0;
 			
+			input{
+			 margin-right: 10px;
+			}
 			input[disabled] {
 			  cursor: default;
 			  color: #ccc;
@@ -343,7 +376,7 @@
           }
           
           &.callTransfer{
-                background-position: -365px -38px;
+                background-position: -358px -40px;
           }
           
           &.plugin{
@@ -352,6 +385,11 @@
           
           &.notifications{
                 background-position: -486px -38px;
+                margin-top: -12px;
+          }
+          
+          &.network{
+                background-position: -207px -40px;                
           }
       }
       
@@ -401,7 +439,7 @@
   .Bargers {
     border: 1px solid #999999;
 	background-color: #999999;
-	height: 235px;
+	height: 250px;
 	margin-top: 10px;
 	overflow-y: auto;
   }
@@ -824,3 +862,20 @@
       top: 3px;
   }
 } 
+
+
+#dialogheadicon{
+    left: 0px;
+      top: 10px;
+      width: 40px;
+      height: 40px;
+      background: url("img/XApp-Icons.png") no-repeat -320px -40px;
+      font-size:12px;
+}
+
+#header_label{
+    display: inline-block;
+    position: absolute;
+    left: 10%;
+    top: 4%;
+}
