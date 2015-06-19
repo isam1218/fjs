@@ -26,10 +26,10 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="bargePermission != 0" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="bargePermission != 0" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="bargePermission != 0" />
-						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
 					</div>
 				</div>
 				<div class="Contact">
@@ -43,10 +43,10 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.call.contactId)" ng-disabled="bargePermission != 0" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.call.contactId)" ng-disabled="bargePermission != 0" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.contactId)" ng-disabled="bargePermission != 0" />
-						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.contactId)" ng-disabled="onCall.call.type > 4" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
 					</div>
 				</div>
 			</div>
@@ -116,7 +116,7 @@
 				</div>
 				<div class="Banner upper">{{::verbage.contacts}}</div>
 				<div class="Members">
-					<a href="" class="ListRow" ng-repeat="contact in contacts | filter: transferFilter() | orderBy: 'displayName' track by contact.xpid" ng-click="selectDestination(contact)"> 
+					<a href="" class="ListRow" ng-repeat="contact in contacts | filter: transferPermFilterContacts() | filter: transferFilter() | orderBy: 'displayName' track by contact.xpid" ng-click="selectDestination(contact)"> 
 						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">

@@ -2,7 +2,14 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	var deferred = $q.defer();	
 	var contacts = [];
 	var service = this;
+	var xFerFromPermObj = {};
+  var xFerToPermObj = {};
+
 	
+	var isEnabled = function(permission, bit) {
+		return ((permission & (1 << bit)) == 0);
+	};
+
 	service.getContact = function(xpid) {
 		for (var i = 0, len = contacts.length; i < len; i++) {
 			if (contacts[i].xpid == xpid)
@@ -69,6 +76,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		// retrieve child data
 		httpService.getFeed('contactstatus');
 		httpService.getFeed('calls');
+		httpService.getFeed('contactpermissions');
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
@@ -134,4 +142,23 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			}
 		}
     });
+
+	$rootScope.$on('contactpermissions_synced', function(event, data){
+		for (var i = 0; i < contacts.length; i++){
+			for (var j = 0; j < data.length; j++){
+				if (contacts[i].xpid == data[j].xpid && data[j].permissions){
+					xFerFromPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 3);
+					xFerToPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 4);
+				}
+			}
+		}
+		for (var k = 0; k < contacts.length; k++){
+			if (contacts[k].xpid == $rootScope.myPid){
+				contacts[k].xFerFromPermObj = xFerFromPermObj;
+				contacts[k].xFerToPermObj = xFerToPermObj;
+			}
+		}
+	});
+
+
 }]);

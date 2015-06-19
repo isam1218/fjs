@@ -13,7 +13,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.selectedConf = null;
 	$scope.addError = null;
 	$scope.contacts = [];
-	$scope.bargePermission = $rootScope.bargePermission;
 
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
@@ -219,6 +218,22 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		else
 			$scope.addError = 'Select conference room';
 	};
+
+	$scope.determineBarge = function(contactToBarge){
+		return $rootScope.bargeObj[contactToBarge];
+	};
+
+	$scope.determineTransferFrom = function(contactToTransfer){
+		var me = contactService.getContact($rootScope.myPid);
+		return me.xFerFromPermObj[contactToTransfer];
+	};
+
+	$scope.transferPermFilterContacts = function(){
+		var me = contactService.getContact($rootScope.myPid);
+		return function(contact){
+			return me.xFerToPermObj[contact.xpid];
+		};
+	}
 
   $scope.$on("$destroy", function() {
 		updateTime = null;
