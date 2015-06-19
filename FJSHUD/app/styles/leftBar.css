@@ -246,6 +246,9 @@
   /*font-size: .9em;*/
   transition: .25s;
 }
+.LeftBar .Notifications .Footer {
+  padding-bottom: 10px;
+}
 .LeftBar .Notifications .TitleBar,
 .LeftBar .Notifications .NotificationDivider > div {
   width: 100%;

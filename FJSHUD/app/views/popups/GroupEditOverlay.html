@@ -1,38 +1,42 @@
 <div class="Overlay" ng-controller="GroupEditOverlayController">
 	<div ng-click="showOverlay(false)" class="Background"></div>
 	<div class="Foreground">
-		<div ng-click="showOverlay(false)" class="Close">x</div>
-		
+		<!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->        		
 		<div class="Header">
-			<h2>{{ closing ? verbage.time_to_goodbye : (editing ? verbage.expand_team : verbage.build_team) }}</h2>
+		   <div ng-click="showOverlay(false)" class="Close">
+             <div class="CloseIcon2"></div>
+           </div>
+		   <div class="headerIcon groupEdit"></div>
+            <div class="HeaderTitle">{{ closing ? verbage.time_to_goodbye : (editing ? verbage.expand_team : verbage.build_team) }}</div>
+			<!-- <h2>{{ closing ? verbage.time_to_goodbye : (editing ? verbage.expand_team : verbage.build_team) }}</h2> -->
 		</div>
 		
 		<div class="Sections">
 			<div class="Section" ng-show="!closing">
 				<div>
-					<h4>{{::verbage.name}}</h4>
-					<input type="text"  ng-model="add.name" class="XInputText" />
-				</div>
-				<div>
-					<h4>{{::verbage.Message}}</h4>
+					<h4 class="upper">{{::verbage.name}}</h4>
+					<input type="text" ng-model="add.name" class="XInputText" />
+				</div>				
+				<div  class="visibility">
+					<h4 class="upper">{{::verbage.Message}}</h4>
 					<input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" /> {{::verbage.visible_to_entire}}
 				</div>
 				<div>
-					<h4>{{::verbage.description}}</h4>
+					<h4 class="upper">{{::verbage.description}}</h4>
 					<textarea ng-model="add.description" ng-attr-placeholder="{{::verbage.team_description}}"></textarea>
 				</div>
 			</div>
 			
 			<div class="Section" ng-show="closing">
-				<h4>{{::verbage.Message}}</h4>
-				<em>{{::verbage.message_individual}}</em>
+				<h4 class="upper">{{::verbage.Message}}</h4>
+				<p>{{::verbage.message_individual}}</p>
 				<br/>
 				<textarea ng-model="add.message"></textarea>
 			</div>
 			
 			<div class="Section">
 				<div>
-					<h4>{{::verbage.members}}</h4>
+					<h4 class="upper">{{::verbage.members}}</h4>
 					<div class="ContactSearchHolder" ng-show="!closing">
 						<input type="search" ng-model-options="{debounce: 200}" class="XInputText" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
 					</div>
