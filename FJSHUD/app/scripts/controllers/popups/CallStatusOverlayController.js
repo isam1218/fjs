@@ -219,8 +219,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select conference room';
 	};
 
-	$scope.determineBarge = function(contactToBarge){
-		return $rootScope.bargeObj[contactToBarge];
+	$scope.determineBarge = function(callObj){
+		if (!callObj)
+			return false;
+		else
+			return $rootScope.bargeObj[callObj];
 	};
 
 	$scope.determineTransferFrom = function(contactToTransfer){
