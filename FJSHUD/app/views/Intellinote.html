@@ -1,20 +1,77 @@
-<div class="Widget">
+<div class="Widget Intellinote" ng-click="showInvite = false">
     <div class="WidgetHeader">
 		<img src="img/Intellinote-Icon.png" />
-		<img src="img/Intellinote-Logo.png" />
+		<img src="img/Intellinote-Logo.png" class="Logo" />
     </div>
 
     <div class="WidgetBody">
-		<div>
+		<div class="Intro">
 			You are licensed to use the Fonality for Intellinote service. With this feature, you and your teams can get work done by capturing contextual information, collaborating and managing projects to completion on a powerful, versatile platform integrated into your Fonality Heads Up Display.
 		</div>
 		
-		<div>
-			<h4>Intellinote Home</h4>
-			Users can directly access their Intellinote application by launching it directly from here. No additional login required.
+		<div class="Content">
+			<div class="Left">
+				<div class="Section">
+					<h4>Intellinote Home</h4>
+					Users can directly access their Intellinote application by launching it directly from here. No additional login required.
+				</div>
+				
+				<h4>Invite</h4>
+				Users can add individuals and groups.
+			</div>
+			
+			<div class="Right">
+				<div class="Section">
+					<div class="WorkspaceButton" ng-click="verifyLicense()">
+						Go to Intellinote
+						<div>&#9654;</div>
+					</div>
+				</div>
+				
+				<div class="SearchHolder">
+					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+				</div>				
+				
+				<div class="Contacts">
+					<div class="ListRow Small" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
+						<avatar profile="contact" widget="zoom"></avatar>
+						<div class="ListRowContent" dockable="contact">
+							<div class="ZoomRowTitle">
+								<div class="name">{{::contact.displayName}}</div>
+								<div class="link">#{{::contact.primaryExtension }}</div>
+							</div>
+							<div class="ZoomRowStatus">
+								<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+								<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
+								<div class="ListRowDesc">{{contact.hud_status}}</div>
+							</div>
+						</div>
+						<button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
+					</div>
+				</div>
+				
+				<div class="Workspaces">
+					<div class="WorkspaceButton" ng-click="showList($event)">
+						Invite to Workspace
+						<div class="Down">&#9660;</div>
+					</div>
+					
+					<div class="List" ng-show="showInvite">
+						<div class="Header">
+							Invite to Workspace
+							<div class="Down">&#9660;</div>
+						</div>
+						
+						<div class="Items">
+							<div ng-repeat="workspace in workspaces | orderBy: 'name' track by workspace.workspace_id" ng-click="addToWorkspace(workspace)">
+								{{ ::workspace.name }}
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div ng-bind-html="inviteStatus"></div>
+			</div>
 		</div>
-		
-		<br/>
-		<a href="" ng-click="verifyLicense()">GO TO INTELLINOTE</a>
     </div>
 </div>
