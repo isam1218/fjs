@@ -99,7 +99,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
-				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);
+				permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
 
 				// group permissions from MyPermissions.java
 				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
