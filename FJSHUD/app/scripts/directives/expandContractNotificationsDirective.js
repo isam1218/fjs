@@ -10,7 +10,7 @@ hudweb.directive('expandContractNotifications', function() {
         	
             $(element).on('hoverIntent mouseenter', function() {              
             	$scope.showNotificationBody = true;            	
-            	var content = $(element).find('.LeftBar .NotificationSection:not(.last)');
+            	var content = $(element).find('.NotificationSection:not(.last)');
             	//set the max height of the expanded notifications
             	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .RoundedTop').outerHeight() - $('.LeftBar .LeftBarTop').outerHeight() - 10;
             	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight);
