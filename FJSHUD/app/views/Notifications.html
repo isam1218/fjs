@@ -39,7 +39,7 @@
 					
 						<div class="LeftBarNotificationMessageSection" ng-init="message_section_notifications = getMessage(message)"> 
 							<div ng-click="go_to_notification_chat(message)" class="chatNotification">
-								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{ ::convertTime(message.time) }} </div></div> 
+								<div class="" ng-class="message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="message.displayName">{{ message.displayName}}</span><span ng-if="!message.displayName" style="width: 38.5%;">&nbsp;</span></span> <div class="NotificationTime">{{::  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
 								<div class="NotificationType" ng-show="showNotificationBody">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="message.type == 'gchat'">
 								{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}</span></div>
 								<div class="NotificationMessage" scroll-to-bottom> 
