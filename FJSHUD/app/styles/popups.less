@@ -46,6 +46,8 @@
         }
         .LeftBarNotificationMessageSection{
             margin-left: 5px;
+            width: 90%;
+            max-width: 90%;
             
             .NotificationDisplayName{
                 height: auto;
@@ -96,7 +98,11 @@
       position: absolute;
       width: 94%;
       bottom: 10px;       
-      padding-top: 20px;        
+      padding-top: 20px;      
+      
+      .XButton[type=button]{
+        width:20%;
+      }  
     }
     .notifications_section{             
         width: 100%;          
@@ -104,7 +110,7 @@
         overflow-y: auto;
         vertical-align: middle;
         display: inline-block;
-        margin-top: 20px;
+        /*margin-top: 20px;*/
         
         .Messages{
             overflow: hidden;
@@ -131,14 +137,16 @@
         border: 1px solid #ccc;        
         position: absolute;        
         right: 5px;
-        top: 70px;
+        top: 80px;
         bottom: 70px;
         overflow: hidden;
         overflow-y: auto;
         overflow-x: hidden;
         padding-bottom: 40px;   
         width: 94%;
-        left: 15px;             
+        left: 15px;    
+        margin-bottom: 20px;  
+        background: url() #fff;       
         
         .overlayNotificationsSection:before{             
              content: '';
