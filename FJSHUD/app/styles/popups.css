@@ -6,6 +6,13 @@
   height: 100%;
   z-index: 160;
 }
+.Overlay.notifications .overlayNotificationsSection {
+  background: url() #ffffff;
+}
+.Overlay.notifications .plugins .LeftBarNotificationAvatarSection,
+.Overlay.notifications .webphone .LeftBarNotificationAvatarSection {
+  border-right: none 0px;
+}
 .Overlay.notifications .Conference-HeaderSubTitle {
   font-size: 11px;
   line-height: 18px;
@@ -17,6 +24,9 @@
   font-style: italic;
   color: #555;
   float: left;
+}
+.Overlay.notifications .NotificationMessages {
+  display: block;
 }
 .Overlay.notifications .Messages {
   background: url('') #ffffff !important;
@@ -33,6 +43,24 @@
 }
 .Overlay.notifications .Messages .LeftBarNotificationMessageSection {
   margin-left: 5px;
+}
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection .NotificationDisplayName {
+  height: auto;
+}
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection .chatNotification.webphone,
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection .chatNotification.plugins {
+  padding-top: 10px;
+}
+.Overlay.notifications .Messages .NotificationSection {
+  height: auto !important;
+  width: 100%;
+}
+.Overlay.notifications .Messages .NotificationSection.plugins,
+.Overlay.notifications .Messages .NotificationSection.webphone {
+  padding-bottom: 20px;
+}
+.Overlay.notifications .Messages .NotificationMessage {
+  max-height: none !important;
 }
 .Overlay.notifications .XButton.header {
   float: right;
@@ -96,7 +124,6 @@
 .Overlay.notifications .NotificationMessages {
   border: 1px solid #ccc;
   position: absolute;
-  /*left: 5px;*/
   right: 5px;
   top: 70px;
   bottom: 70px;
@@ -461,7 +488,7 @@
   border-radius: 5px;
   z-index: 99;
   padding: .5em;
-  font-size: .8em;
+  font-size: 12px;
 }
 .SearchContactOverlay .Header {
   text-align: center;

@@ -278,11 +278,13 @@
 }
 .NotificationDivider.firstHeaderDivider {
   background-color: #999;
-  /*background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));*/
   height: 2.3em;
 }
 .NotificationDivider.firstHeaderDivider.noMessagess {
   margin-top: -1px;
+}
+.NotificationDivider.firstHeaderDivider.firstHeaderDivider > div {
+  border-top: none 0px;
 }
 .NotificationDivider.firstHeaderDivider img {
   display: none;
@@ -338,6 +340,35 @@
   background-image: url("../img/XTile-Widget.png");
   /*padding-bottom: 20px;*/
   width: 100%;
+}
+.Messages:not(.first) .NotificationDivider > div {
+  border-left: 1px solid #ccc;
+}
+.Messages .header_text {
+  display: none;
+}
+.Messages.first {
+  /*.NotificationHeader{
+               
+           }*/
+}
+.Messages.first.noMessagess .NotificationDivider {
+  margin-top: -1px;
+}
+.Messages.first .NotificationHeaderBackground {
+  position: relative;
+  bottom: -1.2em;
+  right: -1px;
+}
+.Messages.first .NotificationDivider {
+  background-color: #999;
+  height: 2.3em;
+}
+.Messages.first .NotificationDivider img {
+  display: none;
+}
+.Messages.first .header_text {
+  display: block;
 }
 .Messages.plugins,
 .Messages.webphone {

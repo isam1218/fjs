@@ -103,8 +103,7 @@
          
              input[type=search]{           
                 width: 30%;
-                font-size: 0.688em !important;
-                /*height: 2.6em !important; */           
+                font-size: 0.688em !important;                         
              }
              &.fj-stream{ 
                  .XButton{
@@ -372,8 +371,14 @@
   }
   .Overlay {
     &.notifications{ 
+      .LeftBarNotificationAvatarSection{
+            max-width: 12%;
+      }
+        
       .LeftBarNotificationMessageSection{
-         width: 90%;
+         /*width: 90%;*/
+         max-width: 86%;
+         padding-left: 10px;
       }
     }
   }
@@ -389,7 +394,7 @@
         .XButton{
             width: 75px !important;   
             &.CurrentCallBtnLong{
-                        width: 155px !important;
+              width: 155px !important;
             }                             
         }
                 

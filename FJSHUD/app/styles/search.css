@@ -7,6 +7,10 @@
   background-position: 1%;
   max-width: 100%;
 }
+.SearchBox.Add {
+  background: url("../img/add.png") no-repeat;
+  background-position: 2%;
+}
 .SearchInputBox {
   position: relative;
   margin: 0;
