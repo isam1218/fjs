@@ -241,9 +241,9 @@ p {
 @import "tables";
 @import "buttons";
 @import "icons";
-@import "popups";
 @import "nativeAlert";
 @import "notification";
+@import "popups";
 @import "voicemail";
 @import "queue";
 @import "media";
@@ -626,8 +626,14 @@ p {
   }
   .Overlay {
     &.notifications{ 
+      .LeftBarNotificationAvatarSection{
+            max-width: 12%;
+      }
+        
       .LeftBarNotificationMessageSection{
-         width: 90%;
+         /*width: 90%;*/
+         max-width: 86%;
+         padding-left: 10px;
       }
     }
   }

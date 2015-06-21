@@ -7,6 +7,15 @@
   z-index: 100;
   
   &.notifications{    
+    .overlayNotificationsSection{
+        background: url() #fff;
+    }
+   
+    .plugins, .webphone{
+        .LeftBarNotificationAvatarSection{
+            border-right: none 0px;
+        }    
+    } 
     .Conference-HeaderSubTitle{
         font-size: 11px;
         line-height: 18px;
@@ -19,7 +28,9 @@
         color: #555;
         float: left;
     }
-    
+    .NotificationMessages{          
+          display: block;
+    } 
     .Messages{
         background: url('') #fff !important;
         /*padding-bottom:8px !important;*/
@@ -35,7 +46,27 @@
         }
         .LeftBarNotificationMessageSection{
             margin-left: 5px;
+            
+            .NotificationDisplayName{
+                height: auto;
+            }
+            .chatNotification{
+                &.webphone, &.plugins{
+                    padding-top: 10px;
+                }
+            }    
         }
+        .NotificationSection{
+            height: auto !important;
+            width: 100%;
+            
+            &.plugins, &.webphone{
+                padding-bottom: 20px;
+            }
+        }
+        .NotificationMessage{
+          max-height: none !important;
+        } 
     }
     .XButton.header{
         float: right;
@@ -98,8 +129,7 @@
     }
     .NotificationMessages{       
         border: 1px solid #ccc;        
-        position: absolute;
-        /*left: 5px;*/
+        position: absolute;        
         right: 5px;
         top: 70px;
         bottom: 70px;
