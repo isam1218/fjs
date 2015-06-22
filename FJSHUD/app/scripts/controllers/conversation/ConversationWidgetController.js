@@ -93,18 +93,19 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     };
 
     $scope.tabFilter = function(){
+        var recordingPerm = settingsService.getPermission('showCallCenter');
+		
         return function(tab){
-            if (tab.lower == 'recordings'){
-                var recordingPerm = settingsService.getPermission('showCallCenter');
-                if (recordingPerm)
-                    return true;
-                else
-                    return false;
-            }
-
             switch(tab.lower){
+				case "recordings":
+					if (recordingPerm)
+						return true;
+					else
+						return false;
+				
+					break;
                 case "chat":
-                    if($scope.contact.primaryExtension == ''){
+                    if($scope.contact.primaryExtension == '' && $scope.contact.jid == '' && $scope.contact.ims == ''){
                         return false;
                     }else{
                         return true;
@@ -128,7 +129,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 
             return true;
         };
-  };
+	};
 
     $scope.$on("$destroy", function() {
 	
