@@ -616,6 +616,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			}	
 		}
 
+		if(item.type == 'wall' || item.type == 'chat'){
+					playChatNotification = true;
+
+			if(playChatNotification){
+				phoneService.playSound("received");
+				playChatNotification = false;
+			}	
+		}
+
+		
 		if(itemDate.startOf('day').isSame(today.startOf('day'))){
 			
 			// if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
@@ -647,10 +657,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					$scope.todaysNotifications.push(item);
 					
 				}
-				if(item.type == 'wall' || item.type == 'chat'){
-					playChatNotification = true;
-
-				}
+				
 				if(displayDesktopAlert){
 					if($scope.todaysNotifications.length > 0){
 						$scope.displayAlert = true;
@@ -745,7 +752,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						for(var j = 0; j < $scope.notifications.length; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
 								$scope.notifications.splice(j,1,notification);
-
 								isNotificationAdded = true;
 								break;	
 							}
@@ -810,10 +816,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			}
 		};
 
-		if(playChatNotification){
-			phoneService.playSound("received");
-			playChatNotification = false;
-		} 
+		 
 
 		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time; 

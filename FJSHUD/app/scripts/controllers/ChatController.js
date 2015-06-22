@@ -110,7 +110,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             'a.audience':chat.audience,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "2_5",
+            "a.taskId": "2_9",
             "_archive":0,
         };
 		
@@ -169,23 +169,28 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			
 			var from = data[i].from.replace('contacts:', '');
 			
-			if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
-				if (from == $scope.meModel.my_pid){
-					if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
-						phoneService.playSound("sent");
-				}
-			}
+			
 
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
 			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
+				if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
+					if (from == $scope.meModel.my_pid){
+						if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
+							phoneService.playSound("sent");
+					}
+				}
 				$scope.messages.push(data[i]);
 				found = true;				
 			}
 		}
 		
+		
+
 		if (found) {
+			
+
 			addDetails();
 			
 			// jump to bottom if new messages were found
