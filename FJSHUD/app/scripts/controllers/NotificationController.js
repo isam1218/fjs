@@ -584,7 +584,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 			var contextId = item.context.split(":")[1];
 			switch(context){
 				case "groups":
-					// console.error('context - ', contextId);
 					groupContextId = contextId;
 					targetId = $routeParam.groupId;
 					break;
@@ -678,15 +677,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				break;	
 			}
 		}
-
-		if(long_waiting_calls[notification.xpid] != undefined){
-			delete long_waiting_calls[notification.xpid];
-		}
-
 		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
 			$timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
+		}
+	};
+
+	var deleteLastLongWaitNotification = function(){
+		for (var i = $scope.todaysNotifications.length-1; i >= 0; i--){
+			if ($scope.todaysNotifications[i].type == 'q-alert-rotation'){
+				$scope.todaysNotifications.splice(i, 1);
+				break;
+			}
+		}
+		for (var j = 0; j < $scope.notifications.length; j++){
+			if ($scope.notifications[j].type == 'q-alert-rotation'){
+				$scope.notifications.splice(j,1);
+			}
 		}
 	};
 
@@ -707,14 +715,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							if(notification.type == 'q-alert-rotation'){
 								notification.label = $scope.verbage.long_waiting_call;
 								var long_waiting_notification = angular.copy(notification);
-								$timeout(function(){
-									deleteNotification(long_waiting_notification);
-								}, 60000);
 								long_waiting_calls[notification.xpid] = notification;
 							}else if(notification.type == 'q-alert-abandoned'){
 								notification.label = 'abandoned call';
 								notification.message = "";
 								var abandoned_notification = angular.copy(notification);
+								// once it's an abandoned call, want long-wait-note to disappear
+								deleteLastLongWaitNotification();
 								$timeout(function(){
 									deleteNotification(abandoned_notification);
 								}, 60000);
@@ -772,12 +779,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					notification.labelType == '';
 					if(notification.type == 'q-alert-rotation'){
 						notification.label = $scope.verbage.long_waiting_call;
-						$timeout(deleteNotification(notification), 60000);
-
 					}else if(notification.type == 'q-alert-abandoned'){
 						notification.label = 'abandoned call';
 						notification.message = "";
-						$timeout(deleteNotification(notification), 60000);
+						deleteLastLongWaitNotification();
+						$timeout(function(){
+							deleteNotification(notification);
+						}, 60000);
 					}else if(notification.type == 'q-broadcast'){
 						notification.label = 'broadcast message';
 					}else if(notification.type == 'gchat'){
