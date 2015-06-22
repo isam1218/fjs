@@ -161,9 +161,9 @@
 					<em>{{::verbage.call_transfer_destination}}</em>
 				</div>
 				<div>
-					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="1" ng-false-value="0" /> {{::verbage.primary_extension}}
+					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="true" ng-false-value="false" /> {{::verbage.primary_extension}}
 					<br/>
-					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="0" ng-false-value="1" /> {{::verbage.voicemail_box}}x
+					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="false" ng-false-value="true" /> {{::verbage.voicemail_box}}x
 				</div>
 			</div>
 		</div>

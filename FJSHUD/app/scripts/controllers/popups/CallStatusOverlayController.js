@@ -13,6 +13,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.selectedConf = null;
 	$scope.addError = null;
 	$scope.contacts = [];
+	$scope.who = {};
+	$scope.who.sendToPrimary = true;
 
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
@@ -126,7 +128,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.transferFrom = contactService.getContact(xpid);
 			$scope.tranQuery = '';
 			$scope.transferTo = null;
-			$scope.sendToPrimary = 1;
+			$scope.sendToPrimary = true;
 			
 			contactService.getContacts().then(function(data) { 
 				$scope.contacts = data;
@@ -140,15 +142,14 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.transferCall = function() {
 		if ($scope.transferTo) {
-
-			if($scope.transferFrom.call){
-				httpService.sendAction('calls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+			if($scope.transferFrom.call && $scope.transferFrom.primaryExtension){
+				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
 					fromContactId: $scope.transferFrom.xpid,
 					toContactId: $scope.transferTo.xpid
 				});	
 			}else{
-				httpService.sendAction('mycalls', $scope.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					mycallId: $scope.transferFrom.xpid,
+				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					mycallId: $scope.onCall.call.xpid,
 					toContactId: $scope.transferTo.xpid
 				});	
 
