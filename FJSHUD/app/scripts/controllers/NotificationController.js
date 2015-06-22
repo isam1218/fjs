@@ -438,7 +438,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							displayDesktopAlert = false;
 						}
 						break;
-						
+						 
 				}
 
 				
@@ -565,7 +565,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	});
 
 	var addTodaysNotifications = function(item){
-    	playChatNotification = false;
     	var today = moment(ntpService.calibrateTime(new Date().getTime()));
 		var itemDate = moment(item.time);
 		var context;
@@ -617,12 +616,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 
 		if(item.type == 'wall' || item.type == 'chat'){
-					playChatNotification = true;
-
-			if(playChatNotification){
-				phoneService.playSound("received");
-				playChatNotification = false;
-			}	
+			phoneService.playSound("received");
 		}
 
 		
