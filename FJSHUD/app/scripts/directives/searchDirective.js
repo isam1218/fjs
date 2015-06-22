@@ -41,13 +41,19 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 				var xImg = angular.element('<img class="x" src="img/clear.png"/>');
 				
 				xImg.bind('click', function(e) {
-					e.stopPropagation();
-					
-					$(this).hide();
+					e.stopPropagation();										
 					
 					scope.$evalAsync(function() {
 						scope.$eval(attrs.ngModel + ' = "";');
 					});
+					
+					if ($(element).parent().find('.SearchContactOverlay').length > 0)
+					{
+						$(element).parent().find('.SearchContactOverlay').remove();
+						$(element).val('');
+						$(this).hide();
+						
+					}	
 				});	
 				
 				element.on('keyup change mouseover mouseenter', function(e) {
