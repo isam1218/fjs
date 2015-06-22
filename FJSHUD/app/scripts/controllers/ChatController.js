@@ -10,6 +10,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
+	$scope.showFileShare = true;
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -17,18 +18,23 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.audience = 'contact';
 		chat.targetId = $routeParams.contactId;
 		chat.type = 'f.conversation.chat';
+		chat.attachmentType = 'f.conversation.wall'
 	}
 	else if ($routeParams.conferenceId) {
 		chat.name = $scope.conference.name;
 		chat.audience = 'conference';
 		chat.targetId = $routeParams.conferenceId;
 		chat.type = 'f.conversation.chat';
+		chat.attachmentType = 'f.conversation.wall'
+
 	}
 	else if ($routeParams.groupId) {
 		chat.name = $scope.group.name;
 		chat.audience = 'group';
 		chat.targetId = $routeParams.groupId;
 		chat.type = 'f.conversation.chat';
+		chat.attachmentType = 'f.conversation.wall'
+
 	}
 	else if ($routeParams.queueId) {
 		chat.name = $scope.queue.name;
@@ -40,9 +46,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			chat.type = 'queuemessage';
 			$scope.showAlerts = true;
 			$scope.chat.status = 3;
+			$scope.enableAlert = false;
+			$scope.showFileShare = false;
 		}
-		else
+		else{
 			chat.type = 'f.conversation.chat';
+			chat.attachmentType = 'f.conversation.wall'
+		}
+			
 	}
 	
 	// send to pop-up controller
@@ -94,6 +105,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};	
 
 	$scope.uploadAttachments = function($files){
+      	
+		if(!showFileShare){
+			return;
+		}
+      	
       	fileList = [];
 		
       	fileList.push($files.file);
@@ -101,7 +117,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
         var data = {
             'action':'sendWallEvent',
             'a.targetId': chat.targetId,
-            'a.type':'f.conversation.chat',
+            'a.type': chat.attachmentType,
             'a.xpid':"",
             'a.archive':0,
             'a.retainKeys':"",
@@ -126,7 +142,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
 	
-	httpService.getChat(chat.audience+'s', chat.type, chat.targetId).then(function(data) {
+	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
+
+	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
 		
@@ -143,6 +161,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		if (version < 0)
 			$interval.cancel(chatLoop);
 	});
+
+
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
@@ -174,7 +194,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
+			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '')
+
+			if ( (streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
 				if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
 					if (from == $scope.meModel.my_pid){
 						if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
