@@ -16,6 +16,8 @@
   position: relative;
   width: 100%;
   left: 0;
+  top: 5px;
+  margin-bottom: 5px;
 }
 .WidgetFont {
   font-size: 12px;
@@ -46,7 +48,8 @@
 .ZoomRowStatus {
   position: absolute;
   top: 16px;
-  left: 5px;
+  /*left: 5px;*/
+  top: 3px;
   height: 16px;
   font-size: 10px;
 }
@@ -85,13 +88,88 @@
   width: 40%;
   position: absolute;
 }
+.ZoomWidgetSection .JoinMeetingSection .addContact {
+  position: relative;
+  top: 10px;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.ZoomWidgetSection .JoinMeetingSection .addContact img.x {
+  top: -20px;
+  left: 195px;
+  z-index: 200;
+}
+.ZoomWidgetSection .JoinMeetingSection .XButtonWide.XButtonBlue.first {
+  margin-top: 0px;
+}
 .ZoomWidgetSection.left {
   left: 5%;
 }
+.ZoomWidgetSection.left .JoinMeetingSection .SearchInputBox {
+  top: 0px;
+}
+.ZoomWidgetSection.left .JoinMeetingSection .XButton.XButtonBlue {
+  margin-top: 5px;
+}
 .ZoomWidgetSection.right {
-  left: 55%;
+  left: 50%;
+  width: 45%;
 }
 .WidgetZoomBody {
   top: 35px;
   background-image: url(../img/XTile-Widget.png);
+}
+.widget-zoom-contacts {
+  top: 20px;
+  position: relative;
+}
+.widget-zoom-contacts .ListRow {
+  float: left;
+  padding: 5px;
+  height: 42px;
+}
+.widget-zoom-contacts .ListRow .Avatar {
+  top: -2px;
+  left: -2px;
+  margin: auto;
+}
+.widget-zoom-contacts .ListRow .ListRowContent {
+  margin-left: 1px;
+  padding: 0px;
+}
+.widget-zoom-contacts .ListRow .name {
+  font-weight: bold;
+  margin-top: -2px;
+}
+.widget-zoom-contacts .ListRow:hover .XButton.XButtonRed {
+  display: inline-block;
+}
+.widget-zoom-contacts .ListRow:hover .ZoomRowTitle .link {
+  display: none;
+}
+.widget-zoom-contacts .ListRow .XButton.XButtonRed {
+  display: none;
+  font-size: 11px;
+  padding: 4px 6px 6px 6px;
+  margin: 0px;
+  margin-right: -5px;
+  font-weight: bold;
+  height: 25px;
+}
+.widget-zoom-contacts .ListRow .ZoomRowTitle {
+  padding-left: 5px;
+}
+.widget-zoom-contacts .ListRow .ZoomRowTitle .link {
+  display: inline-block;
+  top: 5px;
+}
+.widget-zoom-contacts .ListRow .ZoomRowStatus {
+  top: 15px;
+}
+.widget-zoom-contacts .ListRow .ZoomRowStatus > div {
+  float: left;
+}
+.widget-zoom-contacts .ListRow .ZoomRowStatus > div.ListRowDesc {
+  margin-top: 5px;
 }

@@ -56,10 +56,10 @@
             </div>
 
             <div class="JoinMeetingSection"> 
-                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_screen_share_only}}</button>
+                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
                 <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
-                <div class="Add SearchInputBox">
-					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+                <div class="addContact">
+					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
                 </div>
             </div>
 
@@ -72,9 +72,9 @@
                                 <div class="link">#{{::contact.primaryExtension }}</div>
                             </div>
                             <div class="ZoomRowStatus">
-                                <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                                <!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
                                 <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
-                                <div class="ListRowDesc">{{contact.hud_status}}</div>
+                                <div class="ListRowDesc">{{::contact.hud_status}}</div>
                             </div>
                         </div>
                         <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
