@@ -24,9 +24,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 				if (autoClearOn) {
 					$timeout.cancel(timeout);
 					
-					timeout = $timeout(function() {
-						scope.$eval(attrs.ngModel + ' = "";');
-					}, autoClearTime*1000);
+					timeout = $timeout(clearSearch, autoClearTime*1000);
 				}
 			});
 			
@@ -38,25 +36,27 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			
 			// firefox doesn't have a clear button
 			if (browser == 'Firefox') {
-				var xImg = angular.element('<img class="x" src="img/clear.png"/>');
-				
-				xImg.bind('click', function(e) {
-					e.stopPropagation();
-					
-					$(this).hide();
-					
-					scope.$evalAsync(function() {
-						scope.$eval(attrs.ngModel + ' = "";');
-					});
-				});	
+				var xImg;
 				
 				element.on('keyup change mouseover mouseenter', function(e) {
 					if (element.val() != '') {
+						// create x for first time
 						if ($(element).parent().find('.x').length == 0) {
-							if ($(element).closest('.ConferenceMembers').length > 0)
-								element.parent().append(xImg);
-							else
-								element.after(xImg);
+							 xImg = angular.element('<img class="x" src="img/clear.png"/>');
+				
+							xImg.css('top', element[0].offsetTop + 'px');
+							xImg.css('left', element[0].offsetLeft + element[0].offsetWidth + 'px');
+				
+							// clear on click
+							xImg.bind('click', function(e) {
+								e.stopPropagation();
+								
+								$(this).hide();
+								
+								clearSearch();
+							});	
+				
+							$(element).parent().append(xImg);
 						}
 						else
 							$(element).parent().find('.x').show();
@@ -66,19 +66,8 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 				});
 				
 				element.on('mouseleave', function(e) {
-					if (e.relatedTarget.className != 'x')
+					if (e.relatedTarget && e.relatedTarget.className != 'x')
 						$(element).parent().find('.x').hide();
-				});
-				
-				scope.$on('$destroy', function() {
-					xImg.unbind().remove();
-					$timeout.cancel(timeout);
-				});
-			}
-			// destroy for other browsers
-			else {
-				scope.$on('$destroy', function() {
-					$timeout.cancel(timeout);
 				});
 			}
 			
@@ -91,6 +80,24 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 						});
 					}
 				});
+			}
+			
+			scope.$on('$destroy', function() {
+				$timeout.cancel(timeout);
+				
+				if (xImg !== undefined)
+					xImg.unbind().remove();
+			});
+			
+			function clearSearch() {
+				if (attrs.ngModel)
+					scope.$eval(attrs.ngModel + ' = "";');
+				else
+					element.val('');
+				
+				// contact overlay?
+				if (attrs.contactSearch !== undefined)
+					$(element).trigger('search');
 			}
 		}			
 	};	
