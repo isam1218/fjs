@@ -190,6 +190,13 @@ function do_version_check(){
                	sync_request(changedFeeds);
             else
 				setTimeout('do_version_check();', 500);
+		}else if(xmlhttp.status == 404 || xmlhttp.status == 500){
+			for(i = 0; i < ports.length;i++){
+				ports[i].postMessage({
+					"action": "network_error"
+				});
+			}
+
 		}
 		else{
 			for(i = 0; i < ports.length;i++){

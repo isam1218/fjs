@@ -301,6 +301,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 isRegistered = false;
                 return;
         } else if (session_status.status == 2) {
+        	$rootScope.$broadcast('network_status',undefined);
             isRegistered = false;
         }
 	};

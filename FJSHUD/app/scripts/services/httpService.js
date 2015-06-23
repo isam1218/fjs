@@ -93,6 +93,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
 								}
 							});
+							synced = true;
 		                }
 		                break;
 		            case "feed_request":
@@ -100,10 +101,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                break;
       				case "auth_failed":
 						delete localStorage.me;
-      					delete localStorage.nodeID;
-      					delete localStorage.authTicket;
-      					delete localStorage.data_obj;
-      					attemptLogin();
+						delete localStorage.nodeID;
+						delete localStorage.authTicket;
+						attemptLogin();
+      					break;
+      				case "network_error":
+      					if(!synced){
+      						$rootScope.$broadcast('network_issue',undefined);
+							worker.port.close();
+						}
       					break;
 					case "timestamp_created":
 						if (event.data.data)
@@ -199,10 +205,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
-						delete localStorage.data_obj;
-						delete localStorage.fon_tabs;
 						attemptLogin();
 						break;
+					case "network_error":
+      					if(!synced){
+      						$rootScope.$broadcast('network_issue',undefined);
+							worker.port.close();
+						}
+      					break;
 					case "timestamp_created":
 						if (event.data.data)
 							ntpService.syncTime(event.data.data);
@@ -342,11 +352,19 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					$rootScope.$broadcast('no_license', undefined);
 
 					break;
+				case 404:
+					$rootScope.$broadcast('network_issue',undefined);
+					break;
+				case 500:
+					$rootScope.$broadcast('network_issue',undefined);
+					break;
 				default:
 					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
-					attemptLogin();
+					$rootScope.$broadcast('network_issue',undefined);
+
+					//attemptLogin();
 					break;
 			}
 
