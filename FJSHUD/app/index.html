@@ -57,15 +57,13 @@
 				<div class="LeftBarTop">
 					<div class="ContactSearch">
 						<div ng-show=" tab != 'favorites' && tab != 'recent'">
-							<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
-							<span></span>
+							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
 							
 							<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
 						</div>
 						
 						<div ng-show="tab == 'favorites'">
-							<input type="search" ng-model-options="{debounce: 200}" class="Search add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
-							<span class="favorites"></span>
+							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
 						</div>
 					</div>
 					<div class="WidgetTabBar">
@@ -179,7 +177,6 @@
     <script src="scripts/directives/myCurrentTimeDirective.js"></script>
     <script src="scripts/directives/includeDirective.js"></script>
     <script src="scripts/directives/expandContractNotificationsDirective.js"></script>
-    <script src="scripts/directives/leftBarListScrollHeightDirective.js"></script>
     <script src="scripts/directives/topNavBehaviorDirective.js"></script>
 
     <!--controllers-->

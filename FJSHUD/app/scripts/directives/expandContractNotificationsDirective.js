@@ -12,8 +12,11 @@ hudweb.directive('expandContractNotifications', function() {
             	$scope.showNotificationBody = true;            	
             	var content = $(element).find('.NotificationSection:not(.last)');
             	//set the max height of the expanded notifications
-            	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .RoundedTop').outerHeight() - $('.LeftBar .LeftBarTop').outerHeight() - 10;
+            	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar.hasButton').outerHeight() - $('.LeftBar .Phone').outerHeight() - 5;
             	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight);
+				
+				// turn on expandability
+				$('.LeftBarNotificationSection').css('position', 'absolute');
             	
 	       		if(!hoverFlag && content.length > 0){
 	       			$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').hide();
@@ -56,12 +59,18 @@ hudweb.directive('expandContractNotifications', function() {
 	        	    	if(idx == 0)
 	        	    	  $(this).closest('.Messages').removeClass('firstMessage');
 	        	    	
-	        	    	if(browser == "Firefox")	
-	        	    	{	var topPos = $(this).hasClass('firstsection') ? 0 : -10;
-	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime);	
+	        	    	if(browser == "Firefox") {	
+							var topPos = $(this).hasClass('firstsection') ? 0 : -10;
+	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime, function() {
+								$('.LeftBarNotificationSection').css('position', 'relative');
+							});	
 	        	    	}
-	        	    	else
-	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime);           
+	        	    	else {
+	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime, function() {
+								$('.LeftBarNotificationSection').css('position', 'relative');
+							});   
+						}
+						
 	        	        $(this).removeClass('open');          
 	        	    });            	
      
