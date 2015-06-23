@@ -102,17 +102,24 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		else
 			return 'img/XIcon-UnknownDocument.png';
 	};	
+	
+	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
+	$scope.flow_cleanup = function($files){
+		$scope.upload.flow.cancel();
+	}
 
 	$scope.uploadAttachments = function($files){
       	
 		if(!$scope.showFileShare){
 			return;
 		}
-      	
       	fileList = [];
 		
-      	fileList.push($files.file);
-		
+		for(var i = 0; i < $files.length;i++){
+      		fileList.push($files[i].file);
+			
+      	}
+      	
         var data = {
             'action':'sendWallEvent',
             'a.targetId': chat.targetId,
@@ -128,12 +135,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             "a.taskId": "2_9",
             "_archive":0,
         };
-		
-        httpService.upload_attachment(data,fileList);
-		
-        $scope.upload.flow.cancel();
+		httpService.upload_attachment(data,fileList);
+	};
+
     
-    };
 	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
