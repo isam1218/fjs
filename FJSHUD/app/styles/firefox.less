@@ -9,12 +9,11 @@
            width: 7px; 
            height: 7px; 
            border: 0px none; 
-           display: inline-block; 
-           position: relative; 
-           right: 15px; 
-           top: 12px; 
-           float: left;        
-           cursor: pointer;                
+           position: absolute; 
+           margin-left: -15px; 
+           margin-top: 12px;   
+           cursor: pointer;   
+		   z-index: 100;
      }
         
      .TopBarMeStatus{
@@ -30,14 +29,6 @@
             top: 3px !important;
           }
         }
-     }   
-     .LeftBarTop{
-          img.x{
-            right: 24px;
-            top: 19px;
-            z-index: 101;        
-          }
-                   
      }     
     .Widget.Queues{
         .Block{
@@ -118,12 +109,9 @@
              }
              .ChatSearch{
                 top: 0px !important;
-                img.x{
-                  top: 10px !important;
-                }  
                 .Search{
                     margin-top: 0px;
-                    width: 63% !important;
+                    width: 68% !important;
                     height: 2.38em !important;  
                 }
              }
@@ -138,9 +126,6 @@
                         height: 2.40em !important;
                         width: 94% !important;
                     }
-                    img.x{
-                        top: 10px !important;
-                    }
                 }
             }
             
@@ -148,10 +133,6 @@
             
                 .XButton.XSortButton{
                     margin-top: 0px !important;
-                }
-                
-                img.x{
-                    top: 10px !important;
                 }
                 
                 input[type="search"] {
@@ -164,16 +145,9 @@
        height: 100% !important;
        width: 82%  !important;
        right: 0px  !important;
-       top: 0px !important;    
-       
-       img.x{float: right;right: 8px;}              
+       top: 0px !important;                
     }
     .Conference{
-    
-        img.x{
-            top: 10px;
-            right: 15%;
-        }
         
         .ToolBar{
         
@@ -197,22 +171,10 @@
            }
          }  
        }     
-    }      
-    .ConferenceMembers{ 
-           
-         img.x{
-             float: right;
-             right: 8px;
-             top: -18px;
-             position: relative;
-         }              
-    }         
+    }        
     .Conversation{
     
-      .ToolBar{        
-         
-         img.x{top: 10px; right: 12px;}
-         
+      .ToolBar{         
          .XButton {
            height: 2.2em !important;
          }
@@ -244,8 +206,6 @@
             
             .SearchIcon{float: left;}
             
-            img.x{right: 10px;}
-            
             .Arrows{float: right; width: 24%;}
       
             input[type=search].SearchBox{
@@ -257,9 +217,6 @@
             }
           }         
          }
-        }
-        .voicemail .ToolBar{
-            img.x{right: 16px;}
         }
      } 
      .XButton span{
