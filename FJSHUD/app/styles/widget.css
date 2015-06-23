@@ -1,7 +1,7 @@
 .ToolBar {
   position: relative;
   border-bottom: solid 1px #ccc;
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   padding: .3em 0 .7em 0;
 }
@@ -13,7 +13,6 @@
 .MyStatus .ToolBar .XButton {
   width: 31% !important;
   float: left !important;
-  /*font-size: 0.688em !important;*/
   padding-left: 0.5em !important;
 }
 .MyStatus .ToolBar select.XButton {
@@ -30,7 +29,7 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 1px 0 10px gray;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
 }
 .Widget {
   position: absolute;
@@ -81,7 +80,7 @@
 }
 .WidgetHeader {
   position: relative;
-  padding: .5em .25em;
+  padding: 20px;
 }
 .WidgetHeader .TopBarItemAppIcon,
 .WidgetHeader .WidgetHeaderTitle,
@@ -102,6 +101,113 @@
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Office {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -95px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Office .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -95px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_External {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -140px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_External .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -140px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Queue {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -185px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Queue .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -185px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Office,
+.WidgetBody .ListRow .Avatar.CallAvatar_External,
+.WidgetBody .ListRow .Avatar.CallAvatar_Queue {
+  margin-top: 6px;
+  margin-left: 5px;
+  border: none;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Office img,
+.WidgetBody .ListRow .Avatar.CallAvatar_External img,
+.WidgetBody .ListRow .Avatar.CallAvatar_Queue img {
+  height: 22px !important;
+  width: 22px !important;
+  margin: 4px !important;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Office:hover .AvatarInteractable,
+.WidgetBody .ListRow .Avatar.CallAvatar_External:hover .AvatarInteractable,
+.WidgetBody .ListRow .Avatar.CallAvatar_Queue:hover .AvatarInteractable {
+  display: block;
+}
+.WidgetBody .ListRow .Avatar.CallAvatar_Office .AvatarInteractable,
+.WidgetBody .ListRow .Avatar.CallAvatar_External .AvatarInteractable,
+.WidgetBody .ListRow .Avatar.CallAvatar_Queue .AvatarInteractable {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  border: none;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  display: none;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Office {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Office .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_External {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_External .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Queue {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Queue .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Office,
+.WidgetBody .vmsection .Avatar.CallAvatar_External,
+.WidgetBody .vmsection .Avatar.CallAvatar_Queue {
+  margin: auto 2px !important;
+  border: none;
+  width: 40px !important;
+  height: 40px !important;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Office img,
+.WidgetBody .vmsection .Avatar.CallAvatar_External img,
+.WidgetBody .vmsection .Avatar.CallAvatar_Queue img {
+  height: 32px !important;
+  width: 32px !important;
+  margin: 4px !important;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Office:hover .AvatarInteractable,
+.WidgetBody .vmsection .Avatar.CallAvatar_External:hover .AvatarInteractable,
+.WidgetBody .vmsection .Avatar.CallAvatar_Queue:hover .AvatarInteractable {
+  display: block;
+}
+.WidgetBody .vmsection .Avatar.CallAvatar_Office .AvatarInteractable,
+.WidgetBody .vmsection .Avatar.CallAvatar_External .AvatarInteractable,
+.WidgetBody .vmsection .Avatar.CallAvatar_Queue .AvatarInteractable {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  border: none;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  display: none;
 }
 .WidgetHeaderTitle {
   font-size: 1em;

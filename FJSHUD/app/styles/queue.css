@@ -153,9 +153,6 @@
 .Widget.Queues .QueueButtonToggle .QueueListView {
   background: url("../img/QueueListView.png") no-repeat 0px 0px;
 }
-.Widget.Queues .ToolBar {
-  /*top: -8px;*/
-}
 .Widget.Queues .ToolBar.Queues input[type=search] {
   width: 50%;
 }
