@@ -30,7 +30,8 @@
         </div>
 
         <!-- ng-views -->
-        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" include-once="views/ChatView.html"
+        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" include-once="views/ChatView.html" flow-init
+        flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
         ng-controller="ChatController"
         ></div>
         <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" include-once="views/conference/CurrentCall.html"
