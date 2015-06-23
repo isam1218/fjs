@@ -14,13 +14,13 @@ hudweb.directive('expandContractNotifications', function() {
             	//set the max height of the expanded notifications
             	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar.hasButton').outerHeight() - $('.LeftBar .Phone').outerHeight() - 5;
             	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight);
-				
-				// turn on expandability
-				$('.LeftBarNotificationSection').css('position', 'absolute');
             	
 	       		if(!hoverFlag && content.length > 0){
+					// turn on expandability
+					$('.LeftBarNotificationSection').css('position', 'absolute');
+				
 	       			$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').hide();
-              $('.LeftBar .NotificationDivider.firstHeaderDivider').hide();
+					$('.LeftBar .NotificationDivider.firstHeaderDivider').hide();
 	       			$scope.$safeApply(function(){
 	       			   $scope.showAllNotifications = true;
 	       			});   
@@ -45,6 +45,7 @@ hudweb.directive('expandContractNotifications', function() {
    		            setTimeout(function(){ hoverFlag = false; }, animTime);	       		        
 	       		  }		
             });
+			
             $(element).on('mouseleave', function() {
             	$scope.showNotificationBody = $scope.todaysNotifications.length > 3 ? false:true;
             	
@@ -63,22 +64,23 @@ hudweb.directive('expandContractNotifications', function() {
 	        	    	
 	        	    	if(browser == "Firefox") {	
 							var topPos = $(this).hasClass('firstsection') ? 0 : -10;
-	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime, function() {
-								$('.LeftBarNotificationSection').css('position', 'relative');
-							});	
+	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime);	
 	        	    	}
 	        	    	else {
-	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime, function() {
-								$('.LeftBarNotificationSection').css('position', 'relative');
-							});   
+	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime);   
 						}
 						
 	        	        $(this).removeClass('open');          
-	        	    });            	
+	        	    }); 
+				
+					setTimeout(function() {
+						$('.LeftBarNotificationSection').css('position', 'relative');
+					}, animTime);					
      
         	        hoverFlag = false;  
             	}
-        		
+				else
+					$('.LeftBarNotificationSection').css('position', 'relative'); 		
             });
        }
    };
