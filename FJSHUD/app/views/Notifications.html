@@ -14,21 +14,21 @@
      </div>    	
    <div class="scroller">  	
 	       <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
-					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
-							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
+					<div class="NotificationHeader ng-class:{'firstHeader': todaysNotifications.length <= 4 ? $index == 0 : $index == todaysNotifications.length - 5};">
+							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': todaysNotifications.length <= 4 ? $index == 0 : $index == todaysNotifications.length - 5};">
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
-							
 					</div>
-					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
+					<div class="NotificationDivider ng-class:{'firstHeaderDivider': todaysNotifications.length <= 4 ? $index == 0 : !anotherDevice ? $index == todaysNotifications.length - 5 : $index == todaysNotifications.length - 4};">
 					    <img />
-					   <div class="headerText" ng-if="$index == 0"> 
+					   <div class="headerText" ng-if="showTodayHeader($index, anotherDevice)"> 
+
 					    <div class="Icon" ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
 				        <div>{{::verbage.notifications}}  </div>
 				        <div class="Event" ng-show="notifications.length > 0"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
 				       </div>             
 					</div>
-					<div class="NotificationSection ng-class:{'firstsection': $index == 0 , 'last' : ($last || $index == showing)  && phoneSessionEnabled && !anotherDevice};" >
+					<div class="NotificationSection ng-class:{'firstsection': $index == 0 , 'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
 			
 						<avatar 
 							class="LeftBarNotificationAvatarSection NotificationAvatar"
