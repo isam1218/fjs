@@ -1,7 +1,7 @@
 .ToolBar {
   position: relative;
   border-bottom: solid 1px #ccc;
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   padding: .3em 0 .7em 0;
   
@@ -15,8 +15,7 @@
  .ToolBar{
      .XButton{
         width: 31% !important;
-        float: left !important;
-        /*font-size: 0.688em !important;*/
+        float: left !important;        
         padding-left: 0.5em !important;
      }
      select.XButton{
@@ -35,7 +34,7 @@
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 	box-shadow: 1px 0 10px gray;
-	padding-top: 10px;
+	/*padding-top: 10px;*/
   }
 }
 
@@ -94,7 +93,7 @@
 }
 .WidgetHeader {
   position: relative;
-  padding: .5em .25em;
+  padding: 20px;
   
   .TopBarItemAppIcon, .WidgetHeaderTitle, .Avatar {
     position: relative;
@@ -115,6 +114,128 @@
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
+  
+  .ListRow{ 
+      .Avatar
+      {      
+              &.CallAvatar_Office{
+                background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -95px;
+                .AvatarInteractable {                 
+                   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -95px;
+                }
+               }
+          
+              &.CallAvatar_External{
+                background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -140px;
+                .AvatarInteractable {                 
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -140px;
+                }    
+              }
+              &.CallAvatar_Queue{
+                background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -185px;
+                .AvatarInteractable {                 
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -185px;
+                } 
+              }
+      
+              &.CallAvatar_Office,
+              &.CallAvatar_External,
+              &.CallAvatar_Queue
+              {
+                margin-top: 6px;
+                margin-left: 5px;            
+                border: none;
+                
+                img{
+                    height: 22px !important;
+                    width: 22px !important;
+                    margin: 4px !important;
+                    border-radius: 30px;
+                    -webkit-border-radius: 30px;
+                }
+                
+                &:hover{
+                   .AvatarInteractable {
+                    display: block; 
+                   } 
+                }
+                
+                .AvatarInteractable {                                    
+                    height: 30px;
+                    width: 30px;
+                    position: absolute;
+                    border: none;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    top: 0;
+                    display: none;
+                }
+              }                     
+       }         
+  } 
+  .vmsection{
+   .Avatar
+   {   
+     &.CallAvatar_Office{
+        background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
+        .AvatarInteractable {                 
+           background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
+        }
+     }
+  
+     &.CallAvatar_External{
+        background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+        .AvatarInteractable {                 
+            background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+        }    
+     }
+     &.CallAvatar_Queue{
+        background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
+        .AvatarInteractable {                 
+            background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
+        } 
+     }
+     
+     &.CallAvatar_Office,
+     &.CallAvatar_External,
+     &.CallAvatar_Queue
+     {
+        margin: auto 2px !important;           
+        border: none;
+        width: 40px !important;
+        height: 40px !important;
+        
+        img{
+            height: 32px !important;
+            width: 32px !important;
+            margin: 4px !important;
+            border-radius: 40px;
+            -webkit-border-radius: 40px;
+        }
+        
+        &:hover{
+           .AvatarInteractable {
+            display: block; 
+           } 
+        }
+        
+        .AvatarInteractable {                            
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            border: none;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+     }
+    }              
+  }  
 }
 
 .WidgetHeaderTitle {

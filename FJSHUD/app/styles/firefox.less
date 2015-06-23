@@ -103,8 +103,7 @@
          
              input[type=search]{           
                 width: 30%;
-                font-size: 0.688em !important;
-                /*height: 2.6em !important; */           
+                font-size: 0.688em !important;                          
              }
              &.fj-stream{ 
                  .XButton{
@@ -412,5 +411,31 @@
             margin-bottom: 5px;
         }
     }
-   }      
+   } 
+   
+   
+   .CallLog {
+    .ListLineContent.Header{
+        .ListLineContentCell{
+            &:first-child{
+                 width: 28px;
+            } 
+            &.Name{width: 108px !important;}   
+            &.Phone{width: 76px !important;}
+            &.Duration{width: 54px  !important;}  
+            &.StartedAt{width: 110px !important;}  
+            &.CallType{width: 10%  !important;}  
+        }
+    } 
+
+    .ListRow {
+        /*& > div:not(:first-child){
+            padding-left: 5px;                        
+        }*/
+         &.Phone {        
+            flex: 2.2 1 0;
+        }
+    }
+          
+   }     
 }
