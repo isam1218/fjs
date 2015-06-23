@@ -46,7 +46,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			chat.type = 'queuemessage';
 			$scope.showAlerts = true;
 			$scope.chat.status = 3;
-			$scope.enableAlert = false;
 			$scope.showFileShare = false;
 		}
 		else{
@@ -194,7 +193,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '')
+			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '');
 
 			if ( (streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
 				if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
