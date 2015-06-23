@@ -23,9 +23,9 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
         } else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
             return "Yesterday";
         } else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
-    		return "today " + moment(milliseconds).lang(locale_code).format('hh:mm a');
+    		return "Today " + moment(milliseconds).lang(locale_code).format('hh:mm a');
     	} else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
-    		return "yesterday " + moment(milliseconds).lang(locale_code).format('hh:mm a');
+    		return "Yesterday " + moment(milliseconds).lang(locale_code).format('hh:mm a');
     	} else if (moment(milliseconds).startOf('year').isSame(moment(todayTime).startOf('year'))){
             return moment(milliseconds).lang(locale_code).format("MMMM D, hh:mm a");
         } else {
