@@ -49,23 +49,40 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();	
 	
 	$scope.showHideElements = function(index){
-		var showing = 4;
+		var showing = $scope.todaysNotifications.length - 5;
 		if(!$scope.phoneSessionEnabled || $scope.anotherDevice)
-			showing = 3;
+			showing = $scope.todaysNotifications.length - 4;
 		if(!$scope.phoneSessionEnabled && $scope.anotherDevice)
-			showing = 2;
-		
+			showing = $scope.todaysNotifications.length - 3;
 		$scope.showing = showing;
-		
-		if(!$scope.showAllNotifications)
-		{	
-			if(index > showing)
-				return false;
+		if (!$scope.showAllNotifications && $scope.todaysNotifications){
+			if (index >= showing)
+				return true;
 			else
-			    return true;
+				return false;
 		}
-	
 		return true;
+	};
+
+	$scope.showTodayHeader = function(index, anotherDevice){
+		if ($scope.todaysNotifications.length <= 4){
+			if (index == 0)
+				return true
+			else
+				return false
+		} else {
+			if (!anotherDevice){
+				if (index == $scope.todaysNotifications.length - 5)
+					return true
+				else
+					return false;
+			} else {
+				if (index == $scope.todaysNotifications.length - 4)
+					return true;
+				else
+					return false;
+			}
+		}
 	};
 
 	// used to update the UI
