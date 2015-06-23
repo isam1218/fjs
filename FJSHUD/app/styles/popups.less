@@ -7,6 +7,15 @@
   z-index: 160;  
   
   &.notifications{    
+    .overlayNotificationsSection{
+        background: url() #fff;
+    }
+   
+    .plugins, .webphone{
+        .LeftBarNotificationAvatarSection{
+            border-right: none 0px;
+        }    
+    } 
     .Conference-HeaderSubTitle{
         font-size: 11px;
         line-height: 18px;
@@ -19,11 +28,17 @@
         color: #555;
         float: left;
     }
+
     
     .HeaderTitle{
         left: -5px !important;
     }
     
+
+    .NotificationMessages{          
+          display: block;
+    } 
+
     .Messages{
         background: url('') #fff !important;
         /*padding-bottom:8px !important;*/
@@ -39,7 +54,29 @@
         }
         .LeftBarNotificationMessageSection{
             margin-left: 5px;
+            width: 90%;
+            max-width: 90%;
+            
+            .NotificationDisplayName{
+                height: auto;
+            }
+            .chatNotification{
+                &.webphone, &.plugins{
+                    padding-top: 10px;
+                }
+            }    
         }
+        .NotificationSection{
+            height: auto !important;
+            width: 100%;
+            
+            &.plugins, &.webphone{
+                padding-bottom: 20px;
+            }
+        }
+        .NotificationMessage{
+          max-height: none !important;
+        } 
     }
     
     
@@ -71,7 +108,11 @@
       position: absolute;
       width: 94%;
       bottom: 10px;       
-      padding-top: 20px;        
+      padding-top: 20px;      
+      
+      .XButton[type=button]{
+        width:20%;
+      }  
     }
     .notifications_section{             
         width: 100%;          
@@ -79,7 +120,7 @@
         overflow-y: auto;
         vertical-align: middle;
         display: inline-block;
-        margin-top: 20px;
+        /*margin-top: 20px;*/
         
         .Messages{
             overflow: hidden;
@@ -104,17 +145,18 @@
     }
     .NotificationMessages{       
         border: 1px solid #ccc;        
-        position: absolute;
-        /*left: 5px;*/
+        position: absolute;        
         right: 5px;
-        top: 70px;
+        top: 80px;
         bottom: 70px;
         overflow: hidden;
         overflow-y: auto;
         overflow-x: hidden;
         padding-bottom: 40px;   
         width: 94%;
-        left: 15px;             
+        left: 15px;    
+        margin-bottom: 20px;  
+        background: url() #fff;       
         
         .overlayNotificationsSection:before{             
              content: '';
@@ -129,8 +171,8 @@
           max-height: inherit;
         }            
     }
-    .Foreground{   
-      width: 40%;    
+    .Foreground{          
+      width: 500px;
       background: url('') #ffffff !important;
       height: 500px;
       .footer{
@@ -532,7 +574,7 @@
   border-radius: 5px;
   z-index: 99;
   padding: .5em;
-  font-size: .8em;
+  font-size: 12px;
   
   .Header {
 	text-align: center;

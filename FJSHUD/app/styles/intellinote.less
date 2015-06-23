@@ -1,0 +1,114 @@
+.Widget.Intellinote {
+	font-size: 12px;
+	padding: 20px;
+	
+	.Intro {
+		margin: 20px 0 10px 0;
+	}
+	
+	.Logo {
+		margin-left: 20px;
+	}
+	
+	.Section {
+		min-height: 110px;
+	}
+	
+	.Left {
+		float: left;
+		width: 48%;
+		background-color: #f9f9f9;
+	
+		h4 {
+			font-size: 14px;
+			color: #779c00;
+			margin-bottom: 5px;
+			text-transform: uppercase;
+		}
+	}
+	
+	.Right {
+		float: right;
+		width: 48%;
+		clear: right;
+		
+		.SearchHolder {
+			position: relative;
+		}
+		
+		.Contacts {
+			max-height: 200px;
+			overflow-y: auto;
+		}
+		
+		.Workspaces {
+			position: relative;
+			
+			.List {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				background-color: white;
+				border: 1px solid #ccc;
+				box-shadow: 0 0 5px #ccc;
+				
+				.Header {
+					position: relative;
+					font-weight: bold;
+					padding: 7px 0 7px 30px;
+					
+					.Down {
+						position: absolute;
+						top: 10%;
+						right: 0;
+						height: 80%;
+						width: 15%;
+						padding-top: 4px;
+						text-align: center;
+					}
+				}
+				
+				.Items {
+					font-size: 13px;
+					border-top: 1px solid #333;
+					margin: 0 10px 10px 10px;
+					
+					div {
+						cursor: pointer;
+						font-size: 13px;
+						padding: 5px;
+					
+						&:hover {
+							background-color: #eee;
+						}
+					}
+				}
+			}
+		}
+	
+		.WorkspaceButton {
+			position: relative;
+			font-weight: bold;
+			color: white;
+			padding: 7px 0 7px 30px;
+			background-color: #779c00;
+			margin: 20px 0;
+			cursor: pointer;
+			
+			div {
+				position: absolute;
+				top: 10%;
+				right: 0;
+				height: 80%;
+				border-left: 1px solid white;
+				width: 15%;
+				text-align: center;
+				
+				&.Down {
+					padding-top: 4px;
+				}
+			}
+		}
+	}
+}

@@ -1,4 +1,5 @@
-hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$routeParams', '$location', 'ContactService', 'HttpService', 'GroupService', function($scope, $rootScope, $routeParams, $location, contactService, httpService, groupService) {
+hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$routeParams', '$location', 'ContactService', 'HttpService', 'GroupService','$sce', 
+	function($scope, $rootScope, $routeParams, $location, contactService, httpService, groupService,$sce) {
 	$scope.add = {type: 2, contacts: []};
 	$scope.editing = false;
 
@@ -71,8 +72,9 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		var deletedMessageIntro = "GOODBYE " + groupName + "!  "; 
 		var finalDeletedGroupMessage = deletedMessageIntro + deletedGroupMessage;
 
+		var action = $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup');
 		// save
-		httpService.sendAction('groups', $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup'), $scope.add);
+		httpService.sendAction('groups',action , $scope.add);
 		
 		// change location
 		if ($scope.closing && $routeParams.groupId && $routeParams.groupId == $scope.add.groupId)

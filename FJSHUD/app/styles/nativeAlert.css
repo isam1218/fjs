@@ -109,7 +109,7 @@
 #CallAlert .Notifications .NotificationMessages .scroller {
   padding-top: 0px;
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 #CallAlert .Notifications .NotificationMessages .scroller .Messages:first-child {

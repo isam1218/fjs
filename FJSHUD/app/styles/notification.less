@@ -2,10 +2,10 @@
 
 	border-left:solid 1px #eee;
 	/*flex: 1;
-	-webkit-box-flex: 1;*/
-	/*padding-left:10px;*/
+	-webkit-box-flex: 1;*/	
 	padding-left: 5px;
-	width: 86%;
+	width: 92%;
+	padding-top: 5px;
 		
 	.NotificationDisplayName{
 		height: 2.5em;
@@ -36,7 +36,8 @@
 		font-weight:normal;
 		position: relative;
 		float:right;
-		right:20%;		
+		/*right:20%;	*/
+		right: 20px;	
 	}
 
 	.NotificationMessage{
@@ -48,6 +49,7 @@
 		white-space: normal;		
 		max-height: 75px;	
 		//text-overflow:ellipsis;
+		top: 5px;
 		p{
 			font-size:.8em;
 		}
@@ -270,7 +272,8 @@
 	display:-webkit-box;
 	padding-left: 5px;
 	overflow: hidden;
-	width: 83%;	
+	/*width: 83%;*/	
+	width: 95%;
 	height: 0px;
 	padding-bottom: 10px;
 	
@@ -300,11 +303,13 @@
 	height: 4px;
 	
 	&.firstHeaderDivider{
-	   background-color: #999;
-       /*background: -webkit-gradient(linear, left top, left bottom, from(#999999), to(#888888));*/
+	   background-color: #999;       
        height: 2.3em;
        &.noMessagess{
          margin-top: -1px;
+       }
+       &.firstHeaderDivider > div{
+        border-top: none 0px;
        }
        img{display: none;}
 	}
@@ -371,10 +376,46 @@
 	background-image:url("../img/XTile-Widget.png");
 	/*padding-bottom: 20px;*/
 	width: 100%;
+	
+	&:not(.first){
+    	.NotificationDivider > div{
+            border-left:1px solid #ccc;
+        }
+    }
+    
+    .header_text{
+       display: none;
+    }
+    
+    &.first{
+           &.noMessagess{
+              .NotificationDivider{
+                 margin-top: -1px;
+              }   
+           }
+           /*.NotificationHeader{
+               
+           }*/
+           .NotificationHeaderBackground{         
+               position: relative;     
+               bottom: -1.2em;
+               right: -1px;    
+           }
+           .NotificationDivider{               
+               background-color: #999;              
+               height: 2.3em;               
+               img{display: none;}   
+           }
+           .header_text{
+               display: block;
+           }
+    }
+    
 	&.plugins, &.webphone{
 	   cursor:pointer;
 	   text-decoration:none;
 	   color:inherit;
+	   
 	   .content{
 	       font-weight:bold;
 	       font-size:.7em;

@@ -47,9 +47,9 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
 						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
 					</div>
 				</div>
@@ -161,9 +161,9 @@
 					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
 				<div>
-					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="1" ng-false-value="0" /> {{::verbage.primary_extension}}
+					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="true" ng-false-value="false" /> {{::verbage.primary_extension}}
 					<br/>
-					<input type="checkbox" ng-model="sendToPrimary" ng-value="{{sendToPrimary}}" ng-true-value="0" ng-false-value="1" /> {{::verbage.voicemail_box}}x
+					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="false" ng-false-value="true" /> {{::verbage.voicemail_box}}x
 				</div>
 			</div>
 		</div>
