@@ -6,7 +6,9 @@
   border: 1px solid #ccc;
   float: left;
   flex: 1;
+  -webkit-flex: 1;
   flex-direction: column;
+  -webkit-flex-direction: column;
   display: flex;
   height: 100%;
 
@@ -83,7 +85,7 @@
 	.ContactList {
 	  flex: 1 1 0;
 	  -ms-flex: 1 1 auto;
-	  -webkit-flex: 1;
+	  -webkit-flex: 1 1 0;
 	  position: relative;
       width: 100%;
       overflow-y: auto;
@@ -156,7 +158,7 @@
           display: block;
           flex: 1 1 0;
           -ms-flex: 1 1 auto;
-          -webkit-flex: 1;
+          -webkit-flex: 1 1 0;
           overflow-y: auto;
           overflow-x: hidden;
           position: absolute;
@@ -225,6 +227,7 @@
     position: relative;
     width: 100%;
     display: flex;
+	display: -webkit-flex;
     z-index: 99;
 
     & > div:first-child {
