@@ -146,11 +146,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		call.accept();
 		httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 	
-		/*for(i in callsDetails){
+		for(i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 				holdCall(i,true);		
 			}
-		}*/
+		}
 	};
 
 	var playVm = function(xpid){
@@ -521,10 +521,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var removeNotification = function(){
-		/*if(alertPlugin){
+		if(alertPlugin){
 			isAlertShown = false;
 			alertPlugin.removeAlert();
-		}*/
+		}
 	};
 	
 	var remove_notification = function(xpid){		

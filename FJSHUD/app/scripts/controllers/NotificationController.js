@@ -485,10 +485,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 		$scope.isRinging = true;
 		
-       	if(displayDesktopAlert){
-       		$scope.displayAlert = true;
-			$timeout(displayNotification, 1000);
-		}
+       
        	
        	if(!$.isEmptyObject(data))
 		{	
@@ -530,6 +527,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
        	
 		if($.isEmptyObject($scope.calls)){
 			phoneService.removeNotification();
+		}else{
+			if(displayDesktopAlert){
+	       		$scope.displayAlert = true;
+				$timeout(displayNotification, 1000);
+			}
 		}
 
        	if($scope.inCall && !$.isEmptyObject($scope.callObj))
