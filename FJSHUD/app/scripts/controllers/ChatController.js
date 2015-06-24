@@ -205,8 +205,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			if ( (streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
 				if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
 					if (from == $scope.meModel.my_pid){
-						if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
-							phoneService.playSound("sent");
+						phoneService.playSound("sent");
+					}else{
+						phoneService.playSound("received");
 					}
 				}
 				$scope.messages.push(data[i]);

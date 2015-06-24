@@ -659,7 +659,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				for(var j = 0; j < $scope.todaysNotifications.length; j++){
 						if($scope.todaysNotifications[j].xpid == item.xpid){
 						$scope.todaysNotifications.splice(j,1,item);
-						if(item.type == 'wall' || item.type == 'chat'){
+						if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
 							phoneService.playSound("received");
 						}
 						isAdded = true;
@@ -667,7 +667,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}
 				}
 				if(!isAdded){
-					if(item.type == 'wall' || item.type == 'chat'){
+					if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
 						phoneService.playSound("received");
 					}
 					$scope.todaysNotifications.push(item);
