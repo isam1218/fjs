@@ -208,14 +208,11 @@
 	-webkit-flex-direction: column;
 	
 	.scroller{	    
-      padding-top: 0px;
+      background-color: #999;
       
       &:hover{
        overflow-y: auto;
        overflow-x:hidden;
-      }
-      .firstMessage{
-        margin-top: -16px;
       }
 	}
 }
@@ -224,19 +221,22 @@
 	transition: 1s;		
 }
 
-.TitleBar{
-  margin-bottom: 10px;
-  &.noNotifications{
-   display: none;
-  }
-}
 .LeftBarNotificationSection{
     background-color: #999;
     background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#888));
     border-bottom: solid 1px #777;
     width: 100%;
     position: relative;
-    bottom: 0px;        
+    bottom: 0px;
+
+	&.hasMessages {
+		&.Expand {
+			.TitleBar .XButton { visibility: visible; }
+			.scroller { padding-top: 20px; }
+		}
+		
+		.TitleBar .XButton { visibility: hidden; }
+	}
     
     &:hover, &.noMessages{
         background: transparent;
@@ -253,6 +253,9 @@
         margin-bottom: 0px;
       }
     }
+	
+	.NotificationHeaderBackground { bottom: 17px; }
+	.NotificationDivider { height: 1px; }
 }
 
 .NotificationMessages.LeftBarNotifications.noMessages{   
@@ -275,6 +278,7 @@
 	margin-top:5px;	
 	-webkit-box-orient:horizontal;
 	display:-webkit-box;
+	display:-ms-flexbox;
 	padding-left: 5px;
 	overflow: hidden;
 	/*width: 83%;*/	
@@ -379,6 +383,7 @@
 	font-style:normal;
 	font-size:1em;
 	background-image:url("../img/XTile-Widget.png");
+	background-color: white;
 	/*padding-bottom: 20px;*/
 	width: 100%;
 	
@@ -387,6 +392,12 @@
             border-left:1px solid #ccc;
         }
     }
+	
+	&:after {
+		clear: both;
+		content: "";
+		display: table;
+	}
     
     .header_text{
        display: none;

@@ -8,11 +8,13 @@ hudweb.directive('expandContractNotifications', function() {
         	browser = browser && browser[0] ? browser[0] : "MSIE";
         	var $scope = scope;
         	
-            $(element).on('hoverIntent mouseenter', function() {              
+            $(element).on('hoverIntent mouseenter', function() {
+				$(this).addClass('Expand');
+				
             	$scope.showNotificationBody = true;            	
             	var content = $(element).find('.NotificationSection:not(.last)');
             	//set the max height of the expanded notifications
-            	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar.hasButton').outerHeight() - $('.LeftBar .Phone').outerHeight() - $('.LeftBar .CallStatusContainer').outerHeight() - 20;
+            	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar').outerHeight() - $('.LeftBar .Phone').outerHeight() - $('.LeftBar .CallStatusContainer').outerHeight() - 20;
             	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight + 'px');
             	
 	       		if(!hoverFlag && content.length > 0){				
@@ -44,6 +46,8 @@ hudweb.directive('expandContractNotifications', function() {
             });
 			
             $(element).on('mouseleave', function() {
+				$(this).removeClass('Expand');
+				
             	$scope.showNotificationBody = $scope.todaysNotifications.length > 3 ? false:true;
             	
             	$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').show();
