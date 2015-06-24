@@ -4,13 +4,13 @@
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
      </div> 
 	 <div class="TitleBar hasButton"  ng-if="hasMessages" show-on-hover-parent>
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
      </div>    	
    <div class="scroller">  	
 	       <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
