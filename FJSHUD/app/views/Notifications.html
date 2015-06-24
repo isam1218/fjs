@@ -421,7 +421,7 @@
 					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 				</div>				
 				<div class="controlButtons">
-					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{ currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</div>
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
 					
