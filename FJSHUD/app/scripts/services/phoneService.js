@@ -26,6 +26,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.bargeObj = {};
 	var isRegistered = false;
 	var isAlertShown = true;
+	var soundEstablished = false;
 
 	var voicemails = [];
 	var weblauncher = {};
@@ -285,7 +286,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		setupListeners();
 				activatePhone();
 
-			 	soundManager = session.soundManager;
+			 	
+			 }
+            //isRegistered = true;
+			if(!soundEstablished){
+				soundManager = session.soundManager;
 				devices = soundManager.devs;
 				deferred.resolve(devices);
 				spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
@@ -293,10 +298,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
 					soundManager.speaker = parseFloat(spkVolume);
 					soundManager.microphone = parseFloat(micVolume);
+					soundEstablished = true;
 				}
-			 }
-            //isRegistered = true;
-			
+			}
 			//registerPhone(true);
 			
          } else if (session_status.status == 1) {
@@ -347,7 +351,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			xpid = queryArray[0];
     	}
     	activateBrowserTab();
-    	
+    	var data;
     	window.focus();
     	if(url.indexOf('#') === -1){
 
@@ -367,7 +371,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
@@ -385,7 +389,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/OpenNotifications':
 	    			data = {
 	    				event:'openNot'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '/PlayVM':
@@ -451,7 +455,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '#/ResumeCall':
 	    			data = {
 	    				event: 'resume'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
@@ -461,7 +465,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '#/OpenNotifications':
 	    			data = {
 	    				event:'openNot'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '#/AcceptZoom':
@@ -610,7 +614,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 phone.attachEvent("onStatus", accStatus);
     		}else{
     			phone.addEventListener("Call",onCallStateChanged);
-    			phone.addEventListener("Status",accStatus)
+    			phone.addEventListener("Status",accStatus);
     		}
     	}
 
