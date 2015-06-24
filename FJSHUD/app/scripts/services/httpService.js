@@ -431,7 +431,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
             't': 'web',
             'action': action
         }
-        if (model) {
+        if (model || model == 0) {
             if (model.value) {
                 params['a.value'] = model.value;
             } else {
