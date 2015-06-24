@@ -56,12 +56,18 @@
 	}		
 }
 
+.CallStatusContainer {
+  position: relative;
+}
+
 .CallStatusContainerOutbound {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+    background: linear-gradient(#f3f8e6, #ecf2da);
+    background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
 
 }
 .CallStatusContainerInbound {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+    background: linear-gradient(#e4f1f8, #dfebf1);
+    background: -webkit-linear-gradient(#e4f1f8, #dfebf1);
 
 }
 
@@ -88,7 +94,7 @@
     overflow: hidden;
     width: 100%;
     padding-right: 5px;
-    position: absolute;
+    position: relative;
     bottom: 1px;
 
    .CallStatusIconContainer,
@@ -246,9 +252,6 @@
       .TitleBar{
         margin-bottom: 0px;
       }
-    }   
-    &.withCalls{
-      bottom: 45px !important;
     }
 }
 

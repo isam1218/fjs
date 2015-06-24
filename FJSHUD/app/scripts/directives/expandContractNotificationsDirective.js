@@ -12,13 +12,10 @@ hudweb.directive('expandContractNotifications', function() {
             	$scope.showNotificationBody = true;            	
             	var content = $(element).find('.NotificationSection:not(.last)');
             	//set the max height of the expanded notifications
-            	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar.hasButton').outerHeight() - $('.LeftBar .Phone').outerHeight() - 5;
-            	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight);
+            	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar.hasButton').outerHeight() - $('.LeftBar .Phone').outerHeight() - $('.LeftBar .CallStatusContainer').outerHeight() - 20;
+            	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight + 'px');
             	
-	       		if(!hoverFlag && content.length > 0){
-					// turn on expandability
-					$('.LeftBarNotificationSection').css('position', 'absolute');
-				
+	       		if(!hoverFlag && content.length > 0){				
 	       			$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').hide();
 					$('.LeftBar .NotificationDivider.firstHeaderDivider').hide();
 	       			$scope.$safeApply(function(){
@@ -52,7 +49,6 @@ hudweb.directive('expandContractNotifications', function() {
             	$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').show();
               $('.LeftBar .NotificationDivider.firstHeaderDivider').show();
             	var content = $(element).find('.NotificationSection:not(.last)');
-            	$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
             	
             	$scope.$safeApply(function(){
             	   $scope.showAllNotifications = false;    
@@ -64,23 +60,23 @@ hudweb.directive('expandContractNotifications', function() {
 	        	    	
 	        	    	if(browser == "Firefox") {	
 							var topPos = $(this).hasClass('firstsection') ? 0 : -10;
-	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime);	
+	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime, function() {
+								$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
+							});	
 	        	    	}
 	        	    	else {
-	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime);   
+	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime, function() {
+								$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
+							});   
 						}
 						
 	        	        $(this).removeClass('open');          
-	        	    }); 
-				
-					setTimeout(function() {
-						$('.LeftBarNotificationSection').css('position', 'relative');
-					}, animTime);					
+	        	    }); 				
      
         	        hoverFlag = false;  
-            	}
+            	}	
 				else
-					$('.LeftBarNotificationSection').css('position', 'relative'); 		
+					$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
             });
        }
    };
