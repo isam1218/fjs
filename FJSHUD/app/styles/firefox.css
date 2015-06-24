@@ -9,12 +9,11 @@
     width: 7px;
     height: 7px;
     border: 0px none;
-    display: inline-block;
-    position: relative;
-    right: 15px;
-    top: 12px;
-    float: left;
+    position: absolute;
+    margin-left: -15px;
+    margin-top: 12px;
     cursor: pointer;
+    z-index: 100;
   }
   .TopBarMeStatus .Logout {
     padding: 1px 14px 3px 13px !important;
@@ -25,10 +24,16 @@
   .TopBarMeStatus .XButton span {
     top: 3px !important;
   }
-  .LeftBarTop img.x {
-    right: 24px;
-    top: 19px;
-    z-index: 101;
+  .Widget.Queues .Block .Avatar {
+    width: 42px !important;
+    height: 40px !important;
+  }
+  .Widget.Queues .Block .Title {
+    width: 80px !important;
+    flex: none !important;
+  }
+  .Widget.Queues .Block .Title .Agents {
+    padding-top: 0px !important;
   }
   .WidgetMe .WidgetHeader {
     height: 8.438em !important;
@@ -73,7 +78,6 @@
   .WidgetBody .ToolBar input[type=search] {
     width: 30%;
     font-size: 0.688em !important;
-    /*height: 2.6em !important; */
   }
   .WidgetBody .ToolBar.fj-stream .XButton {
     float: right !important;
@@ -88,12 +92,9 @@
   .WidgetBody .ToolBar .ChatSearch {
     top: 0px !important;
   }
-  .WidgetBody .ToolBar .ChatSearch img.x {
-    top: 10px !important;
-  }
   .WidgetBody .ToolBar .ChatSearch .Search {
     margin-top: 0px;
-    width: 63% !important;
+    width: 68% !important;
     height: 2.38em !important;
   }
   .WidgetBody .ToolBar .SearchInputBox {
@@ -107,14 +108,8 @@
     height: 2.40em !important;
     width: 94% !important;
   }
-  .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder img.x {
-    top: 10px !important;
-  }
   .WidgetBody .ToolBar.Queues .XButton.XSortButton {
     margin-top: 0px !important;
-  }
-  .WidgetBody .ToolBar.Queues img.x {
-    top: 10px !important;
   }
   .WidgetBody .ToolBar.Queues input[type="search"] {
     width: 20em !important;
@@ -124,14 +119,6 @@
     width: 82%  !important;
     right: 0px  !important;
     top: 0px !important;
-  }
-  .SearchInputBoxInputHolder img.x {
-    float: right;
-    right: 8px;
-  }
-  .Conference img.x {
-    top: 10px;
-    right: 15%;
   }
   .Conference .ToolBar .XButton {
     font-size: 0.625em !important;
@@ -148,16 +135,6 @@
   .Conference .ToolBar .SearchInputBoxInputHolder input[type=search] {
     width: 92% !important;
     font-size: 0.688em !important;
-  }
-  .ConferenceMembers img.x {
-    float: right;
-    right: 8px;
-    top: -18px;
-    position: relative;
-  }
-  .Conversation .ToolBar img.x {
-    top: 10px;
-    right: 12px;
   }
   .Conversation .ToolBar .XButton {
     height: 2.2em !important;
@@ -187,9 +164,6 @@
   .Conversation .ToolBar.chatTop .ChatSearch .SearchIcon {
     float: left;
   }
-  .Conversation .ToolBar.chatTop .ChatSearch img.x {
-    right: 10px;
-  }
   .Conversation .ToolBar.chatTop .ChatSearch .Arrows {
     float: right;
     width: 24%;
@@ -200,9 +174,6 @@
     top: 0 !important;
     width: 62% !important;
     float: left;
-  }
-  .Conversation .voicemail .ToolBar img.x {
-    right: 16px;
   }
   .XButton span {
     vertical-align: top;
@@ -295,8 +266,13 @@
   .LeftBarNotificationMessageSection .NotificationMessage {
     padding-left: 5px;
   }
+  .Overlay.notifications .LeftBarNotificationAvatarSection {
+    max-width: 12%;
+  }
   .Overlay.notifications .LeftBarNotificationMessageSection {
-    width: 90%;
+    /*width: 90%;*/
+    max-width: 86%;
+    padding-left: 10px;
   }
   .MyCallBlock_Rec {
     right: 33% !important;
@@ -315,5 +291,37 @@
   }
   .DockPanel .InnerDock {
     width: 100% !important;
+  }
+  .ZoomWidgetSection .XButtonWide.XButtonBlue.first {
+    margin-top: 5px;
+  }
+  .ZoomWidgetSection .JoinMeetingSection .addContact {
+    margin-bottom: 5px;
+  }
+  .CallLog .ListLineContent.Header .ListLineContentCell:first-child {
+    width: 28px;
+  }
+  .CallLog .ListLineContent.Header .ListLineContentCell.Name {
+    width: 108px !important;
+  }
+  .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
+    width: 76px !important;
+  }
+  .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
+    width: 54px  !important;
+  }
+  .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
+    width: 110px !important;
+  }
+  .CallLog .ListLineContent.Header .ListLineContentCell.CallType {
+    width: 10%  !important;
+  }
+  .CallLog .ListRow {
+    /*& > div:not(:first-child){
+            padding-left: 5px;                        
+        }*/
+  }
+  .CallLog .ListRow.Phone {
+    flex: 2.2 1 0;
   }
 }

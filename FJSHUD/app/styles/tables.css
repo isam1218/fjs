@@ -84,6 +84,7 @@
   flex-direction: row;
   -webkit-flex-direction: row;
   text-decoration: none;
+  height: 40px;
 }
 .ListRow .vmcallbtn {
   visibility: hidden;
@@ -137,13 +138,12 @@
 }
 .ListRow .Avatar {
   margin: .25em;
-  /*margin-right: .45em;*/
-  width: 34px;
-  height: 34px;
-}
-.ListRow .Avatar img {
   width: 30px;
   height: 30px;
+}
+.ListRow .Avatar img {
+  width: 28px;
+  height: 28px;
   margin: 1px;
 }
 .ListRow .Avatar img.GroupAvatarItemImg {
@@ -259,7 +259,7 @@
 .LeftBar .ListRow:nth-child(odd),
 .Widget .vmsection:nth-child(odd),
 .LeftBar .vmsection:nth-child(odd) {
-  background-color: #f9f9f9;
+  background-color: #f9f9f9 !important;
 }
 .Widget .ListRow:hover,
 .LeftBar .ListRow:hover,
