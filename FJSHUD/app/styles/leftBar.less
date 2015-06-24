@@ -25,6 +25,17 @@
 	border-top-right-radius: 50%;
 	box-shadow: 0px 1px 1px #ccc inset;
   }
+  
+  .LeftBarWrapper {
+    flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1 1 auto;
+    display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	overflow: hidden;
+  }
 
   .LeftBarTop{
    .WidgetTabBar{
@@ -249,7 +260,6 @@
 	   padding: .25em;
 	   transition: 1s;
 	   border-top: 1px solid #ccc;
-       border-right:1px solid #ccc;
        font-size: 12px;
 
 	  & > * {

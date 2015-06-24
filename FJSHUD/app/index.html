@@ -54,56 +54,58 @@
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
-				<div class="LeftBarTop">
-					<div class="ContactSearch">
-						<div ng-show=" tab != 'favorites' && tab != 'recent'">
-							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
+				<div class="LeftBarWrapper">
+					<div class="LeftBarTop">
+						<div class="ContactSearch">
+							<div ng-show=" tab != 'favorites' && tab != 'recent'">
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
+								
+								<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+							</div>
 							
-							<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+							<div ng-show="tab == 'favorites'">
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+							</div>
 						</div>
-						
-						<div ng-show="tab == 'favorites'">
-							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+						<div class="WidgetTabBar">
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
+								<div class="inner">{{::verbage.all}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
+								<div class="inner">{{::verbage.favorites}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
+								<div class="inner">{{::verbage.recent}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
+								<div class="inner">{{::verbage.external}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
+								<div class="inner">{{::verbage.Groups}}</div>
+								<div class="arrow"></div>
+							</a>
 						</div>
 					</div>
-					<div class="WidgetTabBar">
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.all}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.favorites}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.recent}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.external}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.Groups}}</div>
-							<div class="arrow"></div>
-						</a>
-					</div>
-				</div>
 
-				<div class="Contacts"
-					ng-if="tab != 'recent' && tab != 'groups'"
-					include-once="views/ContactsWidget.html"
-					ng-controller="ContactsWidget">
-				</div>
-				<div class="Groups"
-					ng-if="tab == 'groups'"
-					include-once="views/GroupsWidget.html"
-					ng-controller="GroupsController">
-				</div>
-				<div class="Recent"
-					ng-if="tab == 'recent'"
-					include-once="views/RecentWidget.html"
-					ng-controller="RecentController">
+					<div class="Contacts"
+						ng-if="tab != 'recent' && tab != 'groups'"
+						include-once="views/ContactsWidget.html"
+						ng-controller="ContactsWidget">
+					</div>
+					<div class="Groups"
+						ng-if="tab == 'groups'"
+						include-once="views/GroupsWidget.html"
+						ng-controller="GroupsController">
+					</div>
+					<div class="Recent"
+						ng-if="tab == 'recent'"
+						include-once="views/RecentWidget.html"
+						ng-controller="RecentController">
+					</div>
 				</div>
 
 				<div class="Notifications" include-once="views/Notifications.html" ng-controller="NotificationController"></div>
@@ -166,7 +168,6 @@
 	<script src="scripts/directives/windowResizeDirective.js"></script>
 	<script src="scripts/directives/searchDirective.js"></script>
 	<script src="scripts/directives/scrollDirective.js"></script>
-	<script src="scripts/directives/showOnHoverParentDirective.js"></script>
     <script src="scripts/directives/dockableDirective.js"></script>
     <script src="scripts/directives/droppableDirective.js"></script>
     <script src="scripts/directives/dockDraggerDirective.js"></script>
