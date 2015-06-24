@@ -1,16 +1,16 @@
 <div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}"  expand-contract-notifications>
  <div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">     
-	<div class="TitleBar" ng-show="!hasMessages">
+	<div class="TitleBar" ng-if="!hasMessages">
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
      </div> 
-	 <div class="TitleBar hasButton"  ng-show="hasMessages" show-on-hover-parent>
+	 <div class="TitleBar hasButton"  ng-if="hasMessages" show-on-hover-parent>
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="$parent.overlay ='notifications'" />
      </div>    	
    <div class="scroller">  	
 	       <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
@@ -412,6 +412,7 @@
 
 </div>
 
+<div class="CallStatusContainer">
 	<div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 					<div class="CallStatusIcon"> </div>
@@ -430,6 +431,7 @@
 				</div>
 				
 	</div>	
+</div>
 
 	<div id="Alert" style="visibility:hidden;position:absolute;left:-1000px" ng-if="displayAlert" include-once="views/nativealerts/CallAlert.html"></div>
     
