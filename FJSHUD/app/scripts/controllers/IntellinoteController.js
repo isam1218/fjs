@@ -34,17 +34,18 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	
 	$scope.verifyLicense = function() {
 		//window.open(getURL('loadApp'));
-		
-		$.ajax({
-			url: getURL('loginString') + '&workspaceId=',
-			dataType: "jsonp",
-			jsonpCallback: 'JSON_CALLBACK',
-			success: function(data) {
-				if (data && data.url) {
+
+		$http.get("https://pps-dev.fonality.com:8443/pps/loginURL?callback=JSON_CALLBACK&fonalityUserId=1624931&serverId=53035&serverType=pbxtra&authToken=8e4d52b47d967b8f51a90b10358c915159d87da65c4a2412&workspaceId=&callback=JSON_CALLBACK&_=1435254004816").
+		  success(function(data) {
+		  	if (data && data.url) {
 					window.open(data.url);
 				}
-			}
-		});
+		    console.log("success");
+		  }).
+		  error(function(data, status, headers, config) {
+		    console.log("error");
+
+		  });
 	};
 	
 	// from search contacts directive
