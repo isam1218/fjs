@@ -754,7 +754,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
 								notification.label =$scope.verbage.voicemail;
-							}else if(notification.type == 'wall' || notification.type == 'chat'){
+							}else if(notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
                 				notification.label = 'missed call';
@@ -764,6 +764,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							}else if(notification.type == "description"){
 								notification.label = "chat message"
 								notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
+							}else if(notification.type == 'wall'){
+								notification.label = "share";
 							}
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
@@ -815,7 +817,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
 						notification.label = $scope.verbage.voicemail;
-					}else if(notification.type == 'wall' || notification.type == 'chat'){
+					}else if(notification.type == 'chat'){
 						notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
             			notification.label = 'missed call';
@@ -826,8 +828,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}else if(notification.type == "description"){
 						notification.label = "chat message"
 						notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
-						
+					}else if(notification.type == 'wall'){
+								notification.label = "share";
 					}
+					
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
 						var conference = conferenceService.getConference(xpid);
