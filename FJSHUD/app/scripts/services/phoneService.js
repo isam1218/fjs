@@ -18,7 +18,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var soundManager;
 	var meModel = {};
 	var sipCalls = {};
-	var xpid2Sip = {};
+	//var xpid2Sip = {};
 	var tabInFocus = true;
 	var callsDetails = {};
 	var allCallDetails = {};
@@ -118,14 +118,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 
 	var hangUp = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		delete xpid2Sip[xpid];
+		
+		var call = context.getCall(xpid);
+		call.hangUp();
 		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 		//}
 	};
 
 	var holdCall = function(xpid,isHeld){
+		
+		var call = context.getCall(xpid);
+		if(call){
+			call.hold = isHeld;
+		}
 		if(isHeld){
            	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
@@ -145,7 +150,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		var call = context.getCall(xpid);
 		call.accept();
-		httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+		//httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 	
 		for(i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
@@ -211,6 +216,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
         data = {}
+        //var sipId = call.sip_id.split("@")[0];
         sipCalls[call.sip_id] = call;
 		
 		switch(status){
@@ -232,7 +238,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				break;
 			case CALL_STATUS_ERROR:
 				removeNotification();
-				delete sipCalls[call.sip_id];
 				break;
 			case CALL_STATUS_UNKNOWN:
 				removeNotification();
@@ -243,7 +248,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					sipId: call.sip_id
 				}
 				removeNotification();
-				delete sipCalls[call.sip_id];
 				break;
 		}
 		
@@ -663,8 +667,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		var call = getCall(xpid);
 		if(call){
 			call.transfer(number);
 		}	
@@ -704,10 +707,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.sendDtmf = function(xpid,entry){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		var call = context.getCal(xpid);
 		if(call){
-
 			call.dtmf(entry);
 		}	
 	};
@@ -727,8 +728,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	holding the call resuming the call and ending the call
 	*/
 	this.getCall = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		call = sipCalls[callsDetails[xpid].sipId];
 		return call;
 	};
 	/**
@@ -737,7 +737,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.getCallDetail = function(xpid){
 		return callsDetails[xpid];
 	};
-
+ 
 	this.getCallByContactId = function(contactId){
 		for(call in callsDetails){
 			if(callsDetails[call].contactId){
@@ -821,8 +821,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}
 						}
+						delete sipCalls[callsDetails[data[i].xpid].sipId];
 						delete callsDetails[data[i].xpid];
-						delete xpid2Sip[data[i].xpid];
 					}
 
 				}else{
@@ -835,6 +835,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 					callsDetails[data[i].xpid] = data[i];
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+						
+						if(!doesExist){
+							for(callId in callsDetails){
+								if(callId != data[i].xpid){
+									holdCall(callId,true);		
+								}
+							}
+						}
+
 						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record && !doesExist){
 
 							if(data[i].incoming){
@@ -860,26 +869,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							}
 						}					
 					}
-					for(sipCall in sipCalls){
-						var toBreak = false;
-						
-						if(xpid2Sip[data[i].xpid]){
-							if(xpid2Sip[data[i].xpid] != sipCall){
-								xpid2Sip[data[i].xpid] = sipCall;
-							}
-						}else{
-							xpid2Sip[data[i].xpid] = sipCall;
-						}
-
-					}
-
 				}
 			}
 		}
 		if (data[0].incoming){
 			storageService.saveRecent('contact', data[0].contactId);
 		}
-
+		console.log(sipCalls);
+		
+		console.log(callsDetails);
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
 	this.registerPhone = registerPhone;	

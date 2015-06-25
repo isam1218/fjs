@@ -422,10 +422,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		if(data){
 
 			for (i in data){
-				$scope.calls[data[i].contactId] = data[i];
-				$scope.calls[data[i].contactId].fullProfile = contactService.getContact(data[i].contactId);
-				
+				$scope.calls[data[i].xpid] = data[i];
 
+				if(data[i].contactId){
+					$scope.calls[data[i].contactId].fullProfile = contactService.getContact(data[i].contactId);
+				}
 				switch(toDisplayFor){
 					case 'never':
 						break;
