@@ -435,7 +435,8 @@
   background: #fefefe linear-gradient(#fefefe, #eeeeee);
   user-select: none;
   -webkit-user-select: none;
-  height: 35px;
+  height: auto;
+  max-height: 35px;
 }
 .WidgetTabBarButton {
   position: relative;

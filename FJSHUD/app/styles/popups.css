@@ -578,6 +578,7 @@
 #ContextMenu .TopRow div.Contact .info {
   font-size: 12px;
   font-weight: bold;
+  margin-left: 5px;
 }
 #ContextMenu .TopRow div.Contact .Numbers span {
   font-weight: bold;
@@ -585,6 +586,12 @@
 #ContextMenu .TopRow .Numbers div {
   min-width: 3em;
   text-align: right;
+}
+#ContextMenu .TopRow strong {
+  font-weight: bold;
+}
+#ContextMenu .TopRow .ListRowStatusIcon {
+  margin-left: -5px;
 }
 #ContextMenu .BottomRow {
   border-top: 1px solid #ccc;

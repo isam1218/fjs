@@ -726,7 +726,7 @@ p {
 .LeftBar .Contacts .ContactList a.ListRow,
 .LeftBar .Groups .ContactList a.ListRow,
 .LeftBar .Recent .ContactList a.ListRow {
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 .LeftBar .Contacts .ContactList a.ListRow .Members,
 .LeftBar .Groups .ContactList a.ListRow .Members,
@@ -1572,7 +1572,8 @@ p {
   background: #fefefe linear-gradient(#fefefe, #eeeeee);
   user-select: none;
   -webkit-user-select: none;
-  height: 35px;
+  height: auto;
+  max-height: 35px;
 }
 .WidgetTabBarButton {
   position: relative;
@@ -1615,7 +1616,6 @@ p {
   display: block;
 }
 .WidgetMe .WidgetHeader {
-  height: 75px;
   width: 100%;
 }
 .WidgetMe .WidgetHeaderTitle {
@@ -1639,7 +1639,6 @@ p {
 .WidgetMe .WidgetBody {
   height: 78%;
   max-height: 100%;
-  top: 73px;
 }
 .WidgetMe .WidgetBody .call-block {
   height: 50%;
@@ -1994,6 +1993,7 @@ div.NewCall {
   background-color: #fff;
 }
 div.NewCall input.NewCall {
+  height: 26px;
   position: relative;
   top: 7px;
   margin-bottom: 4px;
@@ -2005,12 +2005,13 @@ div.NewCall input.NewCall {
   padding: 7px 5px;
 }
 div.NewCall .XButton {
+  height: 26px;
   float: right;
-  height: 2em;
   width: 15%;
   position: relative;
   margin-left: 0.5em;
   top: 7px;
+  padding-top: 2px;
 }
 div.NewCall .XButton.XButtonGreen {
   margin-right: 1em;
@@ -4596,23 +4597,29 @@ div.NewCall .XButton.XButtonNormal {
 .ListRow .CallStatus .Avatar {
   margin: 1px !important;
 }
-.Widget .ListRow,
-.LeftBar .ListRow,
 .Widget .vmsection,
 .LeftBar .vmsection {
   background-color: #f9f9f9;
 }
-.Widget .ListRow:nth-child(odd),
-.LeftBar .ListRow:nth-child(odd),
 .Widget .vmsection:nth-child(odd),
 .LeftBar .vmsection:nth-child(odd) {
   background-color: #eee !important;
 }
-.Widget .ListRow:hover,
-.LeftBar .ListRow:hover,
 .Widget .vmsection:hover,
 .LeftBar .vmsection:hover {
   background-color: #ddd;
+}
+.ListRow {
+  background-color: #fff;
+}
+.ListRow:nth-child(odd) {
+  background-color: #f9f9f9 !important;
+}
+.ListRow:hover {
+  background-color: #f0f0ff !important;
+}
+.Groups .ListRow:nth-child(odd) {
+  background-color: #fff !important;
 }
 .Groups .ListRow > div {
   flex: 1;
@@ -6494,6 +6501,7 @@ a.Messages {
 #ContextMenu .TopRow div.Contact .info {
   font-size: 12px;
   font-weight: bold;
+  margin-left: 5px;
 }
 #ContextMenu .TopRow div.Contact .Numbers span {
   font-weight: bold;
@@ -6501,6 +6509,12 @@ a.Messages {
 #ContextMenu .TopRow .Numbers div {
   min-width: 3em;
   text-align: right;
+}
+#ContextMenu .TopRow strong {
+  font-weight: bold;
+}
+#ContextMenu .TopRow .ListRowStatusIcon {
+  margin-left: -5px;
 }
 #ContextMenu .BottomRow {
   border-top: 1px solid #ccc;
@@ -7575,7 +7589,7 @@ a.Messages {
     height: 5.625em;
   }
   .WidgetMe .WidgetBody {
-    top: 160px;
+    top: 180px;
     position: absolute;
   }
   .WidgetMe .Avatar.AvatarBig {
@@ -7590,6 +7604,9 @@ a.Messages {
   }
   .WidgetBody .SearchInputBoxInputHolder {
     width: 78% !important;
+  }
+  .WidgetBody div.NewCall .XButton {
+    padding-top: 5px !important;
   }
   .WidgetBody .ToolBar input[type=search] {
     width: 30%;

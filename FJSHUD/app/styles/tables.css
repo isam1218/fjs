@@ -242,23 +242,29 @@
 .ListRow .CallStatus .Avatar {
   margin: 1px !important;
 }
-.Widget .ListRow,
-.LeftBar .ListRow,
 .Widget .vmsection,
 .LeftBar .vmsection {
   background-color: #f9f9f9;
 }
-.Widget .ListRow:nth-child(odd),
-.LeftBar .ListRow:nth-child(odd),
 .Widget .vmsection:nth-child(odd),
 .LeftBar .vmsection:nth-child(odd) {
   background-color: #eee !important;
 }
-.Widget .ListRow:hover,
-.LeftBar .ListRow:hover,
 .Widget .vmsection:hover,
 .LeftBar .vmsection:hover {
   background-color: #ddd;
+}
+.ListRow {
+  background-color: #fff;
+}
+.ListRow:nth-child(odd) {
+  background-color: #f9f9f9 !important;
+}
+.ListRow:hover {
+  background-color: #f0f0ff !important;
+}
+.Groups .ListRow:nth-child(odd) {
+  background-color: #fff !important;
 }
 .Groups .ListRow > div {
   flex: 1;

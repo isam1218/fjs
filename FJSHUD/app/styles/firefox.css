@@ -51,7 +51,7 @@
     height: 5.625em;
   }
   .WidgetMe .WidgetBody {
-    top: 160px;
+    top: 180px;
     position: absolute;
   }
   .WidgetMe .Avatar.AvatarBig {
@@ -66,6 +66,9 @@
   }
   .WidgetBody .SearchInputBoxInputHolder {
     width: 78% !important;
+  }
+  .WidgetBody div.NewCall .XButton {
+    padding-top: 5px !important;
   }
   .WidgetBody .ToolBar input[type=search] {
     width: 30%;

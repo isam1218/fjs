@@ -147,7 +147,7 @@
 .LeftBar .Contacts .ContactList a.ListRow,
 .LeftBar .Groups .ContactList a.ListRow,
 .LeftBar .Recent .ContactList a.ListRow {
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 .LeftBar .Contacts .ContactList a.ListRow .Members,
 .LeftBar .Groups .ContactList a.ListRow .Members,
