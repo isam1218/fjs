@@ -425,7 +425,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				$scope.calls[data[i].xpid] = data[i];
 
 				if(data[i].contactId){
-					$scope.calls[data[i].contactId].fullProfile = contactService.getContact(data[i].contactId);
+					$scope.calls[data[i].xpid].fullProfile = contactService.getContact(data[i].contactId);
 				}
 				switch(toDisplayFor){
 					case 'never':
