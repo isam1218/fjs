@@ -3,10 +3,6 @@
   width: 100%;
   height: 100px;
   min-width: 1000px;
-  /*display: flex;
-  display: -webkit-flex;
-  flex-direction: row;
-  -webkit-flex-direction: row;*/
   border-bottom: 1px solid white;
   box-shadow: 0 -1px 1px #cccccc inset;
 }
@@ -94,10 +90,6 @@
   right: 0px;
   overflow-x: hidden;
   overflow-y: auto;
-}
-.DropDownMoreList .DropDownMoreListScrollable .dropdownView #apps {
-  /*overflow-y: auto;
-              overflow-x: hidden;*/
 }
 .DropDownMoreList .DropDownMoreListScrollable .dropdownView #apps .TopBar2MenuItemApp {
   position: relative;
@@ -227,7 +219,6 @@
   float: right;
 }
 .TopBarMeStatus .Logout {
-  /*padding-left: 24px;*/
   padding: 3px 14px 4px 14px;
 }
 .TopBarMeStatus .Logout .icon {
@@ -239,7 +230,6 @@
   top: 1px;
 }
 .TopBarMeStatus .XButton span {
-  /*width: 58px;*/
   left: 8px;
 }
 .TopBarMeStatus .Status {
@@ -256,7 +246,6 @@
   float: right;
 }
 .TopBarVoicemailControls {
-  /*position: absolute;*/
   position: relative;
   float: right;
   top: 0;

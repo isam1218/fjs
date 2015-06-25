@@ -36,7 +36,6 @@
     padding-top: 0px !important;
   }
   .WidgetMe .WidgetHeader {
-    height: 8.438em !important;
     position: absolute !important;
   }
   .WidgetMe .WidgetHeader > div {
@@ -61,13 +60,6 @@
   .WidgetMe .MeInfoBlock {
     width: 79% !important;
   }
-  .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
-    height: 3.5em !important;
-  }
-  .ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
-    height: 2.5em !important;
-    padding-top: 10px !important;
-  }
   .WidgetBody .SearchInputBox {
     width: 30% !important;
     float: left;
@@ -81,7 +73,6 @@
   }
   .WidgetBody .ToolBar.fj-stream .XButton {
     float: right !important;
-    height: 1.9em !important;
   }
   .WidgetBody .ToolBar.fj-stream select.XButton,
   .WidgetBody .ToolBar.fj-stream select.XButtonDropDown {
@@ -104,9 +95,8 @@
   .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder {
     width: 82% !important;
   }
-  .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder input[type=search] {
-    height: 2.40em !important;
-    width: 94% !important;
+  .WidgetBody .ToolBar .SearchInputBox .SearchInputBoxInputHolder img.x {
+    top: 10px !important;
   }
   .WidgetBody .ToolBar.Queues .XButton.XSortButton {
     margin-top: 0px !important;
@@ -120,11 +110,6 @@
     right: 0px  !important;
     top: 0px !important;
   }
-  .Conference .ToolBar .XButton {
-    font-size: 0.625em !important;
-    height: 2.90em !important;
-    width: 33.9% !important;
-  }
   .Conference .ToolBar .SearchInputBox {
     width: 30% !important;
     float: left;
@@ -136,11 +121,9 @@
     width: 92% !important;
     font-size: 0.688em !important;
   }
-  .Conversation .ToolBar .XButton {
-    height: 2.2em !important;
-  }
-  .Conversation .ToolBar .XButtonNormal {
-    height: 1.9em !important;
+  .Conversation .ToolBar img.x {
+    top: 10px;
+    right: 12px;
   }
   .Conversation .ToolBar select.XButton,
   .Conversation .ToolBar select.XButtonDropDown {
@@ -177,14 +160,10 @@
   }
   .XButton span {
     vertical-align: top;
-    /*top: -3px; */
   }
   /******* notifications **********/
   .LeftBar {
     height: 99%;
-  }
-  .LeftBar .Notifications {
-    /*bottom: 16px;*/
   }
   .LeftBar .Notifications .TitleBar .XButton,
   .LeftBar .Notifications .NotificationDivider > div .XButton {
@@ -220,13 +199,6 @@
     height: 15px;
     padding-bottom: 10px;
     margin-bottom: -10px;
-    /*&.halfHeight{
-        overflow: hidden;
-        height: 1.5em;
-         &.firstsection{
-            height: 1.8em;
-         }
-     }*/
   }
   .NotificationSection.last {
     height: auto;
@@ -284,7 +256,7 @@
     width: 75px !important;
   }
   .CurrentCall .RightSide .XButton.CurrentCallBtnLong {
-    width: 155px !important;
+    width: 150px !important;
   }
   .DockPanel {
     height: 100% !important;
@@ -299,27 +271,22 @@
     margin-bottom: 5px;
   }
   .CallLog .ListLineContent.Header .ListLineContentCell:first-child {
-    width: 28px;
+    width: 32px;
   }
   .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-    width: 108px !important;
+    width: 102px !important;
   }
   .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
-    width: 76px !important;
+    width: 70px !important;
   }
   .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
     width: 54px  !important;
   }
   .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-    width: 110px !important;
+    width: 105px !important;
   }
   .CallLog .ListLineContent.Header .ListLineContentCell.CallType {
     width: 10%  !important;
-  }
-  .CallLog .ListRow {
-    /*& > div:not(:first-child){
-            padding-left: 5px;                        
-        }*/
   }
   .CallLog .ListRow.Phone {
     flex: 2.2 1 0;

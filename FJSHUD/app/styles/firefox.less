@@ -47,8 +47,7 @@
        }
     }      
     .WidgetMe{
-     .WidgetHeader{
-        height: 8.438em !important;
+     .WidgetHeader{        
         position: absolute !important;
         
         & > div{
@@ -72,13 +71,7 @@
      .Avatar.AvatarBig{width: 19% !important;}
      
      .MeInfoBlock {width: 79% !important;}
-    }    
-   
-.ChatInputBox .ChatInputFields .text.ChatInputBoxInput { height: 3.5em !important; }
-.ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {          
-            height: 2.5em !important;
-            padding-top: 10px !important;
-}
+    }     
 
     .WidgetBody{        
         
@@ -98,8 +91,7 @@
              }
              &.fj-stream{ 
                  .XButton{
-                    float: right !important;
-                    height: 1.9em !important;                         
+                    float: right !important;                                         
                  } 
                  select.XButton, select.XButtonDropDown{
                     height: 2.3em !important;
@@ -121,10 +113,9 @@
                 float: left;
             
                 .SearchInputBoxInputHolder{
-                    width: 82% !important;
-                    input[type=search]{
-                        height: 2.40em !important;
-                        width: 94% !important;
+                    width: 82% !important;                    
+                    img.x{
+                        top: 10px !important;
                     }
                 }
             }
@@ -149,13 +140,7 @@
     }
     .Conference{
         
-        .ToolBar{
-        
-         .XButton{            
-            font-size: 0.625em !important;
-            height: 2.90em !important;    
-            width: 33.9% !important;        
-          }
+        .ToolBar{        
           
          .SearchInputBox{
            width: 30% !important; 
@@ -174,13 +159,10 @@
     }        
     .Conversation{
     
-      .ToolBar{         
-         .XButton {
-           height: 2.2em !important;
-         }
-         .XButtonNormal{
-            height: 1.9em !important;
-         }
+      .ToolBar{        
+         
+         img.x{top: 10px; right: 12px;}         
+         
          select.XButton, select.XButtonDropDown{
            width: 32%;
            height: 2em;
@@ -220,8 +202,7 @@
         }
      } 
      .XButton span{
-        vertical-align: top;        
-        /*top: -3px; */  
+        vertical-align: top;               
      }
     
   /******* notifications **********/
@@ -229,8 +210,7 @@
   {
     height: 99%;
    .Notifications
-   {
-        /*bottom: 16px;*/
+   {        
         .TitleBar .XButton,
         .NotificationDivider > div .XButton
         {
@@ -290,14 +270,7 @@
      &:not(.firstsection){
        top: -10px;
        margin-bottom: -12px;
-     }
-     /*&.halfHeight{
-        overflow: hidden;
-        height: 1.5em;
-         &.firstsection{
-            height: 1.8em;
-         }
-     }*/
+     }     
   }
   
   .LeftBarNotificationMessageSection{
@@ -381,20 +354,17 @@
     .ListLineContent.Header{
         .ListLineContentCell{
             &:first-child{
-                 width: 28px;
+                 width: 32px;
             } 
-            &.Name{width: 108px !important;}   
-            &.Phone{width: 76px !important;}
+            &.Name{width: 102px !important;}   
+            &.Phone{width: 70px !important;}
             &.Duration{width: 54px  !important;}  
-            &.StartedAt{width: 110px !important;}  
+            &.StartedAt{width: 105px !important;}  
             &.CallType{width: 10%  !important;}  
         }
     } 
 
-    .ListRow {
-        /*& > div:not(:first-child){
-            padding-left: 5px;                        
-        }*/
+    .ListRow {       
          &.Phone {        
             flex: 2.2 1 0;
         }

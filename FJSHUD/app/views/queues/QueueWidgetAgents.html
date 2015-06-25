@@ -1,10 +1,12 @@
 <div class="ToolBar ">
   <input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-model="que.query" ng-attr-placeholder="{{::verbage.search}}" />
-    <select class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort">
+  <div class="SelectBox selectWrapper queue">
+    <select ng-model="selectedSort">
 		<option value="displayName">{{::verbage.sort_by_name}}</option>
 		<option value="queue_status">{{::verbage.sort_by_call_status}}</option>
 		<option value="hud_status">{{::verbage.sort_by_chat_status}}</option>
     </select>
+  </div>  
 </div>
 
 <div class="QueueList">

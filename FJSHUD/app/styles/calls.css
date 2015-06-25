@@ -1,5 +1,8 @@
-.CallLog .ToolBar {
-  margin-top: 5px;
+.CallLog .vmsections,
+.CallLog .rows {
+  border: 1px solid #eee;
+  width: 99.5%;
+  margin-bottom: 10px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
@@ -23,10 +26,10 @@
   width: 112px !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
-  width: 70px !important;
+  width: 78px !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 54px  !important;
+  width: 44px  !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
   width: 110px !important;
@@ -39,7 +42,6 @@
 }
 .CallLog .vmails .ToolBar select.XButtonDropDown {
   margin-top: 2px;
-  /*height: 2.85em;*/
   top: -2px;
   float: right !important;
   padding: 6px 0;
@@ -80,28 +82,6 @@
   overflow: hidden;
   height: 40px;
 }
-.CallLog .ListRow > div:first-child {
-  width: 40px;
-}
-.CallLog .ListRow > div:first-child .CallAvatar {
-  cursor: pointer;
-  top: -1px;
-  left: -1px;
-  height: 30px;
-  width: 30px;
-  border-radius: 30px;
-  -webkit-border-radius: 30px;
-}
-.CallLog .ListRow > div:first-child .CallAvatar img {
-  height: 28px;
-  width: 28px;
-  border-radius: 30px;
-  -webkit-border-radius: 30px;
-  margin-left: -1px;
-}
-.CallLog .ListRow > div:first-child .CallAvatar:hover .AvatarInteractable {
-  display: block;
-}
 .CallLog .ListRow > div:not(:first-child) {
   padding-left: 5px;
 }
@@ -113,13 +93,17 @@
   border-right: 1px solid #fff;
 }
 .CallLog .ListRow > div.Name {
+  flex: 3 1 0;
+  -webkit-flex: 3 1 0;
+}
+.CallLog .ListRow > div.Name > div {
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
-  flex: 3 1 0;
-  -webkit-flex: 3 1 0;
   color: #009cff;
   font-weight: bold;
+  max-width: 114px;
+  margin-top: 15px;
 }
 .CallLog .ListRow > div.Phone {
   text-decoration: underline;
@@ -159,7 +143,6 @@
 .RecentCallSection {
   font-size: .7em;
   padding: 10px 0;
-  /*height: 50%;*/
   height: 66%;
 }
 .RecentCallSection .RecentCallColumnHeaders {

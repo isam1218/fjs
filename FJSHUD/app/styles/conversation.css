@@ -1,9 +1,6 @@
 .Widget.Conversation {
   min-height: 300px;
 }
-.Widget.Conversation .ToolBar {
-  margin-top: 5px;
-}
 .Widget.Conversation .ContactList {
   margin-top: 10px;
 }
@@ -15,7 +12,6 @@
   top: 0;
   right: 0;
   left: 0;
-  padding: 0 10px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
   margin: .05em .1em 0.7em 0.7em;
@@ -28,7 +24,6 @@
   text-align: center;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div {
-  /*display: inline-block;*/
   margin-bottom: 1px;
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus div > div.NoCallIcon {
@@ -80,11 +75,20 @@
 .Widget.Conversation .WidgetBody .ListRow:hover .ListRowStatus {
   visibility: visible;
 }
-.Widget.Conversation .WidgetBody .ToolBar input[type=search].SearchBox {
+.Widget.Conversation .WidgetBody .ToolBar input[type=search] {
+  height: 26px !important;
+}
+.Widget.Conversation .WidgetBody .ToolBar input.chat[type=search] {
+  height: 24px !important;
+}
+.Widget.Conversation .WidgetBody .ToolBar .SearchBox {
   width: 30% !important;
 }
 .Widget.Conversation .WidgetBody .ToolBar .XButton {
   width: 32%;
+}
+.Widget.Conversation .WidgetBody .ToolBar .XButton.group {
+  width: 90px;
 }
 .Widget.Conversation .WidgetBody .ToolBar.fj-stream .XButton {
   width: 24%;
@@ -232,23 +236,23 @@
 .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
   margin-right: 10px;
   font-size: .95em;
-  /*height:auto;
-	  min-height: 16px;
-	  max-height: 200px;
-	  width:365px;
-	  font-size: .95em;
-	  line-height: 1.1em;*/
   padding: 5px;
   overflow: auto;
   background-color: #fff;
   flex: 1;
   -webkit-flex: 1;
+  max-width: 80%;
+  height: 28px;
 }
 .ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
-  position: relative;
-  /*width: 65px;*/
-  width: 15%;
-  padding-top: 8px;
+  height: 28px !important;
+  padding-top: 6px;
+  vertical-align: bottom;
+  float: right;
+  bottom: 2px;
+  position: absolute;
+  right: 0px;
+  width: 80px;
 }
 .ListMessageChatWidget {
   background-color: #fff;
