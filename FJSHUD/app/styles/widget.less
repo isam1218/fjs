@@ -180,7 +180,7 @@
      
        select{
             width: 100px;
-            height: 26px;
+            height: 24px;
             &:hover{            
                 background: url(../img/arrowDown_8.png)no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
                 background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
@@ -194,8 +194,10 @@
            
    }
    &.fj-stream{
-       .XButton.convQueueInput{
-            height: 28px !important;
+       .XButton.convQueueInput{            
+            span{
+                vertical-align: top;
+            }
        }
    }
   } 
