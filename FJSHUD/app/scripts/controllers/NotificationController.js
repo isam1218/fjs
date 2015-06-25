@@ -531,7 +531,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}else{
 			if(displayDesktopAlert){
 	       		$scope.displayAlert = true;
-				$timeout(displayNotification, 1000);
+				$timeout(displayNotification, 1500);
 			}
 		}
 

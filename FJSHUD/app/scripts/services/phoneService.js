@@ -120,9 +120,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var hangUp = function(xpid){
 		
 		var call = context.getCall(xpid);
-		call.hangUp();
+
+		if(call){
+			call.hangUp();
+		}
+		
 		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-		//}
 	};
 
 	var holdCall = function(xpid,isHeld){
