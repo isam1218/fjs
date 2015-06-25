@@ -284,7 +284,7 @@
 } 
 
 .Widget, .LeftBar{
- .ListRow, .vmsection{
+  .vmsection{
     background-color: #f9f9f9;
     
     &:nth-child(odd) {
@@ -294,7 +294,26 @@
           background-color: #ddd;
     }
  }
-}    
+} 
+
+.ListRow{
+      background-color: #fff;
+     
+      &:nth-child(odd) {
+          background-color: #f9f9f9 !important;
+      }
+      &:hover {
+          background-color: #f0f0ff !important;
+      }
+}
+
+.Groups{
+    .ListRow{
+        &:nth-child(odd) {
+          background-color: #fff !important;
+        }
+    }
+}   
 
 .Groups .ListRow > div {
   flex: 1;
