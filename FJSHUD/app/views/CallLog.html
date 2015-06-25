@@ -39,12 +39,12 @@
 	</div>
 
 	<div class="ListView">	
-		<div>
+		<div class="rows">
 			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | orderBy:sortField:sortReverse | limitTo:logSize track by call.xpid">
 				<div>
 					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
 				</div>
-				<div class="Name"><span> {{ ::call.displayName }}</span></div>
+				<div class="Name"><div> {{ ::call.displayName }}</div></div>
 				<div class="Phone">
 					<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
 				</div>

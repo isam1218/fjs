@@ -40,8 +40,9 @@
 		
         <div class="WidgetTabContent">
             <div class="ToolBar">
-                <select class="SelectBox XButton" ng-model="selectedConf" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortConf(selectedConf)"></select>
-
+             <div class="SelectBox selectWrapper conf">
+                <select ng-model="selectedConf" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortConf(selectedConf)"></select>
+             </div>
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">

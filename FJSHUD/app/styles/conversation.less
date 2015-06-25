@@ -1,8 +1,5 @@
 .Widget.Conversation {
-  min-height: 300px;
-  
-  .ToolBar{margin-top: 5px;}
- 
+  min-height: 300px;   
 
   .ContactList {      
         margin-top: 10px;
@@ -16,8 +13,7 @@
   .WidgetHeader {
     top:0;
     right:0;
-    left:0;
-    padding: 0 10px;   
+    left:0;    
 
     .WidgetHeaderCallStatus {
       margin: .05em .1em 0.7em 0.7em;
@@ -29,8 +25,7 @@
 	  div {
 		text-align: center;
 
-		& > div {
-		  /*display: inline-block;*/
+		& > div {		  
 		  margin-bottom: 1px;
 		  &.NoCallIcon{
 		      clear: both;
@@ -90,12 +85,15 @@
     }
 	
     .ToolBar{     
-      input[type=search].SearchBox{           
-        width: 30% !important;
+      input[type=search]{height: 26px !important;}
+      input.chat[type=search]{height: 24px !important;}
+      .SearchBox{           
+        width: 30% !important;        
       }
      .XButton{
-        width: 32%;         
-     }
+        width: 32%;   
+        &.group{width: 90px;}      
+      }        
     }  
         .ToolBar.fj-stream{ 
             .XButton{
@@ -270,25 +268,25 @@
 
 	.text.ChatInputBoxInput {
 	  margin-right: 10px;
-    font-size: .95em;
-	  /*height:auto;
-	  min-height: 16px;
-	  max-height: 200px;
-	  width:365px;
-	  font-size: .95em;
-	  line-height: 1.1em;*/
+      font-size: .95em;	
 	  padding:5px;
 	  overflow:auto;
 	  background-color: #fff;
 	  flex: 1;
 	  -webkit-flex: 1;
+	  max-width: 80%;
+	  height: 28px;
 	}
 	
 	.XButton.ChatInputBoxSend {
-	  position: relative;
-	  /*width: 65px;*/
-	  width: 15%;
-      padding-top: 8px;
+	  height: 28px !important;
+      padding-top: 6px;
+      vertical-align: bottom;
+      float: right;
+      bottom: 2px;
+      position: absolute;
+      right: 0px;
+      width: 80px;
 	}
   }
 }
