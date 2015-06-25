@@ -919,8 +919,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     }
 
     $scope.muteCall = function(){
-       phoneService.setVolume(0);
-       $scope.volume.spkVol = 0;
+       phoneService.setMicSensitivity(0);
+       $scope.volume.micVol = 0;
 
     }
 
