@@ -1,54 +1,44 @@
-hudweb.directive('contactSearch', ['$document', 'ContactService', function($document, contactService) {
+hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', function($rootScope, $document, contactService) {
+	var contacts = [];
+
+	contactService.getContacts().then(function(data) {
+		contacts = data;
+	});
+	
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
-			var contacts = [];
-
-			// pull updates from service
-			contactService.getContacts().then(function(data) {
-				contacts = data;
-			});
-	
-			var rect = element[0].getBoundingClientRect();			
-			element.css('position', 'relative');
-			element.css('width', '100%');
-
-			if($(element).closest('.LeftBar').length > 0)
-				element.css('width', '95%');
+			var overlay, inset, headerTitle;
+			var added = false;
+			var rect = element[0].getBoundingClientRect();
 			
-			if($(element).closest('.ConferenceMembers').length == 0)
-				element.css('z-index', 100);								
+			element.css('position', 'relative');
+			element.css('z-index', 100);
 				
 			// create overlay elements
-			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
-			//overlay.css('width', rect.width + 'px');
+			overlay = angular.element('<div class="SearchContactOverlay"></div>');
 			
-			var inset = angular.element('<div class="Inset"></div>');
+			inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
-			
-			var headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
 
-			if(attrs.conference =="true"){
-				headerTitle = angular.element('<div class="Header">Join to conference</div>')
-				if($(element).closest('.ConferenceMembers').length > 0)
-				{	
-					overlay.css('width','450%');					
-				}	
-				else
-					overlay.css('width','300%');
-			}
+			if (attrs.conference == "true")
+				headerTitle = angular.element('<div class="Header">Join to Conference</div>');
+			else
+				headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
 
 			// search input
 			element.bind('keyup', function() {
-				overlay.remove();
-				inset.empty();
+				if (added) {
+					inset.empty();
+					overlay.remove();
+				}
 				
 				if (element.val().length > 0) {
 					inset.append(headerTitle);
 					
 					// look for match
 					for (var c = 0, len = contacts.length; c < len; c++) {
-						if (contacts[c].primaryExtension && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1) {
+						if (contacts[c].xpid != $rootScope.myPid && contacts[c].primaryExtension && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1) {
 							// add to div
 							var line = makeLine(contacts[c]);
 							inset.append(line);
@@ -57,17 +47,9 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 					
 					overlay.append(inset);
 					element.after(overlay);
-			
-					// prevent accidental closing
-					overlay.bind('click', function(e) {
-						e.stopPropagation();
-					});
-			
-					// close overlay for reals
-					$document.bind('click', function(e) {
-						element.val('');
-						overlay.remove();
-					});
+					
+					if (!added)
+						overlayProperties();
 				}
 			});
 			
@@ -77,9 +59,36 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			
 			// clear search
 			element.bind('search', function(e) {
-				if (element.val().length == 0)
+				if (element.val().length == 0) {
+					inset.empty();
 					overlay.remove();
+				}
 			});
+			
+			// create overlay properties one-time
+			function overlayProperties() {
+				// add some paddin'
+				if (element.prop('offsetWidth') == overlay.prop('offsetWidth') || element.prop('offsetLeft') == overlay.prop('offsetLeft')) {
+					overlay.css('left', '-10px');
+					overlay.css('width', overlay.prop('offsetWidth') + 20 + 'px');
+				}
+				
+				if (element.prop('offsetTop') == overlay.prop('offsetTop'))
+					overlay.css('top', '-10px');
+			
+				// prevent accidental closing
+				overlay.bind('click', function(e) {
+					e.stopPropagation();
+				});
+			
+				// close overlay for reals
+				$document.bind('click', function(e) {
+					element.val('');
+					overlay.remove();
+				});
+				
+				added = true;
+			}
 			
 			// fill row content
 			function makeLine(contact) {
@@ -88,12 +97,17 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				
 				line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
-				//line.append('<input style="float:right" class="vmcallbtn" type="button" value="Call" ng-click="callExtension('+contact.primaryExtension+')"></input>');
+				
 				// send contact to parent scope
 				line.bind('click', function() {
 					scope.searchContact(contact);
 					element.val('');
+					inset.empty();
 					overlay.remove();
+				});
+				
+				line.on('$destroy', function() {
+					line.empty().unbind('click');
 				});
 				
 				return line;
@@ -101,6 +115,7 @@ hudweb.directive('contactSearch', ['$document', 'ContactService', function($docu
 			
 			scope.$on('$destroy', function() {
 				$document.unbind('click');
+				inset.empty();
 				overlay.unbind().remove();
 			});
 		}

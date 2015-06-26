@@ -142,11 +142,11 @@
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
 						<div class="ListRowTitle">
-							{{ ::member.fullProfile.displayName }}
+							{{ ::member.fullProfile.displayName || member.displayName }}
 							<br/>
-							{{ ::member.fullProfile.primaryExtension }}
+							{{ ::member.fullProfile.primaryExtension || member.phone }}
 						</div>
-						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt"></div>
+						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt || member.started"></div>
 					</div>
 				</a>
 				

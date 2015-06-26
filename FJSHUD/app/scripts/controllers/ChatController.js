@@ -10,6 +10,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.loading = true;
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
+	$scope.showFileShare = true;
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -17,18 +18,23 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.audience = 'contact';
 		chat.targetId = $routeParams.contactId;
 		chat.type = 'f.conversation.chat';
+		chat.attachmentType = 'f.conversation.wall'
 	}
 	else if ($routeParams.conferenceId) {
 		chat.name = $scope.conference.name;
 		chat.audience = 'conference';
 		chat.targetId = $routeParams.conferenceId;
 		chat.type = 'f.conversation.chat';
+		chat.attachmentType = 'f.conversation.wall'
+
 	}
 	else if ($routeParams.groupId) {
 		chat.name = $scope.group.name;
 		chat.audience = 'group';
 		chat.targetId = $routeParams.groupId;
 		chat.type = 'f.conversation.chat';
+		chat.attachmentType = 'f.conversation.wall'
+
 	}
 	else if ($routeParams.queueId) {
 		chat.name = $scope.queue.name;
@@ -40,9 +46,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			chat.type = 'queuemessage';
 			$scope.showAlerts = true;
 			$scope.chat.status = 3;
+			$scope.showFileShare = false;
 		}
-		else
+		else{
 			chat.type = 'f.conversation.chat';
+			chat.attachmentType = 'f.conversation.wall'
+		}
+			
 	}
 	
 	// send to pop-up controller
@@ -92,16 +102,29 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		else
 			return 'img/XIcon-UnknownDocument.png';
 	};	
+	
+	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
+	$scope.flow_cleanup = function($files){
+		$scope.upload.flow.cancel();
+		$scope.$safeApply();
+	}
 
 	$scope.uploadAttachments = function($files){
+      	
+		if(!$scope.showFileShare){
+			return;
+		}
       	fileList = [];
 		
-      	fileList.push($files.file);
-		
+		for(var i = 0; i < $files.length;i++){
+      		fileList.push($files[i].file);
+			
+      	}
+      	
         var data = {
             'action':'sendWallEvent',
             'a.targetId': chat.targetId,
-            'a.type':'f.conversation.chat',
+            'a.type': chat.attachmentType,
             'a.xpid':"",
             'a.archive':0,
             'a.retainKeys':"",
@@ -110,15 +133,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             'a.audience':chat.audience,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "2_5",
+            "a.taskId": "2_9",
             "_archive":0,
         };
-		
-        httpService.upload_attachment(data,fileList);
-		
-        $scope.upload.flow.cancel();
+		httpService.upload_attachment(data,fileList);
+
+	};
+
     
-    };
 	
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function(scope) {
@@ -126,7 +148,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
 	
-	httpService.getChat(chat.audience+'s', chat.type, chat.targetId).then(function(data) {
+	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
+
+	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
 		
@@ -143,6 +167,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		if (version < 0)
 			$interval.cancel(chatLoop);
 	});
+
+
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
@@ -169,23 +195,31 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			
 			var from = data[i].from.replace('contacts:', '');
 			
-			if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
-				if (from == $scope.meModel.my_pid){
-					if (settingsService.getSetting('hudmw_chat_sound_sent') == 'true')
-						phoneService.playSound("sent");
-				}
-			}
+			
 
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
 			
-			if (data[i].type.replace('.auto', '').replace('.group.remove', '') == chat.type && context == chat.targetId) {
+			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '');
+
+			if ( (streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
+				if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
+					if (from == $scope.meModel.my_pid){
+						phoneService.playSound("sent");
+					}else{
+						phoneService.playSound("received");
+					}
+				}
 				$scope.messages.push(data[i]);
 				found = true;				
 			}
 		}
 		
+		
+
 		if (found) {
+			
+
 			addDetails();
 			
 			// jump to bottom if new messages were found

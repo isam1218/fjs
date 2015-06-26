@@ -2,15 +2,13 @@
   font-size: 12px;
 }
 .vmsection {
-  margin: 0px 10px;
+  margin: 0px;
   border: 0px;
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
+  width: 100%;
 }
 .vmsection:hover .displayName .vmtime {
   visibility: hidden;
@@ -19,6 +17,9 @@
   visibility: visible;
   top: 4px;
   right: 2px;
+}
+.vmsection .Avatar.CallAvatar_Queue {
+  margin: auto 0px auto -5px !important;
 }
 .vmsection .ConferenceAvatarSection.Avatar.ConferenceRecording {
   margin: 0.5em;
@@ -39,7 +40,6 @@
   position: relative;
   padding-left: 10px;
   display: block;
-  border-left: 1px solid #ccc;
   padding: 5px;
   cursor: pointer;
 }

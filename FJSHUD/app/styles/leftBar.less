@@ -6,8 +6,11 @@
   border: 1px solid #ccc;
   float: left;
   flex: 1;
+  -webkit-flex: 1;
   flex-direction: column;
+  -webkit-flex-direction: column;
   display: flex;
+  display: -webkit-flex;
   height: 100%;
 
   .RoundedTop {
@@ -22,18 +25,24 @@
 	border-top-right-radius: 50%;
 	box-shadow: 0px 1px 1px #ccc inset;
   }
+  
+  .LeftBarWrapper {
+    flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1 1 auto;
+    display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	overflow: hidden;
+  }
 
   .LeftBarTop{
    .WidgetTabBar{
       background: url() transparent !important;
    }
   }
-  .ContactSearch {
-   /* display: flex;
-	display: -webkit-flex;
-	flex-direction: row;
-	-webkit-flex-direction: row;
-	width: 100%;*/
+  .ContactSearch {   
 	width: 300px;
 
 	span{
@@ -49,17 +58,9 @@
        }
      }
 
-    .Search {
-      color: #729c00;
-	  border: 1px solid #729c00;
-	  border-radius: 2px;
-	  padding: .5em;
+    .SearchBox {
 	  margin: .5em;
 	  width: 70%;
-	  padding-left: 20px;
-	  &.add{
-	   padding-left: 25px;
-	  }
     }
 
     .New {
@@ -80,22 +81,21 @@
   .Contacts, .Groups, .Recent {
     flex: 1 1 0;
 	-webkit-flex: 1 1 0;
-	-ms-flex: 1 1 0;
+	-ms-flex: 1 1 auto;
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
-	overflow: hidden;
     position: relative;
     moin-height: 50%;
 
 	.ContactList {
-	  flex: 1 1 0;
-	  -ms-flex: 1 1 0;
-	  -webkit-flex: 1;
+	  flex: 1;
+	  -ms-flex: 1 1 auto;
+	  -webkit-flex: 1 1 0;
 	  position: relative;
       width: 100%;
-      overflow: hidden;
+      overflow-y: auto;
 
       .ListRowContent{
          .name{
@@ -164,13 +164,12 @@
           -webkit-flex-direction: column;
           display: block;
           flex: 1 1 0;
-          -ms-flex: 1 1 0;
-          -webkit-flex: 1;
+          -ms-flex: 1 1 auto;
+          -webkit-flex: 1 1 0;
           overflow-y: auto;
           overflow-x: hidden;
           position: absolute;
-          width: 100%;
-          /*height: 100%;*/
+          width: 100%;          
       }
       h4 {
 	    margin: .5em 0 0 .5em;
@@ -198,52 +197,26 @@
         }
     }
   }
- /* .Recent {
-      flex: 1 1 0;
-      -webkit-flex: 1 1 0;
-      display: flex;
-      display: -webkit-flex;
-      flex-direction: column;
-      -webkit-flex-direction: column;
-      overflow: hidden;
-
-      .ContactList {
-          flex: 1 1 0;
-          -ms-flex: 1 1 0;
-          -webkit-flex: 1 1 0;
-          overflow-y: auto;
-          min-height: 60px;
-
-          h4 {
-              margin: .5em 0 0 .5em;
-              color: #0093f0;
-              font-variant: small-caps;
-              font-size: .9em;
-
-              & + em {
-                  margin: 0 0 .5em .5em;
-                  font-size: .8em;
-                  display: block;
-              }
-          }
-
-      }
-  }  */
 
   .Notifications{
     position: relative;
     width: 100%;
-    border-bottom-left-radius: 30px;
-    -webkit-border-bottom-left-radius: 30px;
-    /*-webkit-box-flex: 0;*/
+    /*border-bottom-left-radius: 30px;
+    -webkit-border-bottom-left-radius: 30px;    
     position: absolute;
-    bottom: 40px;
+    bottom: 40px;*/
     display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
     z-index: 99;
 
-    & > div:first-child {
-    	/*font-size: .9em;*/
+    & > div:first-child {    	
     	transition: .25s;
+	} 	
+	
+	.Footer{
+	  padding-bottom: 10px;
 	}
 
 	.TitleBar, .NotificationDivider > div {
@@ -253,7 +226,6 @@
 	   padding: .25em;
 	   transition: 1s;
 	   border-top: 1px solid #ccc;
-       border-right:1px solid #ccc;
        font-size: 12px;
 
 	  & > * {
@@ -266,6 +238,7 @@
        display: none;
        position: relative;
        bottom: -10px;
+	   margin-top: -10px;
 	  }
 
 	  .XButton {
@@ -299,7 +272,7 @@
     background-color: #fff;
     border: solid 1px #eee;
     min-height: 2.5em;
-    position: absolute;
+    position: relative;
     bottom: 0;
 
 	.Number {

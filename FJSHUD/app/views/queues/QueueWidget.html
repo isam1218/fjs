@@ -4,7 +4,7 @@
     <avatar profile="queue"></avatar>
     <div class="WidgetHeaderTitle Single"><span>{{::queue.name}}</span></div>
 	
-    <div class="WidgetStat">
+    <div class="WidgetStat agents">
 		<div class="Left">
 			<div class="Labels">
 				<div>{{::verbage.agents}}:</div>
@@ -82,7 +82,9 @@
     <div ng-if="selected == 'calls'" class="ListView WithToolBar"
          include-once="views/queues/QueueWidgetCalls.html" ng-controller="QueueWidgetCallsController"></div>
     <div ng-if="selected == 'chat'" class="ListView ChatView"
-         include-once="views/ChatView.html" ng-controller="ChatController"></div>
+         include-once="views/ChatView.html" ng-controller="ChatController" flow-init
+          flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
+         ></div>
     <div ng-if="selected == 'calllog'" class="ListView CallLog"
          include-once="views/CallLog.html" ng-controller="CallLogController"></div>
     <div ng-if="selected == 'recordings'" class="ListView WithToolBar"

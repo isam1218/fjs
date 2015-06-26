@@ -1,0 +1,42 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
+    .ToolBar{
+          .selectWrapper{
+                &.vm{
+                    width: 110px !important;
+                }
+                
+                &.queue,
+                &.status,
+                &.conf,
+                &.members{ 
+                    width: 130px !important;
+                }
+                 
+                &.convQueue{
+                    width: 80px !important;
+                }
+                
+                select:hover{
+                    background: transparent !important;
+                }
+           }   
+     }
+     .Conference {
+            .ToolBar{
+                    input[type=button],   
+                    .selectWrapper.conf{  
+                        width: 130px !important;
+                    } 
+            }
+     }
+     
+     .WidgetStat {
+        .row{
+            &.second{
+                .Left{
+                    width: 35%;
+                }
+            }    
+        }
+     }
+}

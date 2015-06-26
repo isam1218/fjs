@@ -269,7 +269,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status = chatStatus,"customMessage":$scope.meModel.chat_custom_status});
     };
     $scope.setCustomStatus = function() {
-        myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":$scope.meModel.chat_custom_status});
+        var text;
+        if ($scope.meModel.chat_custom_status.length >= 25)
+            text = $scope.meModel.chat_custom_status.substr(0, 22) + '...';
+        myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":text});
     };
 
     this.getElementOffset = function(element) {
@@ -920,8 +923,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.muteCall = function(){
-       phoneService.setVolume(0);
-       $scope.volume.spkVol = 0;
+       phoneService.setMicSensitivity(0);
+       $scope.volume.micVol = 0;
 
     };
 

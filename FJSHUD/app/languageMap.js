@@ -256,9 +256,9 @@ fjs.i18n = {
       to:'to',
       from:'from',
       /*****Search WIdget ******/
-      type_for_results:'Type or speak for results',
+      type_for_results:'Type for results',
       search_to_start_convo:'Search to Start Conversation',
-      type_subject_name:'Type or speak name of contact, team, queue, or conference room...',
+      type_subject_name:'Type name of contact, team, queue, or conference room...',
     
       /***** Call Recordings *****/
       call_log_tab:'Call Log',

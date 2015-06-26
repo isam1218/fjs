@@ -49,7 +49,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					$(this).removeClass('DroppableArea');
 					
 					// re-check basic criteria
-					if (timeout || drops.indexOf(type) == -1)
+					if (timeout || drops.indexOf(type) == -1 || obj.xpid == $rootScope.myPid)
 						return;
 					
 					// dock new item

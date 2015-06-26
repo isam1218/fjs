@@ -9,7 +9,6 @@ body, html {
   padding: 0;
   margin: 0;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
-  /*font-size: 1em;*/
   color: #555;
   background: #ccc url(../img/bg.png);
   box-shadow: 0 4px 5px rgba(255,255,255,0.3) inset;
@@ -38,7 +37,6 @@ p {
   color: #0093f0;
   font-size: 11px;
   font-weight: bold;
-  //height: 29px;
   line-height: 18px;
   width: auto;
   text-transform: uppercase;
@@ -237,14 +235,51 @@ p {
 @import "queue";
 @import "search";
 @import "video";
+@import "intellinote";
 @import "conversation";
 @import "tables";
 @import "buttons";
 @import "icons";
-@import "popups";
 //@import "nativeAlert";
 @import "notification";
+@import "popups";
 @import "voicemail";
 @import "queue";
 @import "media";
 @import "firefox";
+@import "ie";
+
+.LeftBar .Recent {
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+
+.LeftBar .Recent .ContactList {
+  flex: 1 1 0;
+  -ms-flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  overflow-y: auto;
+  min-height: 60px;
+  margin-top: 10px;
+}
+
+.LeftBar .Recent .ContactList h4 {
+  margin: .5em 0 0 .5em;
+  color: #0093f0;
+  font-variant: small-caps;
+  font-size: .9em;
+}
+
+.LeftBar .Recent .ContactList h4 + em {
+  margin: 0 0 .5em .5em;
+  font-size: .8em;
+  display: block;
+}
+
+.Overlay .Foreground {
+  max-height: 575px;
+}

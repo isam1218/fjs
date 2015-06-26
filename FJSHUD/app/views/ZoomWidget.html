@@ -8,9 +8,7 @@
 
     <div class="ListSection WidgetFont WidgetZoomBody" ng-if="inMeeting"> 
              <div>
-              <h2
-              style="display: block;font-size: 1.5em;-webkit-margin-before: 0.83em;-webkit-margin-after: 0.83em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;color:#666"
-              >{{::verbage.zoom_created}}</h2>
+              <h2>{{::verbage.zoom_created}}</h2>
             </div>
             <div> {{::verbage.zoom_your_meeting_will_begin}} <a href="{{joinUrl}}"> {{::verbage.link}} </a> </div>
             <br>
@@ -36,17 +34,17 @@
                 <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
                 <div class="WidgetFont">{{::verbage.join_summary}}</div>
             </div>
-
+           <div class="joinWrapper">
             <div class="JoinMeetingSection"> 
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" ng-attr-placeholder="{{::verbage.meeting_id}}" />
+                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
                     </div>
                 </div>
                 <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
 
             </div>
-
+          </div>
         </div>
 
         <div class="ZoomWidgetSection right"> 
@@ -54,15 +52,15 @@
                 <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
                 <div class="WidgetFont">{{::verbage.create_summary}}</div>
             </div>
-
-            <div class="JoinMeetingSection"> 
-                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_screen_share_only}}</button>
-                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
-                <div class="Add SearchInputBox">
-					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
-                </div>
+            <div class="joinWrapper">
+	            <div class="JoinMeetingSection"> 
+	                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
+	                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
+	                <div class="addContact">
+						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" placeholder="{{::verbage.add_someone}}" contact-search />
+	                </div>
+	            </div>
             </div>
-
             <div class="widget-zoom-contacts">
                     <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
 						<avatar profile="contact" widget="zoom"></avatar>
@@ -72,9 +70,9 @@
                                 <div class="link">#{{::contact.primaryExtension }}</div>
                             </div>
                             <div class="ZoomRowStatus">
-                                <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+                                <!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
                                 <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
-                                <div class="ListRowDesc">{{contact.hud_status}}</div>
+                                <div class="ListRowDesc">{{::contact.hud_status}}</div>
                             </div>
                         </div>
                         <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>

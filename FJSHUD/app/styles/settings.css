@@ -1,7 +1,4 @@
 .WidgetMe .WidgetHeader {
-  padding: 0 10px;
-  /*height: 22%;*/
-  height: 75px;
   width: 100%;
 }
 .WidgetMe .WidgetHeaderTitle {
@@ -25,7 +22,6 @@
 .WidgetMe .WidgetBody {
   height: 78%;
   max-height: 100%;
-  top: 73px;
 }
 .WidgetMe .WidgetBody .call-block {
   height: 50%;
@@ -380,6 +376,7 @@ div.NewCall {
   background-color: #fff;
 }
 div.NewCall input.NewCall {
+  height: 26px;
   position: relative;
   top: 7px;
   margin-bottom: 4px;
@@ -391,12 +388,13 @@ div.NewCall input.NewCall {
   padding: 7px 5px;
 }
 div.NewCall .XButton {
+  height: 26px;
   float: right;
-  height: 2em;
   width: 15%;
   position: relative;
   margin-left: 0.5em;
   top: 7px;
+  padding-top: 2px;
 }
 div.NewCall .XButton.XButtonGreen {
   margin-right: 1em;

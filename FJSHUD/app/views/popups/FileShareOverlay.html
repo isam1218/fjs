@@ -1,11 +1,15 @@
 <div class="Overlay" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
     <div ng-click="showOverlay(false)" class="Background"></div>
-	
+ <div class="wrapper" style="width: 90%;max-width: 1000px;">	
     <div class="Foreground" ng-if="audience">
-        <div ng-click="showOverlay(false)" class="Close">x</div>
-        
+        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->                
         <div class="Header">
-            <h2>{{::verbage.file_share_to}}<span style="color:#729c00">{{ toName }}</span></h2>
+            <div ng-click="showOverlay(false)" class="Close">
+	           <div class="CloseIcon2"></div>
+	        </div>
+            <div class="headerIcon share"></div>
+            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>
+           <!-- <h2>{{::verbage.file_share_to}}<span style="color:#729c00">{{ toName }}</span></h2> -->
         </div>
         
         <div class="Sections">
@@ -17,7 +21,7 @@
                 </div>
                 <div>
                     <h4 class="upper">{{::verbage.auto_delete}}</h4>
-                    <div>{{::verbage.schedule_move_to_trash}} </div>
+                    <p>{{::verbage.schedule_move_to_trash}} </p>
                     <div ng-repeat="archive in archiveOptions" class="AutoDelete"> 
                         <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-change="update(selectedArchiveOption)">{{archive.name}}</input>
                     </div>
@@ -25,16 +29,11 @@
             </div>            
             
             <div class="Section">
-                <div >
-                    <span> 
-                        <h4 style="display:inline-block">{{::verbage.attachments}}  </h4>
-                        <span class="XButton" style="float:right;position:relative;margin: .75em 0 .25em 0;" flow-btn>{{::verbage.attach}}</span>
-                    </span>
+                <div id="attachments">
+                 <h4 class="upper">{{::verbage.attachments}}  </h4>
+                 <span class="XButton" flow-btn>{{::verbage.attach}}</span>                   
+                 <p>{{::verbage.attach_files_to_share}}</p>
                 </div>
-                <div> 
-                    {{::verbage.attach_files_to_share}}
-                </div>
-                
                 <div class="Members">
                     <div ng-repeat="file in $flow.files" class="ListRow">
                         <div style="margin-left:5px;display:inline-block;width:70%">  
@@ -54,12 +53,14 @@
 	</div>
 	
     <div class="Foreground" ng-if="downloadables">
-        <div ng-click="showOverlay(false)" class="Close">x</div>
-        
+       <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->                      
         <div class="Header">
-            <h2>{{::verbage.Preview}}: <span style="color:#729c00">{{ currentDownload.fileName }}</span></h2>
+            <div ng-click="showOverlay(false)" class="Close">
+	           <div class="CloseIcon2"></div>
+	        </div> 
+            <div class="headerIcon share"></div>
+            <div class="HeaderTitle">{{::verbage.Preview}}: <span class="name">{{ currentDownload.fileName }}</span></div>          
         </div>
-        
         <div class="Sections" >
             <div class="Section">
                 <div style="background-color:#FFF;height:inherit">
@@ -105,4 +106,5 @@
 
         </div>
     </div>
+  </div>  
 </div>

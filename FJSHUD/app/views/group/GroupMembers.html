@@ -1,17 +1,13 @@
-<div class="ToolBar">
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query"></div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
+<div class="ToolBar">        
+        <input class="SearchBox" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query">
+      
+        <div class="SelectBox selectWrapper members">
+	        <select ng-model="selectedSort"
+	                    ng-options="sort_option.name for sort_option in sort_options"
+	                ng-change="sortBy(selectedSort.type)"
+	        > 
+	        </select>
         </div>
-        <div></div>
-        <select style="width:150px"class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
-                    ng-options="sort_option.name for sort_option in sort_options"
-                ng-change="sortBy(selectedSort.type)"
-        > 
-        </select>
-        
 </div>
 
 <div class="ListView fj-scrollable"> 

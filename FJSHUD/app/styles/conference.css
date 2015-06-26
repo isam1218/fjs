@@ -7,8 +7,13 @@
 .Conference .ToolBar .SearchInputBox {
   width: 27%;
 }
-.Conference.fj-widget-area .ToolBar {
-  margin-top: 5px;
+.Conference .ToolBar input[type=button],
+.Conference .ToolBar .selectWrapper.conf {
+  height: 30px !important;
+  width: 150px !important;
+  font-size: 11px;
+  font-weight: bold;
+  font-color: #333;
 }
 .Conference .ListViewTopNoteClose {
   top: 30%;
@@ -53,15 +58,6 @@
 .ListRow-Conference-Members {
   clear: both;
   position: relative;
-  /*
-  &.status{
-      display: block;
-      width: 36px;
-      float: right;
-      top: 0px;
-      position: absolute;
-      right: 0;
-  }*/
 }
 .conferences-room-item-member {
   width: 62px;
