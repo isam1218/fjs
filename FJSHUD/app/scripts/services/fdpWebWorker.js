@@ -108,9 +108,6 @@ function version_check (){
 		    else
 		       	setTimeout('should_sync();', 500);
 		}else{
-			//delete localStorage.nodeID;
-			//delete localStorage.authTicket;
-			//attemptLogin();
 			self.postMessage({
 				action:'auth_failed'
 			});
@@ -212,10 +209,11 @@ var sync_request = function(f){
 
 			self.postMessage(sync_response);
 			setTimeout('should_sync();', 500);
-		}else{
+		}
+		else{
 			self.postMessage({
 				action:'auth_failed'
-			})
+			});
 		}
 		
 	});
