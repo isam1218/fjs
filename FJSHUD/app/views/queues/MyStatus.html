@@ -19,7 +19,7 @@
 </div>
 
 <div class="QueueList">
-	<div class="ListRow" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]" dockable="queue">	
+	<div class="ListRow myStatus" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]" dockable="queue">	
 		<avatar profile="queue"></avatar>
 
 		<div class="ListRowContent">

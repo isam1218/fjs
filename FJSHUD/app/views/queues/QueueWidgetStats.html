@@ -31,8 +31,8 @@
 
 <div class="ListView QueueStatTable">
 	<div class="Row Header">
-		<div>&nbsp;</div>
-		<div>&nbsp;</div>
+		<div class="statusCell" ng-click=""><div class="ContentCellIcon ChatHeader"></div><div class="DirectionArrow none"></div></div>
+		<div class="statusCell" ng-click=""><div class="ContentCellIcon QueueHeader"></div><div class="DirectionArrow none"></div></div>
 		<div ng-click="setSort('displayName')">
 			<span>{{::verbage.Agent_Name}}</span>
 			<div ng-if="sortOrder == 'displayName'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>

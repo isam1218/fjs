@@ -19,11 +19,19 @@
 	overflow-y: auto;
 	padding: .5em 2.5%;
 	
-	.ListRow{
+	.ListSectionHeader{
+	   margin-bottom: -5px;
+	}
+	
+	.ListRow.myStatus{
 	    &:hover{ 
 	       .ListRowStatus{
                 visibility:visible !important;
             }
+	    }
+	    
+	    [class*="XIcon-ChatStatus"]{
+	       margin-left: -5px;
 	    }
 	}	
   }
@@ -65,11 +73,13 @@
 	  }
 	}
 	
-	.Row:nth-child(odd) {
-	  background-color: #eeeeee;
-	  overflow: hidden;
+	.Row{
+	   color: gray;
+    	&:nth-child(odd) {
+    	  background-color: #eeeeee;
+    	  overflow: hidden;
+    	}
 	}
-	
 	.Header > div, .Row > div {
 	  float: left;
 	  overflow: hidden;
@@ -143,6 +153,7 @@
 		  text-align: center;
 		  padding: .25em;
 		  font-size: .8em;
+		  color: gray;
 		}
 	  }
 	}
@@ -178,7 +189,12 @@
       width: 1.8em;
       height: 1.8em;
       position: relative;     
-      top: .21em;
+      top: .08em;
+      left: .12em;
+      
+      &.QueueListView{
+        left: -.0359em;
+      }
     }
     .QueueTileView {
       background: url("../img/QueueTileView.png") no-repeat 0px 0px;      
@@ -205,8 +221,8 @@
   .StatHeader {
     text-align: center;
 	width: 100%;
-	margin: 1em auto;
-	font-size: .8em;
+	margin: 5px auto;
+	font-size: 11px;
 	
 	.StatBlock {
 	  display: inline-block;
@@ -234,12 +250,58 @@
     width: 100%;
     padding: .5em;
     text-align: center;
-    color: gray;
-	font-size: .8em;
+    height: 20px;
+    line-height: 20px;
+    color: #999;
+	font-size: 11px;
+	cursor: default;
   }
   
   .QueueStatTable {
     padding: 1em;
+    
+    .ContentCellIcon{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 24px;
+      height: 24px;
+      
+      &.ChatHeader{
+          background: url("../img/XStatus.png?v=1425679800685") no-repeat -103px -8px;
+          border: none;
+          width: 13px;
+          height: 11px;
+          left: 5px;
+          top: 8px;
+      }
+      &.QueueHeader{
+            background: url(../img/XStatus.png?v=1425679800685) no-repeat -144px -24px;
+      }      
+     }
+    
+    .statusCell{
+      color: #666;
+      padding-top: 4px;
+      font-size: 11px;
+      width: 24px;
+      text-align: center;
+      border-right: solid 1px #fff;
+    }
+    .DirectionArrow {
+      position: relative;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      margin-left: 1px;
+      border-style: solid;
+      border-width: 6px;
+      
+      &.none
+      {
+        display : none;
+      }
+    }
 	
 	.Table {
 	  flex: 1;
@@ -262,27 +324,30 @@
 	  }
 	  
 	  &.Header {
-	    border-bottom: 1px solid #333;
-		margin-bottom: .5em;
-		font-size: .9em;
+	    border-bottom: 1px solid #333;				
+		color: #666;
+        padding-top: 4px;
+        font-size: 11px;
 	  }
 	  
 	  & > div {
 		position: relative;
 	    float: left;
-		height: 2em;
-		line-height: 2em;
+		height: 24px;
+		line-height: 24px;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap;
+		white-space: nowrap;	
+		border-right: 1px solid #fff;	
+		font-size: 12px;
 		
-		&:nth-child(1) { width: 5%; }
-		&:nth-child(2) { width: 5%; }
-		&:nth-child(3) { width: 35%; }
-		&:nth-child(4) { width: 25%; }
-		&:nth-child(5) { width: 10%; }
-		&:nth-child(6) { width: 15%; }
-		&:nth-child(7) { width: 5%; }
+		&:nth-child(1) { width: 7%; }
+		&:nth-child(2) { width: 7%; }
+		&:nth-child(3) { width: 35%; padding-left: 5px; }
+		&:nth-child(4) { width: 20%;padding-left: 5px; }
+		&:nth-child(5) { width: 10%;padding-left: 5px; }
+		&:nth-child(6) { width: 15%;padding-left: 5px; }
+		&:nth-child(7) { width: 6%;padding-left: 5px; }
 	  }
 	}
 	

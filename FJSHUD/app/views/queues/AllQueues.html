@@ -4,7 +4,7 @@
   <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
   </div>
-  <div class="SelectBox selectWrapper queue">
+  <div class="SelectBox selectWrapper queue" ng-if="viewIcon">
     <select ng-if="viewIcon"
 			ng-model="selectedQueue"
             ng-options="queue_option.display_name for queue_option in queue_options track by queue_option.display_name" 
