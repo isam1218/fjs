@@ -153,6 +153,13 @@ function sync_request(f){
 				
 			synced = true;
 		}
+		else{
+			for(i = 0; i < ports.length;i++){
+				ports[i].postMessage({
+					"action": "auth_failed"
+				});
+			}
+		}
 		
 		// again, again!
 		setTimeout('do_version_check();', 500);

@@ -243,18 +243,18 @@
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>
-		<a class="Button" href="" ng-click="resetQueue()">
-			<div class="ListRowActionButtonReset"></div>
-			<span>{{::verbage.Reset_Stats}}</span>
-		</a>
+		<a class="Button" href="" ng-show="myQueue" ng-click="fileShare()">
+            <div class="ListRowActionButtonFileShare"></div>
+            <span>{{::verbage.file_share}}</span>
+        </a>
 		<a class="Button" href="#/queue/{{profile.xpid}}/chat" ng-show="myQueue">
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
-		</a>
-		<a class="Button" href="" ng-show="myQueue" ng-click="fileShare()">
-			<div class="ListRowActionButtonFileShare"></div>
-			<span>{{::verbage.file_share}}</span>
-		</a>
+		</a>		
+		<a class="Button" href="" ng-click="resetQueue()">
+            <div class="ListRowActionButtonReset"></div>
+            <span>{{::verbage.Reset_Stats}}</span>
+        </a>
 	</div>
 	
 	<!-- conference -->

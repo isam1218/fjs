@@ -216,6 +216,17 @@
 	top: 0;
 	left: 0;
   }
+  
+  .Avatar{
+    width: 40px !important;
+    height: 40px !important;
+    
+    img:not(.GroupAvatarItemImg){
+        width: 38px !important;
+        height: 38px !important;
+    }
+  }
+  
 }
 
 .WidgetBody {
@@ -408,9 +419,11 @@
   clear: both;
 }
 
+.WidgetHeaderCallStatus {
+    min-width: 30%;
+}
 .WidgetStat, .WidgetHeaderCallStatus {
-  float: right;
-  min-width: 30%;
+  float: right;  
   border-radius: 4px;
   background-color: #fff;
   border: solid 1px #ccc;
@@ -422,15 +435,51 @@
 .WidgetStat {
   text-align: right;
   line-height: 1.75em;
-  font-size: .7em;
+  font-size: .7em; 
+  width: 300px;
   
+  &.agents{
+    width: 220px;
+  }
+  
+  .row{
+    width: 100%;
+    float: left;
+    clear: both;
+    text-align: right;
+    white-space: nowrap;
+    
+    &.first{
+        .Left{
+          width: 50%;
+        }
+        .Right{
+            width: 35%;
+            margin-right: .3em;
+        }
+    }
+    
+    &.second{
+        .Left{
+            width: 34%;
+            width: 35%\9; /* ie9 and less */
+        }
+        .Right{
+            width: 55%;
+            margin-right: .3em;
+        }
+    }
+  }
   .Left, .Right, .Labels, .Data {
 	display: inline-block;
 	vertical-align: top;
 	
 	&.Left {
-	  margin-right: 1em;
+	  margin-right: 1em;	
+	  float: left;  
 	}
+
+	&.Right{float: right;}
 	
 	&.Labels { 
 		text-align: right; 
