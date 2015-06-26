@@ -1,121 +1,124 @@
 <div class="LeftBarNotificationSection notificationsSection" ng-class="todaysNotifications.length == 0 && !anotherDevice && phoneSessionEnabled ? 'noMessages' : 'hasMessages'"  expand-contract-notifications>
- <div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">     
-	<div class="TitleBar">
-        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
-        <div>{{::verbage.notifications}}</div>
-        <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay = 'notifications'" />
-     </div>    	
-   <div class="scroller">  	
-	       <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
-					<div class="NotificationHeader">
-							<div class="NotificationHeaderBackground">
-								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
-							</div>
+	<div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">     
+		<div class="TitleBar">
+			<div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
+			<div>{{::verbage.notifications}}</div>
+			<div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+			<input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay = 'notifications'" />
+		</div>   
+		
+		<div class="scroller">  	
+	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
+				<div class="NotificationHeader">
+					<div class="NotificationHeaderBackground">
+						<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 					</div>
-					<div class="NotificationDivider"></div>
-					<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
-						<avatar 
-							class="LeftBarNotificationAvatarSection NotificationAvatar"
-							ng-click="go_to_notification_chat(message)" 
-							profile="message.fullProfile" 
-							type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
-						</avatar>
-					
-						<div class="LeftBarNotificationMessageSection" ng-init="message_section_notifications = getMessage(message)"> 
-							<div ng-click="go_to_notification_chat(message)" class="chatNotification">
-								<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ><span ng-if="::message.displayName">{{ ::message.displayName}}</span><span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> <div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
-								<div class="NotificationType" ng-show="showNotificationBody">...{{ ::message.label }} <span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
-								{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}</span></div>
-								<div class="NotificationMessage" scroll-to-bottom> 
-								  <div ng-if="message.message && message.message.length > 1" ng-repeat="messageToDisplay in message_section_notifications track by $index" ng-bind-html="::messageToDisplay"><br/></div>
-								  <span ng-if="!message.message || message.message <= 1" ng-bind-html="::message_section_notifications"></span>								  
-								</div> 
+				</div>
+				<div class="NotificationDivider"></div>
+				<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
+					<avatar 
+						class="LeftBarNotificationAvatarSection NotificationAvatar"
+						ng-click="go_to_notification_chat(message)" 
+						profile="message.fullProfile" 
+						type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
+					</avatar>
+				
+					<div class="LeftBarNotificationMessageSection"> 
+						<div ng-click="go_to_notification_chat(message)" class="chatNotification">
+							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
+								<span ng-if="::message.displayName">{{ ::message.displayName}}</span>
+								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
+								<div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
+							</div> 
+							<div class="NotificationType" ng-show="showNotificationBody">
+								...{{ ::message.label }} 
+								<span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
+									{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
+								</span>
 							</div>
-							
-							<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
-								<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-								<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">{{::verbage.accept}}</span>
-							
-							</div>
-							<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
-								<span class="XButton" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
-								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.call_back}}</span>
-							</div>
-
-							<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
-								<span class="XButton chatNotification" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
-								<span class="XButton XButtonGreen" ng-click="makeCall(message.phone); remove_notification(message.xpid)">{{::verbage.Call}}</span>	
-							</div>
-							
-							<div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
-								<span class="XButton" ng-click="remove_notification(message.xpid);">{{::verbage.Skip}}</span>
-								<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
-							</div>
-							
-							<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
-								<span class="XButton" ng-click="showQueue(message)">{{::verbage.Show}}</span>
-							</a>
+							<div class="NotificationMessage" scroll-to-bottom ng-bind-html="formatMessage(message.message)"></div> 
 						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
+							<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
+							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">{{::verbage.accept}}</span>
+						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
+							<span class="XButton" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
+							<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.call_back}}</span>
+						</div>
+
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
+							<span class="XButton chatNotification" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+							<span class="XButton XButtonGreen" ng-click="makeCall(message.phone); remove_notification(message.xpid)">{{::verbage.Call}}</span>	
+						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
+							<span class="XButton" ng-click="remove_notification(message.xpid);">{{::verbage.Skip}}</span>
+							<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
+						</div>
+						
+						<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+							<span class="XButton" ng-click="showQueue(message)">{{::verbage.Show}}</span>
+						</a>
+					</div>
 				</div>
 
 			</div>
  
 			<div class="Messages plugins" ng-click="showOverlay(true,'DownloadPlugin',{});" ng-if="!phoneSessionEnabled">		
 			  <a href="{{::pluginDownloadUrl}}" download target="_blank">
-					<div class="NotificationHeader"> 
-							<div class="NotificationHeaderBackground"> 
-								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
-							</div>
-							
+				<div class="NotificationHeader"> 
+					<div class="NotificationHeaderBackground"> 
+						<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 					</div>
-					<div class="NotificationDivider"></div>
-
-					<div class="NotificationSection ng-class:{'last' : !anotherDevice}" > 
-						
-						<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
-							<div class="AvatarWarningSmall"></div>
-						</div>
-					
-						<div class="LeftBarNotificationMessageSection" > 
-							<div class="chatNotification plugins">
-								<div class="content"><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
-								<div ></div>
-
-								<div class="NotificationMessage">Click to download & Install</div>
-							</div>
-							
-						</div>
 				</div>
-				</a>
+				<div class="NotificationDivider"></div>
+
+				<div class="NotificationSection ng-class:{'last' : !anotherDevice}" >
+					<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+						<div class="AvatarWarningSmall"></div>
+					</div>
+				
+					<div class="LeftBarNotificationMessageSection" > 
+						<div class="chatNotification plugins">
+							<div class="content"><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
+							<div ></div>
+
+							<div class="NotificationMessage">Click to download & Install</div>
+						</div>
+						
+					</div>
+				</div>
+			  </a>
 			</div>
 			
 			<div class="Messages webphone" ng-if="anotherDevice" ng-click="$parent.activatePhone()">                
-			        <div class="NotificationHeader">
-                            <div class="NotificationHeaderBackground"> 
-                                <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
-                            </div>
-                            
+			    <div class="NotificationHeader">
+                    <div class="NotificationHeaderBackground"> 
+                        <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
                     </div>
-                    <div class="NotificationDivider" ></div>
-                    <div class="NotificationSection webphone last"> 
-                        
-                        <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
-                            <div class="AvatarWarningSmall"></div>
-                        </div>
+                </div>
+                <div class="NotificationDivider" ></div>
+                <div class="NotificationSection webphone last"> 
                     
-                        <div class="LeftBarNotificationMessageSection" > 
-                            <div class="chatNotification webphone">
-                                <div class="content"><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
-                                <div ></div>
+                    <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+                        <div class="AvatarWarningSmall"></div>
+                    </div>
+                
+                    <div class="LeftBarNotificationMessageSection" > 
+                        <div class="chatNotification webphone">
+                            <div class="content"><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
+                            <div ></div>
 
-                                <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
-                            </div>
-                            
+                            <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
                         </div>
+                        
+                    </div>
                  </div>               
             </div> 
-         </div>    
+        </div>    
 	</div>
 </div>
 
