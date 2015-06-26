@@ -353,13 +353,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	var query = arguments[1];
     	var queryArray;
     	var id;
+    	var data;
+		
 		if(query){
 			queryArray = query.split('&');
 			xpid = queryArray[0];
     	}
-    	activateBrowserTab();
-    	var data;
-    	window.focus();
+		
+		// re-focus tab/window
+		if (url.indexOf('/Close') === -1) {
+			activateBrowserTab();
+			window.focus();
+		}		
+		
     	if(url.indexOf('#') === -1){
 
 			switch(url){
