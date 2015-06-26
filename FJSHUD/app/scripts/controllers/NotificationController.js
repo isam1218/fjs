@@ -661,7 +661,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						if($scope.todaysNotifications[j].xpid == item.xpid){
 						$scope.todaysNotifications.splice(j,1,item);
 						if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
-							phoneService.playSound("received");
+							if(!$scope.isFirstSync){
+								phoneService.playSound("received");
+							}
 						}
 						isAdded = true;
 						break;	
@@ -669,7 +671,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				}
 				if(!isAdded){
 					if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
-						phoneService.playSound("received");
+						if(!$scope.isFirstSync){
+							phoneService.playSound("received");
+						}
 					}
 					$scope.todaysNotifications.push(item);
 					
@@ -862,6 +866,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		else
 		   	$scope.hasMessages = true;	
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
+
+		
 			
 					
     });		

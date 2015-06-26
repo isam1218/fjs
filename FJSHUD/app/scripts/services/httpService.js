@@ -18,8 +18,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
 	var upload_progress = 0;
 	var feeds = fjs.CONFIG.FEEDS;
+	$rootScope.isFirstSync = true;
 	var deferred_progress = $q.defer();
-	
     var VERSIONS_PATH = "/v1/versions";
         /**
          * Versionscache servlet URL
@@ -92,6 +92,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 									if (synced_data[feed].length > 0)
 										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
 								}
+								$rootScope.isFirstSync = false;
+
 							});
 		                }
 		                break;
@@ -188,6 +190,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 									
 									if (synced_data[feed].length > 0)
 										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+									
+									$rootScope.isFirstSync = false;
 								}
 							});
 		                }
