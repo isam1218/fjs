@@ -22,7 +22,7 @@
 	.ListSectionHeader{
 	   margin-bottom: -5px;
 	}
-	
+		
 	.ListRow.myStatus{
 	    &:hover{ 
 	       .ListRowStatus{
@@ -307,6 +307,8 @@
 	  flex: 1;
 	  -webkit-flex: 1;
 	  overflow-y: auto;
+	  position: absolute;
+	  width: 95%;
 	}
 	
 	.Agent:nth-child(even) .Row, .Details .Row:nth-child(odd) {
@@ -405,6 +407,8 @@
 	  em {
 	    font-size: .8em;
 	    margin-left: 10px;
+	    position: relative;
+	    top: -5px;
 	  }
 	  
 	  .Arrow {

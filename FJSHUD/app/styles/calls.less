@@ -10,7 +10,7 @@
     .ListLineContentCell{
       max-width: none !important;
       &:first-child{
-         width: 26px;
+         width: 30px;
       }   
                     
       .DirectionArrow{
@@ -26,11 +26,11 @@
         .DirectionArrow{margin-left: 0;}
       }                   
                   
-      &.Name{width: 112px !important;}   
-      &.Phone{width: 78px !important;}
-      &.Duration{width: 44px  !important;}  
-      &.StartedAt{width: 110px !important;}  
-      &.CallType{width: 10%  !important;}
+      &.Name{width: 118px;}   
+      &.Phone{width: 82px;}
+      &.Duration{width: 46px;}  
+      &.StartedAt{  width: 106px; margin-left: -2px;}  
+      &.CallType{width: 10%;}
     }                                               
   }           
 
@@ -80,12 +80,17 @@
 	  overflow: hidden;
 	  height: 40px;           
       
+      &:first-child {
+          min-width: 40px;
+          width: 40px;
+      }
+      
       &:not(:first-child) { 
         padding-left: 5px;               
         span{
             position: relative;
             top: 15px;
-        }           	       	        	        	    
+        }                    	       	        	        	    
       }
       
       &:not(.Type){
@@ -95,6 +100,7 @@
       &.Name {    	
         flex: 3 1 0;
 		-webkit-flex: 3 1 0;
+    	max-width: 135px;
     	
     	 & > div{
     	   text-align: left;
@@ -113,6 +119,7 @@
     	flex: 2.1 1 0;
 		-webkit-flex: 2.1 1 0;
 		font-weight: bold;    
+    	max-width: 130px;
     	    
     	span{white-space: nowrap; cursor: pointer;}
       }
@@ -120,13 +127,14 @@
       &.Duration{
 	    flex: 1.4 1 0;
 		-webkit-flex: 1 1 0;
-		padding-right: 6px;
+		max-width: 50px;
 	  }
     	   
       &.Date {
         flex: 3 1 0;
 		-webkit-flex: 3 1 0;
     	white-space: nowrap;
+    	max-width: 120px;
       }
       &.Type{
         width: 6%;
