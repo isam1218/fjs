@@ -1,23 +1,19 @@
 <div class="Widget Search" id="WidgetSearch">
     <div class="WidgetBody">
 		<div class="SearchPanel">
-			<div class="SearchInputBox">
-				<div class="SearchInputBoxInputHolder">
-					<input class="SearchInputBoxInput"
-						   type="search" ng-model-options="{debounce: 200}" x-webkit-speech=""
-						   data-ng-model="query" 
-						   ng-click="clearSearch()" ng-keydown="onKeyDown($event)"
-						   ng-attr-placeholder="{{::verbage.type_for_results}}"
-						   autofocus="true" />
-				</div>
-				<div class="SearchInputBoxStateButton"><div class="SearchInputBoxStateButtonIcon"></div></div>
-			</div>
+			<input class="SearchBox"
+				   type="search" ng-model-options="{debounce: 200}" x-webkit-speech=""
+				   data-ng-model="query" 
+				   ng-click="clearSearch()" ng-keydown="onKeyDown($event)"
+				   ng-attr-placeholder="{{::verbage.type_for_results}}"
+				   autofocus="true" />
+				   
 			<input type="button" class="XButton" value="{{::verbage.search}}" ng-click="searchEmUp()" />
 		</div>
 		
 		<div class="SearchResults">
 			<div ng-if="!searched" class="Intro">
-				<h4>{{::verbage.search_to_start_convo}}</h4>
+				<div class="ListSectionHeaderTitle">{{::verbage.search_to_start_convo}}</div>
 				<em>{{::verbage.type_subject_name}}</em>
 			</div>
 			
@@ -26,7 +22,7 @@
 			</div>
 		
 			<div ng-if="contacts.length > 0">
-				<h4>{{::verbage.contacts}}</h4>
+				<div class="ListSectionHeaderTitle">{{::verbage.contacts}}</div>
 				<a href="#/contact/{{ ::contact.xpid }}" ng-repeat="contact in contacts track by contact.xpid" class="ListRow" droppable="Call">		
 					<avatar profile="contact"></avatar>
 					
@@ -42,17 +38,15 @@
 								<div class="status-icon-inner"></div>
 							</div>
 							{{contact.hud_status || 'offline'}}
-						</div>
-						
-						<div class="ListRowStatus">
-							<span ng-if="contact.primaryExtension">#{{ ::contact.primaryExtension }}</span>
-						</div>
+						</div>																		
+						<div class="ListRowStatus" ng-if="contact.primaryExtension">#{{ ::contact.primaryExtension }}</div>
+						<input style="float:right" ng-if="!contact.fullProfile.call" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, contact.fullProfile)">						
 					</div>
 				</a>
 			</div>
 			
 			<div ng-if="groups.length > 0">
-				<h4>{{::verbage.Groups}}</h4>
+				<div class="ListSectionHeaderTitle">{{::verbage.Groups}}</div>
 				<a href="#/group/{{ ::group.xpid }}" ng-repeat="group in groups track by group.xpid" class="ListRow">
 					<avatar profile="group"></avatar>
 					
@@ -65,28 +59,32 @@
 								</span>
 							</div>
 						</div>
-						<div class="ListRowStatus">{{ ::group.extension ? '#' + group.extension : getOwner(group) }}</div>
+						<div class="ListRowStatus">{{ ::group.extension ? '#' + group.extension : getOwner(group) }}</div>					
+                        <input style="float:right" ng-if="group.extension" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, group.extension)">  
+                        <input style="float:right" ng-if="!group.extension && getOwner(group)" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, getOwner(group))">                      
 					</div>
 				</a>
 			</div>
 			
-			<div ng-if="conferences.length > 0">
-				<h4>{{::verbage.Conferences}}</h4>
-				<a href="#/conference/{{ ::conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow" droppable="Contact,Call">
+		    <div ng-if="conferences.length > 0">
+				<div class="ListSectionHeaderTitle">{{::verbage.Conferences}}</div>
+				<a href="#/conference/{{ ::conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow conference" droppable="Contact,Call">
 					<avatar profile="conference"></avatar>
 					
                     <div class="ListRowContent" dockable="conference">
                         <div class="ListRowTitle">
-                            <div class="name"> Room # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
-                            <span class="link" ng-if="conference.location">at {{::conference.location}}</span>
+                            <div class="name"> Room #{{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+                            
 							
                             <div data-ng-if="conference.members.length == 0">
                                 <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
 								<div class="ListConferenceStatusText">{{::verbage.free_room}}</div>
+								<span class="link" ng-if="conference.location">at {{::conference.location}}</span>
                             </div>                            
                             <div data-ng-if="conference.members.length > 0">
                                 <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
 								<div class="ListConferenceStatusText">{{conference.members.length}} {{::verbage.members_on_call}}</div>
+								<span class="link" ng-if="conference.location">at {{::conference.location}}</span>
 							</div> 
                         </div>
                     </div>
@@ -98,10 +96,10 @@
                         </div>
                     </div>
 				</a>
-			</div>
+			</div>			
 			
 			<div ng-if="queues.length > 0">
-				<h4>{{::verbage.queues}}</h4>
+				<div class="ListSectionHeaderTitle">{{::verbage.queues}}</div>
 				<a href="#/queue/{{ ::queue.xpid }}" ng-repeat="queue in queues track by queue.xpid" class="ListRow">
 					<avatar profile="queue"></avatar>
 					<div class="ListRowContent" dockable="queue">

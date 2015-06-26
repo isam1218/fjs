@@ -1,8 +1,6 @@
 .LeftBarNotificationMessageSection{
 
 	border-left:solid 1px #eee;
-	/*flex: 1;
-	-webkit-box-flex: 1;*/	
 	padding-left: 5px;
 	width: 92%;
 	padding-top: 5px;
@@ -47,21 +45,27 @@
 		font-size: 13px;
 		color: #222;
 		white-space: normal;		
-		max-height: 75px;	
-		//text-overflow:ellipsis;
+		max-height: 75px;
 		top: 5px;
+
 		p{
 			font-size:.8em;
 		}
 	}		
 }
 
+.CallStatusContainer {
+  position: relative;
+}
+
 .CallStatusContainerOutbound {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
+    background: linear-gradient(#f3f8e6, #ecf2da);
+    background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
 
 }
 .CallStatusContainerInbound {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
+    background: linear-gradient(#e4f1f8, #dfebf1);
+    background: -webkit-linear-gradient(#e4f1f8, #dfebf1);
 
 }
 
@@ -80,15 +84,12 @@
 }
 
 .CallStatusContainerInbound,
-.CallStatusContainerOutbound{  
-    //background: #e4f1f8 linear-gradient(#e4f1f8, #dfebf1);
-    //background: -webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-    //background: -moz-linear-gradient(center top , #E4F1F8, #DFEBF1);
+.CallStatusContainerOutbound{     
     min-height: 40px;
     overflow: hidden;
     width: 100%;
     padding-right: 5px;
-    position: absolute;
+    position: relative;
     bottom: 1px;
 
    .CallStatusIconContainer,
@@ -192,22 +193,20 @@
 
 .NotificationMessages{	
 	overflow:hidden;
-	background-image:url("../img/XTile-Widget.png");
-	/*background: transparent;	*/
+	background-image:url("../img/XTile-Widget.png");	
 	width: 100%;		
-	padding-bottom: 20px;
+	padding-bottom: 5px;
 	display: flex;
+	display: -webkit-flex;
 	flex-direction: column;
+	-webkit-flex-direction: column;
 	
 	.scroller{	    
-      padding-top: 0px;
+      background-color: #999;
       
       &:hover{
        overflow-y: auto;
        overflow-x:hidden;
-      }
-      .firstMessage{
-        margin-top: -16px;
       }
 	}
 }
@@ -216,19 +215,22 @@
 	transition: 1s;		
 }
 
-.TitleBar{
-  margin-bottom: 10px;
-  &.noNotifications{
-   display: none;
-  }
-}
 .LeftBarNotificationSection{
     background-color: #999;
     background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#888));
     border-bottom: solid 1px #777;
     width: 100%;
-    position: absolute;
-    bottom: 0px;        
+    position: relative;
+    bottom: 0px;
+
+	&.hasMessages {
+		&.Expand {
+			.TitleBar .XButton { visibility: visible; }
+			.scroller { padding-top: 20px; }
+		}
+		
+		.TitleBar .XButton { visibility: hidden; }
+	}
     
     &:hover, &.noMessages{
         background: transparent;
@@ -244,10 +246,10 @@
       .TitleBar{
         margin-bottom: 0px;
       }
-    }   
-    &.withCalls{
-      bottom: 45px !important;
     }
+	
+	.NotificationHeaderBackground { bottom: 17px; }
+	.NotificationDivider { height: 1px; }
 }
 
 .NotificationMessages.LeftBarNotifications.noMessages{   
@@ -270,6 +272,7 @@
 	margin-top:5px;	
 	-webkit-box-orient:horizontal;
 	display:-webkit-box;
+	display:-ms-flexbox;
 	padding-left: 5px;
 	overflow: hidden;
 	/*width: 83%;*/	
@@ -290,8 +293,7 @@
 	margin-right: -1px;
 	
 	.firstHeaderTitle{	   
-       position: relative;
-      /* bottom: -1.3em;*/
+       position: relative;      
        bottom: -1.2em;
        right: -1px;
 	}
@@ -303,7 +305,7 @@
 	height: 4px;
 	
 	&.firstHeaderDivider{
-	   background-color: #999;       
+	   background-color: #999;      
        height: 2.3em;
        &.noMessagess{
          margin-top: -1px;
@@ -374,7 +376,7 @@
 	font-style:normal;
 	font-size:1em;
 	background-image:url("../img/XTile-Widget.png");
-	/*padding-bottom: 20px;*/
+	background-color: white;
 	width: 100%;
 	
 	&:not(.first){
@@ -382,6 +384,12 @@
             border-left:1px solid #ccc;
         }
     }
+	
+	&:after {
+		clear: both;
+		content: "";
+		display: table;
+	}
     
     .header_text{
        display: none;

@@ -3,15 +3,13 @@
 	font-size:12px;
 }
 .vmsection{
-	margin:0px 10px;
-	border: 0px;
-	border-top: 1px solid #ccc;    
-	border-left: 1px solid #ccc;
-	border-right: 1px solid #ccc;
+	margin:0px;
+	border: 0px;	
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: row;
 	-webkit-flex-direction: row;
+	width: 100%;
 	
 	&:hover{
     	.displayName{
@@ -24,6 +22,10 @@
                right: 2px;
              }
         } 
+    }
+    
+    .Avatar.CallAvatar_Queue{
+          margin: auto 0px auto -5px !important;
     }
     
     .ConferenceAvatarSection.Avatar.ConferenceRecording{
@@ -45,8 +47,7 @@
 		-webkit-flex: 1;
 		position:relative;
 		padding-left:10px;
-		display:block;		
-		border-left: 1px solid #ccc;
+		display:block;			
 		padding: 5px;
 		cursor: pointer;
 		

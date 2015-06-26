@@ -1,6 +1,6 @@
 hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService', '$q', function($q, $rootScope, httpService,$compile,$location,settingsService, storageService, $q) {
 
-	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="onload" value="onloadedplugin" /></object>'
+	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 
 	//$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
 	$("body").append($compile(pluginHtml)($rootScope));
@@ -18,7 +18,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var soundManager;
 	var meModel = {};
 	var sipCalls = {};
-	var xpid2Sip = {};
+	//var xpid2Sip = {};
 	var tabInFocus = true;
 	var callsDetails = {};
 	var allCallDetails = {};
@@ -26,6 +26,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.bargeObj = {};
 	var isRegistered = false;
 	var isAlertShown = true;
+	var soundEstablished = false;
 
 	var voicemails = [];
 	var weblauncher = {};
@@ -117,14 +118,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 
 	var hangUp = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		delete xpid2Sip[xpid];
+		
+		var call = context.getCall(xpid);
+
+		if(call){
+			call.hangUp();
+		}
+		
 		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-		//}
 	};
 
 	var holdCall = function(xpid,isHeld){
+		
+		var call = context.getCall(xpid);
+		if(call){
+			call.hold = isHeld;
+		}
 		if(isHeld){
            	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
@@ -141,7 +150,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var acceptCall = function(xpid){
-		httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+
+		var call = context.getCall(xpid);
+		call.accept();
+		//httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 	
 		for(i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
@@ -207,6 +219,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
         data = {}
+        //var sipId = call.sip_id.split("@")[0];
         sipCalls[call.sip_id] = call;
 		
 		switch(status){
@@ -228,7 +241,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				break;
 			case CALL_STATUS_ERROR:
 				removeNotification();
-				delete sipCalls[call.sip_id];
 				break;
 			case CALL_STATUS_UNKNOWN:
 				removeNotification();
@@ -238,9 +250,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					event: 'onclose',
 					sipId: call.sip_id
 				}
-				//showCallControls(null);
 				removeNotification();
-				delete sipCalls[call.sip_id];
 				break;
 		}
 		
@@ -265,8 +275,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					registration: isRegistered,
 				}
 				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-	
-            }
+	      }
     };
    var showCallControls = function(call){
     	$rootScope.$broadcast("current_call_control", call);
@@ -284,16 +293,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		setupListeners();
 				activatePhone();
 
+			 	
 			 }
             //isRegistered = true;
-			soundManager = session.soundManager;
-			devices = soundManager.devs;
-			deferred.resolve(devices);
-			spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
-			micVolume = settingsService.getSetting('hudmw_webphone_mic');
-			if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
-				soundManager.speaker = parseFloat(spkVolume);
-				soundManager.microphone = parseFloat(micVolume);
+			if(!soundEstablished){
+				soundManager = session.soundManager;
+				devices = soundManager.devs;
+				deferred.resolve(devices);
+				spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
+				micVolume = settingsService.getSetting('hudmw_webphone_mic');
+				if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
+					soundManager.speaker = parseFloat(spkVolume);
+					soundManager.microphone = parseFloat(micVolume);
+					soundEstablished = true;
+				}
 			}
 			//registerPhone(true);
 			
@@ -303,6 +316,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         } else if (session_status.status == 2) {
         	$rootScope.$broadcast('network_status',undefined);
             isRegistered = false;
+            return;
         }
 	};
 
@@ -345,7 +359,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			xpid = queryArray[0];
     	}
     	activateBrowserTab();
-    	
+    	var data;
     	window.focus();
     	if(url.indexOf('#') === -1){
 
@@ -365,7 +379,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
@@ -383,7 +397,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/OpenNotifications':
 	    			data = {
 	    				event:'openNot'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '/PlayVM':
@@ -449,7 +463,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '#/ResumeCall':
 	    			data = {
 	    				event: 'resume'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
@@ -459,7 +473,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '#/OpenNotifications':
 	    			data = {
 	    				event:'openNot'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '#/AcceptZoom':
@@ -607,8 +621,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				phone.attachEvent("onCall", onCallStateChanged);
                 phone.attachEvent("onStatus", accStatus);
     		}else{
-    			phone.addEventListener("Call",onCallStateChanged,false);
-    			phone.addEventListener("Status",accStatus,false)
+    			phone.addEventListener("Call",onCallStateChanged);
+    			phone.addEventListener("Status",accStatus);
     		}
     	}
 
@@ -657,8 +671,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		var call = getCall(xpid);
 		if(call){
 			call.transfer(number);
 		}	
@@ -698,10 +711,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.sendDtmf = function(xpid,entry){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		var call = context.getCal(xpid);
 		if(call){
-
 			call.dtmf(entry);
 		}	
 	};
@@ -721,8 +732,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	holding the call resuming the call and ending the call
 	*/
 	this.getCall = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		call = sipCalls[callsDetails[xpid].sipId];
 		return call;
 	};
 	/**
@@ -731,7 +741,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.getCallDetail = function(xpid){
 		return callsDetails[xpid];
 	};
-
+ 
 	this.getCallByContactId = function(contactId){
 		for(call in callsDetails){
 			if(callsDetails[call].contactId){
@@ -786,8 +796,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(data){
 			var i = 0;
 			for(i = 0; i < data.length; i ++){
+					
 				if(data[i].xef001type == "delete"){
 					var call = callsDetails[data[i].xpid];
+				
 					if(call){
 						
 						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
@@ -813,14 +825,30 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}
 						}
+						delete sipCalls[callsDetails[data[i].xpid].sipId];
 						delete callsDetails[data[i].xpid];
-						delete xpid2Sip[data[i].xpid];
 					}
 
 				}else{
+					var doesExist = false;
+
+					var call = callsDetails[data[i].xpid];
+					if(call != undefined && (call.record || call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD)){
+						doesExist = true;
+					}
+
 					callsDetails[data[i].xpid] = data[i];
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
+						
+						if(!doesExist){
+							for(callId in callsDetails){
+								if(callId != data[i].xpid){
+									holdCall(callId,true);		
+								}
+							}
+						}
+
+						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record && !doesExist){
 
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
@@ -845,26 +873,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							}
 						}					
 					}
-					for(sipCall in sipCalls){
-						var toBreak = false;
-						
-						if(xpid2Sip[data[i].xpid]){
-							if(xpid2Sip[data[i].xpid] != sipCall){
-								xpid2Sip[data[i].xpid] = sipCall;
-							}
-						}else{
-							xpid2Sip[data[i].xpid] = sipCall;
-						}
-
-					}
-
 				}
 			}
 		}
 		if (data[0].incoming){
 			storageService.saveRecent('contact', data[0].contactId);
 		}
-
+		console.log(sipCalls);
+		
+		console.log(callsDetails);
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
 	this.registerPhone = registerPhone;	
@@ -881,5 +898,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}		
 	});
 
+	var context = this;
 
 }]);

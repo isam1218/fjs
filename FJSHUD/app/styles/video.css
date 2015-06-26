@@ -26,8 +26,6 @@
   margin-right: 5px;
 }
 .WidgetZoom .XButtonBlue {
-  /*(position:absolute;
-  top: 30px;*/
   right: 0;
   width: 100%;
   margin-top: 10px;
@@ -48,7 +46,6 @@
 .ZoomRowStatus {
   position: absolute;
   top: 16px;
-  /*left: 5px;*/
   top: 3px;
   height: 16px;
   font-size: 10px;
@@ -78,8 +75,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.WidgetZoom .JoinMeetingSection .SearchContactOverlay .Inset {
-  height: 200px;
+.WidgetZoom .JoinMeetingSection .SearchBox {
+  width: 100%;
 }
 .WidgetTextHeader {
   height: 200px;

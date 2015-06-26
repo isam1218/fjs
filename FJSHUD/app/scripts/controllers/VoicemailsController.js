@@ -1,4 +1,4 @@
-hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService) {
+hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService', function($rootScope, $scope, $routeParams, groupService, contactService, httpService, storageService) {
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
@@ -146,5 +146,15 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		
         httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: voicemail.xpid});
 	};
+
+  $scope.callExtension = function($event, contact) {
+    $event.stopPropagation();
+    $event.preventDefault();
+    
+    httpService.sendAction('me', 'callTo', {phoneNumber: contact.phone});
+  
+    storageService.saveRecent('contact', contact.xpid);
+  };
+
 
 }]);

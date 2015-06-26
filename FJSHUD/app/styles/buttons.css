@@ -28,14 +28,11 @@ input[type="tel"] {
 .XButton {
   position: relative;
   display: inline-block;
-  /*height: 2.5em;*/
   margin: 0;
   padding: 5px;
   text-align: center;
-  /*line-height: 2.4em;*/
   text-decoration: none;
   cursor: pointer;
-  /*font-size: .7em;*/
   font-weight: bold;
   border-radius: 2px;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -185,8 +182,7 @@ select[disabled] {
   cursor: pointer;
 }
 .ToolBar .XButton {
-  /*font-size: 0.6566em;
-  height: 2.9em;*/
+  height: 26px;
   padding: 6px 5px;
 }
 .CurrentCallBtn {

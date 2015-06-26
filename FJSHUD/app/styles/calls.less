@@ -1,8 +1,17 @@
-.CallLog {  
-  .ToolBar{margin-top: 5px;}      
+.CallLog {   
+  
+  .vmsections, .rows{
+    border: 1px solid #eee;
+    width: 99.5%;
+    margin-bottom: 10px;
+   }   
+   
   .ListLineContent.Header{
     .ListLineContentCell{
       max-width: none !important;
+      &:first-child{
+         width: 26px;
+      }   
                     
       .DirectionArrow{
         left: 8px !important; 
@@ -17,21 +26,20 @@
         .DirectionArrow{margin-left: 0;}
       }                   
                   
-      &.Name{width: 30% !important;}   
-      &.Phone{width: 15% !important;}
-      &.Duration{width: 16%  !important;}  
-      &.StartedAt{width: 15%  !important;}  
+      &.Name{width: 112px !important;}   
+      &.Phone{width: 78px !important;}
+      &.Duration{width: 44px  !important;}  
+      &.StartedAt{width: 110px !important;}  
       &.CallType{width: 10%  !important;}
     }                                               
   }           
 
   .vmails{                
-    .ToolBar{
-            margin-bottom: 20px;
+    .ToolBar{          
+            width: 100%;
             
             select.XButtonDropDown{
-                margin-top: 2px;
-                /*height: 2.85em;*/
+                margin-top: 2px;               
                 top: -2px;
                 float: right !important;
                 padding: 6px 0;
@@ -39,6 +47,7 @@
                     width: 32.5% !important;
                 }    
             }
+            
             input, select{float: left;}
             input[type=search]{
                 width: 30%;
@@ -46,8 +55,7 @@
                 &.recording{width: 45%};
             }
         }    
-  }                
-
+  }               
        
   .ListRow {
     display: flex;
@@ -59,8 +67,9 @@
     font-size: .9em;
     width: 100%;
     cursor: default !important;
+    font-size: 12px;
             	    	
-    & > div {
+    & > div{
       flex: 1;
 	  -webkit-flex: 1;
       display: inline-block;
@@ -69,47 +78,62 @@
 	  white-space: nowrap;
 	  text-overflow: ellipsis;
 	  overflow: hidden;
+	  height: 40px;           
       
-      .CallAvatar{
-        cursor: pointer;
-        /*.CallAvatar_Office {          
-          margin: 1px 1px 0px 1px;
-        }*/
+      &:not(:first-child) { 
+        padding-left: 5px;               
+        span{
+            position: relative;
+            top: 15px;
+        }           	       	        	        	    
       }
       
-      &:not(:first-child):not(.Name) {
-        font-size: .8em;      	       	       	        	        	    
+      &:not(.Type){
+        border-right: 1px solid #fff;
       }
     	  
-      &.Name {
-    	text-align: left;
-    	text-overflow: ellipsis;
-        overflow: hidden;
-        flex: 3;
-		-webkit-flex: 3;
-    	color: #009cff;     		  		
+      &.Name {    	
+        flex: 3 1 0;
+		-webkit-flex: 3 1 0;
+    	
+    	 & > div{
+    	   text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: #009cff;   
+            font-weight: bold; 
+            max-width: 114px;
+            margin-top:  15px;            
+    	 }            		  		
       }
     	  
       &.Phone {
 	    text-decoration: underline;
     	color: #333;
-    	flex: 2;
-		-webkit-flex: 2;
+    	flex: 2.1 1 0;
+		-webkit-flex: 2.1 1 0;
+		font-weight: bold;    
     	    
     	span{white-space: nowrap; cursor: pointer;}
       }
     	  
       &.Duration{
-	    flex: 1;
-		-webkit-flex: 1;
+	    flex: 1.4 1 0;
+		-webkit-flex: 1 1 0;
+		padding-right: 6px;
 	  }
     	   
       &.Date {
-        flex: 3;
-		-webkit-flex: 3;
+        flex: 3 1 0;
+		-webkit-flex: 3 1 0;
     	white-space: nowrap;
       }
-      &.Type{width: 6%;}
+      &.Type{
+        width: 6%;
+        .ListRowStatusIcon{
+            margin-top: 10px;
+        }
+      }
     }
   }
 
@@ -125,8 +149,7 @@
 
 .RecentCallSection{
   font-size:.7em;
-  padding: 10px 0;
-  /*height: 50%;*/
+  padding: 10px 0;  
   height: 66%;
     
   .RecentCallColumnHeaders{    

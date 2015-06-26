@@ -25,6 +25,14 @@
 .Widget.Queues .MyStatus {
   font-size: 1em !important;
 }
+.Widget.Queues .MyStatus .ToolBar .XButton {
+  width: 150px !important;
+  float: left !important;
+  padding-left: 0.5em !important;
+  height: 28px;
+  text-align: left;
+  font-size: 11px;
+}
 .Widget.Queues .Grid {
   font-size: .85em;
 }
@@ -153,15 +161,8 @@
 .Widget.Queues .QueueButtonToggle .QueueListView {
   background: url("../img/QueueListView.png") no-repeat 0px 0px;
 }
-.Widget.Queues .ToolBar {
-  /*top: -8px;*/
-}
 .Widget.Queues .ToolBar.Queues input[type=search] {
   width: 50%;
-}
-.Widget.Queues .ToolBar select.XButton {
-  width: 37%;
-  top: -1px;
 }
 .Widget.Queues .ToolBarBottom {
   padding: .5em;

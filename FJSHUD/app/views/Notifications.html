@@ -1,35 +1,20 @@
-<div class="LeftBarNotificationSection notificationsSection ng-class:{'noMessages' : todaysNotifications.length == 0}"  expand-contract-notifications>
- <div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}" get-scroll-height>     
-	<div class="TitleBar" ng-show="!hasMessages">
+<div class="LeftBarNotificationSection notificationsSection" ng-class="todaysNotifications.length == 0 ? 'noMessages' : 'hasMessages'"  expand-contract-notifications>
+ <div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">     
+	<div class="TitleBar">
         <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
         <div>{{::verbage.notifications}}</div>
         <div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
-     </div> 
-	 <div class="TitleBar hasButton"  ng-show="hasMessages" show-on-hover-parent>
-        <div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
-        <div>{{::verbage.notifications}}</div>
-        <div class="Event" ng-show="notifications.length > 0"> - {{ getNotificationsLength(notifications.length) + ' ' + verbage.events }}</div>
-        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay ='notifications'" />
+        <input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay = 'notifications'" />
      </div>    	
    <div class="scroller">  	
 	       <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
-					<div class="NotificationHeader ng-class:{'firstHeader': $index == 0};"> 
-							<div class="NotificationHeaderBackground ng-class:{'firstHeaderTitle': $index == 0};"> 
+					<div class="NotificationHeader">
+							<div class="NotificationHeaderBackground">
 								<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
 							</div>
-							
 					</div>
-					<div class="NotificationDivider ng-class:{'firstHeaderDivider': $index == 0}">
-					    <img />
-					   <div class="headerText" ng-if="$index == 0"> 
-					    <div class="Icon" ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
-				        <div>{{::verbage.notifications}}  </div>
-				        <div class="Event" ng-show="notifications.length > 0"> {{ getNotificationsLength(notifications.length) + ' events' }} </div>
-				       </div>             
-					</div>
-					<div class="NotificationSection ng-class:{'firstsection': $index == 0 , 'last' : ($last || $index == showing)  && phoneSessionEnabled && !anotherDevice};" >
-			
+					<div class="NotificationDivider"></div>
+					<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
 						<avatar 
 							class="LeftBarNotificationAvatarSection NotificationAvatar"
 							ng-click="go_to_notification_chat(message)" 
@@ -412,6 +397,7 @@
 
 </div>
 
+<div class="CallStatusContainer">
 	<div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 					<div class="CallStatusIcon"> </div>
@@ -421,7 +407,7 @@
 					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration">{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}</span></div>
 				</div>				
 				<div class="controlButtons">
-					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{ currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</div>
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</div>
 					
@@ -430,8 +416,9 @@
 				</div>
 				
 	</div>	
-
-	<div id="Alert" style="visibility:hidden;position:absolute;left:-1000px" ng-if="displayAlert" include-once="views/nativealerts/CallAlert.html"></div>
+</div>
+	<!--include once directive is causing the IE to crash for call alerts still unsure why until then switching back to ng-include-->
+	<div id="Alert" style="visibility:hidden;position:absolute;left:-1000px" ng-if="displayAlert" ng-include="views/nativealerts/CallAlert.html"></div>
     
 
 

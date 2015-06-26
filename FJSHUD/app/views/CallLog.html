@@ -39,17 +39,17 @@
 	</div>
 
 	<div class="ListView">	
-		<div>
+		<div class="rows">
 			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | orderBy:sortField:sortReverse | limitTo:logSize track by call.xpid">
 				<div>
 					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
 				</div>
-				<div class="Name"> {{ ::call.displayName }}</div>
+				<div class="Name"><div> {{ ::call.displayName }}</div></div>
 				<div class="Phone">
 					<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
 				</div>
-				<div class="Duration"> {{ ::call.duration | duration }}</div>
-				<div class="Date"> {{ ::call.startedAt |  fondate:'MMMM D, hh:mm a':fon_lang_code }}</div>
+				<div class="Duration"> <span>{{ ::call.duration | duration }}</span></div>
+				<div class="Date"> <span>{{ ::call.startedAt |  fondate:'MMMM D, hh:mm a':fon_lang_code }}</span></div>
     			<div class="Type">
 					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ ::call.incoming ? 'Incoming' : 'Outbound' }}"></div>
 				</div>

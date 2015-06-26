@@ -1,8 +1,14 @@
-.CallLog .ToolBar {
-  margin-top: 5px;
+.CallLog .vmsections,
+.CallLog .rows {
+  border: 1px solid #eee;
+  width: 99.5%;
+  margin-bottom: 10px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
+}
+.CallLog .ListLineContent.Header .ListLineContentCell:first-child {
+  width: 26px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell .DirectionArrow {
   left: 8px !important;
@@ -17,26 +23,25 @@
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 30% !important;
+  width: 112px !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
-  width: 15% !important;
+  width: 78px !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 16%  !important;
+  width: 44px  !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-  width: 15%  !important;
+  width: 110px !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.CallType {
   width: 10%  !important;
 }
 .CallLog .vmails .ToolBar {
-  margin-bottom: 20px;
+  width: 100%;
 }
 .CallLog .vmails .ToolBar select.XButtonDropDown {
   margin-top: 2px;
-  /*height: 2.85em;*/
   top: -2px;
   float: right !important;
   padding: 6px 0;
@@ -64,6 +69,7 @@
   font-size: .9em;
   width: 100%;
   cursor: default !important;
+  font-size: 12px;
 }
 .CallLog .ListRow > div {
   flex: 1;
@@ -74,45 +80,57 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  height: 40px;
 }
-.CallLog .ListRow > div .CallAvatar {
-  cursor: pointer;
-  /*.CallAvatar_Office {          
-          margin: 1px 1px 0px 1px;
-        }*/
+.CallLog .ListRow > div:not(:first-child) {
+  padding-left: 5px;
 }
-.CallLog .ListRow > div:not(:first-child):not(.Name) {
-  font-size: .8em;
+.CallLog .ListRow > div:not(:first-child) span {
+  position: relative;
+  top: 15px;
+}
+.CallLog .ListRow > div:not(.Type) {
+  border-right: 1px solid #fff;
 }
 .CallLog .ListRow > div.Name {
+  flex: 3 1 0;
+  -webkit-flex: 3 1 0;
+}
+.CallLog .ListRow > div.Name > div {
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
-  flex: 3;
-  -webkit-flex: 3;
   color: #009cff;
+  font-weight: bold;
+  max-width: 114px;
+  margin-top: 15px;
 }
 .CallLog .ListRow > div.Phone {
   text-decoration: underline;
   color: #333;
-  flex: 2;
-  -webkit-flex: 2;
+  flex: 2.1 1 0;
+  -webkit-flex: 2.1 1 0;
+  font-weight: bold;
 }
 .CallLog .ListRow > div.Phone span {
   white-space: nowrap;
   cursor: pointer;
 }
 .CallLog .ListRow > div.Duration {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1.4 1 0;
+  -webkit-flex: 1 1 0;
+  padding-right: 6px;
 }
 .CallLog .ListRow > div.Date {
-  flex: 3;
-  -webkit-flex: 3;
+  flex: 3 1 0;
+  -webkit-flex: 3 1 0;
   white-space: nowrap;
 }
 .CallLog .ListRow > div.Type {
   width: 6%;
+}
+.CallLog .ListRow > div.Type .ListRowStatusIcon {
+  margin-top: 10px;
 }
 .CallLog .Empty {
   text-align: center;
@@ -125,7 +143,6 @@
 .RecentCallSection {
   font-size: .7em;
   padding: 10px 0;
-  /*height: 50%;*/
   height: 66%;
 }
 .RecentCallSection .RecentCallColumnHeaders {

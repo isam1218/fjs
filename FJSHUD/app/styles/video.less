@@ -24,14 +24,47 @@
 }
 
 .WidgetFont{
-  font-size: 12px;
-  font-weight: italic;
-  margin-left:5px;
+  font-size: 12px;  
+  margin-left:10px;
   margin-right:5px;
+  
+  h2{
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+    color:#666;
+  }
 }
-.WidgetZoom .XButtonBlue {
-  /*(position:absolute;
-  top: 30px;*/
+
+.ZoomWidgetSection{
+    height: 140px;
+    position: absolute;
+    .WidgetFont{
+        font-style: italic;
+    }
+    .WidgetTextHeader{
+      min-height: none;
+      height: auto;
+    }
+    
+    .joinWrapper{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        
+        .JoinMeetingSection{
+            position: absolute;
+            width: 100%;
+            top: 0;
+        }
+    }    
+}
+
+.WidgetZoom .XButtonBlue { 
   right: 0;
   width:100%;
   margin-top:10px;
@@ -53,8 +86,7 @@
 
 .ZoomRowStatus{
   position: absolute;
-  top: 16px;
-  /*left: 5px;*/
+  top: 16px;  
   top: 3px;
   height: 16px;
   font-size: 10px;
@@ -87,7 +119,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
 	  
-	  .SearchContactOverlay .Inset { height: 200px; }
+	  .SearchBox { width: 100%; }
     }
 }
 
@@ -105,8 +137,8 @@
         top:10px;
         display: inline-block;
         margin-bottom: 10px;
-        width: 100%;
-        
+        width: 100%;    
+            
         img.x {
             top: -20px;
             left: 195px;

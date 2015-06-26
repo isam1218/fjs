@@ -49,7 +49,7 @@
 					<div class="Buttons">
 						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
 						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.fullProfile.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
 						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
 					</div>
 				</div>

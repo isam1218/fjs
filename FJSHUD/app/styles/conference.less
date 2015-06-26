@@ -4,12 +4,20 @@
         width: 34.8%;
     }
     select.XButton {padding: 5px 0px;}
-    .SearchInputBox{width: 27%;}        
+    .SearchInputBox{width: 27%;}  
+    
+    input[type=button],   
+    .selectWrapper.conf{        
+        height: 30px !important;
+        width: 150px !important; 
+        width: 140px !important\9; /* ie6/7/8/9  */   
+        font-size: 11px;
+        font-weight: bold;
+        font-color: #333;
+    }
+    
   }
  
-  &.fj-widget-area{
-    .ToolBar{margin-top: 5px;}
-  }
   .ListViewTopNoteClose{top: 30%;}
   .ListViewTopNote{font-size: 12px;}
 }
@@ -53,16 +61,7 @@
 
 .ListRow-Conference-Members {
   clear: both;
-  position: relative;
-  /*
-  &.status{
-      display: block;
-      width: 36px;
-      float: right;
-      top: 0px;
-      position: absolute;
-      right: 0;
-  }*/
+  position: relative;  
 }
 
 .conferences-room-item-member {

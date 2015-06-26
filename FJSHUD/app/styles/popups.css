@@ -33,7 +33,6 @@
 }
 .Overlay.notifications .Messages {
   background: url('') #ffffff !important;
-  /*padding-bottom:8px !important;*/
   padding-bottom: 0 !important;
   margin-top: 0px;
 }
@@ -178,14 +177,10 @@
   background-color: #fafafa;
   box-shadow: 0 0 50px #333;
   position: absolute;
-  /*top: 10%;*/
   top: 0;
   left: 20%;
   width: 836px;
   max-height: 500px;
-  /*min-width: 300px;
-	min-height: 300px;
-	padding: 1em;*/
   padding: 20px;
   display: flex;
   display: -webkit-flex;
@@ -212,8 +207,6 @@
   background: url("../img/XIconSet-24x24.png?v=1425679800685") -24px -24px;
 }
 .Overlay .Foreground .Sections {
-  /*flex: 1;
-	  -webkit-flex: 1;*/
   overflow-y: hidden;
   overflow-x: hidden;
   padding-top: 10px;
@@ -336,6 +329,7 @@
   display: inline-block;
   padding: .5em;
   margin-left: -0.5em;
+  width: 100%;
 }
 .Overlay .Foreground .Header {
   border-bottom: 1px solid #ccc;
@@ -402,7 +396,6 @@
 .Overlay .Foreground .Footer {
   border-top: 1px solid #ccc;
   padding-top: 20px;
-  /*	  padding-bottom: 10px;*/
   text-align: right;
 }
 .Overlay .Foreground .Footer .Error {
@@ -514,12 +507,17 @@
   top: 0;
   left: 0;
   width: 100%;
+  height: 330px;
   background-color: white;
   box-shadow: 1px 0 10px gray;
   border-radius: 5px;
   z-index: 99;
   padding: .5em;
   font-size: 12px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
 }
 .SearchContactOverlay .Header {
   text-align: center;
@@ -529,7 +527,8 @@
 }
 .SearchContactOverlay .Inset {
   overflow-y: auto;
-  height: 300px;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
 }
 .SearchContactOverlay .Inset .ListRowContent {
   left: 36px !important;
@@ -603,6 +602,7 @@
 #ContextMenu .TopRow div.Contact .info {
   font-size: 12px;
   font-weight: bold;
+  margin-left: 5px;
 }
 #ContextMenu .TopRow div.Contact .Numbers span {
   font-weight: bold;
@@ -610,6 +610,12 @@
 #ContextMenu .TopRow .Numbers div {
   min-width: 3em;
   text-align: right;
+}
+#ContextMenu .TopRow strong {
+  font-weight: bold;
+}
+#ContextMenu .TopRow .ListRowStatusIcon {
+  margin-left: -5px;
 }
 #ContextMenu .BottomRow {
   border-top: 1px solid #ccc;
