@@ -5,21 +5,28 @@
    }
    .WidgetHeaderTitle {
       color: #333;    
-      font-size: 1.250em;
-      line-height: 45px;
+      font-size: 20px;
+      line-height: 35px;
       left: 0px;
       right: 15px;
-      top: 0;
-      height: 45px;
-      position:relative;
-	  display: block;
-	  width: 100%;
-      margin: 10px 0 0;            
+      top: 0;          
+	  width: 100%;                           
     }
     .Avatar.AvatarBig{
       float: left;
-	  width: 5em;
-	  height: 5em;
+	  width: 90px !important;
+      height: 90px !important;
+      position: relative;
+      left: 0px;
+      top: 0px;
+      border: 1px solid #779c00;
+      border-radius: 4px;
+      -webkit-border-radius: 4px;
+      
+      img{
+        width: 90px !important;
+        height: 90px !important;
+      }
     } 
     .WidgetBody{                     
        height: 78%;
@@ -77,9 +84,6 @@
         }
        }
     }    
-
-   
-     .MeInfoBlock-column textarea{height: 3em;}
      
     .Preferences-Holder{
       position: relative;     
@@ -137,26 +141,57 @@
 }
 
 .MeInfoBlock {
-  display:inline-block;
+  /*display:inline-block;*/
   margin-left:5px;
   vertical-align: top;
-  width: 79.5%;
+  /*width: 79.5%;*/
+  float: left;
+  clear: none;
   
 }
 .MeInfoBlock-column {
   display:inline-block;
   vertical-align: top;
+  width: 180px;
   
   &:nth-child(1)
-  {float: left; width: 40%;}
+  {
+    float: left;
+    
+    .MeInfoTitle{margin-left: 5px;}
+  }
   
   &:nth-child(2)
-  {float: right; width: 60%;}
-  
-  textarea,
-  .SelectBox{
-    width: 98%;
-  }
+  {
+    float: right;
+    
+    .LeftBarMeCustomStatusSection{
+        position: relative;
+        height: 33px;
+        width: 180px;
+        margin-bottom: 5px;
+        
+        textarea{
+            padding: 2px;
+            margin: 0px;
+            height: 33px;
+            width: 184px;
+            font-family: monospace;
+            font-size: 12px;                               
+        }
+        
+        .LocationSelector{
+          position: relative;
+          height: 40px;
+          left: 0px;
+          
+         .SelectBox {              
+              width: 184px;
+              height: 33px;
+          }
+        }
+    }
+  }   
 }
 .MeInfoTitle {
   color: #999;

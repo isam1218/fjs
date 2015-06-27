@@ -1,16 +1,16 @@
 <div>     
     <div class="ListViewTopNote">
-        <span style="font-size:12px;">{{ joined ? verbage.you_are_on_call : verbage.not_a_member_of_conference }}</span>
-        <input class="XButton" style="float:right; margin-top:5px; margin-right:5px;" type="button" ng-click="joinConference()"value="{{joined ? verbage.leave : verbage.join }}"> </input> 
+        <span>{{ joined ? verbage.you_are_on_call : verbage.not_a_member_of_conference }}</span>
+        <input class="XButton joinConference" type="button" ng-click="joinConference()" value="{{joined ? verbage.leave : verbage.join }}"> </input> 
 	</div>
 
 </div>
 
-<div class="ToolBar" style="height:6em;"> 
+<div class="ToolBar"> 
     <div class="ConferenceMembers"> 
         <div class="Conference-HeaderTitle">{{::verbage.conference_member}}</div>
 
-		<div style="position:relative; top:20px">
+		<div class="searchboxWrapper">
 			<input class="SearchBox Add" type="search" ng-model-options="{debounce: 200}" contact-search conference="true" ng-attr-placeholder="{{::verbage.add_someone}}" />
 		</div>
     </div>
@@ -25,7 +25,7 @@
 		<div class="ListRowContent" dockable="member.fullProfile"> 
 			<div class="ListRowTitle">
 				<div class="name">
-					<span> {{ ::member.displayName }} </span>
+					<strong> {{ ::member.displayName }} </strong>
 					<div>
 						<div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>						
 						<div class="ListRowStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
@@ -37,7 +37,7 @@
 			
 			<div class="ListRowStatus">
 				<div class="vmtime" timer="member.started"></div>
-				<div ng-if="member.ring">
+				<div class="joining" ng-if="member.ring">
 					<img src="img/XLoading.gif" />
 					joining...
 				</div>
