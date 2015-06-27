@@ -13,23 +13,31 @@
         <div class="Sections">
             <div class="Section" style="min-width:36%">
                  <div>
-                    <input type="checkbox" name="softphone"/><label id="network_error_label">Fonality Web softphone</label>
+                    <div style="display:inline-block" class="CheckboxItem-true TwentyFourIcon" name="softphone"/><div style="line-height:28px" id="network_error_label">Fonality Web softphone</div>
                     <div id="softPhoneReason"></div>
                     
-                    <input type="checkbox" name="cloud"/><label id="network_error_label">Fonality Cloud Services</label>
+                    <div style="display:inline-block" class="CheckboxItem-true TwentyFourIcon" type="checkbox" name="cloud"/><span id="network_error_label">Fonality Cloud Services</span>
                     <div id="cloudReason"></div>
-                    <input type="checkbox" name="server"/><label id="network_error_label">PBX server</label>
+                    <div  style="display:inline-block" class="CheckboxItem-true TwentyFourIcon" type="checkbox" name="server"/><span id="network_error_label">PBX server</span>
                     <div id="serverReason"></div>
                 </div>
             </div>
             
             <div class="Section">
-                <div class="network"></div>
+                <div style="height:320px;width:500px;position:relative;background:#FFF;border:1px solid #ccc">
+                  <div class="WebIcon ErrorIcon"> </div>
+                  <div class="ErrorArrowIcon WebArrowIcon Active-true"></div>
+                  <div class="PbxIcon ErrorIcon"> </div>
+                  <div class="PbxArrowIcon Active-true"></div>
+                  <div class="FonalityIcon ErrorIcon"> </div>
+                  <div class="ErrorArrowIcon InternetArrowIcon Active-false"></div>
+                </div>
             </div>
         </div>
         
         <div class="Footer">                                      
-            <input type="button" class="XButton XButtonRed" value="Close"/>           
+            <input type="button" class="XButton" value="Close"/>
+            <input style="width:20%" type="button" class="XButton XButtonRed" value="Clean up & reload"/>           
         </div>
     </div>
 </div>

@@ -289,8 +289,12 @@
   display: inline-block;
   width: 38%;
 }
-.Overlay .Foreground .Section label#network_error_label {
-  width: 70%;
+.Overlay .Foreground .Section #network_error_label {
+  width: 80%;
+  line-height: 26px;
+  margin-left: 5px;
+  display: inline-block;
+  font-weight: bold;
 }
 .Overlay .Foreground .Section textarea {
   /*width: 80%;*/
