@@ -166,6 +166,20 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 	};
 
+	// required to show new messages on-the-fly
+	$scope.formatMessage = function(message){		
+		switch(message.type){
+			case "vm":
+				return "Voicemail from extension " + message.phone; 
+				break;
+			case 'missed-call':	
+				return "Missed call from extension " + message.phone; 
+				break;
+			default:
+				return message.replace(/\n/g, '<br/>');
+		}
+	};
+
 	$scope.getNotificationsLength = function(length)
 	{
 		var length = $scope.phoneSessionEnabled ? length : length + 1;

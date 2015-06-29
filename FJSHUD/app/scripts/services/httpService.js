@@ -243,7 +243,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 									synced_data = JSON.parse(localStorage.data_obj);
 									for(feed in synced_data){
 										if (synced_data[feed].length > 0)
-			
 			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 									}
 								}
@@ -442,9 +441,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			if(localStorage.data_obj){
 				var data = JSON.parse(localStorage.data_obj);
 				
-				$rootScope.$evalAsync(function() {
-					$rootScope.$broadcast(feed + '_synced', data[feed]);
-				});
+				if (data[feed]) {
+					$rootScope.$evalAsync(function() {
+						$rootScope.$broadcast(feed + '_synced', data[feed]);
+					});
+				}
 			}
 		}
     };

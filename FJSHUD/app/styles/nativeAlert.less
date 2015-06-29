@@ -3,20 +3,13 @@
     src: url(fonts/LDFComicSans.ttf);
 }
 
-.CallStatusContainerOutbound{
-	background-image:-webkit-gradient(linear, left top, left bottom, from(#e4f1f8), to(#dfebf1));
-}
-
-.CallStatusContainerInbound{
-	background-image:-webkit-gradient(linear, left top, left bottom, from(#f3f8e6), to(#ecf2da));
-}
-
 .CallStatusIconContainer{
 	width: 34px;
     height: 34px;
 	border:3px solid #0093f0;
 	border-radius:30px; 
-	text-align:center;display:inline-block;
+	text-align:center;
+	display:inline-block;
 	.CallStatusIcon{
 		width:30px;
 		height:30px;
@@ -26,15 +19,18 @@
 	}
 }
 
-#Alert{
-  position:static;
-}
-
 #CallAlert{
+  position: relative;
   width: 300px;
   max-height:500px;
   font-size: 1em;
   background: url() #fff;
+  
+  a {
+	text-decoration: none;
+	color: inherit;
+  }
+  
   div.CallStatusContainerOutbound{
       position:relative;
       margin-bottom: 8px;
@@ -55,6 +51,17 @@
           text-overflow: ellipsis;
           white-space: nowrap;
       }
+  }
+        
+  .close{
+    width: 24px;
+    height: 24px;  
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+    cursor: pointer;
+    background: url("../img/XIconSet-24x24.png") no-repeat -24px -24px;
   }
 
   .Notifications {
@@ -110,16 +117,12 @@
         padding-bottom: 0px;
         
         .scroller {
-          padding-top: 0px;
-          height: 300px;
+          max-height: 300px;
+		  margin-bottom: 20px;
           overflow-y: auto;
           overflow-x: hidden;
           
-          .Messages{
-            &:first-child{
-              top: -10px;
-            }
-            
+          .Messages{            
             .NotificationSection {
               height: auto !important;  
               width: 100% !important;
@@ -137,20 +140,18 @@
       padding: 10px; 
       color: #aaa;
       font-size: 14px;
+	  height: 60px;
   
       &.ListRowFirst{
        .Avatar{
             width: 40px;
             height: 40px;
-            top: -2px; 
-        }
-        
-        .close{
-          width: 24px;
-          height: 24px;  
-          margin: -3px auto 0 auto;
-          cursor: pointer;
-          background: url("../img/XIconSet-24x24.png") no-repeat -24px -24px;
+            top: -2px;
+			
+			img {
+				width: 100%;
+				height: 100%;
+			}
         } 
       }
       

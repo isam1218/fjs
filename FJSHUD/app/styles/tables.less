@@ -95,7 +95,8 @@
   flex-direction: row;
   -webkit-flex-direction: row;
   text-decoration: none;
-  height: 40px;
+  min-height: 40px;
+  height: auto;
   
   .vmcallbtn{
         visibility:hidden;
@@ -163,13 +164,14 @@
   }
   
   .Avatar {
-	margin: .25em;
+	/*margin: .25em;*/
+	margin: 5px;
 	width: 30px;
 	height: 30px;
 	
 	img{
-	  width: 28px;
-	  height: 28px;
+	  width: 26px;
+	  height: 26px;
 	  margin: 1px;	  	 
 	}
 	
@@ -185,7 +187,8 @@
 	-webkit-flex: 1;
     border-left: solid 1px #DEE1E5;
 	overflow: hidden;
-	max-height: 40px;
+	min-height: 40px;
+	height: auto;
   }
   
   .ListRowTitle {
@@ -193,7 +196,9 @@
     padding: .5em;    
     font-size: 12px;
     text-decoration: none;
-    color: #555;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #888;
     white-space: nowrap;
 	max-width: 55%;
 	flex: 1 1 0;
@@ -220,11 +225,17 @@
       }
     }
     
-    .name {
-      strong {
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	  }
+    .ListRowStatusIcon{
+        margin-left: -6px;
+    }
+    strong {           
+        font-weight: bold;
+        font-size: 13px;
+        color: #222;
+    }
+    .name {      
+      font-size: 13px;
+      color: #222;          
 	  
 	  & > * {
 	    display: block;

@@ -83,7 +83,7 @@ fjs.i18n = {
    		duration:	'Duration',
 		preferences:	'Preferences',
     	general:	'General',
-　　　	  language:	'Language',
+　　　	    language:	'Language',
         autoclear_search:	'Autoclear search',
         autoclear_after: 'Autoclear after ',
         seconds: '秒',
@@ -294,7 +294,7 @@ fjs.i18n = {
       rooms:'Rooms',
       room:'Room',
       total:'Total',
-      you_are_on_call:'you are on a call',
+      you_are_on_call:'You are on a call',
       
       not_a_member_of_conference:'You are not a member of this conference',
       join_to_chat:'Join conference call to use chat.',
