@@ -28,7 +28,7 @@
                 </div>
             </div>            
             
-            <div class="Section">
+            <div class="Section ">
                 <div id="attachments">
                  <h4 class="upper">{{::verbage.attachments}}  </h4>
                  <span class="XButton" flow-btn>{{::verbage.attach}}</span>                   
@@ -59,13 +59,13 @@
 	           <div class="CloseIcon2"></div>
 	        </div> 
             <div class="headerIcon share"></div>
-            <div class="HeaderTitle">{{::verbage.Preview}}: <span class="name">{{ currentDownload.fileName }}</span></div>          
+            <div class="HeaderTitle DownloadHeader">{{::verbage.Preview}}: <span class="name">{{ currentDownload.fileName }}</span></div>          
         </div>
         <div class="Sections" >
             <div class="Section">
-                <div style="background-color:#FFF;height:inherit">
+                <div style="background-color:#FFF;height:340px;text-align:center;line-height:340px">
 					<!-- embed types -->
-					<img class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
+					<img class="CurrentDownload DownloadPreview" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
 					
 					<iframe class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'doc' || embedType == 'text'"></iframe>
 					
@@ -75,7 +75,11 @@
                 </div>
             </div>            
             
-            <div class="Section">
+            <div class="Section" style="
+                min-width: 42%;
+                max-width: 42%;
+                margin-left: 9%
+            ">
                 <div style="margin-bottom:10px">
                     <span> 
                         <h4 class="upper">{{::verbage.items}} </h4>
