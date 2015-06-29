@@ -14,7 +14,7 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
   $scope.queue_options = [
     {display_name: $scope.verbage.queue_name, type: "name"},
     {display_name: $scope.verbage.queue_sort_calls_wait, type: "info.waiting"},
-    {display_name: $scope.verbage.queue_sort_avg_wait_time, type: "info.esa"},
+    {display_name: $scope.verbage.queue_sort_longest_hold_time, type: "longestWait"},
     {display_name: $scope.verbage.queue_sort_avg_talk_time, type: "info.avgTalk"},
     {display_name: $scope.verbage.queue_sort_total_calls, type: "info.abandon + info.completed"},
     {display_name: $scope.verbage.queue_abandoned_calls, type: "info.abandonPercent"},

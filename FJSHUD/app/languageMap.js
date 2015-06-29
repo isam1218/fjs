@@ -322,6 +322,7 @@ fjs.i18n = {
       queue_sort_calls_wait:'Calls Waiting',
       queue_sort_avg_wait_time:'Average wait time(ESA)',
       queue_sort_avg_talk_time:'Average talk time',
+      queue_sort_longest_hold_time: 'Longest hold time',
       queue_sort_total_calls:"Total calls (since last reset)",
       queue_abandoned_calls:'Abandoned calls',
       queue_active_calls:'Active calls',
@@ -488,6 +489,7 @@ fjs.i18n = {
       active_calls_answered:'Active Calls (Answered)',
       active_calls_in_queue_longest_wait:'active call(s) in queue with the longest call time of',
       no_active_calls:'No active calls',
+      longest_hold: 'Lng Hold',
       
 
       call_management:'Call Management',
@@ -848,6 +850,7 @@ fjs.i18n = {
       queue_sort_calls_wait:'待ち呼数 ',
       queue_sort_avg_wait_time:'平均待ち時間 (ESA)',
       queue_sort_avg_talk_time:'平均通話時間 ',
+      queue_sort_longest_hold_time: '',
       queue_sort_total_calls:"総呼数 （最後のリセットから）",
       queue_abandoned_calls:'途中放棄呼数 ',
       queue_active_calls:'通話中の呼数 ',
