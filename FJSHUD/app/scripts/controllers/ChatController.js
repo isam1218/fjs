@@ -1,5 +1,5 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout','SettingsService',
-	function($scope,httpService, $routeParams,contactService,phoneService,$interval, $timeout,settingsService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService',
+	function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService) {
 
 	var version = 0;
 	var scrollbox = {};
@@ -218,8 +218,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		
 
 		if (found) {
-			
-
 			addDetails();
 			
 			// jump to bottom if new messages were found
@@ -306,6 +304,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				if ($scope.messages[i].type == 'f.conversation.chat.group.remove'){
 					$scope.messages[i].message = "<strong>Goodbye " + $scope.messages[i].data.groupId + "!</strong><br />" + $scope.messages[i].message;
 				}
+				
+				// update html per message
+				$scope.messages[i].message = $filter('chatify')($scope.messages[i].message);
 			}
 		}
 	};
