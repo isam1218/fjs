@@ -266,14 +266,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
-                } else {
+                	$rootScope.phoneError = false;
+                     
+                } else if(account_.status == REG_STATUS_UNKNOWN){
+                  	 $rootScope.phoneError = true;
                      isRegistered = false;
+					 if($rootScope.isFirstSync){
+					 	$rootScope.$evalAsync($rootScope.$broadcast('network_issue',data));
+	     			 }
+		 
+				}else{
+					$rootScope.phoneError = false;
+                    isRegistered = false;
 				}
 
-				data = {
+				var data = {
 					event:'state',
 					registration: isRegistered,
-				}
+				};
 				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 	      }
     };

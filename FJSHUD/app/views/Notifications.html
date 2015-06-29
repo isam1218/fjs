@@ -18,9 +18,14 @@
 						<avatar 
 							class="LeftBarNotificationAvatarSection NotificationAvatar"
 							ng-click="go_to_notification_chat(message)" 
-							profile="message.fullProfile" 
+							profile="message.fullProfile"
+							ng-if="message.type != 'error'" 
 							type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 						</avatar>
+
+						<div ng-if="message.type== 'error'" class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+							<div class="AvatarWarningSmall"></div>
+						</div>
 					
 						<div class="LeftBarNotificationMessageSection" ng-init="message_section_notifications = getMessage(message)"> 
 							<div ng-click="go_to_notification_chat(message)" class="chatNotification">

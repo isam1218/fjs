@@ -304,6 +304,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		}
 		
 		var tab = message.type == 'q-broadcast' ? '/alerts' : '/chat';
+		
+		if(message.type == "error"){
+			
+			$rootScope.pbxError = message.receivedStatus == "offline";
+			$rootScope.$evalAsync($rootScope.$broadcast('network_issue',{}));
+			return;
+		}
+
 		switch(message.audience){
 			case 'contacts':
 				var contact = contactService.getContact(xpid);
@@ -771,6 +779,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 								notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
 							}else if(notification.type == 'wall'){
 								notification.label = "share";
+							}else if(notification.type == 'error'){
+								notification.displayName = 'Error';
+								notification.message = 'Open for Details';
 							}
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
@@ -835,6 +846,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 						notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
 					}else if(notification.type == 'wall'){
 								notification.label = "share";
+					}else if(notification.type == 'error'){
+							notification.displayName = 'Error';
+							notification.message = 'Open for Details';
 					}
 					
 					if(notification.audience == "conference"){

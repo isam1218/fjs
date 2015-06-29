@@ -5742,16 +5742,16 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -280px 0px;
 }
 .InternetArrowIcon.Active-true {
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -380px -90px;
+  background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -380px 0px;
 }
 .InternetArrowIcon.Active-false {
   background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -380px -90px;
 }
 .PbxArrowIcon.Active-false {
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -470px 0px;
+  background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -470px -80px;
 }
 .WebArrowIcon.Active-false {
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -280px 0px;
+  background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -280px -90px;
 }
 .ErrorIcon {
   height: 90px;

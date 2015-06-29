@@ -91,6 +91,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     };
 	
 	$scope.showOverlay = function(show, url, data) {
+
 		$scope.overlay.show = show;
 		$scope.overlay.url = url ? 'views/popups/' + url + '.html' : '';
 		$scope.overlay.data = data ? data : null;
@@ -113,6 +114,17 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.reloadPage = function(){
 		window.onbeforeunload = function(){};
 		myHttpService.logout();
+	}
+
+	$scope.reload = function(){
+		window.onbeforeunload = function(){};
+		location.reload();
+	}
+
+	$scope.closeError = function(){
+		if(!$scope.isFirstSync){
+			$scope.showOverlay(false);
+		}
 	}
 
 	$scope.$on('network_issue', function(event,data){

@@ -109,7 +109,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
       					break;
       				case "network_error":
       					if(!synced){
-      						$rootScope.$broadcast('network_issue',undefined);
+      						
+      						$rootScope.networkError = true;
+      						$rootScope.$broadcast('network_issue',data);
 							worker.port.close();
 						}
       					break;
@@ -366,8 +368,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
+					$rootScope.networkError = true;
 					$rootScope.$broadcast('network_issue',undefined);
-
 					//attemptLogin();
 					break;
 			}
