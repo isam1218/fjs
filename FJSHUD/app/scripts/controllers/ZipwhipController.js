@@ -1,4 +1,4 @@
-hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'SettingsService', function($scope, $rootScope, $http, settingsService) {
+hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'SettingsService', function($scope, $rootScope, $http, settingsService) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;
@@ -6,8 +6,8 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	
 	// pps url
 	var getURL = function(action) {
-		var url = 
-			 action
+		var url = 'https://pps1.stage3.arch.fonality.com:8443/pps/'
+			+ action
 			+ '?callback=JSON_CALLBACK'
 			+ '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
 			+ '&serverId=' + $rootScope.meModel.server_id
@@ -21,7 +21,7 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	settingsService.getSettings().then(function() {
 		// get workspaces
 		$.ajax({
-			url: fjs.CONFIG.SERVER.ppsServer + getURL('workspaceListString') + '&admin=1',
+			url: getURL('workspaceListString') + '&admin=1',
 			dataType: "jsonp",
 			jsonpCallback: 'JSON_CALLBACK',
 			success: function(data) {
@@ -34,10 +34,9 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	
 	$scope.verifyLicense = function() {
 		//window.open(getURL('loadApp'));
-
-
-		  $.ajax({
-			url: fjs.CONFIG.SERVER.ppsServer + getURL('loginString') + '&workspaceId=',
+		
+		$.ajax({
+			url: getURL('loginString') + '&workspaceId=',
 			dataType: "jsonp",
 			jsonpCallback: 'JSON_CALLBACK',
 			success: function(data) {
