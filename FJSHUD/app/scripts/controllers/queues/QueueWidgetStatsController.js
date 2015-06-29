@@ -3,16 +3,22 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
   $scope.sortOrder = 'displayName';
   $scope.isAscending = false;
   $scope.queueMembers = [];
+  $scope.iconSelected;
   
   $scope.setSort = function(select) {
-	if ($scope.sortOrder == select)
-	  $scope.isAscending = !$scope.isAscending;
-    else if (select == 'displayName')
-	  $scope.isAscending = false;
+  	if ($scope.sortOrder == select)
+  	  $scope.isAscending = !$scope.isAscending;
+      else if (select == 'displayName')
+  	  $scope.isAscending = false;
+      else
+  	  $scope.isAscending = true;
+  	$scope.sortOrder = select;
+    if (select == 'fullProfile.hud_status')
+      $scope.iconSelected = 'fullProfile.hud_status';
+    else if (select == 'status.status')
+      $scope.iconSelected = 'status.status';
     else
-	  $scope.isAscending = true;
-	
-	$scope.sortOrder = select;
+      $scope.iconSelected = 'other';
   };
 
   queueService.getQueues().then(function(data) {
@@ -25,7 +31,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
 	
 		for (var i = 0, iLen = $scope.queueMembers.length; i < iLen; i++) {
 			var member = $scope.queueMembers[i];
-	
+	     console.error('member - ', member);
 			// find other queues for this contact
 			member.otherQueues = [];
 			
