@@ -45,6 +45,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.stopTime;	
 	$scope.callObj = {};
 	$scope.anotherDevice = false;
+	$scope.clearOld;
 	
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();	
 	
@@ -279,7 +280,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
     	
 		return old_notifications;
 	};
-	
+
 	$scope.removeOldNotifications = function()
 	{		
 		  
@@ -293,10 +294,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		$scope.hasOldNotifications = false;	
 		$scope.oldNotifications = [];					
 											
-		if(!$scope.hasNewNotifications && 
-		   !$scope.hasAwayNotifications && 
-		   !$scope.hasOldNotifications)
-			$scope.showNotificationOverlay(false);				
+		// want to remove the 'clear' and 'hide' buttons when 'clear' button is pressed, but don't want entire overlay to close...
+		$scope.clearOld = true;
 	};
 	
 	$scope.remove_all = function(){
@@ -306,7 +305,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 		myHttpService.sendAction('quickinbox','removeAll');
 			
-		$scope.showOverlay(false);
+		$scope.showNotificationOverlay(false);
+		$scope.hasAwayNotifications = false;
+		$scope.hasOldNotifications = false;
 	};
 
 	$scope.go_to_notification_chat = function(message){
