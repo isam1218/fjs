@@ -26,7 +26,7 @@
   </a>
   
 
-  <div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" >                            
+  <div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.type != 5 ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" >                            
      <a href="#/showCallControlls?{{currentCall}}" class="CallStatusIconContainer">
          <div class="CallStatusIcon"> </div>
      </a>

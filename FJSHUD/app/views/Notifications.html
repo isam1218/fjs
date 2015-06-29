@@ -393,7 +393,7 @@
 </div>
 
 <div class="CallStatusContainer">
-	<div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.incoming ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
+	<div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.type != 5 ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 					<div class="CallStatusIcon"> </div>
 				</div>
@@ -412,8 +412,8 @@
 				
 	</div>	
 </div>
-	<!--include once directive is causing the IE to crash for call alerts still unsure why until then switching back to ng-include-->
-	<div id="Alert" style="visibility:hidden;position:absolute;left:-1000px" ng-if="displayAlert" ng-include="'views/nativealerts/CallAlert.html'"></div>
+	<!--include once directive is causing the IE to crash for call alerts still unsure why until then switching back to ng-include   -->
+	<div id="Alert" style="visibility:hidden;position:absolute;left:-100px;top:-500px;"  ng-if="displayAlert" ng-include="'views/nativealerts/CallAlert.html'"></div>
     
 
 
