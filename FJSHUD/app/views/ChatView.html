@@ -31,7 +31,7 @@
             
             </div>
             <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag">
-                <div class="ListMessageText" ng-bind-html="message.message | links | highlight:chat.query"></div>
+                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment.url,attachment.fileName)}}" />               
                     <p> {{ ::attachment.fileName }}</p>

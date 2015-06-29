@@ -251,7 +251,7 @@
 	          <div class="notification_border ng-class:{'lessPadding': !showAway}"></div>
          </div>
          <!-- /////////////////// OLD NOTIFICATIONS /////////////////////////// -->
-         <div class="overlayNotificationsSection" ng-if="hasOldNotifications">    
+         <div class="overlayNotificationsSection" ng-if="hasOldNotifications" ng-hide="clearOld">    
           <div class="section_header">         
 	         <div class="Conference-HeaderTitle ng-binding" ng-if="hasOldNotifications">OLD ITEMS</div>
 	         <div class="Conference-HeaderSubTitle" ng-if="hasOldNotifications">You have {{oldNotificationsLength}} old item(s)</div> 
