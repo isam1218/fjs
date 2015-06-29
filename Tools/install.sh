@@ -9,6 +9,7 @@ popd
 
 pushd $FJ_ROOT_DIR/FJSHUD/app/styles
 lessc main.less > main.css
+lessc nativeAlert.less > nativeAlert.css
 popd 
 
 popd > /dev/null
