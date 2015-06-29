@@ -469,6 +469,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	this.get_audio = function(key) {
 		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
 	};
+	
+	this.get_smiley = function(key) {
+		return fjs.CONFIG.SERVER.serverURL + '/v1/chat_smiles_download?xpid=' + key + '&Authorization=' + authTicket + '&node=' + nodeID;
+	};
 
     this.get_attachment = function(xkeyUrl,fileName){
 
@@ -476,6 +480,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
     		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID + "&" + fileName + '&d';
     	}
     };
+	
     //this will return a promise to for file uploads
     this.get_upload_progress = function(){
     	return deferred_progress.promise;
