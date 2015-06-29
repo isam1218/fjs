@@ -111,7 +111,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
       					if(!synced){
       						
       						$rootScope.networkError = true;
-      						$rootScope.$broadcast('network_issue',data);
+      						$rootScope.$broadcast('network_issue',{});
 							worker.port.close();
 						}
       					break;

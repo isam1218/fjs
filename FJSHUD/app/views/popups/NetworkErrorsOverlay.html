@@ -11,19 +11,19 @@
         </div>
         
         <div class="Sections">
-            <div class="Section" style="min-width:36%">
+            <div class="Section" style="min-width:32%">
                  <div>
                     <div style="display:inline-block" class="TwentyFourIcon" name="softphone" ng-class="phoneError ? 'CheckboxItem-false' : 'CheckboxItem-true'"></div>
                     <div style="line-height:28px" id="network_error_label">Fonality Web softphone</div>
                     <div id="softPhoneReason" ng-if="phoneError">can't register</div>
-                    
+                    <br/> 
                     <div style="display:inline-block" class="TwentyFourIcon" type="checkbox" name="cloud" ng-class="networkError ? 'CheckboxItem-false' : 'CheckboxItem-true'"></div>
-                    <span id="network_error_label">Fonality Cloud Services</span>
+                    <div id="network_error_label">Fonality Cloud Services</div>
                     <div id="cloudReason" ng-if="networkError">Check your Internet connection</div>
+                    <br/>
                     
-
                     <div  style="display:inline-block" class="TwentyFourIcon" type="checkbox" name="server" ng-class="pbxError ? 'CheckboxItem-false' : 'CheckboxItem-true'"></div>
-                    <span id="network_error_label">PBX server</span>
+                    <div id="network_error_label">PBX server</div>
                     <div id="serverReason" ng-if="pbxError">If problem persists contact your administrator</div>
                 </div>
             </div>
