@@ -2,12 +2,12 @@ hudweb.filter('chatify', ['$sce', 'HttpService', function($sce, httpService) {
 	var regex1 = new RegExp('^[\\w\\.]+\\.(com|edu|net|gov|org)((\\?|#).*){0,1}$', 'gi');
 	var regex2 = new RegExp('^\\w+@\\w+\\.\\w{2,4}$', 'gi');
 		
-    return function(text) {
-		var text = text.toString();
+    return function(t) {
+		var text = t.toString();
 		var words = text.split(' ');
 		
+		// 1: turn text into links
 		for (var i = 0, len = words.length; i < len; i++) {
-			// 1: turn text into links
 			// e-mail address
 			if (words[i].match(regex2))
 				words[i] = '<a href="mailto:' + words[i] + '" target="_blank">' + words[i] + '</a>';
@@ -17,36 +17,22 @@ hudweb.filter('chatify', ['$sce', 'HttpService', function($sce, httpService) {
 			// url no protocol
 			else if (words[i].match(regex1))
 				words[i] = '<a href="http://' + words[i] + '" target="_blank">' + words[i] + '</a>';
-			
-			// 2: make smilies
-			switch(words[i]) {
-				case '&gt;:-(':
-					words[i] = '<img src="' + httpService.get_smiley(8) + '" />';
-					break;
-				case ':-|':
-					words[i] = '<img src="' + httpService.get_smiley(7) + '" />';
-					break;
-				case ':-(':
-					words[i] = '<img src="' + httpService.get_smiley(6) + '" />';
-					break;
-				case 'o_0':
-					words[i] = '<img src="' + httpService.get_smiley(5) + '" />';
-					break;
-				case ':-P':
-					words[i] = '<img src="' + httpService.get_smiley(4) + '" />';
-					break;
-				case ":'(":
-					words[i] = '<img src="' + httpService.get_smiley(3) + '" />';
-					break;
-				case ':-)':
-					words[i] = '<img src="' + httpService.get_smiley(2) + '" />';
-					break;
-				case ':-D':
-					words[i] = '<img src="' + httpService.get_smiley(1) + '" />';
-					break;
-			}
 		}
 		
-		return $sce.trustAsHtml(words.join(' '));
+		text = words.join(' ');
+			
+		// 2: make smilies
+		text = text
+			.replace(/&gt;:-\(/g, '<img src="' + httpService.get_smiley(8) + '" />')
+			.replace(/:-\|/g, '<img src="' + httpService.get_smiley(7) + '" />')
+			.replace(/:-\(/g, '<img src="' + httpService.get_smiley(6) + '" />')
+			.replace(/o_0/g, '<img src="' + httpService.get_smiley(5) + '" />')
+			.replace(/:-P/g, '<img src="' + httpService.get_smiley(4) + '" />')
+			.replace(/:'\(/g, '<img src="' + httpService.get_smiley(3) + '" />')
+			.replace(/:-\)/g, '<img src="' + httpService.get_smiley(2) + '" />')
+			.replace(/:-D/g, '<img src="' + httpService.get_smiley(1) + '" />');
+		
+		// return html
+		return $sce.trustAsHtml(text);
 	};
 }]);
