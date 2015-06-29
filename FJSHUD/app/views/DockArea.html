@@ -104,7 +104,7 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" droppable="Call">
+				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'fullProfile.displayName' track by member.xpid" droppable="Call">
 					<avatar profile="member.fullProfile"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
