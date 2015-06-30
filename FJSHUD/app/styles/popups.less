@@ -1,3 +1,24 @@
+.DownloadHeader{
+  width:85%;
+}
+.DownloadsSection{
+    min-width: 42%;
+  margin-left: 30px;
+}
+
+.Downloadables{
+  height:40px;
+}
+
+
+.CurrentDownload{
+    height:auto;
+    position:relative;
+    max-height: 300px;
+    vertical-align: middle !important;
+}
+
+
 .Overlay {
   position: fixed;
   left: 0;
@@ -28,9 +49,17 @@
         color: #555;
         float: left;
     }
+
+    
+    .HeaderTitle{
+        left: -5px !important;
+    }
+    
+
     .NotificationMessages{          
           display: block;
     } 
+
     .Messages{
         background: url('') #fff !important;       
         padding-bottom: 0 !important;
@@ -70,6 +99,8 @@
           max-height: none !important;
         } 
     }
+    
+    
     .XButton.header{
         float: right;
         margin-right: 5px;
@@ -223,6 +254,20 @@
 	  padding-top: 10px;
 	  padding-bottom: 20px;
 	  
+	  &.callStatus{	
+	    
+	      .Section{
+	      
+	         .Contact{
+	           margin-bottom: 0px !important;
+	           
+	           &.top{
+	               margin-bottom: 20px !important;
+	           }
+	         }	         	         
+	      }
+	  }	  
+	  
 	  #attachments{
 	       .XButton{
 	           float:right;
@@ -252,6 +297,12 @@
 	  font-size: .9em;
 	  height:inherit;
 	  
+	   .network{
+	     background: url("../img/Network-Problems.png?v=1425679800685") no-repeat -0px -0px;
+	     width: 504px;
+	     height: 323px;	     
+	   }
+	  
 	  .visibility{
 	   font-size: 12px;
 	   
@@ -277,6 +328,10 @@
 	  
 	  & > div {
 		margin-bottom: .5em;
+		
+		&.transferSearch{
+		   margin-bottom: 0px;
+        }
 	  }
 	  
 	  & > div > * {
@@ -298,6 +353,15 @@
 		display: inline-block;
 		width: 38%;
 	  }
+
+    #network_error_label{
+      width:80%;
+      line-height: 26px;
+      margin-left: 5px;
+      display: inline-block;
+      font-weight: bold;
+    }
+
 	  
 	  textarea {
 		/*width: 80%;*/
@@ -330,6 +394,9 @@
 		.Buttons {
 			margin: 2em 0 .5em 0;
 			
+			input{
+			 margin-right: 10px;
+			}
 			input[disabled] {
 			  cursor: default;
 			  color: #ccc;
@@ -376,7 +443,7 @@
           }
           
           &.callTransfer{
-                background-position: -365px -38px;
+                background-position: -358px -40px;
           }
           
           &.plugin{
@@ -385,6 +452,11 @@
           
           &.notifications{
                 background-position: -486px -38px;
+                margin-top: -12px;
+          }
+          
+          &.network{
+                background-position: -207px -40px;                
           }
       }
       
@@ -432,7 +504,7 @@
   .Bargers {
     border: 1px solid #999999;
 	background-color: #999999;
-	height: 235px;
+	height: 250px;
 	margin-top: 10px;
 	overflow-y: auto;
   }
@@ -490,8 +562,8 @@
 
   .AttachmentDownload{
   	.Members();
-  	height:inherit;
-  	.Downloadables:hover {
+  	width:280px;
+    .Downloadables:hover {
   		background-color: #f0f0ff;
 	}
 
@@ -511,10 +583,6 @@
 	}
   }
 }
-.CurrentDownload{
-		height:auto;
-		max-height:100%;
-	}
 .SearchContactOverlay {
   position: absolute;
   top: 0;
@@ -533,16 +601,56 @@
   -webkit-flex-direction: column;
   
   .Header {
-	text-align: center;
-	font-weight: bold;
-	border-bottom: 1px solid #ccc;
-	color: #729c00;
+	  text-align: center;
+      font-weight: bold;
+      color: #729c00;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      position: relative;
+      text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+      font-size: 12px;
+      margin-left: 10px;
+      margin-right: 10px;
+      border-bottom: solid 1px #999;
+      overflow: hidden;
+      text-overflow: clip;
+      white-space: nowrap;
   }
   
+  .ExpandedToolBarHelp {
+      position: absolute;
+      width: 180px;
+      height: 30px;
+      line-height: 30px;
+      background-color: #ffe;
+      border: solid 1px #eee;
+      border-radius: 3px;
+      -webkit-border-radius: 3px;
+      text-align: center;
+      top: 16.8%;
+      right: 15px;
+  }
+  .XButton.XButtonNormal.JoinByPhoneBtn{
+      width: 115px !important;
+      position: absolute;
+      left: 33% !important;
+      top: 16.8%;
+      height: 30px !important;
+      padding-top: 6px !important;
+  }
   .Inset {
   	overflow-y: auto;
   	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+	
+	.rows{
+	   border: solid 1px #eee;
+	   width: 99.5%;
+	   
+	   .ListRow{
+	       width: 100%;
+	   }
+	}
 		
 	.ListRowContent {
 	  left: 36px !important;
@@ -568,6 +676,44 @@
 		top: -10px;		
 	  }
 	}
+  }
+  &.conferenceSearch{
+    width: 500px !important; 
+    top: -55px !important; 
+    
+    .Header{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 12px;
+    }
+    .Inset {
+      margin-top: 60px !important;
+      
+      .ListRow{
+        height: 44px;
+        
+        .Avatar{
+            margin: 6px 5px !important;
+        }
+        
+        .ListRowContent {
+            padding: .3em .5em 0 .5em !important;       
+                    
+            .ListRowStatus{
+                margin-top: 6px !important;
+            }
+      
+            .ListRowTitle{
+                margin-top: -5px;
+                
+                .hudStatus{
+                    margin-top: -2px;
+                }     
+            }
+         }
+        
+      }                       
+    }     
   }
 }
 
@@ -870,3 +1016,20 @@
       top: 3px;
   }
 } 
+
+
+#dialogheadicon{
+    left: 0px;
+      top: 10px;
+      width: 40px;
+      height: 40px;
+      background: url("img/XApp-Icons.png") no-repeat -320px -40px;
+      font-size:12px;
+}
+
+#header_label{
+    display: inline-block;
+    position: absolute;
+    left: 10%;
+    top: 4%;
+}

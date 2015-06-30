@@ -25,6 +25,9 @@
   color: #555;
   float: left;
 }
+.Overlay.notifications .HeaderTitle {
+  left: -5px !important;
+}
 .Overlay.notifications .NotificationMessages {
   display: block;
 }
@@ -156,7 +159,7 @@
 .Overlay.notifications .Foreground {
   width: 500px;
   background: url('') #ffffff !important;
-  height: 500px;
+  height: 575px;
 }
 .Overlay.notifications .Foreground .footer {
   border-top: none 0px !important;
@@ -209,6 +212,12 @@
   padding-top: 10px;
   padding-bottom: 20px;
 }
+.Overlay .Foreground .Sections.callStatus .Section .Contact {
+  margin-bottom: 0px !important;
+}
+.Overlay .Foreground .Sections.callStatus .Section .Contact.top {
+  margin-bottom: 20px !important;
+}
 .Overlay .Foreground .Sections #attachments .XButton {
   float: right;
   position: relative;
@@ -234,6 +243,11 @@
   font-size: .9em;
   height: inherit;
 }
+.Overlay .Foreground .Section .network {
+  background: url("../img/Network-Problems.png?v=1425679800685") no-repeat 0px 0px;
+  width: 504px;
+  height: 323px;
+}
 .Overlay .Foreground .Section .visibility {
   font-size: 12px;
 }
@@ -256,6 +270,9 @@
 .Overlay .Foreground .Section > div {
   margin-bottom: .5em;
 }
+.Overlay .Foreground .Section > div.transferSearch {
+  margin-bottom: 0px;
+}
 .Overlay .Foreground .Section > div > * {
   vertical-align: top;
 }
@@ -271,6 +288,13 @@
 .Overlay .Foreground .Section label {
   display: inline-block;
   width: 38%;
+}
+.Overlay .Foreground .Section #network_error_label {
+  width: 80%;
+  line-height: 26px;
+  margin-left: 5px;
+  display: inline-block;
+  font-weight: bold;
 }
 .Overlay .Foreground .Section textarea {
   /*width: 80%;*/
@@ -299,6 +323,9 @@
 }
 .Overlay .Foreground .Section .Contact .Buttons {
   margin: 2em 0 .5em 0;
+}
+.Overlay .Foreground .Section .Contact .Buttons input {
+  margin-right: 10px;
 }
 .Overlay .Foreground .Section .Contact .Buttons input[disabled] {
   cursor: default;
@@ -339,13 +366,17 @@
   background-position: -398px -38px;
 }
 .Overlay .Foreground .Header .headerIcon.callTransfer {
-  background-position: -365px -38px;
+  background-position: -358px -40px;
 }
 .Overlay .Foreground .Header .headerIcon.plugin {
   background-position: -320px -40px;
 }
 .Overlay .Foreground .Header .headerIcon.notifications {
   background-position: -486px -38px;
+  margin-top: -12px;
+}
+.Overlay .Foreground .Header .headerIcon.network {
+  background-position: -207px -40px;
 }
 .Overlay .Foreground .Header .HeaderTitle {
   position: relative;
@@ -385,7 +416,7 @@
 .Overlay .Bargers {
   border: 1px solid #999999;
   background-color: #999999;
-  height: 235px;
+  height: 250px;
   margin-top: 10px;
   overflow-y: auto;
 }
@@ -510,12 +541,15 @@
   left: 36px !important;
   display: block !important;
   padding: .3em 0 0 .5em;
+  font-size: 11px;
 }
 .SearchContactOverlay .Inset .ListRowContent .Name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: bold;
+  max-width: 120px;
+  margin-top: 10px;
 }
 .SearchContactOverlay .Inset .ListRowContent .Extension {
   font-size: .9em;
@@ -778,4 +812,18 @@
 .AutoDelete input {
   position: relative;
   top: 3px;
+}
+#dialogheadicon {
+  left: 0px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("img/XApp-Icons.png") no-repeat -320px -40px;
+  font-size: 12px;
+}
+#header_label {
+  display: inline-block;
+  position: absolute;
+  left: 10%;
+  top: 4%;
 }

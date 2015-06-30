@@ -13,8 +13,8 @@
   .WidgetHeader {
     top:0;
     right:0;
-    left:0;    
-
+    left:0;          
+    
     .WidgetHeaderCallStatus {
       margin: .05em .1em 0.7em 0.7em;
       width: 40%;
@@ -71,6 +71,88 @@
       border-radius: 18px 4px 4px 18px;
     }
   }
+  
+  &.conference{
+    .WidgetHeader {
+        .WidgetHeaderTitle {
+              top: -1px !important;
+              left: 10px !important;
+              float: left;
+        }
+        .Avatar.AvatarNormal{
+              float: left;
+        } 
+        .WidgetStat {
+            width: 200px;
+            position: absolute;
+            float: right;
+            top: 20px;
+            right: 20px;
+        }
+    }
+    
+    
+    .WidgetTabContent.currentCall{
+        .ToolBar{
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        
+        .ListRow{
+            &:hover{
+                .ListRowStatus{visibility: visible;}
+                .vmtime{visibility: visible;}
+            }
+            .ListRowStatus{
+                .vmtime, .joining{                                
+                    float: right;
+                    margin-left: 20px;
+                    font-weight: bold;
+                    color: #222;
+                }
+                .joining{
+                    margin-top: -6px;
+                    img{vertical-align: middle;}
+                }
+            }
+            .Avatar.CallAvatar.CallAvatar_Office{
+                width: 40px !important;
+                height: 40px !important;                
+                background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px !important;                
+                margin: 2px 5px !important;           
+                border: none;        
+        
+                img{
+                    height: 32px !important;
+                    width: 32px !important;
+                    margin: 4px !important;
+                    border-radius: 40px !important;
+                    -webkit-border-radius: 40px !important;
+                }
+                
+                &:hover{
+                   .AvatarInteractable {
+                    display: block; 
+                   }                    
+                }                
+        
+                .AvatarInteractable {                            
+                    height: 40px !important;
+                    width: 40px !important;
+                    position: absolute !important;
+                    border: none !important;
+                    right: 0 !important;
+                    bottom: 0 !important;
+                    left: 0 !important;
+                    top: 0 !important;
+                    display: none;                                 
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px !important;
+                
+                }
+             }
+          }
+       }
+  }
   .WidgetBody {
     position: relative;
     
@@ -85,8 +167,8 @@
     }
 	
     .ToolBar{     
-      input[type=search]{height: 26px !important;}
-      input.chat[type=search]{height: 24px !important;}
+      input[type=search]{height: 26px;}//
+      input.chat[type=search]{height: 24px;}//!important
       .SearchBox{           
         width: 30% !important;        
       }
@@ -213,12 +295,13 @@
   display: flex;
   display: -webkit-flex;
   flex: 1 1 0;     
-  -ms-flex: 1 1 0;
+  -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 0;
   
   .ListViewContent {
     flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+    -ms-flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
 	margin-top: 5px;

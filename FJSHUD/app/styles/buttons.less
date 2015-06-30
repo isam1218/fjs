@@ -20,7 +20,8 @@ textarea {
 }
 
 input[type="text"], input[type="email"], input[type="search"], input[type="tel"] {  
-  border-radius: 2px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
   outline: none;
   -webkit-appearance: none;
 }
@@ -211,7 +212,7 @@ input[disabled], select[disabled],
 
 .ToolBar .XButton{   
   height: 26px;
-  padding: 6px 5px;
+  padding: 3px 5px 6px 5px;
 }
 .CurrentCallBtn
 {
@@ -537,6 +538,14 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
     box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
 
   }
+}
+
+.CheckboxItem-true {
+  background: url("../img/XIconSet-24x24.png?v=1383302254789") no-repeat -96px -48px;
+}
+
+.CheckboxItem-false {
+  background: url("../img/XIconSet-24x24.png?v=1383302254789") no-repeat -120px -48px;
 }
 
 .ImgBtnUpload{

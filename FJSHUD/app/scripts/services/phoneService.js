@@ -348,14 +348,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
-                } else {
+                	$rootScope.phoneError = false;
+                     
+                } else if(account_.status == REG_STATUS_UNKNOWN){
+                  	 $rootScope.phoneError = true;
                      isRegistered = false;
+					 if($rootScope.isFirstSync){
+					 	$rootScope.$evalAsync($rootScope.$broadcast('network_issue',data));
+	     			 }
+		 
+				}else{
+					$rootScope.phoneError = false;
+                    isRegistered = false;
 				}
 
-				data = {
+				var data = {
 					event:'state',
 					registration: isRegistered,
-				}
+				};
 				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 	      }
     };
@@ -397,6 +407,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 isRegistered = false;
                 return;
         } else if (session_status.status == 2) {
+        	$rootScope.$broadcast('network_status',undefined);
             isRegistered = false;
             return;
         }
@@ -437,13 +448,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
    		var query = arguments[1];
     	var queryArray;
     	var id;
+    	var data;
+		
 		if(query){
 			queryArray = query.split('&');
 			xpid = queryArray[0];
     	}
-    	activateBrowserTab();
-    	var data;
-    	window.focus();
+		
+		// re-focus tab/window
+		if (url.indexOf('/Close') === -1) {
+			activateBrowserTab();
+			window.focus();
+		}		
+		
     	if(url.indexOf('#') === -1){
 
 			switch(url){

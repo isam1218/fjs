@@ -48,6 +48,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	$scope.stopTime;	
 	$scope.callObj = {};
 	$scope.anotherDevice = false;
+	$scope.clearOld;
 	
 	$scope.phoneSessionEnabled = phoneService.isPhoneActive();	
 	
@@ -179,6 +180,20 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		}
 	};
 
+	// required to show new messages on-the-fly
+	$scope.formatMessage = function(message){		
+		switch(message.type){
+			case "vm":
+				return "Voicemail from extension " + message.phone; 
+				break;
+			case 'missed-call':	
+				return "Missed call from extension " + message.phone; 
+				break;
+			default:
+				return message.replace(/\n/g, '<br/>');
+		}
+	};
+
 	$scope.getNotificationsLength = function(length)
 	{
 		var length = $scope.phoneSessionEnabled ? length : length + 1;
@@ -278,7 +293,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
     	
 		return old_notifications;
 	};
-	
+
 	$scope.removeOldNotifications = function()
 	{		
 		  
@@ -292,10 +307,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		$scope.hasOldNotifications = false;	
 		$scope.oldNotifications = [];					
 											
-		if(!$scope.hasNewNotifications && 
-		   !$scope.hasAwayNotifications && 
-		   !$scope.hasOldNotifications)
-			$scope.showNotificationOverlay(false);				
+		// want to remove the 'clear' and 'hide' buttons when 'clear' button is pressed, but don't want entire overlay to close...
+		$scope.clearOld = true;
 	};
 	
 	$scope.remove_all = function(){
@@ -305,7 +318,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 		myHttpService.sendAction('quickinbox','removeAll');
 			
-		$scope.showOverlay(false);
+		$scope.showNotificationOverlay(false);
+		$scope.hasAwayNotifications = false;
+		$scope.hasOldNotifications = false;
 	};
 
 	$scope.go_to_notification_chat = function(message){
@@ -317,6 +332,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		}
 		
 		var tab = message.type == 'q-broadcast' ? '/alerts' : '/chat';
+		
+		if(message.type == "error"){
+			
+			$rootScope.pbxError = message.receivedStatus == "offline";
+			$rootScope.$evalAsync($rootScope.$broadcast('network_issue',{}));
+			return;
+		}
+
 		switch(message.audience){
 			case 'contacts':
 				var contact = contactService.getContact(xpid);
@@ -839,6 +862,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 								notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
 							}else if(notification.type == 'wall'){
 								notification.label = "share";
+							}else if(notification.type == 'error'){
+								notification.displayName = 'Error';
+								notification.message = 'Open for Details';
 							}
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
@@ -904,6 +930,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 						notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
 					}else if(notification.type == 'wall'){
 								notification.label = "share";
+					}else if(notification.type == 'error'){
+							notification.displayName = 'Error';
+							notification.message = 'Open for Details';
 					}
 					
 					if(notification.audience == "conference"){

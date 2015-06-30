@@ -95,6 +95,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 								$rootScope.isFirstSync = false;
 
 							});
+							synced = true;
 		                }
 		                break;
 		            case "feed_request":
@@ -102,10 +103,17 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                break;
       				case "auth_failed":
 						delete localStorage.me;
-      					delete localStorage.nodeID;
-      					delete localStorage.authTicket;
-      					delete localStorage.data_obj;
-      					attemptLogin();
+						delete localStorage.nodeID;
+						delete localStorage.authTicket;
+						attemptLogin();
+      					break;
+      				case "network_error":
+      					if(!synced){
+      						
+      						$rootScope.networkError = true;
+      						$rootScope.$broadcast('network_issue',{});
+							worker.port.close();
+						}
       					break;
 					case "timestamp_created":
 						if (event.data.data)
@@ -203,10 +211,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
-						delete localStorage.data_obj;
-						delete localStorage.fon_tabs;
 						attemptLogin();
 						break;
+					case "network_error":
+      					if(!synced){
+      						$rootScope.$broadcast('network_issue',undefined);
+							worker.port.close();
+						}
+      					break;
 					case "timestamp_created":
 						if (event.data.data)
 							ntpService.syncTime(event.data.data);
@@ -231,7 +243,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 									synced_data = JSON.parse(localStorage.data_obj);
 									for(feed in synced_data){
 										if (synced_data[feed].length > 0)
-			
 			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 									}
 								}
@@ -346,11 +357,19 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					$rootScope.$broadcast('no_license', undefined);
 
 					break;
+				case 404:
+					$rootScope.$broadcast('network_issue',undefined);
+					break;
+				case 500:
+					$rootScope.$broadcast('network_issue',undefined);
+					break;
 				default:
 					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
-					attemptLogin();
+					$rootScope.networkError = true;
+					$rootScope.$broadcast('network_issue',undefined);
+					//attemptLogin();
 					break;
 			}
 
@@ -422,9 +441,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			if(localStorage.data_obj){
 				var data = JSON.parse(localStorage.data_obj);
 				
-				$rootScope.$evalAsync(function() {
-					$rootScope.$broadcast(feed + '_synced', data[feed]);
-				});
+				if (data[feed]) {
+					$rootScope.$evalAsync(function() {
+						$rootScope.$broadcast(feed + '_synced', data[feed]);
+					});
+				}
 			}
 		}
     };
@@ -468,6 +489,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	this.get_audio = function(key) {
 		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
 	};
+	
+	this.get_smiley = function(key) {
+		return fjs.CONFIG.SERVER.serverURL + '/v1/chat_smiles_download?xpid=' + key + '&Authorization=' + authTicket + '&node=' + nodeID;
+	};
 
     this.get_attachment = function(xkeyUrl,fileName){
 
@@ -475,6 +500,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
     		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID + "&" + fileName + '&d';
     	}
     };
+	
     //this will return a promise to for file uploads
     this.get_upload_progress = function(){
     	return deferred_progress.promise;

@@ -92,8 +92,7 @@
          .ToolBar{
          
              input[type=search]{           
-                width: 30%;
-                font-size: 0.688em !important;                         
+                width: 30%;                                       
              }
              &.fj-stream{ 
                  .XButton{
@@ -110,7 +109,7 @@
                 .Search{
                     margin-top: 0px;
                     width: 68% !important;
-                    height: 2.38em !important;  
+                    height: 100% !important;  
                 }
              }
              
@@ -147,7 +146,10 @@
     .Conference{
         
         .ToolBar{        
-          
+         
+         .XButton{          
+          padding: 6px 5px;
+         } 
          .SearchInputBox{
            width: 30% !important; 
            float: left;      
@@ -178,26 +180,40 @@
          input[type=search].SearchBox{           
             width: 30% !important;
          }
+         input.chat[type=search]{height: 100% !important;}
          
          .XButton.XSortButton{
             margin-top: 0 !important;
-         }        
-         
-         &.chatTop{
+         }               
+        
+        }
+     } 
+     .XButton span{
+        vertical-align: top;               
+     }
+     
+     .ToolBar.chatTop{
           .XButton {
                height: 2.2em !important;
           }
               
           .ChatSearch{
-            width: 64% !important;
+            width: 60% !important;
             top: 0 !important!;
+            height: 28px !important;
             
             .SearchIcon{float: left;}
             
-            .Arrows{float: right; width: 24%;}
+            .Arrows{
+                float: right; 
+                width: 24%;
+                position: relative;
+                clear: none;
+                top: -26px;
+             }
       
             input[type=search].SearchBox{
-                height: 2.4em !important;
+                height: 100% !important;
                 margin-top: 0 !important;
                 top: 0 !important;
                 width: 62% !important;
@@ -205,11 +221,6 @@
             }
           }         
          }
-        }
-     } 
-     .XButton span{
-        vertical-align: top;               
-     }
     
   /******* notifications **********/
   .LeftBar
@@ -275,7 +286,7 @@
      
      &:not(.firstsection){
        top: -10px;
-       margin-bottom: -12px;
+       margin-bottom: -10px;
      }     
   }
   
@@ -360,19 +371,34 @@
     .ListLineContent.Header{
         .ListLineContentCell{
             &:first-child{
-                 width: 32px;
+                 width: 28px;
             } 
-            &.Name{width: 102px !important;}   
-            &.Phone{width: 70px !important;}
-            &.Duration{width: 54px  !important;}  
-            &.StartedAt{width: 105px !important;}  
+            &.Name{width: 92px !important; max-width: 92px;}   
+            &.Phone{width: 66px !important;max-width: 66px;}
+            &.Duration{width: 56px  !important;max-width: 56px;}  
+            &.StartedAt{width: 126px !important; max-width: 126px; margin-left: -8px;}  
             &.CallType{width: 10%  !important;}  
         }
     } 
 
-    .ListRow {       
-         &.Phone {        
-            flex: 2.2 1 0;
+    .ListRow { 
+         & > div{
+             &:first-child{
+                max-width: 42px;
+             } 
+             &.Name{
+                max-width: 100px;
+             }      
+             &.Phone {        
+                flex: 2.2 1 0;
+                max-width: 76px;
+             }
+             &.Duration{
+                max-width: 48px;
+             } 
+             &.Date{
+                max-width: 140px;
+             }
         }
     }
           

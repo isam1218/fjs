@@ -91,6 +91,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     };
 	
 	$scope.showOverlay = function(show, url, data) {
+
 		$scope.overlay.show = show;
 		$scope.overlay.url = url ? 'views/popups/' + url + '.html' : '';
 		$scope.overlay.data = data ? data : null;
@@ -115,6 +116,23 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		myHttpService.logout();
 	}
 
+	$scope.reload = function(){
+		window.onbeforeunload = function(){};
+		location.reload();
+	}
+
+	$scope.closeError = function(){
+		if(!$scope.isFirstSync){
+			$scope.showOverlay(false);
+		}
+	}
+
+	$scope.$on('network_issue', function(event,data){
+		$scope.showOverlay(true,'NetworkErrorsOverlay',data);
+		$scope.$safeApply();
+	
+	});
+
 	$scope.$on('no_license',function(event,data){
 		var data = {}
 		setTimeout(function(){
@@ -123,5 +141,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		},10000);
 
 		$scope.showOverlay(true,'NoPermission',data);
+		$scope.$safeApply();
+
 	});
 }]);

@@ -1,9 +1,9 @@
-<div class="fj-widget-area Widget Conversation" droppable="Contact,Call">
+<div class="fj-widget-area Widget Conversation conference" droppable="Contact,Call">
     <div class="WidgetHeader">
         <avatar profile="conference"></avatar>
 		
         <div class="WidgetHeaderTitle Single">{{ ::conference.name}}</div>
-        <div>{{ conference.members.length > 0 ? conference.members.length + ' ' + verbage.members_on_call : verbage.free_room }}</div>
+        <div class="WidgetHeaderSubTitle">{{ conference.members.length > 0 ? conference.members.length + ' ' + verbage.members_on_call : verbage.free_room }}</div>
 		
         <div class="WidgetStat" ng-if="conference.members.length > 0">
 			<div class="Left">
@@ -34,7 +34,7 @@
         flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
         ng-controller="ChatController"
         ></div>
-        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent" include-once="views/conference/CurrentCall.html"
+        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent currentCall" include-once="views/conference/CurrentCall.html"
         ></div>
         <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
         
