@@ -27,11 +27,11 @@
   
 
   <div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.type != 5 ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" >                            
-     <a href="#/showCallControlls?{{currentCall}}" class="CallStatusIconContainer">
+     <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer">
          <div class="CallStatusIcon"> </div>
      </a>
    
-     <a href="#/showCallControlls?{{currentCall}}" class="CallStatusText"> 
+     <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusText"> 
          <div class="memberName">{{currentCall.displayName}}<div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
          <div class="callStatus">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} <span>&nbsp;</span> <span class="MyCallBlock_Duration" data-duration="{{callObj[currentCall.xpid].nativeTime}}"></span></div>
      </a>                 
