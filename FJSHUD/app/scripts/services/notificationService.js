@@ -107,7 +107,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var nt = notification;
 			};
 			return notification;
-		}
+		};
 
 		this.sendData = sendData;
 		
