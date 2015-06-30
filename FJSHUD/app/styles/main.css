@@ -885,7 +885,6 @@ p {
   display: -webkit-flex;
   width: 100%;
   padding: 5px 10px 5px 5px;
-  /* z-index: 99; */
   background-color: #fff;
   border: solid 1px #eee;
   min-height: 2.5em;
@@ -3349,6 +3348,10 @@ div.NewCall .XButton.XButtonNormal {
   background-position: 1%;
   max-width: 100%;
 }
+.SearchBox.Add {
+  background: url("../img/add.png") no-repeat;
+  background-position: 2%;
+}
 .SearchInputBox {
   position: relative;
   margin: 0;
@@ -3589,6 +3592,102 @@ div.NewCall .XButton.XButtonNormal {
 .WidgetZoomBody {
   top: 35px;
   background-image: url(../img/XTile-Widget.png);
+}
+.Widget.Intellinote {
+  font-size: 12px;
+  padding: 20px;
+}
+.Widget.Intellinote .Intro {
+  margin: 20px 0 10px 0;
+}
+.Widget.Intellinote .Logo {
+  margin-left: 20px;
+}
+.Widget.Intellinote .Section {
+  min-height: 110px;
+}
+.Widget.Intellinote .Left {
+  float: left;
+  width: 48%;
+  background-color: #f9f9f9;
+}
+.Widget.Intellinote .Left h4 {
+  font-size: 14px;
+  color: #779c00;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.Widget.Intellinote .Right {
+  float: right;
+  width: 48%;
+  clear: right;
+}
+.Widget.Intellinote .Right .SearchHolder {
+  position: relative;
+}
+.Widget.Intellinote .Right .Contacts {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.Widget.Intellinote .Right .Workspaces {
+  position: relative;
+}
+.Widget.Intellinote .Right .Workspaces .List {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ccc;
+}
+.Widget.Intellinote .Right .Workspaces .List .Header {
+  position: relative;
+  font-weight: bold;
+  padding: 7px 0 7px 30px;
+}
+.Widget.Intellinote .Right .Workspaces .List .Header .Down {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  width: 15%;
+  padding-top: 4px;
+  text-align: center;
+}
+.Widget.Intellinote .Right .Workspaces .List .Items {
+  font-size: 13px;
+  border-top: 1px solid #333;
+  margin: 0 10px 10px 10px;
+}
+.Widget.Intellinote .Right .Workspaces .List .Items div {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 5px;
+}
+.Widget.Intellinote .Right .Workspaces .List .Items div:hover {
+  background-color: #eee;
+}
+.Widget.Intellinote .Right .WorkspaceButton {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #779c00;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButton div {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
 }
 .Widget.Conversation {
   min-height: 300px;
@@ -5247,7 +5346,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   left: 0;
   width: 100%;
   height: 100%;
-  /* z-index: 100; */
 }
 .Overlay .Foreground {
   background-color: #fafafa;
@@ -5480,7 +5578,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   border-radius: 5px;
   z-index: 99;
   padding: .5em;
-  font-size: .8em;
+  font-size: 12px;
 }
 .SearchContactOverlay .Header {
   text-align: center;
