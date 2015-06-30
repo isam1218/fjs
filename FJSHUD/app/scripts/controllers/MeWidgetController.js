@@ -180,7 +180,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     myHttpService.getFeed('weblaunchervariables');
     myHttpService.getFeed('i18n_langs');
 
-    var phonePromise = phoneService.getDevices();
     
     if(!phoneService.isPhoneActive()){
             for(var i = 0; i < $scope.tabs.length; i++){
@@ -191,7 +190,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         }
 
-    phonePromise.then(function(data){
+    phoneService.getDevicesPromise().then(function(data){
         
         if(!phoneService.isPhoneActive()){
             for (var i = 0; i < $scope.tabs.length; i++) {
@@ -200,6 +199,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     break;
                 }
             }
+        }
+
+        if(phoneService.isPhoneActive() == "new_webphone"){
+            return;
         }
         
             $scope.inputDevices = data.devices.filter(function(item){

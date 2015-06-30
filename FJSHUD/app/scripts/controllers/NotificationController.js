@@ -136,7 +136,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 	  	$scope.callObj[id].daysText = daysText;
     };       
 
-	phoneService.getDevices().then(function(data){
+	phoneService.getDevicesPromise().then(function(data){
 		$scope.phoneSessionEnabled = true;
 	});
 	
@@ -748,12 +748,18 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 				for(var j = 0; j < $scope.todaysNotifications.length; j++){
 						if($scope.todaysNotifications[j].xpid == item.xpid){
-						$scope.todaysNotifications.splice(j,1,item);
-						if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
-							if(!$scope.isFirstSync){
-								phoneService.playSound("received");
+							if(item.xef001iver != $scope.todaysNotifications[j].xef001iver)
+								nservice.displayWebNotification(item);
+
+
+							$scope.todaysNotifications.splice(j,1,item);
+						//nservice.displayWebNotification(item);
+							if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
+
+								if(!$scope.isFirstSync){
+									phoneService.playSound("received");
+								}
 							}
-						}
 						isAdded = true;
 						break;	
 					}
@@ -765,6 +771,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 						}
 					}
 					$scope.todaysNotifications.push(item);
+					nservice.displayWebNotification(item);
+
 					
 				}
 				
@@ -968,31 +976,10 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 		
 			
 		if(displayDesktopAlert){
-			//nservice.isEnabled(
-			if(true){
-		
-			 for (var i = 0; i < missedCalls.length;i++){
-			 	 var missedCall = missedCalls[i];
-			 	 var data = {
-			 	 	"notificationId": missedCall.senderId ? missedCall.senderId  : missedCall.phone, 
-  					"leftButtonText" : "Chat",
-  					"rightButtonText" : "Call",
-  					"leftButtonId" : "CHAT_REQUEST",
-  					"rightButtonId" : "CALL_REQUEST",
-  					"leftButtonEnabled" : "true",
-  					"rightButtonEnabled" : "true",
-  					"callerName" : missedCall.displayName, 
-  					"callMessage" :"...you have a missed call",
-  					"callLocation" : "External",
-  					"callDate" : "Today, 1:03pm",
-   					//"phoneStatus" : "mute"
-			 	 };
-
-			 	 phoneService.displayWebphoneNotification(data,"MISSED_CALL");
-
-
-			 }
-			}else{
+			if(nservice.isEnabled()){
+				return;
+			}
+			else{
 				$timeout(displayNotification, 1000);
 			}
 
