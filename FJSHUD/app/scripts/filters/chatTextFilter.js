@@ -31,6 +31,9 @@ hudweb.filter('chatify', ['$sce', 'HttpService', function($sce, httpService) {
 			.replace(/:'\(/g, '<img src="' + httpService.get_smiley(3) + '" />')
 			.replace(/:-\)/g, '<img src="' + httpService.get_smiley(2) + '" />')
 			.replace(/:-D/g, '<img src="' + httpService.get_smiley(1) + '" />');
+			
+		// 3: line breaks
+		text = text.replace(/\n/g, '<br/>');
 		
 		// return html
 		return $sce.trustAsHtml(text);
