@@ -695,8 +695,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};*/
 	
 	var showCurrentCallControls = function(currentCall){
-		$location.path("settings/callid/"+currentCall.xpid);
-		phoneService.showCallControls(currentCall);
+		$location.path("settings/callid/"+currentCall);
 	};
 	
 	var showQueue = function(qid, audience, type,messagexpid)

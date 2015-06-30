@@ -19,7 +19,7 @@
                 <div class="MeInfoBlock-column">
                     <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
                     <div class="LeftBarMeCustomStatusSection">
-                        <textarea ng-mouseleave="setCustomStatus()" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" ng-attr-placeholder="{{::verbage.custom_message}}"></textarea>
+                      <textarea ng-keyup="setCustomStatus()" class="LeftBarMeCustomStatus" data-ng-model="meModel.chat_custom_status" ng-attr-placeholder="{{::verbage.custom_message}}" ></textarea>
                     </div>
                     <div class="MeInfoTitle">{{::verbage.location}}</div>
                     <div class="LocationSelector ">

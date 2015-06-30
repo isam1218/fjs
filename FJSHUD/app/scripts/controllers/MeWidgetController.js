@@ -11,6 +11,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.phoneType = false;
     var queueThresholdUpdateTimeout;
     var weblauncherTimeout;
+    var timer;
+    var text;
+
     $scope.avatar ={};
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
@@ -268,14 +271,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     May need to move the settings into its own seperate controller
      */
     $scope.chatStatuses = [{"title":$scope.verbage.available, "key":"available"}, {"title":$scope.verbage.away, "key":"away"}, {"title":$scope.verbage.busy, "key":"dnd"}];
+
     $scope.setChatStatus = function(chatStatus){
         myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status = chatStatus,"customMessage":$scope.meModel.chat_custom_status});
     };
+    
     $scope.setCustomStatus = function() {
-        var text;
-        if ($scope.meModel.chat_custom_status.length >= 25)
-            text = $scope.meModel.chat_custom_status.substr(0, 22) + '...';
-        myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":text});
+        $timeout.cancel(timer);
+        timer = $timeout(function(){
+            if ($scope.meModel.chat_custom_status.length >= 25)
+                text = $scope.meModel.chat_custom_status.substr(0, 22) + '...';
+            else
+                text = $scope.meModel.chat_custom_status;
+            myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":text});
+        }, 3000);
     };
 
     this.getElementOffset = function(element) {

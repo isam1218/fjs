@@ -301,7 +301,7 @@
   .ListViewContent {
     flex: 1 1 0;
 	-webkit-flex: 1 1 0;
-    -ms-flex: 1 1 auto;
+    -ms-flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
 	margin-top: 5px;
@@ -359,15 +359,14 @@
 	  -webkit-flex: 1;
 	  max-width: 80%;
 	  height: 28px;
+	  min-height: 28px;
+	  max-height: 200px;
 	}
 	
 	.XButton.ChatInputBoxSend {
 	  height: 28px !important;
       padding-top: 6px;
-      vertical-align: bottom;
       float: right;
-      bottom: 2px;
-      position: absolute;
       right: 0px;
       width: 80px;
 	}

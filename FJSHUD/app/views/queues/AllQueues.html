@@ -30,9 +30,10 @@
 				<strong>{{ queue.info.waiting }}</strong>
 				{{::verbage.waiting}}
 			</div>
-			<div ng-class="(queue.info.esa > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
-				<strong>{{ queue.info.esa*1000 | duration }}</strong>
-				{{::verbage.avg_wait}}
+			<div ng-class="(queue.longestWait > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
+				<strong ng-if="queue.longestWait > 0" timer="queue.longestWait"></strong>
+				<strong ng-if="queue.longestWait == 0">00:00</strong>
+				{{::verbage.longest_hold}}
 			</div>
 			<div ng-class="(queue.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>

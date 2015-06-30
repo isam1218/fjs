@@ -5,7 +5,7 @@
     <div class="ListRowTitle">
 		<strong> {{ ::member.fullProfile.displayName}}</strong>
 		<br/>
-		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
+		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}"></div>
 
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
 		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
