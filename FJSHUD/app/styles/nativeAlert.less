@@ -26,14 +26,14 @@
   font-size: 1em;
   background: url() #fff;
   
-  a {
+  a:not(.XButton) {
 	text-decoration: none;
 	color: inherit;
   }
   
   div.CallStatusContainerOutbound{
       position:relative;
-      margin-bottom: 8px;
+      bottom: 0px;
       .CallStatusIconContainer{
         border: 1px solid #0093f0;
       }
@@ -118,7 +118,6 @@
         
         .scroller {
           max-height: 300px;
-		  margin-bottom: 20px;
           overflow-y: auto;
           overflow-x: hidden;
           
