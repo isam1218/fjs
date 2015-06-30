@@ -3,7 +3,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		Detect Current Browser
 	*/
 	var ua = navigator.userAgent;
-	var browser = ua.match(/(chrome|safari|firefox|msie)/i);
+	var browser = ua.match(/(edge|chrome|safari|firefox|msie)/i);
 	// if not found, default to IE mode
 	browser = browser && browser[0] ? browser[0] : "MSIE";
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";

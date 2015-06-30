@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', 
   function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
 
@@ -639,7 +639,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
 		}
 	});
-	  var addTodaysNotifications = function(item){
+	  var addTodaysNotifications = function(item)
+    {
    // console.error('item - ', item);
 
     var context, contextId, targetId, groupContextId, queueContextId;
@@ -744,13 +745,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
         }
 
         if (displayDesktopAlert){
-               if ($scope.todaysNotifications.length > 0){
+              nservice.displayWebNotification(item);
+              if ($scope.todaysNotifications.length > 0){
                        $scope.displayAlert = true;
                        $timeout(displayNotification, 1500);
              }
       }
     }
   }
+  
  };
 	var deleteNotification = function(notification){
 		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
@@ -946,6 +949,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
 			
 		if(displayDesktopAlert){
+<<<<<<< HEAD
 			//nservice.isEnabled(
 			if(true){
 		
@@ -972,5 +976,16 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			 }
 	   }
       }				
+=======
+			if(nservice.isEnabled()){
+				return;
+			}
+			else{
+				$timeout(displayNotification, 1000);
+			}
+
+		}				
+
+>>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
     });		
 }]);

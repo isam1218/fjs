@@ -55,7 +55,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
 		
 
-		sendData =  function(data,retry,type){
+		var sendData =  function(data,retry,type){
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
@@ -72,10 +72,42 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 	
 		this.dismiss = function(type,id){
-			
 			sendData({"notificationType":type, "notificationId":id },0,"DISMISS");	
 			
 		};
+
+		this.displayWebNotification = function(data){
+			if (!Notification) {
+				console.log('Desktop notifications not supported');
+				return;
+			}
+			if (Notification.permission !== "granted")
+				Notification.requestPermission();
+			var url = data.fullProfile.getAvatar(64);
+			var notification = new Notification(data.label, {
+				icon : url,
+				body :data.message,
+				tag : data.xpid,
+			});
+			var notification_data = data;
+			notification.onclick = function () {
+				var nt = notification;
+				var nd = notification_data;
+				var context_data = nd.context;
+				var context = context_data.split(':')[0];
+				var xpid = context_data.split(':')[1];
+				$location.path("/" + nd.audience + "/" + xpid + "/chat");
+
+			};
+			  
+			notification.onclose = function () {
+				var nt = notification;
+			};
+			notification.onerror = function () {
+				var nt = notification;
+			};
+			return notification;
+		}
 
 		this.sendData = sendData;
 		

@@ -100,8 +100,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	var registerPhone = function(isRegistered){
-	
-		messageSoftphone({a : 'reg', value : isRegistered});
+		if(context.webphone){
+			messageSoftphone({a : 'reg', value : isRegistered});
+		}
 		if(phone){
 			phone.register(isRegistered);
 		}
@@ -116,7 +117,27 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}; 
 	
+<<<<<<< HEAD
 	
+=======
+	settingsService.getMe().then(function(data){
+		
+		if(!$rootScope.isIE){
+			if(!context.webphone && $rootScope.meModel.my_pid){
+				getWSVersion();
+        		nservice.initNSService();
+        	}	
+		}else{
+			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
+	        	username = $rootScope.meModel.my_jid.split("@")[0];
+				if(!isRegistered && phonePlugin.getSession){
+					session = phonePlugin.getSession(username);
+					session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
+						
+					if(session.attachEvent){
+						session.attachEvent("onStatus", sessionStatus);
+		                session.attachEvent("onNetworkStatus", onNetworkStatus);
+>>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 
 	settingsService.getMe().then(function(data){
 		if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
@@ -192,6 +213,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var call = context.getCall(xpid);
 		if(call){
 			if(context.webphone){
+<<<<<<< HEAD
 				//messageSoftphone({a : 'hold', value : call.sip_id});
 				if(isHeld){
            			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
@@ -202,6 +224,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.hold = isHeld;
 			}
+=======
+				context.webphone.send(JSON.stringify({a : 'hold', value : call.sip_id}));
+			}else{
+				call.hold = isHeld;
+			}
+		}
+		if(isHeld){
+           	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+>>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 		}else{
 			if(isHeld){
         		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
@@ -216,6 +247,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
 			return;
 		}
+<<<<<<< HEAD
 
 		if($rootScope.meModel.location.locationType == 'w'){
         	if(context.webphone && number)
@@ -233,14 +265,32 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			
 		}		
     };
+=======
+		if(context.webphone){
+			context.webphone.send(JSON.stringify({a:'call', value: number}));
+		}else{
+			httpService.sendAction('me', 'callTo', {phoneNumber: number});
+		}
+
+				
+	};
+>>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 
 	var acceptCall = function(xpid){
 		var call = context.getCall(xpid);
 		if(context.webphone)context.webphone.send(JSON.stringify({a : 'accept', value : xpid}));
 		if(call){
+<<<<<<< HEAD
 			call.accept();
 		}else{
 			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+=======
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'accept', value : call.sip_id}));
+			}else{
+				call.accept();
+			}
+>>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 		}
 	
 		for(var i in callsDetails){
@@ -311,6 +361,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		
 			
 		if(alertPlugin && displayNotification){
+<<<<<<< HEAD
 			alertPlugin.setAlertSize(width,height);
 			alertPlugin.addAlertEx(content);
 			alertPlugin.setShadow(true);
@@ -318,29 +369,47 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			alertPlugin.setTransparency(255);
 			isAlertShown = true;
 		}		
+=======
+
+				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
+				alertPlugin.addAlertEx(content);
+				alertPlugin.setShadow(true);
+				alertPlugin.setBorderRadius(5);
+				alertPlugin.setTransparency(255);
+				isAlertShown = true;
+		}
+>>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 	};
 
 	displayWebphoneNotification = function(data,type){
 		var displayNotification = false;
+		
 		if(settingsService.getSetting('alert_show') == 'true'){
 			
 			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
 					displayNotification = true;	
 				
 			}else{
+				if(!tabInFocus){
+						displayNotification = true;	
+				
+				}
 				if(document.visibilityState == "hidden"){
-					displayNotification = true;	
+						displayNotification = true;	
+
 				}		
 			}
-			if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-				if($rootScope.meModel.chat_status == 'busy'){
+
+			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
+				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
 					displayNotification = true;
 				}else{
 					displayNotification = false;
 				}
 			}
-		}
-		
+		};
+
+
 		if(displayNotification){
 			nservice.sendData(data,0,type);
 		}
@@ -1011,7 +1080,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	};
 
-	this.getDevices = function(){
+	this.getDevicesPromise = function(){
 		return deferred.promise;	
 	};
 
