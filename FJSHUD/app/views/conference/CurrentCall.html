@@ -11,7 +11,8 @@
         <div class="Conference-HeaderTitle">{{::verbage.conference_member}}</div>
 
 		<div style="position:relative; top:20px">
-			<input class="SearchBox Add" type="search" ng-model-options="{debounce: 200}" contact-search conference="true" ng-attr-placeholder="{{::verbage.add_someone}}" />
+
+			<input class="SearchBox Add" type="search" ng-model-options="{debounce: 200}" contact-search conference="true" ng-attr-placeholder="{{::verbage.add_someone}}" data-ng-model="query" />
 		</div>
     </div>
 

@@ -8,12 +8,15 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
-			var overlay, inset, headerTitle;
-			var added = false;
-			var rect = element[0].getBoundingClientRect();
-			
+
+	
+			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
+			element.css('width', '100%');
 			element.css('z-index', 100);
+
+			if ($(element).closest('.LeftBar').length > 0)
+				element.css('width', '95%');
 				
 			// create overlay elements
 			overlay = angular.element('<div class="SearchContactOverlay"></div>');
@@ -21,10 +24,10 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
 
-			if (attrs.conference == "true")
-				headerTitle = angular.element('<div class="Header">Join to Conference</div>');
-			else
-				headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
+
+			if (attrs.conference == "true"){
+				headerTitle = angular.element('<div class="Header">Join to conference</div>')
+			}
 
 			// search input
 			element.bind('keyup', function() {
@@ -48,8 +51,26 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					overlay.append(inset);
 					element.after(overlay);
 					
-					if (!added)
-						overlayProperties();
+
+					// add some paddin'
+					if (element.prop('offsetWidth') == overlay.prop('offsetWidth')) {
+						overlay.css('left', '-10px');
+						overlay.css('width', overlay.prop('offsetWidth') + 20 + 'px');
+					}
+					
+					if (element.prop('offsetTop') == overlay.prop('offsetTop'))
+						overlay.css('top', '-10px');
+			
+					// prevent accidental closing
+					overlay.bind('click', function(e) {
+						e.stopPropagation();
+					});
+			
+					// close overlay for reals
+					$document.bind('click', function(e) {
+						element.val('');
+						overlay.remove();
+					});
 				}
 			});
 			
@@ -115,7 +136,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			
 			scope.$on('$destroy', function() {
 				$document.unbind('click');
-				inset.empty();
+
+				inset.remove();
 				overlay.unbind().remove();
 			});
 		}

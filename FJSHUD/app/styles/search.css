@@ -3,7 +3,7 @@
   border: 1px solid #729c00;
   border-radius: 2px;
   padding: .5em .5em .5em 2em;
-  background: url("../img/search.png") no-repeat;
+  background: url("../img/search.png") no-repeat white;
   background-position: 1%;
   max-width: 100%;
 }
@@ -111,7 +111,7 @@
   flex-direction: row;
   -webkit-flex-direction: row;
 }
-#WidgetSearch .SearchInputBox {
+#WidgetSearch .SearchBox {
   position: relative;
   flex: 1;
   -webkit-flex: 1;
