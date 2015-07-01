@@ -43,6 +43,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 				stop: function(event, ui) {
 					// destroy scope
 					scope.obj = null;
+					ui.helper.empty();
 				}
 			});
 		}
