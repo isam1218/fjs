@@ -6,7 +6,7 @@ fjs.CONFIG = {
 //		, loginURL: "https://dev4.fon9.com:5501"
       serverURL: "https://lb-stage3.fonality.com:446"
       , loginURL: "https://lb-stage3.fonality.com:444"
-      ,ppsServer: ' https://pps-dev.fonality.com:8443/pps/'
+      ,ppsServer: 'https://lb-stage3.fonality.com:8443/pps/'
 //      serverURL: "https://huc-dev.fonality.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501"
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"

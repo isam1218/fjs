@@ -42,10 +42,11 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 			   if (data && data.workspace_list) {
 								$scope.workspaces = data.workspace_list;
 							}
-				console.log('Successful call' + fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1')
+							console.log("SUCCESS "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
 			  }).
 			  error(function(data, status, headers, config) {
-				console.log('Not Success' + fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1')
+
+							console.log("FAIL "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
 
 			  });
 
@@ -73,13 +74,11 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 						  if (data && data.url) {
 							window.open(data.url);
 						}
-				console.log('Successful call' + fjs.CONFIG.SERVER.ppsServer + getURL('workspaceListString') + '&admin=1')
+						console.log("SUCCESS " + fjs.CONFIG.SERVER.ppsServer + getURL('loginURL') + '&workspaceId=');
 
 				  }).
 				  error(function(data, status, headers, config) {
-				    // called asynchronously if an error occurs
-				    // or server returns response with an error status.
-				console.log('Unsuccessful call' + fjs.CONFIG.SERVER.ppsServer + getURL('workspaceListString') + '&admin=1')
+   						console.log("FAIL " + fjs.CONFIG.SERVER.ppsServer + getURL('loginURL') + '&workspaceId=');
 
 				  });
 	};
