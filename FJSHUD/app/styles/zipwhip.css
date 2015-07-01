@@ -1,0 +1,96 @@
+.Widget.Zipwhip {
+  font-size: 12px;
+  padding: 20px;
+}
+.Widget.Zipwhip .Intro {
+  margin: 20px 0 10px 0;
+}
+.Widget.Zipwhip .Logo {
+  margin-left: 20px;
+}
+.Widget.Zipwhip .Section {
+  min-height: 110px;
+}
+.Widget.Zipwhip .Left {
+  float: left;
+  width: 48%;
+  background-color: #f9f9f9;
+}
+.Widget.Zipwhip .Left h4 {
+  font-size: 14px;
+  color: #779c00;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.Widget.Zipwhip .Right {
+  float: right;
+  width: 48%;
+  clear: right;
+}
+.Widget.Zipwhip .Right .SearchHolder {
+  position: relative;
+}
+.Widget.Zipwhip .Right .Contacts {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.Widget.Zipwhip .Right .Workspaces {
+  position: relative;
+}
+.Widget.Zipwhip .Right .Workspaces .List {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ccc;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Header {
+  position: relative;
+  font-weight: bold;
+  padding: 7px 0 7px 30px;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Header .Down {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  width: 15%;
+  padding-top: 4px;
+  text-align: center;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Items {
+  font-size: 13px;
+  border-top: 1px solid #333;
+  margin: 0 10px 10px 10px;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Items div {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 5px;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Items div:hover {
+  background-color: #eee;
+}
+.Widget.Zipwhip .Right .WorkspaceButton {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #779c00;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
+}
