@@ -6,7 +6,7 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 	
 	// pps url
 	var getURL = function(action) {
-		var url = 'https://pps1.stage3.arch.fonality.com:8443/pps/'
+		var url = 'https://pps-dev.fonality.com:8443/pps/'
 			+ action
 			+ '?callback=JSON_CALLBACK'
 			+ '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
@@ -21,7 +21,7 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 	settingsService.getSettings().then(function() {
 		// get workspaces
 		$.ajax({
-			url: getURL('workspaceListString') + '&admin=1',
+			url: getURL('workspaceList') + '&admin=1',
 			dataType: "jsonp",
 			jsonpCallback: 'JSON_CALLBACK',
 			success: function(data) {
@@ -36,7 +36,7 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 		//window.open(getURL('loadApp'));
 		
 		$.ajax({
-			url: getURL('loginString') + '&workspaceId=',
+			url: getURL('loginZipwhipURL') ,
 			dataType: "jsonp",
 			jsonpCallback: 'JSON_CALLBACK',
 			success: function(data) {
