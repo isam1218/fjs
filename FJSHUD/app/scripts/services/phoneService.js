@@ -574,9 +574,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$location.path("/" + audience + "/" + xpid + "/chat");
 		
 		remove_notification(mxpid);
-		//showOverlay(false);
 		
-		//storeRecent(xpid);
 	};
 	
 	var storeRecent = function(xpid){
@@ -595,9 +593,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return HttpService.get_avatar(pid,40,40);
 	};
 	
-	/*var activatePhone = function(){
-		   httpService.updateSettings('instanceId','update',localStorage.instance_id); 
-	};*/
+	
 	
 	var showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall);
@@ -699,10 +695,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.getDtmfToneGenerator = function(){
 		return session.getDTMFToneGenerator();
 	};
-	/*this.playDtmfSound=function(entry){
-			//session.getDTMFToneGenerator().setToneEnabled(true);
-			session.getDTMFToneGenerator().play(entry);
-	}*/
+
 	this.setVolume = setVolume;
 	this.setMicSensitivity = setMicSensitivity;
 
@@ -894,9 +887,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if (data[0].incoming){
 			storageService.saveRecent('contact', data[0].contactId);
 		}
-		console.log(sipCalls);
 		
-		console.log(callsDetails);
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
 	this.registerPhone = registerPhone;	

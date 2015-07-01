@@ -202,7 +202,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       if ($scope.recent[singleContactXpid] !== undefined)
         contactCounter++;
     }
-    // console.log(contactPagesShown, ' <  (', contactCounter, ' / ', contactPageSize, ')');
     return contactPagesShown < (contactCounter / contactPageSize);
   };
 
@@ -278,7 +277,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.nonVisibleTeamHeaderDisplay = function(groupType){
 		if (groupType !== 0 && groupType === 2)
 			return true;
-  }
+  };
 
   $scope.publicTeamHeaderDisplay = function(groupType){
 		if (groupType !== 0 && groupType === 4)

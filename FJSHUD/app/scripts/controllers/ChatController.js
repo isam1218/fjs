@@ -19,14 +19,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.audience = 'contact';
 		chat.targetId = $routeParams.contactId;
 		chat.type = 'f.conversation.chat';
-		chat.attachmentType = 'f.conversation.wall'
+		chat.attachmentType = 'f.conversation.wall';
 	}
 	else if ($routeParams.conferenceId) {
 		chat.name = $scope.conference.name;
 		chat.audience = 'conference';
 		chat.targetId = $routeParams.conferenceId;
 		chat.type = 'f.conversation.chat';
-		chat.attachmentType = 'f.conversation.wall'
+		chat.attachmentType = 'f.conversation.wall';
 
 	}
 	else if ($routeParams.groupId) {
@@ -34,7 +34,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.audience = 'group';
 		chat.targetId = $routeParams.groupId;
 		chat.type = 'f.conversation.chat';
-		chat.attachmentType = 'f.conversation.wall'
+		chat.attachmentType = 'f.conversation.wall';
 
 	}
 	else if ($routeParams.queueId) {
@@ -108,7 +108,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.flow_cleanup = function($files){
 		$scope.upload.flow.cancel();
 		$scope.$safeApply();
-	}
+	};
 
 	$scope.uploadAttachments = function($files){
       	

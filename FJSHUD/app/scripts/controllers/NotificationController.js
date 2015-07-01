@@ -131,7 +131,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	  	$scope.callObj[id].minutesText = minutesText;  
 	  	$scope.callObj[id].hoursText = hoursText;	  
 	  	$scope.callObj[id].daysText = daysText;
-    }     	    
+    };     	    
     
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
@@ -431,7 +431,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 	$scope.activatePhone = function(){
 		   myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
-	}
+	};
 
 	$scope.$on('calls_updated',function(event,data){
 		$scope.calls = {};
@@ -750,7 +750,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	$scope.$on('quickinbox_synced', function(event,data){
-		//var playChatNotification = false;
 		displayDesktopAlert = true;
 
   		if(data){

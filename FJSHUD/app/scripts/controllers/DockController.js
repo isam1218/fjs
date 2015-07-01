@@ -138,7 +138,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	$scope.isObjectEmpty = function(object){
 		return !$.isEmptyObject(object);
-	}
+	};
 	
 	$scope.parkedCalls = [];
 	

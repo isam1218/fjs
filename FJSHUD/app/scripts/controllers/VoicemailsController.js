@@ -33,7 +33,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.actionObj = {};
     $scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[0];
 
-	httpService.getFeed('me');
 	httpService.getFeed('voicemailbox');
 	
 	$scope.$on('voicemailbox_synced', function(event, data) {		
