@@ -311,35 +311,47 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	};
 
 	$scope.go_to_notification_chat = function(message){
-		if (message.context === undefined){
-			var xpid = message.xpid;
-		} else {
+		var endPath;
+		var calllogPath = '/calllog/calllog';
+
+		if (message.context){
 			var context = message.context;
 			var xpid = context.split(':')[1];
 		}
-		
-		var tab = message.type == 'q-broadcast' ? '/alerts' : '/chat';
-		
-		if(message.type == "error"){
-			
-			$rootScope.pbxError = message.receivedStatus == "offline";
-			$rootScope.$evalAsync($rootScope.$broadcast('network_issue',{}));
-			return;
-		}
 
-		switch(message.audience){
-			case 'contacts':
-				var contact = contactService.getContact(xpid);
-				if(contact.primaryExtension == ''){
-					tab = '/';
-				}
+		switch(message.type){
+			case 'error':
+				$rootScope.pbxError = message.receivedStatus == "offline";
+				$rootScope.$evalAsync($rootScope.$broadcast('network_issue',{}));
+				return;
+			case 'chat':
+			case 'wall':
+			case 'gchat':
+				endPath = "/" + message.audience + "/" + xpid + '/chat';
+				break;
+			case 'missed-call':
+				if (message.senderId || message.fullProfile)
+					endPath = "/" + message.audience + "/" + xpid + '/chat';
+				else
+					endPath = calllogPath;
+				break;
+			case 'vm':
+				if (message.senderId || message.fullProfile)
+					endPath = "/" + message.audience + "/" + xpid + '/voicemails';
+				else
+					endPath = "/calllog/voicemails";
+				break;
+			case 'q-broadcast':
+				endPath = "/" + message.audience + "/" + message.queueId + '/alerts';
+				break;
+			case 'q-alert-abandoned':
+				endPath = "/" + message.audience + "/" + message.queueId + '/stats';
 				break;
 		}
 
-
-		$location.path("/" + message.audience + "/" + xpid + tab);
+		$location.path(endPath);
 		$scope.remove_notification(message.xpid);
-		$scope.showOverlay(false);
+		$scope.showNotificationOverlay(false);
 	};
 	
 	$scope.showQueue = function(message)
