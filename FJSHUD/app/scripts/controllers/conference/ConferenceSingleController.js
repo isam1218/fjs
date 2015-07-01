@@ -69,7 +69,10 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 	
 	// update permission to view chat
 	$scope.$on('conferencestatus_synced', function(event, data) {
-		$scope.joined = $scope.conference.status.isMeJoined;
+		if($scope.conference.status){
+			var isJoined = $scope.conference.status.isMeJoined;
+		}
+		$scope.joined = isJoined || false;
 		$scope.enableChat = $scope.joined;
 		$scope.enableTextInput = $scope.joined;
 		$scope.enableFileShare = $scope.joined;
