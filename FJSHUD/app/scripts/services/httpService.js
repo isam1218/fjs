@@ -124,8 +124,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		    }, false);
 
 		    worker.port.start();
-		}else{
-			
 		}
 	}else{
 		
@@ -504,7 +502,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
     //this will return a promise to for file uploads
     this.get_upload_progress = function(){
     	return deferred_progress.promise;
-    }
+    };
 
     this.upload_attachment = function(data,attachments) {
         var params = {

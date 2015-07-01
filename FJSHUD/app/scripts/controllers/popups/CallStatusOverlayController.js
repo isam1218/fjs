@@ -184,7 +184,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			else
 				return false;
 		};
-	}
+	};
 
 	$scope.isStatusUndefined = function(conference){
 		// conferences w/o the status property can't be joined and will break the overlay...

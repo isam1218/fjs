@@ -4,7 +4,6 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     /*
     when loading controller get the necessary feeds 
     */
-    //httpService.getFeed("me");
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
     $scope.locations = {};
@@ -41,7 +40,7 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
 
     $scope.getCurrentLocationId = function() {
         return $scope.meModel["current_location"] && $scope.meModel["current_location"];
-    }
+    };
 
    
     $scope.$on('locations_synced', function(event,data){

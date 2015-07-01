@@ -84,7 +84,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 	$scope.nonVisibleTeamHeaderDisplay = function(groupType){
 		if (groupType !== 0 && groupType === 2)
 			return true;
-	}
+	};
 
 	$scope.publicTeamHeaderDisplay = function(groupType){
 		if (groupType !== 0 && groupType === 4)

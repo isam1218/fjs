@@ -1,7 +1,4 @@
 hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', function($scope, $http,httpService) {
-
-    //fjs.ui.AddContactMenuController.call(this, $scope, dataManager, "views/AddContactPopupMenu.html");
-
     $scope.joinMeeting = function(meetingId){
         window.open("https://api.zoom.us/j/" + meetingId,'_blank');
     };
@@ -58,7 +55,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
     $scope.addedContacts = [];
     $scope.searchContact = function(contact){
         $scope.addedContacts.push(contact);
-    }
+    };
 
      $scope.getAvatarUrl = function(xpid,width, height) {
         if(xpid){
@@ -74,7 +71,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
             }
         }
         $scope.$safeApply();
-    }
+    };
 
     this.onAjaxResult = function(isOk, _data){
         $scope.hasResult = true;

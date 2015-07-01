@@ -63,7 +63,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	// filter list down
 	$scope.customFilter = function() {
 		return function(conference) {
-			if ($scope.tab == 'all' || ($scope.tab == 'my' && conference.permissions == 0)){
+      if (($scope.tab == 'all'  && conference.permissions == 0)|| ($scope.tab == 'my' && conference.permissions == 0)){
 				if (conference.members.length == 0){
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
 						return true;

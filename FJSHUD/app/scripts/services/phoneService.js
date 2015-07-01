@@ -668,9 +668,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$location.path("/" + audience + "/" + xpid + "/chat");
 		
 		remove_notification(mxpid);
-		//showOverlay(false);
 		
-		//storeRecent(xpid);
 	};
 	
 	var storeRecent = function(xpid){
@@ -690,9 +688,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return HttpService.get_avatar(pid,40,40);
 	};
 	
-	/*var activatePhone = function(){
-		   httpService.updateSettings('instanceId','update',localStorage.instance_id); 
-	};*/
+	
 	
 	var showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall);

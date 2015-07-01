@@ -475,15 +475,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
         if(settings){
         	
-            if(settings.hudw_lang){
-                /*language = $scope.languages.filter(function(item){
-                return (item.value== settings['hudw_lang']);
-                })    
-                
-                $scope.languageSelect = language[0];*/
-            }
-            
-            if(settings.hudmw_auto_away_timeout){
+           if(settings.hudmw_auto_away_timeout){
                 autoAwayOption = $scope.autoAwayOptions.filter(function(item){
                     return (item.value == settings['hudmw_auto_away_timeout']);
                 });   
@@ -645,7 +637,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
             "a.taskId": "1_0"
-        }
+        };
         myHttpService.update_avatar(data);
     };
      $scope.$on('contacts_synced', function(event, data) {
@@ -783,7 +775,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         
         $scope.showOverlay(true, 'CallStatusOverlay', data);
     };
-
     $scope.formatIncoming = function(calllog,type){
         switch(type){
             case "From":
@@ -810,7 +801,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.holdCall = function(call,isHeld){
         phoneService.holdCall(call.xpid,isHeld == 'True');
-        $scope.currentCall.isHeld =isHeld == 'True';
     };
 
 
@@ -820,7 +810,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     };
 		
-    //}
 
     $scope.endCall = function(call){
         phoneService.hangUp(call.xpid);

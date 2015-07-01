@@ -28,7 +28,7 @@ httpRequest = function(){
     this.SF_LOGIN_PATH = "/accounts/salesforce";
 
 
-}
+};
 httpRequest.prototype.getXmlHttp = function() {
         /**
          * @type {XMLHttpRequest}
@@ -100,4 +100,4 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
         xmlhttp.send(this.getParamData(data));
 
         return xmlhttp;
-}
+};

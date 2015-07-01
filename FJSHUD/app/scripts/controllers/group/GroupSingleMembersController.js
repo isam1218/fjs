@@ -20,9 +20,9 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
     $event.stopPropagation();
     $event.preventDefault();
 	
-	httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+	   httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
 	
-	storageService.saveRecent('contact', contact.xpid);
+	   storageService.saveRecent('contact', contact.xpid);
   };
   
   $scope.showCallStatus = function($event, contact) {
