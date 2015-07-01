@@ -104,7 +104,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.saveMeTab = function(tab, index){
         switch(tab){
             case "General":
-                console.log('general');
                 $scope.selected = $scope.tabs[0];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
@@ -154,7 +153,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.$parent.selected = $scope.selected;
                 break;
             case "About":
-                console.log('');
                 $scope.selected = $scope.tabs[7];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
