@@ -26,7 +26,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				overlay.append('<div class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton"><span>Join by phone</span></div>');
 				overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
 			} else {
-				overlay = angular.element('<div class="SearchContactOverlay"></div>');
+				overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
 				headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
 				inset.append(headerTitle);
 			}
