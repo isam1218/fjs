@@ -24,70 +24,15 @@
       -webkit-border-radius: 4px;
       
       img{
-        width: 90px !important;
-        height: 90px !important;
+        width: 86px !important;
+        height: 86px !important;
+        margin: 1px;
       }
-    } 
-    .WidgetBody{                     
-       height: 78%;
-       max-height: 100%;      
-       
-       .call-block{
-        height: 50%; 
-        overflow-y: hidden;
-        .CurrentCall{
-            .LeftSide{
-                width: 50%;
-                .Dialog-settings-row{
-                    margin:10px 5px;
-                    
-                    input[type=range]{
-                        width: 70%;
-                        margin-bottom: -8px;
-                    }
-                }
-                .ListRowTitle > div{
-                    float: left;
-                    margin-left: -5px;
-                    clear: both;
-                }
-                .Avatar{
-                  margin-top: 8px;
-                }
-            }
-            .RightSide{
-                width: 50%;
-                .row_buttons{
-                    clear: both;
-                    
-                    .XButton{
-                       width: 74px;
-                       height: 24px;
-                       float: left;
-                       clear: none;
-                       font-size: 12px;
-                    }
-                    .record{
-                      top: 0px;
-                      left: 0px;
-                    } 
-                    .SelectBox{
-                        top: 0px;
-                        left: 5px;
-                    }                    
-                    .CurrentCallBtnLong{
-                        width: 155px;
-                    }
-                    
-                }
-            }
-        }
-       }
-    }    
-     
+    }
+    
     .Preferences-Holder{
       position: relative;     
-      height: 42%;  
+      height: 50%;  
       margin-top: 3px;
       display: inline-block;
       overflow: hidden;
@@ -97,14 +42,15 @@
         top: 0px;
         border-top: none;
      }
+     
      .SettingsPanel{
        flex: 1;
-	   -webkit-flex: 1;
+       -webkit-flex: 1;
        display: flex;
-	   display: -webkit-flex;
+       display: -webkit-flex;
        flex-direction: column;
-	   -webkit-flex-direction: column;	   
-		
+       -webkit-flex-direction: column;     
+        
        &.DialogContentMainBlock_List {
          left: 0px;
          top: 0px;
@@ -118,30 +64,199 @@
          background-color: #f9f9f9;
          bottom: 0px;   
        
-		 & > div {
-		   overflow-y: auto;
-		   padding: 10px;
-		   height: 100%;
-		   width: 100%;
-		   
-		   &.padding{
-		    padding-bottom: 30px;
-		   }
-		 }
+         & > div {
+           overflow-y: auto;
+           padding: 10px;
+           height: 100%;
+           width: 100%;                
+           
+           &.padding{
+            padding-bottom: 30px;
+           }
+         }
        }   
-	   
-	   .lblSelect {
-		 display: inline-block;
-		 width:150px;
-		 font-size:12;
-	   }
+       
+       .lblSelect {
+         display: inline-block;
+         width:150px;
+         font-size:12;
+       }
      }
     }
-    
+     
+    .WidgetBody{                     
+       height: 78%;
+       max-height: 100%;      
+       
+       .call-block{
+        height: 50%;
+        
+        overflow-y: hidden;                
+        
+        .CurrentCall{
+            height: 20%;
+            
+            .LeftSide{
+                width: 50%;
+                margin-bottom: -5px;
+                
+                .Dialog-settings-row{
+                    margin: 5px;
+                    
+                    input[type=range]{
+                        width: 70%;
+                        margin-bottom: -8px;
+                    }
+                    .XButtonToggleSmall{
+                        margin-top: 0;
+                        vertical-align: top;
+                        
+                        &.XIcon24-MuteOff:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
+                        }
+                        &.XIcon24-MuteOn:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
+                        }
+                        &.XIcon24-Speaker-Off:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat -48px 0px;
+                        }
+                        &.XIcon24-Speaker-On:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
+                        }
+                    }
+                }
+                .ListRowTitle > div{
+                    float: left;
+                    margin-left: -5px;
+                    clear: both;
+                    max-width: 100%;
+                }
+                
+                .name{ 
+                  margin-left: 0px;
+                  margin-top: 5px;
+                  clear: none;
+                  strong{font-size: 14px;}
+                }  
+                .ListRowStatus{
+                    margin-left: 5px;
+                    margin-top: 5px;
+                    
+                    .ListRowStatusIcon.phone{
+                        margin-right: 10px;
+                        display: inline-block;
+                    }
+                }
+                .Avatar{
+                  margin-top: 8px;
+                  border: none;
+                  width: 40px;
+                  height: 40px;
+                  
+                  &.CallAvatar_External{
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+                    .AvatarInteractable {                 
+                        background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+                    }    
+                  }
+                  
+                  img{
+                      height: 32px;
+                      width: 32px;
+                      margin: 4px;
+                      border-radius: 40px;
+                      -webkit-border-radius: 40px;
+                  }
+                    
+                  &:hover{
+                     .AvatarInteractable {
+                      display: block; 
+                     } 
+                  }
+                  
+                  .AvatarInteractable {                            
+                      height: 40px;
+                      width: 40px;
+                      position: absolute;
+                      border: none;
+                      right: 0;
+                      bottom: 0;
+                      left: 0;
+                      top: 0;
+                      display: none;
+                  }
+                }
+            }
+            .RightSide{
+                width: 50%;
+                padding-top: 5px;
+                margin-bottom: -5px;
+                
+                .row_buttons{
+                    width: 100%;
+                    float: left;
+                    min-height: 40px;
+                    position: relative;
+                    padding: 5px 0;
+                    vertical-align: top;
+                    margin: 0;
+                    
+                    .XButton{
+                       width: 74px;
+                       height: 24px;
+                       float: left;
+                       clear: none;
+                       font-size: 12px;
+                       display: inline-block;
+                       margin-right: 5px;
+                       
+                       &.dial{
+                        margin-top: 0;
+                       }
+                       
+                       &.CurrentCallBtn{margin:0px 5px 0px 0px;}
+                    }
+                    .record{
+                      top: 0px;                      
+                    } 
+                    .SelectBox{
+                        top: 0px;                        
+                    }                    
+                    .CurrentCallBtnLong{
+                        width: 154px !important;
+                        margin: 0;
+                    }
+                    
+                }
+            }
+        }
+       }
+       
+       &.currentCall{
+        .call-block{
+           /* max-height: 180%;*/
+            
+            .RecentCallSection{             
+              height: 100%;
+                
+              .RecentCallLogs{                  
+                  height: 72%;
+              }
+            }
+         }
+                
+         .Preferences-Holder{
+            .SettingsPanel.DialogContentMainBlock_List {
+                & > div {                   
+                      height: 40%;                    
+                }
+            }
+         }  
+       }
+    }              
 }
 
 .MeInfoBlock {
-  /*display:inline-block;*/
   margin-left:5px;
   vertical-align: top;
   /*width: 79.5%;*/
@@ -175,21 +290,10 @@
             padding: 2px;
             margin: 0px;
             height: 33px;
-            width: 184px;
+            width: 182px;
             font-family: monospace;
             font-size: 12px;                               
-        }
-        
-        .LocationSelector{
-          position: relative;
-          height: 40px;
-          left: 0px;
-          
-         .SelectBox {              
-              width: 184px;
-              height: 33px;
-          }
-        }
+        }      
     }
   }   
 }
