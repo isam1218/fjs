@@ -18,12 +18,13 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			// create overlay elements			
 			inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
-
+			
+			var joinByPhoneBtn = angular.element('<div class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton"><span>Join by phone</span></div>'); 
 			if (attrs.conference == "true"){
 				overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
 				headerTitle = angular.element('<div class="Header">Join to Conference</div>');
 				overlay.append(headerTitle);
-				overlay.append('<div class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton"><span>Join by phone</span></div>');
+				overlay.append(joinByPhoneBtn);
 				overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
 			} else {
 				overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
@@ -33,6 +34,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 
 			rows = angular.element('<div class="rows"></div>');
 			
+
 			// search input
 			element.bind('keyup', function(e) {
 				if (added) {
@@ -47,19 +49,21 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				}
 				
 				if (element.val().length > 0) {
-					
+					var matchCount = 0;
 					// look for match
 					for (var c = 0, len = contacts.length; c < len; c++) {
-						if (contacts[c].xpid != $rootScope.myPid && contacts[c].primaryExtension && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
+						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
 							var line = makeLine(contacts[c], false);
 							rows.append(line);
-						} else if (contacts[c].displayName.search(new RegExp(element.val(), 'i')) == -1 && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) == -1 && contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) == -1 && contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) == -1 && element.val().length > 4 && !isNaN(element.val())) {
-							var line = makeLine(contacts[c], true);
-							inset.empty();
-							rows.empty();
-							rows = line;
-							break;
-						}
+							matchCount ++;
+						} 
+					}
+
+					if(matchCount == 0){
+						var line = makeLine(null, true);
+						inset.empty();
+						rows.empty();
+						rows = line;
 					}
 					
 					inset.append(rows);
@@ -123,7 +127,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					var name = '<div class="ListRowContent"><div class="ListRowTitle">';
 					name += '<div class="name"><strong>Unknown number</strong></div>';
 
-					if (!isNaN(element.val()) && element.val().length == 10){
+					if (!isNaN(element.val())){
 						name += '<div class="">' + element.val() + '</div>';
 						name += '</div><div class="ListRowStatus"><div class="XButton XButtonNormal JoinByPhoneBtnSecond"><span>Join by phone</span></div></div></div>';
 					}	else
@@ -151,8 +155,17 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 
 				// send contact to parent scope
 				line.bind('click', function() {
-					scope.searchContact(contact);
-					if (!isNaN(element.val()) && element.val().length == 10){
+					if(contact){
+						if(contact.primaryExtension){
+							scope.searchContact(contact);
+						}else{
+							if(contact.phoneMobile){
+								scope.addToConference(contact.phoneMobile);	
+							}else{
+								scope.addToConference(contact.phoneBusiness);
+							}
+						}
+					}else if (!isNaN(element.val())){
 						scope.addToConference(element.val());
 					}
 					element.val('');
@@ -160,6 +173,14 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					overlay.remove();
 				});
 				
+				if(joinByPhoneBtn){
+					joinByPhoneBtn.bind('click',function(){
+						if (!isNaN(element.val())){
+							scope.addToConference(element.val());
+						}	
+					})
+				}
+
 				line.on('$destroy', function() {
 					line.empty().unbind('click');
 				});
@@ -168,6 +189,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			}
 			
 
+
+			
 			scope.$on('$destroy', function() {
 				$document.unbind('click');
 				rows.empty();				

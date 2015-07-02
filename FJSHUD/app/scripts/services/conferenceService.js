@@ -110,7 +110,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 		totals.occupied = 0;
 		totals.talking = 0;
 		totals.all = 0;
-		
+		$rootScope.$broadcast('conferencemembers_updated',data);
 		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
 			var conference = conferences[c];
 			
