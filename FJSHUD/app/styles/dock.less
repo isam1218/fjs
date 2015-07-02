@@ -111,15 +111,16 @@
 		padding: .25em;
 		text-decoration: none;
 		white-space: nowrap;
-		font-size: .8em;
+		/*font-size: .8em;*/
 		display: flex;
 		display: -webkit-flex;
 		flex-direction: row;
 		-webkit-flex-direction: row;
 	
+	    /*
 		& > .Avatar {
 			font-size: 1.25em;
-		}
+		}*/
 	
 		&.Single {
 		background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
@@ -135,10 +136,35 @@
 			overflow: hidden;
 			flex: 1;
 			-webkit-flex: 1;
+			text-shadow: #fff 0 1px 0;
+			font-size: 12px;
 			
 			div {
 				overflow: hidden;
 				text-overflow: ellipsis;
+				color: #555;
+				cursor: pointer; 
+				margin-top: -2px;
+                padding: 0;				
+				
+				&.titleHeader{				                   
+                  text-shadow: #fff 0 1px 0;
+                  font-weight: bold;                  
+                  font-size: 12px;
+                  margin-top: 0;
+				}
+				&.subTitle{
+				    font-size: 11px;				                        
+                    white-space: nowrap;
+				}
+				
+				&.ListRowStatusIcon{
+				  margin-left: -8px;				 
+				  
+				  &:first-child{
+				    margin-left: -5px;
+				  }  
+				}
 			}
 		
 			.Name {
@@ -176,26 +202,61 @@
 		
 		.SubHeader {
 			background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
-			border-top: 1px solid #aaa;
-			border-bottom: 1px solid white;
-			text-align: center;
-			font-size: .75em;
-			padding: .25em;
+			border-top: 1px solid #aaa;			
+			text-align: center;					
 			font-weight: bold;
 			color: #888;
-			text-shadow: whiteSmoke 0 1px 0;
+			text-shadow: whiteSmoke 0 1px 0;							
+            height: 20px;
+            border-bottom: solid 1px #fff;
+            background-image: -webkit-gradient(linear, top left, bottom left, from(#CFCFCF), color-stop(0.3, #E2E2E2), to(#EEE));
+            font-size: 12px;  
+            line-height: 20px; 
 		}
 		
 		.List {
 			flex: 1;
 			-webkit-flex: 1;
 			background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
-		
+		    
+		    .free{
+		      font-size: 12px;
+		      padding: 5px;
+		      
+		      p{
+		          text-align: center;
+		          input{font-size: 11px; width: 50px;}
+		      }
+		    }
 			.ListRow {
 				background-color: #eee;
 				
 				.ListRowTitle {
-					padding: 0;
+				  max-width: 100% !important;  				     				  
+    				  
+    				  .name{
+    				    font-size: 12px !important;    				    
+                        color: #555;
+                        text-shadow: 0px 1px 0px #fff;
+                        white-space: nowrap;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        text-decoration: none;
+    				  }
+    				  .ListRowStatusIcon{
+    				    float: left;
+    				    margin-left: -5px !important;
+    				  }
+    				  .status{
+    				    font-size: 11px;
+    				    color: #888;  
+    				    text-align: left;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        text-decoration: none; 
+                        margin-top: 5px; 
+    				  }				  
 				}
 			}
 		
