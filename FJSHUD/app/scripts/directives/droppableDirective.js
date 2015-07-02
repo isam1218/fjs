@@ -13,11 +13,13 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 				tolerance: 'pointer',
 				greedy: true,
 				over: function(event, ui) {
+					var isolatedScope = angular.element(ui.draggable).data('_scope');
+					
 					// find original draggable object
 					if (ui.draggable[0].attributes.dockable)
-						obj = $parse(ui.draggable[0].attributes.dockable.nodeValue)(angular.element(ui.draggable).scope());
-					else if (angular.element(ui.draggable).scope().gadget.data)
-						obj = angular.element(ui.draggable).scope().gadget.data;
+						obj = $parse(ui.draggable[0].attributes.dockable.nodeValue)(isolatedScope);
+					else if (isolatedScope.gadget.data)
+						obj = isolatedScope.gadget.data;
 					else
 						obj = null;
 					
