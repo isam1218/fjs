@@ -4,9 +4,9 @@
 		<a href="#/callcenter" class="Header">
 			<div class="Icon TopBarItemAppIcon CallCenter"></div>
 			<div class="Title">
-				<div>{{::verbage.my_queue}}</div>
-				<div ng-if="gadget.data.queues.length == 0">Not an agent</div>
-				<div ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.logged_out }}</div>
+				<div class="titleHeader">{{::verbage.my_queue}}</div>
+				<div class="subTitle" ng-if="gadget.data.queues.length == 0">Not an agent</div>
+				<div class="subTitle" ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.logged_out }}</div>
 			</div>
 		</a>
 			
@@ -19,10 +19,9 @@
 				
 					<div class="ListRowContent" dockable="queue">
 						<div class="ListRowTitle">
-							{{ ::queue.name }}
-							<br/>
+							<div class="name">{{ ::queue.name }}</div>							
 							<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
-							{{ queueStatusLabel(queue.me.status.status) }}
+							<div class="status">{{ queueStatusLabel(queue.me.status.status) }}</div>
 						</div>
 					</div>
 				</a>
@@ -42,10 +41,10 @@
 		<div class="Header Single">
 			<avatar profile="4"></avatar>
 			<div class="Title">
-				<div>{{::verbage.parked_calls}}</div>
-				<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
-				<div class = "GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
-				<div class = "GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
+				<div class="titleHeader">{{::verbage.parked_calls}}</div>
+				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
+				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
+				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
 			</div>
 		</div>
 		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
@@ -72,7 +71,7 @@
 		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div>{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader">{{ ::gadget.data.displayName }}</div>
 				<div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
@@ -95,8 +94,8 @@
 		<a href="#/group/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div>{{ ::gadget.data.name }}</div>
-				<div>None</div>
+				<div class="titleHeader">{{ ::gadget.data.name }}</div>
+				<div class="subTitle">None</div>
 			</div>
 		</a>
 		
@@ -127,9 +126,9 @@
 		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
-				<div ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
-				<div ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
+				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
+				<div class="subTitle" ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
+				<div class="subTitle" ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
 			</div>
 		</a>
 		
@@ -150,7 +149,7 @@
 					</div>
 				</a>
 				
-				<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
+				<div class="free" ng-if="!gadget.data.members || gadget.data.members.length == 0">
 					{{::verbage.room_is_free}}...
 					<p>
 						<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
