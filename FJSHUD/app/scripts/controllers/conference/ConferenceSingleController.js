@@ -4,11 +4,42 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 	
 	$scope.conferenceId = $routeParams.conferenceId;
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
-	$scope.joined = $scope.conference.status.isMeJoined;
+
+  $scope.membersRefused = [];
+	
+  $scope.joined = $scope.conference.status.isMeJoined;
     $scope.enableChat = $scope.joined;
     $scope.enableTextInput = $scope.joined;
     $scope.enableFileShare = $scope.joined;
 	
+   var currentMembers = angular.copy($scope.conference.members);
+  
+   //its not receiving consistent data from the conferencemember synced so we will listen for when the broadcast from the conference service
+  $rootScope.$on("conferencemembers_updated",function(event,data){
+      for(var i = 0; i < data.length;i++){
+            // member dropped out
+          if (data[i].xef001type == 'delete') {
+            for (var m = 0; m < currentMembers.length; m++) {
+              if (currentMembers[m].xpid == data[i].xpid) {
+                //if the previous ring was active that means they refused the conference so we added them to a temporary list for this controller for members refused
+                if(currentMembers[m].ring){
+
+                	$scope.membersRefused.push(currentMembers[m]);
+                }
+                currentMembers.splice(m, 1);
+                break;
+              }
+            }
+          }else{
+
+            //copy the members to temporary array 
+          	if(data[i].fdpConferenceId = $scope.conference.xpid && data[i].contactId != $scope.meModel.my_pid){
+          		currentMembers.push(data[i]);
+          	}
+          }
+
+      }
+  });
 	// store recent
 	storageService.saveRecent('conference', $scope.conferenceId);
 	
@@ -95,6 +126,14 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
     };
   };
 
+  $scope.removeRefused = function(member){
+     for(var i = 0; i < $scope.membersRefused.length; i++){
+     	if(member.xpid == $scope.membersRefused[i].xpid){
+     		$scope.membersRefused.splice(i,1);
+     	}
+     }
+  }
+
   $scope.searchContact = function(contact){
 		if(contact){
 			params = {
@@ -115,6 +154,27 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
     }
     httpService.sendAction("conferences", "joinPhone", params);
   };
+
+  $scope.clearRefused = function(){
+	$scope.membersRefused.length = 0;
+  }
+
+  $scope.tryCallAll = function(){
+  	var members = angular.copy($scope.membersRefused);
+    for(var i = 0; i < members.length;i++){
+      $scope.tryCall(members[i]);
+    }
+  }
+
+  $scope.tryCall = function(member){
+      if(member.fullProfile){
+        $scope.searchContact(member.fullProfile);
+      }else{
+      	$scope.addToConference(member.phone);
+      }
+
+      $scope.removeRefused(member);
+  }
 
   $scope.joinConference = function(){
 		if($scope.joined){

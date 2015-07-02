@@ -44,20 +44,20 @@
 			</div>
 		</div>
     </div>
-    <div class="noJoinConf" ng-if="true">
+    <div class="noJoinConf" ng-if="membersRefused.length > 0">
     <div class="ListSection">
         <div class="ListSectionHeader">
             <div class="ListSectionHeaderTitle">UNABLE TO JOIN</div>
             <div class="ListSectionButtons">
-                <div class="XButton XButtonNormal"><span>Clear</span></div>
-                <div class="XButton XButtonNormal"><span>Try all</span></div>
+                <div class="XButton XButtonNormal" ng-click="clearRefused()"><span>Clear</span></div>
+                <div class="XButton XButtonNormal" ng-click="tryCallAll()"><span>Try all</span></div>
             </div>
         </div>
         <div class="ListSectionBody">These contacts did not respond for join request.</div>
     </div>
-    <div class="ListRow" ng-repeat="member in conference.members">
+    <div class="ListRow" ng-repeat="member in membersRefused">
 
-        <avatar profile="member" type="4" context="conference:conference"></avatar>
+        <avatar profile="member.fullProfile" type="4" context="conference:conference"></avatar>
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
             <div class="ListRowTitle">
@@ -73,8 +73,8 @@
             </div>
             <span>{{ ::contact.primaryExtension }}</span>
             <div class="action-buttons">
-                <div class="XButton XButtonNormal"><span>Remove</span></div>
-                <div class="XButton XButtonNormal"><span>Try again</span></div>
+                <div class="XButton XButtonNormal" ng-click="removeRefused(member)"><span>Remove</span></div>
+                <div class="XButton XButtonNormal" ng-click="tryCall(member)"><span>Try again</span></div>
             </div>
         </div>
     </div>
