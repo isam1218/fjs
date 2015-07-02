@@ -13,11 +13,7 @@
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 
-<div class="ListViewContent" id="ListViewContent">
-   
-    <div  class="attachmentDrag" > 
-
-    </div>
+<div class="ListViewContent" id="ListViewContent">       
     <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" >
         <div class="ListMessageLeft">
             <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
