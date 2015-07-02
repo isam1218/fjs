@@ -6493,6 +6493,18 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainer {
   position: relative;
 }
+<<<<<<< HEAD
+=======
+.CallStatusContainerOutbound {
+  background: linear-gradient(#f3f8e6, #ecf2da);
+  background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
+}
+
+.CallStatusContainerQueue{
+  background: linear-gradient(#fff1dd,#f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd,#f8e7cd);
+}
+>>>>>>> @clnielsen changed coloring for queue calls
 .CallStatusContainerInbound {
   background: linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-linear-gradient(#e4f1f8, #dfebf1);
