@@ -113,6 +113,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			notification.onerror = function () {
 				var nt = notification;
 			};
+
+			setTimeout(function(){
+        		notification.close()
+      		}, 5000);
+			
 			return notification;
 		};
 
