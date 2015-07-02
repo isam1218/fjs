@@ -106,6 +106,17 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 		}
 	};
 
+  $scope.conferenceContact;
+
+  $scope.addToConference = function(phoneNumber){
+    console.error('called! w. ng-model as - ', phoneNumber);
+    params = {
+      conferenceId: $scope.conferenceId,
+      phone: phoneNumber
+    }
+    httpService.sendAction("conferences", "joinPhone", params);
+  };
+
   $scope.joinConference = function(){
 		if($scope.joined){
 			params = {
