@@ -147,7 +147,7 @@
 		   <!-- /////////////////// NEW NOTIFICATIONS /////////////////////////// -->		 
 		  <div class="overlayNotificationsSection" ng-if="hasNewNotifications">					 			 
 		    <div class="section_header">         
-             <div class="Conference-HeaderTitle ng-binding" ng-if="hasOldNotifications">NEW ITEMS</div>
+             <div class="Conference-HeaderTitle" ng-if="hasOldNotifications">NEW ITEMS</div>
              <div class="Conference-HeaderSubTitle" ng-if="hasOldNotifications">You have {{newNotificationsLength}} new item(s)</div> 
             </div>
 	        <div class="new_notifications notifications_section" ng-if="hasNewNotifications" ng-show="!showNew">   							
@@ -253,7 +253,7 @@
          <!-- /////////////////// OLD NOTIFICATIONS /////////////////////////// -->
          <div class="overlayNotificationsSection" ng-if="hasOldNotifications" ng-hide="clearOld">    
           <div class="section_header">         
-	         <div class="Conference-HeaderTitle ng-binding" ng-if="hasOldNotifications">OLD ITEMS</div>
+	         <div class="Conference-HeaderTitle" ng-if="hasOldNotifications">OLD ITEMS</div>
 	         <div class="Conference-HeaderSubTitle" ng-if="hasOldNotifications">You have {{oldNotificationsLength}} old item(s)</div> 
 	         <input type="button" class="XButton header"  ng-if="hasOldNotifications" ng-show="showOld" value="{{::verbage.show}}" ng-click="showNotifications('old')" /> 
 	         <input type="button" class="XButton header"  ng-if="hasOldNotifications" ng-show="!showOld" value="{{::verbage.hide}}" ng-click="showNotifications('old')" />

@@ -6,15 +6,39 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
-    <link rel="stylesheet" href="styles/main.css">
-  	<script type="text/javascript">
-			(function(){
+    <link rel="stylesheet" href="styles/main.css">   
+    <!--[if lt IE ]> 
+        <link rel="stylesheet" href="styles/ie.css">  
+    <![endif]-->
+  	<script type="text/javascript">   	
+			(function(){				
 				var uv=document.createElement('script');
 				uv.type='text/javascript';
 				uv.async=true;
 				uv.src='//widget.uservoice.com/Tn3xl4wYXZ7m5rjTNJnOQ.js';
 				var s=document.getElementsByTagName('script')[0];
 				s.parentNode.insertBefore(uv,s);
+				
+					            
+	            var isIE11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
+	            var isIE10 = !!navigator.userAgent.match(/Trident.*rv[ :]*10\./);
+	                
+	            if(isIE10 || isIE11)
+	            {
+	                    	
+	              var ie_css = document.createElement('link');
+	              ie_css.setAttribute('rel','stylesheet');
+	              ie_css.setAttribute('href','styles/ie.css');
+	              var l=document.getElementsByTagName('link')[0];
+	              l.parentNode.appendChild(ie_css,l);	                    	
+	            }
+	            if(navigator.userAgent.toLowerCase().indexOf('firefox') != -1){	            	
+	            	var FF_css = document.createElement('link');
+	            	FF_css.setAttribute('rel','stylesheet');
+	            	FF_css.setAttribute('href','styles/firefox.css');
+	                var li=document.getElementsByTagName('link')[0];
+	                li.parentNode.appendChild(FF_css,li);  
+	            }
 			})();
 		</script>
 		<script type="text/javascript">
@@ -243,6 +267,6 @@
     <script src="scripts/services/detectBrowserService.js"></script>
     
     <!-- factory -->
-    <script src="scripts/factory/windowDimensionsFactory.js"></script>
+    <script src="scripts/factory/windowDimensionsFactory.js"></script>   
 </body>
 </html>

@@ -6,7 +6,9 @@ var hudweb = angular.module('fjshudApp', [
     'flow'
 ]);
 
-hudweb.config(function ($routeProvider) {
+hudweb.config(function ($routeProvider, $compileProvider) {
+	$compileProvider.debugInfoEnabled(false);
+	
 	$routeProvider
 		.when('/settings',
 		{

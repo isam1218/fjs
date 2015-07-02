@@ -75,6 +75,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.call_obj = {};
     $scope.call_obj.phoneNumber = "";
     $scope.calls = {};
+    $scope.onCall = false;
     /* */
     /**
     * used to determine what tab is selected in the me widget controller
@@ -105,7 +106,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.saveMeTab = function(tab, index){
         switch(tab){
             case "General":
-                console.log('general');
                 $scope.selected = $scope.tabs[0];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
@@ -155,7 +155,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.$parent.selected = $scope.selected;
                 break;
             case "About":
-                console.log('');
                 $scope.selected = $scope.tabs[7];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
@@ -781,11 +780,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 if(calllog.incoming){
                     return calllog.phone;
                 }else{
-                    return $scope.verbage.you + "@ " + calllog.location;
+                    return $scope.verbage.you + " @ " + calllog.location;
                 }
             case "To":
                 if(calllog.incoming){
-                    return $scope.verbage.you + "@ " + calllog.location;
+                    return $scope.verbage.you + " @ " + calllog.location;
                 }else{
                     return calllog.phone;
                 }
@@ -871,6 +870,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('current_call_control', function(event,currentCall){
          $scope.currentCall = currentCall;
         if($scope.currentCall){
+        	$scope.onCall = true;
             if($scope.currentCall.contactId){
                 var contact = contactService.getContact(currentCall.contactId);
                 currentCall.contact = contact;
@@ -878,6 +878,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
         if(currentCall  == null){
             $scope.call_obj.phoneNumber = "";
+            $scope.onCall = false;
         }
 
     });
@@ -896,6 +897,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             action = 'stopCallRecording';
         
         if($scope.currentCall){
+        	$scope.onCall = true;
             if($scope.currentCall.contactId){
                myHttpService.sendAction('contacts', action, {contactId: $scope.currentCall.contactId});
             }else{
@@ -952,7 +954,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('calls_updated',function(event,data){
         $scope.calls = data;
         var call_exist = false;
-
+        $scope.onCall = false;
+        
         if(data && !$.isEmptyObject(data)){
             for (i in data){
                 if(data[i].xpid == $scope.meModel.my_pid){
@@ -964,6 +967,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }else if(data[i].phone == $scope.currentCall.phone){
                         $scope.currentCall = data[i];
                         call_exist = true;
+                        $scope.onCall = true;
                     }else if(data[i].xpid == $scope.currentCall.xpid){
                         $scope.currentCall = data[i];
                     }
@@ -978,9 +982,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             
             if($scope.currentCall && !data[$scope.currentCall.xpid]){
                 $scope.currentCall = null;
+                $scope.onCall = false;
             }
         }else{
             $scope.currentCall = null;
+            $scope.onCall = false;
         }
         /*
         if(!data[$scope.currentCall.xpid]){

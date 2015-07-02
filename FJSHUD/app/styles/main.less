@@ -115,12 +115,16 @@ p {
   }
 }
 
-.LocationSelector {
-  width: 100%;
+.LocationSelector {  
+   position: relative;
+   width: 182px;
+   height: 28px;
+   left: 0px;
   
-  .SelectBox {
-    width: 100%;
-    padding: 5px 10px 5px 0px;
+  .SelectBox {              
+      width: 100%;
+      height: 100%;
+      padding: 5px 10px 5px 0px;
   }
 }
 
@@ -246,8 +250,9 @@ p {
 @import "voicemail";
 @import "queue";
 @import "media";
-@import "firefox";
-@import "ie";
+//@import "firefox";
+/*@import "ie";*/
+
 
 .LeftBar .Recent {
   flex: 1 1 0;

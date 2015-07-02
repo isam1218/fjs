@@ -656,13 +656,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 
 	var displayNotification = function(){
 
-		element = document.getElementById("Alert");
+		var element = document.getElementById("Alert");
+		
 		if(element){
-			content = element.innerHTML;
+			var content = element.innerHTML;
 			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-			
-		  }
-		 $scope.displayAlert = false;
+		}
+		
+		element = null;
+		$scope.displayAlert = false;
 	};
 
 	$scope.$on('phone_event',function(event,data){

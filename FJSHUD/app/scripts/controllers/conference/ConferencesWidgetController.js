@@ -83,7 +83,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		// find first empty room on same server
 		for (var i = 0; i < $scope.conferences.length; i++) {
-			if ($scope.conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0)) {
+			if ($scope.conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0) && $scope.conferences[i].permissions == 0) {
 				found = $scope.conferences[i].xpid;
 				break;
 			}
@@ -93,7 +93,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		if (!found) {
 			for (var i = 0; i < $scope.conferences.length; i++) {
 				// find first room on same server
-				if (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0) {
+				if (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0 && $scope.conferences[i].permissions == 0) {
 					found = $scope.conferences[i].xpid;
 					break;
 				}

@@ -25,6 +25,22 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   outline: none;
   -webkit-appearance: none;
 }
+.ListSectionButtons {
+    position: absolute;
+    height: 40px;
+    top: 0px;
+    right: 10px;
+}
+.ListSectionButtons .XButton {
+  position: relative;
+  display: block;
+  float: right;
+  width: 80px;
+  margin-left: 10px;
+  height: 28px;
+  padding-top: 3px;
+  font-weight: bold;
+}
 
 .XButton {
   position: relative;
@@ -96,6 +112,15 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
         &:extend(.XButtonGreen:hover);
       }
   }
+}
+
+.XButtonNormal span {   
+    background-image: -moz-linear-gradient(center top , #FEFEFE, #EBEBEB);
+    background-color: #FEFEFE;
+    color: #333;
+    text-shadow: 0px 1px 0px #FFF;
+    transition: border 0.3s ease 0s;
+    font-weight: bold;
 }
 
 .XButtonMedium.disabled-true span,
@@ -214,6 +239,39 @@ input[disabled], select[disabled],
   height: 26px;
   padding: 3px 5px 6px 5px;
 }
+
+.XIcon24-Record-Off{  
+  right: 0px;
+  top: -10px;
+  background:url(../img/XIconSet-24x24.png) no-repeat -194px 0px;
+    //background:url(img/XIconSet-24x24.png?v=1418381374907) no-repeat -96px 24px;
+
+}
+.XIcon24-Record-On{
+  left: 40px;
+  top: 2px;
+  background:url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
+}
+
+.XIcon24-Record-Off,
+.XIcon24-Record-On{
+  position: absolute;
+  margin-left: 5px;  
+  width: 16px;
+  height: 15px;
+  
+}
+.XIcon24-MuteOff {
+  background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-MuteOn {
+  background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
+  width: 24px;
+  height: 24px;
+}
+
 .CurrentCallBtn
 {
   margin: 10px 5px 10px 0px;   
@@ -232,8 +290,9 @@ input[disabled], select[disabled],
     top: 2px;
   } 
   .XIcon24-Record-Off{
-    right: 12px;
-    top: 1px;
+    right: 6px;
+    top: 0px;
+    position: absolute;
   }
 }
 
@@ -311,37 +370,6 @@ input.CurrentCallBtn{
   }
 }
 
-.XIcon24-Record-Off{  
-  right: 0px;
-  top: -10px;
-  background:url(../img/XIconSet-24x24.png) no-repeat -194px 0px;
-    //background:url(img/XIconSet-24x24.png?v=1418381374907) no-repeat -96px 24px;
-
-}
-.XIcon24-Record-On{
-  left: 40px;
-  top: 2px;
-  background:url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
-}
-
-.XIcon24-Record-Off,
-.XIcon24-Record-On{
-  position: absolute;
-  margin-left: 5px;  
-  width: 16px;
-  height: 15px;
-  
-}
-.XIcon24-MuteOff {
-  background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
-  width: 24px;
-  height: 24px;
-}
-.XIcon24-MuteOn {
-  background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
-  width: 24px;
-  height: 24px;
-}
 /**
 DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 */

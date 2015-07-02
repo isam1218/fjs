@@ -140,14 +140,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		httpService.upload_attachment(data,fileList);
 
 	};
-
-    
-	
-	// keep scrollbar at bottom until chats are loaded
-	var scrollWatch = $scope.$watch(function(scope) {
-		if (scrollbox.scrollHeight)
-			scrollbox.scrollTop = scrollbox.scrollHeight;
-	});
 	
 	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
 
@@ -160,10 +152,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		$scope.messages = data.items;
 		addDetails();
 		
-		// kill watcher
+		// jump to bottom
 		$timeout(function() {
-			scrollWatch();
-		}, 100);
+			scrollbox.scrollTop = scrollbox.scrollHeight;
+		}, 10);
 		
 		// no more chats
 		if (version < 0)
@@ -274,7 +266,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	// change size of chat box according to content
 	$scope.adjustHeight = function() {
 		chatbox.style.height = '1px';
-		chatbox.style.height = chatbox.scrollHeight + 'px';
+		chatbox.style.height = (chatbox.scrollHeight+2) + 'px';
 	};
 	
 	$scope.searchChat = function(increment) {

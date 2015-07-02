@@ -1,10 +1,10 @@
 hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', function($rootScope, $parse, $timeout, settingsService) {
+	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
 	var timer;
 	var current;
 	
-	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar>
-	// where context and type are optional
+	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar> where context and type are optional
 	return {
 		restrict: 'E',
 		replace: true,
@@ -12,7 +12,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
-			var context, widget;
+			var context, widget, rect;
 			
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
@@ -113,12 +113,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			// add arrow to indicate menu
 			element.append('<div class="AvatarForeground AvatarInteractable"></div>');
 			
-			// set up overlay
-			var overlay = angular.element(document.getElementById('ContextMenu'));
-			var arrow = angular.element(overlay[0].getElementsByClassName('Arrow')[0]);
-			var buttons = overlay[0].getElementsByClassName('Button');
-			var rect;
-			
 			element.bind('mouseenter', function(e) {
 				rect = element[0].getBoundingClientRect();
 				$timeout.cancel(timer);
@@ -184,13 +178,15 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {
 						overlay.css('left', (rect.left + rect.width/2) + 'px');
 						overlay.css('right', 'auto');
-						arrow.removeClass('Right').addClass('Left');
+						
+						$('#ContextMenu .Arrow').removeClass('Right').addClass('Left');
 					}
 					// can fit on left side
 					else {
 						overlay.css('right', (window.innerWidth - rect.left - rect.width/2) + 'px');
 						overlay.css('left', 'auto');
-						arrow.removeClass('Left').addClass('Right');
+						
+						$('#ContextMenu .Arrow').removeClass('Left').addClass('Right');
 					}
 					
 					// set width for logout reasons
@@ -198,7 +194,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
 			
 					// button clicks
-					angular.element(buttons).bind('click', function(e) {
+					$('#ContextMenu .Button').bind('click', function(e) {
 						e.stopPropagation();
 						
 						// logout button shouldn't close

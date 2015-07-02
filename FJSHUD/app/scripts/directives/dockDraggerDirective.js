@@ -2,6 +2,9 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+			// super important for droppable to work
+			element.data('_scope', scope);
+			
 			// snap to position
 			if ((scope.gadget.value.config.x > 0 || scope.gadget.value.config.y > 0) && (!$('#InnerDock').hasClass('ui-sortable') || $('#InnerDock').hasClass('ui-sortable-disabled'))) {
 				element.addClass('Positioned');
