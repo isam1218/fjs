@@ -8,7 +8,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
-
 	
 			var rect = element[0].getBoundingClientRect();			
 			element.css('position', 'relative');
@@ -19,11 +18,13 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				element.css('width', '95%');
 				
 			// create overlay elements
-			overlay = angular.element('<div class="SearchContactOverlay"></div>');
+			var overlay = angular.element('<div class="SearchContactOverlay"></div>');
+			//overlay.css('width', rect.width + 'px');
 			
-			inset = angular.element('<div class="Inset"></div>');
+			var inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
-
+			
+			var headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
 
 			if (attrs.conference == "true"){
 				headerTitle = angular.element('<div class="Header">Join to conference</div>')
@@ -31,10 +32,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 
 			// search input
 			element.bind('keyup', function() {
-				if (added) {
-					inset.empty();
-					overlay.remove();
-				}
+				overlay.remove();
+				inset.empty();
 				
 				if (element.val().length > 0) {
 					inset.append(headerTitle);
@@ -51,7 +50,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					overlay.append(inset);
 					element.after(overlay);
 					
-
 					// add some paddin'
 					if (element.prop('offsetWidth') == overlay.prop('offsetWidth')) {
 						overlay.css('left', '-10px');
@@ -80,36 +78,9 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			
 			// clear search
 			element.bind('search', function(e) {
-				if (element.val().length == 0) {
-					inset.empty();
+				if (element.val().length == 0)
 					overlay.remove();
-				}
 			});
-			
-			// create overlay properties one-time
-			function overlayProperties() {
-				// add some paddin'
-				if (element.prop('offsetWidth') == overlay.prop('offsetWidth') || element.prop('offsetLeft') == overlay.prop('offsetLeft')) {
-					overlay.css('left', '-10px');
-					overlay.css('width', overlay.prop('offsetWidth') + 20 + 'px');
-				}
-				
-				if (element.prop('offsetTop') == overlay.prop('offsetTop'))
-					overlay.css('top', '-10px');
-			
-				// prevent accidental closing
-				overlay.bind('click', function(e) {
-					e.stopPropagation();
-				});
-			
-				// close overlay for reals
-				$document.bind('click', function(e) {
-					element.val('');
-					overlay.remove();
-				});
-				
-				added = true;
-			}
 			
 			// fill row content
 			function makeLine(contact) {
@@ -123,12 +94,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				line.bind('click', function() {
 					scope.searchContact(contact);
 					element.val('');
-					inset.empty();
 					overlay.remove();
-				});
-				
-				line.on('$destroy', function() {
-					line.empty().unbind('click');
 				});
 				
 				return line;
@@ -136,7 +102,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			
 			scope.$on('$destroy', function() {
 				$document.unbind('click');
-
 				inset.remove();
 				overlay.unbind().remove();
 			});
