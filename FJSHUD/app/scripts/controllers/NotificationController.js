@@ -539,6 +539,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 						var left_buttonID;
 						var right_buttonID;
 						var right_buttonEnabled;
+						var callType;
 						if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
 							left_buttonText = $scope.calls[i].incoming ? "Decline" : "Cancel";
 							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
@@ -559,6 +560,14 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 							right_buttonEnabled = "true";
 							
 						}
+						if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+							callType = "Queue";
+						}else if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+							callType = "External";
+						}else{
+							callType = "Office";
+						}
+
 				 		data = {
 					  			"notificationId": $scope.calls[i].xpid, 
 					  			"leftButtonText" : left_buttonText,
@@ -569,7 +578,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope','$interval',
 					  			"rightButtonEnabled" : right_buttonEnabled,
 					  			"callerName" : $scope.calls[i].displayName, 
 					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outgoind call for",
-					  			"callCategory" : $scope.calls[i].contactId ? "Internal" : "External",
+					  			"callCategory" : callType,
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0"
 						};

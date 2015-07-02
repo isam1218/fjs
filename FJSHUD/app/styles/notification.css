@@ -56,6 +56,10 @@
   background: linear-gradient(#f3f8e6, #ecf2da);
   background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
 }
+.CallStatusContainerQueue {
+  background: linear-gradient(#fff1dd, #f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd, #f8e7cd);
+}
 .CallStatusContainerInbound {
   background: linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-linear-gradient(#e4f1f8, #dfebf1);
@@ -101,8 +105,8 @@
   position: relative;
   text-shadow: 0px 1px 0px #FFF;
   clear: none;
-  float: right;
-  top: 0;
+  display: inline-block;
+  padding-left: 1px;
 }
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText {

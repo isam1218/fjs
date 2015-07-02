@@ -83,9 +83,16 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			}
 			if (Notification.permission !== "granted")
 				Notification.requestPermission();
-			var url = data.fullProfile.getAvatar(64);
+			
+			var iconUrl;
+			if(data.fullProfile){
+				iconUrl = data.fullProfile.getAvatar(64);
+			}else{
+				iconUrl = "img/Generic-Avatar-28.png";
+			}
+			
 			var notification = new Notification(data.label, {
-				icon : url,
+				icon : iconUrl,
 				body :data.message,
 				tag : data.xpid,
 			});
