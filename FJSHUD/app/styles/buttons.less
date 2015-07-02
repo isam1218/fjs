@@ -25,6 +25,22 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   outline: none;
   -webkit-appearance: none;
 }
+.ListSectionButtons {
+    position: absolute;
+    height: 40px;
+    top: 0px;
+    right: 10px;
+}
+.ListSectionButtons .XButton {
+  position: relative;
+  display: block;
+  float: right;
+  width: 80px;
+  margin-left: 10px;
+  height: 28px;
+  padding-top: 3px;
+  font-weight: bold;
+}
 
 .XButton {
   position: relative;
@@ -96,6 +112,15 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
         &:extend(.XButtonGreen:hover);
       }
   }
+}
+
+.XButtonNormal span {   
+    background-image: -moz-linear-gradient(center top , #FEFEFE, #EBEBEB);
+    background-color: #FEFEFE;
+    color: #333;
+    text-shadow: 0px 1px 0px #FFF;
+    transition: border 0.3s ease 0s;
+    font-weight: bold;
 }
 
 .XButtonMedium.disabled-true span,
