@@ -44,4 +44,39 @@
 			</div>
 		</div>
     </div>
+    <div class="noJoinConf" ng-if="true">
+    <div class="ListSection">
+        <div class="ListSectionHeader">
+            <div class="ListSectionHeaderTitle">UNABLE TO JOIN</div>
+            <div class="ListSectionButtons">
+                <div class="XButton XButtonNormal"><span>Clear</span></div>
+                <div class="XButton XButtonNormal"><span>Try all</span></div>
+            </div>
+        </div>
+        <div class="ListSectionBody">These contacts did not respond for join request.</div>
+    </div>
+    <div class="ListRow" ng-repeat="member in conference.members">
+
+        <avatar profile="member" type="4" context="conference:conference"></avatar>
+
+        <div class="ListRowContent" dockable="member.fullProfile"> 
+            <div class="ListRowTitle">
+                <div class="name">
+                    <strong> {{ ::member.displayName }} </strong>
+                    <div>
+                        <div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>                        
+                        <div class="ListRowStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
+                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+                        {{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}
+                    </div>
+                </div>                 
+            </div>
+            <span>{{ ::contact.primaryExtension }}</span>
+            <div class="action-buttons">
+                <div class="XButton XButtonNormal"><span>Remove</span></div>
+                <div class="XButton XButtonNormal"><span>Try again</span></div>
+            </div>
+        </div>
+    </div>
+   </div>
 </div>
