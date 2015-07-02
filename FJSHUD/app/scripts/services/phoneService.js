@@ -358,7 +358,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 
     var onAlert = function(urlhash){
-    	console.log("AlertClicked: " + urlhash);
     	var arguments = urlhash.split("?");
     	var url = arguments[0];
     	var query = arguments[1];
@@ -372,7 +371,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	}
 		
 		// re-focus tab/window
-		if (url.indexOf('/Close') === -1) {
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts\"') === -1) {
 			activateBrowserTab();
 			window.focus();
 		}		
