@@ -123,9 +123,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		if(call){
 			call.hangUp();
+		}else{
+			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 		}
 		
-		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 	};
 
 	var holdCall = function(xpid,isHeld){
@@ -133,12 +134,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var call = context.getCall(xpid);
 		if(call){
 			call.hold = isHeld;
-		}
-		if(isHeld){
-           	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+			if(isHeld){
+           		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+			}else{
+	           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+			}	
 		}
+		
 	};
 
 	var makeCall = function(number){
@@ -152,8 +155,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var acceptCall = function(xpid){
 
 		var call = context.getCall(xpid);
-		call.accept();
-		//httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+		if(call){
+			call.accept();
+		}else{
+			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+		}
 	
 		for(i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
@@ -219,7 +225,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
         data = {}
-        //var sipId = call.sip_id.split("@")[0];
         sipCalls[call.sip_id] = call;
 		
 		switch(status){
