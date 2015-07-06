@@ -315,7 +315,7 @@ fjs.i18n = {
       logout:'Log Out',
       active:'Active',
       queue_name:'Queue Name',
-      my_queue:'My Queue',
+      my_queue:'My Queues',
       all_queues:'All Queues',
       my_status:'My Status',
       agents:'Agents',

@@ -4,6 +4,9 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+			// super important for droppable to work
+			element.data('_scope', scope);
+			
 			// object to dock
 			var obj = $parse(attrs.dockable)(scope);
 			

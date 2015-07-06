@@ -266,7 +266,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	// change size of chat box according to content
 	$scope.adjustHeight = function() {
 		chatbox.style.height = '1px';
-		chatbox.style.height = chatbox.scrollHeight + 'px';
+		chatbox.style.height = (chatbox.scrollHeight+2) + 'px';
 	};
 	
 	$scope.searchChat = function(increment) {
