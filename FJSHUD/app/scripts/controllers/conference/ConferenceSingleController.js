@@ -17,7 +17,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
 
 
-  $scope.$watch('conference.members', function(newValue,oldValue){
+  $scope.$watchCollection('conference.members', function(newValue,oldValue){
     	
 
       //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
@@ -52,7 +52,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
             }
         }
       }
-  },true);
+  });
 
 	// store recent
 	storageService.saveRecent('conference', $scope.conferenceId);
