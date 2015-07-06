@@ -21,54 +21,46 @@
       max-width: 300px;
       height: 50px;
       padding: 5px;
+      font-size: 12px;
+	  position: relative;
 
-	  div {
+	  .NoCallText, .NoCallIcon {
 		text-align: center;
-
-		& > div {		  
-		  margin-bottom: 1px;
-		  &.NoCallIcon{
-		      clear: both;
-		      margin: 0 auto;
-		  }
-		}
+		clear: both;
+		margin: 1px auto;
 	  }
 
       .Avatar {
-        top:1px;
-        left: 1px;
-        float:left;
-        border: 1px solid #0093F0;
-
+        display: inline-block;
+		border-radius: 20px;
       }
+	  
       .CallLineTop {
-        top:3px;
-        left:40px;
+        display: inline-block;
+		vertical-align: top;
+		margin-left: 3px;
+		line-height: 16px;
+		
         .CallerName {
           font-weight: bold;
-          font-size: 12px;
           color: #645D5D;
           text-overflow: ellipsis;
           white-space: nowrap;
           position: relative;
           overflow: hidden;
           width: 100px;
-          top: 5px;
-        }
-        .CallDuration {
-          right:5px;
-          position: relative;
-          font-size: 11px;
-        }
-        .CallExtension{
-          font-size:12px;
-          margin-top: 3px;
-          float:left;
+		  margin-top: 5px;
         }
       }
-    }
-    .WidgetHeaderCallStatus.HasCall {
-      border-radius: 18px 4px 4px 18px;
+	  
+      .CallDuration {
+		position: absolute;
+		text-align: right;
+		top: 3px;
+        right: 3px;
+        font-size: 11px;
+		color: gray;
+      }
     }
   }
   
