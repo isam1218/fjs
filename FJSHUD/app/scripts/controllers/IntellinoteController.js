@@ -27,11 +27,11 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 			   if (data && data.workspace_list) {
 								$scope.workspaces = data.workspace_list;
 							}
-							console.log("SUCCESS"+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+							console.log("SUCCESS "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
 			  }).
 			  error(function(data, status, headers, config) {
 
-							console.log("FAIL"+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+							console.log("FAIL "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
 
 			  });
 
@@ -83,10 +83,12 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 
 								$scope.workspaces = data.workspace_list;
 							}
+					console.log("SUCCESS "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+
 			  }).
 			  error(function(data, status, headers, config) {
 
-				console.log("FAIL"+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+				console.log("FAIL "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
 
 			  });
 		$event.stopPropagation();

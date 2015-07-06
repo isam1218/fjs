@@ -30,6 +30,12 @@
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
 }
+@-moz-document url-prefix() {
+  .Widget.Intellinote .Right .SearchHolder {
+    position: relative;
+    margin-bottom: 30px;
+  }
+}
 .Widget.Intellinote .Right .Contacts {
   max-height: 200px;
   overflow-y: auto;

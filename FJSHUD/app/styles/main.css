@@ -383,7 +383,6 @@ p {
 .TopBar2ItemAppIcon.Intellinote {
   background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
 }
-
 .TopBarItemAppIcon.Zipwhip,
 .TopBar2ItemAppIcon.Zipwhip {
   background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
@@ -3487,11 +3486,7 @@ div.NewCall .XButton.XButtonNormal {
   max-width: 100%;
 }
 .SearchBox.Add {
-<<<<<<< HEAD
   background: url("../img/add.png") no-repeat;
-=======
-  background: url("../img/add.png") no-repeat white;
->>>>>>> tickets/INTG-133
   background-position: 2%;
 }
 .SearchInputBox {
@@ -3845,6 +3840,12 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
 }
+@-moz-document url-prefix() {
+  .Widget.Intellinote .Right .SearchHolder {
+    position: relative;
+    margin-bottom: 30px;
+  }
+}
 .Widget.Intellinote .Right .Contacts {
   max-height: 200px;
   overflow-y: auto;
@@ -3909,8 +3910,6 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Intellinote .Right .WorkspaceButton div.Down {
   padding-top: 4px;
 }
-<<<<<<< HEAD
-=======
 .Widget.Zipwhip {
   font-size: 12px;
   padding: 20px;
@@ -4007,7 +4006,6 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Zipwhip .Right .WorkspaceButton div.Down {
   padding-top: 4px;
 }
->>>>>>> tickets/INTG-133
 .Widget.Conversation {
   min-height: 300px;
 }
@@ -4025,11 +4023,7 @@ div.NewCall .XButton.XButtonNormal {
   top: 0;
   right: 0;
   left: 0;
-<<<<<<< HEAD
-  padding: 0 10px;
-=======
   padding: 10px;
->>>>>>> tickets/INTG-133
 }
 .Widget.Conversation .WidgetHeader .WidgetHeaderCallStatus {
   margin: .05em .1em 0.7em 0.7em;
