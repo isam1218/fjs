@@ -166,8 +166,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			if(context.webphone){
 				context.webphone.send(JSON.stringify({a : 'hangUp', value :call.sip_id}));
 			}else{call.hangUp();}
+		}else{
+			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 		}	
-		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 	};
 
 	var holdCall = function(xpid,isHeld){
@@ -178,12 +179,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.hold = isHeld;
 			}
-		}
-		if(isHeld){
-           	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+			if(isHeld){
+           		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+			}else{
+	           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+			}	
 		}
+		
+		
 	};
 
 	var makeCall = function(number){
@@ -208,6 +212,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.accept();
 			}
+		}else{
+			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 		}
 	
 		for(i in callsDetails){
@@ -311,7 +317,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
         data = {}
-        //var sipId = call.sip_id.split("@")[0];
         sipCalls[call.sip_id] = call;
 		
 		switch(status){
@@ -452,7 +457,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 
     var onAlert = function(urlhash){
-    	console.log("AlertClicked: " + urlhash);
     	var arguments = urlhash.split("?");
     	var url = arguments[0];
    		var query = arguments[1];
@@ -466,7 +470,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	}
 		
 		// re-focus tab/window
-		if (url.indexOf('/Close') === -1) {
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts\"') === -1) {
 			activateBrowserTab();
 			window.focus();
 		}		

@@ -63,10 +63,10 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				showSingle();
 			
 			// set up watchers for avatars that may change
-			if (widget == 'context') {
+			if (widget == 'context' || widget == 'callstatus') {
 				scope.$watch($parse(attrs.profile), function (newObj) {
 					showSingle();
-					loadImage(element.find('img'), newObj.getAvatar(28));
+					loadImage(element.find('img'), newObj ? newObj.getAvatar(28) : '');
 				});
 			}
 			

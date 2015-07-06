@@ -6,8 +6,12 @@ var hudweb = angular.module('fjshudApp', [
     'flow'
 ]);
 
-hudweb.config(function ($routeProvider, $compileProvider) {
+hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
+	// disables debugger injection 
 	$compileProvider.debugInfoEnabled(false);
+	
+	// combines responses into one digest cycle
+	$httpProvider.useApplyAsync(true);
 	
 	$routeProvider
 		.when('/settings',
