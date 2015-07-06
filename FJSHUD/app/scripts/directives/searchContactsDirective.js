@@ -74,11 +74,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					element.after(overlay);
 
 					if(joinByPhoneBtn){
-					joinByPhoneBtn.bind('click',function(){
-						if (!isNaN(element.val())){
-							scope.addToConference(element.val());
-							}	
-						})
+						joinByPhoneBtn.bind('click',function(){
+							if (!isNaN(element.val())){
+								scope.addToConference(element.val());
+								}	
+						});
 					}
 					
 					if (!added)
