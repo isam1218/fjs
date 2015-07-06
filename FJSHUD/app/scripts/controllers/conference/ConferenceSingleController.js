@@ -12,34 +12,48 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
     $scope.enableTextInput = $scope.joined;
     $scope.enableFileShare = $scope.joined;
 	
-   var currentMembers = angular.copy($scope.conference.members);
+   //var currentMembers = angular.copy($scope.conference.members);
   
-   //its not receiving consistent data from the conferencemember synced so we will listen for when the broadcast from the conference service
-  $rootScope.$on("conferencemembers_updated",function(event,data){
-      for(var i = 0; i < data.length;i++){
-            // member dropped out
-          if (data[i].xef001type == 'delete') {
-            for (var m = 0; m < currentMembers.length; m++) {
-              if (currentMembers[m].xpid == data[i].xpid) {
-                //if the previous ring was active that means they refused the conference so we added them to a temporary list for this controller for members refused
-                if(currentMembers[m].ring){
 
-                	$scope.membersRefused.push(currentMembers[m]);
-                }
-                currentMembers.splice(m, 1);
-                break;
-              }
-            }
-          }else{
 
-            //copy the members to temporary array 
-          	if(data[i].fdpConferenceId = $scope.conference.xpid && data[i].contactId != $scope.meModel.my_pid){
-          		currentMembers.push(data[i]);
-          	}
+
+  $scope.$watch('conference.members', function(newValue,oldValue){
+    	
+
+      //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
+      for(var i = 0; i < oldValue.length; i++){
+        var exists = false;
+        //this is to verify if a member has dropped 
+        for(var j = 0; j < newValue.length; j++){
+          if(oldValue[i].xpid == newValue[j].xpid){
+            exists = true;  
+            break;
           }
+        
+        }
+        if(!exists){
+            //if the oldvalue was ring it means the previous state of the conference call was ringing and if that member doesn't exist now as part of the conference we can assume he decline the conference invitation
+            if(oldValue[i].ring){
+                var refuseMembersExists = false;
+                for(var j = 0; j < $scope.membersRefused.length;j++){
 
+                  //we verify by the contactId attached to the member because the xpid changes everytime a user joins a conference
+                  if(oldValue[i].contactId && $scope.membersRefused[j].contactId){
+                      if(oldValue[i].contactId == $scope.membersRefused[j].contactId){
+                        refuseMembersExists = true;
+                        $scope.membersRefused.splice(j,1,oldValue[i]);
+                      }  
+                  }
+                  
+                }
+
+                if(!refuseMembersExists)
+                  $scope.membersRefused.push(oldValue[i]);
+            }
+        }
       }
-  });
+  },true);
+
 	// store recent
 	storageService.saveRecent('conference', $scope.conferenceId);
 	
@@ -132,7 +146,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
      		$scope.membersRefused.splice(i,1);
      	}
      }
-  }
+  };
 
   $scope.searchContact = function(contact){
 		if(contact){
@@ -157,14 +171,14 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.clearRefused = function(){
 	$scope.membersRefused.length = 0;
-  }
+  };
 
   $scope.tryCallAll = function(){
   	var members = angular.copy($scope.membersRefused);
     for(var i = 0; i < members.length;i++){
       $scope.tryCall(members[i]);
     }
-  }
+  };
 
   $scope.tryCall = function(member){
       if(member.fullProfile){
@@ -174,7 +188,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
       }
 
       $scope.removeRefused(member);
-  }
+  };
 
   $scope.joinConference = function(){
 		if($scope.joined){
