@@ -48,7 +48,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						$(ui.helper).addClass('not-allowed');
 				},
 				drop: function(event, ui) {
-					$(this).removeClass('DroppableArea');
+					$('.DroppableArea').removeClass('DroppableArea');
 					
 					// re-check basic criteria
 					if (timeout || drops.indexOf(type) == -1 || obj.xpid == $rootScope.myPid)

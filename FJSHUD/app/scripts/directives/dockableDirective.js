@@ -7,15 +7,13 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 			// super important for droppable to work
 			element.data('_scope', scope);
 			
-			// object to dock
-			var obj = $parse(attrs.dockable)(scope);
-			
 			$(element).draggable({
 				cursorAt: { top: 25, left: 25 },
 				zIndex: 50,
 				appendTo: 'body',
 				helper: function() {
-					scope.obj = obj;
+					// object to dock
+					var obj = $parse(attrs.dockable)(scope);
 			
 					// create visible element
 					var gadget = $('<div class="Gadget"></div>');
@@ -23,7 +21,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 					var title = $('<div class="Title"></div>');
 					
 					// avatar
-					$(header).append($compile('<avatar profile="obj" context="drag"></avatar>')(scope));
+					$(header).append($compile('<avatar profile="' + attrs.dockable + '" context="drag"></avatar>')(scope));
 					
 					// single title
 					if (obj.firstName !== undefined) {						
@@ -44,8 +42,6 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 					$(ui.helper).addClass('not-allowed');
 				},
 				stop: function(event, ui) {
-					// destroy scope
-					scope.obj = null;
 					ui.helper.empty();
 				}
 			});
