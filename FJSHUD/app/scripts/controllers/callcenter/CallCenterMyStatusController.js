@@ -10,7 +10,7 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 	});
 	
 	// enable/disable action buttons
-	$scope.$watch('checkboxes', function() {
+	$scope.$watchCollection('checkboxes', function() {
 		$scope.disableLogin = true;
 		$scope.disableLogout = true;
 		
@@ -26,7 +26,7 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 				}
 			}
 		}
-	}, true);
+	});
 	
 	$scope.selectQueues = function(value) {
 		for (i in $scope.checkboxes) {

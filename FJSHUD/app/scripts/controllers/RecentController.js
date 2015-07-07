@@ -29,7 +29,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.groupedSections = [{type: 'contact', lastTime: {}},{type: 'group', lastTime: {}},{type: 'queue', lastTime: {}},{type: 'conference', lastTime: {}}];
 
   // retrieve saved recents from LS (if any), then grab the most recent entry from each grouping (contact, group, queue, conf) and assign as prop to the items in groupedSections array
-  $scope.$watch('recent', function() {
+  $scope.$watchCollection('recent', function() {
     // grab the most recent item for each section
     for (var key in $scope.recent){
       var singleEntry = $scope.recent[key];
@@ -52,7 +52,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.groupedSections[1].lastTime = mostRecentGroup;
     $scope.groupedSections[2].lastTime = mostRecentQueue;
     $scope.groupedSections[3].lastTime = mostRecentConf;
-  }, true);
+  });
 
   contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;

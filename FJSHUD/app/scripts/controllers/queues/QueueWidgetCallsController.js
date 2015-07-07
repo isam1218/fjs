@@ -20,12 +20,12 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 	};
 	
 	// listen for updates
-	$scope.$watch('queue.calls', function() {
+	$scope.$watchCollection('queue.calls', function() {
 		$scope.callsWaiting = 0;
 		$scope.callsActive = 0;
 
-    $scope.longestWait = ntpService.calibrateTime(new Date().getTime());
-    $scope.longestActive = ntpService.calibrateTime(new Date().getTime());
+		$scope.longestWait = ntpService.calibrateTime(new Date().getTime());
+		$scope.longestActive = ntpService.calibrateTime(new Date().getTime());
 		
 		for (var i = 0; i < $scope.queue.calls.length; i++) {
 			// active calls
@@ -45,5 +45,5 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 					$scope.longestWait = $scope.queue.calls[i].startedAt;
 			}
 		}
-	}, true);
+	});
 }]);
