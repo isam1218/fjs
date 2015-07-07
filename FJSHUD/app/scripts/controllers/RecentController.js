@@ -202,7 +202,10 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       if ($scope.recent[singleContactXpid] !== undefined)
         contactCounter++;
     }
-    return contactPagesShown < (contactCounter / contactPageSize);
+    if (contactCounter < 10)
+      return contactPagesShown < (contactCounter/contactPageSize);
+    else
+      return contactPagesShown < 3;
   };
 
   $scope.hasMoreGroupsToLoad = function(){
@@ -212,7 +215,10 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       if ($scope.recent[singleGroupXpid] !== undefined)
         groupCounter++;
     }
-    return groupPagesShown < (groupCounter / groupPageSize);
+    if (groupCounter < 10)
+      return groupPagesShown < (groupCounter / groupPageSize);
+    else
+      return groupPagesShown < 3;
   };
 
   $scope.hasMoreQueuesToLoad = function(){
@@ -222,7 +228,10 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       if ($scope.recent[singleQueueXpid] !== undefined)
         queueCounter++;
     }
-    return queuePagesShown < (queueCounter / queuePageSize);
+    if (queueCounter < 10)
+      return queuePagesShown < (queueCounter / queuePageSize);
+    else
+      return queuePagesShown < 3;
   };
 
   $scope.hasMoreConferencesToLoad = function(){
@@ -232,7 +241,10 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       if ($scope.recent[singleConferenceXpid] !== undefined)
         conferenceCounter++;
     }
-    return conferencePagesShown < (conferenceCounter / conferencePageSize);
+    if (conferenceCounter < 10)
+      return conferencePagesShown < (conferenceCounter / conferencePageSize);
+    else
+      return conferencePagesShown < 3;
   };
 
   $scope.loadMoreContacts = function(){
