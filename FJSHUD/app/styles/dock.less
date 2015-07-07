@@ -60,12 +60,13 @@
 }
   
 .Gadget {
-	position: relative;
+	position: absolute;
 	display: inline-flex;
 	display: -webkit-inline-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
 	border-radius: 5px;
+	-webkit-border-radius: 0;
 	border: 1px solid #aaa;
 	overflow: hidden;
 	width: 160px;
@@ -203,6 +204,7 @@
 		
 		.SubHeader {
 			background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
+			background: -webkit-linear-gradient(to bottom, #D4D4D5, #D9D9DA);
 			border-top: 1px solid #aaa;			
 			text-align: center;					
 			font-weight: bold;
@@ -210,15 +212,16 @@
 			text-shadow: whiteSmoke 0 1px 0;							
             height: 20px;
             border-bottom: solid 1px #fff;
-            background-image: -webkit-gradient(linear, top left, bottom left, from(#CFCFCF), color-stop(0.3, #E2E2E2), to(#EEE));
             font-size: 12px;  
             line-height: 20px; 
 		}
 		
 		.List {
-			flex: 1;
-			-webkit-flex: 1;
+			flex: 1 1 0;
+			-webkit-flex: 1 1 0;
+			-ms-flex: 1;
 			background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
+			background: -webkit-linear-gradient(to bottom, #DCDCDC, #EAEAEB);
 		    
 		    .free{
 		      font-size: 12px;

@@ -300,10 +300,46 @@
 	  border: 1px solid #ccc;
 	  border-radius: 3px;
 	  width: 150px;
+	  display: flex;
+	  display: -webkit-flex;
+	  flex-direction: row;
+	  -webkit-flex-direction: row;
+	  padding-top: 3px;
+	  
+	  .CallAvatar {
+		width: 36px;
+		height: 36px;
+		
+		&.CallAvatar_Office {
+		  background-position: -92px -95px;
+		}
+		
+		img {
+		  height: 24px;
+		  width: 24px;
+		  margin: 3px;
+		}
+	  }
 	  
 	  .Details {
-	    display: inline-block;
-		font-size: 12px;
+	    font-size: 12px;
+		color: #333;
+		
+		.Name {
+	      text-overflow: ellipsis;
+		  overflow: hidden;
+		  width: 70px;
+		  white-space: nowrap;
+		  font-weight: bold;
+		}
+	  }
+	  
+	  .Time {
+	    text-align: right;
+		flex: 1;
+		font-size: 11px;
+		color: gray;
+		padding-right: 2px;
 	  }
 	}
 	

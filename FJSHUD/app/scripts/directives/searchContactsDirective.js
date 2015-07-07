@@ -35,12 +35,15 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			rows = angular.element('<div class="rows"></div>');
 			
 
+
 			// search input
 			element.bind('keyup', function(e) {
 				if (added) {
 				   rows.empty();				   
 				   overlay.remove();
 				}
+
+
 
 				// if user deletes search input, need to reset inset and create new rows div
 				if (e.keyCode == 8 || e.keyCode == 46){
@@ -69,6 +72,14 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					inset.append(rows);
 					overlay.append(inset);
 					element.after(overlay);
+
+					if(joinByPhoneBtn){
+						joinByPhoneBtn.bind('click',function(){
+							if (!isNaN(element.val())){
+								scope.addToConference(element.val());
+								}	
+						});
+					}
 					
 					if (!added)
 						overlayProperties();
@@ -87,6 +98,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					//overlay.remove();
 				}
 			});
+
+			
 			
 			// create overlay properties one-time
 			function overlayProperties() {
@@ -173,13 +186,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					overlay.remove();
 				});
 				
-				if(joinByPhoneBtn){
-					joinByPhoneBtn.bind('click',function(){
-						if (!isNaN(element.val())){
-							scope.addToConference(element.val());
-						}	
-					})
-				}
+				
 
 				line.on('$destroy', function() {
 					line.empty().unbind('click');

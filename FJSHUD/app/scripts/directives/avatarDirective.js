@@ -205,14 +205,14 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 							$('#ContextMenu .List').css('height', diff + 'px');
 						}
 					});
-				}, 10);
+				}, 10, false);
 			}
 			
 			function hideOverlay(t) {
 				timer = $timeout(function() {
 					overlay.css('display', 'none');
 					overlay.unbind();
-				}, t);
+				}, t, false);
 			}
 		}
 	};

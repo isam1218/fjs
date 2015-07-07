@@ -1,4 +1,4 @@
-hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService','ContactService', function($q, $timeout, $rootScope, httpService,contactService) {	
+hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactService', function($q, $rootScope, httpService, contactService) {	
 	var deferSettings = $q.defer();
 	var deferPermissions = $q.defer();
 	var deferMe = $q.defer();
