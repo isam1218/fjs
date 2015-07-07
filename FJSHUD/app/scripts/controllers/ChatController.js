@@ -155,7 +155,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		// jump to bottom
 		$timeout(function() {
 			scrollbox.scrollTop = scrollbox.scrollHeight;
-		}, 10);
+		}, 10, false);
 		
 		// no more chats
 		if (version < 0)
@@ -217,7 +217,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// jump to bottom if new messages were found
 			$timeout(function() {
 				scrollbox.scrollTop = scrollbox.scrollHeight;
-			}, 100);
+			}, 100, false);
 		}
 	});
 	

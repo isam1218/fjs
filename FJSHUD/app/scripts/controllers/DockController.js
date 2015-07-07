@@ -95,7 +95,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						}
 					});
 				}
-			}, 100);
+			}, 100, false);
 		}
 		else if ((column || column === undefined) && data.use_column_layout != 'true') {
 			column = false;
