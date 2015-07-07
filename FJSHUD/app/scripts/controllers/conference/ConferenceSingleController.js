@@ -74,31 +74,25 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.tabs = [{upper: $scope.verbage.current_call, lower: 'currentcall'}, 
   {upper: $scope.verbage.chat, lower: 'chat'}, {upper: $scope.verbage.recordings, lower: 'recordings'}];
 
-  var getXpidInConf = $rootScope.$watch('myPid', function(newVal, oldVal){
-      if (!$scope.globalXpid){
-          $scope.globalXpid = newVal;
-            
-          if($routeParams.route != undefined){
-            $scope.selected = $routeParams.route;
-            localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+	settingsService.getSettings().then(function() {
+        $scope.globalXpid = $rootScope.myPid;
+          
+        if($routeParams.route != undefined){
+          $scope.selected = $routeParams.route;
+          localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
 
-            for(var i = 0; i < $scope.tabs.length;i++){
-              if($scope.tabs[i].lower == $routeParams.route){
-                $scope.toggleObject = {item: i};
-                localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-              }
+          for(var i = 0; i < $scope.tabs.length;i++){
+            if($scope.tabs[i].lower == $routeParams.route){
+              $scope.toggleObject = {item: i};
+              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+              break;
             }
-          }else{
-                $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-                $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
           }
-
-            getXpidInConf();
-      } else {
-          getXpidInConf();
-      }
-  });  
+        }else{
+              $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+              $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+        }
+	});  
   
   // $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
   $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;

@@ -1,17 +1,12 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', function($rootScope, $scope, $location, conferenceService, httpService, settingsService) {
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
 
-  var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
-      if (!$scope.globalXpid){
-          $scope.globalXpid = newVal;
-              $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
-              getXpidInC();
-      } else {
-          getXpidInC();
-      }
-  });
+	settingsService.getSettings().then(function() {
+		$scope.globalXpid = $rootScope.myPid;
+		$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+	});
 	
 	$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
 

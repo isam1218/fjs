@@ -91,15 +91,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     {label:$scope.verbage.about,option:'About',isActive:true},
     ];
 
-    var getXpidInMe = $rootScope.$watch('myPid', function(newVal, oldVal){
-        if (!$scope.globalXpid){
-            $scope.globalXpid = newVal;
-            $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
-            $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-            getXpidInMe();
-        } else {
-            getXpidInMe();
-        }
+    settingsService.getSettings().then(function(data) {
+		// grab settings from service (prevents conflict with dock)
+		$scope.settings = settings = data;
+		update_queues();
+		update_settings();
+		
+		// localstorage logic
+        $scope.globalXpid = $rootScope.myPid;
+        $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
+        $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
     });
 
     $scope.saveMeTab = function(tab, index){
@@ -610,15 +611,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             weblauncherTimeout = undefined;
         }, 500, false);
     };
-	
-
-
-	// grab settings from service (prevents conflict with dock)
-	settingsService.getSettings().then(function(data) {
-		$scope.settings = settings = data;
-		update_queues();
-        update_settings();
-	});
     
     $scope.$on('settings_updated',function(event,data){
         if (data){

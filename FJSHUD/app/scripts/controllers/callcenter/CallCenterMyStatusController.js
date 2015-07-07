@@ -7,6 +7,7 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 	
 	queueService.getQueues().then(function(data) {
 		$scope.reasons = data.reasons;
+		$scope.queues = data.mine;
 	});
 	
 	// enable/disable action buttons
