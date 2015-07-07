@@ -17,8 +17,8 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		else {
 			$scope.editing = true;
 			$scope.add.groupId = data.xpid;
-			$scope.add.name = data.name;
-			$scope.add.description = data.description;
+			$scope.add.name = $('<div/>').html(data.name).text();
+			$scope.add.description = $('<div/>').html(data.description).text();
 			$scope.add.type = data.type;
 			
 			for (var i = 0; i < data.members.length; i++) {
