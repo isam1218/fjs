@@ -919,7 +919,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.parkCall = function(currentCall){
-       call =  phoneService.getCall(currentCall.contactId);
+       call =  phoneService.getCall(currentCall.xpid);
         phoneService.parkCall(currentCall.xpid);
     };
 
