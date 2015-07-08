@@ -280,8 +280,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 text = $scope.meModel.chat_custom_status.substr(0, 22) + '...';
             else
                 text = $scope.meModel.chat_custom_status;
+			
             myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":text});
-        }, 3000);
+        }, 3000, false);
     };
 
     this.getElementOffset = function(element) {
@@ -595,7 +596,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             "outHHref":$scope.currentWebLauncher.outboundHangup,
             "outHSilent":$scope.currentWebLauncher.outboundHangupSilent,
             "outHAuto":$scope.currentWebLauncher.outboundHangupAuto,
-        }
+        };
 
         myHttpService.sendAction("weblauncher","update",data);
     };
@@ -607,7 +608,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         weblauncherTimeout = $timeout(function(){
             $scope.update_weblauncher_settings();
             weblauncherTimeout = undefined;
-        },500);
+        }, 500, false);
     };
 	
 

@@ -29,7 +29,7 @@
   .LeftBarWrapper {
     flex: 1 1 0;
 	-webkit-flex: 1 1 0;
-	-ms-flex: 1 1 auto;
+	-ms-flex: 1;
     display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
@@ -41,6 +41,19 @@
    .WidgetTabBar{
       background: url() transparent !important;
    }
+  }
+  
+  .ListRowTitle{
+    width: 50%;
+    .name{
+        width: 100%;
+        
+        strong{
+          text-overflow: ellipsis;
+          width: 100%;
+          overflow: hidden; 
+        }
+    }
   }
   .ContactSearch {   
 	width: 300px;

@@ -2,6 +2,8 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 	function($scope, $rootScope, $routeParams, $location, contactService, httpService, groupService,$sce) {
 	$scope.add = {type: 2, contacts: []};
 	$scope.editing = false;
+	$scope.changeToModelMade = false;
+
 
 	// add user as first group member
 	$scope.add.contacts[0] = contactService.getContact($rootScope.myPid);
@@ -37,6 +39,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		}
 		
 		$scope.$evalAsync(function() {
+			$scope.changeToModelMade = true;
 			$scope.add.contacts.push(contact);
 		});
 	};
@@ -45,6 +48,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		for (var i = 0; i < $scope.add.contacts.length; i++) {
 			if ($scope.add.contacts[i] == contact) {
 				$scope.add.contacts.splice(i, 1);
+				$scope.changeToModelMade = true;
 				break;
 			}
 		}
@@ -87,7 +91,21 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		$scope.closing = true;
 	};
 
-    $scope.$on("$destroy", function() {
-		
-    });
+	$scope.changeMade = function(){
+		$scope.changeToModelMade = true;
+	};
+
+	// controls closing overlay by clicking on background
+	$scope.showOverlayOnCondition = function(){
+			if (!$scope.changeToModelMade)
+				$scope.showOverlay(false);
+			else{
+				$scope.addError = 'You have unsaved changes.';
+				return;
+			}
+	};
+
+  $scope.$on("$destroy", function() {
+	
+  });
 }]);

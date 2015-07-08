@@ -51,7 +51,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 					}, 10000);
 				}
 			};
-		}, 3000);
+		}, 3000, false);
 	});
 
     $scope.onBodyClick = function() {

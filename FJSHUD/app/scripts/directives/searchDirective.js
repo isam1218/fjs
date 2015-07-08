@@ -21,7 +21,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			
 			// trigger auto clear
 			element.on('keyup', function(e) {
-				if (autoClearOn) {
+				if (autoClearOn == 'true') {
 					$timeout.cancel(timeout);
 					
 					timeout = $timeout(clearSearch, autoClearTime*1000);
