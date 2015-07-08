@@ -48,14 +48,14 @@
                       <div class="ListRowContent" style="border-left:none">
                         <div class="ListRowTitle">
                           <div class="name">
-                            <span><strong>{{ ::currentCall.displayName }}</strong></span>
+                            <strong>{{ ::currentCall.displayName }}</strong>
                           </div>
                           <div class="ListRowStatus" >
-                            <div class="ListRowStatusIcon" style="display: inline-block;">{{ currentCall.phone }}</div>
+                            <div class="phone">{{ currentCall.phone }}</div>
                             <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{currentCall.contact.queueStatus}}">
                               <div class="status-icon-inner"></div>
                             </div>
-                            <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.contact.hud_status || 'offline' }}">
+                            <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.contact.hud_status || 'offline' }} last">
                               <div class="status-icon-inner"></div>
                             </div>
                             
