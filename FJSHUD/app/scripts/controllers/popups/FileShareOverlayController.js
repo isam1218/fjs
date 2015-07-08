@@ -110,7 +110,9 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
         $scope.$parent.showOverlay(false);
 		
 		// go to chat page
-		$location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
+        $timeout(function() {
+        	$location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
+        }, 100, false);
     };
 
 	$scope.selectCurrentDownload = function(download){

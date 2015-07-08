@@ -1,6 +1,6 @@
-<div class="Overlay" style="z-index:1200">
+<div class="Overlay" > <!-- style="z-index:1200" -->
     
-    <style> 
+<!--     <style> 
 
         #dialogheadicon{
             left: 0px;
@@ -17,7 +17,7 @@
             left: 10%;
             top: 4%;
         }
-    </style>
+    </style> -->
     <div   class="Background"></div>
     <div class="Foreground">
         <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->               
@@ -26,11 +26,11 @@
            <div class="CloseIcon2"></div>
           </div>
           <div class="headerIcon noPermissions"></div>
-          <div class="HeaderTitle">{{::verbage.sorry_no_authorization_header}}</div>
+          <div class="HeaderTitle no_permission">{{::verbage.sorry_no_authorization_header}}</div>
             <!-- <span><div id="dialogheadicon"></div>  <h2 id="header_label">{{::verbage.sorry_no_authorization_header}}</h2></span> -->
         </div>
         
-        <div class="Sections">
+        <div class="Sections no_permission">
             <div class="Section">
                  <div>
                     <h4 class="upper">{{::verbage.WHY}}?</h4>
