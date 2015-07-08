@@ -87,32 +87,41 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
       		fileList.push($files[i].file);
       	}
 		
-        var data = {
-            'action':'sendWallEvent',
-            'a.targetId': $scope.targetId,
-            'a.type':'f.conversation.wall',
-            'a.xpid':"",
-            'a.archive':$scope.selectedArchiveOption.value,
-            'a.retainKeys':"",
-            'a.message': this.message ? this.message : '',
-            'a.callback':'postToParent',
-            'a.audience':$scope.audience,
-            'alt':"",
-            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "1_0",
-            "_archive": $scope.selectedArchiveOption.value,
-        };
+		if (fileList.length > 0) {
+			var data = {
+				'action':'sendWallEvent',
+				'a.targetId': $scope.targetId,
+				'a.type':'f.conversation.wall',
+				'a.xpid':"",
+				'a.archive':$scope.selectedArchiveOption.value,
+				'a.retainKeys':"",
+				'a.message': this.message ? this.message : '',
+				'a.callback':'postToParent',
+				'a.audience':$scope.audience,
+				'alt':"",
+				"a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
+				"a.taskId": "1_0",
+				"_archive": $scope.selectedArchiveOption.value,
+			};
 		
-        httpService.upload_attachment(data,fileList);
+			httpService.upload_attachment(data, fileList);
+		}
+		else if (this.message && this.message != '') {
+			// send as normal chat
+			httpService.sendAction('streamevent', 'sendConversationEvent', {
+				type: 'f.conversation.chat',
+				audience: $scope.audience,
+				to: $scope.targetId,
+				message: this.message
+			});
+		}
 		
         this.message = "";
         $scope.upload.flow.cancel();
         $scope.$parent.showOverlay(false);
 		
 		// go to chat page
-        $timeout(function() {
-        	$location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
-        }, 100, false);
+        $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
     };
 
 	$scope.selectCurrentDownload = function(download){
