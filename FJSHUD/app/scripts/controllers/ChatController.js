@@ -141,6 +141,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 
 	};
 	
+	// keep scrollbar at bottom until chats are loaded
+	var scrollWatch = $scope.$watch(function() {
+		if (scrollbox.scrollHeight)
+			scrollbox.scrollTop = scrollbox.scrollHeight;
+	});
+	
 	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
 
 	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
@@ -152,10 +158,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		$scope.messages = data.items;
 		addDetails();
 		
-		// jump to bottom
+		// kill watcher
 		$timeout(function() {
-			scrollbox.scrollTop = scrollbox.scrollHeight;
-		}, 10, false);
+			scrollWatch();
+		}, 100, false);
 		
 		// no more chats
 		if (version < 0)
