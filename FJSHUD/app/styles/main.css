@@ -3828,7 +3828,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #779c00;
+  color: #3c9c00;
   margin-bottom: 5px;
   text-transform: uppercase;
 }
@@ -3894,6 +3894,8 @@ div.NewCall .XButton.XButtonNormal {
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
+  border-radius: 3px;
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
   background-color: #779c00;
   margin: 20px 0;
   cursor: pointer;
@@ -3915,7 +3917,7 @@ div.NewCall .XButton.XButtonNormal {
   padding: 20px;
 }
 .Widget.Zipwhip .Intro {
-  margin: 20px 0 10px 0;
+  margin: 10px 0 10px 0;
 }
 .Widget.Zipwhip .Logo {
   margin-left: 20px;
@@ -3929,7 +3931,8 @@ div.NewCall .XButton.XButtonNormal {
   background-color: #f9f9f9;
 }
 .Widget.Zipwhip .Left h4 {
-  font-size: 16px;
+  color: #3c9c00;
+  font-size: 17px;
   margin-bottom: 5px;
 }
 .Widget.Zipwhip .Right {
@@ -3987,12 +3990,25 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
   font-weight: bold;
   color: white;
-  padding: 7px 0 7px 34px;
-  background-color: #FF3333;
-  margin: 40px 0px 0px 50px;
+  height: 28px;
+  padding: 7px 0 7px 30px;
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  border-radius: 3px;
+  background-color: #779c00;
+  margin: 45px 0px;
   cursor: pointer;
-  border-radius: 12px;
-  width: 150px;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
 }
 .Widget.Conversation {
   min-height: 300px;
