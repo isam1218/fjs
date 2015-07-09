@@ -36,7 +36,7 @@
 			</div>
 			
 			<div class="ListRowStatus">
-				<div class="vmtime" timer="member.started"></div>
+				<div class="vmtime" timer="member.started" ng-if="!member.ring"></div>
 				<div class="joining" ng-if="member.ring">
 					<img src="img/XLoading.gif" />
 					joining...
