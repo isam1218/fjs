@@ -115,9 +115,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		if(!$scope.showFileShare){
 			return;
 		}
-      	fileList = [];
+      	
+		var fileList = [];
 		
-		for(var i = 0; i < $files.length;i++){
+		for(var i = 0, iLen = $files.length; i < iLen; i++){
       		fileList.push($files[i].file);
 			
       	}

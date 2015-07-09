@@ -31,7 +31,7 @@ hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$loc
 	
 		for (var i = 0, iLen = $scope.queueMembers.length; i < iLen; i++) {
 			var member = $scope.queueMembers[i];
-	     console.error('member - ', member);
+			
 			// find other queues for this contact
 			member.otherQueues = [];
 			

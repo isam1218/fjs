@@ -79,7 +79,7 @@
 
 				function alertScroll(x,y,dx) {
 				    var scrolls = fj.alert.App.__scrolls
-				    for(var i=0; i <scrolls.length; i++) {
+				    for(var i = 0, iLen = scrolls.length; i < iLen; i++) {
 				        scrolls[i].onWheel({wheelDelta:(-1*dx)});
 				    }
 				}
@@ -150,7 +150,7 @@
 				            }
 				            , initScrolls: function() {
 				                var scrolls = fj.Utils.DOMUtils.getElementsByClassName(document, "fj-scrollable");
-				                for(var i=0; i <scrolls.length; i++) {
+				                for(var i = 0, iLen = scrolls.length; i < iLen; i++) {
 				                    this.__scrolls.push(new fj.Scrollable(scrolls[i]));
 				                }
 				            }
@@ -163,7 +163,7 @@
 				                else {
 				                    var _els = document.getElementsByTagName("*");
 				                    var val; 
-				                    for(var i=0; i < _els.length; i++) {
+				                    for(var i = 0, iLen = _els.length; i < iLen; i++) {
 				                    	val = _els[i].getAttribute("data-bottom-scroll");  	 
 				                        if('on' == val) {
 				                            scrolls.push(_els[i]);
@@ -172,7 +172,7 @@
 				                }
 				                if(scrolls && scrolls.length>0){
 				                	setTimeout(function(){
-				                		for(var i=0; i<scrolls.length; i++){
+				                		for(var i = 0, iLen = scrolls.length; i < iLen; i++){
 				                			scrolls[i].scrollTop = scrolls[i].scrollHeight;
 				                		}
 				                	},100);
@@ -181,7 +181,7 @@
 
 				            
 				            , destroyScrolls: function() {
-				                for(var i=0; i <this.__scrolls.length; i++) {
+				                for(var i = 0, iLen = this.__scrolls.length; i < iLen; i++) {
 				                    this.__scrolls[i].destroy();
 				                }
 				                this.__scrolls = [];
@@ -458,7 +458,7 @@
 				        var context =this;
 				        this.getElements();
 				        this.__intervalId = setInterval(function(){
-				            for(var i=0; i<context.elements.length; i++) {
+				            for(var i = 0, iLen = context.elements.length; i < iLen; i++) {
 				                context.setDurationValue(context.elements[i]);
 				            }
 				        }, 1000);
@@ -491,7 +491,7 @@
 				        else {
 				            var _els = document.getElementsByTagName("*");
 				            var arr= [];
-				            for(var i=0; i < _els.length; i++) {
+				            for(var i = 0, iLen = _els.length; i < iLen; i++) {
 				                if(_els[i].getAttribute("data-duration") || _els[i].getAttribute("data-human-duration")) {
 				                    arr.push(_els[i]);
 				                }

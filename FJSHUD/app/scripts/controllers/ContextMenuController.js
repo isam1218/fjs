@@ -84,7 +84,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 				$scope.canDock = true;
 				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string
 				
-				for (key in data) {
+				for (var key in data) {
 					if (key.indexOf('GadgetConfig') != -1 && key.match(regex)) {
 						$scope.canDock = false;
 						break;
@@ -193,7 +193,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		var emails = [];
 		
 		// get all addresses from members
-		for (var i = 0; i < group.members.length; i++) {
+		for (var i = 0, iLen = group.members.length; i < iLen; i++) {
 			var member = group.members[i];
 			
 			if (member.contactId != $rootScope.myPid && member.fullProfile && member.fullProfile.email)

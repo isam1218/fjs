@@ -124,7 +124,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				
 						overlay.bind('mouseleave', function(e) {							
 							// keep open if user moves back onto avatar
-							for (i = 0; i < element.children().length; i++)  {
+							for (var i = 0, iLen = element.children().length; i < iLen; i++)  {
 								if (e.relatedTarget == element.children()[i])
 									return;
 							}

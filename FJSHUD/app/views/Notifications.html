@@ -19,14 +19,15 @@
 				<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
 					<avatar 
 						class="LeftBarNotificationAvatarSection NotificationAvatar"
+						ng-if="::message.type != 'error'"
 						ng-click="go_to_notification_chat(message)" 
 						profile="message.fullProfile" 
 						type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 					</avatar>
 
-					<div ng-if="message.type== 'error'" class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
-							<div class="AvatarWarningSmall"></div>
-						</div>
+					<div ng-if="::message.type == 'error'" class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+						<div class="AvatarWarningSmall"></div>
+					</div>
 				
 					<div class="LeftBarNotificationMessageSection"> 
 						<div ng-click="go_to_notification_chat(message)" class="chatNotification">

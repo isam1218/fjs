@@ -23,7 +23,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 			$scope.add.description = $('<div/>').html(data.description).text();
 			$scope.add.type = data.type;
 			
-			for (var i = 0; i < data.members.length; i++) {
+			for (var i = 0, iLen = data.members.length; i < iLen; i++) {
 				// avoid adding self again
 				if (data.members[i].contactId != $rootScope.myPid)
 					$scope.add.contacts.push(contactService.getContact(data.members[i].contactId));
@@ -33,7 +33,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 	
 	$scope.searchContact = function(contact) {
 		// prevent duplicates
-		for (var i = 0; i < $scope.add.contacts.length; i++) {
+		for (var i = 0, iLen = $scope.add.contacts.length; i < iLen; i++) {
 			if ($scope.add.contacts[i] == contact)
 				return;
 		}
@@ -45,7 +45,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 	};
 	
 	$scope.removeUser = function(contact) {
-		for (var i = 0; i < $scope.add.contacts.length; i++) {
+		for (var i = 0, iLen = $scope.add.contacts.length; i < iLen; i++) {
 			if ($scope.add.contacts[i] == contact) {
 				$scope.add.contacts.splice(i, 1);
 				$scope.changeToModelMade = true;
@@ -63,7 +63,7 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		
 		// comma separated list
 		$scope.add.contactIds = '';
-		for (var i = 0; i < $scope.add.contacts.length; i++){
+		for (var i = 0, iLen = $scope.add.contacts.length; i < iLen; i++){
 			if ($scope.add.contacts[i] != null){
 				$scope.add.contactIds += $scope.add.contacts[i].xpid + ',';
 			}

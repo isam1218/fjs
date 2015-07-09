@@ -83,7 +83,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	settingsService.getMe().then(function(data){
 		if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
-        	username = $rootScope.meModel.my_jid.split("@")[0];
+        	var username = $rootScope.meModel.my_jid.split("@")[0];
 			if(!isRegistered && phonePlugin.getSession){
 				session = phonePlugin.getSession(username);
 				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
@@ -161,7 +161,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 		}
 	
-		for(i in callsDetails){
+		for(var i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 				holdCall(i,true);		
 			}
@@ -169,7 +169,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var playVm = function(xpid){
-		for (var i = 0; i < voicemails.length; i++) {
+		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
 				$rootScope.$broadcast('play_voicemail', voicemails[i]);
 				break;
@@ -224,24 +224,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
-        data = {}
+        var data = {};
         sipCalls[call.sip_id] = call;
 		
 		switch(status){
 			case CALL_STATUS_RINGING:
 				data = {
 					event: 'ringing',
-				}
+				};
 				break;
 			case CALL_STATUS_ACCEPTED:
 				data = {
 					event: 'accepted',
-				}
+				};
 				break;
 			case CALL_STATUS_HOLD:
 				data = {
 					event: 'onhold'
-				}
+				};
 			
 				break;
 			case CALL_STATUS_ERROR:
@@ -254,7 +254,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				data = {
 					event: 'onclose',
 					sipId: call.sip_id
-				}
+				};
 				removeNotification();
 				break;
 		}
@@ -315,8 +315,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				soundManager = session.soundManager;
 				devices = soundManager.devs;
 				deferred.resolve(devices);
-				spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
-				micVolume = settingsService.getSetting('hudmw_webphone_mic');
+				var spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
+				var micVolume = settingsService.getSetting('hudmw_webphone_mic');
 				if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
 					soundManager.speaker = parseFloat(spkVolume);
 					soundManager.microphone = parseFloat(micVolume);
@@ -363,8 +363,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 
     var onAlert = function(urlhash){
-    	
-    	var arguments,url,query,queryArray,id,data;
+    	var arguments,url,query,queryArray,id,data,xpid;
     	arguments = urlhash.split("?");
     	url = arguments[0];
     	if(arguments.length > 1){
@@ -439,7 +438,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '/goToChat':
 					var context = queryArray[0];
 					var audience = context.split(":")[0];
-					var xpid = context.split(":")[1];
+					xpid = context.split(":")[1];
 					var messagexpid = queryArray[1];
 					goToNotificationChat(xpid, audience,messagexpid); 
 					break;	
@@ -521,7 +520,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '#/goToChat':
 					var context = queryArray[0];
 					var audience = context.split(":")[0];
-					var xpid = context.split(":")[1];
+					xpid = context.split(":")[1];
 					var messagexpid = queryArray[1];
 					goToNotificationChat(xpid, audience,messagexpid); 
 					break;	
@@ -582,7 +581,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	var storeRecent = function(xpid){
-		localPid = JSON.parse(localStorage.me);
+		var localPid = JSON.parse(localStorage.me);
 		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
 		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
 		recent[xpid] = {
@@ -622,7 +621,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 		remove_notification(messagexpid);
     };	
-    onAlertMouseEvent = function(event,x,y){
+	
+    var onAlertMouseEvent = function(event,x,y){
     	//this.removeNotification();
     };
 
@@ -744,7 +744,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	holding the call resuming the call and ending the call
 	*/
 	this.getCall = function(xpid){
-		call = sipCalls[callsDetails[xpid].sipId];
+		var call = sipCalls[callsDetails[xpid].sipId];
 		return call;
 	};
 	/**
@@ -755,7 +755,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
  
 	this.getCallByContactId = function(contactId){
-		for(call in callsDetails){
+		for(var call in callsDetails){
 			if(callsDetails[call].contactId){
 				if(callsDetails[call].contactId == contactId){
 					return callsDetails[call];
@@ -781,7 +781,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var displayHangUpLauncher = false;
 		var displayLauncher = false;
 		
-		for(i = 0; i < data.length; i ++){
+		for(var i = 0, iLen = data.length; i < iLen; i++){
 				if(data[i].xef001type == "delete"){
 					if(allCallDetails[data[i].xpid]){
 						delete allCallDetails[data[i].xpid];
@@ -807,7 +807,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			
 		if(data){
 			var i = 0;
-			for(i = 0; i < data.length; i ++){
+			for(var i = 0, iLen = data.length; i < iLen; i++){
 					
 				if(data[i].xef001type == "delete"){
 					var call = callsDetails[data[i].xpid];
@@ -817,7 +817,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
 							if(call.incoming){
 								if(weblauncher.inboundHangupAuto){
-										url = weblauncher.inboundHangup;
+										var url = weblauncher.inboundHangup;
 										url = settingsService.formatWebString(url,call);
 										if(weblauncher.inboundHangupSilent){
 											$.ajax(url,{});
@@ -827,7 +827,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}else{
 								if(weblauncher.outboundHangupAuto){
-										url = weblauncher.outboundHangup;
+										var url = weblauncher.outboundHangup;
 										url = settingsService.formatWebString(url,call);
 										if(weblauncher.outboundHangupSilent){
 											$.ajax(url,{});
@@ -853,7 +853,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 						
 						if(!doesExist){
-							for(callId in callsDetails){
+							for(var callId in callsDetails){
 								if(callId != data[i].xpid){
 									holdCall(callId,true);		
 								}
@@ -864,7 +864,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
-										url = weblauncher.inbound;
+										var url = weblauncher.inbound;
 										url = settingsService.formatWebString(url,data[i]);
 										if(weblauncher.inboundSilent){
 											$.ajax(url,{});
@@ -874,7 +874,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}else{
 								if(weblauncher.outboundAuto){
-										url = weblauncher.outbound;
+										var url = weblauncher.outbound;
 										url = settingsService.formatWebString(url,data[i]);
 										if(weblauncher.outboundSilent){
 											$.ajax(url,{});
@@ -898,7 +898,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
-			for(var i = 0; i < data.length; i++){
+			for(var i = 0, iLen = data.length; i < iLen; i++){
 				if (data[i].xpid)
 					$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
 				if(callsDetails[data[i].xpid]){

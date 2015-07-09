@@ -45,7 +45,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 	};
 	
 	this.reset_app_menu = function(){
-		data = {};
+		var data = {};
 		$rootScope.$broadcast('reset_app_menu', data);
 	};
 
@@ -141,13 +141,13 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
     });
 	
 	$rootScope.$on('locations_synced', function(event,data){
-        for(var i = 0; i < data.length; i++){
+    for(var i = 0, iLen = data.length; i < iLen; i++){
 			locations[data[i].xpid] = data[i];
 			if(data[i].xpid == $rootScope.meModel.current_location){
 				$rootScope.meModel.location = data[i];
 				break;	
 			}
-        }
+    }
 
         if($rootScope.meModel){
         	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];

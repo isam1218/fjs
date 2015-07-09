@@ -141,8 +141,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 
 	$rootScope.$on('queuepermissions_synced', function (event, data){
-		for (var i = 0; i < queues.length; i++){
-			for (var j = 0; j < data.length; j++){
+		for (var i = 0, iLen = queues.length; i < iLen; i++){
+			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (data[j].xpid == queues[i].xpid){
 					queues[i].permissions = data[j];
 				}

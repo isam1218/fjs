@@ -88,7 +88,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
-								for (feed in synced_data) {
+								for (var feed in synced_data) {
 									if (synced_data[feed].length > 0)
 										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
 								}
@@ -156,7 +156,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 							if(localStorage.data_obj != undefined){
 								synced_data = JSON.parse(localStorage.data_obj);
-								for(feed in synced_data){
+								for(var feed in synced_data){
 									if (synced_data[feed].length > 0)
 			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 								}
@@ -173,7 +173,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    var synced_data = event.data.data;
 		                  	tabMap = JSON.parse(localStorage.fon_tabs);
 		                  	if(tabMap[tabId].isMaster){
-								for(tab in tabMap){
+								for(var tab in tabMap){
 									tabMap[tab].isSynced = false;	
 								}
 
@@ -188,7 +188,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 							
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
-								for (feed in synced_data) {
+								for (var feed in synced_data) {
 									if(!$.isEmptyObject(data_obj)){
 										data_obj[feed] = synced_data[feed];
 										localStorage.data_obj = JSON.stringify(data_obj);
@@ -239,7 +239,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 
 									synced_data = JSON.parse(localStorage.data_obj);
-									for(feed in synced_data){
+									for(var feed in synced_data){
 										if (synced_data[feed].length > 0)
 			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
 									}
@@ -511,11 +511,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
         }
 		var fd = new FormData();
     
-        for (field in data) {
+        for (var field in data) {
             fd.append(field, data[field]);
         }
 
-        for (i in attachments){
+        for (var i in attachments){
         	fd.append('a.attachments',attachments[i]);
         }
 
@@ -553,7 +553,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
     
         var fd = new FormData();
     
-        for (field in data) {
+        for (var field in data) {
             fd.append(field, data[field]);
         }
         var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
@@ -584,7 +584,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			t: 'web',
 			action: action
 		};
-		for (key in data)
+		for (var key in data)
 			params['a.' + key] = data[key];
 	
 		return $http({
@@ -625,9 +625,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		.then(function(response) {
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 	
-			for (key in data) {
+			for (var key in data) {
 				// create xpid for each record
-				for (i = 0; i < data[key].items.length; i++)
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
 					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
 				
 				// send items back to controller
@@ -664,9 +664,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		.then(function(response) {
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 
-			for (key in data) {
+			for (var key in data) {
 				// create xpid for each record
-				for (i = 0; i < data[key].items.length; i++)
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
 					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
 				
 				// send items back to controller
