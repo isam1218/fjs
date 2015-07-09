@@ -54,14 +54,31 @@
     .joinWrapper{
         position: absolute;
         width: 100%;
-        bottom: 0;
+        top: 140px;
+        height: 120px;
         
         .JoinMeetingSection{
             position: absolute;
             width: 100%;
             top: 0;
         }
-    }    
+    }  
+    
+    .widget-zoom-contacts{
+        top: 260px;
+        position: absolute;
+        
+        .ZoomRowTitle{
+             width: 100%;
+             margin-top: 3px;
+             
+             .name{
+                  width: 50%; 
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+             }
+        }
+    }  
 }
 
 .WidgetZoom .XButtonBlue { 
@@ -177,7 +194,11 @@
 
 .widget-zoom-contacts{
     top: 20px;
-    position: relative;        
+    position: relative;  
+    width: 100%;   
+    max-height: 400px;
+    overflow-y: auto;   
+    overflow-x: hidden;
         
     .ListRow {
         float: left;
@@ -216,7 +237,7 @@
             font-size: 11px;
             padding: 4px 6px 6px 6px;
             margin: 0px;
-            margin-right: -5px;                      
+            /*margin-right: -5px;  */                    
             font-weight: bold;
             height: 25px;
         }   
