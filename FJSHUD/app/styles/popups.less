@@ -16,6 +16,7 @@
     position:relative;
     max-height: 300px;
     vertical-align: middle !important;
+    width: 100%;
 }
 
 
@@ -26,6 +27,57 @@
   width: 100%;
   height: 100%;
   z-index: 160;  
+  
+  &.fileShare{
+    .wrapper{
+        width: 90%;
+        
+        .Section{
+            .review{
+                background-color:#FFF;
+                height:340px;
+                max-height: none;
+                text-align:center;
+                line-height:340px;
+                padding-top: 26px;
+                
+                img.CurrentDownload{
+                    width: 100%;
+                    height: 284px;
+                }                               
+            }            
+            .Members .ListRow{
+                .file{
+                    margin-left:5px;
+                    display:inline-block;
+                    width:70%;
+                    padding-top: 10px;
+                    
+                    & > p:first-child{
+                        border-bottom:1px solid #ccc;
+                        width:100%;color:#009cff;
+                        font-weight:bold;
+                    }
+                    
+                    span{
+                        margin-top:0px;
+                    }                                        
+                }
+                
+                .XButton{
+                        float:right;
+                        margin-top:10px;
+                        right: -30px;
+                        height: 28px;
+                }
+            }
+        }
+        .XButton.XButtonBlue{
+            font-size: 12px;
+            height: 26px;
+        }
+    }
+  }
       
   &.notifications{    
     .overlayNotificationsSection{
