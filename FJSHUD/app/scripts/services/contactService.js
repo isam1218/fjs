@@ -101,7 +101,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			contacts[i].call = null;
 			
 			// find caller
-			for (key in data) {
+			for (var key in data) {
 				if (contacts[i].xpid == data[key].xpid) {
 					contacts[i].call = data[key];
 					
@@ -117,7 +117,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				contacts[i].call.bargers = [];
 			
 				// find people barging call
-				for (key in data) {
+				for (var key in data) {
 					if (data[key].barge > 0 && data[key].xpid != contacts[i].xpid && (data[key].contactId == contacts[i].call.xpid || data[key].contactId == contacts[i].call.contactId)) {
 						for (var c = 0, cLen = contacts.length; c < cLen; c++) {
 							if (contacts[c].xpid == data[key].xpid) {

@@ -106,23 +106,25 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	};
 
 	$scope.joinConference = function(){
+		var params;
 
 		if($scope.joined){
 			params = {
 				conferenceId:$scope.targetId
-			}
+			};
+			
 			httpService.sendAction("conferences",'leave',params);
 		}else{
-				params = {
-					conferenceId: $scope.targetId,
-					contactId: $scope.meModel.my_pid,
-				}
+			params = {
+				conferenceId: $scope.targetId,
+				contactId: $scope.meModel.my_pid,
+			};
 
 			httpService.sendAction("conferences","joinContact",params);
 
 			
 		}
-	}
+	};
 
 	$scope.$on('calls_updated',function(event,data){
 		if(data){

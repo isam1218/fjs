@@ -46,7 +46,6 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 
     $scope.$on('locations_synced', function(event,data){
         if(data){
-            var me = {};
             for (var i = 0; i < data.length; i++) {
                 $scope.locations[data[i].xpid] = data[i];
             }

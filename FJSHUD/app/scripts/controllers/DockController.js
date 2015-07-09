@@ -19,11 +19,11 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	});
 	
 	var updateDock = function(data) {
-		for (key in data) {
+		for (var key in data) {
 			// check for dupes
 			var found = false;
 			
-			for (g in $scope.gadgets) {
+			for (var g in $scope.gadgets) {
 				for (var i = 0; i < $scope.gadgets[g].length; i++) {
 					if (key == $scope.gadgets[g][i].name) {
 						found = true;
@@ -122,7 +122,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		httpService.sendAction('settings', 'delete', {name: data});
 		
 		// remove from ui
-		for (g in $scope.gadgets) {
+		for (var g in $scope.gadgets) {
 			for (var i = 0; i < $scope.gadgets[g].length; i++) {
 				if (data == $scope.gadgets[g][i].name) {
 					$scope.gadgets[g].splice(i, 1);
@@ -144,7 +144,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	
 	$scope.$on('parkedcalls_synced',function(event,data){
 		if(data){
-			for(parkedCall in data){
+			for(var parkedCall in data){
 				if(data[parkedCall].xef001type == "delete"){
 					//delete $scope.parkedCalls[data[parkedCall.xpid]];
 					for (var i = 0; i < $scope.parkedCalls.length;i++){

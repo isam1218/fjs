@@ -51,10 +51,10 @@ function get_feed_data(feed){
 function format_array(feed) {
     var arr = [];
 	
-	for (key in feed) {
+	for (var key in feed) {
 		if (feed[key].items.length > 0) {
 			// create xpid for each record
-			for (i = 0; i < feed[key].items.length; i++)
+			for (var i = 0; i < feed[key].items.length; i++)
 				feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
 				
 			arr = arr.concat(feed[key].items);
@@ -74,7 +74,7 @@ function should_sync(){
 function version_check (){
 	var newFeeds ='';
 
-	for (i = 0; i < feeds.length; i++)
+	for (var i = 0; i < feeds.length; i++)
 		newFeeds += '&' + feeds[i] + '=';
 	
 	var request = new httpRequest();
@@ -120,7 +120,7 @@ function version_check (){
 
 var sync_request = function(f){			
 	var newFeeds = '';
-	for (i = 0; i < f.length; i++)
+	for (var i = 0; i < f.length; i++)
 		newFeeds += '&' + f[i] + '=';
 	
 	var request = new httpRequest();
@@ -132,14 +132,14 @@ var sync_request = function(f){
 		
 		
 		if (xmlhttp.status && xmlhttp.status == 200){		
-			synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
+			var synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
 			
-			for (feed in synced_data) {
+			for (var feed in synced_data) {
 				// first time
 				if (!synced)
 					data_obj[feed] = synced_data[feed];
 				else {
-					for (key in synced_data[feed]) {
+					for (var key in synced_data[feed]) {
 						// full replace
 						if (synced_data[feed][key].xef001type == 'F'){
 							if(data_obj[feed]){
@@ -150,10 +150,10 @@ var sync_request = function(f){
 						}
 						// update individually
 						else {
-							for (i = 0; i < synced_data[feed][key].items.length; i++) {
+							for (var i = 0; i < synced_data[feed][key].items.length; i++) {
 								var newItem = true;
 								if(data_obj[feed]){
-									for (j = 0; j < data_obj[feed][key].items.length; j++) {
+									for (var j = 0; j < data_obj[feed][key].items.length; j++) {
 										if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
 											data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
 											newItem = false;
@@ -178,11 +178,11 @@ var sync_request = function(f){
 					data_obj['callerrecording'] = {};
 					data_obj['conferencerecording'] = {};
 					
-					for (key in synced_data[feed]) {
+					for (var key in synced_data[feed]) {
 						data_obj['callerrecording'][key] = {items: []};
 						data_obj['conferencerecording'][key] = {items: []};
 					
-						for (i = 0; i < synced_data[feed][key].items.length; i++) {
+						for (var i = 0; i < synced_data[feed][key].items.length; i++) {
 							if (synced_data[feed][key].items[i].conferenceId)
 								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
 							else

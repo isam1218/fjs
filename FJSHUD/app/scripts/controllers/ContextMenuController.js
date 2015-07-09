@@ -84,7 +84,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 				$scope.canDock = true;
 				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string
 				
-				for (key in data) {
+				for (var key in data) {
 					if (key.indexOf('GadgetConfig') != -1 && key.match(regex)) {
 						$scope.canDock = false;
 						break;

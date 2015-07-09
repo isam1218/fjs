@@ -45,7 +45,6 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
    
     $scope.$on('locations_synced', function(event,data){
         if(data){
-            var me = {};
             for (var i = 0; i < data.length; i++) {
                 if(data[i].locationType != 'a'){
                      $scope.locations[data[i].xpid] = data[i];
@@ -56,7 +55,6 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
 
      $scope.$on('location_status_synced', function(event,data){
         if(data){
-            var me = {};
             for (var i = 0; i < data.length; i++) {
                 if($scope.locations[data[i].xpid]){
                     $scope.locations[data[i].xpid].status = data[i];

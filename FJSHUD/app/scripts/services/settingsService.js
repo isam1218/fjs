@@ -45,7 +45,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 	};
 	
 	this.reset_app_menu = function(){
-		data = {};
+		var data = {};
 		$rootScope.$broadcast('reset_app_menu', data);
 	};
 

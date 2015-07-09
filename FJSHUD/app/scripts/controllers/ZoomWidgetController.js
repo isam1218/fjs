@@ -10,7 +10,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
     $scope.inMeeting = false;
     $scope.startMeeting = function(option){
         var data = {};
-        var users = ""
+        var users = "";
 
         for (var i = 0; i < $scope.addedContacts.length; i++) {
             users = users + $scope.addedContacts[i].xpid + ",";

@@ -42,7 +42,7 @@ onmessage = function(event, port){
 };
 
 function get_feed_data(feed){
-	for(i = 0; i < ports.length;i++){
+	for(var i = 0; i < ports.length;i++){
 		ports[i].postMessage({
 			"action": "feed_request",
 			"feed": feed,
@@ -54,7 +54,7 @@ function get_feed_data(feed){
 function format_array(feed) {
     var arr = [];
 	
-	for (key in feed) {
+	for (var key in feed) {
 		if (feed[key].items.length > 0) {
 			// create xpid for each record
 			for (var i = 0; i < feed[key].items.length; i++)
@@ -76,14 +76,14 @@ function sync_request(f){
 	var header = construct_request_header();
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status && xmlhttp.status == 200){		
-			synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
+			var synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
 			
-			for (feed in synced_data) {
+			for (var feed in synced_data) {
 				// first time
 				if (!synced)
 					data_obj[feed] = synced_data[feed];
 				else {
-					for (key in synced_data[feed]) {
+					for (var key in synced_data[feed]) {
 						// full replace
 						if (synced_data[feed][key].xef001type == 'F'){
 							if(data_obj[feed]){
@@ -124,7 +124,7 @@ function sync_request(f){
 					data_obj['callerrecording'] = {};
 					data_obj['conferencerecording'] = {};
 					
-					for (key in synced_data[feed]) {
+					for (var key in synced_data[feed]) {
 						data_obj['callerrecording'][key] = {items: []};
 						data_obj['conferencerecording'][key] = {items: []};
 					
@@ -154,7 +154,7 @@ function sync_request(f){
 			synced = true;
 		}
 		else{
-			for(i = 0; i < ports.length;i++){
+			for(var i = 0; i < ports.length;i++){
 				ports[i].postMessage({
 					"action": "auth_failed"
 				});
@@ -198,7 +198,7 @@ function do_version_check(){
             else
 				setTimeout('do_version_check();', 500);
 		}else if(xmlhttp.status == 404 || xmlhttp.status == 500){
-			for(i = 0; i < ports.length;i++){
+			for(var i = 0; i < ports.length;i++){
 				ports[i].postMessage({
 					"action": "network_error"
 				});
@@ -206,7 +206,7 @@ function do_version_check(){
 
 		}
 		else{
-			for(i = 0; i < ports.length;i++){
+			for(var i = 0; i < ports.length;i++){
 				ports[i].postMessage({
 					"action": "auth_failed"
 				});

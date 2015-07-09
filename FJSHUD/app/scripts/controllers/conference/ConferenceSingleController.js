@@ -144,10 +144,10 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.searchContact = function(contact){
 		if(contact){
-			params = {
+			var params = {
 				conferenceId: $scope.conferenceId,
 				contactId: contact.xpid
-			}
+			};
 
 			httpService.sendAction("conferences","joinContact",params);
 		}
@@ -156,10 +156,11 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.conferenceContact;
 
   $scope.addToConference = function(phoneNumber){
-    params = {
+    var params = {
       conferenceId: $scope.conferenceId,
       phone: phoneNumber
-    }
+    };
+	
     httpService.sendAction("conferences", "joinPhone", params);
   };
 
@@ -185,16 +186,19 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   };
 
   $scope.joinConference = function(){
+		var params;
+		
 		if($scope.joined){
 			params = {
 				conferenceId:$scope.conferenceId
-			}
+			};
+			
 			httpService.sendAction("conferences",'leave',params);
 		}else{
-				params = {
-					conferenceId: $scope.conferenceId,
-					contactId: $scope.meModel.my_pid,
-				}
+			params = {
+				conferenceId: $scope.conferenceId,
+				contactId: $scope.meModel.my_pid,
+			};
 
 			httpService.sendAction("conferences","joinContact",params);			
 		}

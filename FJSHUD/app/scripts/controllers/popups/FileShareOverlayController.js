@@ -80,10 +80,9 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	};
 
     $scope.uploadAttachments = function($files){
-      	$files[0];
-      	fileList = [];
+      	var fileList = [];
 		
-      	for (i in $files){
+      	for (var i in $files){
       		fileList.push($files[i].file);
       	}
 		
