@@ -103,11 +103,13 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				permissions.showZipwhip = isEnabled(data[i].propertyValue, 16);
 				permissions.showZipwhip = isEnabled(data[i].propertyValue, 17);
 
+				//permissions.showZipwhip = isEnabled(data[i].propertyValue, 17);
+
 				// group permissions from MyPermissions.java
 				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
 				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
-				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
-				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
+				// permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
+				// permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
@@ -117,6 +119,8 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				// // Call Permission from CallPermissions.java
 				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				deferPermissions.resolve(permissions);
+				console.log(data[i].propertyValue);
+
             }
 			// assign other useful goodies
 			else if (data[i].propertyKey == 'my_pid') {

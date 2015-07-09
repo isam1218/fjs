@@ -105,15 +105,22 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		settingsService.getPermissions().then(function(data) {
 			for (var i = 0; i < $scope.appIcons.length; i++) {
 				// toggle permission-based icons
-				if ($scope.appIcons[i].key == 'Intellinote')
+				if ($scope.appIcons[i].key == 'Intellinote'){
 					$scope.appIcons[i].enabled = data.showIntellinote;
-        else if ($scope.appIcons[i].key == 'Zipwhip')
+        }
+        if ($scope.appIcons[i].key == 'Zipwhip'){
           $scope.appIcons[i].enabled = data.showZipwhip;
-				else if ($scope.appIcons[i].key == 'Zoom')
+        }
+				 if ($scope.appIcons[i].key == 'Zoom'){
 					$scope.appIcons[i].enabled = data.showVideoCollab;
-				else if ($scope.appIcons[i].key == 'CallCenter')
+        }
+				 if ($scope.appIcons[i].key == 'CallCenter'){
 					$scope.appIcons[i].enabled = data.showCallCenter;
+        }
+
+
 			}
+      console.log(data);
 		});
 	});
 
