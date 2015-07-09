@@ -393,7 +393,12 @@
 </div>
 
 <div class="CallStatusContainer">
-	<div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.type != 5 ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
+	<div class="CallStatusContainerInbound" ng-repeat="currentCall in calls" 
+	
+	ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')"
+
+	ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
+				
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
 					<div class="CallStatusIcon"> </div>
 				</div>

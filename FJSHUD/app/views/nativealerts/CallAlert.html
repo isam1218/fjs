@@ -26,7 +26,7 @@
   </a>
   
 
-  <div class="CallStatusContainerOutbound" ng-repeat="currentCall in calls" ng-class="currentCall.type != 5 ? 'CallStatusContainerInbound' : 'CallStatusContainerOutbound'" >                            
+  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" >                            
      <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer">
          <div class="CallStatusIcon"> </div>
      </a>
