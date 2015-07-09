@@ -48,21 +48,30 @@
         </div>
 
         <div class="ZoomWidgetSection right"> 
-            <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
-                <div class="WidgetFont">{{::verbage.create_summary}}</div>
-            </div>
-            <div class="joinWrapper">
-	            <div class="JoinMeetingSection"> 
-	                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
-	                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
-	                <div class="addContact">
-						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" placeholder="{{::verbage.add_someone}}" contact-search />
-	                </div>
+	            <div class="ListSection WidgetTextHeader"> 
+	                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
+	                <div class="WidgetFont">{{::verbage.create_summary}}</div>
+	            </div>
+	            <div class="joinWrapper">
+		            <div class="JoinMeetingSection"> 
+		                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
+		                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
+		                <div class="addContact">
+							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" placeholder="{{::verbage.add_someone}}" contact-search />
+		                </div>
+		            </div>
 	            </div>
             </div>
+            <script>
+
+            $(window).bind("resize",function() {
+              var totalElHeights = 	$('.WidgetZoomBody').height() + ('.ZoomWidgetSection').height() + $(".WidgetFont").height();
+              var ttlPctUsed = Math.round(totalElHeights / $('.WidgetZoomBody').height()) * 100;
+              $(".widget-zoom-contacts").css("max-height", 100 - ttlPctUsed);
+            });
+            </script>
             <div class="widget-zoom-contacts">
-                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
+                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
 						<avatar profile="contact" widget="zoom"></avatar>
                         <div class="ListRowContent" dockable="contact">
                             <div class="ZoomRowTitle">
@@ -80,7 +89,7 @@
             </div>
 
 
-        </div>
+        
 
     </div>
 
