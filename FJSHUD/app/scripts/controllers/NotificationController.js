@@ -697,15 +697,15 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 
 				for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
 						if($scope.todaysNotifications[j].xpid == item.xpid){
-						$scope.todaysNotifications.splice(j,1,item);
-						if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
-							if(!$scope.isFirstSync){
-								phoneService.playSound("received");
+							$scope.todaysNotifications.splice(j,1,item);
+							if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
+								if(!$scope.isFirstSync){
+									phoneService.playSound("received");
+								}
 							}
+							isAdded = true;
+							break;	
 						}
-						isAdded = true;
-						break;	
-					}
 				}
 				if(!isAdded){
 					if(item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
@@ -760,6 +760,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		for (var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 			if ($scope.notifications[j].type == 'q-alert-rotation'){
 				$scope.notifications.splice(j,1);
+				jLen--;
 			}
 		}
 	};

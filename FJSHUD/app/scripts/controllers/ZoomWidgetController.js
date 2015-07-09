@@ -68,6 +68,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             if($scope.addedContacts[i].xpid == contactId){
                 $scope.addedContacts.splice(i,1);
+                iLen--;
             }
         }
         $scope.$safeApply();

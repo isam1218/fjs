@@ -138,6 +138,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
      for(var i = 0, iLen = $scope.membersRefused.length; i < iLen; i++){
      	if(member.xpid == $scope.membersRefused[i].xpid){
      		$scope.membersRefused.splice(i,1);
+        iLen--;
      	}
      }
   };

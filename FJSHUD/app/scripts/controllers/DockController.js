@@ -150,6 +150,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					for (var i = 0, iLen = $scope.parkedCalls.length; i < iLen; i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
 							$scope.parkedCalls.splice(i,1);
+							iLen--;
 						}
 					}
 				
