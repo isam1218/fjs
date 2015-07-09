@@ -97,7 +97,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	
 	$scope.$on('me_synced', function() {
 		settingsService.getPermissions().then(function(data) {
-			for (var i = 0; i < $scope.appIcons.length; i++) {
+			for (var i = 0, iLen = $scope.appIcons.length; i < iLen; i++) {
 				// toggle permission-based icons
 				if ($scope.appIcons[i].key == 'Intellinote')
 					$scope.appIcons[i].enabled = data.showIntellinote;
@@ -110,7 +110,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	});
 
 	$scope.$on('settings_updated', function(event, data){
-		for (var i = 0; i < $scope.appIcons.length; i++) {
+		for (var i = 0, iLen = $scope.appIcons.length; i < iLen; i++) {
 			// toggle box icon
 			if ($scope.appIcons[i].key == 'Box') {
 				$scope.appIcons[i].enabled = data['hudmw_box_enabled'];

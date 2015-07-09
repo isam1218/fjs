@@ -627,7 +627,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	
 			for (var key in data) {
 				// create xpid for each record
-				for (var i = 0; i < data[key].items.length; i++)
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
 					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
 				
 				// send items back to controller
@@ -666,7 +666,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 			for (var key in data) {
 				// create xpid for each record
-				for (var i = 0; i < data[key].items.length; i++)
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
 					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
 				
 				// send items back to controller

@@ -42,7 +42,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     });
 
     if (myQueues.queues.length > 0){
-        for (var i = 0; i < myQueues.queues.length; i++){
+        for (var i = 0, iLen = myQueues.queues.length; i < iLen; i++){
             var single = myQueues.queues[i];
             if (single.xpid === $scope.queueId){
                 $scope.chatPermission = true;
@@ -56,7 +56,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     if ($routeParams.route != undefined){
         $scope.selected = $routeParams.route;
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
-        for (var i = 0; i < $scope.tabs.length; i++){
+        for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
             if ($scope.tabs[i].lower == $routeParams.route){
                 $scope.toggleObject = $scope.tabs[i].idx;
                 localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
@@ -89,7 +89,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         else
         {
 	        // if a member of a queue...
-	        for (var j = 0; j < myQueues.length; j++){
+	        for (var j = 0, jLen = myQueues.length; j < jLen; j++){
 	        	
 	            var myPermission = myQueues[j].permissions.permissions;
 	            

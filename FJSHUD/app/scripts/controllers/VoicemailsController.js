@@ -121,8 +121,8 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     var MarkReadVoiceMails = function(isRead){
         var voicemailIds = "";
-        for (var i = 0; i < $scope.voicemails.length; i++) {
-            var xpid = $scope.voicemails[i].xpid;
+        for (var i = 0, iLen = $scope.voicemails.length; i < iLen; i++) {
+            xpid = $scope.voicemails[i].xpid;
             voicemailIds = voicemailIds.concat(xpid.toString() + ",");
         }        
         httpService.sendAction("voicemailbox","setReadStatusAll",{'read':isRead, ids: voicemailIds});
@@ -130,7 +130,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     var DeleteReadVoiceMails = function(){
         var voicemailIds = "";
-        for (var i = 0; i < $scope.voicemails.length; i++) {
+        for (var i = 0, iLen = $scope.voicemails.length; i < iLen; i++) {
             if($scope.voicemails[i].readStatus){
                 var xpid = $scope.voicemails[i].xpid;
                 voicemailIds = voicemailIds.concat(xpid.toString() + ",");

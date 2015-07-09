@@ -54,7 +54,7 @@ function format_array(feed) {
 	for (var key in feed) {
 		if (feed[key].items.length > 0) {
 			// create xpid for each record
-			for (var i = 0; i < feed[key].items.length; i++)
+			for (var i = 0, iLen = feed[key].items.length; i < iLen; i++)
 				feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
 				
 			arr = arr.concat(feed[key].items);
@@ -74,7 +74,7 @@ function should_sync(){
 function version_check (){
 	var newFeeds ='';
 
-	for (var i = 0; i < feeds.length; i++)
+	for (var i = 0, iLen = feeds.length; i < iLen; i++)
 		newFeeds += '&' + feeds[i] + '=';
 	
 	var request = new httpRequest();
@@ -100,7 +100,7 @@ function version_check (){
 				timestamp_flag = true;      	
 			}
 			
-		    for(var i = 2; i < params.length-1; i++)
+		    for(var i = 2, iLen = params.length-1; i < iLen; i++)
 				changedFeeds.push(params[i]);
 				
 			if (changedFeeds.length > 0)
@@ -150,10 +150,10 @@ var sync_request = function(f){
 						}
 						// update individually
 						else {
-							for (var i = 0; i < synced_data[feed][key].items.length; i++) {
+							for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
 								var newItem = true;
 								if(data_obj[feed]){
-									for (var j = 0; j < data_obj[feed][key].items.length; j++) {
+									for (var j = 0, jLen = data_obj[feed][key].items.length; j < jLen; j++) {
 										if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
 											data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
 											newItem = false;
@@ -182,7 +182,7 @@ var sync_request = function(f){
 						data_obj['callerrecording'][key] = {items: []};
 						data_obj['conferencerecording'][key] = {items: []};
 					
-						for (var i = 0; i < synced_data[feed][key].items.length; i++) {
+						for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
 							if (synced_data[feed][key].items[i].conferenceId)
 								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
 							else

@@ -57,7 +57,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;
 
-    for (var i = 0; i < $scope.totalContacts.length; i++){
+    for (var i = 0, iLen = $scope.totalContacts.length; i < iLen; i++){
       var singleContact = $scope.totalContacts[i];
       singleContact.recent_type = 'contact';
       $scope.combined[singleContact.xpid] = singleContact;
@@ -67,7 +67,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   conferenceService.getConferences().then(function(data) {
     $scope.totalConferences = data.conferences;
 
-    for (var j = 0; j < $scope.totalConferences.length; j++){
+    for (var j = 0, jLen = $scope.totalConferences.length; j < jLen; j++){
       var singleConference = $scope.totalConferences[j];
       singleConference.recent_type = 'conference';
       $scope.combined[singleConference.xpid] = singleConference;
@@ -79,7 +79,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     return totalGroups.then(function(data){
       $scope.totalGroups = data.groups;
 
-      for (var l = 0; l < $scope.totalGroups.length; l++){
+      for (var l = 0, lLen = $scope.totalGroups.length; l < lLen; l++){
         var singleGroup = $scope.totalGroups[l];
         singleGroup.recent_type = 'group';
         $scope.combined[singleGroup.xpid] = singleGroup;
@@ -91,7 +91,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     return queueService.getQueues().then(function(data) {
       $scope.totalQueues = data.queues;
 
-      for (var k = 0; k < $scope.totalQueues.length; k++){
+      for (var k = 0, kLen = $scope.totalQueues.length; k < kLen; k++){
         var singleQueue = $scope.totalQueues[k];
         singleQueue.recent_type = 'queue';
         $scope.combined[singleQueue.xpid] = singleQueue;
@@ -197,7 +197,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   
   $scope.hasMoreContactsToLoad = function(){
     var contactCounter = 0;
-    for (var i = 0; i < $scope.totalContacts.length; i++){
+    for (var i = 0, iLen = $scope.totalContacts.length; i < iLen; i++){
       var singleContactXpid = $scope.totalContacts[i].xpid;
       if ($scope.recent[singleContactXpid] !== undefined)
         contactCounter++;
@@ -210,7 +210,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 
   $scope.hasMoreGroupsToLoad = function(){
     var groupCounter = 0;
-    for (var i = 0; i < $scope.totalGroups.length; i++){
+    for (var i = 0, iLen = $scope.totalGroups.length; i < iLen; i++){
       var singleGroupXpid = $scope.totalGroups[i].xpid;
       if ($scope.recent[singleGroupXpid] !== undefined)
         groupCounter++;
@@ -223,7 +223,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 
   $scope.hasMoreQueuesToLoad = function(){
     var queueCounter = 0;
-    for (var i = 0; i < $scope.totalQueues.length; i++){
+    for (var i = 0, iLen = $scope.totalQueues.length; i < iLen; i++){
       var singleQueueXpid = $scope.totalQueues[i].xpid;
       if ($scope.recent[singleQueueXpid] !== undefined)
         queueCounter++;
@@ -236,7 +236,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 
   $scope.hasMoreConferencesToLoad = function(){
     var conferenceCounter = 0;
-    for (var i = 0; i < $scope.totalConferences.length; i++){
+    for (var i = 0, iLen = $scope.totalConferences.length; i < iLen; i++){
       var singleConferenceXpid = $scope.totalConferences[i].xpid;
       if ($scope.recent[singleConferenceXpid] !== undefined)
         conferenceCounter++;

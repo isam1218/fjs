@@ -54,7 +54,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   if ($routeParams.route != undefined){
     $scope.selected = $routeParams.route;
     localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
-    for (var i = 0; i < $scope.tabs.length; i++){
+    for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
       if ($scope.tabs[i].lower == $routeParams.route){
         $scope.toggleObject = $scope.tabs[i].idx;
         localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);

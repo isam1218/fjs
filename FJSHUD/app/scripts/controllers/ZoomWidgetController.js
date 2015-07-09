@@ -12,7 +12,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
         var data = {};
         var users = "";
 
-        for (var i = 0; i < $scope.addedContacts.length; i++) {
+        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             users = users + $scope.addedContacts[i].xpid + ",";
         }
 
@@ -65,7 +65,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
 
 
     $scope.deleteContact = function(contactId){
-        for (var i = 0; i < $scope.addedContacts.length; i++) {
+        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             if($scope.addedContacts[i].xpid == contactId){
                 $scope.addedContacts.splice(i,1);
             }

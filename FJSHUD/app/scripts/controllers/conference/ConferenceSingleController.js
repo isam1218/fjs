@@ -21,10 +21,10 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
     	
 
       //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
-      for(var i = 0; i < oldValue.length; i++){
+      for(var i = 0, iLen = oldValue.length; i < iLen; i++){
         var exists = false;
         //this is to verify if a member has dropped 
-        for(var j = 0; j < newValue.length; j++){
+        for(var j = 0, jLen = newValue.length; j < jLen; j++){
           if(oldValue[i].xpid == newValue[j].xpid){
             exists = true;  
             break;
@@ -35,7 +35,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
             //if the oldvalue was ring it means the previous state of the conference call was ringing and if that member doesn't exist now as part of the conference we can assume he decline the conference invitation
             if(oldValue[i].ring){
                 var refuseMembersExists = false;
-                for(var j = 0; j < $scope.membersRefused.length;j++){
+                for(var j = 0, jLen = $scope.membersRefused.length; j < jLen; j++){
 
                   //we verify by the contactId attached to the member because the xpid changes everytime a user joins a conference
                   if(oldValue[i].contactId && $scope.membersRefused[j].contactId){
@@ -81,7 +81,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
           $scope.selected = $routeParams.route;
           localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
 
-          for(var i = 0; i < $scope.tabs.length;i++){
+          for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
             if($scope.tabs[i].lower == $routeParams.route){
               $scope.toggleObject = {item: i};
               localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
@@ -135,7 +135,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   };
 
   $scope.removeRefused = function(member){
-     for(var i = 0; i < $scope.membersRefused.length; i++){
+     for(var i = 0, iLen = $scope.membersRefused.length; i < iLen; i++){
      	if(member.xpid == $scope.membersRefused[i].xpid){
      		$scope.membersRefused.splice(i,1);
      	}
@@ -170,7 +170,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.tryCallAll = function(){
   	var members = angular.copy($scope.membersRefused);
-    for(var i = 0; i < members.length;i++){
+    for(var i = 0, iLen = members.length; i < iLen; i++){
       $scope.tryCall(members[i]);
     }
   };

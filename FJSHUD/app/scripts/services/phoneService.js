@@ -169,7 +169,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var playVm = function(xpid){
-		for (var i = 0; i < voicemails.length; i++) {
+		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
 				$rootScope.$broadcast('play_voicemail', voicemails[i]);
 				break;
@@ -781,7 +781,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var displayHangUpLauncher = false;
 		var displayLauncher = false;
 		
-		for(var i = 0; i < data.length; i ++){
+		for(var i = 0, iLen = data.length; i < iLen; i++){
 				if(data[i].xef001type == "delete"){
 					if(allCallDetails[data[i].xpid]){
 						delete allCallDetails[data[i].xpid];
@@ -806,7 +806,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		weblauncher = settingsService.getActiveWebLauncher();
 			
 		if(data){
-			for(var i = 0; i < data.length; i++){
+			var i = 0;
+			for(var i = 0, iLen = data.length; i < iLen; i++){
 					
 				if(data[i].xef001type == "delete"){
 					var call = callsDetails[data[i].xpid];
@@ -897,7 +898,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
-			for(var i = 0; i < data.length; i++){
+			for(var i = 0, iLen = data.length; i < iLen; i++){
 				if (data[i].xpid)
 					$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
 				if(callsDetails[data[i].xpid]){

@@ -193,7 +193,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		var emails = [];
 		
 		// get all addresses from members
-		for (var i = 0; i < group.members.length; i++) {
+		for (var i = 0, iLen = group.members.length; i < iLen; i++) {
 			var member = group.members[i];
 			
 			if (member.contactId != $rootScope.myPid && member.fullProfile && member.fullProfile.email)

@@ -38,7 +38,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 					case 'shared':
 						// find groups i don't own but that i belong to
 						if (group.ownerId != $rootScope.myPid && group.members) {
-							for (var i = 0; i < group.members.length; i++) {
+							for (var i = 0, iLen = group.members.length; i < iLen; i++) {
 								if (group.members[i].contactId == $rootScope.myPid)
 									return true;
 							}
@@ -59,7 +59,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
       if ((group.name || group.extension) && (group.name.toLowerCase().indexOf(query) != -1 || group.extension.indexOf(query) != -1))
         return true;
       else if (group.members.length > 0){
-        for (var i = 0; i < group.members.length; i++){
+        for (var i = 0, iLen = group.members.length; i < iLen; i++){
           var singleMember = group.members[i].fullProfile;
 		  
           if (singleMember.fullName.toLowerCase().indexOf(query) != -1 || singleMember.primaryExtension.indexOf(query) != -1 || singleMember.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || singleMember.phoneMobile.indexOf(query) != -1 || singleMember.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)

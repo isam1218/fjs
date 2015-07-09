@@ -10,7 +10,7 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 		if($routeParams.route != undefined){
 	  		$scope.selected = $routeParams.route;
 	  		localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-			for(var i = 0; i < $scope.tabs.length;i++){
+			for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
 	  			if($scope.tabs[i].lower == $routeParams.route){
 	  				$scope.toggleObject = {item: i};
 	  				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);

@@ -42,7 +42,7 @@ onmessage = function(event, port){
 };
 
 function get_feed_data(feed){
-	for(var i = 0; i < ports.length;i++){
+	for(var i = 0, iLen = ports.length; i < iLen; i++){
 		ports[i].postMessage({
 			"action": "feed_request",
 			"feed": feed,
@@ -57,7 +57,7 @@ function format_array(feed) {
 	for (var key in feed) {
 		if (feed[key].items.length > 0) {
 			// create xpid for each record
-			for (var i = 0; i < feed[key].items.length; i++)
+			for (var i = 0, iLen = feed[key].items.length; i < iLen; i++)
 				feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
 				
 			arr = arr.concat(feed[key].items);
@@ -94,10 +94,10 @@ function sync_request(f){
 						}
 						// update individually
 						else {
-							for (var i = 0; i < synced_data[feed][key].items.length; i++) {
+							for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
 								var newItem = true;
 								if(data_obj[feed]){
-									for (var j = 0; j < data_obj[feed][key].items.length; j++) {
+									for (var j = 0, jLen = data_obj[feed][key].items.length; j < jLen; j++) {
 										if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
 											data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
 											newItem = false;
@@ -128,7 +128,7 @@ function sync_request(f){
 						data_obj['callerrecording'][key] = {items: []};
 						data_obj['conferencerecording'][key] = {items: []};
 					
-						for (var i = 0; i < synced_data[feed][key].items.length; i++) {
+						for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
 							if (synced_data[feed][key].items[i].conferenceId)
 								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
 							else
@@ -148,13 +148,13 @@ function sync_request(f){
 				"data": synced_data
 			};
 			
-			for (var i = 0; i < ports.length; i++)
+			for (var i = 0, iLen = ports.length; i < iLen; i++)
 				ports[i].postMessage(sync_response);
 				
 			synced = true;
 		}
 		else{
-			for(var i = 0; i < ports.length;i++){
+			for(var i = 0, iLen = ports.length; i < iLen;i++){
 				ports[i].postMessage({
 					"action": "auth_failed"
 				});
@@ -169,7 +169,7 @@ function sync_request(f){
 function do_version_check(){
 	var newFeeds ='';
 
-	for (var i = 0; i < feeds.length; i++)
+	for (var i = 0, iLen = feeds.length; i < iLen; i++)
 		newFeeds += '&' + feeds[i] + '=';
 			
 	var request = new httpRequest();
@@ -180,7 +180,7 @@ function do_version_check(){
 			var params = xmlhttp.responseText.split(";");
 			
 			if (!timestamp_flag){
-				for (var j = 0; j < ports.length; j++){
+				for (var j = 0, jLen = ports.length; j < jLen; j++){
 					ports[j].postMessage({
 						"action": "timestamp_created",
 						"data": params[0]
@@ -190,7 +190,7 @@ function do_version_check(){
 				timestamp_flag = true;      	
 			}
 			
-            for(var i = 2; i < params.length-1; i++)
+            for(var i = 2, iLen = params.length-1; i < iLen; i++)
 				changedFeeds.push(params[i]);
 				
 			if (changedFeeds.length > 0)
@@ -198,7 +198,7 @@ function do_version_check(){
             else
 				setTimeout('do_version_check();', 500);
 		}else if(xmlhttp.status == 404 || xmlhttp.status == 500){
-			for(var i = 0; i < ports.length;i++){
+			for(var i = 0, iLen = ports.length; i < iLen; i++){
 				ports[i].postMessage({
 					"action": "network_error"
 				});
@@ -206,7 +206,7 @@ function do_version_check(){
 
 		}
 		else{
-			for(var i = 0; i < ports.length;i++){
+			for(var i = 0, iLen = ports.length; i < iLen; i++){
 				ports[i].postMessage({
 					"action": "auth_failed"
 				});

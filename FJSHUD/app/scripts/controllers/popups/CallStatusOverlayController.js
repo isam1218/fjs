@@ -173,7 +173,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				return true;
 			}
 			else if (conference.members){
-				for (var i = 0; i < conference.members.length; i++){
+				for (var i = 0, iLen = conference.members.length; i < iLen; i++){
 					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
 						return true;
 				}

@@ -187,7 +187,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     
 
     if(!phoneService.isPhoneActive()){
-            for (var i = 0; i < $scope.tabs.length; i++) {
+            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
                 if($scope.tabs[i].option == 'Phone'){
                     $scope.tabs[i].isActive = false;
                     break;
@@ -199,7 +199,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     phonePromise.then(function(data){
         
         if(!phoneService.isPhoneActive()){
-            for (var i = 0; i < $scope.tabs.length; i++) {
+            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
                 if($scope.tabs[i].option == 'Phone'){
                     $scope.tabs[i].isActive = false;
                     break;
@@ -830,7 +830,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.currentWebLauncher = activeWebLauncher[0];
             }else{
                 //if no web launcher is set find the default web launcher and set it for the user
-                for(var i = 0; i < data.length;i++){
+                for(var i = 0, iLen = data.length; i < iLen; i++){
                     if(data[i].id == "user_default"){
                         $scope.currentWebLauncher = data[i];
                         $scope.update_settings('hudmw_launcher_config_id','update',$scope.currentWebLauncher.id);

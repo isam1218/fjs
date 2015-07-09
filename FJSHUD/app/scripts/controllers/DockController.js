@@ -147,7 +147,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			for(var parkedCall in data){
 				if(data[parkedCall].xef001type == "delete"){
 					//delete $scope.parkedCalls[data[parkedCall.xpid]];
-					for (var i = 0; i < $scope.parkedCalls.length;i++){
+					for (var i = 0, iLen = $scope.parkedCalls.length; i < iLen; i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
 							$scope.parkedCalls.splice(i,1);
 						}
@@ -155,7 +155,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				
 				}else{
 					var toAdd = true;
-					for (var i = 0; i < $scope.parkedCalls.length;i++){
+					for (var i = 0, iLen = $scope.parkedCalls.length; i < iLen; i++){
 						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
 							toAdd = false;
 						}
