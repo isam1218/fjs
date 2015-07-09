@@ -36,7 +36,6 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
                         localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                     }
                 }
-            }
         }else{
             $scope.globalXpid = $rootScope.myPid;
             $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
