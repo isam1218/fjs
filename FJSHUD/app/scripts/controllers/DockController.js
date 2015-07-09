@@ -73,37 +73,44 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		}
 		
 		// enable/disable grid layout
-		if (!column && data.use_column_layout == 'true') {
+		if (data.use_column_layout == 'true') {
 			$timeout(function() {
-				column = true;
-				
+				// update draggable status
 				$('#InnerDock .Gadget').draggable('disable');
 			
-				if ($('#InnerDock').hasClass('ui-sortable'))
-					$('#InnerDock').sortable('enable');
-				else {
-					$('#InnerDock').sortable({
-						revert: 1,
-						handle: '.Header, .Content',
-						helper: 'clone',
-						appendTo: 'body',
-						cursorAt: { top: 25 },
-						start: function(event, ui) {
-							// visual cues
-							$(ui.helper).addClass('ui-draggable-dragging');
-							ui.placeholder.height(ui.helper[0].scrollHeight);
-						}
-					});
+				// turn sorting on for first time
+				if (!column) {
+					column = true;
+					
+					if ($('#InnerDock').hasClass('ui-sortable'))
+						$('#InnerDock').sortable('enable');
+					else {
+						$('#InnerDock').sortable({
+							revert: 1,
+							handle: '.Header, .Content',
+							helper: 'clone',
+							appendTo: 'body',
+							cursorAt: { top: 25 },
+							start: function(event, ui) {
+								// visual cues
+								$(ui.helper).addClass('ui-draggable-dragging');
+								ui.placeholder.height(ui.helper[0].scrollHeight);
+							}
+						});
+					}
 				}
 			}, 100, false);
 		}
-		else if ((column || column === undefined) && data.use_column_layout != 'true') {
-			column = false;
-			
+		else {			
+			// update draggable status
 			$('#InnerDock .Gadget').draggable('enable');
 			
-			if ($('#InnerDock').hasClass('ui-sortable'))
+			// turn sorting off for first time
+			if ((column || column === undefined) && $('#InnerDock').hasClass('ui-sortable')) {
+				column = false;
+				
 				$('#InnerDock').sortable('disable');
+			}
 		}
 	};
 
@@ -123,7 +130,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		
 		// remove from ui
 		for (var g in $scope.gadgets) {
-			for (var i = 0; i < $scope.gadgets[g].length; i++) {
+			for (var i = 0, len = $scope.gadgets[g].length; i < len; i++) {
 				if (data == $scope.gadgets[g][i].name) {
 					$scope.gadgets[g].splice(i, 1);
 					return;
