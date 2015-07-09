@@ -1,4 +1,4 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService', '$q', function($q, $rootScope, httpService,$compile,$location,settingsService, storageService, $q) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService',function($q, $rootScope, httpService,$compile,$location,settingsService, storageService) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 
@@ -10,7 +10,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var version = phonePlugin.version;
 	var deferred = $q.defer();
 
-	
+	$rootScope.volume = {};
 	var devices = [];
 	var session;
 	var alertPlugin;
@@ -363,14 +363,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 
     var onAlert = function(urlhash){
-    	var arguments = urlhash.split("?");
-    	var url = arguments[0];
-    	var query = arguments[1];
-    	var queryArray;
-    	var id;
-    	var data;
-		
-		if(query){
+    	
+    	var arguments,url,query,queryArray,id,data;
+    	arguments = urlhash.split("?");
+    	url = arguments[0];
+    	if(arguments.length > 1){
+	    	query = arguments[1];
+	    }	
+    	if(query){
 			queryArray = query.split('&');
 			xpid = queryArray[0];
     	}

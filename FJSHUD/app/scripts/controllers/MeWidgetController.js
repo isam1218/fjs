@@ -920,14 +920,33 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.parkCall = function(currentCall){
-       call =  phoneService.getCall(currentCall.contactId);
+       call =  phoneService.getCall(currentCall.xpid);
         phoneService.parkCall(currentCall.xpid);
     };
 
     $scope.muteCall = function(){
-       phoneService.setMicSensitivity(0);
-       $scope.volume.micVol = 0;
+       if($scope.volume.micVol == 0){
+            phoneService.setMicSensitivity($rootScope.volume.mic);
+            $scope.volume.micVol = $rootScope.volume.mic;
+            $rootScope.volume.mic = 0;
+        }else{
+            phoneService.setMicSensitivity(0);
+            $rootScope.volume.mic = angular.copy($scope.volume.micVol);
+            $scope.volume.micVol = 0;
+       }
+    };
 
+    $scope.silentSpk = function(){
+        if($scope.volume.spkVol == 0){
+             phoneService.setVolume($rootScope.volume.spk);
+             $scope.volume.spkVol = $rootScope.volume.spk;
+             
+
+        }else{
+            phoneService.setVolume(0);
+            $rootScope.volume.spk = angular.copy($scope.volume.spkVol);
+            $scope.volume.spkVol = 0;
+        }
     };
 
     var updateTime = function() {
