@@ -37,24 +37,49 @@
 	overflow: hidden;
   }
 
+  .ListRow{
+    .CallStatus{
+         height: 36px;
+         width: 36px;
+         
+         .Avatar{
+            margin: 2px !important;
+         }       
+    }
+    .ListRowTitle{
+         width: 50%;
+         
+         .status{      
+           margin-left: -5px !important; 
+           
+           .ListRowStatusIcon{
+            margin-left: 0 !important;
+           }
+         }
+         
+         .name{
+            width: 100%;
+            
+            strong{
+              text-overflow: ellipsis;
+              width: 100%;
+              overflow: hidden; 
+            }
+         }
+     } 
+  }    
+  
   .LeftBarTop{
    .WidgetTabBar{
       background: url() transparent !important;
    }
-  }
+  }   
   
-  .ListRowTitle{
-    width: 50%;
-    .name{
-        width: 100%;
-        
-        strong{
-          text-overflow: ellipsis;
-          width: 100%;
-          overflow: hidden; 
-        }
+  .grouped{
+    a.ListRow:nth-child(odd) {
+      background-color: #fff !important;
     }
-  }
+  } 
   .ContactSearch {   
 	width: 300px;
 
@@ -162,6 +187,18 @@
         
         .ListRowStatus{
             top: 10px;
+            
+            .ListRowStatusText{
+                max-width: 72px;
+            }
+            
+            &.onCall{
+                right: -3px;
+                
+                .ListRowStatusText{
+                    right: 5px;
+                }
+            }
         }
         
         .Members{
