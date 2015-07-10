@@ -1,15 +1,14 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService',function($q, $rootScope, httpService,$compile,$location,settingsService, storageService) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService',
+	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 
-	//$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
 	$("body").append($compile(pluginHtml)($rootScope));
 	
-
 	var phonePlugin = document.getElementById('fonalityPhone');
 	var version = phonePlugin.version;
 	var deferred = $q.defer();
-
+	var deferredVM = $q.defer();
 	$rootScope.volume = {};
 	var devices = [];
 	var session;
@@ -18,7 +17,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var soundManager;
 	var meModel = {};
 	var sipCalls = {};
-	//var xpid2Sip = {};
 	var tabInFocus = true;
 	var callsDetails = {};
 	var allCallDetails = {};
@@ -28,12 +26,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isAlertShown = true;
 	var soundEstablished = false;
 
-	var voicemails = [];
 	var weblauncher = {};
 	var alertPosition = {};
 	alertPosition.x = 0;
 	alertPosition.y = 0;
-	//fjs.CONFIG.SERVER.serverURL 
+
+	var voicemails = [];
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
      var CALL_STATUS_RINGING = "0";
@@ -796,8 +794,71 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	httpService.getFeed('voicemailbox');
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
-		voicemails = data;
+
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			var match = false;
+			
+			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
+				// find and update or delete
+				if (voicemails[v].xpid == data[i].xpid) {
+					if (data[i].xef001type == 'delete') {
+						voicemails.splice(v, 1);
+						vLen--;
+					}
+					else
+						voicemails[v].readStatus = data[i].readStatus;
+					
+					match = true;
+					break;
+				}
+			}
+			
+			if (!match && data[i].xef001type != 'delete') {
+				data[i].fullProfile = contactService.getContact(data[i].contactId);
+				voicemails.push(data[i]);
+
+			}
+		}
+
+		deferredVM.resolve(voicemails);
 	});
+
+	this.getVm = function(){
+		return deferredVM.promise;
+	};
+	
+	this.getVoiceMail = function(xpid){
+		for(var i = 0; i < voicemails.length;i++){
+			if(voicemails[i].xpid == xpid){
+				return voicemails[i];
+			}
+		}
+	}
+	this.getVoiceMailsFor = function(id, type){
+		switch(type){
+			case 'contact':
+				return voicemails.filter(function(data){
+					return data.contactId == id;
+				});
+			break;
+			case 'group':
+				var group = groupService.getGroup(id);
+				var groupVm = [];
+				if(group){
+					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
+						groupVm.push(voicemails.filter(function(item){
+							return item.contactId == group.members[g].contactId		
+						}));
+
+					}		
+				}
+				return groupVm;
+			break;
+			default: 
+				return voicemails;
+			break;
+		}
+	};
 	
 	$rootScope.$on("mycalls_synced",function(event,data){
 		

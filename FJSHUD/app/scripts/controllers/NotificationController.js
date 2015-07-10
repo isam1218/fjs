@@ -151,7 +151,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		switch(message.type){
 
 			case "vm":
-				return "Voicemail from extension " + message.phone; 
+				if(message.vm.transcription != ""){
+					return vm.transcription;
+				}else{
+					return "transcription is not available";
+				}
 				break;
 			case 'missed-call':	
 				return "Missed call from extension " + message.phone; 
@@ -171,13 +175,17 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.formatMessage = function(message){		
 		switch(message.type){
 			case "vm":
-				return "Voicemail from extension " + message.phone; 
+				if(message.vm.transcription != ""){
+					return vm.transcription;
+				}else{
+					return "transcription is not available";
+				}
 				break;
 			case 'missed-call':	
 				return "Missed call from extension " + message.phone; 
 				break;
 			default:
-				return message.replace(/\n/g, '<br/>');
+				return message.message.replace(/\n/g, '<br/>');
 		}
 	};
 
@@ -796,7 +804,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							}else if(notification.type == 'gchat'){
 								notification.label = "group chat to";
 							}else if(notification.type == 'vm'){
-								notification.label =$scope.verbage.voicemail;
+								var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
+								var vm = phoneService.getVoiceMail(notification.vmId);
+								notification.vm = vm;
+								notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+								
 							}else if(notification.type == 'chat'){
 								notification.label = 'chat message';
 							}else if(notification.type == 'missed-call'){
@@ -862,7 +874,11 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					}else if(notification.type == 'gchat'){
 						notification.label = "group chat to";
 					}else if(notification.type == 'vm'){
-						notification.label = $scope.verbage.voicemail;
+						var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
+						var vm = phoneService.getVoiceMail(notification.vmId);
+						notification.vm = vm;
+						notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+						
 					}else if(notification.type == 'chat'){
 						notification.label = 'chat message';
 					}else if(notification.type == 'missed-call'){
@@ -880,7 +896,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 							notification.displayName = 'Error';
 							notification.message = 'Open for Details';
 					}
-					
 					if(notification.audience == "conference"){
 						var xpid = notification.context.split(':')[1];
 						var conference = conferenceService.getConference(xpid);
@@ -911,8 +926,5 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		   	$scope.hasMessages = true;	
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 
-		
-			
-					
-    });		
+	});		
 }]);
