@@ -30,7 +30,7 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
         $event.preventDefault();
     
     // permission?
-    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || contact.xpid == $rootScope.myPid)
       return;
   
     $scope.showOverlay(true, 'CallStatusOverlay', contact);

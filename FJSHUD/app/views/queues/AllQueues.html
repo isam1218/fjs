@@ -88,7 +88,7 @@
 			</div>
 		</div>
 		<div class="Table">
-			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
+			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: que.query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
                 <div>{{ ::queue.name }}</div>
 				<div>{{ queue.info.waiting}}</div>
 				<div>{{ queue.info.esa*1000 | duration}}</div>
