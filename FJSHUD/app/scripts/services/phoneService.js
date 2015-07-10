@@ -828,12 +828,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	this.getVoiceMail = function(xpid){
-		for(var i = 0; i < voicemails.length;i++){
+		for(var i = 0; iLen = voicemails.length; i < iLen;i++){
 			if(voicemails[i].xpid == xpid){
 				return voicemails[i];
 			}
 		}
-	}
+	};
 	this.getVoiceMailsFor = function(id, type){
 		switch(type){
 			case 'contact':
