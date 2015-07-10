@@ -26,7 +26,6 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
   };
   
   $scope.showCallStatus = function($event, contact) {
-    console.error('contact - ', contact);
     $event.stopPropagation();
         $event.preventDefault();
     
