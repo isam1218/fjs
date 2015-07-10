@@ -838,7 +838,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		switch(type){
 			case 'contact':
 				return voicemails.filter(function(data){
-					return data.contactId == id;
+					return data.contactId == id && !data.readStatus;
 				});
 			break;
 			case 'group':
@@ -847,7 +847,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(group){
 					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
 						groupVm.push(voicemails.filter(function(item){
-							return item.contactId == group.members[g].contactId		
+							return item.contactId == group.members[g].contactId	 && !item.readStatus	
 						}));
 
 					}		

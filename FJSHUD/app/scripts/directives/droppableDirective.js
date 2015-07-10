@@ -36,7 +36,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						type = 'Call';
 					
 					// check for allowed cases
-					if (drops.indexOf(type) != -1) {
+					if (drops.indexOf(type) != -1 && (!$(this).hasClass('InnerDock') || obj.xpid != $rootScope.myPid)) {
 						$(this).addClass('DroppableArea');
 						$(ui.helper).removeClass('not-allowed');
 					}
@@ -51,11 +51,15 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					$('.DroppableArea').removeClass('DroppableArea');
 					
 					// re-check basic criteria
-					if (timeout || drops.indexOf(type) == -1 || obj.xpid == $rootScope.myPid)
+					if (timeout || drops.indexOf(type) == -1)
 						return;
 					
 					// dock new item
 					if ($(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
+						// can't dock yourself
+						if (obj.xpid == $rootScope.myPid)
+							return;
+						
 						var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 						var data = {
