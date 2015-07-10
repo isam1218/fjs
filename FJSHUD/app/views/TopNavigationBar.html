@@ -53,12 +53,12 @@
 	<div class="TopBarVoicemailControls" ng-if="voicemail">		
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		<div class="Caller">
-			<avatar profile="voicemail" type="4"></avatar>
+			<avatar profile="voicemail" type="{{ ::voicemail.primaryExtension ? 4 : 1 }}"></avatar>
 			<div class="Details">
-				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
-				<strong>{{ voicemail.displayName || voicemail.name }}</strong>
+				<em>...{{ ::voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
+				<strong>{{ ::voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
 				<br/>
-				<span>{{ voicemail.primaryExtension || voicemail.extensionNumber }}</span>
+				<span>{{ ::voicemail.primaryExtension || voicemail.extensionNumber || voicemail.calleePhone }} &nbsp;</span>
 			</div>
 		</div>
 		<div class="Loading" ng-show="!player.loaded">{{::verbage.loading}}...</div>
@@ -67,7 +67,7 @@
 			<div class="Left"></div><div class="Bar">
 				<div class="MediaPlayerProgressButton" ng-style="{'left':player.progress}" ng-mousedown="moveSlider($event)"></div>
 			</div><div class="Right"></div>
-			<div class="Time">{{ player.duration | duration }}</div>
+			<div class="Time">{{ ::player.duration | duration }}</div>
 		</div>
 		<div class="Buttons">
 			<div>
