@@ -87,7 +87,11 @@
 									{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
 								</span>
 							</div>
-							<div class="NotificationMessage" scroll-to-bottom ng-bind-html="formatMessage(message.message)"></div> 
+
+							<div class="NotificationMessage" scroll-to-bottom >
+								<span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
+								<span ng-bind-html="formatMessage(message)"> </span>	
+							</div> 
 						</a>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
