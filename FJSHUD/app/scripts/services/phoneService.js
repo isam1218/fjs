@@ -9,6 +9,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var version = phonePlugin.version;
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
+	var deferredCalls = $q.defer();
 	$rootScope.volume = {};
 	var devices = [];
 	var session;
@@ -53,7 +54,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
 	
-	
+	this.getDeferredCalls = function(){
+		return deferredCalls.promise;
+	}
 
 	window.onfocus = function(){
 		tabInFocus = true;
@@ -738,6 +741,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			return false;
 		}
 	};
+
 	/*this returns the call object provided by the phone plugin which gives you control over the call such 
 	holding the call resuming the call and ending the call
 	*/
@@ -828,12 +832,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	this.getVoiceMail = function(xpid){
-		for(var i = 0; iLen = voicemails.length; i < iLen;i++){
+		for(var i = 0, iLen = voicemails.length; i < iLen ;i++){
 			if(voicemails[i].xpid == xpid){
 				return voicemails[i];
 			}
 		}
 	};
+	
 	this.getVoiceMailsFor = function(id, type){
 		switch(type){
 			case 'contact':
@@ -911,6 +916,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}
 
 					callsDetails[data[i].xpid] = data[i];
+					if(data[i].contactId){
+						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
+					}
+
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 						
 						if(!doesExist){
@@ -953,6 +962,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			storageService.saveRecent('contact', data[0].contactId);
 		}
 		
+		//deferredCalls.resolve(callsDetails);
+
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
 	this.registerPhone = registerPhone;	

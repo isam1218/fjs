@@ -27,8 +27,8 @@
   
 
   <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" >                            
-     <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer">
-         <div class="CallStatusIcon"> </div>
+     <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer" ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')">
+         <div ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
      </a>
    
      <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusText"> 
