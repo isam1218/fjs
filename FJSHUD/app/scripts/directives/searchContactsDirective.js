@@ -48,6 +48,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				// if user deletes search input, need to reset inset and create new rows div
 				if (e.keyCode == 8 || e.keyCode == 46){
 					inset.empty();
+					if (attrs.conference != 'true'){
+						overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
+						headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
+						inset.append(headerTitle);
+					}
 					rows = angular.element('<div class="rows"></div>');
 				}
 				
@@ -66,6 +71,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 						var line = makeLine(null, true);
 						inset.empty();
 						rows.empty();
+						if (attrs.conference != 'true'){
+							overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
+							headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
+							inset.append(headerTitle);							
+						}
 						rows = line;
 					}
 					
@@ -135,7 +145,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			function makeLine(contact, joinByPhone) {
 				var line = angular.element('<div class="ListRow"></div>');
 				
-				if (joinByPhone){
+				// join by phone only applies to conferences (not zoom vid)
+				if (joinByPhone && attrs.conference == "true"){
 					line.append('<div class="Avatar AvatarSmall"><img src="img/Generic-Avatar-14.png"/></div>');				
 					var name = '<div class="ListRowContent"><div class="ListRowTitle">';
 					name += '<div class="name"><strong>Unknown number</strong></div>';
@@ -148,11 +159,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 
 					line.append(name);
 				} else {
-					line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');				
 					
 					//add the chat status if the search is done for conference
 					if (attrs.conference == "true")
 					{
+						line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');				
 						var hud_status = contact.hud_status || 'offline';
 						var name = '<div class="ListRowContent"><div class="ListRowTitle">';
 						name += '<div class="name"><strong>' + contact.displayName + '</strong></div>';
@@ -161,26 +172,31 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 						name += '</div></div><div class="ListRowStatus"><div class="Extension Link">#' + contact.primaryExtension + '</div></div></div>';
 						line.append(name);
 					}	
-					else
-						line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
+					else{
+						if (contact)
+							line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
+					}
 
 				}
 
 				// send contact to parent scope
 				line.bind('click', function() {
-					if(contact){
-						if(contact.primaryExtension){
+					if (contact){
+						if (contact.primaryExtension)
 							scope.searchContact(contact);
-						}else{
-							if(contact.phoneMobile){
-								scope.addToConference(contact.phoneMobile);	
-							}else{
-								scope.addToConference(contact.phoneBusiness);
-							}
+						else if (contact.phoneMobile)
+							scope.addToConference(contact.phoneMobile);
+						else if (contact.phoneBusiness)
+							scope.addToConference(contact.phoneBusiness);
+						else {
+							if (attrs.conference == 'true')
+								return;
+							else
+								scope.searchContact(contact);
 						}
-					}else if (!isNaN(element.val())){
+					} else if (!isNaN(element.val()))
 						scope.addToConference(element.val());
-					}
+
 					element.val('');
 					rows.empty();					
 					overlay.remove();
