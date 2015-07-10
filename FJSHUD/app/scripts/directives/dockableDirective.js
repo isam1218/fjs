@@ -9,7 +9,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 			
 			$(element).draggable({
 				cursorAt: { top: 25, left: 25 },
-				zIndex: 50,
+				zIndex: 100,
 				appendTo: 'body',
 				helper: function() {
 					// object to dock
