@@ -1,6 +1,4 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDimensions', '$sce', '$interval', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, windowDimensions, $sce, $interval, queueService, httpService, contactService, settingsService) {
-  var player; // html element
-  var loadCheck;
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDimensions', '$sce', '$interval', '$timeout', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, windowDimensions, $sce, $interval, $timeout, queueService, httpService, contactService, settingsService) {
   $scope.showDropdown = false;
   $scope.smallScreen = false;
   //Initialize window width 
@@ -33,15 +31,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	  
 	  return true;	  		  		  		    
   };
-  
-  $scope.player = {
-		position: 0,
-		duration: 0,
-		loaded: false,
-		playing: false,
-		volume: 0.6,
-		progress: 0
-	};
 
     // To INTEGRATE, add new navbar icons HERE...
     $scope.appIcons = [
@@ -132,135 +121,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
     $scope.queue = queueService.getMyQueues();
   });
   
-  /**
-    VOICEMAIL PLAYER
-  */
-  
-  $scope.$on('play_voicemail', function(event, data) {
-	$interval.cancel(loadCheck);
-	  
-    $scope.voicemail = data.fullProfile ? data.fullProfile : contactService.getContact(data.contactId);
-    $scope.player.loaded = false;
-    $scope.player.duration = data.duration;
-    $scope.player.position = 0;
-    $scope.player.progress = 0;
-    
-    // update hidden audio element
-    var source = document.getElementById('voicemail_player_source');
-    var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
-    source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
-    
-    player = document.getElementById('voicemail_player');
-    player.load();
-	
-	// fail catch
-	loadCheck = $interval(function() {
-		if (isNaN(player.duration))
-			player.load();
-		else
-			$interval.cancel(loadCheck);
-	}, 1000);
-    
-    player.onloadeddata = function() {
-      $scope.player.loaded = true;
-      $scope.player.playing = true;
-      $scope.$safeApply();
-      
-      player.play();
-    };
-    
-    player.ontimeupdate = function() {
-      $scope.player.position = player.currentTime*1000;
-      
-      // prevent the jitters
-      if (!document.body.onmousemove)
-        $scope.player.progress = (player.currentTime / player.duration * 100) + '%';
-        
-      $scope.$safeApply();
-    };
-    
-    player.onpause = function() {
-      $scope.player.playing = false;
-      $scope.$safeApply();
-      
-      // kill player
-      if (!$scope.voicemail)
-        player = null;
-    };
-    
-    player.onplay = function() {
-      $scope.player.playing = true;
-      $scope.$safeApply();
-    };
-    
-    if($(document).width() <= 1195)
-   	 $scope.smallScreen = true;  
-   	else
-   	 $scope.smallScreen = false;
-    
-    //'more' section
-    if($scope.voicemail && $scope.smallScreen)
-    	$($scope.moreIcon).show();
-    else
-    	$($scope.moreIcon).hide();
-  });
-  
-  $scope.playAudio = function() {
-    if ($scope.player.playing)
-      player.pause();
-    else
-      player.play();
-  };
-  
-  $scope.changeSeek = function(seek) {
-    player.currentTime += seek;
-  };
-  
-  $scope.changeVolume = function(vol) {
-    $scope.player.volume += vol;
-    
-    // keep within range
-    if ($scope.player.volume > 1)
-      $scope.player.volume = 1;
-    else if ($scope.player.volume < 0)
-      $scope.player.volume = 0;
-      
-    player.volume = $scope.player.volume;
-  };
-  
-  $scope.moveSlider = function($event) {
-    var rect = $event.target.parentNode.getBoundingClientRect();
-    
-    document.body.onmousemove = function(e) {
-      var diff = e.clientX - rect.left;
-      
-      // keep within range
-      if (diff < 0)
-        diff = 0;
-      else if (diff > rect.width)
-        diff = rect.width;
-      
-      $scope.player.progress = diff + 'px';
-      $scope.$safeApply();
-    };
-    
-    document.body.onmouseup = function(e) {
-      // set new progress
-      var diff = (e.clientX - rect.left) / rect.width;
-      player.currentTime = diff * player.duration;
-      
-      // remove listeners
-      document.body.onmousemove = null;
-      document.body.onmouseup = null;
-    };
-  };
-  
-  $scope.closePlayer = function() {
-	$interval.cancel(loadCheck);
-    $scope.voicemail = null;
-    player.pause();
-  };
-  
   var icon_version;
 
   $scope.$on("fdpImage_synced",function(event,data){
@@ -276,8 +136,161 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
   $scope.logout = function() {
     httpService.logout();
   };
-
-    $scope.$on("$destroy", function() {
   
-    });
+	/**
+		VOICEMAIL PLAYER
+	*/
+  
+	$scope.player = {
+		position: 0,
+		duration: 0,
+		loaded: false,
+		playing: false,
+		volume: 0.6,
+		progress: 0
+	};
+	
+	var player;
+	var source;
+	var loadCheck;
+  
+	$scope.$on('play_voicemail', function(event, data) {
+		// first time setup
+		if (!player) {
+			player = document.getElementById('voicemail_player');
+			source = document.getElementById('voicemail_player_source');
+			
+			player.onloadeddata = function() {
+				$scope.player.loaded = true;
+				$scope.player.playing = true;
+				$scope.$safeApply();
+				
+				player.play();
+			};
+			
+			player.ontimeupdate = function() {
+				$scope.player.position = player.currentTime*1000;
+				
+				// prevent the jitters
+				if (!document.body.onmousemove)
+					$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
+				
+				$scope.$safeApply();
+			};
+			
+			player.onpause = function() {
+				$scope.player.playing = false;
+				$scope.$safeApply();
+			};
+			
+			player.onplay = function() {
+				$scope.player.playing = true;
+				$scope.$safeApply();
+			};
+		}
+		
+		// reset
+		$interval.cancel(loadCheck);	
+		$scope.voicemail = null;
+		$scope.player.loaded = false;
+		$scope.player.duration = data.duration;
+		$scope.player.position = 0;
+		$scope.player.progress = 0;
+			
+		// update hidden audio element
+		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
+		source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
+		player.load();
+	
+		// fail catch
+		loadCheck = $interval(function() {
+			if (isNaN(player.duration))
+				player.load();
+			else
+				$interval.cancel(loadCheck);
+		}, 1000);
+	
+		// delay getting profile so view will update
+		$timeout(function() {
+			if (data.fullProfile)
+				$scope.voicemail = data.fullProfile;
+			else if (data.contactId)
+				$scope.voicemail = contactService.getContact(data.contactId);
+			else
+				$scope.voicemail = data;
+		}, 10);
+    
+		// 'more' icon
+		if ($(document).width() <= 1195) {
+			$scope.smallScreen = true;  
+			$($scope.moreIcon).show();
+		}
+		else {
+			$scope.smallScreen = false;
+			$($scope.moreIcon).hide();
+		}
+	});
+  
+	$scope.playAudio = function() {
+		if ($scope.player.playing)
+			player.pause();
+		else
+			player.play();
+	};
+	
+	$scope.changeSeek = function(seek) {
+		player.currentTime += seek;
+	};
+  
+	$scope.changeVolume = function(vol) {
+		$scope.player.volume += vol;
+		
+		// keep within range
+		if ($scope.player.volume > 1)
+			$scope.player.volume = 1;
+		else if ($scope.player.volume < 0)
+			$scope.player.volume = 0;
+			
+		player.volume = $scope.player.volume;
+	};
+  
+	$scope.moveSlider = function($event) {
+		var rect = $event.target.parentNode.getBoundingClientRect();
+	
+		document.body.onmousemove = function(e) {
+			var diff = e.clientX - rect.left;
+			
+			// keep within range
+			if (diff < 0)
+			diff = 0;
+			else if (diff > rect.width)
+			diff = rect.width;
+			
+			$scope.player.progress = diff + 'px';
+			$scope.$safeApply();
+		};
+	
+		document.body.onmouseup = function(e) {
+			// set new progress
+			var diff = (e.clientX - rect.left) / rect.width;
+			player.currentTime = diff * player.duration;
+			
+			// remove listeners
+			document.body.onmousemove = null;
+			document.body.onmouseup = null;
+		};
+	};
+  
+	$scope.closePlayer = function() {
+		$interval.cancel(loadCheck);
+		$scope.voicemail = null;
+		
+		player.pause();
+		player.onloadeddata = null;
+		player.ontimeupdate = null;
+		player.onpause = null;
+		player.onplay = null;
+		player = null;
+		source = null;
+	};
 }]);
