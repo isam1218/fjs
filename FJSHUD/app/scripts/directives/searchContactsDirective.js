@@ -156,17 +156,17 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					line.append(name);
 				} else {
 					// 2. conference adding internal contact
-					// add the chat status if the search is done for conference
 					if (attrs.conference == "true")
 					{
 						var confMemAdded = false;
-						for (var i = 0; i < scope.conference.members.length; i++){
+						for (var i = 0, iLen = scope.conference.members.length; i < iLen; i++){
 							var singleMember = scope.conference.members[i].fullProfile.xpid;
 							if (contact.xpid == singleMember)
 								confMemAdded = true;
 						}
 						if (!confMemAdded){
 							line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');				
+							// add the chat status if the search is done for conference
 							var hud_status = contact.hud_status || 'offline';
 							var name = '<div class="ListRowContent"><div class="ListRowTitle">';
 							name += '<div class="name"><strong>' + contact.displayName + '</strong></div>';
@@ -193,8 +193,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 						} else {
 							// 4. zoom adding contact, but take into account if contact already added or deleted from added list
 							var contactAdded = false;
-							for (var i = 0; i < scope.addedContacts.length; i++){
-									// cross reference against addedContacts
+							for (var i = 0, iLen = scope.addedContacts.length; i < iLen; i++){
 								if (contact.xpid == scope.addedContacts[i].xpid)
 									contactAdded = true;
 							}
