@@ -453,10 +453,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		   myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
 	};
 
-	phoneService.getDeferredCalls().then(function(dta){
-
-	});
-
 	$scope.$on('calls_updated',function(event,data){
 		displayDesktopAlert = false;
 		
