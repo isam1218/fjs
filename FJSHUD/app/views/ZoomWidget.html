@@ -28,26 +28,26 @@
 
         <div class="ListSection WidgetFont" > 
             <div> {{::verbage.video_collaboration_summary}}</div>
-        </div>
-        <div class="ZoomWidgetSection left"> 
-            <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
-                <div class="WidgetFont">{{::verbage.join_summary}}</div>
-            </div>
-           <div class="joinWrapper">
-            <div class="JoinMeetingSection"> 
-                <div class="SearchInputBox">
-                    <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
-                    </div>
-                </div>
-                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="ZoomWidgetSection right"> 
+        </div>        
+	    <div class="ZoomWidgetSection left"> 
+	            <div class="ListSection WidgetTextHeader"> 
+	                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
+	                <div class="WidgetFont">{{::verbage.join_summary}}</div>
+	            </div>
+	           <div class="joinWrapper">
+	            <div class="JoinMeetingSection"> 
+	                <div class="SearchInputBox">
+	                    <div class="SearchInputBoxInputHolder">
+	                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
+	                    </div>
+	                </div>
+	                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
+	
+	            </div>
+	          </div>
+	        </div>
+	
+	        <div class="ZoomWidgetSection right"> 
 	            <div class="ListSection WidgetTextHeader"> 
 	                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
 	                <div class="WidgetFont">{{::verbage.create_summary}}</div>
@@ -61,16 +61,8 @@
 		                </div>
 		            </div>
 	            </div>
-            </div>
-            <script>
-
-            $(window).bind("resize",function() {
-              var totalElHeights = 	$('.WidgetZoomBody').height() + ('.ZoomWidgetSection').height() + $(".WidgetFont").height();
-              var ttlPctUsed = Math.round(totalElHeights / $('.WidgetZoomBody').height()) * 100;
-              $(".widget-zoom-contacts").css("max-height", 100 - ttlPctUsed);
-            });
-            </script>
-            <div class="widget-zoom-contacts">
+            </div>              
+            <div class="widget-zoom-contacts" resize-height>
                     <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
 						<avatar profile="contact" widget="zoom"></avatar>
                         <div class="ListRowContent" dockable="contact">
