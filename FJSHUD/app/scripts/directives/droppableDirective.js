@@ -87,7 +87,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							
 							// find first empty room on same server
 							for (var i = 0; i < len; i++) {
-								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!conferences[i].members || conferences[i].members.length == 0)) {
+								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && conferences[i].status && (!conferences[i].members || conferences[i].members.length == 0)) {
 									found = conferences[i].xpid;
 									break;
 								}
@@ -97,7 +97,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							if (!found) {
 								for (var i = 0; i < len; i++) {
 									// find first room on same server
-									if (!conferences[i].members || conferences[i].members.length == 0) {
+									if (conferences[i].status && !conferences[i].members || conferences[i].members.length == 0) {
 										found = conferences[i].xpid;
 										break;
 									}
@@ -122,8 +122,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						});
 					}
 					// join conference normally
-					else if (scope.conference || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
-						var xpid = scope.conference ? scope.conference.xpid : scope.gadget.data.xpid;
+					else if (scope.conference || (scope.item && scope.item.recent_type == 'conference') || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
+						var xpid = scope.conference ? scope.conference.xpid : scope.gadget ? scope.gadget.data.xpid : scope.item.xpid;
 						
 						if (type == 'Contact') {
 							httpService.sendAction('conferences', 'joinContact', {
@@ -157,6 +157,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							xpid = scope.member.contactId;
 						else if (scope.gadget)
 							xpid = scope.gadget.data.xpid;
+						else if (scope.item)
+							xpid = scope.item.xpid;
 						
 						httpService.sendAction('calls', 'transferToContact', {
 							fromContactId: $rootScope.myPid,
