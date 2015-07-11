@@ -423,8 +423,8 @@
 
 	ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
 				
-				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusIconContainer">
-					<div class="CallStatusIcon"> </div>
+				<div  class="CallStatusIconContainer" ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')">
+					<div ng-click="showCurrentCallControls(currentCall)" ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
 				</div>
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
 					<div class="memberName">{{currentCall.displayName}} <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>

@@ -1,4 +1,5 @@
-hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService', function($q, $rootScope, $location, contactService, httpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService','NtpService', 
+function($q, $rootScope, $location, contactService, httpService,ntpService) {
 	var service = this;
 	var deferred = $q.defer();
 	
@@ -179,6 +180,11 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if(data[i].xpid == conferences[c].xpid){
 					conferences[c].status = data[i];
+					if(conferences[c].status.recorded){
+						conferences[c].status.recordedStartTime = ntpService.calibrateTime(new Date().getTime());
+					}else{
+						conferences[c].status.recordedStartTime = 0;
+					}
 					break;
 				}
 			}

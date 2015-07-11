@@ -146,14 +146,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   };
 
-  $scope.customSort = function(){
-    return 'timestamp';
-  };
-
-  $scope.customReverse = function(){
-    return true;
-  };
-
   $scope.searchRecentContactFilter = function(){
     return function(contact){
       if (contact.displayName.toLowerCase().indexOf($scope.$parent.query) != -1 || contact.primaryExtension.indexOf($scope.$parent.query) != -1){
@@ -278,6 +270,17 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     } else {
         return 'img/Generic-Avatar-28.png';
     }
+  };
+  
+  $scope.getDroppableType = function(type) {
+	switch(type) {
+		case 'contact':
+			return 'Call';
+		case 'conference':
+			return 'Call,Contact';
+	}	
+	
+	return '';
   };
   
   $scope.deptHeaderDisplay = function(groupType){

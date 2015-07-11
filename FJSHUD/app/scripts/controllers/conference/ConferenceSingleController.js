@@ -156,7 +156,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.conferenceContact;
 
-  $scope.addToConference = function(phoneNumber){
+  $scope.addExternalToConference = function(phoneNumber){
     var params = {
       conferenceId: $scope.conferenceId,
       phone: phoneNumber
@@ -180,7 +180,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
       if(member.fullProfile){
         $scope.searchContact(member.fullProfile);
       }else{
-      	$scope.addToConference(member.phone);
+      	$scope.addExternalToConference(member.phone);
       }
 
       $scope.removeRefused(member);

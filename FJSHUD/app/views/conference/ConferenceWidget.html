@@ -13,7 +13,7 @@
 				</div>
 				<div class="Data">
 					<div timer="conference.status.started"></div>
-					<div ng-if="conference.status.recorded" timer="conference.timestamp"></div>
+					<div style="color:red" ng-if="conference.status.recorded" timer="conference.status.recordedStartTime"></div>
 					<div ng-if="!conference.status.recorded">00:00</div>
 				</div>
 			</div>
