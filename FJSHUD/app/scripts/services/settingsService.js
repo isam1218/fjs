@@ -101,8 +101,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
 				permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
 				permissions.showZipwhip = isEnabled(data[i].propertyValue, 16);
-
-				//permissions.showZipwhip = isEnabled(data[i].propertyValue, 17);
+				permissions.showZipwhip = isEnabled(data[i].propertyValue, 17);
 
 				// group permissions from MyPermissions.java
 				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
