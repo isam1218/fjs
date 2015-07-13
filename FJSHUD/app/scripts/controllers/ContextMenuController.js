@@ -14,6 +14,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		list: [],
 		show: false,
 	};
+
+	$scope.contextShow = false;
+		
 	
 	queueService.getQueues().then(function(data) {
 		$scope.reasons.list = data.reasons;
@@ -27,7 +30,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
-		
+		$scope.contextShow = true;
 		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;		
 		$scope.profile.name = $('<div/>').html($scope.profile.name).text();
 		$scope.profile.displayName = $('<div/>').html($scope.profile.displayName).text();

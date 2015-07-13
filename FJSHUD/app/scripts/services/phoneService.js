@@ -789,6 +789,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						delete allCallDetails[data[i].xpid];
 					}
 				}else{
+					
+					//this guarantees that the call details are populated regardless of new calls_object
+					var details;
+					if(allCallDetails[data[i].xpid]){
+						if(allCallDetails[data[i].xpid].details){
+							details = allCallDetails[data[i].xpid].details;
+						}
+					}
+					
+					if(details){
+						data[i].details = details;
+					}
+
 					allCallDetails[data[i].xpid] = data[i];
 				}
 		}
@@ -865,6 +878,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 	
+	$rootScope.$on("mycalldetails_synced", function(event,data){
+		if(data){
+			for(var i = 0, iLen = data.length; i < iLen; i++){
+				if (data[i].xpid)
+					//$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
+					if(callsDetails[data[i].xpid]){
+						callsDetails[data[i].xpid].details = data[i];
+				}
+				
+				
+			}
+			//$rootScope.$broadcast('all_calls_updated', allCallDetails);
+		}	
+	});
+
 	$rootScope.$on("mycalls_synced",function(event,data){
 		
 		var displayHangUpLauncher = false;
@@ -914,8 +942,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(call != undefined && (call.record || call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD)){
 						doesExist = true;
 					}
+					
+					if(callsDetails[data[i].xpid].details){
+						data[i].details = callsDetails[data[i].xpid].details;
+					}
 
 					callsDetails[data[i].xpid] = data[i];
+					
 					if(data[i].contactId){
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}
@@ -976,7 +1009,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(callsDetails[data[i].xpid]){
 					callsDetails[data[i].xpid].details = data[i];
 				}
+				
+				if(allCallDetails[data[i].xpid]){
+					allCallDetails[data[i].xpid].details = data[i];
+				}
 			}
+			$rootScope.$broadcast('all_calls_updated', allCallDetails);
 		}		
 	});
 
