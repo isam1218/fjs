@@ -161,14 +161,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					widget: widget,
 					context: context ? $parse(context)(scope) : null
 				};
-
-				scope.$watch('obj.call',function(){
-					if(obj.call == null){
-						console.log(obj.call);
-					} 
-					console.log('hello');
-				});
-				$rootScope.$broadcast('contextMenu', data);
+			$rootScope.$broadcast('contextMenu', data);
 				$rootScope.contextShow = true;
 
 				$timeout(function() {
@@ -221,7 +214,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			function hideOverlay(t) {
 				timer = $timeout(function() {
-					overlay.css('display', 'none');
+					//overlay.css('display', 'none');
 					overlay.unbind();
 				}, t, false);
 			}

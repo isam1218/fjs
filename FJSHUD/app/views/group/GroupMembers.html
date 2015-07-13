@@ -25,7 +25,10 @@
 				{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + on call' : '') }}
             </div>
 			
-			<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
+
+			<callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
+
+			<!--<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
 				<avatar 
 					profile="member.fullProfile.call.fullProfile"
 					context="callstatus"
@@ -36,7 +39,7 @@
 					<div class="Phone">{{::member.fullProfile.call.phone}}</div>
 				</div>
 				<div class="Time" timer="member.fullProfile.call.startedAt"></div>
-			</div>
+			</div>-->
 			
             <div class="vmalternate" ng-if="!member.fullProfile.call">
                 <div class="vmtime">#{{ ::member.fullProfile.primaryExtension }}</div>

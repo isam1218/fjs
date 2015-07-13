@@ -10,7 +10,10 @@
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
 		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
     </div>
-	<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
+
+    <callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
+
+	<!--<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
 		<avatar 
 			profile="member.fullProfile.call.fullProfile"
 			context="callstatus"
@@ -21,7 +24,7 @@
 			<div class="Phone">{{::member.fullProfile.call.phone}}</div>
 		</div>
 		<div class="Time" timer="member.fullProfile.call.startedAt"></div>
-	</div>
+	</div>-->
 			
 	<div ng-if="!member.fullProfile.call">
 		<div class="ListRowStatus">

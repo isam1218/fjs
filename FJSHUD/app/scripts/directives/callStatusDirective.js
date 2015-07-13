@@ -28,8 +28,8 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 					duration = angular.element("<div class='CallDuration' timer=" + contact.call.startedAt + "> </div>");
 					details.append(detailCallerName);
 					details.append(detailCallExtension); 
-					avatarEle.css('height','40px');
-					avatarEle.css('width', '40px');
+					//avatarEle.css('height','40px');
+					//avatarEle.css('width', '40px');
 					
 					element.append(avatarEle);
 					element.append(details);
@@ -41,18 +41,6 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 					element.append(details);
 					element.append(detailCallerName);
 				}
-
-				/*if(avatarEle){
-					avatarEle.bind('click',function(){
-						$event.stopPropagation();
-				        $event.preventDefault();
-						
-						if (contact.call.contactId == scope.meModel.my_pid)
-							return;
-					
-						scope.showOverlay(true, 'CallStatusOverlay', contact);
-					});
-				}*/
 				$compile(element.contents())(scope);
 			}
 
@@ -62,9 +50,6 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 					return;
 
 				switch(contact.call.type){
-
-					case fjs.CONFIG.CALL_TYPES.QUEUE_CALL:
-						break;
 					case fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL:
 						$location.path('/conference/'+ contact.call.details.conferenceId);
 						break;
