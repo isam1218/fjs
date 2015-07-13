@@ -17,6 +17,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	var appVersion = navigator.appVersion;
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
 	var upload_progress = 0;
+	var upload_taskId = 0;
 	var feeds = fjs.CONFIG.FEEDS;
 	$rootScope.isFirstSync = true;
 	var deferred_progress = $q.defer();
@@ -33,7 +34,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		return "xxx".replace(/[x]/g,function(c){
 			return c == 'x' ? Math.random().toString(16).substr(2,2) : c
 		});
-	}
+	};
 
 	var assignTab = function(){
 		
@@ -59,7 +60,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
-			}
+			};
 		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
@@ -508,7 +509,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
-        }
+        };
+		
+		// new task id
+		data['a.taskId'] = '2_' + upload_taskId;
+		
 		var fd = new FormData();
     
         for (var field in data) {
@@ -543,13 +548,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		request.open("POST",requestURL, true);
 		request.send(fd);
        
+	    upload_taskId++;
     };
 
     this.update_avatar = function(data) {
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
-        }
+        };
     
         var fd = new FormData();
     
