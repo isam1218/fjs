@@ -12,21 +12,7 @@
     </div>
 
     <callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
-
-	<!--<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
-		<avatar 
-			profile="member.fullProfile.call.fullProfile"
-			context="callstatus"
-			type="{{::member.fullProfile.call.type}}">
-		</avatar>
-		<div class="Details">
-			<div class="Name">{{::member.fullProfile.call.displayName}}</div>
-			<div class="Phone">{{::member.fullProfile.call.phone}}</div>
-		</div>
-		<div class="Time" timer="member.fullProfile.call.startedAt"></div>
-	</div>-->
-			
-	<div ng-if="!member.fullProfile.call">
+		<div ng-if="!member.fullProfile.call">
 		<div class="ListRowStatus">
 			<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
 		</div>

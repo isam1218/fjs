@@ -214,7 +214,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			function hideOverlay(t) {
 				timer = $timeout(function() {
-					//overlay.css('display', 'none');
+					overlay.css('display', 'none');
 					overlay.unbind();
 				}, t, false);
 			}
