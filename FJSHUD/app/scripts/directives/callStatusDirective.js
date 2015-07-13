@@ -1,4 +1,5 @@
-hudweb.directive('callstatus', ['$parse','$compile', '$interval', 'NtpService', function($parse,$compile, $interval, ntpService) {
+hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService', 
+	function($parse,$compile, $location, ntpService,conferenceService) {
 	return {
 		restrict: 'E',
 		replace: true,
@@ -16,8 +17,11 @@ hudweb.directive('callstatus', ['$parse','$compile', '$interval', 'NtpService', 
 
 			function updateContact(contact){
 				element.empty();
+				//we create a call status contact and attach it to the scope 
+				scope.callstatusContact = contact;
 				if(contact.call){
-					avatarEle = angular.element("<avatar ng-click='showCallOverlay(contact)' profile=" + contact.call.fullProfile + " type=" + contact.call.type + "> </avatar>");
+					
+					avatarEle = angular.element("<avatar ng-click='showCallOverlay(callstatusContact)' context='callstatus' profile='callstatusContact.call.fullProfile' type=" + contact.call.type + "> </avatar>");
 					details = angular.element("<div class='CallLineTop'></div>");
 					detailCallerName = angular.element("<div class='CallerName'>" + contact.call.displayName + "</div>");
 					detailCallExtension = angular.element("<div class='CallExtension'>" + contact.call.phone + "</div>");
@@ -38,7 +42,7 @@ hudweb.directive('callstatus', ['$parse','$compile', '$interval', 'NtpService', 
 					element.append(detailCallerName);
 				}
 
-				if(avatarEle){
+				/*if(avatarEle){
 					avatarEle.bind('click',function(){
 						$event.stopPropagation();
 				        $event.preventDefault();
@@ -48,7 +52,7 @@ hudweb.directive('callstatus', ['$parse','$compile', '$interval', 'NtpService', 
 					
 						scope.showOverlay(true, 'CallStatusOverlay', contact);
 					});
-				}
+				}*/
 				$compile(element.contents())(scope);
 			}
 
@@ -56,10 +60,19 @@ hudweb.directive('callstatus', ['$parse','$compile', '$interval', 'NtpService', 
 						
 				if (contact.call.contactId == scope.meModel.my_pid)
 					return;
-					
-				scope.showOverlay(true, 'CallStatusOverlay', contact);
-				
-			}
+
+				switch(contact.call.type){
+
+					case fjs.CONFIG.CALL_TYPES.QUEUE_CALL:
+						break;
+					case fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL:
+						$location.path('/conference/'+ contact.call.details.conferenceId);
+						break;
+					default:
+						scope.showOverlay(true, 'CallStatusOverlay', contact);
+			
+				}
+			};
 
 			scope.$watch("contact.call",function(){
 				updateContact(contact);

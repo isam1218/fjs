@@ -13,7 +13,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
 			var context, widget, rect;
-			var profileCallWatcher;
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
@@ -163,6 +162,12 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					context: context ? $parse(context)(scope) : null
 				};
 
+				scope.$watch('obj.call',function(){
+					if(obj.call == null){
+						console.log(obj.call);
+					} 
+					console.log('hello');
+				});
 				$rootScope.$broadcast('contextMenu', data);
 				$rootScope.contextShow = true;
 
@@ -215,12 +220,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			}
 			
 			function hideOverlay(t) {
-				if(profileCallWatcher){
-					profileCallWatcher();
-				}
-
-				$rootScope.contextShow = false;
-
 				timer = $timeout(function() {
 					overlay.css('display', 'none');
 					overlay.unbind();

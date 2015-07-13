@@ -88,9 +88,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
-								for (var feed in synced_data) {
-									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+								for(var i = 0, ilen = feeds.length;i < ilen;i++){
+									if(synced_data[feeds[i]] && synced_data[feeds[i]].length > 0){
+										$rootScope.$broadcast(feeds[i] + '_synced', synced_data[feeds[i]]);
+									}
 								}
 								$rootScope.isFirstSync = false;
 
@@ -156,9 +157,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 							if(localStorage.data_obj != undefined){
 								synced_data = JSON.parse(localStorage.data_obj);
-								for(var feed in synced_data){
-									if (synced_data[feed].length > 0)
-			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
+									var feed = fjs.CONFIG.FEEDS[i];
+									if(synced_data[feed]){
+										if (synced_data[feed].length > 0)
+			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									}
 								}
 							}
 							worker.postMessage({
@@ -186,7 +190,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    	data_obj = JSON.parse(localStorage.data_obj);
 		                    }
 							
-		                    // send data to other controllers
+		                    // send data to other controllers i'm doing this to ensure order when syncing'
 							$rootScope.$evalAsync(function() {
 								for (var feed in synced_data) {
 									if(!$.isEmptyObject(data_obj)){
@@ -239,9 +243,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 
 									synced_data = JSON.parse(localStorage.data_obj);
-									for(var feed in synced_data){
-										if (synced_data[feed].length > 0)
-			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
+										var feed = fjs.CONFIG.FEEDS[i];
+										if(synced_data[feed]){
+											if (synced_data[feed].length > 0)
+												$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+										}
 									}
 								}
 

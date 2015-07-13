@@ -3,9 +3,9 @@ var fjs = {};
 fjs.CONFIG = {
     SERVER: {
         serverURL: "https://dev4.fon9.com:8081"
-		, loginURL: "https://dev4.fon9.com:5501"
-        //loginURL:'https://auth.fonality.com',
-        //serverURL: 'https://fdp-huc-v5.fonality.com'
+	   	, loginURL: "https://dev4.fon9.com:5501"
+       // loginURL:'https://auth.fonality.com',
+       // serverURL: 'https://fdp-huc-v5.fonality.com'
 //      serverURL: "https://lb-stage3.fonality.com:446"
 //      , loginURL: "https://lb-stage3.fonality.com:444"
 //      serverURL: "https://huc-dev.fonality.com:8081"
@@ -33,6 +33,7 @@ fjs.CONFIG = {
         GROUP_CALL:1,
         CONFERENCE_CALL:0,
         INDIVIDUAL_CALL:2,
+        QUEUE_CALL:3,
         BARGE_CALL:4,
         EXTERNAL_CALL:5,
         CALL_MENU:6,
