@@ -12,6 +12,14 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			var added = false;
 			var rect = element[0].getBoundingClientRect();
 			
+			var addTeamMemberHeader = function(){
+				overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
+				headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
+				inset.append(headerTitle);
+			};
+
+			var joinByPhoneBtn = angular.element('<div class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton"><span>Join by phone</span></div>'); 
+			
 			element.css('position', 'relative');
 			element.css('z-index', 100);
 				
@@ -19,19 +27,14 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			inset = angular.element('<div class="Inset"></div>');
 			inset.css('margin-top', rect.height*1.5 + 'px');
 			
-			var joinByPhoneBtn = angular.element('<div class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton"><span>Join by phone</span></div>'); 
-			
 			if (attrs.conference == "true"){
 				overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
 				headerTitle = angular.element('<div class="Header">Join to Conference</div>');
 				overlay.append(headerTitle);
 				overlay.append(joinByPhoneBtn);
 				overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
-			} else {
-				overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
-				headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
-				inset.append(headerTitle);
-			}
+			} else
+				addTeamMemberHeader();
 
 			rows = angular.element('<div class="rows"></div>');
 
@@ -46,9 +49,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (e.keyCode == 8 || e.keyCode == 46){
 					inset.empty();
 					if (attrs.conference != 'true'){
-						overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
-						headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
-						inset.append(headerTitle);
+						addTeamMemberHeader();
 					}
 					rows = angular.element('<div class="rows"></div>');
 				}
@@ -59,9 +60,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					if (attrs.ngController == "ContactsWidget"){
 						overlay.remove();
 						headerTitle.remove();
-						overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
-						headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
-						inset.append(headerTitle);
+						addTeamMemberHeader();
 					}
 					for (var c = 0, len = contacts.length; c < len; c++) {
 						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
@@ -76,16 +75,17 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 						inset.empty();
 						rows.empty();
 						if (attrs.conference != 'true'){
-							overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
-							headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
-							inset.append(headerTitle);
+							addTeamMemberHeader();
 						}
 						rows = line;
 					}
-					
+
+					headerTitle.remove();
+					addTeamMemberHeader();
 					inset.append(rows);
 					overlay.append(inset);
 					element.after(overlay);
+
 					if(joinByPhoneBtn){
 						joinByPhoneBtn.bind('click',function(){
 							if (!isNaN(element.val())){
@@ -106,9 +106,9 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			// clear search
 			element.bind('search', function(e) {
 				if (element.val().length == 0) {
-					//rows.empty();
-					//inset.empty();
-					//overlay.remove();
+					rows.empty();
+					inset.empty();
+					overlay.remove();
 				}
 			});
 
@@ -142,7 +142,19 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				
 				added = true;
 			}
-			
+
+			var fullContactInfo = function(line, contact){
+				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
+				var hud_status = contact.hud_status || 'offline';
+				var name = '<div class="ListRowContent"><div class="ListRowTitle">';
+				name += '<div class="name"><strong>' + contact.displayName + '</strong></div>';
+				name += '<div class="hudStatus"><div class="ListRowStatusIcon XIcon-ChatStatus-'+ hud_status +'"></div>';
+				name +=	 contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline';
+				name += '</div></div><div class="ListRowStatus"><div class="Extension Link">#' + contact.primaryExtension + '</div></div></div>';
+				line.append(name);
+				// return line;
+			};
+
 			// fill row content
 			function makeLine(contact, joinByPhone, idx) {
 				var line = angular.element('<div class="ListRow"></div>');
@@ -173,17 +185,9 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 									confMemAdded = true;
 							}
 						}
-						if (contact && !confMemAdded){
-							line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');				
-							// add the chat status if the search is done for conference
-							var hud_status = contact.hud_status || 'offline';
-							var name = '<div class="ListRowContent"><div class="ListRowTitle">';
-							name += '<div class="name"><strong>' + contact.displayName + '</strong></div>';
-							name += '<div class="hudStatus"><div class="ListRowStatusIcon XIcon-ChatStatus-'+ hud_status +'"></div>';
-							name +=	 contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline';
-							name += '</div></div><div class="ListRowStatus"><div class="Extension Link">#' + contact.primaryExtension + '</div></div></div>';
-							line.append(name);
-						} else
+						if (contact && !confMemAdded)
+							var name = fullContactInfo(line, contact);
+						else
 							line = angular.element('');
 					}	
 					else{
@@ -198,7 +202,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 								}
 							}
 							if (contact && !faveAdded)
-								line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
+								fullContactInfo(line, contact);
 							else
 								line = angular.element('');
 							// 4. group edit...
@@ -211,7 +215,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 								}
 							}
 							if (contact && !groupMemberAdded)
-								line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
+								var name = fullContactInfo(line, contact);
 							else
 								line = angular.element('');
 						} else {
@@ -224,7 +228,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 								}
 							}
 							if (contact && !contactAdded)
-								line.append('<div class="ListRowContent"><div class="Name">' + contact.displayName + '</div><div class="Extension">#' + contact.primaryExtension + '</div></div>');
+								var name = fullContactInfo(line, contact);
 							else
 								line = angular.element('');
 						}
