@@ -7,14 +7,15 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 	
 	queueService.getQueues().then(function(data) {
 		$scope.reasons = data.reasons;
+		$scope.queues = data.mine;
 	});
 	
 	// enable/disable action buttons
-	$scope.$watch('checkboxes', function() {
+	$scope.$watchCollection('checkboxes', function() {
 		$scope.disableLogin = true;
 		$scope.disableLogout = true;
 		
-		for (xpid in $scope.checkboxes) {
+		for (var xpid in $scope.checkboxes) {
 			if ($scope.checkboxes[xpid]) {
 				for (var i = 0; i < $scope.queues.length; i++) {
 					if ($scope.queues[i].xpid == xpid) {
@@ -26,10 +27,10 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 				}
 			}
 		}
-	}, true);
+	});
 	
 	$scope.selectQueues = function(value) {
-		for (i in $scope.checkboxes) {
+		for (var i in $scope.checkboxes) {
 			if (value == 'all')
 				$scope.checkboxes[i] = true;
 			else
@@ -41,7 +42,7 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 		var toSend = [];
 		
 		// find selected queues
-		for (i in $scope.checkboxes) {
+		for (var i in $scope.checkboxes) {
 			if ($scope.checkboxes[i])
 				toSend.push(i);
 			

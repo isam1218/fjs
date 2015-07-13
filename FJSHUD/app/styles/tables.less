@@ -183,12 +183,13 @@
 	img{
 	  width: 26px;
 	  height: 26px;
-	  margin: 1px;	  	 
+	  margin: 1px;	
+	  margin-left: -1px;  	 
 	}
 	
 	&.CallAvatar_Office{
 	  img{
-	    margin: 0px;
+	    margin: -1px;
 	  }
 	}
   }
@@ -211,7 +212,7 @@
     overflow: hidden;
     color: #888;
     white-space: nowrap;
-	max-width: 55%;
+	max-width: 50%;
 	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
 	margin-top: -3px;
@@ -595,6 +596,7 @@
     margin-left: .5em;
     flex: 1;
 	-webkit-flex: 1;
+	overflow: hidden;
   }
   
   .ChatMessageItem {

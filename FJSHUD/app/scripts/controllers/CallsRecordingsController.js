@@ -8,7 +8,7 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
             $scope.selected = $routeParams.route;
             localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
 
-            for(var i = 0; i < $scope.tabs.length;i++){
+            for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
               if($scope.tabs[i].lower == $routeParams.route){
                 $scope.toggleObject = {item: i};
                 localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
@@ -22,14 +22,9 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     }
   };
 
-  var getXpidInCR = $rootScope.$watch('myPid', function(newVal){
-    if (!$scope.globalXpid){
-      $scope.setFromLocalStorage(newVal);
-      getXpidInCR();
-    } else {
-      getXpidInCR();
-    }
-  });
+	settingsService.getSettings().then(function() {
+		$scope.setFromLocalStorage($rootScope.myPid);
+	});
 
   $scope.selected = localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
   $scope.toggleObject = localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid]) : {item: 0};

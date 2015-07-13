@@ -48,14 +48,14 @@
                       <div class="ListRowContent" style="border-left:none">
                         <div class="ListRowTitle">
                           <div class="name">
-                            <span><strong>{{ ::currentCall.displayName }}</strong></span>
+                            <strong>{{ ::currentCall.displayName }}</strong>
                           </div>
                           <div class="ListRowStatus" >
-                            <div class="ListRowStatusIcon" style="display: inline-block;">{{ currentCall.phone }}</div>
+                            <div class="phone">{{ currentCall.phone }}</div>
                             <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{currentCall.contact.queueStatus}}">
                               <div class="status-icon-inner"></div>
                             </div>
-                            <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.contact.hud_status || 'offline' }}">
+                            <div ng-if="currentCall.type != 0" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.contact.hud_status || 'offline' }} last">
                               <div class="status-icon-inner"></div>
                             </div>
                             
@@ -68,13 +68,13 @@
                   <div class="Dialog-settings-row">
                     <div class="XButton XButtonToggleSmall" ng-class="volume.micVol == 0 ? 'XIcon24-MuteOn' : 'XIcon24-MuteOff'"
 
-                    ng-click="update_settings('hudmw_webphone_mic','update',0)"></div>
+                    ng-click="muteCall()"></div>
                  
                     <input type="range" min="0" max="1" step=".01" ng-model="volume.micVol" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVol)"
                     ></input>
                  </div>
 	             <div class="Dialog-settings-row">
-	                <div class="XButton XButtonToggleSmall " ng-class="volume.spkVol == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="update_settings('hudmw_webphone_speaker','update',0)"></div>
+	                <div class="XButton XButtonToggleSmall " ng-class="volume.spkVol == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="silentSpk()"></div>
 	                <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
 	             </div>
                </div>                          
@@ -108,7 +108,7 @@
               </div>           
              </div>
 
-              <div class="NewCall" ng-if="currentCall == null" style="display: none;">
+              <div class="NewCall" ng-if="currentCall == null">
                 <div class="WidgetSectionTitle">{{::verbage.place_a_call}}</div>
                 <input class="NewCall" ng-keypress="callKeyPress($event)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">                
                 <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>

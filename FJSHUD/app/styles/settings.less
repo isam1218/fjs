@@ -124,28 +124,49 @@
                             background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
                         }
                     }
-                }
-                .ListRowTitle > div{
+                }                               
+    
+                .ListRowTitle{
+                  width: 60%;
+                  max-width: none;
+                  
+                  & > div{
                     float: left;
                     margin-left: -5px;
                     clear: both;
-                    max-width: 100%;
+                  }                      
                 }
                 
                 .name{ 
                   margin-left: 0px;
                   margin-top: 5px;
                   clear: none;
-                  strong{font-size: 14px;}
+                  width: 100%;
+                  max-width: none;
+                  
+                  strong{
+                    font-size: 14px; 
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;  
+                  }
                 }  
                 .ListRowStatus{
                     margin-left: 5px;
-                    margin-top: 5px;
-                    
-                    .ListRowStatusIcon.phone{
-                        margin-right: 10px;
-                        display: inline-block;
+                    margin-top: 5px;                    
+                                       
+                    .ListRowStatusIcon{
+                       margin-left: 0px; 
+                       .last{
+                        margin-left: -5px;                      
+                       }
                     }
+                    .phone{
+                        margin-right: 5px;
+                        display: inline-block;
+                        margin-left: 5px;
+                        float: left;
+                    } 
                 }
                 .Avatar{
                   margin-top: 8px;
@@ -160,6 +181,25 @@
                     }    
                   }
                   
+                  &.CallAvatar_Office{
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
+                    .AvatarInteractable {                 
+                       background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
+                    }
+                  }
+              
+                  &.CallAvatar_External{
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+                    .AvatarInteractable {                 
+                        background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+                    }    
+                  }
+                  &.CallAvatar_Queue{
+                    background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
+                    .AvatarInteractable {                 
+                        background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
+                    } 
+                  }
                   img{
                       height: 32px;
                       width: 32px;
@@ -202,7 +242,7 @@
                     margin: 0;
                     
                     .XButton{
-                       width: 74px;
+                       min-width: 74px;
                        height: 24px;
                        float: left;
                        clear: none;

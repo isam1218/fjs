@@ -37,17 +37,11 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	}
 
     $scope.archiveOptions = [
-    	{name:'Never',taskId:"2_6",value:0},
-    	{name:'in 3 Hours', taskId:"2_3",value:10800000},
-    	{name: 'in 2 Days', taskId:"2_4", value:172800000},
-    	{name: "in a Week", taskId:"2_5", value:604800000},
+    	{name:'Never', value:0},
+    	{name: 'in 3 Hours', value:10800000},
+    	{name: 'in 2 Days', value:172800000},
+    	{name: "in a Week", value:604800000},
     ];
-
-    if(fjs.CONFIG.DEBUG){
-    	$scope.archiveOptions.push({
-    		name:"5 minutes",taskId:"2_7", value:30000
-    	});
-    }
 
     $scope.selectedArchiveOption = $scope.archiveOptions[0];
     
@@ -80,37 +74,47 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	};
 
     $scope.uploadAttachments = function($files){
-      	$files[0];
-      	fileList = [];
+      	var fileList = [];
 		
-      	for (i in $files){
+      	for (var i in $files){
       		fileList.push($files[i].file);
       	}
 		
-        var data = {
-            'action':'sendWallEvent',
-            'a.targetId': $scope.targetId,
-            'a.type':'f.conversation.wall',
-            'a.xpid':"",
-            'a.archive':$scope.selectedArchiveOption.value,
-            'a.retainKeys':"",
-            'a.message': this.message ? this.message : '',
-            'a.callback':'postToParent',
-            'a.audience':$scope.audience,
-            'alt':"",
-            "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "1_0",
-            "_archive": $scope.selectedArchiveOption.value,
-        };
+		if (fileList.length > 0) {
+			var data = {
+				'action':'sendWallEvent',
+				'a.targetId': $scope.targetId,
+				'a.type':'f.conversation.wall',
+				'a.xpid':"",
+				'a.archive':$scope.selectedArchiveOption.value,
+				'a.retainKeys':"",
+				'a.message': this.message ? this.message : '',
+				'a.callback':'postToParent',
+				'a.audience':$scope.audience,
+				'alt':"",
+				"a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
+				"a.taskId": "1_0",
+				"_archive": $scope.selectedArchiveOption.value,
+			};
 		
-        httpService.upload_attachment(data,fileList);
+			httpService.upload_attachment(data, fileList);
+		}
+		else if (this.message && this.message != '') {
+			// send as normal chat
+			httpService.sendAction('streamevent', 'sendConversationEvent', {
+				type: 'f.conversation.chat',
+				audience: $scope.audience,
+				to: $scope.targetId,
+				message: this.message
+			});
+		}
 		
         this.message = "";
         $scope.upload.flow.cancel();
         $scope.$parent.showOverlay(false);
 		
 		// go to chat page
-		$location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
+        $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
     };
 
 	$scope.selectCurrentDownload = function(download){

@@ -36,7 +36,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						type = 'Call';
 					
 					// check for allowed cases
-					if (drops.indexOf(type) != -1) {
+					if (drops.indexOf(type) != -1 && (!$(this).hasClass('InnerDock') || obj.xpid != $rootScope.myPid)) {
 						$(this).addClass('DroppableArea');
 						$(ui.helper).removeClass('not-allowed');
 					}
@@ -48,14 +48,18 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						$(ui.helper).addClass('not-allowed');
 				},
 				drop: function(event, ui) {
-					$(this).removeClass('DroppableArea');
+					$('.DroppableArea').removeClass('DroppableArea');
 					
 					// re-check basic criteria
-					if (timeout || drops.indexOf(type) == -1 || obj.xpid == $rootScope.myPid)
+					if (timeout || drops.indexOf(type) == -1)
 						return;
 					
 					// dock new item
 					if ($(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
+						// can't dock yourself
+						if (obj.xpid == $rootScope.myPid)
+							return;
+						
 						var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 						var data = {
@@ -83,7 +87,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							
 							// find first empty room on same server
 							for (var i = 0; i < len; i++) {
-								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!conferences[i].members || conferences[i].members.length == 0)) {
+								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && conferences[i].status && (!conferences[i].members || conferences[i].members.length == 0)) {
 									found = conferences[i].xpid;
 									break;
 								}
@@ -93,7 +97,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							if (!found) {
 								for (var i = 0; i < len; i++) {
 									// find first room on same server
-									if (!conferences[i].members || conferences[i].members.length == 0) {
+									if (conferences[i].status && !conferences[i].members || conferences[i].members.length == 0) {
 										found = conferences[i].xpid;
 										break;
 									}
@@ -118,8 +122,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						});
 					}
 					// join conference normally
-					else if (scope.conference || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
-						var xpid = scope.conference ? scope.conference.xpid : scope.gadget.data.xpid;
+					else if (scope.conference || (scope.item && scope.item.recent_type == 'conference') || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
+						var xpid = scope.conference ? scope.conference.xpid : scope.gadget ? scope.gadget.data.xpid : scope.item.xpid;
 						
 						if (type == 'Contact') {
 							httpService.sendAction('conferences', 'joinContact', {
@@ -153,6 +157,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							xpid = scope.member.contactId;
 						else if (scope.gadget)
 							xpid = scope.gadget.data.xpid;
+						else if (scope.item)
+							xpid = scope.item.xpid;
 						
 						httpService.sendAction('calls', 'transferToContact', {
 							fromContactId: $rootScope.myPid,

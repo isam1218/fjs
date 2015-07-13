@@ -1,3 +1,4 @@
+<div ng-if="contextShow"> 
 <div class="Arrow Left"></div>
 
 <div class="TopRow">
@@ -300,6 +301,10 @@
 			<span>{{::verbage.undock}}</span>
 		</a>
 	</div>
+
+	<div ng-if="type == 'Contact'"> 
+		<callStatus profile="profile" ng-if="profile.call"></callStatus>
+	</div>
 </div>
 
 <div class="BottomRow Reasons" ng-show="reasons.show">
@@ -312,4 +317,5 @@
 			{{ ::reason.name }}
 		</div>
 	</div>
+</div>
 </div>

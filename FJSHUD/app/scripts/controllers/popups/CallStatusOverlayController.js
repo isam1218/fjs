@@ -142,10 +142,19 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.transferCall = function() {
 		if ($scope.transferTo) {
-			httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+			if($scope.onCall.xpid == $rootScope.meModel.my_pid){
+				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
 					mycallId: $scope.onCall.call.xpid,
 					toContactId: $scope.transferTo.xpid
 				});	
+				
+			}else{
+				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					fromContactId: $scope.onCall.call.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+				
+			}
 
 			$scope.showOverlay(false);
 		}
@@ -164,7 +173,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				return true;
 			}
 			else if (conference.members){
-				for (var i = 0; i < conference.members.length; i++){
+				for (var i = 0, iLen = conference.members.length; i < iLen; i++){
 					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
 						return true;
 				}
@@ -187,8 +196,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.isStatusUndefined = function(conference){
-		// conferences w/o the status property can't be joined and will break the overlay...
-		return conference.status !== undefined;
+		// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
+		if (conference.status !== undefined && conference.permissions == 0){
+			return true;
+		}
 	};
 
 	

@@ -28,41 +28,42 @@
 
         <div class="ListSection WidgetFont" > 
             <div> {{::verbage.video_collaboration_summary}}</div>
-        </div>
-        <div class="ZoomWidgetSection left"> 
-            <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
-                <div class="WidgetFont">{{::verbage.join_summary}}</div>
-            </div>
-           <div class="joinWrapper">
-            <div class="JoinMeetingSection"> 
-                <div class="SearchInputBox">
-                    <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
-                    </div>
-                </div>
-                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="ZoomWidgetSection right"> 
-            <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
-                <div class="WidgetFont">{{::verbage.create_summary}}</div>
-            </div>
-            <div class="joinWrapper">
-	            <div class="JoinMeetingSection"> 
-	                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
-	                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
-	                <div class="addContact">
-						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" placeholder="{{::verbage.add_someone}}" contact-search />
-	                </div>
+        </div>        
+	    <div class="ZoomWidgetSection left"> 
+	            <div class="ListSection WidgetTextHeader"> 
+	                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
+	                <div class="WidgetFont">{{::verbage.join_summary}}</div>
 	            </div>
-            </div>
-            <div class="widget-zoom-contacts">
-                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
+	           <div class="joinWrapper">
+	            <div class="JoinMeetingSection"> 
+	                <div class="SearchInputBox">
+	                    <div class="SearchInputBoxInputHolder">
+	                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
+	                    </div>
+	                </div>
+	                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
+	
+	            </div>
+	          </div>
+	        </div>
+	
+	        <div class="ZoomWidgetSection right"> 
+	            <div class="ListSection WidgetTextHeader"> 
+	                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
+	                <div class="WidgetFont">{{::verbage.create_summary}}</div>
+	            </div>
+	            <div class="joinWrapper">
+		            <div class="JoinMeetingSection"> 
+		                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
+		                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
+		                <div class="addContact">
+							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" placeholder="{{::verbage.add_someone}}" contact-search />
+		                </div>
+		            </div>
+	            </div>
+            </div>              
+            <div class="widget-zoom-contacts" resize-height>
+                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
 						<avatar profile="contact" widget="zoom"></avatar>
                         <div class="ListRowContent" dockable="contact">
                             <div class="ZoomRowTitle">
@@ -80,7 +81,7 @@
             </div>
 
 
-        </div>
+        
 
     </div>
 

@@ -29,7 +29,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.groupedSections = [{type: 'contact', lastTime: {}},{type: 'group', lastTime: {}},{type: 'queue', lastTime: {}},{type: 'conference', lastTime: {}}];
 
   // retrieve saved recents from LS (if any), then grab the most recent entry from each grouping (contact, group, queue, conf) and assign as prop to the items in groupedSections array
-  $scope.$watch('recent', function() {
+  $scope.$watchCollection('recent', function() {
     // grab the most recent item for each section
     for (var key in $scope.recent){
       var singleEntry = $scope.recent[key];
@@ -52,12 +52,12 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.groupedSections[1].lastTime = mostRecentGroup;
     $scope.groupedSections[2].lastTime = mostRecentQueue;
     $scope.groupedSections[3].lastTime = mostRecentConf;
-  }, true);
+  });
 
   contactService.getContacts().then(function(data) {
     $scope.totalContacts = data;
 
-    for (var i = 0; i < $scope.totalContacts.length; i++){
+    for (var i = 0, iLen = $scope.totalContacts.length; i < iLen; i++){
       var singleContact = $scope.totalContacts[i];
       singleContact.recent_type = 'contact';
       $scope.combined[singleContact.xpid] = singleContact;
@@ -67,7 +67,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   conferenceService.getConferences().then(function(data) {
     $scope.totalConferences = data.conferences;
 
-    for (var j = 0; j < $scope.totalConferences.length; j++){
+    for (var j = 0, jLen = $scope.totalConferences.length; j < jLen; j++){
       var singleConference = $scope.totalConferences[j];
       singleConference.recent_type = 'conference';
       $scope.combined[singleConference.xpid] = singleConference;
@@ -79,7 +79,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     return totalGroups.then(function(data){
       $scope.totalGroups = data.groups;
 
-      for (var l = 0; l < $scope.totalGroups.length; l++){
+      for (var l = 0, lLen = $scope.totalGroups.length; l < lLen; l++){
         var singleGroup = $scope.totalGroups[l];
         singleGroup.recent_type = 'group';
         $scope.combined[singleGroup.xpid] = singleGroup;
@@ -91,7 +91,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     return queueService.getQueues().then(function(data) {
       $scope.totalQueues = data.queues;
 
-      for (var k = 0; k < $scope.totalQueues.length; k++){
+      for (var k = 0, kLen = $scope.totalQueues.length; k < kLen; k++){
         var singleQueue = $scope.totalQueues[k];
         singleQueue.recent_type = 'queue';
         $scope.combined[singleQueue.xpid] = singleQueue;
@@ -146,14 +146,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     }
   };
 
-  $scope.customSort = function(){
-    return 'timestamp';
-  };
-
-  $scope.customReverse = function(){
-    return true;
-  };
-
   $scope.searchRecentContactFilter = function(){
     return function(contact){
       if (contact.displayName.toLowerCase().indexOf($scope.$parent.query) != -1 || contact.primaryExtension.indexOf($scope.$parent.query) != -1){
@@ -197,42 +189,54 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   
   $scope.hasMoreContactsToLoad = function(){
     var contactCounter = 0;
-    for (var i = 0; i < $scope.totalContacts.length; i++){
+    for (var i = 0, iLen = $scope.totalContacts.length; i < iLen; i++){
       var singleContactXpid = $scope.totalContacts[i].xpid;
       if ($scope.recent[singleContactXpid] !== undefined)
         contactCounter++;
     }
-    return contactPagesShown < (contactCounter / contactPageSize);
+    if (contactCounter < 10)
+      return contactPagesShown < (contactCounter/contactPageSize);
+    else
+      return contactPagesShown < 3;
   };
 
   $scope.hasMoreGroupsToLoad = function(){
     var groupCounter = 0;
-    for (var i = 0; i < $scope.totalGroups.length; i++){
+    for (var i = 0, iLen = $scope.totalGroups.length; i < iLen; i++){
       var singleGroupXpid = $scope.totalGroups[i].xpid;
       if ($scope.recent[singleGroupXpid] !== undefined)
         groupCounter++;
     }
-    return groupPagesShown < (groupCounter / groupPageSize);
+    if (groupCounter < 10)
+      return groupPagesShown < (groupCounter / groupPageSize);
+    else
+      return groupPagesShown < 3;
   };
 
   $scope.hasMoreQueuesToLoad = function(){
     var queueCounter = 0;
-    for (var i = 0; i < $scope.totalQueues.length; i++){
+    for (var i = 0, iLen = $scope.totalQueues.length; i < iLen; i++){
       var singleQueueXpid = $scope.totalQueues[i].xpid;
       if ($scope.recent[singleQueueXpid] !== undefined)
         queueCounter++;
     }
-    return queuePagesShown < (queueCounter / queuePageSize);
+    if (queueCounter < 10)
+      return queuePagesShown < (queueCounter / queuePageSize);
+    else
+      return queuePagesShown < 3;
   };
 
   $scope.hasMoreConferencesToLoad = function(){
     var conferenceCounter = 0;
-    for (var i = 0; i < $scope.totalConferences.length; i++){
+    for (var i = 0, iLen = $scope.totalConferences.length; i < iLen; i++){
       var singleConferenceXpid = $scope.totalConferences[i].xpid;
       if ($scope.recent[singleConferenceXpid] !== undefined)
         conferenceCounter++;
     }
-    return conferencePagesShown < (conferenceCounter / conferencePageSize);
+    if (conferenceCounter < 10)
+      return conferencePagesShown < (conferenceCounter / conferencePageSize);
+    else
+      return conferencePagesShown < 3;
   };
 
   $scope.loadMoreContacts = function(){
@@ -266,6 +270,17 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     } else {
         return 'img/Generic-Avatar-28.png';
     }
+  };
+  
+  $scope.getDroppableType = function(type) {
+	switch(type) {
+		case 'contact':
+			return 'Call';
+		case 'conference':
+			return 'Call,Contact';
+	}	
+	
+	return '';
   };
   
   $scope.deptHeaderDisplay = function(groupType){

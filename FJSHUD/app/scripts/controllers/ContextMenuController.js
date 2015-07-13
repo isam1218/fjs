@@ -14,6 +14,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		list: [],
 		show: false,
 	};
+
+	$scope.contextShow = false;
+		
 	
 	queueService.getQueues().then(function(data) {
 		$scope.reasons.list = data.reasons;
@@ -27,7 +30,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
+		$scope.contextShow = true;
 		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;		
+		$scope.profile.name = $('<div/>').html($scope.profile.name).text();
+		$scope.profile.displayName = $('<div/>').html($scope.profile.displayName).text();
+
 		$scope.original = res.obj;
 		$scope.context = res.context;
 		$scope.widget = res.widget;
@@ -80,7 +87,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 				$scope.canDock = true;
 				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string
 				
-				for (key in data) {
+				for (var key in data) {
 					if (key.indexOf('GadgetConfig') != -1 && key.match(regex)) {
 						$scope.canDock = false;
 						break;
@@ -189,7 +196,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		var emails = [];
 		
 		// get all addresses from members
-		for (var i = 0; i < group.members.length; i++) {
+		for (var i = 0, iLen = group.members.length; i < iLen; i++) {
 			var member = group.members[i];
 			
 			if (member.contactId != $rootScope.myPid && member.fullProfile && member.fullProfile.email)

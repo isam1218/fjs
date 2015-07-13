@@ -101,7 +101,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			contacts[i].call = null;
 			
 			// find caller
-			for (key in data) {
+			for (var key in data) {
 				if (contacts[i].xpid == data[key].xpid) {
 					contacts[i].call = data[key];
 					
@@ -117,7 +117,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				contacts[i].call.bargers = [];
 			
 				// find people barging call
-				for (key in data) {
+				for (var key in data) {
 					if (data[key].barge > 0 && data[key].xpid != contacts[i].xpid && (data[key].contactId == contacts[i].call.xpid || data[key].contactId == contacts[i].call.contactId)) {
 						for (var c = 0, cLen = contacts.length; c < cLen; c++) {
 							if (contacts[c].xpid == data[key].xpid) {
@@ -144,15 +144,15 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
     });
 
 	$rootScope.$on('contactpermissions_synced', function(event, data){
-		for (var i = 0; i < contacts.length; i++){
-			for (var j = 0; j < data.length; j++){
+		for (var i = 0, iLen = contacts.length; i < iLen; i++){
+			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (contacts[i].xpid == data[j].xpid && data[j].permissions){
 					xFerFromPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 3);
 					xFerToPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 4);
 				}
 			}
 		}
-		for (var k = 0; k < contacts.length; k++){
+		for (var k = 0, kLen = contacts.length; k < kLen; k++){
 			if (contacts[k].xpid == $rootScope.myPid){
 				contacts[k].xFerFromPermObj = xFerFromPermObj;
 				contacts[k].xFerToPermObj = xFerToPermObj;

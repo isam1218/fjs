@@ -53,12 +53,11 @@
   text-align: center;
 }
 .Gadget {
-  position: relative;
+  position: absolute;
   display: inline-flex;
   display: -webkit-inline-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  border-radius: 5px;
   border: 1px solid #aaa;
   overflow: hidden;
   width: 160px;
@@ -98,14 +97,14 @@
   padding: .25em;
   text-decoration: none;
   white-space: nowrap;
-  font-size: .8em;
+  /*font-size: .8em;*/
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
 }
 .Gadget .Header > .Avatar {
-  font-size: 1.25em;
+  margin-top: auto;
 }
 .Gadget .Header.Single {
   background: linear-gradient(to bottom, #eeeeef, #ddddde);
@@ -119,10 +118,33 @@
   overflow: hidden;
   flex: 1;
   -webkit-flex: 1;
+  text-shadow: #fff 0 1px 0;
+  font-size: 12px;
 }
 .Gadget .Header .Title div {
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #555;
+  cursor: pointer;
+  margin-top: -2px;
+  padding: 0;
+}
+.Gadget .Header .Title div.titleHeader {
+  text-shadow: #fff 0 1px 0;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 0;
+  margin-bottom: -1px;
+}
+.Gadget .Header .Title div.subTitle {
+  font-size: 11px;
+  white-space: nowrap;
+}
+.Gadget .Header .Title div.ListRowStatusIcon {
+  margin-left: -8px;
+}
+.Gadget .Header .Title div.ListRowStatusIcon:first-child {
+  margin-left: -5px;
 }
 .Gadget .Header .Title .Name {
   font-weight: bold;
@@ -154,25 +176,63 @@
 }
 .Gadget .Content .SubHeader {
   background: linear-gradient(to bottom, #d4d4d5, #d9d9da);
+  background: -webkit-linear-gradient(to bottom, #d4d4d5, #d9d9da);
   border-top: 1px solid #aaa;
-  border-bottom: 1px solid white;
   text-align: center;
-  font-size: .75em;
-  padding: .25em;
   font-weight: bold;
   color: #888;
   text-shadow: whiteSmoke 0 1px 0;
+  height: 20px;
+  border-bottom: solid 1px #fff;
+  font-size: 12px;
+  line-height: 20px;
 }
 .Gadget .Content .List {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
   background: linear-gradient(to bottom, #dcdcdc, #eaeaeb);
+  background: -webkit-linear-gradient(to bottom, #dcdcdc, #eaeaeb);
+}
+.Gadget .Content .List .free {
+  font-size: 12px;
+  padding: 5px;
+}
+.Gadget .Content .List .free p {
+  text-align: center;
+}
+.Gadget .Content .List .free p input {
+  font-size: 11px;
+  width: 50px;
 }
 .Gadget .Content .List .ListRow {
   background-color: #eee;
 }
 .Gadget .Content .List .ListRow .ListRowTitle {
-  padding: 0;
+  max-width: 100% !important;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .name {
+  font-size: 12px !important;
+  color: #555;
+  text-shadow: 0px 1px 0px #fff;
+  white-space: nowrap;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .ListRowStatusIcon {
+  float: left;
+  margin-left: -5px !important;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .status {
+  font-size: 11px;
+  color: #888;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  margin-top: 5px;
 }
 .Gadget .Content .List.Stats {
   font-size: .7em;

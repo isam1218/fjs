@@ -1,15 +1,13 @@
-<div class="Overlay" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
+<div class="Overlay fileShare" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
     <div ng-click="showOverlay(false)" class="Background"></div>
- <div class="wrapper" style="width: 90%;max-width: 1000px;">	
-    <div class="Foreground" ng-if="audience">
-        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->                
+ <div class="wrapper">	
+    <div class="Foreground" ng-if="audience">                      
         <div class="Header">
             <div ng-click="showOverlay(false)" class="Close">
 	           <div class="CloseIcon2"></div>
 	        </div>
             <div class="headerIcon share"></div>
-            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>
-           <!-- <h2>{{::verbage.file_share_to}}<span style="color:#729c00">{{ toName }}</span></h2> -->
+            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>          
         </div>
         
         <div class="Sections">
@@ -36,11 +34,11 @@
                 </div>
                 <div class="Members">
                     <div ng-repeat="file in $flow.files" class="ListRow">
-                        <div style="margin-left:5px;display:inline-block;width:70%">  
-                        <p style="border-bottom:1px solid #ccc;width:100%;color:#009cff;font-weight:bold">{{::verbage.file}}</p>
-                        <span style="margin-top:0px"><p>{{file.name}} ({{file.size}} {{::verbage.bytes}})</p></span>
+                        <div class="file">  
+	                        <p>{{::verbage.file}}</p>
+	                        <span><p>{{file.name}} ({{file.size}} {{::verbage.bytes}})</p></span>
                         </div>
-                        <div class="XButton" style="float:right;margin-top:10px;margin-right:5px" ng-click="$flow.removeFile(file)">{{::verbage.Remove}}</div>
+                        <div class="XButton" ng-click="$flow.removeFile(file)">{{::verbage.Remove}}</div>
                     </div>
                 </div>
             </div>
@@ -63,7 +61,7 @@
         </div>
         <div class="Sections" >
             <div class="Section">
-                <div style="background-color:#FFF;height:340px;text-align:center;line-height:340px">
+                <div class="review">
 					<!-- embed types -->
 					<img class="CurrentDownload DownloadPreview" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
 					

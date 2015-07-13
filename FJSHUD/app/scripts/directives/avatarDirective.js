@@ -13,7 +13,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
 			var context, widget, rect;
-			
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
@@ -116,7 +115,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			element.bind('mouseenter', function(e) {
 				rect = element[0].getBoundingClientRect();
 				$timeout.cancel(timer);
-				
+
 				if (overlay.css('display') != 'block') {
 					// delay
 					timer = $timeout(function() {
@@ -124,7 +123,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				
 						overlay.bind('mouseleave', function(e) {							
 							// keep open if user moves back onto avatar
-							for (i = 0; i < element.children().length; i++)  {
+							for (var i = 0, iLen = element.children().length; i < iLen; i++)  {
 								if (e.relatedTarget == element.children()[i])
 									return;
 							}
@@ -156,14 +155,15 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			function showOverlay() {				
 				// send data to controller		
+				
 				var data = {
 					obj: obj,
 					widget: widget,
 					context: context ? $parse(context)(scope) : null
 				};
-				
-				$rootScope.$broadcast('contextMenu', data);
-				
+			$rootScope.$broadcast('contextMenu', data);
+				$rootScope.contextShow = true;
+
 				$timeout(function() {
 					// position pop-pop				
 					overlay.addClass('NoWrap');
@@ -191,7 +191,11 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					// set width for logout reasons
 					overlay.removeClass('NoWrap');
-					overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
+					if(obj.call){
+						overlay.css('width', (overlay[0].getBoundingClientRect().width + 30) + 'px');
+					}else{
+						overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
+					}
 			
 					// button clicks
 					$('#ContextMenu .Button').bind('click', function(e) {
@@ -205,14 +209,14 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 							$('#ContextMenu .List').css('height', diff + 'px');
 						}
 					});
-				}, 10);
+				}, 10, false);
 			}
 			
 			function hideOverlay(t) {
 				timer = $timeout(function() {
 					overlay.css('display', 'none');
 					overlay.unbind();
-				}, t);
+				}, t, false);
 			}
 		}
 	};

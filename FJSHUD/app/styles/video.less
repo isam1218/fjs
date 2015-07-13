@@ -4,6 +4,14 @@
       left: 10px;
       right: 10px;
     }
+    
+    .WidgetZoomBody {overflow: hidden;}
+    .XButtonBlue {
+        right: 0px;
+        width: 100%;
+        margin-top: 10px;
+        display: inline-block;
+    }
 }
 .widget-zoom-topic {
   position: relative;
@@ -16,17 +24,15 @@
 }
 
 .WidgetZoom .SearchInputBox {
-  position: relative;
-  width: 100%;
-  left: 0;
-  top: 5px;
-  margin-bottom: 5px;
+    position: relative;
+    width: 100%;
+    left: 0px;
+    top: 5px;
+    margin-bottom: 5px;
 }
 
 .WidgetFont{
-  font-size: 12px;  
-  margin-left:10px;
-  margin-right:5px;
+  font-size: 12px;   
   
   h2{
     display: block;
@@ -41,27 +47,89 @@
 }
 
 .ZoomWidgetSection{
-    height: 140px;
-    position: absolute;
+    width: 48%;
+    position: relative;
+    min-height: 250px;
+    height: auto;
+    float: left;
+    top: 10px;
+    
     .WidgetFont{
-        font-style: italic;
+      color: #555;
+      font-size: 11px;
+      font-style: italic;
+      font-weight: normal;      
+      margin-top: 0px;
+      margin-bottom: 4px;
+      display: inline-block;
     }
     .WidgetTextHeader{
-      min-height: none;
-      height: auto;
+        min-height: none;
+        height: auto;
+        display: inline-block;
+        left: 0px;
+        margin-left: 0px;
     }
     
     .joinWrapper{
         position: absolute;
         width: 100%;
-        bottom: 0;
+        left: 0px;
+        bottom: 0px;
+        margin-bottom: 0px;
         
         .JoinMeetingSection{
             position: absolute;
             width: 100%;
-            top: 0;
+            display: inline-block;
+            left: 0px;
+            margin-left: 0px;
+            bottom: 0px;
+            position: relative;                       
+            
+            .SearchInputBox {
+                top: 0px;
+            }
+            
+            .addContact{
+                position:relative; 
+                top:10px;
+                display: inline-block;
+                margin-bottom: 10px;
+                width: 100%;    
+                    
+                img.x {
+                    top: -20px;
+                    left: 195px;
+                    z-index: 200;
+                }
+            }
+            
+            .XButtonBlue.XButton {
+                margin-top: 5px;
+            }
+            
+            .XButtonWide.XButtonBlue.first{
+                margin-top: 0px;
+            }
+            
         }
-    }    
+    }     
+        
+    &.right{left: 4%;}  
+  
+    &.left {  
+        left: 0px;
+        
+        .JoinMeetingSection{
+           .SearchInputBox{
+               top: 0px;
+           }
+           .XButton.XButtonBlue{
+               margin-top: 5px;
+           }
+        }
+    }   
 }
 
 .WidgetZoom .XButtonBlue { 
@@ -125,59 +193,38 @@
 
 
 .WidgetTextHeader{
-  height:200px;
-}
-.ZoomWidgetSection{
-  width:40%;
-  position:absolute;
-  
-  .JoinMeetingSection{
-    .addContact{
-        position:relative; 
-        top:10px;
-        display: inline-block;
-        margin-bottom: 10px;
-        width: 100%;    
-            
-        img.x {
-            top: -20px;
-            left: 195px;
-            z-index: 200;
-        }
-    }
-    
-    .XButtonWide.XButtonBlue.first{
-        margin-top: 0px;
-    }
-  }
-  
-  &.left {
-	left: 5%;
-	
-	.JoinMeetingSection{
-       .SearchInputBox{
-           top: 0px;
-       }
-       .XButton.XButtonBlue{
-           margin-top: 5px;
-       }
-    }
-  }
-  
-  &.right {
-	left: 50%;
-	width: 45%;		
-  }    
+  height:200px;  
 }
 
 .WidgetZoomBody{
   top:35px;
   background-image: url(../img/XTile-Widget.png);
+  padding: 0px 20px;
+  
+  .ListSection {
+    position: relative;    
+    background-color: #f9f9f9;
+    left: 0px;
+    margin-left: 0px;
+    
+    .ListSectionHeaderTitle{
+        margin-left: 0px;
+    }
+    
+  }
 }
 
 .widget-zoom-contacts{
-    top: 20px;
-    position: relative;        
+    top: 30px;
+    position: relative;
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    float: right;
+    max-height: 55%;
         
     .ListRow {
         float: left;
@@ -216,16 +263,27 @@
             font-size: 11px;
             padding: 4px 6px 6px 6px;
             margin: 0px;
-            margin-right: -5px;                      
+            /*margin-right: -5px;  */                    
             font-weight: bold;
             height: 25px;
         }   
         .ZoomRowTitle{
             padding-left: 5px;
+            width: 100%;
+            margin-top: 3px;
+             
+            .name{
+                  width: 50%; 
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+            }
+            
             .link{
                 display: inline-block;
                 top: 5px;
             }
+            
+            
         }
         .ZoomRowStatus{            
             top: 15px;

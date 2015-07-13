@@ -1,17 +1,12 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', function($rootScope, $scope, $location, conferenceService, httpService) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', function($rootScope, $scope, $location, conferenceService, httpService, settingsService) {
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
 
-  var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
-      if (!$scope.globalXpid){
-          $scope.globalXpid = newVal;
-              $scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
-              getXpidInC();
-      } else {
-          getXpidInC();
-      }
-  });
+	settingsService.getSettings().then(function() {
+		$scope.globalXpid = $rootScope.myPid;
+		$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
+	});
 	
 	$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
 
@@ -31,7 +26,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	conferenceService.getConferences().then(function(data) {
 		$scope.conferences = data.conferences;
 		$scope.totals = data.totals;
-    for (var i = 0; i < data.conferences.length; i++){
+    for (var i = 0, iLen = data.conferences.length; i < iLen; i++){
       if (currentServer != data.conferences[i].serverNumber){
         serverCount++;
         currentServer = data.conferences[i].serverNumber;
@@ -68,7 +63,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
 						return true;
 				} else {
-					for (var j = 0; j < conference.members.length; j++){
+					for (var j = 0, jLen = conference.members.length; j < jLen; j++){
 						var individualMember = conference.members[j];
 						if (individualMember.displayName.toLowerCase().indexOf($scope.query.toLowerCase()) != -1 || individualMember.fullProfile.primaryExtension.indexOf($scope.query) != -1 || conference.extensionNumber.indexOf($scope.query) != -1)
 							return true;
@@ -82,7 +77,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		var found = null;
 		
 		// find first empty room on same server
-		for (var i = 0; i < $scope.conferences.length; i++) {
+		for (var i = 0, iLen = $scope.conferences.length; i < iLen; i++) {
 			if ($scope.conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0) && $scope.conferences[i].permissions == 0) {
 				found = $scope.conferences[i].xpid;
 				break;
@@ -91,7 +86,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		
 		// try again for linked server
 		if (!found) {
-			for (var i = 0; i < $scope.conferences.length; i++) {
+			for (var i = 0, iLen = $scope.conferences.length; i < iLen; i++) {
 				// find first room on same server
 				if (!$scope.conferences[i].members || $scope.conferences[i].members.length == 0 && $scope.conferences[i].permissions == 0) {
 					found = $scope.conferences[i].xpid;
@@ -111,23 +106,25 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 	};
 
 	$scope.joinConference = function(){
+		var params;
 
 		if($scope.joined){
 			params = {
 				conferenceId:$scope.targetId
-			}
+			};
+			
 			httpService.sendAction("conferences",'leave',params);
 		}else{
-				params = {
-					conferenceId: $scope.targetId,
-					contactId: $scope.meModel.my_pid,
-				}
+			params = {
+				conferenceId: $scope.targetId,
+				contactId: $scope.meModel.my_pid,
+			};
 
 			httpService.sendAction("conferences","joinContact",params);
 
 			
 		}
-	}
+	};
 
 	$scope.$on('calls_updated',function(event,data){
 		if(data){

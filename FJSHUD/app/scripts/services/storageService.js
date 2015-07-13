@@ -1,4 +1,4 @@
-hudweb.service('StorageService', ['$rootScope', 'ContactService', function($rootScope,contactService) {
+hudweb.service('StorageService', ['$rootScope', 'ContactService', 'SettingsService', function($rootScope, contactService, settingsService) {
 	var service = this;
 	var recents;
 	
@@ -33,14 +33,10 @@ hudweb.service('StorageService', ['$rootScope', 'ContactService', function($root
 	};
 	
 	// wait for user xpid
-	var watcher = $rootScope.$watch('myPid', function() {
-		if ($rootScope.myPid) {
-			watcher();
+	settingsService.getSettings().then(function() {
+		if (localStorage['recents_of_' + $rootScope.myPid] === undefined)
+			localStorage['recents_of_' + $rootScope.myPid] = '{}';
 			
-			if (localStorage['recents_of_' + $rootScope.myPid] === undefined)
-				localStorage['recents_of_' + $rootScope.myPid] = '{}';
-			
-			recents = JSON.parse(localStorage['recents_of_' + $rootScope.myPid]);
-		}
+		recents = JSON.parse(localStorage['recents_of_' + $rootScope.myPid]);
 	});
 }]);

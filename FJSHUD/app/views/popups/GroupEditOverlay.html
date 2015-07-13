@@ -1,5 +1,5 @@
 <div class="Overlay" ng-controller="GroupEditOverlayController">
-	<div ng-click="showOverlay(false)" class="Background"></div>
+	<div ng-click="showOverlayOnCondition()" class="Background"></div>
 	<div class="Foreground">
 		<!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->        		
 		<div class="Header">
@@ -15,15 +15,15 @@
 			<div class="Section" ng-show="!closing">
 				<div>
 					<h4 class="upper">{{::verbage.name}}</h4>
-					<input type="text" ng-model="add.name" class="XInputText" />
+					<input type="text" ng-model="add.name" class="XInputText" ng-change="changeMade()" />
 				</div>				
 				<div  class="visibility">
 					<h4 class="upper">{{::verbage.Message}}</h4>
-					<input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" /> {{::verbage.visible_to_entire}}
+					<input ng-model="add.type" ng-true-value="4" ng-false-value="2" type="checkbox" ng-change="changeMade()"/> {{::verbage.visible_to_entire}}
 				</div>
 				<div>
 					<h4 class="upper">{{::verbage.description}}</h4>
-					<textarea ng-model="add.description" ng-attr-placeholder="{{::verbage.team_description}}"></textarea>
+					<textarea ng-model="add.description" ng-attr-placeholder="{{::verbage.team_description}}" ng-change="changeMade()"></textarea>
 				</div>
 			</div>
 			
@@ -31,14 +31,14 @@
 				<h4 class="upper">{{::verbage.Message}}</h4>
 				<p>{{::verbage.message_individual}}</p>
 				<br/>
-				<textarea ng-model="add.message"></textarea>
+				<textarea ng-model="add.message" ng-change="changeMade()"></textarea>
 			</div>
 			
 			<div class="Section">
 				<div>
 					<h4 class="upper">{{::verbage.members}}</h4>
 					<div class="ContactSearchHolder" ng-show="!closing">
-						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" id="SearchContactDirectiveMarker" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
 					</div>
 				</div>
 				

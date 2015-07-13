@@ -115,9 +115,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		if(!$scope.showFileShare){
 			return;
 		}
-      	fileList = [];
+      	
+		var fileList = [];
 		
-		for(var i = 0; i < $files.length;i++){
+		for(var i = 0, iLen = $files.length; i < iLen; i++){
       		fileList.push($files[i].file);
 			
       	}
@@ -134,12 +135,18 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             'a.audience':chat.audience,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "2_9",
-            "_archive":0,
+            "a.taskId": "1_0",
+            "_archive": 0,
         };
 		httpService.upload_attachment(data,fileList);
 
 	};
+	
+	// keep scrollbar at bottom until chats are loaded
+	var scrollWatch = $scope.$watch(function() {
+		if (scrollbox.scrollHeight)
+			scrollbox.scrollTop = scrollbox.scrollHeight;
+	});
 	
 	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
 
@@ -152,10 +159,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		$scope.messages = data.items;
 		addDetails();
 		
-		// jump to bottom
+		// kill watcher
 		$timeout(function() {
-			scrollbox.scrollTop = scrollbox.scrollHeight;
-		}, 10);
+			scrollWatch();
+		}, 100, false);
 		
 		// no more chats
 		if (version < 0)
@@ -185,11 +192,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				}
 			}
 
-			if (dupe) continue;
+			if (dupe || data[i].xef001type == 'delete') 
+				continue;
 			
-			var from = data[i].from.replace('contacts:', '');
-			
-			
+			var from = data[i].from.replace('contacts:', '');			
 
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
@@ -208,8 +214,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				found = true;				
 			}
 		}
-		
-		
 
 		if (found) {
 			addDetails();
@@ -217,7 +221,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			// jump to bottom if new messages were found
 			$timeout(function() {
 				scrollbox.scrollTop = scrollbox.scrollHeight;
-			}, 100);
+			}, 100, false);
 		}
 	});
 	

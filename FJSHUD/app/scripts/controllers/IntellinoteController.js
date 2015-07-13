@@ -48,24 +48,24 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	};
 	
 	// from search contacts directive
-    $scope.searchContact = function(contact) {
+  $scope.searchContact = function(contact) {
 		// avoid dupes
-        for (var i = 0; i < $scope.addedContacts.length; i++) {
+    for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
 			if (contact == $scope.addedContacts[i])
 				return;
 		}
 		
-        $scope.addedContacts.push(contact);
-    };
+    $scope.addedContacts.push(contact);
+  };
 
-    $scope.deleteContact = function(xpid){
-        for (var i = 0; i < $scope.addedContacts.length; i++) {
-            if ($scope.addedContacts[i].xpid == xpid) {
-                $scope.addedContacts.splice(i, 1);
+  $scope.deleteContact = function(xpid){
+	  for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+	  	if ($scope.addedContacts[i].xpid == xpid) {
+	    	$scope.addedContacts.splice(i, 1);
 				break;
-            }
-        }
-    };
+	    }
+	  }
+  };
 	
 	$scope.showList = function($event) {
 		$event.stopPropagation();
@@ -79,7 +79,7 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 		// get user ids
 		var users = [];
 		
-		for (var i = 0; i < $scope.addedContacts.length; i++)
+		for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++)
 			users.push($scope.addedContacts[i].xpid.split('_')[1]);
 		
 		$.ajax({
@@ -97,8 +97,8 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 						$scope.inviteStatus = 'The following users were not added: ';
 						var users = [];
 						
-						for (var i = 0; i < data.user.length; i++) {
-							for (var c = 0; c < $scope.addedContacts.length; c++) {
+						for (var i = 0, iLen = data.user.length; i < iLen; i++) {
+							for (var c = 0, cLen = $scope.addedContacts.length; c < cLen; c++) {
 								if (data.user[i].user_Id == $scope.addedContacts[c].xpid.split('_')[1]) {
 									users.push($scope.addedContacts[c].displayName);
 									break;

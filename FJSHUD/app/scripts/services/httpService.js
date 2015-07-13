@@ -17,6 +17,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	var appVersion = navigator.appVersion;
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
 	var upload_progress = 0;
+	var upload_taskId = 0;
 	var feeds = fjs.CONFIG.FEEDS;
 	$rootScope.isFirstSync = true;
 	var deferred_progress = $q.defer();
@@ -59,7 +60,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
-			}
+			};
 		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
@@ -88,9 +89,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 		                    // send data to other controllers
 							$rootScope.$evalAsync(function() {
-								for (feed in synced_data) {
-									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
+								for(var i = 0, ilen = feeds.length;i < ilen;i++){
+									if(synced_data[feeds[i]] && synced_data[feeds[i]].length > 0){
+										$rootScope.$broadcast(feeds[i] + '_synced', synced_data[feeds[i]]);
+									}
 								}
 								$rootScope.isFirstSync = false;
 
@@ -156,9 +158,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 							if(localStorage.data_obj != undefined){
 								synced_data = JSON.parse(localStorage.data_obj);
-								for(feed in synced_data){
-									if (synced_data[feed].length > 0)
-			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+								for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
+									var feed = fjs.CONFIG.FEEDS[i];
+									if(synced_data[feed]){
+										if (synced_data[feed].length > 0)
+			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									}
 								}
 							}
 							worker.postMessage({
@@ -173,7 +178,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    var synced_data = event.data.data;
 		                  	tabMap = JSON.parse(localStorage.fon_tabs);
 		                  	if(tabMap[tabId].isMaster){
-								for(tab in tabMap){
+								for(var tab in tabMap){
 									tabMap[tab].isSynced = false;	
 								}
 
@@ -186,9 +191,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    	data_obj = JSON.parse(localStorage.data_obj);
 		                    }
 							
-		                    // send data to other controllers
+		                    // send data to other controllers i'm doing this to ensure order when syncing'
 							$rootScope.$evalAsync(function() {
-								for (feed in synced_data) {
+								for (var feed in synced_data) {
 									if(!$.isEmptyObject(data_obj)){
 										data_obj[feed] = synced_data[feed];
 										localStorage.data_obj = JSON.stringify(data_obj);
@@ -239,9 +244,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 
 									synced_data = JSON.parse(localStorage.data_obj);
-									for(feed in synced_data){
-										if (synced_data[feed].length > 0)
-			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+									for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
+										var feed = fjs.CONFIG.FEEDS[i];
+										if(synced_data[feed]){
+											if (synced_data[feed].length > 0)
+												$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
+										}
 									}
 								}
 
@@ -508,14 +516,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
-        }
+        };
+		
+		// new task id
+		data['a.taskId'] = '2_' + upload_taskId;
+		
 		var fd = new FormData();
     
-        for (field in data) {
+        for (var field in data) {
             fd.append(field, data[field]);
         }
 
-        for (i in attachments){
+        for (var i in attachments){
         	fd.append('a.attachments',attachments[i]);
         }
 
@@ -543,17 +555,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		request.open("POST",requestURL, true);
 		request.send(fd);
        
+	    upload_taskId++;
     };
 
     this.update_avatar = function(data) {
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
-        }
+        };
     
         var fd = new FormData();
     
-        for (field in data) {
+        for (var field in data) {
             fd.append(field, data[field]);
         }
         var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
@@ -584,7 +597,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			t: 'web',
 			action: action
 		};
-		for (key in data)
+		for (var key in data)
 			params['a.' + key] = data[key];
 	
 		return $http({
@@ -625,9 +638,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		.then(function(response) {
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 	
-			for (key in data) {
+			for (var key in data) {
 				// create xpid for each record
-				for (i = 0; i < data[key].items.length; i++)
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
 					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
 				
 				// send items back to controller
@@ -665,9 +678,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 
-			for (key in data) {
+			for (var key in data) {
 				// create xpid for each record
-				for (i = 0; i < data[key].items.length; i++)
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
 					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
 				
 				// send items back to controller

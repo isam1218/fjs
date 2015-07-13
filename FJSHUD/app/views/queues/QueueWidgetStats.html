@@ -81,7 +81,7 @@
 				<div class="SubHeader">{{::verbage.other_queues}}</div>
 				<div class="Row" ng-repeat="other in member.otherQueues track by other.queue.xpid" ng-click="goToQueue(other.queue.xpid)">
 					<div>&nbsp;</div>
-					<div class="XIcon-QueueStatus-{{other.status.status}}">&nbsp;</div>
+					<div> <div class=" XIcon-QueueStatus XIcon-QueueStatus-{{other.status.status}}">&nbsp;</div></div>
 					<div>{{ ::other.queue.name }}</div>
 					<div timer="other.stats.lastCallTimestamp"></div>
 					<div>{{ other.stats.callsHandled }}</div>

@@ -14,6 +14,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		data: null
 	};
 	
+	$scope.contextShow = false;
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
         var phase = $scope.$root.$$phase;
@@ -51,7 +52,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 					}, 10000);
 				}
 			};
-		}, 3000);
+		}, 3000, false);
 	});
 
     $scope.onBodyClick = function() {

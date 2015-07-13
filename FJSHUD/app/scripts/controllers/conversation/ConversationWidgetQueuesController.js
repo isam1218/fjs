@@ -225,9 +225,9 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 		
     	var queues = data.queues;
 		
-        for(var q = 0; q < queues.length; q++){
+        for(var q = 0, qLen = queues.length; q < qLen; q++){
             if(queues[q].members){
-                for(var i = 0; i < queues[q].members.length; i++){
+                for(var i = 0, iLen = queues[q].members.length; i < iLen; i++){
                    if(queues[q].members[i].contactId == $scope.contactId){
                         queues[q].you = queues[q].members[i];
                         $scope.queues.push(queues[q]);

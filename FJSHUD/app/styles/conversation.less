@@ -9,59 +9,13 @@
     margin-top: 10px;
     margin-bottom: 10px;    
   }
-    
+  
   .WidgetHeader {
     top:0;
     right:0;
     left:0;          
     
-    .WidgetHeaderCallStatus {
-      margin: .05em .1em 0.7em 0.7em;
-      width: 40%;
-      max-width: 300px;
-      height: 50px;
-      padding: 5px;
-      font-size: 12px;
-	  position: relative;
-
-	  .NoCallText, .NoCallIcon {
-		text-align: center;
-		clear: both;
-		margin: 1px auto;
-	  }
-
-      .Avatar {
-        display: inline-block;
-		border-radius: 20px;
-      }
-	  
-      .CallLineTop {
-        display: inline-block;
-		vertical-align: top;
-		margin-left: 3px;
-		line-height: 16px;
-		
-        .CallerName {
-          font-weight: bold;
-          color: #645D5D;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          position: relative;
-          overflow: hidden;
-          width: 100px;
-		  margin-top: 5px;
-        }
-      }
-	  
-      .CallDuration {
-		position: absolute;
-		text-align: right;
-		top: 3px;
-        right: 3px;
-        font-size: 11px;
-		color: gray;
-      }
-    }
+    
   }
   
   &.conference{
@@ -221,6 +175,54 @@
     }
   }
 }
+
+.WidgetHeaderCallStatus {
+      margin: .05em .1em 0.7em 0.7em;
+      width: 40%;
+      max-width: 300px;
+      height: 50px;
+      padding: 5px;
+      font-size: 12px;
+    position: relative;
+
+    .NoCallText, .NoCallIcon {
+    text-align: center;
+    clear: both;
+    margin: 1px auto;
+    }
+
+      .Avatar {
+        display: inline-block;
+    border-radius: 20px;
+      }
+    
+      .CallLineTop {
+        display: inline-block;
+    vertical-align: top;
+    margin-left: 3px;
+    line-height: 16px;
+    
+        .CallerName {
+          font-weight: bold;
+          color: #645D5D;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          position: relative;
+          overflow: hidden;
+          width: 100px;
+      margin-top: 5px;
+        }
+      }
+    
+      .CallDuration {
+    position: absolute;
+    text-align: right;
+    top: 3px;
+        right: 3px;
+        font-size: 11px;
+    color: gray;
+      }
+    }
 
 .AttachmentsHolder 
 {
@@ -383,9 +385,8 @@
   }
   .ListMessageText{   
     padding-right: 10px;
-    -ms-word-wrap: break-word;
+    word-wrap: break-word;
     white-space:normal;
-    word-break: break-all;
   }
   
   .time
