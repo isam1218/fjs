@@ -140,10 +140,10 @@
 					<avatar profile="member" context="conference:gadget.data"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
-						<div class="ListRowTitle">
-							{{ ::member.fullProfile.displayName || member.displayName }}
-							<br/>
-							{{ ::member.fullProfile.primaryExtension || member.phone }}
+						<div class="ConfMemberRowTitle">
+							<div class="name">{{ ::member.fullProfile.displayName || member.displayName }}</div>
+<!-- 							<br/> -->
+							<div class="">{{ ::member.fullProfile.primaryExtension || member.phone }}</div>
 						</div>
 						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt || member.started"></div>
 					</div>

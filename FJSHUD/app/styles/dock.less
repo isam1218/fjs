@@ -234,12 +234,21 @@
 		    }
 			.ListRow {
 				background-color: #eee;
-				
-				.ListRowTitle {
-				  max-width: 100% !important;  				     				  
-    				  
-    				  .name{
-    				    font-size: 12px !important;    				    
+			  .ConfMemberRowTitle{
+          float: left;
+          padding: .5em;    
+          font-size: 12px;
+          text-decoration: none;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          color: #888;
+          white-space: nowrap;
+          max-width: 66%;
+          flex: 1 1 0;
+          -webkit-flex: 1 1 0;
+          margin-top: -3px;
+              .name{
+                font-size: 12px !important;               
                         color: #555;
                         text-shadow: 0px 1px 0px #fff;
                         white-space: nowrap;
@@ -247,21 +256,35 @@
                         text-overflow: ellipsis;
                         overflow: hidden;
                         text-decoration: none;
-    				  }
-    				  .ListRowStatusIcon{
-    				    float: left;
-    				    margin-left: -5px !important;
-    				  }
-    				  .status{
-    				    font-size: 11px;
-    				    color: #888;  
-    				    text-align: left;
+              }
+
+        }        
+        .ListRowTitle {
+          max-width: 100% !important;                       
+              .name{
+                font-size: 12px !important;               
+                        color: #555;
+                        text-shadow: 0px 1px 0px #fff;
+                        white-space: nowrap;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        text-decoration: none;
+              }
+              .ListRowStatusIcon{
+                float: left;
+                margin-left: -5px !important;
+              }
+              .status{
+                font-size: 11px;
+                color: #888;  
+                text-align: left;
                         text-overflow: ellipsis;
                         overflow: hidden;
                         text-decoration: none; 
                         margin-top: 5px; 
-    				  }				  
-				}
+              }         
+        }
 			}
 		
 			&.Stats {
