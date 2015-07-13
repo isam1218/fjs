@@ -135,8 +135,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             'a.audience':chat.audience,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "2_9",
-            "_archive":0,
+            "a.taskId": "1_0",
+            "_archive": 0,
         };
 		httpService.upload_attachment(data,fileList);
 
@@ -192,11 +192,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				}
 			}
 
-			if (dupe) continue;
+			if (dupe || data[i].xef001type == 'delete') 
+				continue;
 			
-			var from = data[i].from.replace('contacts:', '');
-			
-			
+			var from = data[i].from.replace('contacts:', '');			
 
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
@@ -215,8 +214,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				found = true;				
 			}
 		}
-		
-		
 
 		if (found) {
 			addDetails();

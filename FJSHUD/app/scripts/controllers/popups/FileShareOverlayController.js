@@ -37,17 +37,11 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	}
 
     $scope.archiveOptions = [
-    	{name:'Never',taskId:"2_6",value:0},
-    	{name:'in 3 Hours', taskId:"2_3",value:10800000},
-    	{name: 'in 2 Days', taskId:"2_4", value:172800000},
-    	{name: "in a Week", taskId:"2_5", value:604800000},
+    	{name:'Never', value:0},
+    	{name: 'in 3 Hours', value:10800000},
+    	{name: 'in 2 Days', value:172800000},
+    	{name: "in a Week", value:604800000},
     ];
-
-    if(fjs.CONFIG.DEBUG){
-    	$scope.archiveOptions.push({
-    		name:"5 minutes",taskId:"2_7", value:30000
-    	});
-    }
 
     $scope.selectedArchiveOption = $scope.archiveOptions[0];
     
