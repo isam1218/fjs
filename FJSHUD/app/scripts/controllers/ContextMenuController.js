@@ -102,12 +102,14 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	*/
 	
 	$scope.dockItem = function(add) {
+		var type = $scope.type == 'ParkedCall' ? 'Contact' : $scope.type;
+			
 		if (add) {
 			var data = {
-				name: 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.profile.xpid,
+				name: 'GadgetConfig__empty_Gadget' + type + '_' + $scope.profile.xpid,
 				value: JSON.stringify({
 					"contextId": "empty",
-					"factoryId": "Gadget" + $scope.type,
+					"factoryId": "Gadget" + type,
 					"entityId": $scope.profile.xpid,
 					"config": {"x": 0, "y": 0},
 					"index": 1
@@ -118,7 +120,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		}
 		else {
 			// send to dock controller
-			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.profile.xpid);
+			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + type + '_' + $scope.profile.xpid);
 		}
 	};
 	
