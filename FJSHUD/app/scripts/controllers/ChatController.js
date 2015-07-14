@@ -1,5 +1,4 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService',
-	function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService, storageService) {
 
 	var version = 0;
 	var scrollbox = {};
@@ -54,6 +53,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}
 			
 	}
+	
+	$scope.chat.message = storageService.getChatMessage(chat.targetId);
 	
 	// send to pop-up controller
 	$scope.showAttachmentOverlay = function() {		
@@ -230,15 +231,15 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	});
 	
 	$scope.sendMessage = function() {
-		if (this.message == '')
+		if ($scope.chat.message == '')
 			return;
 			
 		// alert
 		if ($scope.showAlerts) {
 			httpService.sendAction('queues', 'broadcastMessage', {
 				queueId: chat.targetId,
-				plain: this.message,
-				xhtml: this.message,
+				plain: $scope.chat.message,
+				xhtml: $scope.chat.message,
 				status: $scope.chat.status,
 				clientId: ''
 			});
@@ -249,11 +250,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
-				message: this.message
+				message: $scope.chat.message
 			});
 		}		
 		
-		this.message = '';		
+		$scope.chat.message = '';
+		storageService.saveChatMessage(chat.targetId);
 	};
 	
 	$scope.searchChat = function(increment) {
@@ -350,5 +352,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
 		scrollbox = null;
+		
+		// save message for later
+		storageService.saveChatMessage(chat.targetId, $scope.chat.message);
     });	
 }]);
