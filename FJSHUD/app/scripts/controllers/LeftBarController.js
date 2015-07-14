@@ -28,8 +28,9 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
-		
 		storageService.saveRecentByPhone(number);
+        $scope.number = '';
+
     };
 
     httpService.getFeed('settings');
@@ -63,20 +64,6 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
         } else if (!autoClearTime){
             return;
         }
-    };
-
-    $scope.makePhoneCall = function(type,$event){
-        switch(type){
-            case 'dialpad':
-                if ($event.keyCode == 13 && !$event.shiftKey) {
-                    $scope.makeCall($scope.number);
-                    $scope.number = '';
-                    $event.preventDefault();
-                }
-                break;
-        }
-		
-		$scope.number = '';
     };
 
     $scope.$on('locations_synced', function(event,data){

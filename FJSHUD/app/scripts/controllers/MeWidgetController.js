@@ -800,7 +800,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
         storageService.saveRecentByPhone(number);
-		$scope.call_obj.phoneNumber = '';
+		    $scope.call_obj.phoneNumber = '';
     };
 		
 
