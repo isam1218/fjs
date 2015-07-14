@@ -175,7 +175,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.formatMessage = function(message){		
 		switch(message.type){
 			case "vm":
-				if(message.vm.transcription != ""){
+				if(message.vm && message.vm.transcription != ""){
 					return vm.transcription;
 				}else{
 					return "transcription is not available";

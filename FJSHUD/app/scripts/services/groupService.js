@@ -147,8 +147,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		}
 			
 		// populate members via different feed
-		httpService.getFeed('groupcontacts');
-		httpService.getFeed('group_page_member');
+		/*httpService.getFeed('groupcontacts');
+		httpService.getFeed('group_page_member');*/
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {

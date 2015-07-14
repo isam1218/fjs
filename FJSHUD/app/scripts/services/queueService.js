@@ -134,10 +134,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 		}
 		
 		// retrieve child data	
-		httpService.getFeed('queue_stat_calls');
+		/*httpService.getFeed('queue_stat_calls');
 		httpService.getFeed('queue_call');
 		httpService.getFeed('queue_members');
-		httpService.getFeed('queuepermissions');
+		httpService.getFeed('queuepermissions');*/
 	});
 
 	$rootScope.$on('queuepermissions_synced', function (event, data){
@@ -247,9 +247,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			}
 		
 			// pull member child data
-			httpService.getFeed('queue_members_status');
+			/*httpService.getFeed('queue_members_status');
 			httpService.getFeed('queue_members_stat');
-			httpService.getFeed('queuemembercalls');
+			httpService.getFeed('queuemembercalls');*/
 			
 			deferred.resolve(formatData());
 		}

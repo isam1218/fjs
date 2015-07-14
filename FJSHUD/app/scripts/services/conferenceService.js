@@ -101,10 +101,10 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 		}
 		
 		// retrieve child data
-		httpService.getFeed('conferencemembers');
+		/*httpService.getFeed('conferencemembers');
 		httpService.getFeed('server');
 		httpService.getFeed('conferencestatus');
-		httpService.getFeed('conferencepermissions');
+		httpService.getFeed('conferencepermissions');*/
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
