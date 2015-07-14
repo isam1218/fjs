@@ -30,18 +30,8 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
         phoneService.makeCall(number);
 		
 		storageService.saveRecentByPhone(number);
-    };
-
-    $scope.makePhoneCall = function(type,$event){
-        switch(type){
-            case 'dialpad':
-                if ($event.keyCode == 13 && !$event.shiftKey) {
-                    $scope.makeCall($scope.number);
-                    $scope.number = '';
-                    $event.preventDefault();
-                }
-                break;
-        }
+		
+		$scope.number = '';
     };
 
     $scope.$on('locations_synced', function(event,data){

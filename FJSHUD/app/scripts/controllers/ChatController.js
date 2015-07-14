@@ -2,7 +2,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService) {
 
 	var version = 0;
-	var chatbox;
 	var scrollbox = {};
 	var chat = {}; // internal controller data
 	
@@ -153,7 +152,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
-		chatbox = document.getElementById('ChatMessageText');
 		
 		$scope.loading = false;
 		$scope.messages = data.items;
@@ -256,21 +254,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}		
 		
 		this.message = '';		
-		chatbox.style.height = '1px';
-	};
-
-	// look for enter key
-	$scope.chatKeypress = function($event) {
-		if ($event.keyCode == 13 && !$event.shiftKey) {
-			this.sendMessage();
-			$event.preventDefault();
-		}
-	};
-	
-	// change size of chat box according to content
-	$scope.adjustHeight = function() {
-		chatbox.style.height = '1px';
-		chatbox.style.height = (chatbox.scrollHeight+2) + 'px';
 	};
 	
 	$scope.searchChat = function(increment) {
@@ -367,6 +350,5 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
 		scrollbox = null;
-		chatbox = null;
     });	
 }]);
