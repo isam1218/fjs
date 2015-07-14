@@ -800,6 +800,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.makeCall(number);
 		
 		storageService.saveRecentByPhone(number);
+		
+		$scope.call_obj.phoneNumber = '';
     };
 
     $scope.endCall = function(call){
@@ -900,14 +902,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                myHttpService.sendAction('mycalls', action, {mycallId: $scope.currentCall.xpid});
                 
             }
-        }
-    };
-
-    $scope.callKeyPress = function($event){
-        if ($event.keyCode == 13 && !$event.shiftKey) {
-            $scope.makeCall($scope.call_obj.phoneNumber);
-            $scope.call_obj.phoneNumber = '';
-            $event.preventDefault();
         }
     };
 
