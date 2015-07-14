@@ -334,6 +334,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 				return;
 			case 'chat':
 			case 'wall':
+			case 'description':
 			case 'gchat':
 				endPath = "/" + message.audience + "/" + xpid + '/chat';
 				break;
