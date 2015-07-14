@@ -1,5 +1,5 @@
-hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService', 
-	function($scope, $rootScope,$interval, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService){
+hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService', 
+	function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService){
 
 	var playChatNotification = false;
 	var displayDesktopAlert = true;
@@ -42,7 +42,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 	$scope.showAway = false;
 	$scope.showOld = false;
 	$scope.displayAlert = false;
-	$scope.stopTime;	
 	$scope.callObj = {};
 	$scope.anotherDevice = false;
 	$scope.clearOld;
@@ -84,54 +83,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 					return false;
 			}
 		}
-	};
-
-	// used to update the UI
-    $scope.updateTime = function(id) {    	
-			
-		var time = ntpService.calibrateTime(new Date().getTime()) - $scope.callObj[id].start;
-    	time = time/1000;
-    	$scope.callObj[id].seconds = Math.floor(time % 60);
-    	time = time/60; 
-    	$scope.callObj[id].minutes = Math.floor(time % 60);
-    	time = time/60; 
-    	$scope.callObj[id].hours = Math.floor(time % 24);  
-    	$scope.callObj[id].days = Math.floor(time/24);
-    	
-    	var secondsText = '';
-    	var minutesText = '';   
-    	var hoursText = '';
-    	var daysText = '';
-    	   	
-	  	//seconds
-	  	if($scope.callObj[id].seconds < 10)
-	  		secondsText = ':0'+$scope.callObj[id].seconds;
-	  	else
-	  		secondsText = ':'+$scope.callObj[id].seconds;
-	  	//minutes
-	  	if($scope.callObj[id].minutes < 10)
-	  		minutesText = '0'+$scope.callObj[id].minutes;
-	  	else
-	  		minutesText = $scope.callObj[id].minutes;
-	  	//hours
-	  	if($scope.callObj[id].hours < 10)
-	  		hoursText = '0'+$scope.callObj[id].hours+":";
-	  	else
-	  		hoursText = $scope.callObj[id].hours+":";
-	  	
-	  	if($scope.callObj[id].hours <= 0)
-	  		hoursText='';
-	  	
-	  	if($scope.callObj[id].days <= 0)
-	  		daysText = '';
-	  	else
-	  		daysText = $scope.callObj[id].days +" days ";
-	  	
-	  	$scope.callObj[id].secondsText = secondsText;
-	  	$scope.callObj[id].minutesText = minutesText;  
-	  	$scope.callObj[id].hoursText = hoursText;	  
-	  	$scope.callObj[id].daysText = daysText;
-    };     	    
+	};   	    
     
 	phoneService.getDevices().then(function(data){
 		$scope.phoneSessionEnabled = true;
@@ -544,16 +496,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', '$interval'
 		   {	   
 		   		//the nativeTime is for the native Alert as it requires its own time and does its own calculations for the duration 
 		   	   $scope.callObj[xpid].nativeTime = new Date().getTime();
-			   $scope.callObj[xpid].stopTime = $interval(function(){
-				   $scope.updateTime(xpid);
-			   }, 1000);
 		   }	   
 		}	
 		else
 		{				
 			if($scope.callObj[xpid])
 			{
-				$interval.cancel($scope.callObj[xpid].stopTime);
 				$scope.callObj[xpid]= {};		
 			}
 		}	
