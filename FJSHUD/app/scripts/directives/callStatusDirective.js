@@ -51,7 +51,10 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 
 				switch(contact.call.type){
 					case fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL:
-						$location.path('/conference/'+ contact.call.details.conferenceId);
+						var conference = conferenceService.getConference(contact.call.details.conferenceId);
+						if(conference && conference.permissions == 0){
+							$location.path('/conference/'+ contact.call.details.conferenceId);
+						}
 						break;
 					default:
 						scope.showOverlay(true, 'CallStatusOverlay', contact);

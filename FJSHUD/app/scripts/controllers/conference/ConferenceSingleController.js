@@ -8,9 +8,9 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.membersRefused = [];
 	
   $scope.joined = $scope.conference.status.isMeJoined;
-    $scope.enableChat = $scope.joined;
-    $scope.enableTextInput = $scope.joined;
-    $scope.enableFileShare = $scope.joined;
+  $scope.enableChat = $scope.joined;
+  $scope.enableTextInput = $scope.joined;
+  $scope.enableFileShare = $scope.joined;
 	
    //var currentMembers = angular.copy($scope.conference.members);
   
