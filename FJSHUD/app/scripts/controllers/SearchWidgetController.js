@@ -69,12 +69,6 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 			}
 		}, 100);
 	};
-	
-	$scope.onKeyDown = function($event) {
-		// enter
-		if ($event.keyCode == 13)
-			$scope.searchEmUp();
-	};
 
     $scope.$on("$destroy", function() {
 		
