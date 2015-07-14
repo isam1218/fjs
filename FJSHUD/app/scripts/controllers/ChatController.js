@@ -1,7 +1,6 @@
 hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService, storageService) {
 
 	var version = 0;
-	var chatbox;
 	var scrollbox = {};
 	var chat = {}; // internal controller data
 	
@@ -155,7 +154,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
-		chatbox = document.getElementById('ChatMessageText');
 		
 		$scope.loading = false;
 		addMessages(data.items);
@@ -259,6 +257,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		$scope.chat.message = '';
 		chatbox.style.height = '1px';
 		storageService.saveChatMessage(chat.targetId);
+		this.message = '';		
 	};
 	
 	$scope.searchChat = function(increment) {
