@@ -1,3 +1,4 @@
+
 hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService',
 	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService) {
 
@@ -943,8 +944,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						doesExist = true;
 					}
 					
-					if(callsDetails[data[i].xpid].details){
-						data[i].details = callsDetails[data[i].xpid].details;
+					if(call && call.details){
+						data[i].details = call.details;
 					}
 
 					callsDetails[data[i].xpid] = data[i];
