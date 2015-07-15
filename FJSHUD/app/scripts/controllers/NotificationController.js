@@ -455,10 +455,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 						break;
 						 
 				}
-
-				
-
-								
 			}
 	
 		}
@@ -506,15 +502,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			}
 		}	
        	
-		if($scope.calls.length <  1){
-			phoneService.removeNotification();
+	
+		if(displayDesktopAlert){
+	       	$scope.displayAlert = true;
+			$timeout(displayNotification, 1500);
 		}else{
-			if(displayDesktopAlert){
-	       		$scope.displayAlert = true;
-				$timeout(displayNotification, 1500);
-			}
+			$scope.displayAlert = true;
+			$timeout(function(){
+				var element = document.getElementById("Alert");
+				if(element){
+					var content = element.innerHTML;
+					phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+					
+				}
+				element = null;
+				$scope.displayAlert = false;
+			},2500);
 		}
-
+		
        	if($scope.inCall && !$.isEmptyObject($scope.callObj))
        		$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
        	else
@@ -530,18 +535,24 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		phoneService.showCallControls(currentCall);
 	};
 
-	var displayNotification = function(){
-
+	var displayNotification = function(cacheOnly){
+		console.log(cacheOnly);
 		var element = document.getElementById("Alert");
 		
 		if(element){
 			var content = element.innerHTML;
-			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			if(cacheOnly){
+				phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+			}else{
+				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			}
 		}
 		
 		element = null;
 		$scope.displayAlert = false;
 	};
+
+
 
 	$scope.$on('phone_event',function(event,data){
 		var phoneEvent = data.event;
@@ -562,6 +573,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			case "openNot":
 				$scope.overlay ='notifications';
 				break;
+			case 'displayNotification':
+				$scope.displayAlert = true;
+				$timeout(displayNotification
+						, 1500);
+				break;
+
 
 		}
 	});
@@ -667,7 +684,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 						$timeout(displayNotification
 						, 1500);
 					}
-					//adding a second delay for the native notification to have the digest complete with the updated notifications
 				}	
 			}
 		}

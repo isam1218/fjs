@@ -16,6 +16,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var session;
 	var alertPlugin;
 	var phone;
+	var notificationCache = {};
 	var soundManager;
 	var meModel = {};
 	var sipCalls = {};
@@ -57,15 +58,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
-	}
-
-	window.onfocus = function(){
-		tabInFocus = true;
 	};
 
-	window.onblur = function(){
-		tabInFocus = false;
+	var isDocumentHidden  = function(){
+		var hidden; 
+		if(document.hidden){
+			if(notificationCache.html){
+				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+			}
+		}else{
+			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
+				removeNotification();
+			}
+		}
 	};
+	
+	document.addEventListener("visibilitychange", isDocumentHidden, false);
+
+
 
 
 	var registerPhone = function(isRegistered){
@@ -83,6 +93,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}; 
 	
+	
+
 	settingsService.getMe().then(function(data){
 		if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
         	var username = $rootScope.meModel.my_jid.split("@")[0];
@@ -169,7 +181,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 	};
-
 	var playVm = function(xpid){
 		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
@@ -179,26 +190,37 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+	var addonActivateTab = function() {
+            if(!context.addonProxyElement) {
+                context.addonProxyElement = document.createElement("MyExtensionDataElement");
+                context.addonProxyElement.setAttribute("url", location.href);
+                document.documentElement.appendChild(context.addonProxyElement);
+            }
+            var evt = document.createEvent("Events");
+            evt.initEvent("MyExtensionEvent", true, false);
+            context.addonProxyElement.dispatchEvent(evt);
+     };
+     //we are using this to cache the previous notification section 
+	this.cacheNotification = function(content,width,height){
+		notificationCache.html = content;
+		notificationCache.height = height;
+		notificationCache.width = width;
+	};
+
 	var displayNotification = function(content, width,height){
 		
 		var displayNotification = false;
 		if(!alertPlugin){
 			return;
 		}
-
+		context.cacheNotification(content,width,height);
+					
 		if(settingsService.getSetting('alert_show') == 'true'){
-			
 			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
 					displayNotification = true;	
-				
 			}else{
-				if(!tabInFocus){
+				if(document.visibilityState == "hidden" || document.hidden){
 						displayNotification = true;	
-				
-				}
-				if(document.visibilityState == "hidden"){
-						displayNotification = true;	
-
 				}		
 			}
 
@@ -213,8 +235,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		
 
 			
-	if(alertPlugin && displayNotification){
-
+		if(alertPlugin && displayNotification){
 				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
@@ -353,13 +374,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			session.activateIE("#/");
 				break;
     		case "Chrome":
-    			session.activateChrome("#/");
+    			addonActivateTab();
+				session.activateChrome("#/");
+				addonActivateTab();
 				break;
     		case "Safari":
     			session.activateSafari("#/");
 				break;
     		case "FireFox":
-    			session.activateFirefox("#/");
+    			addonActivateTab();
+				session.activateFirefox("#/");
+				addonActivateTab();
+
 				break;
     	}
     };
@@ -367,7 +393,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     var onAlert = function(urlhash){
     	var arguments,url,query,queryArray,id,data,xpid;
     	arguments = urlhash.split("?");
-    	url = arguments[0];
+    	url = arguments[0].replace("#",'');
     	if(arguments.length > 1){
 	    	query = arguments[1];
 	    }	
@@ -377,14 +403,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	}
 		
 		// re-focus tab/window
-		if (url.indexOf('/Close') === -1 && url.indexOf('"ts\"') === -1) {
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts\"') === -1 && url.indexOf("/AcceptCall") === -1) {
 			activateBrowserTab();
 			window.focus();
 		}		
 		
-    	if(url.indexOf('#') === -1){
-
-			switch(url){
+    	switch(url){
 	    		case '/Close':
 	    			removeNotification();
 	    			break;
@@ -393,7 +417,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			break;
 	    		case '/EndCall':
 	    			hangUp(xpid);
-	    			break;
+	    			removeNotification();
+					break;
 	    		case '/HoldCall':
 	    			holdCall(xpid,true);
 	    			break;
@@ -406,7 +431,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			break;
 	    		case '/AcceptCall':
 					acceptCall(xpid);
-	    			break;
+					if(settingsService.getSetting('alert_call_duration') == "while_ringing"){
+						removeNotification();
+	    			}else if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
+	    				if(!document.hidden){
+							remove_notification();
+						}
+	    			}
+					break;
 	    		case '/AcceptZoom':
 					window.open(xpid,'_blank');
 	    			removeNotification();
@@ -467,90 +499,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					showQueue(queueId,audience, type,messagexpid);
 					break;
 			}
-    	}else{
-    		switch(url){
-	    		case '#/Close':
-	    			removeNotification();
-	    			break;
-	    		case '#/CancelCall':
-	    			hangUp(xpid);
-	    			break;
-	    		case '#/EndCall':
-	    			hangUp(xpid);
-	    			break;
-	    		case '#/HoldCall':
-	    			holdCall(xpid,true);
-	    			break;
-	    		case '#/ResumeCall':
-	    			data = {
-	    				event: 'resume'
-	    			};
-	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-					holdCall(xpid,false);
-	    			break;
-	    		case '#/AcceptCall':
-					acceptCall(xpid);
-	    			break;
-	    		case '#/OpenNotifications':
-	    			data = {
-	    				event:'openNot'
-	    			};
-	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-					break;
-				case '#/AcceptZoom':
-					window.open(xpid,'_blank');
-	    			removeNotification();
-	    			break;
-				case '#/RejectZoom':
-					removeNotification();
-					break;
-				case '#/PlayVM':
-					playVm(xpid);
-					break;
-				case '#/CallBack':
-					makeCall(xpid);
-					break;
-				case '#/contact':
-					$location.path('/contact/'+xpid);
-					$location.replace();
-					//$rootScope.$apply();
-					removeNotification();
-					break;
-				case '#/RemoveNotification':
-				    remove_notification(xpid);
-					break;	
-				case '#/goToChat':
-					var context = queryArray[0];
-					var audience = context.split(":")[0];
-					xpid = context.split(":")[1];
-					var messagexpid = queryArray[1];
-					goToNotificationChat(xpid, audience,messagexpid); 
-					break;	
-				case '#/callAndRemove':
-					var phone = queryArray[1];
-					makeCall(phone); 
-					remove_notification(xpid); 
-					break;	
-				case '#/getPlugins':
-					showOverlay(true,'DownloadPlugin',{});
-					window.open(xpid,'_blank');
-					break;	
-				case '#/activatePhone':
-					activatePhone();
-					break;
-				case '#/showCallControlls':
-					showCurrentCallControls(xpid);
-					break;
-				case '#/showQueue':
-					var queueId = queryArray[0];
-					var audience = queryArray[1];
-					var type = queryArray[2];
-					var messagexpid = queryArray[3];
-					showQueue(queueId,audience, type,messagexpid);
-					
-					break;
-	    	}
-    	}
+    	
+    	
 	};
 
 	var removeNotification = function(){
