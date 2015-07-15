@@ -1,6 +1,7 @@
 hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService, storageService) {
 
 	var version = 0;
+	var chatbox;
 	var scrollbox = {};
 	var chat = {}; // internal controller data
 	
@@ -153,10 +154,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
+		chatbox = document.getElementById('ChatMessageText');
 		
 		$scope.loading = false;
-		$scope.messages = data.items;
-		addDetails();
+		addMessages(data.items);
 		
 		// kill watcher
 		$timeout(function() {
@@ -172,7 +173,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		var found = false;
+		var found = [];
 		
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			// prevent duplicates
@@ -209,13 +210,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 						phoneService.playSound("received");
 					}
 				}
-				$scope.messages.push(data[i]);
-				found = true;				
+				
+				found.push(data[i]);				
 			}
 		}
 
-		if (found) {
-			addDetails();
+		if (found.length > 0) {
+			addMessages(found);
 			
 			// jump to bottom if new messages were found
 			$timeout(function() {
@@ -255,6 +256,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}		
 		
 		$scope.chat.message = '';
+		chatbox.style.height = '1px';
 		storageService.saveChatMessage(chat.targetId);
 	};
 	
@@ -285,19 +287,19 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};
 
 
-	// apply name and avatar
-	var addDetails = function() {
-		for (var i = 0, len = $scope.messages.length; i < len; i++) {
-			if (!$scope.messages[i].fullProfile) {
-				$scope.messages[i].fullProfile = contactService.getContact($scope.messages[i].from.replace('contacts:', ''));
-				
-				if ($scope.messages[i].type == 'f.conversation.chat.group.remove'){
-					$scope.messages[i].message = "<strong>Goodbye " + $scope.messages[i].data.groupId + "!</strong><br />" + $scope.messages[i].message;
-				}
-				
-				// update html per message
-				$scope.messages[i].message = $filter('chatify')($scope.messages[i].message);
+	// apply name and avatar and push to view
+	var addMessages = function(data) {
+		for (var i = 0, len = data.length; i < len; i++) {
+			data[i].fullProfile = contactService.getContact(data[i].from.replace('contacts:', ''));
+			
+			if (data[i].type == 'f.conversation.chat.group.remove'){
+				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + data[i].message;
 			}
+			
+			// update html per message
+			data[i].message = $filter('chatify')(data[i].message);
+			
+			$scope.messages.push(data[i]);
 		}
 	};
 
@@ -310,9 +312,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
 				version = data.h_ver;
 			
-				$scope.loading = false;
-				$scope.messages = data.items.concat($scope.messages);				
-				addDetails();
+				$scope.loading = false;			
+				addMessages(data.items);
 
 				// bump scroll down
 				if (scrollbox.scrollTop == 0)
@@ -323,7 +324,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 					$interval.cancel(chatLoop);
 			});
 		}
-	}, 600);
+	}, 600, 0, false);
 
 	$scope.nameDisplay = function(message, index){
 		var curMsg = $scope.$parent.filteredMessages[index];
@@ -352,6 +353,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
 		scrollbox = null;
+		chatbox = null;
 		
 		// save message for later
 		storageService.saveChatMessage(chat.targetId, $scope.chat.message);
