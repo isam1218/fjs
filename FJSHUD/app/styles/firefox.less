@@ -1,4 +1,4 @@
-@supports (-moz-appearance:meterbar) {  
+//@supports (-moz-appearance:meterbar) {  
      input[type="search"]{float: left;}
      
      .SearchBox {
@@ -64,8 +64,8 @@
      .WidgetBody{
        top: 180px;
        position: absolute;
-     }
-     
+       height: auto;
+     }     
      
      .MeInfoBlock {width: 79% !important;}
     }     
@@ -153,7 +153,9 @@
          &.currentCall{
             .call-block{                                               
                          
-              .CurrentCall{                
+              .CurrentCall{    
+                height: 148px;
+                            
                 .LeftSide .Dialog-settings-row{
                     margin: 1px !important;
                     height: 30px !important;
@@ -469,40 +471,200 @@
    }
 
 /* media queries*/
-.WidgetMe {
+/*.WidgetMe {
+      @media screen              
+        and (max-height: 178px) { 
+         .WidgetBody{             
+            height: 44.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 179px)         
+        and (max-height: 188px) { 
+         .WidgetBody{             
+            height: 45%
+         }                        
+       }
+      @media screen        
+        and (min-height: 189px)         
+        and (max-height: 198px) { 
+         .WidgetBody{             
+            height: 45.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 199px)         
+        and (max-height: 208px) { 
+         .WidgetBody{             
+            height: 46%
+         }                        
+       }
+      @media screen        
+        and (min-height: 209px)         
+        and (max-height: 218px) { 
+         .WidgetBody{             
+            height: 46.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 219px)         
+        and (max-height: 228px) { 
+         .WidgetBody{             
+            height: 47%
+         }                        
+       }
+      @media screen        
+        and (min-height: 219px)         
+        and (max-height: 228px) { 
+         .WidgetBody{             
+            height: 47.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 229px)         
+        and (max-height: 238px) { 
+         .WidgetBody{             
+            height: 48%
+         }                        
+       }
+      @media screen        
+        and (min-height: 239px)         
+        and (max-height: 248px) { 
+         .WidgetBody{             
+            height: 48.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 249px)         
+        and (max-height: 258px) { 
+         .WidgetBody{             
+            height: 49%
+         }                        
+       }
+      @media screen        
+        and (min-height: 259px)         
+        and (max-height: 268px) { 
+         .WidgetBody{             
+            height: 49.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 269px)         
+        and (max-height: 278px) { 
+         .WidgetBody{             
+            height: 50%
+         }                        
+       }
+      @media screen        
+        and (min-height: 279px)         
+        and (max-height: 288px) { 
+         .WidgetBody{             
+            height: 50.5%
+         }                        
+       }
+      @media screen        
+        and (min-height: 289px)         
+        and (max-height: 298px) { 
+         .WidgetBody{             
+            height: 51%
+         }                        
+       } 
+      @media screen        
+        and (min-height: 299px)         
+        and (max-height: 308px) { 
+         .WidgetBody{             
+            height: 51.5%
+         }                        
+       } 
        @media screen        
+        and (min-height: 309px)         
+        and (max-height: 318px) { 
+         .WidgetBody{             
+            height: 52%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 319px)         
+        and (max-height: 328px) { 
+         .WidgetBody{             
+            height: 52.5%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 329px)         
+        and (max-height: 338px) { 
+         .WidgetBody{             
+            height: 53%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 339px)         
+        and (max-height: 348px) { 
+         .WidgetBody{             
+            height: 53.5%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 349px)         
+        and (max-height: 358px) { 
+         .WidgetBody{             
+            height: 54%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 359px)         
+        and (max-height: 368px) { 
+         .WidgetBody{             
+            height: 54.5%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 369px)         
+        and (max-height: 378px) { 
+         .WidgetBody{             
+            height: 55%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 379px)         
+        and (max-height: 388px) { 
+         .WidgetBody{             
+            height: 55.5%
+         }                        
+       } 
+       @media screen        
+        and (min-height: 389px)         
+        and (max-height: 398px) { 
+         .WidgetBody{             
+            height: 56%
+         }                        
+       } 
+       @media screen  
+        and (min-height: 399px)         
         and (max-height: 408px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 60%;                
-            } 
+            height: 56.5%
          }                        
        } 
        @media screen 
         and (min-height: 409px)      
         and (max-height: 418px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 62%;                
-            } 
+           height: 57%
          }                        
        } 
        @media screen 
         and (min-height: 419px)      
         and (max-height: 429px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 64%;                
-            } 
+            height: 57.5%
          }                        
        } 
        @media screen 
         and (min-height: 430px)      
         and (max-height: 436px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 66%;                
-            } 
+            height: 58%
          }                        
        } 
        
@@ -510,9 +672,7 @@
         and (min-height: 437px)      
         and (max-height: 456px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 68%;                
-            } 
+            height: 58.5%
          }                        
        }  
         
@@ -520,66 +680,65 @@
         and (min-height: 457px)      
         and (max-height: 471px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 72%;                
-            } 
+            height: 59%
          }                        
        }   
        @media screen 
         and (min-height: 472px)      
         and (max-height: 485px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 74%;                
-            } 
+            height: 59.5%
          }                        
        }  
        @media screen 
         and (min-height: 486px)      
         and (max-height: 503px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 76%;                
-            } 
+            height: 60%
          }                        
        }  
        @media screen 
         and (min-height: 504px)      
         and (max-height: 511px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 78%;                
-            } 
+            height: 60.5%
          }                        
        }        
        @media screen 
         and (min-height: 512px)      
         and (max-height: 523px) { 
          .WidgetBody{             
-            .RecentCallSection{
-                height: 80%;                
-            } 
+            height: 61%
          }                        
        }       
-            
+       
         @media screen 
-        and (min-height: 524px)
-        and (max-height: 574px) {       
-            .RecentCallSection{
-                height: 82%;
-                
-            }           
-        }  
+        and (min-height: 524px)  
+        and (max-height: 333px){
+          .WidgetBody{
+            height: 61.5%
+          }   
+        }
+        @media screen 
+        and (min-height: 534px)  
+        and (max-height: 543px){
+          .WidgetBody{
+             height: 62%
+          }   
+        }
+        @media screen 
+        and (min-height: 544px)  
+        and (max-height: 556px){
+          .WidgetBody{
+            height: 62.5%
+          }   
+        }           
         
        @media screen 
         and (min-height: 557px)
-        and (max-height: 572px) {
+        and (max-height: 573px) {
           .WidgetBody{
-            height: 70.6%;  
-            .RecentCallSection{
-                height: 82%;
-                
-            }      
+            height: 63%;                   
           }
        } 
         
@@ -587,130 +746,85 @@
         and (min-height: 574px)
         and (max-height: 593px) {
           .WidgetBody{
-            height: 72%; 
-            .RecentCallSection{
-                height: 84%;
-                
-            }      
+            height: 63.5%;
+               
           }
        } 
        @media screen 
         and (min-height: 594px)
         and (max-height: 604px) {
           .WidgetBody{
-            height: 72.6%; 
-            .RecentCallSection{
-                height: 84%;
-                
-            }       
+            height: 64%;                 
           }
        }   
        @media screen 
         and (min-height: 605px)
         and (max-height: 617px) {
           .WidgetBody{
-            height: 73.2%;  
-            .RecentCallSection{
-                height: 84%;
-                
-            }      
+            height: 64.5%;                
           }
        }     
        @media screen 
         and (min-height: 618px)
         and (max-height: 627px) {
           .WidgetBody{
-            height: 73.7%;   
-            .RecentCallSection{
-                height: 86%;
-                
-            }    
+            height: 65%;              
           }
        }  
        @media screen 
         and (min-height: 628px)
         and (max-height: 637px) {
           .WidgetBody{
-            height: 74.2%;  
-            .RecentCallSection{
-                height: 88%;
-                
-            }     
+            height: 65.5%;             
           }
        }  
        @media screen 
         and (min-height: 638px)
         and (max-height: 649px) {
           .WidgetBody{
-            height: 74.5%; 
-            .RecentCallSection{
-                height: 88%;
-                
-            }      
+            height: 66%;                
           }
        } 
        @media screen 
         and (min-height: 650px)
         and (max-height: 666px) {
           .WidgetBody{
-            height: 75%;  
-            .RecentCallSection{
-                height: 90%;
-                
-            }     
+            height: 66.5%;                 
           }
        }  
        @media screen 
         and (min-height: 667px)
         and (max-height: 678px) {
           .WidgetBody{
-            height: 75.8%; 
-            .RecentCallSection{
-                height: 90%;
-                
-            }      
+            height: 67%;                 
           }
        } 
        @media screen 
         and (min-height: 677px)
         and (max-height: 689px) {
           .WidgetBody{
-            height: 76.2%; 
-            .RecentCallSection{
-                height: 92%;
-                
-            }      
+            height: 67.5%;                
           }
        } 
         @media screen 
         and (min-height: 690px)
         and (max-height: 699px) {
           .WidgetBody{
-            height: 76.5%;
-            .RecentCallSection{
-                height: 92%;
-                
-            }       
+            height: 68%;
           }
        } 
         @media screen 
         and (min-height: 700px)
         and (max-height: 709px) {
           .WidgetBody{
-            height: 77.2%;
-            .RecentCallSection{
-                height: 94%;
-            }       
+            height: 68.5%;
           }
        } 
         @media screen 
         and (min-height: 710px)
         and (max-height: 719px) {
           .WidgetBody{   
-            height:  77%;       
-            .RecentCallSection{
-                height: 94%;
-            }      
+            height:  69%; 
           }
         }
         
@@ -718,10 +832,7 @@
         and (min-height: 720px)
         and (max-height: 734px) {
           .WidgetBody{   
-            height:  77.5%;       
-            .RecentCallSection{
-                height: 94%;
-            }      
+            height:  69.5%; 
           }
         }       
     
@@ -729,10 +840,7 @@
         and (min-height: 735px)
         and (max-height: 744px) {
           .WidgetBody{   
-            height:  78%;       
-            .RecentCallSection{
-                height: 94%;
-            }      
+            height:  70%;
           }
         } 
     
@@ -740,10 +848,7 @@
         and (min-height: 745px)
         and (max-height: 760px) {
           .WidgetBody{   
-            height:  78.8%;       
-            .RecentCallSection{
-                height: 94%;
-            }      
+            height:  71.5%;
           }
         } 
      
@@ -751,10 +856,7 @@
         and (min-height: 761px)
         and (max-height: 779px) {
           .WidgetBody{   
-            height:  79.3%;       
-            .RecentCallSection{
-                height: 96%;
-            }      
+            height:  72%;
           }
         } 
    
@@ -762,10 +864,7 @@
         and (min-height: 780px)
         and (max-height: 799px) {
           .WidgetBody{   
-            height:  79.8%;       
-            .RecentCallSection{
-                height: 96%;
-            }      
+            height:  72.5%;
           }
         } 
     
@@ -773,10 +872,7 @@
         and (min-height: 800px)
         and (max-height: 829px) {
           .WidgetBody{   
-            height:  80.2%;       
-            .RecentCallSection{
-                height: 96%;
-            }      
+            height:  73%;
           }
         } 
     
@@ -784,10 +880,7 @@
         and (min-height: 830px)
         and (max-height: 845px) {
           .WidgetBody{   
-            height:  80.8%;       
-            .RecentCallSection{
-                height: 96%;
-            }      
+            height:  73.5%;
           }
         } 
    
@@ -795,10 +888,7 @@
         and (min-height: 846px)
         and (max-height: 854px) {
           .WidgetBody{   
-            height:  81%;       
-            .RecentCallSection{
-                height: 98%;
-            }      
+            height:  74%; 
           }
         } 
     
@@ -806,10 +896,7 @@
         and (min-height: 855px)
         and (max-height: 870px) {
           .WidgetBody{   
-            height:  81.5%;       
-            .RecentCallSection{
-                height: 98%;
-            }      
+            height:  74.5%;
           }
         } 
     
@@ -817,10 +904,7 @@
         and (min-height: 871px)
         and (max-height: 899px) {
           .WidgetBody{   
-            height:  82.2%;       
-            .RecentCallSection{
-                height: 100%;
-            }      
+            height:  75%; 
           }
         } 
    
@@ -828,792 +912,16 @@
         and (min-height: 900px)
         and (max-height: 912px) {
           .WidgetBody{  
-            height: 82.5%;          
-            .RecentCallSection{
-                height: 100%;
-            }      
+            height: 75.5%; 
           }
-        }   
-        
-        /*@media screen 
-        and (min-height: 952px)
-        and (max-height: 969px) {
-          .WidgetBody{            
-            .RecentCallSection{
-                height: 65.3%;
-            } 
-            .Preferences-Holder{
-                height: 65%;
-             }          
-          }
-        } */
+        }                
         
         @media screen 
         and (min-height: 913px){        
           .WidgetBody{            
-            .RecentCallSection{
-                height: 100%;
-            }                               
+             height: 76%;                          
           }
-        }
-        @media screen 
-        and (min-height: 585px)  
-        and (max-height: 624px){
-          .WidgetBody{
-            .Preferences-Holder{
-                height: 41%;
-             }  
-          }   
-        }
-        @media screen 
-        and (min-height: 625px)  
-        and (max-height: 714px){
-          .WidgetBody{
-            .Preferences-Holder{
-                height: 42%;
-             }  
-          }   
-        }
-        @media screen 
-        and (min-height: 715px)  
-        and (max-height: 809px){
-          .WidgetBody{
-            .Preferences-Holder{
-                height: 43%;
-             }  
-          }   
-        }
-        @media screen 
-        and (min-height: 810px)  
-        and (max-height: 913px){
-          .WidgetBody{
-            .Preferences-Holder{
-                height: 44%;
-             }  
-          }   
-        }
-        @media screen 
-        and (min-height: 914px){         
-          .WidgetBody{
-            .Preferences-Holder{
-                height: 45%;
-             }  
-          }   
-        }
-        /* current call*/        
-        @media screen 
-        and (min-height: 964px)           
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 64%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 84%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 951px)  
-        and (max-height: 965px)  
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 62%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 84%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 930px) 
-        and (max-height: 950px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 60%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 86%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }                
-        
-        @media screen 
-        and (min-height: 905px) 
-        and (max-height: 929px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 58%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 84%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 901px) 
-        and (max-height: 904px)   
-        {
-           .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 56%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 82%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-        }
-        @media screen 
-        and (min-height: 887px) 
-        and (max-height: 900px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 54%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 82%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 864px) 
-        and (max-height: 886px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 52%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 82%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 841px) 
-        and (max-height: 863px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 50%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 82%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
+        }             
        
-       @media screen 
-        and (min-height: 827px) 
-        and (max-height: 840px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 50%;
-                    .RecentCallSection{
-                        height: 46%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 82%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }                
-        
-        @media screen 
-        and (min-height: 822px) 
-        and (max-height: 826px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 56%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 78%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 801px) 
-        and (max-height: 821px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 55%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 76%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 791px) 
-        and (max-height: 800px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 53%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 74%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 778px) 
-        and (max-height: 790px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 52%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 74%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 764px) 
-        and (max-height: 777px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 51%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 74%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 756px) 
-        and (max-height: 763px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 50%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 74%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 750px) 
-        and (max-height: 756px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 48%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 72%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 729px) 
-        and (max-height: 749px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 46%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 74%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 723px) 
-        and (max-height: 728px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 44%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 74%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 698px) 
-        and (max-height: 722px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 42%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 72%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 686px) 
-        and (max-height: 697px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 38%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 70%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 676px) 
-        and (max-height: 685px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 36%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 64%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 668px) 
-        and (max-height: 677px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 34%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 64%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        
-        @media screen 
-        and (min-height: 654px) 
-        and (max-height: 667px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 24%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 62% !important;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 638px) 
-        and (max-height: 653px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 23%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 60% !important;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 628px) 
-        and (max-height: 637px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 26%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 68%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 617px) 
-        and (max-height: 627px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 24%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 60%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen 
-        and (min-height: 610px) 
-        and (max-height: 616px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 23%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 60%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-        @media screen       
-        and (max-height: 609px)   
-        {
-            .WidgetBody.currentCall{
-                .call-block {
-                    height: 70%;
-                    .RecentCallSection{
-                        height: 23%;
-                        
-                    }
-                }
-                .Preferences-Holder{
-                    height: 50%;
-                    
-                    .SettingsPanel.DialogContentMainBlock_List{
-                      height: 56%;  
-                      & > div{
-                        height: 100%;
-                      }  
-                    }    
-                }
-            }
-         
-        }
-       
-     }  
-}
+     }  */
+//}
