@@ -3477,8 +3477,8 @@ div.NewCall .XButton.XButtonNormal {
   display: inline-block;
 }
 .SearchBox {
-  color: #729c00;
-  border: 1px solid #729c00;
+  color: #00ad33;
+  border: 1px solid #00ad33;
   border-radius: 2px;
   padding: .5em .5em .5em 2em;
   background: url("../img/search.png") no-repeat white;
@@ -3494,7 +3494,7 @@ div.NewCall .XButton.XButtonNormal {
   margin: 0;
   border-radius: 3px;
   background-color: white;
-  border: solid 1px #729C00;
+  border: solid 1px #00ad33;
   padding: 14px;
 }
 .SearchInputBoxInputHolder {
@@ -3505,7 +3505,7 @@ div.NewCall .XButton.XButtonNormal {
   right: 8px;
   height: 80%;
   border: none;
-  color: #729c00;
+  color: #00ad33;
 }
 .SearchInputBoxInput {
   position: absolute;
@@ -3515,7 +3515,7 @@ div.NewCall .XButton.XButtonNormal {
   width: 100%;
   height: 100%;
   border: none;
-  color: #729c00;
+  color: #00ad33;
   font-size: .8em;
 }
 .SearchInputBoxStateButton {
@@ -3547,7 +3547,7 @@ div.NewCall .XButton.XButtonNormal {
   height: 1.8em;
   border-radius: 3px;
   background-color: white;
-  border: solid 1px #729C00;
+  border: solid 1px #00ad33;
   float: left;
 }
 .ChatSearch > * {
@@ -3575,7 +3575,7 @@ div.NewCall .XButton.XButtonNormal {
   background-color: white;
   color: gray;
   border: none;
-  border-left: solid 1px #729C00;
+  border-left: solid 1px #00ad33;
   float: right;
   cursor: pointer;
 }
@@ -3810,10 +3810,10 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote {
   font-size: 12px;
-  padding: 20px;
+  padding: 10px;
 }
 .Widget.Intellinote .Intro {
-  margin: 20px 0 10px 0;
+  margin: 10px 0 10px 0;
 }
 .Widget.Intellinote .Logo {
   margin-left: 20px;
@@ -3828,7 +3828,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #3c9c00;
+  color: #00ad33;
   margin-bottom: 5px;
   text-transform: uppercase;
 }
@@ -3894,9 +3894,7 @@ div.NewCall .XButton.XButtonNormal {
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
-  border-radius: 3px;
-  background: #3c9c00 linear-gradient(#3c9c00, #328400);
-  background-color: #779c00;
+  background-color: #00ad33;
   margin: 20px 0;
   cursor: pointer;
 }
@@ -3914,10 +3912,10 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Zipwhip {
   font-size: 12px;
-  padding: 20px;
+  padding: 10px;
 }
 .Widget.Zipwhip .Intro {
-  margin: 10px 0 10px 0;
+  margin: 0px 0 10px 0;
 }
 .Widget.Zipwhip .Logo {
   margin-left: 20px;
@@ -3931,9 +3929,10 @@ div.NewCall .XButton.XButtonNormal {
   background-color: #f9f9f9;
 }
 .Widget.Zipwhip .Left h4 {
-  color: #3c9c00;
+  color: #00ad33;
   font-size: 17px;
   margin-bottom: 5px;
+  margin-top: 40px;
 }
 .Widget.Zipwhip .Right {
   float: right;
@@ -3992,10 +3991,8 @@ div.NewCall .XButton.XButtonNormal {
   color: white;
   height: 28px;
   padding: 7px 0 7px 30px;
-  background: #3c9c00 linear-gradient(#3c9c00, #328400);
-  border-radius: 3px;
-  background-color: #779c00;
-  margin: 45px 0px;
+  background-color: #00ad33;
+  margin: 65px 0px;
   cursor: pointer;
 }
 .Widget.Zipwhip .Right .WorkspaceButton div {

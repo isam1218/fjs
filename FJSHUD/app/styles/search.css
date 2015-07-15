@@ -1,6 +1,6 @@
 .SearchBox {
-  color: #729c00;
-  border: 1px solid #729c00;
+  color: #00ad33;
+  border: 1px solid #00ad33;
   border-radius: 2px;
   padding: .5em .5em .5em 2em;
   background: url("../img/search.png") no-repeat white;
@@ -16,7 +16,7 @@
   margin: 0;
   border-radius: 3px;
   background-color: white;
-  border: solid 1px #729C00;
+  border: solid 1px #00ad33;
   padding: 14px;
 }
 .SearchInputBoxInputHolder {
@@ -27,7 +27,7 @@
   right: 8px;
   height: 80%;
   border: none;
-  color: #729c00;
+  color: #00ad33;
 }
 .SearchInputBoxInput {
   position: absolute;
@@ -37,7 +37,7 @@
   width: 100%;
   height: 100%;
   border: none;
-  color: #729c00;
+  color: #00ad33;
   font-size: .8em;
 }
 .SearchInputBoxStateButton {
@@ -69,7 +69,7 @@
   height: 1.8em;
   border-radius: 3px;
   background-color: white;
-  border: solid 1px #729C00;
+  border: solid 1px #00ad33;
   float: left;
 }
 .ChatSearch > * {
@@ -97,7 +97,7 @@
   background-color: white;
   color: gray;
   border: none;
-  border-left: solid 1px #729C00;
+  border-left: solid 1px #00ad33;
   float: right;
   cursor: pointer;
 }
