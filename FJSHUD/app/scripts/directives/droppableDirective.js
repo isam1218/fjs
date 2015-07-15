@@ -111,11 +111,15 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 									conferenceId: found
 								});
 								
-								// connect third party
-								httpService.sendAction('conferences', 'joinContact', {
-									conferenceId: found,
-									contactId: obj.xpid
-								});
+								// add a brief timeout before adding the second user to the conference
+								timeout = setTimeout(function() {
+									httpService.sendAction('conferences', 'joinContact', {
+										conferenceId: found,
+										contactId: obj.xpid
+									});
+
+								}, 2000);
+								
 								
 								$location.path('/conference/' + found + '/currentcall');
 							}
