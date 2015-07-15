@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', 'GroupService', function($scope, $routeParams, groupService) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', 'GroupService', 'ContactService', function($scope, $routeParams, groupService, contactService) {
     var context = this;
 	var favoriteID;
 	
@@ -44,6 +44,11 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 	$scope.isTheirGroup = function() {
 		if ($scope.userGroup && $scope.userGroup.name.toLowerCase().indexOf($scope.que.query.toLowerCase()) != -1)
 			return true;
+	};
+
+	$scope.findGroupOwner = function(group){
+		var owner = contactService.getContact(group.ownerId);
+		return owner.displayName;
 	};
 	
     $scope.$on("$destroy", function() {
