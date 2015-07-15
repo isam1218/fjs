@@ -84,19 +84,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                break;
 		            case "sync_completed":
 		                if (event.data.data) {
-
-		                    var synced_data = event.data.data;
-
-		                    // send data to other controllers
-							$rootScope.$evalAsync(function() {
-								for(var i = 0, ilen = feeds.length;i < ilen;i++){
-									if(synced_data[feeds[i]] && synced_data[feeds[i]].length > 0){
-										$rootScope.$broadcast(feeds[i] + '_synced', synced_data[feeds[i]]);
-									}
-								}
-								$rootScope.isFirstSync = false;
-
-							});
+		                    broadcastSyncData(event.data.data);
+								
+							$rootScope.isFirstSync = false;
 							synced = true;
 		                }
 		                break;
@@ -157,19 +147,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						}else{
 
 							if(localStorage.data_obj != undefined){
-								synced_data = JSON.parse(localStorage.data_obj);
-								for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
-									var feed = fjs.CONFIG.FEEDS[i];
-									if(synced_data[feed]){
-										if (synced_data[feed].length > 0)
-			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-									}
-								}
+								broadcastSyncData(JSON.parse(localStorage.data_obj));
 							}
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
-							})
+							});
 						}
 						break;
 		            case "sync_completed":
@@ -192,19 +175,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    }
 							
 		                    // send data to other controllers i'm doing this to ensure order when syncing'
-							$rootScope.$evalAsync(function() {
-								for (var feed in synced_data) {
-									if(!$.isEmptyObject(data_obj)){
-										data_obj[feed] = synced_data[feed];
-										localStorage.data_obj = JSON.stringify(data_obj);
-									}
-									
-									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
-									
-									$rootScope.isFirstSync = false;
-								}
-							});
+							broadcastSyncData(synced_data);
+							$rootScope.isFirstSync = false;
 		                }
 		                break;
 		            case "feed_request":
@@ -241,16 +213,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
 							if(!tabMap[tabId].isSynced){
 								if(localStorage.data_obj != undefined){
-
-
-									synced_data = JSON.parse(localStorage.data_obj);
-									for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
-										var feed = fjs.CONFIG.FEEDS[i];
-										if(synced_data[feed]){
-											if (synced_data[feed].length > 0)
-												$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-										}
-									}
+									broadcastSyncData(JSON.parse(localStorage.data_obj));
 								}
 
 								tabMap[tabId].isSynced = true;	
@@ -268,7 +231,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		}
 	}
 
+	var broadcastSyncData = function(data) {
+		if (data) {
+			// send data to other controllers
+			$rootScope.$evalAsync(function() {
+				// loop through feeds in order, according to properties.js
+				for (var i = 0, ilen = feeds.length; i < ilen; i++){
+					if (data[feeds[i]] && data[feeds[i]].length > 0){
+						$rootScope.$broadcast(feeds[i] + '_synced', data[feeds[i]]);
+					}
+				}
 
+			});
+		}
+	};
 	
 	// send first message to shared worker
 	var authorizeWorker = function() {
