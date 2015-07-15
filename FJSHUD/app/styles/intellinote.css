@@ -1,9 +1,9 @@
 .Widget.Intellinote {
   font-size: 12px;
-  padding: 20px;
+  padding: 10px;
 }
 .Widget.Intellinote .Intro {
-  margin: 20px 0 10px 0;
+  margin: 10px 0 10px 0;
 }
 .Widget.Intellinote .Logo {
   margin-left: 20px;
@@ -18,7 +18,7 @@
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #779c00;
+  color: #00ad33;
   margin-bottom: 5px;
   text-transform: uppercase;
 }
@@ -84,7 +84,7 @@
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
-  background-color: #779c00;
+  background-color: #00ad33;
   margin: 20px 0;
   cursor: pointer;
 }

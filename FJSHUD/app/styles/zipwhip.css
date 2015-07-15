@@ -1,9 +1,9 @@
 .Widget.Zipwhip {
   font-size: 12px;
-  padding: 20px;
+  padding: 10px;
 }
 .Widget.Zipwhip .Intro {
-  margin: 20px 0 10px 0;
+  margin: 0px 0 10px 0;
 }
 .Widget.Zipwhip .Logo {
   margin-left: 20px;
@@ -17,8 +17,10 @@
   background-color: #f9f9f9;
 }
 .Widget.Zipwhip .Left h4 {
-  font-size: 16px;
+  color: #00ad33;
+  font-size: 17px;
   margin-bottom: 5px;
+  margin-top: 40px;
 }
 .Widget.Zipwhip .Right {
   float: right;
@@ -75,10 +77,21 @@
   position: relative;
   font-weight: bold;
   color: white;
-  padding: 7px 0 7px 34px;
-  background-color: #FF3333;
-  margin: 40px 0px 0px 50px;
+  height: 28px;
+  padding: 7px 0 7px 30px;
+  background-color: #00ad33;
+  margin: 65px 0px;
   cursor: pointer;
-  border-radius: 12px;
-  width: 150px;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
 }
