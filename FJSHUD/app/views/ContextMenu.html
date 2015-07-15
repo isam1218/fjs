@@ -302,8 +302,8 @@
 		</a>
 	</div>
 
-	<div ng-if="type == 'Contact'"> 
-		<callStatus profile="profile" ng-if="profile.call"></callStatus>
+	<div ng-if="type == 'Contact' && profile.call"> 
+		<callStatus profile="profile"></callStatus>
 	</div>
 </div>
 

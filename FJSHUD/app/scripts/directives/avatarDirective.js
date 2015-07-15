@@ -191,11 +191,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					// set width for logout reasons
 					overlay.removeClass('NoWrap');
-					if(obj.call){
-						overlay.css('width', (overlay[0].getBoundingClientRect().width + 30) + 'px');
-					}else{
-						overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
-					}
+					overlay.css('width', (overlay[0].getBoundingClientRect().width + 2) + 'px');
 			
 					// button clicks
 					$('#ContextMenu .Button').bind('click', function(e) {
