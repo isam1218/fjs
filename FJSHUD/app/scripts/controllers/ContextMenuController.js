@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
-	function($rootScope, $scope, $location, contactService, groupService, queueService, settingsService, httpService, storageService,phoneService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
+	function($rootScope, $scope, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -208,12 +208,46 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		window.open('mailto:' + emails.join(';'));
 	};
 	
-	$scope.fileShare = function() {
-		$scope.$parent.showOverlay(true, 'FileShareOverlay', {
-			name: $scope.profile.displayName || $scope.profile.name,
-			audience: $scope.type.split(/(?=[A-Z])/)[0].toLowerCase(),
-			xpid: $scope.profile.xpid
-		});
+	$scope.fileShare = function(repost) {
+		if (repost) {
+			// need to find information for original audience
+			var context = $scope.original.context.split(':');
+			var audience = context[0].replace(/s$/g, '');
+			var xpid = context[1];
+			var name = '';
+			
+			// what a ridiculous way to get the name...
+			switch(audience) {
+				case 'contact':
+					name = contactService.getContact(xpid).displayName;
+					break;
+				case 'conference':
+					name = conferenceService.getConference(xpid).name;
+					break;
+				case 'queue':
+					name = queueService.getQueue(xpid).name;
+					break;
+				case 'group':
+					name = groupService.getGroup(xpid).name;
+					break;
+			}
+			
+			var data = {
+				name: name,
+				audience: audience,
+				xpid: xpid,
+				original: $scope.original
+			};
+		}
+		else {
+			var data = {
+				name: $scope.profile.displayName || $scope.profile.name,
+				audience: $scope.type.split(/(?=[A-Z])/)[0].toLowerCase(),
+				xpid: $scope.profile.xpid
+			};
+		}
+		
+		$scope.$parent.showOverlay(true, 'FileShareOverlay', data);
 	};
 
 	$scope.loginQueue = function() {

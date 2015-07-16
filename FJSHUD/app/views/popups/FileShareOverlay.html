@@ -33,10 +33,18 @@
                  <p>{{::verbage.attach_files_to_share}}</p>
                 </div>
                 <div class="Members">
+                    <div ng-repeat="file in reposts" class="ListRow">
+                        <div class="file">  
+	                        <p>{{::verbage.file}}</p>
+	                        <span><p>{{::file.fileName}}</p></span>
+                        </div>
+                        <div class="XButton" ng-click="reposts.splice($index, 1)">{{::verbage.Remove}}</div>
+                    </div>
+					
                     <div ng-repeat="file in $flow.files" class="ListRow">
                         <div class="file">  
 	                        <p>{{::verbage.file}}</p>
-	                        <span><p>{{file.name}} ({{file.size}} {{::verbage.bytes}})</p></span>
+	                        <span><p>{{::file.name + ' (' + file.size + ' ' + verbage.bytes + ')'}}</p></span>
                         </div>
                         <div class="XButton" ng-click="$flow.removeFile(file)">{{::verbage.Remove}}</div>
                     </div>
