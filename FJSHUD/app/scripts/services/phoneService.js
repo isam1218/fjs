@@ -393,7 +393,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     var onAlert = function(urlhash){
     	var arguments,url,query,queryArray,id,data,xpid;
     	arguments = urlhash.split("?");
-    	url = arguments[0].replace("#",'');
+    	//we need to decode the uri because the plugin will sometimes return an html encoded string
+    	url = decodeURI(arguments[0].replace("#",''));
+    	
     	if(arguments.length > 1){
 	    	query = arguments[1];
 	    }	
@@ -403,7 +405,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	}
 		
 		// re-focus tab/window
-		if (url.indexOf('/Close') === -1 && url.indexOf('"ts\"') === -1 && url.indexOf("/AcceptCall") === -1) {
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1) {
 			activateBrowserTab();
 			window.focus();
 		}		
