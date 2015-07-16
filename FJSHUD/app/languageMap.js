@@ -395,7 +395,7 @@ fjs.i18n = {
 
       
       no_recent_calls:"No Recent Calls",
-
+      UnMute: 'Unmute',
       Mute:'Mute',
       Park:'Park',
       Hold:'Hold',
@@ -931,7 +931,7 @@ fjs.i18n = {
 
 
       no_recent_calls:"No Recent Calls",
-
+      UnMute:'ミュート解除します',
       Mute:'ミュート',
       Park:'パーク',
       Hold:'保留',

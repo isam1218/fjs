@@ -918,6 +918,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
        }
     };
 
+    $scope.muteConference = function(){
+        phoneService.mute($scope.currentCall.xpid, !$scope.currentCall.mute);
+    };
+
     $scope.silentSpk = function(){
         if($scope.volume.spkVol == 0){
              phoneService.setVolume($rootScope.volume.spk);
