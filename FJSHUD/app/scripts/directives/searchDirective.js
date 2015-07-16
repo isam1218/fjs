@@ -26,6 +26,8 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 					
 					timeout = $timeout(clearSearch, autoClearTime*1000);
 				}
+				if($(element).val() == '')
+					scope.clearSearch();
 			});
 			
 			// pull updated settings
