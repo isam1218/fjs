@@ -43,8 +43,7 @@
 								</span>
 							</div>
 
-							<!--<span ng-if="!message.message || message.message <= 1" style="position:absolute;margin-left:5px">{{ ::new_notifications_to_display }} </span> -->
-							
+						
 							<div class="NotificationMessage" scroll-to-bottom >
 								<span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
 								<span ng-bind-html="formatMessage(message)"> </span>	
@@ -173,7 +172,7 @@
 	                        class="LeftBarNotificationAvatarSection NotificationAvatar"
 	                        ng-click="go_to_notification_chat(message)"
 	                        profile="message.fullProfile"
-	                        type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
+	                        type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 	                    </avatar>	               
 	                    <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message)">                         
 	                        <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
