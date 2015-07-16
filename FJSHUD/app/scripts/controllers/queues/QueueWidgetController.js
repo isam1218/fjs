@@ -97,9 +97,9 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 	            if (myQueues[j].xpid === $scope.queueId)
 	            {
 	            	//we only look at the alerts and chat tabs 
-	             	if($routeParams.route === 'alerts' || $routeParams.route === 'chat')
+	             	if($routeParams.route === 'alerts' || $routeParams.route === 'chat' || $scope.selected === 'alerts' || $scope.selected === 'chat')
 	             	{	
-		            	//no permission
+		            	//yes permission
 	             		if(myPermission === 0)
 		            	{	    
 	             			   // I'm a member and i have alert broadcast permission and i'm on alerts tab
@@ -107,9 +107,10 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 		            		
 				                $scope.enableChat = true;
 				                $scope.enableTextInput = true;
-				                $scope.enableFileShare = true;	            		
+				                $scope.enableFileShare = true;
+                                break;        		
 		            	}
-	             		//has permission
+	             		//no permission
 		            	else 
 		            	{
 		            		//check if queue id of the route exists, otherwise do nothing
@@ -119,6 +120,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 			                    $scope.enableTextInput = ($routeParams.route === 'chat') ? true : false;
 			                    $scope.enableChat = true;
 			                    $scope.enableFileShare = true;
+                                break;
 		            		}	
 		            	}	
 	             	}	
