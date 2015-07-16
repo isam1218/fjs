@@ -11,6 +11,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
 	$scope.showFileShare = true;
+	$scope.messages = [];
 
 	// set chat data
 	if ($routeParams.contactId) {
