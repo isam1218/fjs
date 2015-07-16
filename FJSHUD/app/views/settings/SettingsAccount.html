@@ -26,7 +26,7 @@
           <div class="ListPage">
             <div class="ListPageHeader"></div>
             <div class="Dialog-settings-row">
-              <div class="file-input Dialog-settings-row" flow-init flow-name="avatar.flow" flow-file-added="change_avatar($file)">
+              <div class="file-input Dialog-settings-row" flow-init="{testChunks:false}" flow-files-submitted="flow_cleanup($files)" flow-name="avatar.flow" flow-file-added="change_avatar($file)">
 
                 <label class="queueBlock">{{::verbage.avatar}}:</label>
                   <img 

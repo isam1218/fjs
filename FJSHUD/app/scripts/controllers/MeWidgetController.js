@@ -615,9 +615,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             update_settings();
         }
     });
-
+    //this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
+    $scope.flow_cleanup = function($files){
+        $scope.avatar.flow.cancel();
+        $scope.$safeApply();
+    };
     $scope.change_avatar = function($file){
-        $scope.avatar = $file;
+        //$scope.avatar = $file;
 		
         var data = {
             'action':'updateAvatar',
