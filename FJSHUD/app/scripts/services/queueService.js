@@ -86,6 +86,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			for (var i = 0, len = queues.length; i < len; i++) {
 				queues[i].calls = [];
 				queues[i].members = [];
+				queues[i].longestWait = 0;
+				queues[i].longestActive = 0;
 				
 				queues[i].getAvatar = function (index, size) {
 					if (this.members && this.members[index] !== undefined)
@@ -186,10 +188,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 	
 	$rootScope.$on('queue_call_synced', function(event, data) {
+		var timestamp = ntpService.calibrateTime(new Date().getTime());
+		
 		for (var q = 0, qLen = queues.length; q < qLen; q++) {
 			queues[q].calls.splice(0, queues[q].calls.length);
-			queues[q].longestWait = ntpService.calibrateTime(new Date().getTime());
-			queues[q].longestActive = ntpService.calibrateTime(new Date().getTime());
+			queues[q].longestWait = timestamp;
+			queues[q].longestActive = timestamp;
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if (data[i].queueId == queues[q].xpid) {
@@ -204,8 +208,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 						if (data[i].startedAt < queues[q].longestActive)
 							queues[q].longestActive = data[i].startedAt;
 					}
-					else if (data[i].startedAt < queues[q].longestWait)
+					else {
+						if (data[i].startedAt < queues[q].longestWait)
 							queues[q].longestWait = data[i].startedAt;
+					}
 						
 					// attach ringing agent
 					if (data[i].agentContactId)
@@ -214,10 +220,10 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			}
 			
 			// no change, so set to zero
-			if (queues[q].longestWait == ntpService.calibrateTime(new Date().getTime()))
+			if (queues[q].longestWait == timestamp)
 				queues[q].longestWait = 0;
 			
-			if (queues[q].longestActive == ntpService.calibrateTime(new Date().getTime()))
+			if (queues[q].longestActive == timestamp)
 				queues[q].longestActive = 0;
 		}
 	});
