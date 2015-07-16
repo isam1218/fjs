@@ -3,6 +3,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
   var playChatNotification = false;
   var displayDesktopAlert = true;
+<<<<<<< HEAD
     
   $scope.notifications = [];
   $scope.calls = [];
@@ -118,8 +119,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
         break;
       default:
         return messages;
-
-    
     }
   };
 
@@ -317,6 +316,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
   
   $scope.showQueue = function(message)
     {
+
     var qid = message.queueId;
     
     $('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
@@ -470,104 +470,115 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
     $scope.calls.sort(function(a,b){
       return a.created - b.created;
     });
-       
-        
-        if(!$.isEmptyObject(data))
-    { 
-       var xpid = '';
-       for(var k in data)
-       {
-        xpid = k;
-       }
-       if(typeof $scope.callObj[xpid] == "undefined")
-       {     
-         $scope.callObj[xpid] = {};
-         $scope.callObj[xpid].minutes = 0;
-         $scope.callObj[xpid].seconds = 0;
-         $scope.callObj[xpid].hours = 0;  
-         $scope.callObj[xpid].days = 0;
-         $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());
+       	if(!$.isEmptyObject(data))
+		{	
+		   var xpid = '';
+		   for(var k in data)
+		   {
+				xpid = k;
+		   }
+		   if(typeof $scope.callObj[xpid] == "undefined")
+		   {	   
+			   $scope.callObj[xpid] = {};
+			   $scope.callObj[xpid].minutes = 0;
+			   $scope.callObj[xpid].seconds = 0;
+			   $scope.callObj[xpid].hours = 0;	
+			   $scope.callObj[xpid].days = 0;
+			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());
 
-       }
-       if($scope.callObj[xpid].seconds == 0 && 
-        $scope.callObj[xpid].minutes == 0 && 
-        $scope.callObj[xpid].hours == 0 &&
-        $scope.callObj[xpid].days == 0)
-       {     
-          //the nativeTime is for the native Alert as it requires its own time and does its own calculations for the duration 
-           $scope.callObj[xpid].nativeTime = new Date().getTime();
-       }     
-    } 
-    else
-    {       
-      if($scope.callObj[xpid])
-      {
-        $scope.callObj[xpid]= {};   
-      }
-    } 
-        
-    if($scope.calls.length <  1){
-      phoneService.removeNotification();
-    }else{
-      if(displayDesktopAlert){
-            $scope.displayAlert = true;
-        $timeout(displayNotification, 1500);
-      }
-    }
+		   }
+		   if($scope.callObj[xpid].seconds == 0 && 
+			  $scope.callObj[xpid].minutes == 0 && 
+			  $scope.callObj[xpid].hours == 0 &&
+			  $scope.callObj[xpid].days == 0)
+		   {	   
+		   		//the nativeTime is for the native Alert as it requires its own time and does its own calculations for the duration 
+		   	   $scope.callObj[xpid].nativeTime = new Date().getTime();
+		   }	   
+		}	
+		else
+		{				
+			if($scope.callObj[xpid])
+			{
+				$scope.callObj[xpid]= {};		
+			}
+		}	
+       	
+	
+		if(displayDesktopAlert){
+	       	$scope.displayAlert = true;
+			$timeout(displayNotification, 1500);
+		}else{
+			$scope.displayAlert = true;
+			$timeout(function(){
+				var element = document.getElementById("Alert");
+				if(element){
+					var content = element.innerHTML;
+					phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+					
+				}
+				element = null;
+				$scope.displayAlert = false;
+			},2500);
+		}
+		
+       	if($scope.inCall && !$.isEmptyObject($scope.callObj))
+       		$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
+       	else
+       		$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
+	});
 
-        if($scope.inCall && !$.isEmptyObject($scope.callObj))
-          $('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
-        else
-          $('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
-  });
+	$scope.playVm = function(xpid){
+		phoneService.playVm(xpid);
+	};
 
-  $scope.playVm = function(xpid){
-    phoneService.playVm(xpid);
-  };
+	$scope.showCurrentCallControls = function(currentCall){
+		$location.path("settings/callid/"+currentCall.xpid);
+		phoneService.showCallControls(currentCall);
+	};
 
-  $scope.showCurrentCallControls = function(currentCall){
-    $location.path("settings/callid/"+currentCall.xpid);
-    phoneService.showCallControls(currentCall);
-  };
+	var displayNotification = function(){
+		var element = document.getElementById("Alert");
+		if(element){
+			var content = element.innerHTML;
+				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+		}
+		element = null;
+		$scope.displayAlert = false;
+	};
 
-  var displayNotification = function(){
 
-    var element = document.getElementById("Alert");
-    
-    if(element){
-      var content = element.innerHTML;
-      phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-    }
-    
-    element = null;
-    $scope.displayAlert = false;
-  };
 
-  $scope.$on('phone_event',function(event,data){
-    var phoneEvent = data.event;
-    $scope.inCall = true;
-    switch (phoneEvent){
-      case "ringing":
-        $scope.isRinging = true;
-        break;
-      case "accepted":
-        $scope.isRinging = false;
-        break;
-      case "onhold":
-        $scope.onHold = true;
-        break;
-      case "resume":
-        $scope.onHold = false;
-        break;
-      case "openNot":
-        $scope.overlay ='notifications';
-        break;
+	$scope.$on('phone_event',function(event,data){
+		var phoneEvent = data.event;
+		$scope.inCall = true;
+		switch (phoneEvent){
+			case "ringing":
+				$scope.isRinging = true;
+				break;
+			case "accepted":
+				$scope.isRinging = false;
+				break;
+			case "onhold":
+				$scope.onHold = true;
+				break;
+			case "resume":
+				$scope.onHold = false;
+				break;
+			case "openNot":
+				$scope.overlay ='notifications';
+				break;
+			case 'displayNotification':
+				$scope.displayAlert = true;
+				$timeout(displayNotification
+						, 1500);
+				break;
 
-    }
-  });
 
-  var addTodaysNotifications = function(item){
-    // console.error('item - ', item);
+		}
+	});
+	  var addTodaysNotifications = function(item){
+   // console.error('item - ', item);
 
     var context, contextId, targetId, groupContextId, queueContextId;
     var today = moment(ntpService.calibrateTime(new Date().getTime()));
@@ -577,9 +588,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
     if(item.context){
       context = item.context.split(":")[0];
       contextId = item.context.split(":")[1];
-    
+
     }
-    
+
     if (context){
       var context = item.context.split(":")[0];
       var contextId = item.context.split(":")[1];
@@ -597,275 +608,275 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
         case "queues":
           queueContextId = contextId;
           break;
-      } 
+      }
     }
     if(item.queueId){
       var queue = queueService.getQueue(item.queueId);
       if(queue){
         item.displayName = queue.name;
       }
-        
+
     }
     if(settingsService.getSetting('alert_vm_show_new') != 'true'){
       if(item.type == 'vm'){
         displayDesktopAlert = false;
-      } 
+      }
     }
 
     // if message is from today...
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
-      
+
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
       if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);        
+        $scope.remove_notification(item.xpid);
         return false;
       }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);        
+        $scope.remove_notification(item.xpid);
         return false;
       }else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);        
+        $scope.remove_notification(item.xpid);
         return false;
       } else if (targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
         return false;
-      
+
       }else{
-      	var dupe = false;
-      	var combinedMsg = false;
+       var dupe = false;
+       var combinedMsg = false;
         for (var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
-        	// take into account that 2 msgs in a row from the same contact are combined into 1 message
-        	if ((item.xef001iver != $scope.todaysNotifications[j].xef001iver) && (item.xpid == $scope.todaysNotifications[j].xpid)){
-        		// it's a dupe but combined msg, but still want to play chat sound
-        		dupe = true;
-        		combinedMsg = true;
-        		break;
-        	}
-        	if (item.xpid == $scope.todaysNotifications[j].xpid){
-        		// dupe, don't want to play chat sound
-        		dupe = true;
-        		break;
-        	}
+               // take into account that 2 msgs in a row from the same contact are combined into 1 message
+               if ((item.xef001iver != $scope.todaysNotifications[j].xef001iver) && (item.xpid == $scope.todaysNotifications[j].xpid)){
+                       // it's a dupe but combined msg, but still want to play chat sound
+                       dupe = true;
+                       combinedMsg = true;
+                       break;
+               }
+               if (item.xpid == $scope.todaysNotifications[j].xpid){
+                       // dupe, don't want to play chat sound
+                       dupe = true;
+                       break;
+               }
         }
 
         // if not a dupe, or it's the second in a string of msgs in a row, still play chat sound
         if (dupe && combinedMsg || !dupe){
-	        if (item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
-	        	if (!$scope.isFirstSync){
-	        		phoneService.playSound('received');
-	        	}
-	        }        	
+               if (item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
+                       if (!$scope.isFirstSync){
+                               phoneService.playSound('received');
+                       }
+               }
         }
 
         // if dupe but also a combined message --> find and replace msg in todaysnotifications
         if (combinedMsg){
-        	for (var i = 0, iLen = $scope.todaysNotifications.length; i < iLen; i++){
-        		if (item.xpid == $scope.todaysNotifications[i].xpid){
-        			$scope.todaysNotifications.splice(i, 1, item);
-        		}
-        	}
+               for (var i = 0, iLen = $scope.todaysNotifications.length; i < iLen; i++){
+                       if (item.xpid == $scope.todaysNotifications[i].xpid){
+                               $scope.todaysNotifications.splice(i, 1, item);
+                       }
+               }
         } else if (dupe){
-        	// dupe --> don't add to todaysNotifications
-        	return;
+               // dupe --> don't add to todaysNotifications
+               return;
         } else {
-        	// otherwise add to todaysNotes
-        	$scope.todaysNotifications.push(item);
+               // otherwise add to todaysNotes
+               $scope.todaysNotifications.push(item);
         }
 
         if (displayDesktopAlert){
-        	if ($scope.todaysNotifications.length > 0){
-        		$scope.displayAlert = true;
-        		$timeout(displayNotification, 1500);
-        	}
-        }
+               if ($scope.todaysNotifications.length > 0){
+                       $scope.displayAlert = true;
+                       $timeout(displayNotification, 1500);
+             }
       }
     }
-    
-  };
+  }
+ };
+	var deleteNotification = function(notification){
+		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
+			if($scope.notifications[j].xpid == notification.xpid){
+				$scope.notifications.splice(j,1);
+				break;	
+			}
+		}
+		for(var k = 0, kLen = $scope.todaysNotifications.length; k < kLen; k++){
+			if($scope.todaysNotifications[k].xpid == notification.xpid){
+				$scope.todaysNotifications.splice(k,1);
+				break;	
+			}
+		}
+		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+			$timeout(displayNotification, 1500);		
+		}else{
+			phoneService.removeNotification();
+		}
+	};
 
-  var deleteNotification = function(notification){
-    for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
-      if($scope.notifications[j].xpid == notification.xpid){
-        $scope.notifications.splice(j,1);
-        break;  
-      }
-    }
-    for(var k = 0, kLen = $scope.todaysNotifications.length; k < kLen; k++){
-      if($scope.todaysNotifications[k].xpid == notification.xpid){
-        $scope.todaysNotifications.splice(k,1);
-        break;  
-      }
-    }
-    if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
-      $timeout(displayNotification, 1500);    
-    }else{
-      phoneService.removeNotification();
-    }
-  };
+	var deleteLastLongWaitNotification = function(){
+		for (var i = $scope.todaysNotifications.length-1; i >= 0; i--){
+			if ($scope.todaysNotifications[i].type == 'q-alert-rotation'){
+				$scope.todaysNotifications.splice(i, 1);
+				break;
+			}
+		}
+		for (var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
+			if ($scope.notifications[j].type == 'q-alert-rotation'){
+				$scope.notifications.splice(j,1);
+				jLen--;
+			}
+		}
+	};
 
-  var deleteLastLongWaitNotification = function(){
-    for (var i = $scope.todaysNotifications.length-1; i >= 0; i--){
-      if ($scope.todaysNotifications[i].type == 'q-alert-rotation'){
-        $scope.todaysNotifications.splice(i, 1);
-        break;
-      }
-    }
-    for (var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
-      if ($scope.notifications[j].type == 'q-alert-rotation'){
-        $scope.notifications.splice(j,1);
-        jLen--;
-      }
-    }
-  };
+	$scope.$on('quickinbox_synced', function(event,data){
+		displayDesktopAlert = true;
 
-  $scope.$on('quickinbox_synced', function(event,data){
-    displayDesktopAlert = true;
+  		if(data){
+			data.sort(function(a,b){
+				return b.time - a.time;
+			});
+			if($scope.notifications && $scope.notifications.length > 0){
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					var isNotificationAdded = false;
+					var notification = data[i];
+					notification.fullProfile = contactService.getContact(notification.senderId);
+					notification.label == '';
+							if(notification.type == 'q-alert-rotation'){
+								notification.label = $scope.verbage.long_waiting_call;
+								var long_waiting_notification = angular.copy(notification);
+								long_waiting_calls[notification.xpid] = notification;
+							}else if(notification.type == 'q-alert-abandoned'){
+								notification.label = 'abandoned call';
+								notification.message = "";
+								var abandoned_notification = angular.copy(notification);
+								// once it's an abandoned call, want long-wait-note to disappear
+								deleteLastLongWaitNotification();
+								$timeout(function(){
+									deleteNotification(abandoned_notification);
+								}, 60000);
+							}else if(notification.type == 'q-broadcast'){
+								notification.label = 'broadcast message';
+							}else if(notification.type == 'gchat'){
+								notification.label = "group chat to";
+							}else if(notification.type == 'vm'){
+								var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
+								var vm = phoneService.getVoiceMail(notification.vmId);
+								notification.vm = vm;
+								notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+								
+							}else if(notification.type == 'chat'){
+								notification.label = 'chat message';
+							}else if(notification.type == 'missed-call'){
+                				notification.label = 'missed call';
+							}else if(notification.type == 'busy-ring-back'){
+                				notification.label = 'is now available for call';
+								notification.message= "User is free for call";
+							}else if(notification.type == "description"){
+								notification.label = "chat message"
+								notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
+							}else if(notification.type == 'wall'){
+								notification.label = "share";
+							}else if(notification.type == 'error'){
+								notification.displayName = 'Error';
+								notification.message = 'Open for Details';
+							}
+					if(notification.audience == "conference"){
+						var xpid = notification.context.split(':')[1];
+						var conference = conferenceService.getConference(xpid);
+						notification.conference = conference;
+					}
 
-      if(data){
-      data.sort(function(a,b){
-        return b.time - a.time;
-      });
-      if($scope.notifications && $scope.notifications.length > 0){
-        for (var i = 0, iLen = data.length; i < iLen; i++) {
-          var isNotificationAdded = false;
-          var notification = data[i];
-          notification.fullProfile = contactService.getContact(notification.senderId);
-          notification.label == '';
-              if(notification.type == 'q-alert-rotation'){
-                notification.label = $scope.verbage.long_waiting_call;
-                var long_waiting_notification = angular.copy(notification);
-                long_waiting_calls[notification.xpid] = notification;
-              }else if(notification.type == 'q-alert-abandoned'){
-                notification.label = 'abandoned call';
-                notification.message = "";
-                var abandoned_notification = angular.copy(notification);
-                // once it's an abandoned call, want long-wait-note to disappear
-                deleteLastLongWaitNotification();
-                $timeout(function(){
-                  deleteNotification(abandoned_notification);
-                }, 60000);
-              }else if(notification.type == 'q-broadcast'){
-                notification.label = 'broadcast message';
-              }else if(notification.type == 'gchat'){
-                notification.label = "group chat to";
-              }else if(notification.type == 'vm'){
-                var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
-                var vm = phoneService.getVoiceMail(notification.vmId);
-                notification.vm = vm;
-                notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
-                
-              }else if(notification.type == 'chat'){
-                notification.label = 'chat message';
-              }else if(notification.type == 'missed-call'){
-                        notification.label = 'missed call';
-              }else if(notification.type == 'busy-ring-back'){
-                        notification.label = 'is now available for call';
-                notification.message= "User is free for call";
-              }else if(notification.type == "description"){
-                notification.label = "chat message"
-                notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
-              }else if(notification.type == 'wall'){
-                notification.label = "share";
-              }else if(notification.type == 'error'){
-                notification.displayName = 'Error';
-                notification.message = 'Open for Details';
-              }
-          if(notification.audience == "conference"){
-            var xpid = notification.context.split(':')[1];
-            var conference = conferenceService.getConference(xpid);
-            notification.conference = conference;
-          }
+					if(notification.xef001type != "delete"){
 
-          if(notification.xef001type != "delete"){
+						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
+							if($scope.notifications[j].xpid == notification.xpid){
+								$scope.notifications.splice(j,1,notification);
+								isNotificationAdded = true;
+								break;	
+							}
+						}
+						if(!isNotificationAdded){							
+							$scope.notifications.push(notification);
+							
+						}
+						addTodaysNotifications(notification);
 
-            for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
-              if($scope.notifications[j].xpid == notification.xpid){
-                $scope.notifications.splice(j,1,notification);
-                isNotificationAdded = true;
-                break;  
-              }
-            }
-            if(!isNotificationAdded){             
-              $scope.notifications.push(notification);
-              
-            }
-            addTodaysNotifications(notification);
+					}else if(notification.xef001type == "delete"){
+						if(long_waiting_calls[notification.xpid] == undefined){
+							deleteNotification(notification);
+						}
+					}
+				}
+				$scope.notifications.sort(function(a, b){
+					return b.time - a.time;
+				});
+			}else{
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					var notification = data[i];
+					notification.fullProfile = contactService.getContact(notification.senderId);
+					notification.labelType == '';
+					if(notification.type == 'q-alert-rotation'){
+						notification.label = $scope.verbage.long_waiting_call;
+					}else if(notification.type == 'q-alert-abandoned'){
+						notification.label = 'abandoned call';
+						notification.message = "";
+						deleteLastLongWaitNotification();
+						$timeout(function(){
+							deleteNotification(notification);
+						}, 60000);
+					}else if(notification.type == 'q-broadcast'){
+						notification.label = 'broadcast message';
+					}else if(notification.type == 'gchat'){
+						notification.label = "group chat to";
+					}else if(notification.type == 'vm'){
+						var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
+						var vm = phoneService.getVoiceMail(notification.vmId);
+						notification.vm = vm;
+						notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+						
+					}else if(notification.type == 'chat'){
+						notification.label = 'chat message';
+					}else if(notification.type == 'missed-call'){
+            			notification.label = 'missed call';
+					}else if(notification.type == 'busy-ring-back'){
+            			notification.label = 'is now available for call';
+						notification.displayName = notification.fullProfile.displayName;
+						notification.message= "User is free for call";
+					}else if(notification.type == "description"){
+						notification.label = "chat message"
+						notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
+					}else if(notification.type == 'wall'){
+								notification.label = "share";
+					}else if(notification.type == 'error'){
+							notification.displayName = 'Error';
+							notification.message = 'Open for Details';
+					}
+					if(notification.audience == "conference"){
+						var xpid = notification.context.split(':')[1];
+						var conference = conferenceService.getConference(xpid);
+						notification.conference = conference;
+					}
+					if(notification.xef001type != "delete"){
+						$scope.notifications.push(notification);
+						addTodaysNotifications(notification);
+					}
+				}
+			}
+		};
 
-          }else if(notification.xef001type == "delete"){
-            if(long_waiting_calls[notification.xpid] == undefined){
-              deleteNotification(notification);
-            }
-          }
-        }
-        $scope.notifications.sort(function(a, b){
-          return b.time - a.time;
-        });
-      }else{
-        for (var i = 0, iLen = data.length; i < iLen; i++) {
-          var notification = data[i];
-          notification.fullProfile = contactService.getContact(notification.senderId);
-          notification.labelType == '';
-          if(notification.type == 'q-alert-rotation'){
-            notification.label = $scope.verbage.long_waiting_call;
-          }else if(notification.type == 'q-alert-abandoned'){
-            notification.label = 'abandoned call';
-            notification.message = "";
-            deleteLastLongWaitNotification();
-            $timeout(function(){
-              deleteNotification(notification);
-            }, 60000);
-          }else if(notification.type == 'q-broadcast'){
-            notification.label = 'broadcast message';
-          }else if(notification.type == 'gchat'){
-            notification.label = "group chat to";
-          }else if(notification.type == 'vm'){
-            var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
-            var vm = phoneService.getVoiceMail(notification.vmId);
-            notification.vm = vm;
-            notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
-            
-          }else if(notification.type == 'chat'){
-            notification.label = 'chat message';
-          }else if(notification.type == 'missed-call'){
-                  notification.label = 'missed call';
-          }else if(notification.type == 'busy-ring-back'){
-                  notification.label = 'is now available for call';
-            notification.displayName = notification.fullProfile.displayName;
-            notification.message= "User is free for call";
-          }else if(notification.type == "description"){
-            notification.label = "chat message"
-            notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
-          }else if(notification.type == 'wall'){
-                notification.label = "share";
-          }else if(notification.type == 'error'){
-              notification.displayName = 'Error';
-              notification.message = 'Open for Details';
-          }
-          if(notification.audience == "conference"){
-            var xpid = notification.context.split(':')[1];
-            var conference = conferenceService.getConference(xpid);
-            notification.conference = conference;
-          }
-          if(notification.xef001type != "delete"){
-            $scope.notifications.push(notification);
-            addTodaysNotifications(notification);
-          }
-        }
-      }
-    };
+		 
 
-    $scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
-      return a.time - b.time; 
-    });
-             
-    if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
-      $scope.showNotificationBody = false;
-    }else{
-      $scope.showNotificationBody = true;
-    }
-    if(!$scope.todaysNotifications || $scope.todaysNotifications.length == 0)
-       $scope.hasMessages = false;
-    else
-        $scope.hasMessages = true;  
-      $scope.totalTodaysNotifications = $scope.todaysNotifications.length;
+		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
+			return a.time - b.time; 
+		});
+			       
+		if($scope.todaysNotifications && $scope.todaysNotifications.length > 3){
+			$scope.showNotificationBody = false;
+		}else{
+			$scope.showNotificationBody = true;
+		}
+		if(!$scope.todaysNotifications || $scope.todaysNotifications.length == 0)
+			 $scope.hasMessages = false;
+		else
+		   	$scope.hasMessages = true;	
+			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 
-  });   
+	});		
 }]);
