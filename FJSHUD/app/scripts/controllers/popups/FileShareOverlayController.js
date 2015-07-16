@@ -1,5 +1,6 @@
 hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 'HttpService', function($scope, $location, $sce, httpService) {
 	$scope.embedType = 'img';
+	$scope.reposts = [];
 	
 	var updateEmbed = function() {
 		var url = $scope.currentDownload.fileName;
@@ -25,9 +26,17 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	};
 	
 	if ($scope.$parent.overlay.data.audience) {
-		$scope.toName = $scope.$parent.overlay.data.name;
-		$scope.targetId = $scope.$parent.overlay.data.xpid;
-		$scope.audience = $scope.$parent.overlay.data.audience;
+		var data = $scope.$parent.overlay.data;
+		
+		$scope.toName = data.name;
+		$scope.targetId = data.xpid;
+		$scope.audience = data.audience;
+		
+		// repost?
+		if (data.original) {
+			$scope.message = data.original.message;
+			$scope.reposts = data.original.data.attachment;
+		}
 	}
 	else {
 		$scope.downloadables = $scope.$parent.overlay.data.downloadables;
@@ -80,7 +89,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
       		fileList.push($files[i].file);
       	}
 		
-		if (fileList.length > 0) {
+		if (fileList.length > 0 || $scope.reposts.length > 0) {
 			var data = {
 				'action':'sendWallEvent',
 				'a.targetId': $scope.targetId,
@@ -96,6 +105,18 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 				"a.taskId": "1_0",
 				"_archive": $scope.selectedArchiveOption.value,
 			};
+			
+			// add repost keys
+			if ($scope.reposts.length > 0) {
+				var xkeys = [];
+				
+				for (var i = 0, len = $scope.reposts.length; i < len; i++)
+					xkeys.push($scope.reposts[i].xkey);
+				
+				data['action'] = 'republish';
+				data['a.retainKeys'] = xkeys.join(',');
+				data['a.xpid'] = $scope.$parent.overlay.data.original.xpid;
+			}
 		
 			httpService.upload_attachment(data, fileList);
 		}
