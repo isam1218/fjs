@@ -3,7 +3,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
     return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {					
-			var checkIfLoaded;
+			var checkIfLoaded, docLoaded = false;
 			
 			function updateZoomWidgetHeight(element) {
 				var totalElHeights = $('.WidgetZoomBody').height() - ($('.ZoomWidgetSection.right').height() + $(".WidgetFont").height() + 60);
@@ -120,7 +120,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 		        			
 		        			$(call_block).find('.RecentCallSection').css('height', RecentCallHeightPct + "%");        				        									
 		        			//recent call log height
-							var recent_call_log_height = RecentCallHeight - ($(recent_call_section).find('.WidgetSectionTitle.meTitle').outerHeight() + $(recent_call_section).find('.RecentCallColumnHeaders').outerHeight());// + $(recent_call_section).find('.NoRecentCalls').outerHeight() + 4
+							var recent_call_log_height = RecentCallHeight - ($(recent_call_section).find('.WidgetSectionTitle.meTitle').outerHeight() + $(recent_call_section).find('.RecentCallColumnHeaders').outerHeight());
 							var recent_call_log__height_pct =  ((recent_call_log_height / RecentCallHeight) * 100); 
 							//recent call log height	        		
 							$(call_block).find('.RecentCallLogs').css('height', recent_call_log__height_pct +'%');	        		
@@ -132,6 +132,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 				if($('.Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div div').length > 0)
 				{
 					updateMeWidgetHeight(element);
+					docLoaded = true;
 					$interval.cancel(checkIfLoaded);
 				}	
 			}
@@ -142,14 +143,19 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 				updateZoomWidgetHeight(element);
 			}
 			//Me widget			
-			if($(element).hasClass('NewCall') || $(element).hasClass('CurrentCall'))
+			if($(element).hasClass('NewCall') && !docLoaded)
 			{	
 				
 				checkIfLoaded = $interval(checkWidgetLoaded, 100);   			 			    					
 			}
+			if($(element).hasClass('CurrentCall'))
+			{
+				updateMeWidgetHeight(element);
+			}	
 			
 			//resizes the added contacts div 
 			scope.$on('watchWindowResize::resize', function( event, data ) {
+				docLoaded = false;
 				//video collaboration
 				if($(element).hasClass('WidgetZoomBody'))
 				{
@@ -157,10 +163,14 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 				}
 				
 				//Me widget			
-				if($(element).hasClass('NewCall') || $(element).hasClass('CurrentCall'))
+				if($(element).hasClass('NewCall'))
 				{					
 					checkIfLoaded = $interval(checkWidgetLoaded, 100);  			
-				}		       				
+				}
+				if($(element).hasClass('CurrentCall'))
+				{
+					updateMeWidgetHeight(element);
+				}
 		    });
 		}
     };  
