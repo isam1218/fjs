@@ -3,8 +3,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
   var playChatNotification = false;
   var displayDesktopAlert = true;
-<<<<<<< HEAD
-    
   $scope.notifications = [];
   $scope.calls = [];
   var long_waiting_calls = {};
