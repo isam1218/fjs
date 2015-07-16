@@ -11,9 +11,40 @@
 .Conference .ToolBar .selectWrapper.conf {
   height: 30px !important;
   width: 150px !important;
+  width: 140px !important\9;
+  /* ie6/7/8/9  */
   font-size: 11px;
   font-weight: bold;
   font-color: #333;
+}
+.Conference .XButton.joinConference {
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.Conference .ListRow {
+  min-height: 50px;
+  max-height: none;
+  height: auto;
+}
+.Conference .ListRow .ListRowContent {
+  min-height: 50px;
+  max-height: none;
+  height: auto;
+}
+.Conference .ListRow .ListRowContent .Avatar.CallAvatar_Office {
+  margin: auto !important;
+}
+.Conference .ListRow .Avatar.AvatarNormal {
+  width: 40px;
+  height: 40px;
+}
+.Conference .ListRow .ListConferenceStatusIcon {
+  margin: 0 -3px -3px -5px;
+  vertical-align: bottom;
+}
+.Conference .ListRow .ListRowTitle > div:not(.name) {
+  margin-top: 3px;
 }
 .Conference .ListViewTopNoteClose {
   top: 30%;
@@ -28,12 +59,31 @@
   background-color: #FFE;
   border: solid 1px #EEE;
   border-radius: 3px;
-  padding: .5em;
+  padding: .8em;
   height: 55px;
-  width: 96%;
+  width: 94%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 1px 1px 5px #888888;
+}
+.ListViewTopNote .XButton.joinConference {
+  float: right;
+  font-size: 11px;
+  width: 55px;
+  height: 26px;
+}
+.ListViewTopNote span {
+  font-size: 12px;
+}
+.ConferenceMembers {
+  margin-top: 30px;
+}
+.searchboxWrapper {
+  position: relative;
+}
+.searchboxWrapper .SearchBox.Add {
+  width: 160px !important;
+  height: 30px !important;
 }
 .Conference-HeaderTitle {
   color: #0093f0;
@@ -46,6 +96,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.ConferenceMembers .Conference-HeaderTitle {
+  margin-left: 0px;
 }
 .ListViewTopNoteClose {
   position: absolute;
@@ -146,4 +199,15 @@
   border-radius: 30px;
   -webkit-border-radius: 30px;
   color: #0093f0;
+}
+.noJoinConf .ListRow .ListRowContent span {
+  font-size: 11px;
+  font-weight: bold;
+  float: right;
+  color: #333;
+  text-shadow: 0px 1px 0px #FFF;
+  transition: border 0.3s ease 0s;
+}
+.noJoinConf .ListSection {
+  margin-bottom: 10px;
 }
