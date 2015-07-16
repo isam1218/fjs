@@ -13,11 +13,11 @@
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <div ng-href="{{getRef(member, myself)}}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
+    <div class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
        <a ng-href="{{::getRef(member, myself)}}" >  <avatar profile="member.fullProfile"></avatar></a>
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
-            <a class="ListRowTitle" ng-href="{{getRef(member, myself)}}">
+            <a class="ListRowTitle" ng-href="{{::getRef(member, myself)}}">
                 <span> {{ ::member.fullProfile.displayName }} </span>
 				<br/>
                 <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
