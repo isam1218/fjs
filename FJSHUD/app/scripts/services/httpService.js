@@ -84,7 +84,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                break;
 		            case "sync_completed":
 		                if (event.data.data) {
-		                	console.log(event.data.data);
 		                    broadcastSyncData(event.data.data);
 							synced = true;
 		                }

@@ -102,7 +102,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
     switch(message.type){
 
       case "vm":
-        if(message.vm.transcription != ""){
+        if(message.vm && message.vm.transcription != ""){
           return vm.transcription;
         }else{
           return "transcription is not available";

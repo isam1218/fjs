@@ -759,7 +759,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$rootScope.$broadcast('all_calls_updated', allCallDetails);
 	});
 	
-	httpService.getFeed('voicemailbox');
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
 
@@ -814,7 +813,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		switch(type){
 			case 'contact':
 				return voicemails.filter(function(data){
-					return data.contactId == id && !data.readStatus;
+					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primaryExtension;
 				});
 			break;
 			case 'group':

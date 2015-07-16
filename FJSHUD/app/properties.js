@@ -14,14 +14,14 @@ fjs.CONFIG = {
 //      serverURL: "https://huc-qa.fonality.com:8080"
 //      , loginURL: "https://huc-qa.fonality.com:5501"
     }
-    , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','quickinbox','calllog','server','location_status', 
+    , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queuelogoutreasons','queue_stat_members',
             'queue_call','queuepermissions', 'queue_stat_calls',  'queuemessagestats',
             'calldetails',  'grouppermissions', 'groupcontacts', 
             'contactpermissions', 'contactstatus', 'fdpImage',   'group_page_member',
              'chatsmiles', 'weblauncher', 'weblaunchervariables',  
-            'streamevent','recent_talks','voicemailbox','conferencemembers',
-            'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalldetails','i18n_langs']
+            'streamevent','recent_talks','conferencemembers',
+            'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
     , 
     CALL_STATES:{
         CALL_UNKNOWN:-1,
