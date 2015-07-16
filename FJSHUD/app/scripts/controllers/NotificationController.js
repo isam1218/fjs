@@ -874,5 +874,4 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
 
 	});		
->>>>>>> Stashed changes
 }]);
