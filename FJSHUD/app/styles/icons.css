@@ -195,6 +195,11 @@
   width: 40px;
   background: url("../img/XActionSet-40x40.png?v=1433885191397") no-repeat -80px -240px;
 }
+.CallIsMuted {
+  height: 40px;
+  width: 40px;
+  background: url("../img/XActionSet-40x40.png?v=1433885191397") no-repeat -40px -240px;
+}
 .FonalityIcon {
   position: absolute;
   top: 180px;

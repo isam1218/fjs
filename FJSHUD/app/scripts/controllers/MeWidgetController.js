@@ -916,6 +916,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $rootScope.volume.mic = angular.copy($scope.volume.micVol);
             $scope.volume.micVol = 0;
        }
+
+       $scope.update_settings('hudmw_webphone_mic','update',$scope.volume.micVol);
     };
 
     $scope.muteConference = function(){
@@ -933,6 +935,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $rootScope.volume.spk = angular.copy($scope.volume.spkVol);
             $scope.volume.spkVol = 0;
         }
+
+       $scope.update_settings('hudmw_webphone_speaker','update',$scope.volume.spkVol);
+    
     };
 
     var updateTime = function() {
