@@ -791,6 +791,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		deferredVM.resolve(voicemails);
 	});
 
+	this.mute = function(callId,toMute){
+		if(toMute){
+			httpService.sendAction('mycalls','mute',{mycallId: callId});
+		}else{
+			httpService.sendAction('mycalls','unmute',{mycallId: callId});
+		}
+	}
 	this.getVm = function(){
 		return deferredVM.promise;
 	};
