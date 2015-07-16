@@ -6,8 +6,8 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.log_out_option;
     $scope.sort;
     $scope.queues = [];
-    $scope.que = {};
-    $scope.que.query = '';
+    $scope.search = {};
+    $scope.search.query = '';
 
     $scope.getAvatarUrl = function(queue, index) {
         

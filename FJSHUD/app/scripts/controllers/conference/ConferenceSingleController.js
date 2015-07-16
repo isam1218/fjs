@@ -8,9 +8,9 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.membersRefused = [];
 	
   $scope.joined = $scope.conference.status.isMeJoined;
-    $scope.enableChat = $scope.joined;
-    $scope.enableTextInput = $scope.joined;
-    $scope.enableFileShare = $scope.joined;
+  $scope.enableChat = $scope.joined;
+  $scope.enableTextInput = $scope.joined;
+  $scope.enableFileShare = $scope.joined;
 	
    //var currentMembers = angular.copy($scope.conference.members);
   
@@ -19,6 +19,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.$watchCollection('conference.members', function(newValue,oldValue){
     	
+   	  
 
       //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
       for(var i = 0, iLen = oldValue.length; i < iLen; i++){
@@ -26,7 +27,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
         //this is to verify if a member has dropped 
         for(var j = 0, jLen = newValue.length; j < jLen; j++){
           if(oldValue[i].xpid == newValue[j].xpid){
-            exists = true;  
+            exists = true;
             break;
           }
         
@@ -42,6 +43,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
                       if(oldValue[i].contactId == $scope.membersRefused[j].contactId){
                         refuseMembersExists = true;
                         $scope.membersRefused.splice(j,1,oldValue[i]);
+                        break;
                       }  
                   }
                   
@@ -52,6 +54,14 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
             }
         }
       }
+
+      for(var i = 0,iLen = newValue.length; i < iLen;i++){
+   	  	for(var j = 0, jLen = $scope.membersRefused.length; j < jLen;j++){
+   	  		if(newValue[i].contactId == $scope.membersRefused[j].contactId){
+   	  			$scope.membersRefused.splice(j,1);
+   	  		}	
+   	  	}
+   	  }
   });
 
 	// store recent

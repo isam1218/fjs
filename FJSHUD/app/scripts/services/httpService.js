@@ -17,6 +17,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	var appVersion = navigator.appVersion;
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
 	var upload_progress = 0;
+	var upload_taskId = 0;
 	var feeds = fjs.CONFIG.FEEDS;
 	$rootScope.isFirstSync = true;
 	var deferred_progress = $q.defer();
@@ -33,7 +34,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		return "xxx".replace(/[x]/g,function(c){
 			return c == 'x' ? Math.random().toString(16).substr(2,2) : c
 		});
-	}
+	};
 
 	var assignTab = function(){
 		
@@ -59,7 +60,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
-			}
+			};
 		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
@@ -83,18 +84,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                break;
 		            case "sync_completed":
 		                if (event.data.data) {
-
-		                    var synced_data = event.data.data;
-
-		                    // send data to other controllers
-							$rootScope.$evalAsync(function() {
-								for (var feed in synced_data) {
-									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
-								}
-								$rootScope.isFirstSync = false;
-
-							});
+		                    broadcastSyncData(event.data.data);
 							synced = true;
 		                }
 		                break;
@@ -155,16 +145,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						}else{
 
 							if(localStorage.data_obj != undefined){
-								synced_data = JSON.parse(localStorage.data_obj);
-								for(var feed in synced_data){
-									if (synced_data[feed].length > 0)
-			                            $rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-								}
+								broadcastSyncData(JSON.parse(localStorage.data_obj));
 							}
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
-							})
+							});
 						}
 						break;
 		            case "sync_completed":
@@ -186,20 +172,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    	data_obj = JSON.parse(localStorage.data_obj);
 		                    }
 							
-		                    // send data to other controllers
-							$rootScope.$evalAsync(function() {
-								for (var feed in synced_data) {
-									if(!$.isEmptyObject(data_obj)){
-										data_obj[feed] = synced_data[feed];
-										localStorage.data_obj = JSON.stringify(data_obj);
-									}
-									
-									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
-									
-									$rootScope.isFirstSync = false;
-								}
-							});
+		                    // send data to other controllers i'm doing this to ensure order when syncing'
+							broadcastSyncData(synced_data);
+							$rootScope.isFirstSync = false;
 		                }
 		                break;
 		            case "feed_request":
@@ -236,13 +211,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
 							if(!tabMap[tabId].isSynced){
 								if(localStorage.data_obj != undefined){
-
-
-									synced_data = JSON.parse(localStorage.data_obj);
-									for(var feed in synced_data){
-										if (synced_data[feed].length > 0)
-			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-									}
+									broadcastSyncData(JSON.parse(localStorage.data_obj));
 								}
 
 								tabMap[tabId].isSynced = true;	
@@ -260,7 +229,21 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		}
 	}
 
+	var broadcastSyncData = function(data) {
+		if (data) {
+			// send data to other controllers
+			$rootScope.$evalAsync(function() {
+				// loop through feeds in order, according to properties.js
+				for (var i = 0, ilen = feeds.length; i < ilen; i++){
+					if (data[feeds[i]] && data[feeds[i]].length > 0){
+						$rootScope.$broadcast(feeds[i] + '_synced', data[feeds[i]]);
+					}
+				}
+				$rootScope.isFirstSync = false;
 
+			});
+		}
+	};
 	
 	// send first message to shared worker
 	var authorizeWorker = function() {
@@ -508,7 +491,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
-        }
+        };
+		
+		// new task id
+		data['a.taskId'] = '2_' + upload_taskId;
+		
 		var fd = new FormData();
     
         for (var field in data) {
@@ -543,13 +530,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		request.open("POST",requestURL, true);
 		request.send(fd);
        
+	    upload_taskId++;
     };
 
     this.update_avatar = function(data) {
         var params = {
             'Authorization': authTicket,
             'node': nodeID,
-        }
+        };
     
         var fd = new FormData();
     

@@ -14,7 +14,7 @@
 </div>
 
 <div class="ListViewContent" id="ListViewContent">       
-    <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" >
+    <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by $index" >
         <div class="ListMessageLeft">
             <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
             <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code:'list_message_left'}}</div>
@@ -58,7 +58,7 @@
 	</div>
 	
 	<div class="ChatInputFields" ng-if="enableTextInput">
-		<textarea id="ChatMessageText" ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" ng-keyup="adjustHeight()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
+		<textarea id="ChatMessageText" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()"><span>{{::verbage.send}}</span></div>
 	</div>
 </div>

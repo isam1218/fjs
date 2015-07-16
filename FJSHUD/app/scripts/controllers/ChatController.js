@@ -1,5 +1,4 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService',
-	function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService, storageService) {
 
 	var version = 0;
 	var chatbox;
@@ -12,6 +11,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.displayHeader = true;
 	$scope.filteredMessages = [];
 	$scope.showFileShare = true;
+	$scope.messages = [];
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -55,6 +55,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}
 			
 	}
+	
+	$scope.chat.message = storageService.getChatMessage(chat.targetId);
 	
 	// send to pop-up controller
 	$scope.showAttachmentOverlay = function() {		
@@ -135,8 +137,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
             'a.audience':chat.audience,
             'alt':"",
             "a.lib":"https://huc-v5.fonality.com/repository/fj.hud/1.3/res/message.js",
-            "a.taskId": "2_9",
-            "_archive":0,
+            "a.taskId": "1_0",
+            "_archive": 0,
         };
 		httpService.upload_attachment(data,fileList);
 
@@ -156,8 +158,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chatbox = document.getElementById('ChatMessageText');
 		
 		$scope.loading = false;
-		$scope.messages = data.items;
-		addDetails();
+		addMessages(data.items);
 		
 		// kill watcher
 		$timeout(function() {
@@ -173,7 +174,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		var found = false;
+		var found = [];
 		
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			// prevent duplicates
@@ -192,11 +193,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				}
 			}
 
-			if (dupe) continue;
+			if (dupe || data[i].xef001type == 'delete') 
+				continue;
 			
-			var from = data[i].from.replace('contacts:', '');
-			
-			
+			var from = data[i].from.replace('contacts:', '');			
 
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
@@ -211,15 +211,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 						phoneService.playSound("received");
 					}
 				}
-				$scope.messages.push(data[i]);
-				found = true;				
+				
+				found.push(data[i]);				
 			}
 		}
-		
-		
 
-		if (found) {
-			addDetails();
+		if (found.length > 0) {
+			addMessages(found);
 			
 			// jump to bottom if new messages were found
 			$timeout(function() {
@@ -235,15 +233,15 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	});
 	
 	$scope.sendMessage = function() {
-		if (this.message == '')
+		if ($scope.chat.message == '')
 			return;
 			
 		// alert
 		if ($scope.showAlerts) {
 			httpService.sendAction('queues', 'broadcastMessage', {
 				queueId: chat.targetId,
-				plain: this.message,
-				xhtml: this.message,
+				plain: $scope.chat.message,
+				xhtml: $scope.chat.message,
 				status: $scope.chat.status,
 				clientId: ''
 			});
@@ -254,26 +252,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
-				message: this.message
+				message: $scope.chat.message
 			});
 		}		
 		
-		this.message = '';		
+		$scope.chat.message = '';
 		chatbox.style.height = '1px';
-	};
-
-	// look for enter key
-	$scope.chatKeypress = function($event) {
-		if ($event.keyCode == 13 && !$event.shiftKey) {
-			this.sendMessage();
-			$event.preventDefault();
-		}
-	};
-	
-	// change size of chat box according to content
-	$scope.adjustHeight = function() {
-		chatbox.style.height = '1px';
-		chatbox.style.height = (chatbox.scrollHeight+2) + 'px';
+		storageService.saveChatMessage(chat.targetId);
 	};
 	
 	$scope.searchChat = function(increment) {
@@ -303,19 +288,19 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};
 
 
-	// apply name and avatar
-	var addDetails = function() {
-		for (var i = 0, len = $scope.messages.length; i < len; i++) {
-			if (!$scope.messages[i].fullProfile) {
-				$scope.messages[i].fullProfile = contactService.getContact($scope.messages[i].from.replace('contacts:', ''));
-				
-				if ($scope.messages[i].type == 'f.conversation.chat.group.remove'){
-					$scope.messages[i].message = "<strong>Goodbye " + $scope.messages[i].data.groupId + "!</strong><br />" + $scope.messages[i].message;
-				}
-				
-				// update html per message
-				$scope.messages[i].message = $filter('chatify')($scope.messages[i].message);
+	// apply name and avatar and push to view
+	var addMessages = function(data) {
+		for (var i = 0, len = data.length; i < len; i++) {
+			data[i].fullProfile = contactService.getContact(data[i].from.replace('contacts:', ''));
+			
+			if (data[i].type == 'f.conversation.chat.group.remove'){
+				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + data[i].message;
 			}
+			
+			// update html per message
+			data[i].message = $filter('chatify')(data[i].message);
+			
+			$scope.messages.push(data[i]);
 		}
 	};
 
@@ -328,9 +313,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
 				version = data.h_ver;
 			
-				$scope.loading = false;
-				$scope.messages = data.items.concat($scope.messages);				
-				addDetails();
+				$scope.loading = false;			
+				addMessages(data.items);
 
 				// bump scroll down
 				if (scrollbox.scrollTop == 0)
@@ -341,7 +325,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 					$interval.cancel(chatLoop);
 			});
 		}
-	}, 600);
+	}, 600, 0, false);
 
 	$scope.nameDisplay = function(message, index){
 		var curMsg = $scope.$parent.filteredMessages[index];
@@ -371,5 +355,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		$interval.cancel(chatLoop);
 		scrollbox = null;
 		chatbox = null;
+		
+		// save message for later
+		storageService.saveChatMessage(chat.targetId, $scope.chat.message);
     });	
 }]);

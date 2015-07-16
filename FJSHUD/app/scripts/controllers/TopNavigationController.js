@@ -208,7 +208,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				player.load();
 			else
 				$interval.cancel(loadCheck);
-		}, 1000);
+		}, 1000, 0, false);
 	
 		// delay getting profile so view will update
 		$timeout(function() {

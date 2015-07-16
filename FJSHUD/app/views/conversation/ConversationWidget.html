@@ -1,7 +1,7 @@
 <div class="Widget Conversation" droppable="Call">
     <div class="WidgetHeader">
         <avatar profile="contact"></avatar>
-        <div class="WidgetHeaderTitle">
+        <div class="WidgetHeaderTitle WidgetHeaderTitleOverflow">
 			<span ng-if="::contact.primaryExtension">{{ ::contact.displayName }} ({{::contact.primaryExtension}})</span>
 			<span ng-if="::!contact.primaryExtension">{{ contact.displayName }}</span>
 			<br/>
@@ -9,20 +9,7 @@
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
             <span class="ChatStatus">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}</span>
 		</div>
-        <div class="WidgetHeaderCallStatus">
-            <div ng-if="contact.call">
-				<avatar profile="contact.call.fullProfile" type="{{contact.call.type}}"></avatar>
-                <div class="CallLineTop">
-                    <div class="CallerName">{{contact.call.displayName}}</div>
-                    <div class="CallExtension">{{::contact.call.phone}} </div>
-                </div>
-                <div class="CallDuration" timer="contact.call.startedAt"></div>
-            </div>
-            <div ng-if="!contact.call">                
-                <div class="NoCallText">{{::verbage.no_active_call}}</div>
-                <div class="NoCallIcon"></div>
-            </div>
-        </div>
+        <callstatus profile="contact"></callstatus>
     </div>
     <div class="WidgetBody">
         <div class="WidgetTabBar">

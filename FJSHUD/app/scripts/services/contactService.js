@@ -74,9 +74,9 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		}
 		
 		// retrieve child data
-		httpService.getFeed('contactstatus');
+		/*httpService.getFeed('contactstatus');
 		httpService.getFeed('calls');
-		httpService.getFeed('contactpermissions');
+		httpService.getFeed('contactpermissions');*/
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
