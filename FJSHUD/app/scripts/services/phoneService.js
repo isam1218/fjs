@@ -797,7 +797,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}else{
 			httpService.sendAction('mycalls','unmute',{mycallId: callId});
 		}
-	}
+	};
 	this.getVm = function(){
 		return deferredVM.promise;
 	};
