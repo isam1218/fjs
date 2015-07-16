@@ -57,16 +57,14 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 	};
 	
 	$scope.clearSearch = function() {
-		$timeout(function() {
-			if ($scope.query == '') {
+		$timeout(function() {			
 				$scope.contacts = [];
 				$scope.groups = [];
 				$scope.conferences = [];
 				$scope.queues = [];
-				
+				$scope.query = '';
 				$scope.searched = false;
-				$scope.$safeApply();
-			}
+				$scope.$safeApply();			
 		}, 100);
 	};
 
