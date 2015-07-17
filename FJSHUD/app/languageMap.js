@@ -327,7 +327,7 @@ fjs.i18n = {
       queue_abandoned_calls:'Abandoned calls',
       queue_active_calls:'Active calls',
       agents_logged_into_queue:'Agents logged into the queue',
-      agents_logged_out_of_queue:'Agents logged into the queue',
+      agents_logged_out_of_queue:'Agents logged out of the queue',
       stats_tab:'Stats',
 
       calls_tab:'Calls',
@@ -855,7 +855,7 @@ fjs.i18n = {
       queue_abandoned_calls:'途中放棄呼数 ',
       queue_active_calls:'通話中の呼数 ',
       agents_logged_into_queue:'Agents logged into the queue',
-      agents_logged_out_of_queue:'Agents logged into the queue',
+      agents_logged_out_of_queue:'Agents logged out of the queue',
 
       agent_tab:'オペレータ',
       stats_tab:'統計',
