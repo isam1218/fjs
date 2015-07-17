@@ -34,117 +34,34 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 
     var initialAction = {name: "Logout All"};
     $scope.actionObj = {};
-    $scope.actionObj.selectedAction = $scope.actionObj.currentAction = initialAction;
+    $scope.actionObj.selectedAction = $scope.actionObj.currentAction = localStorage.savedLogoutReason ? JSON.parse(localStorage.savedLogoutReason) : initialAction;
+    
     $scope.handleLogoutAction = function(reasonId){
-        $scope.actionObj.selectedAction = initialAction;
-        switch(reasonId){
-            case "0_130083":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("7670_Reason");
-                break;
-            case "0_142483":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("7978_Reason");
-                break;                
-            case "0_118808":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Do we need a reason?");
-                break;
-            case "0_80843":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("just got fired");
-                break;
-            case "0_116580":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Public Affair");
-                break;
-            case "0_13":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Smoking break");
-                break;
-            case "0_78033":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("rational reasoning");
-                break;                            
-            case "0_19":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Slacking off");
-                break;
-            case "0_37":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Hiding from the customers");
-                break;
-            case "0_71485":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("i have my reasons");
-                break;
-            case "0_132627":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Reason_for_Build_7673");
-                break;
-            case "0_39":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Playing games");
-                break;
-            case "0_67456":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Taking a nap");
-                break;
-            case "0_114866":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("A New Test Reason");
-                break;
-            case "0_3164":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("feeding the geese");
-                break;
-            case "0_29":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Walking the company dog");
-                break;
-            case "0_31":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Feeding the ducks");
-                break;
-            case "0_122102":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("HUDweb Test");
-                break;
-            case "0_130085":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Doing The Harlem Shake");
-                break;
-            case "0_73873":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("give me a reason to login");
-                break;
-        }
+    	for(var k=0; k < $scope.log_out_reasons.length; k++)
+    	{
+    		var reason = $scope.log_out_reasons[k];
+    		if(reason.xef001type == reasonId)
+    		{	
+    			$scope.actionObj.selectedAction = reason;
+    			localStorage.savedLogoutReason = JSON.stringify(reason);
+    			return;
+    		}		
+    	}	
+	        //$scope.actionObj.selectedAction = initialAction;
+	    $scope.queueLogoutAll(reasonId);
     };
 
     $scope.trancateSelectedName = function(){
     	if($scope.selectedConversationQueueOption.name.length > 13)
     	{
     		$scope.selectedConversationQueueOption.name = $scope.selectedConversationQueueOption.name.substring(0, 12) + '...';
+    	}    	
+    };
+    
+    $scope.trancateSelectedReason = function(){
+    	if($scope.actionObj.selectedAction.name.length > 13)
+    	{
+    		$scope.actionObj.selectedAction.name = $scope.actionObj.selectedAction.name.substring(0, 12) + '...';
     	}    	
     };
     
