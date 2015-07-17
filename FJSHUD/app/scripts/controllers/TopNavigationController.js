@@ -98,6 +98,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
       key:"Zipwhip", 
       enabled:false, 
       title: "Zipwhip"
+    },
+     {
+      url:"#/zipwhip", 
+      key:"Zipwhip_Power", 
+      enabled:false, 
+      title: "Zipwhip Power"
     }
     ];
 	
@@ -110,6 +116,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
         }
         if ($scope.appIcons[i].key == 'Zipwhip'){
           $scope.appIcons[i].enabled = data.showZipwhip;
+        }
+        if ($scope.appIcons[i].key == 'Zipwhip_Power'){
+          $scope.appIcons[i].enabled = data.showZipwhip_Power;
         }
 				 if ($scope.appIcons[i].key == 'Zoom'){
 					$scope.appIcons[i].enabled = data.showVideoCollab;

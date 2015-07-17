@@ -98,10 +98,10 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
-				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+				permissions.showVideoCollab = true;//isEnabled(data[i].propertyValue, 1);
 				permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
 				permissions.showZipwhip = isEnabled(data[i].propertyValue, 16);
-				permissions.showZipwhip = isEnabled(data[i].propertyValue, 17);
+				permissions.showZipwhip_Power = isEnabled(data[i].propertyValue, 17);
 
 				// group permissions from MyPermissions.java
 				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
@@ -117,7 +117,6 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 				// // Call Permission from CallPermissions.java
 				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				deferPermissions.resolve(permissions);
-				console.log(data[i].propertyValue);
 
             }
 			// assign other useful goodies

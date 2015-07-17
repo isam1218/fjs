@@ -188,6 +188,10 @@
 .TopBar2ItemAppIcon.Zipwhip {
   background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
 }
+.TopBarItemAppIcon.Zipwhip_Power,
+.TopBar2ItemAppIcon.Zipwhip_Power {
+  background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
+}
 .TopBarItemAppIcon.more {
   background-position: -280px -40px;
   position: relative;
