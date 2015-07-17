@@ -196,4 +196,50 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				
 		$location.path('/conference/' + conference.xpid);
 	};
+
+	$scope.goToFullRoute = function(itemType, itemXpid){
+		switch(itemType){
+			case "contact":
+        if (localStorage['ConversationWidget_' + itemXpid + '_tabs_of_' + $rootScope.myPid]){
+          // look up LS using xpid, if there's a tab saved related to that contact --> return url path w/ that tab
+          var endPath = "/contact/" + itemXpid + "/" + JSON.parse(localStorage['ConversationWidget_' + itemXpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          // otherwise default to returning that contact 'chat' url tab
+          var endPath = "/contact/" + itemXpid + "/chat";
+          return $location.path(endPath);
+        }
+				break;
+			case "group":
+        if (localStorage['GroupSingle_' + itemXpid + '_tabs_of_' + $rootScope.myPid]){
+          var endPath = "/group/" + itemXpid + "/" + JSON.parse(localStorage['GroupSingle_' + itemXpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          // need to take into account if not my group (then there's no chat --> go to members tab)
+          var groupIsMine = groupService.isMine(itemXpid);
+          var endPath = groupIsMine ? "/group/" + itemXpid + "/chat" : "/group/" + itemXpid + "/members";
+          return $location.path(endPath);
+        }
+				break;
+			case "queue":
+        if (localStorage['QueueWidget_' + itemXpid + '_tabs_of_' + $rootScope.myPid]){
+          var endPath = "/queue/" + itemXpid + "/" + JSON.parse(localStorage['QueueWidget_' + itemXpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          var endPath = "/queue/" + itemXpid + "/agents";
+          return $location.path(endPath);
+        }
+				break;
+			case "conference":
+        if (localStorage['ConferenceSingle_' + itemXpid + '_tabs_of_' + $rootScope.myPid]){
+          var endPath = "/conference/" + itemXpid + "/" + JSON.parse(localStorage['ConferenceSingle_' + itemXpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          var endPath = "/conference/" + itemXpid + "/currentcall";
+          return $location.path(endPath);
+        }
+				break;
+		}
+	};
+
 }]);
