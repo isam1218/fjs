@@ -162,6 +162,20 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     	};
     };
     
+    $scope.truncateLongAction = function()
+    {
+    	return function(opt){
+    		var truncated_name = opt.name;
+    		if(opt.name.length > 13)
+    			truncated_name = opt.name.substring(0, 12) + '...';
+		    if(truncated_name == $scope.actionObj.selectedAction.name)
+		    	opt.name =  truncated_name;
+		    else
+		    	opt.name = opt.orig_name;
+		    return opt;
+    	};
+    };
+    
     $scope.sort_options = [{name:$scope.verbage.queue_name, orig_name:$scope.verbage.queue_name, id:1,type:'name'},
     {name:$scope.verbage.queue_sort_calls_wait, orig_name:$scope.verbage.queue_sort_calls_wait, id:2, type:'waiting'},
     {name: $scope.verbage.queue_sort_avg_wait_time, orig_name:$scope.verbage.queue_sort_avg_wait_time,id:3, type:'avgwaiting'},
