@@ -5,7 +5,7 @@
 	        </select>	        
 	    </div>
 	    <div class="SelectBox selectWrapper vm">    
-	        <select class="HideFirst" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
+	        <select class="HideFirst" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions | filter: truncateLongAction() track by action.display_name" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
 	            <option>{{::verbage.action}}</option>
 	        </select>	        
 	    </div>    
