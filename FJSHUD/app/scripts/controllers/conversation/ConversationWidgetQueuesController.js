@@ -141,19 +141,42 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
         }
     };
 
-    $scope.sort_options = [{name:$scope.verbage.queue_name, id:1,type:'name'},
-    {name:$scope.verbage.queue_sort_calls_wait,id:2, type:'waiting'},
-    {name: $scope.verbage.queue_sort_avg_wait_time,id:3, type:'avgwaiting'},
-    {name:$scope.verbage.queue_sort_avg_talk_time,id:4, type:'avgtalk'},
-    {name:$scope.verbage.queue_sort_total_calls, id:5, type:'total'},
-    {name:$scope.verbage.queue_abandoned_calls,id:6, type:'abandoned'},
-    {name:$scope.verbage.queue_active_calls, id:7, type:'active'}
+    $scope.trancateSelectedName = function(){
+    	if($scope.selectedConversationQueueOption.name.length > 13)
+    	{
+    		$scope.selectedConversationQueueOption.name = $scope.selectedConversationQueueOption.name.substring(0, 12) + '...';
+    	}    	
+    };
+    
+    $scope.truncateLongString = function()
+    { 
+    	return function(opt){
+    		var truncated_name = opt.name;
+    		if(opt.name.length > 13)
+    			truncated_name = opt.name.substring(0, 12) + '...';
+		    if(truncated_name == $scope.selectedConversationQueueOption.name)
+		    	opt.name =  truncated_name;
+		    else
+		    	opt.name = opt.orig_name;
+		    return opt;
+    	};
+    };
+    
+    $scope.sort_options = [{name:$scope.verbage.queue_name, orig_name:$scope.verbage.queue_name, id:1,type:'name'},
+    {name:$scope.verbage.queue_sort_calls_wait, orig_name:$scope.verbage.queue_sort_calls_wait, id:2, type:'waiting'},
+    {name: $scope.verbage.queue_sort_avg_wait_time, orig_name:$scope.verbage.queue_sort_avg_wait_time,id:3, type:'avgwaiting'},
+    {name:$scope.verbage.queue_sort_avg_talk_time, orig_name:$scope.verbage.queue_sort_avg_talk_time,id:4, type:'avgtalk'},
+    {name:$scope.verbage.queue_sort_total_calls, orig_name:$scope.verbage.queue_sort_total_calls, id:5, type:'total'},
+    {name:$scope.verbage.queue_abandoned_calls, orig_name:$scope.verbage.queue_abandoned_calls,id:6, type:'abandoned'},
+    {name:$scope.verbage.queue_active_calls, orig_name:$scope.verbage.queue_active_calls, id:7, type:'active'}
     ];
 
-    $scope.selectedConversationQueueOption = localStorage.selectedConversationQueueOption ? JSON.parse(localStorage.selectedConversationQueueOption) : $scope.sort_options[0];
+    $scope.selectedConversationQueueOption = localStorage.selectedConversationQueueOption ? JSON.parse(localStorage.selectedConversationQueueOption) : $scope.sort_options[0];    
 
     $scope.sortConversationQueue = function(queueSelection){
         $scope.selectedConversationQueueOption = queueSelection;
+        $scope.trancateSelectedName();
+        
         switch(queueSelection.type){
             case "name":
                 $scope.queues.sort(function(a,b){

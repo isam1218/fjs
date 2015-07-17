@@ -1,7 +1,7 @@
   <div class="ToolBar fj-stream">       
         <input class="SearchBox"  data-ng-model="search.query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
         <div class="SelectBox selectWrapper convQueue">
-	        <select  ng-model="selectedConversationQueueOption" ng-options="sort_option.name for sort_option in sort_options track by sort_option.name" ng-change="sortConversationQueue(selectedConversationQueueOption)">
+	        <select  ng-model="selectedConversationQueueOption" ng-options="sort_option.name for sort_option in sort_options | filter: truncateLongString() track by sort_option.name" ng-change="sortConversationQueue(selectedConversationQueueOption)">
 	        </select>
         </div>
         <div class="SelectBox selectWrapper convQueue">
