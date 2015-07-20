@@ -34,21 +34,17 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 
     var initialAction = {name: "Logout All"};
     $scope.actionObj = {};
-    $scope.actionObj.selectedAction = $scope.actionObj.currentAction = localStorage.savedLogoutReason ? JSON.parse(localStorage.savedLogoutReason) : initialAction;
+    $scope.actionObj.selectedAction = $scope.actionObj.currentAction = initialAction;
     
-    $scope.handleLogoutAction = function(reasonId){
-    	for(var k=0; k < $scope.log_out_reasons.length; k++)
-    	{
-    		var reason = $scope.log_out_reasons[k];
-    		if(reason.xef001type == reasonId)
-    		{	
-    			$scope.actionObj.selectedAction = reason;
-    			localStorage.savedLogoutReason = JSON.stringify(reason);
-    			return;
-    		}		
-    	}	
-	        //$scope.actionObj.selectedAction = initialAction;
+    $scope.handleLogoutAction = function(reasonId, event){    
+    	var logout_select = event.target;
+    	$(logout_select).find('option').css('background-color', '#fff').css('color', '#333');
+    	var option  = $(logout_select).find('option:selected');
+    	$(option).css('background-color', '#729c00').css('color', '#fff');
+	    $scope.actionObj.selectedAction = initialAction;
 	    $scope.queueLogoutAll(reasonId);
+	    
+	    
     };
 
     $scope.trancateSelectedName = function(){
@@ -56,14 +52,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     	{
     		$scope.selectedConversationQueueOption.name = $scope.selectedConversationQueueOption.name.substring(0, 12) + '...';
     	}    	
-    };
-    
-    $scope.trancateSelectedReason = function(){
-    	if($scope.actionObj.selectedAction.name.length > 13)
-    	{
-    		$scope.actionObj.selectedAction.name = $scope.actionObj.selectedAction.name.substring(0, 12) + '...';
-    	}    	
-    };
+    };       
     
     $scope.truncateLongString = function()
     { 
@@ -77,21 +66,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 		    	opt.name = opt.orig_name;
 		    return opt;
     	};
-    };
-    
-    $scope.truncateLongAction = function()
-    {
-    	return function(opt){
-    		var truncated_name = opt.name;
-    		if(opt.name.length > 13)
-    			truncated_name = opt.name.substring(0, 12) + '...';
-		    if(truncated_name == $scope.actionObj.selectedAction.name)
-		    	opt.name =  truncated_name;
-		    else
-		    	opt.name = opt.orig_name;
-		    return opt;
-    	};
-    };
+    };   
     
     $scope.sort_options = [{name:$scope.verbage.queue_name, orig_name:$scope.verbage.queue_name, id:1,type:'name'},
     {name:$scope.verbage.queue_sort_calls_wait, orig_name:$scope.verbage.queue_sort_calls_wait, id:2, type:'waiting'},
@@ -176,6 +151,12 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 
     queueService.getQueues().then(function(data) {
 		$scope.log_out_reasons = data.reasons;
+		
+		for(var k=0; k < $scope.log_out_reasons.length; k++)
+    	{
+    		var reason = $scope.log_out_reasons[k];
+    		reason.orig_name = reason.name;
+    	}	
 		
     	var queues = data.queues;
 		
