@@ -41,6 +41,10 @@ onmessage = function(event, port){
 	}
 };
 
+onerror = function(){
+	console.log("error with shared worker");
+};
+
 function get_feed_data(feed){
 	for(var i = 0, iLen = ports.length; i < iLen; i++){
 		ports[i].postMessage({
@@ -145,7 +149,7 @@ function sync_request(f){
 			
 			var sync_response = {
 				"action": "sync_completed",
-				"data": synced_data
+				"data": synced_data,
 			};
 			
 			for (var i = 0, iLen = ports.length; i < iLen; i++)
