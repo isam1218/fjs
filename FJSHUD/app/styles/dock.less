@@ -410,6 +410,26 @@
 
 }
 
+.FileUploadStatus{
+	.Gadget:hover{
+		progress{
+			display:none;
+		}
+		.CancelUploadIcon{
+			display:block;
+		}
+	}
+
+	.Gadget{
+		progress{
+			display:block;
+		}
+		.CancelUploadIcon{
+			display:none;
+		}
+	}
+}
+
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
 	.FileUploadStatus{
 		margin-top:80%;
