@@ -9,6 +9,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.recent = storageService.getRecents();
   $scope.sortField = "timeline";
   $scope.sectionSortField = 'time';
+  $scope.myPid = $rootScope.myPid;
   var contactPagesShown = 1;
   var groupPagesShown = 1;
   var queuePagesShown = 1;
@@ -109,7 +110,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       // grab merged item's xpid
       var currentXpid = item.xpid;
       // if the recent contact matches an item in the merged array (if it exists)
-      if ($scope.recent && $scope.recent[currentXpid] !== undefined){
+      if (currentXpid != $scope.myPid && $scope.recent && $scope.recent[currentXpid] !== undefined){
         // attach a sorting timestamp
         item.timestamp = $scope.recent[currentXpid]['time'];
         return true;
