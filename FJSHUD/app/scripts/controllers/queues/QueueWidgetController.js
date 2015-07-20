@@ -1,18 +1,18 @@
 hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, queueService, settingsService, storageService) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
-	$scope.queue = queueService.getQueue($scope.queueId);
+    $scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
     $scope.sortField = "displayName";
     $scope.conversationType = 'queue';
     $scope.sortReverse = false;
     var myQueues = queueService.getMyQueues();
-	
-	// store recent
-	storageService.saveRecent('queue', $scope.queueId);
+    
+    // store recent
+    storageService.saveRecent('queue', $scope.queueId);
 
-	// for chat
-	$scope.enableChat = false;
-	$scope.enableFileShare = false;
+    // for chat
+    $scope.enableChat = false;
+    $scope.enableFileShare = false;
     // for alerts
     $scope.showAlerts = false;
     $scope.enableAlertBroadcast = false;
@@ -53,8 +53,25 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         $scope.chatPermission = false;
     }
 
-    $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
-    $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
+    if ($routeParams.route != undefined){
+        $scope.selected = $routeParams.route;
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
+            if ($scope.tabs[i].lower == $routeParams.route){
+                $scope.toggleObject = $scope.tabs[i].idx;
+                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+                break;
+            }
+        }
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+    } else {
+        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
+    }
+
+    // $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
+    // $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
 
     $scope.saveQTab = function(tab, index){
         $scope.selected = tab;
