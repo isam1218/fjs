@@ -26,8 +26,6 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 					
 					timeout = $timeout(clearSearch, autoClearTime*1000);
 				}
-				if($(element).val() == '')
-					scope.clearSearch();
 			});
 			
 			// pull updated settings
@@ -40,7 +38,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			if (browser == 'Firefox') {
 				var xImg;
 				
-				element.on('keyup change mouseover mouseenter', function(e) {
+				element.on('keydown mouseenter', function(e) {
 					if (element.val() != '') {
 						// create x for first time
 						if ($(element).parent().find('.x').length == 0) {
@@ -92,8 +90,11 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			});
 			
 			function clearSearch() {
-				if (attrs.ngModel)
-					scope.$eval(attrs.ngModel + ' = "";');
+				if (attrs.ngModel) {
+					scope.$evalAsync(function() {
+						scope.$eval(attrs.ngModel + ' = "";');
+					});
+				}
 				else
 					element.val('');
 				

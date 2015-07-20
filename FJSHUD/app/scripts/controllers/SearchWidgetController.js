@@ -56,17 +56,18 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 		});
 	};
 	
-	$scope.clearSearch = function() {
-		$timeout(function() {			
+	// reset search field on clear
+	$scope.$watch('query', function(val) {
+		if (val == '') {
+			$scope.$evalAsync(function() {
 				$scope.contacts = [];
 				$scope.groups = [];
 				$scope.conferences = [];
 				$scope.queues = [];
-				$scope.query = '';
 				$scope.searched = false;
-				$scope.$safeApply();			
-		}, 100);
-	};
+			});
+		}
+	});
 
     $scope.$on("$destroy", function() {
 		
