@@ -210,13 +210,13 @@
 </div>
 <!---->
 <div class="FileUploadStatus" ng-if="upload_progress > 0">
-				<div class="progress_text text-style"><span >Progress</span></div>
-	<div class="Gadget" >
+	<div class="progress_text text-style"><span >Progress</span></div>
+	<div class="Gadget" ng-mouseover="hoverOver=true" ng-mouseleave="hoverOver=false">
 		<div class="text-style" >
 			<div class="timer" timer="now"></div>
 			<div> <span>Form Upload<span></div>
-			<progress ng-value="upload_progress" max="100"> </progress>
-		
+			<progress ng-value="upload_progress" max="100" ng-if="!hoverOver" > </progress>
+			<div class="CancelUploadIcon" ng-click="cancelUpload()" style="float:right" ng-if="hoverOver"> </div>
 		</div>
 	</div>
 </div>

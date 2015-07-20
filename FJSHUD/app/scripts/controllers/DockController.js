@@ -3,12 +3,14 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	
 	$scope.gadgets = {};
 	$scope.upload_time = 0;	
-	
+	var request;
 	$scope.upload_progress = 0;
 	httpService.get_upload_progress().then(function(data){
-		$scope.upload_progress = data.progress;	
+		$scope.upload_progress = data.progress;
+		request = data.xhr;	
 	},function(error){},function(data){
 		$scope.upload_progress = data.progress;
+		request = data.xhr;	
 		if(data.started){
 			$scope.upload_time = new Date().getTime();
 		}
@@ -17,6 +19,12 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		}	
 		
 	});
+
+	$scope.cancelUpload = function(){
+		if(request){
+			request.abort();
+		}
+	}
 	
 	var updateDock = function(data) {
 		for (var key in data) {

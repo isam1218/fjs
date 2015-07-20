@@ -526,14 +526,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 				var data = {
 					progress:percentComplete,
 					started: upload_start,
-
+					xhr: request
 				};
 
 				deferred_progress.notify(data);
 				upload_start = false;
 			}	
 		};
-		
+		request.addEventListener("abort", function(evt){
+			var data = {
+				progress: 100,
+			};
+			deferred_progress.notify(data);
+			console.log(evt);
+		},false);
 		request.open("POST",requestURL, true);
 		request.send(fd);
        
@@ -561,11 +567,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 				var data = {
 					progress:percentComplete,
 					started: upload_start,
+					xhr:request,
 				};
 				deferred_progress.notify(data);
 				upload_start = false;
 			}	
 		};
+
+		request.addEventListener("abort", function(evt){
+			var data = {
+				progress: 100,
+			};
+			deferred_progress.notify(data);
+			console.log(evt);
+		},false);
 		
 		request.open("POST",requestURL, true);
 		request.send(fd);

@@ -107,14 +107,16 @@ function version_check (){
 		        sync_request(changedFeeds);
 		    else
 		       	setTimeout('should_sync();', 500);
-		}else{
+		}else if(xmlhttp.status != 0){
 			self.postMessage({
 				action:'auth_failed'
 			});
 			
 			setTimeout('should_sync();', 500);
+		}else{
+			setTimeout('do_version_check();', 500);
+
 		}
-			
 	});
 }
 
