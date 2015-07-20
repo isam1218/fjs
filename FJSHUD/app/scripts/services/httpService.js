@@ -73,6 +73,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
+		   
 		    worker.port.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
@@ -92,9 +93,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
       				case "auth_failed":
-						delete localStorage.me;
-						delete localStorage.nodeID;
-						delete localStorage.authTicket;
+						localStorage.removeItem("me");
+						localStorage.removeItem("nodeID");
+						localStorage.removeItem("authTicket");
 						attemptLogin();
       					break;
       				case "network_error":
@@ -112,7 +113,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 				}
 		    }, false);
+			worker.port.addEventListener("error",function(evt){
+		    	console.log("error with shared worker port");
+		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
 
+		    },false);
 		    worker.port.start();
 		}
 	}else{
@@ -181,9 +186,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
-						delete localStorage.me;
-						delete localStorage.nodeID;
-						delete localStorage.authTicket;
+						localStorage.removeItem("me");
+						localStorage.removeItem("nodeID");
+						localStorage.removeItem("authTicket");
+						
 						attemptLogin();
 						break;
 					case "network_error":
@@ -396,14 +402,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	this.setUnload = function() {			
 		// stupid warning
 		window.onbeforeunload = function() {
-			if (localStorage.tabclosed)
+			
+			/*if (localStorage.tabclosed)
 				localStorage.tabclosed = "true";
     	
 			// shut off web worker
 			if (worker.port)
 				worker.port.close();
 			else
-				worker.terminate();
+				worker.terminate();*/
 			
 			return "Are you sure you want to navigate away from this page?";
 		};
