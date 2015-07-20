@@ -14,7 +14,7 @@
     <div class='timeline' ng-if="sortField =='timeline'" ng-style="{'height': RecentTabHeight}">     
         
         <div ng-click="goToFullRoute(item)" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> 
-        <!-- <a href="#/{{::item.recent_type}}/{{::item.xpid}}" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> -->
+           
             <avatar profile="item"></avatar>
 			
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'contact'">
