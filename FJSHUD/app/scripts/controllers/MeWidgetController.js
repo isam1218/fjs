@@ -683,7 +683,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         }else if(b.incoming){
                             return b.location.localeCompare(a.phone);
                         }else{
-                            return b.location.localeCompare(b.location)
+                            return b.location.localeCompare(b.location);
                         }
                     });
                    

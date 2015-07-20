@@ -159,6 +159,15 @@
 .RecentCallsHeader{
   display:inline-block;  
   color: #888;  
+  
+  &:not(:first-child){
+   .RecentPointer{
+     margin-left: -20px;
+   } 
+   &:nth-child(3){
+    margin-left: -10px;
+   }
+  }
     
   &.recent-selected-column{ 
     color:#91B139;
@@ -301,7 +310,7 @@
 
 
   .RecentDate{
-    width:30%
+    width:32%;
 
   }
   .RecentFromTo{
