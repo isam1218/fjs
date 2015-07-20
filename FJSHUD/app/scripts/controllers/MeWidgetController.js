@@ -279,11 +279,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.setCustomStatus = function() {
         $timeout.cancel(timer);
         timer = $timeout(function(){
-            if ($scope.meModel.chat_custom_status.length >= 25)
-                text = $scope.meModel.chat_custom_status.substr(0, 22) + '...';
-            else
-                text = $scope.meModel.chat_custom_status;
-			
+			text = $scope.meModel.chat_custom_status;
             myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":text});
         }, 3000, false);
     };
@@ -620,9 +616,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             update_settings();
         }
     });
-
+    //this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
+    $scope.flow_cleanup = function($files){
+        $scope.avatar.flow.cancel();
+        $scope.$safeApply();
+    };
     $scope.change_avatar = function($file){
-        $scope.avatar = $file;
+        //$scope.avatar = $file;
 		
         var data = {
             'action':'updateAvatar',
@@ -683,7 +683,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         }else if(b.incoming){
                             return b.location.localeCompare(a.phone);
                         }else{
-                            return b.location.localeCompare(b.location)
+                            return b.location.localeCompare(b.location);
                         }
                     });
                    
@@ -800,7 +800,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
         storageService.saveRecentByPhone(number);
-
+		$scope.call_obj.phoneNumber = '';
     };
 		
 
@@ -905,14 +905,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     };
 
-    $scope.callKeyPress = function($event){
-        if ($event.keyCode == 13 && !$event.shiftKey) {
-            $scope.makeCall($scope.call_obj.phoneNumber);
-            $scope.call_obj.phoneNumber = '';
-            $event.preventDefault();
-        }
-    };
-
     $scope.parkCall = function(currentCall){
         var call =  phoneService.getCall(currentCall.xpid);
         phoneService.parkCall(currentCall.xpid);
@@ -928,6 +920,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $rootScope.volume.mic = angular.copy($scope.volume.micVol);
             $scope.volume.micVol = 0;
        }
+
+       $scope.update_settings('hudmw_webphone_mic','update',$scope.volume.micVol);
+    };
+
+    $scope.muteConference = function(){
+        phoneService.mute($scope.currentCall.xpid, !$scope.currentCall.mute);
     };
 
     $scope.silentSpk = function(){
@@ -941,6 +939,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $rootScope.volume.spk = angular.copy($scope.volume.spkVol);
             $scope.volume.spkVol = 0;
         }
+
+       $scope.update_settings('hudmw_webphone_speaker','update',$scope.volume.spkVol);
+    
     };
 
     var updateTime = function() {

@@ -73,6 +73,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	if(isSWSupport){
 		if (SharedWorker != 'undefined') {
 		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
+		   
 		    worker.port.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
@@ -84,19 +85,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                break;
 		            case "sync_completed":
 		                if (event.data.data) {
-
-		                    var synced_data = event.data.data;
-
-		                    // send data to other controllers
-							$rootScope.$evalAsync(function() {
-								for(var i = 0, ilen = feeds.length;i < ilen;i++){
-									if(synced_data[feeds[i]] && synced_data[feeds[i]].length > 0){
-										$rootScope.$broadcast(feeds[i] + '_synced', synced_data[feeds[i]]);
-									}
-								}
-								$rootScope.isFirstSync = false;
-
-							});
+		                    broadcastSyncData(event.data.data);
 							synced = true;
 		                }
 		                break;
@@ -104,9 +93,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
       				case "auth_failed":
-						delete localStorage.me;
-						delete localStorage.nodeID;
-						delete localStorage.authTicket;
+						localStorage.removeItem("me");
+						localStorage.removeItem("nodeID");
+						localStorage.removeItem("authTicket");
 						attemptLogin();
       					break;
       				case "network_error":
@@ -124,7 +113,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 				}
 		    }, false);
+			worker.port.addEventListener("error",function(evt){
+		    	console.log("error with shared worker port");
+		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
 
+		    },false);
 		    worker.port.start();
 		}
 	}else{
@@ -157,19 +150,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						}else{
 
 							if(localStorage.data_obj != undefined){
-								synced_data = JSON.parse(localStorage.data_obj);
-								for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
-									var feed = fjs.CONFIG.FEEDS[i];
-									if(synced_data[feed]){
-										if (synced_data[feed].length > 0)
-			                            	$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-									}
-								}
+								broadcastSyncData(JSON.parse(localStorage.data_obj));
 							}
 							worker.postMessage({
 								action:"sync",
 								to_sync: false,
-							})
+							});
 						}
 						break;
 		            case "sync_completed":
@@ -192,28 +178,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		                    }
 							
 		                    // send data to other controllers i'm doing this to ensure order when syncing'
-							$rootScope.$evalAsync(function() {
-								for (var feed in synced_data) {
-									if(!$.isEmptyObject(data_obj)){
-										data_obj[feed] = synced_data[feed];
-										localStorage.data_obj = JSON.stringify(data_obj);
-									}
-									
-									if (synced_data[feed].length > 0)
-										$rootScope.$broadcast(feed + '_synced', synced_data[feed]);
-									
-									$rootScope.isFirstSync = false;
-								}
-							});
+							broadcastSyncData(synced_data);
+							$rootScope.isFirstSync = false;
 		                }
 		                break;
 		            case "feed_request":
 		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
 		                break;
 					case "auth_failed":
-						delete localStorage.me;
-						delete localStorage.nodeID;
-						delete localStorage.authTicket;
+						localStorage.removeItem("me");
+						localStorage.removeItem("nodeID");
+						localStorage.removeItem("authTicket");
+						
 						attemptLogin();
 						break;
 					case "network_error":
@@ -241,16 +217,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
 							if(!tabMap[tabId].isSynced){
 								if(localStorage.data_obj != undefined){
-
-
-									synced_data = JSON.parse(localStorage.data_obj);
-									for(var i = 0, ilen = fjs.CONFIG.FEEDS.length; i < ilen;i++){
-										var feed = fjs.CONFIG.FEEDS[i];
-										if(synced_data[feed]){
-											if (synced_data[feed].length > 0)
-												$rootScope.$evalAsync($rootScope.$broadcast(feed + '_synced', synced_data[feed]));
-										}
-									}
+									broadcastSyncData(JSON.parse(localStorage.data_obj));
 								}
 
 								tabMap[tabId].isSynced = true;	
@@ -268,7 +235,21 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		}
 	}
 
+	var broadcastSyncData = function(data) {
+		if (data) {
+			// send data to other controllers
+			$rootScope.$evalAsync(function() {
+				// loop through feeds in order, according to properties.js
+				for (var i = 0, ilen = feeds.length; i < ilen; i++){
+					if (data[feeds[i]] && data[feeds[i]].length > 0){
+						$rootScope.$broadcast(feeds[i] + '_synced', data[feeds[i]]);
+					}
+				}
+				$rootScope.isFirstSync = false;
 
+			});
+		}
+	};
 	
 	// send first message to shared worker
 	var authorizeWorker = function() {
@@ -421,14 +402,15 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	this.setUnload = function() {			
 		// stupid warning
 		window.onbeforeunload = function() {
-			if (localStorage.tabclosed)
+			
+			/*if (localStorage.tabclosed)
 				localStorage.tabclosed = "true";
     	
 			// shut off web worker
 			if (worker.port)
 				worker.port.close();
 			else
-				worker.terminate();
+				worker.terminate();*/
 			
 			return "Are you sure you want to navigate away from this page?";
 		};
@@ -544,14 +526,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 				var data = {
 					progress:percentComplete,
 					started: upload_start,
-
+					xhr: request
 				};
 
 				deferred_progress.notify(data);
 				upload_start = false;
 			}	
 		};
-		
+		request.addEventListener("abort", function(evt){
+			var data = {
+				progress: 100,
+			};
+			deferred_progress.notify(data);
+			console.log(evt);
+		},false);
 		request.open("POST",requestURL, true);
 		request.send(fd);
        
@@ -579,11 +567,20 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 				var data = {
 					progress:percentComplete,
 					started: upload_start,
+					xhr:request,
 				};
 				deferred_progress.notify(data);
 				upload_start = false;
 			}	
 		};
+
+		request.addEventListener("abort", function(evt){
+			var data = {
+				progress: 100,
+			};
+			deferred_progress.notify(data);
+			console.log(evt);
+		},false);
 		
 		request.open("POST",requestURL, true);
 		request.send(fd);

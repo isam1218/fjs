@@ -12,9 +12,11 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.membersRefused = [];
 	
-    $scope.enableChat = $scope.joined;
-    $scope.enableTextInput = $scope.joined;
-    $scope.enableFileShare = $scope.joined;
+
+  $scope.joined = $scope.conference.status.isMeJoined;
+  $scope.enableChat = $scope.joined;
+  $scope.enableTextInput = $scope.joined;
+  $scope.enableFileShare = $scope.joined;
 	
    //var currentMembers = angular.copy($scope.conference.members);
   
@@ -23,6 +25,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.$watchCollection('conference.members', function(newValue,oldValue){
     	
+   	  
 
       //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
       for(var i = 0, iLen = oldValue.length; i < iLen; i++){
@@ -30,7 +33,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
         //this is to verify if a member has dropped 
         for(var j = 0, jLen = newValue.length; j < jLen; j++){
           if(oldValue[i].xpid == newValue[j].xpid){
-            exists = true;  
+            exists = true;
             break;
           }
         
@@ -46,6 +49,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
                       if(oldValue[i].contactId == $scope.membersRefused[j].contactId){
                         refuseMembersExists = true;
                         $scope.membersRefused.splice(j,1,oldValue[i]);
+                        break;
                       }  
                   }
                   
@@ -56,6 +60,14 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
             }
         }
       }
+
+      for(var i = 0,iLen = newValue.length; i < iLen;i++){
+   	  	for(var j = 0, jLen = $scope.membersRefused.length; j < jLen;j++){
+   	  		if(newValue[i].contactId == $scope.membersRefused[j].contactId){
+   	  			$scope.membersRefused.splice(j,1);
+   	  		}	
+   	  	}
+   	  }
   });
 
 	// store recent
@@ -81,7 +93,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.tabs = [{upper: $scope.verbage.current_call, lower: 'currentcall'}, 
   {upper: $scope.verbage.chat, lower: 'chat'}, {upper: $scope.verbage.recordings, lower: 'recordings'}];
 
-	settingsService.getSettings().then(function() {
+  settingsService.getSettings().then(function() {
         $scope.globalXpid = $rootScope.myPid;
           
         if($routeParams.route != undefined){
@@ -95,37 +107,23 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
               break;
             }
           }
+          localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+          localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
         }else{
-              $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-              $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+              // $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
+              // $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+              $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid]) : $scope.tabs[0].lower;
+              $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
         }
-	});  
-  
-  // $scope.selected = $routeParams.route ? $routeParams.route : $scope.tabs[0].lower;
-  $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-  $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+  }); 
+
+
 
   $scope.saveConfTab = function(tab, index){
-      switch(tab){
-          case "currentcall":
-              $scope.selected = $scope.tabs[0].lower;
-              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "chat":
-              $scope.selected = $scope.tabs[1].lower;
-              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-          case "recordings":
-              $scope.selected = $scope.tabs[2].lower;
-              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-              $scope.toggleObject = {item: index};
-              localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-              break;
-      }
+      $scope.selected = tab;
+      $scope.toggleObject = {item: index};
+      localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+      localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   };
 
   $scope.tabFilter = function(){

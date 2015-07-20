@@ -1,8 +1,15 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', function($rootScope, $parse, $timeout, settingsService) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', function($rootScope, $parse, $timeout, settingsService, httpService) {
 	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
 	var timer;
 	var current;
+	
+	// show updated avatars
+	$rootScope.$on('fdpImage_synced', function(event, data) {
+		for (var i = 0, len = data.length; i < len; i++) {
+			$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+		}
+	});
 	
 	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar> where context and type are optional
 	return {
@@ -68,6 +75,9 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					loadImage(element.find('img'), newObj ? newObj.getAvatar(28) : '');
 				});
 			}
+			
+			// also attach xpid to listen for updates
+			element.addClass(profile.xpid);
 			
 			function showSingle() {
 				element.html('<img class="AvatarImgPH" src="' + url + 'img/Generic-Avatar-28.png" />');
@@ -191,11 +201,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					// set width for logout reasons
 					overlay.removeClass('NoWrap');
-					if(obj.call){
-						overlay.css('width', (overlay[0].getBoundingClientRect().width + 30) + 'px');
-					}else{
-						overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
-					}
+					overlay.css('width', (overlay[0].getBoundingClientRect().width + 2) + 'px');
 			
 					// button clicks
 					$('#ContextMenu .Button').bind('click', function(e) {

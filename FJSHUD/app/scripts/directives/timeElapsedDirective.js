@@ -14,7 +14,7 @@ hudweb.directive('timer', ['$filter', '$interval', 'NtpService', function($filte
 				
 				start = new Date();
 				calibrate = false;
-				loop = $interval(updateDate, 1000);					
+				loop = $interval(updateDate, 1000, 0, false);					
 				updateDate();
 			}
 			else {
@@ -26,7 +26,7 @@ hudweb.directive('timer', ['$filter', '$interval', 'NtpService', function($filte
 																		
 						// increment every second
 						if (!loop) {
-							loop = $interval(updateDate, 1000);					
+							loop = $interval(updateDate, 1000, 0, false);
 							updateDate();
 						}
 					}

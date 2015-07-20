@@ -11,6 +11,16 @@
   overflow-x: auto;
   overflow-y: hidden;
   
+  .ListRowTitle{
+   max-width: 100%;
+   padding-top: 5px;
+   font-size: 11px;
+  }
+  .Header.ListSectionGadget
+  {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
   &.Moving {
     border: 1px dashed #358503;
     border-width: 1px;
@@ -201,6 +211,7 @@
 		-webkit-flex-direction: column;
 		overflow-y: auto;
 		min-height: 6em;
+		position: relative;
 		
 		.SubHeader {
 			background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
@@ -397,6 +408,26 @@
 	    background: #72E673;
 	}
 
+}
+
+.FileUploadStatus{
+	.Gadget:hover{
+		progress{
+			display:none;
+		}
+		.CancelUploadIcon{
+			display:block;
+		}
+	}
+
+	.Gadget{
+		progress{
+			display:block;
+		}
+		.CancelUploadIcon{
+			display:none;
+		}
+	}
 }
 
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 

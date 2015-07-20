@@ -35,11 +35,9 @@
                 </div>
             </div>
 
-            <div class="WidgetBody ng-class:{'currentCall': onCall}"> 
-             <div class="call-block">                           
-             <!--  ng-if="currentCall != null"-->
-
-              <div class="CurrentCall"  ng-if="currentCall != null">
+            <div class="WidgetBody ng-class:{'currentCall': currentCall != null}">  
+             <div class="call-block">                                     
+              <div class="CurrentCall" ng-if="currentCall != null" resize-height> 
                 <div class="WidgetSectionTitle">{{::verbage.current_call}} <span timer="currentCall.startedAt ? currentCall.startedAt : currentCall.created"> </span> </div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >  
@@ -83,7 +81,9 @@
                   <div class="row_buttons"> 
                     <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('transfer',currentCall)"><span>{{::verbage.transfer}}</span></button> 
                     <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)"><span>{{::verbage.conf_room}}</span></button> 
-                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="muteCall()" ng-if="currentCall.type == 0"><span>{{::verbage.Mute}}</span></button>
+                    <button class="XButton CurrentCallBtn" 
+                    ng-class="currentCall.mute ? 'UnmuteBtn' : ''"
+                    ng-click="muteConference()" ng-if="currentCall.type == 0"><span>{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
                     <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></button>  
                     
                   </div> 
@@ -108,9 +108,9 @@
               </div>           
              </div>
 
-              <div class="NewCall" ng-if="currentCall == null">
+              <div class="NewCall" ng-if="currentCall == null" resize-height>
                 <div class="WidgetSectionTitle">{{::verbage.place_a_call}}</div>
-                <input class="NewCall" ng-keypress="callKeyPress($event)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">                
+                <input class="NewCall" on-submit="makeCall(call_obj.phoneNumber)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">                
                 <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
                 <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
               </div>              
@@ -157,7 +157,7 @@
                   </div>                  
                </div>
               </div>
-              <div class="fj-vbox-space Preferences-Holder">
+              <div class="fj-vbox-space Preferences-Holder" ng-if="currentCall == null"> 
 	              <div class="WidgetSectionTitle">{{::verbage.preferences}}</div>	              
 		              <div class="WidgetTabBar">
 		                <a href="" ng-repeat="tab in ::tabs" ng-show="tab.isActive" ng-click="saveMeTab(tab.option, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">

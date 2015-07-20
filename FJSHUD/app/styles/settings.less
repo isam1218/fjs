@@ -60,7 +60,7 @@
          border: none 0px;        
          background-image: url("../img/XTile-Widget.png");                         
          height: 95%;
-         overflow-y: hidden;
+         overflow: hidden;
          background-color: #f9f9f9;
          bottom: 0px;   
        
@@ -89,12 +89,12 @@
        max-height: 100%;      
        
        .call-block{
-        height: 50%;
-        
+        height: 50%;        
         overflow-y: hidden;                
         
         .CurrentCall{
-            height: 20%;
+          // min-height: 140px;
+          //height: 42%;
             
             .LeftSide{
                 width: 50%;
@@ -273,25 +273,21 @@
        }
        
        &.currentCall{
-        .call-block{
-           /* max-height: 180%;*/
-            
-            .RecentCallSection{             
-              height: 100%;
+        .call-block{          
+            .RecentCallSection{                          
+              position: relative;
+              float: left;
+              clear: both;
+              width: 100%;
+              overflow: hidden;
+              /*height: 70%;*/
+              padding: 0;
                 
               .RecentCallLogs{                  
-                  height: 72%;
+                  height: 100%;
               }
             }
-         }
-                
-         .Preferences-Holder{
-            .SettingsPanel.DialogContentMainBlock_List {
-                & > div {                   
-                      height: 40%;                    
-                }
-            }
-         }  
+         }                         
        }
     }              
 }
@@ -606,6 +602,7 @@ input.text{
 div.NewCall{ 
       width: 100%;
       background-color: #fff;
+      padding: 10px 0;
            
       input.NewCall{
         height: 26px;

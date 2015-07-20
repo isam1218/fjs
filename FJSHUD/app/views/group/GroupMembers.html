@@ -13,25 +13,25 @@
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <a ng-href="{{getRef(member, myself)}}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
-        <avatar profile="member.fullProfile"></avatar>
+    <div class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
+       <a ng-href="{{::getRef(member, myself)}}" >  <avatar profile="member.fullProfile"></avatar></a>
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
-            <div class="ListRowTitle">
+            <a class="ListRowTitle" ng-href="{{::getRef(member, myself)}}">
                 <span> {{ ::member.fullProfile.displayName }} </span>
 				<br/>
                 <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
                 <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
 				{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + on call' : '') }}
-            </div>
+            </a>
 			
 
 			<callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
-			<div class="vmalternate" ng-if="!member.fullProfile.call">
-                <div class="vmtime">#{{ ::member.fullProfile.primaryExtension }}</div>
+			<a ng-href="{{::getRef(member, myself)}}" class="vmalternate" ng-if="!member.fullProfile.call">
+                <div class="ListRowStatus">#{{ ::member.fullProfile.primaryExtension }}</div>
                 <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
-            </div>
+            </a>
             
         </div>
-    </a>
+    </div>
 </div>

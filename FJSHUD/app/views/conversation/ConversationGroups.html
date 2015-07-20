@@ -37,7 +37,7 @@
                     <span class="details">{{ ::group.members.length }} members</span>
                 </div>
             </div>
-            <div class="ListRowStatus">#{{ ::group.extension }}</div>
+            <div class="ListRowStatus">Owner: {{ ::findGroupOwner(group) }}</div>
             <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(group.extension)"></input>
         </div>
     </a>

@@ -55,7 +55,7 @@
   .ListView {
       position: relative;
       flex: 1 1 0;
-	  -ms-flex: 1 1 0;
+	  -ms-flex: 1;
 	  -webkit-flex: 1 1 0;
       overflow-y: auto;
       width: 100%;
@@ -115,6 +115,7 @@
         color: #333;
         text-shadow: 0 1px 0px #fff;
         font-family: Arial,Tahoma,"Helvetica Neue",Helvetica,sans-serif;
+        padding: 0 0 0 3px;
   
         &:hover{            
             background: url(../img/arrowDown_8.png)no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
@@ -127,7 +128,7 @@
         
         option{
             text-align: left;
-            padding: 0 5px;
+            //padding: 0 5px;
             background-color: #fff;
         }           
      }
@@ -575,15 +576,3 @@
 .WidgetTabBarButton.fj-selected-item .arrow {
   display: block;
 } 
-
-#ContextMenu{
-  .WidgetHeaderCallStatus{
-      width: 100px;
-      min-width: 185px;
-      height: 50px;
-      .Avatar{
-        height:40px;
-        width:40px;
-      }
-  }
-}

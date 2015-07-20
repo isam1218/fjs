@@ -75,6 +75,8 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
                 }
                 break;
         }
+		
+		$scope.number = '';
     };
 
     $scope.$on('locations_synced', function(event,data){

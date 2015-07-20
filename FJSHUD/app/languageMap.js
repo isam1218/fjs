@@ -267,8 +267,8 @@ fjs.i18n = {
       no_transcriptions:'no transcription available',
 
       action:'Actions',
-      mark_all_incoming_vm_read:'Mark all incoming voicemails as read',
-      mark_all_incoming_vm_unread:'Mark all incoming voicemails as unread',
+      mark_all_incoming_vm_read:'Mark as read all incoming voicemails',
+      mark_all_incoming_vm_unread:'Mark as unread all incoming voicemails',
       delete_all_incoming_read:'Delete all read incoming voicemails', 
 
       sort_newest_first:'Newest First',
@@ -327,7 +327,7 @@ fjs.i18n = {
       queue_abandoned_calls:'Abandoned calls',
       queue_active_calls:'Active calls',
       agents_logged_into_queue:'Agents logged into the queue',
-      agents_logged_out_of_queue:'Agents logged into the queue',
+      agents_logged_out_of_queue:'Agents logged out of the queue',
       stats_tab:'Stats',
 
       calls_tab:'Calls',
@@ -395,7 +395,7 @@ fjs.i18n = {
 
       
       no_recent_calls:"No Recent Calls",
-
+      UnMute: 'Unmute',
       Mute:'Mute',
       Park:'Park',
       Hold:'Hold',
@@ -855,7 +855,7 @@ fjs.i18n = {
       queue_abandoned_calls:'途中放棄呼数 ',
       queue_active_calls:'通話中の呼数 ',
       agents_logged_into_queue:'Agents logged into the queue',
-      agents_logged_out_of_queue:'Agents logged into the queue',
+      agents_logged_out_of_queue:'Agents logged out of the queue',
 
       agent_tab:'オペレータ',
       stats_tab:'統計',
@@ -931,7 +931,7 @@ fjs.i18n = {
 
 
       no_recent_calls:"No Recent Calls",
-
+      UnMute:'ミュート解除します',
       Mute:'ミュート',
       Park:'パーク',
       Hold:'保留',

@@ -101,10 +101,10 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 		}
 		
 		// retrieve child data
-		httpService.getFeed('conferencemembers');
+		/*httpService.getFeed('conferencemembers');
 		httpService.getFeed('server');
 		httpService.getFeed('conferencestatus');
-		httpService.getFeed('conferencepermissions');
+		httpService.getFeed('conferencepermissions');*/
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
@@ -152,7 +152,7 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 								
 						// redirect self
 						if ($rootScope.myPid == data[i].contactId)
-							$location.path('/conference/' + data[i].fdpConferenceId);
+							$location.path('/conference/' + data[i].fdpConferenceId + '/currentcall');
 					}
 				}
 			}

@@ -40,9 +40,17 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 				},
 				start: function(event, ui) {
 					$(ui.helper).addClass('not-allowed');
+					
+					// disable droppable for overflow elements
+					$('.Gadget .Content a.ui-droppable').each(function() {
+						if ($(this).position().top >= $(this).closest('.Content').height())
+							$(this).droppable('option', 'disabled', true);
+					});
 				},
 				stop: function(event, ui) {
 					ui.helper.empty();
+					
+					$('.Gadget .Content a.ui-droppable').droppable('option', 'disabled', false);
 				}
 			});
 		}

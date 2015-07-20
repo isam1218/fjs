@@ -1,7 +1,7 @@
 <div class="Widget Conversation" droppable="Call">
     <div class="WidgetHeader">
         <avatar profile="contact"></avatar>
-        <div class="WidgetHeaderTitle">
+        <div class="WidgetHeaderTitle WidgetHeaderTitleOverflow">
 			<span ng-if="::contact.primaryExtension">{{ ::contact.displayName }} ({{::contact.primaryExtension}})</span>
 			<span ng-if="::!contact.primaryExtension">{{ contact.displayName }}</span>
 			<br/>

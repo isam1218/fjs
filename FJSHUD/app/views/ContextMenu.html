@@ -88,10 +88,18 @@
 			<div class="ListRowActionButtonLeave"></div>
 			<span>{{::verbage.leave}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'chat' && original.data.attachment" ng-click="deleteAttachment()">
-			<div class="ListRowActionButtonRemove"></div>
-			<span>{{::verbage.delete_word}}</span>
-		</a>
+		
+		<div ng-show="widget == 'chat' && original.data.attachment">
+			<a class="Button" href="" ng-click="fileShare(true)">
+				<div class="ListRowActionButtonFileShare"></div>
+				<span>Repost</span>
+			</a>
+			<a class="Button" href="" ng-click="deleteAttachment()">
+				<div class="ListRowActionButtonRemove"></div>
+				<span>{{::verbage.delete_word}}</span>
+			</a>
+		</div>
+		
 		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
@@ -302,8 +310,8 @@
 		</a>
 	</div>
 
-	<div ng-if="type == 'Contact'"> 
-		<callStatus profile="profile" ng-if="profile.call"></callStatus>
+	<div ng-if="type == 'Contact' && profile.call"> 
+		<callStatus profile="profile"></callStatus>
 	</div>
 </div>
 

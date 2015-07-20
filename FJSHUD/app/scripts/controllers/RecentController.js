@@ -1,4 +1,4 @@
-hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService){
+hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', '$location',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService, $location){
   
   $scope.totalContacts = [];
   $scope.totalGroups = [];
@@ -9,6 +9,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.recent = storageService.getRecents();
   $scope.sortField = "timeline";
   $scope.sectionSortField = 'time';
+  $scope.myPid = $rootScope.myPid;
   var contactPagesShown = 1;
   var groupPagesShown = 1;
   var queuePagesShown = 1;
@@ -109,7 +110,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       // grab merged item's xpid
       var currentXpid = item.xpid;
       // if the recent contact matches an item in the merged array (if it exists)
-      if ($scope.recent && $scope.recent[currentXpid] !== undefined){
+      if (currentXpid != $scope.myPid && $scope.recent && $scope.recent[currentXpid] !== undefined){
         // attach a sorting timestamp
         item.timestamp = $scope.recent[currentXpid]['time'];
         return true;
@@ -297,6 +298,53 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.publicTeamHeaderDisplay = function(groupType){
 		if (groupType !== 0 && groupType === 4)
 			return true;
+  };
+
+  $scope.goToFullRoute = function(item){
+    var itemType = item.recent_type;
+
+    switch(itemType){
+      case "contact":
+        if (localStorage['ConversationWidget_' + item.xpid + '_tabs_of_' + $rootScope.myPid]){
+          // look up LS using xpid, if there's a tab saved related to that contact --> return url path w/ that tab
+          var endPath = "/contact/" + item.xpid + "/" + JSON.parse(localStorage['ConversationWidget_' + item.xpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          // otherwise default to returning that contact 'chat' url tab
+          var endPath = "/contact/" + item.xpid + "/chat";
+          return $location.path(endPath);
+        }
+        break;
+      case "group":
+        if (localStorage['GroupSingle_' + item.xpid + '_tabs_of_' + $rootScope.myPid]){
+          var endPath = "/group/" + item.xpid + "/" + JSON.parse(localStorage['GroupSingle_' + item.xpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          // need to take into account if not my group (then there's no chat --> go to members tab)
+          var groupIsMine = groupService.isMine(item.xpid);
+          var endPath = groupIsMine ? "/group/" + item.xpid + "/chat" : "/group/" + item.xpid + "/members";
+          return $location.path(endPath);
+        }
+        break;
+      case "queue":
+        if (localStorage['QueueWidget_' + item.xpid + '_tabs_of_' + $rootScope.myPid]){
+          var endPath = "/queue/" + item.xpid + "/" + JSON.parse(localStorage['QueueWidget_' + item.xpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          var endPath = "/queue/" + item.xpid + "/agents";
+          return $location.path(endPath);
+        }
+        break;
+      case "conference":
+        if (localStorage['ConferenceSingle_' + item.xpid + '_tabs_of_' + $rootScope.myPid]){
+          var endPath = "/conference/" + item.xpid + "/" + JSON.parse(localStorage['ConferenceSingle_' + item.xpid + '_tabs_of_' + $rootScope.myPid]);
+          return $location.path(endPath);
+        } else {
+          var endPath = "/conference/" + item.xpid + "/currentcall";
+          return $location.path(endPath);
+        }
+        break;
+    }
   };
 
 }]);
