@@ -120,11 +120,17 @@
 			<div class="Section" ng-show="!transferTo">
 				<div class="transferSearch">
 					<h4 class="upper">{{::verbage.destination}}</h4>
-					<input type="search" ng-model-options="{debounce: 200}" class="Search" ng-model="transfer.search" ng-attr-placeholder="{{::verbage.search}}" />
+					<div class="ContactSearchHolder">
+						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" id="TransferOverlay" ng-attr-placeholder="{{::verbage.add_someone}}" transfer-contact-search />
+					</div>
+
+					<!-- <input type="search" ng-model-options="{debounce: 200}" class="Search" contact-search ng-attr-placeholder="{{::verbage.search}}" /> -->
+					<!-- <input type="search" ng-model-options="{debounce: 200}" class="Search" ng-model="transfer.search" ng-attr-placeholder="{{::verbage.search}}" /> -->
 				</div>
-				<div class="Banner upper">{{::verbage.contacts}}</div>
+				<!-- <div class="Banner upper">{{::verbage.contacts}}</div> -->
 				<div class="Members">
-					<a href="" class="ListRow" ng-repeat="contact in contacts | filter: transferPermFilterContacts() | filter: transferFilter() | orderBy: 'displayName' track by contact.xpid" ng-click="selectDestination(contact)"> 
+					<a href="" class="ListRow" ng-repeat="contact in transferContacts | filter: transferPermFilterContacts() | orderBy: 'displayName' track by contact.xpid" ng-click="selectDestination(contact)"> 
+					<!-- <a href="" class="ListRow" ng-repeat="contact in contacts | filter: transferPermFilterContacts() | filter: transferFilter() | orderBy: 'displayName' track by contact.xpid" ng-click="selectDestination(contact)">  -->
 						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
@@ -137,6 +143,7 @@
 					</a>
 				</div>
 			</div>
+			<div>{{transfer.search}}</div>
 			
 			<div class="Section" ng-if="transferTo">
 				<div>

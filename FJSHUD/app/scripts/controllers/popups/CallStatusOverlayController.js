@@ -16,6 +16,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.who = {};
 	$scope.who.sendToPrimary = true;
 
+
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
 	if($scope.$parent.overlay.data.screen){		
@@ -146,16 +147,15 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
 					mycallId: $scope.onCall.call.xpid,
 					toContactId: $scope.transferTo.xpid
-				});	
-				
+				});
 			}else{
 				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
 					fromContactId: $scope.onCall.call.xpid,
 					toContactId: $scope.transferTo.xpid
 				});	
-				
 			}
-
+			// save receiving end of transfer for later use in recent transfers...
+			localStorage['recentTransfers_of_' + $rootScope.meModel.my_Pid] = JSON.stringify($scope.transferTo.xpid)
 			$scope.showOverlay(false);
 		}
 		else
@@ -185,15 +185,26 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
 	};
 
+	$scope.transferToObj;
+
 	$scope.transferFilter = function(){
 		var query = $scope.transfer.search.toLowerCase();
+		$scope.matchCount = 0;
 		return function(contact){
-			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1)
+			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
+				$scope.matchCount++;
+				// console.error('match - ', $scope.matchCount);
 				return true;
-			else
+			} else if (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4){
+				// console.error('phone # -', $scope.transfer.search);
+			}
+			else{
 				return false;
+			}
 		};
 	};
+	
+	$scope.transferToObj = $scope.transfer.search;
 
 	$scope.isStatusUndefined = function(conference){
 		// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
@@ -239,7 +250,45 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		return function(contact){
 			return me.xFerToPermObj[contact.xpid];
 		};
-	}
+	};
+
+	$scope.transferContacts = [];
+
+	$scope.searchContact = function(contact) {
+		// prevent duplicates
+		for (var i = 0, iLen = $scope.transferContacts.length; i < iLen; i++) {
+			if ($scope.transferContacts[i] == contact)
+				return;
+		}
+		console.error('search contact added! - ', contact);
+		localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(contact.xpid);
+		
+		$scope.$evalAsync(function() {
+			$scope.changeToModelMade = true;
+			$scope.transferContacts.push(contact);
+		});
+	};
+
+	$scope.addExternalToTransfer = function(contact){
+    var params = {
+      conferenceId: $scope.conferenceId,
+      phone: phoneNumber
+    };
+		// look up transfer external post request to server....
+    httpService.sendAction("conferences", "joinPhone", params);
+	};
+
+	$scope.recentTransferFilter = function(){
+		// if LS --> parse and set as recentTransfers
+		var recentTransfers = [];
+		return function(contact){
+			// loop thru recentTransfers, if contact.xpid == recentTransfers[i] --> return true
+
+			// else
+				// return false
+				// hide recent transfers section
+		};
+	};
 
   $scope.$on("$destroy", function() {
 		updateTime = null;
