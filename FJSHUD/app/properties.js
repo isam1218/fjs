@@ -33,10 +33,7 @@ fjs.CONFIG = {
         GROUP_CALL:1,
         CONFERENCE_CALL:0,
         INDIVIDUAL_CALL:2,
-<<<<<<< HEAD
         QUEUE_CALL:3,
-=======
->>>>>>> fixed barge controls
         BARGE_CALL:4,
         EXTERNAL_CALL:5,
         CALL_MENU:6,

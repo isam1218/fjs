@@ -90,19 +90,11 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 		SYNCING
 	*/
 	
-<<<<<<< HEAD
 	$rootScope.$on('me_synced', function(event,data){
         for(var i = 0, len = data.length; i < len; i++){
             $rootScope.meModel[data[i].propertyKey] = data[i].propertyValue;
 			
 			if(data[i].propertyKey == 'personal_permissions'){			
-=======
-	$rootScope.$on('me_synced', function(event, data) {
-		for (var i = 0, len = data.length; i < len; i++) {
-			// look at fj repository > MyPermissions.java for reference
-			if (data[i].propertyKey == 'personal_permissions') {
-				
->>>>>>> @clnielsen HUDF-290 addded holding and resuming call and added more semicolons
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
@@ -149,13 +141,13 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
     });
 	
 	$rootScope.$on('locations_synced', function(event,data){
-    for(var i = 0, iLen = data.length; i < iLen; i++){
-			locations[data[i].xpid] = data[i];
-			if(data[i].xpid == $rootScope.meModel.current_location){
-				$rootScope.meModel.location = data[i];
-				break;	
-			}
-    }
+	    for(var i = 0, iLen = data.length; i < iLen; i++){
+				locations[data[i].xpid] = data[i];
+				if(data[i].xpid == $rootScope.meModel.current_location){
+					$rootScope.meModel.location = data[i];
+					break;	
+				}
+	    }
 
         if($rootScope.meModel){
         	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];

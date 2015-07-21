@@ -798,13 +798,9 @@ hudweb.controller('NotificationController',
 	};
 
 	$scope.$on('quickinbox_synced', function(event,data){
-
-		displayDesktopAlert = true;
-  		var missedCalls = [];
-
-		var displayDesktopAlert = true;
+    var displayDesktopAlert = true;
 		var missedCalls = [];
-  		if(data){
+  	if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
 			});
@@ -937,6 +933,7 @@ hudweb.controller('NotificationController',
 					}
 				}
 			}
+    }
 		
 
 		 

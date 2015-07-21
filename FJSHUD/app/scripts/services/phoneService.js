@@ -136,7 +136,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}; 
 	
 
-	settingsService.getMe().then(function(data){
+	settingsService.getMe().then
+	(function(data){
 		
 		if($rootScope.browser == "Chrome"){
 			if(!context.webphone && $rootScope.meModel.my_pid){
@@ -161,6 +162,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(session.status == 0){
 				}
 			}
+		}
 		}	
 	});
 
@@ -1453,23 +1455,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var focusBrowser = function(){
 			nservice.sendData({message:"focus"},0,"FOCUS");
 	}
-	$rootScope.$on('locations_synced', function(event,data){
-        if(data){
-            if($.isEmptyObject(locations)){
-            	for(index in data){
-					locations[data[index].xpid] = data[index];
-					if(data[index].xpid == $rootScope.meModel.current_location){
-						$rootScope.meModel.location = data[index];
-						break;	
-					}
-            	}	
-            }
-
-            if($rootScope.meModel){
-            	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
-            }
-        }
-    });
 
 	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
