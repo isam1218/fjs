@@ -142,7 +142,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 			if($(element).hasClass('NewCall') && !docLoaded)
 			{	
 				
-				checkIfLoaded = $interval(checkWidgetLoaded, 100);   			 			    					
+				checkIfLoaded = $interval(checkWidgetLoaded, 100, 0, false);   			 			    					
 			}
 			if($(element).hasClass('CurrentCall'))
 			{
@@ -161,7 +161,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 				//Me widget			
 				if($(element).hasClass('NewCall'))
 				{					
-					checkIfLoaded = $interval(checkWidgetLoaded, 100);  			
+					checkIfLoaded = $interval(checkWidgetLoaded, 100, 0, false);  			
 				}
 				if($(element).hasClass('CurrentCall'))
 				{
