@@ -136,8 +136,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	}; 
 	
 
-	settingsService.getMe().then
-	(function(data){
+	settingsService.getMe().then(function(data){
 		
 		if($rootScope.browser == "Chrome"){
 			if(!context.webphone && $rootScope.meModel.my_pid){
@@ -941,41 +940,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		}
     	}
     };
-
-	$rootScope.$on('me_synced', function(event,data){
-        if(data){
-            var me = {};
-            for(medata in data){
-                $rootScope.meModel[data[medata].propertyKey] = data[medata].propertyValue;
-            }
-        }
-		if(!context.webphone && $rootScope.meModel.my_pid){
-			//initWS();
-        	getWSVersion();
-        	nservice.initNSService();
-        }
-
-        if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
-        	username = $rootScope.meModel.my_jid.split("@")[0];
-			if(!isRegistered && phonePlugin.getSession){
-				session = phonePlugin.getSession(username);
-				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
-					
-				if(session.attachEvent){
-					session.attachEvent("onStatus", this.sessionStatus);
-	                session.attachEvent("onNetworkStatus", this.onNetworkStatus);
-
-				}else{
-					 session.addEventListener("Status",sessionStatus, false);
-	               	 session.addEventListener("NetworkStatus", this.onNetworkStatus);
-				}
-
-				if(session.status == 0){
-				}
-			}
-		}
-
-    });
 
 	var isEnabled = function(permission, bit) {
 		return ((permission & (1 << bit)) == 0);
