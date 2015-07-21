@@ -2,7 +2,6 @@
   
   .vmsections, .rows{
     border: 1px solid #eee;
-    width: 99.5%;
     margin-bottom: 10px;
    }   
    
@@ -84,6 +83,7 @@
       &:first-child {
           min-width: 40px;
           width: 40px;
+		  -ms-flex: 0;
       }
       
       &:not(:first-child) { 
@@ -101,6 +101,7 @@
       &.Name {    	
         flex: 3 1 0;
 		-webkit-flex: 3 1 0;
+		-ms-flex: 3;
     	max-width: 135px;
     	
     	 & > div{
@@ -119,6 +120,7 @@
     	color: #333;
     	flex: 2.1 1 0;
 		-webkit-flex: 2.1 1 0;
+		-ms-flex: 2.1;
 		font-weight: bold;    
     	max-width: 130px;
     	    
@@ -128,17 +130,20 @@
       &.Duration{
 	    flex: 1.4 1 0;
 		-webkit-flex: 1 1 0;
+		-ms-flex: 1;
 		max-width: 50px;
 	  }
     	   
       &.Date {
         flex: 3 1 0;
 		-webkit-flex: 3 1 0;
+		-ms-flex: 3;
     	white-space: nowrap;
     	max-width: 120px;
       }
       &.Type{
         width: 6%;
+		-ms-flex: 1;
         .ListRowStatusIcon{
             margin-top: 10px;
         }

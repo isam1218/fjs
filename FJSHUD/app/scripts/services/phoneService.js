@@ -191,9 +191,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}else{
 			if(isHeld){
-           		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+        httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 			}else{
-	           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+	       httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
 			}	
 		}
 		
