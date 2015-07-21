@@ -758,8 +758,12 @@ hudweb.controller
 
         if (displayDesktopAlert){
                if ($scope.todaysNotifications.length > 0){
-                       $scope.displayAlert = true;
-                       $timeout(displayNotification, 1500);
+                       if(nservice.isEnabled()){
+                          nservice.displayWebNotification(item);
+                       }else{
+                          $scope.displayAlert = true;
+                          $timeout(displayNotification, 1500);
+                       }
              }
       }
     }
