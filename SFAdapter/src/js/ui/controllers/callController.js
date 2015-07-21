@@ -223,7 +223,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+        if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE)
+        {
+            if($scope.call.type == fjs.controllers.CallController.QUEUE_CALL_TYPE && ($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE) && $scope.call.incoming)
+            {
+                //skip incoming queue not answered call
+                console.log("Skip queue ring callLog", $scope.callLog);
+                return;
+            }
             var message = {};
             message.action = "addCallLog";
             message.data = {};
@@ -254,6 +261,7 @@ fjs.controllers.CallController.extend(fjs.controllers.CommonController);
 
 fjs.controllers.CallController.CONFERENCE_CALL_TYPE = 0;
 fjs.controllers.CallController.SYSTEM_CALL_TYPE = 7;
+fjs.controllers.CallController.QUEUE_CALL_TYPE = 3;
 fjs.controllers.CallController.HOLD_CALL_TYPE = 3;
 fjs.controllers.CallController.RING_CALL_TYPE = 0;
 fjs.controllers.CallController.TALCKING_CALL_TYPE = 2;
