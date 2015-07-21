@@ -117,27 +117,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}; 
 	
-<<<<<<< HEAD
-	
-=======
-	settingsService.getMe().then(function(data){
-		
-		if($rootScope.browser == "Chrome"){
-			if(!context.webphone && $rootScope.meModel.my_pid){
-				getWSVersion();
-        		nservice.initNSService();
-        	}	
-		}else{
-			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
-	        	username = $rootScope.meModel.my_jid.split("@")[0];
-				if(!isRegistered && phonePlugin.getSession){
-					session = phonePlugin.getSession(username);
-					session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
-						
-					if(session.attachEvent){
-						session.attachEvent("onStatus", sessionStatus);
-		                session.attachEvent("onNetworkStatus", onNetworkStatus);
->>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 
 	settingsService.getMe().then(function(data){
 		if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
@@ -213,18 +192,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var call = context.getCall(xpid);
 		if(call){
 			if(context.webphone){
-<<<<<<< HEAD
-				//messageSoftphone({a : 'hold', value : call.sip_id});
-				if(isHeld){
-           			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-				}else{
-           			httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-				}
-			
-			}else{
-				call.hold = isHeld;
-			}
-=======
 				context.webphone.send(JSON.stringify({a : 'hold', value : call.sip_id}));
 			}else{
 				call.hold = isHeld;
@@ -232,7 +199,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 		if(isHeld){
            	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
->>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 		}else{
 			if(isHeld){
         		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
@@ -247,8 +213,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
 			return;
 		}
-<<<<<<< HEAD
-
 		if($rootScope.meModel.location.locationType == 'w'){
         	if(context.webphone && number)
         	{	
@@ -265,32 +229,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			
 		}		
     };
-=======
-		if(context.webphone){
-			context.webphone.send(JSON.stringify({a:'call', value: number}));
-		}else{
-			httpService.sendAction('me', 'callTo', {phoneNumber: number});
-		}
-
-				
-	};
->>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 
 	var acceptCall = function(xpid){
 		var call = context.getCall(xpid);
-		if(context.webphone)context.webphone.send(JSON.stringify({a : 'accept', value : xpid}));
 		if(call){
-<<<<<<< HEAD
-			call.accept();
-		}else{
-			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
-=======
 			if(context.webphone){
 				context.webphone.send(JSON.stringify({a : 'accept', value : call.sip_id}));
 			}else{
 				call.accept();
 			}
->>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
 		}
 	
 		for(var i in callsDetails){
@@ -1398,13 +1345,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	});
 
-<<<<<<< HEAD
-=======
 	var focusBrowser = function(){
 			nservice.sendData({message:"focus"},0,"FOCUS");
 	}
-
->>>>>>> @clnielsen added refocusing with google chrome
 	$rootScope.$on('locations_synced', function(event,data){
         if(data){
             if($.isEmptyObject(locations)){
