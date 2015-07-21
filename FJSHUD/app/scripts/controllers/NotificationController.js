@@ -750,10 +750,13 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
         }
 
         if (displayDesktopAlert){
-              nservice.displayWebNotification(item);
-              if ($scope.todaysNotifications.length > 0){
-                       $scope.displayAlert = true;
-                       $timeout(displayNotification, 1500);
+               if ($scope.todaysNotifications.length > 0){
+                       if(nservice.isEnabled()){
+                          nservice.displayWebNotification(item);
+                       }else{
+                          $scope.displayAlert = true;
+                          $timeout(displayNotification, 1500);
+                       }
              }
       }
     }
