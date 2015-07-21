@@ -509,24 +509,88 @@ hudweb.controller
 				$scope.callObj[xpid]= {};		
 			}
 		}	
-       	
+    
+    if(displayDesktopAlert){
+     
+      if(nservice.isEnabled()){
+         for (i in $scope.calls){
+           var data = {};
+           var left_buttonText;
+           var right_buttonText;
+           var left_buttonID;
+           var right_buttonID;
+           var right_buttonEnabled;
+           var callType;
+           if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+             left_buttonText = $scope.calls[i].incoming ? "Decline" : "Cancel";
+             right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
+             left_buttonID = "CALL_DECLINED";
+             right_buttonID = "CALL_ACCEPTED";
+             right_buttonEnabled = $scope.calls[i].incoming ? "true" : "false";
+           }else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+             left_buttonText = "END";
+             right_buttonText = "HOLD";
+             left_buttonID = "CALL_DECLINED";
+             right_buttonID = "CALL_ON_HOLD";
+             right_buttonEnabled = "true";
+           }else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
+             left_buttonText = "END";
+             right_buttonText = "TALK";
+             left_buttonID = "CALL_DECLINED";
+             right_buttonID = "CALL_ON_RESUME";
+             right_buttonEnabled = "true";
+           }
+           if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+             callType = "Queue";
+           }else if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+             callType = "External";
+           }else{
+             callType = "Office";
+           }
+           data = {
+                 "notificationId": $scope.calls[i].xpid,
+                 "leftButtonText" : left_buttonText,
+                 "rightButtonText" : right_buttonText,                  
+                 "leftButtonId" : left_buttonID,                  
+                 "rightButtonId" : right_buttonID,
+                 "leftButtonEnabled" : "true",
+                 "rightButtonEnabled" : right_buttonEnabled,                  
+                 "callerName" : $scope.calls[i].displayName,
+                 "callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outgoind call for",
+                 "callCategory" : callType,
+                 "muted" : $scope.calls[i].mute ? "1" : "0",
+                 "record" : $scope.calls[i].record ? "1" : "0"
+           };            
+
+           phoneService.displayWebphoneNotification(data,"INCOMING_CALL");          
+         }
+       }else{            
+            $scope.displayAlert = true;
+            $timeout(displayNotification, 1500);          
+        }
+    }else{
+        if(!nservice.isEnabled()){        
+        $scope.displayAlert = true;
+        $timeout(function(){
+         var element = document.getElementById("Alert");
+         if(element){
+           var content = element.innerHTML;
+           phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);          }
+          element = null;
+          $scope.displayAlert = false;
+          },2500);
+      }
+    }
+
+
+      
+
+
+      
+
+
 	
-		if(displayDesktopAlert){
-	       	$scope.displayAlert = true;
-			$timeout(displayNotification, 1500);
-		}else{
-			$scope.displayAlert = true;
-			$timeout(function(){
-				var element = document.getElementById("Alert");
-				if(element){
-					var content = element.innerHTML;
-					phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-					
-				}
-				element = null;
-				$scope.displayAlert = false;
-			},2500);
-		}
+		
 		
        	if($scope.inCall && !$.isEmptyObject($scope.callObj))
        		$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
