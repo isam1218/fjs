@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, groupService, settingsService, storageService) {
+hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'SettingsService', 'StorageService', '$location', function($scope, $rootScope, $routeParams, groupService, settingsService, storageService, $location) {
 	$scope.groupID = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupID);
 	$scope.isMine = groupService.isMine($scope.groupID);
@@ -57,20 +57,19 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
     for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
       if ($scope.tabs[i].lower == $routeParams.route){
         $scope.toggleObject = $scope.tabs[i].idx;
-        localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
         break;
       }
     }
+    var endPath = "/group/" + $routeParams.groupId + "/" + $scope.selected;
+    $location.path(endPath);
     localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
     localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   } else {
     $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? 'chat' : 'members';
     $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : $scope.isMine ? 0 : 1;
+    var endPath = "/group/" + $routeParams.groupId + "/" + $scope.selected;
+    $location.path(endPath);
   }
-
-  // if have a saved tab/route --> load that route
-  // $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? 'chat' : 'members';
-  // $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : $scope.isMine ? 0 : 1;
 
   // save user's last selected tab to LS
   $scope.saveGTab = function(tab, index){

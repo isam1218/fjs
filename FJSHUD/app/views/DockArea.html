@@ -68,7 +68,7 @@
 
 	<!-- contacts -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" droppable="Call" dragger>
-		<div ng-click="goToFullRoute('contact', gadget.data.xpid)"  class="Header Single">
+		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="titleHeader">{{ ::gadget.data.displayName }}</div>
@@ -86,36 +86,35 @@
 					type="{{::gadget.data.call.type}}">
 				</avatar>
 			</div>	
-		</div>
+		</a>
 	</div>
 
 	<!-- groups -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
-		<div ng-click="goToFullRoute('group', gadget.data.xpid)" class="Header">
+		<a href="#/group/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="titleHeader">{{ ::gadget.data.name }}</div>
 				<div class="subTitle">None</div>
 			</div>
-		</div>
+		</a>
 		
 		<div class="Content">
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<div  class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'fullProfile.displayName' track by member.xpid" droppable="Call">
-					<div ng-click="goToFullRoute('contact', member.fullProfile.xpid)" class="ListRow">
-						<avatar profile="member.fullProfile"></avatar>
-					
-						<div class="ListRowContent" dockable="member.fullProfile">
-							<div class="ListRowTitle">
-								<div class="name">{{ ::member.fullProfile.displayName }}</div>
-								<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-								<div class="status">{{(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + on call' : '') }}</div>								
-							</div>
+				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'fullProfile.displayName' track by member.xpid" droppable="Call">
+					<avatar profile="member.fullProfile"></avatar>
+				
+					<div class="ListRowContent" dockable="member.fullProfile">
+						<div class="ListRowTitle">
+							{{ ::member.fullProfile.displayName }}
+							<br/>
+							<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+							{{verbage[member.fullProfile.hud_status] || verbage['offline']}}
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 		
@@ -124,21 +123,20 @@
 
 	<!-- conferences -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
-		<div ng-click="goToFullRoute('conference', gadget.data.xpid)" class="Header">
+		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
 				<div class="subTitle" ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
 				<div class="subTitle" ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
 			</div>
-		</div>
+		</a>
 		
 		<div class="Content">
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<div  class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
-					<div ng-click="goToFullRoute('contact', member.fullProfile.xpid)" class="ListRow">
+				<a class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
 					<avatar profile="member" context="conference:gadget.data"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
@@ -149,8 +147,7 @@
 						</div>
 						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt || member.started"></div>
 					</div>
-				</div>
-				</div>
+				</a>
 				
 				<div class="free" ng-if="!gadget.data.members || gadget.data.members.length == 0">
 					{{::verbage.room_is_free}}...
@@ -166,13 +163,13 @@
 
 	<!-- queues -->
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
-		<div ng-click="goToFullRoute('queue', gadget.data.xpid)" class="Header">
+		<a href="#/queue/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="Name">{{ ::gadget.data.name }}</div>
 				<div class="Agents">Agents: {{ gadget.data.info.active + ' / ' + gadget.data.loggedInMembers + ' / ' + gadget.data.members.length }}</div>
 			</div>
-		</div>
+		</a>
 		
 		<div class="Content">
 			<div class="List Stats">

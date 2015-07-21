@@ -678,7 +678,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.sendDtmf = function(xpid,entry){
-		var call = context.getCal(xpid);
+		var call = context.getCall(xpid);
 		if(call){
 			call.dtmf(entry);
 		}	
