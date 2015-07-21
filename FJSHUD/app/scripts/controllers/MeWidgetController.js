@@ -8,12 +8,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var settings = {};
     var queues = [];
     var callId = $routeParam.callId;
+    $scope.phoneType = false;
     var queueThresholdUpdateTimeout;
     var weblauncherTimeout;
     var timer;
     var text;
-
-    $scope.avatar ={};
 
     $scope.avatar ={};
     $scope.phoneType = false;
@@ -185,7 +184,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     myHttpService.getFeed('i18n_langs');
 
     
-
     if(!phoneService.isPhoneActive()){
             for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
                 if($scope.tabs[i].option == 'Phone'){
@@ -193,7 +191,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     break;
                 }
             }
-    }
+     }
 
     phoneService.getDevicesPromise().then(function(data){
         
@@ -437,6 +435,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
 
     };
+
     $scope.volume = {};
     $scope.volume.micVol;
     $scope.volume.spkVol;
@@ -642,6 +641,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.$on('contacts_synced', function(event, data) {
+
         
         if(data && data != undefined){
             var meUser = data.filter(function(item){
@@ -804,11 +804,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.holdCall(call.xpid,isHeld == 'True');
     };
 
+
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 		$scope.call_obj.phoneNumber = '';
+
     };
+		
 
     $scope.endCall = function(call){
         phoneService.hangUp(call.xpid);
@@ -1048,6 +1051,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                    phoneService.playTone(data,false);
                 },100);
 
+
             if($scope.currentCall){
                 
                 
@@ -1129,6 +1133,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
         update_queues();
     });
+
 
       
 }]);

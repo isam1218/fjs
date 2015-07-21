@@ -4,9 +4,15 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 	
 	$scope.conferenceId = $routeParams.conferenceId;
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
+	
+	if($scope.conference.status){
+		var isJoined = $scope.conference.status.isMeJoined;
+	}
+	$scope.joined = isJoined || false;
 
   $scope.membersRefused = [];
 	
+
   $scope.joined = $scope.conference.status.isMeJoined;
   $scope.enableChat = $scope.joined;
   $scope.enableTextInput = $scope.joined;

@@ -1,8 +1,7 @@
 
-hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', 
+hudweb.controller('NotificationController', 
+  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService',
   function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
-
-
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = [];
@@ -506,7 +505,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 				$scope.callObj[xpid]= {};		
 			}
 		}	
-       	
+      	
 		$scope.inCall = Object.keys($scope.calls).length > 0;
 
 		$scope.isRinging = true;
@@ -630,23 +629,23 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			case "openNot":
 				$scope.overlay ='notifications';
 				break;
-			case 'displayNotification':
-				$scope.displayAlert = true;
-				$timeout(displayNotification
-						, 1500);
-				break;
 			case "enabled":
 				$scope.phoneSessionEnabled = true;
 				break;
 			case "disabled":
 				$scope.phoneSessionEnabled = false;
+			case 'displayNotification':
+				$scope.displayAlert = true;
+				$timeout(displayNotification
+						, 1500);
 				break;
-
 
 		}
 	});
-	  var addTodaysNotifications = function(item)
-    {
+	
+
+  var addTodaysNotifications = function(item){
+   // console.error('item - ', item);
 
     var context, contextId, targetId, groupContextId, queueContextId;
     var today = moment(ntpService.calibrateTime(new Date().getTime()));
@@ -800,6 +799,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
 	$scope.$on('quickinbox_synced', function(event,data){
 
+		displayDesktopAlert = true;
+  		var missedCalls = [];
+
 		var displayDesktopAlert = true;
 		var missedCalls = [];
   		if(data){
@@ -911,7 +913,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 					}else if(notification.type == 'missed-call'){
                 				notification.label = 'missed call';
                 				missedCalls.push(notification);
-
 					}else if(notification.type == 'busy-ring-back'){
             					notification.label = 'is now available for call';
 						notification.displayName = notification.fullProfile.displayName;

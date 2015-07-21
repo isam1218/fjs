@@ -126,4 +126,12 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		}
 	};
 
+	$scope.$on('calls_updated',function(event,data){
+		if(data){
+			$scope.calls = data;
+			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
+		}
+		
+		$scope.inCall = Object.keys($scope.calls).length > 0;
+	});
 }]);

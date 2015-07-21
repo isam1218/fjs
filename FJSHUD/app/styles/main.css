@@ -1275,6 +1275,18 @@ p {
 .FileUploadStatus progress[aria-valuenow]:before {
   background: #72E673;
 }
+.FileUploadStatus .Gadget:hover progress {
+  display: none;
+}
+.FileUploadStatus .Gadget:hover .CancelUploadIcon {
+  display: block;
+}
+.FileUploadStatus .Gadget progress {
+  display: block;
+}
+.FileUploadStatus .Gadget .CancelUploadIcon {
+  display: none;
+}
 @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
   .FileUploadStatus {
     margin-top: 80%;
@@ -3253,6 +3265,12 @@ div.NewCall .XButton.XButtonNormal {
   display: inline-block;
   color: #888;
 }
+.RecentCallsHeader:not(:first-child) .RecentPointer {
+  margin-left: -20px;
+}
+.RecentCallsHeader:not(:first-child):nth-child(3) {
+  margin-left: -10px;
+}
 .RecentCallsHeader.recent-selected-column {
   color: #91B139;
 }
@@ -3375,7 +3393,7 @@ div.NewCall .XButton.XButtonNormal {
   width: 7%;
 }
 .RecentCallSection .RecentDate {
-  width: 30%;
+  width: 32%;
 }
 .RecentCallSection .RecentFromTo {
   width: 25%;
@@ -6494,6 +6512,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .CallStatusContainerOutbound {
   background: linear-gradient(#f3f8e6, #ecf2da);
@@ -6505,6 +6524,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   background: -webkit-linear-gradient(#fff1dd,#f8e7cd);
 }
 >>>>>>> @clnielsen changed coloring for queue calls
+=======
+.CallStatusContainerQueue {
+  background: linear-gradient(#fff1dd, #f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd, #f8e7cd);
+}
+>>>>>>> 09d802e6c0393b53bebfe7f2bd71003b3c7223ee
 .CallStatusContainerInbound {
   background: linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-linear-gradient(#e4f1f8, #dfebf1);

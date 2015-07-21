@@ -177,4 +177,5 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 		}
 	});
+
 }]);
