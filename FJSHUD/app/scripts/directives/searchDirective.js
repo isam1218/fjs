@@ -43,8 +43,10 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 						// create x for first time
 						if ($(element).parent().find('.x').length == 0) {
 							 xImg = angular.element('<img class="x" src="img/clear.png"/>');
-				
-							xImg.css('top', element[0].offsetTop + 'px');
+				            if($(element).closest('#WidgetSearch').length > 0)
+				            	xImg.css('top', (element[0].offsetTop - 3) + 'px');
+				            else
+				            	xImg.css('top', element[0].offsetTop + 'px');
 							xImg.css('left', element[0].offsetLeft + element[0].offsetWidth + 'px');
 				
 							// clear on click
