@@ -123,9 +123,11 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	    {
 	    	return function(opt){
 	    		var truncated_name = opt.display_name;
+	    		var opt_name = opt.display_name;
+	    		
 	    		if(opt.display_name.length > 20)
 	    			truncated_name = opt.display_name.substring(0, 19) + '...';
-			    if(truncated_name == $scope.actionObj.selectedAction.display_name)
+			    if(truncated_name == $scope.actionObj.selectedAction.display_name || opt_name == $scope.actionObj.selectedAction.display_name)
 			    	opt.display_name =  truncated_name;
 			    else
 			    	opt.display_name = opt.orig_name;

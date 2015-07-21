@@ -58,9 +58,11 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     { 
     	return function(opt){
     		var truncated_name = opt.name;
+    		var opt_name = opt.display_name;
+    		
     		if(opt.name.length > 13)
     			truncated_name = opt.name.substring(0, 12) + '...';
-		    if(truncated_name == $scope.selectedConversationQueueOption.name)
+		    if(truncated_name == $scope.selectedConversationQueueOption.name || opt_name == $scope.selectedConversationQueueOption.name)
 		    	opt.name =  truncated_name;
 		    else
 		    	opt.name = opt.orig_name;

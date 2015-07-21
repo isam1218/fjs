@@ -23,12 +23,15 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
  {
    return function(opt){
 	var truncated_name = opt.display_name; 
+	var opt_name = opt.display_name;
 	
 	if(opt.display_name && opt.display_name.length > 23)
 		truncated_name = opt.display_name.substring(0, 22) + '...';
 	
-    if(truncated_name == $scope.selectedQueue.display_name)
-    	opt.display_name =  truncated_name;
+    if(truncated_name == $scope.selectedQueue.display_name || opt_name == $scope.selectedQueue.display_name)
+    {	
+    	opt.display_name = truncated_name;
+    }	
     else
     	opt.display_name = opt.orig_name;
 	return opt; 

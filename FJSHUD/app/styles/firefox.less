@@ -14,7 +14,7 @@
            margin-top: 12px;   
            cursor: pointer;   
 		   z-index: 100;
-     }
+     }         
         
      .TopBarMeStatus{
         .Logout {
@@ -291,7 +291,19 @@
   }
   
   .Widget{
-    height: 99%;
+    height: 99.2%;    
+    
+    &#WidgetSearch{
+      .WidgetBody .SearchPanel{
+            input.SearchBox{
+                padding-top: 1px !important;
+                padding-bottom: 1px !important;            
+            }
+            input.XButton{
+                line-height: 0.5;
+            }
+        }
+    }   
   } 
   .WidgetTabBar{ clear: both;}
   .Messages{        
@@ -408,6 +420,15 @@
      }
    } 
    
+   .Gadget {
+    .Header {
+        .Title {
+            .Agents {
+                overflow: initial !important;
+            }
+        }
+    }
+   }
    
    .ZoomWidgetSection{
     .XButtonWide.XButtonBlue.first{
@@ -456,19 +477,7 @@
         }
     }
           
-   } 
-   
-   .Widget.Search{
-    .SearchPanel{
-        input.SearchBox{
-            padding-top: 1px !important;
-            padding-bottom: 1px !important;            
-        }
-        input.XButton{
-            line-height: 0.5;
-        }
-    }
-   }
+   }      
 
 /* media queries*/
 /*.WidgetMe {
