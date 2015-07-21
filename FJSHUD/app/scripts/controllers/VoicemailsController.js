@@ -71,9 +71,29 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		
 	});
 	
-	phoneService.getVm().then(function(data){
+	phoneService.getVm().then(function(data) {
+		if (group || contact) {
+			// voicemails need to be filtered down
+			updateVoicemails(data);
+			
+			// set up listener
+			$scope.$on('voicemailbox_synced', function() {
+				phoneService.getVm().then(function(data2) {
+					// refresh
+					updateVoicemails(data2);
+				});
+			});
+		}
+		else
+			// pass by reference
+			$scope.voicemails = data;
+	});
+	
+	var updateVoicemails = function(data) {		
 		// populate voicemails according to page
 		if (group) {
+			$scope.voicemails = [];
+			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				for (var g = 0, gLen = group.members.length; g < gLen; g++) {
 					if (data[i].contactId == group.members[g].contactId) {
@@ -82,16 +102,13 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 					}
 				}
 			}
-			
 		}
 		else if (contact) {
-			$scope.voicemails  = data.filter(function(voicemail){
-					return voicemail.contactId == contact.xpid;
-				});
-		}else {
-			$scope.voicemails = data;
+			$scope.voicemails = data.filter(function(voicemail){
+				return voicemail.contactId == contact.xpid;
+			});
 		}
-	});
+	};
 	
 	 //call truncation on select value change
 	$scope.trancateSelectedName = function(){
@@ -100,6 +117,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	   		$scope.actionObj.selectedAction.display_name = $scope.actionObj.selectedAction.display_name.substring(0, 19) + '...';
 	   	}    	
 	};
+	
 	//call truncation on page load
 	$scope.truncateLongAction = function()
 	    {
@@ -171,8 +189,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	// send to top navigation controller
 	$scope.playVoicemail = function(voicemail) {
 		$rootScope.$broadcast('play_voicemail', voicemail);
-		
-        httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: voicemail.xpid});
 	};
 
   $scope.callExtension = function($event, contact) {
