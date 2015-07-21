@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, contactService, settingsService, storageService) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'SettingsService', 'StorageService', '$location', function($scope, $rootScope, $routeParams, contactService, settingsService, storageService, $location) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);
 	$scope.messages = [];
@@ -26,24 +26,30 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
     {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
-    settingsService.getSettings().then(function() {            
+
+    settingsService.getSettings().then(function() {
+        // if there's a defined route...
         if($routeParams.route != undefined ){
+            // set $scope.selected and toggleObject as that full route
             $scope.selected = $routeParams.route;
-            localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
-                    if($scope.tabs[i].lower == $routeParams.route){
-                        $scope.toggleObject = {item: i};
-                        localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                    }
+            for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
+                if($scope.tabs[i].lower == $routeParams.route){
+                    $scope.toggleObject = {item: i};
+                    break;
                 }
+            }
+            // outline that full route and send user there
+            var endPath = "/contact/" + $routeParams.contactId + "/" + $scope.selected;
+            $location.path(endPath);
+            // save selected tab to LS
             localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
             localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
         }else{
-            // $scope.globalXpid = $rootScope.myPid;
-            // $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-            // $scope.toggleObject = localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+            // otherwise if no defined route -> use last accessed tab (saved to LS), send user to that path
             $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
             $scope.toggleObject = localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
+            var endPath = "/contact/" + $routeParams.contactId + "/" + $scope.selected;
+            $location.path(endPath);
         }
     });
     

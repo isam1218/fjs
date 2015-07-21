@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'QueueService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, queueService, settingsService, storageService) {
+hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParams', 'QueueService', 'SettingsService', 'StorageService', '$location', function($scope, $rootScope, $routeParams, queueService, settingsService, storageService, $location) {
     $scope.queueId = $scope.targetId = $routeParams.queueId;
     $scope.queue = queueService.getQueue($scope.queueId);
     $scope.query = "";
@@ -59,19 +59,19 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
             if ($scope.tabs[i].lower == $routeParams.route){
                 $scope.toggleObject = $scope.tabs[i].idx;
-                localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
                 break;
             }
         }
+        var endPath = "/queue/" + $routeParams.queueId + "/" + $scope.selected;
+        $location.path(endPath);
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     } else {
         $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
         $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
+        var endPath = "/queue/" + $routeParams.queueId + "/" + $scope.selected;
+        $location.path(endPath);
     }
-
-    // $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
-    // $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
 
     $scope.saveQTab = function(tab, index){
         $scope.selected = tab;
