@@ -910,6 +910,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.parkCall(currentCall.xpid);
     };
 
+    $scope.determineTransferFrom = function(contactToTransfer){
+        var me = contactService.getContact($rootScope.myPid);
+        return me.xFerFromPermObj[contactToTransfer];
+    };
+
     $scope.muteCall = function(){
        if($scope.volume.micVol == 0){
             phoneService.setMicSensitivity($rootScope.volume.mic);
