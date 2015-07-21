@@ -2,6 +2,7 @@
 hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', 
   function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
 
+
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = [];
@@ -87,7 +88,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
     }
   };        
     
-  phoneService.getDevices().then(function(data){
+  phoneService.getDevicesPromise().then(function(data){
     $scope.phoneSessionEnabled = true;
   });
   
@@ -347,9 +348,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
   $scope.holdCall = function(xpid,isHeld){
     phoneService.holdCall(xpid,isHeld);
-    
-    
-
     if(!isHeld){
       for(var call in $scope.calls){
         if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
@@ -590,7 +588,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
         $('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
     else
         $('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
-
 	});
 
 	$scope.playVm = function(xpid){
@@ -650,7 +647,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 	});
 	  var addTodaysNotifications = function(item)
     {
-   // console.error('item - ', item);
 
     var context, contextId, targetId, groupContextId, queueContextId;
     var today = moment(ntpService.calibrateTime(new Date().getTime()));
@@ -958,7 +954,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
 			
 		if(displayDesktopAlert){
-<<<<<<< HEAD
 			//nservice.isEnabled(
 			if(true){
 		
@@ -985,16 +980,5 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 			 }
 	   }
       }				
-=======
-			if(nservice.isEnabled()){
-				return;
-			}
-			else{
-				$timeout(displayNotification, 1000);
-			}
-
-		}				
-
->>>>>>> @clnielsen added the native notifications and cleaned up the phone stuff for the new webphone
     });		
 }]);
