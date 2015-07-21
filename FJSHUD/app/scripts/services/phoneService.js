@@ -763,33 +763,43 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
-
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			var match = false;
+		// first time
+		if (voicemails.length == 0) {
+			voicemails = data;
 			
+			// add full profile
 			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
-				// find and update or delete
-				if (voicemails[v].xpid == data[i].xpid) {
-					if (data[i].xef001type == 'delete') {
-						voicemails.splice(v, 1);
-						vLen--;
+				voicemails[v].fullProfile = contactService.getContact(voicemails[v].contactId);
+			}
+			
+			deferredVM.resolve(voicemails);
+		}
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+				
+				for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
+					// find and update or delete
+					if (voicemails[v].xpid == data[i].xpid) {
+						if (data[i].xef001type == 'delete') {
+							voicemails.splice(v, 1);
+							vLen--;
+						}
+						else
+							voicemails[v].readStatus = data[i].readStatus;
+						
+						match = true;
+						break;
 					}
-					else
-						voicemails[v].readStatus = data[i].readStatus;
-					
-					match = true;
-					break;
+				}
+				
+				if (!match && data[i].xef001type != 'delete') {
+					data[i].fullProfile = contactService.getContact(data[i].contactId);
+					voicemails.push(data[i]);
+
 				}
 			}
-			
-			if (!match && data[i].xef001type != 'delete') {
-				data[i].fullProfile = contactService.getContact(data[i].contactId);
-				voicemails.push(data[i]);
-
-			}
 		}
-
-		deferredVM.resolve(voicemails);
 	});
 
 	this.mute = function(callId,toMute){
