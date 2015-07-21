@@ -111,7 +111,7 @@
 							<div class="ListRowTitle">
 								<div class="name">{{ ::member.fullProfile.displayName }}</div>
 								<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-								<div class="status">{{verbage[member.fullProfile.hud_status] || verbage['offline']}}</div>								
+								<div class="status">{{(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + on call' : '') }}</div>								
 							</div>
 						</div>
 					</div>

@@ -141,6 +141,30 @@
 		& > div {
 			display: inline-block;
 			vertical-align: top;
+			
+			&.CallStatus{
+                border: 1px solid #CCC;
+                border-radius: 3px;
+                -webkit-border-radius: 3px;
+                background-color: #fff;
+                height: 34px;
+                width: 34px;
+                padding: 1px;
+                
+                .CallAvatar.CallAvatar_Office, 
+                .CallAvatar_Office, .CallAvatar{
+                  width: 30px;
+                  height: 30px;
+                  img{
+                   width: 28px;
+                   height: 28px;
+                   margin-top: -2px;
+                   &.default{
+                    margin-left: -2px;
+                   }
+                  }
+                }
+          }
 		}
 	
 		.Title {
@@ -159,13 +183,15 @@
 				color: #555;
 				cursor: pointer; 
 				margin-top: -2px;
-                /*padding: 0;*/				
+                /*padding: 0;*/							
 				
 				&.titleHeader{				                   
                   text-shadow: #fff 0 1px 0;
                   font-weight: bold;                  
                   font-size: 12px;
                   margin-top: -2px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
                   
                   
                   &.header{
@@ -286,7 +312,9 @@
                 }        
                 .ListRowTitle {
                   max-width: 100% !important;    
-                  padding: 5px;                   
+                  padding: 5px 0 5px 5px;   
+                  width: 100%;
+                                  
                           .name{
                             font-size: 12px !important;               
                                     color: #555;

@@ -80,11 +80,11 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			element.addClass(profile.xpid);
 			
 			function showSingle() {
-				element.html('<img class="AvatarImgPH" src="' + url + 'img/Generic-Avatar-28.png" />');
+				element.html('<img class="AvatarImgPH default" src="' + url + 'img/Generic-Avatar-28.png" />');
 			}
 			
 			function showGroup() {
-				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
+				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
 			}
 			
 			function loadImage(el, url) {
