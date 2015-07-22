@@ -322,6 +322,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         return false;
     };
 
+    $scope.showBargePopup = function(e) {
+        e.stopPropagation();
+        var eventTarget = context.getEventHandlerElement(e.target, e);
+        var offset = context.getElementOffset(eventTarget);
+        data = {key:"BargeDropDown", x:offset.x, y:offset.y + 25,model:$scope.currentCall};
+        $scope.showPopup(data, eventTarget);
+        return false;
+    };
+
     $scope.showDialPad = function(e) {
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
