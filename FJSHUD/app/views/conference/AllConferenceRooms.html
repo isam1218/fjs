@@ -44,14 +44,7 @@
                 <select ng-model="selectedConf" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortConf(selectedConf)"></select>
              </div>
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
-                <div class="SearchInputBox">
-                    <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
-                    </div>
-                    <div class="SearchInputBoxStateButton">
-                        <div class="SearchInputBoxStateButtonIcon"></div>
-                    </div>
-                </div>
+                <input class="SearchBox" data-ng-model="query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
             </div>
            
             <div class="ListView WithToolBar">
