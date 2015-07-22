@@ -38,6 +38,12 @@ fjs.CONFIG = {
         EXTERNAL_CALL:5,
         CALL_MENU:6,
     },
+    
+    BARGE_TYPE:{
+        BARGE:2,
+        MONITOR:1,
+        WHISPER:3,
+    },
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',

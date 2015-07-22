@@ -34,10 +34,10 @@
                     </div>
                 </div>
             </div>
-
+          <!---->
             <div class="WidgetBody ng-class:{'currentCall': currentCall != null}">  
              <div class="call-block">                                     
-              <div class="CurrentCall" ng-if="currentCall != null" resize-height> 
+              <div class="CurrentCall"  ng-if="currentCall != null" resize-height> 
                 <div class="WidgetSectionTitle">{{::verbage.current_call}} <span timer="currentCall.startedAt ? currentCall.startedAt : currentCall.created"> </span> </div>
                 <div class="LeftSide"> 
                   <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >  
@@ -79,13 +79,23 @@
                 <div class="RightSide">   
                                          
                   <div class="row_buttons"> 
-                    <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('transfer',currentCall)"><span>{{::verbage.transfer}}</span></button> 
-                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)"><span>{{::verbage.conf_room}}</span></button> 
+                    <button  class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.type != 4"><span>{{::verbage.transfer}}</span></button> 
+                    <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.type != 4"><span>{{::verbage.conf_room}}</span></button> 
                     <button class="XButton CurrentCallBtn" 
                     ng-class="currentCall.mute ? 'UnmuteBtn' : ''"
                     ng-click="muteConference()" ng-if="currentCall.type == 0"><span>{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
-                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0"><span>{{::verbage.Park}}</span></button>  
                     
+                    <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3}" ng-click="parkCall(currentCall)" ng-if="currentCall.type != 0 && currentCall.type != 4"><span>{{::verbage.Park}}</span></button>  
+                    
+                    <!---->
+
+                    <div class="SelectBox XButton" ng-if="currentCall.type == 4" data-ng-click="showBargePopup($event, $element)" style="width:97%" ng-click="showBargePopup($event,$element,true)">
+                                <div class="SelectBoxText"><span>{{ currentCall.barge == 2 ? 'Barge' : (currentCall.barge == 3 ? 'Whisper' : 'Monitor')}}</span></div>
+                                <div class="SelectBoxArrow"></div>
+                    </div>
+    
+                     <!--<button class="XButton CurrentCallBtn" style="width:97%" ng-click="showBargePopup($event,$element,true)"><span>Barge</span></button> --> 
+                   
                   </div> 
                   
                   <div class="row_buttons"> 
