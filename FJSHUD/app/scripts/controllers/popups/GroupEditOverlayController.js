@@ -75,14 +75,19 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		var groupName = $scope.add.name;
 		var deletedMessageIntro = "GOODBYE " + groupName + "!  "; 
 		var finalDeletedGroupMessage = deletedMessageIntro + deletedGroupMessage;
-
 		var action = $scope.closing ? 'removeWorkgroup' : ($scope.editing ? 'updateWorkgroup' : 'addWorkgroup');
-		// save
-		httpService.sendAction('groups',action , $scope.add);
 		
-		// change location
-		if ($scope.closing && $routeParams.groupId && $routeParams.groupId == $scope.add.groupId)
-			$location.path('/settings/');
+		// save
+		httpService.sendAction('groups', action , $scope.add);
+		
+		if ($scope.closing) {
+			// delete gadget
+			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetGroup_' + $scope.add.groupId);
+			
+			// change location
+			if ($routeParams.groupId && $routeParams.groupId == $scope.add.groupId)
+				$location.path('/settings/');
+		}
 		
 		$scope.showOverlay(false);
 	};

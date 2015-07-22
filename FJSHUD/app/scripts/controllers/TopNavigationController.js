@@ -155,6 +155,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	var loadCheck;
   
 	$scope.$on('play_voicemail', function(event, data) {
+		// mark as read
+        httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: data.xpid});
+		
 		// first time setup
 		if (!player) {
 			player = document.getElementById('voicemail_player');

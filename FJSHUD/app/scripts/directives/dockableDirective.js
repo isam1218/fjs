@@ -42,7 +42,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 					$(ui.helper).addClass('not-allowed');
 					
 					// disable droppable for overflow elements
-					$('.Gadget .Content a.ui-droppable').each(function() {
+					$('.Gadget .Content .ui-droppable').each(function() {
 						if ($(this).position().top >= $(this).closest('.Content').height())
 							$(this).droppable('option', 'disabled', true);
 					});

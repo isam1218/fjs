@@ -15,7 +15,7 @@ fjs.CONFIG = {
 //      , loginURL: "https://huc-qa.fonality.com:5501"
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
-            'queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queuelogoutreasons','queue_stat_members',
+            'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queue_stat_members',
             'queue_call','queuepermissions', 'queue_stat_calls',  'queuemessagestats',
             'calldetails',  'grouppermissions', 'groupcontacts', 
             'contactpermissions', 'contactstatus', 'fdpImage',   'group_page_member',
@@ -37,6 +37,12 @@ fjs.CONFIG = {
         BARGE_CALL:4,
         EXTERNAL_CALL:5,
         CALL_MENU:6,
+    },
+    
+    BARGE_TYPE:{
+        BARGE:2,
+        MONITOR:1,
+        WHISPER:3,
     },
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',

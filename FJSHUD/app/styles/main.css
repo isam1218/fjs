@@ -1396,6 +1396,7 @@ p {
   color: #333;
   text-shadow: 0 1px 0px #fff;
   font-family: Arial, Tahoma, "Helvetica Neue", Helvetica, sans-serif;
+  padding: 0 0 0 3px;
 }
 .Widget .ToolBar .selectWrapper select:hover {
   background: url(../img/arrowDown_8.png) no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
@@ -1412,7 +1413,6 @@ p {
 }
 .Widget .ToolBar .selectWrapper select option {
   text-align: left;
-  padding: 0 5px;
   background-color: #fff;
 }
 .Widget .ToolBar .selectWrapper.vm {
@@ -3672,6 +3672,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .Grid .Row {
   color: gray;
+  font-size: 11px;
 }
 .Widget.Queues .Grid .Row:nth-child(odd) {
   background-color: #eeeeee;
@@ -3688,11 +3689,12 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .Grid .Header > div:nth-child(1),
 .Widget.Queues .Grid .Row > div:nth-child(1) {
-  width: 25%;
+  width: 18%;
+  padding-left: 1px;
 }
 .Widget.Queues .Grid .Header > div:nth-child(n+2),
 .Widget.Queues .Grid .Row > div:nth-child(n+2) {
-  width: 12.5%;
+  width: 13.65%;
 }
 .Widget.Queues .Block {
   position: relative;
@@ -4064,7 +4066,8 @@ div.NewCall .XButton.XButtonNormal {
   height: 0;
   display: inline-block;
   border-color: transparent transparent #729c00 transparent;
-  bottom: 7px;
+  /*bottom: 7px;*/
+  top: 0;
 }
 .Widget.Queues .asc_arrow {
   position: absolute;
@@ -5755,7 +5758,6 @@ input[type="tel"] {
   border: 1px solid rgba(155, 155, 155, 0.3);
 }
 .XButtonNormal span {
-  background-image: -moz-linear-gradient(center top, #fefefe, #ebebeb);
   background-color: transparent;
   color: #333;
   text-shadow: 0px 1px 0px #FFF;
@@ -5780,13 +5782,10 @@ input[type="tel"] {
 .XButtonNormal:disabled span,
 .XButtonNormal.disabled-true span {
   height: 26px;
-  /*background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
-  background-color: #ebebeb;*/
   color: #999;
   text-shadow: 0 1px 0px #fff;
   transition: border .3s;
   cursor: auto;
-  /*background: #fefefe linear-gradient(#fefefe, #ebebeb);*/
   background: transparent;
 }
 .XButtonBlue.disabled-true span,
@@ -6248,6 +6247,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 30px;
   width: 30px;
   background: url("../img/XAvatarBorder.png") no-repeat -95px -230px;
+}
+.CancelUploadIcon {
+  height: 32px;
+  width: 32px;
+  background: url("../img/XIconSet-32x32.png") no-repeat -320px -32px;
 }
 .DownloadIcon {
   position: absolute;

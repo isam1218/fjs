@@ -26,8 +26,6 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 					
 					timeout = $timeout(clearSearch, autoClearTime*1000);
 				}
-				if($(element).val() == '')
-					scope.clearSearch();
 			});
 			
 			// pull updated settings
@@ -40,13 +38,15 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			if (browser == 'Firefox') {
 				var xImg;
 				
-				element.on('keyup change mouseover mouseenter', function(e) {
+				element.on('keydown mouseenter', function(e) {
 					if (element.val() != '') {
 						// create x for first time
 						if ($(element).parent().find('.x').length == 0) {
 							 xImg = angular.element('<img class="x" src="img/clear.png"/>');
-				
-							xImg.css('top', element[0].offsetTop + 'px');
+				            if($(element).closest('#WidgetSearch').length > 0)
+				            	xImg.css('top', (element[0].offsetTop - 3) + 'px');
+				            else
+				            	xImg.css('top', element[0].offsetTop + 'px');
 							xImg.css('left', element[0].offsetLeft + element[0].offsetWidth + 'px');
 				
 							// clear on click
@@ -92,8 +92,11 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			});
 			
 			function clearSearch() {
-				if (attrs.ngModel)
-					scope.$eval(attrs.ngModel + ' = "";');
+				if (attrs.ngModel) {
+					scope.$evalAsync(function() {
+						scope.$eval(attrs.ngModel + ' = "";');
+					});
+				}
 				else
 					element.val('');
 				

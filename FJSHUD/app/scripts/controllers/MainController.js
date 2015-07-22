@@ -78,6 +78,13 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     	}
     };
 
+    $scope.barge_call = function(call,bargeType){
+    	var xpid = call.fullProfile.xpid;
+    	myHttpService.sendAction('contacts', bargeType + 'Call', {contactId: xpid});
+    	$scope.onBodyClick();
+	};
+
+
     $scope.showPopup = function(data, target) {
         if(!data.key) {
             $scope.currentPopup.url = null;

@@ -14,7 +14,7 @@
            margin-top: 12px;   
            cursor: pointer;   
 		   z-index: 100;
-     }
+     }         
         
      .TopBarMeStatus{
         .Logout {
@@ -83,6 +83,9 @@
          div.NewCall{
             .XButton{
                 padding-top: 5px !important;
+                span{
+                    vertical-align: top;
+                }
             }
          }
          
@@ -238,10 +241,7 @@
         
         }
      } 
-     .XButton span{
-        vertical-align: top;               
-     }
-     
+          
      .ToolBar.chatTop{
           .XButton {
                height: 2.2em !important;
@@ -291,7 +291,19 @@
   }
   
   .Widget{
-    height: 99%;
+    height: 99.2%;    
+    
+    &#WidgetSearch{
+      .WidgetBody .SearchPanel{
+            input.SearchBox{
+                padding-top: 1px !important;
+                padding-bottom: 1px !important;            
+            }
+            input.XButton{
+                line-height: 0.5;
+            }
+        }
+    }   
   } 
   .WidgetTabBar{ clear: both;}
   .Messages{        
@@ -343,7 +355,7 @@
   .LeftBarNotificationMessageSection{
     float: left;
     padding-left: 0px;
-    width: 82%;
+    width: 82% !important;
     clear: none;
     
     .NotificationDisplayName {
@@ -408,6 +420,15 @@
      }
    } 
    
+   .Gadget {
+    .Header {
+        .Title {
+            .Agents {
+                overflow: initial !important;
+            }
+        }
+    }
+   }
    
    .ZoomWidgetSection{
     .XButtonWide.XButtonBlue.first{
@@ -420,7 +441,11 @@
     }
    } 
    
-   
+   .vminfo{
+    .vmalternate{
+       .vmcallbtn{margin-top: -15px;}        
+    }
+   }
    .CallLog {
     .ListLineContent.Header{
         .ListLineContentCell{
@@ -456,19 +481,7 @@
         }
     }
           
-   } 
-   
-   .Widget.Search{
-    .SearchPanel{
-        input.SearchBox{
-            padding-top: 1px !important;
-            padding-bottom: 1px !important;            
-        }
-        input.XButton{
-            line-height: 0.5;
-        }
-    }
-   }
+   }      
 
 /* media queries*/
 /*.WidgetMe {

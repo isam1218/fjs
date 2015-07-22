@@ -44,28 +44,24 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 				if($(element).is(':visible') &&  $(element).hasClass('NewCall'))
 				{
 					$(call_block).css('height', new_section_height + "px");	        			        			
-        			
-        			//new call height
+					//new call height
         			var new_call_height = $(call_block).find('.NewCall').outerHeight();
         			//recent call section height
 					var recent_call_height = new_section_height;// - new_call_height - 20; //we need to account for the padding
 					//recent call log height
 					var recent_call_log_height = recent_call_height - new_call_height - ($(recent_call_section).find('.WidgetSectionTitle.meTitle').outerHeight() + $(recent_call_section).find('.RecentCallColumnHeaders').outerHeight());
 					var recent_call_log__height_pct =  ((recent_call_log_height / recent_call_height) * 100);
-					//recent call log height        									
+					//recent call log height       
+					var recentCallLogs = $(call_block).find('.RecentCallLogs');
+					$(call_block).find('.RecentCallSection').removeAttr('style');
+					$(recentCallLogs).removeAttr('style');
 					$(call_block).find('.RecentCallLogs').css('height', (recent_call_log__height_pct) +'%');
 														
 					//reference holder height
-					var pref_holder = $(widget_body).find('.Preferences-Holder');					
-					var perf_holder_height = new_section_height + 15;
-					
-					//reference list height					
-					var pref_height = perf_holder_height - ($(pref_holder).find('.WidgetSectionTitle').outerHeight() + $(pref_holder).find('.WidgetTabBar').outerHeight());
-					//inner reference div height									
-					var inner_perf_height = (pref_height / widgetHeight) * 100;		
-					
+					var pref_holder = $(widget_body).find('.Preferences-Holder');														
+					//reference list height													
 					$(pref_holder).css('height', new_section_height + "px").css('clear', 'both');
-					
+				
 					//reference list height					
 					var pref_height = new_section_height - ($(pref_holder).find('.WidgetSectionTitle').outerHeight() + $(pref_holder).find('.WidgetTabBar').outerHeight() - 70);// + 20
 					var pref_holder_height = new_section_height + 15;
@@ -146,7 +142,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 			if($(element).hasClass('NewCall') && !docLoaded)
 			{	
 				
-				checkIfLoaded = $interval(checkWidgetLoaded, 100);   			 			    					
+				checkIfLoaded = $interval(checkWidgetLoaded, 100, 0, false);   			 			    					
 			}
 			if($(element).hasClass('CurrentCall'))
 			{
@@ -165,7 +161,7 @@ hudweb.directive('resizeHeight', ['$interval', function($interval){
 				//Me widget			
 				if($(element).hasClass('NewCall'))
 				{					
-					checkIfLoaded = $interval(checkWidgetLoaded, 100);  			
+					checkIfLoaded = $interval(checkWidgetLoaded, 100, 0, false);  			
 				}
 				if($(element).hasClass('CurrentCall'))
 				{

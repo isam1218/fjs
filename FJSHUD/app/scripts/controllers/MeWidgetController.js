@@ -322,6 +322,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         return false;
     };
 
+    $scope.showBargePopup = function(e) {
+        e.stopPropagation();
+        var eventTarget = context.getEventHandlerElement(e.target, e);
+        var offset = context.getElementOffset(eventTarget);
+        data = {key:"BargeDropDown", x:offset.x, y:offset.y + 25,model:$scope.currentCall};
+        $scope.showPopup(data, eventTarget);
+        return false;
+    };
+
     $scope.showDialPad = function(e) {
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
@@ -683,7 +692,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         }else if(b.incoming){
                             return b.location.localeCompare(a.phone);
                         }else{
-                            return b.location.localeCompare(b.location)
+                            return b.location.localeCompare(b.location);
                         }
                     });
                    
@@ -908,6 +917,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.parkCall = function(currentCall){
         var call =  phoneService.getCall(currentCall.xpid);
         phoneService.parkCall(currentCall.xpid);
+    };
+
+    $scope.determineTransferFrom = function(contactToTransfer){
+        var me = contactService.getContact($rootScope.myPid);
+        return me.xFerFromPermObj[contactToTransfer];
     };
 
     $scope.muteCall = function(){

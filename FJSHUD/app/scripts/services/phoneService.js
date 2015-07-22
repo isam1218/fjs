@@ -3,11 +3,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
+	var phonePlugin;
 
 	$("body").append($compile(pluginHtml)($rootScope));
-	
-	var phonePlugin = document.getElementById('fonalityPhone');
-	var version = phonePlugin.version;
+	phonePlugin = document.getElementById('fonalityPhone');
+	var version;
+	if(phonePlugin){
+		version = phonePlugin.version;
+	}
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
@@ -65,6 +68,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(document.hidden){
 			if(notificationCache.html){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+			}else{
+				$rootScope.$broadcast("phone_event", {event: "displayNotification"});
 			}
 		}else{
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
@@ -73,7 +78,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 	
-	document.addEventListener("visibilitychange", isDocumentHidden, false);
+	if(document.attachEvent){
+		document.attachEvent("onVisibilitychange",isDocumentHidden);
+	}else{
+		document.addEventListener("visibilitychange", isDocumentHidden, false);
+		
+	}
 
 
 
@@ -148,11 +158,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var call = context.getCall(xpid);
 		if(call){
 			call.hold = isHeld;
+      httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
 			if(isHeld){
-           		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+        httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 			}else{
-	           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+	       httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
 			}	
 		}
 		
@@ -763,33 +774,43 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
-
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			var match = false;
+		// first time
+		if (voicemails.length == 0) {
+			voicemails = data;
 			
+			// add full profile
 			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
-				// find and update or delete
-				if (voicemails[v].xpid == data[i].xpid) {
-					if (data[i].xef001type == 'delete') {
-						voicemails.splice(v, 1);
-						vLen--;
+				voicemails[v].fullProfile = contactService.getContact(voicemails[v].contactId);
+			}
+			
+			deferredVM.resolve(voicemails);
+		}
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+				
+				for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
+					// find and update or delete
+					if (voicemails[v].xpid == data[i].xpid) {
+						if (data[i].xef001type == 'delete') {
+							voicemails.splice(v, 1);
+							vLen--;
+						}
+						else
+							voicemails[v].readStatus = data[i].readStatus;
+						
+						match = true;
+						break;
 					}
-					else
-						voicemails[v].readStatus = data[i].readStatus;
-					
-					match = true;
-					break;
+				}
+				
+				if (!match && data[i].xef001type != 'delete') {
+					data[i].fullProfile = contactService.getContact(data[i].contactId);
+					voicemails.push(data[i]);
+
 				}
 			}
-			
-			if (!match && data[i].xef001type != 'delete') {
-				data[i].fullProfile = contactService.getContact(data[i].contactId);
-				voicemails.push(data[i]);
-
-			}
 		}
-
-		deferredVM.resolve(voicemails);
 	});
 
 	this.mute = function(callId,toMute){

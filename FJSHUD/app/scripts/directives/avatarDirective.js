@@ -1,8 +1,15 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', function($rootScope, $parse, $timeout, settingsService) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', function($rootScope, $parse, $timeout, settingsService, httpService) {
 	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
 	var timer;
 	var current;
+	
+	// show updated avatars
+	$rootScope.$on('fdpImage_synced', function(event, data) {
+		for (var i = 0, len = data.length; i < len; i++) {
+			$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+		}
+	});
 	
 	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar> where context and type are optional
 	return {
@@ -69,12 +76,15 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				});
 			}
 			
+			// also attach xpid to listen for updates
+			element.addClass(profile.xpid);
+			
 			function showSingle() {
-				element.html('<img class="AvatarImgPH" src="' + url + 'img/Generic-Avatar-28.png" />');
+				element.html('<img class="AvatarImgPH default" src="' + url + 'img/Generic-Avatar-28.png" />');
 			}
 			
 			function showGroup() {
-				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
+				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
 			}
 			
 			function loadImage(el, url) {

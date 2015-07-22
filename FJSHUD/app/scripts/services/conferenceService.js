@@ -152,7 +152,7 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 								
 						// redirect self
 						if ($rootScope.myPid == data[i].contactId)
-							$location.path('/conference/' + data[i].fdpConferenceId);
+							$location.path('/conference/' + data[i].fdpConferenceId + '/currentcall');
 					}
 				}
 			}

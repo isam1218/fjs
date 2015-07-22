@@ -267,8 +267,8 @@ fjs.i18n = {
       no_transcriptions:'no transcription available',
 
       action:'Actions',
-      mark_all_incoming_vm_read:'Mark all incoming voicemails as read',
-      mark_all_incoming_vm_unread:'Mark all incoming voicemails as unread',
+      mark_all_incoming_vm_read:'Mark as read all incoming voicemails',
+      mark_all_incoming_vm_unread:'Mark as unread all incoming voicemails',
       delete_all_incoming_read:'Delete all read incoming voicemails', 
 
       sort_newest_first:'Newest First',
