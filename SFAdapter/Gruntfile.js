@@ -132,7 +132,7 @@ module.exports = function(grunt) {
         ,'copy': {
             main: {
                 files: [
-                    {expand: true, cwd: 'bin/', src: ['SFAdapter-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/SFAdapter/build_'+getCurrentTime()+'_'+getBuildNumber()}
+                    {expand: true, cwd: 'bin/', src: ['SFAdapter-'+getBuildNumber()+'.zip'], dest: '/var/www/yum/hud/build_'+getCurrentTime()+'_'+getBuildNumber()}
                 ]
             }
         }
