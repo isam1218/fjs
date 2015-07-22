@@ -660,7 +660,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.isAscending = false;
     $scope.$on('calllog_synced',function(event,data){
         if(data){
-            $scope.calllogs = data;
+            $scope.calllogs = data.filter(function(item){
+                if(item.xef001type != "delete"){
+                    //we attach the from display and to display values in order to sort the values
+                    item.fromDisplayValue = $scope.formatIncoming(item,'From');
+                    item.toDisplayValue = $scope.formatIncoming(item,'To');
+                    return true;
+                }
+            });
             $scope.calllogs.sort(function(a,b){
                 return b.startedAt - a.startedAt;
             });
@@ -685,61 +692,27 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             case "From":
                  if($scope.isAscending){
                     $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return b.phone.localeCompare(b.phone);
-                        }else if(a.incoming){
-                            return b.phone.localeCompare(a.location);
-                        }else if(b.incoming){
-                            return b.location.localeCompare(a.phone);
-                        }else{
-                            return b.location.localeCompare(b.location);
-                        }
+                        return a.fromDisplayValue.localeCompare(b.fromDisplayValue);
                     });
                    
                     $scope.isAscending = false;   
                 }else{
                      $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return a.phone.localeCompare(b.phone);
-                        }else if(a.incoming){
-                            return a.phone.localeCompare(b.location);
-                        }else if(b.incoming){
-                            return a.location.localeCompare(b.phone);
-                        }else{
-                            return a.location.localeCompare(b.location);
-                        }
+                         return b.fromDisplayValue.localeCompare(a.fromDisplayValue);
                     }); 
-                    
                     $scope.isAscending = true;
                 }
                 break;
             case "To":
                 if($scope.isAscending){
                     $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return b.location.localeCompare(b.location);
-                        }else if(a.incoming){
-                            return b.phone.localeCompare(a.location);
-                        }else if(b.incoming){
-                            return b.location.localeCompare(a.phone);
-                        }else{
-                            return b.phone.localeCompare(a.phone);
-                        }
+                        return a.toDisplayValue.localeCompare(b.toDisplayValue);
                     });
                     
                     $scope.isAscending = false;   
                 }else{
-
                     $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return a.location.localeCompare(b.location);
-                        }else if(a.incoming){
-                            return a.location.localeCompare(b.phone);
-                        }else if(b.incoming){
-                            return a.phone.localeCompare(b.location);
-                        }else{
-                            return a.phone.localeCompare(b.phone);
-                        }
+                        return b.toDisplayValue.localeCompare(a.toDisplayValue);
                     }); 
                     
                     $scope.isAscending = true;
@@ -781,7 +754,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         switch(type){
             case "From":
                 if(calllog.incoming){
-                    return calllog.phone;
+                    if(calllog.phone){
+                        return calllog.phone;
+                    }else{
+                        return calllog.displayName;
+                    }
                 }else{
                     return $scope.verbage.you + " @ " + calllog.location;
                 }
@@ -789,18 +766,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 if(calllog.incoming){
                     return $scope.verbage.you + " @ " + calllog.location;
                 }else{
-                    return calllog.phone;
+                    if(calllog.phone){
+                        return calllog.phone;
+                    }else{
+                        return calllog.displayName;
+                    }
                 }
         }
     };
     
-    $scope.$on('groups_synced', function(event,data){
-        var meGroup = data.filter(function(item){
-            return item.xpid == $scope.meModel['my_pid'];
-        });
-
-    });
-
     $scope.holdCall = function(call,isHeld){
         phoneService.holdCall(call.xpid,isHeld == 'True');
     };
