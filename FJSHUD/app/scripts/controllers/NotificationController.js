@@ -761,7 +761,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
         notification.message= "User is free for call";
         break; 
       case 'description':
-        notification.label = "chat message"
+        notification.label = "chat message";
         notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
         break;
       case 'wall':
