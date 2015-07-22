@@ -2,11 +2,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
+	var phonePlugin;
 
 	$("body").append($compile(pluginHtml)($rootScope));
-	
-	var phonePlugin = document.getElementById('fonalityPhone');
-	var version = phonePlugin.version;
+	phonePlugin = document.getElementById('fonalityPhone');
+	var version;
+	if(phonePlugin){
+		version = phonePlugin.version;
+	}
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
@@ -74,6 +77,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(document.hidden){
 			if(notificationCache.html){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+			}else{
+				$rootScope.$broadcast("phone_event", {event: "displayNotification"});
 			}
 		}else{
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
@@ -81,7 +86,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 	};
-	messageSoftphone = function(data,retry){
+
+	var messageSoftphone = function(data,retry){
 		if(retry == undefined)retry = 0;
 		if(context.webphone){
 			if(context.webphone.readyState == 1){
@@ -93,7 +99,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			} 
 		}
 	};
-	document.addEventListener("visibilitychange", isDocumentHidden, false);
+	
+	if(document.attachEvent){
+		document.attachEvent("onVisibilitychange",isDocumentHidden);
+	}else{
+		document.addEventListener("visibilitychange", isDocumentHidden, false);
+		
+	}
 
 	window.onfocus = function(){
 		tabInFocus = true;

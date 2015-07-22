@@ -1,0 +1,22 @@
+<div class="MenuWindow SelectMenuBox" data-ng-style="currentPopup.position">
+    <div class="MenuContent">
+        <div class="MenuSection">
+             <div class="MenuItem selected" ng-click="barge_call(currentPopup.model, 'barge')">                              
+                <div class="SelectedIcon" ng-show="currentPopup.model.barge == 2"></div>
+                <div class="MenuItemText"><span>Barge</span></div>
+             </div>
+             <div class="MenuItem selected" ng-click="barge_call(currentPopup.model, 'monitor')">                              
+                <div class="SelectedIcon" ng-show="currentPopup.model.barge == 1"></div>
+                <div class="MenuItemText"><span>Monitor</span></div>
+             </div>
+             <div class="MenuItem selected" ng-click="barge_call(currentPopup.model, 'whisper')">                              
+                <div class="SelectedIcon"ng-show="currentPopup.model.barge == 3" ></div>
+                <div class="MenuItemText"><span>Whisper</span></div>
+             </div>
+        </div>
+    </div>
+</div>
+
+    this.addAction("2","Barge",false);
+        this.addAction("1","Monitor",false);
+        this.addAction("3","Whisper",false);

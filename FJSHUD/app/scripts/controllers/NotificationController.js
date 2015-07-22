@@ -319,9 +319,7 @@ hudweb.controller('NotificationController',
     {
 
     var qid = message.queueId;
-    
     $('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
-    
     if(message.type == 'q-alert-abandoned')   
     {
       queueService.setSelected(true, 'stats', qid);
@@ -333,7 +331,6 @@ hudweb.controller('NotificationController',
       { 
          queueService.setSelected(true, 'calls', qid);  
          $location.path("/" + message.audience + "/" + qid + "/calls");
-              
       }   
          
     }
@@ -457,10 +454,6 @@ hudweb.controller('NotificationController',
             break;
              
         }
-
-        
-
-                
       }
   
     }
@@ -797,6 +790,65 @@ hudweb.controller('NotificationController',
 		}
 	};
 
+  var updateNotificationLabel  = function(notification){
+    var type = notification.type;
+    switch(type){
+      case 'q-alert-rotation':
+            notification.label = $scope.verbage.long_waiting_call;
+            var long_waiting_notification = angular.copy(notification);
+            long_waiting_calls[notification.xpid] = notification;
+        break;
+      case 'q-alert-abandoned':
+        notification.label = 'abandoned call';
+            notification.message = "";
+            var abandoned_notification = angular.copy(notification);
+            // once it's an abandoned call, want long-wait-note to disappear
+            deleteLastLongWaitNotification();
+            $timeout(function(){deleteNotification(abandoned_notification);}, 60000);
+        break;
+      case 'q-broadcast':
+        notification.label = 'broadcast message';
+        break;
+      case 'gchat':
+        notification.label = "group chat to";
+        break;
+      case 'vm':
+        var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
+        var vm = phoneService.getVoiceMail(notification.vmId);
+        notification.vm = vm;
+        notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+        break;
+      case 'chat':
+        notification.label = 'chat message';
+        break;
+      case 'missed-call':
+        notification.label = 'missed call';
+        break;
+      case 'busy-ring-back':
+        notification.label = 'is now available for call';
+        notification.message= "User is free for call";
+        break; 
+      case 'description':
+        notification.label = "chat message"
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
+        break;
+      case 'wall':
+        notification.label = "share";
+        break;
+      case 'error':
+        notification.displayName = 'Error';
+        notification.message = 'Open for Details';
+        break;
+    }
+
+    if(notification.audience == "conference"){
+      var xpid = notification.context.split(':')[1];
+      var conference = conferenceService.getConference(xpid);
+      notification.conference = conference;
+    }
+
+  };
+
 	$scope.$on('quickinbox_synced', function(event,data){
     var displayDesktopAlert = true;
 		var missedCalls = [];
@@ -810,52 +862,7 @@ hudweb.controller('NotificationController',
 					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
-							if(notification.type == 'q-alert-rotation'){
-								notification.label = $scope.verbage.long_waiting_call;
-								var long_waiting_notification = angular.copy(notification);
-								long_waiting_calls[notification.xpid] = notification;
-							}else if(notification.type == 'q-alert-abandoned'){
-								notification.label = 'abandoned call';
-								notification.message = "";
-								var abandoned_notification = angular.copy(notification);
-								// once it's an abandoned call, want long-wait-note to disappear
-								deleteLastLongWaitNotification();
-								$timeout(function(){
-									deleteNotification(abandoned_notification);
-								}, 60000);
-							}else if(notification.type == 'q-broadcast'){
-								notification.label = 'broadcast message';
-							}else if(notification.type == 'gchat'){
-								notification.label = "group chat to";
-							}else if(notification.type == 'vm'){
-								var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
-								var vm = phoneService.getVoiceMail(notification.vmId);
-								notification.vm = vm;
-								notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
-								
-							}else if(notification.type == 'chat'){
-								notification.label = 'chat message';
-							}else if(notification.type == 'missed-call'){
-                 				notification.label = 'missed call';
-                 				missedCalls.push(notification);
-							}else if(notification.type == 'busy-ring-back'){
-                				notification.label = 'is now available for call';
-								notification.message= "User is free for call";
-							}else if(notification.type == "description"){
-								notification.label = "chat message"
-								notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
-							}else if(notification.type == 'wall'){
-								notification.label = "share";
-							}else if(notification.type == 'error'){
-								notification.displayName = 'Error';
-								notification.message = 'Open for Details';
-							}
-					if(notification.audience == "conference"){
-						var xpid = notification.context.split(':')[1];
-						var conference = conferenceService.getConference(xpid);
-						notification.conference = conference;
-					}
-
+         updateNotificationLabel(notification);
 					if(notification.xef001type != "delete"){
 
 						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
@@ -885,49 +892,8 @@ hudweb.controller('NotificationController',
 					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
-					if(notification.type == 'q-alert-rotation'){
-						notification.label = $scope.verbage.long_waiting_call;
-					}else if(notification.type == 'q-alert-abandoned'){
-						notification.label = 'abandoned call';
-						notification.message = "";
-						deleteLastLongWaitNotification();
-						$timeout(function(){
-							deleteNotification(notification);
-						}, 60000);
-					}else if(notification.type == 'q-broadcast'){
-						notification.label = 'broadcast message';
-					}else if(notification.type == 'gchat'){
-						notification.label = "group chat to";
-					}else if(notification.type == 'vm'){
-						var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
-						var vm = phoneService.getVoiceMail(notification.vmId);
-						notification.vm = vm;
-						notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
-						
-					}else if(notification.type == 'chat'){
-						notification.label = 'chat message';
-					}else if(notification.type == 'missed-call'){
-                				notification.label = 'missed call';
-                				missedCalls.push(notification);
-					}else if(notification.type == 'busy-ring-back'){
-            					notification.label = 'is now available for call';
-						notification.displayName = notification.fullProfile.displayName;
-						notification.message= "User is free for call";
-					}else if(notification.type == "description"){
-						notification.label = "chat message"
-						notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;	
-					}else if(notification.type == 'wall'){
-								notification.label = "share";
-					}else if(notification.type == 'error'){
-							notification.displayName = 'Error';
-							notification.message = 'Open for Details';
-					}
-					if(notification.audience == "conference"){
-						var xpid = notification.context.split(':')[1];
-						var conference = conferenceService.getConference(xpid);
-						notification.conference = conference;
-					}
-					if(notification.xef001type != "delete"){
+          updateNotificationLabel(notification);
+          if(notification.xef001type != "delete"){
 						$scope.notifications.push(notification);
 						addTodaysNotifications(notification);
 					}
@@ -938,7 +904,7 @@ hudweb.controller('NotificationController',
 
 		 
 
-		$scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
+    $scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time; 
 		});
 			       
