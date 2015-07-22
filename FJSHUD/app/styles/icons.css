@@ -82,6 +82,11 @@
   width: 30px;
   background: url("../img/XAvatarBorder.png") no-repeat -95px -230px;
 }
+.CancelUploadIcon {
+  height: 32px;
+  width: 32px;
+  background: url("../img/XIconSet-32x32.png") no-repeat -320px -32px;
+}
 .DownloadIcon {
   position: absolute;
   left: 0px;

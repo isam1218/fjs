@@ -3,74 +3,28 @@
 }
 .WidgetMe .WidgetHeaderTitle {
   color: #333;
-  font-size: 1.250em;
-  line-height: 45px;
+  font-size: 20px;
+  line-height: 35px;
   left: 0px;
   right: 15px;
   top: 0;
-  height: 45px;
-  position: relative;
-  display: block;
   width: 100%;
-  margin: 10px 0 0;
 }
 .WidgetMe .Avatar.AvatarBig {
   float: left;
-  width: 5em;
-  height: 5em;
-}
-.WidgetMe .WidgetBody {
-  height: 78%;
-  max-height: 100%;
-}
-.WidgetMe .WidgetBody .call-block {
-  height: 50%;
-  overflow-y: hidden;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide {
-  width: 50%;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row {
-  margin: 10px 5px;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row input[type=range] {
-  width: 70%;
-  margin-bottom: -8px;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle > div {
-  float: left;
-  margin-left: -5px;
-  clear: both;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar {
-  margin-top: 8px;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
-  width: 50%;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
-  clear: both;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
-  width: 74px;
-  height: 24px;
-  float: left;
-  clear: none;
-  font-size: 12px;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
-  top: 0px;
+  width: 90px !important;
+  height: 90px !important;
+  position: relative;
   left: 0px;
-}
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
   top: 0px;
-  left: 5px;
+  border: 1px solid #779c00;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
-  width: 155px;
-}
-.WidgetMe .MeInfoBlock-column textarea {
-  height: 3em;
+.WidgetMe .Avatar.AvatarBig img {
+  width: 86px !important;
+  height: 86px !important;
+  margin: 1px;
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
@@ -100,7 +54,7 @@
   border: none 0px;
   background-image: url("../img/XTile-Widget.png");
   height: 95%;
-  overflow-y: hidden;
+  overflow: hidden;
   background-color: #f9f9f9;
   bottom: 0px;
 }
@@ -118,27 +72,218 @@
   width: 150px;
   font-size: 12;
 }
-.MeInfoBlock {
+.WidgetMe .WidgetBody {
+  height: 78%;
+  max-height: 100%;
+}
+.WidgetMe .WidgetBody .call-block {
+  height: 50%;
+  overflow-y: hidden;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide {
+  width: 50%;
+  margin-bottom: -5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row {
+  margin: 5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row input[type=range] {
+  width: 70%;
+  margin-bottom: -8px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall {
+  margin-top: 0;
+  vertical-align: top;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-MuteOff:hover {
+  background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-MuteOn:hover {
+  background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-Speaker-Off:hover {
+  background: url(../img/XIconSet-24x24.png) no-repeat -48px 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-Speaker-On:hover {
+  background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle {
+  width: 60%;
+  max-width: none;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle > div {
+  float: left;
+  margin-left: -5px;
+  clear: both;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .name {
+  margin-left: 0px;
+  margin-top: 5px;
+  clear: none;
+  width: 100%;
+  max-width: none;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .name strong {
+  font-size: 14px;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus {
+  margin-left: 5px;
+  margin-top: 5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus .ListRowStatusIcon {
+  margin-left: 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus .ListRowStatusIcon .last {
+  margin-left: -5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus .phone {
+  margin-right: 5px;
   display: inline-block;
   margin-left: 5px;
+  float: left;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar {
+  margin-top: 8px;
+  border: none;
+  width: 40px;
+  height: 40px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Office {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Office .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Queue {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Queue .AvatarInteractable {
+  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar img {
+  height: 32px;
+  width: 32px;
+  margin: 4px;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar:hover .AvatarInteractable {
+  display: block;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar .AvatarInteractable {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  border: none;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  display: none;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
+  width: 50%;
+  padding-top: 5px;
+  margin-bottom: -5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
+  width: 100%;
+  float: left;
+  min-height: 40px;
+  position: relative;
+  padding: 5px 0;
   vertical-align: top;
-  width: 79.5%;
+  margin: 0;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
+  min-width: 74px;
+  height: 24px;
+  float: left;
+  clear: none;
+  font-size: 12px;
+  display: inline-block;
+  margin-right: 5px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton.talk {
+  border: 1px solid #FF8E29;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton.dial {
+  margin-top: 0;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton.CurrentCallBtn {
+  margin: 0px 5px 0px 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
+  top: 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
+  top: 0px;
+}
+.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
+  width: 154px !important;
+  margin: 0;
+}
+.WidgetMe .WidgetBody.currentCall .call-block .RecentCallSection {
+  position: relative;
+  float: left;
+  clear: both;
+  width: 100%;
+  overflow: hidden;
+  /*height: 70%;*/
+  padding: 0;
+}
+.WidgetMe .WidgetBody.currentCall .call-block .RecentCallSection .RecentCallLogs {
+  height: 100%;
+}
+.MeInfoBlock {
+  margin-left: 5px;
+  vertical-align: top;
+  /*width: 79.5%;*/
+  float: left;
+  clear: none;
 }
 .MeInfoBlock-column {
   display: inline-block;
   vertical-align: top;
+  width: 180px;
 }
 .MeInfoBlock-column:nth-child(1) {
   float: left;
-  width: 40%;
+}
+.MeInfoBlock-column:nth-child(1) .MeInfoTitle {
+  margin-left: 5px;
 }
 .MeInfoBlock-column:nth-child(2) {
   float: right;
-  width: 60%;
 }
-.MeInfoBlock-column textarea,
-.MeInfoBlock-column .SelectBox {
-  width: 98%;
+.MeInfoBlock-column:nth-child(2) .LeftBarMeCustomStatusSection {
+  position: relative;
+  height: 33px;
+  width: 180px;
+  margin-bottom: 5px;
+}
+.MeInfoBlock-column:nth-child(2) .LeftBarMeCustomStatusSection textarea {
+  padding: 2px;
+  margin: 0px;
+  height: 33px;
+  width: 182px;
+  font-family: monospace;
+  font-size: 12px;
 }
 .MeInfoTitle {
   color: #999;
@@ -374,6 +519,7 @@ input.text {
 div.NewCall {
   width: 100%;
   background-color: #fff;
+  padding: 10px 0;
 }
 div.NewCall input.NewCall {
   height: 26px;

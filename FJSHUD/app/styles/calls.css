@@ -1,14 +1,13 @@
 .CallLog .vmsections,
 .CallLog .rows {
   border: 1px solid #eee;
-  width: 99.5%;
   margin-bottom: 10px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell:first-child {
-  width: 26px;
+  width: 30px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell .DirectionArrow {
   left: 8px !important;
@@ -23,19 +22,20 @@
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 112px !important;
+  width: 118px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
-  width: 78px !important;
+  width: 74px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 44px  !important;
+  width: 46px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-  width: 110px !important;
+  width: 106px;
+  margin-left: -2px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.CallType {
-  width: 10%  !important;
+  width: 10%;
 }
 .CallLog .vmails .ToolBar {
   width: 100%;
@@ -80,7 +80,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  height: 40px;
+  min-height: 40px;
+  height: auto;
+}
+.CallLog .ListRow > div:first-child {
+  min-width: 40px;
+  width: 40px;
+  -ms-flex: 0;
 }
 .CallLog .ListRow > div:not(:first-child) {
   padding-left: 5px;
@@ -95,6 +101,8 @@
 .CallLog .ListRow > div.Name {
   flex: 3 1 0;
   -webkit-flex: 3 1 0;
+  -ms-flex: 3;
+  max-width: 135px;
 }
 .CallLog .ListRow > div.Name > div {
   text-align: left;
@@ -110,7 +118,9 @@
   color: #333;
   flex: 2.1 1 0;
   -webkit-flex: 2.1 1 0;
+  -ms-flex: 2.1;
   font-weight: bold;
+  max-width: 130px;
 }
 .CallLog .ListRow > div.Phone span {
   white-space: nowrap;
@@ -119,15 +129,19 @@
 .CallLog .ListRow > div.Duration {
   flex: 1.4 1 0;
   -webkit-flex: 1 1 0;
-  padding-right: 6px;
+  -ms-flex: 1;
+  max-width: 50px;
 }
 .CallLog .ListRow > div.Date {
   flex: 3 1 0;
   -webkit-flex: 3 1 0;
+  -ms-flex: 3;
   white-space: nowrap;
+  max-width: 120px;
 }
 .CallLog .ListRow > div.Type {
   width: 6%;
+  -ms-flex: 1;
 }
 .CallLog .ListRow > div.Type .ListRowStatusIcon {
   margin-top: 10px;
@@ -140,22 +154,64 @@
 .ListRowNoBorders {
   border: none !important;
 }
+.RecentCallsHeader {
+  display: inline-block;
+  color: #888;
+}
+.RecentCallsHeader:not(:first-child) .RecentPointer {
+  margin-left: -20px;
+}
+.RecentCallsHeader:not(:first-child):nth-child(3) {
+  margin-left: -10px;
+}
+.RecentCallsHeader.recent-selected-column {
+  color: #91B139;
+}
+.RecentCallsHeader span.upper {
+  font-size: 9px;
+  cursor: pointer;
+}
+.RecentCallsHeader .desc_arrow {
+  position: relative;
+  border: solid 6px;
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border-color: transparent transparent #729c00 transparent;
+  bottom: 1px;
+}
+.RecentCallsHeader .asc_arrow {
+  position: relative;
+  border: solid 6px;
+  border-color: #729c00 transparent transparent transparent;
+  top: 5px;
+  width: 0;
+  height: 0;
+  display: inline-block;
+}
 .RecentCallSection {
   font-size: .7em;
   padding: 10px 0;
-  height: 66%;
+  height: 100%;
 }
 .RecentCallSection .RecentCallColumnHeaders {
   padding: 6px 10px;
   border-bottom: 1px solid #ccc;
 }
 .RecentCallSection .RecentCallLogs {
-  font-weight: bold;
+  font-size: 11px;
   padding: 4px 10px 10px 10px;
   overflow-y: auto;
-  height: 100%;
+  overflow-x: hidden;
+  height: 80%;
   width: 100%;
   position: relative;
+  text-overflow: ellipsis;
+  color: #424242;
+  text-shadow: 1px 0px 0px #B8B8B8;
+}
+.RecentCallSection .RecentCallLogs .RecentCallsHeader {
+  color: #424242 !important;
 }
 .RecentCallSection .RecentCallLogs .RecentCallRow {
   padding-top: 7px;
@@ -230,7 +286,7 @@
   width: 7%;
 }
 .RecentCallSection .RecentDate {
-  width: 30%;
+  width: 32%;
 }
 .RecentCallSection .RecentFromTo {
   width: 25%;
@@ -239,7 +295,7 @@
 .RecentCallSection .RecentFromTo.call {
   cursor: pointer;
   text-decoration: underline;
-  color: #91B139;
+  color: #91B139 !important;
 }
 .RecentCallSection .RecentDur {
   width: 14%;
@@ -250,7 +306,4 @@
   font-size: 1.3em;
   opacity: 0.5;
   padding: 10px 0 0 0;
-}
-.RecentCallsHeader {
-  display: inline-block;
 }

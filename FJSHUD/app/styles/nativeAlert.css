@@ -1,8 +1,15 @@
+#CallAlert {
+  position: relative;
+  width: 300px;
+  max-height: 500px;
+  font-size: 1em;
+  background: url() #ffffff;
+}
 @font-face {
   font-family: Comic Sans;
   src: url(fonts/LDFComicSans.ttf);
 }
-.CallStatusIconContainer {
+#CallAlert .CallStatusIconContainer {
   width: 34px;
   height: 34px;
   border: 1px solid #0093f0;
@@ -10,14 +17,14 @@
   text-align: center;
   display: inline-block;
 }
-.CallStatusIconContainer .CallStatusIcon {
+#CallAlert .CallStatusIconContainer .CallStatusIcon {
   width: 30px;
   height: 30px;
   background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
   margin-left: -5px;
   margin-top: -5px;
 }
-.LeftBarNotificationMessageSection .NotificationMessage {
+#CallAlert .LeftBarNotificationMessageSection .NotificationMessage {
   padding-right: 20px;
   -ms-word-wrap: break-word;
   white-space: normal;
@@ -25,13 +32,6 @@
   height: auto;
   max-height: none;
   padding-bottom: 20px;
-}
-#CallAlert {
-  position: relative;
-  width: 300px;
-  max-height: 500px;
-  font-size: 1em;
-  background: url() #ffffff;
 }
 #CallAlert a:not(.XButton) {
   text-decoration: none;

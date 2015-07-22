@@ -3,6 +3,15 @@
   left: 10px;
   right: 10px;
 }
+.WidgetZoom .WidgetZoomBody {
+  overflow: hidden;
+}
+.WidgetZoom .XButtonBlue {
+  right: 0px;
+  width: 100%;
+  margin-top: 10px;
+  display: inline-block;
+}
 .widget-zoom-topic {
   position: relative;
   height: 100px;
@@ -15,15 +24,95 @@
 .WidgetZoom .SearchInputBox {
   position: relative;
   width: 100%;
-  left: 0;
+  left: 0px;
   top: 5px;
   margin-bottom: 5px;
 }
 .WidgetFont {
   font-size: 12px;
-  font-weight: italic;
-  margin-left: 5px;
-  margin-right: 5px;
+}
+.WidgetFont h2 {
+  display: block;
+  font-size: 1.5em;
+  -webkit-margin-before: 0.83em;
+  -webkit-margin-after: 0.83em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  font-weight: bold;
+  color: #666;
+}
+.ZoomWidgetSection {
+  width: 48%;
+  position: relative;
+  min-height: 250px;
+  height: auto;
+  float: left;
+  top: 10px;
+}
+.ZoomWidgetSection .WidgetFont {
+  color: #555;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: normal;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+.ZoomWidgetSection .WidgetTextHeader {
+  min-height: none;
+  height: auto;
+  display: inline-block;
+  left: 0px;
+  margin-left: 0px;
+}
+.ZoomWidgetSection .joinWrapper {
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  bottom: 0px;
+  margin-bottom: 0px;
+}
+.ZoomWidgetSection .joinWrapper .JoinMeetingSection {
+  position: absolute;
+  width: 100%;
+  display: inline-block;
+  left: 0px;
+  margin-left: 0px;
+  bottom: 0px;
+  position: relative;
+}
+.ZoomWidgetSection .joinWrapper .JoinMeetingSection .SearchInputBox {
+  top: 0px;
+}
+.ZoomWidgetSection .joinWrapper .JoinMeetingSection .addContact {
+  position: relative;
+  top: 10px;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.ZoomWidgetSection .joinWrapper .JoinMeetingSection .addContact img.x {
+  top: -20px;
+  left: 195px;
+  z-index: 200;
+}
+.ZoomWidgetSection .joinWrapper .JoinMeetingSection .XButtonBlue.XButton {
+  margin-top: 5px;
+}
+.ZoomWidgetSection .joinWrapper .JoinMeetingSection .XButtonWide.XButtonBlue.first {
+  margin-top: 0px;
+}
+.ZoomWidgetSection.right {
+  left: 4%;
+}
+.ZoomWidgetSection.left {
+  left: 0px;
+}
+.ZoomWidgetSection.left .JoinMeetingSection .SearchInputBox {
+  top: 0px;
+}
+.ZoomWidgetSection.left .JoinMeetingSection .XButton.XButtonBlue {
+  margin-top: 5px;
 }
 .WidgetZoom .XButtonBlue {
   right: 0;
@@ -81,50 +170,37 @@
 .WidgetTextHeader {
   height: 200px;
 }
-.ZoomWidgetSection {
-  width: 40%;
-  position: absolute;
-}
-.ZoomWidgetSection .JoinMeetingSection .addContact {
-  position: relative;
-  top: 10px;
-  display: inline-block;
-  margin-bottom: 10px;
-  width: 100%;
-}
-.ZoomWidgetSection .JoinMeetingSection .addContact img.x {
-  top: -20px;
-  left: 195px;
-  z-index: 200;
-}
-.ZoomWidgetSection .JoinMeetingSection .XButtonWide.XButtonBlue.first {
-  margin-top: 0px;
-}
-.ZoomWidgetSection.left {
-  left: 5%;
-}
-.ZoomWidgetSection.left .JoinMeetingSection .SearchInputBox {
-  top: 0px;
-}
-.ZoomWidgetSection.left .JoinMeetingSection .XButton.XButtonBlue {
-  margin-top: 5px;
-}
-.ZoomWidgetSection.right {
-  left: 50%;
-  width: 45%;
-}
 .WidgetZoomBody {
   top: 35px;
   background-image: url(../img/XTile-Widget.png);
+  padding: 0px 20px;
+}
+.WidgetZoomBody .ListSection {
+  position: relative;
+  background-color: #f9f9f9;
+  left: 0px;
+  margin-left: 0px;
+}
+.WidgetZoomBody .ListSection .ListSectionHeaderTitle {
+  margin-left: 0px;
 }
 .widget-zoom-contacts {
-  top: 20px;
+  top: 30px;
   position: relative;
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  float: right;
+  max-height: 55%;
 }
 .widget-zoom-contacts .ListRow {
   float: left;
   padding: 5px;
-  height: 42px;
+  min-height: 42px;
+  height: auto;
 }
 .widget-zoom-contacts .ListRow .Avatar {
   top: -2px;
@@ -150,12 +226,19 @@
   font-size: 11px;
   padding: 4px 6px 6px 6px;
   margin: 0px;
-  margin-right: -5px;
+  /*margin-right: -5px;  */
   font-weight: bold;
   height: 25px;
 }
 .widget-zoom-contacts .ListRow .ZoomRowTitle {
   padding-left: 5px;
+  width: 100%;
+  margin-top: 3px;
+}
+.widget-zoom-contacts .ListRow .ZoomRowTitle .name {
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .widget-zoom-contacts .ListRow .ZoomRowTitle .link {
   display: inline-block;

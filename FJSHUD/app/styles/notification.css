@@ -42,9 +42,12 @@
   overflow: hidden;
   font-size: 13px;
   color: #222;
-  white-space: normal;
   max-height: 75px;
   top: 5px;
+  padding-right: 10px;
+  -ms-word-wrap: break-word;
+  white-space: normal;
+  word-break: break-all;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
   font-size: .8em;
@@ -52,29 +55,42 @@
 .CallStatusContainer {
   position: relative;
 }
-.CallStatusContainerOutbound {
-  background: linear-gradient(#f3f8e6, #ecf2da);
-  background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
-}
 .CallStatusContainerInbound {
   background: linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-linear-gradient(#e4f1f8, #dfebf1);
 }
+.CallStatusContainerQueue {
+  background: linear-gradient(#fff1dd, #f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd, #f8e7cd);
+}
+.CallStatusContainerOutbound {
+  background: linear-gradient(#f3f8e6, #ecf2da);
+  background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
+}
 .CallStatusIconContainer {
   width: 40px;
   height: 40px;
-  border: 3px solid #0093f0;
   border-radius: 30px;
   text-align: center;
   display: inline-block;
 }
+.CallStatusIconInternalBorder {
+  border: 1px solid #0093f0;
+}
+.CallStatusIconExternalBorder {
+  border: 1px solid #769D20;
+}
+.CallStatusIconQueueBorder {
+  border: 1px solid #D48423;
+}
 .CallStatusIconContainer .CallStatusIcon {
-  width: 40px;
-  height: 40px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+  width: 38px;
+  height: 38px;
+  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -82px -242px;
 }
 .CallStatusContainerInbound,
-.CallStatusContainerOutbound {
+.CallStatusContainerOutbound,
+.CallStatusContainerQueue {
   min-height: 40px;
   overflow: hidden;
   width: 100%;
@@ -84,28 +100,33 @@
 }
 .CallStatusContainerInbound .CallStatusIconContainer,
 .CallStatusContainerOutbound .CallStatusIconContainer,
+.CallStatusContainerQueue .CallStatusIconContainer,
 .CallStatusContainerInbound .CallStatusText,
-.CallStatusContainerOutbound .CallStatusText {
+.CallStatusContainerOutbound .CallStatusText,
+.CallStatusContainerQueue .CallStatusText {
   float: left;
   margin: 5px 0px 5px 5px;
   cursor: pointer;
   pointer-events: auto;
 }
 .CallStatusContainerInbound .CallStatusIconContainer .CallStatusIcon,
-.CallStatusContainerOutbound .CallStatusIconContainer .CallStatusIcon {
+.CallStatusContainerOutbound .CallStatusIconContainer .CallStatusIcon,
+.CallStatusContainerQueue .CallStatusIconContainer .CallStatusIcon {
   cursor: pointer;
   pointer-events: auto;
 }
 .CallStatusContainerInbound .MyCallBlock_Duration,
-.CallStatusContainerOutbound .MyCallBlock_Duration {
+.CallStatusContainerOutbound .MyCallBlock_Duration,
+.CallStatusContainerQueue .MyCallBlock_Duration {
   position: relative;
   text-shadow: 0px 1px 0px #FFF;
   clear: none;
-  float: right;
-  top: 0;
+  display: inline-block;
+  padding-left: 1px;
 }
 .CallStatusContainerInbound .CallStatusText,
-.CallStatusContainerOutbound .CallStatusText {
+.CallStatusContainerOutbound .CallStatusText,
+.CallStatusContainerQueue .CallStatusText {
   font-size: 11px;
   font-weight: bold;
   cursor: pointer;
@@ -115,7 +136,8 @@
   margin-top: 10px;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
-.CallStatusContainerOutbound .CallStatusText .callStatus {
+.CallStatusContainerOutbound .CallStatusText .callStatus,
+.CallStatusContainerQueue .CallStatusText .callStatus {
   font-size: 10px;
   font-weight: normal;
   overflow: hidden;
@@ -123,11 +145,13 @@
   white-space: nowrap;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus .onCall,
-.CallStatusContainerOutbound .CallStatusText .callStatus .onCall {
+.CallStatusContainerOutbound .CallStatusText .callStatus .onCall,
+.CallStatusContainerQueue .CallStatusText .callStatus .onCall {
   float: left;
 }
 .CallStatusContainerInbound .CallStatusText .memberName,
-.CallStatusContainerOutbound .CallStatusText .memberName {
+.CallStatusContainerOutbound .CallStatusText .memberName,
+.CallStatusContainerQueue .CallStatusText .memberName {
   font-size: 12px;
   line-height: 15px;
   font-weight: bold;
@@ -136,8 +160,22 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.CallStatusContainerInbound .CallStatusText .memberName .name,
+.CallStatusContainerOutbound .CallStatusText .memberName .name,
+.CallStatusContainerQueue .CallStatusText .memberName .name {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.CallStatusContainerInbound .CallStatusText .memberName .name.truncate,
+.CallStatusContainerOutbound .CallStatusText .memberName .name.truncate,
+.CallStatusContainerQueue .CallStatusText .memberName .name.truncate {
+  width: 80%;
+}
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec,
-.CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec {
+.CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec,
+.CallStatusContainerQueue .CallStatusText .memberName .MyCallBlock_Rec {
   position: absolute;
   background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
   width: 36px;
@@ -147,28 +185,34 @@
   margin-top: -15px;
 }
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec.true,
-.CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec.true {
+.CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec.true,
+.CallStatusContainerQueue .CallStatusText .memberName .MyCallBlock_Rec.true {
   display: block;
 }
 .CallStatusContainerInbound .controlButtons,
-.CallStatusContainerOutbound .controlButtons {
+.CallStatusContainerOutbound .controlButtons,
+.CallStatusContainerQueue .controlButtons {
   float: right;
   display: inline-block;
   margin-top: 10px;
 }
 .CallStatusContainerInbound .controlButtons .XButton,
-.CallStatusContainerOutbound .controlButtons .XButton {
+.CallStatusContainerOutbound .controlButtons .XButton,
+.CallStatusContainerQueue .controlButtons .XButton {
   font-size: 11px;
   pointer-events: auto;
 }
 .CallStatusContainerInbound .controlButtons .XButton.record,
 .CallStatusContainerOutbound .controlButtons .XButton.record,
+.CallStatusContainerQueue .controlButtons .XButton.record,
 .CallStatusContainerInbound .controlButtons .XButton.SelectBox[type=move],
-.CallStatusContainerOutbound .controlButtons .XButton.SelectBox[type=move] {
+.CallStatusContainerOutbound .controlButtons .XButton.SelectBox[type=move],
+.CallStatusContainerQueue .controlButtons .XButton.SelectBox[type=move] {
   top: 10px;
 }
 .CallStatusContainerInbound .controlButtons .XButton.disableButton,
-.CallStatusContainerOutbound .controlButtons .XButton.disableButton {
+.CallStatusContainerOutbound .controlButtons .XButton.disableButton,
+.CallStatusContainerQueue .controlButtons .XButton.disableButton {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -337,11 +381,10 @@
 }
 .NotificationZoomBtn {
   margin-top: 10px;
-  margin-bottom: 10px;
 }
-.NotificationZoomBtn span.XButton {
+.NotificationZoomBtn .XButton {
   width: auto;
-  font-size: 0.8rem;
+  font-size: 0.8em;
 }
 .Messages {
   position: relative;

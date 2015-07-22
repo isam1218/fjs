@@ -258,7 +258,8 @@
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
-  font-size: .9em;
+  /*font-size: .9em;*/
+  font-size: 12px;
   z-index: 0;
   clear: none;
   margin-top: -80px;
@@ -273,6 +274,9 @@
 }
 .TopBarVoicemailControls:hover .Buttons {
   opacity: 1;
+}
+.TopBarVoicemailControls:hover .Buttons > div:first-child {
+  padding-right: 1px;
 }
 .TopBarVoicemailControls .XButtonClose {
   position: absolute;
