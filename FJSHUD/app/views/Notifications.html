@@ -428,7 +428,7 @@
 					"> </div>
 				</div>
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
-					<div class="memberName">{{currentCall.displayName}} <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
+					<div class="memberName"><div class="name ng-class:{'truncate': currentCall.record && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div> <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
 					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration" timer="callObj[currentCall.xpid].start"></span></div>
 				</div>				
 				<div class="controlButtons">
