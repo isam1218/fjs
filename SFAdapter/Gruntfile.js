@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 
     function getBuildNumber() {
         if(!buildNumber) {
-            buildNumber = grunt.file.read('../hud-buildid/count.txt');
+            buildNumber = grunt.file.read('../build_number');
         }
         return buildNumber;
     }
