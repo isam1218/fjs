@@ -153,19 +153,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		
 	};
 
-	var holdCall = function(xpid,isHeld){
-		
-		var call = context.getCall(xpid);
-		if(call){
+	var holdCall = function(xpid,isHeld){		
+	  var call = context.getCall(xpid);
+	  if(call){
 			call.hold = isHeld;
-      httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+	  }else{
+	 	if(isHeld){
+          httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-			if(isHeld){
-        httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-			}else{
 	       httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-			}	
-		}
+		}	
+	  }
 		
 	};
 
