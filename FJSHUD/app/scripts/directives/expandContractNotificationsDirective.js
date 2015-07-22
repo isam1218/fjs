@@ -1,7 +1,8 @@
 hudweb.directive('expandContractNotifications', function() {
       return {
          link : function(scope, element, attrs) {
-        	var animTime = 300, hoverFlag = false; 
+        	var animTime = 300, hoverFlag = false;
+			var scrollWatcher;
         	var nua = navigator.userAgent;
         	var browser = nua.match(/(chrome|safari|firefox|msie)/i);
         	//if not found, default to IE mode
@@ -10,6 +11,13 @@ hudweb.directive('expandContractNotifications', function() {
         	
             $(element).on('hoverIntent mouseenter', function() {
 				$(this).addClass('Expand');
+				
+				// watch for new notifications while this is open
+				scrollWatcher = scope.$watchCollection('todaysNotifications', function () {
+					$('.LeftBar .NotificationMessages .scroller').animate({
+						scrollTop: $('.LeftBar').outerHeight() 
+					});
+				});
 				
             	$scope.showNotificationBody = true;            	
             	var content = $(element).find('.NotificationSection:not(.last)');
@@ -47,6 +55,9 @@ hudweb.directive('expandContractNotifications', function() {
 			
             $(element).on('mouseleave', function() {
 				$(this).removeClass('Expand');
+				
+				// turn off watcher
+				scrollWatcher();
 				
             	$scope.showNotificationBody = $scope.todaysNotifications.length > 3 ? false:true;
             	
