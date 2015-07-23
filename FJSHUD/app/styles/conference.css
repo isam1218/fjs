@@ -4,7 +4,7 @@
 .Conference .ToolBar select.XButton {
   padding: 5px 0px;
 }
-.Conference .ToolBar .SearchInputBox {
+.Conference .ToolBar .SearchBox {
   width: 27%;
 }
 .Conference .ToolBar input[type=button],

@@ -39,6 +39,7 @@
 .Widget .WidgetTabContent {
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+  -ms-flex: 1;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -49,7 +50,7 @@
 .Widget .ListView {
   position: relative;
   flex: 1 1 0;
-  -ms-flex: 1 1 0;
+  -ms-flex: 1;
   -webkit-flex: 1 1 0;
   overflow-y: auto;
   width: 100%;
@@ -113,6 +114,7 @@
   color: #333;
   text-shadow: 0 1px 0px #fff;
   font-family: Arial, Tahoma, "Helvetica Neue", Helvetica, sans-serif;
+  padding: 0 0 0 3px;
 }
 .Widget .ToolBar .selectWrapper select:hover {
   background: url(../img/arrowDown_8.png) no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
@@ -129,13 +131,14 @@
 }
 .Widget .ToolBar .selectWrapper select option {
   text-align: left;
-  padding: 0 5px;
   background-color: #fff;
 }
 .Widget .ToolBar .selectWrapper.vm {
   width: 130px;
   float: right;
   margin-left: 10px;
+  width: 110px\9;
+  /* ie6/7/8/9  */
 }
 .Widget .ToolBar .selectWrapper.vm select {
   height: 24px;
@@ -152,6 +155,8 @@
 .Widget .ToolBar .selectWrapper.members {
   width: 150px;
   float: right;
+  width: 130px\9;
+  /* ie6/7/8/9  */
 }
 .Widget .ToolBar .selectWrapper.queue select,
 .Widget .ToolBar .selectWrapper.status select,
@@ -181,11 +186,13 @@
 }
 .Widget .ToolBar .selectWrapper.convQueue {
   width: 100px;
+  width: 80px\9;
+  /* ie6/7/8/9  */
   float: right;
 }
 .Widget .ToolBar .selectWrapper.convQueue select {
   width: 100px;
-  height: 26px;
+  height: 24px;
 }
 .Widget .ToolBar .selectWrapper.convQueue select:hover {
   background: url(../img/arrowDown_8.png) no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
@@ -200,8 +207,17 @@
   background: url(../img/arrowDown_8.png) no-repeat 94%, linear-gradient(to bottom, #fefefe, #ebebeb);
   /* W3C */
 }
-.Widget .ToolBar.fj-stream .XButton.convQueueInput {
-  height: 28px !important;
+.Widget .ToolBar.fj-stream .XButton.convQueueInput span {
+  vertical-align: top;
+}
+.Widget.WidgetZoom {
+  height: 100%;
+}
+.Widget.WidgetZoom .WidgetHeader {
+  min-height: 60px;
+}
+.Widget.WidgetZoom .WidgetZoomBody {
+  height: 92%;
 }
 .WidgetHeader {
   position: relative;
@@ -215,6 +231,14 @@
   vertical-align: middle;
   top: 0;
   left: 0;
+}
+.WidgetHeader .Avatar {
+  width: 40px !important;
+  height: 40px !important;
+}
+.WidgetHeader .Avatar img:not(.GroupAvatarItemImg) {
+  width: 38px !important;
+  height: 38px !important;
 }
 .WidgetBody {
   position: relative;
@@ -251,7 +275,7 @@
 .WidgetBody .ListRow .Avatar.CallAvatar_External,
 .WidgetBody .ListRow .Avatar.CallAvatar_Queue {
   margin-top: 6px;
-  margin-left: 5px;
+  margin-left: 4px;
   border: none;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_Office img,
@@ -350,6 +374,9 @@
 .WidgetHeaderTitle.Full {
   width: auto !important;
 }
+.WidgetHeaderTitle.Single span {
+  margin-left: 5px;
+}
 .WidgetHeaderTitle span.ChatStatus {
   font-weight: normal !important;
   font-size: 0.875em;
@@ -358,6 +385,15 @@
 .WidgetHeaderTitle .XIcon-ChatStatus-away,
 .WidgetHeaderTitle .XIcon-ChatStatus-available {
   margin-left: -5px;
+}
+.WidgetHeaderSubTitle {
+  position: relative;
+  text-align: left;
+  font-size: 12px;
+  color: #555;
+  margin-top: 20px;
+  left: 10px;
+  width: 50%;
 }
 .WidgetHeaderCallStatus .NoCallText {
   text-align: center;
@@ -383,10 +419,12 @@
   position: relative;
   clear: both;
 }
+.WidgetHeaderCallStatus {
+  min-width: 30%;
+}
 .WidgetStat,
 .WidgetHeaderCallStatus {
   float: right;
-  min-width: 30%;
   border-radius: 4px;
   background-color: #fff;
   border: solid 1px #ccc;
@@ -398,6 +436,33 @@
   text-align: right;
   line-height: 1.75em;
   font-size: .7em;
+  width: 300px;
+}
+.WidgetStat.agents {
+  width: 230px;
+}
+.WidgetStat .row {
+  width: 100%;
+  float: left;
+  clear: both;
+  text-align: right;
+  white-space: nowrap;
+}
+.WidgetStat .row.first .Left {
+  width: 50%;
+}
+.WidgetStat .row.first .Right {
+  width: 35%;
+  margin-right: .3em;
+}
+.WidgetStat .row.second .Left {
+  width: 34%;
+  width: 35%\9;
+  /* ie9 and less */
+}
+.WidgetStat .row.second .Right {
+  width: 55%;
+  margin-right: .3em;
 }
 .WidgetStat .Left,
 .WidgetStat .Right,
@@ -411,6 +476,13 @@
 .WidgetStat .Labels.Left,
 .WidgetStat .Data.Left {
   margin-right: 1em;
+  float: left;
+}
+.WidgetStat .Left.Right,
+.WidgetStat .Right.Right,
+.WidgetStat .Labels.Right,
+.WidgetStat .Data.Right {
+  float: right;
 }
 .WidgetStat .Left.Labels,
 .WidgetStat .Right.Labels,

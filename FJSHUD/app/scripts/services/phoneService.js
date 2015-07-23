@@ -231,9 +231,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.hold = isHeld;
 			}
-		}
-		if(isHeld){
-           	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 
 		}else{
 			if(isHeld){
@@ -242,8 +240,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	       	    httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
 			}	
 		}
-		
-		
 	};
 
 	var makeCall = function(number){
@@ -992,7 +988,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		var call = getCall(xpid);
+		var call = context.getCall(xpid);
 		if(call){
 			if(context.webphone && phoneNumber){
 				context.webphone.send(JSON.stringify({a : 'transfer', value : sip_id, ext: number}));

@@ -164,6 +164,19 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.CallStatusContainerInbound .CallStatusText .memberName .name,
+.CallStatusContainerOutbound .CallStatusText .memberName .name,
+.CallStatusContainerQueue .CallStatusText .memberName .name {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.CallStatusContainerInbound .CallStatusText .memberName .name.truncate,
+.CallStatusContainerOutbound .CallStatusText .memberName .name.truncate,
+.CallStatusContainerQueue .CallStatusText .memberName .name.truncate {
+  width: 80%;
+}
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerQueue .CallStatusText .memberName .MyCallBlock_Rec {

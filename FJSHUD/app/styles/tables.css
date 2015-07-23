@@ -83,7 +83,8 @@
   flex-direction: row;
   -webkit-flex-direction: row;
   text-decoration: none;
-  height: 40px;
+  min-height: 40px;
+  height: auto;
 }
 .ListRow .vmcallbtn {
   visibility: hidden;
@@ -91,8 +92,23 @@
   top: 0;
   position: absolute;
 }
+.ListRow .vmtime {
+  visibility: visible;
+}
 .ListRow .ListRowStatus {
   visibility: visible;
+}
+.ListRow .action-buttons {
+  position: absolute;
+  right: 0px;
+  top: 14px;
+}
+.ListRow .action-buttons .XButton {
+  height: 28px;
+  width: 80px;
+}
+.ListRow .action-buttons .XButton span {
+  float: none;
 }
 .ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .Remove {
   display: block;
@@ -122,6 +138,9 @@
   text-shadow: 0 -1px 0 #000000;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
+.ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .vmtime {
+  visibility: hidden;
+}
 .ListRow:not(.ListRow-Conference):not(.ListRow-Contact):hover .ListRowStatus:not(.Members) {
   visibility: hidden;
 }
@@ -136,33 +155,38 @@
   display: none;
 }
 .ListRow .Avatar {
-  margin: .25em;
+  /*margin: .25em;*/
+  margin: 5px;
   width: 30px;
   height: 30px;
 }
 .ListRow .Avatar img {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   margin: 1px;
+  margin-left: -1px;
 }
 .ListRow .Avatar.CallAvatar_Office img {
-  margin: 0px;
+  margin: -1px;
 }
 .ListRow .ListRowContent {
   flex: 1;
   -webkit-flex: 1;
   border-left: solid 1px #DEE1E5;
   overflow: hidden;
-  max-height: 40px;
+  min-height: 40px;
+  height: auto;
 }
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
   font-size: 12px;
   text-decoration: none;
-  color: #555;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #888;
   white-space: nowrap;
-  max-width: 55%;
+  max-width: 50%;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
   margin-top: -3px;
@@ -184,9 +208,17 @@
 .ListRow .ListRowTitle .external.ListRowStatusIcon {
   margin-top: -5px;
 }
-.ListRow .ListRowTitle .name strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.ListRow .ListRowTitle .ListRowStatusIcon {
+  margin-left: -6px;
+}
+.ListRow .ListRowTitle strong {
+  font-weight: bold;
+  font-size: 13px;
+  color: #222;
+}
+.ListRow .ListRowTitle .name {
+  font-size: 13px;
+  color: #222;
 }
 .ListRow .ListRowTitle .name > * {
   display: block;
@@ -198,14 +230,15 @@
 .ListRow .ListRowStatus {
   float: right;
   color: #888;
-  font-size: .8em;
+  font-size: 11px;
   text-align: center;
   line-height: 1em;
   height: 1em;
   position: relative;
-  top: 10px;
+  top: 5px;
   right: 5px;
   display: inline-block;
+  text-align: right;
 }
 .ListRow .ListRowStatus .ListRowStatusIcon,
 .ListRow .ListRowStatus .ListRowStatusText {
@@ -213,6 +246,7 @@
   position: relative;
   top: -10px;
   font-size: 10px;
+  margin-left: -5px;
 }
 .ListRow .ListRowStatus .ListRowStatusText {
   top: -15px;
@@ -220,6 +254,7 @@
   max-width: 8em;
   white-space: nowrap;
   overflow: hidden;
+  margin-right: 5px;
 }
 .ListRow .CallStatus {
   float: right;
@@ -234,10 +269,41 @@
   border: 1px solid #ccc;
   border-radius: 3px;
   width: 150px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  padding-top: 3px;
+}
+.ListRow .CallStatus.Full .CallAvatar {
+  width: 36px;
+  height: 36px;
+}
+.ListRow .CallStatus.Full .CallAvatar.CallAvatar_Office {
+  background-position: -92px -95px;
+}
+.ListRow .CallStatus.Full .CallAvatar img {
+  height: 24px;
+  width: 24px;
+  margin: 3px;
 }
 .ListRow .CallStatus.Full .Details {
-  display: inline-block;
   font-size: 12px;
+  color: #333;
+}
+.ListRow .CallStatus.Full .Details .Name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 70px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+.ListRow .CallStatus.Full .Time {
+  text-align: right;
+  flex: 1;
+  font-size: 11px;
+  color: gray;
+  padding-right: 2px;
 }
 .ListRow .CallStatus .Avatar {
   margin: 1px !important;
@@ -466,6 +532,7 @@
   margin-left: .5em;
   flex: 1;
   -webkit-flex: 1;
+  overflow: hidden;
 }
 .ListMessage .ChatMessageItem {
   color: #222;
