@@ -68,9 +68,14 @@ p {
   flex-direction: row;
   -webkit-flex-direction: row;
   width: 100%;
-  height: 85%;
+  height: 90%;
 }
-
+.PanelWrapper:after {
+  padding-top: 25%;
+  /* 16:9 ratio */
+  display: block;
+  content: '';
+}
 .col1{
   width:180px;
   display:inline-block;
