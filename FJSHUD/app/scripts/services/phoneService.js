@@ -650,7 +650,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		var call = getCall(xpid);
+		var call = context.getCall(xpid);
 		if(call){
 			call.transfer(number);
 		}	
