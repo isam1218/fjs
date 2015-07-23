@@ -50,7 +50,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 				stop: function(event, ui) {
 					ui.helper.empty();
 					
-					$('.Gadget .Content a.ui-droppable').droppable('option', 'disabled', false);
+					$('.Gadget .Content .ui-droppable').droppable('option', 'disabled', false);
 				}
 			});
 		}
