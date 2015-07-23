@@ -108,7 +108,7 @@
 								<div class="inner">{{::verbage.external}}</div>
 								<div class="arrow"></div>
 							</a>
-							<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('groups')" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
 								<div class="inner">{{::verbage.Groups}}</div>
 								<div class="arrow"></div>
 							</a>
@@ -116,7 +116,7 @@
 					</div>
 
 					<div class="Contacts"
-						ng-if="tab != 'recent' && tab != 'groups'"
+						contact-filters
 						include-once="views/ContactsWidget.html"
 						ng-controller="ContactsWidget">
 					</div>
@@ -205,6 +205,7 @@
     <script src="scripts/directives/heightChangeDirective.js"></script>
 	<script src="scripts/directives/callStatusDirective.js"></script>
     <script src="scripts/directives/onSubmitDirective.js"></script>
+    <script src="scripts/directives/contactFiltersDirective.js"></script>
     <script src="scripts/directives/transferContactSearchDirective.js"></script>
 
     <!--controllers-->

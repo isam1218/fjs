@@ -21,7 +21,7 @@
 
 <div class="ContactList">
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" data-ng-repeat="contact in contacts | filter: customFilter() | orderBy: sortField: sortReverse track by contact.xpid" ng-show="searchFilter(contact)" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">	
+		<a href="#contact/{{::contact.xpid}}" data-ng-repeat="contact in contacts | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
