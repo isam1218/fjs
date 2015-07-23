@@ -3,12 +3,12 @@
   
   <div class="ListRowContent" dockable="member.fullProfile">
     <div class="ListRowTitle">
-		<strong> {{ ::member.fullProfile.displayName}}</strong>
+		{{ ::member.fullProfile.displayName}}
 		<br/>
 		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}"></div>
 
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
-		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
+		<span>{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}</span>
     </div>
 
     <callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
