@@ -387,10 +387,12 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
   };
 
   $scope.$on('settings_updated',function(event,data){
+    if(data['hudmw_webphone_mic']){
+         $scope.volume.mic = data['hudmw_webphone_mic'];
+    } 
+    
     if(data['instanceId'] != undefined){
-      if(data['hudmw_webphone_mic']){
-      	 $scope.volume.mic = data['hudmw_webphone_mic'];
- 	  }	
+    
       if(data['instanceId'] != localStorage.instance_id){
         $scope.anotherDevice = true;
 
