@@ -39,6 +39,13 @@
 	                var li=document.getElementsByTagName('link')[0];
 	                li.parentNode.appendChild(FF_css,li);  
 	            }
+	            if(navigator.userAgent.toLowerCase().indexOf('safari') != -1){                    
+                    var safari_css = document.createElement('link');
+                    safari_css.setAttribute('rel','stylesheet');
+                    safari_css.setAttribute('href','styles/safari.css');
+                    var sli=document.getElementsByTagName('link')[0];
+                    sli.parentNode.appendChild(safari_css,sli);  
+                }
 			})();
 		</script>
 		<script type="text/javascript">
