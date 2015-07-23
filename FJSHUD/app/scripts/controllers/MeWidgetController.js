@@ -442,9 +442,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     };
 	
-    $scope.volume = {};
-    $scope.volume.micVol;
-    $scope.volume.spkVol;
     $scope.queueSummaryStats = {};
 
     $scope.update_queue_treshold = function(type,value){
@@ -905,17 +902,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.muteCall = function(){
-       if($scope.volume.micVol == 0){
+       if($scope.volume.micVolume == 0){
             phoneService.setMicSensitivity($rootScope.volume.mic);
-            $scope.volume.micVol = $rootScope.volume.mic;
-            $rootScope.volume.mic = 0;
+            $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+            
         }else{
+            $rootScope.volume.mic = angular.copy($scope.volume.micVolume);
             phoneService.setMicSensitivity(0);
-            $rootScope.volume.mic = angular.copy($scope.volume.micVol);
-            $scope.volume.micVol = 0;
+            $scope.update_settings('hudmw_webphone_mic','update',0);
        }
-
-       $scope.update_settings('hudmw_webphone_mic','update',$scope.volume.micVol);
     };
 
     $scope.muteConference = function(){
@@ -923,20 +918,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.silentSpk = function(){
-        if($scope.volume.spkVol == 0){
-             phoneService.setVolume($rootScope.volume.spk);
-             $scope.volume.spkVol = $rootScope.volume.spk;
-             
-
+        if($scope.volume.spkVolume == 0){
+             phoneService.setVolume($scope.volume.spk);
+             $scope.update_settings('hudmw_webphone_speaker','update',$rootScope.volume.spk);
         }else{
+            $rootScope.volume.spk = angular.copy($scope.volume.spkVolume);
             phoneService.setVolume(0);
-            $rootScope.volume.spk = angular.copy($scope.volume.spkVol);
-            $scope.volume.spkVol = 0;
-        }
-
-       $scope.update_settings('hudmw_webphone_speaker','update',$scope.volume.spkVol);
-    
-    };
+            $scope.update_settings('hudmw_webphone_speaker','update',0);
+         }
+     };
 
     var updateTime = function() {
         if ($scope.currentCall && $scope.currentCall.startedAt) {
