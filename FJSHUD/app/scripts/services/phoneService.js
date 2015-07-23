@@ -916,11 +916,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			  if (msg.micvolume!=undefined) 
     			  {
     				  var mv = parseFloat(msg.micvolume);
+    				  $rootScope.volume.micVolume = mv;
     				  context.getMicrophoneVolume = function() {return mv};
     			  }    				  
     			  if (msg.soundvolume!=undefined) 
     			  {
     				  var sv = parseFloat(msg.soundvolume);
+    				  $rootScope.volume.spkVolume = sv;
     				  context.getSpeakerVolume = function() {return sv};
     			  }
     			  if (msg.ec!=undefined) 
