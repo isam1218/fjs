@@ -1,9 +1,7 @@
 hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 
     function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService) {
     var context = this;
-    var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
-    var CALL_ON_HOLD = 3;
-    var CALL_IN_PROGRESS = 2;
+    var MAX_AUTO_AWAY_TIMEOUT = 2147483647;    
     var soundManager;
     var settings = {};
     var queues = [];
@@ -660,7 +658,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.isAscending = false;
     $scope.$on('calllog_synced',function(event,data){
         if(data){
-            $scope.calllogs = data;
+            $scope.calllogs = data.filter(function(item){
+                if(item.xef001type != "delete"){
+                    //we attach the from display and to display values in order to sort the values
+                    item.fromDisplayValue = $scope.formatIncoming(item,'From');
+                    item.toDisplayValue = $scope.formatIncoming(item,'To');
+                    return true;
+                }
+            });
             $scope.calllogs.sort(function(a,b){
                 return b.startedAt - a.startedAt;
             });
@@ -685,61 +690,27 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             case "From":
                  if($scope.isAscending){
                     $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return b.phone.localeCompare(b.phone);
-                        }else if(a.incoming){
-                            return b.phone.localeCompare(a.location);
-                        }else if(b.incoming){
-                            return b.location.localeCompare(a.phone);
-                        }else{
-                            return b.location.localeCompare(b.location);
-                        }
+                        return a.fromDisplayValue.localeCompare(b.fromDisplayValue);
                     });
                    
                     $scope.isAscending = false;   
                 }else{
                      $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return a.phone.localeCompare(b.phone);
-                        }else if(a.incoming){
-                            return a.phone.localeCompare(b.location);
-                        }else if(b.incoming){
-                            return a.location.localeCompare(b.phone);
-                        }else{
-                            return a.location.localeCompare(b.location);
-                        }
+                         return b.fromDisplayValue.localeCompare(a.fromDisplayValue);
                     }); 
-                    
                     $scope.isAscending = true;
                 }
                 break;
             case "To":
                 if($scope.isAscending){
                     $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return b.location.localeCompare(b.location);
-                        }else if(a.incoming){
-                            return b.phone.localeCompare(a.location);
-                        }else if(b.incoming){
-                            return b.location.localeCompare(a.phone);
-                        }else{
-                            return b.phone.localeCompare(a.phone);
-                        }
+                        return a.toDisplayValue.localeCompare(b.toDisplayValue);
                     });
                     
                     $scope.isAscending = false;   
                 }else{
-
                     $scope.calllogs.sort(function(a,b){
-                        if(a.incoming && b.incoming){
-                            return a.location.localeCompare(b.location);
-                        }else if(a.incoming){
-                            return a.location.localeCompare(b.phone);
-                        }else if(b.incoming){
-                            return a.phone.localeCompare(b.location);
-                        }else{
-                            return a.phone.localeCompare(b.phone);
-                        }
+                        return b.toDisplayValue.localeCompare(a.toDisplayValue);
                     }); 
                     
                     $scope.isAscending = true;
@@ -781,7 +752,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         switch(type){
             case "From":
                 if(calllog.incoming){
-                    return calllog.phone;
+                    if(calllog.phone){
+                        return calllog.phone;
+                    }else{
+                        return calllog.displayName;
+                    }
                 }else{
                     return $scope.verbage.you + " @ " + calllog.location;
                 }
@@ -789,7 +764,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 if(calllog.incoming){
                     return $scope.verbage.you + " @ " + calllog.location;
                 }else{
-                    return calllog.phone;
+                    if(calllog.phone){
+                        return calllog.phone;
+                    }else{
+                        return calllog.displayName;
+                    }
                 }
         }
     };
@@ -801,8 +780,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     });
 
-    $scope.holdCall = function(call,isHeld){
-        phoneService.holdCall(call.xpid,isHeld == 'True');
+    $scope.holdCall = function(call){    	
+    	var isHeld = (call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD) ? true : false;
+    	phoneService.holdCall(call.xpid, isHeld);			    	
     };
 
     $scope.makeCall = function(number){

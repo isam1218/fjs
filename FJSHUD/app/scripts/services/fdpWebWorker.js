@@ -114,7 +114,7 @@ function version_check (){
 			
 			setTimeout('should_sync();', 500);
 		}else{
-			setTimeout('do_version_check();', 500);
+			setTimeout('version_check();', 500);
 
 		}
 	});
