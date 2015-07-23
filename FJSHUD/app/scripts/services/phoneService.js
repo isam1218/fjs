@@ -335,7 +335,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var onVolumeChanged = function(spkVolume,microphoneLevel){
 		$rootScope.volume.spkVolume = spkVolume;
 		$rootScope.volume.micVolume = microphoneLevel;
-	}
+	};
 
 	var sessionStatus = function(session_status){
 		if (session_status.status == 0 && !isRegistered) {
