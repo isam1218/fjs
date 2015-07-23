@@ -1,4 +1,4 @@
-hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService) {
+hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', 'PhoneService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService, phoneService) {
 	$scope.onCall = $scope.$parent.overlay.data;
 
 	$scope.timeElapsed = 0;
@@ -137,30 +137,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	};
 	
-	$scope.selectDestination = function(contact) {
-		$scope.transferTo = contact;
-	};
-	
-	$scope.transferCall = function() {
-		if ($scope.transferTo) {
-			if($scope.onCall.xpid == $rootScope.meModel.my_pid){
-				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					mycallId: $scope.onCall.call.xpid,
-					toContactId: $scope.transferTo.xpid
-				});
-			}else{
-				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					fromContactId: $scope.onCall.call.xpid,
-					toContactId: $scope.transferTo.xpid
-				});	
-			}
-			// save receiving end of transfer for later use in recent transfers...
-			localStorage['recentTransfers_of_' + $rootScope.meModel.my_Pid] = JSON.stringify($scope.transferTo.xpid)
-			$scope.showOverlay(false);
-		}
-		else
-			$scope.addError = 'Select destination';
-	};
 	
 	$scope.selectConference = function(conference) {
 		$scope.selectedConf = conference;
@@ -252,43 +228,61 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		};
 	};
 
+	$scope.selectDestination = function(contact) {
+		$scope.transferTo = contact;
+	};
+	
+	$scope.transferCall = function() {
+		if ($scope.transferTo) {
+			if($scope.onCall.xpid == $rootScope.meModel.my_pid){
+				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					mycallId: $scope.onCall.call.xpid,
+					toContactId: $scope.transferTo.xpid
+				});
+			}else{
+				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					fromContactId: $scope.onCall.call.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+			}
+			// save receiving end of transfer for later use in recent transfers...
+			localStorage['recentTransfers_of_' + $rootScope.meModel.my_Pid] = JSON.stringify($scope.transferTo.xpid)
+			$scope.showOverlay(false);
+		}
+		else
+			$scope.addError = 'Select destination';
+	};
+
 	$scope.transferContacts = [];
 
+	// feed the entire contact
 	$scope.searchContact = function(contact) {
 		// prevent duplicates
 		for (var i = 0, iLen = $scope.transferContacts.length; i < iLen; i++) {
 			if ($scope.transferContacts[i] == contact)
 				return;
 		}
-		console.error('search contact added! - ', contact);
-		localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(contact.xpid);
+
+		// retrieve recent transfers from LS, add contact to recents, save recents		
+		var recentTransferObj = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : {};
+		recentTransferObj[contact.xpid] = contact.xpid;
+		localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentTransferObj);
 		
 		$scope.$evalAsync(function() {
-			$scope.changeToModelMade = true;
-			$scope.transferContacts.push(contact);
+			// $scope.changeToModelMade = true;
+			$scope.transferTo = contact;
+			if ($scope.transferContacts.length == 0)
+				$scope.transferContacts.push(contact);
+			else
+				$scope.transferContacts.splice(0, 1, contact);
 		});
 	};
 
 	$scope.addExternalToTransfer = function(contact){
-    var params = {
-      conferenceId: $scope.conferenceId,
-      phone: phoneNumber
-    };
-		// look up transfer external post request to server....
-    httpService.sendAction("conferences", "joinPhone", params);
+    phoneService.transfer($scope.onCall.call.xpid, contact);
+		$scope.showOverlay(false);
 	};
 
-	$scope.recentTransferFilter = function(){
-		// if LS --> parse and set as recentTransfers
-		var recentTransfers = [];
-		return function(contact){
-			// loop thru recentTransfers, if contact.xpid == recentTransfers[i] --> return true
-
-			// else
-				// return false
-				// hide recent transfers section
-		};
-	};
 
   $scope.$on("$destroy", function() {
 		updateTime = null;
