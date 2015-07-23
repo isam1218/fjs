@@ -24,7 +24,7 @@
                         <strong>{{ ::item.displayName || item.name }}</strong>  
                         <div class="status">                     
 	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
-	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{item.call ? ' + on call' : ''}}</span>
+	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{item.call ? ' + ' + verbage['on_call'] : ''}}</span>
                         </div>
                     </div>
                 </div>                
@@ -113,7 +113,7 @@
                                 <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                                 <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                                 <br/>
-                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}{{contact.call ? ' + on call' : ''}}</div>
+                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}{{contact.call ? ' + ' + verbage['on_call'] : ''}}</div>
                             </div> 
                             
                             <div class="CallStatus" ng-if="contact.call.startedAt">
