@@ -424,7 +424,7 @@
 				
 				<div  class="CallStatusIconContainer" ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')">
 					<div ng-click="showCurrentCallControls(currentCall)" ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 
-					(volume.mic == 0 ? 'CallIsMuted' : 'IsOnCall' )
+					(volume.micVolume == 0 ? 'CallIsMuted' : 'IsOnCall' )
 					"> </div>
 				</div>
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 

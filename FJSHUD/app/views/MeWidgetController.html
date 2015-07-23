@@ -64,16 +64,16 @@
                       </div>
                   </div>
                   <div class="Dialog-settings-row">
-                    <div class="XButton XButtonToggleSmall" ng-class="volume.micVol == 0 ? 'XIcon24-MuteOn' : 'XIcon24-MuteOff'"
+                    <div class="XButton XButtonToggleSmall" ng-class="volume.micVolume == 0 ? 'XIcon24-MuteOn' : 'XIcon24-MuteOff'"
 
                     ng-click="muteCall()"></div>
                  
-                    <input type="range" min="0" max="1" step=".01" ng-model="volume.micVol" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVol)"
+                    <input type="range" min="0" max="1" step=".01" ng-model="volume.micVolume" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVolume)"
                     ></input>
                  </div>
 	             <div class="Dialog-settings-row">
-	                <div class="XButton XButtonToggleSmall " ng-class="volume.spkVol == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="silentSpk()"></div>
-	                <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
+	                <div class="XButton XButtonToggleSmall " ng-class="volume.spkVolume == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="silentSpk()"></div>
+	                <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVolume" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVolume)"></input>
 	             </div>
                </div>                          
                 <div class="RightSide">   

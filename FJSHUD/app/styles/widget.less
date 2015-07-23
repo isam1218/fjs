@@ -13,28 +13,35 @@
 }
 
 .WidgetPanel {
-  position: relative;
-  margin: -40px 0 0 10px;
-  width: 500px;
-    
-  .Widget {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-	box-shadow: 1px 0 10px gray;	
-  }
+  //position: relative;
+ // margin: -40px 0 0 10px;
+  //width: 500px;
+  
+  position : fixed;
+  top : 60px;
+  left : 320px;
+  width : 500px;
+  bottom : 10px;
+  display : -webkit-box;
+  border-radius : 10px;
+  -webkit-border-radius : 10px;
+  border-top-left-radius : 10px;
+  -webkit-border-top-left-radius : 10px;
+  border-top-right-radius : 10px;
+  -webkit-border-top-right-radius : 10px;
+  background-image : url("../img/XTile-Widget.png?v=1425679800685");
+  box-shadow : 1px 0px 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
+  -webkit-box-shadow : 1px 0px 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
+  border : solid 1px #ccc;
+  z-index : 1;  
 }
 
 .Widget {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 500px;
-  height: 100%;
-  background-image: url(../img/XTile-Widget.png);
-  border: solid 1px #ccc;
-  z-index: 1;
+  left: 0;  
+  width: 100%;
+  height: 100%; 
   display: flex;
   display: -webkit-flex;
   flex-direction: column;

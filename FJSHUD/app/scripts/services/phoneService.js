@@ -14,6 +14,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
 	$rootScope.volume = {};
+	$rootScope.volume.spkVolume = 0;
+	$rootScope.volume.micVolume = 0;
+	
 	var devices = [];
 	var session;
 	var context = {};
@@ -496,6 +499,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	$rootScope.$broadcast("current_call_control", call);
 	};
 
+	var onVolumeChanged = function(spkVolume,microphoneLevel){
+		$rootScope.volume.spkVolume = spkVolume;
+		$rootScope.volume.micVolume = microphoneLevel;
+	}
+
 	var sessionStatus = function(session_status){
 		if (session_status.status == 0 && !isRegistered) {
             
@@ -513,10 +521,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             //isRegistered = true;
 			if(!soundEstablished){
 				soundManager = session.soundManager;
+				if(soundManager){
+					if(soundManager.attachEvent){
+						soundManager.attachEvent("onVolume", onVolumeChanged);
+					}else{
+						soundManager.addEventListener("Volume",onVolumeChanged,false);
+					}
+				}
+
 				devices = soundManager.devs;
 				deferred.resolve(formatData());
 				var spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
 				var micVolume = settingsService.getSetting('hudmw_webphone_mic');
+				$rootScope.volume.spkVolume = spkVolume;
+				$rootScope.volume.micVolume = micVolume;
 				if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
 					soundManager.speaker = parseFloat(spkVolume);
 					soundManager.microphone = parseFloat(micVolume);

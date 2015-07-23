@@ -45,8 +45,6 @@ hudweb.controller('NotificationController',
   $scope.callObj = {};
   $scope.anotherDevice = false;
   $scope.clearOld;
-  $scope.volume = {};
-  $scope.volume.mic = 0;
   
   $scope.phoneSessionEnabled = phoneService.isPhoneActive();  
   
@@ -385,10 +383,6 @@ hudweb.controller('NotificationController',
   };
 
   $scope.$on('settings_updated',function(event,data){
-    if(data['hudmw_webphone_mic']){
-         $scope.volume.mic = data['hudmw_webphone_mic'];
-    } 
-    
     if(data['instanceId'] != undefined){
     
       if(data['instanceId'] != localStorage.instance_id){
