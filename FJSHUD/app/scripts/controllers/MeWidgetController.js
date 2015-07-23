@@ -1,9 +1,7 @@
 hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 
     function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService) {
     var context = this;
-    var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
-    var CALL_ON_HOLD = 3;
-    var CALL_IN_PROGRESS = 2;
+    var MAX_AUTO_AWAY_TIMEOUT = 2147483647;    
     var soundManager;
     var settings = {};
     var queues = [];
@@ -775,8 +773,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     };
     
-    $scope.holdCall = function(call,isHeld){
-        phoneService.holdCall(call.xpid,isHeld == 'True');
+    $scope.$on('groups_synced', function(event,data){
+        var meGroup = data.filter(function(item){
+            return item.xpid == $scope.meModel['my_pid'];
+        });
+
+    });
+
+    $scope.holdCall = function(call){    	
+    	var isHeld = (call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD) ? true : false;
+    	phoneService.holdCall(call.xpid, isHeld);			    	
     };
 
     $scope.makeCall = function(number){

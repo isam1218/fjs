@@ -1,4 +1,4 @@
-hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService) {
+hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', 'PhoneService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService, phoneService) {
 	$scope.onCall = $scope.$parent.overlay.data;
 
 	$scope.timeElapsed = 0;
@@ -15,6 +15,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.contacts = [];
 	$scope.who = {};
 	$scope.who.sendToPrimary = true;
+
 
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
@@ -136,31 +137,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	};
 	
-	$scope.selectDestination = function(contact) {
-		$scope.transferTo = contact;
-	};
-	
-	$scope.transferCall = function() {
-		if ($scope.transferTo) {
-			if($scope.onCall.xpid == $rootScope.meModel.my_pid){
-				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					mycallId: $scope.onCall.call.xpid,
-					toContactId: $scope.transferTo.xpid
-				});	
-				
-			}else{
-				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					fromContactId: $scope.onCall.call.xpid,
-					toContactId: $scope.transferTo.xpid
-				});	
-				
-			}
-
-			$scope.showOverlay(false);
-		}
-		else
-			$scope.addError = 'Select destination';
-	};
 	
 	$scope.selectConference = function(conference) {
 		$scope.selectedConf = conference;
@@ -185,15 +161,26 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
 	};
 
+	$scope.transferToObj;
+
 	$scope.transferFilter = function(){
 		var query = $scope.transfer.search.toLowerCase();
+		$scope.matchCount = 0;
 		return function(contact){
-			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1)
+			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
+				$scope.matchCount++;
+				// console.error('match - ', $scope.matchCount);
 				return true;
-			else
+			} else if (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4){
+				// console.error('phone # -', $scope.transfer.search);
+			}
+			else{
 				return false;
+			}
 		};
 	};
+	
+	$scope.transferToObj = $scope.transfer.search;
 
 	$scope.isStatusUndefined = function(conference){
 		// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
@@ -239,7 +226,63 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		return function(contact){
 			return me.xFerToPermObj[contact.xpid];
 		};
-	}
+	};
+
+	$scope.selectDestination = function(contact) {
+		$scope.transferTo = contact;
+	};
+	
+	$scope.transferCall = function() {
+		if ($scope.transferTo) {
+			if($scope.onCall.xpid == $rootScope.meModel.my_pid){
+				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					mycallId: $scope.onCall.call.xpid,
+					toContactId: $scope.transferTo.xpid
+				});
+			}else{
+				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
+					fromContactId: $scope.onCall.call.xpid,
+					toContactId: $scope.transferTo.xpid
+				});	
+			}
+			// save receiving end of transfer for later use in recent transfers...
+			localStorage['recentTransfers_of_' + $rootScope.meModel.my_Pid] = JSON.stringify($scope.transferTo.xpid)
+			$scope.showOverlay(false);
+		}
+		else
+			$scope.addError = 'Select destination';
+	};
+
+	$scope.transferContacts = [];
+
+	// feed the entire contact
+	$scope.searchContact = function(contact) {
+		// prevent duplicates
+		for (var i = 0, iLen = $scope.transferContacts.length; i < iLen; i++) {
+			if ($scope.transferContacts[i] == contact)
+				return;
+		}
+
+		// retrieve recent transfers from LS, add contact to recents, save recents		
+		var recentTransferObj = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : {};
+		recentTransferObj[contact.xpid] = contact.xpid;
+		localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentTransferObj);
+		
+		$scope.$evalAsync(function() {
+			// $scope.changeToModelMade = true;
+			$scope.transferTo = contact;
+			if ($scope.transferContacts.length == 0)
+				$scope.transferContacts.push(contact);
+			else
+				$scope.transferContacts.splice(0, 1, contact);
+		});
+	};
+
+	$scope.addExternalToTransfer = function(contact){
+    phoneService.transfer($scope.onCall.call.xpid, contact);
+		$scope.showOverlay(false);
+	};
+
 
   $scope.$on("$destroy", function() {
 		updateTime = null;

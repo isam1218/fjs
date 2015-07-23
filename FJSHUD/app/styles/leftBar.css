@@ -28,18 +28,49 @@
 .LeftBar .LeftBarWrapper {
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
-  -ms-flex: 1 1 auto;
+  -ms-flex: 1;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
   overflow: hidden;
 }
+.LeftBar .ListRow {
+  max-height: 41px;
+}
+.LeftBar .ListRow .CallStatus {
+  height: 36px;
+  width: 36px;
+}
+.LeftBar .ListRow .CallStatus .Avatar {
+  margin: 2px !important;
+}
+.LeftBar .ListRow .ListRowTitle {
+  width: 50%;
+}
+.LeftBar .ListRow .ListRowTitle .status {
+  margin-left: -5px !important;
+}
+.LeftBar .ListRow .ListRowTitle .status .ListRowStatusIcon {
+  margin-left: 0 !important;
+}
+.LeftBar .ListRow .ListRowTitle .name {
+  width: 100%;
+}
+.LeftBar .ListRow .ListRowTitle .name strong {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
 .LeftBar .LeftBarTop .WidgetTabBar {
   background: url() transparent !important;
 }
+.LeftBar .grouped a.ListRow:nth-child(odd) {
+  background-color: #fff !important;
+}
 .LeftBar .ContactSearch {
   width: 300px;
+  height: 43px;
 }
 .LeftBar .ContactSearch span {
   position: absolute;
@@ -83,7 +114,7 @@
   flex-direction: column;
   -webkit-flex-direction: column;
   position: relative;
-  moin-height: 50%;
+  min-height: 50%;
 }
 .LeftBar .Contacts .ContactList,
 .LeftBar .Groups .ContactList,
@@ -149,11 +180,28 @@
 .LeftBar .Recent .ContactList a.ListRow {
   background-color: #fff;
 }
+.LeftBar .Contacts .ContactList a.ListRow .ListRowStatus,
+.LeftBar .Groups .ContactList a.ListRow .ListRowStatus,
+.LeftBar .Recent .ContactList a.ListRow .ListRowStatus {
+  top: 10px;
+  width: 55px;
+}
+.LeftBar .Contacts .ContactList a.ListRow .ListRowStatus .ListRowStatusText,
+.LeftBar .Groups .ContactList a.ListRow .ListRowStatus .ListRowStatusText,
+.LeftBar .Recent .ContactList a.ListRow .ListRowStatus .ListRowStatusText {
+  max-width: 54px;
+}
+.LeftBar .Contacts .ContactList a.ListRow .CallStatus,
+.LeftBar .Groups .ContactList a.ListRow .CallStatus,
+.LeftBar .Recent .ContactList a.ListRow .CallStatus {
+  margin-right: 1.8em !important;
+}
 .LeftBar .Contacts .ContactList a.ListRow .Members,
 .LeftBar .Groups .ContactList a.ListRow .Members,
 .LeftBar .Recent .ContactList a.ListRow .Members {
   top: 2px;
-  height: 24px;
+  min-height: 24px;
+  height: auto;
   line-height: 24px;
   text-overflow: ellipsis;
   overflow: hidden;

@@ -3,20 +3,20 @@
   
   <div class="ListRowContent" dockable="member.fullProfile">
     <div class="ListRowTitle">
-		<strong> {{ ::member.fullProfile.displayName}}</strong>
+		{{ ::member.fullProfile.displayName}}
 		<br/>
 		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}"></div>
 
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
-		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
+		<span>{{ (member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + on call' : '') }}</span>
     </div>
 
     <callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
-		<div ng-if="!member.fullProfile.call">
-		<div class="ListRowStatus">
-			<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
-		</div>
-		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
+	<div ng-if="!member.fullProfile.call">
+			<div class="ListRowStatus">
+				<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
+			</div>
+			<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
 	</div>
 	</div>
 </a>

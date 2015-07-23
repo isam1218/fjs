@@ -67,6 +67,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					}
 
 					if(matchCount == 0){
+						console.error('X');
 						var line = makeLine(null, true);
 						inset.empty();
 						rows.empty();
@@ -82,12 +83,14 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					addTeamMemberHeader();
 
 					if (attrs.conference == "true" && matchCount == 0 & !isNaN(element.val())){
+						console.error('Y');
 						overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
 						headerTitle = angular.element('<div class="Header">Join to Conference</div>');
 						overlay.append(headerTitle);
 						overlay.append(joinByPhoneBtn);
 						overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
 					} else if (attrs.conference == 'true' & matchCount == 0 & isNaN(element.val())){
+						console.error('Z');
 						overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
 						headerTitle = angular.element('<div class="Header">Join to Conference</div>');
 						overlay.append(headerTitle);
