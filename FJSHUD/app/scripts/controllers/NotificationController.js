@@ -354,11 +354,17 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
     }
   };
 
-  $scope.acceptCall = function(xpid){
+  $scope.acceptCall = function(xpid, message){
     for(var call in $scope.calls){
       if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
         $scope.holdCall($scope.calls[call].xpid,true);
       }
+    }
+    if (message && message.type == 'zoom'){
+      var urlPath = message.message.split(': ')[1];
+      $scope.remove_notification(message.xpid);
+      window.open(urlPath, "_blank");
+      return;
     }
     phoneService.acceptCall(xpid);
   };
@@ -766,6 +772,9 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
       case 'error':
         notification.displayName = 'Error';
         notification.message = 'Open for Details';
+        break;
+      case 'zoom':
+        notification.label = "zoom";
         break;
     }
 
