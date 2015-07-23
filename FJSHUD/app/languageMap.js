@@ -16,6 +16,7 @@ fjs.i18n = {
     cancel:'Cancel',
     select:'Select',
     clear_selection:'Clear Selection',
+    on_call: 'on call',
     
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
