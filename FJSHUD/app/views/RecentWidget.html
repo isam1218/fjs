@@ -10,8 +10,8 @@
         </div>
     </div>
 </div>
-<div class="ContactList" ng-style="{'height': RecentTabHeight}">
-    <div class='timeline' ng-if="sortField =='timeline'" ng-style="{'height': RecentTabHeight}">     
+<div class="ContactList">
+    <div class='timeline' ng-if="sortField =='timeline'">     
         
         <div ng-click="goToFullRoute(item)" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> 
            

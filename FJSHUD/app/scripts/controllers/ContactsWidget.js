@@ -15,16 +15,17 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 		$scope.favorites = data.favorites;
 	});
 
-  $scope.sort = function(field) {
-      if($scope.sortField != field) {
-          $scope.sortField = field;
-          $scope.sortReverse = false;
-      }
-      else {
-          $scope.sortReverse = !$scope.sortReverse;
-      }
-  };
+    $scope.sort = function(field) {
+        if($scope.sortField != field) {
+            $scope.sortField = field;
+            $scope.sortReverse = false;
+        }
+        else {
+            $scope.sortReverse = !$scope.sortReverse;
+        }
+    };
 	
+	/*
 	// filter contacts down
 	$scope.customFilter = function() {
 		var tab = $scope.$parent.tab;
@@ -58,6 +59,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 		else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
 			return true;
 	};
+	*/
 	
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
