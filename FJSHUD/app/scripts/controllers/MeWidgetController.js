@@ -180,6 +180,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     myHttpService.getFeed('weblauncher');    
     myHttpService.getFeed('weblaunchervariables');
     myHttpService.getFeed('i18n_langs');
+    myHttpService.getFeed('settings'); 
 
     
     if(!phoneService.isPhoneActive()){
@@ -621,7 +622,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     
     $scope.$on('settings_updated',function(event,data){
         if (data){
-			$scope.settings = settings = data;
+			//$scope.settings = settings = data;
 			update_queues();
             update_settings();
         }
