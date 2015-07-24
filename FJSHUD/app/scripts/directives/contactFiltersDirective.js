@@ -1,6 +1,7 @@
 hudweb.directive('contactFilters', function ($rootScope) {
 	return {
 		restrict: "A",
+		scope: '=',
 		link: function(scope, element, attrs) {
 			var tab = scope.tab;
 			var favWatcher;
@@ -50,31 +51,37 @@ hudweb.directive('contactFilters', function ($rootScope) {
 						$('.ContactList .ListRow').show();
 					// filter down
 					else {
-						$('.ContactList .ListRow').each(function() {
-							var contact = angular.element($(this)).scope().contact;
+						for (var i = 0, len = scope.contacts.length; i < len; i++) {
+							var contact = scope.contacts[i];
+							var row = element[0].getElementsByClassName('ContactRow-' + contact.xpid)[0];
 							
 							if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
-								$(this).show();
+								$(row).show();
 							else
-								$(this).hide();
-						});
+								$(row).hide();
+						}
+					
+						row = null;
 					}
 				});
 			}
 			
 			function filterContacts() {
-				$('.ContactList .ListRow').each(function() {
-					var contact = angular.element($(this)).scope().contact;
+				for (var i = 0, len = scope.contacts.length; i < len; i++) {
+					var contact = scope.contacts[i];
+					var row = element[0].getElementsByClassName('ContactRow-' + contact.xpid)[0];
 					
 					if (tab == 'all' && contact.xpid != $rootScope.myPid)
-						$(this).removeClass('Hide');
+						$(row).removeClass('Hide');
 					else if (tab == 'external' && contact.primaryExtension == '')
-						$(this).removeClass('Hide');
+						$(row).removeClass('Hide');
 					else if (tab == 'favorites' && scope.favorites[contact.xpid] !== undefined)
-						$(this).removeClass('Hide');
+						$(row).removeClass('Hide');
 					else
-						$(this).addClass('Hide');
-				});
+						$(row).addClass('Hide');
+				}
+				
+				row = null;
 			}
 		}
 	};

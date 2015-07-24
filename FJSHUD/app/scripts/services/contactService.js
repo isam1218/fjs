@@ -62,7 +62,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				}
 				
 				// add new contact
-				if (!match) {
+				if (!match && data[i].xef001type != 'delete') {
 					contacts.push(data[i]);
 					
 					// add avatar
