@@ -11,6 +11,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var weblauncherTimeout;
     var timer;
     var text;
+    $scope.sortType = "Date";
 
     $scope.avatar ={};
     $scope.phoneType = false;
@@ -673,72 +674,63 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     return true;
                 }
             });
-            $scope.calllogs.sort(function(a,b){
-                return b.startedAt - a.startedAt;
-            });
+            $scope.sortCallLog($scope.recentSelectSort,$scope.isAscending);
         }
     });
-    $scope.sortCallLog = function(sortType){
+
+    $scope.sortCallLog = function(sortType,ascending){
         switch(sortType){
             case "Date":
-                if($scope.isAscending){
+                if($scope.isAscending || (ascending != undefined && !ascending)){
                     $scope.calllogs.sort(function(a,b){
                         return b.startedAt - a.startedAt;
                     }); 
-                    $scope.isAscending = false;   
                 }else{
                     $scope.calllogs.sort(function(a,b){
                         return a.startedAt - b.startedAt;
                     });
-                    $scope.isAscending = true;
                 }
                 
                 break;
             case "From":
-                 if($scope.isAscending){
+                 if($scope.isAscending || (ascending != undefined && !ascending)){
                     $scope.calllogs.sort(function(a,b){
                         return a.fromDisplayValue.localeCompare(b.fromDisplayValue);
                     });
-                   
-                    $scope.isAscending = false;   
                 }else{
                      $scope.calllogs.sort(function(a,b){
                          return b.fromDisplayValue.localeCompare(a.fromDisplayValue);
                     }); 
-                    $scope.isAscending = true;
                 }
                 break;
             case "To":
-                if($scope.isAscending){
+                if($scope.isAscending || (ascending != undefined && !ascending)){
                     $scope.calllogs.sort(function(a,b){
                         return a.toDisplayValue.localeCompare(b.toDisplayValue);
                     });
-                    
-                    $scope.isAscending = false;   
                 }else{
                     $scope.calllogs.sort(function(a,b){
                         return b.toDisplayValue.localeCompare(a.toDisplayValue);
                     }); 
-                    
-                    $scope.isAscending = true;
                 }
                 break;
 
             case "Duration":
-                if($scope.isAscending){
+                if($scope.isAscending || (ascending != undefined && !ascending)){
                     
                     $scope.calllogs.sort(function(a,b){
                         return b.duration - a.duration;
                     }); 
-                    $scope.isAscending = false;   
                 }else{
                     $scope.calllogs.sort(function(a,b){
                         return a.duration - b.duration;
                     });
-                    $scope.isAscending = true;
                 }
                 break;
         }
+
+        if(ascending == undefined)
+            $scope.isAscending = !$scope.isAscending;
 
         $scope.recentSelectSort = sortType;
   };
@@ -1004,10 +996,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.currentCall = null;
             $scope.onCall = false;
         }
-        /*
-        if(!data[$scope.currentCall.xpid]){
-            $scope.currentCall = null;
-        }*/
+       
         updateTime();
     });
     
