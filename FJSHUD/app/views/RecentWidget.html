@@ -13,7 +13,7 @@
 <div class="ContactList">
     <div class='timeline' ng-if="sortField =='timeline'">     
         
-        <div ng-click="goToFullRoute(item)" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> 
+        <a href="#/{{::item.recent_type}}/{{::item.xpid}}" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> 
            
             <avatar profile="item"></avatar>
 			
@@ -81,8 +81,7 @@
                          <avatar profile="member.fullProfile" type="4"></avatar>                                                                     
                 </div>
             </div>
-        </div>    
-        <!-- </a> -->
+        </a>
     </div>
 
     <div class='grouped' ng-if="sortField == 'grouped'">
@@ -98,8 +97,7 @@
                     <div class="dept">{{::verbage.contact_name_status}}</div>
                    </div> 
                  </div>
-                 <!-- <a href="#/contact/{{::contact.xpid}}/{{::lastContactTabRoute(contact.xpid)}}" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call"> -->
-                 <div ng-click="goToFullRoute(contact)" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">
+                 <a href="#/contact/{{::contact.xpid}}/{{::lastContactTabRoute(contact.xpid)}}" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">
                         <avatar profile="contact"></avatar>
                         
                         <div class="ListRowContent" dockable="contact">
@@ -126,8 +124,7 @@
                                 </avatar>
                             </div>              
                         </div>
-                    </div>
-                <!-- </a> -->
+                </a>
                     <button class="loadmore" ng-show="hasMoreContactsToLoad()" ng-click="loadMoreContacts()"><strong>LOAD MORE</strong></button>
                 </div>
             </div>
@@ -140,8 +137,7 @@
                     <div class="dept">{{::verbage.recent_group_name_members}}</div>
                     </div>
                   </div>
-                    <div ng-click="goToFullRoute(group)" href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
-                    <!-- <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact"> -->
+                    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
                         <avatar profile="group"></avatar>
                         <div class="ListRowContent" dockable="group">
                             <div class="ListRowTitle">
@@ -154,8 +150,7 @@
                             </div>
                             <!-- <div class="ListRowStatus Members">{{ group.members.length }}</div> -->
                         </div>
-                    <!-- </a> -->
-                    </div>
+                    </a>
                     <button class="loadmore" ng-show="hasMoreGroupsToLoad()" ng-click="loadMoreGroups()"><strong>LOAD MORE</strong></button>
                 </div>
             </div>
@@ -168,8 +163,7 @@
                     <div class="dept">{{::verbage.recent_queue_name_status}}</div>
                    </div> 
                   </div>
-                    <div ng-click="goToFullRoute(queue)" class="ListRowFirst ListRow ListRow-Contact" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: queuesLimit() track by queue.xpid"> 
-                    <!-- <a href="#/queue/{{::queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: queuesLimit() track by queue.xpid">  -->
+                    <a href="#/queue/{{::queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: queuesLimit() track by queue.xpid"> 
                         <avatar profile="queue"></avatar>
                     
                         <div class="ListRowContent" dockable="queue">
@@ -182,8 +176,7 @@
                                 </span>
                             </div>
                         </div>
-                    <!-- </a> -->
-                    </div>
+                    </a>
                     <button class="loadmore" ng-show="hasMoreQueuesToLoad()" ng-click="loadMoreQueues()"><strong>LOAD MORE</strong></button>
                 </div>
             </div>
@@ -196,8 +189,7 @@
 	                    <div class="dept">{{::verbage.recent_conference_room_extension}}</div>
                     </div>
                   </div>
-                    <div ng-click="goToFullRoute(conference)" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: conferencesLimit() track by conference.xpid" droppable="Call,Contact">
-                    <!-- <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: conferencesLimit() track by conference.xpid" droppable="Call,Contact"> -->
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: conferencesLimit() track by conference.xpid" droppable="Call,Contact">
                         <avatar profile="conference"></avatar>
                         <div class="ListRowContent" dockable="conference">
                             <div class="ListRowTitle">
@@ -217,8 +209,7 @@
                                     <avatar profile="member.fullProfile" type="4"></avatar>                                                                    
                             </div>
                         </div>
-                    <!-- </a> -->
-                    </div>
+                    </a>
                     <button class="loadmore" ng-show="hasMoreConferencesToLoad()" ng-click="loadMoreConferences()"><strong>LOAD MORE</strong></button>
                 </div>
             </div>
