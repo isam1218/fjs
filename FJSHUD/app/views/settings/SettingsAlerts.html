@@ -112,30 +112,26 @@
             
             <div class="QueueSetting QueueSettingCheckBox">
               <input type="checkbox"
-                ng-model="settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
-                ng-checked="settings['HUDw_QueueNotificationsLW_'+queue.xpid] == 'true'"
-                ng-click="update_checkbox_settings('HUDw_QueueNotificationsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsLW_'+queue.xpid] ? 'true' : 'false')"
+                ng-model="settings['HUDw_QueueNotificationsLW_'+queue.xpid]"                
+                ng-change="update_checkbox_settings('HUDw_QueueNotificationsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsLW_'+queue.xpid] ? 'true' : 'false')"
               >
             </div>
             
             <div class="QueueSetting QueueSettingCheckBox">
               <input type="checkbox" 
-              ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"
-              ng-checked="settings['HUDw_QueueAlertsLW_'+queue.xpid] == 'true'"
-              ng-click ="update_checkbox_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
+              ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"                            
+              ng-change ="update_checkbox_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
               ng-disabled = "!settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
               >
             </div>
             <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
-              ng-model = "settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
-              ng-checked="settings['HUDw_QueueNotificationsAb_'+queue.xpid] == 'true'"
-              ng-click="update_checkbox_settings('HUDw_QueueNotificationsAb_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
+              ng-model = "settings['HUDw_QueueNotificationsAb_'+queue.xpid]"              
+              ng-change="update_checkbox_settings('HUDw_QueueNotificationsAb_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
               
             ></div>
             <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
-              ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"
-              ng-checked="settings['HUDw_QueueAlertsAb_'+queue.xpid] == 'true'"
-              ng-click ="update_checkbox_settings('HUDw_QueueAlertsAb_' + queue.xpid,'update', settings['HUDw_QueueAlertsAb_'+queue.xpid] ? 'true' : 'false')"
+              ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"              
+              ng-change ="update_checkbox_settings('HUDw_QueueAlertsAb_' + queue.xpid,'update', settings['HUDw_QueueAlertsAb_'+queue.xpid] ? 'true' : 'false')"
               ng-disabled = "!settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
            ></div>
            </div>
