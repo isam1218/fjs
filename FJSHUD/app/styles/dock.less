@@ -11,6 +11,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   max-width: 60%;
+  font-size: 0.9em;
   
   position: fixed;
   left: 820px;
@@ -228,7 +229,7 @@
 			}
 			
 			.Agents {
-				background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+				/*background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
 				border-radius: 6px;
 				margin-top: 0px;
 				text-align: center;				
@@ -237,7 +238,29 @@
 				margin-left: -3px;
 				text-align: left;	
 				margin-top: 1px;	
-				line-height: 1.4em;		
+				line-height: 1.4em;	
+				color: #808080;	*/
+				
+				//position: absolute;                
+                right: 5px;
+                height: 14px;
+                line-height: 14px;
+                padding-left: 2px;
+                padding-right: 2px;
+                font-size: 10px;
+                border-radius: 6px;
+                -webkit-border-radius: 6px;
+                text-align: center;
+                //background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+                color: #888;
+                top: 23px;
+                left: 42px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                text-decoration: none;
+                white-space: nowrap;
+                background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+                margin-top: 3px;
 			}
 		}
   
@@ -367,7 +390,8 @@
 			&.Stats {
 				font-size: .7em;
 				text-align: center;
-				color: #9B9B9B;
+				//color: #9B9B9B;
+				color: #808080;
 				padding: 1em 0;
 				line-height: 1.5em;
 				border-top: 1px solid #D5D6D6;

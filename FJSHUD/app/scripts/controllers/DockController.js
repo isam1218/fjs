@@ -5,6 +5,8 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.upload_time = 0;	
 	var request;
 	$scope.upload_progress = 0;
+	$scope.queueThresholds = {};
+	
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
 		request = data.xhr;	
@@ -124,6 +126,12 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	// initial sync
 	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {
+		
+		$scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
+		$scope.queueThresholds.avg_wait = parseInt(settingsService.getSetting('queueAvgWaitThreshold'));
+		$scope.queueThresholds.avg_talk = parseInt(settingsService.getSetting('queueAvgTalkThresholdThreshold'));
+		$scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
+		
 		updateDock(data[0]);
 		
 		// normal updates
