@@ -279,10 +279,13 @@
 .cust_status{
   float: right;
 }
+
+/* VOICEMAIL PLAYER */
+
 .TopBarVoicemailControls { 
   position: relative;
   float: right;
-  top: 0;  
+  top: -5px;  
   background-color: #eee;
   min-height: 100px;
   max-height: 100%;
@@ -318,24 +321,56 @@
 	right: 5px;
   }
   
-  .Caller {
+  .Callers {
+	position: relative;
     background-color: white;
 	margin: 0 20px 15px 0;
 	border-radius: 4px;
 	border: 1px solid #ccc;
 	padding: .25em .5em;
 	line-height: 1.5em;
+	overflow: hidden;
+	
+	.Voicemail {
+		float: left;
+		width: 40%;
+	}
+	
+	.Recording {
+	  float: right;
+	  width: 40%;
+	  display: flex;
+	  display: -webkit-flex;
+	  flex-direction: row;
+	  -webkit-flex-direction: row;
+	  align-items: center;
+	  -webkit-align-items: center;
+	  
+	  .RecordingIcon {
+	  	position: absolute;
+	  	top: 50%;
+	  	left: 50%;
+	  	margin-left: -13px;
+	  }
+	  
+	  .Details {
+	  	flex: 1;
+	  	-webkit-flex: 1;
+	  }
+	}
 	
 	.Details {
 	  display: inline-block;
+	  text-overflow: ellipsis;
+	  overflow: hidden;
 	  
 	  em {
 	    color: #999;
+		padding-right: .75em;
 	  }
 	  
 	  strong {
 	    color: #009cff;
-		margin-left: .75em;
 	  }
 	}
   }
