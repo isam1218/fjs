@@ -173,15 +173,15 @@
 		
 		<div class="Content">
 			<div class="List Stats">
-				<div>
-					<strong>{{ gadget.data.info.waiting }}</strong>
+				<div ng-class="(gadget.data.info.waiting > queueThresholds.waiting && queueThresholds.waiting != 0) ? 'RedText' : ''">
+					<strong>{{ gadget.data.info.waiting }}</strong> 
 					{{::verbage.waiting}}
 				</div>
-				<div>
+				<div ng-class="(gadget.data.longestWait > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
 					{{::verbage.avg_wait}}
 				</div>
-				<div>
+				<div ng-class="(gadget.data.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
                     {{::verbage.avg_talk}}
 				</div>
@@ -189,7 +189,7 @@
 					<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
 					{{::verbage.total}}
 				</div>
-				<div>
+				<div ng-class="(gadget.data.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
 					<strong>{{ gadget.data.info.abandonPercent }}%</strong>
 					{{::verbage.Abandon}}
 
