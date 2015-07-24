@@ -1086,7 +1086,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//this method will find the call object within the native - mycallsfeed mapping and place a dtmf call
 	this.sendDtmf = function(xpid,entry){
-		var call = context.getCal(xpid);
+		var call = context.getCall(xpid);
 		if(call){
 			if(context.webphone)
 				context.webphone.send(JSON.stringify({a : 'dtmf', value : sip_id, digits : entry}));

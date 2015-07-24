@@ -14,6 +14,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.avatar ={};
     $scope.phoneType = false;
+    $scope.settings = {};
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     $scope.pluginVersion = phoneService.getVersion();
 
