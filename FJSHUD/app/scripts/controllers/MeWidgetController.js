@@ -12,7 +12,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var text;
 
     $scope.avatar ={};
-
+    $scope.settings = {};
     
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
     
