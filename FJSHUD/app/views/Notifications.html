@@ -53,7 +53,7 @@
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
 							<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId)">{{::verbage.accept}}</span>
+							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId, message)">{{::verbage.accept}}</span>
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
@@ -187,7 +187,7 @@
 							</div>
 	                        <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
 	                            <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
+	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId, message)" >{{::verbage.accept}}</a>
 	                        </div>
 	                        <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'">
 	                            <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
@@ -245,7 +245,7 @@
 	                         </div>
 	                        <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
 	                            <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
+	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId, message)" >{{::verbage.accept}}</a>
 	                        </div>
 	                        <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'">
 	                            <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
@@ -306,7 +306,7 @@
 							</div>
 	                        <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
 	                            <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId)" >{{::verbage.accept}}</a>
+	                            <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId, message)" >{{::verbage.accept}}</a>
 	                        </div>
 	                        <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'">
 	                            <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
@@ -437,7 +437,7 @@
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
 					
 					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</div>
-					<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</div>
+					<div ng-click="acceptCall(currentCall.xpid, message)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
 				</div>
 				
 	</div>	

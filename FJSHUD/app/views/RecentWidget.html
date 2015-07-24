@@ -24,7 +24,7 @@
                         <strong>{{ ::item.displayName || item.name }}</strong>  
                         <div class="status">                     
 	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
-	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{item.call ? ' + ' + verbage['on_call'] : ''}}</span>
+	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}{{item.call ? ' + ' + verbage['on_call'] : ''}}</span>
                         </div>
                     </div>
                 </div>                

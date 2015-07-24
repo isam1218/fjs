@@ -92,9 +92,7 @@
         height: 50%;        
         overflow-y: hidden;                
         
-        .CurrentCall{
-          // min-height: 140px;
-          //height: 42%;
+        .CurrentCall{          
             
             .LeftSide{
                 width: 50%;
@@ -792,10 +790,112 @@ div.NewCall{
     border-color: #226dd2;
   }
 
-  .QueueHeader {
-    background: #ddd;
-    width: 100%;
-  }
+.table.Queues{
+      width: 99%;
+      border: 1px solid #bbb;
+      .QueueHeader {
+        width: 100%;
+        border-bottom: solid 1px #bbb;
+        background-color: #ddd;
+        clear: both;        
+        
+        .QueueSetting.QueueSettingHeader {
+            display: inline-block;
+            test-align: center;
+            color: #666;
+            font-size: 11px;        
+            float: left;
+            clear: none;
+            height: 24px;
+            line-height: 24px;
+            white-space: nowrap;
+            text-overflow: clip;
+            overflow: hidden;
+            width: 16.6666%;
+            padding-right: 6px;
+            
+            &:first-child{            
+              font-weight: bold;
+              font-size: 13px;             
+              width: 33.333%;
+              text-align: center;
+              border-right: 1px solid #BBB;
+            }     
+        }
+        &:not(.top){
+          .QueueSetting.QueueSettingHeader {
+            border-bottom: 1px solid #BBB;
+            
+             &:nth-child(3){
+                border-right: 1px solid #BBB;
+            }
+          }  
+        }
+        
+        &.top{           
+                    
+            .QueueSetting {            
+                color: #0093f0;
+                width: 33.333%;
+                &:nth-child(2){
+                    border-right: 1px solid #BBB;
+                }
+            }
+        }    
+      }
+      .queueList{
+        border: solid 1px #eee;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        position: relative;
+        
+        .ListRow{
+            min-height: inherit;
+            
+            .SettingsListLineContent{ 
+                width: 100%;
+                .QueueSetting{                  
+                  height: 24px;
+                  background-color: #f9f9f9;
+                  display: inline-block;
+                  float: left;
+                  height: 24px;
+                  line-height: 24px;
+                  white-space: nowrap;
+                  text-overflow: clip;
+                  overflow: hidden;
+                  width: 16.66%;
+                  text-align: center; 
+                  font-size: 12px;
+                  padding-right: 6px;
+                  
+                  &:first-child{
+                    text-align: center;
+                    border-right: 1px solid #BBB;
+                    width: 33.2%;
+                  }
+                  &:nth-child(2),
+                  &:nth-child(3){
+                    padding-left: 1px;
+                  }
+                  &:nth-child(3){
+                    border-right: 1px solid #BBB;
+                    width: 17%;
+                  }
+                  &:nth-child(5){
+                    width: 16.48%;
+                  }
+                }  
+            }
+            
+            &:nth-child(odd){
+                .SettingsListLineContent .QueueSetting{
+                    background-color: #eee;
+                }        
+            }
+          }
+       }  
+}
   .QueueSetting {
     display: inline-block;
     test-align: center;
