@@ -29,13 +29,14 @@
               <div class="file-input Dialog-settings-row" flow-init="{testChunks:false}" flow-files-submitted="flow_cleanup($files)" flow-name="avatar.flow" flow-file-added="change_avatar($file)">
 
                 <label class="queueBlock">{{::verbage.avatar}}:</label>
-                  <img 
+                <div class="AvatarSmall">
+                  <img class="AvatarImgPH""
                    onerror="this.src='img/Generic-Avatar-Small.png'" data-ng-src="{{getMeAvatarUrl(40,38)}}"
-                   style="min-height:38px; min-width:40px; max-height:38px; max-width:40px" flow-img="$flow.files[$flow.files.length-1]"  />
-                <span class="ImgBtnUpload"flow-btn flow-drop flow-drag-enter="style={border: '4px solid green'}" flow-drag-leave="style={}"
-                ng-style="style">{{::verbage.Upload}}</span>
-
+                   />
+                </div> 
+                <div class="XButton"><span>{{::verbage.Upload}}</span></div>               
               </div>
+            </div>  
             <div class="Dialog-settings-row">
               <label class="queueBlock">{{::verbage.first_name}}:</label>
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.first_name">
@@ -80,5 +81,5 @@
               <label class="queueBlock">{{::verbage.my_department}}:</label>
               <input class="text DialogSettingInput" type="text" readonly="true" ng-model="department">
             </div>
-          </div>
+         
         </div>
