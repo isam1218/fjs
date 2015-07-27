@@ -7,6 +7,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
   $scope.calls = [];
   var long_waiting_calls = {};
   var msgXpid;
+  var numberOfMyCalls = 0;
   $scope.inCall = false;
   $scope.inRinging = false;
   $scope.path = $location.absUrl().split("#")[0];
@@ -439,20 +440,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
       for (var i in data){
         $scope.calls[data[i].xpid] = data[i];
-        
-        var singleCall = data[i];
-        if (singleCall.fullProfile.call.contactId == $rootScope.myPid){
-          if (singleCall.fullProfile.call.bargers.length > 0){
-            var myCallBarger = singleCall.fullProfile.call.bargers[0].displayName;
-            var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
-            msgXpid = msgDate + '';
-            // if someone barges my call, create and send me a notification on the fly
-            createBargeNotification(myCallBarger, msgDate, msgXpid);
-          } else if (singleCall.fullProfile.call.bargers == 0){
-            // if that barger drops out, remove that notification
-            $scope.remove_notification(msgXpid);
-          }
-        }
 
         var found = false;
         var profile;
@@ -491,7 +478,30 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
       }
   
     }
+
+    for (var j = 0; j < $scope.calls.length; j++){
+      var singleCall = $scope.calls[j];
+      if (singleCall.fullProfile.call.contactId == $rootScope.myPid){
+        numberOfMyCalls = 1;
+        if (singleCall.fullProfile.call.bargers.length > 0){
+          var myCallBarger = singleCall.fullProfile.call.bargers[0].displayName;
+          var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
+          msgXpid = msgDate + '';
+          // if someone barges my call, create and send me a notification on the fly
+          createBargeNotification(myCallBarger, msgDate, msgXpid);
+        } else if (singleCall.fullProfile.call.bargers == 0){
+          // if that barger drops out, remove that notification
+          $scope.remove_notification(msgXpid);
+        }
+      } 
+    }
     
+    if ($scope.calls.length == 0 && numberOfMyCalls == 1){
+      numberOfMyCalls = 0;
+      // if call is dropped, remove barged call notification...
+      $scope.remove_notification(msgXpid);
+    }
+
     $scope.inCall = $scope.calls.length > 0;
 
     $scope.isRinging = true;
