@@ -540,7 +540,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
 		}
 		element = null;
 		$scope.displayAlert = false;
@@ -690,23 +690,30 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
   }
  };
 	var deleteNotification = function(notification){
+		var removed = false;
 		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 			if($scope.notifications[j].xpid == notification.xpid){
 				$scope.notifications.splice(j,1);
+				removed = true;
 				break;	
 			}
 		}
 		for(var k = 0, kLen = $scope.todaysNotifications.length; k < kLen; k++){
 			if($scope.todaysNotifications[k].xpid == notification.xpid){
 				$scope.todaysNotifications.splice(k,1);
+				removed = true;
 				break;	
 			}
 		}
-		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
-			$timeout(displayNotification, 1500);		
-		}else{
-			phoneService.removeNotification();
+		if(removed){
+			if($scope.todaysNotifications.length > 0 || !$.isEmptyObject($scope.calls)){
+				$scope.displayAlert = true;
+				$timeout(displayNotification, 1500);		
+			}else{
+				phoneService.removeNotification();
+			}	
 		}
+		
 	};
 
 	var deleteLastLongWaitNotification = function(){

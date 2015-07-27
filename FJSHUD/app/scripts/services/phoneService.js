@@ -69,11 +69,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isDocumentHidden  = function(){
 		var hidden; 
 		if(document.hidden){
-			if(notificationCache.html){
+			/*if(notificationCache.html){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 			}else{
 				$rootScope.$broadcast("phone_event", {event: "displayNotification"});
-			}
+			}*/
 		}else{
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				removeNotification();
@@ -229,19 +229,29 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		context.cacheNotification(content,width,height);
 					
 		if(settingsService.getSetting('alert_show') == 'true'){
-			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
-					displayNotification = true;	
-			}else{
-				if(document.visibilityState == "hidden" || document.hidden){
-						displayNotification = true;	
-				}		
-			}
-
 			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
 				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-					displayNotification = true;
+					if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
+						displayNotification = true;	
+					}else{
+						if(document.visibilityState == "hidden" || document.hidden){
+								displayNotification = true;	
+						}else{
+							displayNotification = false;
+						}		
+					}
 				}else{
 					displayNotification = false;
+				}
+			}else{
+				if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
+					displayNotification = true;	
+				}else{
+					if(document.visibilityState == "hidden" || document.hidden){
+							displayNotification = true;	
+					}else{
+						displayNotification = false;
+					}		
 				}
 			}
 		}
@@ -433,7 +443,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	}
 		
 		// re-focus tab/window
-		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1) {
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1 
+			&& url.indexOf('/RemoveNotification') === -1
+		) {
 			activateBrowserTab();
 			window.focus();
 		}		
