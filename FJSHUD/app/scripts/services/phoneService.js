@@ -674,6 +674,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+	this.getSelectedDevice = function(input){
+		if(context.webphone){
+			switch(input){
+				case 'inpdefid':
+					return context.getInputDeviceId();
+				case 'outdefid':
+					return context.getOutputDeviceId();
+				case 'ringdefid':
+					return context.getRingDeviceId();
+			}
+		}else{
+			return soundManager[input];
+		}
+	};
+
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
