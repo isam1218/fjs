@@ -11,8 +11,8 @@
               <div class="lblSelect">{{::verbage.web_launcher_profile}}</div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
                   ng-model="currentWebLauncher"
-                  ng-options="profile.name for profile in weblauncher_profiles"
-                  ng-change="update_settings('hudmw_launcher_config_id','update',currentWebLauncher.id)"
+                  ng-options="profile.name for profile in weblauncher_profiles | filter: truncateLongString() "
+                  ng-change="update_settings('hudmw_launcher_config_id','update',currentWebLauncher.id, currentWebLauncher)"
               >
               </select>
             </div>
