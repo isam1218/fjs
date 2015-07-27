@@ -101,7 +101,30 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
         $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
     });
-
+    
+    $scope.truncateLongString = function()
+    { 
+    	return function(opt){
+    		var truncated_name = opt.name;
+    		var opt_name = opt.name;
+    		
+    		if(opt.name.length > 20)
+    			truncated_name = opt.name.substring(0, 19) + '...';
+		    if(truncated_name == $scope.currentWebLauncher.name || opt_name == $scope.currentWebLauncher.name)
+		    	opt.name =  truncated_name;
+		    else
+		    	opt.name = opt.orig_name;
+		    return opt;
+    	};
+    }; 
+    
+    $scope.trancateSelectedName = function(){
+    	if($scope.currentWebLauncher.name.length > 20)
+    	{
+    		$scope.currentWebLauncher.name = $scope.currentWebLauncher.name.substring(0, 19) + '...';
+    	}    	
+    }; 
+    
     $scope.saveMeTab = function(tab, index){
         switch(tab){
             case "General":
@@ -399,7 +422,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     {id:9,value:2400000,label:'40 minutes'}];
     $scope.autoAwaySelected;
   
-    $scope.update_settings = function(type,action,model){
+    $scope.update_settings = function(type,action,model, currentObject){
         switch(type){
             case 'auto_away_timeout':
                 if(model){
@@ -436,10 +459,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     !$scope.boxObj.enableBox
                 myHttpService.updateSettings(type, action, model);
                 break;
+            case 'hudmw_launcher_config_id':            	            	  
+            	//$scope.truncateLongString();
+            	$scope.currentWebLauncher = currentObject;
+            	$scope.trancateSelectedName(); 
+            	myHttpService.updateSettings(type,action,model);
+            	break;
             default:
                 myHttpService.updateSettings(type,action,model); 
+                break;
             
-        }
+         }
 
     };
 	
@@ -806,19 +836,24 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             var activeWebLauncher = data.filter(function(item){
                 return item.id == settings['hudmw_launcher_config_id'];
             });
+            
             if (activeWebLauncher.length > 0){
                 $scope.currentWebLauncher = activeWebLauncher[0];
             }else{
                 //if no web launcher is set find the default web launcher and set it for the user
-                for(var i = 0, iLen = data.length; i < iLen; i++){
+                for(var i = 0, iLen = data.length; i < iLen; i++){                	                	
                     if(data[i].id == "user_default"){
-                        $scope.currentWebLauncher = data[i];
-                        $scope.update_settings('hudmw_launcher_config_id','update',$scope.currentWebLauncher.id);
+                        $scope.currentWebLauncher = data[i];                      
+                        $scope.update_settings('hudmw_launcher_config_id','update',$scope.currentWebLauncher.id);                       
                     }
                 }
             };
-
-            $scope.weblauncher_profiles = data;
+            
+            for(var j = 0, jLen = data.length; j < jLen; j++){               	                	                                   
+            	data[j].orig_name = data[j].name;                                   
+            }
+            $scope.weblauncher_profiles = data; 
+            $scope.trancateSelectedName();
         }
     });
 
