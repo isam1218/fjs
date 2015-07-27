@@ -6,6 +6,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
   $scope.notifications = [];
   $scope.calls = [];
   var long_waiting_calls = {};
+  var msgXpid;
   $scope.inCall = false;
   $scope.inRinging = false;
   $scope.path = $location.absUrl().split("#")[0];
@@ -409,6 +410,20 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
        myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
   };
 
+  var createBargeNotification = function(callBarger, msgDate, msgXpid){
+    var extraNotification;
+    extraNotification = {
+      displayName: "Call Monitoring",
+      message: callBarger,
+      time: msgDate,
+      type: "barge message",
+      xpid: msgXpid,
+      label: "You are being barged by"
+    };
+    $scope.notifications.unshift(extraNotification);
+    $scope.todaysNotifications.push(extraNotification);
+  };
+
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
     
@@ -424,6 +439,21 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
       for (var i in data){
         $scope.calls[data[i].xpid] = data[i];
+        
+        var singleCall = data[i];
+        if (singleCall.fullProfile.call.contactId == $rootScope.myPid){
+          if (singleCall.fullProfile.call.bargers.length > 0){
+            var myCallBarger = singleCall.fullProfile.call.bargers[0].displayName;
+            var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
+            msgXpid = msgDate + '';
+            // if someone barges my call, create and send me a notification on the fly
+            createBargeNotification(myCallBarger, msgDate, msgXpid);
+          } else if (singleCall.fullProfile.call.bargers == 0){
+            // if that barger drops out, remove that notification
+            $scope.remove_notification(msgXpid);
+          }
+        }
+
         var found = false;
         var profile;
         $scope.calls.push(data[i]);   
@@ -540,7 +570,7 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-			phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
 		}
 		element = null;
 		$scope.displayAlert = false;
@@ -576,8 +606,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
 
 		}
 	});
-	  var addTodaysNotifications = function(item){
-   // console.error('item - ', item);
+  var addTodaysNotifications = function(item){
+    // console.error('item - ', item);
 
     var context, contextId, targetId, groupContextId, queueContextId;
     var today = moment(ntpService.calibrateTime(new Date().getTime()));
@@ -689,31 +719,25 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
     }
   }
  };
+
 	var deleteNotification = function(notification){
-		var removed = false;
 		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 			if($scope.notifications[j].xpid == notification.xpid){
 				$scope.notifications.splice(j,1);
-				removed = true;
 				break;	
 			}
 		}
 		for(var k = 0, kLen = $scope.todaysNotifications.length; k < kLen; k++){
 			if($scope.todaysNotifications[k].xpid == notification.xpid){
 				$scope.todaysNotifications.splice(k,1);
-				removed = true;
 				break;	
 			}
 		}
-		if(removed){
-			if($scope.todaysNotifications.length > 0 || !$.isEmptyObject($scope.calls)){
-				$scope.displayAlert = true;
-				$timeout(displayNotification, 1500);		
-			}else{
-				phoneService.removeNotification();
-			}	
+		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+			$timeout(displayNotification, 1500);		
+		}else{
+			phoneService.removeNotification();
 		}
-		
 	};
 
 	var deleteLastLongWaitNotification = function(){
@@ -783,6 +807,8 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
       case 'zoom':
         notification.label = "zoom";
         break;
+      case 'barge message':
+        notification.label = "You are being barged by"
     }
 
     if(notification.audience == "conference"){
