@@ -174,35 +174,11 @@ var sync_request = function(f){
 						}
 					}
 				}
-			
-				// split recordings up into additional feeds
-				if (feed == "callrecording") {
-					data_obj['callerrecording'] = {};
-					data_obj['conferencerecording'] = {};
-					
-					for (var key in synced_data[feed]) {
-						data_obj['callerrecording'][key] = {items: []};
-						data_obj['conferencerecording'][key] = {items: []};
-					
-						for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
-							if (synced_data[feed][key].items[i].conferenceId)
-								data_obj['conferencerecording'][key].items.push(synced_data[feed][key].items[i]);
-							else
-								data_obj['callerrecording'][key].items.push(synced_data[feed][key].items[i]);
-						}
-					}
-					
-					synced_data['callerrecording'] = format_array(data_obj['callerrecording']);
-					synced_data['conferencerecording'] = format_array(data_obj['conferencerecording']);
-				}
 				
 				synced_data[feed] = format_array(data_obj[feed]);
 			}
-
-			//localStorage.data_obj = JSON.stringify(this.data_obj);
 			
-			synced = true;
-			
+			synced = true;			
 
 			var sync_response = {
 				"action": "sync_completed",

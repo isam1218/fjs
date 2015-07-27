@@ -203,8 +203,13 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		$scope.player.progress = 0;
 		
 		// is this a recording?
-		if (data.originatorUserId)
-			$scope.recorder = contactService.getContact(data.originatorUserId);
+		if (data.originatorUserId) {
+			// find other party
+			if (!data.calleeUserId || data.fullProfile.xpid == data.calleeUserId)
+				$scope.recorder = contactService.getContact(data.callerUserId);
+			else 
+				$scope.recorder = contactService.getContact(data.calleeUserId);
+		}
 		else
 			$scope.recorder = null;
 			
