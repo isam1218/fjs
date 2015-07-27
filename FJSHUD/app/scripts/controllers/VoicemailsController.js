@@ -6,19 +6,19 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.tester.query = "";
 	
 
-	// single group widget
-	if ($routeParams.groupId) {
-		var group = groupService.getGroup($routeParams.groupId);
-		$scope.emptyVoiceLabel = group.name;
-	}
-	// conversation widget
-	else if ($routeParams.contactId) {
-		var contact = contactService.getContact($routeParams.contactId);
-		$scope.emptyVoiceLabel = contact.displayName;
-	}
-	// calls & recordings
-	else
-		$scope.emptyVoiceLabel = 'anyone else';	
+    	// single group widget
+		if ($routeParams.groupId) {
+			var group = groupService.getGroup($routeParams.groupId);
+			$scope.emptyVoiceLabel = group.name;
+		}
+		// conversation widget
+		else if ($routeParams.contactId) {
+			var contact = contactService.getContact($routeParams.contactId);
+			$scope.emptyVoiceLabel = contact.displayName;
+		}
+		// calls & recordings
+		else
+			$scope.emptyVoiceLabel = 'anyone else';
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
@@ -35,22 +35,19 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     };
 
     $scope.actions = [
-		{display_name:$scope.verbage.action,orig_name:$scope.verbage.action, type:"unknown"},
-		{display_name:$scope.verbage.mark_all_incoming_vm_read,orig_name:$scope.verbage.mark_all_incoming_vm_read, type:"read"},
-		{display_name:$scope.verbage.mark_all_incoming_vm_unread,orig_name:$scope.verbage.mark_all_incoming_vm_unread, type:"unread"},
-		{display_name:$scope.verbage.delete_all_incoming_read,orig_name:$scope.verbage.delete_all_incoming_read, type:"delete"},
+		{display_name:$scope.verbage.action, type:"unknown"},
+		{display_name:$scope.verbage.mark_all_incoming_vm_read, type:"read"},
+		{display_name:$scope.verbage.mark_all_incoming_vm_unread, type:"unread"},
+		{display_name:$scope.verbage.delete_all_incoming_read, type:"delete"},
     ];
 
     $scope.actionObj = {};
-    $scope.actionObj.selectedAction = localStorage.selectedVMAction ? JSON.parse(localStorage.selectedVMAction) : $scope.actions[0];
-    $scope.actionObj.currentAction = $scope.actionObj.selectedAction;
+    $scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[0];
         
     // user's profile for their own voicemails
 	contactService.getContacts().then(function() {
 		$scope.myProfile = contactService.getContact($rootScope.myPid);
-		//$scope.actionObj.selectedAction = 
-		$scope.trancateSelectedName(); 
-		
+				
 		switch($scope.actionObj.selectedAction.type){
 		    case "unknown":
 		    	$scope.actionObj.currentAction = $scope.actions[0];		    	
@@ -102,6 +99,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 					}
 				}
 			}
+			
 		}
 		else if (contact) {
 			$scope.voicemails = data.filter(function(voicemail){
@@ -109,53 +107,23 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 			});
 		}
 	};
-	
-	 //call truncation on select value change
-	$scope.trancateSelectedName = function(){
-	   	if($scope.actionObj.selectedAction.display_name.length > 20)
-	   	{
-	   		$scope.actionObj.selectedAction.display_name = $scope.actionObj.selectedAction.display_name.substring(0, 19) + '...';
-	   	}    	
-	};
-	
-	//call truncation on page load
-	$scope.truncateLongAction = function()
-	    {
-	    	return function(opt){
-	    		var truncated_name = opt.display_name;
-	    		var opt_name = opt.display_name;
-	    		
-	    		if(opt.display_name.length > 20)
-	    			truncated_name = opt.display_name.substring(0, 19) + '...';
-			    if(truncated_name == $scope.actionObj.selectedAction.display_name || opt_name == $scope.actionObj.selectedAction.display_name)
-			    	opt.display_name =  truncated_name;
-			    else
-			    	opt.display_name = opt.orig_name;
-			    return opt;
-	    	};
-	};	
-	
+
 	$scope.handleVoiceMailAction = function(type){
         $scope.actionObj.selectedAction = $scope.actions[0];
-        
         switch(type){
             case "read":
-            	$scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[1];            	
-            	$scope.trancateSelectedName(); 
+                $scope.actionObj.currentAction = $scope.actions[1];
                 MarkReadVoiceMails(true);
                 break;
             case "unread":
-            	$scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[2];
-            	$scope.trancateSelectedName(); 
+                $scope.actionObj.currentAction = $scope.actions[2];
                 MarkReadVoiceMails(false);
                 break;
             case "delete":
-            	$scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[3];
-            	$scope.trancateSelectedName(); 
+                $scope.actionObj.currentAction = $scope.actions[3];
                 DeleteReadVoiceMails();
                 break;
-        } 
-        localStorage.selectedVMAction = JSON.stringify($scope.actionObj.selectedAction);
+        }
     };
 
     $scope.voiceFilter = function(){
