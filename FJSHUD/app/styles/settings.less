@@ -66,9 +66,10 @@
        
          & > div {
            overflow-y: auto;
-           padding: 10px;
+           //padding: 10px;
            height: 100%;
-           width: 100%;                
+           width: 100%; 
+           padding-bottom: 10px;               
            
            &.padding{
             padding-bottom: 30px;
@@ -76,6 +77,11 @@
          }
        }   
        
+       .labels{
+        float: right;
+        position: relative;
+        margin-top: -3px;
+       }
        .lblSelect {
          display: inline-block;
          width:150px;
@@ -559,10 +565,176 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
 .Dialog-settings-row{
-  margin:10px;
-  min-height:30px;
+    &.file-input{     
+        padding-bottom: 30px;
+           
+        & > label,
+        .AvatarSmall,
+        .XButton
+        {
+             float: left;   
+        }
+        .AvatarSmall,
+        .XButton
+        {
+            clear: none;
+        }
+        
+        .AvatarSmall{    
+            vertical-align: top;
+            margin-top: -6px;        
+            height: 40px;
+            width: 40px;
+            border: 1px solid #779C00;
+            border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            img{
+                    height: 38px;
+                    width: 38px;
+            } 
+        }
+        .XButton{ 
+            margin-left: 10px;          
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+.lblSelect, .SelectBoxSettings{
+    float: left;   
+ }
+ .SelectBoxSettings{         
+    top: -2px;
+    clear: none;
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;    
+    color: #555555;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+ }
+ input[name='lwa']{
+    margin-left: 0px;
+    vertical-align: bottom;
+    margin-bottom: 0px;
+ }
+ .Dialog-settings-row{  
+      margin: 10px 5px;
+      min-height: 26px;            
+      
+      input[type=text]{
+        position: relative;
+        width: 100%;
+        margin-top: 3px;
+        height: 26px;
+        line-height: 24px;
+        padding-left: 12px;
+        font-size: 12px;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        color: #333;
+        border: solid 1px #C7C7C7;
+        box-shadow: 0px 0px 1px #ddd inset;
+        -webkit-box-shadow: 0px 0px 1px #ddd inset;
+        user-select: text;
+        -webkit-user-select: text;
+        outline: none;
+        background-color: #fff;
+        
+        &.DialogSettingInput{
+            width: 70%;
+        }
+      }
+      
+      .Dialog-check-block{
+        font-size: 12px;
+        position: relative;
+        //margin-top: -3px;
+        width: 100%;
+        
+        span{float: left;}
+      }
+      &.checkbox-label{
+        clear: both;
+        float: left;
+      }
+      .labels{
+        padding: 0px;
+        label{
+          //margin-left: 3px;
+          font-size: 11px;
+          padding: 0px;
+         input{
+            margin-bottom: 2px; 
+            margin-right: 2px;
+            vertical-align: bottom;
+         }   
+        }
+      }
+ }    
+ .ListSection.general,
+ .ListPage.general{
+    .Dialog-settings-row{
+        clear: both;
+        
+        .SelectBoxSettings.fj-hbox{
+            float: left;
+        }
+    }
+    
+ }
+  
+ .ListSection.queues{
+    .ListPage{
+        padding-top: 10px;
+    }
+ }
+ 
+ .ListSection.cp{
+    .ListSectionLink{
+        a.Link{
+            font-size: 12px;
+            margin-left: 20px;
+        } 
+    }
+ }
+.ListPage.launcher{
+    position: relative;
+   // border: solid 1px #efefef;
+    border-top: none;
+    background-color: #fff;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    box-shadow: 0px 0px 2px #999 inset;
+    -webkit-box-shadow: 0px 0px 2px #999 inset;
+    min-height: 60px;
+    padding:10px;
+    //padding-top: 0px !important;
+    
+    .ListPageHeader{
+        position: relative;
+        height: 1px;
+        //padding-bottom: 10px;
+    }
+}
+.ListSection.launcher,
+.ListPage.launcher{
+   .weblauncher-variables{
+     font-size: 12px;
+     .right{
+            clear: none;
+            width: 60%;
+      }
+      .left{
+        width: 40%;
+      }
+      .left, .right{
+            float: left;
+      }
+   }  
 }
 
 .ListPageHeaderText{
@@ -588,8 +760,8 @@ input.text.DialogFieldInput {
 }
 
 span.inputBlock{
-  width:300px;
-  display:inline-block;
+  //width:300px;
+ // display:inline-block;
 }
 
 input.text{
