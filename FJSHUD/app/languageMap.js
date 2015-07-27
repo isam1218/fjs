@@ -109,7 +109,7 @@ fjs.i18n = {
 		launch_page_during_calls: '発信時ウェブ表示',
 		launch_page_after_hang_up:'切断時ウェブ表示',
 		silent:'Silent',
-		auto_launch:'Auto Launch',
+		auto_launch:'Auto-launch',
 		inbound_calls:'Inbound Calls',
 		inbound_call_settings:'inbound call settings',
 		web_launcher_variables:'Web Launcher Variables',

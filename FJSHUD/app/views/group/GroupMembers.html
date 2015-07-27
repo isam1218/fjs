@@ -14,10 +14,10 @@
     <div class="ListViewTopSpace"></div>
 	
     <div class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
-       <a ng-href="{{::getRef(member, myself)}}" >  <avatar profile="member.fullProfile"></avatar></a>
+       <a ng-href="#/contact/{{::member.contactId}}" >  <avatar profile="member.fullProfile"></avatar></a>
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
-            <a class="ListRowTitle" ng-href="{{::getRef(member, myself)}}">
+            <a class="ListRowTitle" ng-href="#/contact/{{::member.contactId}}">
                 <span> {{ ::member.fullProfile.displayName }} </span>
 				<br/>
                 <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
@@ -27,7 +27,7 @@
 			
 
 			<callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
-			<a ng-href="{{::getRef(member, myself)}}" class="vmalternate" ng-if="!member.fullProfile.call">
+			<a ng-href="#/contact/{{::member.contactId}}" class="vmalternate" ng-if="!member.fullProfile.call">
                 <div class="ListRowStatus">#{{ ::member.fullProfile.primaryExtension }}</div>
                 <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
             </a>

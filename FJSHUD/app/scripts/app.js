@@ -101,4 +101,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 		.otherwise({
 			redirectTo: '/settings'
 		});
+})
+.run(function ($rootScope, $location) {
+    $rootScope.$on("$locationChangeStart", function(e) {
+        // don't redirect to self
+		if ($location.path().indexOf($rootScope.myPid) != -1)
+			e.preventDefault();
+    });
 });
