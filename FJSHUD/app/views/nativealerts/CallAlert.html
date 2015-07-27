@@ -3,7 +3,7 @@
 
 <div id="CallAlert">  
   <div onclick="window.location.replace('#/Close')" class="close"></div>  
-  <a ng-href="#contact/{{::meModel.my_pid}}"  class="ListRowFirst ListRow ListRow-Contact">     
+  <a  class="ListRowFirst ListRow ListRow-Contact">     
    <div class="Avatar"><img ng-src="{{ getAvatar(meModel.my_pid) }}" class="AvatarImgPH"></div>
   <!-- <avatar profile="meContact"></avatar> -->
 
@@ -57,7 +57,8 @@
 		</div>   
 		
 		<div class="scroller">  	
-	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-show="showHideElements($index)">			
+		<!--ng-show="showHideElements($index)"-->
+	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" >			
 				<div class="NotificationHeader">
 					<div class="NotificationHeaderBackground">
 						<a href="#/RemoveNotification?{{message.xpid}}">
@@ -152,7 +153,7 @@
 			<div class="Messages webphone" ng-if="anotherDevice" ng-click="$parent.activatePhone()">                
 			    <div class="NotificationHeader">
                     <div class="NotificationHeaderBackground"> 
-                        <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+                        <div class="NotificationClose" ></div>
                     </div>
                 </div>
                 <div class="NotificationDivider" ></div>
