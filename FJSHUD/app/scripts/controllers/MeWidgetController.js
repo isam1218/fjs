@@ -212,7 +212,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             soundManager = phoneService.getSoundManager();
             
             $scope.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == soundManager.inpdefid; 
+                 return item.id == phoneService.getSelectedDevice('inpdefid'); 
             })[0];
             
 
@@ -221,11 +221,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             });
             
             $scope.selectedOutput = $scope.outputDevices.filter(function(item){
-                 return item.id == soundManager.outdefid; 
+                 return item.id == phoneService.getSelectedDevice('outdefid'); 
             })[0];
             
             $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                 return item.id == soundManager.ringdefid; 
+                 return item.id == phoneService.getSelectedDevice('ringdefid'); 
             })[0];
 
             if($scope.selectedRingput == undefined){
@@ -313,11 +313,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
       }
 };
 
-    $scope.showLocationsPopup = function(e) {
+    $scope.showLocationsPopup = function(e,element,transfer) {
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        $scope.showPopup({key:"LocationsPopup", x:offset.x-60, y:offset.y}, eventTarget);
+        data = {key:"LocationsPopup", x:offset.x-60, y:offset.y};
+        $scope.showPopup(data, eventTarget);
         return false;
     };
 
@@ -960,6 +961,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }else if(data[i].xpid == $scope.currentCall.xpid){
                         $scope.currentCall = data[i];
                     }
+                    $routeParam.callId = $scope.currentCall.xpid;
                 }
             }
             
