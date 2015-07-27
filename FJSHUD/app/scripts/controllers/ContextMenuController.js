@@ -43,7 +43,14 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		$scope.myQueue = false;
 		
 		// get type
-		if ($scope.profile.firstName !== undefined) {
+		if ($scope.original.parkExt !== undefined) {
+			$scope.type = 'Contact';
+			
+			// external parked call
+			if (!$scope.original.callerContactId)
+				$scope.profile = null;
+		}
+		else if ($scope.profile.firstName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
@@ -67,10 +74,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		}
 		else if ($scope.profile.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
-		}
-		else if ($scope.profile.parkExt !== undefined) {
-			$scope.type = 'ParkedCall';
-			$scope.profile = contactService.getContact($scope.original.callerContactId);
 		}
 		else if ($scope.profile.name !== undefined) {
 			$scope.type = 'Group';
@@ -101,15 +104,13 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		DOCK ICON ACTIONS
 	*/
 	
-	$scope.dockItem = function(add) {
-		var type = $scope.type == 'ParkedCall' ? 'Contact' : $scope.type;
-			
+	$scope.dockItem = function(add) {			
 		if (add) {
 			var data = {
-				name: 'GadgetConfig__empty_Gadget' + type + '_' + $scope.profile.xpid,
+				name: 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.profile.xpid,
 				value: JSON.stringify({
 					"contextId": "empty",
-					"factoryId": "Gadget" + type,
+					"factoryId": "Gadget" + $scope.type,
 					"entityId": $scope.profile.xpid,
 					"config": {"x": 0, "y": 0},
 					"index": 1
@@ -120,7 +121,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		}
 		else {
 			// send to dock controller
-			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + type + '_' + $scope.profile.xpid);
+			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_Gadget' + $scope.type + '_' + $scope.profile.xpid);
 		}
 	};
 	
