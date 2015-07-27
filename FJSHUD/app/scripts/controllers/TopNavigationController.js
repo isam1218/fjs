@@ -150,6 +150,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		progress: 0
 	};
 	
+	$scope.recorder;
+	
 	var player;
 	var source;
 	var loadCheck;
@@ -199,6 +201,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		$scope.player.duration = data.duration;
 		$scope.player.position = 0;
 		$scope.player.progress = 0;
+		
+		// is this a recording?
+		if (data.originatorUserId)
+			$scope.recorder = contactService.getContact(data.originatorUserId);
+		else
+			$scope.recorder = null;
 			
 		// update hidden audio element
 		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
@@ -287,6 +295,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	$scope.closePlayer = function() {
 		$interval.cancel(loadCheck);
 		$scope.voicemail = null;
+		$scope.recorder = null;
 		
 		player.pause();
 		player.onloadeddata = null;
