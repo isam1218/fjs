@@ -1,10 +1,10 @@
 <div class="ListLineContent Header LeftContactsColumns">
     <div>
-        <div data-ng-click="sort('timeline')" class="ListLineContentCell Name {{(sortField == 'timeline' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <div data-ng-click="sort('timeline')" class="ListLineContentCell Name {{sortField == 'timeline' ? 'Up' : 'None'}}">
             <span>Timeline</span>
             <div class="DirectionArrow"></div>
         </div>
-        <div data-ng-click="sort('grouped')"  class="ListLineContentCell HudStatus {{(sortField == 'grouped' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <div data-ng-click="sort('grouped')"  class="ListLineContentCell HudStatus {{sortField == 'grouped' ? 'Up' : 'None'}}">
             <span>Grouped</span>
             <div class="DirectionArrow"></div>
         </div>
@@ -19,15 +19,17 @@
 			
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'contact'">
 
-                <div class="ListRowTitle">
+                <div class="ListRowTitle RecentsRowTitle">
                     <div class="name">
                         <strong>{{ ::item.displayName || item.name }}</strong>  
-                        <div class="status">                     
-	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
-	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}{{item.call ? ' + ' + verbage['on_call'] : ''}}</span>
-                        </div>
                     </div>
-                </div>                
+                    <div class="status">                     
+                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
+                        <div class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}{{item.call ? ' + ' + verbage['on_call'] : ''}}</div>
+                    </div> 
+                </div>
+                
+                
                 <div class="CallStatus" ng-if="item.call.startedAt">
                     <avatar 
                         ng-if="item.call.startedAt" 

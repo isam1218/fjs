@@ -179,7 +179,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 							
 		                    // send data to other controllers i'm doing this to ensure order when syncing'
 							broadcastSyncData(synced_data);
-							$rootScope.isFirstSync = false;
 		                }
 		                break;
 		            case "feed_request":
@@ -246,7 +245,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					}
 				}
 				$rootScope.isFirstSync = false;
-
 			});
 		}
 	};
