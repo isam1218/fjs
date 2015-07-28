@@ -166,27 +166,29 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.parkedCalls = [];
 	
 	$scope.$on('parkedcalls_synced',function(event,data){
-		if(data){
-			for(var parkedCall in data){
-				if(data[parkedCall].xef001type == "delete"){
-					//delete $scope.parkedCalls[data[parkedCall.xpid]];
-					for (var i = 0, iLen = $scope.parkedCalls.length; i < iLen; i++){
-						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
-							$scope.parkedCalls.splice(i,1);
-							iLen--;
-						}
+		for (var i = 0, len = data.length; i < len; i++){
+			if(data[i].xef001type == "delete"){
+				for (var p = 0, pLen = $scope.parkedCalls.length; p < pLen; p++){
+					if(data[i].xpid == $scope.parkedCalls[p].xpid){
+						$scope.parkedCalls.splice(p,1);
+						pLen--;
 					}
-				
-				}else{
-					var toAdd = true;
-					for (var i = 0, iLen = $scope.parkedCalls.length; i < iLen; i++){
-						if(data[parkedCall].xpid == $scope.parkedCalls[i].xpid){
-							toAdd = false;
-						}
+				}
+			
+			}
+			else{
+				var toAdd = true;
+				for (var p = 0, pLen = $scope.parkedCalls.length; p < pLen; p++){
+					if(data[i].xpid == $scope.parkedCalls[p].xpid){
+						toAdd = false;
 					}
-					if(toAdd){
-						$scope.parkedCalls.push(data[parkedCall]);
-					}
+				}
+				if(toAdd){
+					// add profile
+					if (data[i].callerContactId)
+						data[i].fullProfile = contactService.getContact(data[i].callerContactId);
+					
+					$scope.parkedCalls.push(data[i]);
 				}
 			}
 		}
