@@ -149,6 +149,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				if (contacts[i].xpid == data[j].xpid && data[j].permissions){
 					xFerFromPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 3);
 					xFerToPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 4);
+					
+					break;
 				}
 			}
 		}
@@ -156,6 +158,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 			if (contacts[k].xpid == $rootScope.myPid){
 				contacts[k].xFerFromPermObj = xFerFromPermObj;
 				contacts[k].xFerToPermObj = xFerToPermObj;
+				
+				break;
 			}
 		}
 	});
