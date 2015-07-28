@@ -118,7 +118,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 				
 				// add new queue
-				if (!match) {
+				if (!match && data[i].xef001type != 'delete') {
 					queues.push(data[i]);
 					
 					queues[queues.length-1].calls = [];

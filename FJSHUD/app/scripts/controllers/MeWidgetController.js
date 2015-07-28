@@ -195,15 +195,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.recentSelectSort = 'Date';
-    myHttpService.getFeed('me');
-    myHttpService.getFeed('queues');
-    myHttpService.getFeed('locations');
-    myHttpService.getFeed('calllog');   
-    myHttpService.getFeed('calls');    
-    myHttpService.getFeed('weblauncher');    
-    myHttpService.getFeed('weblaunchervariables');
-    myHttpService.getFeed('i18n_langs');
-    myHttpService.getFeed('settings'); 
+	
+	// only poll worker on subsequent page loads
+	if (!$rootScope.isFirstSync) {
+		myHttpService.getFeed('me');
+		myHttpService.getFeed('queues');
+		myHttpService.getFeed('locations');
+		myHttpService.getFeed('calllog');   
+		myHttpService.getFeed('calls');    
+		myHttpService.getFeed('weblauncher');    
+		myHttpService.getFeed('weblaunchervariables');
+		myHttpService.getFeed('i18n_langs');
+		myHttpService.getFeed('settings');
+	}
 
     var phonePromise = phoneService.getDevices();
     
