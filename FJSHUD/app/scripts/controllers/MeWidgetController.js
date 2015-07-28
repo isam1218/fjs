@@ -197,15 +197,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.recentSelectSort = 'Date';
-    myHttpService.getFeed('me');
-    myHttpService.getFeed('queues');
-    myHttpService.getFeed('locations');
-    myHttpService.getFeed('calllog');   
-    myHttpService.getFeed('calls');    
-    myHttpService.getFeed('weblauncher');    
-    myHttpService.getFeed('weblaunchervariables');
-    myHttpService.getFeed('i18n_langs');
-    myHttpService.getFeed('settings'); 
+	
+	// only poll worker on subsequent page loads
+	if (!$rootScope.isFirstSync) {
+		myHttpService.getFeed('me');
+		myHttpService.getFeed('queues');
+		myHttpService.getFeed('locations');
+		myHttpService.getFeed('calllog');   
+		myHttpService.getFeed('calls');    
+		myHttpService.getFeed('weblauncher');    
+		myHttpService.getFeed('weblaunchervariables');
+		myHttpService.getFeed('i18n_langs');
+		myHttpService.getFeed('settings');
+	}
 
     
     if(!phoneService.isPhoneActive()){
@@ -944,7 +948,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.determineTransferFrom = function(contactToTransfer){
         var me = contactService.getContact($rootScope.myPid);
-        return me.xFerFromPermObj[contactToTransfer];
+        if(contactToTransfer){
+            return me.xFerFromPermObj[contactToTransfer];
+        }else{
+            return true;
+        }
     };
 
     $scope.muteCall = function(){

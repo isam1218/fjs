@@ -38,15 +38,18 @@ hudweb.controller('CallCenterMyStatusController', ['$scope', '$rootScope', 'Http
 		}
 	};
 	
-	$scope.loginQueues = function(login, event) {
+	$scope.loginQueues = function(login) {
 		var toSend = [];
+	
 		if(!login)
 		{
-			var logout_select = event.target;
-	    	$(logout_select).find('option').css('background-color', '#fff').css('color', '#333');
-	    	var option  = $(logout_select).find('option:selected');
-	    	$(option).css('background-color', '#729c00').css('color', '#fff');  
-		}
+					var not_selected_options = $('.calllogout option').filter(function(){
+						return !$(this).is(':selected');							
+					});
+
+                    $(not_selected_options).removeClass('selected');
+                    $('.calllogout option:selected').addClass('selected');					
+		} 
 		
 		// find selected queues
 		for (var i in $scope.checkboxes) {

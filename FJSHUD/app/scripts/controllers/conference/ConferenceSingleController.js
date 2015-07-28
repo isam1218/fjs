@@ -25,22 +25,23 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
   $scope.$watchCollection('conference.members', function(newValue,oldValue){
     	
-   	  
-
-      //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
+   	  //we use scope watch to compare the new value vs the old value of the conference members  object attached to this scope
       for(var i = 0, iLen = oldValue.length; i < iLen; i++){
         var exists = false;
         //this is to verify if a member has dropped 
         for(var j = 0, jLen = newValue.length; j < jLen; j++){
-          if(oldValue[i].xpid == newValue[j].xpid){
-            exists = true;
+          if(oldValue[i].contactId == newValue[j].contactId){
+           exists = true;
             break;
           }
-        
+          if(oldValue[i].xpid == newValue[j].xpid){
+           exists = true;
+            break;
+          }
         }
         if(!exists){
             //if the oldvalue was ring it means the previous state of the conference call was ringing and if that member doesn't exist now as part of the conference we can assume he decline the conference invitation
-            if(oldValue[i].ring){
+            if(oldValue[i].ring && !oldValue[i].fullProfile.call){
                 var refuseMembersExists = false;
                 for(var j = 0, jLen = $scope.membersRefused.length; j < jLen; j++){
 
@@ -65,6 +66,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
    	  	for(var j = 0, jLen = $scope.membersRefused.length; j < jLen;j++){
    	  		if(newValue[i].contactId == $scope.membersRefused[j].contactId){
    	  			$scope.membersRefused.splice(j,1);
+            jLen--;
    	  		}	
    	  	}
    	  }

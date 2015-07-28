@@ -171,7 +171,8 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					widget: widget,
 					context: context ? $parse(context)(scope) : null
 				};
-			$rootScope.$broadcast('contextMenu', data);
+				
+				$rootScope.$broadcast('contextMenu', data);
 				$rootScope.contextShow = true;
 
 				$timeout(function() {
@@ -222,6 +223,9 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				timer = $timeout(function() {
 					overlay.css('display', 'none');
 					overlay.unbind();
+					
+					$('#ContextMenu .Button').unbind('click');
+					$rootScope.contextShow = false;
 				}, t, false);
 			}
 		}
