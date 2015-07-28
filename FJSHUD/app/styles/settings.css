@@ -60,12 +60,17 @@
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div {
   overflow-y: auto;
-  padding: 10px;
   height: 100%;
   width: 100%;
+  padding-bottom: 10px;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div.padding {
   padding-bottom: 30px;
+}
+.WidgetMe .Preferences-Holder .SettingsPanel .labels {
+  float: right;
+  position: relative;
+  margin-top: -3px;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel .lblSelect {
   display: inline-block;
@@ -483,9 +488,155 @@
   overflow: hidden;
   white-space: nowrap;
 }
+.Dialog-settings-row.file-input {
+  padding-bottom: 30px;
+}
+.Dialog-settings-row.file-input > label,
+.Dialog-settings-row.file-input .AvatarSmall,
+.Dialog-settings-row.file-input .XButton {
+  float: left;
+}
+.Dialog-settings-row.file-input .AvatarSmall,
+.Dialog-settings-row.file-input .XButton {
+  clear: none;
+}
+.Dialog-settings-row.file-input .AvatarSmall {
+  vertical-align: top;
+  margin-top: -6px;
+  height: 40px;
+  width: 40px;
+  border: 1px solid #779C00;
+  border-radius: 2px 2px 2px 2px;
+  -webkit-border-radius: 2px 2px 2px 2px;
+}
+.Dialog-settings-row.file-input .AvatarSmall img {
+  height: 38px;
+  width: 38px;
+}
+.Dialog-settings-row.file-input .XButton {
+  margin-left: 10px;
+}
+.Dialog-settings-row.file-input .XButton:hover {
+  cursor: pointer;
+}
+.lblSelect,
+.SelectBoxSettings {
+  float: left;
+}
+.SelectBoxSettings {
+  top: -2px;
+  clear: none;
+  height: 24px;
+  line-height: 24px;
+  overflow: hidden;
+  color: #555555;
+  position: relative;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+input[name='lwa'] {
+  margin-left: 0px;
+  vertical-align: bottom;
+  margin-bottom: 0px;
+}
 .Dialog-settings-row {
-  margin: 10px;
-  min-height: 30px;
+  margin: 10px 5px;
+  min-height: 26px;
+}
+.Dialog-settings-row input[type=text] {
+  position: relative;
+  width: 100%;
+  margin-top: 3px;
+  height: 26px;
+  line-height: 24px;
+  padding-left: 12px;
+  font-size: 12px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0px 0px 1px #ddd inset;
+  -webkit-box-shadow: 0px 0px 1px #ddd inset;
+  user-select: text;
+  -webkit-user-select: text;
+  outline: none;
+  background-color: #fff;
+}
+.Dialog-settings-row input[type=text].DialogSettingInput {
+  width: 70%;
+}
+.Dialog-settings-row .Dialog-check-block {
+  font-size: 12px;
+  position: relative;
+  width: 100%;
+}
+.Dialog-settings-row .Dialog-check-block span {
+  float: left;
+}
+.Dialog-settings-row.checkbox-label {
+  clear: both;
+  float: left;
+}
+.Dialog-settings-row .labels {
+  padding: 0px;
+}
+.Dialog-settings-row .labels label {
+  font-size: 11px;
+  padding: 0px;
+}
+.Dialog-settings-row .labels label input {
+  margin-bottom: 2px;
+  margin-right: 2px;
+  vertical-align: bottom;
+}
+.ListSection.general .Dialog-settings-row,
+.ListPage.general .Dialog-settings-row {
+  clear: both;
+}
+.ListSection.general .Dialog-settings-row .SelectBoxSettings.fj-hbox,
+.ListPage.general .Dialog-settings-row .SelectBoxSettings.fj-hbox {
+  float: left;
+}
+.ListSection.queues .ListPage {
+  padding-top: 10px;
+}
+.ListSection.cp .ListSectionLink a.Link {
+  font-size: 12px;
+  margin-left: 20px;
+}
+.ListPage.launcher {
+  position: relative;
+  border-top: none;
+  background-color: #fff;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  box-shadow: 0px 0px 2px #999 inset;
+  -webkit-box-shadow: 0px 0px 2px #999 inset;
+  min-height: 60px;
+  padding: 10px;
+}
+.ListPage.launcher .ListPageHeader {
+  position: relative;
+  height: 1px;
+}
+.ListSection.launcher .weblauncher-variables,
+.ListPage.launcher .weblauncher-variables {
+  font-size: 12px;
+}
+.ListSection.launcher .weblauncher-variables .right,
+.ListPage.launcher .weblauncher-variables .right {
+  clear: none;
+  width: 60%;
+}
+.ListSection.launcher .weblauncher-variables .left,
+.ListPage.launcher .weblauncher-variables .left {
+  width: 40%;
+}
+.ListSection.launcher .weblauncher-variables .left,
+.ListPage.launcher .weblauncher-variables .left,
+.ListSection.launcher .weblauncher-variables .right,
+.ListPage.launcher .weblauncher-variables .right {
+  float: left;
 }
 .ListPageHeaderText {
   position: relative;
@@ -506,12 +657,8 @@ input.text.DialogFieldInput {
   width: 25%;
   display: inline-block;
 }
-span.inputBlock {
-  width: 300px;
-  display: inline-block;
-}
 input.text {
-  line-height: 24px;
+  height: 24px;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   border: solid 1px #c7c7c7;
@@ -696,9 +843,96 @@ div.NewCall .XButton.XButtonNormal {
   background-color: #226dd2;
   border-color: #226dd2;
 }
-.Preferences-Holder .QueueHeader {
-  background: #ddd;
+.Preferences-Holder .table.Queues {
+  width: 99%;
+  border: 1px solid #bbb;
+}
+.Preferences-Holder .table.Queues .QueueHeader {
   width: 100%;
+  border-bottom: solid 1px #bbb;
+  background-color: #ddd;
+  clear: both;
+}
+.Preferences-Holder .table.Queues .QueueHeader .QueueSetting.QueueSettingHeader {
+  display: inline-block;
+  test-align: center;
+  color: #666;
+  font-size: 11px;
+  float: left;
+  clear: none;
+  height: 24px;
+  line-height: 24px;
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
+  width: 16.6666%;
+  padding-right: 6px;
+}
+.Preferences-Holder .table.Queues .QueueHeader .QueueSetting.QueueSettingHeader:first-child {
+  font-weight: bold;
+  font-size: 13px;
+  width: 33.333%;
+  text-align: center;
+  border-right: 1px solid #BBB;
+}
+.Preferences-Holder .table.Queues .QueueHeader:not(.top) .QueueSetting.QueueSettingHeader {
+  border-bottom: 1px solid #BBB;
+}
+.Preferences-Holder .table.Queues .QueueHeader:not(.top) .QueueSetting.QueueSettingHeader:nth-child(3) {
+  border-right: 1px solid #BBB;
+}
+.Preferences-Holder .table.Queues .QueueHeader.top .QueueSetting {
+  color: #0093f0;
+  width: 33.333%;
+}
+.Preferences-Holder .table.Queues .QueueHeader.top .QueueSetting:nth-child(2) {
+  border-right: 1px solid #BBB;
+}
+.Preferences-Holder .table.Queues .queueList {
+  border: solid 1px #eee;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  position: relative;
+  clear: both;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow {
+  min-height: inherit;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent {
+  width: 100%;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent .QueueSetting {
+  background-color: #f9f9f9;
+  display: inline-block;
+  float: left;
+  height: 24px;
+  line-height: 24px;
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
+  width: 16.66%;
+  text-align: center;
+  font-size: 12px;
+  padding-right: 6px;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent .QueueSetting:first-child {
+  text-align: center;
+  border-right: 1px solid #BBB;
+  width: 33.2%;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent .QueueSetting:nth-child(2),
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent .QueueSetting:nth-child(3) {
+  padding-left: 1px;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent .QueueSetting:nth-child(3) {
+  border-right: 1px solid #BBB;
+  width: 17%;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow .SettingsListLineContent .QueueSetting:nth-child(5) {
+  width: 16.48%;
+}
+.Preferences-Holder .table.Queues .queueList .ListRow:nth-child(odd) .SettingsListLineContent .QueueSetting {
+  background-color: #eee;
 }
 .Preferences-Holder .QueueSetting {
   display: inline-block;
