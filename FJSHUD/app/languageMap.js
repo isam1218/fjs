@@ -306,7 +306,7 @@ fjs.i18n = {
       department:'Department',
       member_of_department:'Contact is a member of this department',
       our_teams:'Our Teams',
-      both_in_these_teams:'We are both both in these teams',
+      both_in_these_teams:'We are both in these teams',
 
       /*****QUEUES******/
       login_all:'Login All',
