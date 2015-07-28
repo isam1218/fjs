@@ -6,9 +6,9 @@
   </div>
   <div class="SelectBox selectWrapper queue" ng-if="viewIcon">
     <select ng-if="viewIcon"
-			ng-model="selectedQueue"
+      ng-model="selectedQueue"
             ng-options="queue_option.display_name for queue_option in queue_options | filter: truncateLongAction() track by queue_option.display_name" 
-			ng-change="setSort(selectedQueue.type, selectedQueue)">
+      ng-change="setQueueSort(selectedQueue)">
     </select>
   </div>
 </div>
