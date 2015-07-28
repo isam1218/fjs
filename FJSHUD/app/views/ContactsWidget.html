@@ -27,15 +27,15 @@
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
 					<div class="name" ng-if="::contact.primaryExtension">
-						<strong ng-bind-html="::contact.displayName">{{ ::contact.displayName }}</strong>
+						<strong ng-bind-html="::contact.displayName"></strong>
 						<span>#{{ ::contact.primaryExtension }}</span>
 					</div>
 					<div class="name" ng-if="::!contact.primaryExtension" >
-						<strong ng-bind-html="contact.displayName">{{ ::contact.displayName }}</strong>
+						<strong ng-bind-html="contact.displayName"></strong>
 					</div>
 				</div>	
 				
-				<div class="ListRowStatus ng-class:{'onCall':contact.call}">
+				<div class="ListRowStatus">
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                     <br/>                   

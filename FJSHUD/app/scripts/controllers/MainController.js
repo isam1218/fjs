@@ -14,7 +14,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		data: null
 	};
 	
-	$scope.contextShow = false;
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
         var phase = $scope.$root.$$phase;

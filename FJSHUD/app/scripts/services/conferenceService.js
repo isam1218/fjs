@@ -84,7 +84,7 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 				}
 				
 				// add new conference
-				if (!match) {
+				if (!match && data[i].xef001type != 'delete') {
 					conferences.push(data[i]);
 					
 					conferences[conferences.length-1].members = [];
