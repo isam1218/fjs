@@ -1,5 +1,4 @@
 .LeftBar {
-  position: relative;
   max-width: 300px;
   min-width: 300px;
   background-color: white;
@@ -11,7 +10,11 @@
   -webkit-flex-direction: column;
   display: flex;
   display: -webkit-flex;
-  height: 100%;
+  position: fixed;
+  top: 100px;
+  left: 10px;
+  width: 300px;
+  bottom: 10px;
 }
 .LeftBar .RoundedTop {
   position: absolute;
@@ -38,6 +41,9 @@
 .LeftBar .ListRow {
   max-height: 41px;
 }
+.LeftBar .ListRow.Hide {
+  display: none !important;
+}
 .LeftBar .ListRow .CallStatus {
   height: 36px;
   width: 36px;
@@ -46,7 +52,7 @@
   margin: 2px !important;
 }
 .LeftBar .ListRow .ListRowTitle {
-  width: 50%;
+  width: 48%;
 }
 .LeftBar .ListRow .ListRowTitle .status {
   margin-left: -5px !important;
@@ -61,6 +67,16 @@
   text-overflow: ellipsis;
   width: 100%;
   overflow: hidden;
+}
+.LeftBar .ListRow .ListRowTitle .status .desc {
+  font-size: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.LeftBar .ListRow .RecentsRowTitle {
+  width: 100%;
+  max-width: 85%;
 }
 .LeftBar .LeftBarTop .WidgetTabBar {
   background: url() transparent !important;
@@ -184,17 +200,19 @@
 .LeftBar .Groups .ContactList a.ListRow .ListRowStatus,
 .LeftBar .Recent .ContactList a.ListRow .ListRowStatus {
   top: 10px;
-  width: 55px;
+  width: 83px;
+  text-align: center;
+  right: -5px;
 }
 .LeftBar .Contacts .ContactList a.ListRow .ListRowStatus .ListRowStatusText,
 .LeftBar .Groups .ContactList a.ListRow .ListRowStatus .ListRowStatusText,
 .LeftBar .Recent .ContactList a.ListRow .ListRowStatus .ListRowStatusText {
-  max-width: 54px;
+  max-width: 100%;
 }
 .LeftBar .Contacts .ContactList a.ListRow .CallStatus,
 .LeftBar .Groups .ContactList a.ListRow .CallStatus,
 .LeftBar .Recent .ContactList a.ListRow .CallStatus {
-  margin-right: 1.8em !important;
+  margin-left: -10px;
 }
 .LeftBar .Contacts .ContactList a.ListRow .Members,
 .LeftBar .Groups .ContactList a.ListRow .Members,
@@ -249,10 +267,6 @@
 .LeftBar .Notifications {
   position: relative;
   width: 100%;
-  /*border-bottom-left-radius: 30px;
-    -webkit-border-bottom-left-radius: 30px;    
-    position: absolute;
-    bottom: 40px;*/
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
