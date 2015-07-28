@@ -89,8 +89,6 @@ hudweb.controller('NotificationController', ['$scope', '$rootScope', 'HttpServic
   phoneService.getDevices().then(function(data){
     $scope.phoneSessionEnabled = true;
   });
-  
-  myHttpService.getFeed('quickinbox');
 
   $scope.getAvatar = function(pid){
     return myHttpService.get_avatar(pid,40,40);

@@ -8,9 +8,10 @@
  </div> 
  <div class="SelectBox selectWrapper status"> 
   <select 
+    class="calllogout"
 	ng-model="mystatus.logoutReason" 
-	ng-change="loginQueues(false, $event)" 
-	ng-disabled="disableLogout"
+	ng-change="loginQueues(false)"	
+	ng-disabled="disableLogout"	
 	ng-options="reason.name for reason in reasons | orderBy:'name' track by reason.xpid">
 		<option value="">{{::verbage.logout}}</option>
   </select>
