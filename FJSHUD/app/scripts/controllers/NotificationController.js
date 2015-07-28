@@ -479,7 +479,7 @@ hudweb.controller('NotificationController',
 
     for (var j = 0; j < $scope.calls.length; j++){
       var singleCall = $scope.calls[j];
-      if (singleCall.fullProfile.call.contactId == $rootScope.myPid){
+      if (singleCall.fullProfile && singleCall.fullProfile.call.contactId && singleCall.fullProfile.call.contactId == $rootScope.myPid){
         numberOfMyCalls = 1;
         if (singleCall.fullProfile.call.bargers.length > 0){
           var myCallBarger = singleCall.fullProfile.call.bargers[0].displayName;

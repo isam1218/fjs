@@ -1013,7 +1013,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			return soundManager[input];
 		}
 	};
-	
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
