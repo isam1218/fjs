@@ -926,7 +926,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.determineTransferFrom = function(contactToTransfer){
         var me = contactService.getContact($rootScope.myPid);
-        return me.xFerFromPermObj[contactToTransfer];
+        if(contactToTransfer){
+            return me.xFerFromPermObj[contactToTransfer];
+        }else{
+            return true;
+        }
     };
 
     $scope.muteCall = function(){
