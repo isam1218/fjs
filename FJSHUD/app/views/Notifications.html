@@ -71,9 +71,9 @@
 							<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
 						</div>
 						
-						<a href="#/queue/{{message.queueId}}" class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+						<div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
 							<span class="XButton" ng-click="showQueue(message)">{{::verbage.Show}}</span>
-						</a>
+						</div>
 					</div>
 				</div>
 
