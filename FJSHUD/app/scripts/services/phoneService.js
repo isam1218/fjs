@@ -1022,7 +1022,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.transfer = function(xpid,number){
 		var call = context.getCall(xpid);
 		if(call){
-			if(context.webphone && phoneNumber){
+			if(context.webphone && number){
 				context.webphone.send(JSON.stringify({a : 'transfer', value : sip_id, ext: number}));
 			}else{
 				call.transfer(number);
