@@ -69,11 +69,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isDocumentHidden  = function(){
 		var hidden; 
 		if(document.hidden){
-			/*if(notificationCache.html){
-				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
-			}else{
-				$rootScope.$broadcast("phone_event", {event: "displayNotification"});
-			}*/
 		}else{
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				removeNotification();
@@ -234,7 +229,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
 						displayNotification = true;	
 					}else{
-						if(document.visibilityState == "hidden" || document.hidden){
+						if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
 								displayNotification = true;	
 						}else{
 							displayNotification = false;
@@ -247,7 +242,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
 					displayNotification = true;	
 				}else{
-					if(document.visibilityState == "hidden" || document.hidden){
+					if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
 							displayNotification = true;	
 					}else{
 						displayNotification = false;
