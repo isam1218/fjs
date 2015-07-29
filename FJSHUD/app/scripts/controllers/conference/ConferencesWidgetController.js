@@ -59,10 +59,11 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
   // filter list down
   $scope.customFilter = function() {
     return function(conference) {
-      // console.error('conf room & perm - ', conference.location, conference.name, conference.permissions);
-      // conference.permissions === 0 --> [view/join permission] + [invite/kick/mute permission]
-      // conference.permissions === 4 --> [view/join permission] ONLY
-      // conference.permissions === undefined --> NO conference permission whatsoever
+      /*
+      conference.permissions === 0 --> [view/join permission] + [invite/kick/mute permission]
+      conference.permissions === 4 --> [view/join permission] ONLY
+      conference.permissions === undefined --> NO conference permission whatsoever
+      */
 			if (( ($scope.tab == 'all'  && conference.permissions === 0) || ($scope.tab == 'all' && conference.permissions === 4)) || ($scope.tab == 'my' && conference.permissions === 0)){
 				if (conference.members.length == 0){
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)

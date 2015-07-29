@@ -197,4 +197,10 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 			httpService.sendAction("conferences","joinContact",params);			
 		}
 	};
+
+  $scope.permissionToInvite = function(){
+    // permission to invite others to conference === 0, otherwise no permission
+    return $scope.conference.permissions === 0;
+  };
+
 }]);
