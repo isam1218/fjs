@@ -7,7 +7,7 @@
 </div>
 
 <div class="ToolBar"> 
-    <div class="ConferenceMembers"> 
+    <div ng-if="permissionToInvite()" class="ConferenceMembers"> 
         <div class="Conference-HeaderTitle">{{::verbage.conference_member}}</div>
 
 		<div class="searchboxWrapper">
