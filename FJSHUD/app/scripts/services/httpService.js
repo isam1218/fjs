@@ -349,16 +349,16 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					$rootScope.$broadcast('network_issue',undefined);
 					break;
 				default:
+					/*
 					localStorage.removeItem('me');
 					localStorage.removeItem('nodeID');
 					localStorage.removeItem('authTicket');
 					$rootScope.networkError = true;
 					$rootScope.$broadcast('network_issue',undefined);
-					//attemptLogin();
+					*/
+					attemptLogin();
 					break;
 			}
-
-			//attemptLogin();
 		});
 	}
 	else {
