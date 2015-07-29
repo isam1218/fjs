@@ -1,10 +1,9 @@
-
 hudweb.controller('NotificationController', 
   ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService',
   function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
   var playChatNotification = false;
   var displayDesktopAlert = true;
-  $scope.notifications = [];
+  $scope.notifications = nservice.notifications  || [];
   $scope.calls = [];
   var long_waiting_calls = {};
   var msgXpid;
@@ -227,7 +226,14 @@ hudweb.controller('NotificationController',
     var old_notifications = $scope.notifications.filter(function(item){
       var date = new Date(item.time);
       var today = new Date();
-      return date.getTime() < today.getTime() && date.getDate() < today.getDate() && item.receivedStatus != "away"; 
+      return (((date.getTime() < today.getTime() && 
+    		    date.getDate() < today.getDate()) && 
+    		    date.getMonth() == today.getMonth() &&  
+    		    date.getFullYear() == today.getFullYear()) || 
+    		    date.getFullYear() < today.getFullYear() || 
+    		    (date.getFullYear() == today.getFullYear() && 
+    		     date.getMonth() < today.getMonth())) && 
+    		     item.receivedStatus != "away"; 
     });
         if(old_notifications.length > 0)
            $scope.hasOldNotifications = true; 
@@ -913,7 +919,7 @@ hudweb.controller('NotificationController',
 					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
-         updateNotificationLabel(notification);
+					updateNotificationLabel(notification);
 					if(notification.xef001type != "delete"){
 
 						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
@@ -943,18 +949,16 @@ hudweb.controller('NotificationController',
 					var notification = data[i];
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.labelType == '';
-          updateNotificationLabel(notification);
-          if(notification.xef001type != "delete"){
+					updateNotificationLabel(notification);
+					if(notification.xef001type != "delete"){
 						$scope.notifications.push(notification);
 						addTodaysNotifications(notification);
 					}
 				}
 			}
-    }
-		
 
-		 
-
+			globals.notifications = $scope.notifications;
+		};
     $scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time; 
 		});

@@ -55,10 +55,16 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 
 	$scope.enableChat = true;
 	
-	// filter list down
-	$scope.customFilter = function() {
-		return function(conference) {
-			if (($scope.tab == 'all'  && conference.permissions == 0)|| ($scope.tab == 'my' && conference.permissions == 0)){
+
+  // filter list down
+  $scope.customFilter = function() {
+    return function(conference) {
+      /*
+      conference.permissions === 0 --> [view/join permission] + [invite/kick/mute permission]
+      conference.permissions === 4 --> [view/join permission] ONLY
+      conference.permissions === undefined --> NO conference permission whatsoever
+      */
+			if (( ($scope.tab == 'all'  && conference.permissions === 0) || ($scope.tab == 'all' && conference.permissions === 4)) || ($scope.tab == 'my' && conference.permissions === 0)){
 				if (conference.members.length == 0){
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
 						return true;

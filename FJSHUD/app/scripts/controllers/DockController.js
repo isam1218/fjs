@@ -122,16 +122,16 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				$('#InnerDock').sortable('disable');
 			}
 		}
+		
+		// thresholds
+		$scope.queueThresholds.waiting = parseInt(data.queueWaitingThreshold);
+		$scope.queueThresholds.avg_wait = parseInt(data.queueAvgWaitThreshold);
+		$scope.queueThresholds.avg_talk = parseInt(data.queueAvgTalkThresholdThreshold);
+		$scope.queueThresholds.abandoned = parseInt(data.queueAbandonThreshold);
 	};
 
 	// initial sync
-	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {
-		
-		$scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
-		$scope.queueThresholds.avg_wait = parseInt(settingsService.getSetting('queueAvgWaitThreshold'));
-		$scope.queueThresholds.avg_talk = parseInt(settingsService.getSetting('queueAvgTalkThresholdThreshold'));
-		$scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
-		
+	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {		
 		updateDock(data[0]);
 		
 		// normal updates

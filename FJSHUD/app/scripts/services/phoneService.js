@@ -330,7 +330,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
 						displayNotification = true;	
 					}else{
-						if(document.visibilityState == "hidden" || document.hidden){
+						if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
 								displayNotification = true;	
 						}else{
 							displayNotification = false;
@@ -343,7 +343,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
 					displayNotification = true;	
 				}else{
-					if(document.visibilityState == "hidden" || document.hidden){
+					if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
 							displayNotification = true;	
 					}else{
 						displayNotification = false;
