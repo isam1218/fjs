@@ -3,20 +3,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 	var phonePlugin;
-
-	$("body").append($compile(pluginHtml)($rootScope));
-	phonePlugin = document.getElementById('fonalityPhone');
 	var version;
-	if(phonePlugin){
-		version = phonePlugin.version;
-	}
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
 	$rootScope.volume = {};
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
-	
+	$rootScope.pluginVersion = undefined;
+	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.Browser == "Chrome" ? 'NEW' : 'OLD'];
 	var devices = [];
 	var session;
 	var context = {};
@@ -71,6 +66,16 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
 	
+	if($rootScope.browser != "Chrome"){
+		$("body").append($compile(pluginHtml)($rootScope));
+		phonePlugin = document.getElementById('fonalityPhone');
+		if(phonePlugin){
+			version = phonePlugin.version;
+			$rootScope.pluginVersion = phonePlugin.version;
+		}	
+	}
+	
+
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
 	};
@@ -78,11 +83,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isDocumentHidden  = function(){
 		var hidden; 
 		if(document.hidden){
-			/*if(notificationCache.html){
-				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
-			}else{
-				$rootScope.$broadcast("phone_event", {event: "displayNotification"});
-			}*/
 		}else{
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				removeNotification();
@@ -799,7 +799,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		webphone.onmessage = function(e){
 			if(e.data){
-				context.version = e.data;	
+				context.version = e.data;
+				$rootScope.pluginVersion = context.version;	
 				initWS();
 				webphone.close();
 			}
@@ -1111,7 +1112,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.isPhoneActive = function(){
-		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : (phonePlugin.getSession ? 'old_webphone' : false);
+		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : ( (phonePlugin && phonePlugin.getSession) ? 'old_webphone' : false);
 
 	};
 
@@ -1476,6 +1477,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			$rootScope.$broadcast('all_calls_updated', allCallDetails);
 		}		
 	});
+
+
 
 	var context = this;
 

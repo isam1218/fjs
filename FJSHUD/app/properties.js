@@ -51,5 +51,9 @@ fjs.CONFIG = {
         MAC_NEW:'http://build01.lax01.fonality.com/job/hud-wp.osx/lastSuccessfulBuild/artifact/webphone/installer.mac/WebPhone-1.1.011149.pkg'
 
     },
+    PLUGIN_VERSION:{
+        OLD:'5.17.8986',
+        NEW:'1.1.011150',
+    },
     DEBUG:true,
 };

@@ -17,7 +17,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.phoneType = false;
     $scope.settings = {};
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
-    $scope.pluginVersion = phoneService.getVersion();
 
     $scope.currentCall = phoneService.getCallDetail(callId);
   
@@ -1129,7 +1128,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }
                     break;
                 case "enabled":
-                    $scope.pluginVersion = phoneService.getVersion();
+                    //$scope.pluginVersion = phoneService.getVersion();
                     break;
             }
 
@@ -1149,6 +1148,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         update_queues();
     });
 
+    $rootScope.isPluginUptoDate = function(){
+        return $scope.pluginVersion && ($scope.pluginVersion.localeCompare($scope.latestVersion)) > -1;
+    }
 
-      
 }]);

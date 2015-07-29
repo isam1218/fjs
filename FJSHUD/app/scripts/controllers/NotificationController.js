@@ -17,7 +17,6 @@ hudweb.controller('NotificationController',
   $scope.showHeader = false;  
   $scope.hasMessages = false;
   $scope.phoneSessionEnabled = true;
-  $scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
   $scope.showTimer = false;
   $scope.selectedStatsTab = false;
   $scope.selectedCallsTab = false;
@@ -892,6 +891,14 @@ hudweb.controller('NotificationController',
     }
 
   };
+
+  $scope.isPluginUptoDate = function(){
+    if($rootScope.pluginVersion != undefined){
+        return $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) > -1;
+    }else{
+        return true;
+    }
+  }
 
 	$scope.$on('quickinbox_synced', function(event,data){
     var displayDesktopAlert = true;
