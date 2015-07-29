@@ -82,7 +82,7 @@
 			<div class="Messages plugins"  ng-if="(!phoneSessionEnabled || !isPluginUptoDate()) && pluginErrorEnabled">		
 				<div class="NotificationHeader"> 
 					<div class="NotificationHeaderBackground"> 
-						<div class="NotificationClose" ></div>
+						<div class="NotificationClose" ng-click="disableWarning()"></div>
 					</div>
 				</div>
 				<a  style="color:#333;text-decoration:none" href="{{::pluginDownloadUrl}}" download target="_blank" ng-click="showOverlay(true,'DownloadPlugin',{});">

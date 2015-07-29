@@ -1150,6 +1150,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $rootScope.isPluginUptoDate = function(){
         return $scope.pluginVersion && ($scope.pluginVersion.localeCompare($scope.latestVersion)) > -1;
-    }
+    };
 
 }]);

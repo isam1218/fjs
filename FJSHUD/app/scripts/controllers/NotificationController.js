@@ -94,6 +94,10 @@ hudweb.controller('NotificationController',
     return myHttpService.get_avatar(pid,40,40);
   };
 
+  $scope.disableWarning = function(){
+    $scope.pluginErrorEnabled = false;
+  };
+
   $scope.getMessage = function(message){              
     var messages = message.message && message.message != null && message.message != "" ? (message.message).split('\n') : '';
     if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
