@@ -79,13 +79,14 @@
 
 			</div>
  
-			<div class="Messages plugins" ng-click="showOverlay(true,'DownloadPlugin',{});" ng-if="!phoneSessionEnabled || !isPluginUptoDate()">		
-			  <a  style="color:#333;text-decoration:none" href="{{::pluginDownloadUrl}}" download target="_blank">
+			<div class="Messages plugins"  ng-if="(!phoneSessionEnabled || !isPluginUptoDate()) && pluginErrorEnabled">		
 				<div class="NotificationHeader"> 
 					<div class="NotificationHeaderBackground"> 
-						<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+						<div class="NotificationClose" ></div>
 					</div>
 				</div>
+				<a  style="color:#333;text-decoration:none" href="{{::pluginDownloadUrl}}" download target="_blank" ng-click="showOverlay(true,'DownloadPlugin',{});">
+			
 				<div class="NotificationDivider"></div>
 
 				<div class="NotificationSection ng-class:{'last' : !anotherDevice}" >

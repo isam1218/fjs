@@ -8,6 +8,7 @@ hudweb.controller('NotificationController',
   var long_waiting_calls = {};
   var msgXpid;
   var numberOfMyCalls = 0;
+  $scope.pluginErrorEnabled = true;
   $scope.inCall = false;
   $scope.inRinging = false;
   $scope.path = $location.absUrl().split("#")[0];
@@ -957,7 +958,7 @@ hudweb.controller('NotificationController',
 				}
 			}
 
-			globals.notifications = $scope.notifications;
+			nservice.notifications = $scope.notifications;
 		};
     $scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time; 

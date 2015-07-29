@@ -11,7 +11,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
 	$rootScope.pluginVersion = undefined;
-	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.Browser == "Chrome" ? 'NEW' : 'OLD'];
+	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.platform + '_' + ($rootScope.Browser == "Chrome" ? 'NEW' : 'OLD')];
+	console.log($rootScope.platform + '_' + $rootScope.Browser == "Chrome" ? 'NEW' : 'OLD');
 	var devices = [];
 	var session;
 	var context = {};
