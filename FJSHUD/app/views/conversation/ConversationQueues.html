@@ -5,7 +5,7 @@
 	        </select>
         </div>
         <div class="SelectBox selectWrapper convQueue">
-	        <select class="fj-hbox SelectBox SelectBoxSettings" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons | filter: truncateLongAction()" ng-change="handleLogoutAction(actionObj.selectedAction.xpid, $event)">
+	        <select class="fj-hbox SelectBox SelectBoxSettings" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons | filter: truncateLongAction()" ng-change="queueLogoutAll(actionObj.selectedAction.xpid)">
 	            <option value="">{{::verbage.logout_all}}</option>
 	        </select>
         </div>

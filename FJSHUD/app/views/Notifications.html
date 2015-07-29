@@ -4,7 +4,7 @@
 			<div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
 			<div>{{::verbage.notifications}}</div>
 			<div class="Event" ng-show="notifications.length > 0"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
-			<input type="button" value="{{::verbage.open}}" class="XButton" ng-click="overlay = 'notifications'" />
+			<input type="button" value="{{::verbage.open}}" class="XButton" ng-click="showOverlay(true, 'NotificationsOverlay', {})"/> <!-- "$parent.overlay = 'notifications'" -->
 		</div>   
 		
 		<div class="scroller">  	
@@ -133,16 +133,16 @@
         </div>    
 	</div>
 </div>
-
+<!-- 
 <div ng-if="overlay == 'notifications'" class="notifications Overlay NotificationOverlay">
 	<div ng-click="showNotificationOverlay(false)" class="Background"></div>
 	<div class="Foreground">
-		<!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->        		
+		   		
 		<div class="Header NotificationSectionHeader">
 		    <div ng-click="showNotificationOverlay(false)" class="Close">
 	           <div class="CloseIcon2"></div>
 	        </div>
-			<!-- <div class="NotificationSectionHeaderImage"></div> -->
+		
 			<div class="headerIcon notifications"></div>                                   
 			<div class="HeaderTitle">{{::verbage.notifications}}</div>
 			<div class="HeaderTitle">{{::verbage.new_word}}: {{ getNotificationsLength(get_new_notifications().length)}} </div>
@@ -151,7 +151,7 @@
 		
 		</div>
 		<div class="NotificationMessages" >		
-		   <!-- /////////////////// NEW NOTIFICATIONS /////////////////////////// -->		 
+		   <!-- /////////////////// NEW NOTIFICATIONS /////////////////////////// ->		 
 		  <div class="overlayNotificationsSection" ng-if="hasNewNotifications">					 			 
 		    <div class="section_header">         
              <div class="Conference-HeaderTitle" ng-if="hasOldNotifications">NEW ITEMS</div>
@@ -209,7 +209,7 @@
 			<div class="notification_border ng-class:{'lessPadding': !showNew}"></div>  
 		 </div>
 		
-		 <!-- /////////////////// AWAY NOTIFICATIONS /////////////////////////// -->
+		 <!-- /////////////////// AWAY NOTIFICATIONS /////////////////////////// ->
 		 <div class="overlayNotificationsSection" ng-if="hasAwayNotifications">
 		    <div class="section_header">
 			 <div class="Conference-HeaderTitle" ng-if="hasAwayNotifications">WHILE YOU WERE AWAY</div> 
@@ -266,7 +266,7 @@
 	          </div>
 	          <div class="notification_border ng-class:{'lessPadding': !showAway}"></div>
          </div>
-         <!-- /////////////////// OLD NOTIFICATIONS /////////////////////////// -->
+         <!-- /////////////////// OLD NOTIFICATIONS /////////////////////////// ->
          <div class="overlayNotificationsSection" ng-if="hasOldNotifications" ng-hide="clearOld">    
           <div class="section_header">         
 	         <div class="Conference-HeaderTitle" ng-if="hasOldNotifications">OLD ITEMS</div>
@@ -327,7 +327,7 @@
 	            
 	          </div>	
           </div>
-          <!-- //////////////////////////// Plugins //////////////////////// -->	
+          <!-- //////////////////////////// Plugins //////////////////////// ->	
          <div class="overlayNotificationsSection plugins" ng-if="!phoneSessionEnabled" ng-click="showOverlay(true,'DownloadPlugin',{})">                        
           <div class="notifications_section"> 
             <div class="Messages plugins ng-class:{'first': !hasNewNotifications && !hasAwayNotifications && !hasOldNotifications}">
@@ -366,7 +366,7 @@
              </div>
             </div>
            </div>    
-            <!-- ////////////////////// WEBPHONE /////////////////// -->
+            <!-- ////////////////////// WEBPHONE /////////////////// ->
            <div class="overlayNotificationsSection webphone" ng-if="anotherDevice" ng-click="activatePhone()">                        
              <div class="notifications_section">   
                 <div class="Messages webphone last ng-class:{'first': phoneSessionEnabled && !hasNewNotifications && !hasAwayNotifications && !hasOldNotifications}">                
@@ -413,7 +413,7 @@
 	 	
 	</div>
 
-</div>
+</div> -->
 
 <div class="CallStatusContainer">
 	<div class="CallStatusContainerInbound" ng-repeat="currentCall in calls" 

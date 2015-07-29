@@ -29,7 +29,7 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.queueLogoutAll = function(reasonId){
         httpService.sendAction("contacts", "agentLogoutAll", {contactId:$scope.contactId,reason:reasonId});
 		
-		$scope.log_out_option = '';
+		$scope.actionObj.selectedAction = '';
     };
 
     var initialAction = {name: "Logout All"};
@@ -153,12 +153,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 
     queueService.getQueues().then(function(data) {
 		$scope.log_out_reasons = data.reasons;
-		
-		for(var k=0; k < $scope.log_out_reasons.length; k++)
-    	{
-    		var reason = $scope.log_out_reasons[k];
-    		reason.orig_name = reason.name;
-    	}	
 		
     	var queues = data.queues;
 		

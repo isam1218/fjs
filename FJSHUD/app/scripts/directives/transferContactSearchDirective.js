@@ -40,7 +40,7 @@ hudweb.directive('transferContactSearch', ['$rootScope', '$document', 'ContactSe
       addTeamMemberHeader();
       recentTransferHeader = angular.element('<div class="Header TransferHeader">Recent Transfers</div>');
       recentTransferRows = angular.element('<div id="recentTransferRows" class="rows"></div>');
-      contactsHeader = angular.element('<div class="Header TransferHeader">Contacts</div>')
+      contactsHeader = angular.element('<div class="Header TransferHeader">Contacts</div>');
       rows = angular.element('<div class="rows"></div>');
 
       // search input
