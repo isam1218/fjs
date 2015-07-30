@@ -738,7 +738,7 @@
 	  .Extension {
 	    font-size: .9em;
 		color: gray;
-		position: relative;
+		// position: relative;
 		float: right;
 		right: 5px;
 		top: -10px;		
@@ -748,9 +748,8 @@
   
   &.favoritesSearch{
     top: -40px;
-    height: 400px;
-    width: 498px;
-    left: -10px;
+    height: 330px;
+    z-index: 98;
     
     .Inset{
         overflow: hidden;
@@ -767,6 +766,17 @@
             overflow-y: auto;
             overflow-x: hidden;
             width: 100%;
+        }
+        .ListRowTitle{
+
+        }
+        .AddTeamMember{
+          width: 75%;
+          max-width: 100%;
+        }
+        .AddZoomMember{
+          width: 60%;
+          max-width: 100%;
         }
     }
   }

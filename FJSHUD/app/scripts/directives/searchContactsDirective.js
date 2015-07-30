@@ -21,16 +21,23 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			
 			var joinByPhoneBtn = angular.element('<div class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton"><span>Join by phone</span></div>');
 			var joinByPhoneBtnDisabled = angular.element('<div class="XButton XButtonNormal JoinByPhoneBtn" disabled="disabled" id="joinConfButton"><span>Join by phone</span></div>'); 
-
-			var addTeamMemberHeader = function(){
-				overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
-				headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
-				inset.append(headerTitle);
+			
+			var addTeamMemberHeader = function(conf){
+				if (conf){
+					overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
+					headerTitle = angular.element('<div class="Header">Join to Conference</div>');
+					overlay.append(headerTitle)
+				} else {
+					overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
+					headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
+					inset.append(headerTitle);
+				}
 			};
 			
-			overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
-			headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
-			inset.append(headerTitle);
+			if (attrs.conference == 'true')
+				addTeamMemberHeader(true);
+			else
+				addTeamMemberHeader(false);
 
 			rows = angular.element('<div class="rows"></div>');
 
@@ -45,7 +52,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (e.keyCode == 8 || e.keyCode == 46){
 					inset.empty();
 					if (attrs.conference != 'true'){
-						addTeamMemberHeader();
+						addTeamMemberHeader(false);
 					}
 					rows = angular.element('<div class="rows"></div>');
 				}
@@ -53,47 +60,38 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (element.val().length > 0) {
 					var matchCount = 0;
 					// look for match
-					if (attrs.ngController == "ContactsWidget"){
-						overlay.remove();
-						headerTitle.remove();
-						addTeamMemberHeader();
-					}
 					for (var c = 0, len = contacts.length; c < len; c++) {
 						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
 							var line = makeLine(contacts[c], false, c);
 							rows.append(line);
-							matchCount ++;
+							matchCount++;
 						} 
 					}
 
 					if(matchCount == 0){
-						console.error('X');
 						var line = makeLine(null, true);
 						inset.empty();
 						rows.empty();
 
 						if (attrs.conference != 'true'){
-							addTeamMemberHeader();
+							addTeamMemberHeader(false);
 						}
 						rows = line;
 					}
 
 					headerTitle.remove();
 
-					addTeamMemberHeader();
+					if (attrs.conference == 'true')
+						addTeamMemberHeader(true);
+					else
+						addTeamMemberHeader(false);
 
 					if (attrs.conference == "true" && matchCount == 0 & !isNaN(element.val())){
-						console.error('Y');
-						overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
-						headerTitle = angular.element('<div class="Header">Join to Conference</div>');
-						overlay.append(headerTitle);
+						addTeamMemberHeader(true);
 						overlay.append(joinByPhoneBtn);
 						overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
 					} else if (attrs.conference == 'true' & matchCount == 0 & isNaN(element.val())){
-						console.error('Z');
-						overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
-						headerTitle = angular.element('<div class="Header">Join to Conference</div>');
-						overlay.append(headerTitle);
+						addTeamMemberHeader(true);
 						overlay.append(joinByPhoneBtnDisabled);
 						overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
 					}
@@ -163,13 +161,16 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			var fullContactInfo = function(line, contact){
 				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				var hud_status = contact.hud_status || 'offline';
-				var name = '<div class="ListRowContent"><div class="ListRowTitle">';
+				// zoom has diff class cuz needs smaller name width...
+				if (attrs.conference == "true" || attrs.ngController == "ContactsWidget" || attrs.id == 'SearchContactDirectiveMarker')
+					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
+				else
+					var name = '<div class="ListRowContent"><div class="ListRowTitle AddZoomMember">';
 				name += '<div class="name"><strong>' + contact.displayName + '</strong></div>';
 				name += '<div class="hudStatus"><div class="ListRowStatusIcon XIcon-ChatStatus-'+ hud_status +'"></div>';
 				name +=	 contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline';
 				name += '</div></div><div class="ListRowStatus"><div class="Extension Link">#' + contact.primaryExtension + '</div></div></div>';
 				line.append(name);
-				// return line;
 			};
 
 			// fill row content
