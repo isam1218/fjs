@@ -1101,7 +1101,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var call = context.getCall(xpid);
 		if(call){
 			if(context.webphone)
-				context.webphone.send(JSON.stringify({a : 'dtmf', value : sip_id, digits : entry}));
+				context.webphone.send(JSON.stringify({a : 'dtmf', value : call.sip_id, digits : entry}));
 			else
 				call.dtmf(entry);
 		}	
