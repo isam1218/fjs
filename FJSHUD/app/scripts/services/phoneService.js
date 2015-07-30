@@ -1221,14 +1221,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(data){
 			for(var i = 0, iLen = data.length; i < iLen; i++){
 				if (data[i].xpid)
-					//$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
 					if(callsDetails[data[i].xpid]){
 						callsDetails[data[i].xpid].details = data[i];
 				}
-				
-				
 			}
-			//$rootScope.$broadcast('all_calls_updated', allCallDetails);
 		}	
 	});
 
@@ -1377,35 +1373,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var focusBrowser = function(){
 			nservice.sendData({message:"focus"},0,"FOCUS");
 	}
-
-
-	$rootScope.$on('notification_action', function(event,data){
-		if(data.notificationEventType){
-			switch(data.notificationEventType){
-				case 'CALL_DECLINED':
-					hangUp(data.notificationId);
-					break;
-				case 'CALL_ACCEPTED':
-					acceptCall(data.notificationId);
-					break;
-				case 'CHAT_REQUEST':
-					break;
-				case 'CALL_REQUEST':
-					break;
-				case 'CALL_ON_HOLD':
-					holdCall(data.notificationId,true);
-				case 'CALL_ON_RESUME':
-					holdCall(data.notificationId,false);
-					break;
-			}
-			focusBrowser();
-		}
-	});
-
-	var focusBrowser = function(){
-			nservice.sendData({message:"focus"},0,"FOCUS");
-	}
-
+	
 	$rootScope.$on("calldetails_synced",function(event,data){
 		if(data){
 			for(var i = 0, iLen = data.length; i < iLen; i++){
@@ -1422,9 +1390,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			$rootScope.$broadcast('all_calls_updated', allCallDetails);
 		}		
 	});
-
-
-
 	var context = this;
 
 }]);

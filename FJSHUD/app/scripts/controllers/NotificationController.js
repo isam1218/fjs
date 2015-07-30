@@ -601,7 +601,7 @@ hudweb.controller('NotificationController',
 					  			"leftButtonEnabled" : "true",
 					  			"rightButtonEnabled" : right_buttonEnabled,
 					  			"callerName" : $scope.calls[i].displayName, 
-					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outgoind call for",
+					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outbound call for",
 					  			"callCategory" : callType,
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0"
