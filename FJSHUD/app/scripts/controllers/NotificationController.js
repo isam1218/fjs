@@ -553,10 +553,19 @@ hudweb.controller('NotificationController',
 
 		$scope.isRinging = true;
 		element = document.getElementById("CallAlert");
+		
+		if($scope.inCall && !$.isEmptyObject($scope.callObj))
+        	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
+    	else
+			$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
+	
+		
        	
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
 					for (i in $scope.calls){
+				 		
+
 				 		var data = {};
 						var left_buttonText;
 						var right_buttonText;
@@ -590,6 +599,13 @@ hudweb.controller('NotificationController',
 							callType = "Office";
 						}
 
+						if(alertDuration != "entire"){
+				 			if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+				 				nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);		
+				 				return;
+				 			}
+				 		}
+
 				 		data = {
 					  			"notificationId": $scope.calls[i].xpid, 
 					  			"leftButtonText" : left_buttonText,
@@ -607,8 +623,14 @@ hudweb.controller('NotificationController',
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
 					}
 			}else{
-        $scope.displayAlert = true;
-        $timeout(displayNotification, 1500);
+        		if(alertDuration != "entire"){
+				 	if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+				 		phoneService.removeNotification();
+				 		return;
+				 	}
+				}
+        		$scope.displayAlert = true;
+        		$timeout(displayNotification, 1500);
 			}
     }else{
        $scope.displayAlert = true;
@@ -624,10 +646,7 @@ hudweb.controller('NotificationController',
         },2500);
     }
 
-    if($scope.inCall && !$.isEmptyObject($scope.callObj))
-        $('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
-    else
-        $('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
+    
 	});
 
 	$scope.playVm = function(xpid){
@@ -668,7 +687,7 @@ hudweb.controller('NotificationController',
 				$scope.onHold = false;
 				break;
 			case "openNot":
-				$scope.showOverlay(true, 'NotificationsOverlay', {})
+				$scope.showOverlay(true, 'NotificationsOverlay', {});
 				break;
 			case "enabled":
 				$scope.phoneSessionEnabled = true;
