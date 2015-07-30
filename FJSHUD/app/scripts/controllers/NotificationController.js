@@ -890,6 +890,7 @@ hudweb.controller('NotificationController',
         break;
       case 'missed-call':
         notification.label = 'missed call';
+        notification.message="... you have a missed call";
         break;
       case 'busy-ring-back':
         notification.label = 'is now available for call';

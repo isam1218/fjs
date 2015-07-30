@@ -92,9 +92,9 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				iconUrl = "../img/Generic-Avatar-28.png";
 			}
 			
-			var notification = new Notification(data.label, {
+			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
-				body :data.message,
+				body : data.message,
 				tag : data.xpid,
 			});
 			var notification_data = data;
