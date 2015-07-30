@@ -703,8 +703,8 @@ hudweb.controller('NotificationController',
 		}
 	});
   var addTodaysNotifications = function(item){
-   // console.error('item - ', item);
-
+    displayDesktopAlert = true;
+    
     var context, contextId, targetId, groupContextId, queueContextId;
     var today = moment(ntpService.calibrateTime(new Date().getTime()));
     var itemDate = moment(item.time);
@@ -931,8 +931,7 @@ hudweb.controller('NotificationController',
   }
 
 	$scope.$on('quickinbox_synced', function(event,data){
-    displayDesktopAlert = true;
-		var missedCalls = [];
+    var missedCalls = [];
   	if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;

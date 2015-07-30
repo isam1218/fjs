@@ -312,9 +312,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 
 
-	var playVm = function(xpid){
-		$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
-	};
 
 	var shouldAlertDisplay = function(){
 		var displayNotification = false;
@@ -534,7 +531,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		case "Safari":
     			session.activateSafari("#/");
 				break;
-    		case "FireFox":
+    		case "Firefox":
     			addonActivateTab();
 				session.activateFirefox("#/");
 				addonActivateTab();
