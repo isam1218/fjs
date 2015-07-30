@@ -577,9 +577,7 @@ hudweb.controller('NotificationController',
 							right_buttonID = "CALL_ON_HOLD";
 							right_buttonEnabled = "true";
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
-							left_buttonText = "END";
 							right_buttonText = "TALK";	
-							left_buttonID = "CALL_DECLINED";
 							right_buttonID = "CALL_ON_RESUME";
 							right_buttonEnabled = "true";
 							
