@@ -606,7 +606,7 @@ hudweb.controller('NotificationController',
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0"
 						};
-						phoneService.displayWebphoneNotification(data,"INCOMING_CALL");
+						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
 					}
 			}else{
         $scope.displayAlert = true;
@@ -792,7 +792,8 @@ hudweb.controller('NotificationController',
         if (displayDesktopAlert){
                if ($scope.todaysNotifications.length > 0){
                        if(nservice.isEnabled()){
-                          nservice.displayWebNotification(item);
+                          phoneService.displayWebphoneNotification(item,"",false);
+                          //nservice.displayWebNotification(item);
                        }else{
                           $scope.displayAlert = true;
                           $timeout(displayNotification, 1500);
@@ -978,34 +979,5 @@ hudweb.controller('NotificationController',
 		else
 		   	$scope.hasMessages = true;	
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
-
-			
-		if(displayDesktopAlert){
-			//nservice.isEnabled(
-			if(true){
-		
-			 for (var i = 0; i < missedCalls.length;i++){
-			 	 var missedCall = missedCalls[i];
-			 	 var data = {
-			 	 	"notificationId": missedCall.senderId ? missedCall.senderId  : missedCall.phone, 
-  					"leftButtonText" : "Chat",
-  					"rightButtonText" : "Call",
-  					"leftButtonId" : "CHAT_REQUEST",
-  					"rightButtonId" : "CALL_REQUEST",
-  					"leftButtonEnabled" : "true",
-  					"rightButtonEnabled" : "true",
-  					"callerName" : missedCall.displayName, 
-  					"callMessage" :"...you have a missed call",
-  					"callLocation" : "External",
-  					"callDate" : "Today, 1:03pm",
-   					//"phoneStatus" : "mute"
-			 	 };
-
-			 	 phoneService.displayWebphoneNotification(data,"MISSED_CALL");
-
-
-			 }
-	   }
-      }				
-    });		
+  });		
 }]);

@@ -312,18 +312,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 
 
-	playVm = function(xpid){
+	var playVm = function(xpid){
 		$rootScope.$broadcast('play_voicemail',voicemails[xpid]);
-	}
+	};
 
-	var displayNotification = function(content, width,height){
+	var shouldAlertDisplay = function(){
 		var displayNotification = false;
 
-		if(!alertPlugin){
-			return;
-		}
-		context.cacheNotification(content,width,height);
-					
 		if(settingsService.getSetting('alert_show') == 'true'){
 			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
 				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
@@ -350,11 +345,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}		
 				}
 			}
-		};
+		}
 
-
+		return displayNotification;
+	};
+	var displayNotification = function(content, width,height){
+		if(!alertPlugin){
+			return;
+		}
+		var displayNotification = shouldAlertDisplay();
 		
-			
+		context.cacheNotification(content,width,height);
+					
 		if(alertPlugin && displayNotification){
 
 				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
@@ -366,71 +368,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	displayWebphoneNotification = function(data,type){
-		var displayNotification = false;
-		
-		if(settingsService.getSetting('alert_show') == 'true'){
-			
-			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
-					displayNotification = true;	
-				
-			}else{
-				if(!tabInFocus){
-						displayNotification = true;	
-				
-				}
-				if(document.visibilityState == "hidden"){
-						displayNotification = true;	
-
-				}		
-			}
-
-			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
-				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-					displayNotification = true;
-				}else{
-					displayNotification = false;
-				}
-			}
-		};
-
-
+	var displayWebphoneNotification = function(data,type, isNative){
+		var displayNotification = shouldAlertDisplay();
 		if(displayNotification){
-			nservice.sendData(data,0,type);
-		}
-	};
-
-	displayWebphoneNotification = function(data,type){
-		var displayNotification = false;
-		
-		if(settingsService.getSetting('alert_show') == 'true'){
-			
-			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
-					displayNotification = true;	
-				
+			if(isNative){
+				nservice.sendData(data,0,type);
 			}else{
-				if(!tabInFocus){
-						displayNotification = true;	
-				
-				}
-				if(document.visibilityState == "hidden"){
-						displayNotification = true;	
-
-				}		
+				nservice.displayWebNotification(data);	
 			}
-
-			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
-				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-					displayNotification = true;
-				}else{
-					displayNotification = false;
-				}
-			}
-		};
-
-
-		if(displayNotification){
-			nservice.sendData(data,0,type);
 		}
 	};
 
