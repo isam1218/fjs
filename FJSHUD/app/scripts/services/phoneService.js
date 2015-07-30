@@ -234,7 +234,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.hold = isHeld;
 			}
-			httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+			//httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 
 		}else{
 			if(isHeld){
@@ -1069,7 +1069,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	holding the call resuming the call and ending the call
 	*/
 	this.getCall = function(xpid){
-		var call = sipCalls[callsDetails[xpid].sipId];
+		var call;
+		if(callsDetails[xpid]){
+			call = sipCalls[callsDetails[xpid].sipId];
+		}
 		return call;
 	};
 	/**
