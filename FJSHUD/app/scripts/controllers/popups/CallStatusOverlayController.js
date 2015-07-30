@@ -218,14 +218,19 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.determineTransferFrom = function(contactToTransfer){
-		var me = contactService.getContact($rootScope.myPid);
-		return me.xFerFromPermObj[contactToTransfer];
+        var contact = contactService.getContact(contactToTransfer);
+		
+        if (contact && contact.permissions){
+            return settingsService.isEnabled(contact.permissions, 3);
+        }
+		else{
+            return true;
+        }
 	};
 
 	$scope.transferPermFilterContacts = function(){
-		var me = contactService.getContact($rootScope.myPid);
 		return function(contact){
-			return me.xFerToPermObj[contact.xpid];
+			return settingsService.isEnabled(contact.permissions, 4);
 		};
 	};
 

@@ -1,4 +1,6 @@
 hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactService', function($q, $rootScope, httpService, contactService) {	
+	var service = this;
+	
 	var deferSettings = $q.defer();
 	var deferPermissions = $q.defer();
 	var deferMe = $q.defer();
@@ -20,49 +22,49 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 		$rootScope.verbage = fjs.i18n.us;
 	}
 	
-	this.getSettings = function() {
+	service.getSettings = function() {
 		// waits until data is present before sending back
 		return deferSettings.promise;
 	};
 
-	this.getSetting = function(setting_key){
+	service.getSetting = function(setting_key){
 		return settings[setting_key];
 	};
 	
-	this.getPermissions = function() {
+	service.getPermissions = function() {
 		// waits until data is present before sending back
 		return deferPermissions.promise;
 	};
 	
-	this.getPermission = function(key) {
+	service.getPermission = function(key) {
 		return permissions[key];
 	};
 
-	this.getActiveWebLauncher = function(){
+	service.getActiveWebLauncher = function(){
 		return weblaunchers.filter(function(item){
 			return item.id == settings['hudmw_launcher_config_id'];
 		})[0];
 	};
 	
-	this.reset_app_menu = function(){
+	service.reset_app_menu = function(){
 		var data = {};
 		$rootScope.$broadcast('reset_app_menu', data);
 	};
 
-	this.enable_box = function(){
+	service.enable_box = function(){
 		// console.error('in setting service');
 		$rootScope.$broadcast('enable_box', {});
 	};
 
-	this.getMe = function(){
+	service.getMe = function(){
 		return deferMe.promise;	
 	};
 	
-	this.getWl = function(){
+	service.getWl = function(){
 		return deferWl.promise;
 	};
 
-	this.formatWebString = function(url,call){
+	service.formatWebString = function(url,call){
 		var val = $rootScope.meModel;
 		var me = contactService.getContact($rootScope.meModel.my_pid);
 		//var callContact = contactService.getContact(call.contactId);
@@ -82,7 +84,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 		return url;
 	};
 	
-	var isEnabled = function(permission, bit) {
+	service.isEnabled = function(permission, bit) {
 		return ((permission & (1 << bit)) == 0);
 	};
 
@@ -96,16 +98,15 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			
 			if(data[i].propertyKey == 'personal_permissions'){			
 				// licenses from MyPermissions.java
-				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
-				permissions.showVideoCollab = isEnabled(data[i].propertyValue, 1);
+				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
 				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);
 
 				// group permissions from MyPermissions.java
-				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
-				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
-				permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
-				permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
+				permissions.recordingEnabled = service.isEnabled(data[i].propertyValue, 14);
+				permissions.deleteMyRecordingEnabled = service.isEnabled(data[i].propertyValue, 15);
+				permissions.deleteOtherRecordingEnabled = service.isEnabled(data[i].propertyValue, 16);
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
