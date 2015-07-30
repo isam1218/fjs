@@ -668,7 +668,7 @@ hudweb.controller('NotificationController',
 				$scope.onHold = false;
 				break;
 			case "openNot":
-				$scope.overlay ='notifications';
+				$scope.showOverlay(true, 'NotificationsOverlay', {})
 				break;
 			case "enabled":
 				$scope.phoneSessionEnabled = true;
