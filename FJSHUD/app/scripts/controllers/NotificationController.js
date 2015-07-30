@@ -912,7 +912,7 @@ hudweb.controller('NotificationController',
   }
 
 	$scope.$on('quickinbox_synced', function(event,data){
-    var displayDesktopAlert = true;
+    displayDesktopAlert = true;
 		var missedCalls = [];
   	if(data){
 			data.sort(function(a,b){
