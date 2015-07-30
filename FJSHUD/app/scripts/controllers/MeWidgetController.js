@@ -1045,12 +1045,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
     
     var dtmf_input = "";
-    var icon_version;
+    var icon_version = $scope.meModel.icon_version;
     $scope.$on("fdpImage_synced",function(event,data){
         if(data){
             for (var i = 0, len = data.length; i < len; i++) {
                 if(data[i].xpid == $scope.meModel.my_pid){
                     icon_version = data[i].xef001iver;
+                    $scope.meModel.icon_version = icon_version;
                 }
             }
         } 
