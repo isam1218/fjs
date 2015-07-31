@@ -148,7 +148,7 @@
 					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
 				<div>
-					<a href="" class="ListRow"> 
+					<a href="" class="ListRow" ng-if="transferType != 'external'"> 
 						<avatar profile="transferTo"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
@@ -159,12 +159,22 @@
 							</div>
 						</div>
 					</a>
+					<a href="" class="ListRow" ng-if="transferType == 'external'"> 
+						<avatar profile="transferTo"></avatar>
+						<div class="ListRowContent">
+							<div class="ListRowTitle">
+								<strong>{{ transferTo.displayName }}</strong>
+								<br/>
+								{{transferTo.contactNumber}}
+							</div>
+						</div>
+					</a>
 				</div>
-				<div>
+				<div ng-hide="transferType == 'external'">
 					<h4 class="upper">{{::verbage.transfer_options}}</h4>
 					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
-				<div>
+				<div ng-hide="transferType == 'external'">
 					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="true" ng-false-value="false" /> {{::verbage.primary_extension}}
 					<br/>
 					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="false" ng-false-value="true" /> {{::verbage.voicemail_box}}
