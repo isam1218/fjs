@@ -33,7 +33,7 @@
 			<div>
 				<strong ng-if="queue.longestWait > 0" timer="queue.longestWait"></strong>
 				<strong ng-if="queue.longestWait == 0">00:00</strong>
-				{{::verbage.longest_hold}}
+				{{::verbage.avg_wait}}
 			</div>
 			<div ng-class="{'RedText': queueThresholds.avg_talk && queue.info.avgTalk/60 > queueThresholds.avg_talk}">
 				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>
