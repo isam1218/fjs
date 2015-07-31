@@ -4,8 +4,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	*/
 	var ua = navigator.userAgent;
 	var browser = ua.match(/(edge|chrome|safari|firefox|msie)/i);
+	var isEdge = ua.match(/(Edge)/i) != undefined;
+	
 	// if not found, default to IE mode
 	browser = browser && browser[0] ? browser[0] : "MSIE";
+	if(isEdge)
+		browser = "Edge";
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
 	var isIE = browser == "MSIE";
 	var isMasterTab = false;

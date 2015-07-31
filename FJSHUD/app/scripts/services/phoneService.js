@@ -153,7 +153,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	settingsService.getMe().then(function(data){
 		
-		if($rootScope.browser == "Chrome"){
+		if($rootScope.browser == "Chrome" || $rootScope.browser == "Edge"){
 			if(!context.webphone && $rootScope.meModel.my_pid){
 				getWSVersion();
         		nservice.initNSService();
