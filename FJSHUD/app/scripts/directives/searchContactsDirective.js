@@ -26,7 +26,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (conf){
 					overlay = angular.element('<div class="SearchContactOverlay conferenceSearch"></div>');
 					headerTitle = angular.element('<div class="Header">Join to Conference</div>');
-					overlay.append(headerTitle)
+					overlay.append(headerTitle);
 				} else {
 					overlay = angular.element('<div class="SearchContactOverlay favoritesSearch"></div>');
 					headerTitle = angular.element('<div class="Header">Add a Team Member</div>');
