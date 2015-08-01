@@ -179,7 +179,7 @@
 				</div>
 				<div ng-class="(gadget.data.longestWait > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
-					{{::verbage.avg_wait}}
+					{{::verbage.longest_hold}}
 				</div>
 				<div ng-class="(gadget.data.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
 					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
