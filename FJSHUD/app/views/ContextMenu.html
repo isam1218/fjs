@@ -224,15 +224,15 @@
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('page', profile)">
+		<a class="Button" href="" ng-show="canGroupPage && profile.extension" ng-click="callInternal('page', profile)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.page}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('intercom', profile)">
+		<a class="Button" href="" ng-show="canGroupIntercom && profile.extension" ng-click="callInternal('intercom', profile)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('voicemail', profile)">
+		<a class="Button" href="" ng-show="canGroupVoicemail && profile.extension" ng-click="callInternal('voicemail', profile)">
 			<div class="ListRowActionButtonVoicemail"></div>
 			<span>{{::verbage.voicemail}}</span>
 		</a>

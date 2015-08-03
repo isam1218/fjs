@@ -19,7 +19,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		$scope.reasons.list = data.reasons;
 	});
 	
-	// permissions
+	// permissions (will most likely need to be moved)
 	settingsService.getPermissions().then(function(data) {
 		$scope.canRecord = data.recordingEnabled;
 	});
@@ -36,12 +36,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		
 		$scope.reasons.show = false;
 		$scope.myQueue = false;
-		
-		// permissions
-		if ($scope.profile.permissions)
-			$scope.canLoginAgent = settingsService.isEnabled($scope.profile.permissions, 9);
-		else
-			$scope.canLoginAgent = false;
 		
 		// get type
 		if ($scope.original.parkExt !== undefined) {
@@ -83,6 +77,22 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		else {
 			$scope.type = null;
 			$scope.profile = null;
+		}
+		
+		// permissions
+		if ($scope.profile.permissions !== undefined) {
+			switch ($scope.type) {
+				case 'Contact':
+					$scope.canLoginAgent = settingsService.isEnabled($scope.profile.permissions, 9);
+					
+					break;
+				case 'Group':
+					$scope.canGroupIntercom = settingsService.isEnabled($scope.profile.permissions, 1);
+					$scope.canGroupPage = settingsService.isEnabled($scope.profile.permissions, 2);
+					$scope.canGroupVoicemail = settingsService.isEnabled($scope.profile.permissions, 3);
+					
+					break;
+			}
 		}
 		
 		// check if in dock
