@@ -1128,7 +1128,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					allCallDetails[data[i].xpid] = data[i];
 				}
 		}
-		$rootScope.$broadcast('all_calls_updated', allCallDetails);
+		
+		//$rootScope.$broadcast('all_calls_updated', allCallDetails);
 	});
 	
 	
