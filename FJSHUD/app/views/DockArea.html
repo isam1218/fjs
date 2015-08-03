@@ -177,8 +177,9 @@
 					<strong>{{ gadget.data.info.waiting }}</strong> 
 					{{::verbage.waiting}}
 				</div>
-				<div ng-class="{'RedText': queueThresholds.avg_wait && gadget.data.info.esa/60 > queueThresholds.avg_wait}">
-					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
+				<div>
+					<strong ng-if="gadget.data.longestWait > 0" timer="gadget.data.longestWait"></strong>
+					<strong ng-if="gadget.data.longestWait == 0">00:00</strong>
 					{{::verbage.longest_hold}}
 				</div>
 				<div ng-class="{'RedText': queueThresholds.avg_talk && gadget.data.info.avgTalk/60 > queueThresholds.avg_talk}">
