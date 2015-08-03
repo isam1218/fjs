@@ -2,13 +2,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	var deferred = $q.defer();	
 	var contacts = [];
 	var service = this;
-	var xFerFromPermObj = {};
-  var xFerToPermObj = {};
-
-	
-	var isEnabled = function(permission, bit) {
-		return ((permission & (1 << bit)) == 0);
-	};
 
 	service.getContact = function(xpid) {
 		for (var i = 0, len = contacts.length; i < len; i++) {
@@ -147,19 +140,9 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		for (var i = 0, iLen = contacts.length; i < iLen; i++){
 			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (contacts[i].xpid == data[j].xpid && data[j].permissions){
-					xFerFromPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 3);
-					xFerToPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 4);
-					
+					contacts[i].permissions = data[j].permissions;					
 					break;
 				}
-			}
-		}
-		for (var k = 0, kLen = contacts.length; k < kLen; k++){
-			if (contacts[k].xpid == $rootScope.myPid){
-				contacts[k].xFerFromPermObj = xFerFromPermObj;
-				contacts[k].xFerToPermObj = xFerToPermObj;
-				
-				break;
 			}
 		}
 	});

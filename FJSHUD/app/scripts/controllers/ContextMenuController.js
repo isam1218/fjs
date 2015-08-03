@@ -21,7 +21,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	
 	// permissions
 	settingsService.getPermissions().then(function(data) {
-		$scope.canLoginAgent = data.enableAgentLogin;
 		$scope.canRecord = data.recordingEnabled;
 	});
 	
@@ -37,6 +36,12 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		
 		$scope.reasons.show = false;
 		$scope.myQueue = false;
+		
+		// permissions
+		if ($scope.profile.permissions)
+			$scope.canLoginAgent = settingsService.isEnabled($scope.profile.permissions, 9);
+		else
+			$scope.canLoginAgent = false;
 		
 		// get type
 		if ($scope.original.parkExt !== undefined) {

@@ -947,10 +947,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.determineTransferFrom = function(contactToTransfer){
-        var me = contactService.getContact($rootScope.myPid);
-        if(contactToTransfer){
-            return me.xFerFromPermObj[contactToTransfer];
-        }else{
+        var contact = contactService.getContact(contactToTransfer);
+		
+        if (contact && contact.permissions){
+            return settingsService.isEnabled(contact.permissions, 3);
+        }
+		else{
             return true;
         }
     };
