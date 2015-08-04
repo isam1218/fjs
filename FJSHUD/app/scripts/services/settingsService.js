@@ -146,7 +146,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				locations[data[i].xpid] = data[i];
 				if(data[i].xpid == $rootScope.meModel.current_location){
 					$rootScope.meModel.location = data[i];
-					break;	
 				}
 	    }
 
