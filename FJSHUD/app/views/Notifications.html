@@ -36,7 +36,7 @@
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
 								<div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
 							</div> 
-							<div class="NotificationType" ng-show="showNotificationBody">
+							<div class="NotificationType">
 								...{{message.label }} 
 								<span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
 									{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
