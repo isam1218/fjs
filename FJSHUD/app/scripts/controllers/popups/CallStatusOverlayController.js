@@ -92,6 +92,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		httpService.sendAction('contacts', type + 'Call', {contactId: xpid});
 	};
 	
+	settingsService.getPermissions().then(function(data){
+		// hide record button if no record permission
+		$scope.canRecord = data.recordingEnabled;
+	});
+
 	$scope.recordCall = function() {
 		var action = '';
 		if (!$scope.onCall.call.recorded) {

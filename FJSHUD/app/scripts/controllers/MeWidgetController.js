@@ -904,7 +904,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     });
 
-
+    settingsService.getPermissions().then(function(data){
+        $scope.canRecord = data.recordingEnabled;
+    });
 
     $scope.recordCall = function(action) {
         var action = '';
