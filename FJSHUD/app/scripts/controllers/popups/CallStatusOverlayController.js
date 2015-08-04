@@ -92,11 +92,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		httpService.sendAction('contacts', type + 'Call', {contactId: xpid});
 	};
 	
-	settingsService.getPermissions().then(function(data){
-		// hide record button if no record permission
-		$scope.canRecord = data.recordingEnabled;
-	});
-
 	$scope.recordCall = function() {
 		var action = '';
 		if (!$scope.onCall.call.recorded) {
@@ -222,6 +217,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
+
+	$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
 
 	$scope.determineTransferFrom = function(contactToTransfer){
         var contact = contactService.getContact(contactToTransfer);
