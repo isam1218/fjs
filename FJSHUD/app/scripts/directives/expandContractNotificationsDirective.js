@@ -1,7 +1,7 @@
 hudweb.directive('expandContractNotifications', function() {
       return {
          link : function(scope, element, attrs) {
-        	var animTime = 300, hoverFlag = false;
+        	var animTime = 50, hoverFlag = false;
 			var scrollWatcher;
         	var nua = navigator.userAgent;
         	var browser = nua.match(/(chrome|safari|firefox|msie)/i);
