@@ -147,6 +147,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (data[j].xpid == queues[i].xpid){
 					queues[i].permissions = data[j];
+					break;
 				}
 				
 			}
