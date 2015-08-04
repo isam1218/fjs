@@ -346,7 +346,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        data = {key:"LocationsPopup", x:offset.x-60, y:offset.y};
+        data = {key:"LocationsPopup", x:offset.x-60, y:offset.y,model:{
+        	callTransfer:transfer
+        }};
         $scope.showPopup(data, eventTarget);
         return false;
     };
@@ -1103,7 +1105,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
     
-
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;

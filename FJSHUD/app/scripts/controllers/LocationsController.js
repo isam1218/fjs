@@ -6,6 +6,7 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     */
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
+    var call = phoneService.getCallDetail($routeParams.callId);
     $scope.locations = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
@@ -14,7 +15,7 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     
     $scope.moveLocation = function(locationId){
     	var callId = $routeParams.callId;
-        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":$scope.meModel["current_location"] = locationId, "variance": "native", "options": "0"});
+        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":locationId, "variance": "native", "options": "0"});
         $scope.onBodyClick();
     };
     
@@ -39,7 +40,11 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
 
 
     $scope.getCurrentLocationId = function() {
-        return $scope.meModel["current_location"] && $scope.meModel["current_location"];
+        if(call && $scope.currentPopup.model.callTransfer){
+            return call.locationId;
+        }else{
+            return $scope.meModel["current_location"] && $scope.meModel["current_location"];
+        }
     };
 
    
