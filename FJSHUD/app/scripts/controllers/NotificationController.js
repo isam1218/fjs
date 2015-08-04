@@ -581,10 +581,13 @@ hudweb.controller('NotificationController',
 							right_buttonEnabled = $scope.calls[i].incoming ? "true" : "false";
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 							left_buttonText = "END";
-							right_buttonText = "HOLD";	
 							left_buttonID = "CALL_DECLINED";
-							right_buttonID = "CALL_ON_HOLD";
-							right_buttonEnabled = "true";
+						    if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
+						    	right_buttonID = "CALL_ON_HOLD";
+								right_buttonEnabled = "true";
+								right_buttonText = "HOLD";	
+							}
+
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
 							right_buttonText = "TALK";	
 							right_buttonID = "CALL_ON_RESUME";
@@ -597,7 +600,8 @@ hudweb.controller('NotificationController',
 							callType = "External";
 						}else{
 							callType = "Office";
-						}
+						  
+            			}
 
 						if(alertDuration != "entire"){
 				 			if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
