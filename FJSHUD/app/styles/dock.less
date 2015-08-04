@@ -125,7 +125,24 @@
 	&:hover {
 		box-shadow: 0 0 8px gray;
 	}
-
+    
+    #parked_calls{
+        .ListRow .ListRowTitle{
+            padding: 0px;
+            white-space: nowrap;
+            max-width: 80px;
+            padding-top: 5px;
+            text-overflow:ellipssis;    
+            padding-left: 3px;       
+        }
+        
+        .timer{
+            float:right;
+            font-size:.65em;
+            margin-top:3px;
+            margin-right:2px;
+        }
+    }
 	.Header {
 	    cursor: pointer;
 		background-color: #ECECEC;
@@ -139,7 +156,9 @@
 		-webkit-flex-direction: row;
 		max-height: 40px;
 	
-	    
+	    span{
+	       margin-top: -3px;
+	    }
 		& > .Avatar {
 			margin-top: auto;
 		}
