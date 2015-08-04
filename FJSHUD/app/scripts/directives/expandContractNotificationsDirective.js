@@ -51,7 +51,7 @@ hudweb.directive('expandContractNotifications', function() {
        		        }); 
        		        
        		        $('.LeftBar .NotificationMessages .scroller').animate({
-						scrollTop: $('.LeftBar').outerHeight() 
+						scrollTop: topParentHeight 
 					});
    		            setTimeout(function(){ hoverFlag = false; }, animTime);	       		        
 	       		  }		
