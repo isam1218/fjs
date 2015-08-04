@@ -83,7 +83,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		if ($scope.profile.permissions !== undefined) {
 			switch ($scope.type) {
 				case 'Contact':
+					$scope.canIntercom = settingsService.isEnabled($scope.profile.permissions, 6);
 					$scope.canLoginAgent = settingsService.isEnabled($scope.profile.permissions, 9);
+					
+					if ($scope.profile.call)
+						$scope.canBarge = settingsService.isEnabled($scope.profile.call.details.permissions, 1);
 					
 					break;
 				case 'Group':

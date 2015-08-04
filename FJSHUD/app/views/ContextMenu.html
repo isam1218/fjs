@@ -168,7 +168,7 @@
 			<span>{{::verbage.Call_Later}}</span>
 		</a>
 		
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callInternal('callIntercom')">
+		<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
 		</a>
@@ -185,7 +185,7 @@
 			<span>{{::verbage.mobile}}</span>
 		</a>
 		
-		<div ng-if="profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid ">
+		<div ng-if="canBarge && profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid">
 			<a class="Button" href="" ng-click="bargeCall('barge')">
 				<div class="ListRowActionButtonBarge"></div>
 				<span>{{::verbage.barge}}</span>
