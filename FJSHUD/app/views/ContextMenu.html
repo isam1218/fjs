@@ -168,7 +168,7 @@
 			<span>{{::verbage.Call_Later}}</span>
 		</a>
 		
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callInternal('callIntercom')">
+		<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
 		</a>
@@ -185,7 +185,7 @@
 			<span>{{::verbage.mobile}}</span>
 		</a>
 		
-		<div ng-if="profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid ">
+		<div ng-if="canBarge && profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid">
 			<a class="Button" href="" ng-click="bargeCall('barge')">
 				<div class="ListRowActionButtonBarge"></div>
 				<span>{{::verbage.barge}}</span>
@@ -224,15 +224,15 @@
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('page', profile)">
+		<a class="Button" href="" ng-show="canGroupPage && profile.extension" ng-click="callInternal('page', profile)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.page}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('intercom', profile)">
+		<a class="Button" href="" ng-show="canGroupIntercom && profile.extension" ng-click="callInternal('intercom', profile)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('voicemail', profile)">
+		<a class="Button" href="" ng-show="canGroupVoicemail && profile.extension" ng-click="callInternal('voicemail', profile)">
 			<div class="ListRowActionButtonVoicemail"></div>
 			<span>{{::verbage.voicemail}}</span>
 		</a>

@@ -195,8 +195,7 @@ hudweb.directive('transferContactSearch', ['$rootScope', '$document', 'ContactSe
               scope.searchContact(contact);
             }
           } else if (!isNaN(element.val())){
-            // need to define this function in call status over controller
-            scope.addExternalToTransfer(element.val());
+            scope.searchContact(element.val(), true)
           } else {
             return;
           }

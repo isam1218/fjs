@@ -226,7 +226,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					$('#ContextMenu .Button').unbind('click');
 					$rootScope.contextShow = false;
-				}, t, false);
+				}, t);
 			}
 		}
 	};

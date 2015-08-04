@@ -197,6 +197,17 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		deferred.resolve(formatData());
 	});
 	
+	$rootScope.$on('grouppermissions_synced', function(event, data) {		
+		for (var g = 0, gLen = groups.length; g < gLen; g++) {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if (groups[g].xpid == data[i].xpid) {
+					groups[g].permissions = data[i].permissions;
+					break;
+				}
+			}
+		}
+	});
+	
 	$rootScope.$on('group_page_member_synced', function(event, data) {		
 		for (var g = 0, gLen = groups.length; g < gLen; g++) {
 			var group = groups[g];

@@ -94,7 +94,7 @@
                   
                   <div class="row_buttons"> 
                     <button class="XButton CurrentCallBtn" ng-if="currentCall.state == 2 || currentCall.state == 0" ng-click="holdCall(currentCall)"><span> {{::verbage.Hold}}</span></button>
-                    <button class="XButton talk" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</button><div class="XButton record ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3, 'CurrentCallBtn': currentCall.state != 2 && currentCall.state != 3, 'XButtonRecordOn': currentCall.record}" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
+                    <button class="XButton talk" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</button><div class="XButton record ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3, 'CurrentCallBtn': !canRecord || currentCall.state != 2 && currentCall.state != 3, 'XButtonRecordOn': currentCall.record}" ng-disabled="!canRecord" ng-click="recordCall(currentCall)"> <span>{{::verbage.REC}}  </span> <div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div></div> 
                     <div class=" SelectBox XButton " type="move" data-ng-click="showLocationsPopup($event, $element, true)">    
                       <div class="SelectBoxText">
                                 <span>{{::verbage.move}}</span>
@@ -121,32 +121,32 @@
                   <div class="WidgetSectionTitle meTitle">{{::verbage.recent_calls}}</div>
                   
                   <div class="RecentCallColumnHeaders">  
-                    <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortCallLog('Date')"> 
+                    <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="recentSelectSort = 'Date';isAscending = !isAscending"> 
                       <div class="RecentPointer">
                         <span class="upper">{{::verbage.date + '/' + verbage.time}}</span>
-                        <div ng-class="recentSelectSort == 'Date' ? isAscending ? 'asc_arrow' : 'desc_arrow' : ''"></div>
+                        <div ng-class="recentSelectSort == 'Date' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
                       </div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortCallLog('From')">
+                    <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click=" recentSelectSort = 'From';isAscending = !isAscending ">
                         <div class="RecentPointer"><span class="upper">{{::verbage.from}}</span></div>
-                        <div ng-class="recentSelectSort == 'From' ? isAscending ? 'asc_arrow' : 'desc_arrow' : ''"></div>
+                        <div ng-class="recentSelectSort == 'From' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortCallLog('To')">
+                    <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="recentSelectSort = 'To';isAscending = !isAscending ">
                         <div class="RecentPointer"><span class="upper">{{::verbage.to}}</span></div>
-                        <div ng-class="recentSelectSort == 'To' ? isAscending ? 'asc_arrow' : 'desc_arrow' : ''"></div>
+                        <div ng-class="recentSelectSort == 'To' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
                     </div>
                     
-                    <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortCallLog('Duration')">
+                    <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="recentSelectSort = 'Duration';isAscending = !isAscending">
                      <div class="RecentPointer"><span class="upper">{{::verbage.duration}}</span></div>
-                     <div ng-class="recentSelectSort == 'Duration' ? isAscending ? 'asc_arrow' : 'desc_arrow' : ''"></div>
+                     <div ng-class="recentSelectSort == 'Duration' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
                     </div>
                   </div>
                   <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
                   
                   <div  class="RecentCallLogs">                   
-                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value track by calllog.xpid" class="RecentCallRow"> 
+                    <div ng-repeat="calllog in calllogs | limitTo:callLogSizeSelected.value | orderBy:sortCallLog:!isAscending track by calllog.xpid" class="RecentCallRow"> 
 
                       <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'YYYY MMMM D hh:mm a':fon_lang_code}} </div>
 

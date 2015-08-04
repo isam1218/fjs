@@ -1,7 +1,14 @@
 hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', function($rootScope, $document, contactService) {
 	var contacts = [];
+	var myExtension;
 
 	contactService.getContacts().then(function(data) {
+		for (var i = 0, iLen = data.length; i < iLen; i++){
+			if ($rootScope.myPid == data[i].xpid){
+				myExtension = data[i].primaryExtension;
+				break;
+			}
+		}
 		contacts = data;
 	});
 	
@@ -61,7 +68,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					var matchCount = 0;
 					// look for match
 					for (var c = 0, len = contacts.length; c < len; c++) {
-						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
+						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
 							var line = makeLine(contacts[c], false, c);
 							rows.append(line);
 							matchCount++;

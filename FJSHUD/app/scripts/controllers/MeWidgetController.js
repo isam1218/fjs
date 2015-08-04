@@ -708,66 +708,29 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     return true;
                 }
             });
-            $scope.sortCallLog($scope.recentSelectSort,$scope.isAscending);
-        }
+            $scope.calllogs.sort(function(a,b){
+                return b.startedAt - a.startedAt;
+            });
+        }   
     });
 
-    $scope.sortCallLog = function(sortType,ascending){
-        switch(sortType){
-            case "Date":
-                if($scope.isAscending || (ascending != undefined && !ascending)){
-                    $scope.calllogs.sort(function(a,b){
-                        return b.startedAt - a.startedAt;
-                    }); 
-                }else{
-                    $scope.calllogs.sort(function(a,b){
-                        return a.startedAt - b.startedAt;
-                    });
-                }
-                
+    $scope.sortCallLog = function(calllog){
+        switch($scope.recentSelectSort){
+            case 'Date':
+                return calllog.startedAt;
                 break;
-            case "From":
-                 if($scope.isAscending || (ascending != undefined && !ascending)){
-                    $scope.calllogs.sort(function(a,b){
-                        return a.fromDisplayValue.localeCompare(b.fromDisplayValue);
-                    });
-                }else{
-                     $scope.calllogs.sort(function(a,b){
-                         return b.fromDisplayValue.localeCompare(a.fromDisplayValue);
-                    }); 
-                }
+            case 'From':
+                return calllog.fromDisplayValue;
                 break;
-            case "To":
-                if($scope.isAscending || (ascending != undefined && !ascending)){
-                    $scope.calllogs.sort(function(a,b){
-                        return a.toDisplayValue.localeCompare(b.toDisplayValue);
-                    });
-                }else{
-                    $scope.calllogs.sort(function(a,b){
-                        return b.toDisplayValue.localeCompare(a.toDisplayValue);
-                    }); 
-                }
+            case 'To':
+                return calllog.toDisplayValue;
                 break;
-
-            case "Duration":
-                if($scope.isAscending || (ascending != undefined && !ascending)){
-                    
-                    $scope.calllogs.sort(function(a,b){
-                        return b.duration - a.duration;
-                    }); 
-                }else{
-                    $scope.calllogs.sort(function(a,b){
-                        return a.duration - b.duration;
-                    });
-                }
+            case 'Duration':
+                return calllog.duration;
                 break;
         }
+    };
 
-        if(ascending == undefined)
-            $scope.isAscending = !$scope.isAscending;
-
-        $scope.recentSelectSort = sortType;
-  };
     $scope.showCallOvery = function(screen){
         var data = contactService.getContact($scope.meModel.my_pid);
         if(!data){
@@ -904,7 +867,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     });
 
-
+    settingsService.getPermissions().then(function(data){
+        $scope.canRecord = data.recordingEnabled;
+    });
 
     $scope.recordCall = function(action) {
         var action = '';
@@ -947,10 +912,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.determineTransferFrom = function(contactToTransfer){
-        var me = contactService.getContact($rootScope.myPid);
-        if(contactToTransfer){
-            return me.xFerFromPermObj[contactToTransfer];
-        }else{
+        var contact = contactService.getContact(contactToTransfer);
+		
+        if (contact && contact.permissions){
+            return settingsService.isEnabled(contact.permissions, 3);
+        }
+		else{
             return true;
         }
     };
