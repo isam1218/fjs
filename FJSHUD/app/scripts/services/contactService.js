@@ -89,35 +89,43 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		}
 	});
 	
-	$rootScope.$on('all_calls_updated', function(event, data) {
-		for (var i = 0, iLen = contacts.length; i < iLen; i++) {
-			contacts[i].call = null;
+	$rootScope.$on('calls_synced', function(event, data) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			contacts[c].call = null;
 			
 			// find caller
-			for (var key in data) {
-				if (contacts[i].xpid == data[key].xpid) {
-					contacts[i].call = data[key];
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if (contacts[c].xpid == data[i].xpid && data[i].xef001type != 'delete') {
+					contacts[c].call = data[i];
 					
 					// attach full profile, if present
-					if (data[key].contactId)
-						contacts[i].call.fullProfile = angular.copy(service.getContact(data[key].contactId));
+					if (data[i].contactId)
+						contacts[c].call.fullProfile = angular.copy(service.getContact(data[i].contactId));
 					
 					break;
 				}
 			}
 			
-			if (contacts[i].call) {
-				contacts[i].call.bargers = [];
+			if (contacts[c].call) {
+				contacts[c].call.bargers = [];
 			
 				// find people barging call
-				for (var key in data) {
-					if (data[key].barge > 0 && data[key].xpid != contacts[i].xpid && (data[key].contactId == contacts[i].call.xpid || data[key].contactId == contacts[i].call.contactId)) {
-						for (var c = 0, cLen = contacts.length; c < cLen; c++) {
-							if (contacts[c].xpid == data[key].xpid) {
-								contacts[i].call.bargers.push(contacts[c]);
-								break;
-							}
-						}
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					if (data[i].barge > 0 && data[i].xpid != contacts[c].xpid && (data[i].contactId == contacts[c].call.xpid || data[i].contactId == contacts[c].call.contactId)) {
+						contacts[c].call.bargers.push(service.getContact(data[i].xpid));
+					}
+				}
+			}
+		}
+	});
+	
+	$rootScope.$on('calldetails_synced', function(event, data) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			if (contacts[c].call) {
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					if (contacts[c].xpid == data[i].xpid) {
+						contacts[c].call.details = data[i];
+						break;
 					}
 				}
 			}
