@@ -622,7 +622,8 @@ hudweb.controller('NotificationController',
 					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outbound call for",
 					  			"callCategory" : callType,
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
-					  			"record" : $scope.calls[i].record ? "1" : "0"
+					  			"record" : $scope.calls[i].record ? "1" : "0",
+                  				"created": $scope.calls[i].created 
 						};
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
 					}

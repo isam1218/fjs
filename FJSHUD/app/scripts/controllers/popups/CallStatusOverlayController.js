@@ -221,12 +221,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select conference room';
 	};
 
-	$scope.determineBarge = function(callObj){
-		if (!callObj || !callObj.details)
-			return false;
-		else
-			return settingsService.isEnabled(callObj.details.permissions, 1);
-	};
+	$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
 
 	$scope.determineTransferFrom = function(contactToTransfer){
         var contact = contactService.getContact(contactToTransfer);

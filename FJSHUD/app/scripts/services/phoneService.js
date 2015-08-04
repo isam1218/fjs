@@ -62,6 +62,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
 	
+	var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
 	if($rootScope.browser != "Chrome"){
 		$("body").append($compile(pluginHtml)($rootScope));
 		phonePlugin = document.getElementById('fonalityPhone');
@@ -815,7 +816,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		  {
     			  var msg = JSON.parse(e.data);
 
-    			  if (msg.error) alert(msg.error);
+    			  //if (msg.error) alert(msg.error);
     			  
 				  if (msg.sip_id){
 					
@@ -1331,6 +1332,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case 'CALL_ON_RESUME':
 					holdCall(data.notificationId,false);
 					break;
+			}
+			if($rootScope.browser == "Chrome"){
+            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
 			}
 			focusBrowser();
 		}
