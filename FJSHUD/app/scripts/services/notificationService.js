@@ -100,7 +100,9 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var context_data = nd.context;
 				var context = context_data.split(':')[0];
 				var xpid = context_data.split(':')[1];
-				$location.path("/" + nd.audience + "/" + xpid + "/chat");
+				var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
+				
+				$location.path("/" + nd.audience + "/" + xpid + "/" + route);
 
 			};
 			  

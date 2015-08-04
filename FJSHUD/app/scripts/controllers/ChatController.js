@@ -255,9 +255,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}		
 		
 		$scope.chat.message = '';
-		chatbox.style.height = '1px';
 		storageService.saveChatMessage(chat.targetId);
-		this.message = '';		
 	};
 	
 	$scope.searchChat = function(increment) {
@@ -353,7 +351,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.$on("$destroy", function() {
 		$interval.cancel(chatLoop);
 		scrollbox = null;
-		chatbox = null;
 		
 		// save message for later
 		storageService.saveChatMessage(chat.targetId, $scope.chat.message);
