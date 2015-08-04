@@ -217,10 +217,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.determineBarge = function(callObj){
-		if (!callObj)
+		if (!callObj || !callObj.details)
 			return false;
 		else
-			return $rootScope.bargeObj[callObj];
+			return settingsService.isEnabled(callObj.details.permissions, 1);
 	};
 
 	$scope.determineTransferFrom = function(contactToTransfer){
