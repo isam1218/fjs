@@ -48,7 +48,11 @@ hudweb.directive('expandContractNotifications', function() {
        				    $(this).stop().animate({top: topPos, height: targetHeight }, animTime);			       			    
 	       			   
 	       		         $(this).addClass('open'); 			       		         
-       		        }); 	       		      
+       		        }); 
+       		        
+       		        $('.LeftBar .NotificationMessages .scroller').animate({
+						scrollTop: $('.LeftBar').outerHeight() 
+					});
    		            setTimeout(function(){ hoverFlag = false; }, animTime);	       		        
 	       		  }		
             });
