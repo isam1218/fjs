@@ -52,7 +52,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
 		
 
-		var sendData =  function(data,retry,type){
+	this.sendData =  function(data,retry,type){
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
@@ -60,7 +60,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 					notifyPipe.send(type + " "+ JSON.stringify(data));
 				}else{
 					if(retry > 3){
-						setTimeout(sendData(data,retry),5000);
+						setTimeout(context.sendData(data,retry),5000);
 					}
 				}
 			}else{
@@ -69,7 +69,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 	
 		this.dismiss = function(type,id){
-			sendData({"notificationType":type, "notificationId":id },0,"DISMISS");	
+			context.sendData({"notificationType":type, "notificationId":id },0,"DISMISS");	
 			
 		};
 
@@ -120,7 +120,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			return notification;
 		};
 
-		this.sendData = sendData;
+		context = this;
+		//this.sendData = sendData;
 		
 
 

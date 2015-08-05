@@ -1,5 +1,5 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService','NotificationService',
-	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService','NotificationService','$routeParams',
+	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 	var phonePlugin;
@@ -80,9 +80,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isDocumentHidden  = function(){
 		var hidden; 
 		if(document.hidden){
+			if(context.shouldAlertDisplay()){
+				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+			}
 		}else{
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				removeNotification();
+			}
+			if($routeParams.contactId && $routeParams.route == "chat"){
+				$rootScope.$broadcast("phone_event",{event:'deleteChatNots',contactId:$routeParams.contactId});
 			}
 		}
 	};
@@ -310,7 +316,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 
 
-	var shouldAlertDisplay = function(){
+	this.shouldAlertDisplay = function(){
 		var displayNotification = false;
 
 		if(settingsService.getSetting('alert_show') == 'true'){
@@ -347,7 +353,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(!alertPlugin){
 			return;
 		}
-		var displayNotification = shouldAlertDisplay();
+		var displayNotification = context.shouldAlertDisplay();
 		
 		context.cacheNotification(content,width,height);
 					
@@ -363,7 +369,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var displayWebphoneNotification = function(data,type, isNative){
-		var displayNotification = shouldAlertDisplay();
+		var displayNotification = context.shouldAlertDisplay();
 		if(displayNotification){
 			if(isNative){
 				nservice.sendData(data,0,type);

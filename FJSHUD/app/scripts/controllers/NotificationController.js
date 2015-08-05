@@ -164,6 +164,12 @@ hudweb.controller('NotificationController',
       } 
     }
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
+
+    if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+      $timeout(displayNotification, 1500);    
+    }else{
+      phoneService.removeNotification();
+    }
   };
 
   $scope.showNotifications = function(flag)
@@ -704,6 +710,15 @@ hudweb.controller('NotificationController',
 				$timeout(displayNotification
 						, 1500);
 				break;
+      case "deleteChatNots":
+          var contactId = data.contactId;
+          for(var i = 0; i < $scope.notifications.length;i++){
+              if($scope.notifications[i].senderId == contactId && $scope.notifications[i].type == "chat"){
+                  deleteNotification($scope.notifications[i]);
+                  break;
+              }
+          }
+          break;
 
 		}
 	});
@@ -757,19 +772,24 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);
-        return false;
-      }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);
-        return false;
-      }else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);
-        return false;
-      } else if (targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
-        return false;
-
-      }else{
+      
+      if(!document.hidden || document.hasFocus()){
+        if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+          if(item.type == "chat")
+                $scope.remove_notification(item.xpid);
+                return false;
+        }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+          if(item.type == "gchat")
+            $scope.remove_notification(item.xpid);
+          return false;
+        }else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+          $scope.remove_notification(item.xpid);
+          return false;
+        } else if (targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
+          return false;
+        }
+      }
+       
        var dupe = false;
        var combinedMsg = false;
         for (var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
@@ -823,9 +843,7 @@ hudweb.controller('NotificationController',
              }
       }
     }
-  }
-  
- };
+  };
 
 	var deleteNotification = function(notification){
 		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
@@ -841,9 +859,21 @@ hudweb.controller('NotificationController',
 			}
 		}
 		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
-			$timeout(displayNotification, 1500);		
+			$scope.displayAlert = true;
+      $timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
+      $scope.displayAlert = true;
+      $timeout(function(){
+        var element = document.getElementById("Alert");
+        if(element){
+          var content = element.innerHTML;
+          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+          
+        }
+        element = null;
+        $scope.displayAlert = false;
+        },2500);
 		}
 	};
 
