@@ -1,7 +1,7 @@
 hudweb.directive('expandContractNotifications', function() {
       return {
          link : function(scope, element, attrs) {
-        	var animTime = 300, hoverFlag = false;
+        	var animTime = 50, hoverFlag = false;
 			var scrollWatcher;
         	var nua = navigator.userAgent;
         	var browser = nua.match(/(chrome|safari|firefox|msie)/i);
@@ -21,6 +21,7 @@ hudweb.directive('expandContractNotifications', function() {
 				
             	$scope.showNotificationBody = true;            	
             	var content = $(element).find('.NotificationSection:not(.last)');
+            	var last = $(element).find('.NotificationSection.last');
             	//set the max height of the expanded notifications
             	var topParentHeight = $('.LeftBar').outerHeight() - $('.LeftBar .TitleBar').outerHeight() - $('.LeftBar .Phone').outerHeight() - $('.LeftBar .CallStatusContainer').outerHeight() - 20;
             	$('.LeftBar .NotificationMessages .scroller').css('max-height', topParentHeight + 'px');
@@ -33,6 +34,7 @@ hudweb.directive('expandContractNotifications', function() {
 	       			});   
 	       		    hoverFlag = true;	   
 	       		    
+	       		    var scroll_height = 0;
        		        $.each(content, function(idx){                       
 	       			    var targetHeight = $(this).find('.chatNotification').outerHeight() + 20;
 	       			    if($(this).find('.NotificationZoomBtn').length > 0)
@@ -47,8 +49,15 @@ hudweb.directive('expandContractNotifications', function() {
 	       			    $(this).stop().animate({ top: 0, height: origHeight }, animTime);	
        				    $(this).stop().animate({top: topPos, height: targetHeight }, animTime);			       			    
 	       			   
-	       		         $(this).addClass('open'); 			       		         
-       		        }); 	       		      
+	       		         $(this).addClass('open'); 	
+	       		         scroll_height += targetHeight;
+       		        }); 
+       		        
+       		        scroll_height += $(last).outerHeight() + 20;
+       		        
+       		        $('.LeftBar .NotificationMessages .scroller').animate({
+						scrollTop: scroll_height
+					});
    		            setTimeout(function(){ hoverFlag = false; }, animTime);	       		        
 	       		  }		
             });

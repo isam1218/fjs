@@ -122,19 +122,19 @@
 }
 .XIcon-ChatStatus-Available,
 .XIcon-ChatStatus-available {
-  background-position: 0px 0px;
+  background-position: -4px 0px;
 }
 .XIcon-ChatStatus-Away,
 .XIcon-ChatStatus-away {
-  background-position: -24px 0;
+  background-position: -28px 0;
 }
 .XIcon-ChatStatus-Busy,
 .XIcon-ChatStatus-dnd {
-  background-position: -48px 0;
+  background-position: -52px 0;
 }
 .XIcon-ChatStatus-Offline,
 .XIcon-ChatStatus-offline {
-  background-position: -72px 0;
+  background-position: -76px 0;
 }
 [class*="XIcon-QueueStatus"] {
   background: url("../img/XStatus.png") no-repeat;
@@ -144,24 +144,30 @@
   display: inline-block;
   vertical-align: middle;
 }
+.XIcon-QueueStatus-LockedIn,
+.XIcon-QueueStatus {
+  background-position: -100px -24px;
+}
 .XIcon-QueueStatus-LoggedIn,
 .XIcon-QueueStatus-login {
-  background-position: 0 -24px;
+  background-position: -4px -24px;
 }
 .XIcon-QueueStatus-LoggedOut,
 .XIcon-QueueStatus-logout {
-  background-position: -24px -24px;
+  background-position: -28px -24px;
 }
 .XIcon-QueueStatus-LockedIn,
 .XIcon-QueueStatus-login-permanent {
-  background-position: -48px -24px;
+  background-position: -52px -24px;
 }
 .XIcon-QueueStatus-LockedOut {
   background-position: -72px -24px;
 }
-.XIcon-QueueStatus-NotAgent,
-.XIcon-QueueStatus-disabled {
+.XIcon-QueueStatus-NotAgent {
   background-position: -96px -24px;
+}
+.XIcon-QueueStatus-disabled {
+  background-position: -100px -24px !important;
 }
 .XIcon-CallLog-Incoming,
 .XIcon-CallLog-incoming {
@@ -175,11 +181,17 @@
   width: 24px;
   height: 24px;
 }
+.XIcon-CallLog-Missed,
+.XIcon-CallLog-missed {
+  background: url("../img/XIcon-CallLog-Missed.png") no-repeat 0 0;
+  width: 24px;
+  height: 24px;
+}
 .XIconSetMic {
-  background: url("../img/XIconSet-24x24.png") no-repeat 0px 0px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -6px 0px;
 }
 .XIconMuteMic {
-  background: url("../img/XIconSet-24x24.png") no-repeat -24px 0px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -30px 0px;
 }
 .XIconCallOperationVolumeOff {
   background: url("../img/XCallOperation.png") no-repeat -78px 0px;
@@ -189,6 +201,7 @@
   height: 24px;
   display: inline-block;
   vertical-align: middle;
+  float: left;
 }
 .IsCallHold {
   height: 40px;
@@ -240,6 +253,11 @@
 }
 .WebArrowIcon.Active-false {
   background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -280px -90px;
+}
+.RecordingIcon {
+  background: transparent url("../img/XIconSet-24x24.png") no-repeat -152px -4px;
+  width: 36px;
+  height: 19px;
 }
 .ErrorIcon {
   height: 90px;

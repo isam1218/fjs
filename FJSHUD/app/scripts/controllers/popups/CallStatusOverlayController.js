@@ -1,4 +1,4 @@
-hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', 'PhoneService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService, phoneService) {
+hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', 'PhoneService', 'SettingsService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService, phoneService, settingsService) {
 	$scope.onCall = $scope.$parent.overlay.data;
 
 	$scope.timeElapsed = 0;
@@ -216,22 +216,24 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select conference room';
 	};
 
-	$scope.determineBarge = function(callObj){
-		if (!callObj)
-			return false;
-		else
-			return $rootScope.bargeObj[callObj];
-	};
+	$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
+
+	$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
 
 	$scope.determineTransferFrom = function(contactToTransfer){
-		var me = contactService.getContact($rootScope.myPid);
-		return me.xFerFromPermObj[contactToTransfer];
+        var contact = contactService.getContact(contactToTransfer);
+		
+        if (contact && contact.permissions){
+            return settingsService.isEnabled(contact.permissions, 3);
+        }
+		else{
+            return true;
+        }
 	};
 
 	$scope.transferPermFilterContacts = function(){
-		var me = contactService.getContact($rootScope.myPid);
 		return function(contact){
-			return me.xFerToPermObj[contact.xpid];
+			return settingsService.isEnabled(contact.permissions, 4);
 		};
 	};
 

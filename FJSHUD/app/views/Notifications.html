@@ -36,7 +36,7 @@
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
 								<div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
 							</div> 
-							<div class="NotificationType" ng-show="showNotificationBody">
+							<div class="NotificationType">
 								...{{message.label }} 
 								<span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
 									{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
@@ -432,9 +432,13 @@
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText"> 
 					<div class="memberName"><div class="name ng-class:{'truncate': currentCall.record && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div> <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
 					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration" timer="callObj[currentCall.xpid].start"></span></div>
+					
 				</div>				
 				<div class="controlButtons">
-					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{ currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+					<span ng-if="currentCall.mute" style="font-size:9px;color:red">Muted</span>
+					
+					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{ currentCall.incoming ? verbage.
+					decline : verbage.cancel}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</div>
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
 					

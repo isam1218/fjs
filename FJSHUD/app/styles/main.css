@@ -42,7 +42,8 @@ p {
   white-space: nowrap;
 }
 #App {
-  position: relative;
+  position: fixed;
+  top: 0;
   height: 100%;
   width: 100%;
   min-width: 300px;
@@ -53,7 +54,7 @@ p {
   -webkit-flex-direction: column;
 }
 .PanelWrapper {
-  position: absolute;
+  position: fixed;
   padding: 0 10px 10px 10px;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
@@ -62,7 +63,7 @@ p {
   flex-direction: row;
   -webkit-flex-direction: row;
   width: 100%;
-  height: 90%;
+  height: 100%;
 }
 .PanelWrapper:after {
   padding-top: 25%;
@@ -724,6 +725,7 @@ p {
 .LeftBar .ContactSearch .SearchBox {
   margin: .5em;
   width: 70%;
+  z-index: 99;
 }
 .LeftBar .ContactSearch .New {
   float: right;
@@ -892,7 +894,7 @@ p {
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  z-index: 99;
+  z-index: 97;
 }
 .LeftBar .Notifications > div:first-child {
   transition: .25s;
@@ -1164,12 +1166,6 @@ p {
   font-size: 11px;
   white-space: nowrap;
 }
-.Gadget .Header .Title div.ListRowStatusIcon {
-  margin-left: -8px;
-}
-.Gadget .Header .Title div.ListRowStatusIcon:first-child {
-  margin-left: -5px;
-}
 .Gadget .Header .Title .Name {
   font-weight: bold;
   width: 99%;
@@ -1284,12 +1280,8 @@ p {
 }
 .Gadget .Content .List .ListRow .ListRowTitle {
   max-width: 100% !important;
-<<<<<<< HEAD
-  padding: 5px;
-=======
   padding: 5px 0 5px 5px;
   width: 100%;
->>>>>>> fon_dev
 }
 .Gadget .Content .List .ListRow .ListRowTitle .name {
   font-size: 12px !important;
@@ -1305,9 +1297,13 @@ p {
 }
 .Gadget .Content .List .ListRow .ListRowTitle .ListRowStatusIcon {
   float: left;
-  margin-left: -5px !important;
+  margin-left: 0 !important;
 }
 .Gadget .Content .List .ListRow .ListRowTitle .status {
+  max-width: 80%;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: top;
   font-size: 11px;
   color: #888;
   text-align: left;
@@ -1317,7 +1313,7 @@ p {
   margin-top: 5px;
 }
 .Gadget .Content .List .ListRow .ListRowTitle .IconDisplay {
-  float: left;
+  float: none;
 }
 .Gadget .Content .List .ListRow .ListRowTitle .IconDisplay.XIcon-ChatStatus-offline {
   background-position: -78px 0px;
@@ -1603,7 +1599,7 @@ p {
 .Widget .ToolBar .selectWrapper.conf select,
 .Widget .ToolBar .selectWrapper.members select {
   width: 150px;
-  height: 26px;
+  height: 24px;
 }
 .Widget .ToolBar .selectWrapper.queue select:hover,
 .Widget .ToolBar .selectWrapper.status select:hover,
@@ -2650,7 +2646,7 @@ input.text.DialogFieldInput {
   display: inline-block;
 }
 input.text {
-  line-height: 24px;
+  height: 24px;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   border: solid 1px #c7c7c7;
@@ -4029,6 +4025,10 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Queues .CallLog .ListView {
   font-size: 1.15em;
 }
+.Widget.Queues .selected {
+  background-color: #729c00 !important;
+  color: #fff !important;
+}
 .Widget.Queues .QueueList {
   flex: 1 1 0;
   -ms-flex: 1;
@@ -4187,7 +4187,6 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Queues .QueueButtonToggle {
   width: 2.5em;
   padding: 1px 5px;
-  top: -1px;
 }
 .Widget.Queues .QueueButtonToggle .QueueViewIcon {
   width: 1.8em;
@@ -4206,7 +4205,8 @@ div.NewCall .XButton.XButtonNormal {
   background: url("../img/QueueListView.png") no-repeat 0px 0px;
 }
 .Widget.Queues .ToolBar.Queues input[type=search] {
-  width: 50%;
+  width: 160px;
+  height: 26px;
 }
 .Widget.Queues .ToolBarBottom {
   padding: .5em;
@@ -6805,6 +6805,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 24px;
   height: 24px;
 }
+.XIcon-CallLog-Missed,
+.XIcon-CallLog-missed {
+  background: url("../img/XIcon-CallLog-Missed.png") no-repeat 0 0;
+  width: 24px;
+  height: 24px;
+}
 .XIconSetMic {
   background: url("../img/XIconSet-24x24.png") no-repeat -6px 0px;
 }
@@ -6934,6 +6940,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   color: #e27100;
   font-weight: bold;
   font-size: .7em;
+}
+.LeftBarNotificationMessageSection .NotificationDisplayNameQueue span {
+  float: left;
 }
 .LeftBarNotificationMessageSection .NotificationTime {
   font-size: 1em;
@@ -7223,7 +7232,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   padding-bottom: 10px;
 }
 .NotificationSection.last {
-  height: auto;
+  height: auto !important;
 }
 .NotificationSection.open {
   height: auto;
@@ -8026,16 +8035,14 @@ a.Messages {
 .SearchContactOverlay .Inset .ListRowContent .Extension {
   font-size: .9em;
   color: gray;
-  position: relative;
   float: right;
   right: 5px;
   top: -10px;
 }
 .SearchContactOverlay.favoritesSearch {
   top: -40px;
-  height: 400px;
-  width: 498px;
-  left: -10px;
+  height: 330px;
+  z-index: 98;
 }
 .SearchContactOverlay.favoritesSearch .Inset {
   overflow: hidden;
@@ -8052,6 +8059,14 @@ a.Messages {
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
+}
+.SearchContactOverlay.favoritesSearch .Inset .AddTeamMember {
+  width: 75%;
+  max-width: 100%;
+}
+.SearchContactOverlay.favoritesSearch .Inset .AddZoomMember {
+  width: 60%;
+  max-width: 100%;
 }
 .SearchContactOverlay.conferenceSearch {
   width: 500px !important;

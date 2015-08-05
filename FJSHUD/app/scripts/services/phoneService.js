@@ -23,21 +23,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var sipCalls = {};
 	var tabInFocus = true;
 	var callsDetails = {};
-	var allCallDetails = {};
 	$rootScope.meModel = {};
-	$rootScope.bargeObj = {};
 	var isRegistered = false;
 	var isAlertShown = true;
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
 	
-	var voicemails = {};
 	var soundEstablished = false;
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
-	var voicemails = {};
 
 	var weblauncher = {};
 	var alertPosition = {};
@@ -66,6 +62,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
 	
+	var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
 	if($rootScope.browser != "Chrome"){
 		$("body").append($compile(pluginHtml)($rootScope));
 		phonePlugin = document.getElementById('fonalityPhone');
@@ -819,7 +816,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		  {
     			  var msg = JSON.parse(e.data);
 
-    			  if (msg.error) alert(msg.error);
+    			  //if (msg.error) alert(msg.error);
     			  
 				  if (msg.sip_id){
 					
@@ -1100,37 +1097,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	this.parkCall = function(call_id){
 		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
-	};
-
-	$rootScope.$on("calls_synced",function(event,data){
-		var displayHangUpLauncher = false;
-		var displayLauncher = false;
-		
-		for(var i = 0, iLen = data.length; i < iLen; i++){
-				if(data[i].xef001type == "delete"){
-					if(allCallDetails[data[i].xpid]){
-						delete allCallDetails[data[i].xpid];
-					}
-				}else{
-					
-					//this guarantees that the call details are populated regardless of new calls_object
-					var details;
-					if(allCallDetails[data[i].xpid]){
-						if(allCallDetails[data[i].xpid].details){
-							details = allCallDetails[data[i].xpid].details;
-						}
-					}
-					
-					if(details){
-						data[i].details = details;
-					}
-
-					allCallDetails[data[i].xpid] = data[i];
-				}
-		}
-		$rootScope.$broadcast('all_calls_updated', allCallDetails);
-	});
-	
+	};	
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
 		// first time
@@ -1366,30 +1333,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					holdCall(data.notificationId,false);
 					break;
 			}
+			if($rootScope.browser == "Chrome"){
+            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+			}
 			focusBrowser();
 		}
 	});
 
 	var focusBrowser = function(){
 			nservice.sendData({message:"focus"},0,"FOCUS");
-	}
+	};
 	
-	$rootScope.$on("calldetails_synced",function(event,data){
-		if(data){
-			for(var i = 0, iLen = data.length; i < iLen; i++){
-				if (data[i].xpid)
-					$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
-				if(callsDetails[data[i].xpid]){
-					callsDetails[data[i].xpid].details = data[i];
-				}
-				
-				if(allCallDetails[data[i].xpid]){
-					allCallDetails[data[i].xpid].details = data[i];
-				}
-			}
-			$rootScope.$broadcast('all_calls_updated', allCallDetails);
-		}		
-	});
 	var context = this;
 
 }]);

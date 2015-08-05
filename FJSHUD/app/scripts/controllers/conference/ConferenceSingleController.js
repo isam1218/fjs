@@ -11,17 +11,8 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 	$scope.joined = isJoined || false;
 
   $scope.membersRefused = [];
-	
 
   $scope.joined = $scope.conference.status.isMeJoined;
-  $scope.enableChat = $scope.joined;
-  $scope.enableTextInput = $scope.joined;
-  $scope.enableFileShare = $scope.joined;
-	
-   //var currentMembers = angular.copy($scope.conference.members);
-  
-
-
 
   $scope.$watchCollection('conference.members', function(newValue,oldValue){
     	
@@ -81,9 +72,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 			var isJoined = $scope.conference.status.isMeJoined;
 		}
 		$scope.joined = isJoined || false;
-		$scope.enableChat = $scope.joined;
-		$scope.enableTextInput = $scope.joined;
-		$scope.enableFileShare = $scope.joined;
 	});
 
 	$scope.targetId = $scope.conferenceId;

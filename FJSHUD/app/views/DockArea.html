@@ -47,20 +47,20 @@
 				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
 			</div>
 		</div>
-		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
-		<div> 
+		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
+		<div id="parked_calls"> 
 			<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
 				<avatar profile="call"></avatar>
 				
 				<div class="ListRowContent" style="display:inline-block;margin-right:2px">
-					<div class="ListRowTitle" style="width:80px;padding:0px;text-overflow:ellipssis;white-space:nowrap">
+					<div class="ListRowTitle">
 						<div>{{ ::call.displayName }}</div>
 						<div>{{ ::call.phone }}</div>
 					</div>
 						
 						
 				</div>
-				<div timer="call.created" style="float:right;font-size:.65em;margin-top:2px;margin-right:2px"></div>
+				<div timer="call.created" class="timer"></div><!-- style="float:right;font-size:.65em;margin-top:3px;margin-right:2px" -->
 				
 			</div>		
 		</div>
@@ -177,8 +177,9 @@
 					<strong>{{ gadget.data.info.waiting }}</strong> 
 					{{::verbage.waiting}}
 				</div>
-				<div ng-class="{'RedText': queueThresholds.avg_wait && gadget.data.info.esa/60 > queueThresholds.avg_wait}">
-					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
+				<div>
+					<strong ng-if="gadget.data.longestWait > 0" timer="gadget.data.longestWait"></strong>
+					<strong ng-if="gadget.data.longestWait == 0">00:00</strong>
 					{{::verbage.longest_hold}}
 				</div>
 				<div ng-class="{'RedText': queueThresholds.avg_talk && gadget.data.info.avgTalk/60 > queueThresholds.avg_talk}">

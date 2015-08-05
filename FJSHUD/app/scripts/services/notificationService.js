@@ -3,7 +3,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		this.notifications = [];
 		var notifyPipe = false;
 		var enabled = false;
-		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
 		var initNSService = function(){
 			if(notifyPipe) return;
 
@@ -25,9 +24,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
            	notifyPipe.onmessage = function (evt) {
 				var response;
             	if(evt.data == "OK"){
-            		if($rootScope.browser == "Chrome"){
-            			chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
-					}
             		return;
             	}else{
 					response = JSON.parse(evt.data);
@@ -104,7 +100,9 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var context_data = nd.context;
 				var context = context_data.split(':')[0];
 				var xpid = context_data.split(':')[1];
-				$location.path("/" + nd.audience + "/" + xpid + "/chat");
+				var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
+				
+				$location.path("/" + nd.audience + "/" + xpid + "/" + route);
 
 			};
 			  

@@ -26,29 +26,29 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if(request){
 			request.abort();
 		}
-	}
+	};
 	
-	var updateDock = function(data) {
+	var updateDock = function(data) {			
 		for (var key in data) {
-			// check for dupes
-			var found = false;
-			
-			for (var g in $scope.gadgets) {
-				for (var i = 0; i < $scope.gadgets[g].length; i++) {
-					if (key == $scope.gadgets[g][i].name) {
-						found = true;
-						break;
+			// look for gadgets
+			if (key.indexOf('GadgetConfig') != -1) {
+				// check for dupes
+				var found = false;
+				
+				for (var g in $scope.gadgets) {
+					for (var i = 0, len = $scope.gadgets[g].length; i < len; i++) {
+						if (key == $scope.gadgets[g][i].name) {
+							found = true;
+							break;
+						}
 					}
+					
+					if (found) break;
 				}
 				
-				if (found) break;
-			}
+				if (found) continue;
 			
-			if (found) continue;
-			
-			// add new
-			if (key.indexOf('GadgetConfig') != -1) {
-				// gadget element
+				// add new
 				var gadget = {
 					name: key,
 					value: JSON.parse(data[key]),

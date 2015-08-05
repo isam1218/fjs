@@ -51,10 +51,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
   $scope.sortConf = function(selection){
 	localStorage.selectedConfOption = JSON.stringify(selection);
     $scope.selectedConf = selection;
-  };
-
-	$scope.enableChat = true;
-	
+  };	
 
   // filter list down
   $scope.customFilter = function() {
