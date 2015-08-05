@@ -417,7 +417,25 @@ hudweb.controller('NotificationController',
        myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
   };
 
-  var createBargeNotification = function(callBarger, msgDate, msgXpid, type, whisperId){
+  var prepareBargeNotification = function(callObj){
+    var myCallBarger = callObj.call.bargers[0].displayName;
+    var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
+    var personBeingWhisperedUpon = callObj.call.bargers[0].call.contactId;
+    msgXpid = msgDate + '';
+    switch(callObj.call.bargers[0].call.barge){
+      case 1:
+        sendBargeNotification(myCallBarger, msgDate, msgXpid, 'monitor');
+        break;
+      case 2:
+        sendBargeNotification(myCallBarger, msgDate, msgXpid, 'barge');
+        break;
+      case 3:
+        sendBargeNotification(myCallBarger, msgDate, msgXpid, 'whisper', personBeingWhisperedUpon);
+        break;
+    }
+  };
+
+  var sendBargeNotification = function(callBarger, msgDate, msgXpid, type, whisperId){
     var extraNotification, typeLabel;
     switch (type) {
       case 'barge':
@@ -499,38 +517,14 @@ hudweb.controller('NotificationController',
   
     }
 
-    for (var j = 0; j < $scope.calls.length; j++){
-      var singleCall = $scope.calls[j]; 
-      if (singleCall.fullProfile && singleCall.fullProfile.call && singleCall.fullProfile.call.contactId && singleCall.fullProfile.call.contactId == $rootScope.myPid){
-        numberOfMyCalls = 1;
-        if (singleCall.fullProfile.call.bargers.length > 0){
-          var myCallBarger = singleCall.fullProfile.call.bargers[0].displayName;
-          var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
-          msgXpid = msgDate + '';
-          var personBeingWhisperedUpon = singleCall.fullProfile.call.bargers[0].call.contactId;
-          // if someone barges/monitors/whispers my call, create and send me a notification on the fly
-          if (singleCall.fullProfile.call.bargers[0].call.barge == 3)
-            createBargeNotification(myCallBarger, msgDate, msgXpid, 'whisper', personBeingWhisperedUpon);
-          else if (singleCall.fullProfile.call.bargers[0].call.barge == 1)
-            createBargeNotification(myCallBarger, msgDate, msgXpid, 'monitor');
-          else if (singleCall.fullProfile.call.bargers[0].call.barge == 2)
-            createBargeNotification(myCallBarger, msgDate, msgXpid, 'barge');  
-        } else if (singleCall.fullProfile.call.bargers == 0){
-          // if that barger drops out, remove that notification
-          $scope.remove_notification(msgXpid);
-        }
-        // if external call is barged upon...
-      } else if (singleCall.type == 5){
-        // need to work on this...
-        console.error('call w/ external is barged by somebody');
-      }
-    }
+    var myCallObject = contactService.getContact($rootScope.myPid);
     
-    if ($scope.calls.length == 0 && numberOfMyCalls == 1){
-      numberOfMyCalls = 0;
-      // if call is dropped, remove barged call notification...
+    // if someone barges...
+    if (!myCallObject.call || myCallObject.call.bargers.length == 0){
       $scope.remove_notification(msgXpid);
-    }
+    } else if (myCallObject.call.bargers.length > 0){
+      prepareBargeNotification(myCallObject);
+    } 
 
     $scope.inCall = $scope.calls.length > 0;
 
