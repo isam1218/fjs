@@ -41,6 +41,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 					if (contacts[c].xpid == data[i].xpid) {
 						// contact was deleted
 						if (data[i].xef001type == 'delete') {
+							$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetContact_' + contacts[c].xpid);
+					
 							contacts.splice(c, 1);
 							cLen--;
 						}

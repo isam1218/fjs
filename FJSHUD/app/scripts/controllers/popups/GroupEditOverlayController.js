@@ -81,6 +81,8 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		httpService.sendAction('groups', action , $scope.add);
 		
 		if ($scope.closing) {
+			groupService.removeGroup($scope.add.groupId);
+			
 			// delete gadget
 			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetGroup_' + $scope.add.groupId);
 			

@@ -21,6 +21,15 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		return deferred.promise;
 	};
 	
+	service.removeGroup = function(xpid) {
+		for (var i = 0, len = groups.length; i < len; i++) {
+			if (groups[i].xpid == xpid) {
+				groups.splice(i, 1);
+				break;
+			}
+		}
+	};
+	
 	service.isMine = function(xpid) {
 		if (mine && mine.xpid == xpid)
 			return true;
@@ -96,40 +105,29 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 			}
 		}
 		else {
-			// look for removals
-			for (var g = 0, gLen = groups.length; g < gLen; g++) {
-				var match = false;
-				
-				for (var i = 0, iLen = data.length; i < iLen; i++) {
-					if (groups[g].xpid == data[i].xpid) {
-						match = true;
-						break;
-					}
-				}
-				
-				// no match, so delete
-				if (!match) {
-					groups.splice(g, 1);
-					gLen--;
-				}
-			}
-			
-			// update or add
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				var match = false;
 					
 				for (var g = 0, gLen = groups.length; g < gLen; g++) {
-					// existing group
 					if (groups[g].xpid == data[i].xpid) {
-						angular.extend(groups[g], data[i]);
+						// group was deleted
+						if (data[i].xef001type == 'delete') {
+							$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetGroup_' + groups[g].xpid);
+					
+							groups.splice(g, 1);
+							gLen--;
+						}
+						// regular update
+						else
+							angular.extend(groups[g], data[i]);
 						
 						match = true;
 						break;
 					}
 				}
 				
-				// new group
-				if (!match) {
+				// add new group
+				if (!match && data[i].xef001type != 'delete') {
 					groups.push(data[i]);
 					
 					groups[groups.length-1].members = [];
