@@ -34,7 +34,7 @@
         flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
         ng-controller="ChatController"
         ></div>
-        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent currentCall" include-once="views/conference/CurrentCall.html"
+        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent conference currentCall" include-once="views/conference/CurrentCall.html"
         ></div>
         <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
         

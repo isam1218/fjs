@@ -56,6 +56,18 @@
   .ListViewTopNote{font-size: 12px;}
 }
 
+.conference.currentCall{
+    .ListRowTitle{
+        max-width: 61%;
+        .name,
+        .name > * {
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;   
+        }
+    }    
+}
 .ListViewTopNote {
   position: relative;
   margin-top: 10px;
@@ -71,6 +83,7 @@
     font-size: 11px;
     width: 55px;
     height: 26px;
+    margin: 10px;
   }
   
   span{
