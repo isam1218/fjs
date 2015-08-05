@@ -25,7 +25,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		// first time
 		if (contacts.length == 0) {
 			contacts = data;
-			deferred.resolve(contacts);
 			
 			// add avatars
 			for (var i = 0, len = contacts.length; i < len; i++) {
@@ -153,6 +152,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				}
 			}
 		}
+		
+		deferred.resolve(contacts);
 	});
 
 
