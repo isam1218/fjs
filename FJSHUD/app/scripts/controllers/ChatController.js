@@ -1,4 +1,13 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $filter, settingsService, storageService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $location, $filter, settingsService, storageService) {
+	
+	// redirect if not allowed
+	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
+		// only for groups and queues
+		if ($routeParams.groupId)
+			$location.path('group/' + $routeParams.groupId + '/members');
+		else if ($routeParams.queueId && $routeParams.route == 'chat')
+			$location.path('queue/' + $routeParams.queueId + '/agents');
+	}
 
 	var version = 0;
 	var scrollbox = {};
@@ -7,9 +16,9 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
 	$scope.loading = true;
-	$scope.displayHeader = true;
+	$scope.showAlerts = false;
+	$scope.enableChat = true;
 	$scope.filteredMessages = [];
-	$scope.showFileShare = true;
 	$scope.messages = [];
 
 	// set chat data
@@ -19,6 +28,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.targetId = $routeParams.contactId;
 		chat.type = 'f.conversation.chat';
 		chat.attachmentType = 'f.conversation.wall';
+		
+		$scope.enableChat = settingsService.isEnabled($scope.contact.permissions, 8);
 	}
 	else if ($routeParams.conferenceId) {
 		chat.name = $scope.conference.name;
@@ -26,7 +37,13 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.targetId = $routeParams.conferenceId;
 		chat.type = 'f.conversation.chat';
 		chat.attachmentType = 'f.conversation.wall';
-
+		
+		$scope.enableChat = $scope.conference.status.isMeJoined;
+		
+		// unfortunately, we'll need to watch this value
+		$scope.$watch('conference.status.isMeJoined', function(val) {
+			$scope.enableChat = val;
+		});
 	}
 	else if ($routeParams.groupId) {
 		chat.name = $scope.group.name;
@@ -34,7 +51,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		chat.targetId = $routeParams.groupId;
 		chat.type = 'f.conversation.chat';
 		chat.attachmentType = 'f.conversation.wall';
-
 	}
 	else if ($routeParams.queueId) {
 		chat.name = $scope.queue.name;
@@ -44,15 +60,14 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		// alerts are a wee bit different
 		if ($routeParams.route && $routeParams.route == 'alerts') {
 			chat.type = 'queuemessage';
+			
 			$scope.showAlerts = true;
 			$scope.chat.status = 3;
-			$scope.showFileShare = false;
 		}
-		else{
+		else {
 			chat.type = 'f.conversation.chat';
 			chat.attachmentType = 'f.conversation.wall'
 		}
-			
 	}
 	
 	$scope.chat.message = storageService.getChatMessage(chat.targetId);

@@ -9,14 +9,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     
     // store recent
     storageService.saveRecent('queue', $scope.queueId);
-
-    // for chat
-    $scope.enableChat = false;
-    $scope.enableFileShare = false;
-    // for alerts
-    $scope.showAlerts = false;
-    $scope.enableAlertBroadcast = false;
-    $scope.enableTextInput = false;
     
     $scope.tabs = [{upper: $scope.verbage.agents, lower: 'agents', idx: 0}, 
     {upper: $scope.verbage.stats_tab, lower: 'stats', idx: 1}, 
@@ -35,7 +27,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 
 
     $scope.recordingPermission;
-    $scope.chatPermission = false;
+    $scope.chatTabEnabled = false;
 
     settingsService.getPermissions().then(function(data){
         $scope.recordingPermission = data.showCallCenter;
@@ -45,12 +37,12 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         for (var i = 0, iLen = myQueues.queues.length; i < iLen; i++){
             var single = myQueues.queues[i];
             if (single.xpid === $scope.queueId){
-                $scope.chatPermission = true;
+                $scope.chatTabEnabled = true;
                 break;
             }
         }
     } else {
-        $scope.chatPermission = false;
+        $scope.chatTabEnabled = false;
     }
 
     if ($routeParams.route != undefined){
@@ -79,66 +71,5 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     };
-    
-    queueService.getQueues().then(function(data) {
-        // loop thru my queues and x-ref w/ current queue, if member --> allow chat / file share
-        var myQueues = data.mine;
-        
-        // if not a member of any queues...
-        if (myQueues.length === 0){
-            $scope.enableAlertBroadcast = false;
-            $scope.enableChat = false;
-            $scope.enableFileShare = false;
-        }
-        else
-        {
-	        // if a member of a queue...
-	        for (var j = 0, jLen = myQueues.length; j < jLen; j++){
-	        	
-	            var myPermission = myQueues[j].permissions.permissions;
-	            
-	            //compare the current object xpid to the queue id of the scope
-	            if (myQueues[j].xpid === $scope.queueId)
-	            {
-	            	//we only look at the alerts and chat tabs 
-	             	if($routeParams.route === 'alerts' || $routeParams.route === 'chat' || $scope.selected === 'alerts' || $scope.selected === 'chat')
-	             	{	
-		            	//yes permission
-	             		if(myPermission === 0)
-		            	{	    
-	             			   // I'm a member and i have alert broadcast permission and i'm on alerts tab
-		            		    $scope.enableAlertBroadcast = ($routeParams.route === 'alerts') ? true : false;
-		            		
-				                $scope.enableChat = true;
-				                $scope.enableTextInput = true;
-				                $scope.enableFileShare = true;
-                                break;        		
-		            	}
-	             		//no permission
-		            	else 
-		            	{
-		            		//check if queue id of the route exists, otherwise do nothing
-		            		if($routeParams.queueId)
-		            		{
-		            			$scope.enableAlertBroadcast = false;
-			                    $scope.enableTextInput = ($routeParams.route === 'chat') ? true : false;
-			                    $scope.enableChat = true;
-			                    $scope.enableFileShare = true;
-                                break;
-		            		}	
-		            	}	
-	             	}	
-	            }
-	            else
-	            {
-	            	// I'm not a member of this current queue in the for loop
-	                $scope.enableTextInput = false;
-                    $scope.enableAlertBroadcast = false;
-	                $scope.enableChat = false;
-	                $scope.enableFileShare = false;
-	            }		            
-	        } 
-        }
-    });
 
 }]);
