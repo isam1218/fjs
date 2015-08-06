@@ -1027,8 +1027,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
 			switch(sound_key){
 				case 'received':
-					if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
-						$("audio.received")[0].play();
+					if($rootScope.meModel.chat_status != "dnd"){
+						if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
+							$("audio.received")[0].play();
+						}
 					}
 					break;
 				case 'sent':
