@@ -75,8 +75,10 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 							cLen--;
 						}
 						// regular update
-						else
+						else {
 							angular.extend(conferences[c], data[i]);
+							conferences[c].permissions = null;
+						}
 						
 						match = true;
 						break;
