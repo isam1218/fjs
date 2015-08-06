@@ -230,15 +230,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var holdCall = function(xpid,isHeld){
-		var call = context.getCall(xpid);
-		if(call){
+		//var call = context.getCall(xpid);
+		var calldetail = context.getCallDetail(xpid);
+		var call = calldetail.sipCall;
+		if(calldetail.sipCall && calldetail.state != fjs.CONFIG.CALL_STATES.CALL_RINGING){
 			if(context.webphone){
 				context.webphone.send(JSON.stringify({a : 'hold', value : call.sip_id}));
 			}else{
 				call.hold = isHeld;
 			}
-			//httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-
 		}else{
 			if(isHeld){
         		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
@@ -822,9 +822,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     		  {
     			  var msg = JSON.parse(e.data);
 
-    			  //if (msg.error) alert(msg.error);
-    			  
-				  if (msg.sip_id){
+    			  if (msg.sip_id){
 					
 				  	sipCalls[msg.sip_id] = msg;
 				  }
@@ -1258,7 +1256,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}
 
 					callsDetails[data[i].xpid] = data[i];
-					
+					callsDetails[data[i].xpid].sipCall = sipCalls[callsDetails[data[i].xpid].sipId];
 					if(data[i].contactId){
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}

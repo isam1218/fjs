@@ -701,7 +701,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('calllog_synced',function(event,data){
         if(data){
             $scope.calllogs = data.filter(function(item){
-                if(item.xef001type != "delete"){
+                if(item.xef001type != "delete" && !item.filterId){
                     //we attach the from display and to display values in order to sort the values
                     item.fromDisplayValue = $scope.formatIncoming(item,'From');
                     item.toDisplayValue = $scope.formatIncoming(item,'To');
@@ -986,6 +986,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         $scope.currentCall = data[i];
                         call_exist = true;
                         $scope.onCall = true;
+                        if($scope.locations[$scope.currentCall.locationId].locationType  == "w"){
+                            if($scope.currentCall.sipCall == undefined){
+                                $scope.currentCall.state = 3;
+                            }
+                        }
                     }else if(data[i].xpid == $scope.currentCall.xpid){
                         $scope.currentCall = data[i];
                     }
