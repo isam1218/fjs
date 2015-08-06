@@ -160,7 +160,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   };
 
   $scope.tryCallAll = function(){
-  	var members = angular.copy($scope.membersRefused);
+  	var members = $scope.membersRefused;
     for(var i = 0, iLen = members.length; i < iLen; i++){
       $scope.tryCall(members[i]);
     }
