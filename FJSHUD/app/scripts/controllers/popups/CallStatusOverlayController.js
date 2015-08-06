@@ -218,6 +218,9 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 
 	$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
 
+	// disable barge/monitor/whisper buttons if external caller
+	$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);	
+
 	$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
 
 	$scope.determineTransferFrom = function(contactToTransfer){

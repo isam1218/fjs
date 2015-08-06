@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService','$interval', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $interval, $timeout, $location, $filter, settingsService, storageService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService) {
 	
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
@@ -169,6 +169,29 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
+			
+		scrollbox.onscroll = function() {
+			// check scroll position
+			if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
+				$scope.loading = true;
+				
+				// ping server
+				httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
+					version = data.h_ver;
+				
+					$scope.loading = false;			
+					addMessages(data.items);
+
+					// bump scroll down
+					if (scrollbox.scrollTop == 0)
+						scrollbox.scrollTop = 100;
+					
+					// end of history
+					if (version < 0)
+						scrollbox.onscroll = null;
+				});
+			}
+		};
 		
 		$scope.loading = false;
 		addMessages(data.items);
@@ -180,10 +203,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		
 		// no more chats
 		if (version < 0)
-			$interval.cancel(chatLoop);
+			scrollbox.onscroll = null;
 	});
-
-
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
@@ -316,29 +337,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}
 	};
 
-	var chatLoop = $interval(function() {	
-		// check scroll position
-		if (!$scope.loading && $scope.messages.length > 0 && scrollbox.scrollTop == 0) {
-			$scope.loading = true;
-			
-			// ping server
-			httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
-				version = data.h_ver;
-			
-				$scope.loading = false;			
-				addMessages(data.items);
-
-				// bump scroll down
-				if (scrollbox.scrollTop == 0)
-					scrollbox.scrollTop = 100;
-				
-				// end of history
-				if (version < 0)
-					$interval.cancel(chatLoop);
-			});
-		}
-	}, 600, 0, false);
-
 	$scope.nameDisplay = function(message, index){
 		var curMsg = $scope.$parent.filteredMessages[index];
 		var curMsgDate = new Date(curMsg.created);
@@ -364,7 +362,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	};
 
 	$scope.$on("$destroy", function() {
-		$interval.cancel(chatLoop);
+		scrollbox.onscroll = null;
 		scrollbox = null;
 		
 		// save message for later

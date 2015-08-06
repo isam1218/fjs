@@ -1216,7 +1216,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					nservice.dismiss('INCOMING_CALL',data[i].xpid);
 
 					if(call){
-						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
+						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD || call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							if(call.incoming){
 								if(weblauncher.inboundHangupAuto){
 										var url = weblauncher.inboundHangup;
@@ -1261,8 +1261,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}
 
-
-					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
 						
 						if(!doesExist){
 							for(var callId in callsDetails){
@@ -1273,7 +1272,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						}
 
 						if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record && !doesExist) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
 										var url = weblauncher.inbound;
