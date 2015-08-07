@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
-	function($rootScope, $scope, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
+	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -153,10 +153,23 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.deleteRecording = function() {
-		if ($scope.widget == 'recordings')
+		var type;
+		
+		if ($scope.widget == 'recordings') {
 			httpService.sendAction('callrecording', 'remove', {id: $scope.original.xpid});
-		else
+			type = $scope.original.xpid;
+		}
+		else {
 			httpService.sendAction('voicemailbox', 'delete', {id: $scope.original.xpid});
+			type = $scope.original.voicemailMessageKey;
+		}
+		
+		// close player?		
+		if (document.getElementById('voicemail_player_source').src.indexOf(type) != -1) {
+			$timeout(function() {
+				$('.TopBarVoicemailControls .XButtonClose').trigger('click');
+			}, 100);
+		}
 	};
 	
 	$scope.markAsRead = function(read) {
