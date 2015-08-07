@@ -188,6 +188,9 @@ function do_version_check(){
 				});
 			}
 		}
+		else if (xmlhttp.status == 0) {
+			setTimeout('do_version_check();', 500);
+		}
 		else {
 			for(var i = 0, iLen = ports.length; i < iLen; i++){
 				ports[i].postMessage({

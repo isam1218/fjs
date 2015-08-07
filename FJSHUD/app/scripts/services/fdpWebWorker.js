@@ -108,10 +108,13 @@ function version_check (){
 		    else
 		       	setTimeout('should_sync();', 500);
 		}
-		else if(xmlhttp.status == 404 || xmlhttp.status == 500){
+		else if (xmlhttp.status == 404 || xmlhttp.status == 500){
 			self.postMessage({
 				"action": "network_error"
 			});
+		}
+		else if (xmlhttp.status == 0) {
+			setTimeout('version_check();', 500);
 		}
 		else {
 			self.postMessage({
