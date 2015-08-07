@@ -107,15 +107,16 @@ function version_check (){
 		        sync_request(changedFeeds);
 		    else
 		       	setTimeout('should_sync();', 500);
-		}else if(xmlhttp.status != 0){
+		}
+		else if(xmlhttp.status == 404 || xmlhttp.status == 500){
 			self.postMessage({
-				action:'auth_failed'
+				"action": "network_error"
 			});
-			
-			setTimeout('should_sync();', 500);
-		}else{
-			setTimeout('version_check();', 500);
-
+		}
+		else {
+			self.postMessage({
+				"action": "auth_failed"
+			});
 		}
 	});
 }

@@ -180,23 +180,20 @@ function do_version_check(){
                	sync_request(changedFeeds);
             else
 				setTimeout('do_version_check();', 500);
-		}else if(xmlhttp.status == 404 || xmlhttp.status == 500){
+		}
+		else if(xmlhttp.status == 404 || xmlhttp.status == 500){
 			for(var i = 0, iLen = ports.length; i < iLen; i++){
 				ports[i].postMessage({
 					"action": "network_error"
 				});
 			}
-
 		}
-		else if(xmlhttp.status != 0){
+		else {
 			for(var i = 0, iLen = ports.length; i < iLen; i++){
 				ports[i].postMessage({
 					"action": "auth_failed"
 				});
 			}
-			setTimeout('do_version_check();', 500);
-		}else{
-			setTimeout('do_version_check();', 500);
 		}
 	});
 }	
