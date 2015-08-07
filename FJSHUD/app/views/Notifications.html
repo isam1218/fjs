@@ -434,15 +434,15 @@
 					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration" timer="callObj[currentCall.xpid].start"></span></div>
 					
 				</div>				
-				<div class="controlButtons">
+				<div class="controlButtons" ng-switch="currentCall.state">
 					<span ng-if="currentCall.mute" style="font-size:9px;color:red">Muted</span>
 					
-					<div ng-click="endCall(currentCall.xpid)" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{ currentCall.incoming ? verbage.
+					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-switch-when="0">{{ currentCall.incoming ? verbage.
 					decline : verbage.cancel}}</div>
-					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</div>
+					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
 					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
 					
-					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</div>
+					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
 					<div ng-click="acceptCall(currentCall.xpid, message)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
 				</div>
 				
