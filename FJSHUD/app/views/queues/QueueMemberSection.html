@@ -1,7 +1,7 @@
 <a href="#/contact/{{::member.contactId}}" class='ListRow' droppable="Call">
   <avatar profile="member"></avatar>
   
-  <div class="ListRowContent" dockable="member.fullProfile">
+  <div class="ListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null">
     <div class="ListRowTitle">
 		{{ ::member.fullProfile.displayName}}
 		<br/>
@@ -11,8 +11,8 @@
 		<span>{{ (member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</span>
     </div>
 
-    <callStatus profile="member.fullProfile" ng-if="member.fullProfile.call"></callStatus>
-	<div ng-if="!member.fullProfile.call">
+    <callStatus profile="member.fullProfile" ng-switch-when="true"></callStatus>
+	<div ng-switch-when="false">
 			<div class="ListRowStatus">
 				<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
 			</div>
