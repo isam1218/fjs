@@ -17,9 +17,9 @@
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} <span ng-bind-html="emptyVoiceLabel"> </span></div>
         </div>
         <div class="vmsections">
-	        <div class="vmsection ng-class:{'last': $last}" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
-				<avatar ng-if="voicemail.phone != meModel.primary_extension" profile="voicemail" context="voicemails" type="4"></avatar>
-				<avatar ng-if="voicemail.phone == meModel.primary_extension" profile="myProfile" context="voicemails" type="4"></avatar>
+	        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
+				<avatar ng-if="::voicemail.phone != meModel.primary_extension" profile="voicemail" context="voicemails" type="4"></avatar>
+				<avatar ng-if="::voicemail.phone == meModel.primary_extension" profile="myProfile" context="voicemails" type="4"></avatar>
 	
 	            <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
 	                <div class="displayName">
@@ -34,7 +34,7 @@
 	                </div> 
 	                <div class="footnote">
 	                    <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
-	                    <div class="vmfootnote">{{ voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
+	                    <div class="vmfootnote">{{ ::voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
 	                </div>
 	            </div>
 	        </div>
