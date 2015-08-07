@@ -203,20 +203,27 @@
 }
 
 .RecentCallSection{
-  font-size:.7em;
-  padding: 10px 0;   
-  height: 100%;    
+  font-size:.7em; 
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: .65 1 0;
+  -webkit-flex: .65 1 0;
+  -ms-flex: .65;
     
   .RecentCallColumnHeaders{    
     padding: 6px 10px;
     border-bottom:1px solid #ccc;
   }
   .RecentCallLogs{
+	flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1;
     font-size: 11px; 
     padding: 4px 10px 10px 10px;    
     overflow-y:auto;   
-    overflow-x: hidden;  
-    height: 80%;
+    overflow-x: hidden;
     width: 100%;
     position: relative;
     text-overflow: ellipsis;   
