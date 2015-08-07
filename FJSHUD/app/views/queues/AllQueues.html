@@ -30,9 +30,9 @@
 				<strong>{{ queue.info.waiting }}</strong>
 				{{::verbage.waiting}}
 			</div>
-			<div>
-				<strong ng-if="queue.longestWait > 0" timer="queue.longestWait"></strong>
-				<strong ng-if="queue.longestWait == 0">00:00</strong>
+			<div ng-switch="queue.longestWait">
+				<strong ng-switch-default timer="queue.longestWait"></strong>
+				<strong ng-switch-when="0">00:00</strong>
 				{{::verbage.longest_hold}}
 			</div>
 			<div ng-class="{'RedText': queueThresholds.avg_talk && queue.info.avgTalk/60 > queueThresholds.avg_talk}">
@@ -90,9 +90,9 @@
 		<div class="Table">
 			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: que.query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
                 <div>{{ ::queue.name }}</div>				
-				<div>
-                    <span ng-if="queue.longestWait > 0" timer="queue.longestWait"></span>
-                    <span ng-if="queue.longestWait == 0">00:00</span>
+				<div ng-switch="queue.longestWait">
+                    <span ng-switch-default timer="queue.longestWait"></span>
+                    <span ng-switch-when="0">00:00</span>
                 </div>
                 <div ng-class="{'RedText': queueThresholds.waiting && gadget.data.info.waiting > queueThresholds.waiting}">{{ queue.info.waiting}}</div>
 				<div ng-class="{'RedText': queueThresholds.avg_wait && queue.info.esa/60 > queueThresholds.avg_wait}">{{ queue.info.esa*1000 | duration}}</div>

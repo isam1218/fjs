@@ -40,11 +40,11 @@
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
 		<div class="Header Single">
 			<avatar profile="4"></avatar>
-			<div class="Title">
+			<div class="Title" ng-switch="parkedCalls.length">
 				<div class="titleHeader header">{{::verbage.parked_calls}}</div>
-				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
-				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
-				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
+				<div class="subTitle GadgetStatusText" ng-switch-when="0">{{::verbage.no_calls_on_park}}</div>
+				<div class="subTitle GadgetStatusText" ng-switch-when="1"> 1 call on park </div> 
+				<div class="subTitle GadgetStatusText" ng-switch-default> {{ parkedCalls.length }} calls on park </div> 
 			</div>
 		</div>
 		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
@@ -125,10 +125,10 @@
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
 		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
-			<div class="Title">
+			<div class="Title" ng-switch="gadget.data.members.length">
 				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
-				<div class="subTitle" ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
-				<div class="subTitle" ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
+				<div class="subTitle" ng-switch-when="0">{{ ::gadget.data.location }}</div>
+				<div class="subTitle" ng-switch-default>Talking: {{ gadget.data.members.length }}</div>
 			</div>
 		</a>
 		
@@ -177,9 +177,9 @@
 					<strong>{{ gadget.data.info.waiting }}</strong> 
 					{{::verbage.waiting}}
 				</div>
-				<div>
-					<strong ng-if="gadget.data.longestWait > 0" timer="gadget.data.longestWait"></strong>
-					<strong ng-if="gadget.data.longestWait == 0">00:00</strong>
+				<div ng-switch="gadget.data.longestWait">
+					<strong ng-switch-default timer="gadget.data.longestWait"></strong>
+					<strong ng-switch-when="0">00:00</strong>
 					{{::verbage.longest_hold}}
 				</div>
 				<div ng-class="{'RedText': queueThresholds.avg_talk && gadget.data.info.avgTalk/60 > queueThresholds.avg_talk}">
