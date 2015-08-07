@@ -152,9 +152,11 @@ hudweb.controller('NotificationController',
     
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
 
-    if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+    if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
+      $scope.displayAlert = true;
       $timeout(displayNotification, 1500);    
     }else{
+      phoneService.cacheNotification(undefined);
       phoneService.removeNotification();
     }
   };
@@ -711,9 +713,11 @@ hudweb.controller('NotificationController',
 			case "disabled":
 				$scope.phoneSessionEnabled = false;
 			case 'displayNotification':
-				$scope.displayAlert = true;
-				$timeout(displayNotification
-						, 1500);
+				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
+          $scope.displayAlert = true;
+          $timeout(displayNotification
+              , 2500); 
+        }
 				break;
       case "deleteChatNots":
           var contactId = data.contactId;
@@ -868,18 +872,23 @@ hudweb.controller('NotificationController',
       $timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
-      $scope.displayAlert = true;
-      $timeout(function(){
-        var element = document.getElementById("Alert");
-        if(element){
-          var content = element.innerHTML;
-          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-          
-        }
-        element = null;
-        $scope.displayAlert = false;
-        },2500);
-		}
+      if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
+          $scope.displayAlert = true;
+          $timeout(function(){
+            var element = document.getElementById("Alert");
+            if(element){
+              var content = element.innerHTML;
+              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+              
+            }
+            element = null;
+            $scope.displayAlert = false;
+            },2500);
+    	}else{
+        phoneService.cacheNotification(undefined);
+        
+      }
+    }
 	};
 
 	var deleteLastLongWaitNotification = function(){
