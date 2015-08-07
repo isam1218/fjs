@@ -149,7 +149,7 @@ fjs.i18n = {
    	   show_status_when_busy:' Show when status is "Busy"',
    	   show_when_app_in_focus:'Show when app is in focus',
    	   voicemail_alerts:'VOICEMAIL ALERTS',
-   	   configure_desktop_alerts:'Configure voicemail desktop alerts',
+   	   configure_vm_desktop_alerts:'Configure voicemail desktop alerts',
    	   show_when_new_voicemail: 'Show when new voicemail arrives',
    	   call_alerts: 'Call Alerts',
 　     configure_call_desktop_alerts:'Configure call desktop alerts',

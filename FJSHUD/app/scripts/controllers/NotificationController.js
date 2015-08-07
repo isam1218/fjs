@@ -145,24 +145,11 @@ hudweb.controller('NotificationController',
   $scope.getNotificationsLength = function(length)
   {
     var length = $scope.phoneSessionEnabled ? length : length + 1;
-    
     return length;
   };
   
   $scope.remove_notification = function(xpid){
-    for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
-      if($scope.notifications[i].xpid == xpid){
-        $scope.notifications.splice(i,1);
-        break;
-      }
-    }
-
-    for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
-      if($scope.todaysNotifications[j].xpid == xpid){
-        $scope.todaysNotifications.splice(j,1);
-        break;
-      } 
-    }
+    
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
 
     if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
@@ -984,7 +971,6 @@ hudweb.controller('NotificationController',
   }
 
 	$scope.$on('quickinbox_synced', function(event,data){
-    var missedCalls = [];
   	if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -1034,7 +1020,7 @@ hudweb.controller('NotificationController',
 			}
 
 			nservice.notifications = $scope.notifications;
-		};
+		}
     $scope.todaysNotifications = $scope.todaysNotifications.sort(function(a,b){
 			return a.time - b.time; 
 		});
