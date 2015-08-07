@@ -31,12 +31,16 @@
     }
     
     .Preferences-Holder{
-      position: relative;     
-      height: 50%;  
+      position: relative;  
+	  flex: 1 1 0;
+	  -webkit-flex: 1 1 0;
+	  -ms-flex: 1;
       margin-top: 3px;
-      display: inline-block;
+      display: flex;
+	  display: -webkit-flex;
+	  flex-direction: column;
+	  -webkit-flex-direction: column;
       overflow: hidden;
-      padding-bottom: 70px;
            
      .WidgetTabBar{
         top: 0px;
@@ -90,15 +94,16 @@
      }
     }
      
-    .WidgetBody{                     
-       height: 78%;
-       max-height: 100%;      
-       
-       .call-block{
-        height: 50%;        
-        overflow-y: hidden;                
-        
-        .CurrentCall{          
+    .WidgetBody{
+		padding-bottom: 10px;
+		
+       .CurrentCall{
+			& + .RecentCallSection {
+			  flex: 1 1 0;
+			  -webkit-flex: 1 1 0;
+			  -ms-flex: 1;
+			  overflow: auto;
+			}
             
             .LeftSide{
                 width: 50%;
@@ -276,25 +281,6 @@
                     
                 }
             }
-        }
-       }
-       
-       &.currentCall{
-        .call-block{          
-            .RecentCallSection{                          
-              position: relative;
-              float: left;
-              clear: both;
-              width: 100%;
-              overflow: hidden;
-              /*height: 70%;*/
-              padding: 0;
-                
-              .RecentCallLogs{                  
-                  height: 100%;
-              }
-            }
-         }                         
        }
     }              
 }
