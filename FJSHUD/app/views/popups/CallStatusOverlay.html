@@ -200,10 +200,10 @@
 					<h4 class="upper">{{::verbage.transfer_options}}</h4>
 					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
-				<div ng-hide="transferType == 'external' || !canTransferToVm()">
+				<div ng-hide="transferType == 'external'">
 					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="true" ng-false-value="false" /> {{::verbage.primary_extension}}
 					<br/>
-					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="false" ng-false-value="true" /> {{::verbage.voicemail_box}}
+					<span ng-hide="!canTransferToVm()"><input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="false" ng-false-value="true" /> {{::verbage.voicemail_box}}</span>
 				</div>
 			</div>
 		<!-- </div> -->
