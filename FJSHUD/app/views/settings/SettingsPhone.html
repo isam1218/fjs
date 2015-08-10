@@ -26,19 +26,19 @@
 
     </div>
   </div>
-  <div class="ListSection" ng-if="phoneType == 'old_webphone'">
+  <div class="ListSection" >
     <div class="ListSectionHeader">
       <div class="ListSectionHeaderTitle">{{::verbage.device}}</div>
       <div class="ListSectionHeaderRight"></div>
     </div>
   <div class="ListSectionBody">{{::verbage.select_device_to_use}}</div>
   </div>
-  <div class="ListPage" ng-if="phoneType == 'old_webphone'">
+  <div class="ListPage">
     <div class="ListPageHeader"></div>
     <div class="Dialog-settings-row">
       <div class="lblSelect">{{::verbage.input_devices}}: </div>
       <select class="fj-hbox SelectBox SelectBoxSettings"
-          ng-model="selectedInput"
+          ng-model="$parent.selectedInput"
           ng-options="inputDevice.name for inputDevice in inputDevices"
           ng-change="updateAudioSettings(selectedInput.id,'Input')"
       >
@@ -48,7 +48,7 @@
     <div class="Dialog-settings-row">
       <div class="lblSelect">{{::verbage.output_devices}}: </div>
       <select class="fj-hbox SelectBox SelectBoxSettings"
-         ng-model="selectedOutput"
+         ng-model="$parent.selectedOutput"
           ng-options="outputDevice.name for outputDevice in outputDevices"
           ng-change="updateAudioSettings(selectedOutput.id,'Output')"
    
@@ -56,10 +56,10 @@
       </select>
 
       </div>
-      <div class="Dialog-settings-row">
+      <div class="Dialog-settings-row" ng-if="phoneType == 'old_webphone'">
         <div class="lblSelect">{{::verbage.ring_devices}}: </div>
         <select class="fj-hbox SelectBox SelectBoxSettings"
-             ng-model="selectedRingput"
+             ng-model="$parent.selectedRingput"
             ng-options="outputDevice.name for outputDevice in outputDevices"
                ng-change="updateAudioSettings(selectedRingput.id,'Ring')"
    

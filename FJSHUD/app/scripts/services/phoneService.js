@@ -957,6 +957,32 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			return soundManager[input];
 		}
 	};
+
+	this.setAudioDevice = function(type, value){
+		switch(type){
+            case 'Ring':
+                if(context.webphone){
+                	context.setRingDeviceId(value);
+                }else{
+                	phoneService.getSoundManager().ringdefid = value;   
+                }
+                break;
+            case 'Input':
+                if(context.webphone){
+                	 context.setInputDeviceId(value);
+               }else{
+                	phoneService.getSoundManager().inpdefid = value;   
+                }
+                break;
+            case 'Output':
+                if(context.webphone){
+                	context.setOutputDeviceId(value);
+                }else{
+                	phoneService.getSoundManager().outdefid = value;   
+                }
+                break;
+        }
+	}
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
