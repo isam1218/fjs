@@ -458,6 +458,22 @@ hudweb.controller('NotificationController',
     }
   };
 
+  var delete_notification_from_notifications_and_today = function(xpid){
+    for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+      if($scope.notifications[i].xpid == xpid){
+        $scope.notifications.splice(i,1);
+        break;
+      }
+    }
+
+    for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
+      if($scope.todaysNotifications[j].xpid == xpid){
+        $scope.todaysNotifications.splice(j,1);
+        break;
+      } 
+    }
+  };
+
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
     
@@ -516,7 +532,7 @@ hudweb.controller('NotificationController',
     
     // if someone barges...
     if (!myCallObject.call || myCallObject.call.bargers.length == 0){
-      $scope.remove_notification(msgXpid);
+      delete_notification_from_notifications_and_today(msgXpid);
     } else if (myCallObject.call.bargers.length > 0){
       prepareBargeNotification(myCallObject);
     } 
@@ -855,18 +871,9 @@ hudweb.controller('NotificationController',
   };
 
 	var deleteNotification = function(notification){
-		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
-			if($scope.notifications[j].xpid == notification.xpid){
-				$scope.notifications.splice(j,1);
-				break;	
-			}
-		}
-		for(var k = 0, kLen = $scope.todaysNotifications.length; k < kLen; k++){
-			if($scope.todaysNotifications[k].xpid == notification.xpid){
-				$scope.todaysNotifications.splice(k,1);
-				break;	
-			}
-		}
+    
+    delete_notification_from_notifications_and_today(notification.xpid);
+
 		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
 			$scope.displayAlert = true;
       $timeout(displayNotification, 1500);		
