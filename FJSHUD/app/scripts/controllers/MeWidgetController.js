@@ -340,17 +340,23 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        data = {key:"LocationsPopup", x:offset.x-60, y:offset.y};
+        var data = {key:"LocationsPopup", x:offset.x-60, y:offset.y};
         $scope.showPopup(data, eventTarget);
         return false;
     };
 
     $scope.showBargePopup = function(e) {
         e.stopPropagation();
-        var eventTarget = context.getEventHandlerElement(e.target, e);
-        var offset = context.getElementOffset(eventTarget);
-        data = {key:"BargeDropDown", x:offset.x, y:offset.y + 25,model:$scope.currentCall};
-        $scope.showPopup(data, eventTarget);
+		
+        var rect = e.currentTarget.getBoundingClientRect();
+        var data = {
+			key:"BargeDropDown", 
+			x:rect.left, 
+			y:rect.top + 25,
+			model:$scope.currentCall
+		};
+		
+        $scope.showPopup(data);
         return false;
     };
 
