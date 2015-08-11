@@ -326,14 +326,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			// start shared worker
 			authorizeWorker();
 		})
-		.error(function(response, status) {
-			console.log("Error accessing this api: "  + fjs.CONFIG.SERVER.serverURL 
-			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
-			+ authTicket)
-			
+		.error(function(response, status) {			
 			switch(status){
-				case 401:
-					break;
 				case 402:
 					//alert("bad authentication");
 					delete localStorage.me;
