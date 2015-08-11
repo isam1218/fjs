@@ -67,16 +67,17 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
   
   var queue_option = {};
 
-  $scope.setQueueSort = function(queueSelection){
+  $scope.setSort = function(queueSelectionType, queueSelection) {
     $scope.selectedQueue = queueSelection;
     $scope.trancateSelectedName();
-    if (!$scope.isFirstSync){
-      if ($scope.selectedQueue.type == 'name')
-        $scope.isAscending = false;
+    if ($scope.sortColumn == queueSelectionType)
+      $scope.isAscending = !$scope.isAscending;
+      else if (queueSelectionType == 'name')
+      $scope.isAscending = false;
       else
-        $scope.isAscending = true;
-    }
-    $scope.sortColumn = $scope.selectedQueue.type;
+      $scope.isAscending = true;
+    
+    $scope.sortColumn = queueSelectionType;
     queue_option.selectedQueue = $scope.selectedQueue;
     queue_option.isAscending = $scope.isAscending;
     queue_option.sortColumn = $scope.sortColumn;
