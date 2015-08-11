@@ -231,50 +231,50 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         }
 
-        /*if(phoneService.isPhoneActive() == "new_webphone"){
-            return;
-        }*/
-        
-            $scope.inputDevices = data.devices.filter(function(item){
-                return item.input_count > 0;
-            });
-            soundManager = phoneService.getSoundManager();
-            
-            $scope.selectedInput = $scope.inputDevices.filter(function(item){
+	});
+
+	var setInputAudioDevice = function(){
+		$scope.selectedInput = $scope.inputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('inpdefid');
-            })[0];
-            
+       	 })[0];
 
-            $scope.outputDevices = data.devices.filter(function(item){
-                return item.output_count > 0;
-            });
-            
-            $scope.selectedOutput = $scope.outputDevices.filter(function(item){
+        if($scope.selectedInput == undefined){
+            $scope.selectedInput = $scope.inputDevices[0];
+            $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+		}
+	};
+
+	var setOutputAudioDevice = function(){
+		$scope.selectedOutput = $scope.outputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('outdefid'); 
-            })[0];
+         })[0];
             
-            $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('ringdefid'); 
-            })[0];
+         $scope.selectedRingput = $scope.outputDevices.filter(function(item){
+                return item.id == phoneService.getSelectedDevice('ringdefid'); 
+          })[0];
 
-            if($scope.selectedRingput == undefined){
+          if($scope.selectedRingput == undefined){
                 $scope.selectedRingput = $scope.outputDevices[0];
-            }
-            if($scope.selectedOutput == undefined){
+                $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+          }
+          if($scope.selectedOutput == undefined){
                 $scope.selectedOutput = $scope.outputDevices[0];
-            }
-           
-           if($scope.selectedInput == undefined){
-                $scope.selectedInput = $scope.inputDevices[0];
-            }
-            
-              $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
                 $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
-                $scope.updateAudioSettings($scope.selectedInput.id,'Input');
-            
+			}
+	};	
+
+   phoneService.getInputDevices().then(function(data){
+		$scope.inputDevices = data;
+		setInputAudioDevice();
+		
     });
 
-    $scope.updateAudioSettings = function(value, type){
+	phoneService.getOutputDevices().then(function(data){
+		$scope.outputDevices = data;
+		setOutputAudioDevice();
+	});
+
+  	$scope.updateAudioSettings = function(value, type){
         if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
             phoneService.setAudioDevice('Ring',value);    
         }
@@ -1103,6 +1103,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 case "enabled":
                     //$scope.pluginVersion = phoneService.getVersion();
                     break;
+				case "updateDevices":
+					$scope.selectedInput = $scope.inputDevices[0];
+            		$scope.updateAudioSettings($scope.selectedInput.id,'Input');
+            		$scope.selectedRingput = $scope.outputDevices[0];
+                	$scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+        			$scope.selectedOutput = $scope.outputDevices[0];
+                	$scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+					break;
+                  
             }
 
         }
