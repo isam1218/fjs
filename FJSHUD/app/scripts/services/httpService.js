@@ -113,11 +113,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 				}
 		    }, false);
-			worker.port.addEventListener("error",function(evt){
+			worker.onerror = function(evt){
 		    	console.log("error with shared worker port");
 		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
 
-		    },false);
+		    };
 		    worker.port.start();
 		}
 	}else{
@@ -231,6 +231,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 		        }
 		    }, false);
+
+			worker.onerror = function(evt){
+		    	console.log("error with shared worker port");
+		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
+
+		    };
 		}
 	}
 
