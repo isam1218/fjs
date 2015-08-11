@@ -757,8 +757,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     var onSoundDeviceChanged = function(data){
     	devices = soundManager.devs;
-		inputDevices.length = 0;
-		outputDevices.length = 0;
+		inputDevices.splice(0,inputDevices.length);
+		outputDevices.splice(0,outputDevices.length);
 
     	for(var i = 0; i < devices.length;i++){
     		if(devices[i].input_count > 0){
@@ -888,8 +888,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			  if (msg.devices!=undefined)
     			  {
     			  		devices = msg.devices;
-    			  		inputDevices.length = 0;
-						outputDevices.length = 0;
+    			  		inputDevices.splice(0,inputDevices.length);
+						outputDevices.splice(0,outputDevices.length);
 
     			  		for(var i = 0; i < msg.devices.length;i++){
     			  			if(msg.devices[i].input_count > 0){
@@ -1137,11 +1137,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	this.getInputDevices = function(){
 		return deferredInputDevices.promise;
-	}
+	};
 
 	this.getOutputDevices = function(){
 		return deferredOutputDevices.promise;
-	}
+	};
 
 
 	this.isPhoneActive = function(){
