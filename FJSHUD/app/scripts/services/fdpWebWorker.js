@@ -188,8 +188,11 @@ var sync_request = function(f){
 				"action": "sync_completed",
 				"data": synced_data
 			};
-
-			self.postMessage(sync_response);
+			try{
+				self.postMessage(sync_response);
+			}catch(err){
+				console.error(err.message);
+			}
 			setTimeout('should_sync();', 500);
 		}
 		else{
