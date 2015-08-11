@@ -1,4 +1,4 @@
-hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpService', function($http, $rootScope, $location, $q, ntpService){
+hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeout', 'NtpService', function($http, $rootScope, $location, $q, $timeout, ntpService){
 	/**
 		Detect Current Browser
 	*/
@@ -267,6 +267,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	    	//setInterval(version_check,1000);
 	    }
 	};
+	
+	// fail catch if app hasn't loaded
+	$timeout(function() {
+		if ($rootScope.isFirstSync) {
+			localStorage.removeItem("nodeID");
+			attemptLogin();
+		}
+	}, 20000, false);
 	
 	/**
 		AUTHORIZATION
