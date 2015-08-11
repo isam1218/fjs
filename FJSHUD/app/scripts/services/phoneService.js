@@ -7,12 +7,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
+	var deferredInputDevices = $q.defer();
+	var deferredOutputDevices = $q.defer();
 	$rootScope.volume = {};
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
 	$rootScope.pluginVersion = undefined;
 	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.platform + '_' + ($rootScope.browser == "Chrome" ? 'NEW' : 'OLD')];
 	var devices = [];
+	var inputDevices = [];
+	var outputDevices = [];
+
 	var session;
 	var context = {};
 	var alertPlugin;
@@ -29,6 +34,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
+
 	
 	var soundEstablished = false;
 	var selectedDevices = {};
@@ -202,11 +208,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	var formatData = function() {
+	var formatData = function(event) {
 		// format data that controller needs
 		return {
 			mycalls: callsDetails,
 			devices: devices,
+			event:event
 			//totals: totals
 		};
 	};
@@ -468,11 +475,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html";
          		alertPlugin.initAlert(url);
 				removeNotification();
-         		setupListeners();
-				activatePhone();
-
-			 	
-			 }
+         		activatePhone();
+			
             //isRegistered = true;
 			if(!soundEstablished){
 				soundManager = session.soundManager;
@@ -485,7 +489,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 
 				devices = soundManager.devs;
-				deferred.resolve(formatData());
+				inputDevices.length = 0;
+				outputDevices.length = 0;
+
+    			for(var i = 0; i < devices.length;i++){
+    			  	if(devices[i].input_count > 0){
+    			  		inputDevices.push(devices[i]);
+    			  	}
+    			  	if(devices[i].output_count > 0){
+    			  		outputDevices.push(devices[i]);
+    			  	}
+    			}
+				deferredInputDevices.resolve(inputDevices);
+				deferredOutputDevices.resolve(outputDevices);
+						
+
+				
 				var spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
 				var micVolume = settingsService.getSetting('hudmw_webphone_mic');
 				$rootScope.volume.spkVolume = spkVolume;
@@ -497,6 +516,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			    }
 			     
 			}
+			setupListeners();
+		
+		}
+
+				
 			//registerPhone(true);
 			
          } else if (session_status.status == 1) {
@@ -731,8 +755,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	//this.removeNotification();
     };
 
-    var onSoundDeviceChanged = function(event){
+    var onSoundDeviceChanged = function(data){
+    	devices = soundManager.devs;
+		inputDevices.length = 0;
+		outputDevices.length = 0;
 
+    	for(var i = 0; i < devices.length;i++){
+    		if(devices[i].input_count > 0){
+    			inputDevices.push(devices[i]);
+    		}
+    		if(devices[i].output_count > 0){
+    			 outputDevices.push(devices[i]);
+    		}
+    	}
+
+    	$rootScope.$broadcast("phone_event",{event:"updateDevices"});
     };
 
     var getWSVersion = function(){
@@ -851,7 +888,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			  if (msg.devices!=undefined)
     			  {
     			  		devices = msg.devices;
+    			  		inputDevices.length = 0;
+						outputDevices.length = 0;
+
+    			  		for(var i = 0; i < msg.devices.length;i++){
+    			  			if(msg.devices[i].input_count > 0){
+    			  				inputDevices.push(msg.devices[i]);
+    			  			}
+    			  			if(msg.devices[i].output_count > 0){
+    			  				outputDevices.push(msg.devices[i]);
+    			  			}
+    			  		}
+						deferredInputDevices.resolve(inputDevices);
+						deferredOutputDevices.resolve(outputDevices);
+						
+
 						deferred.resolve(formatData());
+						$rootScope.$broadcast("phone_event",{event:"updateDevices"});
 						context.getDevices = function() {return msg.devices};
 		          }
     			  if (msg.inpdevs!=undefined)
@@ -964,25 +1017,25 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 if(context.webphone){
                 	context.setRingDeviceId(value);
                 }else{
-                	phoneService.getSoundManager().ringdefid = value;   
+                	soundManager.ringdefid = value;
                 }
                 break;
             case 'Input':
                 if(context.webphone){
                 	 context.setInputDeviceId(value);
                }else{
-                	phoneService.getSoundManager().inpdefid = value;   
+                	soundManager.inpdefid = value;
                 }
                 break;
             case 'Output':
                 if(context.webphone){
                 	context.setOutputDeviceId(value);
                 }else{
-                	phoneService.getSoundManager().outdefid = value;   
+                	soundManager.outdefid = value;
                 }
                 break;
         }
-	}
+	};
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
@@ -1081,6 +1134,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.getDevicesPromise = function(){
 		return deferred.promise;	
 	};
+	
+	this.getInputDevices = function(){
+		return deferredInputDevices.promise;
+	}
+
+	this.getOutputDevices = function(){
+		return deferredOutputDevices.promise;
+	}
+
 
 	this.isPhoneActive = function(){
 		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : ( (phonePlugin && phonePlugin.getSession) ? 'old_webphone' : false);
@@ -1088,7 +1150,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.getVersion = function(){
-		return context.version ? context.version : (version ? version : 'undefined');
+	return context.version ? context.version : (version ? version : 'undefined');
 	}
 
 	/*this returns the call object provided by the phone plugin which gives you control over the call such 
