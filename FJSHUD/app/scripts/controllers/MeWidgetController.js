@@ -1104,13 +1104,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     //$scope.pluginVersion = phoneService.getVersion();
                     break;
 				case "updateDevices":
-					$scope.selectedInput = $scope.inputDevices[0];
-            		$scope.updateAudioSettings($scope.selectedInput.id,'Input');
-            		$scope.selectedRingput = $scope.outputDevices[0];
-                	$scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-        			$scope.selectedOutput = $scope.outputDevices[0];
-                	$scope.updateAudioSettings($scope.selectedOutput.id,'Output');
-					break;
+					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
+                        $scope.selectedInput = $scope.inputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+                        $scope.selectedRingput = $scope.outputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+                        $scope.selectedOutput = $scope.outputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+                    }
+                    break;
                   
             }
 
