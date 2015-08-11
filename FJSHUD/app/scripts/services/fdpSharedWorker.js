@@ -137,7 +137,7 @@ function sync_request(f){
 				
 				synced = true;
 			}catch(e){
-				console.error(e.mesage);
+				console.error(e.message);
 			}	
 		}
 		else{
