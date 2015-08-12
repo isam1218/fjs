@@ -73,7 +73,7 @@
   <body data-ng-controller="MainController" flow-prevent-drop>
     <div id="AppLoading">
 		<div ng-cloak>
-			<div>{{::verbage.loading}}...</div>
+			<div ng-bind="::verbage.loading"></div>
 			<img src="img/ajax-loader.gif" />
 		</div>
     </div>

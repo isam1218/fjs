@@ -11,6 +11,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	var isMasterTab = false;
 	var tabId = 0;
 	var synced = false;
+	var workerStarted = false;
 	var tabMap = undefined;
 	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
@@ -77,6 +78,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		    worker.port.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
+						workerStarted = true;
+						
 		            	updateSettings('instanceId','update',localStorage.instance_id); 
 
 		                worker.port.postMessage({
@@ -139,6 +142,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			worker.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
+						workerStarted = true;
+						
 		            	tabMap = JSON.parse(localStorage.fon_tabs);
 		           		updateSettings('instanceId','update',localStorage.instance_id); 
 
@@ -276,7 +281,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	
 	// fail catch if app hasn't loaded
 	$timeout(function() {
-		if ($rootScope.isFirstSync) {
+		if (!workerStarted) {
 			localStorage.removeItem("nodeID");
 			attemptLogin();
 		}
