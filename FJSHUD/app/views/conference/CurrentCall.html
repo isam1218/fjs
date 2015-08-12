@@ -18,7 +18,7 @@
 </div>
 
 <div class="ListView fj-scrollable"> 
-	<div class="ListRow" ng-repeat="member in conference.members" > 
+	<a ng-href="#/contact/{{::member.contactId}}" class="ListRow" ng-repeat="member in conference.members" > 
 
 		<avatar profile="member" type="4" context="conference:conference"></avatar>
 
@@ -43,7 +43,7 @@
 				</div>
 			</div>
 		</div>
-    </div>
+    </a>
     <div class="noJoinConf" ng-if="membersRefused.length > 0">
     <div class="ListSection">
         <div class="ListSectionHeader">
