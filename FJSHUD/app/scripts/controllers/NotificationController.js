@@ -537,6 +537,10 @@ hudweb.controller('NotificationController',
     if (!myContactObj.call || myContactObj.call.bargers.length == 0){
       delete_notification_from_notifications_and_today(msgXpid);
     } else if (myContactObj.call.bargers.length > 0){
+      // delete any existing barge-notification...
+      if (msgXpid)
+        delete_notification_from_notifications_and_today(msgXpid);
+      // start creation of new barge notification...
       prepareBargeNotification(myContactObj);
     } 
 
