@@ -207,7 +207,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		myHttpService.getFeed('weblauncher');    
 		myHttpService.getFeed('weblaunchervariables');
 		myHttpService.getFeed('i18n_langs');
-		myHttpService.getFeed('settings');
+		//myHttpService.getFeed('settings');
 	}
 
     
