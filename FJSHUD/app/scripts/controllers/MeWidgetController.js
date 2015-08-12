@@ -240,8 +240,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
         if($scope.selectedInput == undefined){
             $scope.selectedInput = $scope.inputDevices[0];
-            $scope.updateAudioSettings($scope.selectedInput.id,'Input');
 		}
+        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+
 	};
 
 	var setOutputAudioDevice = function(){
@@ -255,13 +256,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
           if($scope.selectedRingput == undefined){
                 $scope.selectedRingput = $scope.outputDevices[0];
-                $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+                
           }
           if($scope.selectedOutput == undefined){
                 $scope.selectedOutput = $scope.outputDevices[0];
-                $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
-			}
-	};	
+          }
+          $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+	       $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+          
+    };	
 
    phoneService.getInputDevices().then(function(data){
 		$scope.inputDevices = data;

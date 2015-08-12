@@ -904,7 +904,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						
 
 						deferred.resolve(formatData());
-						$rootScope.$broadcast("phone_event",{event:"updateDevices"});
+						if( !$rootScope.isFirstSync){
+							$rootScope.$broadcast("phone_event",{event:"updateDevices"});
+						}
 						context.getDevices = function() {return msg.devices};
 		          }
     			  if (msg.inpdevs!=undefined)
