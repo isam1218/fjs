@@ -91,6 +91,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.bargeCall = function(type, xpid) {
 		httpService.sendAction('contacts', type + 'Call', {contactId: xpid});
+		$scope.showOverlay(false);
 	};
 	
 	$scope.recordCall = function() {
@@ -216,10 +217,18 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 
 	// check to make sure the call object exists...
 	if ($scope.onCall.call){
+		// check barge permission...
 		$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
-		// disable barge/monitor/whisper buttons if external caller
+		// disable barge/monitor/whisper buttons if external caller...
 		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);	
 		$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
+		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
+		if ($scope.onCall.call.bargers.length > 0){
+			$scope.alreadyBarged = $scope.onCall.call.bargers[0].call.barge == 2;
+			$scope.alreadyMonitored = $scope.onCall.call.bargers[0].call.barge == 1;
+			$scope.topAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.xpid;
+			$scope.bottomAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.call.fullProfile.xpid;
+		}
 	}
 
 	$scope.determineTransferFrom = function(contactToTransfer){

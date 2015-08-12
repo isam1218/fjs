@@ -159,6 +159,9 @@ hudweb.controller('NotificationController',
       phoneService.cacheNotification(undefined);
       phoneService.removeNotification();
     }
+    
+    // call this so can delete tmp barge notifications
+    delete_notification_from_notifications_and_today(xpid);
   };
 
   $scope.showNotifications = function(flag)
@@ -412,12 +415,12 @@ hudweb.controller('NotificationController',
        myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
   };
 
-  var prepareBargeNotification = function(callObj){
-    var myCallBarger = callObj.call.bargers[0].displayName;
+  var prepareBargeNotification = function(contactObj){
+    var myCallBarger = contactObj.call.bargers[0].displayName;
     var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
-    var personBeingWhisperedUpon = callObj.call.bargers[0].call.contactId;
+    var personBeingWhisperedUpon = contactObj.call.bargers[0].call.contactId;
     msgXpid = msgDate + '';
-    switch(callObj.call.bargers[0].call.barge){
+    switch(contactObj.call.bargers[0].call.barge){
       case 1:
         sendBargeNotification(myCallBarger, msgDate, msgXpid, 'monitor');
         break;
@@ -528,13 +531,13 @@ hudweb.controller('NotificationController',
   
     }
 
-    var myCallObject = contactService.getContact($rootScope.myPid);
+    var myContactObj = contactService.getContact($rootScope.myPid);
     
     // if someone barges...
-    if (!myCallObject.call || myCallObject.call.bargers.length == 0){
+    if (!myContactObj.call || myContactObj.call.bargers.length == 0){
       delete_notification_from_notifications_and_today(msgXpid);
-    } else if (myCallObject.call.bargers.length > 0){
-      prepareBargeNotification(myCallObject);
+    } else if (myContactObj.call.bargers.length > 0){
+      prepareBargeNotification(myContactObj);
     } 
 
     $scope.inCall = $scope.calls.length > 0;
