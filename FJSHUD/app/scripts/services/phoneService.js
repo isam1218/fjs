@@ -1414,19 +1414,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			switch(data.notificationEventType){
 				case 'CALL_DECLINED':
 					hangUp(data.notificationId);
-					break;
+					return;
 				case 'CALL_ACCEPTED':
 					acceptCall(data.notificationId);
-					break;
+					return;
 				case 'CHAT_REQUEST':
 					break;
 				case 'CALL_REQUEST':
 					break;
 				case 'CALL_ON_HOLD':
 					holdCall(data.notificationId,true);
+					return;
 				case 'CALL_ON_RESUME':
 					holdCall(data.notificationId,false);
-					break;
+					return;
 			}
 			if($rootScope.browser == "Chrome"){
             	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
