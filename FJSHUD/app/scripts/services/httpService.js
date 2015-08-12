@@ -165,7 +165,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						break;
 		            case "sync_completed":
 		                if (event.data.data) {
-		                	var data_obj = {};
 		                    var synced_data = event.data.data;
 		                  	tabMap = JSON.parse(localStorage.fon_tabs);
 		                  	if(tabMap[tabId].isMaster){
@@ -176,11 +175,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 								tabMap[tabId].isSynced = true;
 							}
 
-		                    if(!localStorage.data_obj){
-		                    	localStorage.data_obj = JSON.stringify(synced_data);
-		                    }else{
-		                    	data_obj = JSON.parse(localStorage.data_obj);
-		                    }
+		                    localStorage.data_obj = JSON.stringify(synced_data);
 							
 		                    // send data to other controllers i'm doing this to ensure order when syncing'
 							broadcastSyncData(synced_data);
@@ -199,7 +194,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					case "network_error":
       					if(!synced){
       						$rootScope.$broadcast('network_issue',undefined);
-							worker.port.close();
+							worker.terminate();
 						}
       					break;
 					case "timestamp_created":
