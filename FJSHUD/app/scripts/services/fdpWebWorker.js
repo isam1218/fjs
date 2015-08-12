@@ -133,7 +133,7 @@ var sync_request = function(f){
 	var header = {
 				"Authorization":auth,
     	  		"node":node,
-	}
+	};
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
 		
 		
