@@ -12,7 +12,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	var tabId = 0;
 	var synced = false;
 	var workerStarted = false;
-	var tabMap = undefined;
+	var tabMap = {};
 	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
 	var appVersion = navigator.appVersion;
@@ -57,11 +57,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				isSynced:false
 			}
 		}else{*/
-			tabMap = {};
+		if(tabMap){
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
 			};
+		}
+			
 		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
@@ -414,11 +416,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		// stupid warning
 		window.onbeforeunload = function() {
 			
-			/*if (localStorage.tabclosed)
+			if (localStorage.tabclosed)
 				localStorage.tabclosed = "true";
     	
 			// shut off web worker
-			if (worker.port)
+			/*if (worker.port)
 				worker.port.close();
 			else
 				worker.terminate();*/
