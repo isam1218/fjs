@@ -259,7 +259,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
 			return;
 		}
-		if($rootScope.meModel.location.locationType == 'w'){
+		number = number.replace(/\D+/g, '');
+        if($rootScope.meModel.location.locationType == 'w'){
         	if(context.webphone && number)
         	{	
         		messageSoftphone({a : 'call', value : number});
