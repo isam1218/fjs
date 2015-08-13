@@ -318,7 +318,7 @@ hudweb.controller('NotificationController',
 
     $location.path(endPath);
     $scope.remove_notification(message.xpid);
-    $scope.showNotificationOverlay(false);
+    $scope.showOverlay(false);
   };
   
   $scope.showQueue = function(message)
@@ -375,8 +375,16 @@ hudweb.controller('NotificationController',
     phoneService.acceptCall(xpid);
   };
 
-  $scope.makeCall = function(phone){
-    phoneService.makeCall(phone);
+  $scope.makeCall = function(message){
+    if (message.type == 'busy-ring-back'){
+      phoneService.makeCall(message.fullProfile.primaryExtension);
+      $scope.showOverlay(false);
+    }
+    else{
+      phoneService.makeCall(message.phone);
+      $scope.remove_notification(message.xpid);
+      $scope.showOverlay(false);
+    }
   };
 
   $scope.showNotificationOverlay = function(show) {
@@ -690,9 +698,11 @@ hudweb.controller('NotificationController',
     
 	});
 
-	$scope.playVm = function(xpid){
-		phoneService.playVm(xpid);
-	};
+  $scope.playVm = function(msg){
+    phoneService.playVm(msg.vmId);
+    $scope.remove_notification(msg.xpid);
+    $scope.showOverlay(false);
+  };
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
