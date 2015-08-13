@@ -666,6 +666,9 @@ p {
 .LeftBar .ListRow.Hide {
   display: none !important;
 }
+.LeftBar .ListRow .Avatar .GroupAvatarItem img {
+  margin: 0px;
+}
 .LeftBar .ListRow .CallStatus {
   height: 36px;
   width: 36px;
@@ -677,8 +680,11 @@ p {
   max-width: 100%;
   width: 80%;
 }
-.LeftBar .ListRow .ListRowTitle {
-  width: 48%;
+.LeftBar .ListRow .ListRowContent div:first-child:nth-last-child(2) {
+  max-width: 64%;
+}
+.LeftBar .ListRow .ListRowContent div:first-child:nth-last-child(3) {
+  max-width: 50%;
 }
 .LeftBar .ListRow .ListRowTitle .status {
   margin-left: -5px;
@@ -901,6 +907,20 @@ p {
 .LeftBar .Recent .ContactList .timeline {
   overflow-y: auto;
 }
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1).name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1) div:first-child.name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1).ListRowTitle,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1) div:first-child.ListRowTitle {
+  width: 100%;
+  max-width: 100%;
+}
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2).name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2) div:first-child.name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2).ListRowTitle,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2) div:first-child.ListRowTitle {
+  width: 85%;
+  max-width: 85%;
+}
 .LeftBar .Recent .status {
   margin-left: 0 !important;
 }
@@ -1064,7 +1084,7 @@ p {
   text-align: center;
 }
 .Gadget {
-  position: absolute;
+  position: relative;
   display: inline-flex;
   display: -webkit-inline-flex;
   flex-direction: column;
@@ -1135,7 +1155,9 @@ p {
   margin-top: -3px;
 }
 .Gadget .Header > .Avatar {
-  margin-top: auto;
+  margin-top: 0;
+  height: 32px;
+  width: 32px;
 }
 .Gadget .Header.Single {
   background: linear-gradient(to bottom, #eeeeef, #ddddde);
@@ -2093,6 +2115,7 @@ p {
   height: auto;
   width: 100%;
   padding-bottom: 10px;
+  -ms-flex: 1;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div.padding {
   padding-bottom: 30px;
@@ -2105,7 +2128,9 @@ p {
 .WidgetMe .Preferences-Holder .SettingsPanel .lblSelect {
   display: inline-block;
   width: 150px;
-  font-size: 12;
+  font-size: 12px;
+  margin-top: 3px;
+  vertical-align: top;
 }
 .WidgetMe .WidgetBody {
   padding-bottom: 10px;
@@ -2729,6 +2754,20 @@ div.NewCall .XButton.XButtonNormal {
   margin-left: 0;
 }
 /* TODO: rewrite this css */
+.Preferences-Holder p {
+  font-size: 12px;
+  margin-top: 3px;
+  padding: 0px;
+  vertical-align: top;
+}
+.Preferences-Holder .Dialog-settings-row {
+  margin-left: 0px;
+}
+.Preferences-Holder .Dialog-settings-row input[type=checkbox] {
+  margin-bottom: 1px;
+  margin-left: 0px;
+  vertical-align: bottom;
+}
 .Preferences-Holder .fj-content-items {
   position: absolute;
   left: 0px;
@@ -4812,6 +4851,9 @@ div.NewCall .XButton.XButtonNormal {
   font-size: 11px;
   font-weight: bold;
 }
+#WidgetSearch .SearchResults .ListRowStatus.GroupStatus {
+  visibility: visible !important;
+}
 .Widget.Search .SearchPanel input.SearchBox,
 .Widget.Search .SearchPanel input.XButton {
   height: 26px;
@@ -6201,6 +6243,51 @@ div.NewCall .XButton.XButtonNormal {
   float: right;
   color: gray;
 }
+.vmsection.group_members .vmalternate {
+  display: inline-block;
+  float: right;
+  position: relative;
+  margin-top: 3px;
+  margin-right: 5px;
+  height: 40px;
+}
+.vmsection.group_members .vmalternate .vmcallbtn {
+  visibility: hidden;
+  right: 0;
+  top: 0;
+  position: absolute;
+}
+.vmsection.group_members .vmalternate .extension {
+  visibility: visible;
+  position: relative;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmsection.group_members:hover .vmalternate .vmcallbtn {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+  visibility: visible;
+  height: 26px;
+  width: 40px;
+  text-align: center;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmsection.group_members:hover .vmalternate .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.vmsection.group_members:hover .vmalternate .extension {
+  visibility: hidden;
+}
 option {
   text-align: center;
   padding-left: 20px;
@@ -6326,7 +6413,7 @@ input[type="tel"] {
   transition: none;
   box-shadow: none;
 }
-.XButton:disabled span,
+.XButton.disabled,
 .XButtonNormal:disabled span,
 .XButtonNormal.disabled-true span {
   height: 26px;
@@ -7011,6 +7098,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .LeftBarNotificationMessageSection .NotificationDisplayName span {
   float: left;
 }
+.LeftBarNotificationMessageSection .NotificationDisplayName span.truncate {
+  max-width: 55%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .LeftBarNotificationMessageSection .NotificationDisplayNameQueue {
   height: 20px;
   text-overflow: ellipsis;
@@ -7020,6 +7113,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   color: #e27100;
   font-weight: bold;
   font-size: .7em;
+  padding-left: 5px;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayNameQueue span {
   float: left;
@@ -7136,6 +7230,16 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   margin-left: 10px;
   margin-top: 10px;
 }
+.CallStatusContainerInbound .CallStatusText.ringing,
+.CallStatusContainerOutbound .CallStatusText.ringing,
+.CallStatusContainerQueue .CallStatusText.ringing {
+  max-width: 45%;
+}
+.CallStatusContainerInbound .CallStatusText.accepted,
+.CallStatusContainerOutbound .CallStatusText.accepted,
+.CallStatusContainerQueue .CallStatusText.accepted {
+  max-width: 55%;
+}
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus,
 .CallStatusContainerQueue .CallStatusText .callStatus {
@@ -7172,7 +7276,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerInbound .CallStatusText .memberName .name.truncate,
 .CallStatusContainerOutbound .CallStatusText .memberName .name.truncate,
 .CallStatusContainerQueue .CallStatusText .memberName .name.truncate {
-  width: 80%;
+  width: 90%;
 }
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec,
@@ -7213,7 +7317,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .CallStatusContainerInbound .controlButtons .XButton.disableButton,
 .CallStatusContainerOutbound .controlButtons .XButton.disableButton,
-.CallStatusContainerQueue .controlButtons .XButton.disableButton {
+.CallStatusContainerQueue .controlButtons .XButton.disableButton,
+.CallStatusContainerInbound .controlButtons .XButton[disabled],
+.CallStatusContainerOutbound .controlButtons .XButton[disabled],
+.CallStatusContainerQueue .controlButtons .XButton[disabled] {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -7529,7 +7636,7 @@ a.Messages {
 .Overlay.notifications .Conference-HeaderSubTitle {
   font-size: 11px;
   line-height: 18px;
-  width: 50%;
+  width: 60%;
   margin-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -8208,10 +8315,6 @@ a.Messages {
 }
 .SearchContactOverlay.favoritesSearch .Inset .AddTeamMember {
   width: 75%;
-  max-width: 100%;
-}
-.SearchContactOverlay.favoritesSearch .Inset .AddZoomMember {
-  width: 60%;
   max-width: 100%;
 }
 .SearchContactOverlay.conferenceSearch {
