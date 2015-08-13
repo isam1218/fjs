@@ -6,8 +6,10 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 	
 	// show updated avatars
 	$rootScope.$on('fdpImage_synced', function(event, data) {
-		for (var i = 0, len = data.length; i < len; i++) {
-			$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+		if (!$rootScope.isFirstSync) {
+			for (var i = 0, len = data.length; i < len; i++) {
+				$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+			}
 		}
 	});
 	
@@ -226,7 +228,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					$('#ContextMenu .Button').unbind('click');
 					$rootScope.contextShow = false;
-				}, t, false);
+				}, t);
 			}
 		}
 	};

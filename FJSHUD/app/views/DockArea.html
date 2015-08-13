@@ -40,27 +40,27 @@
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
 		<div class="Header Single">
 			<avatar profile="4"></avatar>
-			<div class="Title">
+			<div class="Title" ng-switch="parkedCalls.length">
 				<div class="titleHeader header">{{::verbage.parked_calls}}</div>
-				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
-				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
-				<div class="subTitle GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
+				<div class="subTitle GadgetStatusText" ng-switch-when="0">{{::verbage.no_calls_on_park}}</div>
+				<div class="subTitle GadgetStatusText" ng-switch-when="1"> 1 call on park </div> 
+				<div class="subTitle GadgetStatusText" ng-switch-default> {{ parkedCalls.length }} calls on park </div> 
 			</div>
 		</div>
-		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
-		<div> 
+		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
+		<div id="parked_calls"> 
 			<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
 				<avatar profile="call"></avatar>
 				
 				<div class="ListRowContent" style="display:inline-block;margin-right:2px">
-					<div class="ListRowTitle" style="width:80px;padding:0px;text-overflow:ellipssis;white-space:nowrap">
+					<div class="ListRowTitle">
 						<div>{{ ::call.displayName }}</div>
 						<div>{{ ::call.phone }}</div>
 					</div>
 						
 						
 				</div>
-				<div timer="call.created" style="float:right;font-size:.65em;margin-top:2px;margin-right:2px"></div>
+				<div timer="call.created" class="timer"></div><!-- style="float:right;font-size:.65em;margin-top:3px;margin-right:2px" -->
 				
 			</div>		
 		</div>
@@ -125,10 +125,10 @@
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
 		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
-			<div class="Title">
+			<div class="Title" ng-switch="gadget.data.members.length">
 				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
-				<div class="subTitle" ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
-				<div class="subTitle" ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
+				<div class="subTitle" ng-switch-when="0">{{ ::gadget.data.location }}</div>
+				<div class="subTitle" ng-switch-default>Talking: {{ gadget.data.members.length }}</div>
 			</div>
 		</a>
 		
@@ -173,15 +173,16 @@
 		
 		<div class="Content">
 			<div class="List Stats">
-				<div ng-class="(gadget.data.info.waiting > queueThresholds.waiting && queueThresholds.waiting != 0) ? 'RedText' : ''">
+				<div ng-class="{'RedText': queueThresholds.waiting && gadget.data.info.waiting > queueThresholds.waiting}">
 					<strong>{{ gadget.data.info.waiting }}</strong> 
 					{{::verbage.waiting}}
 				</div>
-				<div ng-class="(gadget.data.longestWait > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
-					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
-					{{::verbage.avg_wait}}
+				<div ng-switch="gadget.data.longestWait">
+					<strong ng-switch-default timer="gadget.data.longestWait"></strong>
+					<strong ng-switch-when="0">00:00</strong>
+					{{::verbage.longest_hold}}
 				</div>
-				<div ng-class="(gadget.data.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
+				<div ng-class="{'RedText': queueThresholds.avg_talk && gadget.data.info.avgTalk/60 > queueThresholds.avg_talk}">
 					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
                     {{::verbage.avg_talk}}
 				</div>
@@ -189,7 +190,7 @@
 					<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
 					{{::verbage.total}}
 				</div>
-				<div ng-class="(gadget.data.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
+				<div ng-class="{'RedText': queueThresholds.abandoned && gadget.data.info.abandonPercent > queueThresholds.abandoned}">
 					<strong>{{ gadget.data.info.abandonPercent }}%</strong>
 					{{::verbage.Abandon}}
 

@@ -9,9 +9,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 	$scope.targetType = "f.conversation.chat";
 	$scope.feed = "groups";
   
-  $scope.enableChat = false;
-  $scope.enableFileShare = false;
-  $scope.enableTextInput = false;
 	$scope.messages = [];
 
 	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat', idx: 0}, 
@@ -27,14 +24,8 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 
   $scope.chatTabEnabled;
   if ($scope.isMine){
-    $scope.enableChat = true;
-    $scope.enableTextInput = true;
-    $scope.enableFileShare = true;
     $scope.chatTabEnabled = true;
   } else {
-    $scope.enableChat = false;
-    $scope.enableTextInput = false;
-    $scope.enableFileShare = false;
     $scope.chatTabEnabled = false;
   }
 

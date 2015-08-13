@@ -4,18 +4,15 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 	
 	$scope.conferenceId = $routeParams.conferenceId;
 	$scope.conference = conferenceService.getConference($scope.conferenceId);
+	
+	if($scope.conference.status){
+		var isJoined = $scope.conference.status.isMeJoined;
+	}
+	$scope.joined = isJoined || false;
 
   $scope.membersRefused = [];
-	
+
   $scope.joined = $scope.conference.status.isMeJoined;
-  $scope.enableChat = $scope.joined;
-  $scope.enableTextInput = $scope.joined;
-  $scope.enableFileShare = $scope.joined;
-	
-   //var currentMembers = angular.copy($scope.conference.members);
-  
-
-
 
   $scope.$watchCollection('conference.members', function(newValue,oldValue){
     	
@@ -71,10 +68,10 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 	
 	// update permission to view chat
 	$scope.$on('conferencestatus_synced', function(event, data) {
-		$scope.joined = $scope.conference.status.isMeJoined;
-		$scope.enableChat = $scope.joined;
-		$scope.enableTextInput = $scope.joined;
-		$scope.enableFileShare = $scope.joined;
+		if($scope.conference.status){
+			var isJoined = $scope.conference.status.isMeJoined;
+		}
+		$scope.joined = isJoined || false;
 	});
 
 	$scope.targetId = $scope.conferenceId;
@@ -163,7 +160,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   };
 
   $scope.tryCallAll = function(){
-  	var members = angular.copy($scope.membersRefused);
+  	var members = $scope.membersRefused;
     for(var i = 0, iLen = members.length; i < iLen; i++){
       $scope.tryCall(members[i]);
     }
@@ -197,4 +194,10 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 			httpService.sendAction("conferences","joinContact",params);			
 		}
 	};
+
+  $scope.permissionToInvite = function(){
+    // permission to invite others to conference === 0, otherwise no permission
+    return $scope.conference.permissions === 0;
+  };
+
 }]);

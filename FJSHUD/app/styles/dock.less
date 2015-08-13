@@ -125,7 +125,24 @@
 	&:hover {
 		box-shadow: 0 0 8px gray;
 	}
-
+    
+    #parked_calls{
+        .ListRow .ListRowTitle{
+            padding: 0px;
+            white-space: nowrap;
+            max-width: 80px;
+            padding-top: 5px;
+            text-overflow:ellipssis;    
+            padding-left: 3px;       
+        }
+        
+        .timer{
+            float:right;
+            font-size:.65em;
+            margin-top:3px;
+            margin-right:2px;
+        }
+    }
 	.Header {
 	    cursor: pointer;
 		background-color: #ECECEC;
@@ -139,7 +156,9 @@
 		-webkit-flex-direction: row;
 		max-height: 40px;
 	
-	    
+	    span{
+	       margin-top: -3px;
+	    }
 		& > .Avatar {
 			margin-top: auto;
 		}
@@ -211,14 +230,6 @@
 				&.subTitle{
 				    font-size: 11px;				                        
                     white-space: nowrap;
-				}
-				
-				&.ListRowStatusIcon{
-				  margin-left: -8px;				 
-				  
-				  &:first-child{
-				    margin-left: -5px;
-				  }  
 				}
 			}
 		
@@ -361,19 +372,23 @@
                           }
                           .ListRowStatusIcon{
                             float: left;
-                            margin-left: -5px !important;
+                            margin-left: 0 !important;
                           }
                           .status{
+                            max-width: 80%;
+                            margin-left: 0;
+                            display: inline-block;
+                            vertical-align: top;
                             font-size: 11px;
                             color: #888;  
                             text-align: left;
-                                    text-overflow: ellipsis;
-                                    overflow: hidden;
-                                    text-decoration: none; 
-                                    margin-top: 5px; 
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            text-decoration: none; 
+                            margin-top: 5px;
                           }
                           .IconDisplay{
-                             float: left;
+                             float: none;
                              &.XIcon-ChatStatus-offline{
                                 background-position: -78px 0px;
                              } 

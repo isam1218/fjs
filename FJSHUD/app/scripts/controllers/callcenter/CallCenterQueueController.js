@@ -48,10 +48,10 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
     {display_name: $scope.verbage.queue_active_calls, orig_name:$scope.verbage.queue_active_calls, type: "info.active"}
   ];
   
-  $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option) : $scope.queue_options[0];
+  $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option)['selectedQueue'] : $scope.queue_options[0];
 
-  $scope.isAscending = false;
-  $scope.sortColumn = $scope.selectedQueue.type;
+  $scope.isAscending = localStorage.queue_option ? JSON.parse(localStorage.queue_option)['isAscending'] : false;
+  $scope.sortColumn = localStorage.queue_option ? JSON.parse(localStorage.queue_option)['sortColumn'] : $scope.selectedQueue.type;
   
   $scope.queueThresholds = {};
   $scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
@@ -65,18 +65,23 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
   else
 	  $scope.viewIcon = true;
   
+  var queue_option = {};
+
   $scope.setSort = function(queueSelectionType, queueSelection) {
-	$scope.selectedQueue =  queueSelection;
-	$scope.trancateSelectedName();
+    $scope.selectedQueue = queueSelection;
+    $scope.trancateSelectedName();
     if ($scope.sortColumn == queueSelectionType)
-  	  $scope.isAscending = !$scope.isAscending;
+      $scope.isAscending = !$scope.isAscending;
       else if (queueSelectionType == 'name')
-  	  $scope.isAscending = false;
+      $scope.isAscending = false;
       else
-  	  $scope.isAscending = true;
-  	
-  	$scope.sortColumn = queueSelectionType;
-    localStorage.queue_option = JSON.stringify(queueSelection);
+      $scope.isAscending = true;
+    
+    $scope.sortColumn = queueSelectionType;
+    queue_option.selectedQueue = $scope.selectedQueue;
+    queue_option.isAscending = $scope.isAscending;
+    queue_option.sortColumn = $scope.sortColumn;
+    localStorage.queue_option = JSON.stringify(queue_option);
   };
   
   $scope.resetStats = function() {

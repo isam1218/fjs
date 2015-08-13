@@ -73,7 +73,7 @@
   <body data-ng-controller="MainController" flow-prevent-drop>
     <div id="AppLoading">
 		<div ng-cloak>
-			<div>{{::verbage.loading}}...</div>
+			<div ng-bind="::verbage.loading"></div>
 			<img src="img/ajax-loader.gif" />
 		</div>
     </div>
@@ -273,12 +273,14 @@
     <script src="scripts/services/queueService.js"></script>
     <script src="scripts/services/conferenceService.js"></script>
     <script src="scripts/services/phoneService.js"></script>
+   	<script src="scripts/services/notificationService.js"></script>
     <script src="scripts/services/ntpService.js"></script>
     <script src="scripts/services/detectBrowserService.js"></script>
     
     <!-- factory -->
-    <script src="scripts/factory/windowDimensionsFactory.js"></script>
     <!-- @endif -->   
+    <script src="scripts/factory/windowDimensionsFactory.js"></script>   
+   	<script src="scripts/services/notificationService.js"></script>
 
 </body>
 </html>

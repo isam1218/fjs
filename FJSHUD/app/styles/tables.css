@@ -219,6 +219,8 @@
 .ListRow .ListRowTitle .name {
   font-size: 13px;
   color: #222;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .ListRow .ListRowTitle .name > * {
   display: block;
@@ -246,7 +248,7 @@
   position: relative;
   top: -10px;
   font-size: 10px;
-  margin-left: -5px;
+  margin-left: -4px;
 }
 .ListRow .ListRowStatus .ListRowStatusText {
   top: -15px;
@@ -457,12 +459,17 @@
   white-space: nowrap;
 }
 .ListPage {
-  border: 1px solid #999;
   border-radius: 6px;
   padding-top: 7px;
   padding-bottom: 20px;
   padding-left: 10px;
-  font-size: .8em;
+  font-size: 12px;
+  border: solid 1px #efefef;
+  background-color: #fff;
+  -webkit-border-radius: 6px;
+  box-shadow: 0px 0px 2px #999 inset;
+  -webkit-box-shadow: 0px 0px 2px #999 inset;
+  min-height: 60px;
 }
 .ListSection {
   position: relative;

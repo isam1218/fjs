@@ -6,7 +6,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.url = null;
 	$scope.currentPopup.x = 0;
 	$scope.currentPopup.y = 0;
-	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
 
 	$scope.overlay = {
 		show: false,

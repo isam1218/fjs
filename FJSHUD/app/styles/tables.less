@@ -247,7 +247,9 @@
     }
     .name {      
       font-size: 13px;
-      color: #222;          
+      color: #222; 
+      text-overflow:ellipsis;
+      overflow:hidden;         
 	  
 	  & > * {
 	    display: block;
@@ -257,6 +259,9 @@
 	    color: gray;
 	    font-size: 10px;
 	  }
+    .ConferenceListRowStatusText{
+      font-size: 12px !important;
+    }
     }
   }
   
@@ -279,6 +284,14 @@
           top: -10px;
           font-size: 10px;   
           margin-left: -4px;      
+       }
+
+       .ConferenceStatusIcon {
+          display: inline-block;
+          position: relative;
+          top: -10px;
+          font-size: 10px;
+          margin-left: -1px !important;
        }
        
        .ListRowStatusText {

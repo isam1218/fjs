@@ -51,14 +51,17 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
   $scope.sortConf = function(selection){
 	localStorage.selectedConfOption = JSON.stringify(selection);
     $scope.selectedConf = selection;
-  };
+  };	
 
-	$scope.enableChat = true;
-	
-	// filter list down
-	$scope.customFilter = function() {
-		return function(conference) {
-			if (($scope.tab == 'all'  && conference.permissions == 0)|| ($scope.tab == 'my' && conference.permissions == 0)){
+  // filter list down
+  $scope.customFilter = function() {
+    return function(conference) {
+      /*
+      conference.permissions === 0 --> [view/join permission] + [invite/kick/mute permission]
+      conference.permissions === 4 --> [view/join permission] ONLY
+      conference.permissions === undefined --> NO conference permission whatsoever
+      */
+			if (( ($scope.tab == 'all'  && conference.permissions === 0) || ($scope.tab == 'all' && conference.permissions === 4)) || ($scope.tab == 'my' && conference.permissions === 0)){
 				if (conference.members.length == 0){
 					if ($scope.query == '' || conference.extensionNumber.indexOf($scope.query) != -1)
 						return true;
@@ -126,4 +129,12 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		}
 	};
 
+	$scope.$on('calls_updated',function(event,data){
+		if(data){
+			$scope.calls = data;
+			$scope.currentCall = $scope.calls[Object.keys($scope.calls)[0]];
+		}
+		
+		$scope.inCall = Object.keys($scope.calls).length > 0;
+	});
 }]);

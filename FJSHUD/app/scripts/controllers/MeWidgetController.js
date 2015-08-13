@@ -6,6 +6,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var settings = {};
     var queues = [];
     var callId = $routeParam.callId;
+    $scope.phoneType = false;
     var queueThresholdUpdateTimeout;
     var weblauncherTimeout;
     var timer;
@@ -13,10 +14,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.sortType = "Date";
 
     $scope.avatar ={};
+    $scope.phoneType = false;
     $scope.settings = {};
-    
     //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
-    
+
     $scope.currentCall = phoneService.getCallDetail(callId);
   
 
@@ -206,12 +207,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		myHttpService.getFeed('weblauncher');    
 		myHttpService.getFeed('weblaunchervariables');
 		myHttpService.getFeed('i18n_langs');
-		myHttpService.getFeed('settings');
+		//myHttpService.getFeed('settings');
 	}
 
-    var phonePromise = phoneService.getDevices();
     
-
     if(!phoneService.isPhoneActive()){
             for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
                 if($scope.tabs[i].option == 'Phone'){
@@ -219,10 +218,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     break;
                 }
             }
-    }
+     }
 
-
-    phonePromise.then(function(data){
+    phoneService.getDevicesPromise().then(function(data){
         
         if(!phoneService.isPhoneActive()){
             for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
@@ -232,57 +230,58 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
             }
         }
-        
-            $scope.inputDevices = data.filter(function(item){
-                return item.input_count > 0;
-            });
-            soundManager = phoneService.getSoundManager();
-            
-            $scope.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('inpdefid'); 
-            })[0];
-            
 
-            $scope.outputDevices = data.filter(function(item){
-                return item.output_count > 0;
-            });
-            
-            $scope.selectedOutput = $scope.outputDevices.filter(function(item){
+	});
+
+	var setInputAudioDevice = function(){
+		$scope.selectedInput = $scope.inputDevices.filter(function(item){
+                 return item.id == phoneService.getSelectedDevice('inpdefid');
+       	 })[0];
+
+        if($scope.selectedInput == undefined){
+            $scope.selectedInput = $scope.inputDevices[0];
+		}
+        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+
+	};
+
+	var setOutputAudioDevice = function(){
+		$scope.selectedOutput = $scope.outputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('outdefid'); 
-            })[0];
+         })[0];
             
-            $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('ringdefid'); 
-            })[0];
+         $scope.selectedRingput = $scope.outputDevices.filter(function(item){
+                return item.id == phoneService.getSelectedDevice('ringdefid'); 
+          })[0];
 
-            if($scope.selectedRingput == undefined){
+          if($scope.selectedRingput == undefined){
                 $scope.selectedRingput = $scope.outputDevices[0];
-            }
-            if($scope.selectedOutput == undefined){
+                
+          }
+          if($scope.selectedOutput == undefined){
                 $scope.selectedOutput = $scope.outputDevices[0];
-            }
-           
-           if($scope.selectedInput == undefined){
-                $scope.selectedInput = $scope.inputDevices[0];
-            }
-            
-            $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-            $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
-            $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+          }
+          $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+	       $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+          
+    };	
+
+   phoneService.getInputDevices().then(function(data){
+		$scope.inputDevices = data;
+		setInputAudioDevice();
+		
     });
 
-    $scope.updateAudioSettings = function(value, type){
-        switch(type){
-            case 'Ring':
-                phoneService.getSoundManager().ringdefid = value;   
-                break;
-            case 'Input':
-                phoneService.getSoundManager().inpdefid = value;   
-                break;
-            case 'Output':
-                phoneService.getSoundManager().outdefid = value;   
-                break;
+	phoneService.getOutputDevices().then(function(data){
+		$scope.outputDevices = data;
+		setOutputAudioDevice();
+	});
+
+  	$scope.updateAudioSettings = function(value, type){
+        if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
+            phoneService.setAudioDevice('Ring',value);    
         }
+        phoneService.setAudioDevice(type,value);
     };
 
     
@@ -338,23 +337,29 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
       else if(target.parentNode) {
           return this.getEventHandlerElement(target.parentNode, event);
       }
-};
+    };
 
     $scope.showLocationsPopup = function(e,element,transfer) {
         e.stopPropagation();
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
-        data = {key:"LocationsPopup", x:offset.x-60, y:offset.y};
+        var data = {key:"LocationsPopup", x:offset.x-60, y:offset.y};
         $scope.showPopup(data, eventTarget);
         return false;
     };
 
     $scope.showBargePopup = function(e) {
         e.stopPropagation();
-        var eventTarget = context.getEventHandlerElement(e.target, e);
-        var offset = context.getElementOffset(eventTarget);
-        data = {key:"BargeDropDown", x:offset.x, y:offset.y + 25,model:$scope.currentCall};
-        $scope.showPopup(data, eventTarget);
+		
+        var rect = e.currentTarget.getBoundingClientRect();
+        var data = {
+			key:"BargeDropDown", 
+			x:rect.left, 
+			y:rect.top + 25,
+			model:$scope.currentCall
+		};
+		
+        $scope.showPopup(data);
         return false;
     };
 
@@ -477,7 +482,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          }
 
     };
-	
+
     $scope.queueSummaryStats = {};
 
     $scope.update_queue_treshold = function(type,value){
@@ -614,7 +619,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive ? "true" : "false");    
         }
     };
-
     $scope.currentWebLauncher = {};
 
     $scope.update_weblauncher_settings = function(){
@@ -647,6 +651,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             weblauncherTimeout = undefined;
         }, 500, false);
     };
+	
+	// grab settings from service (prevents conflict with dock)
+	settingsService.getSettings().then(function(data) {
+		$scope.settings = settings = data;
+		update_queues();
+        update_settings();
+	});
     
     $scope.$on('settings_updated',function(event,data){
         if (data){
@@ -673,7 +684,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         myHttpService.update_avatar(data);
     };
 
-     $scope.$on('contacts_synced', function(event, data) {
+    $scope.$on('contacts_synced', function(event, data) {
+
         
         if(data && data != undefined){
             var meUser = data.filter(function(item){
@@ -692,73 +704,36 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on('calllog_synced',function(event,data){
         if(data){
             $scope.calllogs = data.filter(function(item){
-                if(item.xef001type != "delete"){
+                if(item.xef001type != "delete" && !item.filterId){
                     //we attach the from display and to display values in order to sort the values
                     item.fromDisplayValue = $scope.formatIncoming(item,'From');
                     item.toDisplayValue = $scope.formatIncoming(item,'To');
                     return true;
                 }
             });
-            $scope.sortCallLog($scope.recentSelectSort,$scope.isAscending);
-        }
+            $scope.calllogs.sort(function(a,b){
+                return b.startedAt - a.startedAt;
+            });
+        }   
     });
 
-    $scope.sortCallLog = function(sortType,ascending){
-        switch(sortType){
-            case "Date":
-                if($scope.isAscending || (ascending != undefined && !ascending)){
-                    $scope.calllogs.sort(function(a,b){
-                        return b.startedAt - a.startedAt;
-                    }); 
-                }else{
-                    $scope.calllogs.sort(function(a,b){
-                        return a.startedAt - b.startedAt;
-                    });
-                }
-                
+    $scope.sortCallLog = function(calllog){
+        switch($scope.recentSelectSort){
+            case 'Date':
+                return calllog.startedAt;
                 break;
-            case "From":
-                 if($scope.isAscending || (ascending != undefined && !ascending)){
-                    $scope.calllogs.sort(function(a,b){
-                        return a.fromDisplayValue.localeCompare(b.fromDisplayValue);
-                    });
-                }else{
-                     $scope.calllogs.sort(function(a,b){
-                         return b.fromDisplayValue.localeCompare(a.fromDisplayValue);
-                    }); 
-                }
+            case 'From':
+                return calllog.fromDisplayValue;
                 break;
-            case "To":
-                if($scope.isAscending || (ascending != undefined && !ascending)){
-                    $scope.calllogs.sort(function(a,b){
-                        return a.toDisplayValue.localeCompare(b.toDisplayValue);
-                    });
-                }else{
-                    $scope.calllogs.sort(function(a,b){
-                        return b.toDisplayValue.localeCompare(a.toDisplayValue);
-                    }); 
-                }
+            case 'To':
+                return calllog.toDisplayValue;
                 break;
-
-            case "Duration":
-                if($scope.isAscending || (ascending != undefined && !ascending)){
-                    
-                    $scope.calllogs.sort(function(a,b){
-                        return b.duration - a.duration;
-                    }); 
-                }else{
-                    $scope.calllogs.sort(function(a,b){
-                        return a.duration - b.duration;
-                    });
-                }
+            case 'Duration':
+                return calllog.duration;
                 break;
         }
+    };
 
-        if(ascending == undefined)
-            $scope.isAscending = !$scope.isAscending;
-
-        $scope.recentSelectSort = sortType;
-  };
     $scope.showCallOvery = function(screen){
         var data = contactService.getContact($scope.meModel.my_pid);
         if(!data){
@@ -809,13 +784,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     	phoneService.holdCall(call.xpid, isHeld);			    	
     };
 
+
     $scope.makeCall = function(number){
         phoneService.makeCall(number);
-		
 		storageService.saveRecentByPhone(number);
-		
 		$scope.call_obj.phoneNumber = '';
+
     };
+		
 
     $scope.endCall = function(call){
         phoneService.hangUp(call.xpid);
@@ -894,7 +870,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     });
 
-
+    settingsService.getPermissions().then(function(data){
+        $scope.canRecord = data.recordingEnabled;
+    });
 
     $scope.recordCall = function(action) {
         var action = '';
@@ -923,16 +901,26 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     };
 
+    $scope.callKeyPress = function($event){
+        if ($event.keyCode == 13 && !$event.shiftKey) {
+            $scope.makeCall($scope.call_obj.phoneNumber);
+            $scope.call_obj.phoneNumber = '';
+            $event.preventDefault();
+        }
+    };
+
     $scope.parkCall = function(currentCall){
         var call =  phoneService.getCall(currentCall.xpid);
         phoneService.parkCall(currentCall.xpid);
     };
 
     $scope.determineTransferFrom = function(contactToTransfer){
-        var me = contactService.getContact($rootScope.myPid);
-        if(contactToTransfer){
-            return me.xFerFromPermObj[contactToTransfer];
-        }else{
+        var contact = contactService.getContact(contactToTransfer);
+		
+        if (contact && contact.permissions){
+            return settingsService.isEnabled(contact.permissions, 3);
+        }
+		else{
             return true;
         }
     };
@@ -1001,6 +989,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         $scope.currentCall = data[i];
                         call_exist = true;
                         $scope.onCall = true;
+                        if($scope.locations[$scope.currentCall.locationId].locationType  == "w"){
+                            if($scope.currentCall.sipCall == undefined){
+                                $scope.currentCall.state = 3;
+                            }
+                        }
                     }else if(data[i].xpid == $scope.currentCall.xpid){
                         $scope.currentCall = data[i];
                     }
@@ -1027,12 +1020,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
     
     var dtmf_input = "";
-    var icon_version;
+    var icon_version = $scope.meModel.icon_version;
     $scope.$on("fdpImage_synced",function(event,data){
         if(data){
             for (var i = 0, len = data.length; i < len; i++) {
                 if(data[i].xpid == $scope.meModel.my_pid){
                     icon_version = data[i].xef001iver;
+                    $scope.meModel.icon_version = icon_version;
                 }
             }
         } 
@@ -1042,17 +1036,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("key_press", function(event,data){
             dtmf_input = dtmf_input + data;
             $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-            phoneService.getDtmfToneGenerator().play(data);
+            phoneService.playTone(data,true);
             setTimeout(function(){
-                    phoneService.getDtmfToneGenerator().stop();
-                },200);
+                   phoneService.playTone(data,false);
+                },100);
+
 
             if($scope.currentCall){
                 
                 
-                var call = phoneService.getCall($scope.currentCall.xpid);
                 setTimeout(function(){
-                    call.dtmf(dtmf_input);
+                   phoneService.sendDtmf($scope.currentCall.xpid,dtmf_input);
                     dtmf_input = "";
                 },900);
             }
@@ -1097,13 +1091,34 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.$on('phone_event',function(event,data){
         if(data){
-            if(data.event == 'state'){
-                $scope.phoneState = data.registration;
+            var e = data.event;
+            switch(e){
+                case 'state':
+                    $scope.phoneState = data.registration;
+                    $scope.phoneType = phoneService.isPhoneActive();
+                    for(i in $scope.tabs){
+                            if($scope.tabs[i].option == 'Phone'){
+                                $scope.tabs[i].isActive = ($scope.phoneType == 'new_webphone' || $scope.phoneType == 'old_webphone') ? true : false;
+                                break;
+                            }
+                    }
+                    break;
+                case "enabled":
+                    //$scope.pluginVersion = phoneService.getVersion();
+                    break;
+				case "updateDevices":
+					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
+                        $scope.selectedInput = $scope.inputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+                        $scope.selectedRingput = $scope.outputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
+                        $scope.selectedOutput = $scope.outputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+                    }
+                    break;
+                  
             }
-            if(data.event == 'onclose'){
 
-
-            }
         }
     });
     
@@ -1120,5 +1135,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         update_queues();
     });
 
-      
+    $rootScope.isPluginUptoDate = function(){
+        return $scope.pluginVersion && ($scope.pluginVersion.localeCompare($scope.latestVersion)) > -1;
+    };
+
 }]);

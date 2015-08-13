@@ -1,9 +1,9 @@
-hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpService', function($http, $rootScope, $location, $q, ntpService){
+hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeout', 'NtpService', function($http, $rootScope, $location, $q, $timeout, ntpService){
 	/**
 		Detect Current Browser
 	*/
 	var ua = navigator.userAgent;
-	var browser = ua.match(/(chrome|safari|firefox|msie)/i);
+	var browser = ua.match(/(edge|chrome|safari|firefox|msie)/i);
 	// if not found, default to IE mode
 	browser = browser && browser[0] ? browser[0] : "MSIE";
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
@@ -11,7 +11,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	var isMasterTab = false;
 	var tabId = 0;
 	var synced = false;
-	var tabMap = undefined;
+	var workerStarted = false;
+	var tabMap = {};
 	$rootScope.browser = browser;
 	$rootScope.isIE = isIE;
 	var appVersion = navigator.appVersion;
@@ -56,11 +57,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 				isSynced:false
 			}
 		}else{*/
-			tabMap = {};
+		if(tabMap){
 			tabMap[tabId] = {
 				isMaster: true,
 				isSynced: false
 			};
+		}
+			
 		//}
 
 		localStorage.fon_tabs = JSON.stringify(tabMap);
@@ -77,6 +80,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		    worker.port.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
+						workerStarted = true;
+						
 		            	updateSettings('instanceId','update',localStorage.instance_id); 
 
 		                worker.port.postMessage({
@@ -113,11 +118,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 				}
 		    }, false);
-			worker.port.addEventListener("error",function(evt){
+			worker.onerror = function(evt){
 		    	console.log("error with shared worker port");
 		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
 
-		    },false);
+		    };
 		    worker.port.start();
 		}
 	}else{
@@ -139,6 +144,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			worker.addEventListener("message", function(event) {
 		        switch (event.data.action) {
 		            case "init":
+						workerStarted = true;
+						
 		            	tabMap = JSON.parse(localStorage.fon_tabs);
 		           		updateSettings('instanceId','update',localStorage.instance_id); 
 
@@ -160,7 +167,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 		            case "sync_completed":
 		                if (event.data.data) {
-		                	var data_obj = {};
 		                    var synced_data = event.data.data;
 		                  	tabMap = JSON.parse(localStorage.fon_tabs);
 		                  	if(tabMap[tabId].isMaster){
@@ -171,11 +177,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 								tabMap[tabId].isSynced = true;
 							}
 
-		                    if(!localStorage.data_obj){
-		                    	localStorage.data_obj = JSON.stringify(synced_data);
-		                    }else{
-		                    	data_obj = JSON.parse(localStorage.data_obj);
-		                    }
+		                    localStorage.data_obj = JSON.stringify(synced_data);
 							
 		                    // send data to other controllers i'm doing this to ensure order when syncing'
 							broadcastSyncData(synced_data);
@@ -194,7 +196,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					case "network_error":
       					if(!synced){
       						$rootScope.$broadcast('network_issue',undefined);
-							worker.port.close();
+							worker.terminate();
 						}
       					break;
 					case "timestamp_created":
@@ -231,6 +233,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 						break;
 		        }
 		    }, false);
+
+			worker.onerror = function(evt){
+		    	console.log("error with shared worker port");
+		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
+
+		    };
 		}
 	}
 
@@ -267,6 +275,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	    	//setInterval(version_check,1000);
 	    }
 	};
+	
+	// fail catch if app hasn't loaded
+	$timeout(function() {
+		if (!workerStarted) {
+			localStorage.removeItem("nodeID");
+			attemptLogin();
+		}
+	}, 20000, false);
 	
 	/**
 		AUTHORIZATION
@@ -326,14 +342,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			// start shared worker
 			authorizeWorker();
 		})
-		.error(function(response, status) {
-			console.log("Error accessing this api: "  + fjs.CONFIG.SERVER.serverURL 
-			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
-			+ authTicket)
-			
+		.error(function(response, status) {			
 			switch(status){
-				case 401:
-					break;
 				case 402:
 					//alert("bad authentication");
 					delete localStorage.me;
@@ -349,16 +359,16 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 					$rootScope.$broadcast('network_issue',undefined);
 					break;
 				default:
+					/*
 					localStorage.removeItem('me');
 					localStorage.removeItem('nodeID');
 					localStorage.removeItem('authTicket');
 					$rootScope.networkError = true;
 					$rootScope.$broadcast('network_issue',undefined);
-					//attemptLogin();
+					*/
+					attemptLogin();
 					break;
 			}
-
-			//attemptLogin();
 		});
 	}
 	else {
@@ -401,11 +411,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		// stupid warning
 		window.onbeforeunload = function() {
 			
-			/*if (localStorage.tabclosed)
+			if (localStorage.tabclosed)
 				localStorage.tabclosed = "true";
     	
 			// shut off web worker
-			if (worker.port)
+			/*if (worker.port)
 				worker.port.close();
 			else
 				worker.terminate();*/
@@ -670,6 +680,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			transformResponse: false
 		})
 		.then(function(response) {
+			
 			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
 
 			for (var key in data) {

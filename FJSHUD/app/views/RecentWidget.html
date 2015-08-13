@@ -68,13 +68,13 @@
             </div>            
 
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'conference'">
-                <div class="ListRowTitle">
+                <div class="ListRowTitle" ng-switch="item.members.length">
                     <div class="name"> <strong>{{::verbage.room}} # {{::item.roomNumber}} ({{::item.extensionNumber}})</strong> </div>
-                    <div data-ng-if="item.members.length == 0" class="status conference">
+                    <div ng-switch-when="0" class="status conference">
                         <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
                        <span class="desc">{{::verbage.free_room}}</span>
                     </div>                            
-                    <div data-ng-if="item.members.length > 0" class="status conference">
+                    <div ng-switch-default class="status conference">
                         <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
                         <span class="desc">{{item.members.length}} {{::verbage.members_on_call}}</span>
                     </div> 

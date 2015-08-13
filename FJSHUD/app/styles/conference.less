@@ -56,6 +56,18 @@
   .ListViewTopNote{font-size: 12px;}
 }
 
+.conference.currentCall{
+    .ListRowTitle{
+        max-width: 80%;
+        .name,
+        .name > * {
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;   
+        }
+    }    
+}
 .ListViewTopNote {
   position: relative;
   margin-top: 10px;
@@ -71,6 +83,7 @@
     font-size: 11px;
     width: 55px;
     height: 26px;
+    margin: 10px;
   }
   
   span{
@@ -178,7 +191,7 @@ color: #729c00;
   font-size:12px;
   .TabWarningHeader{
     position: relative;
-    margin-left: 10px;
+    margin: 0 10px;
     font-weight: bold;
     height: 30px;
     line-height: 30px;

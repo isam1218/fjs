@@ -129,8 +129,11 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.voiceFilter = function(){
         var query = $scope.tester.query.toLowerCase();
         return function(voicemail){
-            if (voicemail.displayName.toLowerCase().indexOf(query) !== -1 || voicemail.phone.indexOf(query) !== -1 || voicemail.fullProfile.primaryExtension.indexOf(query) !== -1){
+            if (voicemail.displayName.toLowerCase().indexOf(query) !== -1 || voicemail.phone.indexOf(query) !== -1 ){
                 return true;
+            }
+            if (voicemail.fullProfile !== null && voicemail.fullProfile.primaryExtension.indexOf(query) !== -1){
+              return true;
             }
         };
     

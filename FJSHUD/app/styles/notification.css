@@ -55,6 +55,10 @@
 .CallStatusContainer {
   position: relative;
 }
+.CallStatusContainerQueue {
+  background: linear-gradient(#fff1dd, #f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd, #f8e7cd);
+}
 .CallStatusContainerInbound {
   background: linear-gradient(#e4f1f8, #dfebf1);
   background: -webkit-linear-gradient(#e4f1f8, #dfebf1);

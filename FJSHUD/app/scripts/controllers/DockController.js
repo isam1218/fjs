@@ -26,29 +26,29 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if(request){
 			request.abort();
 		}
-	}
+	};
 	
-	var updateDock = function(data) {
+	var updateDock = function(data) {			
 		for (var key in data) {
-			// check for dupes
-			var found = false;
-			
-			for (var g in $scope.gadgets) {
-				for (var i = 0; i < $scope.gadgets[g].length; i++) {
-					if (key == $scope.gadgets[g][i].name) {
-						found = true;
-						break;
+			// look for gadgets
+			if (key.indexOf('GadgetConfig') != -1) {
+				// check for dupes
+				var found = false;
+				
+				for (var g in $scope.gadgets) {
+					for (var i = 0, len = $scope.gadgets[g].length; i < len; i++) {
+						if (key == $scope.gadgets[g][i].name) {
+							found = true;
+							break;
+						}
 					}
+					
+					if (found) break;
 				}
 				
-				if (found) break;
-			}
+				if (found) continue;
 			
-			if (found) continue;
-			
-			// add new
-			if (key.indexOf('GadgetConfig') != -1) {
-				// gadget element
+				// add new
 				var gadget = {
 					name: key,
 					value: JSON.parse(data[key]),
@@ -122,16 +122,16 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				$('#InnerDock').sortable('disable');
 			}
 		}
+		
+		// thresholds
+		$scope.queueThresholds.waiting = parseInt(data.queueWaitingThreshold);
+		$scope.queueThresholds.avg_wait = parseInt(data.queueAvgWaitThreshold);
+		$scope.queueThresholds.avg_talk = parseInt(data.queueAvgTalkThresholdThreshold);
+		$scope.queueThresholds.abandoned = parseInt(data.queueAbandonThreshold);
 	};
 
 	// initial sync
-	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {
-		
-		$scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
-		$scope.queueThresholds.avg_wait = parseInt(settingsService.getSetting('queueAvgWaitThreshold'));
-		$scope.queueThresholds.avg_talk = parseInt(settingsService.getSetting('queueAvgTalkThresholdThreshold'));
-		$scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
-		
+	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {		
 		updateDock(data[0]);
 		
 		// normal updates

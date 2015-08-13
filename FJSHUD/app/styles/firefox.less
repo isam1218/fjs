@@ -45,8 +45,6 @@
     .WidgetMe{
     
      .WidgetHeader{        
-        position: absolute !important;
-        
         & > div{
             display: inline-block;
         }
@@ -55,13 +53,7 @@
             line-height: 2.4em !important;   
             margin: 0 !important;         
         }        
-     }
-     
-     .WidgetBody{
-       top: 180px;
-       position: absolute;
-       height: auto;
-     }     
+     }   
      
      .MeInfoBlock {width: 79% !important;}
     }     
@@ -143,13 +135,8 @@
                     height: 26px;
                 }
             }        
-         }  
+         } 
          
-         .Preferences-Holder{
-            height: 40%;
-         }  
-         
-         &.currentCall{
             .call-block{                                               
                          
               .CurrentCall{    
@@ -183,8 +170,7 @@
                           /*height: auto !important;    */       
                     }
                 }
-             }  
-         }   
+             }
      }
     .SearchInputBoxInputHolder {
        height: 100% !important;
@@ -404,13 +390,7 @@
   .XIcon24-Record-On{    
     right: 12px !important;
     top: 3px !important;
-  } 
-  .CurrentCall{ 
-      .RightSide{
-       
-       width: 51% !important;                      
-       }
-   }         
+  }        
    
    .ZoomWidgetSection{
     .XButtonWide.XButtonBlue.first{
@@ -434,11 +414,11 @@
             &:first-child{
                  width: 28px;
             } 
-            &.Name{width: 92px !important; max-width: 92px;}   
-            &.Phone{width: 66px !important;max-width: 66px;}
-            &.Duration{width: 56px  !important;max-width: 56px;}  
-            &.StartedAt{width: 126px !important; max-width: 126px; margin-left: -8px;}  
-            &.CallType{width: 10%  !important;}  
+            &.Name{width: 130px !important;}
+            &.Phone{width: 75px !important;}
+            &.Duration{width: 50px  !important;}
+            &.StartedAt{width: 95px !important; margin-left: 5px;}
+            &.CallType{width: 6%  !important;}  
         }
     } 
 
@@ -448,17 +428,17 @@
                 max-width: 42px;
              } 
              &.Name{
-                max-width: 100px;
+                max-width: 130px;
              }      
              &.Phone {        
-                flex: 2.2 1 0;
-                max-width: 76px;
+                flex: 2.75 1 0;
+                max-width: 100px;
              }
              &.Duration{
                 max-width: 48px;
              } 
              &.Date{
-                max-width: 140px;
+                max-width: 125px;
              }
         }
     }

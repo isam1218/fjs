@@ -56,11 +56,16 @@
          }       
     }
 
+    .ListRowTitle.GroupListRowTitle{
+      max-width: 100%;
+      width: 80%;
+    }
+
     .ListRowTitle{
          width: 48%;
          
          .status{      
-           margin-left: -5px !important; 
+           margin-left: -5px; 
            
            .ListRowStatusIcon{
             margin-left: 0 !important;
@@ -69,11 +74,11 @@
          
          .name{
             width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden; 
             
             strong{
-              text-overflow: ellipsis;
               width: 100%;
-              overflow: hidden; 
             }
          }
          .status{
@@ -123,6 +128,7 @@
     .SearchBox {
 	  margin: .5em;
 	  width: 70%;
+    z-index:  99;
     }
 
     .New {
@@ -209,6 +215,12 @@
 	  a.ListRow{
 	    background-color: #fff;
         
+        .GroupListRowStatus{
+          right: 0px !important;
+          left: -5px;
+          width: 30px !important;
+        }
+
         .ListRowStatus{
             top: 10px;           
             width: 83px;
@@ -274,6 +286,13 @@
             overflow-y: auto;
         }
     }
+    .status{
+      margin-left: 0 !important;
+    }
+    .ListRowTitle{
+    	width: 85%;
+    	max-width: 85%;
+    }
   }
 
   .Notifications{
@@ -283,7 +302,7 @@
 	display: -webkit-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
-    z-index: 99;
+    z-index: 97;
 
     & > div:first-child {    	
     	transition: .25s;

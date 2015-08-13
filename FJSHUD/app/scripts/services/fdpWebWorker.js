@@ -107,15 +107,19 @@ function version_check (){
 		        sync_request(changedFeeds);
 		    else
 		       	setTimeout('should_sync();', 500);
-		}else if(xmlhttp.status != 0){
+		}
+		else if (xmlhttp.status == 404 || xmlhttp.status == 500){
 			self.postMessage({
-				action:'auth_failed'
+				"action": "network_error"
 			});
-			
-			setTimeout('should_sync();', 500);
-		}else{
+		}
+		else if (xmlhttp.status == 0) {
 			setTimeout('version_check();', 500);
-
+		}
+		else {
+			self.postMessage({
+				"action": "auth_failed"
+			});
 		}
 	});
 }
@@ -129,7 +133,7 @@ var sync_request = function(f){
 	var header = {
 				"Authorization":auth,
     	  		"node":node,
-	}
+	};
 	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
 		
 		
@@ -184,8 +188,11 @@ var sync_request = function(f){
 				"action": "sync_completed",
 				"data": synced_data
 			};
-
-			self.postMessage(sync_response);
+			try{
+				self.postMessage(sync_response);
+			}catch(err){
+				console.error(err.message);
+			}
 			setTimeout('should_sync();', 500);
 		}
 		else{

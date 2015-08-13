@@ -27,8 +27,8 @@
                   
       &.Name{width: 118px;}   
       &.Phone{width: 74px;}
-      &.Duration{width: 46px;}  
-      &.StartedAt{  width: 106px; margin-left: -2px;}  
+      &.Duration{width: 50px; margin-left: 10px;}      
+      &.StartedAt{width: 95px;}
       &.CallType{width: 10%;}
     }                                               
   }           
@@ -99,17 +99,24 @@
       }
     	  
       &.Name {    	
-        flex: 3 1 0;
-		-webkit-flex: 3 1 0;
-		-ms-flex: 3;
-    	max-width: 135px;
+        flex: 3.75 1 0;
+        -webkit-flex: 3.75 1 0;
+
+		    -ms-flex: 3;
+    	  max-width: 135px;
+        
+        &.SmallFont-true {
+          font-size: 11px;
+        }
+        &.SmallFont-false {
+          font-size: 12px;
+        }
     	
     	 & > div{
     	   text-align: left;
             text-overflow: ellipsis;
             overflow: hidden;
             color: #009cff;   
-            font-weight: bold; 
             max-width: 114px;
             margin-top:  15px;            
     	 }            		  		
@@ -118,32 +125,47 @@
       &.Phone {
 	    text-decoration: underline;
     	color: #333;
-    	flex: 2.1 1 0;
-		-webkit-flex: 2.1 1 0;
-		-ms-flex: 2.1;
-		font-weight: bold;    
+      flex: 2.75 1 0;
+      -webkit-flex: 2.75 1 0;
+
+		  -ms-flex: 2.1;
     	max-width: 130px;
-    	    
-    	span{white-space: nowrap; cursor: pointer;}
+
+      &.SmallFont-true {
+        font-size: 9px;
       }
+      &.SmallFont-false {
+        font-size: 11px;
+      }
+          
+      span{white-space: nowrap; cursor: pointer;}
+      }
+
     	  
       &.Duration{
-	    flex: 1.4 1 0;
-		-webkit-flex: 1 1 0;
-		-ms-flex: 1;
-		max-width: 50px;
+      flex: 1.3 1 0;
+      -webkit-flex: 1.3 1 0;
+      font-size: 11px;
+
+		  -ms-flex: 1;
+		  max-width: 50px;
 	  }
     	   
       &.Date {
-        flex: 3 1 0;
-		-webkit-flex: 3 1 0;
-		-ms-flex: 3;
+       flex: 2 1 0;
+       -webkit-flex: 3.5 1 0;
+       font-size: 11px;
+
+		  -ms-flex: 3;
     	white-space: nowrap;
-    	max-width: 120px;
+    	max-width: 125px;
       }
       &.Type{
         width: 6%;
-		-ms-flex: 1;
+        flex: .5;
+        -webkit-flex: 1;
+
+		    -ms-flex: 1;
         .ListRowStatusIcon{
             margin-top: 10px;
         }
@@ -203,20 +225,27 @@
 }
 
 .RecentCallSection{
-  font-size:.7em;
-  padding: 10px 0;   
-  height: 100%;    
+  font-size:.7em; 
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: .65 1 0;
+  -webkit-flex: .65 1 0;
+  -ms-flex: .65;
     
   .RecentCallColumnHeaders{    
     padding: 6px 10px;
     border-bottom:1px solid #ccc;
   }
   .RecentCallLogs{
+	flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1;
     font-size: 11px; 
     padding: 4px 10px 10px 10px;    
     overflow-y:auto;   
-    overflow-x: hidden;  
-    height: 80%;
+    overflow-x: hidden;
     width: 100%;
     position: relative;
     text-overflow: ellipsis;   

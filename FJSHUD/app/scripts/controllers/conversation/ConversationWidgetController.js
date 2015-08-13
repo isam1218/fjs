@@ -10,9 +10,6 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 	var CONTACT_CALL_TYPE = 4;
 
     $scope.conversationType = 'conversation';
-    $scope.enableChat = true;
-    $scope.enableFileShare = true;
-    $scope.enableTextInput = true;
     $scope.call = {};
     $scope.targetId = $scope.contactID;
     $scope.targetAudience="contact";
@@ -27,7 +24,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
 
-    settingsService.getSettings().then(function() {
+    settingsService.getSettings().then(function() {	
         // if there's a defined route...
         if($routeParams.route != undefined ){
             // set $scope.selected and toggleObject as that full route

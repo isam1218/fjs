@@ -588,6 +588,24 @@
 	width: 100%;
 	height: 286px;
 	overflow-y: auto;
+
+  .TransferSubHeader {
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FFF;
+    background-color: #888;
+    border-top: solid 1px #999;
+    position: relative;
+  }
+
+  .TransferSelectBox {
+    position: relative;
+    margin: 10px;
+    height: 60px;
+    width: auto;
+  }
 	
 	.ListRow {
 	  &:first-child .Delete {
@@ -611,6 +629,23 @@
 	    right: .25em;
 		cursor: pointer;
 	  }
+
+    .TransferSelectTitlePadding {
+      padding: 15px;
+      overflow: visible !important;
+    }
+
+    .TransferText {
+      color: #0093f0;
+      font-size: 11px;
+      font-weight: bold;
+      height: 29px;
+      width: auto;
+      text-transform: uppercase;
+    }
+    .TransferSubText {
+      font-style: italic;
+    }
 	}
   }
 
@@ -738,7 +773,7 @@
 	  .Extension {
 	    font-size: .9em;
 		color: gray;
-		position: relative;
+		// position: relative;
 		float: right;
 		right: 5px;
 		top: -10px;		
@@ -748,9 +783,8 @@
   
   &.favoritesSearch{
     top: -40px;
-    height: 400px;
-    width: 498px;
-    left: -10px;
+    height: 330px;
+    z-index: 98;
     
     .Inset{
         overflow: hidden;
@@ -763,10 +797,21 @@
         }
         .rows{
             margin-top: 40px;
-            height: 305px;
+            height: 230px;
             overflow-y: auto;
             overflow-x: hidden;
             width: 100%;
+        }
+        .ListRowTitle{
+
+        }
+        .AddTeamMember{
+          width: 75%;
+          max-width: 100%;
+        }
+        .AddZoomMember{
+          width: 60%;
+          max-width: 100%;
         }
     }
   }
@@ -774,6 +819,7 @@
   &.conferenceSearch{
     width: 500px !important; 
     top: -55px !important; 
+    left: -10px;
     
     .Header{
         padding-top: 10px;
@@ -805,6 +851,9 @@
             .ListRowTitle{
                 margin-top: -5px;
                 
+                .ListRowStatusIcon{
+                    margin-left: 0px;
+                }
                 .hudStatus{
                     margin-top: -2px;
                 }     

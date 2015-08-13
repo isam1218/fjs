@@ -40,7 +40,7 @@ hudweb.directive('transferContactSearch', ['$rootScope', '$document', 'ContactSe
       addTeamMemberHeader();
       recentTransferHeader = angular.element('<div class="Header TransferHeader">Recent Transfers</div>');
       recentTransferRows = angular.element('<div id="recentTransferRows" class="rows"></div>');
-      contactsHeader = angular.element('<div class="Header TransferHeader">Contacts</div>')
+      contactsHeader = angular.element('<div class="Header TransferHeader">Contacts</div>');
       rows = angular.element('<div class="rows"></div>');
 
       // search input
@@ -195,8 +195,7 @@ hudweb.directive('transferContactSearch', ['$rootScope', '$document', 'ContactSe
               scope.searchContact(contact);
             }
           } else if (!isNaN(element.val())){
-            // need to define this function in call status over controller
-            scope.addExternalToTransfer(element.val());
+            scope.searchContact(element.val(), true)
           } else {
             return;
           }

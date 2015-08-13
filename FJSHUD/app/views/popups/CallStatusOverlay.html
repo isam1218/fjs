@@ -30,9 +30,9 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!determineBarge(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!canBarge; alreadyBarged" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!canBarge; alreadyMonitored" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!canBarge; topAlreadyWhispered" />
 						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
 					</div>
 				</div>
@@ -47,9 +47,9 @@
 					<div class="Time">{{ timeElapsed }}</div>
 					
 					<div class="Buttons">
-						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
-						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.fullProfile.xpid)" ng-disabled="!determineBarge(onCall.call.fullProfile.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!bottomUserCanBarge; alreadyBarged" />
+						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!bottomUserCanBarge; alreadyMonitored" />
+						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.fullProfile.xpid)" ng-disabled="!bottomUserCanBarge; bottomAlreadyWhispered" />
 						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
 					</div>
 				</div>
@@ -81,7 +81,7 @@
 		<div class="Footer">
 			<div class="Error" ng-show="onCall.call.recorded">{{ recordingElapsed }}</div>
 		
-			<input type="button" class="XButton" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" ng-model="onCall.call.recorded" />
+			<input type="button" class="XButton" ng-show="canRecordOthers" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" ng-model="onCall.call.recorded" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
 			<input type="button" class="XButton" value="Conferencing" ng-click="changeScreen('conference')" />
 		</div>
@@ -121,13 +121,15 @@
 				<div class="transferSearch">
 					<h4 class="upper">{{::verbage.destination}}</h4>
 					<div class="ContactSearchHolder">
-						<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" id="TransferOverlay" ng-attr-placeholder="{{::verbage.add_someone}}" transfer-contact-search />
+						<input type="search" ng-model="transfer.search" ng-model-options="{debounce: 200}" class="SearchBox Add TransferSearchBox" id="TransferOverlay" ng-attr-placeholder="{{::verbage.add_someone}}" />
 					</div>
 
 				</div>
-				<!-- <div class="Banner upper">{{::verbage.contacts}}</div> -->
+
 				<div class="Members">
-					<a href="" class="ListRow" ng-repeat="contact in transferContacts | filter: transferPermFilterContacts() | orderBy: 'displayName' track by contact.xpid" ng-click="selectDestination(contact)"> 
+
+					<div ng-hide="recentTransferResults.length == 0" class="TransferSubHeader">Recent Transfers</div>
+					<a href="" class="ListRow" ng-repeat="contact in (recentTransferResults = (recentTransfers | filter: transferPermFilterContacts() | filter: transferFilter() | orderBy: 'displayName'))" ng-click="selectDestination(contact)"> 
 						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
@@ -138,17 +140,41 @@
 							</div>
 						</div>
 					</a>
+
+					<div ng-hide="transferResults.length == 0" class="TransferSubHeader">Contacts</div>
+					<a href="" class="ListRow" ng-repeat="contact in (transferResults  = (transferContacts | filter: transferPermFilterContacts() | filter: transferFilter() | orderBy: 'displayName' ))" ng-click="selectDestination(contact)"> 
+						<avatar profile="contact"></avatar>
+						<div class="ListRowContent">
+							<div class="ListRowTitle">
+								<strong>{{ ::contact.displayName }}</strong>
+								<br/>
+								<div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
+								<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+							</div>
+						</div>
+					</a>
+
+					<a href="" class="ListRow TransferSelectBox" ng-click="selectDestination(selectionDisplay, 'selectionBox')"> 
+						<div class="ListRowContent">
+							<div class="ListRowTitle TransferSelectTitlePadding">
+								<span class="TransferText">Transfer to {{ selectionDisplay }}</span>
+								<br/>
+								<span class="TransferSubText">Click to transfer</span>
+							</div>
+						</div>
+					</a>
 				</div>
+
 			</div>
-			<div>{{transfer.search}}</div>
-			
+		</div>
+
 			<div class="Section" ng-if="transferTo">
 				<div>
 					<h4 class="upper">{{::verbage.office_destination}}</h4>
 					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
 				<div>
-					<a href="" class="ListRow"> 
+					<a href="" class="ListRow" ng-if="transferType != 'external'"> 
 						<avatar profile="transferTo"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
@@ -159,18 +185,28 @@
 							</div>
 						</div>
 					</a>
+					<a href="" class="ListRow" ng-if="transferType == 'external'"> 
+						<avatar profile="transferTo"></avatar>
+						<div class="ListRowContent">
+							<div class="ListRowTitle">
+								<strong>{{ transferTo.displayName }}</strong>
+								<br/>
+								{{transferTo.contactNumber}}
+							</div>
+						</div>
+					</a>
 				</div>
-				<div>
+				<div ng-hide="transferType == 'external' || !canTransferToVm()">
 					<h4 class="upper">{{::verbage.transfer_options}}</h4>
 					<p>{{::verbage.call_transfer_destination}}</p>
 				</div>
-				<div>
+				<div ng-hide="transferType == 'external' || !canTransferToVm()">
 					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="true" ng-false-value="false" /> {{::verbage.primary_extension}}
 					<br/>
 					<input type="checkbox" ng-model="who.sendToPrimary" ng-value="{{who.sendToPrimary}}" ng-true-value="false" ng-false-value="true" /> {{::verbage.voicemail_box}}
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 		
 		<div class="Footer">
 			<div class="Error" ng-show="addError" ng-bind="addError"></div>

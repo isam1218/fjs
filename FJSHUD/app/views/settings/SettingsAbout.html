@@ -28,6 +28,11 @@
               <div class="ListSectionHeader">
                 <div class="ListSectionHeaderTitle">{{::verbage.fon_plugin}}</div>
               </div>
-              <div class="ListSectionBody">{{::verbage.version}}: <span>5.17.008986</span></div>
-             
+              <div class="ListSectionBody">{{::verbage.version}}: <span>{{ pluginVersion || 'undefined' }}</span>
+                   <br>
+                  <div class="XButton" ng-if="!isPluginUptoDate()" ng-click="showOverlay(true,'DownloadPlugin',{});">
+                    <a style="color:#333;text-decoration:none" href="{{::pluginDownloadUrl}}" download target="_blank"><span> Download plugin </span></a>
+                  </div>
+         
+              </div>
             </div>

@@ -26,7 +26,7 @@
   </a>
   
 
-  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" >                            
+  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')">                            
      <a href="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer" ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')">
          <div ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
      </a>
@@ -35,21 +35,20 @@
          <div class="memberName"><div class="name ng-class:{'truncate': currentCall.record && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div><div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
          <div class="callStatus">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} <span class="MyCallBlock_Duration" data-duration="{{callObj[currentCall.xpid].nativeTime}}"></span></div>
      </a>                 
-    <!--{{callObj[currentCall.xpid].minutesText}}{{callObj[currentCall.xpid].secondsText}}{{callObj[currentCall.xpid].hoursText}}-->
-	<div class="controlButtons">
-         <a href="#/EndCall?{{currentCall.xpid}}" ng-if="currentCall.state == callState.CALL_RINGING" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
-         <a href="#/EndCall?{{currentCall.xpid}}" class="XButton" ng-if="currentCall.state == callState.CALL_ACCEPTED">{{::verbage.end}}</a>
-         <a href="#/HoldCall?{{currentCall.xpid}}&false" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED" class="XButton">{{::verbage.hold}}</a>
-         <a href="#/ResumeCall?{{currentCall.xpid}}&true" class="XButton" ng-if="currentCall.state == callState.CALL_HOLD">{{::verbage.Talk}}</a>
+	<div class="controlButtons" ng-switch="currentCall.state">
+         <a href="#/EndCall?{{currentCall.xpid}}" ng-switch-when="0" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</a>
+         <a href="#/EndCall?{{currentCall.xpid}}" class="XButton" ng-switch-when="2">{{::verbage.end}}</a>
+         <a href="#/HoldCall?{{currentCall.xpid}}&false" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</a>
+         <a href="#/ResumeCall?{{currentCall.xpid}}&true" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</a>
          <a href="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</a>
          
     </div>
   </div>
   
-  <div class="Notifications">
-	<div class="LeftBarNotificationSection notificationsSection hasMessages" ng-class="{'Expand': todaysNotifications.length > 0}">
+  <div class="Notifications fj-scrollable">
+	<div class="LeftBarNotificationSection notificationsSection hasMessages Expand">
 	<div class="NotificationMessages LeftBarNotifications">
-		<div class="TitleBar">
+		<div class="TitleBar" id="TitleBar">
 			<div class="HasNotificationIcon"></div>
 			<div>{{::verbage.notifications}}</div>
 			<div class="Event"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>

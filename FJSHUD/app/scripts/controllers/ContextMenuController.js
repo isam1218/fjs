@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
-	function($rootScope, $scope, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
+	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -19,9 +19,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 		$scope.reasons.list = data.reasons;
 	});
 	
-	// permissions
+	// permissions (will most likely need to be moved)
 	settingsService.getPermissions().then(function(data) {
-		$scope.canLoginAgent = data.enableAgentLogin;
 		$scope.canRecord = data.recordingEnabled;
 	});
 	
@@ -80,6 +79,26 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 			$scope.profile = null;
 		}
 		
+		// permissions
+		if ($scope.profile.permissions !== undefined) {
+			switch ($scope.type) {
+				case 'Contact':
+					$scope.canIntercom = settingsService.isEnabled($scope.profile.permissions, 6);
+					$scope.canLoginAgent = settingsService.isEnabled($scope.profile.permissions, 9);
+					
+					if ($scope.profile.call)
+						$scope.canBarge = settingsService.isEnabled($scope.profile.call.details.permissions, 1);
+					
+					break;
+				case 'Group':
+					$scope.canGroupIntercom = settingsService.isEnabled($scope.profile.permissions, 1);
+					$scope.canGroupPage = settingsService.isEnabled($scope.profile.permissions, 2);
+					$scope.canGroupVoicemail = settingsService.isEnabled($scope.profile.permissions, 3);
+					
+					break;
+			}
+		}
+		
 		// check if in dock
 		if ($scope.profile) {
 			settingsService.getSettings().then(function(data) {
@@ -134,10 +153,23 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$location',
 	};
 	
 	$scope.deleteRecording = function() {
-		if ($scope.widget == 'recordings')
+		var type;
+		
+		if ($scope.widget == 'recordings') {
 			httpService.sendAction('callrecording', 'remove', {id: $scope.original.xpid});
-		else
+			type = $scope.original.xpid;
+		}
+		else {
 			httpService.sendAction('voicemailbox', 'delete', {id: $scope.original.xpid});
+			type = $scope.original.voicemailMessageKey;
+		}
+		
+		// close player?		
+		if (document.getElementById('voicemail_player_source').src.indexOf(type) != -1) {
+			$timeout(function() {
+				$('.TopBarVoicemailControls .XButtonClose').trigger('click');
+			}, 100);
+		}
 	};
 	
 	$scope.markAsRead = function(read) {
