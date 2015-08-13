@@ -121,10 +121,4 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 
 		context = this;
-		//this.sendData = sendData;
-		
-
-
-
-
 }]);

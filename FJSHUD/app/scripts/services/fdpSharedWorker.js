@@ -131,10 +131,14 @@ function sync_request(f){
 				"data": synced_data,
 			};
 			
-			for (var i = 0, iLen = ports.length; i < iLen; i++)
-				ports[i].postMessage(sync_response);
+			try{
+				for (var i = 0, iLen = ports.length; i < iLen; i++)
+					ports[i].postMessage(sync_response);
 				
-			synced = true;
+				synced = true;
+			}catch(e){
+				console.error(e.message);
+			}	
 		}
 		else{
 			for(var i = 0, iLen = ports.length; i < iLen;i++){

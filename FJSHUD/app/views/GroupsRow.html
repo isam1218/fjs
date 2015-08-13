@@ -1,7 +1,7 @@
 <avatar profile="group"></avatar>
 
 <div class="ListRowContent" dockable="group">
-    <div class="ListRowTitle">
+    <div class="ListRowTitle GroupListRowTitle">
         <div class="name">
             <strong ng-bind-html="group.name"></strong>
             <span class="details">
@@ -9,5 +9,5 @@
 			</span>
         </div>
     </div>
-    <div class="ListRowStatus Members">{{ group.members.length }}</div>
+    <div class="GroupListRowStatus ListRowStatus Members">{{ group.members.length }}</div>
 </div>

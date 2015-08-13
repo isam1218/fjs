@@ -1,14 +1,15 @@
+var fjs = {};
 importScripts("fdpRequest.js");
 importScripts("../../properties.js");
 
 var synced = false;
+
 var node = undefined;
 var auth = undefined;
-var feeds = fjs.CONFIG.FEEDS;
-var data_obj = {};
-var timestamp_flag = false;
 
-var is_dirty = false;
+var data_obj = {};
+var feeds = fjs.CONFIG.FEEDS;
+var timestamp_flag = false;
 
 self.addEventListener('message',function(event){
 	if(event.data.action){
@@ -20,25 +21,16 @@ self.addEventListener('message',function(event){
 				
 				break;	
 			case 'sync':
-				if(event.data.data != undefined){
-					data_obj = event.data.data;
-				}
-				
-				if(event.data.to_sync){
-					version_check();
-				}else{
-					setTimeout('should_sync();', 500);
-				}
+				do_version_check();
 
 				break;
 			case 'feed_request':
 				get_feed_data(event.data.feed);
+				
 				break;
-
 		}
 	}
 });
-
 
 function get_feed_data(feed){
 	self.postMessage({
@@ -64,79 +56,16 @@ function format_array(feed) {
 	return arr;
 }
 
-
-function should_sync(){
-	self.postMessage({
-		action:'should_sync',
-	});
-}
-
-function version_check (){
-	var newFeeds ='';
-
-	for (var i = 0, iLen = feeds.length; i < iLen; i++)
-		newFeeds += '&' + feeds[i] + '=';
-	
-	var request = new httpRequest();
-	var requestUrl = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) + "?t=web" + newFeeds;
-	
-	var header = {
-		"Authorization":auth,
-    	"node":node,
-	};
-		
-	request.makeRequest(requestUrl,"POST",{},header,function(xmlhttp){
-				 
-		if (xmlhttp.status == 200){
-			var changedFeeds = [];
-		       var params = xmlhttp.responseText.split(";");
-		
-			if (!timestamp_flag){
-				self.postMessage({
-					"action": "timestamp_created",
-					"data": params[0]
-				});
-				
-				timestamp_flag = true;      	
-			}
-			
-		    for(var i = 2, iLen = params.length-1; i < iLen; i++)
-				changedFeeds.push(params[i]);
-				
-			if (changedFeeds.length > 0)
-		        sync_request(changedFeeds);
-		    else
-		       	setTimeout('should_sync();', 500);
-		}
-		else if (xmlhttp.status == 404 || xmlhttp.status == 500){
-			self.postMessage({
-				"action": "network_error"
-			});
-		}
-		else if (xmlhttp.status == 0) {
-			setTimeout('version_check();', 500);
-		}
-		else {
-			self.postMessage({
-				"action": "auth_failed"
-			});
-		}
-	});
-}
-
-var sync_request = function(f){			
+function sync_request(f){			
 	var newFeeds = '';
 	for (var i = 0; i < f.length; i++)
 		newFeeds += '&' + f[i] + '=';
 	
 	var request = new httpRequest();
-	var header = {
-				"Authorization":auth,
-    	  		"node":node,
-	}
-	request.makeRequest(fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds,"POST",{},header,function(xmlhttp){
-		
-		
+	var url = fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds;
+	var header = construct_request_header();
+	
+	request.makeRequest(url,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status && xmlhttp.status == 200){		
 			var synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
 			
@@ -165,12 +94,14 @@ var sync_request = function(f){
 											newItem = false;
 											break;
 										}
-									}
+									}	
 								}else{
+									//recreate the object mapping for synced feed in shareworker
 									newItem = false;
 									data_obj[feed] = synced_data[feed];
 
 								}
+								
 								
 								if (newItem)
 									data_obj[feed][key].items.push(synced_data[feed][key].items[i]);
@@ -182,21 +113,78 @@ var sync_request = function(f){
 				synced_data[feed] = format_array(data_obj[feed]);
 			}
 			
-			synced = true;			
-
 			var sync_response = {
 				"action": "sync_completed",
-				"data": synced_data
+				"data": synced_data,
 			};
-
+			
 			self.postMessage(sync_response);
-			setTimeout('should_sync();', 500);
+			synced = true;
 		}
 		else{
 			self.postMessage({
-				action:'auth_failed'
+				"action": "auth_failed"
 			});
 		}
 		
+		// again, again!
+		setTimeout('do_version_check();', 500);
 	});
-	};
+}
+
+function do_version_check(){
+	var newFeeds ='';
+
+	for (var i = 0, iLen = feeds.length; i < iLen; i++)
+		newFeeds += '&' + feeds[i] + '=';
+			
+	var request = new httpRequest();
+	var url = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds;
+	var header = construct_request_header();
+	
+	request.makeRequest(url,"POST",{},header,function(xmlhttp){
+		if (xmlhttp.status == 200){
+			var changedFeeds = [];
+			var params = xmlhttp.responseText.split(";");
+			
+			if (!timestamp_flag){
+				self.postMessage({
+					"action": "timestamp_created",
+					"data": params[0]
+				});
+				
+				timestamp_flag = true;      	
+			}
+			
+            for(var i = 2, iLen = params.length-1; i < iLen; i++)
+				changedFeeds.push(params[i]);
+				
+			if (changedFeeds.length > 0)
+               	sync_request(changedFeeds);
+            else
+				setTimeout('do_version_check();', 500);
+		}
+		else if(xmlhttp.status == 404 || xmlhttp.status == 500){
+			self.postMessage({
+				"action": "network_error"
+			});
+		}
+		else if (xmlhttp.status == 0) {
+			setTimeout('do_version_check();', 500);
+		}
+		else {
+			self.postMessage({
+				"action": "auth_failed"
+			});
+		}
+	});
+}	
+
+function construct_request_header(){
+	var header = {
+		"Authorization":auth,
+    	"node":node,
+  	};
+
+  	return header;
+}

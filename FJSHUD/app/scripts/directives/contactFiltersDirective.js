@@ -19,8 +19,10 @@ hudweb.directive('contactFilters', function ($rootScope) {
 			
 			function setupWatchers() {
 				// tab click
-				scope.$watch('tab', function(val) {
-					tab = val;
+				scope.$watch('tab', function(newVal, oldVal) {
+					if (newVal == oldVal) return;
+					
+					tab = newVal;
 					
 					// filter every time we click a contact-related tab
 					if (tab != 'groups' && tab != 'recent') {
@@ -43,8 +45,10 @@ hudweb.directive('contactFilters', function ($rootScope) {
 				});
 			
 				// search box
-				scope.$watch('$parent.query', function(val) {
-					var query = val.toLowerCase();
+				scope.$watch('$parent.query', function(newVal, oldVal) {
+					if (newVal == oldVal) return;
+
+					var query = newVal.toLowerCase();
 
 					// show all
 					if (query == '')

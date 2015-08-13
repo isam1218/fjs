@@ -8,7 +8,7 @@
     <select ng-if="viewIcon"
       ng-model="selectedQueue"
             ng-options="queue_option.display_name for queue_option in queue_options | filter: truncateLongAction() track by queue_option.display_name" 
-      ng-change="setQueueSort(selectedQueue)">
+      ng-change="setSort(selectedQueue.type, selectedQueue)">
     </select>
   </div>
 </div>
@@ -58,31 +58,31 @@
 <div ng-if="!viewIcon" class="QueueList">
 	<div class="Grid">
 		<div class="Header">
-			<div ng-click="setSort('name', selectedQueue)">
+			<div ng-click="setSort('name', queue_options[0])">
 				<span>{{::verbage.queue_name}}</span>
 				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
 			</div>			
-			<div ng-click="setSort('longestWait', selectedQueue)">
+			<div ng-click="setSort('longestWait', queue_options[1])">
                 <span>{{::verbage.longest_hold}}</span>     
                 <div ng-if="sortColumn == 'longestWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
             </div>
-            <div ng-click="setSort('info.waiting', selectedQueue)">
+            <div ng-click="setSort('info.waiting', queue_options[2])">
                 <span>{{::verbage.waiting}}</span>      
                 <div ng-if="sortColumn == 'info.waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
             </div>
-			<div ng-click="setSort('info.esa', selectedQueue)">
+			<div ng-click="setSort('info.esa', queue_options[3])">
 				<span>{{::verbage.avg_wait}}</span>		
 				<div ng-if="sortColumn == 'info.esa'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.avgTalk', selectedQueue)">
+			<div ng-click="setSort('info.avgTalk', queue_options[4])">
 				<span>{{::verbage.avg_talk}}</span>		
 				<div ng-if="sortColumn == 'info.avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>			
-			<div ng-click="setSort('info.abandonPercent', selectedQueue)">
+			<div ng-click="setSort('info.abandonPercent', queue_options[5])">
 				<span>{{::verbage.abandoned}}</span>		
 				<div ng-if="sortColumn == 'info.abandonPercent'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.active', selectedQueue)">
+			<div ng-click="setSort('info.active', queue_options[6])">
 				<span>{{::verbage.active}}</span>		
 				<div ng-if="sortColumn == 'info.active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>

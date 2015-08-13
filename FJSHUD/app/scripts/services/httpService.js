@@ -1,4 +1,4 @@
-hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpService', function($http, $rootScope, $location, $q, ntpService){
+hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeout', 'NtpService', function($http, $rootScope, $location, $q, $timeout, ntpService){
 	/**
 		Detect Current Browser
 	*/
@@ -8,230 +8,78 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 	browser = browser && browser[0] ? browser[0] : "MSIE";
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
 	var isIE = browser == "MSIE";
-	var isMasterTab = false;
-	var tabId = 0;
 	var synced = false;
-	var tabMap = undefined;
-	$rootScope.browser = browser;
-	$rootScope.isIE = isIE;
+	var workerStarted = false;
 	var appVersion = navigator.appVersion;
-	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN') ;
 	var upload_progress = 0;
 	var upload_taskId = 0;
 	var feeds = fjs.CONFIG.FEEDS;
-	$rootScope.isFirstSync = true;
 	var deferred_progress = $q.defer();
     var VERSIONS_PATH = "/v1/versions";
-        /**
-         * Versionscache servlet URL
-         * @const {string}
-         * @protected
-         */
     var VERSIONSCACHE_PATH = "/v1/versionscache";
-	
-	//method that generates a random guid for the tab
-	var genGuid = function(){
-		return "xxx".replace(/[x]/g,function(c){
-			return c == 'x' ? Math.random().toString(16).substr(2,2) : c
-		});
-	};
-
-	var assignTab = function(){
-		
-		tabId = sessionStorage.getItem("tabId");
-
-		if(!tabId){
-			tabId = genGuid();//generate a unique tab id
-			sessionStorage.setItem("tabId",tabId);
-		}
-
-		if(localStorage.fon_tabs){
-			tabMap = JSON.parse(localStorage.fon_tabs);
-		}
-
-		//if the tabmap is empty or not defined in localstorage then initialize the tab map is set the current tab as the master tab
-		/*if(tabMap != undefined){
-			tabMap[tabId] = { 
-				isMaster:false,
-				isSynced:false
-			}
-		}else{*/
-			tabMap = {};
-			tabMap[tabId] = {
-				isMaster: true,
-				isSynced: false
-			};
-		//}
-
-		localStorage.fon_tabs = JSON.stringify(tabMap);
-	};
-
-	
-
 	var worker = undefined;
 	
-	if(isSWSupport){
-		if (SharedWorker != 'undefined') {
-		    worker = new SharedWorker("scripts/services/fdpSharedWorker.js");
-		   
-		    worker.port.addEventListener("message", function(event) {
-		        switch (event.data.action) {
-		            case "init":
-		            	updateSettings('instanceId','update',localStorage.instance_id); 
-
-		                worker.port.postMessage({
-		                    "action": "sync"
-		                });
-		                break;
-		            case "sync_completed":
-		                if (event.data.data) {
-		                    broadcastSyncData(event.data.data);
-							synced = true;
-		                }
-		                break;
-		            case "feed_request":
-		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
-		                break;
-      				case "auth_failed":
-						localStorage.removeItem("me");
-						localStorage.removeItem("nodeID");
-						localStorage.removeItem("authTicket");
-						attemptLogin();
-      					break;
-      				case "network_error":
-      					if(!synced){
-      						
-      						$rootScope.networkError = true;
-      						$rootScope.$broadcast('network_issue',{});
-							worker.port.close();
-						}
-      					break;
-					case "timestamp_created":
-						if (event.data.data)
-							ntpService.syncTime(event.data.data);
-						
-						break;
-				}
-		    }, false);
-			worker.port.addEventListener("error",function(evt){
-		    	console.log("error with shared worker port");
-		    	    console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
-
-		    },false);
-		    worker.port.start();
-		}
-	}else{
+	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN');
+	$rootScope.browser = browser;
+	$rootScope.isIE = isIE;
+	$rootScope.isFirstSync = true;
+	
+	// check for second tab before starting web worker
+	if (document.cookie.indexOf('tab=') == -1) {
+		document.cookie = 'tab=true';
 		
-		if(localStorage.tabclosed == "true"){
-			localStorage.removeItem('fon_tabs');
-			localStorage.removeItem('data_obj');
-		}
+		worker = new Worker("scripts/services/fdpWebWorker.js");
 		
-		localStorage.tabclosed = "false";
+		worker.addEventListener("message", function(event) {
+		    switch (event.data.action) {
+		        case "init":
+					workerStarted = true;
+					
+		        	updateSettings('instanceId','update',localStorage.instance_id); 
+
+		            worker.postMessage({
+		                "action": "sync"
+		            });
+		            break;
+		        case "sync_completed":
+		            if (event.data.data) {
+		                broadcastSyncData(event.data.data);
+						synced = true;
+		            }
+		            break;
+		        case "feed_request":
+		            $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
+		            break;
+      			case "auth_failed":
+					localStorage.removeItem("me");
+					localStorage.removeItem("nodeID");
+					localStorage.removeItem("authTicket");
+					attemptLogin();
+      				break;
+      			case "network_error":
+      				if(!synced){
+      					
+      					$rootScope.networkError = true;
+      					$rootScope.$broadcast('network_issue',{});
+						worker.terminate();
+					}
+      				break;
+				case "timestamp_created":
+					if (event.data.data)
+						ntpService.syncTime(event.data.data);
+					
+					break;
+			}
+		}, false);
 		
-		assignTab();
-		
-		if(Object.keys(tabMap).length > 1){
-			window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
-
-		}else{
-			worker = new Worker("scripts/services/fdpWebWorker.js");
-			worker.addEventListener("message", function(event) {
-		        switch (event.data.action) {
-		            case "init":
-		            	tabMap = JSON.parse(localStorage.fon_tabs);
-		           		updateSettings('instanceId','update',localStorage.instance_id); 
-
-						if(tabMap[tabId].isMaster){
-							worker.postMessage({
-		                    	"action": "sync",
-		                    	to_sync: true,
-		                	});	
-						}else{
-
-							if(localStorage.data_obj != undefined){
-								broadcastSyncData(JSON.parse(localStorage.data_obj));
-							}
-							worker.postMessage({
-								action:"sync",
-								to_sync: false,
-							});
-						}
-						break;
-		            case "sync_completed":
-		                if (event.data.data) {
-		                	var data_obj = {};
-		                    var synced_data = event.data.data;
-		                  	tabMap = JSON.parse(localStorage.fon_tabs);
-		                  	if(tabMap[tabId].isMaster){
-								for(var tab in tabMap){
-									tabMap[tab].isSynced = false;	
-								}
-
-								tabMap[tabId].isSynced = true;
-							}
-
-		                    if(!localStorage.data_obj){
-		                    	localStorage.data_obj = JSON.stringify(synced_data);
-		                    }else{
-		                    	data_obj = JSON.parse(localStorage.data_obj);
-		                    }
-							
-		                    // send data to other controllers i'm doing this to ensure order when syncing'
-							broadcastSyncData(synced_data);
-		                }
-		                break;
-		            case "feed_request":
-		                $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
-		                break;
-					case "auth_failed":
-						localStorage.removeItem("me");
-						localStorage.removeItem("nodeID");
-						localStorage.removeItem("authTicket");
-						
-						attemptLogin();
-						break;
-					case "network_error":
-      					if(!synced){
-      						$rootScope.$broadcast('network_issue',undefined);
-							worker.port.close();
-						}
-      					break;
-					case "timestamp_created":
-						if (event.data.data)
-							ntpService.syncTime(event.data.data);
-						
-						break;
-					case "should_sync":
-						
-						//only the master tab should be syncing it will pull the tabs being kept track in local storage
-						tabMap = JSON.parse(localStorage.fon_tabs);
-						if(tabMap[tabId].isMaster){
-							worker.postMessage({
-		                    	"action": "sync",
-		                    	to_sync: true,
-		                	});	
-						}else{
-							
-							//needs to be fixed right now if you are a slave tab you broadcast out the data that was persisted in localstorage
-							if(!tabMap[tabId].isSynced){
-								if(localStorage.data_obj != undefined){
-									broadcastSyncData(JSON.parse(localStorage.data_obj));
-								}
-
-								tabMap[tabId].isSynced = true;	
-							}
-							
-							
-							worker.postMessage({
-								action:"sync",
-								to_sync: false,
-							});
-						}
-						break;
-		        }
-		    }, false);
-		}
+		worker.onerror = function(evt){
+			console.log("error with shared worker port");
+			console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
+		};
+	}
+	else {
+		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
+		return;
 	}
 
 	var broadcastSyncData = function(data) {
@@ -260,13 +108,16 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 
 	    };
 
-	    if(isSWSupport){
-			worker.port.postMessage(events);
-	    }else{
-	    	worker.postMessage(events);
-	    	//setInterval(version_check,1000);
-	    }
+	    worker.postMessage(events);
 	};
+	
+	// fail catch if app hasn't loaded
+	$timeout(function() {
+		if (!workerStarted) {
+			localStorage.removeItem("nodeID");
+			attemptLogin();
+		}
+	}, 20000, false);
 	
 	/**
 		AUTHORIZATION
@@ -284,6 +135,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
             + "&instance_id=" + localStorage.instance_id
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
+			
+		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 		window.onbeforeunload = null;
 		location.href = authURL;
@@ -326,14 +179,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 			// start shared worker
 			authorizeWorker();
 		})
-		.error(function(response, status) {
-			console.log("Error accessing this api: "  + fjs.CONFIG.SERVER.serverURL 
-			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
-			+ authTicket)
-			
+		.error(function(response, status) {			
 			switch(status){
-				case 401:
-					break;
 				case 402:
 					//alert("bad authentication");
 					delete localStorage.me;
@@ -386,12 +233,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
     	localStorage.removeItem("nodeID");
     	localStorage.removeItem("data_obj");
     	localStorage.removeItem("instance_id");
+		
+		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     	
 		// shut off web worker
-		if (worker.port)
-			worker.port.close();
-		else
-			worker.terminate();
+		worker.terminate();
 		
 		window.onbeforeunload = null;		
 		location.href = authURL;
@@ -401,38 +247,19 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
 		// stupid warning
 		window.onbeforeunload = function() {
 			
-			/*if (localStorage.tabclosed)
-				localStorage.tabclosed = "true";
-    	
-			// shut off web worker
-			if (worker.port)
-				worker.port.close();
-			else
-				worker.terminate();*/
+			document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 			return "Are you sure you want to navigate away from this page?";
 		};
 	};
 
-	/*
-	 if there is sharedworker support then it will get the data from the sharedwebworker otherwise it will check localstorage for the data
-	*/
+	// get feed data from web worker
     this.getFeed = function(feed) {
-        if(isSWSupport){
-			worker.port.postMessage({
+		if (worker) {
+			worker.postMessage({
 	            "action": "feed_request",
 	            "feed": feed
 	        });
-    	}else{
-			if(localStorage.data_obj){
-				var data = JSON.parse(localStorage.data_obj);
-				
-				if (data[feed]) {
-					$rootScope.$evalAsync(function() {
-						$rootScope.$broadcast(feed + '_synced', data[feed]);
-					});
-				}
-			}
 		}
     };
     
@@ -441,7 +268,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', 'NtpSer
             'a.name': type,
             't': 'web',
             'action': action
-        }
+        };
+		
         if (model || model == 0) {
             if (model.value) {
                 params['a.value'] = model.value;

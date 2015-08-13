@@ -159,6 +159,9 @@ hudweb.controller('NotificationController',
       phoneService.cacheNotification(undefined);
       phoneService.removeNotification();
     }
+    
+    // call this so can delete tmp barge notifications
+    delete_notification_from_notifications_and_today(xpid);
   };
 
   $scope.showNotifications = function(flag)
@@ -315,7 +318,7 @@ hudweb.controller('NotificationController',
 
     $location.path(endPath);
     $scope.remove_notification(message.xpid);
-    $scope.showNotificationOverlay(false);
+    $scope.showOverlay(false);
   };
   
   $scope.showQueue = function(message)
@@ -372,8 +375,16 @@ hudweb.controller('NotificationController',
     phoneService.acceptCall(xpid);
   };
 
-  $scope.makeCall = function(phone){
-    phoneService.makeCall(phone);
+  $scope.makeCall = function(message){
+    if (message.type == 'busy-ring-back'){
+      phoneService.makeCall(message.fullProfile.primaryExtension);
+      $scope.showOverlay(false);
+    }
+    else{
+      phoneService.makeCall(message.phone);
+      $scope.remove_notification(message.xpid);
+      $scope.showOverlay(false);
+    }
   };
 
   $scope.showNotificationOverlay = function(show) {
@@ -412,12 +423,12 @@ hudweb.controller('NotificationController',
        myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
   };
 
-  var prepareBargeNotification = function(callObj){
-    var myCallBarger = callObj.call.bargers[0].displayName;
+  var prepareBargeNotification = function(contactObj){
+    var myCallBarger = contactObj.call.bargers[0].displayName;
     var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
-    var personBeingWhisperedUpon = callObj.call.bargers[0].call.contactId;
+    var personBeingWhisperedUpon = contactObj.call.bargers[0].call.contactId;
     msgXpid = msgDate + '';
-    switch(callObj.call.bargers[0].call.barge){
+    switch(contactObj.call.bargers[0].call.barge){
       case 1:
         sendBargeNotification(myCallBarger, msgDate, msgXpid, 'monitor');
         break;
@@ -455,6 +466,22 @@ hudweb.controller('NotificationController',
     if (type != 'whisper' || type == 'whisper' && $rootScope.myPid == whisperId){
       $scope.notifications.unshift(extraNotification);
       $scope.todaysNotifications.push(extraNotification);      
+    }
+  };
+
+  var delete_notification_from_notifications_and_today = function(xpid){
+    for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+      if($scope.notifications[i].xpid == xpid){
+        $scope.notifications.splice(i,1);
+        break;
+      }
+    }
+
+    for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
+      if($scope.todaysNotifications[j].xpid == xpid){
+        $scope.todaysNotifications.splice(j,1);
+        break;
+      } 
     }
   };
 
@@ -512,13 +539,17 @@ hudweb.controller('NotificationController',
   
     }
 
-    var myCallObject = contactService.getContact($rootScope.myPid);
+    var myContactObj = contactService.getContact($rootScope.myPid);
     
     // if someone barges...
-    if (!myCallObject.call || myCallObject.call.bargers.length == 0){
-      $scope.remove_notification(msgXpid);
-    } else if (myCallObject.call.bargers.length > 0){
-      prepareBargeNotification(myCallObject);
+    if (!myContactObj.call || myContactObj.call.bargers.length == 0){
+      delete_notification_from_notifications_and_today(msgXpid);
+    } else if (myContactObj.call.bargers.length > 0){
+      // delete any existing barge-notification...
+      if (msgXpid)
+        delete_notification_from_notifications_and_today(msgXpid);
+      // start creation of new barge notification...
+      prepareBargeNotification(myContactObj);
     } 
 
     $scope.inCall = $scope.calls.length > 0;
@@ -667,9 +698,11 @@ hudweb.controller('NotificationController',
     
 	});
 
-	$scope.playVm = function(xpid){
-		phoneService.playVm(xpid);
-	};
+  $scope.playVm = function(msg){
+    phoneService.playVm(msg.vmId);
+    $scope.remove_notification(msg.xpid);
+    $scope.showOverlay(false);
+  };
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
@@ -855,18 +888,9 @@ hudweb.controller('NotificationController',
   };
 
 	var deleteNotification = function(notification){
-		for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
-			if($scope.notifications[j].xpid == notification.xpid){
-				$scope.notifications.splice(j,1);
-				break;	
-			}
-		}
-		for(var k = 0, kLen = $scope.todaysNotifications.length; k < kLen; k++){
-			if($scope.todaysNotifications[k].xpid == notification.xpid){
-				$scope.todaysNotifications.splice(k,1);
-				break;	
-			}
-		}
+    
+    delete_notification_from_notifications_and_today(notification.xpid);
+
 		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
 			$scope.displayAlert = true;
       $timeout(displayNotification, 1500);		

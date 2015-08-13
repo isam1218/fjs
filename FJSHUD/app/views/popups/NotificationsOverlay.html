@@ -53,13 +53,13 @@
                                 <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId, message)" >{{::verbage.accept}}</a>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'">
-                                <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
-                                <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
+                                <span class="XButton" style="width:70px" ng-click="playVm(message)"> {{::verbage.Play}}</span>
+                                <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message)" > {{::verbage.call_back}}</span>
                             </div>
     
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
                                <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
-                               <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
+                               <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message)">{{::verbage.Call}}</span>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
                                 <span class="XButton" style="width:70px" ng-click="showQueue(message)">{{::verbage.Show}}</span>
@@ -111,13 +111,13 @@
                                 <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId, message)" >{{::verbage.accept}}</a>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'">
-                                <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
-                                <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
+                                <span class="XButton" style="width:70px" ng-click="playVm(message)"> {{::verbage.Play}}</span>
+                                <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message)" > {{::verbage.call_back}}</span>
                             </div>
     
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
                                <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
-                               <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
+                               <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message)">{{::verbage.Call}}</span>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
                                 <span class="XButton" style="width:70px"  ng-click="showQueue(message)">{{::verbage.Show}}</span>
@@ -172,13 +172,13 @@
                                 <span class="XButton XButtonGreen" style="width:70px"  ng-click="acceptCall(message.senderId, message)" >{{::verbage.accept}}</a>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'vm'">
-                                <span class="XButton" style="width:70px" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
-                                <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message.phone)" > {{::verbage.call_back}}</span>
+                                <span class="XButton" style="width:70px" ng-click="playVm(message)"> {{::verbage.Play}}</span>
+                                <span class="XButton XButtonGreen" style="width:90px" ng-click="makeCall(message)" > {{::verbage.call_back}}</span>
                             </div>
     
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
                                <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
-                               <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message.phone)">{{::verbage.Call}}</span>
+                               <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message)">{{::verbage.Call}}</span>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
                                 <span class="XButton" style="width:70px" ng-click="showQueue(message)">{{::verbage.Show}}</span>
