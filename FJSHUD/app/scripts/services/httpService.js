@@ -25,7 +25,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
-	if (document.cookie.indexOf('tab') == -1) {
+	if (document.cookie.indexOf('tab=') == -1) {
 		document.cookie = 'tab=true';
 		
 		worker = new Worker("scripts/services/fdpWebWorker.js");
