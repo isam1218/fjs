@@ -4,8 +4,10 @@
 <div id="CallAlert">  
   <div onclick="window.location.replace('#/Close')" class="close"></div>  
   <a  class="ListRowFirst ListRow ListRow-Contact">     
-   <div class="Avatar"><img ng-src="{{ getAvatar(meModel.my_pid) }}" class="AvatarImgPH"></div>
-  <!-- <avatar profile="meContact"></avatar> -->
+   <div class="Avatar">
+	 <img ng-src="{{ getAvatar(meModel.my_pid) }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="AvatarImgPH" />
+	 <img ng-src="{{path}}/img/Generic-Avatar-28.png" class="AvatarImgPH" style="display:none" />
+   </div>
 
   <div class="ListRowContent">
     <div class="NotificationTitle">

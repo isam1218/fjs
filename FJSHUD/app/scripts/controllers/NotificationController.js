@@ -23,7 +23,8 @@ hudweb.controller('NotificationController',
   $scope.notifications_to_display = '';
   $scope.new_notifications_to_display = '';
   $scope.away_notifications_to_display = '';
-  $scope.old_notifications_to_display = '';
+  $scope.old_notifications_to_display = ''; 
+  $scope.multiple_old_notifications = false;
   $scope.message_section_notifications = ''
   $scope.hasNewNotifications = false;
   $scope.hasAwayNotifications = false;
@@ -97,31 +98,37 @@ hudweb.controller('NotificationController',
   $scope.disableWarning = function(){
     $scope.pluginErrorEnabled = false;
   };
-
+  
+  $scope.getMultipleNotifications = function(message){ 
+	  var multiple_old_notifications = false;
+	  var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';
+	  
+	  if(typeof messages === 'string')
+		  return false;
+	  if(Array.isArray(messages))
+	      return true;
+  };
+  
   $scope.getMessage = function(message){              
-    var messages = message.message && message.message != null && message.message != "" ? (message.message).split('\n') : '';
-    if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
-      messages="";
-    
+    var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';      
+     	
+   	if(typeof messages == 'undefined' || typeof messages == 'null')      
+    	      messages="";           
+   
     switch(message.type){
 
       case "vm":
         if(message.vm && message.vm.transcription != ""){
-          return vm.transcription;
+        	messages =  vm.transcription;
         }else{
-          return "transcription is not available";
+        	messages =  "transcription is not available";
         }
         break;
       case 'missed-call': 
-        return "Missed call from extension " + message.phone; 
-        break;
-      case "chat":
-      case "gchat": 
-        return messages;
-        break;
-      default:
-        return messages;
+    	  messages =  "Missed call from extension " + message.phone; 
+        break;      
     }
+    return messages;
   };
 
   // required to show new messages on-the-fly
