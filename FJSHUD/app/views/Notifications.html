@@ -53,22 +53,22 @@
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
 							<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId, message)">{{::verbage.accept}}</span>
+							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId, message); remove_notification(message.xpid)">{{::verbage.accept}}</span>
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
-							<span class="XButton" ng-click="playVm(message.vmId)"> {{::verbage.Play}}</span>
-							<span class="XButton XButtonGreen" ng-click="makeCall(message.phone)">{{::verbage.call_back}}</span>
+							<span class="XButton" ng-click="playVm(message)"> {{::verbage.Play}}</span>
+							<span class="XButton XButtonGreen" ng-click="call_back(message)">{{::verbage.call_back}}</span>
 						</div>
 
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
 							<span class="XButton chatNotification" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
-							<span class="XButton XButtonGreen" ng-click="makeCall(message.phone); remove_notification(message.xpid)">{{::verbage.Call}}</span>	
+							<span class="XButton XButtonGreen" ng-click="makeCall(message)">{{::verbage.Call}}</span>	
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
 							<span class="XButton" ng-click="remove_notification(message.xpid);">{{::verbage.Skip}}</span>
-							<span class="XButton XButtonGreen" ng-click="makeCall(message.fullProfile.primaryExtension)">{{::verbage.Call}}</span>	
+							<span class="XButton XButtonGreen" ng-click="makeCall(message)">{{::verbage.Call}}</span>	
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">

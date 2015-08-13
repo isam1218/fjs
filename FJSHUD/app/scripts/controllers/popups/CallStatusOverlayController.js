@@ -223,7 +223,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);	
 		$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
 		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
-		if ($scope.onCall.call.bargers.length > 0){
+		if ($scope.onCall.call.bargers && $scope.onCall.call.bargers.length > 0){
 			$scope.alreadyBarged = $scope.onCall.call.bargers[0].call.barge == 2;
 			$scope.alreadyMonitored = $scope.onCall.call.bargers[0].call.barge == 1;
 			$scope.topAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.xpid;
