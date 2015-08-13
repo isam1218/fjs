@@ -645,20 +645,25 @@ hudweb.controller('NotificationController',
 							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
 							left_buttonID = "CALL_DECLINED";
 							right_buttonID = "CALL_ACCEPTED";
-							right_buttonEnabled = $scope.calls[i].incoming ? "true" : "false";
+							right_buttonEnabled = $scope.calls[i].incoming;
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 							left_buttonText = "END";
 							left_buttonID = "CALL_DECLINED";
-						    if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
+						  if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
 						    	right_buttonID = "CALL_ON_HOLD";
-								right_buttonEnabled = "true";
-								right_buttonText = "HOLD";	
-							}
+								  right_buttonEnabled = false;
+								  right_buttonText = "HOLD";	
+							}else{
+                  //right_buttonID = "CALL_ON_HOLD";
+                  right_buttonEnabled = false;
+                  right_buttonText = "HOLD";  
+                
+              }
 
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
 							right_buttonText = "TALK";	
 							right_buttonID = "CALL_ON_RESUME";
-							right_buttonEnabled = "true";
+							right_buttonEnabled = true;
 							
 						}
 						if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
@@ -685,7 +690,7 @@ hudweb.controller('NotificationController',
 					  			"rightButtonText" : right_buttonText,
 					  			"leftButtonId" : left_buttonID,
 					  			"rightButtonId" : right_buttonID,
-					  			"leftButtonEnabled" : "true",
+					  			"leftButtonEnabled" : true,
 					  			"rightButtonEnabled" : right_buttonEnabled,
 					  			"callerName" : $scope.calls[i].displayName, 
 					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outbound call for",
