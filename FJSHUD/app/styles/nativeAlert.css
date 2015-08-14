@@ -24,6 +24,9 @@
   margin-left: -5px;
   margin-top: -5px;
 }
+#CallAlert .IsOnCall {
+  background-position: -83px -243px;
+}
 #CallAlert .LeftBarNotificationMessageSection .NotificationMessage {
   padding-right: 20px;
   -ms-word-wrap: break-word;
@@ -134,6 +137,7 @@
   color: #aaa;
   font-size: 14px;
   height: 60px;
+  max-height: none;
 }
 #CallAlert a.ListRow-Contact.ListRowFirst.ListRowFirst .Avatar {
   width: 40px;
