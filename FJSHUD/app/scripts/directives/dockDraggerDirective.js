@@ -41,7 +41,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 					var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 					// if inside dock...
-					if (ui.position.left >= rect.left && ui.position.top >= rect.top) {
+					if (ui.position.left >= rect.left && ui.position.top >= rect.top && ui.position.top < rect.bottom - 25) {
 						var top = ui.position.top - rect.top;
 						var left = ui.position.left - rect.left;
 						
