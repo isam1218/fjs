@@ -15,6 +15,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.contacts = [];
 	$scope.who = {};
 	$scope.who.sendToPrimary = true;
+	$scope.alreadyBarged = false;
+	$scope.alreadyMonitored = false;
+	$scope.topAlreadyWhispered = false;
+	$scope.bottomAlreadyWhispered = false;
 
 	$scope.selectionDisplay;
 	$scope.transferResults;
@@ -209,20 +213,30 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 
-	// check to make sure the call object exists...
+	/* Disabling of Barge/Monitor/Whisper Buttons --> dependent on barge permission, if external caller, and whether has been barged already */
 	if ($scope.onCall.call){
-		// check barge permission...
 		$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
-		// disable barge/monitor/whisper buttons if external caller...
-		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);	
+		// disable barge/monitor/whisper buttons for bottom user if external caller...
+		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
 		$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
 		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
 		if ($scope.onCall.call.bargers && $scope.onCall.call.bargers.length > 0){
 			$scope.alreadyBarged = $scope.onCall.call.bargers[0].call.barge == 2;
 			$scope.alreadyMonitored = $scope.onCall.call.bargers[0].call.barge == 1;
 			$scope.topAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.xpid;
-			$scope.bottomAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.call.fullProfile.xpid;
+			// property doesn't exist if call is not whispered already so need to run a check before setting it up
+			if ($scope.onCall.call.fullProfile)
+				$scope.bottomAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.call.fullProfile.xpid;
+			else
+				$scope.bottomAlreadyWhispered = false;	
 		}
+		// need to differentiate b/w top and bottom because external calls only apply to the bottom user in CSO...
+		$scope.topUserCanBargeFinal = $scope.canBarge ? !$scope.alreadyBarged : false;
+		$scope.topUserCanMonitorFinal = $scope.canBarge ? !$scope.alreadyMonitored : false;
+		$scope.topUserCanWhisperFinal = $scope.canBarge ? !$scope.topAlreadyWhispered : false
+		$scope.bottomUserCanBargeFinal = $scope.bottomUserCanBarge ? !$scope.alreadyBarged : false;
+		$scope.bottomUserCanMonitorFinal = $scope.bottomUserCanBarge ? !$scope.alreadyMonitored : false;
+		$scope.bottomUserCanWhisperFinal = $scope.bottomUserCanBarge ? !$scope.bottomAlreadyWhispered : false;
 	}
 
 
