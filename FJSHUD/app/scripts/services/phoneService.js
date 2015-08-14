@@ -366,7 +366,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		context.cacheNotification(content,width,height);
 					
 		if(alertPlugin && displayNotification){
-
 				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
@@ -753,7 +752,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };	
 	
     var onAlertMouseEvent = function(event,x,y){
-    	//this.removeNotification();
     };
 
     var onSoundDeviceChanged = function(data){
