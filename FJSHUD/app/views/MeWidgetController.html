@@ -84,7 +84,7 @@
             <button class="XButton CurrentCallBtn" 
             ng-class="currentCall.mute ? 'UnmuteBtn' : ''"
             ng-click="muteConference()" ng-if="currentCall.type == 0"><span>{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
-            <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3 && currentCall.state != 0}" ng-click="parkCall(currentCall)" ng-if="currentCall.barge < 1"><span>{{::verbage.Park}}</span></button>  
+            <button class="XButton CurrentCallBtn ng-class:{'disableButton': currentCall.state != 2 && currentCall.state != 3 && currentCall.state != 0}" ng-click="parkCall(currentCall)" ng-if="currentCall.barge < 1 && currentCall.type != 0"><span>{{::verbage.Park}}</span></button>  
             <div class="SelectBox XButton" ng-if="currentCall.barge > 0" style="width:97%" ng-click="showBargePopup($event,$element,true)">
                         <div class="SelectBoxText"><span>{{ currentCall.barge == 2 ? 'Barge' : (currentCall.barge == 3 ? 'Whisper' : 'Monitor')}}</span></div>
                         <div class="SelectBoxArrow"></div>

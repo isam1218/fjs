@@ -23,7 +23,10 @@ hudweb.controller('NotificationController',
   $scope.notifications_to_display = '';
   $scope.new_notifications_to_display = '';
   $scope.away_notifications_to_display = '';
-  $scope.old_notifications_to_display = '';
+  $scope.old_notifications_to_display = ''; 
+  $scope.multiple_old_notifications = false;
+  $scope.multiple_new_notifications =  false;
+  $scope.multiple_away_notifications =  false;
   $scope.message_section_notifications = ''
   $scope.hasNewNotifications = false;
   $scope.hasAwayNotifications = false;
@@ -97,31 +100,36 @@ hudweb.controller('NotificationController',
   $scope.disableWarning = function(){
     $scope.pluginErrorEnabled = false;
   };
-
+  
+  $scope.getMultipleNotifications = function(message){	
+	  var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';
+	  
+	  if(typeof messages === 'string')
+		  return false;
+	  if(Array.isArray(messages))
+	      return true;
+  };
+  
   $scope.getMessage = function(message){              
-    var messages = message.message && message.message != null && message.message != "" ? (message.message).split('\n') : '';
-    if(messages.length == 0 || (messages.length == 1 && messages[0] == ''))
-      messages="";
-    
+    var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';      
+     	
+   	if(typeof messages == 'undefined' || typeof messages == 'null')      
+    	      messages="";           
+   
     switch(message.type){
 
       case "vm":
         if(message.vm && message.vm.transcription != ""){
-          return vm.transcription;
+        	messages =  vm.transcription;
         }else{
-          return "transcription is not available";
+        	messages =  "transcription is not available";
         }
         break;
       case 'missed-call': 
-        return "Missed call from extension " + message.phone; 
-        break;
-      case "chat":
-      case "gchat": 
-        return messages;
-        break;
-      default:
-        return messages;
+    	  messages =  "Missed call from extension " + message.phone; 
+        break;      
     }
+    return messages;
   };
 
   // required to show new messages on-the-fly
@@ -318,7 +326,7 @@ hudweb.controller('NotificationController',
 
     $location.path(endPath);
     $scope.remove_notification(message.xpid);
-    $scope.showNotificationOverlay(false);
+    $scope.showOverlay(false);
   };
   
   $scope.showQueue = function(message)
@@ -375,8 +383,16 @@ hudweb.controller('NotificationController',
     phoneService.acceptCall(xpid);
   };
 
-  $scope.makeCall = function(phone){
-    phoneService.makeCall(phone);
+  $scope.makeCall = function(message){
+    if (message.type == 'busy-ring-back'){
+      phoneService.makeCall(message.fullProfile.primaryExtension);
+      $scope.showOverlay(false);
+    }
+    else{
+      phoneService.makeCall(message.phone);
+      $scope.remove_notification(message.xpid);
+      $scope.showOverlay(false);
+    }
   };
 
   $scope.showNotificationOverlay = function(show) {
@@ -537,6 +553,10 @@ hudweb.controller('NotificationController',
     if (!myContactObj.call || myContactObj.call.bargers.length == 0){
       delete_notification_from_notifications_and_today(msgXpid);
     } else if (myContactObj.call.bargers.length > 0){
+      // delete any existing barge-notification...
+      if (msgXpid)
+        delete_notification_from_notifications_and_today(msgXpid);
+      // start creation of new barge notification...
       prepareBargeNotification(myContactObj);
     } 
 
@@ -686,9 +706,11 @@ hudweb.controller('NotificationController',
     
 	});
 
-	$scope.playVm = function(xpid){
-		phoneService.playVm(xpid);
-	};
+  $scope.playVm = function(msg){
+    phoneService.playVm(msg.vmId);
+    $scope.remove_notification(msg.xpid);
+    $scope.showOverlay(false);
+  };
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
