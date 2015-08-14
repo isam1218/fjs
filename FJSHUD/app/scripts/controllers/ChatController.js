@@ -291,7 +291,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}		
 		
 		$scope.chat.message = '';
-		storageService.saveChatMessage(chat.targetId);
+		storageService.saveChatMessage(chat.targetId);		
+		document.getElementById('ChatMessageText').style.height = '1px';
 	};
 	
 	$scope.searchChat = function(increment) {
