@@ -323,7 +323,22 @@
             font-size: 12px;                               
         }      
     }
-  }   
+  } 
+  .MenuItem{
+    font-weight: bold;
+    
+    &:hover{
+      background-color: transparent !important;
+      color: #555450;
+      text-shadow: 0 -1px 0 #555450;
+    }   
+    &.selected{
+        color: #729C00 !important;
+        &:hover{
+            text-shadow: 0 -1px 0 #729C00 !important;
+        }            
+    }    
+  }    
 }
 .MeInfoTitle {
   color: #999;

@@ -16,6 +16,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.who = {};
 	$scope.who.sendToPrimary = true;
 
+	$scope.selectionDisplay;
+	$scope.transferResults;
 	$scope.transferContacts = [];
 	$scope.transferType;
 	$scope.recentTransfers = [];
@@ -145,7 +147,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	};
 	
-	
 	$scope.selectConference = function(conference) {
 		$scope.selectedConf = conference;
 	};
@@ -169,9 +170,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
 	};
 
-	$scope.transferToObj;
-	$scope.selectionDisplay;
-
 	$scope.transferFilter = function(){
 		var query = $scope.transfer.search.toLowerCase();
 		return function(contact){
@@ -185,10 +183,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		};
 	};
 
-	$scope.transferResults;
-	
-	$scope.transferToObj = $scope.transfer.search;
-
 	$scope.isStatusUndefined = function(conference){
 		// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
 		// conference permissions == 0 --> can INVITE/kick/mute to conference
@@ -197,7 +191,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	};
 
-	
 	$scope.joinConference = function() {
 		if ($scope.selectedConf) {
 			httpService.sendAction('conferences', 'joinCall', {
@@ -215,6 +208,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select conference room';
 	};
 
+
 	// check to make sure the call object exists...
 	if ($scope.onCall.call){
 		// check barge permission...
@@ -231,6 +225,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	}
 
+
 	$scope.determineTransferFrom = function(contactToTransfer){
 	  var contact = contactService.getContact(contactToTransfer);
 	  if (contact && contact.permissions){
@@ -241,15 +236,26 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.transferPermFilterContacts = function(){
+		// filter out contacts from transfer list if do not have [transfer to primary extension permission] AND [transfer to VM permission]
 		return function(contact){
-			return settingsService.isEnabled(contact.permissions, 4);
+			return settingsService.isEnabled(contact.permissions, 4) || settingsService.isEnabled(contact.permissions, 5);
 		};
 	};
 
+	$scope.canTransferToPrimaryExtension = function(){
+		/* Reference (DO NOT DELETE)
+		*CP Group Permission: HUD -- Transfer call to others' extensions
+		*if A is on call w/ B, and want to know if A can transfer B to C's primary extension, check the [transfer call to others' extensions permission] on B */
+		var personBeingTransferred = $scope.transferFrom;
+		return settingsService.isEnabled(personBeingTransferred.permissions, 4);
+	};
+
 	$scope.canTransferToVm = function(){
-		var myContactObj = contactService.getContact($rootScope.myPid);
-		// console.error('vm perm - ', settingsService.isEnabled(myContactObj.permissions, 5));
-		return settingsService.isEnabled(myContactObj.permissions, 5);
+		/* Reference (DO NOT DELETE)
+		*CP Group Permission: HUD -- Transfer call to VM
+		*if A is on call w/ B, and want to know if A can transfer B to C's VM --> check the transferToVM permission on B. */
+		var personBeingTransferred = $scope.transferFrom;
+		return settingsService.isEnabled(personBeingTransferred.permissions, 5);
 	};
 
 	var createTmpExternalContact = function(contactNumber){
@@ -262,6 +268,14 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.selectDestination = function(selectionInput, display) {
 		// if clicking on the selectionBox
 		if (display == 'selectionBox'){
+			// if selected box is an external phone #
+			if (!isNaN(selectionInput) && selectionInput.length > 4){
+				$scope.transferType = 'external';
+				$scope.transferTo = createTmpExternalContact(selectionInput);
+			} 
+			// if user does not have transfer to primary extension permission AND doesn't have transfer to VM perm -> can't advance to next transfer screen
+			if (!$scope.canTransferToPrimaryExtension() && !$scope.canTransferToVm())
+				return;
 			// if selected is an internal contact, grab their contact data...
 			contactService.getContacts().then(function(data){
 				for (var i = 0; i < data.length; i++){
@@ -271,11 +285,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 					}
 				}
 			});
-			// if selected box is an external phone #
-			if (!isNaN(selectionInput) && selectionInput.length > 4){
-				$scope.transferType = 'external';
-				$scope.transferTo = createTmpExternalContact(selectionInput);
-			}
 		} else {
 			// else if clicking on recent or contacts, can't transfer my call to me or to the person i'm talking to...
 			if (selectionInput.xpid != $rootScope.myPid && selectionInput.xpid != $scope.transferFrom.xpid)
@@ -320,7 +329,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			}
 		}
 	});
-
 
   $scope.$on("$destroy", function() {
 		updateTime = null;
