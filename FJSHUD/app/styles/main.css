@@ -673,6 +673,10 @@ p {
 .LeftBar .ListRow .CallStatus .Avatar {
   margin: 2px !important;
 }
+.LeftBar .ListRow .ListRowTitle.GroupListRowTitle {
+  max-width: 100%;
+  width: 80%;
+}
 .LeftBar .ListRow .ListRowTitle {
   width: 48%;
 }
@@ -689,6 +693,9 @@ p {
 }
 .LeftBar .ListRow .ListRowTitle .name strong {
   width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .LeftBar .ListRow .ListRowTitle .status .desc {
   font-size: 10px;
@@ -818,6 +825,13 @@ p {
 .LeftBar .Groups .ContactList a.ListRow,
 .LeftBar .Recent .ContactList a.ListRow {
   background-color: #fff;
+}
+.LeftBar .Contacts .ContactList a.ListRow .GroupListRowStatus,
+.LeftBar .Groups .ContactList a.ListRow .GroupListRowStatus,
+.LeftBar .Recent .ContactList a.ListRow .GroupListRowStatus {
+  right: 0px !important;
+  left: -5px;
+  width: 30px !important;
 }
 .LeftBar .Contacts .ContactList a.ListRow .ListRowStatus,
 .LeftBar .Groups .ContactList a.ListRow .ListRowStatus,
@@ -2295,6 +2309,20 @@ p {
   font-family: monospace;
   font-size: 12px;
 }
+.MeInfoBlock-column .MenuItem {
+  font-weight: bold;
+}
+.MeInfoBlock-column .MenuItem:hover {
+  background-color: transparent !important;
+  color: #555450;
+  text-shadow: 0 -1px 0 #555450;
+}
+.MeInfoBlock-column .MenuItem.selected {
+  color: #729C00 !important;
+}
+.MeInfoBlock-column .MenuItem.selected:hover {
+  text-shadow: 0 -1px 0 #729c00 !important;
+}
 .MeInfoTitle {
   color: #999;
   font-weight: bold;
@@ -3536,11 +3564,11 @@ div.NewCall .XButton.XButtonNormal {
   width: 74px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 46px;
+  width: 50px;
+  margin-left: 10px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-  width: 106px;
-  margin-left: -2px;
+  width: 95px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.CallType {
   width: 10%;
@@ -3607,48 +3635,62 @@ div.NewCall .XButton.XButtonNormal {
   border-right: 1px solid #fff;
 }
 .CallLog .ListRow > div.Name {
-  flex: 3 1 0;
-  -webkit-flex: 3 1 0;
+  flex: 3.75 1 0;
+  -webkit-flex: 3.75 1 0;
   -ms-flex: 3;
   max-width: 135px;
+}
+.CallLog .ListRow > div.Name.SmallFont-true {
+  font-size: 11px;
+}
+.CallLog .ListRow > div.Name.SmallFont-false {
+  font-size: 12px;
 }
 .CallLog .ListRow > div.Name > div {
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
   color: #009cff;
-  font-weight: bold;
   max-width: 114px;
   margin-top: 15px;
 }
 .CallLog .ListRow > div.Phone {
   text-decoration: underline;
   color: #333;
-  flex: 2.1 1 0;
-  -webkit-flex: 2.1 1 0;
+  flex: 2.75 1 0;
+  -webkit-flex: 2.75 1 0;
   -ms-flex: 2.1;
-  font-weight: bold;
   max-width: 130px;
+}
+.CallLog .ListRow > div.Phone.SmallFont-true {
+  font-size: 9px;
+}
+.CallLog .ListRow > div.Phone.SmallFont-false {
+  font-size: 11px;
 }
 .CallLog .ListRow > div.Phone span {
   white-space: nowrap;
   cursor: pointer;
 }
 .CallLog .ListRow > div.Duration {
-  flex: 1.4 1 0;
-  -webkit-flex: 1 1 0;
+  flex: 1.3 1 0;
+  -webkit-flex: 1.3 1 0;
+  font-size: 11px;
   -ms-flex: 1;
   max-width: 50px;
 }
 .CallLog .ListRow > div.Date {
-  flex: 3 1 0;
-  -webkit-flex: 3 1 0;
+  flex: 2 1 0;
+  -webkit-flex: 3.5 1 0;
+  font-size: 11px;
   -ms-flex: 3;
   white-space: nowrap;
-  max-width: 120px;
+  max-width: 125px;
 }
 .CallLog .ListRow > div.Type {
   width: 6%;
+  flex: .5;
+  -webkit-flex: 1;
   -ms-flex: 1;
 }
 .CallLog .ListRow > div.Type .ListRowStatusIcon {
@@ -3877,7 +3919,7 @@ div.NewCall .XButton.XButtonNormal {
   font-size: 12px;
 }
 .conference.currentCall .ListRowTitle {
-  max-width: 61%;
+  max-width: 80%;
 }
 .conference.currentCall .ListRowTitle .name,
 .conference.currentCall .ListRowTitle .name > * {
@@ -4579,6 +4621,10 @@ div.NewCall .XButton.XButtonNormal {
 .SearchBox.Add {
   background: url("../img/add.png") no-repeat white;
   background-position: 2%;
+}
+.SearchBox.TransferSearchBox {
+  width: 382px;
+  background-position: 1% !important;
 }
 .SearchInputBox {
   position: relative;
@@ -5811,6 +5857,9 @@ div.NewCall .XButton.XButtonNormal {
   color: gray;
   font-size: 10px;
 }
+.ListRow .ListRowTitle .name .ConferenceListRowStatusText {
+  font-size: 12px !important;
+}
 .ListRow .ListRowStatus {
   float: right;
   color: #888;
@@ -5831,6 +5880,13 @@ div.NewCall .XButton.XButtonNormal {
   top: -10px;
   font-size: 10px;
   margin-left: -4px;
+}
+.ListRow .ListRowStatus .ConferenceStatusIcon {
+  display: inline-block;
+  position: relative;
+  top: -10px;
+  font-size: 10px;
+  margin-left: -1px !important;
 }
 .ListRow .ListRowStatus .ListRowStatusText {
   top: -15px;
@@ -6798,7 +6854,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .XIcon-QueueStatus-LoggedIn,
 .XIcon-QueueStatus-login {
-  background-position: -4px -24px;
+  background-position: -2px -24px;
 }
 .XIcon-QueueStatus-LoggedOut,
 .XIcon-QueueStatus-logout {
