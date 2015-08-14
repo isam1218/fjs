@@ -307,7 +307,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 					toContactId: $scope.transferTo.xpid
 				});
 			}
-			recentXpids.push($scope.transferTo.xpid);
+			recentXpids[$scope.transferTo.xpid] = $scope.transferTo.xpid;
 			localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentXpids);
 			$scope.showOverlay(false);
 		}
@@ -318,11 +318,12 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	// grabbing recent transfers...
 	contactService.getContacts().then(function(data){
 		$scope.transferContacts = data;
-		recentXpids = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : [];
-		for (var j = 0; j < recentXpids.length; j++){
-			var singleRecent = recentXpids[j];
+		// grab recentXpids array from LS
+		recentXpids = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : {};
+		// // loop thru recentXpids + loop thru all contacts, when find a match, push that contact's data to $scope.recentTransfers
+		for (var xpid in recentXpids){
 			for (var i = 0; i < data.length; i++){
-				if (data[i].xpid == singleRecent){
+				if (data[i].xpid == xpid){
 					$scope.recentTransfers.push(data[i]);
 					break;
 				}
