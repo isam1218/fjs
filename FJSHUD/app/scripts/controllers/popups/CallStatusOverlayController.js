@@ -153,21 +153,26 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.conferenceFilter = function(){
 		var query = $scope.conf.query.toLowerCase();
+		
 		return function(conference){
-			if (query == '' || conference.extensionNumber.indexOf(query) != 1){
-				return true;
-			}
-			else if (conference.members){
-				for (var i = 0, iLen = conference.members.length; i < iLen; i++){
-					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
+			// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
+			// conference permissions == 0 --> can INVITE/kick/mute to conference
+			if (conference.status !== undefined && conference.permissions == 0) {
+				if (query == '')
+					return true;
+				else {
+					// check members
+					for (var i = 0, len = conference.members.length; i < len; i++) {
+						if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
+							return true;
+					}
+					
+					// check conference itself
+					if (conference.extensionNumber.indexOf(query) != -1 || conference.name.indexOf(query) != -1)
 						return true;
 				}
 			}
 		};
-	};
-
-	$scope.conFilter = function(conference){
-		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
 	};
 
 	$scope.transferFilter = function(){
@@ -181,14 +186,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			else
 				return false;
 		};
-	};
-
-	$scope.isStatusUndefined = function(conference){
-		// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
-		// conference permissions == 0 --> can INVITE/kick/mute to conference
-		if (conference.status !== undefined && conference.permissions == 0){
-			return true;
-		}
 	};
 
 	$scope.joinConference = function() {

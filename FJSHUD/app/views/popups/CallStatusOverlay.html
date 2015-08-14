@@ -270,13 +270,13 @@
 				</div>
 			</div>
 			
-			<div class="Section" ng-show="!selectedConf">
+			<div class="Section" ng-if="!selectedConf">
 				<div>
 					<h4 class="upper">{{::verbage.conference_room}}</h4>
 					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-model="conf.query" ng-attr-placeholder="{{::verbage.search_by_room_or_person}}" />
 				</div>
 				<div class="Members">
-                    <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: isStatusUndefined | filter: conFilter track by conference.xpid" ng-click="selectConference(conference)">
+                    <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: conferenceFilter() track by conference.xpid" ng-click="selectConference(conference)">
 						<avatar profile="conference"></avatar>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">
@@ -296,7 +296,7 @@
 				</div>
 			</div>
 			
-			<div class="Section" ng-show="selectedConf">
+			<div class="Section" ng-if="selectedConf">
 				<div>
 					<h4 class="upper">{{::verbage.destination}}</h4>
 				</div>
@@ -318,7 +318,7 @@
 								</div> 
 							</div>
 							
-							<div class="ListRowStatus" ng-if="selectedConf.location">
+							<div class="ListRowStatus" ng-if="::selectedConf.location">
 								at {{::selectedConf.location}}
 							</div>
 						</div>
