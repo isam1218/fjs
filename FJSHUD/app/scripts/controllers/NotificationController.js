@@ -25,6 +25,8 @@ hudweb.controller('NotificationController',
   $scope.away_notifications_to_display = '';
   $scope.old_notifications_to_display = ''; 
   $scope.multiple_old_notifications = false;
+  $scope.multiple_new_notifications =  false;
+  $scope.multiple_away_notifications =  false;
   $scope.message_section_notifications = ''
   $scope.hasNewNotifications = false;
   $scope.hasAwayNotifications = false;
@@ -99,8 +101,7 @@ hudweb.controller('NotificationController',
     $scope.pluginErrorEnabled = false;
   };
   
-  $scope.getMultipleNotifications = function(message){ 
-	  var multiple_old_notifications = false;
+  $scope.getMultipleNotifications = function(message){	
 	  var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';
 	  
 	  if(typeof messages === 'string')

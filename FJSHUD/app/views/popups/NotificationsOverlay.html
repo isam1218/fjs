@@ -37,16 +37,17 @@
                             profile="message.fullProfile"
                             type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
                         </avatar>                  
-                        <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message)">                         
+                        <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message); multiple_new_notifications = getMultipleNotifications(message)">                         
                             <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
                                <div class="NotificationType">...{{ message.label }} <span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
                                 {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
                                 
-                               </span></div>
-                            <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="chat_sub_message in new_notifications_to_display track by $index" ng-bind-html="chat_sub_message"></p>
-                            <p ng-if="!message.message || message.message <= 1">
-                            <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
-                            <span ng-if="!message.message || message.message <= 1" style="position:absolute;margin-left:5px">{{ new_notifications_to_display }} </span> </p>
+                               </span></div>                             
+                            <div class="NotificationMessage"><p ng-if="multiple_new_notifications" ng-repeat="chat_sub_message in new_notifications_to_display track by $index">{{::chat_sub_message}}</p>
+                            <p ng-if="!multiple_new_notifications">
+                            
+                            <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>                            
+                            <span ng-if="!multiple_new_notifications" style="margin-left:5px">{{ ::new_notifications_to_display }} </span> </p>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                                 <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
@@ -97,13 +98,14 @@
                             profile="message.fullProfile"
                             type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
                         </avatar>                               
-                        <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message)">
+                        <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message);multiple_away_notifications = getMultipleNotifications(message)">
                             <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
                                <div class="NotificationType">...{{ ::message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
-                            <div class="NotificationMessage"><p ng-if="message.message && message.message.length > 1" ng-repeat="sub_message in away_notifications_to_display track by $index" ng-bind-html="sub_message"></p>
-                            <p ng-if="!message.message || message.message <= 1">
+                            
+                            <div class="NotificationMessage"><p ng-if="multiple_away_notifications" ng-repeat="sub_message in away_notifications_to_display track by $index">{{ ::sub_message }}</p>
+                            <p ng-if="!multiple_away_notifications">
                             <span class="vmfootnote vmduration" ng-if="message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
-                            <span ng-if="!message.message || message.message <= 1" style="position:absolute;margin-left:5px">{{ away_notifications_to_display }} </span> </p>
+                            <span ng-if="!multiple_away_notifications" style="margin-left:5px">{{ ::away_notifications_to_display }} </span> </p>
                             
                              </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
@@ -165,7 +167,7 @@
                              <p ng-if="!multiple_old_notifications">                               
 
                             <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
-                            <span ng-if="!multiple_old_notifications">{{ old_notifications_to_display }} </span> 
+                            <span ng-if="!multiple_old_notifications">{{ ::old_notifications_to_display }} </span> 
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                                 <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
