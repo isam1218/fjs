@@ -291,7 +291,7 @@ hudweb.controller('NotificationController',
     if (message.context){
       var context = message.context;
       var xpid = context.split(':')[1];
-    }
+    } 
 
     switch(message.type){
       case 'error':
@@ -301,6 +301,7 @@ hudweb.controller('NotificationController',
       case 'chat':
       case 'wall':
       case 'description':
+      case 'barge message':
       case 'gchat':
         endPath = "/" + message.audience + "/" + xpid + '/chat';
         break;
@@ -432,7 +433,7 @@ hudweb.controller('NotificationController',
   };
 
   var prepareBargeNotification = function(contactObj){
-    var myCallBarger = contactObj.call.bargers[0].displayName;
+    var myCallBarger = contactObj.call.bargers[0];
     var msgDate = moment(ntpService.calibrateTime(new Date().getTime()));
     var personBeingWhisperedUpon = contactObj.call.bargers[0].call.contactId;
     msgXpid = msgDate + '';
@@ -464,7 +465,9 @@ hudweb.controller('NotificationController',
     }
     extraNotification = {
       displayName: "Call Monitoring",
-      message: callBarger,
+      context: "contact:" + callBarger.xpid,
+      message: callBarger.displayName,
+      audience: 'contact',
       time: msgDate,
       type: "barge message",
       xpid: msgXpid,
