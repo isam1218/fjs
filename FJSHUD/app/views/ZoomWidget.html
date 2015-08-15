@@ -1,8 +1,9 @@
+<div class="ListView fj-scrollable">
 <div class="Widget WidgetZoom" id="widget-zoom">
-    <div class="WidgetHeader">
+    <div class="WidgetHeader" >
         <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
-            {{::verbage.zoom}}
+            Fonality Video Collaboration
         </div>
     </div>
 
@@ -28,16 +29,41 @@
 
                 
 
-        <div class="ListSection WidgetFont" > 
+        <div class="ListSection WidgetFont" style="padding:0px 15px 0px 15px"> 
             <div> {{::verbage.video_collaboration_summary}}</div>
         </div>
+
+            <div class="ScheduleTabBar">
+                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Home')" ng-class="tab == 'Home' ? 'fj-selected-item' : ''">
+                            <div class="inner">Home</div>
+                            <div class="arrow"></div>
+                        </a>
+                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Meetings')" ng-class="tab == 'Meetings' ? 'fj-selected-item' : ''" >
+                            <div class="inner">Meetings</div>
+                            <div class="arrow"></div>
+                        </a>
+            </div>
+<div id="HomeContainer" ng-show="showHome" ng-controller="ModalDemoCtrl">
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
-                <div class="WidgetFont">{{::verbage.join_summary}}</div>
+                <div class="ListSectionHeaderTitle">SCHEDULE A MEETING</div>
+                <div class="WidgetFont">Click here to schedule a meeting.</div>
             </div>
+            <div class="ListSection WidgetTextHeader"> 
+                    <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
+                    <div class="WidgetFont">{{::verbage.join_summary}}</div>
+            </div>
+            <div class="ListSection WidgetTextHeader"> 
+                            <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
+                            <div class="WidgetFont">{{::verbage.create_summary}}</div>
+            </div>       
+        </div>
+<div id="btnContainer">
+        <div id="scheduleMeetingBtn">
+        <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting</button>
+       </div>
 
-            <div class="JoinMeetingSection"> 
+        <div id="joinMeeting">
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
                         <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" ng-attr-placeholder="{{::verbage.meeting_id}}" />
@@ -45,27 +71,22 @@
                 </div>
                 <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
 
-            </div>
-
         </div>
 
-        <div class="ZoomWidgetSection right"> 
-            <div class="ListSection WidgetTextHeader"> 
-                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
-                <div class="WidgetFont">{{::verbage.create_summary}}</div>
-            </div>
-
-            <div class="JoinMeetingSection"> 
+    <div class="ZoomWidgetSection"> 
+            
+                <div id="joinVideoScreen">
+                 <div class="addContact">
+                    <div >
+                        <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+                    </div>
+                 </div>
                 <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
                 <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
-                <div class="addContact">
-                <div style="position:relative; top:20px">
-					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
-                </div>
-            </div>
-
+               
+        <div class="ListView fj-scrollable"> 
             <div class="widget-zoom-contacts">
-                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'">
+                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'" >
 						<avatar profile="contact" widget="zoom"></avatar>
                         <div class="ListRowContent" dockable="contact">
                             <div class="ZoomRowTitle">
@@ -81,10 +102,108 @@
                         <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
                     </div>
             </div>
-
-
+        </div>
         </div>
 
     </div>
 
 </div>
+
+</div>
+
+<div id="meetingContainer">
+</div>
+</div>
+</div>
+</div>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+
+   <div class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+        <div class="TopBarItemAppIcon Zoom"></div>
+        <div class="WidgetHeaderTitle">
+            Fonality Video Collaboration - Schedule A Meeting
+        </div>
+    </div>
+    <div class="modal-body" ng-controller="ModalDemoCtrl">
+    <div ng-controller="DatepickerDemoCtrl">
+       
+        <div id="scheduleInputContainer">
+        <ul>
+           <li><label>Meeting Topic:</label><input style="width:310px"></li>
+           <li>
+                   
+              <label style="margin-left:55px">When:</label>     
+              <input style="padding:0px 10px 0px 10px;width:100px"  datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
+                <button type="button" style="background-color:white;border:none" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          
+                      
+
+           <select>
+                <option>1:00</option>
+                <option>2:00</option>
+                <option>3:00</option>
+                <option>4:00</option>
+                <option>5:00</option>
+                <option>6:00</option>
+                <option>7:00</option>
+                <option>8:00</option>
+                <option>9:00</option>
+                <option>10:00</option>
+                <option>11:00</option>
+                <option>12:00</option>
+           </select>
+           <select>
+                <option>PM</option>
+                <option>AM</option>
+           </select>
+            </li>
+            <li>
+            <label style="margin-left:35px">Duration:</label>
+            <select >
+            <option ng-repeat="hour in hourOption">{{hour}}</option>
+            </select>
+            <label>hr</label>
+            <select>
+            <option ng-repeat="min in minOption">{{min}}</option>
+            </select>
+            <label>min</label>
+            </li>
+            <li>
+            <label style="margin-left:22px">Time Zone:</label>
+            <select>
+                <option>(GMT-7:00)Pacific Time(US and Canada)</option>
+                <option>(GMT-6:00)Mountain Time(US and Canada)</option>
+                <option>(GMT-10:00)Hawaii Time(US and Canada)</option>
+                <option>(GMT-4:00)Eastern Time(US and Canada)</option>
+                <option>(GMT-5:00)Central Time(US and Canada)</option>
+                <option>(GMT-8:00)Alaska Time(US and Canada)</option>
+            </select>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Schedule</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+    
+</script>
+
+
+<style>
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+</style>
+        
+    

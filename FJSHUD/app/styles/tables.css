@@ -379,7 +379,7 @@
   background: url("../img/XActionSet-30x30.png") no-repeat -90px -60px;
 }
 .ListSectionHeaderTitle {
-  color: #0093f0;
+  color: #015d73;
   font-size: 11px;
   font-weight: bold;
   line-height: 18px;
@@ -396,7 +396,6 @@
   border-radius: 6px;
   padding-top: 7px;
   padding-bottom: 20px;
-  padding-left: 10px;
   font-size: .8em;
 }
 .ListSection {
@@ -415,7 +414,7 @@
   display: inline-block;
 }
 .ListSectionHeaderTitle {
-  color: #0093f0;
+  color: #015d73;
   font-size: 11px;
   font-weight: bold;
   line-height: 18px;
