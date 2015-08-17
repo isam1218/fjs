@@ -128,7 +128,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 
 	$scope.uploadAttachments = function($files){
       	
-		if(!$scope.showFileShare){
+		if($scope.showAlerts || !$scope.enableChat){
 			return;
 		}
       	
