@@ -45,15 +45,32 @@ module.exports = function(grunt) {
         src: 'app/index.html',
         dest: 'dest/index.html'
         
+      },
+      dist:{
+        options:{
+            context:{
+                NODE_ENV:'production'
+            }
+        },
+        files:{
+            'dest/app/index.html':'app/index.html'
+        }
       }
+
     },
 
     less:{
       dist:{
+        options:{
+          compress:true
+        },
         files:{
-          "dest/styles/main.css":"app/styles/main.less",
-          "dest/styles/nativeAlert.css": "app/styles/nativeAlert.less"
-        }
+          "dest/app/styles/main.css":"app/styles/main.less",
+          "dest/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "dest/app/styles/firefox.css": "app/styles/firefox.less",
+          "dest/app/styles/safari.css": "app/styles/safari.less",
+          "dest/app/styles/ie.css": "app/styles/ie.less"
+        },
       }
     },
     'concat': {
@@ -62,7 +79,6 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [ 
-        'app/properties.js',
         'app/languageMap.js',
         'app/scripts/app.js',
         'app/scripts/filters/**/*.js',
@@ -71,7 +87,7 @@ module.exports = function(grunt) {
         'app/scripts/services/**/*.js',
         'app/scripts/factory/**/*.js'
       ],
-        dest: 'app/scripts/fjs.hud.debug.js'
+        dest: 'app/scripts/fjs.min.js'
       }
     }
     , 
@@ -91,7 +107,7 @@ module.exports = function(grunt) {
           beautify:false,
         },
         files:{
-          'dest/fjsmin.js':['<%= concat.dist.dest %>']}
+          'dest/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
       }
     },
     'closure-compiler': {
@@ -131,7 +147,16 @@ module.exports = function(grunt) {
     ,'copy': {
       main: {
         files: [
-          {expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          {expand: true, src: ['bower_components/**/*'], dest: 'dest/'},
+          {expand: true, src: ['server.js'], dest: 'dest/'},
+          {expand: true, src: ['app/properties.js'], dest: 'dest/'},
+          {expand: true, src: ['ssl/*'], dest: 'dest/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
+        
         ]
       }
     }
@@ -149,7 +174,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-  grunt.registerTask('build-dist', ['concat','preprocess:dev','less','uglify:dist', 'zip']);
+  grunt.registerTask('build-dist', ['concat','preprocess:dist','less:dist','uglify:dist','copy','zip']);
   
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
