@@ -2,12 +2,12 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: "https://dev4.fon9.com:8081"
+       serverURL: "https://dev4.fon9.com:8081"
 	   	, loginURL: "https://dev4.fon9.com:5501"
        //loginURL:'https://auth.fonality.com',
        // serverURL: 'https://fdp-huc-v5.fonality.com'
-//      serverURL: "https://lb-stage3.fonality.com:446"
-//      , loginURL: "https://lb-stage3.fonality.com:444"
+     // serverURL: "https://lb-stage3.fonality.com:446"
+     // , loginURL: "https://lb-stage3.fonality.com:444"
 
 //      serverURL: "https://huc-dev.fonality.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501"

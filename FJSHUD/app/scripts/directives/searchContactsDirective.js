@@ -152,7 +152,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (element.val().length == 0) {
 					rows.empty();
 					inset.empty();
-					overlay.remove();
+					//overlay.remove();
 				}
 
 
