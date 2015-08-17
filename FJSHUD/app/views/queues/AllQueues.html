@@ -5,10 +5,10 @@
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
   </div>
   <div class="SelectBox selectWrapper queue" ng-if="viewIcon">
-    <select ng-if="viewIcon"
-      ng-model="selectedQueue"
-            ng-options="queue_option.display_name for queue_option in queue_options | filter: truncateLongAction() track by queue_option.display_name" 
-      ng-change="setSort(selectedQueue.type, selectedQueue)">
+    <select
+		ng-model="selectedQueue"
+        ng-options="queue_option.display_name for queue_option in queue_options | filter: truncateLongAction() track by queue_option.display_name" 
+		ng-change="setSort(selectedQueue.type, selectedQueue)">
     </select>
   </div>
 </div>
