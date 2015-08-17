@@ -229,6 +229,9 @@
   color: gray;
   font-size: 10px;
 }
+.ListRow .ListRowTitle .name .ConferenceListRowStatusText {
+  font-size: 12px !important;
+}
 .ListRow .ListRowStatus {
   float: right;
   color: #888;
@@ -249,6 +252,13 @@
   top: -10px;
   font-size: 10px;
   margin-left: -4px;
+}
+.ListRow .ListRowStatus .ConferenceStatusIcon {
+  display: inline-block;
+  position: relative;
+  top: -10px;
+  font-size: 10px;
+  margin-left: -1px !important;
 }
 .ListRow .ListRowStatus .ListRowStatusText {
   top: -15px;
@@ -446,7 +456,7 @@
   background: url("../img/XActionSet-30x30.png") no-repeat -90px -60px;
 }
 .ListSectionHeaderTitle {
-  color: #0093f0;
+  color: #015d73;
   font-size: 11px;
   font-weight: bold;
   line-height: 18px;
@@ -487,7 +497,7 @@
   display: inline-block;
 }
 .ListSectionHeaderTitle {
-  color: #0093f0;
+  color: #015d73;
   font-size: 11px;
   font-weight: bold;
   line-height: 18px;

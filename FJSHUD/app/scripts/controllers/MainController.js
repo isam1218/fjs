@@ -30,6 +30,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
             }
         }
     };
+    
 	
 	var activityTimeout;
 	
