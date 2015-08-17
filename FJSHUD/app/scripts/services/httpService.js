@@ -25,9 +25,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
-	if (document.cookie.indexOf('tab=') == -1) {
-		document.cookie = 'tab=true';
-		
+	if (document.cookie.indexOf('tab=') == -1) {		
 		worker = new Worker("scripts/services/fdpWebWorker.js");
 		
 		worker.addEventListener("message", function(event) {
@@ -243,10 +241,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		location.href = authURL;
 	};
 	
-	this.setUnload = function() {			
+	this.setUnload = function() {
+		document.cookie = 'tab=true';
+		
 		// stupid warning
-		window.onbeforeunload = function() {
-			
+		window.onbeforeunload = function() {			
 			document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 			return "Are you sure you want to navigate away from this page?";

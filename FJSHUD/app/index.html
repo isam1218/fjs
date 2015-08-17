@@ -85,7 +85,7 @@
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
-				<div class="LeftBarWrapper">
+				<div class="LeftBarWrapper" ng-switch="tab">
 					<div class="LeftBarTop">
 						<div class="ContactSearch">
 							<div ng-show=" tab != 'favorites' && tab != 'recent'">
@@ -128,12 +128,12 @@
 						ng-controller="ContactsWidget">
 					</div>
 					<div class="Groups"
-						ng-if="tab == 'groups'"
+						ng-switch-when="groups"
 						include-once="views/GroupsWidget.html"
 						ng-controller="GroupsController">
 					</div>
 					<div class="Recent"
-						ng-if="tab == 'recent'"
+						ng-switch-when="recent"
 						include-once="views/RecentWidget.html"
 						ng-controller="RecentController">
 					</div>
