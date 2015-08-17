@@ -45,11 +45,11 @@
                 <div class="ListRowTitle">
                     <div class="name">
                         <strong>{{ item.name }}</strong>
-                        <div class="status">
+                        <div class="status" ng-switch="item.type">
 	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>                       
-	                        <span class="details" ng-if="deptHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
-						    <span class="details" ng-if="nonVisibleTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
-						    <span class="details" ng-if="publicTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
+	                        <span class="details" ng-switch-when="0" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
+						    <span class="details" ng-switch-when="2" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
+						    <span class="details" ng-switch-when="4" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
                         </div>                 
                     </div>
                 </div>
