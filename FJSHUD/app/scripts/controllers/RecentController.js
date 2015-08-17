@@ -283,21 +283,4 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 	
 	return '';
   };
-  
-  $scope.deptHeaderDisplay = function(groupType){
-		if (groupType === 0){
-			return true;
-		}
-  };
-
-  $scope.nonVisibleTeamHeaderDisplay = function(groupType){
-		if (groupType !== 0 && groupType === 2)
-			return true;
-  };
-
-  $scope.publicTeamHeaderDisplay = function(groupType){
-		if (groupType !== 0 && groupType === 4)
-			return true;
-  };
-
 }]);

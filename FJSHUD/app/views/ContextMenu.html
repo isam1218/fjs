@@ -1,8 +1,8 @@
 <div ng-if="contextShow"> 
 <div class="Arrow Left"></div>
 
-<div class="TopRow">
-	<div class="Contact" ng-if="type == 'Contact' && profile">
+<div class="TopRow" ng-switch="type == 'Contact' && profile != null">
+	<div class="Contact" ng-switch-when="true">
 		<div>
 			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
@@ -26,7 +26,7 @@
 		</div>
 	</div>
 	
-	<div ng-if="type != 'Contact' || !profile">
+	<div ng-switch-when="false">
 		<strong>{{ profile.displayName || profile.name || 'private' }}</strong>
 	</div>
 </div>
@@ -320,7 +320,7 @@
 	<em>{{::verbage.select_logout_reason}}</em>
 	
 	<div class="List">
-		<div class="Button" ng-repeat="reason in reasons.list | orderBy: 'name'"
+		<div class="Button" ng-repeat="reason in ::reasons.list | orderBy: 'name'"
 			ng-click="logoutQueue(reason.xpid)">
 			{{ ::reason.name }}
 		</div>

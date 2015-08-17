@@ -243,10 +243,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		location.href = authURL;
 	};
 	
-	this.setUnload = function() {			
+	this.setUnload = function() {
+		document.cookie = 'tab=true';
+		
 		// stupid warning
-		window.onbeforeunload = function() {
-			
+		window.onbeforeunload = function() {			
 			document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 			return "Are you sure you want to navigate away from this page?";
