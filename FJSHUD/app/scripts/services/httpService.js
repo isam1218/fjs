@@ -28,7 +28,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	if (document.cookie.indexOf('tab=') == -1) {
 		document.cookie = 'tab=true';
 		
-		worker = new Worker("scripts/services/fdpWebWorker.js");
+		worker = new Worker("scripts/workers/fdpWebWorker.js");
 		
 		worker.addEventListener("message", function(event) {
 		    switch (event.data.action) {
