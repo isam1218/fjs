@@ -635,6 +635,7 @@
   overflow-y: auto;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+<<<<<<< HEAD
 }
 .SearchContactOverlay .Inset .rows {
   border: solid 1px #eee;
@@ -642,6 +643,8 @@
 }
 .SearchContactOverlay .Inset .rows .ListRow {
   width: 100%;
+=======
+>>>>>>> origin/sprints/zipwhip_1.0.0
 }
 .SearchContactOverlay .Inset .ListRowContent {
   left: 36px !important;

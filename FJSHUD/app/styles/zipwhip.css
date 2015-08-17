@@ -1,50 +1,43 @@
-.Widget.Intellinote {
+.Widget.Zipwhip {
   font-size: 12px;
   padding: 10px;
 }
-.Widget.Intellinote .Intro {
-  margin: 10px 0 10px 0;
+.Widget.Zipwhip .Intro {
+  margin: 0px 0 10px 0;
 }
-.Widget.Intellinote .Logo {
+.Widget.Zipwhip .Logo {
   margin-left: 20px;
 }
-.Widget.Intellinote .Section {
+.Widget.Zipwhip .Section {
   min-height: 110px;
 }
-.Widget.Intellinote .Left {
+.Widget.Zipwhip .Left {
   float: left;
   width: 48%;
   background-color: #f9f9f9;
 }
-.Widget.Intellinote .Left h4 {
-  font-size: 14px;
+.Widget.Zipwhip .Left h4 {
   color: #00ad33;
+  font-size: 17px;
   margin-bottom: 5px;
-  text-transform: uppercase;
+  margin-top: 40px;
 }
-.Widget.Intellinote .Right {
+.Widget.Zipwhip .Right {
   float: right;
   width: 48%;
   clear: right;
 }
-.Widget.Intellinote .Right .SearchHolder {
+.Widget.Zipwhip .Right .SearchHolder {
   position: relative;
 }
-@-moz-document url-prefix() {
-  .Widget.Intellinote .Right .SearchHolder {
-    position: relative;
-    margin-bottom: 30px;
-  }
-}
-.Widget.Intellinote .Right .Contacts {
+.Widget.Zipwhip .Right .Contacts {
   max-height: 200px;
   overflow-y: auto;
-  font-size: 14px;
 }
-.Widget.Intellinote .Right .Workspaces {
+.Widget.Zipwhip .Right .Workspaces {
   position: relative;
 }
-.Widget.Intellinote .Right .Workspaces .List {
+.Widget.Zipwhip .Right .Workspaces .List {
   position: absolute;
   top: 0;
   left: 0;
@@ -53,12 +46,12 @@
   border: 1px solid #ccc;
   box-shadow: 0 0 5px #ccc;
 }
-.Widget.Intellinote .Right .Workspaces .List .Header {
+.Widget.Zipwhip .Right .Workspaces .List .Header {
   position: relative;
   font-weight: bold;
   padding: 7px 0 7px 30px;
 }
-.Widget.Intellinote .Right .Workspaces .List .Header .Down {
+.Widget.Zipwhip .Right .Workspaces .List .Header .Down {
   position: absolute;
   top: 10%;
   right: 0;
@@ -67,29 +60,30 @@
   padding-top: 4px;
   text-align: center;
 }
-.Widget.Intellinote .Right .Workspaces .List .Items {
+.Widget.Zipwhip .Right .Workspaces .List .Items {
   font-size: 13px;
   border-top: 1px solid #333;
   margin: 0 10px 10px 10px;
 }
-.Widget.Intellinote .Right .Workspaces .List .Items div {
+.Widget.Zipwhip .Right .Workspaces .List .Items div {
   cursor: pointer;
   font-size: 13px;
   padding: 5px;
 }
-.Widget.Intellinote .Right .Workspaces .List .Items div:hover {
+.Widget.Zipwhip .Right .Workspaces .List .Items div:hover {
   background-color: #eee;
 }
-.Widget.Intellinote .Right .WorkspaceButton {
+.Widget.Zipwhip .Right .WorkspaceButton {
   position: relative;
   font-weight: bold;
   color: white;
+  height: 28px;
   padding: 7px 0 7px 30px;
   background-color: #00ad33;
-  margin: 20px 0;
+  margin: 65px 0px;
   cursor: pointer;
 }
-.Widget.Intellinote .Right .WorkspaceButton div {
+.Widget.Zipwhip .Right .WorkspaceButton div {
   position: absolute;
   top: 10%;
   right: 0;
@@ -98,6 +92,6 @@
   width: 15%;
   text-align: center;
 }
-.Widget.Intellinote .Right .WorkspaceButton div.Down {
+.Widget.Zipwhip .Right .WorkspaceButton div.Down {
   padding-top: 4px;
 }

@@ -81,20 +81,44 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			key:"Intellinote", 
 			enabled:false, 
 			title: "Intellinote"
-		}
+		},
+    {
+      url:"#/zipwhip", 
+      key:"Zipwhip", 
+      enabled:false, 
+      title: "Zipwhip"
+    },
+     {
+      url:"#/zipwhip", 
+      key:"Zipwhip_Power", 
+      enabled:false, 
+      title: "Zipwhip Power"
+    }
     ];
 	
 	$scope.$on('me_synced', function() {
 		settingsService.getPermissions().then(function(data) {
 			for (var i = 0, iLen = $scope.appIcons.length; i < iLen; i++) {
 				// toggle permission-based icons
-				if ($scope.appIcons[i].key == 'Intellinote')
+				if ($scope.appIcons[i].key == 'Intellinote'){
 					$scope.appIcons[i].enabled = data.showIntellinote;
-				else if ($scope.appIcons[i].key == 'Zoom')
+        }
+        if ($scope.appIcons[i].key == 'Zipwhip'){
+          $scope.appIcons[i].enabled = data.showZipwhip;
+        }
+        if ($scope.appIcons[i].key == 'Zipwhip_Power'){
+          $scope.appIcons[i].enabled = data.showZipwhip_Power;
+        }
+				 if ($scope.appIcons[i].key == 'Zoom'){
 					$scope.appIcons[i].enabled = data.showVideoCollab;
-				else if ($scope.appIcons[i].key == 'CallCenter')
+        }
+				 if ($scope.appIcons[i].key == 'CallCenter'){
 					$scope.appIcons[i].enabled = data.showCallCenter;
+        }
+
+
 			}
+      console.log(data);
 		});
 	});
 
