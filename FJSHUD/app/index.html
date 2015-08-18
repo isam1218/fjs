@@ -181,10 +181,10 @@
 
 	<script src="../bower_components/moment/moment.js"></script>
 	<script src="../bower_components/moment/locale/ja.js"></script>
-  
+  	<script src="properties.js"></script>
 
+	<!-- @if NODE_ENV='development' --> 
 	<!--config-->
-    <script src="properties.js"></script>
     <script src="languageMap.js"></script>   
     <script src="scripts/app.js"></script>
 
@@ -279,6 +279,12 @@
     <!-- factory -->
     <script src="scripts/factory/windowDimensionsFactory.js"></script>   
    	<script src="scripts/services/notificationService.js"></script>
+    <!-- @endif -->   
+	
+	<!-- @if NODE_ENV='production' -->
+	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
+	<!-- @endif --> 
+    
 
 </body>
 </html>
