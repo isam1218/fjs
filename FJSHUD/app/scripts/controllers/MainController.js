@@ -125,6 +125,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 
 	$scope.reload = function(){
 		window.onbeforeunload = function(){};
+		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 		location.reload();
 	};
 
@@ -141,7 +142,8 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	});
 
 	$scope.$on('no_license',function(event,data){
-		var data = {}
+		var data = {};
+		
 		setTimeout(function(){
 			window.onbeforeunload = function(){};
 			myHttpService.logout();
