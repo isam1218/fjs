@@ -1,4 +1,4 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, $parse, $location, $rootScope) {
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, settingsService ,$parse, $location, $rootScope) {
 	var timeout;
 	
 	// used as droppable="Type,Type,Type"
@@ -152,6 +152,9 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					}
 					// transfer call
 					else {
+						// check if I have isXFerFromIsEnabled personal permission...
+						if (!settingsService.getPermission('canTransferFrom'))
+							return;
 						// contact id comes from multiple places
 						var xpid;
 						

@@ -14,7 +14,15 @@
 		color: #009cff;
 		font-weight: bold;
 		font-size:.7em;
-		span{float: left;}
+		span{
+			float: left;
+			&.truncate{
+				max-width: 55%;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+            }
+		}
 	}
 
 	.NotificationDisplayNameQueue{

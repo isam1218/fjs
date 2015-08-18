@@ -31,14 +31,23 @@
 	background-position: -83px -243px;
   }
   
-  .LeftBarNotificationMessageSection .NotificationMessage{        
-    padding-right: 20px;
-    -ms-word-wrap: break-word;
-    white-space:normal;
-    word-break: break-all;
-    height: auto;
-    max-height: none;
-    padding-bottom: 20px;
+  .LeftBarNotificationMessageSection{
+    .NotificationMessage{        
+	    padding-right: 20px;
+	    -ms-word-wrap: break-word;
+	    white-space:normal;
+	    word-break: break-all;
+	    height: auto;
+	    max-height: none;
+	    padding-bottom: 20px;
+    }    
+    .NotificationDisplayName {
+    	span{
+    		&.truncate{
+	          	max-width: 55%;
+	        }
+    	}
+    }
   }
   
   a:not(.XButton) {
