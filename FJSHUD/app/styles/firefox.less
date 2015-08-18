@@ -344,7 +344,12 @@
     .NotificationDisplayName {
         padding-left: 5px; 
         
-        span{width: auto !important;}       
+        span{
+          width: auto !important;
+          &.truncate{
+          	max-width: 55% !important;
+          }
+        }       
     }
     
     .NotificationType {
