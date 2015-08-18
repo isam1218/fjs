@@ -29,7 +29,6 @@
                     </div> 
                 </div>
                 
-                
                 <div class="CallStatus" ng-if="item.call.startedAt">
                     <avatar 
                         ng-if="item.call.startedAt" 
@@ -44,9 +43,8 @@
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type =='group'">
                 <div class="ListRowTitle">
                     <div class="name">
-                        <strong>{{ item.name }}</strong>
-                        <div class="status" ng-switch="item.type">
-	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>                       
+                        <strong ng-bind-html="item.name"></strong>
+                        <div class="status" ng-switch="item.type">                      
 	                        <span class="details" ng-switch-when="0" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
 						    <span class="details" ng-switch-when="2" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
 						    <span class="details" ng-switch-when="4" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
@@ -58,12 +56,12 @@
 
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'queue'">
                 <div class="ListRowTitle">
-                    <strong>Q:{{ ::item.name }}</strong>
+                    <strong>{{ ::item.name }}</strong>
                     <br/>
-                    <div class="status queue">
-	                    <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>	                    
-	                    <span class="desc">{{ ::item.name }}</span>
-                    </div>
+                    <span class="status">
+	                    <div class="ListRowStatusIcon XIcon-QueueStatus-{{ item.me.status.status }}"></div>
+	                    <span class="desc">{{ queueStatusLabel(item.me.status.status) }}</span>
+                    </span>
                 </div>
             </div>            
 
@@ -103,18 +101,32 @@
                         <avatar profile="contact"></avatar>
                         
                         <div class="ListRowContent" dockable="contact">
+
+							<div class="ListRowTitle RecentsRowTitle">
+								<div class="name">
+									<strong>{{ ::contact.displayName || contact.name }}</strong>  
+								</div>
+								<div class="status">                     
+									<div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+									<div class="desc">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{contact.call ? ' + ' + verbage['on_call'] : ''}}</div>
+								</div> 
+							</div>
+				
+							<!--
                             <div class="ListRowTitle">
                                 <div class="name">
                                     <strong>{{ contact.displayName || contact.name }}</strong>
                                     <span>#{{ ::contact.primaryExtension || contact.extension }}</span>
                                 </div>
                             </div>
+							
                             <div class="ListRowStatus">
                                 <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                                 <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                                 <br/>
                                 <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}{{contact.call ? ' + ' + verbage['on_call'] : ''}}</div>
                             </div> 
+							-->
                             
                             <div class="CallStatus" ng-if="contact.call.startedAt">
                                 <avatar 
@@ -144,10 +156,12 @@
                         <div class="ListRowContent" dockable="group">
                             <div class="ListRowTitle">
                                 <div class="name">
-                                    <strong>{{ group.name }}</strong>
-                                    <span class="details">
-                                        {{ ::group.extension ? '#' + group.extension : getOwner(group) }}
-                                    </span>
+                                    <strong ng-bind-html="group.name"></strong>
+									<div class="status" ng-switch="group.type">
+										<span class="details" ng-switch-when="0" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
+										<span class="details" ng-switch-when="2" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
+										<span class="details" ng-switch-when="4" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
+									</div> 
                                 </div>
                             </div>
                             <!-- <div class="ListRowStatus Members">{{ group.members.length }}</div> -->
@@ -193,22 +207,22 @@
                   </div>
                     <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: conferencesLimit() track by conference.xpid" droppable="Call,Contact">
                         <avatar profile="conference"></avatar>
-                        <div class="ListRowContent" dockable="conference">
+                        <div class="ListRowContent" dockable="conference" ng-switch="conference.members.length">
                             <div class="ListRowTitle">
                                 <div class="name"> <strong>{{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</strong></div>
                                 
-                                <div data-ng-if="conference.members.length == 0" class="status conference">
+                                <div ng-switch-when="0" class="status conference">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
                                     <span class="desc">{{::verbage.free_room}}</span>
                                 </div>                            
-                                <div data-ng-if="conference.members.length > 0" class="status conference">
+                                <div ng-switch-default class="status conference">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
                                     <span class="desc">{{conference.members.length}} {{::verbage.members_on_call}}</span>
                                 </div> 
                             </div>
                         
-                            <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="CallStatus">                               
-                                    <avatar profile="member.fullProfile" type="4"></avatar>                                                                    
+                            <div ng-switch-default class="CallStatus">        
+                                 <avatar profile="member.fullProfile" type="4"></avatar>   
                             </div>
                         </div>
                     </a>
