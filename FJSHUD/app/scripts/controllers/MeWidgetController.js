@@ -914,16 +914,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.parkCall(currentCall.xpid);
     };
 
-    $scope.determineTransferFrom = function(contactToTransfer){
-        var contact = contactService.getContact(contactToTransfer);
-		
-        if (contact && contact.permissions){
-            return settingsService.isEnabled(contact.permissions, 3);
-        }
-		else{
-            return true;
-        }
-    };
+
+    /*
+    - no longer checking the individual contact's permission for isXferFromEnabled permission, but rather checking my permission feed for isXferFromEnabled permission...
+    - aka this is a personal permission, not a permission based on the other party...
+    - see HUDF-727 - Mikhail's comment on 8.18.15
+    */
+    $scope.canTransferFrom = settingsService.getPermission('canTransferFrom');
 
     $scope.muteCall = function(){
        if($scope.volume.micVolume == 0){

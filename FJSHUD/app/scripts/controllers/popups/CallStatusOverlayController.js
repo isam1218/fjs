@@ -236,7 +236,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.bottomUserCanWhisperFinal = $scope.bottomUserCanBarge ? !$scope.bottomAlreadyWhispered : false;
 	}
 
-
+	// this isn't the isXferFromEnabled personal-permission, 
+	// but rather it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
 	$scope.determineTransferFrom = function(contactToTransfer){
 	  var contact = contactService.getContact(contactToTransfer);
 	  if (contact && contact.permissions){

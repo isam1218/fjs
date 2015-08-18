@@ -102,6 +102,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
 				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);
+				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
 
 				// group permissions from MyPermissions.java
 				permissions.recordingEnabled = service.isEnabled(data[i].propertyValue, 14);
