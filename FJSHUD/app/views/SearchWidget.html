@@ -40,7 +40,7 @@
 							{{contact.hud_status || 'offline'}}
 						</div>																		
 						<div class="ListRowStatus" ng-if="contact.primaryExtension">#{{ ::contact.primaryExtension }}</div>
-						<input style="float:right" ng-if="!contact.fullProfile.call" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, contact.fullProfile)">						
+						<input style="float:right" ng-if="!contact.fullProfile.call" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, contact)">						
 					</div>
 				</a>
 			</div>

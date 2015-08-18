@@ -1,4 +1,4 @@
-hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($scope, $timeout, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', function($scope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService) {
 	$scope.searched = false;
 
 	$scope.searchEmUp = function() {
@@ -68,6 +68,16 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 			});
 		}
 	});
+
+	// clicked on call button
+    $scope.callExtension = function($event, contact){
+		$event.stopPropagation();
+		$event.preventDefault();
+	  
+	    httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+	  
+	    storageService.saveRecent('contact', contact.xpid);
+    };
 
     $scope.$on("$destroy", function() {
 		
