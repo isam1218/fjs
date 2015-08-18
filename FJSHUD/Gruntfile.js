@@ -42,9 +42,9 @@ module.exports = function(grunt) {
               NODE_ENV:'development'
             }
         },
-        src: 'app/index.html',
-        dest: 'dest/index.html'
-        
+        files:{
+            'dest/app/index.html':'app/index.html'
+        }
       },
       dist:{
         options:{
@@ -53,12 +53,32 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'dest/app/index.html':'app/index.html'
+            'dest/app/index.html':'dest/app/index.version.html'
         }
       }
 
     },
-
+    template:{
+      dist:{
+          options:{
+            data:{
+              serverUrl:"https://fdp-huc-v5.fonality.com",
+              loginUrl:"https://auth.fonality.com",
+              version: "HUDW" + getBuildNumber()
+            }
+          },
+          files:{
+            'dest/app/properties.js':['app/properties.js'],
+            'dest/app/index.version.html':['app/index.html']
+          }
+      },dev:{
+        options:{
+          data:{
+            serverUrl:""
+          }
+        }
+      }
+    },
     less:{
       dist:{
         options:{
@@ -145,12 +165,12 @@ module.exports = function(grunt) {
       }
     }
     ,'copy': {
-      main: {
+      dist: {
         files: [
           //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
           {expand: true, src: ['bower_components/**/*'], dest: 'dest/'},
           {expand: true, src: ['server.js'], dest: 'dest/'},
-          {expand: true, src: ['app/properties.js'], dest: 'dest/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
           {expand: true, src: ['ssl/*'], dest: 'dest/'},
           {expand: true, src: ['app/img/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
@@ -172,9 +192,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-preprocess');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-template');
 
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-  grunt.registerTask('build-dist', ['concat','preprocess:dist','less:dist','uglify:dist','copy','zip']);
+  grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
   
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
