@@ -168,7 +168,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			player.onloadeddata = function() {
 				$scope.player.loaded = true;
 				$scope.player.playing = true;
-				$scope.$safeApply();
+				$scope.$digest();
 				
 				player.play();
 			};
@@ -180,17 +180,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				if (!document.body.onmousemove)
 					$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
 				
-				$scope.$safeApply();
+				$scope.$digest();
 			};
 			
 			player.onpause = function() {
 				$scope.player.playing = false;
-				$scope.$safeApply();
+				$scope.$digest();
 			};
 			
 			player.onplay = function() {
 				$scope.player.playing = true;
-				$scope.$safeApply();
+				$scope.$digest();
 			};
 		}
 		
@@ -283,7 +283,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			diff = rect.width;
 			
 			$scope.player.progress = diff + 'px';
-			$scope.$safeApply();
+			$scope.$digest();
 		};
 	
 		document.body.onmouseup = function(e) {
