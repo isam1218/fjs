@@ -1,4 +1,4 @@
-hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', function($scope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService) {
+hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', function($scope, $rootScope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService) {
 	$scope.searched = false;
 
 	$scope.searchEmUp = function() {
@@ -78,6 +78,15 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 	  
 	    storageService.saveRecent('contact', contact.xpid);
     };
+	
+	$scope.getOwner = function(group) {
+		if (group.ownerId == $rootScope.myPid)
+			return 'owner: me';
+		else {
+			var contact = contactService.getContact(group.ownerId);
+			return (contact ? 'owner: ' + contact.displayName : '');
+		}
+	};
 
     $scope.$on("$destroy", function() {
 		
