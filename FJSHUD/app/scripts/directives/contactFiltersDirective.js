@@ -9,7 +9,7 @@ hudweb.directive('contactFilters', function ($rootScope) {
 			// wait for contacts to load
 			var contactWatcher = scope.$watch('contacts.length', function(val) {
 				if (val > 0) {
-					filterContacts();
+					setTimeout(filterContacts, 100);
 					
 					// kill this watcher and create new ones
 					contactWatcher();
