@@ -130,60 +130,83 @@
     <div ng-controller="DatepickerDemoCtrl">
        
         <div id="scheduleInputContainer">
-        <ul>
-           <li><label>Meeting Topic:</label><input style="width:310px"></li>
-           <li>
-                   
-              <label style="margin-left:55px">When:</label>     
-              <input style="padding:0px 10px 0px 10px;width:100px"  datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
-                <button type="button" style="background-color:white;border:none" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-          
-                      
+            <ul>
+               <li><label>Meeting Topic:</label><input style="width:310px"></li>
+               <li>
+                       
+                  <label style="margin-left:55px">When:</label>     
+                  <input style="padding:0px 10px 0px 10px;width:100px"  datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
+                    <button type="button" style="background-color:white;border:none" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              
+                          
 
-           <select>
-                <option>1:00</option>
-                <option>2:00</option>
-                <option>3:00</option>
-                <option>4:00</option>
-                <option>5:00</option>
-                <option>6:00</option>
-                <option>7:00</option>
-                <option>8:00</option>
-                <option>9:00</option>
-                <option>10:00</option>
-                <option>11:00</option>
-                <option>12:00</option>
-           </select>
-           <select>
-                <option>PM</option>
-                <option>AM</option>
-           </select>
-            </li>
-            <li>
-            <label style="margin-left:35px">Duration:</label>
-            <select >
-            <option ng-repeat="hour in hourOption">{{hour}}</option>
-            </select>
-            <label>hr</label>
-            <select>
-            <option ng-repeat="min in minOption">{{min}}</option>
-            </select>
-            <label>min</label>
-            </li>
-            <li>
-            <label style="margin-left:22px">Time Zone:</label>
-            <select>
-                <option>(GMT-7:00)Pacific Time(US and Canada)</option>
-                <option>(GMT-6:00)Mountain Time(US and Canada)</option>
-                <option>(GMT-10:00)Hawaii Time(US and Canada)</option>
-                <option>(GMT-4:00)Eastern Time(US and Canada)</option>
-                <option>(GMT-5:00)Central Time(US and Canada)</option>
-                <option>(GMT-8:00)Alaska Time(US and Canada)</option>
-            </select>
-            </li>
-        </ul>
+               <select>
+                    <option>1:00</option>
+                    <option>2:00</option>
+                    <option>3:00</option>
+                    <option>4:00</option>
+                    <option>5:00</option>
+                    <option>6:00</option>
+                    <option>7:00</option>
+                    <option>8:00</option>
+                    <option>9:00</option>
+                    <option>10:00</option>
+                    <option>11:00</option>
+                    <option>12:00</option>
+               </select>
+               <select>
+                    <option>PM</option>
+                    <option>AM</option>
+               </select>
+                </li>
+                <li>
+                <label style="margin-left:35px">Duration:</label>
+                <select >
+                <option ng-repeat="hour in hourOption">{{hour}}</option>
+                </select>
+                <label>hr</label>
+                <select>
+                <option ng-repeat="min in minOption">{{min}}</option>
+                </select>
+                <label>min</label>
+                </li>
+                <li>
+                <label style="margin-left:22px">Time Zone:</label>
+                <select>
+                    <option>(GMT-7:00)Pacific Time(US and Canada)</option>
+                    <option>(GMT-6:00)Mountain Time(US and Canada)</option>
+                    <option>(GMT-10:00)Hawaii Time(US and Canada)</option>
+                    <option>(GMT-4:00)Eastern Time(US and Canada)</option>
+                    <option>(GMT-5:00)Central Time(US and Canada)</option>
+                    <option>(GMT-8:00)Alaska Time(US and Canada)</option>
+                </select>
+                </li>
+            </ul>
+        <div id="passwordContainer">
+            <form style="margin-bottom:10px">
+                
+                    <label style="margin-left:14px">Audio Options:</label>
+                    <input type="radio" name="audio" checked>Fonality Conference Bridge
+                    <br>
+                    <input type="radio" name="audio" style="margin-left:124px">Zoom Powered Audio
+                
+            </form>
+            <form>
+                
+                    <label>Meeting Options:</label>
+                    <input type="checkbox" ng-model="checked">Require meeting password
+                    <br>
+                    <input type="password" style="margin-left:125px" ng-hide="!checked">
+                    <br>
+                    <input type="checkbox" style="margin-left:125px">Enable join before host
+                
+            </form>
         </div>
+        </div>
+        
+
     </div>
+
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">Schedule</button>

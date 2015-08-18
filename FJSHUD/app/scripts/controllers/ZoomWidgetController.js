@@ -164,8 +164,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
   for(var min = 0; min <=60; min++){
     $scope.minOption.push(min);
   }
-  console.log('Duration',min);
-  console.log('Option',$scope.minOption);
+ 
 
 });
 

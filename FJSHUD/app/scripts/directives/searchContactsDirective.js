@@ -19,13 +19,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			var added = false;
 			var rect = element[0].getBoundingClientRect();
 			
-
 			element.css('position', 'relative');
-			element.css('width', '100%');
 			element.css('z-index', 100);
-
-			if ($(element).closest('.LeftBar').length > 0)
-				element.css('width', '95%');
 				
 			// create overlay elements			
 			inset = angular.element('<div class="Inset"></div>');
@@ -68,7 +63,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 					}
 					rows = angular.element('<div class="rows"></div>');
 				}
-
 				
 				if (element.val().length > 0) {
 					var matchCount = 0;
@@ -121,25 +115,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 						});
 					}
 					
-					// add some paddin'
-					if (element.prop('offsetWidth') == overlay.prop('offsetWidth')) {
-						overlay.css('left', '-10px');
-						overlay.css('width', overlay.prop('offsetWidth') + 20 + 'px');
-					}
-					
-					if (element.prop('offsetTop') == overlay.prop('offsetTop'))
-						overlay.css('top', '-10px');
-			
-					// prevent accidental closing
-					overlay.bind('click', function(e) {
-						e.stopPropagation();
-					});
-			
-					// close overlay for reals
-					$document.bind('click', function(e) {
-						element.val('');
-						overlay.remove();
-					});
+					if (!added)
+						overlayProperties();
 				}
 			});
 			
@@ -152,9 +129,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (element.val().length == 0) {
 					rows.empty();
 					inset.empty();
-					//overlay.remove();
+					overlay.remove();
 				}
-
 
 			});
 
@@ -206,7 +182,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				name += '</div></div><div class="ListRowStatus"><div class="Extension Link">#' + contact.primaryExtension + '</div></div></div>';
 				line.append(name);
 			};
-
 
 			// fill row content
 			function makeLine(contact, joinByPhone, idx) {
@@ -312,8 +287,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 
 					element.val('');
 					rows.empty();					
-
 					overlay.remove();
+				});
+				
+				line.on('$destroy', function() {
+					line.empty().unbind('click');
 				});
 				
 				return line;
@@ -323,7 +301,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			scope.$on('$destroy', function() {
 				$document.unbind('click');
 				rows.empty();				
-
 				overlay.unbind().remove();
 			});
 		}
