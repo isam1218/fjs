@@ -8,6 +8,8 @@ fjs.CONFIG = {
        // serverURL: 'https://fdp-huc-v5.fonality.com'
      serverURL: "https://lb-stage3.fonality.com:446"
      , loginURL: "https://lb-stage3.fonality.com:444"
+     ,ppsServer: 'https://lb-stage3.fonality.com:8443/pps/'
+
 
 //      serverURL: "https://huc-dev.fonality.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501"
