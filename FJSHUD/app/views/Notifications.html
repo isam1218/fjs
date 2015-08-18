@@ -160,7 +160,7 @@
 					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-switch-when="0">{{ currentCall.incoming ? verbage.
 					decline : verbage.cancel}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
-					<div ng-click="holdCall(currentCall.xpid,true)" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
+					<div ng-click="holdCall(currentCall.xpid,true)" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
 					
 					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
 					<div ng-click="acceptCall(currentCall.xpid, message)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
