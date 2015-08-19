@@ -168,11 +168,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			var fullContactInfo = function(line, contact){
 				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				var hud_status = contact.hud_status || 'offline';
-				// zoom has diff class cuz needs smaller name width...
-				if (attrs.conference == "true" || attrs.ngController == "ContactsWidget" || attrs.id == 'SearchContactDirectiveMarker')
-					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
-				else
-					var name = '<div class="ListRowContent"><div class="ListRowTitle AddZoomMember">';
+				var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
 				name += '<div class="name" style="font-size:12px">' + contact.displayName + '</div>';
 				name += '<div class="hudStatus" style="font-size:10px"><div class="ListRowStatusIcon XIcon-ChatStatus-'+ hud_status +'"></div>';
 				name +=	 contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline';
