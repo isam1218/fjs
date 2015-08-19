@@ -39,9 +39,9 @@
 				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>
 				{{::verbage.avg_talk}}
 			</div>
-			<div >
+			<div>
 				<strong>{{ queue.info.abandon + queue.info.completed }}</strong>
-				{{::verbage.talk}}
+				{{::verbage.total}}
 			</div>
 			<div ng-class="{'RedText': queueThresholds.abandoned && queue.info.abandonPercent > queueThresholds.abandoned}">
 				<strong>{{ queue.info.abandonPercent }}%</strong>
