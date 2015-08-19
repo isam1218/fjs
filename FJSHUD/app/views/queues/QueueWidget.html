@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div class="WidgetBody">
+  <div class="WidgetBody" ng-switch="selected">
     <div class="WidgetTabBar">
         <span>
           <a href="#/queue/{{ ::queueId + '/agents'}}" ng-click="saveQTab('agents', 0)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 0}">
@@ -75,21 +75,21 @@
     </div>
    
     <!-- ng-views -->
-    <div ng-if="selected == 'agents'" class="ListView WithToolBar" 
+    <div ng-switch-when="agents" class="ListView WithToolBar" 
 		include-once="views/queues/QueueWidgetAgents.html" ng-controller="QueueWidgetAgentsController"></div>
-    <div ng-if="selected == 'stats'" class="ListView WithToolBar"
+    <div ng-switch-when="stats" class="ListView WithToolBar"
          include-once="views/queues/QueueWidgetStats.html" ng-controller="QueueWidgetStatsController"></div>
-    <div ng-if="selected == 'calls'" class="ListView WithToolBar"
+    <div ng-switch-when="calls" class="ListView WithToolBar"
          include-once="views/queues/QueueWidgetCalls.html" ng-controller="QueueWidgetCallsController"></div>
-    <div ng-if="selected == 'chat'" class="ListView ChatView"
+    <div ng-switch-when="chat" class="ListView ChatView"
          include-once="views/ChatView.html" ng-controller="ChatController" flow-init
           flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
          ></div>
-    <div ng-if="selected == 'calllog'" class="ListView CallLog"
+    <div ng-switch-when="calllog" class="ListView CallLog"
          include-once="views/CallLog.html" ng-controller="CallLogController"></div>
-    <div ng-if="selected == 'recordings'" class="ListView WithToolBar"
+    <div ng-switch-when="recordings" class="ListView WithToolBar"
          include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
-    <div ng-if="selected == 'alerts'" class="ListView ChatView"
+    <div ng-switch-when="alerts" class="ListView ChatView"
          include-once="views/ChatView.html" ng-controller="ChatController"></div>
 
   </div>

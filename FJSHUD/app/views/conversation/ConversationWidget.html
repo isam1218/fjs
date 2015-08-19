@@ -11,7 +11,7 @@
 		</div>
         <callstatus profile="contact"></callstatus>
     </div>
-    <div class="WidgetBody">
+    <div class="WidgetBody" ng-switch="selected">
         <div class="WidgetTabBar">
             <span ng-repeat="tab in tabs | filter: tabFilter()">
                 <a href="#/contact/{{ ::contactID + '/' + tab.lower}}" ng-click="saveCTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : selected == tab.lower}">
@@ -22,29 +22,29 @@
         </div>
 		
 		<!-- ng-views -->
-        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" 
+        <div ng-switch-when="chat" class="ListView ChatView WithToolBar" 
 			include-once="views/ChatView.html" 
             flow-init
             flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
 			ng-controller="ChatController" ></div>
 			
-        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent" 
+        <div ng-switch-when="voicemails" class="voicemail fj-content WidgetTabContent" 
 			include-once="views/Voicemails.html"
 			ng-controller="VoicemailsController"></div>
 			
-        <div ng-if="selected == 'groups'" class="fj-content WidgetTabContent" 
+        <div ng-switch-when="groups" class="fj-content WidgetTabContent" 
 			include-once="views/conversation/ConversationGroups.html"
 			ng-controller="ConversationWidgetGroupsController"></div>   
 			
-        <div ng-if="selected == 'queues'" class="fj-content WidgetTabContent" 
+        <div ng-switch-when="queues" class="fj-content WidgetTabContent" 
 			include-once="views/conversation/ConversationQueues.html"
 			ng-controller="ConversationWidgetQueuesController"></div>
 			
-        <div ng-if="selected == 'calllog'" class="CallLog WidgetTabContent" 
+        <div ng-switch-when="calllog" class="CallLog WidgetTabContent" 
 			include-once="views/CallLog.html"
 			ng-controller="CallLogController"></div>
 			
-        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" 
+        <div ng-switch-when="recordings" class="fj-content WidgetTabContent" 
 			include-once="views/Recordings.html"
 			ng-controller="RecordingsController"></div>
 	</div>
