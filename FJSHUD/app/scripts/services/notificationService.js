@@ -101,7 +101,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var context = context_data.split(':')[0];
 				var xpid = context_data.split(':')[1];
 				var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
-				
+				$rootScope.$broadcast("notification_action",{notificationEventType: "Focus"});
 				$location.path("/" + nd.audience + "/" + xpid + "/" + route);
 
 			};

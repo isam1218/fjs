@@ -1427,14 +1427,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					holdCall(data.notificationId,false);
 					return;
 			}
-			if($rootScope.browser == "Chrome"){
-            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
-			}
+			
 			focusBrowser();
 		}
 	});
 
 	var focusBrowser = function(){
+			if($rootScope.browser == "Chrome"){
+            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+			}
 			nservice.sendData({message:"focus"},0,"FOCUS");
 	};
 	
