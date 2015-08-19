@@ -89,10 +89,10 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			}else{
 				iconUrl = "../img/Generic-Avatar-28.png";
 			}
-			
+			var message = data.type && data.type == 'vm' ? data.label : data.message;
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
-				body : data.message,
+				body : message,
 				tag : data.xpid,
 			});
 			var notification_data = data;
