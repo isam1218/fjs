@@ -3,6 +3,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		this.notifications = [];
 		var notifyPipe = false;
 		var enabled = false;
+		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
+
 		var initNSService = function(){
 			if(notifyPipe) return;
 
@@ -101,9 +103,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var context = context_data.split(':')[0];
 				var xpid = context_data.split(':')[1];
 				var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
-				$rootScope.$broadcast("notification_action",{notificationEventType: "Focus"});
 				$location.path("/" + nd.audience + "/" + xpid + "/" + route);
-
+				focusBrowser();
 			};
 			  
 			notification.onclose = function () {
@@ -120,5 +121,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			return notification;
 		};
 
+		var focusBrowser = function(){
+			if($rootScope.browser == "Chrome"){
+            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+			}
+			context.sendData({message:"focus"},0,"FOCUS");
+		};
 		context = this;
 }]);
