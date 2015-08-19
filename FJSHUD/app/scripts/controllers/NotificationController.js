@@ -322,6 +322,9 @@ hudweb.controller('NotificationController',
         break;
       case 'q-alert-abandoned':
         endPath = "/" + message.audience + "/" + message.queueId + '/stats';
+      case 'busy-ring-back':
+        $scope.makeCall(message);
+        $scope.remove_notification(message.xpid);
         break;
     }
 
