@@ -53,7 +53,7 @@
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
 							<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
-							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId, message); remove_notification(message.xpid)">{{::verbage.accept}}</span>
+							<span class="XButton XButtonGreen" ng-click="acceptCall(message.senderId, message); remove_notification(message.xpid)">{{::verbage.join}}</span>
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 

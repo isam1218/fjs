@@ -646,9 +646,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			}
 					break;
 	    		case '/AcceptZoom':
-					window.open(xpid,'_blank');
-	    			removeNotification();
-	    			break;
+					var apiUrl = queryArray[1].split(': ')[1];
+					window.open(apiUrl,'_blank');
+					remove_notification(xpid);
+					break;
 
 	    		case '/RejectZoom':
 	    			removeNotification();
