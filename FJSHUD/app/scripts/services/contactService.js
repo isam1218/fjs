@@ -1,4 +1,4 @@
-hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
+hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService', function($q, $rootScope, ntpService, httpService) {
 	var deferred = $q.defer();	
 	var contacts = [];
 	var service = this;
@@ -92,22 +92,41 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 	
 	$rootScope.$on('calls_synced', function(event, data) {
 		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
-			contacts[c].call = null;
+			var match = false;
 			
 			// find caller
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if (contacts[c].xpid == data[i].xpid && data[i].xef001type != 'delete') {
+					// recording status
+					var time = 0;
+					
+					if (data[i].recorded) {
+						// don't replace if already there
+						if (contacts[c].call && contacts[c].call.recordedStartTime)
+							time = contacts[c].call.recordedStartTime;
+						else
+							time = ntpService.calibrateTime(new Date().getTime());
+					}
+					else
+						time = 0;
+					
+					// update call object
 					contacts[c].call = data[i];
+					contacts[c].call.recordedStartTime = time;
 					
 					// attach full profile, if present
 					if (data[i].contactId)
 						contacts[c].call.fullProfile = angular.extend({}, service.getContact(data[i].contactId));
 					
+					match = true;
 					break;
 				}
 			}
 			
-			if (contacts[c].call) {
+			// remove call object
+			if (!match)
+				contacts[c].call = null;
+			else {
 				contacts[c].call.bargers = [];
 			
 				// find people barging call

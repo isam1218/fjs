@@ -76,7 +76,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			
 			// also get recorded time
 			if ($scope.onCall.call.recorded)
-				$scope.recordingElapsed = $filter('date')(date - JSON.parse(localStorage.recordedAt), 'mm:ss');
+				$scope.recordingElapsed = $filter('date')(date - $scope.onCall.call.recordedStartTime, 'mm:ss');
 		
 			// increment
 			if ($scope.$parent.overlay.show)
@@ -105,7 +105,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		if (!$scope.onCall.call.recorded) {
 			$scope.onCall.call.recorded = true;
 			$scope.recordingElapsed = '00:00';
-			localStorage.recordedAt = JSON.stringify(ntpService.calibrateTime(new Date().getTime()));
+			
 			action = 'startCallRecording';
 			updateTime();
 		}
