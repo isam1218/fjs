@@ -75,10 +75,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			$rootScope.pluginVersion = phonePlugin.version;
 		}	
 	}
-	
-	this.isAlertVisible = function(){
-		return isAlertShown;
-	}
 
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
