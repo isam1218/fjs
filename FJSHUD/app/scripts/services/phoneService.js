@@ -241,9 +241,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			//totals: totals
 		};
 	};
+	
 	this.getMyCalls = function(){
 		return deferred.promise;
-	}
+	};
 
 	var hangUp = function(xpid){
 		var call = context.getCall(xpid);
