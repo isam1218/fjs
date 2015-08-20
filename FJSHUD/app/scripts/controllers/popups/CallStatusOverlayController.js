@@ -209,13 +209,12 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select conference room';
 	};
 
-
 	/* Disabling of Barge/Monitor/Whisper Buttons --> dependent on barge permission, if external caller, and whether has been barged already */
-	if ($scope.onCall.call){
-		$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
+	$scope.$watch('onCall.call.details', function(callDetails){
+		$scope.canBarge = settingsService.isEnabled(callDetails.permissions, 1);
 		// disable barge/monitor/whisper buttons for bottom user if external caller...
-		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
-		$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
+		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled(callDetails.permissions, 1);
+		$scope.canRecordOthers = settingsService.isEnabled(callDetails.permissions, 0);
 		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
 		if ($scope.onCall.call.bargers && $scope.onCall.call.bargers.length > 0){
 			$scope.alreadyBarged = $scope.onCall.call.bargers[0].call.barge == 2;
@@ -234,10 +233,9 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.bottomUserCanBargeFinal = $scope.bottomUserCanBarge ? !$scope.alreadyBarged : false;
 		$scope.bottomUserCanMonitorFinal = $scope.bottomUserCanBarge ? !$scope.alreadyMonitored : false;
 		$scope.bottomUserCanWhisperFinal = $scope.bottomUserCanBarge ? !$scope.bottomAlreadyWhispered : false;
-	}
+	});
 
-	// this isn't the isXferFromEnabled personal-permission, 
-	// but rather it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
+	// this isn't the isXferFromEnabled personal-permission; it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
 	$scope.determineTransferFrom = function(contactToTransfer){
 	  var contact = contactService.getContact(contactToTransfer);
 	  if (contact && contact.permissions){
@@ -327,12 +325,9 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select destination';
 	};
 
-	// grabbing recent transfers...
 	contactService.getContacts().then(function(data){
 		$scope.transferContacts = data;
-		// grab recentXpids array from LS
 		recentXpids = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : {};
-		// // loop thru recentXpids + loop thru all contacts, when find a match, push that contact's data to $scope.recentTransfers
 		for (var xpid in recentXpids){
 			for (var i = 0; i < data.length; i++){
 				if (data[i].xpid == xpid){
