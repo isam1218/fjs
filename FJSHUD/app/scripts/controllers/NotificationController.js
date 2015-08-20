@@ -677,6 +677,8 @@ hudweb.controller('NotificationController',
 				 			}
 				 		}
 
+            var callStart = ntpService.calibrateTime($scope.calls[i].created);
+
 				 		data = {
 					  			"notificationId": $scope.calls[i].xpid, 
 					  			"leftButtonText" : left_buttonText,
@@ -690,7 +692,7 @@ hudweb.controller('NotificationController',
 					  			"callCategory" : callType,
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0",
-                  				"created": $scope.calls[i].created 
+                  "created": callStart
 						};
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
 					}
