@@ -54,8 +54,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      var CALL_STATUS_HOLD = "4";
      var CALL_STATUS_CLOSED = "2";
      var CALL_STATUS_ERROR = "3";
-
-
      $rootScope.callState = {};
 
      $rootScope.callState.CALL_UNKNOWN = -1;
@@ -78,14 +76,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}
 	
+	this.isAlertVisible = function(){
+		return isAlertShown;
+	}
 
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
 	};
 
-	var isDocumentHidden  = function(){
+	var isDocumentHidden  = function(isForceHidden){
 		var hidden; 
-		if(document.hidden){
+		if(document.hidden || !isForceHidden){
 			if(context.shouldAlertDisplay()){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 			}
@@ -114,9 +115,36 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	if(document.attachEvent){
 		document.attachEvent("onVisibilitychange",isDocumentHidden);
+		document.attachEvent("onFocus",function(){
+			isDocumentHidden(true);
+		});
+		document.attachEvent("onBlur",function(){
+				isDocumentHidden(false);
+			}
+		);
+		window.attachEvent("onFocus",function(){
+			isDocumentHidden(true);
+
+		});
+		window.attachEvent("onBlur",function(){
+			isDocumentHidden(false);
+		});
+
 	}else{
 		document.addEventListener("visibilitychange", isDocumentHidden, false);
-		
+		document.addEventListener("focus", function(){
+			isDocumentHidden(true);
+		}, false);
+		document.addEventListener("blur", function(){
+			isDocumentHidden(false);
+		}, false);
+		window.addEventListener("focus", function(){
+			isDocumentHidden(true);
+		}, false);
+		window.addEventListener("blur", function(){
+			isDocumentHidden(false);
+		}, false);
+	
 	}
 
 	window.onfocus = function(){
@@ -371,7 +399,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
 				alertPlugin.setTransparency(255);
-				isAlertShown = true;
 		}
 	};
 
@@ -592,7 +619,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			break;
+	    			isAlertShown = false;
+					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
 	    			break;
@@ -683,7 +711,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 	var removeNotification = function(){
 		if(alertPlugin){
-			isAlertShown = false;
 			alertPlugin.removeAlert();
 		}
 	};
@@ -1190,6 +1217,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return isAlertShown;
 	};
 	
+	this.setAlertShown = function(value){
+		isAlertShown = value;
+	};
+
 	this.parkCall = function(call_id){
 		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
 	};	
