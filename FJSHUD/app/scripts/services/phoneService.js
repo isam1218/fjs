@@ -24,7 +24,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var phone;
 	var notificationCache = {};
 	var soundManager;
-	var meModel = {};
 	var sipCalls = {};
 	var tabInFocus = true;
 	var callsDetails = {};
@@ -83,10 +82,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isDocumentHidden  = function(isForceHidden){
 		var hidden; 
 		if(document.hidden || !isForceHidden){
+			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 			}
 		}else{
+			tabInFocus = true;
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				removeNotification();
 			}
@@ -143,14 +144,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	}
 
-	window.onfocus = function(){
-		tabInFocus = true;
-	};
-
-	window.onblur = function(){
-		tabInFocus = false;
-	};
-	
 	var messageSoftphone = function(data,retry){
 		if(retry == undefined)retry = 0;
 		if(context.webphone){
@@ -164,6 +157,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 	
+	this.isInFocus = function(){
+		return tabInFocus;
+	}
 
 	var registerPhone = function(isRegistered){
 		if(context.webphone){

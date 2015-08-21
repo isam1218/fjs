@@ -840,7 +840,7 @@ hudweb.controller('NotificationController',
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
       
-      if(!document.hidden || document.hasFocus()){
+      if(phoneService.isInFocus()){
         if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "chat")
                 $scope.remove_notification(item.xpid);
