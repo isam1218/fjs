@@ -156,10 +156,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	var source;
 	var loadCheck;
   
-	$scope.$on('play_voicemail', function(event, data) {
-		// mark as read
-        httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: data.xpid});
-		
+	$scope.$on('play_voicemail', function(event, data) {		
 		// first time setup
 		if (!player) {
 			player = document.getElementById('voicemail_player');
@@ -210,8 +207,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			else 
 				$scope.recorder = contactService.getContact(data.calleeUserId);
 		}
-		else
+		else {
 			$scope.recorder = null;
+			
+			// mark as read
+			httpService.sendAction("voicemailbox", "setReadStatus", {'read': true, id: data.xpid});
+		}
 			
 		// update hidden audio element
 		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
