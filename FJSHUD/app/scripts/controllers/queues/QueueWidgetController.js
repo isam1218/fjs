@@ -66,9 +66,8 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     }
 
     $scope.saveQTab = function(tab, index){
-        $scope.selected = tab;
         $scope.toggleObject = index;
-        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify(tab);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     };
 

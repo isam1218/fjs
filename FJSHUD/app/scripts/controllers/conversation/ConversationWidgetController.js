@@ -53,9 +53,8 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 
 
     $scope.saveCTab = function(tab, index){
-        $scope.selected = tab;
         $scope.toggleObject = {item: index};
-        localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify(tab);
         localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     };
 

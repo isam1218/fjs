@@ -30,24 +30,19 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 	$scope.saveTab = function(tab, index){
 		switch(tab){
 			case "myqueue":
-				$scope.selected = $scope.tabs[0].lower;
-				localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-				$scope.toggleObject = {item: index};
-				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+				var tabName = $scope.tabs[0].lower;
 				break;
 			case "allqueues":
-				$scope.selected = $scope.tabs[1].lower;
-				localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-				$scope.toggleObject = {item: index};
-				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+				var tabName = $scope.tabs[1].lower;
 				break;
 			case "mystatus":
-				$scope.selected = $scope.tabs[2].lower;
-				localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-				$scope.toggleObject = {item: index};
-				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+				var tabName = $scope.tabs[2].lower;
 				break;
 		}
+		
+		localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify(tabName);
+		$scope.toggleObject = {item: index};
+		localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
 	};
 
 	$scope.total = {};
