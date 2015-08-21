@@ -1,5 +1,5 @@
-hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService', 'PhoneService', 'SettingsService',
-	function($scope, $routeParams, httpService, contactService, queueService, groupService, conferenceService, phoneService, settingsService) {	
+hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'ContactService', 'QueueService', 'GroupService', 'ConferenceService', 'PhoneService', 'SettingsService',
+	function($scope, $rootScope, $routeParams, httpService, contactService, queueService, groupService, conferenceService, phoneService, settingsService) {	
 	$scope.calllog = this;
 	$scope.calllog.query = '';
 	$scope.calls = [];
@@ -7,40 +7,22 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 	$scope.sortReverse = true;
 	$scope.loading = true;
 	
-	var pageFilter = '';
-	var feed;
+	var pageFilter;
 	
 	// limit results on other widgets
-	if ($routeParams.queueId) {
+	if ($routeParams.queueId)
 		pageFilter = $routeParams.queueId;
-		feed = 'queues';
-	}
-	else if ($routeParams.contactId) {
+	else if ($routeParams.contactId)
 		pageFilter = $routeParams.contactId;
-		feed = 'contacts';
-	}
 	
-	if (pageFilter != '') {
-		httpService.getCallLog(feed, pageFilter).then(function(data) {
-			updateCallLog(data.items);
-		});
-	}
+	if (!$rootScope.isFirstSync)
+		httpService.getFeed('calllog');
 	
 	settingsService.getSettings().then(function(data){
 		$scope.logSize = data['recent_call_history_length'] || 100; 
 	});
-
-	// wait for sync before polling updates
-	queueService.getQueues().then(function() {
-		if (pageFilter == '')
-			httpService.getFeed('calllog');
-
-		$scope.$on('calllog_synced', function(event, data) {
-			updateCallLog(data);
-		});
-	});
 	
-	var updateCallLog = function(data) {
+	$scope.$on('calllog_synced', function(event, data) {
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			var match = false;
 			
@@ -58,8 +40,8 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 			}
 			
 			// add new (if it also meets page type)
-			if (!match && data[i].xef001type != 'delete' && 
-				(pageFilter == '' || ((data[i].queueId !== undefined && pageFilter == data[i].queueId) || (data[i].contactId !== undefined && pageFilter == data[i].contactId)))) {
+			if (!match && data[i].xef001type != 'delete' && !data[i].filterId && 
+				(!pageFilter || ((data[i].queueId !== undefined && pageFilter == data[i].queueId) || (data[i].contactId !== undefined && pageFilter == data[i].contactId)))) {
 					
 				$scope.calls.push(data[i]);
 				
@@ -76,7 +58,7 @@ hudweb.controller('CallLogController', ['$scope', '$routeParams', 'HttpService',
 		}
 			
 		$scope.loading = false;
-	};
+	});
 	
 	$scope.customFilter = function() {
 		var query = $scope.calllog.query.toLowerCase();
