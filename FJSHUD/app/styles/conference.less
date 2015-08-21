@@ -26,7 +26,7 @@
     min-height: 50px;
     max-height: none;
     height: auto;
-    
+
     .ListRowContent{
         min-height: 50px;
         max-height: none;
@@ -58,7 +58,12 @@
 
 .conference.currentCall{
     .ListRowTitle{
-        max-width: 80%;
+        max-width: 100%;
+        float: none;
+        padding: .3em !important;
+        display: flex;
+        display: -webkit-flex;
+
         .name,
         .name > * {
             width: 100%;
@@ -66,7 +71,23 @@
             text-overflow: ellipsis;
             overflow: hidden;   
         }
-    }    
+        .vmtime{
+          font-weight: bold;
+          font-size: 11px;
+          color: #222;
+        }
+      .ListRowStatusLeftSide{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;    
+      }
+      .ListRowStatusLeftSideNoJoin{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 55%;
+      }
+    }
 }
 .ListViewTopNote {
   position: relative;
@@ -234,10 +255,11 @@ color: #729c00;
 }
 .noJoinConf{
         .ListRow .ListRowContent{
+            display: flex;
+
             span{
                font-size: 11px;
                font-weight: bold; 
-               float: right;
                color: #333;
                text-shadow: 0px 1px 0px #FFF;
                transition: border 0.3s ease 0s;
