@@ -159,7 +159,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	this.isInFocus = function(){
 		return tabInFocus;
-	}
+	};
 
 	var registerPhone = function(isRegistered){
 		if(context.webphone){
