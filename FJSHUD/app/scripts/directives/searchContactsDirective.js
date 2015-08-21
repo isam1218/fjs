@@ -168,7 +168,10 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			var fullContactInfo = function(line, contact){
 				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				var hud_status = contact.hud_status || 'offline';
-				var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
+				if (attrs.conference == 'true')
+					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember AddConferenceMember">';
+				else
+					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
 				name += '<div class="name" style="font-size:12px; max-width:100% !important">' + contact.displayName + '</div>';
 				name += '<div class="hudStatus" style="font-size:10px"><div class="ListRowStatusIcon XIcon-ChatStatus-'+ hud_status +'"></div>';
 				name +=	 contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline';
