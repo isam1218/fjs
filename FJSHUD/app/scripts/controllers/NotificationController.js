@@ -1010,7 +1010,7 @@ hudweb.controller('NotificationController',
         notification.label = "zoom";
         break;
       case 'barge message':
-        notification.label = "You are being barged by"
+        notification.label = "You are being barged by";
     }
 
     if(notification.audience == "conference"){
@@ -1038,10 +1038,11 @@ hudweb.controller('NotificationController',
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var isNotificationAdded = false;
 					var notification = data[i];
-					notification.fullProfile = contactService.getContact(notification.senderId);
-					notification.label == '';
-					updateNotificationLabel(notification);
+					
 					if(notification.xef001type != "delete"){
+						notification.fullProfile = contactService.getContact(notification.senderId);
+						notification.label == '';
+						updateNotificationLabel(notification);
 
 						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
@@ -1068,10 +1069,12 @@ hudweb.controller('NotificationController',
 			}else{
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var notification = data[i];
-					notification.fullProfile = contactService.getContact(notification.senderId);
-					notification.labelType == '';
-					updateNotificationLabel(notification);
+					
 					if(notification.xef001type != "delete"){
+						notification.fullProfile = contactService.getContact(notification.senderId);
+						notification.labelType == '';
+						updateNotificationLabel(notification);
+					
 						$scope.notifications.push(notification);
 						addTodaysNotifications(notification);
 					}
