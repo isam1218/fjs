@@ -151,8 +151,13 @@
 				</div>
 				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
 					<div class="memberName"><div class="name ng-class:{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div> <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
-					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration" timer="callObj[currentCall.xpid].start"></span></div>
-					
+					<div class="callStatus">
+						<div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div>
+						<span class="MyCallBlock_Duration" timer="currentCall.created"></span>
+						<span ng-if="currentCall.state == 3">
+							/ <span class="MyCallBlock_Duration Hold" timer="currentCall.holdStart"></span>
+						</span>
+					</div>
 				</div>				
 				<div class="controlButtons" ng-switch="currentCall.state">
 					<span ng-if="currentCall.mute" class="mute" style="font-size:9px;color:red">Muted</span>
