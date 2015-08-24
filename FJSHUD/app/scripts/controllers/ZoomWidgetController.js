@@ -22,9 +22,11 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
 
         if(tab == "Meetings"){
             $scope.showHome =false;
+            $scope.showMeetings=true;
         }
-        else if(tab =="Home"){
+        if(tab =="Home"){
             $scope.showHome=true;
+            $scope.showMeetings = false;
         }
     };  
 
@@ -171,14 +173,29 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope) {
 
   $scope.items = items;
   $scope.selected = {
     item: $scope.items[0]
   };
 
+  var getURL = function(action) {
+
+    var url = 
+       action
+      + '?fonalityUserId=' + $rootScope.myPid.split('_')[1]
+      + '&serverId=' + $rootScope.meModel.server_id
+      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+      + '&authToken=' + localStorage.authTicket;
+    
+    return url;
+  };
+
   $scope.ok = function () {
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic=test-meeting-0818&startTime=2015-08-05T18:30:00Z&duration=60&timezone=America/Los_Angeles').success(function(data, status, headers, config){
+        console.log('SUCCESS',data);
+    });
     $modalInstance.close($scope.selected.item);
   };
 
@@ -256,3 +273,15 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
     return '';
   };
 });
+
+hudweb.controller('ScrollController', ['$scope', '$location', '$anchorScroll',
+  function ($scope, $location, $anchorScroll) {
+    $scope.gotoBottom = function() {
+      // set the location.hash to the id of
+      // the element you wish to scroll to.
+      $location.hash('bottom');
+
+      // call $anchorScroll()
+      $anchorScroll();
+    };
+  }]);

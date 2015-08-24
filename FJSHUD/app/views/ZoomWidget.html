@@ -1,4 +1,3 @@
-<div class="ListView fj-scrollable">
 <div class="Widget WidgetZoom" id="widget-zoom">
     <div class="WidgetHeader" >
         <div class="TopBarItemAppIcon Zoom"></div>
@@ -42,6 +41,7 @@
                             <div class="arrow"></div>
                         </a>
             </div>
+
 <div id="homeContainer" ng-show="showHome" ng-controller="ModalDemoCtrl">
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader" style="margin-bottom:15px"> 
@@ -83,7 +83,6 @@
                 <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
                 <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
                
-        <div class="ListView fj-scrollable"> 
             <div class="widget-zoom-contacts">
                     <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'" >
 						<avatar profile="contact" widget="zoom"></avatar>
@@ -101,8 +100,6 @@
                         <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
                     </div>
             </div>
-
-        </div>
         
 
     </div>
@@ -111,9 +108,11 @@
 
 </div>
 
-<div id="meetingContainer">
+<div id="meetingContainer" ng-show="showMeetings">
+          <p>Personal Meeting ID(PMI)</p>
+
 </div>
-</div>
+
 </div>
 </div>
 
@@ -217,16 +216,25 @@
 
 
 <style>
-  .full button span {
-    background-color: limegreen;
-    border-radius: 32px;
-    color: black;
-  }
-  .partially button span {
-    background-color: orange;
-    border-radius: 32px;
-    color: black;
-  }
+.full button span {
+background-color: limegreen;
+border-radius: 32px;
+color: black;
+}
+.partially button span {
+background-color: orange;
+border-radius: 32px;
+color: black;
+}
+#scrollArea {
+height: 760px;
+overflow: auto;
+}
+
+#bottom {
+display: block;
+margin-top: 2000px;
+}
 </style>
         
     

@@ -33,15 +33,22 @@
 }
 #homeContainer {
   border: 1px solid none;
-  height: 400px;
+  height: 780px;
   padding: 0px 20px 0px 20px;
 }
+#meetingContainer {
+  border: 1px solid black;
+  height: 780px;
+  padding: 0px 20px 0px 20px;
+}
+#meetingContainer p {
+  font-size: 15px;
+}
 #btnContainer {
+  float: right;
   width: 220px;
   height: 400px;
-  position: absolute;
-  top: 190px;
-  left: 270px;
+  padding-top: 20px;
   border: 1px solid none;
 }
 #btnContainer .SearchContactOverlay {
@@ -354,7 +361,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   float: right;
-  max-height: 55%;
+  max-height: 100%;
 }
 .widget-zoom-contacts .ListRow {
   float: left;
