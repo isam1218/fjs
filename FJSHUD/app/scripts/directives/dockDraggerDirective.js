@@ -22,6 +22,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				helper: 'clone',
 				appendTo: 'body',
 				scroll: false,
+				iframeFix: true,
 				cursorAt: { top: 25 },
 				zIndex: 50,
 				stack: '#InnerDock .Gadget',
