@@ -40,6 +40,10 @@ hudweb.directive('resizer', ['HttpService', function(httpService) {
 					});
 				};
 			});
+			scope.$on('$destroy', function(){
+				element.parent().css('height', 'auto');
+				element.parent().css('min-height', '0px');
+			});
 		}
 	};
 }]);
