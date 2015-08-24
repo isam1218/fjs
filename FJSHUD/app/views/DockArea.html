@@ -57,15 +57,13 @@
 					<div class="ListRowContent" style="display:inline-block;margin-right:2px">
 						<div class="ListRowTitle">
 							<div class="ParkedCallDisplayName">{{ ::call.displayName }}</div>
-							<div>{{ ::call.phone }}</div>
+							<div>{{ ::call.phone}}</div>
 						</div>
-							
-							
+							<div timer="call.created" class="timer"></div>
 					</div>
-					<div timer="call.created" class="timer"></div>
-					
 				</div>
-			</div>
+				
+			</div>		
 		</div>
 
 		<resizer ng-if="parkedCalls.length > 0"></resizer>
