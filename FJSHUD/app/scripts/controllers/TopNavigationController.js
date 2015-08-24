@@ -154,7 +154,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	
 	var player;
 	var source;
-	var loadCheck;
   
 	$scope.$on('play_voicemail', function(event, data) {		
 		// first time setup
@@ -189,10 +188,21 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				$scope.player.playing = true;
 				$scope.$digest();
 			};
+			
+			player.onerror = function() {
+				// retry
+				setTimeout(function() {
+					player.load();
+				}, 1000);
+			};
+			
+			// in case we end up needing this:
+			// source.onerror = function() {};
 		}
+		else
+			player.pause();
 		
-		// reset
-		$interval.cancel(loadCheck);	
+		// reset	
 		$scope.voicemail = null;
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
@@ -218,14 +228,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
 		source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
 		player.load();
-	
-		// fail catch
-		loadCheck = $interval(function() {
-			if (isNaN(player.duration))
-				player.load();
-			else
-				$interval.cancel(loadCheck);
-		}, 1000, 0, false);
 	
 		// delay getting profile so view will update
 		$timeout(function() {
@@ -299,7 +301,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	};
   
 	$scope.closePlayer = function() {
-		$interval.cancel(loadCheck);
 		$scope.voicemail = null;
 		$scope.recorder = null;
 		
@@ -308,7 +309,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		player.ontimeupdate = null;
 		player.onpause = null;
 		player.onplay = null;
+		player.onerror = null;
 		player = null;
+		
 		source = null;
 	};
 }]);
