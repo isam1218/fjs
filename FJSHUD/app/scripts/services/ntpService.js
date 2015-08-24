@@ -39,4 +39,14 @@ hudweb.service('NtpService', function () {
     }
   };
 
+  // do the opposite when sending object's timestamp to native plugin
+  this.calibrateNativeTime = function(dateToAdjust){
+    if (timeSyncFirstPlace == 'client')
+      return dateToAdjust - timeSyncDelta;
+	else if (timeSyncFirstPlace == 'server')     
+      return dateToAdjust + timeSyncDelta;
+	else
+      return dateToAdjust;
+  };
+
 });
