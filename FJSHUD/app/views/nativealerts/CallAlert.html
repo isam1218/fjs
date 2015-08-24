@@ -35,7 +35,13 @@
    
      <div  onclick="mouseClick(this)" action="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
          <div class="memberName"><div class="name ng-class:{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div><div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
-         <div class="callStatus">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} <span class="MyCallBlock_Duration" data-duration="{{callObj[currentCall.xpid].nativeTime}}"></span></div>
+         <div class="callStatus">
+			{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} 
+			<span class="MyCallBlock_Duration" data-duration="{{ ::getNativeTime(currentCall.created) }}"></span>
+			<span ng-if="currentCall.state == 3">
+				/ <span class="MyCallBlock_Duration Hold" data-duration="{{ ::getNativeTime(currentCall.holdStart) }}"></span>
+			</span>
+		 </div>
      </div>                 
 	<div class="controlButtons" ng-switch="currentCall.state">
          <div onclick="mouseClick(this)" action="#/EndCall?{{currentCall.xpid}}" ng-switch-when="0" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
