@@ -96,8 +96,8 @@
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
-							<div class="XButton XButtonRed" onclick="mouseClick(this)" action="#/RemoveNotification?{{message.xpid}}"> {{::verbage.Reject}}</div>
-							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/AcceptCall?{{message.senderId}}">{{::verbage.accept}}</div>
+							<div class="XButton XButtonRed" style="background-color:#CA050E" onclick="mouseClick(this)" action="#/RemoveNotification?{{message.xpid}}"> {{::verbage.Reject}}</div>
+							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/AcceptZoom?{{message.xpid}}&{{message.message}}">{{::verbage.join}}</div>
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 

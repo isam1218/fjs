@@ -30,9 +30,8 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
   $scope.toggleObject = localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
   
   $scope.saveCRTab = function(tab, index){
-    $scope.selected = $scope.tabs[index].lower;
     $scope.toggleObject = {item: index};
-    localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+    localStorage['CallsRecordings_tabs_of_' + $scope.globalXpid] = JSON.stringify(tab);
     localStorage['CallsRecordings_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
   };
 

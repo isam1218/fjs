@@ -24,7 +24,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var phone;
 	var notificationCache = {};
 	var soundManager;
-	var meModel = {};
 	var sipCalls = {};
 	var tabInFocus = true;
 	var callsDetails = {};
@@ -83,10 +82,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var isDocumentHidden  = function(isForceHidden){
 		var hidden; 
 		if(document.hidden || !isForceHidden){
+			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 			}
 		}else{
+			tabInFocus = true;
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				removeNotification();
 			}
@@ -143,14 +144,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	}
 
-	window.onfocus = function(){
-		tabInFocus = true;
-	};
-
-	window.onblur = function(){
-		tabInFocus = false;
-	};
-	
 	var messageSoftphone = function(data,retry){
 		if(retry == undefined)retry = 0;
 		if(context.webphone){
@@ -164,6 +157,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 	
+	this.isInFocus = function(){
+		return tabInFocus;
+	}
 
 	var registerPhone = function(isRegistered){
 		if(context.webphone){
@@ -646,9 +642,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			}
 					break;
 	    		case '/AcceptZoom':
-					window.open(xpid,'_blank');
-	    			removeNotification();
-	    			break;
+					var apiUrl = queryArray[1].split(': ')[1];
+					window.open(apiUrl,'_blank');
+					remove_notification(xpid);
+					break;
 
 	    		case '/RejectZoom':
 	    			removeNotification();
@@ -1378,7 +1375,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}
 
-					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
 						
 						if(!doesExist){
 							for(var callId in callsDetails){
@@ -1388,19 +1384,35 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							}
 						}
 
-						if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record && !doesExist) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+						if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
-										var url = weblauncher.inbound;
-										url = settingsService.formatWebString(url,data[i]);
-										if(weblauncher.inboundSilent){
-											$.ajax(url,{});
-										}else{
-											window.open(url, "_blank");
+									if(weblauncher.launchWhenCallAnswered){
+										if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+											var url = weblauncher.inbound;
+											url = settingsService.formatWebString(url,data[i]);
+											if(weblauncher.inboundSilent){
+												$.ajax(url,{});
+											}else{
+												window.open(url, "_blank");
+											}
 										}
+									}else{
+										if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+											var url = weblauncher.inbound;
+											url = settingsService.formatWebString(url,data[i]);
+											if(weblauncher.inboundSilent){
+												$.ajax(url,{});
+											}else{
+												window.open(url, "_blank");
+											}
+										}
+									}
+																		
+										
 								}
 							}else{
-								if(weblauncher.outboundAuto){
+								if(weblauncher.outboundAuto && data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 										var url = weblauncher.outbound;
 										url = settingsService.formatWebString(url,data[i]);
 										if(weblauncher.outboundSilent){
@@ -1411,7 +1423,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}
 						}					
-					}
+					
 				}
 			}
 		}

@@ -64,9 +64,8 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 
   // save user's last selected tab to LS
   $scope.saveGTab = function(tab, index){
-      $scope.selected = tab;
       $scope.toggleObject = index;
-      localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+      localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify(tab);
       localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   }; 
   

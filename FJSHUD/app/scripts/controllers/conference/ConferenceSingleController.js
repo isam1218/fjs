@@ -105,9 +105,8 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   }); 
 
   $scope.saveConfTab = function(tab, index){
-      $scope.selected = tab;
       $scope.toggleObject = {item: index};
-      localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+      localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify(tab);
       localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   };
 
