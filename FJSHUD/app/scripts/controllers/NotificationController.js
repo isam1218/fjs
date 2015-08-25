@@ -418,7 +418,6 @@ hudweb.controller('NotificationController',
 
   $scope.$on('settings_updated',function(event,data){
     if(data['instanceId'] != undefined){
-    
       if(data['instanceId'] != localStorage.instance_id){
         $scope.anotherDevice = true;
 
@@ -426,9 +425,19 @@ hudweb.controller('NotificationController',
       }else{
         $scope.anotherDevice = false;
         phoneService.registerPhone(true);
-      
       }
     }
+
+    if(data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){
+        if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
+          $scope.displayAlert = true;
+          $timeout(displayNotification
+              , 2500); 
+        }
+    }else{ 
+        phoneService.removeNotification();
+    }
+
   });
 
   $scope.activatePhone = function(){
@@ -894,6 +903,7 @@ hudweb.controller('NotificationController',
                           //nservice.displayWebNotification(item);
                        }else{
                           $scope.displayAlert = true;
+                          phoneService.setAlertShown(true);
                           $timeout(displayNotification, 1500);
                        }
              }
