@@ -6,7 +6,6 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'flow'
 ]);
-
 hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 	// disables debugger injection 
 	$compileProvider.debugInfoEnabled(false);

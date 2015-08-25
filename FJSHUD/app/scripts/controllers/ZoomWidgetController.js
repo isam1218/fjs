@@ -173,7 +173,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope,$modal) {
 
   $scope.items = items;
   $scope.selected = {
@@ -195,9 +195,24 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
   $scope.ok = function () {
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic=test-meeting-0818&startTime=2015-08-05T18:30:00Z&duration=60&timezone=America/Los_Angeles').success(function(data, status, headers, config){
         console.log('SUCCESS',data);
+
     });
     $modalInstance.close($scope.selected.item);
+    $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'copyToClipboard.html',
+      controller: 'ModalInstanceCtrl',
+      size: 'lg',
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
+      }
+    });
   };
+  $scope.copyToClipboard = function(){
+        $modalInstance.close($scope.selected.item);
+      };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
