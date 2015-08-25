@@ -628,10 +628,9 @@ hudweb.controller('NotificationController',
               }
 
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
-							right_buttonText = "TALK";	
-							right_buttonID = "CALL_ON_RESUME";
+							right_buttonText = "TALK";
 							right_buttonEnabled = true;
-							
+							right_buttonID = "talk";
 						}
 						if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							callType = "Queue";
@@ -650,6 +649,7 @@ hudweb.controller('NotificationController',
 				 		}
 
 						var callStart = ntpService.calibrateNativeTime($scope.calls[i].created);
+						var holdStart = ntpService.calibrateNativeTime($scope.calls[i].holdStart);
 
 				 		data = {
 					  			"notificationId": $scope.calls[i].xpid, 
@@ -664,7 +664,8 @@ hudweb.controller('NotificationController',
 					  			"callCategory" : callType,
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0",
-								"created": callStart
+								"created": callStart,
+								"holdStart": holdStart
 						};
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
 					}
