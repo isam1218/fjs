@@ -358,6 +358,14 @@ hudweb.controller('NotificationController',
 
   $scope.endCall = function(xpid){
     phoneService.hangUp(xpid);
+    for(var i = 0; i < $scope.calls.length;i++){
+      if($scope.calls[i].xpid == xpid){
+        $scope.calls.splice(i,1);
+        break;
+      }
+    }
+    $scope.displayAlert = true;
+    $timeout(cacheNotification,1000);
   };
 
   $scope.holdCall = function(xpid,isHeld){
@@ -623,7 +631,7 @@ hudweb.controller('NotificationController',
 		
 		if($scope.inCall && !$.isEmptyObject($scope.callObj))
         	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
-    	else
+    else
 			$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
 	
 		
@@ -713,16 +721,8 @@ hudweb.controller('NotificationController',
 			}
     }else{
        $scope.displayAlert = true;
-      $timeout(function(){
-        var element = document.getElementById("Alert");
-        if(element){
-          var content = element.innerHTML;
-          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-          
-        }
-        element = null;
-        $scope.displayAlert = false;
-        },2500);
+       phoneService.removeNotification();
+       $timeout(cacheNotification,1000);
     }
 
     
@@ -748,6 +748,16 @@ hudweb.controller('NotificationController',
 		element = null;
 		$scope.displayAlert = false;
 	};
+
+  var cacheNotification = function(){
+     var element = document.getElementById("Alert");
+      if(element){
+              var content = element.innerHTML;
+              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+      }
+      element = null;
+      $scope.displayAlert = false;
+  };
 
 
 
@@ -779,7 +789,7 @@ hudweb.controller('NotificationController',
 				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
           $timeout(displayNotification
-              , 2500); 
+              , 2000); 
         }
 				break;
       case "deleteChatNots":
@@ -929,16 +939,7 @@ hudweb.controller('NotificationController',
 			phoneService.removeNotification();
       if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
-          $timeout(function(){
-            var element = document.getElementById("Alert");
-            if(element){
-              var content = element.innerHTML;
-              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-              
-            }
-            element = null;
-            $scope.displayAlert = false;
-            },2500);
+          $timeout(cacheNotification,2500);
     	}else{
         phoneService.cacheNotification(undefined);
         
