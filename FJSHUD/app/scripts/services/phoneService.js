@@ -85,6 +85,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
 				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+				//$rootScope.$broadcast("phone_event",{event:'displayNotification',contactId:$routeParams.contactId});
+
 			}
 		}else{
 			tabInFocus = true;
@@ -248,7 +250,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			if(context.webphone){
 				//messageSoftphone({a : 'hangUp', value : call.sip_id});
 				httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-
 			}else{
 				call.hangUp();
 			}
@@ -553,6 +554,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         }
 	};
 
+	this.resetAlertPosition = function(){
+		alertPosition.x = 0;
+		alertPosition.y = 0;
+	};
 
 
 	onNetworkStatus = function(st){
@@ -563,6 +568,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	alertPosition.x = x;
     	alertPosition.y = y;
     };
+
 
     var activateBrowserTab = function(tabId){
 
