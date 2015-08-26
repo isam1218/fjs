@@ -520,6 +520,7 @@ hudweb.controller('NotificationController',
 	  return ntpService.calibrateNativeTime(new Date(time).getTime());
   };
 
+
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
     
@@ -608,31 +609,10 @@ hudweb.controller('NotificationController',
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
 					for (var i = 0; i < $scope.calls.length; i++){
-				 		var data = {};
-						var left_buttonText;
-						var right_buttonText;
-						var left_buttonID;
-						var right_buttonID;
-						var right_buttonEnabled;
-						var callType;
-						if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
-							left_buttonText = $scope.calls[i].incoming ? "Decline" : "Cancel";
-							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
-							left_buttonID = "CALL_DECLINED";
-							right_buttonID = "CALL_ACCEPTED";
-							right_buttonEnabled = $scope.calls[i].incoming;
-						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-							left_buttonText = "END";
-							left_buttonID = "CALL_DECLINED";
-						  if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
-						    	right_buttonID = "CALL_ON_HOLD";
-								  right_buttonEnabled = false;
-								  right_buttonText = "HOLD";	
-							}else{
-                  //right_buttonID = "CALL_ON_HOLD";
-                  right_buttonEnabled = false;
-                  right_buttonText = "HOLD";  
-                
+				 		if(alertDuration != "entire"){
+              if($scope.call[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+                return;
               }
 
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
@@ -690,13 +670,19 @@ hudweb.controller('NotificationController',
         		$timeout(displayNotification, 1500);
 			}
     }else{
-      if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+
+      if(nservice.isEnabled()){
+          nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+      }else{
+        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
            $scope.displayAlert = true;
             phoneService.removeNotification();
             $timeout(cacheNotification,1000);
-      }else{
-          phoneService.cacheNotification(undefined,0,0);
+        }else{
+            phoneService.cacheNotification(undefined,0,0);
+        }  
       }
+      
     }
 
     
