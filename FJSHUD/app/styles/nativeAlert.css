@@ -12,7 +12,6 @@
 #CallAlert .CallStatusIconContainer {
   width: 34px;
   height: 34px;
-  border: 1px solid #0093f0;
   border-radius: 30px;
   text-align: center;
   display: inline-block;
@@ -36,6 +35,9 @@
   max-height: none;
   padding-bottom: 20px;
 }
+#CallAlert .LeftBarNotificationMessageSection .NotificationDisplayName span.truncate {
+  max-width: 55%;
+}
 #CallAlert a:not(.XButton) {
   text-decoration: none;
   color: inherit;
@@ -43,9 +45,6 @@
 #CallAlert div.CallStatusContainerOutbound {
   position: relative;
   bottom: 0px;
-}
-#CallAlert div.CallStatusContainerOutbound .CallStatusIconContainer {
-  border: 1px solid #0093f0;
 }
 #CallAlert div.CallStatusContainerOutbound .controlButtons .PhoneButton {
   width: 50px;
