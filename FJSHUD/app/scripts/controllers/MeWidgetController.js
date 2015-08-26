@@ -1134,8 +1134,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         update_queues();
     });
 
+
+
     $rootScope.isPluginUptoDate = function(){
         return $scope.pluginVersion && ($scope.pluginVersion.localeCompare($scope.latestVersion)) > -1;
     };
-
+    $scope.resetAlertPosition = function(){
+        phoneService.resetAlertPosition();
+    };
 }]);
