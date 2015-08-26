@@ -47,6 +47,12 @@
 
 				function addAlert(html)  {
 				   document.body.innerHTML = html;
+				   
+					// scroll to bottom
+					setTimeout(function() {
+						document.getElementById('scroller').scrollTop = document.getElementById('scroller').scrollHeight;
+					}, 100);
+					
 				   /*document.getElementById("body").innerHTML = html;
 				   
 
@@ -133,7 +139,7 @@
 
 				        }
 				    }
-				}
+				};
 
 
 				fj.alert.Duration = {
