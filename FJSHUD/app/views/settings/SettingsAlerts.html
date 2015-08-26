@@ -14,7 +14,7 @@
       	<div class="Dialog-settings-row"><input type="checkbox"
           ng-model="alertOnAlways" ng-change="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" 
         > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
-      	<div class="Dialog-settings-row"><input type="button" value="{{::verbage.reset_alert_position}}"></div>
+      	<div class="Dialog-settings-row"><input type="button" value="{{::verbage.reset_alert_position}}" ng-click="resetAlertPosition()"></div>
       </div>
        
      </div>
