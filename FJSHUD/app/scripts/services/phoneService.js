@@ -84,7 +84,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(document.hidden || !isForceHidden){
 			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
-				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+				if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+					displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+				}
 				//$rootScope.$broadcast("phone_event",{event:'displayNotification',contactId:$routeParams.contactId});
 
 			}
