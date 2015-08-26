@@ -520,6 +520,7 @@ hudweb.controller('NotificationController',
 	  return ntpService.calibrateNativeTime(new Date(time).getTime());
   };
 
+
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
     
@@ -608,74 +609,13 @@ hudweb.controller('NotificationController',
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
 					for (var i = 0; i < $scope.calls.length; i++){
-				 		var data = {};
-						var left_buttonText;
-						var right_buttonText;
-						var left_buttonID;
-						var right_buttonID;
-						var right_buttonEnabled;
-						var callType;
-						if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
-							left_buttonText = $scope.calls[i].incoming ? "Decline" : "Cancel";
-							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
-							left_buttonID = "CALL_DECLINED";
-							right_buttonID = "CALL_ACCEPTED";
-							right_buttonEnabled = $scope.calls[i].incoming;
-						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-							left_buttonText = "END";
-							left_buttonID = "CALL_DECLINED";
-						  if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
-						    	right_buttonID = "CALL_ON_HOLD";
-								  right_buttonEnabled = false;
-								  right_buttonText = "HOLD";	
-							}else{
-                  //right_buttonID = "CALL_ON_HOLD";
-                  right_buttonEnabled = false;
-                  right_buttonText = "HOLD";  
-                
+				 		if(alertDuration != "entire"){
+              if($scope.call[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+                return;
               }
-
-						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
-							right_buttonText = "TALK";
-							right_buttonEnabled = true;
-							right_buttonID = "talk";
-						}
-						if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-							callType = "Queue";
-						}else if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
-							callType = "External";
-						}else{
-							callType = "Office";
-						  
-            			}
-
-						if(alertDuration != "entire"){
-				 			if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-				 				nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);		
-				 				return;
-				 			}
-				 		}
-
-						var callStart = ntpService.calibrateNativeTime($scope.calls[i].created);
-						var holdStart = ntpService.calibrateNativeTime($scope.calls[i].holdStart);
-
-				 		data = {
-					  			"notificationId": $scope.calls[i].xpid, 
-					  			"leftButtonText" : left_buttonText,
-					  			"rightButtonText" : right_buttonText,
-					  			"leftButtonId" : left_buttonID,
-					  			"rightButtonId" : right_buttonID,
-					  			"leftButtonEnabled" : true,
-					  			"rightButtonEnabled" : right_buttonEnabled,
-					  			"callerName" : $scope.calls[i].displayName, 
-					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outbound call for",
-					  			"callCategory" : callType,
-					  			"muted" : $scope.calls[i].mute ? "1" : "0",
-					  			"record" : $scope.calls[i].record ? "1" : "0",
-								"created": callStart,
-								"holdStart": holdStart
-						};
-						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
+            }
+            phoneService.displayCallAlert($scope.calls[i]);
 					}
 			}else{
         		if(alertDuration != "entire"){
@@ -689,13 +629,19 @@ hudweb.controller('NotificationController',
         		$timeout(displayNotification, 1500);
 			}
     }else{
-      if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+
+      if(nservice.isEnabled()){
+          nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+      }else{
+        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
            $scope.displayAlert = true;
             phoneService.removeNotification();
             $timeout(cacheNotification,1000);
-      }else{
-          phoneService.cacheNotification(undefined,0,0);
+        }else{
+            phoneService.cacheNotification(undefined,0,0);
+        }  
       }
+      
     }
 
     
