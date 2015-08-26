@@ -5,7 +5,6 @@ hudweb.directive('messagescroll', ['$compile',
     link: function(scope, element, attrs) {
       // required to show new messages on-the-fly
       var formatMessage = function(){
-        console.error('IN FORMAT FUNCTION! -', message);
         var message = scope.message;
         switch(message.type){
           case "vm":
