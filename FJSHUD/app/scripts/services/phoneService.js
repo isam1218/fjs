@@ -1562,10 +1562,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	            this.displayWebphoneNotification(data,"INCOMING_CALL",true);
 	 };
 
-	 this.dismissAlert = function(callId){
-
-	 }
-	
 	var context = this;
 
 }]);
