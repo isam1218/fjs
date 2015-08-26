@@ -940,6 +940,9 @@ p {
 .LeftBar .Notifications > div:first-child {
   transition: .25s;
 }
+.LeftBar .Notifications:hover .scroller {
+  overflow-x: hidden;
+}
 .LeftBar .Notifications .Footer {
   padding-bottom: 10px;
 }
@@ -1021,8 +1024,6 @@ p {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: auto;
-  overflow-y: hidden;
   max-width: 60%;
   font-size: 0.9em;
   position: fixed;
@@ -1032,6 +1033,9 @@ p {
   border-right: none;
   min-width: 200px;
   right: 10px;
+}
+.DockPanel .NoneParked {
+  max-height: 42px !important;
 }
 .DockPanel .ListRowTitle {
   max-width: 100%;
@@ -1050,6 +1054,8 @@ p {
 }
 .DockPanel .InnerDock {
   position: absolute;
+  overflow-x: auto;
+  overflow-y: hidden;
   height: 100%;
   width: 100%;
   column-width: 170px;
@@ -1058,6 +1064,7 @@ p {
   column-gap: 5px;
   -webkit-column-gap: 5px;
   -moz-column-gap: 5px;
+  -webkit-transform: translateZ(0);
 }
 .DockPanel .InnerDock.ui-sortable:not(.ui-sortable-disabled) .Gadget {
   position: static;
@@ -1127,15 +1134,23 @@ p {
 .Gadget #parked_calls .ListRow .ListRowTitle {
   padding: 0px;
   white-space: nowrap;
-  max-width: 80px;
+  max-width: 70px;
   padding-top: 5px;
-  text-overflow: ellipssis;
+  text-overflow: ellipsis;
   padding-left: 3px;
+  margin-top: .1px;
+}
+.Gadget #parked_calls .ListRow .ListRowTitle .ParkedCallDisplayName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #555;
+  text-shadow: 0px 1px 0px #fff;
 }
 .Gadget #parked_calls .timer {
   float: right;
   font-size: .65em;
-  margin-top: 3px;
+  margin-top: 7px;
   margin-right: 2px;
 }
 .Gadget .Header {
@@ -3958,7 +3973,11 @@ div.NewCall .XButton.XButtonNormal {
   font-size: 12px;
 }
 .conference.currentCall .ListRowTitle {
-  max-width: 80%;
+  max-width: 100%;
+  float: none;
+  padding: .3em !important;
+  display: flex;
+  display: -webkit-flex;
 }
 .conference.currentCall .ListRowTitle .name,
 .conference.currentCall .ListRowTitle .name > * {
@@ -3966,6 +3985,22 @@ div.NewCall .XButton.XButtonNormal {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.conference.currentCall .ListRowTitle .vmtime {
+  font-weight: bold;
+  font-size: 11px;
+  color: #222;
+}
+.conference.currentCall .ListRowTitle .ListRowStatusLeftSide {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.conference.currentCall .ListRowTitle .ListRowStatusLeftSideNoJoin {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 55%;
 }
 .ListViewTopNote {
   position: relative;
@@ -4117,10 +4152,12 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-border-radius: 30px;
   color: #0093f0;
 }
+.noJoinConf .ListRow .ListRowContent {
+  display: flex;
+}
 .noJoinConf .ListRow .ListRowContent span {
   font-size: 11px;
   font-weight: bold;
-  float: right;
   color: #333;
   text-shadow: 0px 1px 0px #FFF;
   transition: border 0.3s ease 0s;
@@ -4639,6 +4676,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .queueAgents .ListRow .ListRowTitle {
   color: #222;
+  max-width: 100%;
 }
 .queueAgents .ListRow .ListRowTitle span {
   color: #888;
@@ -5309,6 +5347,9 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Conversation .WidgetBody .ListRow:hover .ListRowStatus {
   visibility: visible;
 }
+.Widget.Conversation .WidgetBody .ConferenceListRow {
+  padding-top: .3em;
+}
 .Widget.Conversation .WidgetBody .ToolBar input[type=search] {
   height: 26px;
 }
@@ -5847,6 +5888,9 @@ div.NewCall .XButton.XButtonNormal {
   min-height: 40px;
   height: auto;
 }
+.ListRow .GroupListRowContent {
+  display: flex;
+}
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
@@ -5901,6 +5945,9 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListRow .ListRowTitle .name .ConferenceListRowStatusText {
   font-size: 12px !important;
+}
+.ListRow .GroupListRowTitle {
+  max-width: 100%;
 }
 .ListRow .ListRowStatus {
   float: right;
@@ -7219,6 +7266,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   display: inline-block;
   padding-left: 1px;
 }
+.CallStatusContainerInbound .MyCallBlock_Duration.Hold,
+.CallStatusContainerOutbound .MyCallBlock_Duration.Hold,
+.CallStatusContainerQueue .MyCallBlock_Duration.Hold {
+  color: gray;
+}
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText,
 .CallStatusContainerQueue .CallStatusText {
@@ -7349,7 +7401,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 }
 .NotificationMessages .scroller:hover {
   overflow-y: auto;
-  overflow-x: hidden;
 }
 .LeftBarNotifications {
   transition: 1s;
@@ -8349,6 +8400,15 @@ a.Messages {
 }
 .SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle {
   margin-top: -5px;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle.AddConferenceMember {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  max-width: 85%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .ListRowStatusIcon {
   margin-left: 0px;
