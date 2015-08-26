@@ -874,7 +874,7 @@ hudweb.controller('NotificationController',
             long_waiting_calls[notification.xpid] = notification;
         break;
       case 'q-alert-abandoned':
-        notification.label = 'abandoned call';
+            notification.label = '...abandoned call';
             notification.message = "";
             var abandoned_notification = angular.copy(notification);
             // once it's an abandoned call, want long-wait-note to disappear
