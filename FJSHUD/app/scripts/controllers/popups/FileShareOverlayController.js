@@ -73,7 +73,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	$scope.getEmbedURL = function(url) {
 		// sanitize url for iframe embedding
 		if ($scope.embedType == 'doc')
-			return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true');
+			return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true&attredirects=0&d=1');
 		else
 			return $sce.trustAsResourceUrl(httpService.get_attachment(url) + '?embedded=true');
 	};
