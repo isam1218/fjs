@@ -163,7 +163,7 @@ hudweb.controller('NotificationController',
       $scope.displayAlert = true;
       $timeout(displayNotification, 1500);    
     }else{
-      phoneService.cacheNotification(undefined);
+      phoneService.cacheNotification(undefined,0,0);
       phoneService.removeNotification();
     }
     
@@ -680,18 +680,23 @@ hudweb.controller('NotificationController',
 					}
 			}else{
         		if(alertDuration != "entire"){
-				 	if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-				 		phoneService.removeNotification();
-				 		return;
-				 	}
-				}
+				 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+				 		   phoneService.removeNotification();
+
+				 		   return;
+				 	    }
+				    }
         		$scope.displayAlert = true;
         		$timeout(displayNotification, 1500);
 			}
     }else{
-       $scope.displayAlert = true;
-       phoneService.removeNotification();
-       $timeout(cacheNotification,1000);
+      if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+           $scope.displayAlert = true;
+            phoneService.removeNotification();
+            $timeout(cacheNotification,1000);
+      }else{
+          phoneService.cacheNotification(undefined,0,0);
+      }
     }
 
     
@@ -757,6 +762,8 @@ hudweb.controller('NotificationController',
           $scope.displayAlert = true;
           $timeout(displayNotification
               , 2000); 
+        }else{
+          phoneService.cacheNotification(undefined,0,0);
         }
 				break;
       case "deleteChatNots":
@@ -908,7 +915,7 @@ hudweb.controller('NotificationController',
           $scope.displayAlert = true;
           $timeout(cacheNotification,2500);
     	}else{
-        phoneService.cacheNotification(undefined);
+        phoneService.cacheNotification(undefined,0,0);
         
       }
     }
@@ -1071,5 +1078,8 @@ hudweb.controller('NotificationController',
 		else
 		   	$scope.hasMessages = true;	
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
+    
+    //todo remove this later this is a hack to decide when to display alerts when changing windows
+    $rootScope.currentNotificationLength = $scope.todaysNotifications.length;
   });		
 }]);
