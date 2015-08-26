@@ -89,7 +89,13 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			}else{
 				iconUrl = "../img/Generic-Avatar-28.png";
 			}
-			var message = data.type && data.type == 'vm' ? data.label : data.message;
+			var message = "";
+			if(data.type == 'vm' || data.type == 'q-alert-abandoned'){
+				message = data.label;
+			}else{
+				message = data.message;
+			}
+
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
 				body : message,
