@@ -131,24 +131,6 @@ hudweb.controller('NotificationController',
     return messages;
   };
 
-  // required to show new messages on-the-fly
-  $scope.formatMessage = function(message){   
-    switch(message.type){
-      case "vm":
-        if(message.vm && message.vm.transcription != ""){
-          return vm.transcription;
-        }else{
-          return "transcription is not available";
-        }
-        break;
-      case 'missed-call': 
-        return "Missed call from extension " + message.phone; 
-        break;
-      default:
-        return message.message.replace(/\n/g, '<br/>');
-    }
-  };
-
   $scope.getNotificationsLength = function(length)
   {
     var length = $scope.phoneSessionEnabled ? length : length + 1;
