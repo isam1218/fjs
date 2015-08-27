@@ -151,11 +151,15 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	};
 	
 	$scope.recorder;
+	$scope.attempts = 0;
 	
 	var player;
 	var source;
+	var retry;
   
-	$scope.$on('play_voicemail', function(event, data) {		
+	$scope.$on('play_voicemail', function(event, data) {
+		clearTimeout(retry);
+		
 		// first time setup
 		if (!player) {
 			player = document.getElementById('voicemail_player');
@@ -190,10 +194,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			};
 			
 			player.onerror = function() {
-				// retry
-				setTimeout(function() {
-					player.load();
-				}, 1000);
+				// retry 3x, then give up
+				if ($scope.attempts < 3) {
+					retry = setTimeout(function() {
+						player.load();
+					}, 1000);
+					
+					$scope.attempts++;
+				}
 			};
 			
 			// in case we end up needing this:
@@ -203,6 +211,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			player.pause();
 		
 		// reset	
+		$scope.attempts = 0;
 		$scope.voicemail = null;
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
@@ -303,6 +312,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	$scope.closePlayer = function() {
 		$scope.voicemail = null;
 		$scope.recorder = null;
+		
+		clearTimeout(retry);
 		
 		player.pause();
 		player.onloadeddata = null;
