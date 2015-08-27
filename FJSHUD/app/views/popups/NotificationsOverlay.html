@@ -20,8 +20,8 @@
              <div class="Conference-HeaderTitle">NEW ITEMS</div>
              <div class="Conference-HeaderSubTitle">You have {{newNotificationsLength}} new item(s)</div> 
             </div>
-            <div class="new_notifications notifications_section" ng-show="!showNew">                            
-                <div class="Messages" ng-repeat="message in get_new_notifications()">              
+            <div class="new_notifications notifications_section" ng-show="hasNewNotifications">                            
+                <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid">              
                      <div class="NotificationHeader"> 
                             <div class="NotificationHeaderBackground"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -43,7 +43,7 @@
                                 {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
                                 
                                </span></div>                             
-                            <div class="NotificationMessage" ng-click="go_to_notification_chat(message)"><p ng-if="multiple_new_notifications" ng-repeat="chat_sub_message in new_notifications_to_display track by $index">{{::chat_sub_message}}</p>
+                            <div class="NotificationMessage" ng-click="go_to_notification_chat(message)"><p ng-if="multiple_new_notifications" ng-repeat="chat_sub_message in new_notifications_to_display track by $index">{{chat_sub_message}}</p>
                             <p ng-if="!multiple_new_notifications">
                             
                             <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>                            
