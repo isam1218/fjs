@@ -76,7 +76,8 @@
 		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div class="titleHeader">{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::contact.primaryExtension">{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::!contact.primaryExtension">{{ gadget.data.displayName }}</div>
 				<div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
