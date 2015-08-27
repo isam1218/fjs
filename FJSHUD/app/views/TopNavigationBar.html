@@ -76,7 +76,7 @@
 			</div>
 		</div>
 		
-		<div class="Loading" ng-show="!player.loaded">{{::verbage.loading}}...</div>
+		<div class="Loading" ng-show="!player.loaded">{{ attempts > 2 ? 'Load failed' : verbage.loading + '...' }}</div>
 		
 		<div class="Progress" ng-show="player.loaded">
 			<div class="Time">{{ player.position | duration }}</div>
