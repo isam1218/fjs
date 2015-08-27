@@ -1171,7 +1171,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				call.dtmf(entry);
 		}	
 	};
-
+	this.holdCalls = function(){
+		for(var callId in callsDetails){
+			holdCall(callId,true);		
+		}
+	};
 	this.getDevicesPromise = function(){
 		return deferred.promise;	
 	};
@@ -1394,16 +1398,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}
 
-						
-						if(!doesExist){
-							for(var callId in callsDetails){
-								if(callId != data[i].xpid){
-									holdCall(callId,true);		
-								}
-							}
-						}
-
-						if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+					if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
 									if(weblauncher.launchWhenCallAnswered){
