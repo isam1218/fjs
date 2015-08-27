@@ -851,7 +851,7 @@ hudweb.controller('NotificationController',
        var combinedMsg = false;
         for (var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
                // take into account that 2 msgs in a row from the same contact are combined into 1 message
-               if ((item.xef001iver != $scope.todaysNotifications[j].xef001iver) && (item.xpid == $scope.todaysNotifications[j].xpid)){
+               if (item.xpid == $scope.todaysNotifications[j].xpid && item.xef001iver != $scope.todaysNotifications[j].xef001iver ){
                        // it's a dupe but combined msg, but still want to play chat sound
                        dupe = true;
                        combinedMsg = true;
@@ -1011,7 +1011,7 @@ hudweb.controller('NotificationController',
     }
   }
 
-	$scope.$on('quickinbox_synced', function(event,data){
+  $scope.$on('quickinbox_synced', function(event,data){
   	if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -1020,6 +1020,7 @@ hudweb.controller('NotificationController',
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var isNotificationAdded = false;
 					var notification = data[i];
+					var has_new_content =  false;
 					
 					if(notification.xef001type != "delete"){
 						notification.fullProfile = contactService.getContact(notification.senderId);
@@ -1028,16 +1029,20 @@ hudweb.controller('NotificationController',
 
 						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
+								if(notification.xef001iver != $scope.notifications[j].xef001iver)
+									has_new_content = true;
 								$scope.notifications.splice(j,1,notification);
 								isNotificationAdded = true;
 								break;	
 							}
 						}
-						if(!isNotificationAdded){							
+						
+						if(!isNotificationAdded || has_new_content){	
+							$scope.hasNewNotifications = true;
 							$scope.notifications.push(notification);
-							
+							addTodaysNotifications(notification);
 						}
-						addTodaysNotifications(notification);
+						//addTodaysNotifications(notification);
 
 					}else if(notification.xef001type == "delete"){
 						if(long_waiting_calls[notification.xpid] == undefined){
