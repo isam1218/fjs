@@ -654,7 +654,6 @@ hudweb.controller('NotificationController',
     }else{
 
       if(nservice.isEnabled()){
-          nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
       }else{
         if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
            $scope.displayAlert = true;
