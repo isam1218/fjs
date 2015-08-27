@@ -21,7 +21,8 @@
 
                 <div class="ListRowTitle RecentsRowTitle">
                     <div class="name">
-                        <strong>{{ ::item.displayName || item.name }}</strong>  
+						<strong ng-if="::item.primaryExtension">{{ ::item.displayName }}</strong>  
+						<strong ng-if="::!item.primaryExtension">{{ item.displayName }}</strong>
                     </div>
                     <div class="status">                     
                         <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
@@ -104,7 +105,8 @@
 
 							<div class="ListRowTitle RecentsRowTitle">
 								<div class="name">
-									<strong>{{ ::contact.displayName || contact.name }}</strong>  
+									<strong ng-if="::contact.primaryExtension">{{ ::contact.displayName }}</strong>  
+									<strong ng-if="::!contact.primaryExtension">{{ contact.displayName }}</strong>  
 								</div>
 								<div class="status">                     
 									<div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
