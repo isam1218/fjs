@@ -35,7 +35,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 		
 		return function(group) {
 			if (group.xpid != favoriteID && group != $scope.userGroup && groupService.isMember(group, $scope.contactId) && groupService.isMine(group.xpid)) {
-				if (query == '' || group.name.toLowerCase().indexOf(query) != -1)
+				if (query == '' || group.name.toLowerCase().indexOf(query) != -1 || group.description.toLowerCase().indexOf(query) != -1)
 					return true;
 			}
 		};
