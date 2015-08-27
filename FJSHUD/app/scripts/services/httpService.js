@@ -134,7 +134,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
 			
-		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 		window.onbeforeunload = null;
 		location.href = authURL;
@@ -232,7 +232,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	localStorage.removeItem("data_obj");
     	localStorage.removeItem("instance_id");
 		
-		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     	
 		// shut off web worker
 		worker.terminate();
@@ -242,11 +242,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	};
 	
 	this.setUnload = function() {
-		document.cookie = 'tab=true';
+		document.cookie = 'tab=true; path=/';
 		
 		// stupid warning
 		window.onbeforeunload = function() {			
-			document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 			return "Are you sure you want to navigate away from this page?";
 		};
