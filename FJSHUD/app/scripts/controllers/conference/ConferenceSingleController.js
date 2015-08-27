@@ -1,5 +1,5 @@
-hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', 'SettingsService', 'StorageService', '$location',
-	function($scope, $rootScope, conferenceService, httpService, $routeParams, settingsService, storageService, $location) {
+hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'ConferenceService', 'HttpService', '$routeParams', 'SettingsService', 'StorageService', '$location','PhoneService',
+	function($scope, $rootScope, conferenceService, httpService, $routeParams, settingsService, storageService, $location,phoneService) {
 	$scope.conversationType = 'conference';
 	
 	$scope.conferenceId = $routeParams.conferenceId;
@@ -185,6 +185,7 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 			
 			httpService.sendAction("conferences",'leave',params);
 		}else{
+      phoneService.holdCalls();
 			params = {
 				conferenceId: $scope.conferenceId,
 				contactId: $scope.meModel.my_pid,
