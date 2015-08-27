@@ -1042,6 +1042,10 @@
   background: #fff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
   box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+
+  &.BargeDropDown{
+    width: 231px !important;
+  }
 }
 
 .MenuWindowTitle {
@@ -1102,6 +1106,15 @@
   text-overflow: ellipsis;
   display:inline-block;
   vertical-align: top;
+
+  &.BargeMenuItemText{
+    margin-left: 24px;
+
+    &.BargeMenuItemTextAdjuster{
+      margin-left: -3px !important;
+    }
+  }
+
 }
 
 .MenuItem .SelectedIcon {
