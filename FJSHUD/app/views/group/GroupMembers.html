@@ -14,24 +14,24 @@
     <div class="ListViewTopSpace"></div>
 	
     <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
-       <a ng-href="#/contact/{{::member.contactId}}" >  <avatar profile="member.fullProfile"></avatar></a>
+        <a ng-href="#/contact/{{::member.contactId}}">
+            <avatar profile="member.fullProfile"></avatar>
+            <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
+                    <a class="ListRowTitle GroupListRowTitle" ng-href="#/contact/{{::member.contactId}}">
+                        <span> {{ ::member.fullProfile.displayName }} </span>
+        				<br/>
+                        <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
+                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+        				{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}
+                    </a>
+        			
 
-        <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
-            <a class="ListRowTitle GroupListRowTitle" ng-href="#/contact/{{::member.contactId}}">
-                <span> {{ ::member.fullProfile.displayName }} </span>
-				<br/>
-                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
-                <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
-				{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}
-            </a>
-			
-
-			<callStatus profile="member.fullProfile" ng-switch-when="true"></callStatus>
-			<a ng-href="#/contact/{{::member.contactId}}" class="vmalternate"  ng-switch-when="false">
-                <div class="ListRowStatus extension">#{{ ::member.fullProfile.primaryExtension }}</div>
-                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
-            </a>
-            
-        </div>
+        			<callStatus profile="member.fullProfile" ng-switch-when="true"></callStatus>
+        			<a ng-href="#/contact/{{::member.contactId}}" class="vmalternate"  ng-switch-when="false">
+                        <div class="ListRowStatus extension">#{{ ::member.fullProfile.primaryExtension }}</div>
+                        <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
+                    </a>
+            </div>
+        </a>
     </div>
 </div>
