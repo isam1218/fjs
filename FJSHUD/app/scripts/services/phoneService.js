@@ -332,6 +332,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
 				$rootScope.$broadcast('play_voicemail', voicemails[i]);
+				voicemails[i].readStatus = true;
 				break;
 			}
 		}
@@ -1300,7 +1301,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		switch(type){
 			case 'contact':
 				return voicemails.filter(function(data){
-					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primaryExtension;
+					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
 				});
 			break;
 			case 'group':
