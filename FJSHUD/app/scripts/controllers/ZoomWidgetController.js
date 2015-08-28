@@ -173,7 +173,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope,$modal) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope,$modal,$filter) {
 
   $scope.items = items;
   $scope.selected = {
@@ -191,11 +191,26 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
     
     return url;
   };
+ 
+  $scope.meeting = {};
+  $scope.meeting.meetingTopic = '';
+  $scope.meeting.timeSelect = null;
+  $scope.meeting.dt = null;
+  $scope.meeting.AmPm = null;
+  
+  $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+
 
   $scope.ok = function () {
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic=test-meeting-0818&startTime=2015-08-05T18:30:00Z&duration=60&timezone=America/Los_Angeles').success(function(data, status, headers, config){
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='
+      +$scope.meeting.meetingTopic+'&startTime='+$scope.meeting.timeSelect+$scope.meeting.AmPm+' , '+$scope.day[$scope.meeting.dt.getDay()] + ' , ' + $scope.month[$scope.meeting.dt.getMonth()] + " " +$scope.meeting.dt.getDay() + " , " + $scope.meeting.dt.getFullYear()
+      +'&duration=60&timezone=America/Los_Angeles').success(function(data, status, headers, config){
         console.log('SUCCESS',data);
+          console.log("TIME", $scope.meeting.timeSelect+$scope.meeting.AmPm);
 
+          console.log("DATE", $scope.day[$scope.meeting.dt.getDay()] + " , " + $scope.month[$scope.meeting.dt.getMonth()] + " " +$scope.meeting.dt.getDay() + " , " + $scope.meeting.dt.getFullYear());
     });
     $modalInstance.close($scope.selected.item);
     $modal.open({
@@ -211,7 +226,7 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
     });
   };
   $scope.copyToClipboard = function(){
-        $modalInstance.close($scope.selected.item);
+        $modalInstance.close();
       };
 
   $scope.cancel = function () {
@@ -219,15 +234,18 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
   };
 });
 
+//Date model controller begins here.
 
 hudweb.controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    $scope.meeting.dt = new Date();
   };
   $scope.today();
 
+  
+
   $scope.clear = function () {
-    $scope.dt = null;
+    $scope.meeting.dt = null;
   };
 
   // Disable weekend selection
