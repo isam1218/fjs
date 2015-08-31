@@ -6,6 +6,7 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
+	$scope.language =  localStorage.fon_lang_code.split(".")[1];
 	
 	$scope.setTab = function(tab) {
 		$scope.tab = tab;
