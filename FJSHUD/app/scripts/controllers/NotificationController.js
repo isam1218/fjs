@@ -873,18 +873,12 @@ hudweb.controller('NotificationController',
     
     delete_notification_from_notifications_and_today(notification.xpid);
 
-		if($scope.todaysNotifications.length > 0 && $scope.calls.length > 0){
+		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
       $timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
-      if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-          $scope.displayAlert = true;
-          $timeout(cacheNotification,2500);
-    	}else{
-        phoneService.cacheNotification(undefined,0,0);
-        
-      }
+      phoneService.cacheNotification(undefined,0,0);
     }
 	};
 
