@@ -215,8 +215,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 			}
 		}
 		// single user
-		else
+		else{
 			httpService.sendAction('contacts', action, {toContactId: $scope.profile.xpid});
+			storageService.saveRecent('contact', $scope.profile.xpid);
+		}
 	};
 	
 	$scope.bargeCall = function(action) {
