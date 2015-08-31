@@ -1,4 +1,4 @@
-fjs.i18n = {
+﻿fjs.i18n = {
 	'us':{
     /******global*****/
     contacts:'Contacts',
@@ -533,7 +533,7 @@ fjs.i18n = {
 
     /******global*****/
     contacts:'Contacts',
-    Groups:'Groups',
+    Groups:'グループ',//'Groups',
     group: 'グループ',
     Conferences:'Conferences',
     queues:'キュー',
@@ -962,7 +962,7 @@ fjs.i18n = {
       recent_queue_name_status:'Queue name (status)',
       recent_conferences:'Recent Conferences',
       recent_conference_room_extension:'Conference Room (extension number)',
-      members_on_call:'member(s) on a call',
+      members_on_call:'メンバーs 通話',
       nothing_found:'Nothing found',
       characters_lefts:'characters left',
       no_recent_calls_in_view:"ビューには最近の通話がありません",
@@ -1001,8 +1001,8 @@ fjs.i18n = {
       calls_on_park:'calls on park',
       none:'None',
       room_is_free:'Room is free and you can do it',
-      active_agents:'ログイン中内線：',
-      logged_in_agents:'ログイン中内線：',
+      active_agents:'ログイン中内線',
+      logged_in_agents:'ログイン中内線',
       file_share_to:'ファイル共有に',
       add_message_to_shared_files:'共有ファイルにメッセージを追加したり、単独でメッセージを送信',
       items:'アイテム',
