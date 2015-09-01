@@ -86,7 +86,7 @@
   
 .Gadget {
 	position: relative;
-	display: inline-flex;
+	display: inline-flex !important;
 	display: -webkit-inline-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
@@ -98,6 +98,7 @@
 	background-color: #EBEBEB;
 	margin: .5em;
 	opacity: .9;
+	-webkit-transform: translateZ(0);
 
 	&.Positioned {
 		position: absolute;
