@@ -755,19 +755,21 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        if(item.type == "chat")
+      if (phoneService.isInFocus()){
+        if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+          if(item.type == "chat")
+            $scope.remove_notification(item.xpid);
+          return false;
+        }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
+          if(item.type == "gchat")
+            $scope.remove_notification(item.xpid);
+          return false;
+        }else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           $scope.remove_notification(item.xpid);
-        return false;
-      }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        if(item.type == "gchat")
-          $scope.remove_notification(item.xpid);
-        return false;
-      }else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-        $scope.remove_notification(item.xpid);
-        return false;
-      } else if (targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
-        return false;
+          return false;
+        } else if (targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
+          return false;
+        }
       }
       
        var dupe = false;
