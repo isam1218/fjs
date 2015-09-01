@@ -93,6 +93,10 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 		{
 			templateUrl: 'views/BoxWidget.html'
 		})
+		.when('/projector',
+		{
+			templateUrl: 'views/Projector.html'
+		})
 		.when('/intellinote',
 		{
 			templateUrl: 'views/Intellinote.html',
