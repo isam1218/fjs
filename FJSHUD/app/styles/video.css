@@ -39,10 +39,15 @@
 #meetingContainer {
   border: 1px solid black;
   height: 780px;
-  padding: 0px 20px 0px 20px;
+  padding: 0px 0px 0px 0px;
 }
 #meetingContainer p {
   font-size: 15px;
+}
+#meetingHeader {
+  border: 1px solid black;
+  height: 170px;
+  padding: 10px 20px 0px 20px;
 }
 #btnContainer {
   float: right;

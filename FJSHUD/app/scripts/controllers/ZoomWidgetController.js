@@ -173,13 +173,13 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope,$modal,$filter) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope,$modal,sharedData) {
 
   $scope.items = items;
   $scope.selected = {
     item: $scope.items[0]
   };
-
+$scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   var getURL = function(action) {
 
     var url = 
@@ -196,27 +196,46 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
   $scope.meeting.meetingTopic = '';
   $scope.meeting.timeSelect = null;
   $scope.meeting.dt = null;
-  $scope.meeting.AmPm = null;
+  $scope.meeting.AmPm = '';
+  $scope.meeting.hourDuration = null;
+  $scope.meeting.minDuration = null;
+  $scope.meeting.timezone = '';
+
+     sharedData.meeting = $scope.meeting;
+  sharedData.meeting.meetingTopic = $scope.meeting.meetingTopic;
+  sharedData.meeting.timeSelect = $scope.meeting.timeSelect;
+  sharedData.meeting.dt = $scope.meeting.dt;
+  sharedData.meeting.AmPm = $scope.meeting.AmPm;
+  sharedData.meeting.hourDuration = $scope.meeting.hourDuration;
+  sharedData.meeting.minDuration = $scope.meeting.minDuration;
+  sharedData.meeting.timezone = $scope.meeting.timezone;
+
   
+
+$scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00"];
+ $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-
+$scope.timeZone = [  "(GMT-7:00)Pacific Time(US and Canada)",
+                    "(GMT-6:00)Mountain Time(US and Canada)",
+                    "(GMT-10:00)Hawaii Time(US and Canada)",
+                    "(GMT-4:00)Eastern Time(US and Canada)",
+                    "(GMT-5:00)Central Time(US and Canada)",
+                    "(GMT-8:00)Alaska Time(US and Canada)"];
 
   $scope.ok = function () {
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='
-      +$scope.meeting.meetingTopic+'&startTime='+$scope.meeting.timeSelect+$scope.meeting.AmPm+' , '+$scope.day[$scope.meeting.dt.getDay()] + ' , ' + $scope.month[$scope.meeting.dt.getMonth()] + " " +$scope.meeting.dt.getDay() + " , " + $scope.meeting.dt.getFullYear()
-      +'&duration=60&timezone=America/Los_Angeles').success(function(data, status, headers, config){
-        console.log('SUCCESS',data);
-          console.log("TIME", $scope.meeting.timeSelect+$scope.meeting.AmPm);
-
-          console.log("DATE", $scope.day[$scope.meeting.dt.getDay()] + " , " + $scope.month[$scope.meeting.dt.getMonth()] + " " +$scope.meeting.dt.getDay() + " , " + $scope.meeting.dt.getFullYear());
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear()+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
+      console.log('SUCCESS', data);
+      sharedData.meeting.meeting_id = data.meeting.meeting_id;
     });
+
+
     $modalInstance.close($scope.selected.item);
     $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'copyToClipboard.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'ModalInstanceCtrlTwo',
       size: 'lg',
       resolve: {
         items: function () {
@@ -224,7 +243,60 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
         }
       }
     });
+
   };
+
+
+ 
+});
+
+hudweb.service("sharedData",function(){
+  this.meeting = {};
+  this.meeting.meetingTopic = '';
+  this.meeting.timeSelect = null;
+  this.meeting.dt = null;
+  this.meeting.AmPm = '';
+  this.meeting.hourDuration = null;
+  this.meeting.minDuration = null;
+  this.meeting.timezone = '';
+  this.meeting.meeting_id = null;
+})
+
+hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance, items,$http,$rootScope,$modal,sharedData) {
+    
+    var getURL = function(action) {
+
+        var url = 
+           action
+          + '?fonalityUserId=' + $rootScope.myPid.split('_')[1]
+          + '&serverId=' + $rootScope.meModel.server_id
+          + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+          + '&authToken=' + localStorage.authTicket;
+        
+        return url;
+      };
+      $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
+
+      $scope.hello = "";
+       $scope.meeting = sharedData.meeting;
+  $scope.meeting.meetingTopic = sharedData.meeting.meetingTopic;
+  $scope.meeting.timeSelect = sharedData.meeting.timeSelect;
+  $scope.meeting.dt = sharedData.meeting.dt;
+  $scope.meeting.AmPm = sharedData.meeting.AmPm;
+  $scope.meeting.hourDuration = sharedData.meeting.hourDuration;
+  $scope.meeting.minDuration = sharedData.meeting.minDuration;
+  $scope.meeting.timezone = sharedData.meeting.timezone;
+  $scope.meeting.meeting_id = sharedData.meeting_meeting_id;
+
+    /*$http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(data){
+        console.log("MEETING DATA",data);
+        $scope.hello += data.meetings[0].topic;
+      });*/
+
+/*$scope.copyToClipboard = function(){
+        $modalInstance.close();
+      };*/
+
   $scope.copyToClipboard = function(){
         $modalInstance.close();
       };
@@ -232,8 +304,10 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-});
+    
 
+
+});
 //Date model controller begins here.
 
 hudweb.controller('DatepickerDemoCtrl', function ($scope) {
@@ -318,3 +392,6 @@ hudweb.controller('ScrollController', ['$scope', '$location', '$anchorScroll',
       $anchorScroll();
     };
   }]);
+
+  
+ 

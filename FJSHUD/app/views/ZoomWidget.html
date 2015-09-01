@@ -140,46 +140,26 @@
               
                           
 
-               <select name="timeSelect" ng-model="meeting.timeSelect">
-                    <option value="1:00">1:00</option>
-                    <option value="2:00">2:00</option>
-                    <option value="3:00">3:00</option>
-                    <option value="4:00">4:00</option>
-                    <option value="5:00">5:00</option>
-                    <option value="6:00">6:00</option>
-                    <option value="7:00">7:00</option>
-                    <option value="8.00">8:00</option>
-                    <option value="9:00">9:00</option>
-                    <option value="10:00">10:00</option>
-                    <option value="11:00">11:00</option>
-                    <option value="12:00">12:00</option>
+               <select ng-init="meeting.timeSelect = times[0]" ng-options="o for o in times" name="timeSelect" ng-model="meeting.timeSelect" >
+                   
                </select>
-               <select name="AmPm" ng-model="meeting.AmPm">
-                    <option>PM</option>
-                    <option>AM</option>
+               <select name="AmPm" ng-model="meeting.AmPm" ng-init="meeting.AmPm = meridian[0]" ng-options="a for a in meridian">
+                    
                </select>
 
                 </li>
                 <li>
                 <label style="margin-left:35px">Duration:</label>
-                <select >
-                <option ng-repeat="hour in hourOption">{{hour}}</option>
+                <select name="hourDuration" ng-model="meeting.hourDuration" ng-init="meeting.hourDuration = hourOption[0]"  ng-options="hr for hr in hourOption">
                 </select>
                 <label>hr</label>
-                <select>
-                <option ng-repeat="min in minOption">{{min}}</option>
+                <select name="minDuration" ng-model="meeting.minDuration" ng-init="meeting.minDuration = minOption[0]" ng-options="min for min in minOption">
                 </select>
                 <label>min</label>
                 </li>
                 <li>
                 <label style="margin-left:22px">Time Zone:</label>
-                <select>
-                    <option>(GMT-7:00)Pacific Time(US and Canada)</option>
-                    <option>(GMT-6:00)Mountain Time(US and Canada)</option>
-                    <option>(GMT-10:00)Hawaii Time(US and Canada)</option>
-                    <option>(GMT-4:00)Eastern Time(US and Canada)</option>
-                    <option>(GMT-5:00)Central Time(US and Canada)</option>
-                    <option>(GMT-8:00)Alaska Time(US and Canada)</option>
+                <select name="timezone" ng-model="meeting.timezone" ng-init="meeting.timezone = timeZone[0]" ng-options="t for t in timeZone">
                 </select>
                 </li>
             </ul>
@@ -209,8 +189,7 @@
     </div>
 </script>
 <script type="text/ng-template" id="copyToClipboard.html">
-
-   <div class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+   <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
         <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
             Fonality Video Collaboration - Add To Calendar
@@ -221,27 +200,29 @@
         <div style="font-size:12px;font-weight:bold;color:gray;border:1px solid none;width:350px;margin-bottom:5px">Click the Copy to Clipboard button to copy the invitation to your clipboard and paste in to your calendar invite.</div>
         <p style="width:280px">When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
     </div>
-    <textarea rows="15" cols="50" style="position:relative;bottom:120px;left:450px;font-size:11px">
+    <textarea   rows="15" cols="50" style="position:relative;bottom:120px;left:450px;font-size:11px">
     Hi there,
 
     {{userName}} is inviting you to a scheduled Zoom meeting.
 
-    Topic:
+    Topic:{{meeting.meetingTopic}}
 
-    Time:
+    Time:{{meeting.timeSelect}} {{meeting.AmPm}}
 
     Join from PC, Mac, iOS or Android:
 
     Or join by phone:
 
     +1 646 7788 (US Toll) or +1 415 762 9988 (US Toll)
-    Meeting ID:
+    Meeting ID:{{meeting.meeting_id}}
     </textarea>
+
+    
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button"  ng-click="copyToClipboard()" >Copy To Clipboard</button>
+        <button class="btn btn-default" ng-click="copyToClipboard()">Copy!</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
-    
+   
 </script>
 
 <style>
