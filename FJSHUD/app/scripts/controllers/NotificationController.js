@@ -477,7 +477,9 @@ hudweb.controller('NotificationController',
     // don't send notification to the party that's NOT being whispered to
     if (type != 'whisper' || type == 'whisper' && $rootScope.myPid == whisperId){
       $scope.notifications.unshift(extraNotification);
-      $scope.todaysNotifications.push(extraNotification);      
+      $scope.todaysNotifications.push(extraNotification);
+      if (displayDesktopAlert && nservice.isEnabled())
+        phoneService.displayWebphoneNotification(extraNotification,"",false);
     }
   };
 
