@@ -1,5 +1,5 @@
-hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q',
-	function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
+hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', '$sce',
+	function($q, $rootScope, httpService,$compile,$location,settingsService,$q,$sce) {
 		this.notifications = [];
 		var notifyPipe = false;
 		var enabled = false;
@@ -92,13 +92,16 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			var message = "";
 			if(data.type == 'vm' || data.type == 'q-alert-abandoned'){
 				message = data.label;
-			}else{
+			}else if(data.type == 'description'){
+        var msgSplit = data.message.split('!</strong><br />');
+        message = "Goodbye " + data.data.groupId + "! " + msgSplit[1];
+      }else{
 				message = data.message;
 			}
 
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
-				body : message,
+				body : $sce.trustAsHtml(message),
 				tag : data.xpid,
 			});
 			var notification_data = data;
