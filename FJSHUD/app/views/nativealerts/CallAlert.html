@@ -46,12 +46,12 @@
 			</span>
 		 </div>
      </div>                 
-	<div class="controlButtons" ng-switch="::currentCall.state">
-         <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" ng-switch-when="0" class="XButton">{{ ::currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
-         <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
-         <div onclick="mouseClick(this)" action="#/HoldCall?{{::currentCall.xpid}}&false" ng-class="::currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="::currentCall.type == 0" ng-if="::currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
-         <div onclick="mouseClick(this)" action="#/ResumeCall?{{::currentCall.xpid}}&true" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
-         <div onclick="mouseClick(this)" action="#/AcceptCall?{{::currentCall.xpid}}" ng-if="::currentCall.incoming && currentCall.state == callState.CALL_RINGING" class="XButton">{{::verbage.accept}}</div>
+	<div class="controlButtons" ng-switch="currentCall.state">
+         <div onclick="mouseClick(this)" action="#/EndCall?{{currentCall.xpid}}" ng-switch-when="0" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+         <div onclick="mouseClick(this)" action="#/EndCall?{{currentCall.xpid}}" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
+         <div onclick="mouseClick(this)" action="#/HoldCall?{{currentCall.xpid}}&false" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
+         <div onclick="mouseClick(this)" action="#/ResumeCall?{{currentCall.xpid}}&true" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
+         <div onclick="mouseClick(this)" action="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
          
     </div>
   </div>
