@@ -899,7 +899,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
@@ -921,6 +921,11 @@ hudweb.controller('NotificationController',
       notification.conference = conference;
     }
 
+  };
+
+  $scope.splitGroupDeleteMsg = function(str){
+    $scope.splitAry = str.split('!</strong><br />');
+    return $scope.splitAry[1];
   };
 
   $scope.isPluginUptoDate = function(){
