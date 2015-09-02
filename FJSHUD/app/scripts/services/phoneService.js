@@ -33,6 +33,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
+	var locations = {};
 
 	
 	var soundEstablished = false;
@@ -1391,7 +1392,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(call && call.details){
 						data[i].details = call.details;
 					}
-
+					data[i].location = locations[data[i].locationId];
 					callsDetails[data[i].xpid] = data[i];
 					callsDetails[data[i].xpid].sipCall = sipCalls[callsDetails[data[i].xpid].sipId];
 					if(data[i].contactId){
@@ -1504,10 +1505,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	    if(call.state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
 	              left_buttonText = call.incoming ? "Decline" : "Cancel";
-	              right_buttonText = call.incoming ? "Accept" : "";
+	              right_buttonText = call.incoming && call.location.locationType != 'm' && meModel.location.locationType != 'm' ? "Accept" : "";
 	              left_buttonID = "CALL_DECLINED";
 	              right_buttonID = "CALL_ACCEPTED";
-	              right_buttonEnabled = call.incoming;
+	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && meModel.location.locationType != 'm';
 	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 	              left_buttonText = "END";
 	              left_buttonID = "CALL_DECLINED";
@@ -1557,6 +1558,28 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	            };
 	            this.displayWebphoneNotification(data,"INCOMING_CALL",true);
 	 };
+
+	 $rootScope.$on('locations_synced', function(event,data){
+        if(data){
+            var me = {};
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
+                if(data[i].locationType != 'a'){
+                     locations[data[i].xpid] = data[i];
+                }
+            }
+        }
+    });
+
+     $rootScope.$on('location_status_synced', function(event,data){
+        if(data){
+            var me = {};
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
+                if(locations[data[i].xpid]){
+                    locations[data[i].xpid].status = data[i];
+                }
+            }
+        }
+    });
 
 	var context = this;
 
