@@ -477,7 +477,9 @@ hudweb.controller('NotificationController',
     // don't send notification to the party that's NOT being whispered to
     if (type != 'whisper' || type == 'whisper' && $rootScope.myPid == whisperId){
       $scope.notifications.unshift(extraNotification);
-      $scope.todaysNotifications.push(extraNotification);      
+      $scope.todaysNotifications.push(extraNotification);
+      if (displayDesktopAlert && nservice.isEnabled())
+        phoneService.displayWebphoneNotification(extraNotification,"",false);
     }
   };
 
@@ -756,12 +758,11 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      
-      if(phoneService.isInFocus()){
+      if (phoneService.isInFocus()){
         if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "chat")
-                $scope.remove_notification(item.xpid);
-                return false;
+            $scope.remove_notification(item.xpid);
+          return false;
         }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "gchat")
             $scope.remove_notification(item.xpid);
@@ -773,7 +774,7 @@ hudweb.controller('NotificationController',
           return false;
         }
       }
-       
+      
        var dupe = false;
        var combinedMsg = false;
         for (var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
@@ -900,7 +901,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
@@ -924,13 +925,43 @@ hudweb.controller('NotificationController',
 
   };
 
+  $scope.splitGroupDeleteMsg = function(str){
+    $scope.splitAry = str.split('!</strong><br />');
+    return $scope.splitAry[1];
+  };
+
   $scope.isPluginUptoDate = function(){
     if($rootScope.pluginVersion != undefined){
         return $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) > -1;
     }else{
         return true;
     }
-  }
+  };
+
+  $scope.$on('$routeChangeSuccess', function(event,data){
+    for (var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+      var singleMsg = $scope.notifications[i];
+      if (singleMsg != undefined){
+        switch(singleMsg.audience){
+          case 'group':
+            var groupNoteId = singleMsg.context.split(':')[1];
+            if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
+              $scope.remove_notification(singleMsg.xpid);
+            break;
+          case 'queue':
+            var queueNoteId = singleMsg.context.split(':')[1];
+            if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
+              $scope.remove_notification(singleMsg.xpid);
+            break;
+          case 'contact':
+            var contactNoteId = singleMsg.context.split(':')[1];
+            if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
+              $scope.remove_notification(singleMsg.xpid);
+            break;
+        }
+      }
+    }
+  });
 
 	$scope.$on('quickinbox_synced', function(event,data){
   	if(data){

@@ -148,7 +148,7 @@
 					(volume.micVolume == 0 ? 'CallIsMuted' : 'IsOnCall' )
 					"> </div>
 				</div>
-				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
+				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING || currentCall.state == callState.CALL_UNKNOWN ? 'ringing' : 'accepted'"> 
 					<div class="memberName"><div class="name ng-class:{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div> <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
 					<div class="callStatus">
 						<div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div>

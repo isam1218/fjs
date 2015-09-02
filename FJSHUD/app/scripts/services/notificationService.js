@@ -1,5 +1,5 @@
-hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q',
-	function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
+hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', '$sce',
+	function($q, $rootScope, httpService,$compile,$location,settingsService,$q,$sce) {
 		this.notifications = [];
 		var notifyPipe = false;
 		var enabled = false;
@@ -76,7 +76,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 
 		this.displayWebNotification = function(data){
-			if (!Notification) {
+      if (!Notification) {
 				console.log('Desktop notifications not supported');
 				return;
 			}
@@ -90,15 +90,28 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				iconUrl = "../img/Generic-Avatar-28.png";
 			}
 			var message = "";
-			if(data.type == 'vm' || data.type == 'q-alert-abandoned'){
-				message = data.label;
-			}else{
-				message = data.message;
-			}
+
+      switch(data.type){
+        case 'vm':
+        case 'q-alert-abandoned':
+          message = data.label;
+          break;
+        case 'description':
+          var msgSplit = data.message.split('!</strong><br />');
+          message = "Goodbye " + data.data.groupId + "! " + msgSplit[1];
+          break;
+        case 'barge message':
+          data.displayName = data.message;
+          message = data.label;
+          break;
+        default:
+          message = data.message;
+          break;
+      }
 
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
-				body : message,
+				body : $sce.trustAsHtml(message),
 				tag : data.xpid,
 			});
 			var notification_data = data;

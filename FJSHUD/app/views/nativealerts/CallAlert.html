@@ -1,12 +1,13 @@
-<link rel="stylesheet" ng-href="{{path}}/styles/main.css" />
-<link rel="stylesheet" ng-href="{{path}}/styles/nativeAlert.css" />
+<style type="text/css">
+	@import url("styles/nativeAlert.css");
+</style>
 
 <div id="CallAlert">  
   <div onclick="window.location.replace('#/Close')" class="close"></div>  
   <a  class="ListRowFirst ListRow ListRow-Contact">     
    <div class="Avatar">
-	 <img ng-src="{{ getAvatar(meModel.my_pid) }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="AvatarImgPH" />
-	 <img ng-src="{{path}}/img/Generic-Avatar-28.png" class="AvatarImgPH" style="display:none" />
+	 <img ng-src="{{ ::getAvatar(meModel.my_pid) }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="AvatarImgPH" />
+	 <img ng-src="{{::path}}/img/Generic-Avatar-28.png" class="AvatarImgPH" style="display:none" />
    </div>
 
   <div class="ListRowContent">
@@ -16,41 +17,41 @@
       </div>
     </div>
     <div class="body">
-      <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{meModel.queue_agent_status}}">
+      <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{::meModel.queue_agent_status}}">
         <div class="status-icon-inner"></div>
       </div>
-      <div class="ListRowStatusIcon XIcon-ChatStatus-{{meModel.chat_status || 'offline' }}">
+      <div class="ListRowStatusIcon XIcon-ChatStatus-{{::meModel.chat_status || 'offline' }}">
         <div class="status-icon-inner"></div>
       </div>
-      <div class="ListRowStatusText">{{meModel.chat_status || 'offline'}}</div>
+      <div class="ListRowStatusText">{{::meModel.chat_status || 'offline'}}</div>
     </div>
    </div>
   </a>
   
 
-  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')">                            
-     <div onclick="mouseClick(this)" action="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer" 
-		ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
+  <div ng-repeat="currentCall in ::calls" ng-class="::currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')">                            
+     <div onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusIconContainer" 
+		ng-class="::currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
      >
-         <div ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
+         <div ng-class="::currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
      </div>
    
-     <div  onclick="mouseClick(this)" action="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
-         <div class="memberName"><div class="name ng-class:{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div><div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
+     <div  onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusText" ng-class="::currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
+         <div class="memberName"><div class="name" ng-class="::{'truncate': currentCall && currentCall.displayName.length > 14}">{{::currentCall.displayName}}</div><div class="MyCallBlock_Rec" ng-class="::{'true': currentCall.record}"></div></div>
          <div class="callStatus">
-			{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} 
+			{{ ::currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} 
 			<span class="MyCallBlock_Duration" data-duration="{{ ::getNativeTime(currentCall.created) }}"></span>
-			<span ng-if="currentCall.state == 3">
+			<span ng-if="::currentCall.state == 3">
 				/ <span class="MyCallBlock_Duration Hold" data-duration="{{ ::getNativeTime(currentCall.holdStart) }}"></span>
 			</span>
 		 </div>
      </div>                 
-	<div class="controlButtons" ng-switch="currentCall.state">
-         <div onclick="mouseClick(this)" action="#/EndCall?{{currentCall.xpid}}" ng-switch-when="0" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
-         <div onclick="mouseClick(this)" action="#/EndCall?{{currentCall.xpid}}" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
-         <div onclick="mouseClick(this)" action="#/HoldCall?{{currentCall.xpid}}&false" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
-         <div onclick="mouseClick(this)" action="#/ResumeCall?{{currentCall.xpid}}&true" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
-         <div onclick="mouseClick(this)" action="#/AcceptCall?{{currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
+	<div class="controlButtons" ng-switch="::currentCall.state">
+         <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" ng-switch-when="0" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+         <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
+         <div onclick="mouseClick(this)" action="#/HoldCall?{{::currentCall.xpid}}&false" ng-class="::currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="::currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
+         <div onclick="mouseClick(this)" action="#/ResumeCall?{{::currentCall.xpid}}&true" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
+         <div onclick="mouseClick(this)" action="#/AcceptCall?{{::currentCall.xpid}}" ng-if="::currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
          
     </div>
   </div>
@@ -61,16 +62,16 @@
 		<div class="TitleBar" id="TitleBar">
 			<div class="HasNotificationIcon"></div>
 			<div>{{::verbage.notifications}}</div>
-			<div class="Event"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+			<div class="Event"> - {{::getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
 			<input type="button" value="{{::verbage.open}}" class="XButton" onclick="window.location.replace('#/OpenNotifications')" />
 		</div>   
 		
 		<div class="scroller" id="scroller">  	
 		<!--ng-show="showHideElements($index)"-->
-	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" >			
+	        <div class="Messages" ng-repeat="message in ::todaysNotifications track by message.xpid" >			
 				<div class="NotificationHeader">
 					<div class="NotificationHeaderBackground">
-						<div onclick="mouseClick(this)" action="#/RemoveNotification?{{message.xpid}}">
+						<div onclick="mouseClick(this)" action="#/RemoveNotification?{{::message.xpid}}">
 							<div class="NotificationClose"></div>
 						</div>
 					</div>
@@ -84,13 +85,13 @@
 					</avatar>
 				
 					<div class="LeftBarNotificationMessageSection">
-						<div onclick="mouseClick(this)" action="#/goToChat?{{message.context}}&{{message.xpid}}" class="chatNotification" action=>
+						<div onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}" class="chatNotification" action=>
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
 								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{ ::message.displayName}}</span>
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
 								<div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
 							</div> 
-							<div class="NotificationType" ng-show="showNotificationBody">
+							<div class="NotificationType" ng-show="::showNotificationBody">
 								...{{ ::message.label }} 
 								<span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
 									{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
@@ -104,50 +105,50 @@
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
-							<div class="XButton XButtonRed" style="background-color:#CA050E" onclick="mouseClick(this)" action="#/RemoveNotification?{{message.xpid}}"> {{::verbage.Reject}}</div>
-							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/AcceptZoom?{{message.xpid}}&{{message.message}}">{{::verbage.join}}</div>
+							<div class="XButton XButtonRed" style="background-color:#CA050E" onclick="mouseClick(this)" action="#/RemoveNotification?{{::message.xpid}}"> {{::verbage.Reject}}</div>
+							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/AcceptZoom?{{::message.xpid}}&{{::message.message}}">{{::verbage.join}}</div>
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
-							<div class="XButton" onclick="mouseClick(this)" action="#/PlayVM?{{message.vmId}}"> {{::verbage.Play}}</div>
-							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/CallBack?{{message.phone}}">{{::verbage.call_back}}</div>
+							<div class="XButton" onclick="mouseClick(this)" action="#/PlayVM?{{::message.vmId}}"> {{::verbage.Play}}</div>
+							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/CallBack?{{::message.phone}}">{{::verbage.call_back}}</div>
 						</div>
 
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
-							<div class="XButton chatNotification" onclick="mouseClick(this)" action="#/goToChat?{{message.context}}&{{message.xpid}}">{{::verbage.chat}}</div>
-							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/callAndRemove?{{message.xpid}}&{{message.phone}}">{{::verbage.Call}}</div>	
+							<div class="XButton chatNotification" onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}">{{::verbage.chat}}</div>
+							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/callAndRemove?{{::message.xpid}}&{{::message.phone}}">{{::verbage.Call}}</div>	
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
-							<div class="XButton" onclick="mouseClick(this)" action="#/RemoveNotification?{{message.xpid}}">{{::verbage.Skip}}</div>
-							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/CallBack?{{message.fullProfile.primaryExtension}}">{{::verbage.Call}}</div>	
+							<div class="XButton" onclick="mouseClick(this)" action="#/RemoveNotification?{{::message.xpid}}">{{::verbage.Skip}}</div>
+							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/CallBack?{{::message.fullProfile.primaryExtension}}">{{::verbage.Call}}</div>	
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
-							<div class="XButton" onclick="mouseClick(this)" action="#/showQueue?{{message.queueId}}&{{::message.audience}}&{{::message.type}}&{{message.xpid}}">{{::verbage.Show}}</div>
+							<div class="XButton" onclick="mouseClick(this)" action="#/showQueue?{{::message.queueId}}&{{::message.audience}}&{{::message.type}}&{{::message.xpid}}">{{::verbage.Show}}</div>
 						</div>
 					</div>
 				</div>
 
 			</div>
  
-			<div class="Messages plugins" ng-click="showOverlay(true,'DownloadPlugin',{});" ng-if="!phoneSessionEnabled">		
+			<div class="Messages plugins" ng-if="::!phoneSessionEnabled">		
 			  <a href="{{::pluginDownloadUrl}}" download target="_blank">
 				<div class="NotificationHeader"> 
 					<div class="NotificationHeaderBackground"> 
-						<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+						<div class="NotificationClose"></div>
 					</div>
 				</div>
 				<div class="NotificationDivider"></div>
 
-				<div class="NotificationSection ng-class:{'last' : !anotherDevice}" >
+				<div class="NotificationSection" ng-class="::{'last' : !anotherDevice}" >
 					<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 						<div class="AvatarWarningSmall"></div>
 					</div>
 				
 					<div class="LeftBarNotificationMessageSection" > 
 						<div class="chatNotification plugins">
-							<div class="content"><span>Browser Plugin</span></span> <div class="NotificationTime">{{   }} </div></div> 
+							<div class="content"><span>Browser Plugin</span></span> <div class="NotificationTime"></div></div> 
 							<div ></div>
 
 							<div class="NotificationMessage">Click to download & Install</div>
@@ -158,7 +159,7 @@
 			  </a>
 			</div>
 			
-			<div class="Messages webphone" ng-if="anotherDevice" ng-click="$parent.activatePhone()">                
+			<div class="Messages webphone" ng-if="::anotherDevice">                
 			    <div class="NotificationHeader">
                     <div class="NotificationHeaderBackground"> 
                         <div class="NotificationClose" ></div>
@@ -173,7 +174,7 @@
                 
                     <div class="LeftBarNotificationMessageSection" > 
                         <div class="chatNotification webphone">
-                            <div class="content"><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
+                            <div class="content"><span>Web Phone</span></span> <div class="NotificationTime"></div></div> 
                             <div ></div>
 
                             <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>

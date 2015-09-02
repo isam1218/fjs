@@ -100,23 +100,23 @@
 						</div>
 						<div class="WidgetTabBar">
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.all}}</div>
+								<div class="inner {{language}}">{{::verbage.all}}</div>
 								<div class="arrow"></div>
 							</a>
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.favorites}}</div>
+								<div class="inner {{language}}">{{::verbage.favorites}}</div>
 								<div class="arrow"></div>
 							</a>
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.recent}}</div>
+								<div class="inner {{language}}">{{::verbage.recent}}</div>
 								<div class="arrow"></div>
 							</a>
-							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.external}}</div>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">								
+								<div class="inner {{language}}">{{::verbage.external}}</div>
 								<div class="arrow"></div>
 							</a>
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('groups')" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.Groups}}</div>
+								<div class="inner {{language}}">{{::verbage.Groups}}</div>
 								<div class="arrow"></div>
 							</a>
 						</div>
