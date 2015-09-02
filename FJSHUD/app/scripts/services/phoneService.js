@@ -1561,7 +1561,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	 $rootScope.$on('locations_synced', function(event,data){
         if(data){
-            var me = {};
             for (var i = 0, iLen = data.length; i < iLen; i++) {
                 if(data[i].locationType != 'a'){
                      locations[data[i].xpid] = data[i];
@@ -1572,7 +1571,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
      $rootScope.$on('location_status_synced', function(event,data){
         if(data){
-            var me = {};
             for (var i = 0, iLen = data.length; i < iLen; i++) {
                 if(locations[data[i].xpid]){
                     locations[data[i].xpid].status = data[i];
