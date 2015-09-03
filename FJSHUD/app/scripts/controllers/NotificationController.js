@@ -613,7 +613,6 @@ hudweb.controller('NotificationController',
     }else{
 
       if(nservice.isEnabled()){
-          nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
       }else{
         if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
            $scope.displayAlert = true;
@@ -838,18 +837,12 @@ hudweb.controller('NotificationController',
     delete_notification_from_notifications_and_today(notification.xpid);
     $rootScope.currentNotificationLength = $scope.todaysNotifications.length;
 
-		if($scope.todaysNotifications.length > 0 && $scope.calls.length > 0){
+		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
       $timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
-      if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-          $scope.displayAlert = true;
-          $timeout(cacheNotification,2500);
-    	}else{
-        phoneService.cacheNotification(undefined,0,0);
-        
-      }
+      phoneService.cacheNotification(undefined,0,0);
     }
 	};
 
@@ -877,7 +870,7 @@ hudweb.controller('NotificationController',
             long_waiting_calls[notification.xpid] = notification;
         break;
       case 'q-alert-abandoned':
-        notification.label = 'abandoned call';
+            notification.label = '...abandoned call';
             notification.message = "";
             var abandoned_notification = angular.copy(notification);
             // once it's an abandoned call, want long-wait-note to disappear
