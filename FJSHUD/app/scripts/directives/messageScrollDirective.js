@@ -24,7 +24,7 @@ hudweb.directive('messagescroll', ['$compile',
 
       scope.$watch("message.message",function(){        
         element.html(formatMessage());
-        if (scope.message.type == 'chat'){
+        if (scope.message.type == 'chat' || scope.message.type == 'gchat'){
           setTimeout(function(){
             element.parent()[0].scrollTop = element.parent()[0].scrollHeight;
           }, 100);

@@ -945,19 +945,25 @@ hudweb.controller('NotificationController',
       if (singleMsg != undefined){
         switch(singleMsg.audience){
           case 'group':
-            var groupNoteId = singleMsg.context.split(':')[1];
-            if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
-              $scope.remove_notification(singleMsg.xpid);
+            if (singleMsg.context){
+              var groupNoteId = singleMsg.context.split(':')[1];
+              if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
+                $scope.remove_notification(singleMsg.xpid);
+            }
             break;
           case 'queue':
-            var queueNoteId = singleMsg.context.split(':')[1];
-            if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
-              $scope.remove_notification(singleMsg.xpid);
+            if (singleMsg.context){
+              var queueNoteId = singleMsg.context.split(':')[1];
+              if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
+                $scope.remove_notification(singleMsg.xpid);              
+            }
             break;
           case 'contact':
-            var contactNoteId = singleMsg.context.split(':')[1];
-            if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
-              $scope.remove_notification(singleMsg.xpid);
+            if (singleMsg.context){
+              var contactNoteId = singleMsg.context.split(':')[1];
+              if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
+                $scope.remove_notification(singleMsg.xpid);
+            }
             break;
         }
       }
