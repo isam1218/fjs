@@ -964,6 +964,7 @@ hudweb.controller('NotificationController',
         notification.message="... you have a missed call";
         break;
       case 'busy-ring-back':
+        notification.displayName = notification.fullProfile.displayName;
         notification.label = 'is now available for call';
         notification.message= "User is free for call";
         break; 
