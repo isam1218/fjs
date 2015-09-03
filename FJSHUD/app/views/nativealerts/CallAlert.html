@@ -29,7 +29,9 @@
   
 
   <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')">                            
-     <div onclick="mouseClick(this)" action="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer" ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')">
+     <div onclick="mouseClick(this)" action="#/showCallControlls?{{currentCall.xpid}}" class="CallStatusIconContainer" 
+		ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
+     >
          <div ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
      </div>
    

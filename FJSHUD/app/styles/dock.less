@@ -8,8 +8,6 @@
   -moz-user-select: none;
   -ms-user-select: none; 
   user-select: none;
-  overflow-x: auto;
-  overflow-y: hidden;
   max-width: 60%;
   font-size: 0.9em;
   
@@ -44,6 +42,8 @@
   
   .InnerDock {
     position: absolute;
+    overflow-x: auto;
+    overflow-y: hidden;
 	height: 100%;
 	width: 100%;
     column-width: 170px;
@@ -52,6 +52,7 @@
     column-gap: 5px;
     -webkit-column-gap: 5px;
     -moz-column-gap: 5px;
+	-webkit-transform: translateZ(0);
   
     &.ui-sortable:not(.ui-sortable-disabled) .Gadget {
       position: static;
