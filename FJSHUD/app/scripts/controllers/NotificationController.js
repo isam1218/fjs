@@ -46,7 +46,6 @@ hudweb.controller('NotificationController',
   $scope.showAway = false;
   $scope.showOld = false;
   $scope.displayAlert = false;
-  $scope.callObj = {};
   $scope.anotherDevice = false;
   $scope.clearOld;
   
@@ -363,7 +362,7 @@ hudweb.controller('NotificationController',
   $scope.holdCall = function(xpid,isHeld){
     phoneService.holdCall(xpid,isHeld);
     if(!isHeld){
-      for(var call in $scope.calls){
+      for(var call = 0; call < $scope.calls.length; call++){
         if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
           $scope.holdCall($scope.calls[call].xpid,true);
         }
@@ -373,7 +372,7 @@ hudweb.controller('NotificationController',
   };
 
   $scope.acceptCall = function(xpid, message){
-    for(var call in $scope.calls){
+    for(var call = 0; call < $scope.calls.length; call++){
       if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
         $scope.holdCall($scope.calls[call].xpid,true);
       }
@@ -507,6 +506,11 @@ hudweb.controller('NotificationController',
       } 
     }
   };
+  
+  // sends adjusted timestamp to phone plugin
+  $scope.getNativeTime = function(time) {
+	  return ntpService.calibrateNativeTime(new Date(time).getTime());
+  };
 
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
@@ -522,11 +526,11 @@ hudweb.controller('NotificationController',
     if(data){
 
       for (var i in data){
-        $scope.calls[data[i].xpid] = data[i];
-
         var found = false;
         var profile;
+		
         $scope.calls.push(data[i]);   
+		
         switch(toDisplayFor){
           case 'never':
             break;
@@ -582,46 +586,11 @@ hudweb.controller('NotificationController',
     $scope.calls.sort(function(a,b){
       return a.created - b.created;
     });
-       	if(!$.isEmptyObject(data))
-		{	
-		   var xpid = '';
-		   for(var k in data)
-		   {
-				xpid = k;
-		   }
-		   if(typeof $scope.callObj[xpid] == "undefined")
-		   {	   
-			   $scope.callObj[xpid] = {};
-			   $scope.callObj[xpid].minutes = 0;
-			   $scope.callObj[xpid].seconds = 0;
-			   $scope.callObj[xpid].hours = 0;	
-			   $scope.callObj[xpid].days = 0;
-			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());
-
-		   }
-		   if($scope.callObj[xpid].seconds == 0 && 
-			  $scope.callObj[xpid].minutes == 0 && 
-			  $scope.callObj[xpid].hours == 0 &&
-			  $scope.callObj[xpid].days == 0)
-		   {	   
-		   		//the nativeTime is for the native Alert as it requires its own time and does its own calculations for the duration 
-		   	   $scope.callObj[xpid].nativeTime = new Date().getTime();
-		   }	   
-		}	
-		else
-		{				
-			if($scope.callObj[xpid])
-			{
-				$scope.callObj[xpid]= {};		
-			}
-		}	
       	
-		$scope.inCall = Object.keys($scope.calls).length > 0;
-
+		$scope.inCall = $scope.calls.length > 0;
 		$scope.isRinging = true;
-		element = document.getElementById("CallAlert");
 		
-		if($scope.inCall && !$.isEmptyObject($scope.callObj))
+		if($scope.inCall)
         	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
     	else
 			$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
@@ -630,9 +599,7 @@ hudweb.controller('NotificationController',
        	
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
-					for (i in $scope.calls){
-				 		
-
+					for (var i = 0; i < $scope.calls.length; i++){
 				 		var data = {};
 						var left_buttonText;
 						var right_buttonText;
@@ -645,20 +612,25 @@ hudweb.controller('NotificationController',
 							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
 							left_buttonID = "CALL_DECLINED";
 							right_buttonID = "CALL_ACCEPTED";
-							right_buttonEnabled = $scope.calls[i].incoming ? "true" : "false";
+							right_buttonEnabled = $scope.calls[i].incoming;
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 							left_buttonText = "END";
 							left_buttonID = "CALL_DECLINED";
-						    if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
+						  if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
 						    	right_buttonID = "CALL_ON_HOLD";
-								right_buttonEnabled = "true";
-								right_buttonText = "HOLD";	
-							}
+								  right_buttonEnabled = false;
+								  right_buttonText = "HOLD";	
+							}else{
+                  //right_buttonID = "CALL_ON_HOLD";
+                  right_buttonEnabled = false;
+                  right_buttonText = "HOLD";  
+                
+              }
 
 						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
 							right_buttonText = "TALK";	
 							right_buttonID = "CALL_ON_RESUME";
-							right_buttonEnabled = "true";
+							right_buttonEnabled = true;
 							
 						}
 						if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
@@ -677,7 +649,7 @@ hudweb.controller('NotificationController',
 				 			}
 				 		}
 
-            var callStart = ntpService.calibrateTime($scope.calls[i].created);
+						var callStart = ntpService.calibrateNativeTime($scope.calls[i].created);
 
 				 		data = {
 					  			"notificationId": $scope.calls[i].xpid, 
@@ -685,14 +657,14 @@ hudweb.controller('NotificationController',
 					  			"rightButtonText" : right_buttonText,
 					  			"leftButtonId" : left_buttonID,
 					  			"rightButtonId" : right_buttonID,
-					  			"leftButtonEnabled" : "true",
+					  			"leftButtonEnabled" : true,
 					  			"rightButtonEnabled" : right_buttonEnabled,
 					  			"callerName" : $scope.calls[i].displayName, 
 					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outbound call for",
 					  			"callCategory" : callType,
 					  			"muted" : $scope.calls[i].mute ? "1" : "0",
 					  			"record" : $scope.calls[i].record ? "1" : "0",
-                  "created": callStart
+								"created": callStart
 						};
 						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
 					}
@@ -743,8 +715,6 @@ hudweb.controller('NotificationController',
 		element = null;
 		$scope.displayAlert = false;
 	};
-
-
 
 	$scope.$on('phone_event',function(event,data){
 		var phoneEvent = data.event;
@@ -917,7 +887,7 @@ hudweb.controller('NotificationController',
     
     delete_notification_from_notifications_and_today(notification.xpid);
 
-		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+		if($scope.todaysNotifications.length > 0 && $scope.calls.length > 0){
 			$scope.displayAlert = true;
       $timeout(displayNotification, 1500);		
 		}else{
@@ -1010,7 +980,7 @@ hudweb.controller('NotificationController',
         notification.label = "zoom";
         break;
       case 'barge message':
-        notification.label = "You are being barged by"
+        notification.label = "You are being barged by";
     }
 
     if(notification.audience == "conference"){
@@ -1038,10 +1008,11 @@ hudweb.controller('NotificationController',
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var isNotificationAdded = false;
 					var notification = data[i];
-					notification.fullProfile = contactService.getContact(notification.senderId);
-					notification.label == '';
-					updateNotificationLabel(notification);
+					
 					if(notification.xef001type != "delete"){
+						notification.fullProfile = contactService.getContact(notification.senderId);
+						notification.label == '';
+						updateNotificationLabel(notification);
 
 						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
@@ -1068,10 +1039,12 @@ hudweb.controller('NotificationController',
 			}else{
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var notification = data[i];
-					notification.fullProfile = contactService.getContact(notification.senderId);
-					notification.labelType == '';
-					updateNotificationLabel(notification);
+					
 					if(notification.xef001type != "delete"){
+						notification.fullProfile = contactService.getContact(notification.senderId);
+						notification.labelType == '';
+						updateNotificationLabel(notification);
+					
 						$scope.notifications.push(notification);
 						addTodaysNotifications(notification);
 					}

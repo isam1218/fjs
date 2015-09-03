@@ -1,7 +1,7 @@
 <a href="#/contact/{{::member.contactId}}" class='ListRow' droppable="Call">
   <avatar profile="member"></avatar>
   
-  <div class="ListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null">
+  <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null">
     <div class="ListRowTitle">
 		{{ ::member.fullProfile.displayName}}
 		<br/>
