@@ -11,8 +11,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var weblauncherTimeout;
     var timer;
     var text;
-    $scope.sortType = "Date";
-
+    $scope.sortType = "Date";   
     $scope.avatar ={};
     $scope.phoneType = false;
     $scope.settings = {};
@@ -81,14 +80,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     *
     */
     $scope.tabs = [
-    {label:$scope.verbage.general,option:'General',isActive:true},
-    {label:$scope.verbage.phone,option:'Phone',isActive:true},
-    {label:$scope.verbage.web_launcher,option:'Web Launcher',isActive:true},
-    {label:$scope.verbage.queues,option:'Queues',isActive:true},
-    {label:$scope.verbage.my_account,option:'Account',isActive:true},
-    {label:$scope.verbage.alerts,option:'Alerts',isActive:true},
-    {label:$scope.verbage.cp,option:'CP',isActive:true},
-    {label:$scope.verbage.about,option:'About',isActive:true},
+    {label:$scope.verbage.general,option:'General',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.phone,option:'Phone',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.web_launcher,option:'Web Launcher',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.queues,option:'Queues',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.my_account,option:'Account',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.alerts,option:'Alerts',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.cp,option:'CP',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
+    {label:$scope.verbage.about,option:'About',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
     ];
 
     settingsService.getSettings().then(function(data) {

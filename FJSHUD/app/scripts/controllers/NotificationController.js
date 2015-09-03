@@ -758,12 +758,11 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      
-      if(phoneService.isInFocus()){
+      if (phoneService.isInFocus()){
         if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "chat")
-                $scope.remove_notification(item.xpid);
-                return false;
+            $scope.remove_notification(item.xpid);
+          return false;
         }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "gchat")
             $scope.remove_notification(item.xpid);
@@ -775,7 +774,7 @@ hudweb.controller('NotificationController',
           return false;
         }
       }
-       
+      
        var dupe = false;
        var combinedMsg = false;
         for (var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
@@ -933,7 +932,32 @@ hudweb.controller('NotificationController',
     }else{
         return true;
     }
-  }
+  };
+
+  $scope.$on('$routeChangeSuccess', function(event,data){
+    for (var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+      var singleMsg = $scope.notifications[i];
+      if (singleMsg != undefined){
+        switch(singleMsg.audience){
+          case 'group':
+            var groupNoteId = singleMsg.context.split(':')[1];
+            if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
+              $scope.remove_notification(singleMsg.xpid);
+            break;
+          case 'queue':
+            var queueNoteId = singleMsg.context.split(':')[1];
+            if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
+              $scope.remove_notification(singleMsg.xpid);
+            break;
+          case 'contact':
+            var contactNoteId = singleMsg.context.split(':')[1];
+            if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
+              $scope.remove_notification(singleMsg.xpid);
+            break;
+        }
+      }
+    }
+  });
 
   $scope.$on('quickinbox_synced', function(event,data){
   	if(data){
