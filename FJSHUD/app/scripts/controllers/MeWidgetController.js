@@ -15,8 +15,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.avatar ={};
     $scope.phoneType = false;
     $scope.settings = {};
-    //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls
-
+    //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls    
     $scope.currentCall = phoneService.getCallDetail(callId);
   
 
@@ -79,7 +78,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     * used to determine what tab is selected in the me widget controller
     *
     */
-    $scope.tabs = [
+/*    $scope.tabs = [
     {label:$scope.verbage.general,option:'General',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
     {label:$scope.verbage.phone,option:'Phone',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
     {label:$scope.verbage.web_launcher,option:'Web Launcher',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
@@ -89,6 +88,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     {label:$scope.verbage.cp,option:'CP',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
     {label:$scope.verbage.about,option:'About',isActive:true, language: localStorage.fon_lang_code.split(".")[1]},
     ];
+*/
+    $scope.tabs = [
+                   {label:$scope.verbage.general,option:'General',isActive:true},
+                   {label:$scope.verbage.phone,option:'Phone',isActive:true},
+                   {label:$scope.verbage.web_launcher,option:'Web Launcher',isActive:true},
+                   {label:$scope.verbage.queues,option:'Queues',isActive:true},
+                   {label:$scope.verbage.my_account,option:'Account',isActive:true},
+                   {label:$scope.verbage.alerts,option:'Alerts',isActive:true},
+                   {label:$scope.verbage.cp,option:'CP',isActive:true},
+                   {label:$scope.verbage.about,option:'About',isActive:true},
+                   ];
 
     settingsService.getSettings().then(function(data) {
 		// grab settings from service (prevents conflict with dock)
@@ -100,6 +110,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.globalXpid = $rootScope.myPid;
         $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
         $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+        $scope.language = $rootScope.language || 'us';
     });
     
     $scope.truncateLongString = function()
@@ -1063,6 +1074,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     if($scope.languages[i].code == localStorage.fon_lang_code){
                         $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
+                		$rootScope.language = localStorage.fon_lang_code.split(".")[1];
+
                         break;
                     }
                 }
@@ -1075,12 +1088,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     if($scope.languages[i].xpid == settings.hudw_lang){
                         $scope.languageSelect = $scope.languages[i];
                         localStorage.fon_lang_code = $scope.languageSelect.code;
+                		$rootScope.language = localStorage.fon_lang_code.split(".")[1];
                         break;
                     }
                 }    
              }
              if($scope.languageSelect == undefined && default_language != undefined){
                  $scope.languageSelect = default_language;
+                 localStorage.fon_lang_code = $scope.languageSelect.code;
+         		 $rootScope.language = localStorage.fon_lang_code.split(".")[1];
+                
                  myHttpService.updateSettings('hudw_lang','update',$scope.languageSelect.xpid); 
 
              }

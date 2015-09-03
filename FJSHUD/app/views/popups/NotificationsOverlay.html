@@ -47,7 +47,10 @@
                             <p ng-if="!multiple_new_notifications">
                             
                             <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>                            
-                            <span ng-if="!multiple_new_notifications" style="margin-left:5px">{{ ::new_notifications_to_display }} </span> </p>
+                            <span ng-if="!multiple_new_notifications && message.type != 'description'" style="margin-left:5px">{{ ::new_notifications_to_display }} </span> 
+                            <span ng-if="::message.type == 'description'"><strong>Goodbye {{::message.data.groupId}}!</strong></span><br>
+                            {{splitGroupDeleteMsg(message.message)}}
+                            </p>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                                 <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
