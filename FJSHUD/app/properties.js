@@ -47,15 +47,15 @@ fjs.CONFIG = {
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
-        WINDOWS_NEW:'http://build01.lax01.fonality.com/view/HUD/job/hud-wp.win/50/artifact/webphone/installer.win/WebPhone-1.1.011184.msi',
-        MAC_NEW:'http://build01.lax01.fonality.com/job/hud-wp.osx/47/artifact/webphone/installer.mac/WebPhone-1.1.011183.pkg'
+        WINDOWS_NEW:'http://build01.lax01.fonality.com/job/hud-wp.win/52/artifact/webphone/installer.win/WebPhone-1.1.011214.msi',
+        MAC_NEW:'http://build01.lax01.fonality.com/job/hud-wp.osx/50/artifact/webphone/installer.mac/WebPhone-1.1.011213.pkg'
 
     },
     PLUGIN_VERSION:{
         MAC_OLD:'5.17.008986',
         WINDOWS_OLD:'5.17.008986',
-        WINDOWS_NEW:'1.1.011184',
-        MAC_NEW:'1.1.011183'
+        WINDOWS_NEW:'1.1.011214',
+        MAC_NEW:'1.1.011213'
     },
     DEBUG:true,
 };
