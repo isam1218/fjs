@@ -645,7 +645,9 @@ hudweb.controller('NotificationController',
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+       }
 		}
 		element = null;
 		$scope.displayAlert = false;
@@ -834,6 +836,7 @@ hudweb.controller('NotificationController',
 	var deleteNotification = function(notification){
     
     delete_notification_from_notifications_and_today(notification.xpid);
+    $rootScope.currentNotificationLength = $scope.todaysNotifications.length;
 
 		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
