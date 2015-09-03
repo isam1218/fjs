@@ -87,21 +87,28 @@ function sync_request(f){
 						else {
 							for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
 								var newItem = true;
+								
 								if(data_obj[feed]){
 									for (var j = 0, jLen = data_obj[feed][key].items.length; j < jLen; j++) {
+										// replace data
 										if (synced_data[feed][key].items[i].xef001id == data_obj[feed][key].items[j].xef001id) {
 											data_obj[feed][key].items[j] = synced_data[feed][key].items[i];
 											newItem = false;
 											break;
 										}
+										
+										// flag old sip object for removal
+										if (feed == 'mycalls' && synced_data[feed][key].items[i].sipId !== undefined && data_obj[feed][key].items[j].sipId !== undefined && synced_data[feed][key].items[i].sipId == data_obj[feed][key].items[j].sipId) {
+											data_obj[feed][key].items[j].xef001type = 'delete';
+											break;
+										}
 									}	
-								}else{
+								}
+								else{
 									//recreate the object mapping for synced feed in shareworker
 									newItem = false;
 									data_obj[feed] = synced_data[feed];
-
-								}
-								
+								}								
 								
 								if (newItem)
 									data_obj[feed][key].items.push(synced_data[feed][key].items[i]);
