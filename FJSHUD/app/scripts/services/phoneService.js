@@ -29,7 +29,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var callsDetails = {};
 	$rootScope.meModel = {};
 	var isRegistered = false;
-	var isAlertShown = true;
+	var isAlertShown = false;
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
@@ -90,7 +90,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						context.displayCallAlert(callsDetails[detail]);
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls)) && !isAlertShown){
 						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 					}					
 				}
@@ -407,6 +407,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
 				alertPlugin.setTransparency(255);
+				isAlertShown = true;
 		}
 	};
 
@@ -725,7 +726,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 	var removeNotification = function(){
 		if(alertPlugin){
+			
 			alertPlugin.removeAlert();
+			isAlertShown = false;
 		}
 	};
 	
