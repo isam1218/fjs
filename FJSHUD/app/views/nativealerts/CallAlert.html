@@ -29,29 +29,29 @@
   </a>
   
 
-  <div ng-repeat="currentCall in ::calls" ng-class="::currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')">                            
+  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == 5 ? 'CallStatusContainerOutbound' : ( currentCall.type == 3 ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')">                            
      <div onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusIconContainer" 
-		ng-class="::currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
+		ng-class="currentCall.type == 5 ? 'CallStatusIconExternalBorder' : ( currentCall.type == 3 ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
      >
-         <div ng-class="::currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
+         <div ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 'IsOnCall'"> </div>
      </div>
    
-     <div  onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusText" ng-class="::currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
-         <div class="memberName"><div class="name" ng-class="::{'truncate': currentCall && currentCall.displayName.length > 14}">{{::currentCall.displayName}}</div><div class="MyCallBlock_Rec" ng-class="::{'true': currentCall.record}"></div></div>
+     <div  onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
+         <div class="memberName"><div class="name" ng-class="{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div><div class="MyCallBlock_Rec" ng-class="{'true': currentCall.record}"></div></div>
          <div class="callStatus">
-			{{ ::currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} 
+			{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call + ' '}} 
 			<span class="MyCallBlock_Duration" data-duration="{{ ::getNativeTime(currentCall.created) }}"></span>
-			<span ng-if="::currentCall.state == 3">
+			<span ng-if="currentCall.state == 3">
 				/ <span class="MyCallBlock_Duration Hold" data-duration="{{ ::getNativeTime(currentCall.holdStart) }}"></span>
 			</span>
 		 </div>
      </div>                 
-	<div class="controlButtons" ng-switch="::currentCall.state">
-         <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" ng-switch-when="0" class="XButton">{{:: currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+	<div class="controlButtons" ng-switch="currentCall.state">
+         <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" ng-switch-when="0" class="XButton">{{ currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
          <div onclick="mouseClick(this)" action="#/EndCall?{{::currentCall.xpid}}" class="XButton" ng-switch-when="2">{{::verbage.end}}</div>
-         <div onclick="mouseClick(this)" action="#/HoldCall?{{::currentCall.xpid}}&false" ng-class="::currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="::currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
+         <div onclick="mouseClick(this)" action="#/HoldCall?{{::currentCall.xpid}}&false" ng-class="currentCall.type == 0 ? 'disableButton' : ''" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton">{{::verbage.hold}}</div>
          <div onclick="mouseClick(this)" action="#/ResumeCall?{{::currentCall.xpid}}&true" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
-         <div onclick="mouseClick(this)" action="#/AcceptCall?{{::currentCall.xpid}}" ng-if="::currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
+         <div onclick="mouseClick(this)" action="#/AcceptCall?{{::currentCall.xpid}}" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton">{{::verbage.accept}}</div>
          
     </div>
   </div>
@@ -62,13 +62,13 @@
 		<div class="TitleBar" id="TitleBar">
 			<div class="HasNotificationIcon"></div>
 			<div>{{::verbage.notifications}}</div>
-			<div class="Event"> - {{::getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+			<div class="Event"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
 			<input type="button" value="{{::verbage.open}}" class="XButton" onclick="window.location.replace('#/OpenNotifications')" />
 		</div>   
 		
 		<div class="scroller" id="scroller">  	
 		<!--ng-show="showHideElements($index)"-->
-	        <div class="Messages" ng-repeat="message in ::todaysNotifications track by message.xpid" >			
+	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" >			
 				<div class="NotificationHeader">
 					<div class="NotificationHeaderBackground">
 						<div onclick="mouseClick(this)" action="#/RemoveNotification?{{::message.xpid}}">
