@@ -1,4 +1,4 @@
-<div class="Widget WidgetZoom" id="widget-zoom">
+<div class="Widget WidgetZoom" id="widget-zoom" >
     <div class="WidgetHeader" >
         <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
@@ -36,13 +36,13 @@
                             <div class="inner">Home</div>
                             <div class="arrow"></div>
                         </a>
-                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Meetings')" ng-class="tab == 'Meetings' ? 'fj-selected-item' : ''" >
+                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Meetings'); getData()" ng-class="tab == 'Meetings' ? 'fj-selected-item' : ''" >
                             <div class="inner">Meetings</div>
                             <div class="arrow"></div>
                         </a>
             </div>
 
-<div id="homeContainer" ng-show="showHome" ng-controller="ModalDemoCtrl">
+<div id="homeContainer" ng-show="showHome" ng-controller="ModalDemoCtrl" >
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader" style="margin-bottom:15px"> 
                 <div class="ListSectionHeaderTitle">SCHEDULE A MEETING</div>
@@ -108,10 +108,34 @@
 
 </div>
 
-<div id="meetingContainer" ng-show="showMeetings">
-          <p>Personal Meeting ID(PMI)</p>
-    <div>{{meetingsList}}</div>
+<div id="meetingContainer" ng-show="showMeetings" >
+    <div class="meetingHeader" >
+        <ul>
+          <li><h4>Personal Meeting ID(PMI)</h4><button><a href="https://zoom.us/my/{{pmi}}" style="color:black">Start</a></button></li>
+          <li><h3>{{pmi}}</h3><button>Copy</button></li>
+          <li><a href ="https://zoom.us/my/{{pmi}}" style="color:black">https://zoom.us/my/{{pmi}}</a></li>
+        </ul>
+    </div>
+    <div id="scrollArea" ng-controller="ScrollController">
 
+        <div class="meetingBody">
+            <h3>My Meetings</h3>
+
+            <ul>
+                <li ng-repeat="x in meetingList">
+                   <h5>{{x.start_time}}</h5><br><br>
+                   <p>Topic: {{x.topic}}</p>
+                   <p>Meeting Id: {{x.meeting_id}}</p>
+                   <div class="meetingBtnsContainer">
+                       <button>Edit</button>
+                       <button>Start</button><br>
+                       <button>Copy</button>
+                       <button ng-click="deleteMeeting()">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 </div>

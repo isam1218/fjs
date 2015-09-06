@@ -37,17 +37,65 @@
   padding: 0px 20px 0px 20px;
 }
 #meetingContainer {
-  border: 1px solid black;
+  border: 1px solid none;
   height: 780px;
+  padding: 0px 10px 0px 10px;
+}
+.meetingHeader {
+  border-bottom: 1px solid #B3B3B3;
+  height: 115px;
+  padding: 10px 20px 0px 80px;
+}
+.meetingHeader h4 {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+.meetingHeader h3 {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+.meetingHeader p {
+  font-size: 12px;
+}
+.meetingHeader ul {
+  list-style: none;
+  padding-left: 0px;
+}
+.meetingHeader button {
+  width: 70px;
+  margin-top: -10px;
+  margin-right: 60px;
+  float: right;
+}
+.meetingBody button {
+  margin-right: 10px;
+  margin-bottom: 5px;
+  width: 60px;
+  float: right;
+}
+.meetingBtnsContainer {
+  position: relative;
+  top: -40px;
+  border: 1px solid none;
+  width: 150px;
+  height: 70px;
+  float: right;
+}
+.meetingBody {
+  padding: 0px 20px 10px 20px;
+}
+.meetingBody ul {
   padding: 0px 0px 0px 0px;
+  list-style: none;
 }
-#meetingContainer p {
-  font-size: 15px;
+.meetingBody li {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 30px 0px;
 }
-#meetingHeader {
-  border: 1px solid black;
-  height: 170px;
-  padding: 10px 20px 0px 20px;
+.meetingBody p {
+  font-size: 13px;
+  margin-bottom: 0px;
 }
 #btnContainer {
   float: right;
@@ -249,6 +297,7 @@
   user-select: none;
   -webkit-user-select: none;
   height: 35px;
+  padding-left: 10px;
 }
 .ScheduleTabBarButton {
   position: relative;

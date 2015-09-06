@@ -1,9 +1,28 @@
-hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', function($scope, $http,httpService) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService','sharedData','$rootScope','SettingsService', function($scope, $http,httpService,sharedData,$rootScope,settingsService) {
 
      $scope.tab = 'Home';
      $scope.showHome=true;
-    //fjs.ui.AddContactMenuController.call(this, $scope, dataManager, "views/AddContactPopupMenu.html");
+     $scope.pmi =null;
+     $scope.host_id = null;
+     $scope.meetingList = [];
+     var getURL = function(action) {
 
+    var url = 
+       action
+       
+      + '?fonalityUserId=' + $rootScope.myPid.split('_')[1]
+      + '&serverId=' + $rootScope.meModel.server_id
+      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+      + '&authToken=' + localStorage.authTicket;
+    
+    return url;
+  };
+ 
+  var authTicket = localStorage.authTicket;
+  $scope.authTicket = authTicket;
+
+ 
+    //fjs.ui.AddContactMenuController.call(this, $scope, dataManager, "views/AddContactPopupMenu.html");
     $scope.joinMeeting = function(meetingId){
         window.open("https://api.zoom.us/j/" + meetingId,'_blank');
     };
@@ -14,7 +33,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
 
     $scope.inMeeting = false;
 
-   
+ 
 
     $scope.setScheduleTab = function(tab) {
         $scope.tab = tab;
@@ -121,14 +140,65 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
             $scope.bodyErrorDisplay=!$scope.bodyStartedDisplay;
         });
     };
+
+  settingsService.getSettings().then(function() {
+     
+   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+        console.log("MEETING DATA",response);
+        $scope.pmi = response.pmi;
+        $scope.host_id = response.host_id;
+        $scope.meetingList = response.meetings;
+        console.log("PMI",$scope.pmi);
+        console.log("MEETINGS",$scope.meetingList);
+           
+        
+
+      });
+ });
+
+  $scope.getData = function(){
+
+  
+     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+        console.log("MEETING DATA",response);
+        $scope.pmi = response.pmi;
+        $scope.host_id = response.host_id;
+        $scope.meetingList = response.meetings;
+        console.log("PMI",$scope.pmi);
+        console.log("MEETINGS",$scope.meetingList);
+           
+        
+
+      });
+
+
+  }
+
+  $scope.deleteMeeting = function(){
+
+    $http.delete(fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+$scope.meetingList[0].meeting_id+'&authToken='+localStorage.authTicket).success(function(deleteData){
+        console.log("Delete DATA",deleteData);
+        
+        
+
+      });
+  };
+
+
+
+
+
+
 }]);
 
 
-hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
+hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$http) {
 
   $scope.items = ['item1', 'item2', 'item3'];
 
   $scope.animationsEnabled = true;
+
+
 
   $scope.open = function (size) {
 
@@ -200,8 +270,9 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   $scope.meeting.hourDuration = null;
   $scope.meeting.minDuration = null;
   $scope.meeting.timezone = '';
+  
 
-     sharedData.meeting = $scope.meeting;
+  sharedData.meeting = $scope.meeting;
   sharedData.meeting.meetingTopic = $scope.meeting.meetingTopic;
   sharedData.meeting.timeSelect = $scope.meeting.timeSelect;
   sharedData.meeting.dt = $scope.meeting.dt;
@@ -210,24 +281,39 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   sharedData.meeting.minDuration = $scope.meeting.minDuration;
   sharedData.meeting.timezone = $scope.meeting.timezone;
 
-  
+
+   
 
 $scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00"];
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-$scope.timeZone = [  "(GMT-7:00)Pacific Time(US and Canada)",
-                    "(GMT-6:00)Mountain Time(US and Canada)",
-                    "(GMT-10:00)Hawaii Time(US and Canada)",
-                    "(GMT-4:00)Eastern Time(US and Canada)",
-                    "(GMT-5:00)Central Time(US and Canada)",
-                    "(GMT-8:00)Alaska Time(US and Canada)"];
+$scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"];
+
+  $scope.startTime = "";
+  $scope.starts = null;
+
+ // $scope.startTime = $scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
+
 
   $scope.ok = function () {
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear()+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
+  $scope.startTime = $scope.meeting.dt
+  $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startTime.getUTCMonth()+"-"+$scope.startTime.getUTCDate()+"T"+$scope.startTime.getUTCHours()+":"+$scope.startTime.getUTCMinutes()+":00Z";
+  console.log("UTC",$scope.starts);
+
+
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
+
+
+
+
+        
+        
+         //+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
+        console.log("DATE",$scope.startTime.toISOString());
     });
 
 
@@ -244,6 +330,10 @@ $scope.timeZone = [  "(GMT-7:00)Pacific Time(US and Canada)",
       }
     });
 
+  };
+
+   $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
   };
 
 
@@ -277,7 +367,6 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance, item
       };
       $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
 
-      $scope.hello = "";
        $scope.meeting = sharedData.meeting;
   $scope.meeting.meetingTopic = sharedData.meeting.meetingTopic;
   $scope.meeting.timeSelect = sharedData.meeting.timeSelect;
@@ -288,10 +377,7 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance, item
   $scope.meeting.timezone = sharedData.meeting.timezone;
   $scope.meeting.meeting_id = sharedData.meeting_meeting_id;
 
-    /*$http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(data){
-        console.log("MEETING DATA",data);
-        $scope.hello += data.meetings[0].topic;
-      });*/
+   
 
 /*$scope.copyToClipboard = function(){
         $modalInstance.close();
