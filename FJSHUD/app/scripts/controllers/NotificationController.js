@@ -1000,7 +1000,8 @@ hudweb.controller('NotificationController',
 						
 						if(!isNotificationAdded || has_new_content){	
 							$scope.hasNewNotifications = true;
-							$scope.notifications.push(notification);
+							if(!has_new_content)
+								$scope.notifications.push(notification);
 							addTodaysNotifications(notification);
 						}
 						//addTodaysNotifications(notification);
