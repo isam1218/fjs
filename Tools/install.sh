@@ -25,3 +25,5 @@ grunt
 cd ../FJSHUD
 npm install
 bower install
+npm install angular-ui-bootstrap
+bower install angular-bootstrap
