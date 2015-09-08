@@ -122,8 +122,8 @@
             <h3>My Meetings</h3>
 
             <ul>
-                <li ng-repeat="x in meetingList">
-                   <h5>{{x.start_time}}</h5><br><br>
+                <li ng-repeat="x in meetingList|orderBy:'start_time':'reverse'">
+                   <h5 style="font-weight:bold">{{x.start_time|date:"EEEE, MMM dd, yyyy"}}</h5>
                    <p>Topic: {{x.topic}}</p>
                    <p>Meeting Id: {{x.meeting_id}}</p>
                    <div class="meetingBtnsContainer">
@@ -165,7 +165,6 @@
                           
 
                <select ng-init="meeting.timeSelect = times[0]" ng-options="o for o in times" name="timeSelect" ng-model="meeting.timeSelect" >
-                   
                </select>
                <select name="AmPm" ng-model="meeting.AmPm" ng-init="meeting.AmPm = meridian[0]" ng-options="a for a in meridian">
                     
