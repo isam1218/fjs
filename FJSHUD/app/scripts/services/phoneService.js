@@ -1508,10 +1508,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	    if(call.state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
 	              left_buttonText = call.incoming ? "Decline" : "Cancel";
-	              right_buttonText = call.incoming && call.location.locationType != 'm' && meModel.location.locationType != 'm' ? "Accept" : "";
+	              right_buttonText = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm' ? "Accept" : "";
 	              left_buttonID = "CALL_DECLINED";
 	              right_buttonID = "CALL_ACCEPTED";
-	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && meModel.location.locationType != 'm';
+	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm';
 	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 	              left_buttonText = "END";
 	              left_buttonID = "CALL_DECLINED";

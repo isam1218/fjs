@@ -16,12 +16,12 @@
         <div class="NotificationMessages" >     
            <!-- /////////////////// NEW NOTIFICATIONS /////////////////////////// -->        
           <div class="overlayNotificationsSection" ng-if="hasNewNotifications">                              
-            <div class="section_header" ng-if="hasOldNotifications">         
+            <div class="section_header" ng-if="hasNewNotifications">         
              <div class="Conference-HeaderTitle">NEW ITEMS</div>
              <div class="Conference-HeaderSubTitle">You have {{newNotificationsLength}} new item(s)</div> 
             </div>
             <div class="new_notifications notifications_section" ng-show="hasNewNotifications">                            
-                <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid">              
+                  <div class="Messages" ng-repeat="message in get_new_notifications()">             
                      <div class="NotificationHeader"> 
                             <div class="NotificationHeaderBackground"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
