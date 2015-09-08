@@ -1,10 +1,11 @@
-hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService','sharedData','$rootScope','SettingsService', function($scope, $http,httpService,sharedData,$rootScope,settingsService) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', function($scope, $http,httpService,sharedData,$rootScope,settingsService) {
 
      $scope.tab = 'Home';
      $scope.showHome=true;
      $scope.pmi =null;
      $scope.host_id = null;
      $scope.meetingList = [];
+
      var getURL = function(action) {
 
     var url = 
@@ -176,9 +177,9 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService','sha
 
   $scope.deleteMeeting = function(){
 
-    $http.delete(fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+$scope.meetingList[0].meeting_id+'&authToken='+localStorage.authTicket).success(function(deleteData){
-        console.log("Delete DATA",deleteData);
-        
+    $http({method:'DELETE',url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+$scope.meetingList[0].meeting_id+'&authToken='+localStorage.authTicket}).success(function(data){
+       console.log("Delete DATA",data);
+       
         
 
       });
@@ -305,7 +306,6 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
   $scope.startMonth = $scope.startTime.getUTCMonth() + 1;
   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startMonth+"-"+$scope.startTime.getUTCDate()+"T"+$scope.startTime.getUTCHours()+":"+$scope.startTime.getUTCMinutes()+":00Z";
   console.log("UTC",$scope.startMonth);
- console.log("Time",$scope.inputTime.value);
 
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
       console.log('SUCCESS', data);

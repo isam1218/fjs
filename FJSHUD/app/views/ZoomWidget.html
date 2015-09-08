@@ -111,9 +111,9 @@
 <div id="meetingContainer" ng-show="showMeetings" >
     <div class="meetingHeader" >
         <ul>
-          <li><h4>Personal Meeting ID(PMI)</h4><button><a href="https://zoom.us/my/{{pmi}}" style="color:black">Start</a></button></li>
+          <li><h4>Personal Meeting ID(PMI)</h4><button><a href="https://zoom.us/j/{{pmi}}" style="color:black">Start</a></button></li>
           <li><h3>{{pmi}}</h3><button>Copy</button></li>
-          <li><a href ="https://zoom.us/my/{{pmi}}" style="color:black">https://zoom.us/my/{{pmi}}</a></li>
+          <li><a href ="https://zoom.us/j/{{pmi}}" style="color:black">https://zoom.us/j/{{pmi}}</a></li>
         </ul>
     </div>
     <div id="scrollArea" ng-controller="ScrollController">
@@ -128,7 +128,7 @@
                    <p>Meeting Id: {{x.meeting_id}}</p>
                    <div class="meetingBtnsContainer">
                        <button>Edit</button>
-                       <button>Start</button><br>
+                       <button><a href="{{x.start_url}}">Start</a></button><br>
                        <button>Copy</button>
                        <button ng-click="deleteMeeting()">Delete</button>
                     </div>
