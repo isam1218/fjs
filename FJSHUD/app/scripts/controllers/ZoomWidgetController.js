@@ -295,6 +295,8 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
   $scope.startTime = "";
   $scope.starts = null;
 
+
+
  // $scope.startTime = $scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
 
 
@@ -303,7 +305,7 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
   $scope.startMonth = $scope.startTime.getUTCMonth() + 1;
   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startMonth+"-"+$scope.startTime.getUTCDate()+"T"+$scope.startTime.getUTCHours()+":"+$scope.startTime.getUTCMinutes()+":00Z";
   console.log("UTC",$scope.startMonth);
-
+ console.log("Time",$scope.inputTime.value);
 
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
       console.log('SUCCESS', data);

@@ -5,6 +5,8 @@ FJ_ROOT_DIR=..
 pushd $FJ_ROOT_DIR/FJSHUD
 npm install
 bower install
+npm install angular-ui-bootstrap
+bower install angular-bootstrap
 popd
 
 pushd $FJ_ROOT_DIR/FJSHUD/app/styles
