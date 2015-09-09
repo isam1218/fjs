@@ -20,7 +20,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			var timeout;
 			
 			// trigger auto clear
-			if (scope.enableChat === undefined) {
+			if (scope.enableChat === undefined && scope.searchEmUp === undefined) {
 				element.on('keyup', function(e) {
 					if (autoClearOn == 'true') {
 						$timeout.cancel(timeout);
