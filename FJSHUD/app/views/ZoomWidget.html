@@ -112,7 +112,7 @@
     <div class="meetingHeader" >
         <ul>
           <li><h4>Personal Meeting ID(PMI)</h4><button><a href="https://zoom.us/j/{{pmi}}" style="color:black">Start</a></button></li>
-          <li><h3>{{pmi}}</h3><button>Copy</button></li>
+          <li><h3 ng-model="pmi_id">{{pmi}}</h3><button>Copy</button></li>
           <li><a href ="https://zoom.us/j/{{pmi}}" style="color:black">https://zoom.us/j/{{pmi}}</a></li>
         </ul>
     </div>
@@ -265,7 +265,7 @@ border-radius: 32px;
 color: black;
 }
 #scrollArea {
-height: 660px;
+height: 310px;
 overflow: auto;
 }
 

@@ -31,6 +31,9 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
     $scope.joinScheduledMeeting = function(meetingId){
         window.open("https://api.zoom.us/j/" + meetingId,'_blank');
     };
+     $scope.pmiScheduledMeeting = function(meetingId){
+        window.open("https://api.zoom.us/j/" + meetingId,'_blank');
+    };
 
     $scope.hasResult = false;
     $scope.startUrl = "";
