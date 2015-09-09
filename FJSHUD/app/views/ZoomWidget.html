@@ -111,9 +111,9 @@
 <div id="meetingContainer" ng-show="showMeetings" >
     <div class="meetingHeader" >
         <ul>
-          <li><h4>Personal Meeting ID(PMI)</h4><button><a href="https://zoom.us/j/{{pmi}}" style="color:black">Start</a></button></li>
-          <li><h3 ng-model="pmi_id">{{pmi}}</h3><button>Copy</button></li>
-          <li><a href ="https://zoom.us/j/{{pmi}}" style="color:black">https://zoom.us/j/{{pmi}}</a></li>
+          <li><h4>Personal Meeting ID(PMI)</h4><button ng-click="joinScheduledMeeting(pmi_id.pmi)">Start</button></li>
+          <li><h3 ng-model="pmi_id.pmi">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button>Copy</button></li>
+          <li><a href ="https://zoom.us/j/{{pmi_id.pmi}}" style="color:black">https://zoom.us/j/{{pmi_id.pmi}}</a></li>
         </ul>
     </div>
     <div id="scrollArea" ng-controller="ScrollController">
@@ -127,7 +127,7 @@
                 <li ng-repeat="x in meetingList|orderBy:'start_time':'reverse'">
                    <h5 style="font-weight:bold">{{x.start_time|date:"EEEE, MMM dd, yyyy"}}</h5>
                    <p>Topic: {{x.topic}}</p>
-                   Meeting Id: <p ng-model="x.meeting_id">{{x.meeting_id}}</p>
+                   <p ng-model="x.meeting_id"> Meeting Id:{{x.meeting_id}}</p>
                    <div class="meetingBtnsContainer">
                        <button>Edit</button>
                        <button ng-click="joinScheduledMeeting(x.meeting_id)">Start</button><br>

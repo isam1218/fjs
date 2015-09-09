@@ -2,7 +2,8 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 
      $scope.tab = 'Home';
      $scope.showHome=true;
-     $scope.pmi =null;
+     $scope.pmi_id = {};
+     $scope.pmi_id.pmi =null;
      $scope.host_id = null;
      $scope.meetingList = [];
 
@@ -153,7 +154,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
      
    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
         console.log("MEETING DATA",response);
-        $scope.pmi = response.pmi;
+        $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
         console.log("PMI",$scope.pmi);
@@ -169,7 +170,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
   
      $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
         console.log("MEETING DATA",response);
-        $scope.pmi = response.pmi;
+        $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
         console.log("PMI",$scope.pmi);
