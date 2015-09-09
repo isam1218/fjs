@@ -1,4 +1,4 @@
-hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', function($scope, $http,httpService,sharedData,$rootScope,settingsService) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$timeout',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$timeout) {
 
      $scope.tab = 'Home';
      $scope.showHome=true;
@@ -187,6 +187,9 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         
 
       });
+   /* $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(data){
+      console.log(data);
+    })*/
   };
 
 
