@@ -4,7 +4,13 @@
    .ListRow .Avatar img {margin: 1px !important;}
   }  
   .WidgetMe{ 
-    .WidgetBody{              
+    .WidgetBody{ 
+        .Conference .ToolBar{
+	  		input[type=button],   
+	    	.selectWrapper.conf{ 
+	    		width: 140px !important;
+	    	}
+	  	}             
         .CurrentCall{
           .LeftSide{
            .Dialog-settings-row{
@@ -62,10 +68,13 @@
      }
      .Conference {
             .ToolBar{
-                    input[type=button],   
+                    //input[type=button],   
                     .selectWrapper.conf{  
                         width: 130px !important;
                     } 
+                    input[type=button]{
+                    	padding-top: 6px !important;
+                    }
             }
      }
      

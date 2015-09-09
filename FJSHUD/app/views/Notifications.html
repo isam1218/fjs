@@ -46,8 +46,7 @@
 						
 							<div class="NotificationMessage">
 								<span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
-								<span ng-bind-html="formatMessage(message)"> </span>	
-
+								<span messagescroll></span>
 							</div> 
 						</div>
 						
@@ -149,10 +148,15 @@
 					(volume.micVolume == 0 ? 'CallIsMuted' : 'IsOnCall' )
 					"> </div>
 				</div>
-				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING ? 'ringing' : 'accepted'"> 
+				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING || currentCall.state == callState.CALL_UNKNOWN ? 'ringing' : 'accepted'"> 
 					<div class="memberName"><div class="name ng-class:{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName}}</div> <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
-					<div class="callStatus"><div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div><span class="MyCallBlock_Duration" timer="callObj[currentCall.xpid].start"></span></div>
-					
+					<div class="callStatus">
+						<div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div>
+						<span class="MyCallBlock_Duration" timer="currentCall.created"></span>
+						<span ng-if="currentCall.state == 3">
+							/ <span class="MyCallBlock_Duration Hold" timer="currentCall.holdStart"></span>
+						</span>
+					</div>
 				</div>				
 				<div class="controlButtons" ng-switch="currentCall.state">
 					<span ng-if="currentCall.mute" class="mute" style="font-size:9px;color:red">Muted</span>
@@ -160,10 +164,10 @@
 					<div ng-click="endCall(currentCall.xpid)" class="XButton decline" ng-switch-when="0">{{ currentCall.incoming ? verbage.
 					decline : verbage.cancel}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton end" ng-switch-when="2">{{::verbage.end}}</div>
-					<div ng-click="holdCall(currentCall.xpid,true)" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton hold">{{::verbage.hold}}</div>
+					<div ng-click="currentCall.type != 0 ? holdCall(currentCall.xpid,true) : ''" ng-class="currentCall.type == 0 ? 'disabled' : ''" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton hold">{{::verbage.hold}}</div>
 					
 					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
-					<div ng-click="acceptCall(currentCall.xpid, message)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm'" class="XButton accept">{{::verbage.accept}}</div>
+					<div ng-click="acceptCall(currentCall.xpid, message)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton accept">{{::verbage.accept}}</div>
 				</div>
 				
 	</div>	

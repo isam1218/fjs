@@ -46,7 +46,6 @@ hudweb.controller('NotificationController',
   $scope.showAway = false;
   $scope.showOld = false;
   $scope.displayAlert = false;
-  $scope.callObj = {};
   $scope.anotherDevice = false;
   $scope.clearOld;
   
@@ -132,24 +131,6 @@ hudweb.controller('NotificationController',
     return messages;
   };
 
-  // required to show new messages on-the-fly
-  $scope.formatMessage = function(message){   
-    switch(message.type){
-      case "vm":
-        if(message.vm && message.vm.transcription != ""){
-          return vm.transcription;
-        }else{
-          return "transcription is not available";
-        }
-        break;
-      case 'missed-call': 
-        return "Missed call from extension " + message.phone; 
-        break;
-      default:
-        return message.message.replace(/\n/g, '<br/>');
-    }
-  };
-
   $scope.getNotificationsLength = function(length)
   {
     var length = $scope.phoneSessionEnabled ? length : length + 1;
@@ -164,7 +145,7 @@ hudweb.controller('NotificationController',
       $scope.displayAlert = true;
       $timeout(displayNotification, 1500);    
     }else{
-      phoneService.cacheNotification(undefined);
+      phoneService.cacheNotification(undefined,0,0);
       phoneService.removeNotification();
     }
     
@@ -358,12 +339,20 @@ hudweb.controller('NotificationController',
 
   $scope.endCall = function(xpid){
     phoneService.hangUp(xpid);
+    for(var i = 0; i < $scope.calls.length;i++){
+      if($scope.calls[i].xpid == xpid){
+        $scope.calls.splice(i,1);
+        break;
+      }
+    }
+    $scope.displayAlert = true;
+    $timeout(cacheNotification,1000);
   };
 
   $scope.holdCall = function(xpid,isHeld){
     phoneService.holdCall(xpid,isHeld);
     if(!isHeld){
-      for(var call in $scope.calls){
+      for(var call = 0; call < $scope.calls.length; call++){
         if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
           $scope.holdCall($scope.calls[call].xpid,true);
         }
@@ -373,7 +362,7 @@ hudweb.controller('NotificationController',
   };
 
   $scope.acceptCall = function(xpid, message){
-    for(var call in $scope.calls){
+    for(var call = 0; call < $scope.calls.length; call++){
       if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
         $scope.holdCall($scope.calls[call].xpid,true);
       }
@@ -488,7 +477,9 @@ hudweb.controller('NotificationController',
     // don't send notification to the party that's NOT being whispered to
     if (type != 'whisper' || type == 'whisper' && $rootScope.myPid == whisperId){
       $scope.notifications.unshift(extraNotification);
-      $scope.todaysNotifications.push(extraNotification);      
+      $scope.todaysNotifications.push(extraNotification);
+      if (displayDesktopAlert && nservice.isEnabled())
+        phoneService.displayWebphoneNotification(extraNotification,"",false);
     }
   };
 
@@ -507,6 +498,12 @@ hudweb.controller('NotificationController',
       } 
     }
   };
+  
+  // sends adjusted timestamp to phone plugin
+  $scope.getNativeTime = function(time) {
+	  return ntpService.calibrateNativeTime(new Date(time).getTime());
+  };
+
 
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
@@ -522,11 +519,11 @@ hudweb.controller('NotificationController',
     if(data){
 
       for (var i in data){
-        $scope.calls[data[i].xpid] = data[i];
-
         var found = false;
         var profile;
+		
         $scope.calls.push(data[i]);   
+		
         switch(toDisplayFor){
           case 'never':
             break;
@@ -582,142 +579,52 @@ hudweb.controller('NotificationController',
     $scope.calls.sort(function(a,b){
       return a.created - b.created;
     });
-       	if(!$.isEmptyObject(data))
-		{	
-		   var xpid = '';
-		   for(var k in data)
-		   {
-				xpid = k;
-		   }
-		   if(typeof $scope.callObj[xpid] == "undefined")
-		   {	   
-			   $scope.callObj[xpid] = {};
-			   $scope.callObj[xpid].minutes = 0;
-			   $scope.callObj[xpid].seconds = 0;
-			   $scope.callObj[xpid].hours = 0;	
-			   $scope.callObj[xpid].days = 0;
-			   $scope.callObj[xpid].start = ntpService.calibrateTime(new Date().getTime());
-
-		   }
-		   if($scope.callObj[xpid].seconds == 0 && 
-			  $scope.callObj[xpid].minutes == 0 && 
-			  $scope.callObj[xpid].hours == 0 &&
-			  $scope.callObj[xpid].days == 0)
-		   {	   
-		   		//the nativeTime is for the native Alert as it requires its own time and does its own calculations for the duration 
-		   	   $scope.callObj[xpid].nativeTime = new Date().getTime();
-		   }	   
-		}	
-		else
-		{				
-			if($scope.callObj[xpid])
-			{
-				$scope.callObj[xpid]= {};		
-			}
-		}	
       	
-		$scope.inCall = Object.keys($scope.calls).length > 0;
-
+		$scope.inCall = $scope.calls.length > 0;
 		$scope.isRinging = true;
-		element = document.getElementById("CallAlert");
 		
-		if($scope.inCall && !$.isEmptyObject($scope.callObj))
+		if($scope.inCall)
         	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
-    	else
+    else
 			$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
 	
 		
        	
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
-					for (i in $scope.calls){
-				 		
-
-				 		var data = {};
-						var left_buttonText;
-						var right_buttonText;
-						var left_buttonID;
-						var right_buttonID;
-						var right_buttonEnabled;
-						var callType;
-						if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
-							left_buttonText = $scope.calls[i].incoming ? "Decline" : "Cancel";
-							right_buttonText = $scope.calls[i].incoming ? "Accept" : "";
-							left_buttonID = "CALL_DECLINED";
-							right_buttonID = "CALL_ACCEPTED";
-							right_buttonEnabled = $scope.calls[i].incoming ? "true" : "false";
-						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-							left_buttonText = "END";
-							left_buttonID = "CALL_DECLINED";
-						    if($scope.calls[i].type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
-						    	right_buttonID = "CALL_ON_HOLD";
-								right_buttonEnabled = "true";
-								right_buttonText = "HOLD";	
-							}
-
-						}else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
-							right_buttonText = "TALK";	
-							right_buttonID = "CALL_ON_RESUME";
-							right_buttonEnabled = "true";
-							
-						}
-						if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-							callType = "Queue";
-						}else if($scope.calls[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
-							callType = "External";
-						}else{
-							callType = "Office";
-						  
-            			}
-
-						if(alertDuration != "entire"){
-				 			if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-				 				nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);		
-				 				return;
-				 			}
-				 		}
-
-            var callStart = ntpService.calibrateTime($scope.calls[i].created);
-
-				 		data = {
-					  			"notificationId": $scope.calls[i].xpid, 
-					  			"leftButtonText" : left_buttonText,
-					  			"rightButtonText" : right_buttonText,
-					  			"leftButtonId" : left_buttonID,
-					  			"rightButtonId" : right_buttonID,
-					  			"leftButtonEnabled" : "true",
-					  			"rightButtonEnabled" : right_buttonEnabled,
-					  			"callerName" : $scope.calls[i].displayName, 
-					  			"callStatus" : $scope.calls[i].incoming ? 'Incoming call for' : "Outbound call for",
-					  			"callCategory" : callType,
-					  			"muted" : $scope.calls[i].mute ? "1" : "0",
-					  			"record" : $scope.calls[i].record ? "1" : "0",
-                  "created": callStart
-						};
-						phoneService.displayWebphoneNotification(data,"INCOMING_CALL",true);
+					for (var i = 0; i < $scope.calls.length; i++){
+				 		if(alertDuration != "entire"){
+              if($scope.call[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+                return;
+              }
+            }
+            phoneService.displayCallAlert($scope.calls[i]);
 					}
 			}else{
         		if(alertDuration != "entire"){
-				 	if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-				 		phoneService.removeNotification();
-				 		return;
-				 	}
-				}
+				 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+				 		   phoneService.removeNotification();
+
+				 		   return;
+				 	    }
+				    }
         		$scope.displayAlert = true;
         		$timeout(displayNotification, 1500);
 			}
     }else{
-       $scope.displayAlert = true;
-      $timeout(function(){
-        var element = document.getElementById("Alert");
-        if(element){
-          var content = element.innerHTML;
-          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-          
-        }
-        element = null;
-        $scope.displayAlert = false;
-        },2500);
+
+      if(nservice.isEnabled()){
+      }else{
+        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+           $scope.displayAlert = true;
+            phoneService.removeNotification();
+            $timeout(cacheNotification,1000);
+        }else{
+            phoneService.cacheNotification(undefined,0,0);
+        }  
+      }
+      
     }
 
     
@@ -738,11 +645,23 @@ hudweb.controller('NotificationController',
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-				phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+       }
 		}
 		element = null;
 		$scope.displayAlert = false;
 	};
+
+  var cacheNotification = function(){
+     var element = document.getElementById("Alert");
+      if(element){
+              var content = element.innerHTML;
+              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+      }
+      element = null;
+      $scope.displayAlert = false;
+  };
 
 
 
@@ -774,7 +693,9 @@ hudweb.controller('NotificationController',
 				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
           $timeout(displayNotification
-              , 2500); 
+              , 2000); 
+        }else{
+          phoneService.cacheNotification(undefined,0,0);
         }
 				break;
       case "deleteChatNots":
@@ -839,12 +760,11 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      
-      if(phoneService.isInFocus()){
+      if (phoneService.isInFocus()){
         if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "chat")
-                $scope.remove_notification(item.xpid);
-                return false;
+            $scope.remove_notification(item.xpid);
+          return false;
         }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
           if(item.type == "gchat")
             $scope.remove_notification(item.xpid);
@@ -856,12 +776,12 @@ hudweb.controller('NotificationController',
           return false;
         }
       }
-       
+      
        var dupe = false;
        var combinedMsg = false;
         for (var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
                // take into account that 2 msgs in a row from the same contact are combined into 1 message
-               if ((item.xef001iver != $scope.todaysNotifications[j].xef001iver) && (item.xpid == $scope.todaysNotifications[j].xpid)){
+               if (item.xpid == $scope.todaysNotifications[j].xpid && item.xef001iver != $scope.todaysNotifications[j].xef001iver ){
                        // it's a dupe but combined msg, but still want to play chat sound
                        dupe = true;
                        combinedMsg = true;
@@ -916,28 +836,14 @@ hudweb.controller('NotificationController',
 	var deleteNotification = function(notification){
     
     delete_notification_from_notifications_and_today(notification.xpid);
+    $rootScope.currentNotificationLength = $scope.todaysNotifications.length;
 
-		if($scope.todaysNotifications.length > 0 && !$.isEmptyObject($scope.calls)){
+		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
       $timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
-      if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-          $scope.displayAlert = true;
-          $timeout(function(){
-            var element = document.getElementById("Alert");
-            if(element){
-              var content = element.innerHTML;
-              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-              
-            }
-            element = null;
-            $scope.displayAlert = false;
-            },2500);
-    	}else{
-        phoneService.cacheNotification(undefined);
-        
-      }
+      phoneService.cacheNotification(undefined,0,0);
     }
 	};
 
@@ -965,7 +871,7 @@ hudweb.controller('NotificationController',
             long_waiting_calls[notification.xpid] = notification;
         break;
       case 'q-alert-abandoned':
-        notification.label = 'abandoned call';
+            notification.label = '...abandoned call';
             notification.message = "";
             var abandoned_notification = angular.copy(notification);
             // once it's an abandoned call, want long-wait-note to disappear
@@ -992,12 +898,13 @@ hudweb.controller('NotificationController',
         notification.message="... you have a missed call";
         break;
       case 'busy-ring-back':
+        notification.displayName = notification.fullProfile.displayName;
         notification.label = 'is now available for call';
         notification.message= "User is free for call";
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;  
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
@@ -1010,7 +917,7 @@ hudweb.controller('NotificationController',
         notification.label = "zoom";
         break;
       case 'barge message':
-        notification.label = "You are being barged by"
+        notification.label = "You are being barged by";
     }
 
     if(notification.audience == "conference"){
@@ -1021,15 +928,51 @@ hudweb.controller('NotificationController',
 
   };
 
+  $scope.splitGroupDeleteMsg = function(str){
+    $scope.splitAry = str.split('!</strong><br />');
+    return $scope.splitAry[1];
+  };
+
   $scope.isPluginUptoDate = function(){
     if($rootScope.pluginVersion != undefined){
         return $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) > -1;
     }else{
         return true;
     }
-  }
+  };
 
-	$scope.$on('quickinbox_synced', function(event,data){
+  $scope.$on('$routeChangeSuccess', function(event,data){
+    for (var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+      var singleMsg = $scope.notifications[i];
+      if (singleMsg != undefined){
+        switch(singleMsg.audience){
+          case 'group':
+            if (singleMsg.context){
+              var groupNoteId = singleMsg.context.split(':')[1];
+              if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
+                $scope.remove_notification(singleMsg.xpid);
+            }
+            break;
+          case 'queue':
+            if (singleMsg.context){
+              var queueNoteId = singleMsg.context.split(':')[1];
+              if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
+                $scope.remove_notification(singleMsg.xpid);              
+            }
+            break;
+          case 'contact':
+            if (singleMsg.context){
+              var contactNoteId = singleMsg.context.split(':')[1];
+              if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
+                $scope.remove_notification(singleMsg.xpid);
+            }
+            break;
+        }
+      }
+    }
+  });
+
+  $scope.$on('quickinbox_synced', function(event,data){
   	if(data){
 			data.sort(function(a,b){
 				return b.time - a.time;
@@ -1038,23 +981,30 @@ hudweb.controller('NotificationController',
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var isNotificationAdded = false;
 					var notification = data[i];
-					notification.fullProfile = contactService.getContact(notification.senderId);
-					notification.label == '';
-					updateNotificationLabel(notification);
+					var has_new_content =  false;
+					
 					if(notification.xef001type != "delete"){
+						notification.fullProfile = contactService.getContact(notification.senderId);
+						notification.label == '';
+						updateNotificationLabel(notification);
 
 						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
 							if($scope.notifications[j].xpid == notification.xpid){
+								if(notification.xef001iver != $scope.notifications[j].xef001iver)
+									has_new_content = true;
 								$scope.notifications.splice(j,1,notification);
 								isNotificationAdded = true;
 								break;	
 							}
 						}
-						if(!isNotificationAdded){							
-							$scope.notifications.push(notification);
-							
+						
+						if(!isNotificationAdded || has_new_content){	
+							$scope.hasNewNotifications = true;
+							if(!has_new_content)
+								$scope.notifications.push(notification);
+							addTodaysNotifications(notification);
 						}
-						addTodaysNotifications(notification);
+						//addTodaysNotifications(notification);
 
 					}else if(notification.xef001type == "delete"){
 						if(long_waiting_calls[notification.xpid] == undefined){
@@ -1068,10 +1018,12 @@ hudweb.controller('NotificationController',
 			}else{
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					var notification = data[i];
-					notification.fullProfile = contactService.getContact(notification.senderId);
-					notification.labelType == '';
-					updateNotificationLabel(notification);
+					
 					if(notification.xef001type != "delete"){
+						notification.fullProfile = contactService.getContact(notification.senderId);
+						notification.labelType == '';
+						updateNotificationLabel(notification);
+					
 						$scope.notifications.push(notification);
 						addTodaysNotifications(notification);
 					}
@@ -1094,5 +1046,8 @@ hudweb.controller('NotificationController',
 		else
 		   	$scope.hasMessages = true;	
 			$scope.totalTodaysNotifications = $scope.todaysNotifications.length;
+    
+    //todo remove this later this is a hack to decide when to display alerts when changing windows
+    $rootScope.currentNotificationLength = $scope.todaysNotifications.length;
   });		
 }]);

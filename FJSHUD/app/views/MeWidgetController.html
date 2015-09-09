@@ -162,7 +162,7 @@
 	      <div class="WidgetSectionTitle">{{::verbage.preferences}}</div>	              
 	          <div class="WidgetTabBar">
 	            <a href="" ng-repeat="tab in ::tabs" ng-show="tab.isActive" ng-click="saveMeTab(tab.option, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
-	              <div class="inner HeaderLabel">{{ ::tab.label }}</div>
+	              <div class="inner HeaderLabel {{language}}">{{ ::tab.label }}</div>
 	              <div class="arrow"></div>
 	            </a>
 	          </div>

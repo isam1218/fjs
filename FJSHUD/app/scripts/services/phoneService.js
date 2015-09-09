@@ -1,5 +1,5 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService','NotificationService','$routeParams',
-	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService','NotificationService','$routeParams','NtpService',
+	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams,ntpService) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 	var phonePlugin;
@@ -29,10 +29,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var callsDetails = {};
 	$rootScope.meModel = {};
 	var isRegistered = false;
-	var isAlertShown = true;
+	var isAlertShown = false;
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
+	var locations = {};
 
 	
 	var soundEstablished = false;
@@ -84,12 +85,26 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(document.hidden || !isForceHidden){
 			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
-				displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+				if(nservice.isEnabled()){
+					for(var detail in callsDetails){
+						context.displayCallAlert(callsDetails[detail]);
+					}
+				}else{
+					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls)) && !isAlertShown){
+						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+					}					
+				}
 			}
 		}else{
 			tabInFocus = true;
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
-				removeNotification();
+				if(nservice.isEnabled()){
+					for(var detail in callsDetails){
+						nservice.dismiss('INCOMING_CALL',detail);
+					}
+				}else{
+					removeNotification();
+				}
 			}
 			if($routeParams.contactId && $routeParams.route == "chat"){
 				$rootScope.$broadcast("phone_event",{event:'deleteChatNots',contactId:$routeParams.contactId});
@@ -159,7 +174,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	this.isInFocus = function(){
 		return tabInFocus;
-	}
+	};
 
 	var registerPhone = function(isRegistered){
 		if(context.webphone){
@@ -248,7 +263,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			if(context.webphone){
 				//messageSoftphone({a : 'hangUp', value : call.sip_id});
 				httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-
 			}else{
 				call.hangUp();
 			}
@@ -319,6 +333,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
 				$rootScope.$broadcast('play_voicemail', voicemails[i]);
+				voicemails[i].readStatus = true;
 				break;
 			}
 		}
@@ -392,6 +407,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
 				alertPlugin.setTransparency(255);
+				isAlertShown = true;
 		}
 	};
 
@@ -553,6 +569,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         }
 	};
 
+	this.resetAlertPosition = function(){
+		alertPosition.x = 0;
+		alertPosition.y = 0;
+	};
 
 
 	onNetworkStatus = function(st){
@@ -563,6 +583,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	alertPosition.x = x;
     	alertPosition.y = y;
     };
+
 
     var activateBrowserTab = function(tabId){
 
@@ -705,7 +726,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 	var removeNotification = function(){
 		if(alertPlugin){
+			
 			alertPlugin.removeAlert();
+			isAlertShown = false;
 		}
 	};
 	
@@ -1152,7 +1175,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				call.dtmf(entry);
 		}	
 	};
-
+	this.holdCalls = function(){
+		for(var callId in callsDetails){
+			holdCall(callId,true);		
+		}
+	};
 	this.getDevicesPromise = function(){
 		return deferred.promise;	
 	};
@@ -1282,7 +1309,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		switch(type){
 			case 'contact':
 				return voicemails.filter(function(data){
-					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primaryExtension;
+					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
 				});
 			break;
 			case 'group':
@@ -1368,23 +1395,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(call && call.details){
 						data[i].details = call.details;
 					}
-
+					data[i].location = locations[data[i].locationId];
 					callsDetails[data[i].xpid] = data[i];
 					callsDetails[data[i].xpid].sipCall = sipCalls[callsDetails[data[i].xpid].sipId];
 					if(data[i].contactId){
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}
 
-						
-						if(!doesExist){
-							for(var callId in callsDetails){
-								if(callId != data[i].xpid){
-									holdCall(callId,true);		
-								}
-							}
-						}
-
-						if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+					if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
 									if(weblauncher.launchWhenCallAnswered){
@@ -1463,7 +1481,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case 'CALL_ON_HOLD':
 					holdCall(data.notificationId,true);
 					return;
-				case 'CALL_ON_RESUME':
+				case 'talk':
 					holdCall(data.notificationId,false);
 					return;
 			}
@@ -1478,7 +1496,92 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 			nservice.sendData({message:"focus"},0,"FOCUS");
 	};
-	
+
+	this.displayCallAlert = function(call){
+		var data = {};
+	    var left_buttonText;
+	    var right_buttonText;
+	    var left_buttonID;
+	    var right_buttonID;
+	    var right_buttonEnabled;
+	    var callType;
+
+	    if(call.state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+	              left_buttonText = call.incoming ? "Decline" : "Cancel";
+	              right_buttonText = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm' ? "Accept" : "";
+	              left_buttonID = "CALL_DECLINED";
+	              right_buttonID = "CALL_ACCEPTED";
+	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm';
+	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+	              left_buttonText = "END";
+	              left_buttonID = "CALL_DECLINED";
+	              if(call.type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
+	                  right_buttonID = "CALL_ON_HOLD";
+	                  right_buttonEnabled = true;
+	                  right_buttonText = "HOLD";  
+	              }else{
+	                  //right_buttonID = "CALL_ON_HOLD";
+	                  right_buttonEnabled = false;
+	                  right_buttonText = "HOLD";  
+	                
+	              }
+
+	            }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
+	              right_buttonText = "TALK";
+	              right_buttonEnabled = true;
+	              right_buttonID = "talk";
+	            }
+	            if(call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+	              callType = "Queue";
+	            }else if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+	              callType = "External";
+	            }else{
+	              callType = "Office";
+	            }
+	          
+
+	            var callStart = ntpService.calibrateNativeTime(call.created);
+	            var holdStart = ntpService.calibrateNativeTime(call.holdStart);
+
+	            data = {
+	                  "notificationId": call.xpid, 
+	                  "leftButtonText" : left_buttonText,
+	                  "rightButtonText" : right_buttonText,
+	                  "leftButtonId" : left_buttonID,
+	                  "rightButtonId" : right_buttonID,
+	                  "leftButtonEnabled" : true,
+	                  "rightButtonEnabled" : right_buttonEnabled,
+	                  "callerName" : call.displayName, 
+	                  "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
+	                  "callCategory" : callType,
+	                  "muted" : call.mute ? "1" : "0",
+	                  "record" : call.record ? "1" : "0",
+	                "created": callStart,
+	                "holdStart": holdStart
+	            };
+	            this.displayWebphoneNotification(data,"INCOMING_CALL",true);
+	 };
+
+	 $rootScope.$on('locations_synced', function(event,data){
+        if(data){
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
+                if(data[i].locationType != 'a'){
+                     locations[data[i].xpid] = data[i];
+                }
+            }
+        }
+    });
+
+     $rootScope.$on('location_status_synced', function(event,data){
+        if(data){
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
+                if(locations[data[i].xpid]){
+                    locations[data[i].xpid].status = data[i];
+                }
+            }
+        }
+    });
+
 	var context = this;
 
 }]);

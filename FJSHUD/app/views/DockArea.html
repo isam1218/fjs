@@ -37,7 +37,7 @@
 		<resizer></resizer>
 	</div>
 
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
+	<div ng-class="{'NoneParked' : parkedCalls.length == 0}" class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
 		<div class="Header Single">
 			<avatar profile="4"></avatar>
 			<div class="Title" ng-switch="parkedCalls.length">
@@ -47,23 +47,26 @@
 				<div class="subTitle GadgetStatusText" ng-switch-default> {{ parkedCalls.length }} calls on park </div> 
 			</div>
 		</div>
-		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
-		<div id="parked_calls"> 
-			<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
-				<avatar profile="call"></avatar>
-				
-				<div class="ListRowContent" style="display:inline-block;margin-right:2px">
-					<div class="ListRowTitle">
-						<div>{{ ::call.displayName }}</div>
-						<div>{{ ::call.phone }}</div>
+		
+		<div ng-if="parkedCalls.length > 0" class="Content">
+			<div class="SubHeader ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
+			<div id="parked_calls"> 
+				<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
+					<avatar profile="call"></avatar>
+					
+					<div class="ListRowContent" style="display:inline-block;margin-right:2px">
+						<div class="ListRowTitle">
+							<div class="ParkedCallDisplayName">{{ ::call.displayName }}</div>
+							<div>{{ ::call.phone}}</div>
+						</div>
+							<div timer="call.created" class="timer"></div>
 					</div>
-						
-						
 				</div>
-				<div timer="call.created" class="timer"></div><!-- style="float:right;font-size:.65em;margin-top:3px;margin-right:2px" -->
 				
 			</div>		
 		</div>
+
+		<resizer ng-if="parkedCalls.length > 0"></resizer>
 	</div>
 
 	<!-- contacts -->
@@ -71,7 +74,8 @@
 		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div class="titleHeader">{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::contact.primaryExtension">{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::!contact.primaryExtension">{{ gadget.data.displayName }}</div>
 				<div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>

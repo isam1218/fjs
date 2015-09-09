@@ -102,7 +102,10 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 			redirectTo: '/settings'
 		});
 })
-.run(function ($rootScope, $location) {
+.run(function ($http, $templateCache, $rootScope, $location) {
+	// cache native alert template
+	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
+	
     $rootScope.$on("$locationChangeStart", function(e) {
         // don't redirect to self
 		if ($location.path().indexOf($rootScope.myPid) != -1)

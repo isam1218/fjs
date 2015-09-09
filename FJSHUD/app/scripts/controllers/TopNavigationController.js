@@ -151,14 +151,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	};
 	
 	$scope.recorder;
+	$scope.attempts = 0;
 	
 	var player;
 	var source;
-	var loadCheck;
+	var retry;
   
 	$scope.$on('play_voicemail', function(event, data) {
-		// mark as read
-        httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: data.xpid});
+		clearTimeout(retry);
 		
 		// first time setup
 		if (!player) {
@@ -192,10 +192,26 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				$scope.player.playing = true;
 				$scope.$digest();
 			};
+			
+			player.onerror = function() {
+				// retry 3x, then give up
+				if ($scope.attempts < 3) {
+					retry = setTimeout(function() {
+						player.load();
+					}, 1000);
+					
+					$scope.attempts++;
+				}
+			};
+			
+			// in case we end up needing this:
+			// source.onerror = function() {};
 		}
+		else
+			player.pause();
 		
-		// reset
-		$interval.cancel(loadCheck);	
+		// reset	
+		$scope.attempts = 0;
 		$scope.voicemail = null;
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
@@ -210,21 +226,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			else 
 				$scope.recorder = contactService.getContact(data.calleeUserId);
 		}
-		else
+		else {
 			$scope.recorder = null;
+			
+			// mark as read
+			httpService.sendAction("voicemailbox", "setReadStatus", {'read': true, id: data.xpid});
+		}
 			
 		// update hidden audio element
 		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
 		source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
 		player.load();
-	
-		// fail catch
-		loadCheck = $interval(function() {
-			if (isNaN(player.duration))
-				player.load();
-			else
-				$interval.cancel(loadCheck);
-		}, 1000, 0, false);
 	
 		// delay getting profile so view will update
 		$timeout(function() {
@@ -298,16 +310,19 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	};
   
 	$scope.closePlayer = function() {
-		$interval.cancel(loadCheck);
 		$scope.voicemail = null;
 		$scope.recorder = null;
+		
+		clearTimeout(retry);
 		
 		player.pause();
 		player.onloadeddata = null;
 		player.ontimeupdate = null;
 		player.onpause = null;
 		player.onplay = null;
+		player.onerror = null;
 		player = null;
+		
 		source = null;
 	};
 }]);
