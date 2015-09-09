@@ -30,14 +30,15 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				start: function() {
 					// show container area
 					$('#DockPanel').scrollLeft(0);
-					$(this).hide().addClass('Positioned');
+					
+					$(this).addClass('Hide Positioned');
 				},
 				stop: function(event, ui) {
 					$(event.toElement).one('click', function(e) {
 						e.preventDefault(); 
 					});	
 
-					$(this).show();
+					$(this).removeClass('Hide');
 					
 					var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
