@@ -125,12 +125,12 @@
                 <li ng-repeat="x in meetingList|orderBy:'start_time':'reverse'">
                    <h5 style="font-weight:bold">{{x.start_time|date:"EEEE, MMM dd, yyyy"}}</h5>
                    <p>Topic: {{x.topic}}</p>
-                   <p>Meeting Id: {{x.meeting_id}}</p>
+                   Meeting Id: <p ng-model="x.meeting_id">{{x.meeting_id}}</p>
                    <div class="meetingBtnsContainer">
                        <button>Edit</button>
-                       <button><a href="{{x.start_url}}">Start</a></button><br>
+                       <button ng-click="joinScheduledMeeting(x.meeting_id)">Start</button><br>
                        <button>Copy</button>
-                       <button ng-click="deleteMeeting()">Delete</button>
+                       <button ng-click="deleteMeeting(x.meeting_id)">Delete</button>
                     </div>
                 </li>
             </ul>

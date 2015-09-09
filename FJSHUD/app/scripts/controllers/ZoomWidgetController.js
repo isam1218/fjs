@@ -28,6 +28,10 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         window.open("https://api.zoom.us/j/" + meetingId,'_blank');
     };
 
+    $scope.joinScheduledMeeting = function(meetingId){
+        window.open("https://api.zoom.us/j/" + meetingId,'_blank');
+    };
+
     $scope.hasResult = false;
     $scope.startUrl = "";
     $scope.joinUrl = "";
@@ -175,9 +179,9 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 
   }
 
-  $scope.deleteMeeting = function(){
 
-    $http({method:'DELETE',url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+$scope.meetingList[0].meeting_id+'&authToken='+localStorage.authTicket}).success(function(data){
+  $scope.deleteMeeting = function(meetingId){
+    $http({method:'GET',url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeetingGet'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
        console.log("Delete DATA",data);
        
         
