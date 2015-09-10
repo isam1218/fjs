@@ -45,15 +45,20 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
     $scope.joinScheduledMeeting = function(meetingId){
         window.open("https://api.zoom.us/j/" + meetingId,'_blank');
     };
+          $scope.Time = "Time: ";
+
     $scope.copy = function(startTime,topic,meeting){
+                $scope.Time = "Time: ";
+
            $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
             console.log("DATA",response);
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
 });
 
-      sharedData.meeting.timeSelect = startTime;
+      sharedData.meeting.timeSelect = $scope.Time+startTime;
       sharedData.meeting.meetingTopic = topic;
+      
 
       console.log("MEETING ID",sharedData.meeting.meeting_id);
     
@@ -72,6 +77,8 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
     };
 
        $scope.copyPmi = function(topic,meeting){
+                        $scope.Time = "Time: Your meeting will start immediately";
+
            $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
             console.log("DATA",response);
             response.meetings.meeting_id = meeting;
@@ -79,9 +86,10 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 });
 
       sharedData.meeting.meetingTopic = $rootScope.meModel.my_jid.split("@")[0] + " Personal Meeting Room";
-      sharedData.meeting.timeSelect = "";
+      sharedData.meeting.timeSelect = $scope.Time;
       console.log("MEETING ID",sharedData.meeting.meeting_id);
-    
+      
+    $scope.Time = "Your meeting will start immediately.";
 
      $modal.open({
       animation: $scope.animationsEnabled,
