@@ -90,8 +90,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						context.displayCallAlert(callsDetails[detail]);
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls)) && !isAlertShown){
-						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+					if(notificationCache.html && notificationCache.html != '' && !isAlertShown){
+						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+						}
 					}					
 				}
 			}
@@ -633,7 +635,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			isAlertShown = false;
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
