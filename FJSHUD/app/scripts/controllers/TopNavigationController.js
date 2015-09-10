@@ -156,6 +156,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	var player;
 	var source;
 	var retry;
+	
+	var loadAgain = function() {
+		// retry 3x, then give up
+		if ($scope.attempts < 3) {
+			retry = setTimeout(function() {
+				player.load();
+			}, 1000);
+			
+			$scope.attempts++;
+		}
+	};
   
 	$scope.$on('play_voicemail', function(event, data) {
 		clearTimeout(retry);
@@ -193,19 +204,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				$scope.$digest();
 			};
 			
-			player.onerror = function() {
-				// retry 3x, then give up
-				if ($scope.attempts < 3) {
-					retry = setTimeout(function() {
-						player.load();
-					}, 1000);
-					
-					$scope.attempts++;
-				}
-			};
-			
-			// in case we end up needing this:
-			// source.onerror = function() {};
+			// fail like a boss
+			player.onerror = loadAgain;
+			source.onerror = loadAgain;
 		}
 		else
 			player.pause();
@@ -323,6 +324,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		player.onerror = null;
 		player = null;
 		
+		source.onerror = null;
 		source = null;
 	};
 }]);
