@@ -112,7 +112,7 @@
     <div class="meetingHeader" >
         <ul>
           <li><h4>Personal Meeting ID(PMI)</h4><button ng-click="joinScheduledMeeting(pmi_id.pmi)">Start</button></li>
-          <li><h3 ng-model="pmi_id.pmi">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button>Copy</button></li>
+          <li><h3 ng-model="pmi_id.pmi">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button ng-click="copyPmi(x.topic,pmi_id.pmi)">Copy</button></li>
           <li><a href ="https://zoom.us/j/{{pmi_id.pmi}}" style="color:black">https://zoom.us/j/{{pmi_id.pmi}}</a></li>
         </ul>
     </div>
@@ -120,18 +120,18 @@
 
  <div class="fj-content"> 
 
-        <div class="meetingBody">
+        <div class="meetingBody" >
             <h3>My Meetings</h3>
 
             <ul>
                 <li ng-repeat="x in meetingList|orderBy:'start_time':'reverse'">
-                   <h5 style="font-weight:bold">{{x.start_time|date:"EEEE, MMM dd, yyyy"}}</h5>
-                   <p>Topic: {{x.topic}}</p>
-                   <p ng-model="x.meeting_id"> Meeting Id:{{x.meeting_id}}</p>
+                   <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE, MMM dd, yyyy"}}</h5>
+                   <p ng-model="x.topic">Topic: {{x.topic}}</p>
+                   <p ng-model="x.meeting_id">{{x.meeting_id}}</p>
                    <div class="meetingBtnsContainer">
                        <button>Edit</button>
                        <button ng-click="joinScheduledMeeting(x.meeting_id)">Start</button><br>
-                       <button>Copy</button>
+                       <button ng-click="copy(x.start_time,x.topic,x.meeting_id)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
                     </div>
                 </li>
@@ -216,6 +216,8 @@
     </div>
     </div>
 </script>
+
+
 <script type="text/ng-template" id="copyToClipboard.html">
    <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
         <div class="TopBarItemAppIcon Zoom"></div>
@@ -228,16 +230,16 @@
         <div style="font-size:12px;font-weight:bold;color:gray;border:1px solid none;width:350px;margin-bottom:5px">Click the Copy to Clipboard button to copy the invitation to your clipboard and paste in to your calendar invite.</div>
         <p style="width:280px">When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
     </div>
-    <textarea   rows="15" cols="50" style="position:relative;bottom:120px;left:450px;font-size:11px">
+    <textarea   rows="15" cols="50" style="position:relative;bottom:120px;left:450px;font-size:11px;width:400px" >
     Hi there,
 
     {{userName}} is inviting you to a scheduled Zoom meeting.
 
-    Topic:{{meeting.meetingTopic}}
+    Topic:{{Topic + meeting.meetingTopic}}
 
     Time:{{meeting.timeSelect}} {{meeting.AmPm}}
 
-    Join from PC, Mac, iOS or Android:
+    Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}
 
     Or join by phone:
 
@@ -247,11 +249,13 @@
 
     
     <div class="modal-footer">
-        <button class="btn btn-default" ng-click="copyToClipboard()">Copy!</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>
     </div>
    
 </script>
+
+
+
 
 <style>
 .full button span {
