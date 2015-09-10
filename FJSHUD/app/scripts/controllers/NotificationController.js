@@ -977,58 +977,44 @@ hudweb.controller('NotificationController',
 			data.sort(function(a,b){
 				return b.time - a.time;
 			});
-			if($scope.notifications && $scope.notifications.length > 0){
-				for (var i = 0, iLen = data.length; i < iLen; i++) {
-					var isNotificationAdded = false;
-					var notification = data[i];
-					var has_new_content =  false;
-					
-					if(notification.xef001type != "delete"){
-						notification.fullProfile = contactService.getContact(notification.senderId);
-						notification.label == '';
-						updateNotificationLabel(notification);
+      
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var isNotificationAdded = false;
+				var notification = data[i];
+				var has_new_content =  false;
+				
+				if(notification.xef001type != "delete"){
+					notification.fullProfile = contactService.getContact(notification.senderId);
+					notification.label == '';
+					updateNotificationLabel(notification);
 
-						for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
-							if($scope.notifications[j].xpid == notification.xpid){
-								if(notification.xef001iver != $scope.notifications[j].xef001iver)
-									has_new_content = true;
-								$scope.notifications.splice(j,1,notification);
-								isNotificationAdded = true;
-								break;	
-							}
-						}
-						
-						if(!isNotificationAdded || has_new_content){	
-							$scope.hasNewNotifications = true;
-							if(!has_new_content)
-								$scope.notifications.push(notification);
-							addTodaysNotifications(notification);
-						}
-						//addTodaysNotifications(notification);
-
-					}else if(notification.xef001type == "delete"){
-						if(long_waiting_calls[notification.xpid] == undefined){
-							deleteNotification(notification);
+					for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
+						if($scope.notifications[j].xpid == notification.xpid){
+							if(notification.xef001iver != $scope.notifications[j].xef001iver)
+								has_new_content = true;
+							$scope.notifications.splice(j,1,notification);
+							isNotificationAdded = true;
+							break;	
 						}
 					}
-				}
-				$scope.notifications.sort(function(a, b){
-					return b.time - a.time;
-				});
-			}else{
-				for (var i = 0, iLen = data.length; i < iLen; i++) {
-					var notification = data[i];
 					
-					if(notification.xef001type != "delete"){
-						notification.fullProfile = contactService.getContact(notification.senderId);
-						notification.labelType == '';
-						updateNotificationLabel(notification);
-					
-						$scope.notifications.push(notification);
+					if(!isNotificationAdded || has_new_content){	
+						$scope.hasNewNotifications = true;
+						if(!has_new_content)
+							$scope.notifications.push(notification);
 						addTodaysNotifications(notification);
+					}
+					//addTodaysNotifications(notification);
+
+				}else if(notification.xef001type == "delete"){
+					if(long_waiting_calls[notification.xpid] == undefined){
+						deleteNotification(notification);
 					}
 				}
 			}
+			$scope.notifications.sort(function(a, b){
+				return b.time - a.time;
+			});
 
 			nservice.notifications = $scope.notifications;
 		}
