@@ -44,7 +44,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             	enabled = false;
             	setTimeout(function(){initNSService()}, 500);
 
-            }
+            };
 		};
 		this.initNSService = initNSService;
 
