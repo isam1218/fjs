@@ -1,6 +1,6 @@
 hudweb.controller('NotificationController', 
-  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService',
-  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice){
+  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', '$sce',
+  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice, $sce){
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
@@ -904,7 +904,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(notification.message);
         break;
       case 'wall':
         notification.label = "share";
@@ -928,9 +928,8 @@ hudweb.controller('NotificationController',
 
   };
 
-  $scope.splitGroupDeleteMsg = function(str){
-    $scope.splitAry = str.split('!</strong><br />');
-    return $scope.splitAry[1];
+  $scope.cleanGroupDeleteMsg = function(str){
+    return $sce.trustAsHtml(str);
   };
 
   $scope.isPluginUptoDate = function(){
