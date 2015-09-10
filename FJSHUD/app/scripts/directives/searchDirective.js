@@ -78,7 +78,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			// IE clear is broken
 			if (browser == 'MSIE') {
 				element.bind('input', function() {
-					if (element.val().length == 0) {
+					if (element.val().length == 0)
 						clearSearch();
 				});
 			}
