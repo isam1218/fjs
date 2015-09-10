@@ -8,9 +8,10 @@ hudweb.service("sharedData",function(){
   this.meeting.minDuration = null;
   this.meeting.timezone = '';
   this.meeting.meeting_id = null;
+  this.meeting.start_url = "";
 });
 
-hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$filter',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$filter) {
 
      $scope.tab = 'Home';
      $scope.showHome=true;
@@ -18,6 +19,8 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
      $scope.pmi_id.pmi =null;
      $scope.host_id = null;
      $scope.meetingList = [];
+     $scope.Time = "Time: ";
+
 
 
      var getURL = function(action) {
@@ -43,10 +46,14 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
     };
 
     $scope.joinScheduledMeeting = function(meetingId){
-        window.open("https://api.zoom.us/j/" + meetingId,'_blank');
-    };
-          $scope.Time = "Time: ";
+        window.open("https://api.zoom.us/s/"+meetingId+"?zpk=YWWiTI8LiJnyhU6S2lW2gli1Vkr2IwqjVTLbWcE1UN8.AwYkMWI4ZDlhNTEtOTBlNi00ZGQyLWE2OWUtNjlmOWM4NjY0M2JlFlFaMEVnYnhnU2NhZ296VFdMU1RCdGcWUVowRWdieGdTY2Fnb3pUV0xTVEJ0ZxR0ZXN0XzcwMDFfNTMwNzcgVXNlcmMAXkRfQmZnblRBdHZkOWpTRENTUlN4Wkl2SWwyQ1NJYmNMTHByYnVrN3BSdzAuQmdJZ09IVlNSM1ZtY1RFNWNXaExTVXRUU0c1d04wUkhPVkJ0WTFweWFVMUhhbEFBQUEAABZ6NjFiNkszSFFNR1JOQ1B0M1FrM2tnAgIB"
+);
 
+    };
+    $scope.startScheduledMeeting = function(start_url){
+      window.open(start_url);
+    }
+          
     $scope.copy = function(startTime,topic,meeting){
                 $scope.Time = "Time: ";
 
@@ -54,6 +61,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
             console.log("DATA",response);
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
+            sharedData.meeting.start_url = response.meetings.start_url;
 });
 
       sharedData.meeting.timeSelect = $scope.Time+startTime;
@@ -254,9 +262,10 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 
 
   $scope.deleteMeeting = function(meetingId){
-    $http({method:'GET',url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeetingGet'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
+    $http({method:"GET",url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeetingGet'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
        console.log("Delete DATA",data);
-       
+            //httpService.sendAction('voicemailbox', 'delete', fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket);
+
         
 
       });
@@ -385,9 +394,19 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
   $scope.ok = function () {
   $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getUTCMonth() + 1;
-  $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startMonth+"-"+$scope.startTime.getUTCDate()+"T"+$scope.startTime.getUTCHours()+":"+$scope.startTime.getUTCMinutes()+":00Z";
+  $scope.startHour = $scope.meeting.timeSelect;
+  $scope.colon = $scope.startHour.indexOf(":");
+  $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
+  $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startMonth+"-"+$scope.startTime.getUTCDate()+"T"+$scope.startHourUTC+":00:00Z";
   console.log("UTC",$scope.startMonth);
-
+ if($scope.meeting.AmPm =="PM"){
+  $scope.startHourUTC = parseInt($scope.startHourUTC);
+  $scope.hourUTC =$scope.startHourUTC + 12;
+ }
+ if($scope.meeting.AmPm == "AM"){
+  $scope.hourUTC = $scope.startHourUTC;
+ }
+ alert($scope.hourUTC);
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
@@ -553,5 +572,3 @@ hudweb.controller('ScrollController', ['$scope', '$location', '$anchorScroll',
     };
   }]);
 
-  
- 

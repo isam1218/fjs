@@ -130,7 +130,7 @@
                    <p ng-model="x.meeting_id">{{x.meeting_id}}</p>
                    <div class="meetingBtnsContainer">
                        <button>Edit</button>
-                       <button ng-click="joinScheduledMeeting(x.meeting_id)">Start</button><br>
+                       <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.start_time,x.topic,x.meeting_id)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
                     </div>
