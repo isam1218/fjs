@@ -78,11 +78,8 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			// IE clear is broken
 			if (browser == 'MSIE') {
 				element.bind('input', function() {
-					if (element.val().length == 0 && attrs.ngModel) {
-						scope.$evalAsync(function() {
-							scope.$eval(attrs.ngModel + ' = "";');
-						});
-					}
+					if (element.val().length == 0) {
+						clearSearch();
 				});
 			}
 			
