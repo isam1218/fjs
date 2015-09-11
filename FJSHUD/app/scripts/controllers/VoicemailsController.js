@@ -4,7 +4,6 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
-    $scope.deferredVM = $q.defer();
 
     	// single group widget
 		if ($routeParams.groupId) {
@@ -147,8 +146,6 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
 				$scope.voicemails[v].fullProfile = contactService.getContact($scope.voicemails[v].contactId);
 			}	
-			
-			$scope.deferredVM.resolve($scope.voicemails);
 		}
 		else {
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
