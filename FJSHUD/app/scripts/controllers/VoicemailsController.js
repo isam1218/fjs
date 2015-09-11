@@ -140,7 +140,9 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
     $rootScope.$on('voicemailbox_synced', function(event, data) {
     	// first time
 		if ($scope.voicemails.length == 0) {
-			$scope.voicemails = data;
+			$scope.voicemails = data.filter(function(item){
+				return item.xef001type != "delete"; 
+			});
 			
 			// add full profile
 			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
