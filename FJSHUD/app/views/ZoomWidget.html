@@ -129,10 +129,11 @@
                    <p>{{x.start_time|date:"h:mm a"}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting Id: {{x.meeting_id}}</p>
+                   <p ng-model="x.timezone"></p>
                    <div class="meetingBtnsContainer">
                        <button>Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
-                       <button ng-click="copy(x.start_time,x.topic,x.meeting_id)">Copy</button>
+                       <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
                     </div>
                 </li>
@@ -198,9 +199,9 @@
                     <label>Meeting Options:</label>
                     <input type="checkbox" ng-model="checked">Require meeting password
                     <br>
-                    <input type="password" style="margin-left:125px" ng-hide="!checked">
+                    <input ng-model="meeting.password" type="password" style="margin-left:125px" ng-hide="!checked">
                     <br>
-                    <input type="checkbox" style="margin-left:125px">Enable join before host
+                    <input type="checkbox" style="margin-left:125px" ng-model="meeting.jbh">Enable join before host
                 
             </form>
         </div>
@@ -238,7 +239,41 @@
 
     Topic:{{meeting.meetingTopic}}
 
-    {{Time}}{{meeting.timeSelect}} {{meeting.AmPm}}
+    Time: {{meeting.timeSelect|date:'h:mm a'}} {{meeting.AmPm}} {{meeting.timezone}}
+
+    Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}
+
+    Or join by phone:
+
+    +1 646 7788 (US Toll) or +1 415 762 9988 (US Toll)
+    Meeting ID:{{meeting.meeting_id}}
+    </textarea>
+
+    
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>
+    </div>
+   
+</script>
+
+<script type="text/ng-template" id="copyToClipboardPMI.html">
+   <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+        <div class="TopBarItemAppIcon Zoom"></div>
+        <div class="WidgetHeaderTitle">
+            Fonality Video Collaboration - Add To Calendar
+        </div>
+    </div>
+    <div id="calendarContainer" style="padding:0px 10px 0px 20px">
+        <div style="font-size:14px;font-weight:bold;border:1px solid none;width:225px;margin-bottom:10px">Your Meeting is Scheduled</div>
+        <div style="font-size:12px;font-weight:bold;color:gray;border:1px solid none;width:350px;margin-bottom:5px">Click the Copy to Clipboard button to copy the invitation to your clipboard and paste in to your calendar invite.</div>
+        <p style="width:280px">When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
+    </div>
+    <textarea   rows="15" cols="50" style="position:relative;bottom:120px;left:450px;font-size:11px;width:400px" >
+    Hi there,
+
+    {{userName}} is inviting you to a scheduled Zoom meeting.
+
+    Topic:{{meeting.meetingTopic}}
 
     Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}
 

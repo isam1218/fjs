@@ -8,7 +8,9 @@ hudweb.service("sharedData",function(){
   this.meeting.minDuration = null;
   this.meeting.timezone = '';
   this.meeting.meeting_id = null;
-  this.meeting.start_url = "";
+  this.meeting.start_url = '';
+  this.password = '';
+  this.jbh=null;
 });
 
 hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$filter',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$filter) {
@@ -54,8 +56,8 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
       window.open(start_url);
     }
           
-    $scope.copy = function(startTime,topic,meeting){
-                $scope.Time = "Time: ";
+    $scope.copy = function(startTime,topic,meeting,timezone){
+                
 
            $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
             console.log("DATA",response);
@@ -64,8 +66,10 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
             sharedData.meeting.start_url = response.meetings.start_url;
 });
 
-      sharedData.meeting.timeSelect = $scope.Time+startTime;
+      sharedData.meeting.timeSelect = startTime;
       sharedData.meeting.meetingTopic = topic;
+      sharedData.meeting.timezone = timezone;
+      sharedData.meeting.AmPm = "";
       
 
       console.log("MEETING ID",sharedData.meeting.meeting_id);
@@ -101,7 +105,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 
      $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'copyToClipboard.html',
+      templateUrl: 'copyToClipboardPMI.html',
       controller: 'ModalInstanceCtrlTwo',
       size: 'lg',
       resolve: {
@@ -359,6 +363,8 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   $scope.meeting.hourDuration = null;
   $scope.meeting.minDuration = null;
   $scope.meeting.timezone = '';
+  $scope.meeting.password ='';
+  $scope.meeting.jbh = null;
   
 
   sharedData.meeting = $scope.meeting;
@@ -369,6 +375,8 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   sharedData.meeting.hourDuration = $scope.meeting.hourDuration;
   sharedData.meeting.minDuration = $scope.meeting.minDuration;
   sharedData.meeting.timezone = $scope.meeting.timezone;
+  sharedData.meeting.password = $scope.meeting.password;
+  sharedData.meeting.jbh = $scope.meeting.jbh;
 
 
 
@@ -412,11 +420,10 @@ if($scope.meeting.AmPm == "PM"){
     $scope.hourUTC = $scope.hourUTC -1;
   }
 $scope.hourUTC = $scope.hourUTC - 5;
- alert($scope.hourUTC);
  
    $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
 
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone).success(function(data, status, headers, config){
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
 
