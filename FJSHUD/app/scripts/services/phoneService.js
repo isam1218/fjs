@@ -1559,8 +1559,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	                  "callerName" : call.displayName, 
 	                  "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
 	                  "callCategory" : callType,
-	                  "muted" : call.mute ? "1" : "0",
-	                  "record" : call.record ? "1" : "0",
+	                  "muted" : call.mute,
+	                  "recorded" : call.record,
 	                "created": callStart,
 	                "holdStart": holdStart
 	            };
