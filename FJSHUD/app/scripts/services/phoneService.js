@@ -1481,7 +1481,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case 'CALL_ON_HOLD':
 					holdCall(data.notificationId,true);
 					return;
-				case 'talk':
+				case 'talk':					
+					for(call in callsDetails){
+						if(call != data.notificationId){
+							holdCall(call, true);
+						}
+					}
 					holdCall(data.notificationId,false);
 					return;
 			}
