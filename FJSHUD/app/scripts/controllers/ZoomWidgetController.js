@@ -13,7 +13,7 @@ hudweb.service("sharedData",function(){
   this.jbh=null;
 });
 
-hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$filter',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$filter) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal) {
 
      $scope.tab = 'Home';
      $scope.showHome=true;
@@ -55,6 +55,20 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
     $scope.startScheduledMeeting = function(start_url){
       window.open(start_url);
     }
+
+    $scope.openEditModal = function(){
+          $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'copyToClipboard.html',
+      controller: 'ModalInstanceCtrl',
+      size: 'lg',
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
+      }
+    });
+    }
           
     $scope.copy = function(startTime,topic,meeting,timezone){
                 
@@ -78,7 +92,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
      $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'copyToClipboard.html',
-      controller: 'ModalInstanceCtrlTwo',
+      controller: 'ModalInstanceCtrl',
       size: 'lg',
       resolve: {
         items: function () {
@@ -254,6 +268,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
+
         
            
         
@@ -400,17 +415,17 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
 
   $scope.ok = function () {
   $scope.startTime = $scope.meeting.dt;
-  $scope.startMonth = $scope.startTime.getUTCMonth() + 1;
+  $scope.startMonth = $scope.startTime.getUTCMonth()+1;
   $scope.startDay = $scope.startTime.getUTCDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
 
-if($scope.meeting.AmPm == "PM"){
+if($scope.meeting.AmPm == "AM"){
   $scope.hourUTC = $scope.startHourUTC;
  }
- if($scope.meeting.AmPm =="AM"){
+ if($scope.meeting.AmPm =="PM"){
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =$scope.startHourUTC + 12;
  }
@@ -419,9 +434,11 @@ if($scope.meeting.AmPm == "PM"){
  if($scope.hourUTC ==24){
     $scope.hourUTC = $scope.hourUTC -1;
   }
-$scope.hourUTC = $scope.hourUTC - 5;
+
+  $scope.hourUTC = $scope.hourUTC -17;
+
  
-   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+$scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
+   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
 
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
       console.log('SUCCESS', data);

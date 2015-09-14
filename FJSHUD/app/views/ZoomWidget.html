@@ -125,13 +125,13 @@
 
             <ul>
                 <li ng-repeat="x in meetingList|orderBy:'start_time'">
-                   <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE, MMM dd, yyyy"}}</h5>
-                   <p>{{x.start_time|date:"h:mm a"}}</p>
+                   <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:'EEEE , MMM dd, yyyy'}}</h5>
+                   <p>{{x.start_time|date:'h:mm a'}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting Id: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone"></p>
                    <div class="meetingBtnsContainer">
-                       <button>Edit</button>
+                       <button ng-click="openEditModal()">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
