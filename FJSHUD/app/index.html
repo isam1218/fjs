@@ -18,28 +18,26 @@
 				uv.src='//widget.uservoice.com/Tn3xl4wYXZ7m5rjTNJnOQ.js';
 				var s=document.getElementsByTagName('script')[0];
 				s.parentNode.insertBefore(uv,s);
-				
 					            
 	            var isIE11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
 	            var isIE10 = !!navigator.userAgent.match(/Trident.*rv[ :]*10\./);
+				var agent = navigator.userAgent.toLowerCase();
 	                
-	            if(isIE10 || isIE11)
-	            {
-	                    	
+	            if(isIE10 || isIE11) {	                    	
 	              var ie_css = document.createElement('link');
 	              ie_css.setAttribute('rel','stylesheet');
 	              ie_css.setAttribute('href','styles/ie.css');
 	              var l=document.getElementsByTagName('link')[0];
 	              l.parentNode.appendChild(ie_css,l);	                    	
 	            }
-	            if(navigator.userAgent.toLowerCase().indexOf('firefox') != -1){	            	
+	            else if(agent.indexOf('firefox') != -1){
 	            	var FF_css = document.createElement('link');
 	            	FF_css.setAttribute('rel','stylesheet');
 	            	FF_css.setAttribute('href','styles/firefox.css');
 	                var li=document.getElementsByTagName('link')[0];
 	                li.parentNode.appendChild(FF_css,li);  
 	            }
-	            if(navigator.userAgent.toLowerCase().indexOf('safari') != -1){                    
+	            else if(agent.indexOf('safari') != -1 && agent.indexOf('chrome') == -1){
                     var safari_css = document.createElement('link');
                     safari_css.setAttribute('rel','stylesheet');
                     safari_css.setAttribute('href','styles/safari.css');
