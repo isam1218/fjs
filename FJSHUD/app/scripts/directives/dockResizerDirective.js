@@ -23,6 +23,9 @@ hudweb.directive('resizer', ['HttpService', function(httpService) {
 					rect = element.parent()[0].getBoundingClientRect();
 					diff = e.clientY - rect.top;
 					
+					// minimum size
+					if (diff < 150) diff = 150;
+					
 					element.parent().css('height', diff + 'px');
 				};
 				
