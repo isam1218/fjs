@@ -592,15 +592,15 @@ hudweb.controller('NotificationController',
        	
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
-					for (var i = 0; i < $scope.calls.length; i++){
-				 		if(alertDuration != "entire"){
-              if($scope.call[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-                return;
-              }
-            }
-            phoneService.displayCallAlert($scope.calls[i]);
-					}
+				for (var i = 0; i < $scope.calls.length; i++){
+			 		if(alertDuration != "entire"){
+		              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+		                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+		                return;
+		               }
+		            }
+                    phoneService.displayCallAlert($scope.calls[i]);
+				}
 			}else{
         		if(alertDuration != "entire"){
 				 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
@@ -694,12 +694,12 @@ hudweb.controller('NotificationController',
 				$scope.phoneSessionEnabled = false;
 			case 'displayNotification':
 				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-          $scope.displayAlert = true;
-          $timeout(displayNotification
-              , 2000); 
-        }else{
-          phoneService.cacheNotification(undefined,0,0);
-        }
+		          $scope.displayAlert = true;
+		          $timeout(displayNotification
+		              , 2000); 
+		        }else{
+		          phoneService.cacheNotification(undefined,0,0);
+		        }
 				break;
       case "deleteChatNots":
           var contactId = data.contactId;
