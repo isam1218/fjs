@@ -91,7 +91,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}
 				}else{
 					if(notificationCache.html && notificationCache.html != '' && !isAlertShown){
-						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails))){
 							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 						}
 					}					
