@@ -34,7 +34,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var	spkVolume;
 	var micVolume;
 	var locations = {};
-
+	var activityChecker;
+	var lastActivityCheck = 0;
 	
 	var soundEstablished = false;
 	var selectedDevices = {};
@@ -81,6 +82,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var isDocumentHidden  = function(isForceHidden){
+		clearInterval(activityChecker);
+				
 		var hidden; 
 		if(document.hidden || !isForceHidden){
 			tabInFocus = false;
@@ -96,6 +99,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						}
 					}					
 				}
+			}
+			
+			if (session) {
+				activityChecker = setInterval(function() {
+					// check if user is active outside of hudweb
+					if (session.getLastUserActivity() < lastActivityCheck) {
+						httpService.sendAction('useractivity', 'reportActivity', {});
+						lastActivityCheck = 0;
+					}
+					else
+						lastActivityCheck = session.getLastUserActivity();
+				}, 5000);
 			}
 		}else{
 			tabInFocus = true;
