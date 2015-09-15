@@ -394,7 +394,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,$http,$rootScope,$modal,sharedData) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,$http,$rootScope,$modal,sharedData,$timeout) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
@@ -450,7 +450,7 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
 
         
            
-        
+        $modalInstance.close();
 
       });
 
@@ -460,7 +460,7 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
  $scope.editMeeting = function(){
    $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getUTCMonth()+1;
-  $scope.startDay = $scope.startTime.getUTCDate()+1;
+  $scope.startDay = $scope.startTime.getUTCDate();
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -493,10 +493,9 @@ if($scope.meeting.AmPm == "AM"){
 
           });
 
+                     // $modalInstance.close();
 
-                              $modalInstance.close();
 
-          
   };
 
 
@@ -519,7 +518,7 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
   $scope.ok = function () {
   $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getUTCMonth()+1;
-  $scope.startDay = $scope.startTime.getUTCDate()+1;
+  $scope.startDay = $scope.startTime.getUTCDate();
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -679,7 +678,7 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
       }
     ];
 
-  $scope.getDayClass = function(date, mode) {
+/*  $scope.getDayClass = function(date, mode) {
     if (mode === 'day') {
       var dayToCheck = new Date(date).setHours(0,0,0,0);
 
@@ -693,7 +692,7 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
     }
 
     return '';
-  };
+  };*/
 });
 
 hudweb.controller('ScrollController', ['$scope', '$location', '$anchorScroll',

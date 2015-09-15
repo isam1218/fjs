@@ -4859,7 +4859,7 @@ div.NewCall .XButton.XButtonNormal {
   padding: 10px 20px 0px 80px;
 }
 .meetingHeader h4 {
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 0px;
 }
 .meetingHeader h3 {
@@ -4904,6 +4904,9 @@ div.NewCall .XButton.XButtonNormal {
 .meetingBody li {
   padding: 0px 0px 0px 0px;
   margin: 0px 0px 60px 0px;
+}
+.meetingBody h3 {
+  color: grey;
 }
 .meetingBody p {
   font-size: 13px;
