@@ -73,6 +73,14 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 		};
 	};
 	
+	var syncWatch = $rootScope.$watch('isFirstSync', function(val) {
+		// resolve queue data only after first sync is complete
+		if (val === false) {
+			deferred.resolve(formatData());
+			syncWatch();
+		}
+	});
+	
 	/**
 		QUEUE SYNC DATA
 	*/
@@ -257,8 +265,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			/*httpService.getFeed('queue_members_status');
 			httpService.getFeed('queue_members_stat');
 			httpService.getFeed('queuemembercalls');*/
-			
-			deferred.resolve(formatData());
 		}
 	});
 
