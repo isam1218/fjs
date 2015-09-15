@@ -647,21 +647,21 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
   };
   $scope.toggleMin();*/
 
- /* $scope.open = function($event) {
+  $scope.open = function($event) {
     $scope.status.opened = true;
-  };*/
+  };
 
- /* $scope.dateOptions = {
+  $scope.dateOptions = {
     formatYear: 'yy',
     startingDay: 1
   };
-*/
+
   $scope.formats = ['MM/dd/yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
   $scope.format = $scope.formats[0];
 
-  /*$scope.status = {
+  $scope.status = {
     opened: false
-  };*/
+  };
 
 /*  var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
