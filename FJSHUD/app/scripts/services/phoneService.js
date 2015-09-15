@@ -90,7 +90,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						context.displayCallAlert(callsDetails[detail]);
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls)) && !isAlertShown){
+					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails)) && !isAlertShown){
 						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 					}					
 				}
