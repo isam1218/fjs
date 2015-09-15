@@ -42,7 +42,7 @@
                         </a>
             </div>
 
-<div id="homeContainer" ng-show="showHome" ng-controller="ModalDemoCtrl" >
+<div id="homeContainer" ng-show="showHome"  >
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader" style="margin-bottom:15px"> 
                 <div class="ListSectionHeaderTitle">SCHEDULE A MEETING</div>
@@ -113,7 +113,6 @@
         <ul>
           <li><h4>Personal Meeting ID(PMI)</h4><button ng-click="joinScheduledMeeting(pmi_id.pmi)">Start</button></li>
           <li><h3 ng-model="pmi_id.pmi">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button ng-click="copyPmi(x.topic,pmi_id.pmi)">Copy</button></li>
-          <li><a href ="https://zoom.us/j/{{pmi_id.pmi}}" style="color:black">https://zoom.us/j/{{pmi_id.pmi}}</a></li>
         </ul>
     </div>
     <div id="scrollArea" ng-controller="ScrollController">
@@ -125,13 +124,13 @@
 
             <ul>
                 <li ng-repeat="x in meetingList|orderBy:'start_time'">
-                   <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:'EEEE , MMM dd, yyyy'}}</h5>
+                   <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE , MMM dd, yyyy"}}</h5>
                    <p>{{x.start_time|date:'h:mm a'}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting Id: {{x.meeting_id}}</p>
-                   <p ng-model="x.timezone"></p>
+                   <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
                    <div class="meetingBtnsContainer">
-                       <button ng-click="openEditModal()">Edit</button>
+                       <button ng-click="openEditModal(x.meeting_id)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
@@ -156,7 +155,7 @@
             Fonality Video Collaboration - Schedule A Meeting
         </div>
     </div>
-    <div class="modal-body" ng-controller="ModalDemoCtrl">
+    <div class="modal-body" ng-controller="ZoomWidgetController">
     <div ng-controller="DatepickerDemoCtrl">
        
         <div id="scheduleInputContainer">
@@ -212,7 +211,8 @@
 
     
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button"  ng-click="ok(); openClipboard(meetingTopic);" >Schedule</button>
+        <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="ok(); openClipboard(meetingTopic);" >Schedule</button>
+        <button class="btn btn-primary" ng-show="updateBtn" ng-click="editMeeting();getInfo()">Update</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
     </div>

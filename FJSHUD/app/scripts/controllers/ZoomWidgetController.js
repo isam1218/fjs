@@ -8,12 +8,13 @@ hudweb.service("sharedData",function(){
   this.meeting.minDuration = null;
   this.meeting.timezone = '';
   this.meeting.meeting_id = null;
+  this.meeting.update_meeting_id = null;
   this.meeting.start_url = '';
   this.password = '';
   this.jbh=null;
 });
 
-hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log) {
 
      $scope.tab = 'Home';
      $scope.showHome=true;
@@ -22,6 +23,8 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
      $scope.host_id = null;
      $scope.meetingList = [];
      $scope.Time = "Time: ";
+    
+    
 
 
 
@@ -48,27 +51,45 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
     };
 
     $scope.joinScheduledMeeting = function(meetingId){
-        window.open("https://api.zoom.us/s/"+meetingId+"?zpk=YWWiTI8LiJnyhU6S2lW2gli1Vkr2IwqjVTLbWcE1UN8.AwYkMWI4ZDlhNTEtOTBlNi00ZGQyLWE2OWUtNjlmOWM4NjY0M2JlFlFaMEVnYnhnU2NhZ296VFdMU1RCdGcWUVowRWdieGdTY2Fnb3pUV0xTVEJ0ZxR0ZXN0XzcwMDFfNTMwNzcgVXNlcmMAXkRfQmZnblRBdHZkOWpTRENTUlN4Wkl2SWwyQ1NJYmNMTHByYnVrN3BSdzAuQmdJZ09IVlNSM1ZtY1RFNWNXaExTVXRUU0c1d04wUkhPVkJ0WTFweWFVMUhhbEFBQUEAABZ6NjFiNkszSFFNR1JOQ1B0M1FrM2tnAgIB"
-);
+
+       $http.get(fjs.CONFIG.SERVER.ppsServer +'zoom/pmiStartUrl'+'?meetingId='+meetingId+'&hostId='+$scope.host_id+'&authToken='+$scope.authTicket).success(function(response){
+        console.log("PMISTUFF",response);
+        window.open(response.start_url);
+
+       });
 
     };
     $scope.startScheduledMeeting = function(start_url){
       window.open(start_url);
     }
 
-    $scope.openEditModal = function(){
+    $scope.openEditModal = function(meetingId){
+      $scope.meeting_id = meetingId;
+      $scope.scheduleBtn = false;
+      $scope.updateBtn = true;
           $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'copyToClipboard.html',
+      templateUrl: 'myModalContent.html',
       controller: 'ModalInstanceCtrl',
       size: 'lg',
       resolve: {
-        items: function () {
-          return $scope.items;
+        schedule: function () {
+          return $scope.scheduleBtn;
+        },
+        update: function(){
+          return $scope.updateBtn;
+        },
+        shared: function(){
+          return $scope.meeting_id;
+        },
+        host: function(){
+          return $scope.host_id;
         }
       }
     });
-    }
+    };
+
+
           
     $scope.copy = function(startTime,topic,meeting,timezone){
                 
@@ -78,11 +99,14 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
             sharedData.meeting.start_url = response.meetings.start_url;
-});
+            sharedData.meeting.meetingTopic = topic;
+            sharedData.meeting.timeSelect = startTime;
+            sharedData.meeting.timezone = timezone;
+          });
 
-      sharedData.meeting.timeSelect = startTime;
+      /*sharedData.meeting.timeSelect = startTime;
       sharedData.meeting.meetingTopic = topic;
-      sharedData.meeting.timezone = timezone;
+      sharedData.meeting.timezone = timezone;*/
       sharedData.meeting.AmPm = "";
       
 
@@ -95,8 +119,17 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
       controller: 'ModalInstanceCtrl',
       size: 'lg',
       resolve: {
-        items: function () {
-          return $scope.items;
+        schedule: function () {
+          
+        },
+        update:function(){
+
+        },
+        shared: function(){
+
+        },
+        host: function(){
+
         }
       }
     });
@@ -287,7 +320,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         
 
       });
-   /* $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(data){
+    /*$http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(data){
       console.log(data);
     })*/
   };
@@ -297,28 +330,38 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 
 
 
-}]);
+/*}]);
 
 
 hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$http) {
-
+*/
   $scope.items = ['item1', 'item2', 'item3'];
 
   $scope.animationsEnabled = true;
 
 
-
   $scope.open = function (size) {
-
+    $scope.scheduleBtn = true;
+    $scope.updateBtn = false;
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'myModalContent.html',
       controller: 'ModalInstanceCtrl',
       size: size,
       resolve: {
-        items: function () {
-          return $scope.items;
+        schedule: function () {
+          return $scope.scheduleBtn;
+        },
+        update: function(){
+          return $scope.updateBtn;
+        },
+        shared: function(){
+
+        },
+        host: function(){
+
         }
+
       }
     });
 
@@ -346,17 +389,23 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
   }
  
 
-});
+}]);
 
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,$http,$rootScope,$modal,sharedData) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,$http,$rootScope,$modal,sharedData) {
 
-  $scope.items = items;
-  $scope.selected = {
+/*  $scope.items = items;
+*/$scope.scheduleBtn = schedule;
+$scope.updateBtn = update;
+     $scope.host_id = host;
+
+ /* $scope.selected = {
     item: $scope.items[0]
-  };
+  };*/
+
+
 $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   var getURL = function(action) {
 
@@ -392,10 +441,64 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   sharedData.meeting.timezone = $scope.meeting.timezone;
   sharedData.meeting.password = $scope.meeting.password;
   sharedData.meeting.jbh = $scope.meeting.jbh;
+ $scope.getInfo = function(){
+
+  
+     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+        console.log("MEETING DATA",response);
+     
+
+        
+           
+        
+
+      });
 
 
+  }
+
+ $scope.editMeeting = function(){
+   $scope.startTime = $scope.meeting.dt;
+  $scope.startMonth = $scope.startTime.getUTCMonth()+1;
+  $scope.startDay = $scope.startTime.getUTCDate()+1;
+  $scope.startHour = $scope.meeting.timeSelect;
+  $scope.colon = $scope.startHour.indexOf(":");
+  $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
+  console.log("UTC",$scope.startHourUTC);
+
+if($scope.meeting.AmPm == "AM"){
+  $scope.hourUTC = $scope.startHourUTC;
+ }
+ if($scope.meeting.AmPm =="PM"){
+  $scope.startHourUTC = parseInt($scope.startHourUTC);
+  $scope.hourUTC =$scope.startHourUTC + 12;
+ }
+ 
+
+ if($scope.hourUTC ==24){
+    $scope.hourUTC = $scope.hourUTC -1;
+  }
+
+  $scope.hourUTC = $scope.hourUTC -17;
+
+ 
+   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
+    sharedData.meeting.update_meeting_id = shared;
 
    
+
+          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
+              console.log("PUT",data);
+              console.log("PUT MEETING ID",sharedData.meeting.meeting_id);
+
+          });
+
+
+                              $modalInstance.close();
+
+          
+  };
+
 
 $scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00"];
 //$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -453,15 +556,15 @@ if($scope.meeting.AmPm == "AM"){
     });
 
 
-    $modalInstance.close($scope.selected.item);
+    $modalInstance.close();
     $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'copyToClipboard.html',
       controller: 'ModalInstanceCtrlTwo',
       size: 'lg',
       resolve: {
-        items: function () {
-          return $scope.items;
+        schedule: function () {
+          return $scope.scheduleBtn;
         }
       }
     });
@@ -478,7 +581,7 @@ if($scope.meeting.AmPm == "AM"){
 
 
 
-hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance, items,$http,$rootScope,$modal,sharedData) {
+hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http,$rootScope,$modal,sharedData) {
     
     var getURL = function(action) {
 
