@@ -394,7 +394,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,$http,$rootScope,$modal,sharedData,$timeout) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,$http,$rootScope,$modal,sharedData,$timeout,$route) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
@@ -457,10 +457,14 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
 
   }
 
+$scope.reloadRoute = function() {
+   $route.reload();
+}
+
  $scope.editMeeting = function(){
    $scope.startTime = $scope.meeting.dt;
-  $scope.startMonth = $scope.startTime.getUTCMonth()+1;
-  $scope.startDay = $scope.startTime.getUTCDate();
+  $scope.startMonth = $scope.startTime.getMonth()+1;
+  $scope.startDay = $scope.startTime.getDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -482,7 +486,7 @@ if($scope.meeting.AmPm == "AM"){
   $scope.hourUTC = $scope.hourUTC -17;
 
  
-   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
+   $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
     sharedData.meeting.update_meeting_id = shared;
 
    
@@ -493,7 +497,7 @@ if($scope.meeting.AmPm == "AM"){
 
           });
 
-                     // $modalInstance.close();
+                     $modalInstance.close();
 
 
   };
@@ -517,8 +521,8 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
 
   $scope.ok = function () {
   $scope.startTime = $scope.meeting.dt;
-  $scope.startMonth = $scope.startTime.getUTCMonth()+1;
-  $scope.startDay = $scope.startTime.getUTCDate();
+  $scope.startMonth = $scope.startTime.getMonth()+1;
+  $scope.startDay = $scope.startTime.getDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -540,7 +544,7 @@ if($scope.meeting.AmPm == "AM"){
   $scope.hourUTC = $scope.hourUTC -17;
 
  
-   $scope.starts = $scope.startTime.getUTCFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
+   $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
 
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
@@ -580,7 +584,7 @@ if($scope.meeting.AmPm == "AM"){
 
 
 
-hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http,$rootScope,$modal,sharedData) {
+hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http,$rootScope,$modal,sharedData,$route) {
     
     var getURL = function(action) {
 
@@ -607,9 +611,6 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http
 
    
 
-/*$scope.copyToClipboard = function(){
-        $modalInstance.close();
-      };*/
 
   $scope.copyToClipboard = function(){
         $modalInstance.close();
@@ -632,37 +633,37 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
 
   
 
-  $scope.clear = function () {
+  /*$scope.clear = function () {
     $scope.meeting.dt = null;
-  };
+  };*/
 
   // Disable weekend selection
-  $scope.disabled = function(date, mode) {
+/*  $scope.disabled = function(date, mode) {
     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-  };
+  };*/
 
-  $scope.toggleMin = function() {
+ /* $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
-  $scope.toggleMin();
+  $scope.toggleMin();*/
 
-  $scope.open = function($event) {
+ /* $scope.open = function($event) {
     $scope.status.opened = true;
-  };
+  };*/
 
-  $scope.dateOptions = {
+ /* $scope.dateOptions = {
     formatYear: 'yy',
     startingDay: 1
   };
-
+*/
   $scope.formats = ['MM/dd/yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
   $scope.format = $scope.formats[0];
 
-  $scope.status = {
+  /*$scope.status = {
     opened: false
-  };
+  };*/
 
-  var tomorrow = new Date();
+/*  var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   var afterTomorrow = new Date();
   afterTomorrow.setDate(tomorrow.getDate() + 2);
@@ -676,7 +677,7 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
         date: afterTomorrow,
         status: 'partially'
       }
-    ];
+    ];*/
 
 /*  $scope.getDayClass = function(date, mode) {
     if (mode === 'day') {
