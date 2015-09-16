@@ -18,6 +18,9 @@
 		</style>
 	
 		<script> 
+				// for debugging
+				// window.location="devtools://open";
+
 				window.fj={alert:{}};
 
 				window.dropEnabled=false;
@@ -39,28 +42,18 @@
 				};
 
 				function addAlert(html)  {
-				   document.body.innerHTML = html;
+					// ain't got no body
+					if (!document.body)
+						document.documentElement.appendChild(document.createElement('body'));
+						
+					document.body.innerHTML = html;
 				   
 					// scroll to bottom
 					setTimeout(function() {
 						document.getElementById('scroller').scrollTop = document.getElementById('scroller').scrollHeight;
 					}, 100);
 					
-				   /*document.getElementById("body").innerHTML = html;
-				   
-
-				   var develop =  document.getElementById('developzone');
-				     var btnOpenConsole = document.createElement("button");
-				      btnOpenConsole.className = "btnOpenConsole";
-				      btnOpenConsole.onclick = function(){
-				        	alert("devtools://open");
-				            window.location="devtools://open";
-				        };
-
-				     develop.appendChild(btnOpenConsole);*/
-				      //document.body.appendChild(btnOpenConsole);
 					fj.alert.Duration.start();
-
 				}
 
 				function alertScroll(x,y,dx) {
@@ -193,21 +186,6 @@
 				    }
 				};
 
-				if(document.addEventListener) {
-				    document.addEventListener("DOMContentLoaded", function() {
-				        document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
-				        fj.alert.App.init();
-				    }, false);
-				}
-				else if(document.attachEvent) {
-				    document.attachEvent("onreadystatechange", function() {
-				        if(document.readyState === "complete") {
-				            document.detachEvent("onreadystatechange", arguments.callee);
-				            fj.alert.App.init();
-				        }
-				    });
-				}
-
 				fj.Utils = {
 				    DOMUtils: {
 				        addEventListener : function(htmlElement, methodName, callback) {
@@ -272,12 +250,8 @@
 
 		</script>
 	</head>
+	
 	<body>
-		<div id="developzone"> </div>
-
-		<div id="body"> </div>
 		
 	</body>
-
-
 </html>
