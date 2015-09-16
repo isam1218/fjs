@@ -4,6 +4,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.timeElapsed = 0;
 	$scope.recordingElapsed = 0;
 	
+	$scope.conferences = [];
 	$scope.conf = this;
 	$scope.conf.query = '';
 	$scope.confQuery = this;
@@ -27,9 +28,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.recentTransfers = [];
 	var recentXpids;
 	var externalContact;
-
-
-
+	var firstArr = []
+	var secondArr = [];
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
 	if($scope.$parent.overlay.data.screen){		
@@ -47,8 +47,18 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				}
 				break;
 			case 'conference':
+				// sort by displaying home server conference rooms first...
 				conferenceService.getConferences().then(function(data) {
-					$scope.conferences = data.conferences;
+					var myObj = contactService.getContact($rootScope.myPid);
+					var myServerNumber = myObj.jid.split('_')[0];
+					for (var i = 0, iLen = data.conferences.length; i < iLen; i++){
+						if (myServerNumber == data.conferences[i].serverNumber.split('_')[1])
+							firstArr.push(data.conferences[i]);
+						else
+							secondArr.push(data.conferences[i]);
+					}
+					firstArr = firstArr.concat(secondArr);
+					$scope.conferences = firstArr;
 				});
 				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 	
@@ -131,9 +141,17 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		
 		if (screen == 'conference') {
 			conferenceService.getConferences().then(function(data) {
-				$scope.conferences = data.conferences;
+				var myObj = contactService.getContact($rootScope.myPid);
+				var myServerNumber = myObj.jid.split('_')[0];
+				for (var i = 0, iLen = data.conferences.length; i < iLen; i++){
+					if (myServerNumber == data.conferences[i].serverNumber.split('_')[1])
+						firstArr.push(data.conferences[i]);
+					else
+						secondArr.push(data.conferences[i]);
+				}
+				firstArr = firstArr.concat(secondArr);
+				$scope.conferences = firstArr;
 			});
-	
 			$scope.confQuery = '';
 			$scope.selectedConf = null;
 			$scope.meToo = {};
@@ -154,6 +172,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.selectConference = function(conference) {
 		$scope.selectedConf = conference;
 	};
+
 	
 	$scope.conferenceFilter = function(){
 		var query = $scope.conf.query.toLowerCase();
