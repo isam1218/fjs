@@ -1159,8 +1159,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//look for audio tag and play sound based on key
 	this.playSound= function(sound_key){
-		var audio = $('audio.send')
-
 		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
 			switch(sound_key){
 				case 'received':
