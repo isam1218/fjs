@@ -3,6 +3,7 @@ importScripts("fdpRequest.js");
 importScripts("../../properties.js");
 
 var synced = false;
+var sync_delay = 100;
 
 var node = undefined;
 var auth = undefined;
@@ -135,7 +136,7 @@ function sync_request(f){
 		}
 		
 		// again, again!
-		setTimeout('do_version_check();', 500);
+		setTimeout('do_version_check();', sync_delay);
 	});
 }
 
@@ -169,7 +170,7 @@ function do_version_check(){
 			if (changedFeeds.length > 0)
                	sync_request(changedFeeds);
             else
-				setTimeout('do_version_check();', 500);
+				setTimeout('do_version_check();', sync_delay);
 		}
 		else if(xmlhttp.status == 404 || xmlhttp.status == 500){
 			self.postMessage({
@@ -177,7 +178,7 @@ function do_version_check(){
 			});
 		}
 		else if (xmlhttp.status == 0) {
-			setTimeout('do_version_check();', 500);
+			setTimeout('do_version_check();', sync_delay);
 		}
 		else {
 			self.postMessage({

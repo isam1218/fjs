@@ -47,7 +47,7 @@ fjs.CONFIG = {
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
-        WINDOWS_NEW:'http://build01.lax01.fonality.com/job/hud-wp.win/lastSuccessfulBuild/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
+        WINDOWS_NEW:'http://build01.lax01.fonality.com/job/hud-wp.win/53/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
         MAC_NEW:'http://build01.lax01.fonality.com/job/hud-wp.osx/52/artifact/webphone/installer.mac/WebPhone-1.1.011218.pkg'
 
     },
