@@ -18,9 +18,6 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     {upper: $scope.verbage.recordings, lower: 'recordings', idx: 5}, 
     {upper: $scope.verbage.alerts, lower: 'alerts', idx: 6}];
     
-    // send tabs to app.js
-    storageService.saveTabs($scope.tabs);
-
     $scope.toggleObject = {};
     $scope.tabObj = {};
              
@@ -60,9 +57,9 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     } else {
-        // otherwise when route isn't defined, use the tabs set in app.js 
-        $scope.selected = storageService.getSelected();
-        $scope.toggleObject = storageService.getToggleObj();
+        // otherwise when route isn't defined --> used LS-saved or default
+        $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
+        $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
     }
 
     $scope.saveQTab = function(tab, index){

@@ -19,9 +19,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   {upper: $scope.verbage.group_info, lower: 'info', idx: 5}
   ];
 
-  // send tabs to app.js
-  storageService.saveTabs($scope.tabs);
-  
   // store recent
   storageService.saveRecent('group', $scope.groupID);
 
@@ -57,9 +54,9 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
     localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
     localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   } else{
-    // otherwise when route isn't defined, use the tabs set in app.js 
-    $scope.selected = storageService.getSelected();
-    $scope.toggleObject = storageService.getToggleObj();
+    // otherwise when route isn't defined --> used LS-saved or default
+    $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? 'chat' : 'members';
+    $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : $scope.isMine ? 0 : 1;
   }
 
   // save user's last selected tab to LS

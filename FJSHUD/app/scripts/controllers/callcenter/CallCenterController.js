@@ -1,11 +1,8 @@
-hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', 'StorageService', function ($scope, $rootScope, $routeParams, httpService, queueService, settingsService, storageService) {
+hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', function ($scope, $rootScope, $routeParams, httpService, queueService, settingsService) {
 
 	$scope.tabs = [{upper: $scope.verbage.my_queue, lower: 'myqueue'},
 	{upper: $scope.verbage.all_queues, lower: 'allqueues'},
 	{upper: $scope.verbage.my_status, lower: 'mystatus'}];
-
-	// send tabs to app.js
-	storageService.saveTabs($scope.tabs);
 
 	// if route is defined (click on specific tab or manaully enter url)...
 	if ($routeParams.route){
@@ -20,8 +17,8 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 		localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
 	} else {
 		// otherwise when route isn't defined, use the tabs set in app.js 
-    $scope.selected = storageService.getSelected();
-    $scope.toggleObject = storageService.getToggleObj();
+    $scope.selected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
+    $scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
 	}
 
 	$scope.saveTab = function(tab, index){
