@@ -20,12 +20,19 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		template: '<div class="Avatar"></div>',
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
-			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
+			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;			
 			var context, widget, rect;
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
 			}
+			if(attrs.profile && attrs.profile == 'vm.myProfile' && widget && widget == 'voicemails')
+	        {				    
+				loadImage(element.find('img'), getAvatar(scope.meModel.my_pid, 28, 28));
+				element.append('<div class="AvatarForeground AvatarInteractable"></div>');	
+				obj = scope.myProfile;
+				profile = obj && obj.fullProfile ? obj.fullProfile : obj;				
+	        }
 			
 			/**
 				AVATAR IMAGES
@@ -51,7 +58,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			if (!profile || !profile.xpid) {
 				if (attrs.profile && attrs.profile == 4)
 					showGroup();
-				else
+				else					
 					showSingle();
 				
 				return;
@@ -89,6 +96,9 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
 			}
 			
+			function getAvatar(pid, w, h){
+				return httpService.get_avatar(pid,w,h);
+			}						
 			function loadImage(el, url) {
 				var img = new Image();
 				img.src = url;
@@ -180,12 +190,17 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				$timeout(function() {
 					// position pop-pop				
 					overlay.addClass('NoWrap');
+					overlay.removeClass('Bump');
 					
 					overlay.css('display', 'block');
 					overlay.css('width', 'auto');
 					overlay.css('top', (rect.top + rect.height/2) + 'px');
 					
 					var oRect = overlay[0].getBoundingClientRect();
+					
+					// can't fit on screen
+					if (oRect.bottom >= window.innerHeight)
+						overlay.addClass('Bump');
 					
 					// can fit on right side
 					if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {
