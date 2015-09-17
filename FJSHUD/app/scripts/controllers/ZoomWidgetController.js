@@ -429,7 +429,6 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
   for(var min = 0; min <60; min+=15){
     $scope.minOption.push(min);
   }
- 
 
 }]);
 
@@ -544,8 +543,58 @@ $scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+ $scope.timeZone = [
+{
+  name:"(GMT-8:00) Pacific Time",
+ offset:420        
+},
+{
+  name:"(GMT-7:00) Mountain Time ",
+ offset:360
+},
+{
+  name:"(GMT-6:00) Central Time ",
+  offset:300
+},
+{
+  name:"(GMT-5:00) Eastern Time ",
+  offset:240
+},
+{
+  name:"(GMT-4:00) Atlantic Time ",
+  offset:180
+},
+{
+  name:"(GMT-9:00) Alaska Time",
+  offset:480
+},
+{
+  name:"(GMT-10:00) Hawaii Time",
+  offset:600
+}
 
-$scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"];
+];
+var d = new Date();
+/*alert(d.getTimezoneOffset());
+*/ for(i=0;i<=$scope.timeZone.length;i++){
+   if(d.getTimezoneOffset() == $scope.timeZone[i].offset){
+            $scope.timeZone.unshift({name:$scope.timeZone[i].name,offset:$scope.timeZone[i].offset});
+            break;
+  }
+}
+  for(i=1;i<=$scope.timeZone.length;i++){
+   if(d.getTimezoneOffset() == $scope.timeZone[i].offset){
+    var a = $scope.timeZone.indexOf($scope.timeZone[i]);
+    $scope.timeZone.splice(a,1);
+            console.log("REMOVE THIS",a);
+        break;
+  }
+  }
+   
+  
+
+
+
 
   $scope.startTime = "";
   $scope.starts = null;

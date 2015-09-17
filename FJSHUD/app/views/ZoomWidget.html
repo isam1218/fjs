@@ -150,6 +150,7 @@
 
 
 <script type="text/ng-template" id="myModalContent.html">
+                <div ng-init="setOffset()"></div>
 
    <div class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
         <div class="TopBarItemAppIcon Zoom"></div>
@@ -190,7 +191,7 @@
                 </li>
                 <li>
                 <label style="margin-left:22px">Time Zone:</label>
-                <select name="timezone" ng-model="meeting.timezone" ng-init="meeting.timezone = timeZone[0]" ng-options="t for t in timeZone">
+                <select name="timezone" ng-model="meeting.timezone"ng-init="meeting.timezone = timeZone[0].name" ng-options="t.name as t.name for t in timeZone">
                 </select>
                 </li>
             </ul>

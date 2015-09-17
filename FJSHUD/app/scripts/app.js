@@ -1,15 +1,12 @@
 'use strict';
 
 var hudweb = angular.module('fjshudApp', [
-	'ngClipboard',
 	'ui.bootstrap',
     'ngRoute',
     'ngSanitize',
     'flow'
 ]);
-hudweb.config(['ngClipProvider', function(ngClipProvider) {
-    ngClipProvider.setPath("https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.1.6/ZeroClipboard.swf");
-  }]);
+
 hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 	// disables debugger injection 
 	$compileProvider.debugInfoEnabled(false);
