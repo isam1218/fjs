@@ -83,9 +83,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.tabs = [{upper: $scope.verbage.current_call, lower: 'currentcall'}, 
   {upper: $scope.verbage.chat, lower: 'chat'}, {upper: $scope.verbage.recordings, lower: 'recordings'}];
 
-  // send tabs to app.js
-  storageService.saveTabs($scope.tabs);
-
   // if route is defined (click on specific tab or manaully enter url)...
   if ($routeParams.route){
     $scope.selected = $routeParams.route;
@@ -98,9 +95,9 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
     localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
     localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   } else {
-    // otherwise when route isn't defined, use the tabs set in app.js 
-    $scope.selected = storageService.getSelected();
-    $scope.toggleObject = storageService.getToggleObj();
+    // otherwise when route isn't defined --> used LS-saved or default
+    $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid]) : 'currentcall';
+    $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
   }
 
   $scope.saveConfTab = function(tab, index){

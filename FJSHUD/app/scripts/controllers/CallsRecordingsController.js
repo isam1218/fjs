@@ -1,9 +1,6 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, settingsService, storageService) {
+hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService', function($scope, $rootScope, $routeParams, settingsService) {
 	// routing
 	$scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'}];
-  
-  // send tabs to app.js
-  storageService.saveTabs($scope.tabs);
 
   // if route is defined (click on specific tab or manaully enter url)...
   if ($routeParams.route){
@@ -17,9 +14,9 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     localStorage['CallsRecordings_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
     localStorage['CallsRecordings_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
   } else {
-    // otherwise when route isn't defined, use the tabs set in app.js 
-    $scope.selected = storageService.getSelected();
-    $scope.toggleObject = storageService.getToggleObj();
+    // otherwise when route isn't defined --> used LS-saved or default
+    $scope.selected = localStorage['CallsRecordings_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $rootScope.myPid]) : 'calllog';
+    $scope.toggleObject = localStorage['CallsRecordings_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
   }
   
   $scope.saveCRTab = function(tab, index){

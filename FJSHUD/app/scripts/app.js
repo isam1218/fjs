@@ -163,37 +163,29 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
         switch(typeFlag){
           case 'contact':
             tmpSelected = localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
-            tmpToggleObject = localStorage['ConversationWidget_' + finalContactId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
             endPath = '/contact/' + finalContactId + '/' + tmpSelected;
             break;
           case 'group':
             tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : GroupService.isMine(finalGroupId) ? 'chat' : 'members';
-            tmpToggleObject = localStorage['GroupSingle_' + finalGroupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_toggleObject_of_' + $rootScope.myPid]) : GroupService.isMine(finalGroupId) ? 0 : 1;
             endPath = '/group/' + finalGroupId + '/' + tmpSelected;
             break;
           case 'queue':
             tmpSelected = localStorage['QueueWidget_' + finalQueueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + finalQueueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
-            tmpToggleObject = localStorage['QueueWidget_' + finalQueueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + finalQueueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
             endPath = '/queue/' + finalQueueId + '/' + tmpSelected;
             break;
           case 'conference':
             tmpSelected = localStorage['ConferenceSingle_' + finalConfId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + finalConfId + '_tabs_of_' + $rootScope.myPid]) : 'currentcall';
-            tmpToggleObject = localStorage['ConferenceSingle_' + finalConfId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + finalConfId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
             endPath = '/conference/' + finalConfId + '/' + tmpSelected;
             break;
           case 'callcenter':
             tmpSelected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
-            tmpToggleObject = localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
             endPath = '/callcenter/' + tmpSelected;
             break;
           case 'calllog':
             tmpSelected = localStorage['CallsRecordings_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallsRecordings_tabs_of_' + $rootScope.myPid]) : 'calllog';
-            tmpToggleObject = localStorage['CallsRecordings_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallsRecordings_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
             endPath = '/calllog/' + tmpSelected;
             break;
         }
-        StorageService.saveSelected(tmpSelected);
-        StorageService.saveToggleObj(tmpToggleObject);
         e.preventDefault();        
         $location.path(endPath);
       }
