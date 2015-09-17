@@ -2,6 +2,9 @@ hudweb.service('StorageService', ['$rootScope', 'ContactService', 'SettingsServi
 	var service = this;
 	var recents;
 	var chats;
+	var selected;
+	var tabs;
+	var toggleObj;
 	
 	// wait for user xpid
 	settingsService.getSettings().then(function() {
@@ -14,6 +17,34 @@ hudweb.service('StorageService', ['$rootScope', 'ContactService', 'SettingsServi
 		recents = JSON.parse(localStorage['recents_of_' + $rootScope.myPid]);
 		chats = JSON.parse(localStorage['chats_of_' + $rootScope.myPid]);
 	});
+
+	/* 
+	SCOPE.SELECTED
+	*/
+	service.saveSelected = function(route){
+		selected = route;
+	};
+
+	service.getSelected = function(){
+		return selected;
+	};
+
+	service.saveTabs = function(tabsArray){
+		tabs = tabsArray;
+	};
+
+	service.getTabs = function(){
+		return tabs;
+	};
+
+	service.saveToggleObj = function(toggleObject){
+		toggleObj = toggleObject;
+	};
+
+	service.getToggleObj = function(){
+		return toggleObj;
+	};
+
 	
 	/**
 		RECENTS
