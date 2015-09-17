@@ -281,27 +281,59 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
   settingsService.getSettings().then(function() {
      
    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-        console.log("MEETING DATA",response);
+        console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
+                $scope.AmPm = sharedData.meeting.AmPm;
 
-       
+
+        for(var i = 0; i<=30;i++){
+           $scope.meetingList[i].start_time.toString();
+           var x =$scope.meetingList[i].start_time.substr(11,2);
+            var z = x - 7;
+            $scope.meetingList[i].start_hour = z + ":00" +$scope.AmPm;
+                       
+          
+                    //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
+
+        }
 
         
 
       });
  });
 
-  $scope.getData = function(){
+  /*$scope.getTimezone = function(start_time){
+    $scope.startTime = start_time;
+    $scope.startTime.substr(11,2);
+    console.log("STARTTIME",$scope.meetingList);
+   
+  }*/
 
+  $scope.getData = function(){
+  
   
      $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-        console.log("MEETING DATA",response);
+        console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
+        $scope.AmPm = sharedData.meeting.AmPm;
+        /*$scope.meetingList.push({"start_hour":$scope.start_hour});
+                console.log("START_HOUR",$scope.start_hour);*/
 
+        for(var i = 0; i<=30;i++){
+              
+           $scope.meetingList[i].start_time.toString();
+           var x =$scope.meetingList[i].start_time.substr(11,2);
+            var z = x - 7;
+            $scope.meetingList[i].start_hour = z + ":00" +$scope.AmPm;
+
+           //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
+
+
+        }
         
            
         
@@ -461,6 +493,7 @@ $scope.reloadRoute = function() {
    $route.reload();
 }
 
+
  $scope.editMeeting = function(){
    $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getMonth()+1;
@@ -470,20 +503,13 @@ $scope.reloadRoute = function() {
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
 
-if($scope.meeting.AmPm == "AM"){
-  $scope.hourUTC = $scope.startHourUTC;
- }
- if($scope.meeting.AmPm =="PM"){
-  $scope.startHourUTC = parseInt($scope.startHourUTC);
-  $scope.hourUTC =$scope.startHourUTC + 12;
- }
+
  
 
  if($scope.hourUTC ==24){
     $scope.hourUTC = $scope.hourUTC -1;
   }
 
-  $scope.hourUTC = $scope.hourUTC -17;
 
  
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
@@ -519,7 +545,7 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
  // $scope.startTime = $scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
 
 
-  $scope.ok = function () {
+  $scope.ok = function (AmPm) {
   $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startDay = $scope.startTime.getDate()+1;
@@ -527,23 +553,25 @@ $scope.timeZone = ["Pacific Time","Mountain Time","Central Time","Eastern Time"]
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
+    $scope.hourUTC = $scope.startHourUTC;
 
-if($scope.meeting.AmPm == "AM"){
+  sharedData.meeting.AmPm = AmPm;
+
+/*if($scope.meeting.AmPm == "AM"){
   $scope.hourUTC = $scope.startHourUTC;
  }
  if($scope.meeting.AmPm =="PM"){
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =$scope.startHourUTC + 12;
  }
- 
 
  if($scope.hourUTC ==24){
     $scope.hourUTC = $scope.hourUTC -1;
-  }
+  }*/
 
   $scope.hourUTC = $scope.hourUTC -17;
-
- 
+/*$scope.startTime.getTimezoneOffset() = +240;
+*/ 
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
 
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){

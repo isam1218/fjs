@@ -124,8 +124,10 @@
 
             <ul>
                 <li ng-repeat="x in meetingList|orderBy:'start_time'">
+                                        <div ng-init="getTimezone(x.start_time)"></div>
+
                    <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE , MMM dd, yyyy"}}</h5>
-                   <p>{{x.start_time|date:'h:mm a'}}</p>
+                   <p>{{x.start_time}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting Id: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
@@ -211,7 +213,7 @@
 
     
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="ok(); openClipboard(meetingTopic);" >Schedule</button>
+        <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="ok(meeting.AmPm); openClipboard(meetingTopic);" >Schedule</button>
         <button class="btn btn-primary" ng-show="updateBtn" ng-click="editMeeting();reloadRoute()">Update</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>

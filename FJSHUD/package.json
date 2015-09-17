@@ -19,5 +19,8 @@
   },
   "scripts": {
     "test": "grunt test"
+  },
+  "dependencies": {
+    "moment-timezone": "^0.4.0"
   }
 }
