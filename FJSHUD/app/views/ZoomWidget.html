@@ -127,7 +127,7 @@
                                         <div ng-init="getTimezone(x.start_time)"></div>
 
                    <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE , MMM dd, yyyy"}}</h5>
-                   <p>{{x.start_hour|date:'hh a'}}</p>
+                   <p>{{x.start_hour}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting Id: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
