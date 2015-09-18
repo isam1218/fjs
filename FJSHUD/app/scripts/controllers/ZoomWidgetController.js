@@ -290,16 +290,20 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         for(var i = 0; i<=30;i++){
            $scope.meetingList[i].start_time.toString();
            if($scope.meetingList[i].start_time.substr(11,2) < 13){
-           var x =$scope.meetingList[i].start_time.substr(11,2);
+           var x =$scope.meetingList[i].start_time.substr(12,1);
          
             $scope.meetingList[i].start_hour = x + ":00AM";
           }
             if($scope.meetingList[i].start_time.substr(11,2) >= 13){
-               var x =$scope.meetingList[i].start_time.substr(12,1);
+               var x =$scope.meetingList[i].start_time.substr(11,2);
                 x = x - 12;
                           $scope.meetingList[i].start_hour = x + ":00PM";
 
-            }           
+            }  
+            if($scope.meetingList[i].start_time.substr(11,2) == 0){
+                    $scope.meetingList[i].start_hour = "12:00PM";
+
+            }         
           
                     //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
 
@@ -333,7 +337,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
            if($scope.meetingList[i].start_time.substr(11,2) < 13){
            $scope.meetingList[i].start_time.toString();
            var x =$scope.meetingList[i].start_time.substr(12,1);
-           alert(x);
+           
            
 
             $scope.meetingList[i].start_hour = x + ":00AM";
@@ -346,6 +350,12 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
                           $scope.meetingList[i].start_hour = x + ":00PM";
 
             } 
+             if($scope.meetingList[i].start_time.substr(11,2) == 0){
+                   var x =$scope.meetingList[i].start_time.substr(11,2);
+
+                    $scope.meetingList[i].start_hour = "12:00PM";
+
+            }  
 
         }
         
