@@ -290,7 +290,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var holdCall = function(xpid,isHeld){
 		//var call = context.getCall(xpid);
-		var calldetail = context.getCallDetail(xpid);
+		/*var calldetail = context.getCallDetail(xpid);
 		var call = calldetail.sipCall;
 		if(calldetail.sipCall && calldetail.state != fjs.CONFIG.CALL_STATES.CALL_RINGING){
 			if(context.webphone){
@@ -298,13 +298,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.hold = isHeld;
 			}
+		}*/
+		if(isHeld){
+        	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-			if(isHeld){
-        		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-			}else{
-	       	    httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-			}	
-		}
+	       	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+		}	
 	};
 
 	var makeCall = function(number){
