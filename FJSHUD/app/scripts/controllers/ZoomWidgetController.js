@@ -12,10 +12,24 @@ hudweb.service("sharedData",function(){
   this.meeting.start_url = '';
   this.password = '';
   this.jbh=null;
+
+    this.setScheduleTab = function(tab) {
+        this.tab = tab;
+        this.query = '';
+
+        if(tab == "Meetings"){
+            this.showHome =false;
+            this.showMeetings=true;
+        }
+        if(tab =="Home"){
+            this.showHome=true;
+            this.showMeetings = false;
+        }
+    }; 
 });
 
 hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log) {
-
+$scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.tab = 'Home';
      $scope.showHome=true;
      $scope.pmi_id = {};
@@ -63,7 +77,9 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
       window.open(start_url);
     }
 
-    $scope.openEditModal = function(meetingId){
+    $scope.openEditModal = function(meetingId,topic,start_time){
+      $scope.topic = topic;
+      $scope.start_time = start_time;
       $scope.meeting_id = meetingId;
       $scope.scheduleBtn = false;
       $scope.updateBtn = true;
@@ -84,6 +100,12 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         },
         host: function(){
           return $scope.host_id;
+        },
+        topic: function(){
+          return $scope.topic;
+        },
+        time: function(){
+          return $scope.start_time;
         }
       }
     });
@@ -130,6 +152,12 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
         },
         host: function(){
 
+        },
+        topic: function(){
+
+        },
+        time: function(){
+
         }
       }
     });
@@ -172,7 +200,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
 
  
 
-    $scope.setScheduleTab = function(tab) {
+  /*  $scope.setScheduleTab = function(tab) {
         $scope.tab = tab;
         $scope.query = '';
 
@@ -184,7 +212,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
             $scope.showHome=true;
             $scope.showMeetings = false;
         }
-    };  
+    }; */ 
 
     $scope.startMeeting = function(option){
         var data = {};
@@ -296,7 +324,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
           }
             if($scope.meetingList[i].start_time.substr(11,2) >= 13){
                var x =$scope.meetingList[i].start_time.substr(11,2);
-                x = x - 12;
+                x -= 12;
                           $scope.meetingList[i].start_hour = x + ":00PM";
 
             }  
@@ -338,7 +366,6 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
            $scope.meetingList[i].start_time.toString();
            var x =$scope.meetingList[i].start_time.substr(12,1);
            
-           
 
             $scope.meetingList[i].start_hour = x + ":00AM";
            //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
@@ -346,7 +373,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sha
             }
               if($scope.meetingList[i].start_time.substr(11,2) >= 13){
                  var x =$scope.meetingList[i].start_time.substr(11,2);
-                 x = x - 12;
+                  x -= 12;
                           $scope.meetingList[i].start_hour = x + ":00PM";
 
             } 
@@ -416,6 +443,12 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
         },
         host: function(){
 
+        },
+        topic: function(){
+
+        },
+        time: function(){
+
         }
 
       }
@@ -449,12 +482,12 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
-$scope.updateBtn = update;
-     $scope.host_id = host;
+  $scope.updateBtn = update;
+  $scope.host_id = host;
 
  /* $scope.selected = {
     item: $scope.items[0]
@@ -473,11 +506,13 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
     
     return url;
   };
- 
+
+ //SET SCHEDULE VALUES
   $scope.meeting = {};
   $scope.meeting.meetingTopic = '';
   $scope.meeting.timeSelect = null;
   $scope.meeting.dt = null;
+  $scope.meeting.times = null;
   $scope.meeting.AmPm = '';
   $scope.meeting.hourDuration = null;
   $scope.meeting.minDuration = null;
@@ -485,6 +520,18 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   $scope.meeting.password ='';
   $scope.meeting.jbh = null;
   
+ // SET EDIT VALUES
+$scope.meeting.meetingTopic = topic;
+$scope.meeting.times= time;
+if($scope.meeting.times != undefined){
+$scope.meeting.dt = $scope.meeting.times;
+  }
+  else{
+    $scope.meeting.dt = new Date();
+  }
+
+
+
 
   sharedData.meeting = $scope.meeting;
   sharedData.meeting.meetingTopic = $scope.meeting.meetingTopic;
@@ -505,40 +552,48 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
 
         
            
-        $modalInstance.close();
 
       });
 
 
   }
+  $scope.setScheduleTab = sharedData.setScheduleTab;
+
+     //$scope.setScheduleTab('Meetings');
 
 $scope.reloadRoute = function() {
+     
    $route.reload();
 }
 
-
- $scope.editMeeting = function(){
-   $scope.startTime = $scope.meeting.dt;
+ $scope.editMeeting = function(AmPm){
+   $scope.startTime = new Date($scope.meeting.dt);
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startDay = $scope.startTime.getDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
+ $scope.hourUTC = $scope.startHourUTC;
 
 
+if($scope.meeting.AmPm == "AM"){
+  $scope.hourUTC = $scope.startHourUTC;
+ }
+ if($scope.meeting.AmPm =="PM"){
+  $scope.startHourUTC = parseInt($scope.startHourUTC);
+  $scope.hourUTC =$scope.startHourUTC + 12;
+ }
  
 
- if($scope.hourUTC ==24){
-    $scope.hourUTC = $scope.hourUTC -1;
-  }
+
 
 
  
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
     sharedData.meeting.update_meeting_id = shared;
 
-   
+   //alert($scope.starts);
 
           $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
               console.log("PUT",data);
@@ -835,7 +890,7 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
     $scope.meeting.dt = new Date();
   };
-  $scope.today();
+  //$scope.today();
 
   
 

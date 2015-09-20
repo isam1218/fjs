@@ -117,7 +117,6 @@
     </div>
     <div id="scrollArea" ng-controller="ScrollController">
 
- <div class="fj-content"> 
 
         <div class="meetingBody" >
             <h3>My Meetings</h3>
@@ -132,7 +131,7 @@
                    <p ng-model="x.meeting_id">Meeting Id: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
                    <div class="meetingBtnsContainer">
-                       <button ng-click="openEditModal(x.meeting_id)">Edit</button>
+                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
@@ -142,7 +141,6 @@
             </ul>
 
         </div>
-    </div>
 </div>
 
 </div>
@@ -215,7 +213,7 @@
     
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="ok(meeting.AmPm); openClipboard(meetingTopic);" >Schedule</button>
-        <button class="btn btn-primary" ng-show="updateBtn" ng-click="editMeeting();reloadRoute()">Update</button>
+        <button class="btn btn-primary" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm);reloadRoute()">Update</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
     </div>
