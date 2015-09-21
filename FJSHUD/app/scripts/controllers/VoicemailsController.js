@@ -46,11 +46,10 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
             
     // user's profile for their own voicemails
 	contactService.getContacts().then(function() {		
+		$scope.myProfile = contactService.getContact($rootScope.myPid);
+		$scope.vm.myProfile = 	$scope.myProfile;
 		
-		phoneService.getVm().then(function(data) {
-			$scope.myProfile = contactService.getContact($rootScope.myPid);
-			$scope.vm.myProfile = 	$scope.myProfile;
-			
+		phoneService.getVm().then(function(data) {						
 			if (group || contact) {
 				// voicemails need to be filtered down
 				updateVoicemails(data);
@@ -138,8 +137,49 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
             }
         };
     
-    };
+    };       
+    $rootScope.$on('voicemailbox_synced', function(event, data) {
+    	// first time
+    	$scope.myProfile = contactService.getContact($rootScope.myPid);
+		$scope.vm.myProfile = 	$scope.myProfile;
+		
+		if ($scope.voicemails.length == 0) {
+			$scope.voicemails = data.filter(function(item){
+				return item.xef001type != "delete"; 
+			});
+			
+			// add full profile
+			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
+				$scope.voicemails[v].fullProfile = contactService.getContact($scope.voicemails[v].contactId);
+			}	
+		}
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+				
+				for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
+					// find and update or delete
+					if ($scope.voicemails[v].xpid == data[i].xpid) {
+						if (data[i].xef001type == 'delete') {
+							$scope.voicemails.splice(v, 1);
+							vLen--;
+						}
+						else
+							$scope.voicemails[v].readStatus = data[i].readStatus;
+						
+						match = true;
+						break;
+					}
+				}
+				
+				if (!match && data[i].xef001type != 'delete') {
+					data[i].fullProfile = contactService.getContact(data[i].contactId);
+					$scope.voicemails.push(data[i]);
 
+				}
+			}
+		}
+    });
     var MarkReadVoiceMails = function(isRead){
         var voicemailIds = "";
         for (var i = 0, iLen = $scope.voicemails.length; i < iLen; i++) {
