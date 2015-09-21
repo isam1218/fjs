@@ -4,6 +4,7 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
+	$scope.vm = {};
 
     	// single group widget
 		if ($routeParams.groupId) {
@@ -42,11 +43,31 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 
     $scope.actionObj = {};
     $scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[0];
-        
+            
     // user's profile for their own voicemails
-	contactService.getContacts().then(function() {
-		$scope.myProfile = contactService.getContact($rootScope.myPid);
+	contactService.getContacts().then(function() {		
+		
+		phoneService.getVm().then(function(data) {
+			$scope.myProfile = contactService.getContact($rootScope.myPid);
+			$scope.vm.myProfile = 	$scope.myProfile;
+			
+			if (group || contact) {
+				// voicemails need to be filtered down
+				updateVoicemails(data);
 				
+				// set up listener
+				$scope.$on('voicemailbox_synced', function() {
+					phoneService.getVm().then(function(data2) {
+						// refresh
+						updateVoicemails(data2);
+					});
+				});
+			}
+			else
+				// pass by reference
+				$scope.voicemails = data;			   
+		});			
+		
 		switch($scope.actionObj.selectedAction.type){
 		    case "unknown":
 		    	$scope.actionObj.currentAction = $scope.actions[0];		    	
@@ -65,25 +86,7 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 	            break;
 		} 
 		
-	});
-	
-	phoneService.getVm().then(function(data) {
-		if (group || contact) {
-			// voicemails need to be filtered down
-			updateVoicemails(data);
-			
-			// set up listener
-			$scope.$on('voicemailbox_synced', function() {
-				phoneService.getVm().then(function(data2) {
-					// refresh
-					updateVoicemails(data2);
-				});
-			});
-		}
-		else
-			// pass by reference
-			$scope.voicemails = data;
-	});
+	});		
 	
 	var updateVoicemails = function(data) {		
 		// populate voicemails according to page
@@ -92,13 +95,12 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-					if (data[i].contactId == group.members[g].contactId) {
-						$scope.voicemails.push(data[i]);
+					if (data[i].contactId == group.members[g].contactId) {						
+						$scope.voicemails.push(data[i]);						
 						break;
 					}
 				}
-			}
-			
+			}			
 		}
 		else if (contact) {
 			$scope.voicemails = data.filter(function(voicemail){
