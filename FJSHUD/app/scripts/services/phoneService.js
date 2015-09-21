@@ -1102,16 +1102,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		var call = context.getCall(xpid);
-		if(call){
-			if(context.webphone && number){
-				context.webphone.send(JSON.stringify({a : 'transfer', value : call.sip_id, ext: number}));
-			}else{
-				call.transfer(number);
-			}
-		}else{
-			httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
-		}
+		httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
 	};
 
 	this.getPhoneState = function(){
