@@ -98,15 +98,15 @@
 				<span>{{::verbage.delete_word}}</span>
 			</a>
 		</div>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && profile.primaryExtension && profile.primaryExtension == meModel.primary_extension && context.fullProfile.xpid == meModel.my_pid" ng-click="deleteRecording()">			
+		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid" ng-click="deleteRecording()">			
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && profile.primaryExtension && profile.primaryExtension == meModel.primary_extension && context.fullProfile.xpid == meModel.my_pid && !original.readStatus" ng-click="markAsRead(true)">
+		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid && !original.readStatus" ng-click="markAsRead(true)">
 			<div class="ListRowActionButtonRead"></div>
 			<span>Read</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && profile.primaryExtension && profile.primaryExtension == meModel.primary_extension && context.fullProfile.xpid == meModel.my_pid && original.readStatus" ng-click="markAsRead(false)">
+		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid && original.readStatus" ng-click="markAsRead(false)">
 			<div class="ListRowActionButtonUnread"></div>
 			<span>Unread</span>
 		</a>		
@@ -122,7 +122,7 @@
 			<div class="ListRowActionButtonVoicemail"></div>
 			<span>{{::verbage.voicemail}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
+		<a class="Button" href="" ng-show="profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
 			<div class="ListRowActionButtonMobile"></div>
 			<span>{{::verbage.mobile}}</span>
 		</a>

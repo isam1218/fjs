@@ -25,14 +25,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
-			}
-			if(attrs.profile && attrs.profile == 'vm.myProfile' && widget && widget == 'voicemails')
-	        {				    
-				loadImage(element.find('img'), getAvatar(scope.meModel.my_pid, 28, 28));
-				element.append('<div class="AvatarForeground AvatarInteractable"></div>');	
-				obj = scope.myProfile;
-				profile = obj && obj.fullProfile ? obj.fullProfile : obj;				
-	        }
+			}			
 			
 			/**
 				AVATAR IMAGES
