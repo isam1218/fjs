@@ -217,8 +217,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 						
 						// logout button shouldn't close
 						if (this.className.indexOf('Logout') == -1)
-							hideOverlay(0);
-						else {
+							hideOverlay(0);					else {
 							var diff = window.innerHeight - oRect.top - oRect.height - 10;
 							$('#ContextMenu .List').css('height', diff + 'px');
 						}
