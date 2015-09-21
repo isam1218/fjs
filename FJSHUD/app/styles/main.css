@@ -3549,20 +3549,34 @@ div.NewCall .XButton.XButtonNormal {
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 118px;
+  width: 150px;
+}
+.CallLog .ListLineContent.Header .ListLineContentCell.Topic {
+  width: 130px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Phone {
   width: 74px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 50px;
+  width: 70px;
   margin-left: 10px;
 }
+.CallLog .ListLineContent.Header .ListLineContentCell.Meeting_Id {
+  width: 70px;
+  margin-left: 58px;
+}
 .CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-  width: 95px;
+  width: 70px;
+}
+.CallLog .ListLineContent.Header .ListLineContentCell.videoStartedAt {
+  width: 110px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.CallType {
   width: 10%;
+}
+.CallLog .ListLineContent.Header .ListLineContentCell.Start_time {
+  width: 20%;
+  margin-left: 20px;
 }
 .CallLog .vmails .ToolBar {
   width: 100%;
@@ -3670,13 +3684,29 @@ div.NewCall .XButton.XButtonNormal {
   -ms-flex: 1;
   max-width: 50px;
 }
+.CallLog .ListRow > div.MeetingId {
+  flex: 1.3 1 0;
+  -webkit-flex: 1.3 1 0;
+  font-size: 11px;
+  -ms-flex: 1;
+  max-width: 80px;
+  margin-left: 60px;
+}
 .CallLog .ListRow > div.Date {
   flex: 2 1 0;
   -webkit-flex: 3.5 1 0;
   font-size: 11px;
   -ms-flex: 3;
   white-space: nowrap;
-  max-width: 125px;
+  max-width: 119px;
+}
+.CallLog .ListRow > div.Time {
+  flex: 2 1 0;
+  -webkit-flex: 3.5 1 0;
+  font-size: 11px;
+  -ms-flex: 3;
+  white-space: nowrap;
+  max-width: 60px;
 }
 .CallLog .ListRow > div.Type {
   width: 6%;
