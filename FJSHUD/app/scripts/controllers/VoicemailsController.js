@@ -46,11 +46,10 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
             
     // user's profile for their own voicemails
 	contactService.getContacts().then(function() {		
+		$scope.myProfile = contactService.getContact($rootScope.myPid);
+		$scope.vm.myProfile = 	$scope.myProfile;
 		
-		phoneService.getVm().then(function(data) {
-			$scope.myProfile = contactService.getContact($rootScope.myPid);
-			$scope.vm.myProfile = 	$scope.myProfile;
-			
+		phoneService.getVm().then(function(data) {						
 			if (group || contact) {
 				// voicemails need to be filtered down
 				updateVoicemails(data);
@@ -137,10 +136,12 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
               return true;
             }
         };
-    
-    };
+    };       
     $rootScope.$on('voicemailbox_synced', function(event, data) {
     	// first time
+    	$scope.myProfile = contactService.getContact($rootScope.myPid);
+		$scope.vm.myProfile = 	$scope.myProfile;
+
 		if ($scope.voicemails.length == 0) {
 			$scope.voicemails = data.filter(function(item){
 				return item.xef001type != "delete"; 
