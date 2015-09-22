@@ -30,6 +30,10 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 	service.getSetting = function(setting_key){
 		return settings[setting_key];
 	};
+
+	service.setSetting = function(key,value){
+		settings[key] = value;
+	};
 	
 	service.getPermissions = function() {
 		// waits until data is present before sending back
