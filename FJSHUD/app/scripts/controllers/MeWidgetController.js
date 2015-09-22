@@ -534,9 +534,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     return (item.value == settings['hudmw_auto_away_timeout']);
                 });   
                 $scope.autoAwaySelected = autoAwayOption[0];
-            }else{
-                $scope.autoAwaySelected = $scope.autoAwayOptions[3]
-                settingsService.setSetting('hudmw_auto_away_timeout',$scope.autoAwaySelected.value);
             }
 
             $scope.queueSummaryStats.waiting_calls = parseInt(settings['queueWaitingThreshold']);
@@ -563,115 +560,25 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     return (item.value == settings['avatar_hover_delay'])
                 });
                 $scope.hoverDelaySelected = hoverDelaySelected[0];
-            }else{
-                $scope.hoverDelaySelected = $scope.hoverDelayOptions[1];
-                settingsService.setSetting('avatar_hover_delay', $scope.hoverDelaySelected.value) 
             }
 
-            if(settings['alert_show'] != undefined){
-                $scope.alertShow = settings['alert_show'] == "true";
-            }else{
-                $scope.alertShow = true;
-                 settingsService.setSetting('alert_show', "true"); 
-            }
+            $scope.alertShow = settings['alert_show'] == "true";
+            $scope.alertShowVM = settings['alert_vm_show_new'] == "true";
+            $scope.alertShowIncoming = settings['alert_call_incoming'] == "true";
+            $scope.alertShowOutgoing = settings['alert_call_outgoing'] == "true";
+            $scope.alertOnAlways = settings['hudmw_show_alerts_always'] == "true";
+            $scope.settings.alertOnBusy = settings['hudmw_show_alerts_in_busy_mode'] == "true";
+            $scope.alertDisplayFor = settings['alert_call_display_for'];
+            $scope.alertDuration = settings['alert_call_duration'];
 
-            if(settings['alert_vm_show_new'] != undefined){
-                $scope.alertShowVM = settings['alert_vm_show_new'] == "true";
-            }else{
-                $scope.alertShowVM = true;
-                 settingsService.setSetting('alert_vm_show_new', "true"); 
-            }
-            if(settings['alert_call_incoming'] != undefined){
-                $scope.alertShowIncoming = settings['alert_call_incoming'] == "true";
-            }else{
-                $scope.alertShowIncoming = true;
-                 settingsService.setSetting('alert_call_incoming', "true"); 
-            }
-
-            if(settings['alert_call_outgoing'] != undefined){
-                $scope.alertShowOutgoing = settings['alert_call_outgoing'] == "true";
-            }else{
-                $scope.alertShowOutgoing = true;
-                 settingsService.setSetting('alert_call_outgoing', "true"); 
-            }
-
-            if(settings['hudmw_show_alerts_always'] != undefined){
-                $scope.alertOnAlways = settings['hudmw_show_alerts_always'] == "true";
-            }else{
-                $scope.alertOnAlways = false;
-                 settingsService.setSetting('hudmw_show_alerts_always', "false"); 
-            }
-
-            if(settings['hudmw_show_alerts_in_busy_mode'] != undefined){
-                $scope.alertOnBusy = settings['hudmw_show_alerts_in_busy_mode'] == "true";
-            }else{
-                $scope.alertOnAlways = false;
-                 settingsService.setSetting('hudmw_show_alerts_in_busy_mode', "false"); 
-            }
-            if(settings['alert_call_display_for'] != undefined){
-                $scope.alertDisplayFor = settings['alert_call_display_for'];
-            }else{
-                $scope.alertOnAlways = "all";
-                 settingsService.setSetting('alert_call_display_for', "all"); 
-            }
-
-            if(settings['alert_call_duration'] != undefined){
-                $scope.alertDuration = settings['alert_call_duration'];
-            }else{
-                $scope.alertOnAlways = "entire";
-                 settingsService.setSetting('alert_call_duration', "entire"); 
-            }
-            if(settings['hudmw_searchautoclear'] != undefined){
-                $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
-            }else{
-                $scope.searchAutoClear = false;
-                settingsService.setSetting('hudmw_searchautoclear', "false");
-            }
-
-
-            if(settings['hudmw_box_enabled'] != undefined){
-                 $scope.boxObj.enableBox = settings['hudmw_box_enabled'] == "true";
-            }else{
-                 $scope.boxObj.enableBox = true;
-                settingsService.setSetting('hudmw_box_enabled', "true");
-            }
-
-            if(settings['hudmw_chat_sounds'] != undefined){
-                  $scope.enableSound = settings['hudmw_chat_sounds'] == "true";
-            }else{
-                $scope.enableSound = true;
-                settingsService.setSetting('hudmw_chat_sounds', "true");
-            }
-
-            if(settings['hudmw_chat_sound_received'] != undefined){
-                  $scope.soundOnChatMsgReceived = settings['hudmw_chat_sound_received'] == "true";
-            }else{
-                $scope.soundOnChatMsgReceived = true;
-                settingsService.setSetting('hudmw_chat_sound_received', "true");
-            }
-
-             if(settings['hudmw_chat_sound_sent'] != undefined){
-                  $scope.soundOnSentMsg = settings['hudmw_chat_sound_sent'] == "true";
-            }else{
-                $scope.soundOnSentMsg = true;
-                settingsService.setSetting('hudmw_chat_sound_sent', "true");
-            }
-           
-           if(settings['busy_ring_back'] != undefined){
-                  $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
-            }else{
-                $scope.enableBusyRingBack = false;
-                settingsService.setSetting('busy_ring_back', "false");
-            }
-
-            if(settings['use_column_layout'] != undefined){
-                  $scope.useColumnLayout = settings['use_column_layout'] == "true";
-            }else{
-                $scope.useColumnLayout = false;
-                settingsService.setSetting('use_column_layout', "false");
-            }
-           
-           
+            $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
+            $scope.boxObj.enableBox=settings['hudmw_box_enabled'] == "true";
+            $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
+            $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
+            $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
+            $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
+            
+            $scope.useColumnLayout = settings['use_column_layout'] == 'true';
             var callLogSelected = $scope.callLogSizeOptions.filter(function(item){
                 return (item.value==settings['recent_call_history_length']);
             });
@@ -682,23 +589,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             
             if($scope.settings.queueWaitingThreshold){
                 $scope.settings.queueWaitingThreshold = parseInt($scope.settings.queueWaitingThreshold);
-            }else{
-                 $scope.settings.queueWaitingThreshold= 0;
             }
             if($scope.settings.queueAvgWaitThreshold){
                 $scope.settings.queueAvgWaitThreshold = parseInt($scope.settings.queueAvgWaitThreshold);
-            }else{
-                $scope.settings.queueAvgWaitThreshold = 3;
             }
             if($scope.settings.queueAvgTalkThresholdThreshold){
                 $scope.settings.queueAvgTalkThresholdThreshold = parseInt($scope.settings.queueAvgTalkThresholdThreshold);
-            }else{
-                $scope.settings.queueAvgTalkThresholdThreshold = 20;
             }
             if($scope.settings.queueAbandonThreshold){
                 $scope.settings.queueAbandonThreshold = parseInt($scope.settings.queueAbandonThreshold);
-            }else{
-                $scope.settings.queueAbandonThreshold = 10;
             }
             
             if($scope.meModel.fon_core){
