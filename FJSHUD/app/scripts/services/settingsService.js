@@ -169,14 +169,14 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			for (var i = 0, len = data.length; i < len; i++)
 				settings[data[i].key] = data[i].value;
 			
-			if(!settings.hudmw_auto_away_timeout){
+			if(!settings.hudmw_auto_away_timeout == undefined){
 				settings.hudmw_auto_away_timeout = 30000;            	
             }
-            if(!settings.hudmw_searchautocleardelay){
+            if(!settings.hudmw_searchautocleardelay == undefined){
             	settings.hudmw_searchautocleardelay = 30;
             }
 
-            if(!settings.avatar_hover_delay){
+            if(!settings.avatar_hover_delay == undefined){
             	settings.avatar_hover_delay = 1;
             }
 
