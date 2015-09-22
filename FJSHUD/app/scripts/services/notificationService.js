@@ -111,7 +111,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
           break;
       }
 
-      message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">");
+      message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">").replace(/&amp;/g , "&");
 
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
