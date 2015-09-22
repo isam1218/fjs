@@ -47,6 +47,7 @@ hudweb.controller('NotificationController',
   $scope.showOld = false;
   $scope.displayAlert = false;
   $scope.anotherDevice = false;
+  $scope.displayAnotherDeviceNotification = false;
   $scope.clearOld;
   
   $scope.phoneSessionEnabled = phoneService.isPhoneActive();  
@@ -148,9 +149,15 @@ hudweb.controller('NotificationController',
       phoneService.cacheNotification(undefined,0,0);
       phoneService.removeNotification();
     }
-    
-    // call this so can delete tmp barge notifications
+    // call this method so can delete tmp barge notifications
     delete_notification_from_notifications_and_today(xpid);
+  };
+
+  $scope.remove_anotherDevice_notification = function(){
+    if ($scope.displayAnotherDeviceNotification)
+      $scope.displayAnotherDeviceNotification = false;
+    else if (!$scope.displayAnotherDeviceNotification)
+      $scope.displayAnotherDeviceNotification = true;
   };
 
   $scope.showNotifications = function(flag)
@@ -409,10 +416,13 @@ hudweb.controller('NotificationController',
     if(data['instanceId'] != undefined){
       if(data['instanceId'] != localStorage.instance_id){
         $scope.anotherDevice = true;
-
+        // another instance being used --> display msg
+        $scope.displayAnotherDeviceNotification = true;
         phoneService.registerPhone(false);
       }else{
         $scope.anotherDevice = false;
+        // no other device -> remove msg
+        $scope.displayAnotherDeviceNotification = false;
         phoneService.registerPhone(true);
       }
     }

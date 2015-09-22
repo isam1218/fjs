@@ -141,7 +141,7 @@
 				</div>
 				<div class="NotificationDivider"></div>
 
-				<div class="NotificationSection" ng-class="::{'last' : !anotherDevice}" >
+				<div class="NotificationSection" ng-class="::{'last' : !displayAnotherDeviceNotification}" >
 					<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 						<div class="AvatarWarningSmall"></div>
 					</div>
@@ -159,7 +159,7 @@
 			  </a>
 			</div>
 			
-			<div class="Messages webphone" ng-if="::anotherDevice">                
+			<div class="Messages webphone" ng-if="::displayAnotherDeviceNotification" onclick="mouseClick(this)" action="#/displayAnotherDevice">                
 			    <div class="NotificationHeader">
                     <div class="NotificationHeaderBackground"> 
                         <div class="NotificationClose" ></div>
