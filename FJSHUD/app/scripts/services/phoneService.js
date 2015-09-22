@@ -730,6 +730,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var messagexpid = queryArray[3];
 					showQueue(queueId,audience, type,messagexpid);
 					break;
+				case '/displayAnotherDevice':
+	       	httpService.updateSettings('instanceId','update',localStorage.instance_id);
+					break;				
 		}
 		
 		// re-focus tab/window
@@ -737,7 +740,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			activateBrowserTab();
 			window.focus();
 		}
-    };
+  };
 	
 	var removeNotification = function(){
 		if(alertPlugin){
