@@ -1,4 +1,4 @@
-hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'SettingsService', function($scope, $rootScope, $http, settingsService) {
+hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', function($scope,$timeout, $rootScope, $http, settingsService) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;
@@ -6,8 +6,9 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	
 	// pps url
 	var getURL = function(action) {
-		var url = 'https://pps1.stage3.arch.fonality.com:8443/pps/'
-			+ action
+
+		var url = 
+			 action
 			+ '?callback=JSON_CALLBACK'
 			+ '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
 			+ '&serverId=' + $rootScope.meModel.server_id
@@ -20,31 +21,38 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	// init
 	settingsService.getSettings().then(function() {
 		// get workspaces
-		$.ajax({
-			url: getURL('workspaceListString') + '&admin=1',
-			dataType: "jsonp",
-			jsonpCallback: 'JSON_CALLBACK',
-			success: function(data) {
-				if (data && data.workspace_list) {
-					$scope.workspaces = data.workspace_list;
-				}
-			}
-		});
+
+		$http.get(fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1').
+			  success(function(data, status, headers, config) {
+			   if (data && data.workspace_list) {
+								$scope.workspaces = data.workspace_list;
+							}
+							console.log("SUCCESS "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+			  }).
+			  error(function(data, status, headers, config) {
+
+							console.log("FAIL "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+
+			  });
+
+
 	});
 	
 	$scope.verifyLicense = function() {
 		//window.open(getURL('loadApp'));
-		
-		$.ajax({
-			url: getURL('loginString') + '&workspaceId=',
-			dataType: "jsonp",
-			jsonpCallback: 'JSON_CALLBACK',
-			success: function(data) {
-				if (data && data.url) {
-					window.open(data.url);
-				}
-			}
-		});
+
+		  $http.get(fjs.CONFIG.SERVER.ppsServer + getURL('loginURL') + '&workspaceId=').
+				  success(function(data, status, headers, config) {
+						  if (data && data.url) {
+							window.open(data.url);
+						}
+						console.log("SUCCESS " + fjs.CONFIG.SERVER.ppsServer + getURL('loginURL') + '&workspaceId=');
+
+				  }).
+				  error(function(data, status, headers, config) {
+   						console.log("FAIL " + fjs.CONFIG.SERVER.ppsServer + getURL('loginURL') + '&workspaceId=');
+
+				  });
 	};
 	
 	// from search contacts directive
@@ -63,14 +71,34 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 	  	if ($scope.addedContacts[i].xpid == xpid) {
 	    	$scope.addedContacts.splice(i, 1);
 				break;
-	    }
-	  }
-  };
-	
+
+            }
+        }
+    };
+
 	$scope.showList = function($event) {
+
+			$http.get(fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1').
+			  success(function(data, status, headers, config) {
+			   if (data && data.workspace_list) {
+
+								$scope.workspaces = data.workspace_list;
+							}
+					console.log("SUCCESS "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+
+			  }).
+			  error(function(data, status, headers, config) {
+
+				console.log("FAIL "+ fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1');
+
+			  });
 		$event.stopPropagation();
-		$scope.showInvite = true;
+		$scope.showInvite = true;	
+
+
 	};
+
+
 	
 	$scope.addToWorkspace = function(workspace) {
 		$scope.showInvite = false;
@@ -82,11 +110,8 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 		for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++)
 			users.push($scope.addedContacts[i].xpid.split('_')[1]);
 		
-		$.ajax({
-			url: getURL('userListToWorkspaceString') + '&workspaceId=' + workspace.workspace_id + '&fonalityUserList=' + users.join(','),
-			dataType: "jsonp",
-			jsonpCallback: 'JSON_CALLBACK',
-			success: function(data) {
+
+		$http.post(fjs.CONFIG.SERVER.ppsServer + getURL('userListToWorkspace') + '&workspaceId=' + workspace.workspace_id + '&fonalityUserList=' + users.join(',')).success(function(data) {
 				if (data && data.status) {
 					if (data.status == 0)
 						$scope.inviteStatus = 'All contacts were added.';
@@ -111,9 +136,9 @@ hudweb.controller('IntellinoteController', ['$scope', '$rootScope', '$http', 'Se
 				}
 				
 				$scope.addedContacts = [];
-			}
-		})
-		.error(function() {
+
+			}).
+		error(function() {
 			$scope.inviteStatus = 'Failed to add contacts.';
 		});
 	};

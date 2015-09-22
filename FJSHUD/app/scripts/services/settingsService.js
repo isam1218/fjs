@@ -101,13 +101,17 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
-				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);
+				permissions.showIntellinote = service.isEnabled(data[i].propertyValue, 15);
 				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
-
+				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
+				permissions.showZipwhip_Power = service.isEnabled(data[i].propertyValue, 17);
 				// group permissions from MyPermissions.java
 				permissions.recordingEnabled = service.isEnabled(data[i].propertyValue, 14);
 				permissions.deleteMyRecordingEnabled = service.isEnabled(data[i].propertyValue, 15);
 				permissions.deleteOtherRecordingEnabled = service.isEnabled(data[i].propertyValue, 16);
+				//permissions.enableAgentLogin = service.isEnabled(data[i].propertyValue, 7);
+
+
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
@@ -117,6 +121,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				// // Call Permission from CallPermissions.java
 				// permissions.isRecordEnabled = isEnabled(data[i].propertyValue, 0);
 				deferPermissions.resolve(permissions);
+
             }
 			// assign other useful goodies
 			else if (data[i].propertyKey == 'my_pid') {

@@ -381,6 +381,14 @@ p {
 .TopBar2ItemAppIcon.Intellinote {
   background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
 }
+.TopBarItemAppIcon.Zipwhip,
+.TopBar2ItemAppIcon.Zipwhip {
+  background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.Zipwhip_Power,
+.TopBar2ItemAppIcon.Zipwhip_Power {
+  background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
+}
 .TopBarItemAppIcon.more {
   background-position: -280px -40px;
   position: relative;
@@ -1092,14 +1100,11 @@ p {
 }
 .Gadget {
   position: relative;
-  display: inline-flex;
+  display: inline-flex !important;
   display: -webkit-inline-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  border-radius: 5px;
-  -webkit-border-radius: 0;
   border: 1px solid #aaa;
-  overflow: hidden;
   width: 160px;
   background-color: #EBEBEB;
   margin: .5em;
@@ -3931,8 +3936,6 @@ div.NewCall .XButton.XButtonNormal {
 .Conference .ToolBar .selectWrapper.conf {
   height: 30px !important;
   width: 150px !important;
-  width: 140px !important\9;
-  /* ie6/7/8/9  */
   font-size: 11px;
   font-weight: bold;
   font-color: #333;
@@ -4696,7 +4699,7 @@ div.NewCall .XButton.XButtonNormal {
   max-width: 100%;
 }
 .SearchBox.Add {
-  background: url("../img/add.png") no-repeat white;
+  background: url("../img/add.png") no-repeat;
   background-position: 2%;
 }
 .SearchBox.TransferSearchBox {
@@ -4708,7 +4711,7 @@ div.NewCall .XButton.XButtonNormal {
   margin: 0;
   border-radius: 3px;
   background-color: white;
-  border: solid 1px #729C00;
+  border: solid 1px #00ad33;
   padding: 14px;
 }
 .SearchInputBoxInputHolder {
@@ -4719,7 +4722,7 @@ div.NewCall .XButton.XButtonNormal {
   right: 8px;
   height: 80%;
   border: none;
-  color: #729c00;
+  color: #00ad33;
 }
 .SearchInputBoxInput {
   position: absolute;
@@ -4729,7 +4732,7 @@ div.NewCall .XButton.XButtonNormal {
   width: 100%;
   height: 100%;
   border: none;
-  color: #729c00;
+  color: #00ad33;
   font-size: .8em;
 }
 .SearchInputBoxStateButton {
@@ -4760,7 +4763,7 @@ div.NewCall .XButton.XButtonNormal {
   height: 1.8em;
   border-radius: 3px;
   background-color: white;
-  border: solid 1px #729C00;
+  border: solid 1px #00ad33;
   float: left;
 }
 .ChatSearch > * {
@@ -4788,7 +4791,7 @@ div.NewCall .XButton.XButtonNormal {
   background-color: white;
   color: gray;
   border: none;
-  border-left: solid 1px #729C00;
+  border-left: solid 1px #00ad33;
   float: right;
   cursor: pointer;
 }
@@ -5156,10 +5159,10 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote {
   font-size: 12px;
-  padding: 20px;
+  padding: 10px;
 }
 .Widget.Intellinote .Intro {
-  margin: 20px 0 10px 0;
+  margin: 10px 0 10px 0;
 }
 .Widget.Intellinote .Logo {
   margin-left: 20px;
@@ -5174,7 +5177,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #779c00;
+  color: #00ad33;
   margin-bottom: 5px;
   text-transform: uppercase;
 }
@@ -5185,6 +5188,12 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
+}
+@-moz-document url-prefix() {
+  .Widget.Intellinote .Right .SearchHolder {
+    position: relative;
+    margin-bottom: 30px;
+  }
 }
 .Widget.Intellinote .Right .Contacts {
   max-height: 200px;
@@ -5235,7 +5244,7 @@ div.NewCall .XButton.XButtonNormal {
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
-  background-color: #779c00;
+  background-color: #00ad33;
   margin: 20px 0;
   cursor: pointer;
 }
@@ -5249,6 +5258,103 @@ div.NewCall .XButton.XButtonNormal {
   text-align: center;
 }
 .Widget.Intellinote .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
+}
+.Widget.Zipwhip {
+  font-size: 12px;
+  padding: 10px;
+}
+.Widget.Zipwhip .Intro {
+  margin: 0px 0 10px 0;
+}
+.Widget.Zipwhip .Logo {
+  margin-left: 20px;
+}
+.Widget.Zipwhip .Section {
+  min-height: 110px;
+}
+.Widget.Zipwhip .Left {
+  float: left;
+  width: 48%;
+  background-color: #f9f9f9;
+}
+.Widget.Zipwhip .Left h4 {
+  color: #00ad33;
+  font-size: 17px;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+.Widget.Zipwhip .Right {
+  float: right;
+  width: 48%;
+  clear: right;
+}
+.Widget.Zipwhip .Right .SearchHolder {
+  position: relative;
+}
+.Widget.Zipwhip .Right .Contacts {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.Widget.Zipwhip .Right .Workspaces {
+  position: relative;
+}
+.Widget.Zipwhip .Right .Workspaces .List {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ccc;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Header {
+  position: relative;
+  font-weight: bold;
+  padding: 7px 0 7px 30px;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Header .Down {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  width: 15%;
+  padding-top: 4px;
+  text-align: center;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Items {
+  font-size: 13px;
+  border-top: 1px solid #333;
+  margin: 0 10px 10px 10px;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Items div {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 5px;
+}
+.Widget.Zipwhip .Right .Workspaces .List .Items div:hover {
+  background-color: #eee;
+}
+.Widget.Zipwhip .Right .WorkspaceButton {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  height: 28px;
+  padding: 7px 0 7px 30px;
+  background-color: #00ad33;
+  margin: 65px 0px;
+  cursor: pointer;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Zipwhip .Right .WorkspaceButton div.Down {
   padding-top: 4px;
 }
 .Widget.Conversation {
@@ -6353,6 +6459,10 @@ textarea {
   box-shadow: 0 0 1px #ddd inset;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
+}
+select::-ms-value {
+  background: transparent;
+  color: #333;
 }
 input[type="text"],
 input[type="email"],
@@ -8564,6 +8674,9 @@ a.Messages {
   border: solid 1px #aaa;
   box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
+.MenuWindow.BargeDropDown {
+  width: 231px !important;
+}
 .MenuWindowTitle {
   position: relative;
   color: #729c00;
@@ -8618,6 +8731,12 @@ a.Messages {
   text-overflow: ellipsis;
   display: inline-block;
   vertical-align: top;
+}
+.MenuItemText.BargeMenuItemText {
+  margin-left: 24px;
+}
+.MenuItemText.BargeMenuItemText.BargeMenuItemTextAdjuster {
+  margin-left: -3px !important;
 }
 .MenuItem .SelectedIcon {
   display: inline-block;
@@ -8710,7 +8829,7 @@ a.Messages {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
-  width: 100%;
+  max-width: 480px;
 }
 .vmsection:hover .displayName .vmtime {
   visibility: hidden;
@@ -8756,6 +8875,10 @@ a.Messages {
 .vmsection .vminfo p.vmdisplay {
   padding: 0;
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 70%;
 }
 .vmsection .vminfo .displayName {
   position: absolute;
@@ -8941,4 +9064,7 @@ a.Messages {
 }
 .Overlay .Foreground {
   max-height: 575px;
+}
+.jp {
+  font-size: 0.67em !important;
 }
