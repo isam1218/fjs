@@ -349,6 +349,50 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
    
   }*/
 
+$scope.$on('modalInstance', function() {
+
+ $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+        console.log("MEETING DATA",response.meetings);
+        $scope.pmi_id.pmi = response.pmi;
+        $scope.host_id = response.host_id;
+        $scope.meetingList = response.meetings;
+        /*$scope.meetingList.push({"start_hour":$scope.start_hour});
+                console.log("START_HOUR",$scope.start_hour);*/
+
+        for(var i = 0; i<=30;i++){
+
+           if($scope.meetingList[i].start_time.substr(11,2) < 13){
+           $scope.meetingList[i].start_time.toString();
+           var x =$scope.meetingList[i].start_time.substr(12,1);
+           
+
+            $scope.meetingList[i].start_hour = x + ":00AM";
+           //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
+
+            }
+              if($scope.meetingList[i].start_time.substr(11,2) >= 13){
+                 var x =$scope.meetingList[i].start_time.substr(11,2);
+                  x -= 12;
+                          $scope.meetingList[i].start_hour = x + ":00PM";
+
+            } 
+             if($scope.meetingList[i].start_time.substr(11,2) == 0){
+                   var x =$scope.meetingList[i].start_time.substr(11,2);
+
+                    $scope.meetingList[i].start_hour = "12:00PM";
+
+            }  
+
+        }
+        
+           
+        
+
+      });
+        console.log("Broadcast Received");
+      });
+
+
   $scope.getData = function(){
   
   
@@ -842,6 +886,10 @@ if($scope.meeting.AmPm == "AM"){
     $modalInstance.dismiss('cancel');
   };
 
+$scope.$on('$destroy', function() {
+        $rootScope.$broadcast('modalInstance');
+        console.log("Broadcast occurred");
+      });
 
  
 });
