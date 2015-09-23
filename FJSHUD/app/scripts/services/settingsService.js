@@ -30,6 +30,10 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 	service.getSetting = function(setting_key){
 		return settings[setting_key];
 	};
+
+	service.setSetting = function(key,value){
+		settings[key] = value;
+	};
 	
 	service.getPermissions = function() {
 		// waits until data is present before sending back
@@ -172,7 +176,90 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			for (var i = 0, len = data.length; i < len; i++)
 				settings[data[i].key] = data[i].value;
 			
-			deferSettings.resolve(settings);
+			if(settings.hudmw_auto_away_timeout == undefined){
+				settings.hudmw_auto_away_timeout = 30000;            	
+            }
+            if(settings.hudmw_searchautocleardelay == undefined){
+            	settings.hudmw_searchautocleardelay = 30;
+            }
+
+            if(settings.avatar_hover_delay == undefined){
+            	settings.avatar_hover_delay = 1;
+            }
+
+            if(settings.alert_show == undefined){
+            	settings.alert_show = "true";
+            }
+
+            if(settings.alert_vm_show_new == undefined){
+            	settings.alert_vm_show_new = "true";
+            }
+
+            if(settings.alert_call_incoming == undefined){
+            	settings.alert_call_incoming = "true";
+            }
+
+            if(settings['alert_call_outgoing'] == undefined){
+            	settings['alert_call_outgoing'] = "true";
+            }
+
+            if(settings['hudmw_show_alerts_always'] == undefined){
+            	settings['hudmw_show_alerts_always'] = "false";
+            }
+
+            if(settings['hudmw_show_alerts_in_busy_mode'] == undefined){
+            	settings['hudmw_show_alerts_in_busy_mode'] = "false";
+            }
+             if(settings['alert_call_display_for'] == undefined){
+            	settings['alert_call_display_for'] = "all";
+            }
+           if(settings['alert_call_duration'] == undefined){
+            	settings['alert_call_duration'] = "entire";
+            }
+
+            if(settings['hudmw_searchautocleardelay'] == undefined){
+            	settings['hudmw_searchautoclear'] = "entire";
+            }
+          	if(settings['hudmw_box_enabled'] == undefined){
+            	settings['hudmw_box_enabled'] = "true";
+            }
+
+            if(settings['hudmw_chat_sounds'] == undefined){
+            	settings['hudmw_chat_sounds'] = "true";
+            }
+            if(settings['hudmw_chat_sound_received'] == undefined){
+            	settings['hudmw_chat_sound_received'] = "true";
+            }
+             if(settings['hudmw_chat_sound_sent'] == undefined){
+            	settings['hudmw_chat_sound_sent'] = "true";
+            }
+
+             if(settings['busy_ring_back'] == undefined){
+            	settings['busy_ring_back'] = "false";
+            }
+			
+			if(settings['use_column_layout'] == undefined){
+            	settings['use_column_layout'] = "false";
+            }
+			if(settings['recent_call_history_length'] == undefined){
+            	settings['recent_call_history_length'] = 50;
+            }
+
+            if(settings['queueWaitingThreshold'] == undefined){
+            	settings['queueWaitingThreshold'] = 0;
+            }
+          
+          	if(settings['queueAvgWaitThreshold'] == undefined){
+            	settings['queueAvgWaitThreshold'] = 3;
+            }
+          if(settings['queueAvgTalkThresholdThreshold'] == undefined){
+            	settings['queueAvgTalkThresholdThreshold'] = 20;
+            }
+          if(settings['queueAbandonThreshold'] == undefined){
+            	settings['queueAbandonThreshold'] = 10;
+            }
+           
+           deferSettings.resolve(settings);
 			
 			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 		}
