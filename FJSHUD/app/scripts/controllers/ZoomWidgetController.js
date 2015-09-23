@@ -656,7 +656,7 @@ $scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
- $scope.timeZone = [
+/* $scope.timeZone = [
 {
   name:"(GMT-8:00) Pacific Time",
  offset:420        
@@ -792,27 +792,30 @@ $scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","
 
 
 
-];
+];*/
 
-//$scope.timeZone= ['Pacific Daylight Time','Pacific Standard Time','Central Daylight Time','Central Standard Time','Mountain Daylight Time','Mountain Standard Time','Eastern Daylight Time'];
-
-var d = new Date();
+$scope.timeZone= ['Etc/GMT+12','Pacific/Pago_Pago','Pacific/Honolulu','America/Anchorage','America/Santa_Isabel','America/Los_Angeles','America/Phoenix','America/Mazatlan','America/Denver','America/Guatemala','America/Chicago','America/Mexico_City','America/Bogota','America/New_York','America/Caracas','America/Asuncion','America/Goose_Bay','America/Campo_Grande','America/Santo_Domingo','America/St_Johns','America/Sao_Paulo','America/Argentina/Buenos_Aires','America/Godthab','America/Montevideo','Etc/GMT+2','Atlantic/Azores','Atlantic/Cape_Verde','Etc/Utc','Europe/London','Europe/Berlin','Africa/Lagos','Africa/Windhoek','Asia/Damascus','Asia/Beirut','Africa/Johannesburg','Asia/Baghdad','Asia/Tehran','Asia/Dubai','Asia/Baku','Asia/Kabul','Asia/Karachi','Asia/Kolkata','Asia/Kathmandu','Asia/Dhaka','Asia/Rangoon','Asia/Jakarta','Asia/Shanghai','Asia/Irkutsk','Asia/Tokyo','Australia/Adelaide','Australia/Darwin','Australia/Brisbane','Australia/Sydney','Pacific/Noumea','Pacific/Noumea','Pacific/Tarawa','Pacific/Auckland','Pacific/Fiji','Pacific/Tongatapu','Pacific/Apia','Pacific/Kiritimati'];
+moment.locale('en');
+var tzName = jstz.determine().name(); // America/Los_Angeles
+//alert(tzName);
+//var d = new Date();
 //alert(d.toTimeString());
 //alert(d.getTimezoneOffset()/60);
  for(i=0;i<=$scope.timeZone.length;i++){
-   if(d.getTimezoneOffset() == $scope.timeZone[i].offset){
-            $scope.timeZone.unshift({name:$scope.timeZone[i].name,offset:$scope.timeZone[i].offset});
+   if(tzName == $scope.timeZone[i]){
+            $scope.timeZone.unshift($scope.timeZone[i]);
+
             break;
   }
 }
-  for(i=1;i<=$scope.timeZone.length;i++){
-   if(d.getTimezoneOffset() == $scope.timeZone[i].offset){
+/*  for(i=1;i<=$scope.timeZone.length;i++){
+   if(tzName == $scope.timeZone[i]){
     var a = $scope.timeZone.indexOf($scope.timeZone[i]);
     $scope.timeZone.splice(a,1);
             console.log("REMOVE THIS",a);
         break;
   }
-  }
+  }*/
    
   
 
