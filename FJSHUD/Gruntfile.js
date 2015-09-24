@@ -64,7 +64,11 @@ module.exports = function(grunt) {
             data:{
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
-              version: "HUDW" + getBuildNumber()
+              version: "HUDW" + getBuildNumber(),
+              WINDOWS_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.win/53/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
+              MAC_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.osx/52/artifact/webphone/installer.mac/WebPhone-1.1.011218.pkg',
+              WINDOWS_PLUGIN_VERSION:'1.1.011219',
+              MAC_PLUGIN_VERSION:'1.1.011218',
             }
           },
           files:{
@@ -74,7 +78,13 @@ module.exports = function(grunt) {
       },dev:{
         options:{
           data:{
-            serverUrl:""
+            serverUrl:"https://dev4.fon9.com:8081",
+            loginURL: "https://dev4.fon9.com:5501",
+            version: "HUDW" + getBuildNumber(),
+            WINDOWS_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.win/53/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
+            MAC_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.osx/52/artifact/webphone/installer.mac/WebPhone-1.1.011218.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011219',
+            MAC_PLUGIN_VERSION:'1.1.011218',
           }
         }
       }
@@ -106,7 +116,7 @@ module.exports = function(grunt) {
         'app/scripts/controllers/**/*.js',
         'app/scripts/services/**/*.js',
         'app/scripts/factory/**/*.js'
-      ],
+        ],
         dest: 'app/scripts/fjs.min.js'
       }
     }
@@ -178,7 +188,30 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
         
         ]
-      }
+      },
+      dev: {
+        files: [
+          //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          {expand: true, src: ['bower_components/**/*'], dest: 'dest/'},
+          {expand: true, src: ['server.js'], dest: 'dest/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
+          {expand: true, src: ['ssl/*'], dest: 'dest/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
+          {expand: true, src: [
+             'app/languageMap.js',
+              'app/scripts/app.js',
+              'app/scripts/filters/**/*.js',
+              'app/scripts/directives/**/*.js',
+              'app/scripts/controllers/**/*.js',
+              'app/scripts/services/**/*.js',
+              'app/scripts/factory/**/*.js'
+          ], dest: 'dest/'},
+        
+        ]
+      },
     }
   });
 
@@ -196,6 +229,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
+  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dist','uglify:dev','copy:dev','zip']);
   
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
