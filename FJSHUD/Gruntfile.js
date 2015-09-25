@@ -65,8 +65,8 @@ module.exports = function(grunt) {
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
               version: "HUDW" + getBuildNumber(),
-              WINDOWS_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.win/53/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
-              MAC_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.osx/52/artifact/webphone/installer.mac/WebPhone-1.1.011218.pkg',
+              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+              MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
               WINDOWS_PLUGIN_VERSION:'1.1.011219',
               MAC_PLUGIN_VERSION:'1.1.011218',
             }
@@ -81,8 +81,8 @@ module.exports = function(grunt) {
             serverUrl:"https://dev4.fon9.com:8081",
             loginURL: "https://dev4.fon9.com:5501",
             version: "HUDW" + getBuildNumber(),
-            WINDOWS_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.win/53/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
-            MAC_PLUGIN:'http://build01.lax01.fonality.com/job/hud-wp.osx/52/artifact/webphone/installer.mac/WebPhone-1.1.011218.pkg',
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
             WINDOWS_PLUGIN_VERSION:'1.1.011219',
             MAC_PLUGIN_VERSION:'1.1.011218',
           }
