@@ -53,7 +53,7 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'dest/app/index.html':'dest/app/index.version.html'
+            'prod/app/index.html':'prod/app/index.version.html'
         }
       }
 
@@ -72,8 +72,8 @@ module.exports = function(grunt) {
             }
           },
           files:{
-            'dest/app/properties.js':['app/properties.js'],
-            'dest/app/index.version.html':['app/index.html']
+            'prod/app/properties.js':['app/properties.js'],
+            'prod/app/index.version.html':['app/index.html']
           }
       },dev:{
         options:{
@@ -99,11 +99,11 @@ module.exports = function(grunt) {
           compress:true
         },
         files:{
-          "dest/app/styles/main.css":"app/styles/main.less",
-          "dest/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
-          "dest/app/styles/firefox.css": "app/styles/firefox.less",
-          "dest/app/styles/safari.css": "app/styles/safari.less",
-          "dest/app/styles/ie.css": "app/styles/ie.less"
+          "prod/app/styles/main.css":"app/styles/main.less",
+          "prod/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "prod/app/styles/firefox.css": "app/styles/firefox.less",
+          "prod/app/styles/safari.css": "app/styles/safari.less",
+          "prod/app/styles/ie.css": "app/styles/ie.less"
         },
       }
     },
@@ -141,7 +141,7 @@ module.exports = function(grunt) {
           beautify:false,
         },
         files:{
-          'dest/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
+          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
       }
     },
     'closure-compiler': {
@@ -182,14 +182,14 @@ module.exports = function(grunt) {
       dist: {
         files: [
           //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
-          {expand: true, src: ['bower_components/**/*'], dest: 'dest/'},
-          {expand: true, src: ['server.js'], dest: 'dest/'},
-          //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
-          {expand: true, src: ['ssl/*'], dest: 'dest/'},
-          {expand: true, src: ['app/img/**/*'], dest: 'dest/'},
-          {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
-          {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
-          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
+          {expand: true, src: ['bower_components/**/*'], dest: 'prod/'},
+          {expand: true, src: ['server.js'], dest: 'prod/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'prod/'},
+          {expand: true, src: ['ssl/*'], dest: 'prod/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
         
         ]
       },
