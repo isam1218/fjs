@@ -29,10 +29,10 @@
 				</div>
 				
 				<div class="SearchHolder">
-					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+					<input  ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
 				</div>				
 				
-				<div class="Contacts widget-zoom-contacts">
+				<div class="Contacts">
 					<div class="ListRow Small" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
 						<avatar profile="contact" widget="zoom"></avatar>
 						<div class="ListRowContent" dockable="contact">

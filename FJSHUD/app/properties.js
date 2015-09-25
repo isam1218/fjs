@@ -59,3 +59,6 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 };
+fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
+
+fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
