@@ -79,7 +79,7 @@ module.exports = function(grunt) {
         options:{
           data:{
             serverUrl:"https://dev4.fon9.com:8081",
-            loginURL: "https://dev4.fon9.com:5501",
+            loginUrl: "https://dev4.fon9.com:5501",
             version: "HUDW" + getBuildNumber(),
             WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
             MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
