@@ -86,7 +86,11 @@ module.exports = function(grunt) {
             WINDOWS_PLUGIN_VERSION:'1.1.011219',
             MAC_PLUGIN_VERSION:'1.1.011218',
           }
-        }
+        },
+          files:{
+            'dest/app/properties.js':['app/properties.js'],
+            'dest/app/index.version.html':['app/index.html']
+          }
       }
     },
     less:{
