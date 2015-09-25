@@ -202,7 +202,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/views/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
-          {expand: true, src: ['app/style/fonts/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
           
         ]
       },
