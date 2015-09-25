@@ -105,6 +105,18 @@ module.exports = function(grunt) {
           "prod/app/styles/safari.css": "app/styles/safari.less",
           "prod/app/styles/ie.css": "app/styles/ie.less"
         },
+      },
+      dev:{
+        options:{
+          compress:true
+        },
+        files:{
+          "dest/app/styles/main.css":"app/styles/main.less",
+          "dest/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "dest/app/styles/firefox.css": "app/styles/firefox.less",
+          "dest/app/styles/safari.css": "app/styles/safari.less",
+          "dest/app/styles/ie.css": "app/styles/ie.less"
+        },
       }
     },
     'concat': {
@@ -190,7 +202,8 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/views/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
-        
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
+          
         ]
       },
       dev: {
@@ -204,6 +217,8 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
+          
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
@@ -233,7 +248,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
-  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dist','uglify:dev','copy:dev','zip']);
+  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
   
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
