@@ -17,6 +17,12 @@
 .LeftBarNotificationMessageSection .NotificationDisplayName span {
   float: left;
 }
+.LeftBarNotificationMessageSection .NotificationDisplayName span.truncate {
+  max-width: 55%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .LeftBarNotificationMessageSection .NotificationDisplayNameQueue {
   height: 20px;
   text-overflow: ellipsis;
@@ -26,6 +32,10 @@
   color: #e27100;
   font-weight: bold;
   font-size: .7em;
+  padding-left: 5px;
+}
+.LeftBarNotificationMessageSection .NotificationDisplayNameQueue span {
+  float: left;
 }
 .LeftBarNotificationMessageSection .NotificationTime {
   font-size: 1em;
@@ -128,6 +138,11 @@
   display: inline-block;
   padding-left: 1px;
 }
+.CallStatusContainerInbound .MyCallBlock_Duration.Hold,
+.CallStatusContainerOutbound .MyCallBlock_Duration.Hold,
+.CallStatusContainerQueue .MyCallBlock_Duration.Hold {
+  color: gray;
+}
 .CallStatusContainerInbound .CallStatusText,
 .CallStatusContainerOutbound .CallStatusText,
 .CallStatusContainerQueue .CallStatusText {
@@ -138,6 +153,16 @@
   clear: none;
   margin-left: 10px;
   margin-top: 10px;
+}
+.CallStatusContainerInbound .CallStatusText.ringing,
+.CallStatusContainerOutbound .CallStatusText.ringing,
+.CallStatusContainerQueue .CallStatusText.ringing {
+  max-width: 45%;
+}
+.CallStatusContainerInbound .CallStatusText.accepted,
+.CallStatusContainerOutbound .CallStatusText.accepted,
+.CallStatusContainerQueue .CallStatusText.accepted {
+  max-width: 55%;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus,
@@ -175,7 +200,7 @@
 .CallStatusContainerInbound .CallStatusText .memberName .name.truncate,
 .CallStatusContainerOutbound .CallStatusText .memberName .name.truncate,
 .CallStatusContainerQueue .CallStatusText .memberName .name.truncate {
-  width: 80%;
+  width: 90%;
 }
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec,
@@ -216,7 +241,10 @@
 }
 .CallStatusContainerInbound .controlButtons .XButton.disableButton,
 .CallStatusContainerOutbound .controlButtons .XButton.disableButton,
-.CallStatusContainerQueue .controlButtons .XButton.disableButton {
+.CallStatusContainerQueue .controlButtons .XButton.disableButton,
+.CallStatusContainerInbound .controlButtons .XButton[disabled],
+.CallStatusContainerOutbound .controlButtons .XButton[disabled],
+.CallStatusContainerQueue .controlButtons .XButton[disabled] {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -245,7 +273,6 @@
 }
 .NotificationMessages .scroller:hover {
   overflow-y: auto;
-  overflow-x: hidden;
 }
 .LeftBarNotifications {
   transition: 1s;
@@ -295,6 +322,10 @@
   visibility: visible;
   overflow-y: auto;
   overflow-x: hidden;
+  -ms-overflow-y: hidden;
+}
+.LeftBarNotificationSection:hover > .LeftBarNotifications .scroller {
+  -ms-overflow-y: auto;
 }
 .NotificationType {
   font-size: .6em;
@@ -315,7 +346,7 @@
   padding-bottom: 10px;
 }
 .NotificationSection.last {
-  height: auto;
+  height: auto !important;
 }
 .NotificationSection.open {
   height: auto;

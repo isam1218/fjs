@@ -17,6 +17,10 @@ textarea {
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
 }
+select::-ms-value {
+  background: transparent;
+  color: #333;
+}
 input[type="text"],
 input[type="email"],
 input[type="search"],

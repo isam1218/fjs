@@ -20,7 +20,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			var timeout;
 			
 			// trigger auto clear
-			if (scope.enableChat === undefined) {
+			if (scope.enableChat === undefined && scope.searchEmUp === undefined) {
 				element.on('keyup', function(e) {
 					if (autoClearOn == 'true') {
 						$timeout.cancel(timeout);
@@ -78,11 +78,8 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			// IE clear is broken
 			if (browser == 'MSIE') {
 				element.bind('input', function() {
-					if (element.val().length == 0 && attrs.ngModel) {
-						scope.$evalAsync(function() {
-							scope.$eval(attrs.ngModel + ' = "";');
-						});
-					}
+					if (element.val().length == 0)
+						clearSearch();
 				});
 			}
 			

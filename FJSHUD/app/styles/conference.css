@@ -11,8 +11,6 @@
 .Conference .ToolBar .selectWrapper.conf {
   height: 30px !important;
   width: 150px !important;
-  width: 140px !important\9;
-  /* ie6/7/8/9  */
   font-size: 11px;
   font-weight: bold;
   font-color: #333;
@@ -52,28 +50,59 @@
 .Conference .ListViewTopNote {
   font-size: 12px;
 }
+.conference.currentCall .ListRowTitle {
+  max-width: 100%;
+  float: none;
+  padding: .3em !important;
+  display: flex;
+  display: -webkit-flex;
+}
+.conference.currentCall .ListRowTitle .name,
+.conference.currentCall .ListRowTitle .name > * {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.conference.currentCall .ListRowTitle .vmtime {
+  font-weight: bold;
+  font-size: 11px;
+  color: #222;
+}
+.conference.currentCall .ListRowTitle .ListRowStatusLeftSide {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.conference.currentCall .ListRowTitle .ListRowStatusLeftSideNoJoin {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 55%;
+}
 .ListViewTopNote {
   position: relative;
   margin-top: 10px;
   margin-bottom: 10px;
   background-color: #FFE;
   border: solid 1px #EEE;
+  height: 50px;
   border-radius: 3px;
-  padding: .8em;
-  height: 55px;
-  width: 94%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 1px 1px 5px #888888;
+  -webkit-border-radius: 3px;
 }
 .ListViewTopNote .XButton.joinConference {
   float: right;
   font-size: 11px;
   width: 55px;
   height: 26px;
+  margin: 10px;
 }
 .ListViewTopNote span {
   font-size: 12px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 40px;
 }
 .ConferenceMembers {
   margin-top: 30px;
@@ -107,6 +136,7 @@
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") -24px -24px;
+  cursor: pointer;
 }
 .ListRow-Conference-Members {
   clear: both;
@@ -164,7 +194,7 @@
 }
 .TabWarning .TabWarningHeader {
   position: relative;
-  margin-left: 10px;
+  margin: 0 10px;
   font-weight: bold;
   height: 30px;
   line-height: 30px;
@@ -200,10 +230,12 @@
   -webkit-border-radius: 30px;
   color: #0093f0;
 }
+.noJoinConf .ListRow .ListRowContent {
+  display: flex;
+}
 .noJoinConf .ListRow .ListRowContent span {
   font-size: 11px;
   font-weight: bold;
-  float: right;
   color: #333;
   text-shadow: 0px 1px 0px #FFF;
   transition: border 0.3s ease 0s;

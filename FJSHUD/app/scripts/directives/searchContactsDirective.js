@@ -67,12 +67,25 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (element.val().length > 0) {
 					var matchCount = 0;
 					// look for match
-					for (var c = 0, len = contacts.length; c < len; c++) {
-						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
-							var line = makeLine(contacts[c], false, c);
-							rows.append(line);
-							matchCount++;
-						} 
+
+					if (attrs.id == 'SearchContactDirectiveMarker'){
+						// group member search doesn't include external contacts aka contacts[c].primaryExtension == ""
+						for (var c = 0, len = contacts.length; c < len; c++) {
+							if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 && contacts[c].primaryExtension != "" || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
+								var line = makeLine(contacts[c], false, c);
+								rows.append(line);
+								matchCount++;
+							} 
+						}	
+					} else {
+						// all other member search (favorites, conference, zoom)
+						for (var c = 0, len = contacts.length; c < len; c++) {
+							if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
+								var line = makeLine(contacts[c], false, c);
+								rows.append(line);
+								matchCount++;
+							} 
+						}
 					}
 
 					if(matchCount == 0){

@@ -193,6 +193,9 @@ img.x {
 .LeftBar .Notifications .NotificationDivider > div .XButton {
   top: -3px !important;
 }
+.LeftBar .ListRow .Avatar img.CallAvatar_Office img {
+  margin: -1px !important;
+}
 .LeftBarNotificationSection {
   background-color: transparent;
 }
@@ -255,6 +258,9 @@ img.x {
 .LeftBarNotificationMessageSection .NotificationDisplayName span {
   width: auto !important;
 }
+.LeftBarNotificationMessageSection .NotificationDisplayName span.truncate {
+  max-width: 55% !important;
+}
 .LeftBarNotificationMessageSection .NotificationType {
   position: relative;
   left: 5px;
@@ -276,6 +282,9 @@ img.x {
 }
 .CallStatusText .memberName .name.truncate {
   width: 90% !important;
+}
+.CallStatusText.ringing {
+  max-width: 40% !important;
 }
 .MyCallBlock_Rec {
   right: 33% !important;

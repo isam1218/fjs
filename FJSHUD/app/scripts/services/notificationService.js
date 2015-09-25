@@ -44,7 +44,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             	enabled = false;
             	setTimeout(function(){initNSService()}, 500);
 
-            }
+            };
 		};
 		this.initNSService = initNSService;
 
@@ -80,6 +80,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				console.log('Desktop notifications not supported');
 				return;
 			}
+      
 			if (Notification.permission !== "granted")
 				Notification.requestPermission();
 			
@@ -89,6 +90,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			}else{
 				iconUrl = "../img/Generic-Avatar-28.png";
 			}
+
 			var message = "";
 
       switch(data.type){
@@ -109,12 +111,16 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
           break;
       }
 
+      message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">");
+
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
-				body : $sce.trustAsHtml(message),
+        body: message,
 				tag : data.xpid,
 			});
+
 			var notification_data = data;
+
 			notification.onclick = function () {
 				var nt = notification;
 				var nd = notification_data;
@@ -122,13 +128,15 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var context = context_data.split(':')[0];
 				var xpid = context_data.split(':')[1];
 				var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
-				$location.path("/" + nd.audience + "/" + xpid + "/" + route);
+				
+				$rootScope.$evalAsync($location.path("/" + nd.audience + "/" + xpid + "/" + route));
 				focusBrowser();
 			};
 			  
 			notification.onclose = function () {
 				var nt = notification;
 			};
+
 			notification.onerror = function () {
 				var nt = notification;
 			};

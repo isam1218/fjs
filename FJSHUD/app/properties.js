@@ -54,8 +54,12 @@ fjs.CONFIG = {
     PLUGIN_VERSION:{
         MAC_OLD:'5.17.008986',
         WINDOWS_OLD:'5.17.008986',
-        WINDOWS_NEW:'1.1.011184',
-        MAC_NEW:'1.1.011183'
+        WINDOWS_NEW:'1.1.011219',
+        MAC_NEW:'1.1.011218'
     },
     DEBUG:true,
 };
+//fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
+
+//fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
+

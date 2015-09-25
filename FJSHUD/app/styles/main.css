@@ -1092,7 +1092,7 @@ p {
 }
 .Gadget {
   position: relative;
-  display: inline-flex;
+  display: inline-flex !important;
   display: -webkit-inline-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
@@ -1104,6 +1104,7 @@ p {
   background-color: #EBEBEB;
   margin: .5em;
   opacity: .9;
+  -webkit-transform: translateZ(0);
 }
 .Gadget.Positioned {
   position: absolute;
@@ -3931,8 +3932,6 @@ div.NewCall .XButton.XButtonNormal {
 .Conference .ToolBar .selectWrapper.conf {
   height: 30px !important;
   width: 150px !important;
-  width: 140px !important\9;
-  /* ie6/7/8/9  */
   font-size: 11px;
   font-weight: bold;
   font-color: #333;
@@ -6354,6 +6353,10 @@ textarea {
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
 }
+select::-ms-value {
+  background: transparent;
+  color: #333;
+}
 input[type="text"],
 input[type="email"],
 input[type="search"],
@@ -8564,6 +8567,9 @@ a.Messages {
   border: solid 1px #aaa;
   box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
+.MenuWindow.BargeDropDown {
+  width: 231px !important;
+}
 .MenuWindowTitle {
   position: relative;
   color: #729c00;
@@ -8618,6 +8624,12 @@ a.Messages {
   text-overflow: ellipsis;
   display: inline-block;
   vertical-align: top;
+}
+.MenuItemText.BargeMenuItemText {
+  margin-left: 24px;
+}
+.MenuItemText.BargeMenuItemText.BargeMenuItemTextAdjuster {
+  margin-left: -3px !important;
 }
 .MenuItem .SelectedIcon {
   display: inline-block;
@@ -8710,7 +8722,7 @@ a.Messages {
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
-  width: 100%;
+  max-width: 480px;
 }
 .vmsection:hover .displayName .vmtime {
   visibility: hidden;
@@ -8756,6 +8768,10 @@ a.Messages {
 .vmsection .vminfo p.vmdisplay {
   padding: 0;
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 70%;
 }
 .vmsection .vminfo .displayName {
   position: absolute;
@@ -8941,4 +8957,7 @@ a.Messages {
 }
 .Overlay .Foreground {
   max-height: 575px;
+}
+.jp {
+  font-size: 0.67em !important;
 }

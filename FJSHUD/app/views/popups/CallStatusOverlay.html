@@ -276,7 +276,7 @@
 					<input type="search" ng-model-options="{debounce: 200}" class="SearchBox TransferSearchBox" ng-model="conf.query" ng-attr-placeholder="{{::verbage.search_by_room_or_person}}" />
 				</div>
 				<div class="Members">
-                    <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: conferenceFilter() | orderBy: 'location' track by conference.xpid" ng-click="selectConference(conference)">
+                    <a href="" class="ListRow ListRow-Conference" data-ng-repeat="conference in conferences | filter: conferenceFilter() track by conference.xpid" ng-click="selectConference(conference)">
 						<avatar profile="conference"></avatar>
                         <div class="ListRowContent">
                             <div class="ListRowTitle">

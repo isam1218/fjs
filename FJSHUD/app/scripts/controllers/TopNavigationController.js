@@ -156,6 +156,45 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	var player;
 	var source;
 	var retry;
+	
+	var onloadeddata = function() {
+		$scope.player.loaded = true;
+		$scope.player.playing = true;
+		$scope.$digest();
+		
+		player.play();
+	};
+	
+	var ontimeupdate = function() {
+		$scope.player.position = player.currentTime*1000;
+		
+		// prevent the jitters
+		if (!document.body.onmousemove)
+			$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
+		
+		$scope.$digest();
+	};
+	
+	var onpause = function() {
+		$scope.player.playing = false;
+		$scope.$digest();
+	};
+	
+	var onplay = function() {
+		$scope.player.playing = true;
+		$scope.$digest();
+	};
+	
+	var onerror = function() {
+		// retry 3x, then give up
+		if ($scope.attempts < 3) {
+			retry = setTimeout(function() {
+				player.load();
+			}, 1000);
+			
+			$scope.attempts++;
+		}
+	};
   
 	$scope.$on('play_voicemail', function(event, data) {
 		clearTimeout(retry);
@@ -165,47 +204,15 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			player = document.getElementById('voicemail_player');
 			source = document.getElementById('voicemail_player_source');
 			
-			player.onloadeddata = function() {
-				$scope.player.loaded = true;
-				$scope.player.playing = true;
-				$scope.$digest();
-				
-				player.play();
-			};
+			// attach events
+			player.addEventListener('loadeddata', onloadeddata);			
+			player.addEventListener('timeupdate', ontimeupdate);			
+			player.addEventListener('pause', onpause);			
+			player.addEventListener('play', onplay);
 			
-			player.ontimeupdate = function() {
-				$scope.player.position = player.currentTime*1000;
-				
-				// prevent the jitters
-				if (!document.body.onmousemove)
-					$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
-				
-				$scope.$digest();
-			};
-			
-			player.onpause = function() {
-				$scope.player.playing = false;
-				$scope.$digest();
-			};
-			
-			player.onplay = function() {
-				$scope.player.playing = true;
-				$scope.$digest();
-			};
-			
-			player.onerror = function() {
-				// retry 3x, then give up
-				if ($scope.attempts < 3) {
-					retry = setTimeout(function() {
-						player.load();
-					}, 1000);
-					
-					$scope.attempts++;
-				}
-			};
-			
-			// in case we end up needing this:
-			// source.onerror = function() {};
+			// fail like a boss
+			player.addEventListener('error', onerror);
+			source.addEventListener('error', onerror);
 		}
 		else
 			player.pause();
@@ -316,13 +323,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		clearTimeout(retry);
 		
 		player.pause();
-		player.onloadeddata = null;
-		player.ontimeupdate = null;
-		player.onpause = null;
-		player.onplay = null;
-		player.onerror = null;
+		player.removeEventListener('loadeddata', onloadeddata);
+		player.removeEventListener('timeupdate', ontimeupdate);
+		player.removeEventListener('pause', onpause);
+		player.removeEventListener('play', onplay);
+		player.removeEventListener('error', onerror);
 		player = null;
 		
+		source.removeEventListener('error', onerror);
 		source = null;
 	};
 }]);

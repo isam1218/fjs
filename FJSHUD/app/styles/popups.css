@@ -8,13 +8,6 @@
 .Downloadables {
   height: 40px;
 }
-.CurrentDownload {
-  height: auto;
-  position: relative;
-  max-height: 300px;
-  vertical-align: middle !important;
-  width: 100%;
-}
 .Overlay {
   position: fixed;
   left: 0;
@@ -29,14 +22,19 @@
 .Overlay.fileShare .wrapper .Section .review {
   background-color: #FFF;
   height: 340px;
-  max-height: none;
   text-align: center;
-  line-height: 340px;
-  padding-top: 26px;
 }
 .Overlay.fileShare .wrapper .Section .review img.CurrentDownload {
+  max-width: 100%;
+  max-height: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+.Overlay.fileShare .wrapper .Section .review iframe.CurrentDownloadDocument {
   width: 100%;
-  height: 284px;
+  height: 100%;
 }
 .Overlay.fileShare .wrapper .Section .Members .ListRow .file {
   margin-left: 5px;
@@ -73,7 +71,7 @@
 .Overlay.notifications .Conference-HeaderSubTitle {
   font-size: 11px;
   line-height: 18px;
-  width: 50%;
+  width: 60%;
   margin-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -507,6 +505,22 @@
   height: 286px;
   overflow-y: auto;
 }
+.Overlay .Members .TransferSubHeader {
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFF;
+  background-color: #888;
+  border-top: solid 1px #999;
+  position: relative;
+}
+.Overlay .Members .TransferSelectBox {
+  position: relative;
+  margin: 10px;
+  height: 60px;
+  width: auto;
+}
 .Overlay .Members .ListRow:first-child .Delete {
   display: none !important;
 }
@@ -526,6 +540,21 @@
   right: .25em;
   cursor: pointer;
 }
+.Overlay .Members .ListRow .TransferSelectTitlePadding {
+  padding: 15px;
+  overflow: visible !important;
+}
+.Overlay .Members .ListRow .TransferText {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  height: 29px;
+  width: auto;
+  text-transform: uppercase;
+}
+.Overlay .Members .ListRow .TransferSubText {
+  font-style: italic;
+}
 .Overlay .AttachmentDownload {
   background-color: #ccc;
   border: 1px solid gray;
@@ -533,6 +562,22 @@
   height: 286px;
   overflow-y: auto;
   width: 280px;
+}
+.Overlay .AttachmentDownload .TransferSubHeader {
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFF;
+  background-color: #888;
+  border-top: solid 1px #999;
+  position: relative;
+}
+.Overlay .AttachmentDownload .TransferSelectBox {
+  position: relative;
+  margin: 10px;
+  height: 60px;
+  width: auto;
 }
 .Overlay .AttachmentDownload .ListRow:first-child .Delete {
   display: none !important;
@@ -552,6 +597,21 @@
   bottom: .25em;
   right: .25em;
   cursor: pointer;
+}
+.Overlay .AttachmentDownload .ListRow .TransferSelectTitlePadding {
+  padding: 15px;
+  overflow: visible !important;
+}
+.Overlay .AttachmentDownload .ListRow .TransferText {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  height: 29px;
+  width: auto;
+  text-transform: uppercase;
+}
+.Overlay .AttachmentDownload .ListRow .TransferSubText {
+  font-style: italic;
 }
 .Overlay .AttachmentDownload .Downloadables:hover {
   background-color: #f0f0ff;
@@ -636,6 +696,9 @@
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
 }
+.SearchContactOverlay .Inset.TransferInset {
+  overflow-x: hidden;
+}
 .SearchContactOverlay .Inset .rows {
   border: solid 1px #eee;
   width: 99.5%;
@@ -660,16 +723,14 @@
 .SearchContactOverlay .Inset .ListRowContent .Extension {
   font-size: .9em;
   color: gray;
-  position: relative;
   float: right;
   right: 5px;
   top: -10px;
 }
 .SearchContactOverlay.favoritesSearch {
   top: -40px;
-  height: 400px;
-  width: 498px;
-  left: -10px;
+  height: 330px;
+  z-index: 98;
 }
 .SearchContactOverlay.favoritesSearch .Inset {
   overflow: hidden;
@@ -682,19 +743,29 @@
 }
 .SearchContactOverlay.favoritesSearch .Inset .rows {
   margin-top: 40px;
-  height: 305px;
+  height: 230px;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
 }
+.SearchContactOverlay.favoritesSearch .Inset .AddTeamMember {
+  width: 75%;
+  max-width: 100%;
+}
 .SearchContactOverlay.conferenceSearch {
   width: 500px !important;
   top: -55px !important;
+  left: -10px;
 }
 .SearchContactOverlay.conferenceSearch .Header {
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 12px;
+}
+.SearchContactOverlay.conferenceSearch .TransferHeader {
+  font-size: 15px;
+  color: #0093f0;
+  font-variant: small-caps;
 }
 .SearchContactOverlay.conferenceSearch .Inset {
   margin-top: 60px !important;
@@ -714,8 +785,25 @@
 .SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle {
   margin-top: -5px;
 }
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle.AddConferenceMember {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  max-width: 85%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .ListRowStatusIcon {
+  margin-left: 0px;
+}
 .SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .hudStatus {
   margin-top: -2px;
+}
+.SearchContactOverlay.transferSearch {
+  width: 415px !important;
+  top: -45px !important;
+  height: 400px;
 }
 #ContextMenu {
   display: none;
@@ -736,6 +824,13 @@
 }
 #ContextMenu.NoWrap .BottomRow {
   white-space: nowrap;
+}
+#ContextMenu.Bump {
+  margin-top: -6em;
+}
+#ContextMenu.Bump .Arrow {
+  top: auto;
+  bottom: 1em;
 }
 #ContextMenu .Arrow {
   position: absolute;
@@ -858,7 +953,10 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+}
+.MenuWindow.BargeDropDown {
+  width: 231px !important;
 }
 .MenuWindowTitle {
   position: relative;
@@ -914,6 +1012,12 @@
   text-overflow: ellipsis;
   display: inline-block;
   vertical-align: top;
+}
+.MenuItemText.BargeMenuItemText {
+  margin-left: 24px;
+}
+.MenuItemText.BargeMenuItemText.BargeMenuItemTextAdjuster {
+  margin-left: -3px !important;
 }
 .MenuItem .SelectedIcon {
   display: inline-block;

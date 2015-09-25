@@ -1,5 +1,5 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 
-    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'QueueService',
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService,queueService) {
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;    
     var soundManager;
@@ -22,6 +22,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
     
+
     $scope.getCurrentLocationTitle = function() {
         /**
          * @type {{name:string. phone:string}}
@@ -533,7 +534,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     return (item.value == settings['hudmw_auto_away_timeout']);
                 });   
                 $scope.autoAwaySelected = autoAwayOption[0];
-                
             }
 
             $scope.queueSummaryStats.waiting_calls = parseInt(settings['queueWaitingThreshold']);
@@ -617,10 +617,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var update_queues = function(){
 		if ($scope.settings && $scope.queues) {
 			for (var i = 0, len = $scope.queues.length; i < len; i++) {
-				$scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[i].xpid] = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[i].xpid] == "true";
-				$scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid] == "true";
-				$scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[i].xpid] == "true";
-				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[i].xpid] = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid] == "true";
+                var QueueNotificationsLW = $scope.settings['HUDw_QueueNotificationsLW_' + $scope.queues[i].xpid];
+                var QueueAlertsLW = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid];
+                var QueueNotificationsAb = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[i].xpid];
+                var QueueAlertsAb = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid]; 
+				$scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[i].xpid] = QueueNotificationsLW == "true" ? true : (QueueNotificationsLW == true ? QueueNotificationsLW : false);
+				$scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[i].xpid] =  QueueAlertsLW == "true" ? true : (QueueAlertsLW == true ? QueueAlertsLW : false);
+				$scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[i].xpid] = QueueNotificationsAb == "true" ? true : (QueueNotificationsAb == true ? QueueNotificationsAb : false);
+				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[i].xpid] = QueueAlertsAb == "true" ? true : (QueueAlertsAb == true ? QueueAlertsAb : false);
 			}
 		}
 		$scope.$safeApply();
@@ -679,6 +683,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             update_settings();
         }
     });
+    
     //this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
     $scope.flow_cleanup = function($files){
         $scope.avatar.flow.cancel();
@@ -1138,7 +1143,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
     
-    $scope.$on("queues_synced", function(event,data){
+    /*$scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
             $scope.queues = $scope.queues.sort(function(a,b){
@@ -1148,7 +1153,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             });
         }
         update_queues();
+    });*/
+
+    queueService.getQueues().then(function(data){
+         if(data && data != undefined){
+            $scope.queues = data.queues;
+            $scope.queues = $scope.queues.sort(function(a,b){
+                if(a.name < b.name){return -1;}
+                else if(a.name > b.name){return 1;}
+                else { return 0;}
+            });
+        }
+        update_queues();
     });
+
 
 
 

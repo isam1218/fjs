@@ -180,12 +180,17 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				$timeout(function() {
 					// position pop-pop				
 					overlay.addClass('NoWrap');
+					overlay.removeClass('Bump');
 					
 					overlay.css('display', 'block');
 					overlay.css('width', 'auto');
 					overlay.css('top', (rect.top + rect.height/2) + 'px');
 					
 					var oRect = overlay[0].getBoundingClientRect();
+					
+					// can't fit on screen
+					if (oRect.bottom >= window.innerHeight)
+						overlay.addClass('Bump');
 					
 					// can fit on right side
 					if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {

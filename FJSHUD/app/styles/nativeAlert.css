@@ -91,7 +91,7 @@
   background-color: #999;
   color: white;
   padding: .25em;
-  transition: 1s;
+  transition: none;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   font-size: 12px;

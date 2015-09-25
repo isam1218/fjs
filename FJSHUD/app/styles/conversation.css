@@ -94,6 +94,9 @@
 .Widget.Conversation .WidgetBody .ListRow:hover .ListRowStatus {
   visibility: visible;
 }
+.Widget.Conversation .WidgetBody .ConferenceListRow {
+  padding-top: .3em;
+}
 .Widget.Conversation .WidgetBody .ToolBar input[type=search] {
   height: 26px;
 }

@@ -29,12 +29,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var callsDetails = {};
 	$rootScope.meModel = {};
 	var isRegistered = false;
-	var isAlertShown = true;
+	var isAlertShown = false;
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
 	var locations = {};
-
+	var activityChecker;
+	var lastActivityCheck = 0;
 	
 	var soundEstablished = false;
 	var selectedDevices = {};
@@ -81,6 +82,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	var isDocumentHidden  = function(isForceHidden){
+		clearInterval(activityChecker);
+				
 		var hidden; 
 		if(document.hidden || !isForceHidden){
 			tabInFocus = false;
@@ -90,10 +93,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						context.displayCallAlert(callsDetails[detail]);
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
-						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+					if(notificationCache.html && notificationCache.html != '' && !isAlertShown){
+						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+						}
 					}					
 				}
+			}
+			
+			if (session) {
+				activityChecker = setInterval(function() {
+					// check if user is active outside of hudweb
+					if (session.getLastUserActivity() < lastActivityCheck) {
+						httpService.sendAction('useractivity', 'reportActivity', {});
+						lastActivityCheck = 0;
+					}
+					else
+						lastActivityCheck = session.getLastUserActivity();
+				}, 5000);
 			}
 		}else{
 			tabInFocus = true;
@@ -273,7 +290,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var holdCall = function(xpid,isHeld){
 		//var call = context.getCall(xpid);
-		var calldetail = context.getCallDetail(xpid);
+		/*var calldetail = context.getCallDetail(xpid);
 		var call = calldetail.sipCall;
 		if(calldetail.sipCall && calldetail.state != fjs.CONFIG.CALL_STATES.CALL_RINGING){
 			if(context.webphone){
@@ -281,13 +298,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.hold = isHeld;
 			}
+		}*/
+		if(isHeld){
+        	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-			if(isHeld){
-        		httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-			}else{
-	       	    httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-			}	
-		}
+	       	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+		}	
 	};
 
 	var makeCall = function(number){
@@ -407,6 +423,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
 				alertPlugin.setTransparency(255);
+				isAlertShown = true;
 		}
 	};
 
@@ -632,7 +649,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			isAlertShown = false;
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -725,7 +741,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     };
 	var removeNotification = function(){
 		if(alertPlugin){
+			
 			alertPlugin.removeAlert();
+			isAlertShown = false;
 		}
 	};
 	
@@ -1091,7 +1109,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}else{
 				call.transfer(number);
 			}
-		}	
+		}else{
+			httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
+		}
 	};
 
 	this.getPhoneState = function(){
@@ -1141,8 +1161,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//look for audio tag and play sound based on key
 	this.playSound= function(sound_key){
-		var audio = $('audio.send')
-
 		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
 			switch(sound_key){
 				case 'received':
@@ -1478,7 +1496,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case 'CALL_ON_HOLD':
 					holdCall(data.notificationId,true);
 					return;
-				case 'talk':
+				case 'talk':					
+					for(call in callsDetails){
+						if(call != data.notificationId){
+							holdCall(call, true);
+						}
+					}
 					holdCall(data.notificationId,false);
 					return;
 			}
@@ -1505,10 +1528,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	    if(call.state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
 	              left_buttonText = call.incoming ? "Decline" : "Cancel";
-	              right_buttonText = call.incoming && call.location.locationType != 'm' && meModel.location.locationType != 'm' ? "Accept" : "";
+	              right_buttonText = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm' ? "Accept" : "";
 	              left_buttonID = "CALL_DECLINED";
 	              right_buttonID = "CALL_ACCEPTED";
-	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && meModel.location.locationType != 'm';
+	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm';
 	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 	              left_buttonText = "END";
 	              left_buttonID = "CALL_DECLINED";

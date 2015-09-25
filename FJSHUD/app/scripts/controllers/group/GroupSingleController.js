@@ -18,9 +18,9 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 	{upper: $scope.verbage.recordings, lower: 'recordings', idx: 4},
   {upper: $scope.verbage.group_info, lower: 'info', idx: 5}
   ];
-	
-	// store recent
-	storageService.saveRecent('group', $scope.groupID);
+
+  // store recent
+  storageService.saveRecent('group', $scope.groupID);
 
   $scope.chatTabEnabled;
   if ($scope.isMine){
@@ -42,24 +42,21 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
     $scope.pageTab = true;
   }
 
-  if ($routeParams.route != undefined){
+  // if route is defined (click on specific tab or manaully enter url)...
+  if ($routeParams.route){
     $scope.selected = $routeParams.route;
-    localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
     for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
       if ($scope.tabs[i].lower == $routeParams.route){
         $scope.toggleObject = $scope.tabs[i].idx;
         break;
       }
     }
-    var endPath = "/group/" + $routeParams.groupId + "/" + $scope.selected;
-    $location.path(endPath);
     localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
     localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
-  } else {
+  } else{
+    // otherwise when route isn't defined --> used LS-saved or default
     $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? 'chat' : 'members';
     $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : $scope.isMine ? 0 : 1;
-    var endPath = "/group/" + $routeParams.groupId + "/" + $scope.selected;
-    $location.path(endPath);
   }
 
   // save user's last selected tab to LS
