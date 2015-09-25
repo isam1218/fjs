@@ -98,6 +98,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 			templateUrl: 'views/Intellinote.html',
 			controller: 'IntellinoteController'
 		})
+		.when('/zipwhip',
+		{
+			templateUrl: 'views/Zipwhip.html',
+			controller: 'ZipwhipController'
+		})
 		.otherwise({
 			redirectTo: '/settings'
 		});
