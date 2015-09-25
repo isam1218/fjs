@@ -66,7 +66,7 @@
 	</div>
 	
 	<div class="ChatInputFields" ng-if="enableChat">
-		<textarea id="ChatMessageText" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
+		<textarea id="ChatMessageText" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()"><span>{{::verbage.send}}</span></div>
 	</div>
 </div>

@@ -93,8 +93,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						context.displayCallAlert(callsDetails[detail]);
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls)) && !isAlertShown){
-						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+					if(notificationCache.html && notificationCache.html != '' && !isAlertShown){
+						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+						}
 					}					
 				}
 			}
@@ -647,7 +649,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			isAlertShown = false;
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -1160,8 +1161,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//look for audio tag and play sound based on key
 	this.playSound= function(sound_key){
-		var audio = $('audio.send')
-
 		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
 			switch(sound_key){
 				case 'received':

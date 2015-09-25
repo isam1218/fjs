@@ -83,26 +83,22 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   $scope.tabs = [{upper: $scope.verbage.current_call, lower: 'currentcall'}, 
   {upper: $scope.verbage.chat, lower: 'chat'}, {upper: $scope.verbage.recordings, lower: 'recordings'}];
 
-  settingsService.getSettings().then(function() {
-    if($routeParams.route != undefined){
-      $scope.selected = $routeParams.route;
-      for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
-        if($scope.tabs[i].lower == $routeParams.route){
-          $scope.toggleObject = {item: i};
-          break;
-        }
+  // if route is defined (click on specific tab or manaully enter url)...
+  if ($routeParams.route){
+    $scope.selected = $routeParams.route;
+    for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
+      if($scope.tabs[i].lower == $routeParams.route){
+        $scope.toggleObject = {item: i};
+        break;
       }
-      var endPath = "/conference/" + $routeParams.conferenceId + "/" + $scope.selected;
-      $location.path(endPath);
-      localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
-      localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
-    }else{
-      $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid]) : $scope.tabs[0].lower;
-      $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
-      var endPath = "/conference/" + $routeParams.conferenceId + "/" + $scope.selected;
-      $location.path(endPath);
     }
-  }); 
+    localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+    localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+  } else {
+    // otherwise when route isn't defined --> used LS-saved or default
+    $scope.selected = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_tabs_of_' + $rootScope.myPid]) : 'currentcall';
+    $scope.toggleObject = localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConferenceSingle_' + $routeParams.conferenceId + '_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
+  }
 
   $scope.saveConfTab = function(tab, index){
       $scope.toggleObject = {item: index};

@@ -4,28 +4,22 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 	{upper: $scope.verbage.all_queues, lower: 'allqueues'},
 	{upper: $scope.verbage.my_status, lower: 'mystatus'}];
 
-	settingsService.getSettings().then(function() {
-  		$scope.globalXpid = $rootScope.myPid;
-		
-		if($routeParams.route != undefined){
-	  		$scope.selected = $routeParams.route;
-	  		localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-			for(var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
-	  			if($scope.tabs[i].lower == $routeParams.route){
-	  				$scope.toggleObject = {item: i};
-	  				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-
-					break;
-	  			}
-	  		}
-		}else{
-			$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-			$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-  		}
-	});
-
-	$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-	$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+	// if route is defined (click on specific tab or manaully enter url)...
+	if ($routeParams.route){
+		$scope.selected = $routeParams.route;
+		for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
+			if ($scope.tabs[i].lower == $routeParams.route){
+				$scope.toggleObject = {item: i};
+				break;
+			}
+		}
+		localStorage['CallCenter_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+		localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+	} else {
+		// otherwise when route isn't defined, use the tabs set in app.js 
+    $scope.selected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
+    $scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
+	}
 
 	$scope.saveTab = function(tab, index){
 		switch(tab){
@@ -40,9 +34,9 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 				break;
 		}
 		
-		localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify(tabName);
+		localStorage['CallCenter_tabs_of_' + $rootScope.myPid] = JSON.stringify(tabName);
 		$scope.toggleObject = {item: index};
-		localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+		localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
 	};
 
 	$scope.total = {};

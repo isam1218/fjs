@@ -2,6 +2,9 @@ hudweb.service('StorageService', ['$rootScope', 'ContactService', 'SettingsServi
 	var service = this;
 	var recents;
 	var chats;
+	var selected;
+	var tabs;
+	var toggleObj;
 	
 	// wait for user xpid
 	settingsService.getSettings().then(function() {

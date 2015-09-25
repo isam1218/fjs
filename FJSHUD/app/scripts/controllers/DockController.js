@@ -1,9 +1,9 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 	var column;
+	var request;
 	
 	$scope.gadgets = {};
 	$scope.upload_time = 0;	
-	var request;
 	$scope.upload_progress = 0;
 	$scope.queueThresholds = {};
 	
@@ -129,10 +129,35 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		$scope.queueThresholds.avg_talk = parseInt(data.queueAvgTalkThresholdThreshold);
 		$scope.queueThresholds.abandoned = parseInt(data.queueAbandonThreshold);
 	};
+	
+	var makeDefault = function(name) {
+		$scope.gadgets[name] = [
+			{
+				name: 'GadgetConfig__empty_' + name + '_',
+				value: {
+					factoryId: name,
+					index: 1,
+					contextId: 'empty',
+					entityId: '',
+					config: {}
+				},
+				data: {}
+			}
+		];
+	};
 
 	// initial sync
 	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {		
 		updateDock(data[0]);
+		
+		// default gadgets
+		if (!$scope.gadgets['GadgetUserQueues']) {
+			makeDefault('GadgetUserQueues');
+			$scope.gadgets['GadgetUserQueues'][0].data = queueService.getMyQueues();
+		}
+		
+		if (!$scope.gadgets['GadgetParkedCalls'])
+			makeDefault('GadgetParkedCalls');
 		
 		// normal updates
 		$scope.$on('settings_updated', function(event, data) {
