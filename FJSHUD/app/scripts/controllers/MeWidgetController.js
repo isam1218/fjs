@@ -534,7 +534,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     return (item.value == settings['hudmw_auto_away_timeout']);
                 });   
                 $scope.autoAwaySelected = autoAwayOption[0];
-                
             }
 
             $scope.queueSummaryStats.waiting_calls = parseInt(settings['queueWaitingThreshold']);
