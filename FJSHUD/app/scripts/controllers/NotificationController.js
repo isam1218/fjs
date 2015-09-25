@@ -594,7 +594,7 @@ hudweb.controller('NotificationController',
 			if(nservice.isEnabled()){
 					for (var i = 0; i < $scope.calls.length; i++){
 				 		if(alertDuration != "entire"){
-              if($scope.call[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
                 nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
                 return;
               }
@@ -615,8 +615,11 @@ hudweb.controller('NotificationController',
     }else{
 
       if(nservice.isEnabled()){
+        for (var i = 0; i < $scope.calls.length; i++){
+           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+        } 
       }else{
-        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+        if($scope.calls.length > 0){
            $scope.displayAlert = true;
             phoneService.removeNotification();
             $timeout(cacheNotification,1000);
@@ -624,8 +627,8 @@ hudweb.controller('NotificationController',
             phoneService.cacheNotification(undefined,0,0);
         }  
       }
-      
-    }
+      }
+    
 
     
 	});
@@ -820,6 +823,7 @@ hudweb.controller('NotificationController',
 
         if (displayDesktopAlert){
                if ($scope.todaysNotifications.length > 0){
+                      phoneService.setStayHidden(false);
                        if(nservice.isEnabled()){
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
