@@ -5,6 +5,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+			if (attrs.droppable == '') return;
+			
 			var obj, type;
 			var drops = attrs.droppable.split(',');
 			
@@ -72,7 +74,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 									"x": (ui.position.left - rect.left)/rect.width*100, 
 									"y": (ui.position.top - rect.top)/rect.height*100
 								},
-								"index": 1
+								"index": $rootScope.dockIndex
 							})
 						};
 						
