@@ -128,7 +128,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 					"factoryId": "Gadget" + $scope.type,
 					"entityId": $scope.profile.xpid,
 					"config": {"x": 0, "y": 0},
-					"index": 1
+					"index": $rootScope.dockIndex
 				})
 			};
 			
