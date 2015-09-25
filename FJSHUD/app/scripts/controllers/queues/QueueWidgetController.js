@@ -17,7 +17,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     {upper: $scope.verbage.call_log_tab, lower: 'calllog', idx: 4}, 
     {upper: $scope.verbage.recordings, lower: 'recordings', idx: 5}, 
     {upper: $scope.verbage.alerts, lower: 'alerts', idx: 6}];
-
+    
     $scope.toggleObject = {};
     $scope.tabObj = {};
              
@@ -45,24 +45,21 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
         $scope.chatTabEnabled = false;
     }
 
-    if ($routeParams.route != undefined){
+    // if route is defined (click on specific tab or manaully enter url)...
+    if ($routeParams.route){
         $scope.selected = $routeParams.route;
-        localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
             if ($scope.tabs[i].lower == $routeParams.route){
                 $scope.toggleObject = $scope.tabs[i].idx;
                 break;
             }
         }
-        var endPath = "/queue/" + $routeParams.queueId + "/" + $scope.selected;
-        $location.path(endPath);
         localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     } else {
+        // otherwise when route isn't defined --> used LS-saved or default
         $scope.selected = localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';
         $scope.toggleObject = localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + $routeParams.queueId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
-        var endPath = "/queue/" + $routeParams.queueId + "/" + $scope.selected;
-        $location.path(endPath);
     }
 
     $scope.saveQTab = function(tab, index){
