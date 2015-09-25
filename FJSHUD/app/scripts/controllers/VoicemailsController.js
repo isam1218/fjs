@@ -4,7 +4,7 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
-    $scope.deferredVM = $q.defer();
+	  $scope.vm = {};
 
     	// single group widget
 		if ($routeParams.groupId) {
@@ -43,11 +43,30 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 
     $scope.actionObj = {};
     $scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[0];
-        
+            
     // user's profile for their own voicemails
-	contactService.getContacts().then(function() {
+	contactService.getContacts().then(function() {		
 		$scope.myProfile = contactService.getContact($rootScope.myPid);
+		$scope.vm.myProfile = 	$scope.myProfile;
+		
+		phoneService.getVm().then(function(data) {						
+			if (group || contact) {
+				// voicemails need to be filtered down
+				updateVoicemails(data);
 				
+				// set up listener
+				$scope.$on('voicemailbox_synced', function() {
+					phoneService.getVm().then(function(data2) {
+						// refresh
+						updateVoicemails(data2);
+					});
+				});
+			}
+			else
+				// pass by reference
+				$scope.voicemails = data;			   
+		});			
+		
 		switch($scope.actionObj.selectedAction.type){
 		    case "unknown":
 		    	$scope.actionObj.currentAction = $scope.actions[0];		    	
@@ -66,25 +85,7 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 	            break;
 		} 
 		
-	});
-	
-	phoneService.getVm().then(function(data) {
-		if (group || contact) {
-			// voicemails need to be filtered down
-			updateVoicemails(data);
-			
-			// set up listener
-			$scope.$on('voicemailbox_synced', function() {
-				phoneService.getVm().then(function(data2) {
-					// refresh
-					updateVoicemails(data2);
-				});
-			});
-		}
-		else
-			// pass by reference
-			$scope.voicemails = data;
-	});
+	});		
 	
 	var updateVoicemails = function(data) {		
 		// populate voicemails according to page
@@ -93,13 +94,12 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
 			
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-					if (data[i].contactId == group.members[g].contactId) {
-						$scope.voicemails.push(data[i]);
+					if (data[i].contactId == group.members[g].contactId) {						
+						$scope.voicemails.push(data[i]);						
 						break;
 					}
 				}
-			}
-			
+			}			
 		}
 		else if (contact) {
 			$scope.voicemails = data.filter(function(voicemail){
@@ -137,18 +137,21 @@ hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeP
             }
         };
     
-    };
+    };       
     $rootScope.$on('voicemailbox_synced', function(event, data) {
     	// first time
+    	$scope.myProfile = contactService.getContact($rootScope.myPid);
+		$scope.vm.myProfile = 	$scope.myProfile;
+		
 		if ($scope.voicemails.length == 0) {
-			$scope.voicemails = data;
+			$scope.voicemails = data.filter(function(item){
+				return item.xef001type != "delete"; 
+			});
 			
 			// add full profile
 			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
 				$scope.voicemails[v].fullProfile = contactService.getContact($scope.voicemails[v].contactId);
 			}	
-			
-			$scope.deferredVM.resolve($scope.voicemails);
 		}
 		else {
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
