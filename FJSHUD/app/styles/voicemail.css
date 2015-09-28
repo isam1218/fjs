@@ -1,1 +1,204 @@
-.displayName{font-size:12px}.vmsection{margin:0;border:0;display:flex;display:-webkit-flex;flex-direction:row;-webkit-flex-direction:row;max-width:480px}.vmsection:hover .displayName .vmtime{visibility:hidden}.vmsection:hover .displayName .vmcallbtn{visibility:visible;top:4px;right:2px}.vmsection .Avatar.CallAvatar_Queue{margin:auto 0 auto -5px!important}.vmsection .ConferenceAvatarSection.Avatar.ConferenceRecording{margin:.5em}.vmsection .vmavatarsection{padding:2.5px 5px}.vmsection .vmavatarsection .vmavatar{border-radius:30px;color:#009cff;border:solid;width:2.5em;height:2.5em}.vmsection .vminfo{flex:1;-webkit-flex:1;position:relative;display:block;padding:5px;cursor:pointer}.vmsection .vminfo:hover .displayName .vmtime{visibility:hidden}.vmsection .vminfo:hover .displayName .vmcallbtn{visibility:visible;top:4px;right:2px}.vmsection .vminfo p.vmdisplay{padding:0;margin:0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;max-width:70%}.vmsection .vminfo .displayName{position:absolute;top:5px;left:5px;right:5px;font-size:12px;text-align:left;text-overflow:ellipsis;overflow:hidden;text-decoration:none;color:#555;white-space:nowrap}.vmsection .vminfo .displayName .ListDisplayName span{height:20px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;font-size:13px;color:#222;text-shadow:0 1px 0 rgba(255,255,255,.3)}.vmsection .vminfo .displayName .vmalternate .vmtime{opacity:1;margin-left:15px;height:20px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;color:#888;font-weight:700;font-size:11px}.vmsection .vminfo .footnote{position:relative;margin-top:20px}.vmsection:hover{background-color:#f0f0ff}.vmsection:hover .vmcallbtn{background:linear-gradient(#3c9c00,#328400) #3c9c00;color:#e8e8e8;border:1px solid rgba(155,155,155,.3);text-shadow:none;visibility:visible;height:26px;width:40px;top:9px;right:7px;text-align:center;border-radius:2px;-webkit-border-radius:2px;text-decoration:none;cursor:pointer;font-size:11px;font-weight:700}.vmsection:hover .vmcallbtn:hover{border:1px solid rgba(0,0,0,.3);color:#fff;text-shadow:0 -1px 0 #000;box-shadow:0 1px 1px rgba(0,0,0,.2)}.vmsection:hover .vmtime{visibility:hidden}.vmfootnote{display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vmdisplay{display:inline-block;color:#009CFF}.vmduration{background-color:#999;color:#fff;border-radius:2px;-webkit-border-radius:2px;padding:1px}.vmalternate{display:inline-block;float:right;position:relative;margin-top:3px;margin-right:5px;height:40px}.vmalternate:hover .vmcallbtn{background:linear-gradient(#3c9c00,#328400) #3c9c00;color:#e8e8e8;border:1px solid rgba(155,155,155,.3);text-shadow:none;visibility:visible;height:26px;width:40px;text-align:center;border-radius:2px;-webkit-border-radius:2px;text-decoration:none;cursor:pointer;font-size:11px;font-weight:700}.vmalternate:hover .vmcallbtn:hover{border:1px solid rgba(0,0,0,.3);color:#fff;text-shadow:0 -1px 0 #000;box-shadow:0 1px 1px rgba(0,0,0,.2)}.vmalternate:hover .vmtime{visibility:hidden}.vmalternate .vmcallbtn{visibility:hidden;right:0;top:0;position:absolute}.vmalternate .vmtime{visibility:visible;position:relative;font-size:11px;font-weight:700}.vmlabel{text-align:center;color:#999;text-shadow:0 2px 0 #fff;line-height:20px;padding-top:60px}.vmlabel .vmlabelheader{font-weight:700;font-size:14px}.vmlabel .vmnomessage{font-size:12px}
+.displayName {
+  font-size: 12px;
+}
+.vmsection {
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  max-width: 480px;
+}
+.vmsection:hover .displayName .vmtime {
+  visibility: hidden;
+}
+.vmsection:hover .displayName .vmcallbtn {
+  visibility: visible;
+  top: 4px;
+  right: 2px;
+}
+.vmsection .Avatar.CallAvatar_Queue {
+  margin: auto 0px auto -5px !important;
+}
+.vmsection .ConferenceAvatarSection.Avatar.ConferenceRecording {
+  margin: 0.5em;
+}
+.vmsection .vmavatarsection {
+  padding: 2.5px 5px;
+}
+.vmsection .vmavatarsection .vmavatar {
+  border-radius: 30px;
+  color: #009cff;
+  border: solid;
+  width: 2.5em;
+  height: 2.5em;
+}
+.vmsection .vminfo {
+  flex: 1;
+  -webkit-flex: 1;
+  position: relative;
+  padding-left: 10px;
+  display: block;
+  padding: 5px;
+  cursor: pointer;
+}
+.vmsection .vminfo:hover .displayName .vmtime {
+  visibility: hidden;
+}
+.vmsection .vminfo:hover .displayName .vmcallbtn {
+  visibility: visible;
+  top: 4px;
+  right: 2px;
+}
+.vmsection .vminfo p.vmdisplay {
+  padding: 0;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 70%;
+}
+.vmsection .vminfo .displayName {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  font-size: 12px;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  color: #555;
+  white-space: nowrap;
+}
+.vmsection .vminfo .displayName .ListDisplayName span {
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 13px;
+  color: #222;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3);
+}
+.vmsection .vminfo .displayName .vmalternate .vmtime {
+  opacity: 1;
+  margin-left: 15px;
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #888;
+  font-weight: bold;
+  font-size: 11px;
+}
+.vmsection .vminfo .footnote {
+  position: relative;
+  margin-top: 20px;
+}
+.vmsection:hover {
+  background-color: #f0f0ff;
+}
+.vmsection:hover .vmcallbtn {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+  visibility: visible;
+  height: 26px;
+  width: 40px;
+  top: 9px;
+  right: 7px;
+  text-align: center;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmsection:hover .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.vmsection:hover .vmtime {
+  visibility: hidden;
+}
+.vmfootnote {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vmdisplay {
+  display: inline-block;
+  color: #009CFF;
+}
+.vmduration {
+  background-color: #999;
+  color: #fff;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  padding: 1px 1px 1px 1px;
+}
+.vmalternate {
+  display: inline-block;
+  float: right;
+  position: relative;
+  margin-top: 3px;
+  margin-right: 5px;
+  height: 40px;
+}
+.vmalternate:hover .vmcallbtn {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  text-shadow: none;
+  visibility: visible;
+  height: 26px;
+  width: 40px;
+  text-align: center;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmalternate:hover .vmcallbtn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.vmalternate:hover .vmtime {
+  visibility: hidden;
+}
+.vmalternate .vmcallbtn {
+  visibility: hidden;
+  right: 0;
+  top: 0;
+  position: absolute;
+}
+.vmalternate .vmtime {
+  visibility: visible;
+  position: relative;
+  font-size: 11px;
+  font-weight: bold;
+}
+.vmlabel {
+  text-align: center;
+  color: #999;
+  text-shadow: 0px 2px 0px #fff;
+  line-height: 20px;
+  padding-top: 60px;
+}
+.vmlabel .vmlabelheader {
+  font-weight: bold;
+  font-size: 14px;
+}
+.vmlabel .vmnomessage {
+  font-size: 12px;
+}

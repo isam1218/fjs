@@ -1,1 +1,505 @@
-option{text-align:center;padding-left:20px}textarea{background-color:#FFF;appearance:textfield;user-select:text;resize:none;outline:0;padding:5px;font-size:11px;border-radius:3px;color:#333;border:1px solid #C7C7C7;box-shadow:0 0 1px #ddd inset;font-family:Arial,Tahoma,'Helvetica Neue',Helvetica,sans-serif;position:relative}select::-ms-value{background:0 0;color:#333}input[type=text],input[type=email],input[type=search],input[type=tel]{border-radius:3px;-webkit-border-radius:3px;outline:0;-webkit-appearance:none}.ListSectionButtons{position:absolute;height:40px;top:0;right:10px}.ListSectionButtons .XButton{position:relative;display:block;float:right;width:80px;margin-left:10px;height:28px;padding-top:3px;font-weight:700}.XButton{position:relative;display:inline-block;margin:0;padding:5px;text-align:center;text-decoration:none;cursor:pointer;font-weight:700;border-radius:2px;border:1px solid rgba(0,0,0,.2);background:linear-gradient(#fefefe,#ebebeb) #fefefe;color:#333;text-shadow:0 1px 0 #fff;vertical-align:middle;text-overflow:ellipsis;font-family:Arial,Tahoma,'Helvetica Neue',Helvetica,sans-serif}.XButton span{vertical-align:middle;position:relative;font-size:11px}.XButton:hover{background:linear-gradient(#fefefe,#ddd) #fefefe;border:1px solid rgba(0,0,0,.3);color:#222;text-shadow:0 1px 0 #fff}.XButton.XButtonGreen{background:linear-gradient(#3c9c00,#328400) #3c9c00;text-shadow:none;background:-webkit-gradient(linear,left top,left bottom,from(#3c9c00),to(#328400)) #3c9c00;color:#e8e8e8;border:1px solid rgba(155,155,155,.3);transition:all .3s;-webkit-transition:all .3s}.XButton.XButtonGreen:hover{border:1px solid rgba(0,0,0,.3);color:#fff;text-shadow:0 -1px 0 #000;box-shadow:0 1px 1px rgba(0,0,0,.2)}.XButton.XButtonBlue{background:linear-gradient(#0077f1,#006fe1) #0077f1;color:#e8e8e8;text-shadow:0 -1px 0 rgba(0,0,0,.1);border:1px solid rgba(155,155,155,.3)}.XButton.XButtonRed{background:linear-gradient(#d72800,#b72200) #d72800;color:#e8e8e8;text-shadow:0 -1px 0 rgba(0,0,0,.1);border:1px solid rgba(155,155,155,.3)}.XButtonNormal span{background-color:transparent;color:#333;text-shadow:0 1px 0 #FFF;transition:border .3s ease 0s;font-weight:700}.XButtonMedium.disabled-true span,.XButtonMedium.disabled-true:hover span{height:26px;background:0 0;color:#999;text-shadow:0 1px 0 #fff;cursor:auto;border:1px solid rgba(0,0,0,.3);transition:none;box-shadow:none}.XButton.disabled,.XButtonNormal.disabled-true span,.XButtonNormal:disabled span{height:26px;color:#999;text-shadow:0 1px 0 #fff;transition:border .3s;cursor:auto;background:0 0}.XButtonBlue.disabled span,.XButtonBlue.disabled-true span,input[disabled],select[disabled]{opacity:.5;cursor:auto}.XButtonClose{background:url(../img/XIconSet-24x24.png) -28px -28px no-repeat;width:16px;height:16px;cursor:pointer}.XButtonClose:hover{background:url(../img/XIconSet-24x24.png) -52px -28px no-repeat}.XButtonDropDown span{padding-right:10px}.XButtonDropDownArrow{position:absolute;right:10px;top:20px;border-color:#555 transparent transparent;border-width:4px;border-style:solid;width:0;height:0}.XButton.XButtonToggle,.XButtonNormal.XButton.XButtonToggle{width:40px}.XButton.XButtonToggleSmall,.XButtonNormal.XButton.XButtonToggleSmall{width:24px}.XButtonToggle.XButtonNormal{width:80px}.XButtonToggle.XButtonSmall{width:65px}.XButtonToggle span{color:#333;text-shadow:0 1px 0 #fff;transition:border .3s;-webkit-transition:border .3s;left:6px;right:6px}.XButtonToggle.Off span{height:26px;background-image:-webkit-gradient(linear,left top,left bottom,from(#fefefe),to(#ebebeb))}.XButtonToggle.On span{height:26px;background-image:-webkit-gradient(linear,left top,left bottom,from(#ddd),to(#ddd));box-shadow:1px 1px 1px rgba(0,0,0,.15) inset;-webkit-box-shadow:1px 1px 1px rgba(0,0,0,.15) inset}.XButtonToggle .XButtonToggleIcon{position:absolute;left:8px;top:8px;width:24px;height:24px;cursor:pointer}.ToolBar .XButton{height:26px;padding:3px 5px 6px}.XIcon24-Record-Off{background:url(../img/XIconSet-24x24.png) -194px 0 no-repeat}.XIcon24-Record-On{background:url(../img/XIconSet-24x24.png) -72px -26px no-repeat}.XIcon24-Record-Off,.XIcon24-Record-On{position:absolute;width:16px;height:15px;right:12px;top:2px}.XIcon24-MuteOff{background:url(../img/XIconSet-24x24.png) no-repeat;width:24px;height:24px}.XIcon24-MuteOn{background:url(../img/XIconSet-24x24.png) -24px 0 no-repeat;width:24px;height:24px}.CurrentCallBtn{margin:10px 5px 10px 0;height:30px;padding:4px 3px 3px;float:left}.CurrentCallBtn.disableButton{cursor:default;pointer-events:none}.UnmuteBtn{border:1px solid #F8B682}div.CurrentCallBtn{opacity:.5}div.CurrentCallBtn.dial{padding:5px 10px}div.CurrentCallBtn.record{top:10px;left:0}div.CurrentCallBtn.record span{margin-top:-3px}input.CurrentCallBtn.disableButton{border:1px solid #ddd;background:#fff}.CurrentCallBtnLong{margin:10px 10px 0 0;width:170px}.XButtonToggle:hover span{border:1px solid rgba(0,0,0,.3);color:#222;text-shadow:0 1px 0 #fff;transition:border .3s;-webkit-transition:border .3s}.XButtonToggle.Off:hover span,.XButtonToggle.On:hover span{height:26px;background-image:-webkit-gradient(linear,left top,left bottom,from(#fefefe),to(#ddd))}.XButtonToggle .SelectBoxArrowBox{position:absolute;top:1px;border-left:1px solid rgba(0,0,0,.2)}.XSortButton span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.XInputText{border-radius:3px;padding:3px;color:#333;border:1px solid #C7C7C7;box-shadow:0 0 1px #DDD inset}.XButtonRecordOn{border:1px solid red}.XButtonRecordOn span{border-color:#F73F3F}.XIcon24-Speaker-Off{background:url(../img/XIconSet-24x24.png) -48px 0 no-repeat;width:24px;height:24px}.XIcon24-Speaker-On{background:url(../img/XIconSet-24x24.png) -120px 0 no-repeat;width:24px;height:24px}.XIcon24-SoundSliderThumb{background:url(../img/XIconSet-24x24.png) -96px 0 no-repeat;width:24px;height:24px}.SelectBox{display:inline-block;border-radius:2px;background-image:linear-gradient(#fefefe,#ebebeb);border:1px solid rgba(0,0,0,.2);vertical-align:middle;position:relative;cursor:pointer}.SelectBox.HideFirst option:first-child{display:none}.SelectBox:hover{background:linear-gradient(#fefefe,#ddd) #fefefe;border:1px solid rgba(0,0,0,.3);color:#222;text-shadow:0 1px 0 #fff}.SelectBoxText{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.SelectBoxSettings{width:195px;text-align:center;padding:0 0 0 20px}.SelectBoxText .InnerIco{color:#719d24;margin-left:10px}.SelectBoxText .InnerIco.move{margin-left:-10px}.SelectBoxArrow{top:12px;border:4px solid;border-color:#555 transparent transparent;width:0;height:0;position:absolute;right:8px}.SelectBoxMenu{position:absolute;top:0;left:0;right:0;height:30px;cursor:pointer}.SelectBoxMenu .SelectBoxText{top:5px;color:#719d24;font-weight:700;text-align:center;position:relative}.SelectMenuBox .MenuContent{margin-top:30px}.MediaPlayerBack{background:url(../img/XPlayer.png) no-repeat;width:42px;height:42px;cursor:pointer}.MediaPlayerBack:hover{background:url(../img/XPlayer.png) 0 -50px no-repeat}.MediaPlayerForward{background:url(../img/XPlayer.png) -135px 0 no-repeat;width:42px;height:42px;cursor:pointer}.MediaPlayerForward:hover{background:url(../img/XPlayer.png) -135px -50px no-repeat}.MediaPlayerPlay{background:url(../img/XPlayer.png) -40px 0 no-repeat;width:46px;height:46px;cursor:pointer}.MediaPlayerPlay:hover{background:url(../img/XPlayer.png) -40px -50px no-repeat}.MediaPlayerPause{background:url(../img/XPlayer.png) -87px 0 no-repeat;width:46px;height:46px;cursor:pointer}.MediaPlayerPause:hover{background:url(../img/XPlayer.png) -87px -50px no-repeat}.MediaPlayerVolumeDown{background:url(../img/XPlayer.png) -173px -5px no-repeat;width:38px;height:38px;cursor:pointer}.MediaPlayerVolumeDown:hover{background:url(../img/XPlayer.png) -173px -55px no-repeat}.MediaPlayerVolumeUp{background:url(../img/XPlayer.png) -209px -5px no-repeat;width:38px;height:38px;cursor:pointer}.MediaPlayerVolumeUp:hover{background:url(../img/XPlayer.png) -209px -55px no-repeat}.MediaPlayerProgressButton{background:url(../img/XPlayer.png) 0 -150px no-repeat;width:20px;height:20px;cursor:pointer}.MediaPlayerProgressButton:hover{background:url(../img/XPlayer.png) -20px -150px no-repeat}.PopupSlider{display:none;position:absolute;top:26px;left:0;width:28px;z-index:100;height:100px;background-color:#fff;border:1px solid #ddd;border-radius:0 0 4px 4px}.PopupSlider .PopupSliderFadeLine{position:absolute;top:5px;bottom:5px;background-color:#bbb;left:12px;right:12px}.PopupSlider .PopupSliderFader{position:absolute;top:30px;width:20px;height:20px;background-color:#999;border-radius:20px;left:4px;box-shadow:1px 0 5px rgba(0,0,0,.3),0 2px 2px #fff inset}.CheckboxItem-true{background:url(../img/XIconSet-24x24.png?v=1383302254789) -96px -48px no-repeat}.CheckboxItem-false{background:url(../img/XIconSet-24x24.png?v=1383302254789) -120px -48px no-repeat}.ImgBtnUpload{display:inline-block;width:100px;text-align:center;line-height:28px;height:26px;cursor:pointer;font-size:11px;font-weight:700;margin-right:10px;border-radius:2px;-webkit-border-radius:2px;border:1px solid rgba(0,0,0,.2)}
+option {
+  text-align: center;
+  padding-left: 20px;
+}
+textarea {
+  background-color: #FFFFFF;
+  appearance: textfield;
+  user-select: text;
+  resize: none;
+  outline: none;
+  padding: 5px;
+  font-size: 11px;
+  border-radius: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0 0 1px #ddd inset;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  position: relative;
+}
+select::-ms-value {
+  background: transparent;
+  color: #333;
+}
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="tel"] {
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+.ListSectionButtons {
+  position: absolute;
+  height: 40px;
+  top: 0px;
+  right: 10px;
+}
+.ListSectionButtons .XButton {
+  position: relative;
+  display: block;
+  float: right;
+  width: 80px;
+  margin-left: 10px;
+  height: 28px;
+  padding-top: 3px;
+  font-weight: bold;
+}
+.XButton {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: #fefefe linear-gradient(#fefefe, #ebebeb);
+  color: #333;
+  text-shadow: 0 1px 0 #fff;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+  /* green */
+  /* blue */
+  /* red */
+}
+.XButton span {
+  vertical-align: middle;
+  position: relative;
+  font-size: 11px;
+}
+.XButton:hover {
+  background: #fefefe linear-gradient(#fefefe, #dddddd);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0 #fff;
+}
+.XButton.XButtonGreen {
+  background: #3c9c00 linear-gradient(#3c9c00, #328400);
+  text-shadow: none;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#3c9c00), to(#328400));
+  background-color: #3c9c00;
+  color: #e8e8e8;
+  border: 1px solid rgba(155, 155, 155, 0.3);
+  transition: all .3s;
+  -webkit-transition: all .3s;
+}
+.XButton.XButtonGreen:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 -1px 0 #000000;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.XButton.XButtonBlue {
+  background: #0077f1 linear-gradient(#0077f1, #006fe1);
+  color: #e8e8e8;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(155, 155, 155, 0.3);
+}
+.XButton.XButtonRed {
+  background: #d72800 linear-gradient(#d72800, #b72200);
+  color: #e8e8e8;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(155, 155, 155, 0.3);
+}
+.XButtonNormal span {
+  background-color: transparent;
+  color: #333;
+  text-shadow: 0px 1px 0px #FFF;
+  transition: border 0.3s ease 0s;
+  font-weight: bold;
+}
+.XButtonMedium.disabled-true span,
+.XButtonMedium.disabled-true:hover span {
+  height: 26px;
+  /*background-image: linear-gradient(left top, left bottom, #fefefe, #ebebeb);
+  background-color: #ebebeb;
+  background: #fefefe linear-gradient(#fefefe, #ebebeb);*/
+  background: transparent;
+  color: #999;
+  text-shadow: 0 1px 0px #fff;
+  cursor: auto;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  transition: none;
+  box-shadow: none;
+}
+.XButton.disabled,
+.XButtonNormal:disabled span,
+.XButtonNormal.disabled-true span {
+  height: 26px;
+  color: #999;
+  text-shadow: 0 1px 0px #fff;
+  transition: border .3s;
+  cursor: auto;
+  background: transparent;
+}
+.XButtonBlue.disabled-true span,
+.XButtonBlue.disabled span,
+input[disabled],
+select[disabled] {
+  opacity: 0.5;
+  cursor: auto;
+}
+.XButtonClose {
+  background: url(../img/XIconSet-24x24.png) no-repeat -28px -28px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+.XButtonClose:hover {
+  background: url(../img/XIconSet-24x24.png) no-repeat -52px -28px;
+}
+.XButtonDropDown span {
+  padding-right: 10px;
+}
+.XButtonDropDownArrow {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  border-color: #555 transparent  transparent  transparent;
+  border-width: 4px;
+  border-style: solid;
+  width: 0px;
+  height: 0px;
+}
+.XButton.XButtonToggle,
+.XButtonNormal.XButton.XButtonToggle {
+  width: 40px;
+}
+.XButton.XButtonToggleSmall,
+.XButtonNormal.XButton.XButtonToggleSmall {
+  width: 24px;
+}
+.XButtonToggle.XButtonNormal {
+  width: 80px;
+}
+.XButtonToggle.XButtonSmall {
+  width: 65px;
+}
+.XButtonToggle span {
+  color: #333;
+  text-shadow: 0 1px 0px #fff;
+  transition: border .3s;
+  -webkit-transition: border .3s;
+  left: 6px;
+  right: 6px;
+}
+.XButtonToggle.Off span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));
+}
+.XButtonToggle.On span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#dddddd));
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15) inset;
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15) inset;
+}
+.XButtonToggle .XButtonToggleIcon {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.ToolBar .XButton {
+  height: 26px;
+  padding: 3px 5px 6px 5px;
+}
+.XIcon24-Record-Off {
+  background: url(../img/XIconSet-24x24.png) no-repeat -194px 0px;
+}
+.XIcon24-Record-On {
+  background: url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
+}
+.XIcon24-Record-Off,
+.XIcon24-Record-On {
+  position: absolute;
+  width: 16px;
+  height: 15px;
+  right: 12px;
+  top: 2px;
+}
+.XIcon24-MuteOff {
+  background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-MuteOn {
+  background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
+  width: 24px;
+  height: 24px;
+}
+.CurrentCallBtn {
+  margin: 10px 5px 10px 0px;
+  height: 30px;
+  padding: 4px 3px 3px 3px;
+  float: left;
+}
+.CurrentCallBtn.disableButton {
+  cursor: default;
+  pointer-events: none;
+}
+.UnmuteBtn {
+  border: 1px solid #F8B682;
+}
+div.CurrentCallBtn {
+  opacity: 0.5;
+}
+div.CurrentCallBtn.dial {
+  padding: 5px 10px;
+}
+div.CurrentCallBtn.record {
+  top: 10px;
+  left: 0px;
+}
+div.CurrentCallBtn.record span {
+  margin-top: -3px;
+}
+input.CurrentCallBtn.disableButton {
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.CurrentCallBtnLong {
+  margin: 10px 10px 0px 0px;
+  width: 170px;
+}
+.XButtonToggle:hover span {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0px #fff;
+  transition: border .3s;
+  -webkit-transition: border .3s;
+}
+.XButtonToggle.Off:hover span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dddddd));
+}
+.XButtonToggle.On:hover span {
+  height: 26px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dddddd));
+}
+.XButtonToggle .SelectBoxArrowBox {
+  position: absolute;
+  top: 1px;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+.XSortButton span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.XInputText {
+  border-radius: 3px;
+  padding: 3px;
+  color: #333;
+  border: solid 1px #C7C7C7;
+  box-shadow: 0px 0px 1px #DDD inset;
+}
+.XButtonRecordOn {
+  border: 1px solid #FF0000;
+}
+.XButtonRecordOn span {
+  border-color: #F73F3F;
+}
+/**
+DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
+*/
+.XIcon24-Speaker-Off {
+  background: url(../img/XIconSet-24x24.png) no-repeat -48px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-Speaker-On {
+  background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
+  width: 24px;
+  height: 24px;
+}
+.XIcon24-SoundSliderThumb {
+  background: url(../img/XIconSet-24x24.png) no-repeat -96px 0px;
+  width: 24px;
+  height: 24px;
+}
+.SelectBox {
+  display: inline-block;
+  border-radius: 2px;
+  background-image: linear-gradient(#fefefe, #ebebeb);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+}
+.SelectBox.HideFirst option:first-child {
+  display: none;
+}
+.SelectBox:hover {
+  background: #fefefe linear-gradient(#fefefe, #dddddd);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0 #fff;
+}
+.SelectBoxText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /*font-size: 0.688em;*/
+  font-size: 11px;
+}
+.SelectBoxSettings {
+  width: 195px;
+  text-align: center;
+  padding: 0 0 0 20px;
+}
+.SelectBoxText .InnerIco {
+  color: #719d24;
+  margin-left: 10px;
+}
+.SelectBoxText .InnerIco.move {
+  margin-left: -10px;
+}
+.SelectBoxArrow {
+  top: 12px;
+  border: 4px solid;
+  border-color: #555 transparent transparent transparent;
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 8px;
+}
+.SelectBoxMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  cursor: pointer;
+}
+.SelectBoxMenu .SelectBoxText {
+  top: 5px;
+  color: #719d24;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+}
+.SelectMenuBox .MenuContent {
+  margin-top: 30px;
+}
+/* voicemail buttons */
+.MediaPlayerBack {
+  background: url(../img/XPlayer.png) no-repeat 0px 0px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+}
+.MediaPlayerBack:hover {
+  background: url(../img/XPlayer.png) no-repeat 0px -50px;
+}
+.MediaPlayerForward {
+  background: url(../img/XPlayer.png) no-repeat -135px 0px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+}
+.MediaPlayerForward:hover {
+  background: url(../img/XPlayer.png) no-repeat -135px -50px;
+}
+.MediaPlayerPlay {
+  background: url(../img/XPlayer.png) no-repeat -40px 0px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+}
+.MediaPlayerPlay:hover {
+  background: url(../img/XPlayer.png) no-repeat -40px -50px;
+}
+.MediaPlayerPause {
+  background: url(../img/XPlayer.png) no-repeat -87px 0px;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+}
+.MediaPlayerPause:hover {
+  background: url(../img/XPlayer.png) no-repeat -87px -50px;
+}
+.MediaPlayerVolumeDown {
+  background: url(../img/XPlayer.png) no-repeat -173px -5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+.MediaPlayerVolumeDown:hover {
+  background: url(../img/XPlayer.png) no-repeat -173px -55px;
+}
+.MediaPlayerVolumeUp {
+  background: url(../img/XPlayer.png) no-repeat -209px -5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+.MediaPlayerVolumeUp:hover {
+  background: url(../img/XPlayer.png) no-repeat -209px -55px;
+}
+.MediaPlayerProgressButton {
+  background: url(../img/XPlayer.png) no-repeat 0 -150px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.MediaPlayerProgressButton:hover {
+  background: url(../img/XPlayer.png) no-repeat -20px -150px;
+}
+.PopupSlider {
+  display: none;
+  position: absolute;
+  top: 26px;
+  left: 0;
+  width: 28px;
+  z-index: 100;
+  height: 100px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+}
+.PopupSlider .PopupSliderFadeLine {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  background-color: #bbb;
+  left: 12px;
+  right: 12px;
+}
+.PopupSlider .PopupSliderFader {
+  position: absolute;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  background-color: #999;
+  border-radius: 20px;
+  left: 4px;
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
+}
+.CheckboxItem-true {
+  background: url("../img/XIconSet-24x24.png?v=1383302254789") no-repeat -96px -48px;
+}
+.CheckboxItem-false {
+  background: url("../img/XIconSet-24x24.png?v=1383302254789") no-repeat -120px -48px;
+}
+.ImgBtnUpload {
+  display: inline-block;
+  width: 100px;
+  font-size: 1em;
+  text-align: center;
+  line-height: 28px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  margin-right: 10px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}

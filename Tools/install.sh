@@ -4,8 +4,12 @@ FJ_ROOT_DIR=..
 
 pushd $FJ_ROOT_DIR/FJSHUD
 npm install
+popd
+
+pushd $FJ_ROOT_DIR/FJSHUD/app
 bower install
 popd
+
 
 pushd $FJ_ROOT_DIR/FJSHUD/app/styles
 lessc main.less > main.css
