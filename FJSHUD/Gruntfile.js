@@ -91,6 +91,23 @@ module.exports = function(grunt) {
             'dest/app/properties.js':['app/properties.js'],
             'dest/app/index.version.html':['app/index.html']
           }
+      },
+      huc_dev:{
+        options:{
+          data:{
+            serverUrl:"https://huc-dev.fonality.com:8081",
+            loginUrl: "https://huc-dev.fonality.com:5501",
+            version: "HUDW" + getBuildNumber(),
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011219',
+            MAC_PLUGIN_VERSION:'1.1.011218',
+          }
+        },
+          files:{
+            'dest/app/properties.js':['app/properties.js'],
+            'dest/app/index.version.html':['app/index.html']
+          }
       }
     },
     less:{
@@ -249,6 +266,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
   grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
+  grunt.registerTask('build-huc-dev', ['concat','template:huc_dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
   
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
