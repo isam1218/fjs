@@ -131,7 +131,7 @@
                    <p ng-model="x.meeting_id">Meeting ID: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
                    <div class="meetingBtnsContainer">
-                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.timezone,x.password,x.option_jbh)">Edit</button>
+                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.timezone,x.password,x.option_jbh,x.start_hour)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
@@ -170,9 +170,9 @@
               
                           
 
-               <select ng-init="meeting.timeSelect = times[0]" ng-options="o for o in times" name="timeSelect" ng-model="meeting.timeSelect" >
+               <select ng-init="meeting.timeSelect" ng-options="o for o in times" name="timeSelect" ng-model="meeting.timeSelect" >
                </select>
-               <select name="AmPm" ng-model="meeting.AmPm" ng-init="meeting.AmPm = meridian[0]" ng-options="a for a in meridian">
+               <select name="AmPm" ng-model="meeting.AmPm" ng-init="meeting.AmPm" ng-options="a for a in meridian">
                     
                </select>
 
@@ -212,7 +212,7 @@
 
     
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="ok(meeting.AmPm); openClipboard(meetingTopic);" >Schedule</button>
+        <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="scheduleMeeting(meeting.AmPm); openClipboard(meetingTopic);" >Schedule</button>
         <button class="btn btn-primary" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm)">Update</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>

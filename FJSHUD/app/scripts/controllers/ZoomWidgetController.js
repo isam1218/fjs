@@ -77,13 +77,19 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       window.open(start_url);
     }
 
-    $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option){
+    $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option,start_hour){
       $scope.topic = topic;
       $scope.start_time = start_time;
       $scope.meeting_id = meetingId;
       $scope.timezone = timezone;
       $scope.password = password;
       $scope.option = option;
+      $scope.start_hour = start_hour.substr(0,4);
+      $scope.AmPm = start_hour.substr(4,2);
+     
+
+
+
       $scope.scheduleBtn = false;
       $scope.updateBtn = true;
           $modal.open({
@@ -118,6 +124,12 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         },
         option:function(){
            return $scope.option; 
+        },
+        start_hour: function(){
+            return $scope.start_hour;
+        },
+        AmPm: function(){
+            return $scope.AmPm;
         }
       }
     });
@@ -178,6 +190,12 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             
         },
         option:function(){
+            
+        },
+        start_hour: function(){
+           
+        },
+        AmPm: function(){
             
         }
       }
@@ -523,6 +541,12 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
         },
         option:function(){
            
+        },
+        start_hour: function(){
+            
+        },
+        AmPm: function(){
+            
         }
 
       }
@@ -556,7 +580,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
@@ -566,7 +590,27 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedul
  /* $scope.selected = {
     item: $scope.items[0]
   };*/
+$scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00"];
+//$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+ $scope.meridian= ["AM","PM"];
+  $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
+
+$scope.timeZone= ['Etc/GMT+12','Pacific/Pago_Pago','Pacific/Honolulu','America/Anchorage','America/Santa_Isabel','America/Los_Angeles','America/Phoenix','America/Mazatlan','America/Denver','America/Guatemala','America/Chicago','America/Mexico_City','America/Bogota','America/New_York','America/Caracas','America/Asuncion','America/Goose_Bay','America/Campo_Grande','America/Santo_Domingo','America/St_Johns','America/Sao_Paulo','America/Argentina/Buenos_Aires','America/Godthab','America/Montevideo','Etc/GMT+2','Atlantic/Azores','Atlantic/Cape_Verde','Etc/Utc','Europe/London','Europe/Berlin','Africa/Lagos','Africa/Windhoek','Asia/Damascus','Asia/Beirut','Africa/Johannesburg','Asia/Baghdad','Asia/Tehran','Asia/Dubai','Asia/Baku','Asia/Kabul','Asia/Karachi','Asia/Kolkata','Asia/Kathmandu','Asia/Dhaka','Asia/Rangoon','Asia/Jakarta','Asia/Shanghai','Asia/Irkutsk','Asia/Tokyo','Australia/Adelaide','Australia/Darwin','Australia/Brisbane','Australia/Sydney','Pacific/Noumea','Pacific/Noumea','Pacific/Tarawa','Pacific/Auckland','Pacific/Fiji','Pacific/Tongatapu','Pacific/Apia','Pacific/Kiritimati'];
+moment.locale('en');
+var tzName = jstz.determine().name(); // America/Los_Angeles
+//alert(tzName);
+//var d = new Date();
+//alert(d.toTimeString());
+//alert(d.getTimezoneOffset()/60);
+ for(i=0;i<=$scope.timeZone.length;i++){
+   if(tzName == $scope.timeZone[i]){
+            $scope.timeZone.unshift($scope.timeZone[i]);
+
+            break;
+  }
+}
 
 $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
   var getURL = function(action) {
@@ -600,6 +644,29 @@ $scope.meeting.times= time;
 $scope.meeting.timezone = timezone;
 $scope.meeting.password = password;
 $scope.meeting.jbh = option;
+$scope.meeting.timeSelect = start_hour;
+$scope.meeting.AmPm = AmPm;
+
+if($scope.meeting.timeSelect != undefined){
+$scope.meeting.timeSelect = start_hour;
+}
+else{
+    $scope.meeting.timeSelect = $scope.times[0];
+}
+
+if($scope.meeting.AmPm != undefined){
+$scope.meeting.AmPm = AmPm;
+}
+else{
+    $scope.meeting.AmPm = $scope.meridian[0];
+}
+
+if($scope.meeting.timezone != undefined){
+    $scope.meeting.timezone = timezone;
+}
+else{
+    $scope.meeting.timezone = $scope.timeZone[0];
+}
 
 if($scope.meeting.times != undefined){
 $scope.meeting.dt = $scope.meeting.times;
@@ -647,7 +714,6 @@ $scope.reloadRoute = function() {
  $scope.editMeeting = function(AmPm){
    $scope.startTime = new Date($scope.meeting.dt);
   $scope.startMonth = $scope.startTime.getMonth()+1;
-  $scope.startDay = $scope.startTime.getDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -657,10 +723,14 @@ $scope.reloadRoute = function() {
 
 if($scope.meeting.AmPm == "AM"){
   $scope.hourUTC = $scope.startHourUTC;
+    $scope.startDay = $scope.startTime.getDate()+1;
+
  }
  if($scope.meeting.AmPm =="PM"){
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =$scope.startHourUTC + 12;
+    $scope.startDay = $scope.startTime.getDate();
+
  }
  
 
@@ -685,27 +755,7 @@ if($scope.meeting.AmPm == "AM"){
   };
 
 
-$scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00"];
-//$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
- $scope.meridian= ["AM","PM"];
-  $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-
-$scope.timeZone= ['Etc/GMT+12','Pacific/Pago_Pago','Pacific/Honolulu','America/Anchorage','America/Santa_Isabel','America/Los_Angeles','America/Phoenix','America/Mazatlan','America/Denver','America/Guatemala','America/Chicago','America/Mexico_City','America/Bogota','America/New_York','America/Caracas','America/Asuncion','America/Goose_Bay','America/Campo_Grande','America/Santo_Domingo','America/St_Johns','America/Sao_Paulo','America/Argentina/Buenos_Aires','America/Godthab','America/Montevideo','Etc/GMT+2','Atlantic/Azores','Atlantic/Cape_Verde','Etc/Utc','Europe/London','Europe/Berlin','Africa/Lagos','Africa/Windhoek','Asia/Damascus','Asia/Beirut','Africa/Johannesburg','Asia/Baghdad','Asia/Tehran','Asia/Dubai','Asia/Baku','Asia/Kabul','Asia/Karachi','Asia/Kolkata','Asia/Kathmandu','Asia/Dhaka','Asia/Rangoon','Asia/Jakarta','Asia/Shanghai','Asia/Irkutsk','Asia/Tokyo','Australia/Adelaide','Australia/Darwin','Australia/Brisbane','Australia/Sydney','Pacific/Noumea','Pacific/Noumea','Pacific/Tarawa','Pacific/Auckland','Pacific/Fiji','Pacific/Tongatapu','Pacific/Apia','Pacific/Kiritimati'];
-moment.locale('en');
-var tzName = jstz.determine().name(); // America/Los_Angeles
-//alert(tzName);
-//var d = new Date();
-//alert(d.toTimeString());
-//alert(d.getTimezoneOffset()/60);
- for(i=0;i<=$scope.timeZone.length;i++){
-   if(tzName == $scope.timeZone[i]){
-            $scope.timeZone.unshift($scope.timeZone[i]);
-
-            break;
-  }
-}
 /*  for(i=1;i<=$scope.timeZone.length;i++){
    if(tzName == $scope.timeZone[i]){
     var a = $scope.timeZone.indexOf($scope.timeZone[i]);
@@ -728,7 +778,7 @@ var tzName = jstz.determine().name(); // America/Los_Angeles
  // $scope.startTime = $scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
 
 
-  $scope.ok = function (AmPm) {
+  $scope.scheduleMeeting = function (AmPm) {
   $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startDay = $scope.startTime.getDate()+1;
