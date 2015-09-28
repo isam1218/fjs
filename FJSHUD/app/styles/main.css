@@ -5354,7 +5354,7 @@ div.NewCall .XButton.XButtonNormal {
 @-moz-document url-prefix() {
   .Widget.Intellinote .Right .SearchHolder {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 }
 .Widget.Intellinote .Right .Contacts {
