@@ -612,15 +612,15 @@ hudweb.controller('NotificationController',
        	
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
-				for (var i = 0; i < $scope.calls.length; i++){
-			 		if(alertDuration != "entire"){
-		              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-		                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-		                return;
-		               }
-		            }
-                    phoneService.displayCallAlert($scope.calls[i]);
-				}
+					for (var i = 0; i < $scope.calls.length; i++){
+				 		if(alertDuration != "entire"){
+              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+                return;
+              }
+            }
+            phoneService.displayCallAlert($scope.calls[i]);
+					}
 			}else{
         		if(alertDuration != "entire"){
 				 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
@@ -635,17 +635,20 @@ hudweb.controller('NotificationController',
     }else{
 
       if(nservice.isEnabled()){
+        for (var i = 0; i < $scope.calls.length; i++){
+           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+        } 
       }else{
         phoneService.removeNotification();
-        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+        if($scope.calls.length > 0){
            $scope.displayAlert = true;
             $timeout(cacheNotification,1000);
         }else{
             phoneService.cacheNotification(undefined,0,0);
         }  
       }
-      
-    }
+      }
+    
 
     
 	});
@@ -843,6 +846,7 @@ hudweb.controller('NotificationController',
 
         if (displayDesktopAlert){
                if ($scope.todaysNotifications.length > 0){
+                      phoneService.setStayHidden(false);
                        if(nservice.isEnabled()){
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
