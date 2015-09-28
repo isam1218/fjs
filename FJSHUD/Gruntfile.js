@@ -211,7 +211,7 @@ module.exports = function(grunt) {
       dist: {
         files: [
           //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
-          {expand: true, src: ['app/bower_components/**/*'], dest: 'prod/app/'},
+          {expand: true, src: ['app/bower_components/**/*'], dest: 'prod/'},
           {expand: true, src: ['server.js'], dest: 'prod/'},
           //{expand: true, src: ['app/properties.js'], dest: 'prod/'},
           {expand: true, src: ['ssl/*'], dest: 'prod/'},
@@ -226,7 +226,7 @@ module.exports = function(grunt) {
       dev: {
         files: [
           //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
-          {expand: true, src: ['app/bower_components/**/*'], dest: 'dest/app/'},
+          {expand: true, src: ['app/bower_components/**/*'], dest: 'dest/'},
           {expand: true, src: ['server.js'], dest: 'dest/'},
           //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
           {expand: true, src: ['ssl/*'], dest: 'dest/'},
