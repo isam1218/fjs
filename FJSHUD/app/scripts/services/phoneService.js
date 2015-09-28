@@ -88,7 +88,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		var alertDuration = settingsService.getSetting('alert_call_duration');      
 
 		var hidden; 
-		if(document.hidden || !isForceHidden && !isAlertShown){
+		if((document.hidden || !isForceHidden) && !isAlertShown){
 			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
 				if(nservice.isEnabled()){
