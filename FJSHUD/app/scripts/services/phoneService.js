@@ -677,12 +677,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			queryArray = query.split('&');
 			xpid = queryArray[0];
     	}		
-		
+				
 		// use 'return' instead of 'break' if we don't need to re-focus tab
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-					return;
+	    			isAlertShown = false;
+					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
 	    			break;
