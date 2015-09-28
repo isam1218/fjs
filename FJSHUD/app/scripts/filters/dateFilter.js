@@ -15,13 +15,19 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
     	}	
 
     	//will return different text depended on whether or not its today or yesterday otherwise return the full date with specified date format
+        // also return day if in the past week
     	
         if (chatSection === 'list_message_left'){
             return moment(milliseconds).lang(locale_code).format('hh:mm a');
         } else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
             return "Today";
         } else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
-            return "Yesterday";
+            return "Yesterday";        
+        } else if (chatSection == 'list_message_header' && moment(milliseconds).startOf('week').isSame(moment(todayTime).startOf('week'))){
+            // if msg happened in the past week, return day (Sunday, Monday, Tues, Wed, Thurs, Fri)...
+            return moment(milliseconds).lang(locale_code).format('dddd');
+        } else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('year').isSame(moment(todayTime).startOf('year'))){
+            return moment(milliseconds).lang(locale_code).format('MMMM D');
         } else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
     		return "Today " + moment(milliseconds).lang(locale_code).format('hh:mm a');
     	} else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
