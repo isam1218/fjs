@@ -95,7 +95,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(!$.isEmptyObject(callsDetails)){
 						for(var detail in callsDetails){
 							if(alertDuration != "entire"){
-								if(callsDetails)[detail].state != fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+								if(callsDetails[detail].state != fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 									context.displayCallAlert(callsDetails[detail]);
 								} 
 							}else{
