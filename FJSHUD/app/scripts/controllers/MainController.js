@@ -125,7 +125,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 
 	$scope.reload = function(){
 		window.onbeforeunload = function(){};
-		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 		location.reload();
 	};
 
