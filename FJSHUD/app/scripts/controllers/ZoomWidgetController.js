@@ -77,10 +77,13 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       window.open(start_url);
     }
 
-    $scope.openEditModal = function(meetingId,topic,start_time){
+    $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option){
       $scope.topic = topic;
       $scope.start_time = start_time;
       $scope.meeting_id = meetingId;
+      $scope.timezone = timezone;
+      $scope.password = password;
+      $scope.option = option;
       $scope.scheduleBtn = false;
       $scope.updateBtn = true;
           $modal.open({
@@ -106,6 +109,15 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         },
         time: function(){
           return $scope.start_time;
+        },
+        timezone:function(){
+            return $scope.timezone;
+        },
+        password:function(){
+            return $scope.password;
+        },
+        option:function(){
+           return $scope.option; 
         }
       }
     });
@@ -158,6 +170,15 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         },
         time: function(){
 
+        },
+        timezone:function(){
+            
+        },
+        password:function(){
+            
+        },
+        option:function(){
+            
         }
       }
     });
@@ -493,6 +514,15 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
         },
         time: function(){
 
+        },
+        timezone:function(){
+            
+        },
+        password:function(){
+           
+        },
+        option:function(){
+           
         }
 
       }
@@ -526,7 +556,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
@@ -567,6 +597,10 @@ $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
  // SET EDIT VALUES
 $scope.meeting.meetingTopic = topic;
 $scope.meeting.times= time;
+$scope.meeting.timezone = timezone;
+$scope.meeting.password = password;
+$scope.meeting.jbh = option;
+
 if($scope.meeting.times != undefined){
 $scope.meeting.dt = $scope.meeting.times;
   }
@@ -656,143 +690,7 @@ $scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-/* $scope.timeZone = [
-{
-  name:"(GMT-8:00) Pacific Time",
- offset:420        
-},
-{
-  name:"(GMT-7:00) Mountain Time ",
- offset:360
-},
-{
-  name:"(GMT-6:00) Central Time ",
-  offset:300
-},
-{
-  name:"(GMT-5:00) Eastern Time ",
-  offset:240
-},
-{
-  name:"(GMT-4:00) Atlantic Time ",
-  offset:180
-},
-{
-  name:"(GMT-9:00) Alaska Time",
-  offset:480
-},
-{
-  name:"(GMT-10:00) Hawaii Time",
-  offset:600
-},
-{
-  name:"(GMT-12:00)International Date Line West",
-  offset:720
-},
-{
-  name:"(GMT-11:00)Coordinated Universal Time",
-  offset:660
-},
-{
-  name:"(GMT-04:30) Caracas",
-  offset:270
-},
-{
-  name:"(GMT-03:30) Newfoundland",
-  offset:150
-},
-{
-  name:"(GMT-03:00) Greenland",
-  offset:120
-},
-{
-  name:"(GMT-01:00) Azores",
-  offset:0
-},
-{
-  name:"(GMT-01:00) Cabo Verde Is.",
-  offset:60
-},
-{
-  name:"(GMT) Casablanca",
-  offset:-60
-},
-{
-  name:"(GMT+01:00) Amsterdam",
-  offset:-120
-},
-{
-  name:"(GMT+02:00) Amman",
-  offset:-180
-},
-{
-  name:"(GMT+03:30) Tehran",
-  offset:-270
-},
-{
-  name:"(GMT+04:00) Abu Dhabi, Muscat",
-  offset:-240
-},
-{
-  name:"(GMT+4:00) Baku",
-  offset:-300
-},
-{
-  name:"(GMT+05:30) Chennai",
-  offset:-330
-},
-{
-  name:"(GMT+05:45) Kathmandu",
-  offset:-345
-},
-{
-  name:"(GMT+06:00) Astana",
-  offset:-360
-},
-{
-  name:"(GMT+06:30) Yangon",
-  offset:-390
-},
-{
-  name:"(GMT+07:00) Bangkok",
-  offset:-420
-},
-{
-  name:"(GMT+05:30) Beijing",
-  offset:-480
-},
-{
-  name:"(GMT+08:00) Ulaanbaatar",
-  offset:-540
-},
-{
-  name:"(GMT+09:30) Adelaide",
-  offset:-570
-},
-{
-  name:"(GMT+10:00) Brisbane",
-  offset:-600
-},
-{
-  name:"(GMT+11:00) Chokurdakh",
-  offset:-660
-},
-{
-  name:"(GMT+12:00) Auckland,Wellington",
-  offset:-720
-},
-{
-  name:"(GMT+13:00) Nuku'alofa",
-  offset:-780
-},
-{
-  name:"(GMT+14:00) Kiritimati Island",
-  offset:-840
-}
 
-
-
-];*/
 
 $scope.timeZone= ['Etc/GMT+12','Pacific/Pago_Pago','Pacific/Honolulu','America/Anchorage','America/Santa_Isabel','America/Los_Angeles','America/Phoenix','America/Mazatlan','America/Denver','America/Guatemala','America/Chicago','America/Mexico_City','America/Bogota','America/New_York','America/Caracas','America/Asuncion','America/Goose_Bay','America/Campo_Grande','America/Santo_Domingo','America/St_Johns','America/Sao_Paulo','America/Argentina/Buenos_Aires','America/Godthab','America/Montevideo','Etc/GMT+2','Atlantic/Azores','Atlantic/Cape_Verde','Etc/Utc','Europe/London','Europe/Berlin','Africa/Lagos','Africa/Windhoek','Asia/Damascus','Asia/Beirut','Africa/Johannesburg','Asia/Baghdad','Asia/Tehran','Asia/Dubai','Asia/Baku','Asia/Kabul','Asia/Karachi','Asia/Kolkata','Asia/Kathmandu','Asia/Dhaka','Asia/Rangoon','Asia/Jakarta','Asia/Shanghai','Asia/Irkutsk','Asia/Tokyo','Australia/Adelaide','Australia/Darwin','Australia/Brisbane','Australia/Sydney','Pacific/Noumea','Pacific/Noumea','Pacific/Tarawa','Pacific/Auckland','Pacific/Fiji','Pacific/Tongatapu','Pacific/Apia','Pacific/Kiritimati'];
 moment.locale('en');
