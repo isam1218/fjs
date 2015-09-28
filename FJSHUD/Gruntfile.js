@@ -53,7 +53,7 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'dest/app/index.html':'dest/app/index.version.html'
+            'prod/app/index.html':'prod/app/index.version.html'
         }
       }
 
@@ -64,23 +64,49 @@ module.exports = function(grunt) {
             data:{
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
-              version: "HUDW" + getBuildNumber()
+              version: "HUDW" + getBuildNumber(),
+              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+              MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+              WINDOWS_PLUGIN_VERSION:'1.1.011219',
+              MAC_PLUGIN_VERSION:'1.1.011218',
             }
           },
           files:{
-            'dest/app/properties.js':['app/properties.js'],
-            'dest/app/index.version.html':['app/index.html']
+            'prod/app/properties.js':['app/properties.js'],
+            'prod/app/index.version.html':['app/index.html']
           }
       },dev:{
         options:{
           data:{
-            serverUrl:""
+            serverUrl:"https://dev4.fon9.com:8081",
+            loginUrl: "https://dev4.fon9.com:5501",
+            version: "HUDW" + getBuildNumber(),
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011219',
+            MAC_PLUGIN_VERSION:'1.1.011218',
           }
-        }
+        },
+          files:{
+            'dest/app/properties.js':['app/properties.js'],
+            'dest/app/index.version.html':['app/index.html']
+          }
       }
     },
     less:{
       dist:{
+        options:{
+          compress:true
+        },
+        files:{
+          "prod/app/styles/main.css":"app/styles/main.less",
+          "prod/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "prod/app/styles/firefox.css": "app/styles/firefox.less",
+          "prod/app/styles/safari.css": "app/styles/safari.less",
+          "prod/app/styles/ie.css": "app/styles/ie.less"
+        },
+      },
+      dev:{
         options:{
           compress:true
         },
@@ -106,7 +132,7 @@ module.exports = function(grunt) {
         'app/scripts/controllers/**/*.js',
         'app/scripts/services/**/*.js',
         'app/scripts/factory/**/*.js'
-      ],
+        ],
         dest: 'app/scripts/fjs.min.js'
       }
     }
@@ -127,7 +153,7 @@ module.exports = function(grunt) {
           beautify:false,
         },
         files:{
-          'dest/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
+          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
       }
     },
     'closure-compiler': {
@@ -168,6 +194,21 @@ module.exports = function(grunt) {
       dist: {
         files: [
           //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          {expand: true, src: ['bower_components/**/*'], dest: 'prod/'},
+          {expand: true, src: ['server.js'], dest: 'prod/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'prod/'},
+          {expand: true, src: ['ssl/*'], dest: 'prod/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
+          
+        ]
+      },
+      dev: {
+        files: [
+          //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
           {expand: true, src: ['bower_components/**/*'], dest: 'dest/'},
           {expand: true, src: ['server.js'], dest: 'dest/'},
           //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
@@ -176,9 +217,20 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
+          
+          {expand: true, src: [
+             'app/languageMap.js',
+              'app/scripts/app.js',
+              'app/scripts/filters/**/*.js',
+              'app/scripts/directives/**/*.js',
+              'app/scripts/controllers/**/*.js',
+              'app/scripts/services/**/*.js',
+              'app/scripts/factory/**/*.js'
+          ], dest: 'dest/'},
         
         ]
-      }
+      },
     }
   });
 
@@ -196,6 +248,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
+  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
   
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };

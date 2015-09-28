@@ -2,8 +2,8 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: "https://dev4.fon9.com:8081"
-	   	, loginURL: "https://dev4.fon9.com:5501"
+        serverURL: "<%= serverUrl %>"
+	   	, loginURL: "<%= loginUrl %>"
        //loginURL:'https://auth.fonality.com',
        // serverURL: 'https://fdp-huc-v5.fonality.com'
 //      serverURL: "https://lb-stage3.fonality.com:446"
@@ -47,8 +47,8 @@ fjs.CONFIG = {
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
-        WINDOWS_NEW:'http://build01.lax01.fonality.com/job/hud-wp.win/53/artifact/webphone/installer.win/WebPhone-1.1.011219.msi',
-        MAC_NEW:'http://build01.lax01.fonality.com/job/hud-wp.osx/52/artifact/webphone/installer.mac/WebPhone-1.1.011218.pkg'
+        WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
+        MAC_NEW:'<%= MAC_PLUGIN %>'
 
     },
     PLUGIN_VERSION:{
@@ -59,3 +59,7 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 };
+//fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
+
+//fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
+

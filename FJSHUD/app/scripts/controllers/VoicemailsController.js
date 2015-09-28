@@ -1,10 +1,10 @@
-hudweb.controller('VoicemailsController', ['$q','$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService','PhoneService', 
-	function($q, $rootScope, $scope, $routeParams, groupService, contactService, httpService, storageService,phoneService) {
+hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService','PhoneService', 
+	function($rootScope, $scope, $routeParams, groupService, contactService, httpService, storageService,phoneService) {
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
-	$scope.vm = {};
+	  $scope.vm = {};
 
     	// single group widget
 		if ($routeParams.groupId) {
