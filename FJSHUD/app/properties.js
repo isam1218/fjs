@@ -7,7 +7,7 @@ fjs.CONFIG = {
         serverURL: "<%= serverUrl %>"
 	   	, loginURL: "<%= loginUrl %>"
 
-    ,ppsServer: 'https://lb-stage3.fonality.com:8443/pps/'
+    
         //      serverURL: "https://huc-dev.fonality.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501"
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
@@ -63,3 +63,6 @@ fjs.CONFIG = {
 
 //fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
 
+fjs.CONFIG.SERVER.ppsServer= 'https://lb-stage3.fonality.com:8443/pps/';
+fjs.CONFIG.SERVER.serverURL= "https://lb-stage3.fonality.com:446";
+fjs.CONFIG.SERVER.loginURL="https://lb-stage3.fonality.com:444";
