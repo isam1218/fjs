@@ -5,6 +5,7 @@
     "angular": "~1.4.1",
     "angular-route": "~1.4.1",
     "angular-sanitize": "~1.4.1",
+    "angular-bootstrap":"0.13.3",
     "es5-shim": "~3.1.0",
     "jquery": "~2.1.4",
     "jquery-hoverintent": "~1.8.1",
