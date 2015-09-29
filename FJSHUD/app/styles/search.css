@@ -4,7 +4,7 @@
   border-radius: 3px;
   -webkit-border-radius: 3px;
   padding: .5em .5em .5em 2em;
-  background: url("../img/search.png") no-repeat white;
+  background: url("../img/search.png") no-repeat #ffffff;
   background-position: 1%;
   max-width: 100%;
 }
@@ -201,6 +201,9 @@
   text-align: right;
   font-size: 11px;
   font-weight: bold;
+}
+#WidgetSearch .SearchResults .ListRowStatus.GroupStatus {
+  visibility: visible !important;
 }
 .Widget.Search .SearchPanel input.SearchBox,
 .Widget.Search .SearchPanel input.XButton {

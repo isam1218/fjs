@@ -1,5 +1,4 @@
 .DockPanel {
-  position: relative;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
   -ms-flex: 1 1 auto;
@@ -8,8 +7,18 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: auto;
-  overflow-y: hidden;
+  max-width: 60%;
+  font-size: 0.9em;
+  position: fixed;
+  left: 820px;
+  top: 100px;
+  bottom: 20px;
+  border-right: none;
+  min-width: 200px;
+  right: 10px;
+}
+.DockPanel .NoneParked {
+  max-height: 42px !important;
 }
 .DockPanel .ListRowTitle {
   max-width: 100%;
@@ -28,6 +37,8 @@
 }
 .DockPanel .InnerDock {
   position: absolute;
+  overflow-x: auto;
+  overflow-y: hidden;
   height: 100%;
   width: 100%;
   column-width: 170px;
@@ -36,6 +47,7 @@
   column-gap: 5px;
   -webkit-column-gap: 5px;
   -moz-column-gap: 5px;
+  -webkit-transform: translateZ(0);
 }
 .DockPanel .InnerDock.ui-sortable:not(.ui-sortable-disabled) .Gadget {
   position: static;
@@ -62,19 +74,19 @@
   text-align: center;
 }
 .Gadget {
-  position: absolute;
+  position: relative;
   display: inline-flex;
   display: -webkit-inline-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  border-radius: 5px;
-  -webkit-border-radius: 0;
   border: 1px solid #aaa;
-  overflow: hidden;
   width: 160px;
   background-color: #EBEBEB;
   margin: .5em;
   opacity: .9;
+}
+.Gadget.Hide {
+  display: none !important;
 }
 .Gadget.Positioned {
   position: absolute;
@@ -102,6 +114,28 @@
 .Gadget:hover {
   box-shadow: 0 0 8px gray;
 }
+.Gadget #parked_calls .ListRow .ListRowTitle {
+  padding: 0px;
+  white-space: nowrap;
+  max-width: 70px;
+  padding-top: 5px;
+  text-overflow: ellipsis;
+  padding-left: 3px;
+  margin-top: .1px;
+}
+.Gadget #parked_calls .ListRow .ListRowTitle .ParkedCallDisplayName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #555;
+  text-shadow: 0px 1px 0px #fff;
+}
+.Gadget #parked_calls .timer {
+  float: right;
+  font-size: .65em;
+  margin-top: 7px;
+  margin-right: 2px;
+}
 .Gadget .Header {
   cursor: pointer;
   background-color: #ECECEC;
@@ -115,8 +149,13 @@
   -webkit-flex-direction: row;
   max-height: 40px;
 }
+.Gadget .Header span {
+  margin-top: -3px;
+}
 .Gadget .Header > .Avatar {
-  margin-top: auto;
+  margin-top: 0;
+  height: 32px;
+  width: 32px;
 }
 .Gadget .Header.Single {
   background: linear-gradient(to bottom, #eeeeef, #ddddde);
@@ -185,28 +224,41 @@
   font-size: 11px;
   white-space: nowrap;
 }
-.Gadget .Header .Title div.ListRowStatusIcon {
-  margin-left: -8px;
-}
-.Gadget .Header .Title div.ListRowStatusIcon:first-child {
-  margin-left: -5px;
-}
 .Gadget .Header .Title .Name {
   font-weight: bold;
   width: 99%;
   text-overflow: ellipsis;
 }
 .Gadget .Header .Title .Agents {
-  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
-  border-radius: 6px;
-  margin-top: 0px;
-  text-align: center;
+  /*background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+				border-radius: 6px;
+				margin-top: 0px;
+				text-align: center;				
+				font-size: 10px;
+				padding-left: 5px;
+				margin-left: -3px;
+				text-align: left;	
+				margin-top: 1px;	
+				line-height: 1.4em;	
+				color: #808080;	*/
+  right: 5px;
+  height: 14px;
+  line-height: 14px;
+  padding-left: 2px;
+  padding-right: 2px;
   font-size: 10px;
-  padding-left: 5px;
-  margin-left: -3px;
-  text-align: left;
-  margin-top: 1px;
-  line-height: 1.4em;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  text-align: center;
+  color: #888;
+  top: 23px;
+  left: 42px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  white-space: nowrap;
+  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+  margin-top: 3px;
 }
 .Gadget .Header .TopBarItemAppIcon.CallCenter {
   position: relative;
@@ -303,9 +355,13 @@
 }
 .Gadget .Content .List .ListRow .ListRowTitle .ListRowStatusIcon {
   float: left;
-  margin-left: -5px !important;
+  margin-left: 0 !important;
 }
 .Gadget .Content .List .ListRow .ListRowTitle .status {
+  max-width: 80%;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: top;
   font-size: 11px;
   color: #888;
   text-align: left;
@@ -315,7 +371,7 @@
   margin-top: 5px;
 }
 .Gadget .Content .List .ListRow .ListRowTitle .IconDisplay {
-  float: left;
+  float: none;
 }
 .Gadget .Content .List .ListRow .ListRowTitle .IconDisplay.XIcon-ChatStatus-offline {
   background-position: -78px 0px;
@@ -329,7 +385,7 @@
 .Gadget .Content .List.Stats {
   font-size: .7em;
   text-align: center;
-  color: #9B9B9B;
+  color: #808080;
   padding: 1em 0;
   line-height: 1.5em;
   border-top: 1px solid #D5D6D6;

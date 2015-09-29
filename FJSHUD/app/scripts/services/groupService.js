@@ -105,21 +105,41 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 			}
 		}
 		else {
-			for (var i = 0, iLen = data.length; i < iLen; i++) {
+			// look for removals
+			for (var g = 0, gLen = groups.length; g < gLen; g++) {
 				var match = false;
-					
-				for (var g = 0, gLen = groups.length; g < gLen; g++) {
+				
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					if (groups[g].xpid == data[i].xpid) {
-						// group was deleted
+						// group was deleted the right way
 						if (data[i].xef001type == 'delete') {
 							$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetGroup_' + groups[g].xpid);
 					
 							groups.splice(g, 1);
 							gLen--;
 						}
-						// regular update
-						else
-							angular.extend(groups[g], data[i]);
+						
+						match = true;
+						break;
+					}
+				}
+				
+				// group was deleted the lame way
+				if (!match) {
+					$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetGroup_' + groups[g].xpid);
+					
+					groups.splice(g, 1);
+					gLen--;
+				}
+			}
+
+			// update or add
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+					
+				for (var g = 0, gLen = groups.length; g < gLen; g++) {
+					if (groups[g].xpid == data[i].xpid) {
+						angular.extend(groups[g], data[i]);
 						
 						match = true;
 						break;
@@ -150,42 +170,56 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			// delete member
-			if (data[i].xef001type == 'delete') {
-				for (var g = 0, gLen = groups.length; g < gLen; g++) {
-					var group = groups[g];
+		for (var g = 0, gLen = groups.length; g < gLen; g++) {
+			var group = groups[g];
+			
+			// check existing members first
+			for (var m = 0, mLen = group.members.length; m < mLen; m++) {
+				var match = false;
 				
-					for (var m = 0, mLen = group.members.length; m < mLen; m++) {
-						if (data[i].xpid == group.members[m].xpid) {
-							// was this a favorite?
-							if (group.xpid == favoriteID)
-								delete favorites[group.members[m].contactId];
-								
-							// delete from main group regardless
-							group.members.splice(m, 1);
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					if (data[i].xpid == group.members[m].xpid) {
+						// keep member as is
+						if (data[i].xef001type != 'delete')
+							match = true;
 							
-							break;
-						}
+						break;
 					}
 				}
+				
+				// remove member
+				if (!match) {
+					// was this a favorite?
+					if (group.xpid == favoriteID)
+						delete favorites[group.members[m].contactId];
+						
+					// delete from main group regardless
+					group.members.splice(m, 1);
+					mLen--;
+				}
 			}
-			// add member
-			else {
-				for (var g = 0, gLen = groups.length; g < gLen; g++) {				
+		}
+		
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			// check for new members
+			if (data[i].groupId) {
+				for (var g = 0, gLen = groups.length; g < gLen; g++) {
+					var group = groups[g];
+					
 					// add member to groups
-					if (data[i].groupId == groups[g].xpid) {
-						if (!service.isMember(groups[g], data[i])) {
+					if (data[i].groupId == group.xpid) {
+						if (!service.isMember(group, data[i].contactId)) {
 							data[i].fullProfile = contactService.getContact(data[i].contactId);
-							groups[g].members.push(data[i]);
+							group.members.push(data[i]);
 						}
 						
 						// add to favorites object
 						if (data[i].groupId == favoriteID)
 							favorites[data[i].contactId] = 1;
 						// mark as mine
-						else if (!mine && !groups[g].ownerId && data[i].contactId == $rootScope.myPid)
-							mine = groups[g];
+						else if (!mine && !group.ownerId && data[i].contactId == $rootScope.myPid)
+							mine = group;
+						
 						break;
 					}
 				}

@@ -88,7 +88,7 @@
     .Conference-HeaderSubTitle{
         font-size: 11px;
         line-height: 18px;
-        width: 50%;
+        width: 60%;
         margin-left: 10px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -803,15 +803,9 @@
             overflow-x: hidden;
             width: 100%;
         }
-        .ListRowTitle{
-
-        }
+        
         .AddTeamMember{
           width: 75%;
-          max-width: 100%;
-        }
-        .AddZoomMember{
-          width: 60%;
           max-width: 100%;
         }
     }
@@ -851,6 +845,16 @@
       
             .ListRowTitle{
                 margin-top: -5px;
+
+              &.AddConferenceMember{
+                display: flex;
+                flex-direction: column;
+                float: left;
+                max-width: 85%;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              }
                 
                 .ListRowStatusIcon{
                     margin-left: 0px;
@@ -891,6 +895,15 @@
     .BottomRow { 
       white-space: nowrap; 
     }
+  }
+  
+  &.Bump {
+	margin-top: -6em;
+	
+	.Arrow {
+	  top: auto;
+	  bottom: 1em;
+	}
   }
   
   .Arrow {
@@ -1039,6 +1052,10 @@
   background: #fff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
   box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+
+  &.BargeDropDown{
+    width: 231px !important;
+  }
 }
 
 .MenuWindowTitle {
@@ -1099,6 +1116,15 @@
   text-overflow: ellipsis;
   display:inline-block;
   vertical-align: top;
+
+  &.BargeMenuItemText{
+    margin-left: 24px;
+
+    &.BargeMenuItemTextAdjuster{
+      margin-left: -3px !important;
+    }
+  }
+
 }
 
 .MenuItem .SelectedIcon {

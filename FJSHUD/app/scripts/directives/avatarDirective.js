@@ -6,7 +6,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 	
 	// show updated avatars
 	$rootScope.$on('fdpImage_synced', function(event, data) {
-		if (!$rootScope.isFirstSync) {
+		if (!document.getElementById('AppLoading')) {
 			for (var i = 0, len = data.length; i < len; i++) {
 				$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
 			}
@@ -180,12 +180,17 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				$timeout(function() {
 					// position pop-pop				
 					overlay.addClass('NoWrap');
+					overlay.removeClass('Bump');
 					
 					overlay.css('display', 'block');
 					overlay.css('width', 'auto');
 					overlay.css('top', (rect.top + rect.height/2) + 'px');
 					
 					var oRect = overlay[0].getBoundingClientRect();
+					
+					// can't fit on screen
+					if (oRect.bottom >= window.innerHeight)
+						overlay.addClass('Bump');
 					
 					// can fit on right side
 					if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {

@@ -79,13 +79,13 @@
     </div>
 	
 	<div id="App">
-		<div class="TopBar" include-once="views/TopNavigationBar.html" ng-mouseleave="showDropdown = false; showHideiconsDropdown()" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
+		<div class="TopBar" include-once="views/TopNavigationBar.html" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
 
 		<div class="PanelWrapper" data-ng-click="onBodyClick()">
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
-				<div class="LeftBarWrapper">
+				<div class="LeftBarWrapper" ng-switch="tab">
 					<div class="LeftBarTop">
 						<div class="ContactSearch">
 							<div ng-show=" tab != 'favorites' && tab != 'recent'">
@@ -100,23 +100,23 @@
 						</div>
 						<div class="WidgetTabBar">
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.all}}</div>
+								<div class="inner {{language}}">{{::verbage.all}}</div>
 								<div class="arrow"></div>
 							</a>
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.favorites}}</div>
+								<div class="inner {{language}}">{{::verbage.favorites}}</div>
 								<div class="arrow"></div>
 							</a>
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.recent}}</div>
+								<div class="inner {{language}}">{{::verbage.recent}}</div>
 								<div class="arrow"></div>
 							</a>
-							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.external}}</div>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">								
+								<div class="inner {{language}}">{{::verbage.external}}</div>
 								<div class="arrow"></div>
 							</a>
 							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('groups')" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
-								<div class="inner">{{::verbage.Groups}}</div>
+								<div class="inner {{language}}">{{::verbage.Groups}}</div>
 								<div class="arrow"></div>
 							</a>
 						</div>
@@ -128,12 +128,12 @@
 						ng-controller="ContactsWidget">
 					</div>
 					<div class="Groups"
-						ng-if="tab == 'groups'"
+						ng-switch-when="groups"
 						include-once="views/GroupsWidget.html"
 						ng-controller="GroupsController">
 					</div>
 					<div class="Recent"
-						ng-if="tab == 'recent'"
+						ng-switch-when="recent"
 						include-once="views/RecentWidget.html"
 						ng-controller="RecentController">
 					</div>
@@ -172,22 +172,22 @@
 	
 
     <!--bower components-->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
-    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="../bower_components/angular-route/angular-route.js"></script>
-	<script src="../bower_components/moment/moment.js"></script>
-	<script src="../bower_components/moment/tzdetect.js"></script>
-	<script src="../bower_components/moment/min/moment.min.js"></script>
-	<script src="../bower_components/moment/min/moment-with-locales.min.js"></script>
-	<script src="../bower_components/moment/locale/ja.js"></script>
-	<script src="../bower_components/moment-timezone/jstz-1.0.4.min.js"></script>
-	<script src="../bower_components/moment-timezone/moment-timezone-utils.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/moment/moment.js"></script>
+	<script src="bower_components/moment/tzdetect.js"></script>
+	<script src="bower_components/moment/min/moment.min.js"></script>
+	<script src="bower_components/moment/min/moment-with-locales.min.js"></script>
+	<script src="bower_components/moment/locale/ja.js"></script>
+	<script src="bower_components/moment-timezone/jstz-1.0.4.min.js"></script>
+	<script src="bower_components/moment-timezone/moment-timezone-utils.js"></script>
 
-	<script src="../bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+	<script src="bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
 
 
 
@@ -196,11 +196,12 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	
-        <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
 
   
 
+	<!-- @if NODE_ENV='development' --> 
 	<!--config-->
     <script src="properties.js"></script>
     <script src="languageMap.js"></script> 
@@ -236,7 +237,8 @@
 	<script src="scripts/directives/callStatusDirective.js"></script>
     <script src="scripts/directives/onSubmitDirective.js"></script>
     <script src="scripts/directives/contactFiltersDirective.js"></script>
-    <script src="scripts/directives/transferContactSearchDirective.js"></script>
+    <script src="scripts/directives/messageScrollDirective.js"></script>
+    <script src="scripts/directives/autofocusDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>
@@ -288,7 +290,6 @@
     <script src="scripts/controllers/RecentController.js"></script>
 
 	<!--services-->
-    <script src="scripts/services/fdpRequest.js"></script>
     <script src="scripts/services/settingsService.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/groupService.js"></script>
@@ -304,6 +305,12 @@
     <!-- factory -->
     <script src="scripts/factory/windowDimensionsFactory.js"></script>   
    	<script src="scripts/services/notificationService.js"></script>
+    <!-- @endif -->   
+	
+	<!-- @if NODE_ENV='production' -->
+	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
+	<!-- @endif --> 
+    
 
 </body>
 </html>

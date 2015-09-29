@@ -26,7 +26,7 @@
 				<a href="#/contact/{{ ::contact.xpid }}" ng-repeat="contact in contacts track by contact.xpid" class="ListRow" droppable="Call">		
 					<avatar profile="contact"></avatar>
 					
-					<div class="ListRowContent" dockable="contact">
+					<div class="ListRowContent" dockable="contact" ng-switch="contact.call != null">
 						<div class="ListRowTitle">
 							<div class="name">
 								<strong>{{ ::contact.displayName }}</strong>
@@ -39,8 +39,10 @@
 							</div>
 							{{contact.hud_status || 'offline'}}
 						</div>																		
-						<div class="ListRowStatus" ng-if="contact.primaryExtension">#{{ ::contact.primaryExtension }}</div>
-						<input style="float:right" ng-if="!contact.fullProfile.call" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, contact.fullProfile)">						
+						<div class="ListRowStatus" ng-switch-when="false" ng-if="::contact.primaryExtension">#{{ ::contact.primaryExtension }}</div>
+						<input style="float:right" ng-switch-when="false" ng-if="::contact.primaryExtension" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, contact)" />		
+
+						<callStatus profile="contact" ng-switch-when="true"></callStatus>
 					</div>
 				</a>
 			</div>
@@ -59,9 +61,7 @@
 								</span>
 							</div>
 						</div>
-						<div class="ListRowStatus">{{ ::group.extension ? '#' + group.extension : getOwner(group) }}</div>					
-                        <input style="float:right" ng-if="group.extension" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, group.extension)">  
-                        <input style="float:right" ng-if="!group.extension && getOwner(group)" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, getOwner(group))">                      
+						<div class="ListRowStatus GroupStatus">{{ ::group.extension ? '#' + group.extension : getOwner(group) }}</div>                     
 					</div>
 				</a>
 			</div>

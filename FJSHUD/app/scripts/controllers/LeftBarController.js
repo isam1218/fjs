@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'StorageService', function($scope, $rootScope, httpService, phoneService, storageService) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService) {
 	$scope.query = '';
     $scope.tab = 'all';
 	$scope.overlay = '';
@@ -6,6 +6,12 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
+    $scope.language = 'us';
+    
+	settingsService.getSettings().then(function(data) {		
+		$scope.language =  $rootScope.language;
+		$scope.$safeApply();
+	});
 	
 	$scope.setTab = function(tab) {
 		$scope.tab = tab;

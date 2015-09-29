@@ -1,6 +1,22 @@
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .LeftBar
+  {   
+   .ListRow .Avatar img {margin-right: 0px !important;}
+  }  
+  
+  .Gadget {
+	border-radius: 5px;
+	overflow: hidden;
+  }
+		
   .WidgetMe{ 
-    .WidgetBody{              
+    .WidgetBody{ 
+        .Conference .ToolBar{
+	  		input[type=button],   
+	    	.selectWrapper.conf{ 
+	    		width: 140px !important;
+	    	}
+	  	}             
         .CurrentCall{
           .LeftSide{
            .Dialog-settings-row{
@@ -58,10 +74,13 @@
      }
      .Conference {
             .ToolBar{
-                    input[type=button],   
+                    //input[type=button],   
                     .selectWrapper.conf{  
                         width: 130px !important;
                     } 
+                    input[type=button]{
+                    	padding-top: 6px !important;
+                    }
             }
      }
      

@@ -24,8 +24,8 @@
                 </div>
                 <div > 
                     <div class="XIcon-QueueStatus QueueStatus" ng-class="chatStatus"></div>
-                    <div class=" XIcon-QueueStatus  QueueStatus" ng-class="queue.you.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' "></div>
-                    {{queue.you.status.status == 'login' ?  verbage.logged_in : verbage.logged_out}}
+                    <div class=" XIcon-QueueStatus  QueueStatus" ng-class="queue.you.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' "></div>                  
+                    {{queue.you.status.status == 'login' ||  queue.you.status.status == 'login-permanent'  ?  verbage.logged_in : verbage.logged_out}}
                 </div>
             </div>
         </div>

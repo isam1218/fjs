@@ -1,4 +1,4 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', 'NtpService', function ($rootScope, $q, contactService, httpService, ntpService) {
+hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', 'NtpService','SettingsService', function ($rootScope, $q, contactService, httpService, ntpService,settingsService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
@@ -72,6 +72,14 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			reasons: reasons
 		};
 	};
+	
+	var syncWatch = $rootScope.$watch('isFirstSync', function(val) {
+		// resolve queue data only after first sync is complete
+		if (val === false) {
+			deferred.resolve(formatData());
+			syncWatch();
+		}
+	});
 	
 	/**
 		QUEUE SYNC DATA
@@ -247,8 +255,25 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 						queues[q].members.push(data[i]);
 			
 						// mark as mine
-						if (data[i].contactId == $rootScope.myPid)
+						if (data[i].contactId == $rootScope.myPid){
+							
+							if(settingsService.getSetting('HUDw_QueueNotificationsLW_'+ queues[q].xpid) == undefined){
+								settingsService.setSetting('HUDw_QueueNotificationsLW_'+ queues[q].xpid,"true");
+							}
+							if(settingsService.getSetting('HUDw_QueueAlertsLW_'+ queues[q].xpid) == undefined){
+								settingsService.setSetting('HUDw_QueueAlertsLW_'+ queues[q].xpid,"true");
+							}
+
+							if(settingsService.getSetting('HUDw_QueueNotificationsAb_'+ queues[q].xpid) == undefined){
+								settingsService.setSetting('HUDw_QueueNotificationsAb_'+ queues[q].xpid,"true");
+							}
+
+							if(settingsService.getSetting('HUDw_QueueAlertsAb_'+ queues[q].xpid) == undefined){
+								settingsService.setSetting('HUDw_QueueAlertsAb_'+ queues[q].xpid,"true");
+							}
+							
 							mine.push(queues[q]);
+						}
 					}
 				}
 			}
@@ -257,8 +282,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			/*httpService.getFeed('queue_members_status');
 			httpService.getFeed('queue_members_stat');
 			httpService.getFeed('queuemembercalls');*/
-			
-			deferred.resolve(formatData());
 		}
 	});
 

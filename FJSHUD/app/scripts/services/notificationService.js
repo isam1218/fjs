@@ -1,8 +1,10 @@
-hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q',
-	function($q, $rootScope, httpService,$compile,$location,settingsService,$q) {
+hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', '$sce',
+	function($q, $rootScope, httpService,$compile,$location,settingsService,$q,$sce) {
 		this.notifications = [];
 		var notifyPipe = false;
 		var enabled = false;
+		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
+
 		var initNSService = function(){
 			if(notifyPipe) return;
 
@@ -42,7 +44,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             	enabled = false;
             	setTimeout(function(){initNSService()}, 500);
 
-            }
+            };
 		};
 		this.initNSService = initNSService;
 
@@ -74,10 +76,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 
 		this.displayWebNotification = function(data){
-			if (!Notification) {
+      if (!Notification) {
 				console.log('Desktop notifications not supported');
 				return;
 			}
+      
 			if (Notification.permission !== "granted")
 				Notification.requestPermission();
 			
@@ -87,13 +90,37 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			}else{
 				iconUrl = "../img/Generic-Avatar-28.png";
 			}
-			
+
+			var message = "";
+
+      switch(data.type){
+        case 'vm':
+        case 'q-alert-abandoned':
+          message = data.label;
+          break;
+        case 'description':
+          var msgSplit = data.message.split('!</strong><br />');
+          message = "Goodbye " + data.data.groupId + "! " + msgSplit[1];
+          break;
+        case 'barge message':
+          data.displayName = data.message;
+          message = data.label;
+          break;
+        default:
+          message = data.message;
+          break;
+      }
+
+      message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">");
+
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
-				body : data.message,
+        body: message,
 				tag : data.xpid,
 			});
+
 			var notification_data = data;
+
 			notification.onclick = function () {
 				var nt = notification;
 				var nd = notification_data;
@@ -102,13 +129,14 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				var xpid = context_data.split(':')[1];
 				var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
 				
-				$location.path("/" + nd.audience + "/" + xpid + "/" + route);
-
+				$rootScope.$evalAsync($location.path("/" + nd.audience + "/" + xpid + "/" + route));
+				focusBrowser();
 			};
 			  
 			notification.onclose = function () {
 				var nt = notification;
 			};
+
 			notification.onerror = function () {
 				var nt = notification;
 			};
@@ -120,5 +148,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			return notification;
 		};
 
+		var focusBrowser = function(){
+			if($rootScope.browser == "Chrome"){
+            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+			}
+			context.sendData({message:"focus"},0,"FOCUS");
+		};
 		context = this;
 }]);

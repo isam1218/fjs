@@ -16,15 +16,15 @@
             <div class="vmlabelheader"> {{::verbage.no_voicemails}} </div> 
             <div class="vmnomessage"> {{::verbage.no_voicemails_between}} <span ng-bind-html="emptyVoiceLabel"> </span></div>
         </div>
-        <div class="vmsections">
-	        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">
-				<avatar ng-if="::voicemail.phone != meModel.primary_extension" profile="voicemail" context="voicemails" type="4"></avatar>
-				<avatar ng-if="::voicemail.phone == meModel.primary_extension" profile="myProfile" context="voicemails" type="4"></avatar>
-	
+        <div class="vmsections">        
+	        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">	       
+	        	<avatar ng-if="::voicemail.phone != meModel.primary_extension || voicemail.fullProfile.xpid == meModel.my_pid" profile="voicemail" context="voicemails:voicemail" type="4"></avatar>
+				<avatar ng-if="::voicemail.phone == meModel.primary_extension && voicemail.fullProfile.xpid != meModel.my_pid" profile="vm.myProfile" context="voicemails:voicemail" type="4"></avatar>
+	            	             
 	            <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
-	                <div class="displayName">
-						<em>{{ ::voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}</em>
-						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && voicemail.phone != meModel.primary_extension ? 'bold' : 'normal'}">
+	                <div class="displayName">	                
+						<em>{{ ::voicemail.phone == meModel.primary_extension ? voicemail.fullProfile.xpid != meModel.my_pid ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' :  verbage.from + '...' }}</em>
+						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && (voicemail.phone != meModel.primary_extension  || (voicemail.phone == meModel.primary_extension && voicemail.fullProfile.xpid == meModel.my_pid)) ? 'bold' : 'normal'}">
 							{{ ::voicemail.displayName + ' <' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '>' }}
 	                    </p>
 	                    <div class="vmalternate">

@@ -122,8 +122,6 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 					for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
 						if (conference.members[m].xpid == data[i].xpid) {
 							conference.members.splice(m, 1);
-							data.splice(i, 1);
-							iLen--;
 							
 							break;
 						}
