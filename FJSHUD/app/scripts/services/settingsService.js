@@ -170,7 +170,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				settings[data[i].key] = data[i].value;
 			
 			if(settings.hudmw_auto_away_timeout == undefined){
-				settings.hudmw_auto_away_timeout = 30000;            	
+				settings.hudmw_auto_away_timeout = 240000;//30000;            	
             }
             if(settings.hudmw_searchautocleardelay == undefined){
             	settings.hudmw_searchautocleardelay = 30;
