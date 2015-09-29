@@ -4,6 +4,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	$scope.sortReverse = false;
 	$scope.contacts = [];
 	$scope.favorites = {};
+	$scope.orderByAttribute = '';
 	
 	// pull contact updates from service
 	contactService.getContacts().then(function(data) {
@@ -14,8 +15,10 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	groupService.getGroups().then(function(data) {
 		$scope.favorites = data.favorites;
 	});
-
-    $scope.sort = function(field) {
+	
+    $scope.sort = function(field, attr) {
+    	$scope.orderByAttribute = attr; 
+    	
         if($scope.sortField != field) {
             $scope.sortField = field;
             $scope.sortReverse = false;
