@@ -15,7 +15,10 @@ hudweb.directive('messagescroll', ['$compile',
             }
             break;
           case 'missed-call': 
-            return "Missed call from extension " + message.phone; 
+        	if(message.fullProfile == null)
+        		return "Missed call from " + message.phone; 
+        	else	
+        		return "Missed call from extension " + message.phone; 
             break;
           default:
             return message.message.replace(/\n/g, '<br/>');
