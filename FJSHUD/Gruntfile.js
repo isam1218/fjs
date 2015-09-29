@@ -31,104 +31,179 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    
+    'jshint':{
+      jsFiles:['app/**/*.js']
+    },
+    preprocess:{
+      dev:{
+        options:{
+            context:{
+              NODE_ENV:'development'
+            }
+        },
+        files:{
+            'dest/app/index.html':'app/index.html'
+        }
+      },
+      dist:{
+        options:{
+            context:{
+                NODE_ENV:'production'
+            }
+        },
+        files:{
+            'prod/app/index.html':'prod/app/index.version.html'
+        }
+      },
+      huc_dev:{
+        options:{
+            context:{
+                NODE_ENV:'development'
+            }
+        },
+        files:{
+            'huc_dev/app/index.html':'huc_dev/app/index.version.html'
+        }
+      }
+
+    },
+    template:{
+      dist:{
+          options:{
+            data:{
+              serverUrl:"https://fdp-huc-v5.fonality.com",
+              loginUrl:"https://auth.fonality.com",
+              version: "HUDW" + getBuildNumber(),
+              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+              MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+              WINDOWS_PLUGIN_VERSION:'1.1.011219',
+              MAC_PLUGIN_VERSION:'1.1.011218',
+            }
+          },
+          files:{
+            'prod/app/properties.js':['app/properties.js'],
+            'prod/app/index.version.html':['app/index.html']
+          }
+      },dev:{
+        options:{
+          data:{
+            serverUrl:"https://dev4.fon9.com:8081",
+            loginUrl: "https://dev4.fon9.com:5501",
+            version: "HUDW" + getBuildNumber(),
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011219',
+            MAC_PLUGIN_VERSION:'1.1.011218',
+          }
+        },
+          files:{
+            'dest/app/properties.js':['app/properties.js'],
+            'dest/app/index.version.html':['app/index.html']
+          }
+      },
+      huc_dev:{
+        options:{
+          data:{
+            serverUrl:"https://huc-dev.fonality.com:8081",
+            loginUrl: "https://huc-dev.fonality.com:5501",
+            version: "HUDW" + getBuildNumber(),
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011219',
+            MAC_PLUGIN_VERSION:'1.1.011218',
+          }
+        },
+          files:{
+            'huc_dev/app/properties.js':['app/properties.js'],
+            'huc_dev/app/index.version.html':['app/index.html']
+          }
+      }
+    },
+    less:{
+      dist:{
+        options:{
+          compress:true
+        },
+        files:{
+          "prod/app/styles/main.css":"app/styles/main.less",
+          "prod/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "prod/app/styles/firefox.css": "app/styles/firefox.less",
+          "prod/app/styles/safari.css": "app/styles/safari.less",
+          "prod/app/styles/ie.css": "app/styles/ie.less"
+        },
+      },
+      dev:{
+        options:{
+          compress:true
+        },
+        files:{
+          "dest/app/styles/main.css":"app/styles/main.less",
+          "dest/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "dest/app/styles/firefox.css": "app/styles/firefox.less",
+          "dest/app/styles/safari.css": "app/styles/safari.less",
+          "dest/app/styles/ie.css": "app/styles/ie.less"
+        },
+      },
+      huc_dev:{
+        options:{
+          compress:true
+        },
+        files:{
+          "huc_dev/app/styles/main.css":"app/styles/main.less",
+          "huc_dev/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
+          "huc_dev/app/styles/firefox.css": "app/styles/firefox.less",
+          "huc_dev/app/styles/safari.css": "app/styles/safari.less",
+          "huc_dev/app/styles/ie.css": "app/styles/ie.less"
+        },
+      }
+    },
     'concat': {
       options: {
         separator: ';'
       },
       dist: {
-        src: [ "app/scripts/model/entryModel.js",
-        "app/scripts/model/feedModel.js",
-        "app/scripts/model/custom/meFeedModel.js",
-        "app/scripts/model/custom/contactEntryModel.js",
-        "app/scripts/model/custom/contactsFeedModel.js",
-        "app/scripts/model/custom/conferenceEntryModel.js",
-        "app/scripts/model/custom/conferenceFeedModel.js",
-        "app/scripts/model/custom/conferenceMemberEntryModel.js",
-        "app/scripts/model/custom/conferenceMemberFeedModel.js",
-        "app/scripts/model/custom/groupEntryModel.js",
-        "app/scripts/model/custom/groupFeedModel.js",
-        "app/scripts/model/custom/voicemailMessageEntryModel.js",
-        "app/scripts/model/custom/voicemailMessageFeedModel.js",
-        "app/scripts/model/custom/myCallEntryModel.js",
-        "app/scripts/model/custom/myCallFeedModel.js",
-        "app/scripts/model/custom/widgetHistoryEntryModel.js",
-        "app/scripts/model/custom/widgetHistoryFeedModel.js",
-        "app/scripts/model/custom/streameventEntryModel.js",
-        "app/scripts/model/custom/streameventFeedModel.js",
-        "app/scripts/model/client/clientFeedModel.js",
-        "app/scripts/model/client/sortingEntryModel.js",
-        "app/scripts/model/client/sortingFeedModel.js",
-        "app/scripts/model/filters/contactsWithoutMeFilter.js",
-        "app/scripts/model/filters/sortConferenceFilter.js",
-        "app/scripts/model/filters/sortVoicemailFilter.js",
-        "app/scripts/model/filters/externalContactsFilter.js",
-        "app/scripts/model/filters/durationFormatFilter.js",
-        "app/scripts/model/filters/resentsSortFilter.js",
-        "app/scripts/model/filters/chatFilter.js",
-        "app/scripts/model/filters/contactVoicemailsFilter.js",
-        "app/scripts/model/actions/actionEntryModel.js",
-        "app/scripts/model/actions/actionContactCallExtension.js",
-        "app/scripts/model/actions/actionContactCallMobile.js",
-        "app/scripts/model/actions/actionContactChat.js",
-        "app/scripts/model/actions/actionContactEmail.js",
-        "app/scripts/model/actions/actionContactIntercom.js",
-        "app/scripts/model/actions/actionContactVoicemail.js",
-        "app/scripts/model/actions/actionScreenShare.js",
-        "app/scripts/model/actions/actionContactFileShare.js",
-        "app/scripts/model/actions/actionContactUnpin.js",
-        "app/scripts/model/actions/actionsManager.js",
-        "app/scripts/model/dataManager.js",
-        "app/scripts/model/module.js",
-        "app/scripts/react/ContextMenu.js",
-        "app/scripts/react/ContactsList.js",
-        "app/scripts/direcives/contextMenuDirective.js",
-        "app/scripts/direcives/contextMenuDialogDirective.js",
-        "app/scripts/direcives/avatarMenuDirective.js",
-        "app/scripts/direcives/contactsListDirective.js",
-        "app/scripts/direcives/unpinDirective.js",
-        "app/scripts/direcives/module.js",
-        "app/scripts/controllers/base/Controller.js",
-        "app/scripts/controllers/base/SortableController.js",
-        "app/scripts/controllers/base/SortMenuController.js",
-        "app/scripts/controllers/base/ActionMenuController.js",
-        "app/scripts/controllers/MainController.js",
-        "app/scripts/controllers/TopNavigationController.js",
-        "app/scripts/controllers/TopBarMeStatusController.js",
-        "app/scripts/controllers/MeWidgetController.js",
-        "app/scripts/controllers/LocationsController.js",
-        "app/scripts/controllers/base/AddContactMenuController.js",
-        "app/scripts/controllers/ZoomWidgetController.js",
-        "app/scripts/controllers/ContactsWidget.js",
-        "app/scripts/controllers/ConferencesWidgetController.js",
-        "app/scripts/controllers/LeftBarContactsController.js",
-        "app/scripts/controllers/GroupsTab.js",
-        "app/scripts/controllers/VoicemailTab.js",
-        "app/scripts/controllers/EditContactDialog.js",
-        "app/scripts/controllers/ConversationWidgetController.js",
-        "app/scripts/controllers/ConversationWidgetGroupsController.js",
-        "app/scripts/controllers/ConversationWidgetVoicemailsController.js",
-        "app/scripts/controllers/ConversationWidgetQueuesController.js",
-        "app/scripts/controllers/ConversationWidgetVoicemailsController.js",
-        "app/scripts/controllers/ConversationWidgetGroupsController.js",
-        "app/scripts/controllers/ContactWidgetChatController.js",
-        "app/scripts/controllers/ContactWidgetGroupsController.js",
-        "app/scripts/controllers/ConversationWidgetCallLogController.js",
-        "app/scripts/controllers/TestWidgetController.js",
-        "app/scripts/controllers/SearchInputController.js",
-        "app/scripts/controllers/MyCallController.js",
-        "app/scripts/controllers/RecentsListController.js",
-        "app/scripts/controllers/RecentItemController.js",
-        "app/scripts/controllers/ChatController.js",
-        "app/scripts/controllers/contextMenuController.js",
-        "app/scripts/controllers/ChatStatusController.js",
-        "app/scripts/controllers/LeftBarController.js",
-        "app/scripts/controllers/LeftBarCallsController.js"
-      ],
-        dest: 'app/scripts/fjs.hud.debug.js'
+        src: [ 
+        'app/languageMap.js',
+        'app/scripts/app.js',
+        'app/scripts/filters/**/*.js',
+        'app/scripts/directives/**/*.js',
+        'app/scripts/controllers/**/*.js',
+        'app/scripts/services/**/*.js',
+        'app/scripts/factory/**/*.js'
+        ],
+        dest: 'app/scripts/fjs.min.js'
       }
     }
-
-    , 'closure-compiler': {
+    , 
+    uglify:{
+      dev:{
+        options:{
+          mangle:false,
+          beautify:true,
+        },
+        files:{
+          'dest/fjsmin.js': '<%= concat.dist.src %>'
+        }
+      },
+      dist:{
+        options:{
+          mangle:false,
+          beautify:false,
+        },
+        files:{
+          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
+      },
+      huc_dev:{
+        options:{
+          mangle:false,
+          beautify:false,
+        },
+        files:{
+          'huc_dev/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
+      }
+    },
+    'closure-compiler': {
       frontend: {
         closurePath: '../Tools/closure',
         js: 'app/scripts/fjs.hud.debug.js',
@@ -163,9 +238,69 @@ module.exports = function(grunt) {
       }
     }
     ,'copy': {
-      main: {
+      dist: {
         files: [
-          {expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          {expand: true, src: ['app/bower_components/**/*'], dest: 'prod/'},
+          {expand: true, src: ['server.js'], dest: 'prod/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'prod/'},
+          {expand: true, src: ['ssl/*'], dest: 'prod/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
+          
+        ]
+      },
+      dev: {
+        files: [
+          //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          {expand: true, src: ['app/bower_components/**/*'], dest: 'dest/'},
+          {expand: true, src: ['server.js'], dest: 'dest/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
+          {expand: true, src: ['ssl/*'], dest: 'dest/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
+          
+          {expand: true, src: [
+             'app/languageMap.js',
+              'app/scripts/app.js',
+              'app/scripts/filters/**/*.js',
+              'app/scripts/directives/**/*.js',
+              'app/scripts/controllers/**/*.js',
+              'app/scripts/services/**/*.js',
+              'app/scripts/factory/**/*.js'
+          ], dest: 'dest/'},
+        
+        ]
+      },
+      huc_dev: {
+        files: [
+          //{expand: true, cwd: 'bin/', src: ['HUDw-'+getBuildNumber()+'.zip'], dest: '/media/storage/build/HUDw/build_'+getCurrentTime()+'_'+getBuildNumber()}
+          {expand: true, src: ['app/bower_components/**/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['server.js'], dest: 'huc_dev/'},
+          //{expand: true, src: ['app/properties.js'], dest: 'dest/'},
+          {expand: true, src: ['ssl/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/img/**/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/views/**/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/res/**/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
+          
+          {expand: true, src: [
+             'app/languageMap.js',
+              'app/scripts/app.js',
+              'app/scripts/filters/**/*.js',
+              'app/scripts/directives/**/*.js',
+              'app/scripts/controllers/**/*.js',
+              'app/scripts/services/**/*.js',
+              'app/scripts/factory/**/*.js'
+          ], dest: 'huc_dev/'},
+        
         ]
       }
     }
@@ -174,10 +309,19 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-string-replace');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-closure-compiler');
   grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-preprocess');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-template');
 
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
+  grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
+  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
+  grunt.registerTask('build-huc-dev', ['concat','template:huc_dev','preprocess:huc_dev','less:huc_dev','uglify:huc_dev','copy:huc_dev','zip']);
+  
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
