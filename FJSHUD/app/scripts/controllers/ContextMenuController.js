@@ -29,7 +29,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;		
 		$scope.profile.name = $('<div/>').html($scope.profile.name).text();
 		$scope.profile.displayName = $('<div/>').html($scope.profile.displayName).text();
-
+        
 		$scope.original = res.obj;
 		$scope.context = res.context;
 		$scope.widget = res.widget;
@@ -215,8 +215,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 			}
 		}
 		// single user
-		else
+		else{
 			httpService.sendAction('contacts', action, {toContactId: $scope.profile.xpid});
+			storageService.saveRecent('contact', $scope.profile.xpid);
+		}
 	};
 	
 	$scope.bargeCall = function(action) {

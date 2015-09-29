@@ -197,10 +197,16 @@
   .ListRowContent {
     flex: 1;
 	-webkit-flex: 1;
+	-ms-flex:  1;
     border-left: solid 1px #DEE1E5;
 	overflow: hidden;
 	min-height: 40px;
 	height: auto;
+  }
+
+  .GroupListRowContent {
+    display: -ms-flexbox;
+    display: flex;
   }
   
   .ListRowTitle {
@@ -215,6 +221,7 @@
 	max-width: 50%;
 	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+	-ms-flex: 4;
 	margin-top: -3px;
     
     .status{      
@@ -263,6 +270,9 @@
       font-size: 12px !important;
     }
     }
+  }
+  .GroupListRowTitle{
+    max-width: 100%;
   }
   
   .ListRowStatus {
@@ -648,4 +658,58 @@
   	  color: gray;
     }
   }
+}
+.vmsection.group_members{
+  .vmalternate{
+    display:inline-block;
+    float:right;
+    position:relative;
+    margin-top:3px;
+    margin-right:5px;
+    height: 40px;
+    -ms-flex:   1;
+   
+    .vmcallbtn{
+        visibility:hidden;
+        right:0;
+        top:0;
+        position:absolute;
+    }
+    .extension{
+        visibility:visible;
+        position:relative;
+        font-size:11px;
+        font-weight: bold;
+    }
+   }    
+   &:hover{
+    .vmalternate{
+      .vmcallbtn {                      
+         background: #3c9c00 linear-gradient(#3c9c00, #328400);           
+         color: #e8e8e8;
+          border: 1px solid rgba(155,155,155,0.3);
+          text-shadow: none;
+          visibility:visible;      
+          height: 26px;
+           width: 40px;
+           text-align: center;
+           border-radius: 2px;
+           -webkit-border-radius: 2px;
+           text-decoration: none;
+           cursor: pointer;
+           font-size: 11px;
+           font-weight: bold;
+           &:hover{
+             border: 1px solid rgba(0,0,0,0.3);
+             color: #fff;
+             text-shadow: 0 -1px 0 #000;
+             box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+           }
+      }
+      .extension{
+        visibility:hidden;
+      }
+
+     }
+    }           
 }

@@ -2,16 +2,13 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-      //serverURL: "https://dev4.fon9.com:8081"
-	   //	, loginURL: "https://dev4.fon9.com:5501"
-      // loginURL:'https://auth.fonality.com',
-       //serverURL: 'https://fdp-huc-v5.fonality.com'
-     serverURL: "https://lb-stage3.fonality.com:446"
-     , loginURL: "https://lb-stage3.fonality.com:444"
+
+
+        serverURL: "<%= serverUrl %>"
+	   	, loginURL: "<%= loginUrl %>"
+
     ,ppsServer: 'https://lb-stage3.fonality.com:8443/pps/'
-
-
-//      serverURL: "https://huc-dev.fonality.com:8081"
+        //      serverURL: "https://huc-dev.fonality.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501"
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
      // serverURL: "https://huc-qa.fonality.com:8080"
@@ -50,15 +47,19 @@ fjs.CONFIG = {
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
-        WINDOWS_NEW:'http://build01.lax01.fonality.com/view/HUD/job/hud-wp.win/50/artifact/webphone/installer.win/WebPhone-1.1.011184.msi',
-        MAC_NEW:'http://build01.lax01.fonality.com/job/hud-wp.osx/47/artifact/webphone/installer.mac/WebPhone-1.1.011183.pkg'
+        WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
+        MAC_NEW:'<%= MAC_PLUGIN %>'
 
     },
     PLUGIN_VERSION:{
         MAC_OLD:'5.17.008986',
         WINDOWS_OLD:'5.17.008986',
-        WINDOWS_NEW:'1.1.011184',
-        MAC_NEW:'1.1.011183'
+        WINDOWS_NEW:'1.1.011219',
+        MAC_NEW:'1.1.011218'
     },
     DEBUG:true,
 };
+//fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
+
+//fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
+

@@ -44,6 +44,9 @@
 .LeftBar .ListRow.Hide {
   display: none !important;
 }
+.LeftBar .ListRow .Avatar .GroupAvatarItem img {
+  margin: 0px;
+}
 .LeftBar .ListRow .CallStatus {
   height: 36px;
   width: 36px;
@@ -51,8 +54,15 @@
 .LeftBar .ListRow .CallStatus .Avatar {
   margin: 2px !important;
 }
-.LeftBar .ListRow .ListRowTitle {
-  width: 48%;
+.LeftBar .ListRow .ListRowTitle.GroupListRowTitle {
+  max-width: 100%;
+  width: 80%;
+}
+.LeftBar .ListRow .ListRowContent div:first-child:nth-last-child(2) {
+  max-width: 64%;
+}
+.LeftBar .ListRow .ListRowContent div:first-child:nth-last-child(3) {
+  max-width: 50%;
 }
 .LeftBar .ListRow .ListRowTitle .status {
   margin-left: -5px;
@@ -67,6 +77,9 @@
 }
 .LeftBar .ListRow .ListRowTitle .name strong {
   width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .LeftBar .ListRow .ListRowTitle .status .desc {
   font-size: 10px;
@@ -197,6 +210,13 @@
 .LeftBar .Recent .ContactList a.ListRow {
   background-color: #fff;
 }
+.LeftBar .Contacts .ContactList a.ListRow .GroupListRowStatus,
+.LeftBar .Groups .ContactList a.ListRow .GroupListRowStatus,
+.LeftBar .Recent .ContactList a.ListRow .GroupListRowStatus {
+  right: 0px !important;
+  left: -5px;
+  width: 30px !important;
+}
 .LeftBar .Contacts .ContactList a.ListRow .ListRowStatus,
 .LeftBar .Groups .ContactList a.ListRow .ListRowStatus,
 .LeftBar .Recent .ContactList a.ListRow .ListRowStatus {
@@ -265,6 +285,20 @@
 .LeftBar .Recent .ContactList .timeline {
   overflow-y: auto;
 }
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1).name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1) div:first-child.name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1).ListRowTitle,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(1) div:first-child.ListRowTitle {
+  width: 100%;
+  max-width: 100%;
+}
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2).name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2) div:first-child.name,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2).ListRowTitle,
+.LeftBar .Recent .ContactList .ListRow .ListRowContent div:first-child:nth-last-child(2) div:first-child.ListRowTitle {
+  width: 85%;
+  max-width: 85%;
+}
 .LeftBar .Recent .status {
   margin-left: 0 !important;
 }
@@ -283,6 +317,9 @@
 }
 .LeftBar .Notifications > div:first-child {
   transition: .25s;
+}
+.LeftBar .Notifications:hover .scroller {
+  overflow-x: hidden;
 }
 .LeftBar .Notifications .Footer {
   padding-bottom: 10px;

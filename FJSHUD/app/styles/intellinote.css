@@ -31,7 +31,7 @@
   position: relative;
 }
 @-moz-document url-prefix() {
-  .Widget.Intellinote .Right .SearchHolder {
+  .SearchHolder {
     position: relative;
     margin-bottom: 40px;
   }

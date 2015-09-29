@@ -9,6 +9,7 @@ hudweb.directive('topNavBehavior', function() {
 		  
 		  $(element).bind('mouseleave', function() {
 		  	scope.showDropdown = false;
+			scope.showHideiconsDropdown();
 		  }); 
 		  
 		  scope.$on('watchWindowResize::resize', function( event, data ) {		     		      

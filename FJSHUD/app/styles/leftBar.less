@@ -46,6 +46,8 @@
 	&.Hide {
 		display: none !important;
 	}
+	
+	.Avatar .GroupAvatarItem img{ margin: 0px;}
      
     .CallStatus{
          height: 36px;
@@ -60,9 +62,11 @@
       max-width: 100%;
       width: 80%;
     }
-
+    .ListRowContent div:first-child:nth-last-child(2){max-width: 64%;}
+    .ListRowContent div:first-child:nth-last-child(3){max-width: 50%;}
     .ListRowTitle{
-         width: 48%;
+         //width: 48%;
+         //max-width: 64%;
          
          .status{      
            margin-left: -5px; 
@@ -79,6 +83,9 @@
             
             strong{
               width: 100%;
+              text-overflow: ellipsis;
+              overflow: hidden; 
+              white-space: nowrap;
             }
          }
          .status{
@@ -285,6 +292,20 @@
         .timeline{
             overflow-y: auto;
         }
+        .ListRow .ListRowContent div:first-child:nth-last-child(1),
+        .ListRow .ListRowContent div:first-child:nth-last-child(1) div:first-child{
+           &.name, &.ListRowTitle{
+            width: 100%;
+        	max-width: 100%;  
+           } 	      	
+        }
+        .ListRow .ListRowContent div:first-child:nth-last-child(2),
+        .ListRow .ListRowContent div:first-child:nth-last-child(2) div:first-child{
+           &.name, &.ListRowTitle{
+            width: 85%;
+        	max-width: 85%;
+           }	
+        }
     }
     .status{
       margin-left: 0 !important;
@@ -306,7 +327,11 @@
 
     & > div:first-child {    	
     	transition: .25s;
-	} 	
+	}
+
+	&:hover .scroller {
+	  overflow-x: hidden;
+	}
 	
 	.Footer{
 	  padding-bottom: 10px;

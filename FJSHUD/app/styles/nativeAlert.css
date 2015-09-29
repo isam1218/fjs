@@ -12,7 +12,6 @@
 #CallAlert .CallStatusIconContainer {
   width: 34px;
   height: 34px;
-  border: 1px solid #0093f0;
   border-radius: 30px;
   text-align: center;
   display: inline-block;
@@ -24,6 +23,9 @@
   margin-left: -5px;
   margin-top: -5px;
 }
+#CallAlert .IsOnCall {
+  background-position: -83px -243px;
+}
 #CallAlert .LeftBarNotificationMessageSection .NotificationMessage {
   padding-right: 20px;
   -ms-word-wrap: break-word;
@@ -33,6 +35,9 @@
   max-height: none;
   padding-bottom: 20px;
 }
+#CallAlert .LeftBarNotificationMessageSection .NotificationDisplayName span.truncate {
+  max-width: 55%;
+}
 #CallAlert a:not(.XButton) {
   text-decoration: none;
   color: inherit;
@@ -40,9 +45,6 @@
 #CallAlert div.CallStatusContainerOutbound {
   position: relative;
   bottom: 0px;
-}
-#CallAlert div.CallStatusContainerOutbound .CallStatusIconContainer {
-  border: 1px solid #0093f0;
 }
 #CallAlert div.CallStatusContainerOutbound .controlButtons .PhoneButton {
   width: 50px;
@@ -89,7 +91,7 @@
   background-color: #999;
   color: white;
   padding: .25em;
-  transition: 1s;
+  transition: none;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   font-size: 12px;
@@ -134,6 +136,7 @@
   color: #aaa;
   font-size: 14px;
   height: 60px;
+  max-height: none;
 }
 #CallAlert a.ListRow-Contact.ListRowFirst.ListRowFirst .Avatar {
   width: 40px;

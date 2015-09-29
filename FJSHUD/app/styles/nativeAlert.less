@@ -13,7 +13,6 @@
   .CallStatusIconContainer{
   	width: 34px;
     height: 34px;
-  	border:1px solid #0093f0;
   	border-radius:30px; 
   	text-align:center;
   	display:inline-block;
@@ -25,20 +24,29 @@
   	  margin-left: -5px;
       margin-top: -5px;
   	}
-  }
+ }
   
   .IsOnCall {
 	background-position: -83px -243px;
   }
   
-  .LeftBarNotificationMessageSection .NotificationMessage{        
-    padding-right: 20px;
-    -ms-word-wrap: break-word;
-    white-space:normal;
-    word-break: break-all;
-    height: auto;
-    max-height: none;
-    padding-bottom: 20px;
+  .LeftBarNotificationMessageSection{
+    .NotificationMessage{        
+	    padding-right: 20px;
+	    -ms-word-wrap: break-word;
+	    white-space:normal;
+	    word-break: break-all;
+	    height: auto;
+	    max-height: none;
+	    padding-bottom: 20px;
+    }    
+    .NotificationDisplayName {
+    	span{
+    		&.truncate{
+	          	max-width: 55%;
+	        }
+    	}
+    }
   }
   
   a:not(.XButton) {
@@ -49,10 +57,6 @@
   div.CallStatusContainerOutbound{
       position:relative;
       bottom: 0px;
-      .CallStatusIconContainer{
-        border: 1px solid #0093f0;
-      }
-
       .controlButtons .PhoneButton{
         width:50px;
         height:25px;
@@ -104,7 +108,7 @@
           background-color: #999;
           color: white;
           padding: .25em;
-          transition: 1s;
+          transition: none;
           border-top: 1px solid #ccc;
           border-right: 1px solid #ccc;
           font-size: 12px;

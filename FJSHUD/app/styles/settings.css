@@ -28,11 +28,15 @@
 }
 .WidgetMe .Preferences-Holder {
   position: relative;
-  height: 50%;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
   margin-top: 3px;
-  display: inline-block;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
   overflow: hidden;
-  padding-bottom: 70px;
 }
 .WidgetMe .Preferences-Holder .WidgetTabBar {
   top: 0px;
@@ -60,9 +64,10 @@
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div {
   overflow-y: auto;
-  height: 100%;
+  height: auto;
   width: 100%;
   padding-bottom: 10px;
+  -ms-flex: 1;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div.padding {
   padding-bottom: 30px;
@@ -75,122 +80,125 @@
 .WidgetMe .Preferences-Holder .SettingsPanel .lblSelect {
   display: inline-block;
   width: 150px;
-  font-size: 12;
+  font-size: 12px;
+  margin-top: 3px;
+  vertical-align: top;
 }
 .WidgetMe .WidgetBody {
-  height: 78%;
-  max-height: 100%;
+  padding-bottom: 10px;
 }
-.WidgetMe .WidgetBody .call-block {
-  height: 50%;
-  overflow-y: hidden;
+.WidgetMe .WidgetBody .CurrentCall + .RecentCallSection {
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
+  overflow: auto;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide {
   width: 50%;
   margin-bottom: -5px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row {
   margin: 5px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row input[type=range] {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row input[type=range] {
   width: 70%;
   margin-bottom: -8px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall {
   margin-top: 0;
   vertical-align: top;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-MuteOff:hover {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-MuteOff:hover {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-MuteOn:hover {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-MuteOn:hover {
   background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-Speaker-Off:hover {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-Speaker-Off:hover {
   background: url(../img/XIconSet-24x24.png) no-repeat -48px 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-Speaker-On:hover {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall.XIcon24-Speaker-On:hover {
   background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowTitle {
   width: 60%;
   max-width: none;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowTitle > div {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowTitle > div {
   float: left;
   margin-left: -5px;
   clear: both;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .name {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .name {
   margin-left: 0px;
   margin-top: 5px;
   clear: none;
   width: 100%;
   max-width: none;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .name strong {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .name strong {
   font-size: 14px;
   text-overflow: ellipsis;
   width: 100%;
   overflow: hidden;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowStatus {
   margin-left: 5px;
   margin-top: 5px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus .ListRowStatusIcon {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowStatus .ListRowStatusIcon {
   margin-left: 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus .ListRowStatusIcon .last {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowStatus .ListRowStatusIcon .last {
   margin-left: -5px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .ListRowStatus .phone {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowStatus .phone {
   margin-right: 5px;
   display: inline-block;
   margin-left: 5px;
   float: left;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar {
   margin-top: 8px;
   border: none;
   width: 40px;
   height: 40px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Office {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Office {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Office .AvatarInteractable {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Office .AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Queue {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Queue {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar.CallAvatar_Queue .AvatarInteractable {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Queue .AvatarInteractable {
   background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar img {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar img {
   height: 32px;
   width: 32px;
   margin: 4px;
   border-radius: 40px;
   -webkit-border-radius: 40px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar:hover .AvatarInteractable {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar:hover .AvatarInteractable {
   display: block;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .LeftSide .Avatar .AvatarInteractable {
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar .AvatarInteractable {
   height: 40px;
   width: 40px;
   position: absolute;
@@ -201,12 +209,12 @@
   top: 0;
   display: none;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide {
+.WidgetMe .WidgetBody .CurrentCall .RightSide {
   width: 50%;
   padding-top: 5px;
   margin-bottom: -5px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons {
   width: 100%;
   float: left;
   min-height: 40px;
@@ -215,7 +223,7 @@
   vertical-align: top;
   margin: 0;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .XButton {
   min-width: 74px;
   height: 24px;
   float: left;
@@ -224,36 +232,24 @@
   display: inline-block;
   margin-right: 5px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton.talk {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .XButton.talk {
   border: 1px solid #FF8E29;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton.dial {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .XButton.dial {
   margin-top: 0;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .XButton.CurrentCallBtn {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .XButton.CurrentCallBtn {
   margin: 0px 5px 0px 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .record {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .record {
   top: 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .SelectBox {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .SelectBox {
   top: 0px;
 }
-.WidgetMe .WidgetBody .call-block .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
+.WidgetMe .WidgetBody .CurrentCall .RightSide .row_buttons .CurrentCallBtnLong {
   width: 154px !important;
   margin: 0;
-}
-.WidgetMe .WidgetBody.currentCall .call-block .RecentCallSection {
-  position: relative;
-  float: left;
-  clear: both;
-  width: 100%;
-  overflow: hidden;
-  /*height: 70%;*/
-  padding: 0;
-}
-.WidgetMe .WidgetBody.currentCall .call-block .RecentCallSection .RecentCallLogs {
-  height: 100%;
 }
 .MeInfoBlock {
   margin-left: 5px;
@@ -289,6 +285,20 @@
   width: 182px;
   font-family: monospace;
   font-size: 12px;
+}
+.MeInfoBlock-column .MenuItem {
+  font-weight: bold;
+}
+.MeInfoBlock-column .MenuItem:hover {
+  background-color: transparent !important;
+  color: #555450;
+  text-shadow: 0 -1px 0 #555450;
+}
+.MeInfoBlock-column .MenuItem.selected {
+  color: #729C00 !important;
+}
+.MeInfoBlock-column .MenuItem.selected:hover {
+  text-shadow: 0 -1px 0 #729c00 !important;
 }
 .MeInfoTitle {
   color: #999;
@@ -696,6 +706,20 @@ div.NewCall .XButton.XButtonNormal {
   margin-left: 0;
 }
 /* TODO: rewrite this css */
+.Preferences-Holder p {
+  font-size: 12px;
+  margin-top: 3px;
+  padding: 0px;
+  vertical-align: top;
+}
+.Preferences-Holder .Dialog-settings-row {
+  margin-left: 0px;
+}
+.Preferences-Holder .Dialog-settings-row input[type=checkbox] {
+  margin-bottom: 1px;
+  margin-left: 0px;
+  vertical-align: bottom;
+}
 .Preferences-Holder .fj-content-items {
   position: absolute;
   left: 0px;
@@ -765,8 +789,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;

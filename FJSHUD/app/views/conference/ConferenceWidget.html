@@ -19,7 +19,7 @@
 			</div>
         </div>
     </div>
-    <div class="WidgetBody">
+    <div class="WidgetBody" ng-switch="selected">
 		<div class="WidgetTabBar">
             <span ng-repeat="tab in tabs | filter: tabFilter()">
                 <a href="#/conference/{{ ::conferenceId + '/' +  tab.lower}}" ng-click="saveConfTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
@@ -30,13 +30,13 @@
         </div>
 
         <!-- ng-views -->
-        <div ng-if="selected == 'chat'" class="ListView ChatView WithToolBar" include-once="views/ChatView.html" flow-init
+        <div ng-switch-when="chat" class="ListView ChatView WithToolBar" include-once="views/ChatView.html" flow-init
         flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
         ng-controller="ChatController"
         ></div>
-        <div ng-if="selected == 'currentcall'" class="fj-content WidgetTabContent conference currentCall" include-once="views/conference/CurrentCall.html"
+        <div ng-switch-when="currentcall" class="fj-content WidgetTabContent conference currentCall" include-once="views/conference/CurrentCall.html"
         ></div>
-        <div ng-if="selected == 'recordings'" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
+        <div ng-switch-when="recordings" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
         
     </div>
 

@@ -175,51 +175,74 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	};
 	
 	$scope.recorder;
+	$scope.attempts = 0;
 	
 	var player;
 	var source;
-	var loadCheck;
+	var retry;
+	
+	var onloadeddata = function() {
+		$scope.player.loaded = true;
+		$scope.player.playing = true;
+		$scope.$digest();
+		
+		player.play();
+	};
+	
+	var ontimeupdate = function() {
+		$scope.player.position = player.currentTime*1000;
+		
+		// prevent the jitters
+		if (!document.body.onmousemove)
+			$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
+		
+		$scope.$digest();
+	};
+	
+	var onpause = function() {
+		$scope.player.playing = false;
+		$scope.$digest();
+	};
+	
+	var onplay = function() {
+		$scope.player.playing = true;
+		$scope.$digest();
+	};
+	
+	var onerror = function() {
+		// retry 3x, then give up
+		if ($scope.attempts < 3) {
+			retry = setTimeout(function() {
+				player.load();
+			}, 1000);
+			
+			$scope.attempts++;
+		}
+	};
   
 	$scope.$on('play_voicemail', function(event, data) {
-		// mark as read
-        httpService.sendAction("voicemailbox", "setReadStatusAll", {'read': true, ids: data.xpid});
+		clearTimeout(retry);
 		
 		// first time setup
 		if (!player) {
 			player = document.getElementById('voicemail_player');
 			source = document.getElementById('voicemail_player_source');
 			
-			player.onloadeddata = function() {
-				$scope.player.loaded = true;
-				$scope.player.playing = true;
-				$scope.$safeApply();
-				
-				player.play();
-			};
+			// attach events
+			player.addEventListener('loadeddata', onloadeddata);			
+			player.addEventListener('timeupdate', ontimeupdate);			
+			player.addEventListener('pause', onpause);			
+			player.addEventListener('play', onplay);
 			
-			player.ontimeupdate = function() {
-				$scope.player.position = player.currentTime*1000;
-				
-				// prevent the jitters
-				if (!document.body.onmousemove)
-					$scope.player.progress = (player.currentTime / player.duration * 100) + '%';
-				
-				$scope.$safeApply();
-			};
-			
-			player.onpause = function() {
-				$scope.player.playing = false;
-				$scope.$safeApply();
-			};
-			
-			player.onplay = function() {
-				$scope.player.playing = true;
-				$scope.$safeApply();
-			};
+			// fail like a boss
+			player.addEventListener('error', onerror);
+			source.addEventListener('error', onerror);
 		}
+		else
+			player.pause();
 		
-		// reset
-		$interval.cancel(loadCheck);	
+		// reset	
+		$scope.attempts = 0;
 		$scope.voicemail = null;
 		$scope.player.loaded = false;
 		$scope.player.duration = data.duration;
@@ -234,21 +257,17 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			else 
 				$scope.recorder = contactService.getContact(data.calleeUserId);
 		}
-		else
+		else {
 			$scope.recorder = null;
+			
+			// mark as read
+			httpService.sendAction("voicemailbox", "setReadStatus", {'read': true, id: data.xpid});
+		}
 			
 		// update hidden audio element
 		var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
 		source.src = $sce.trustAsResourceUrl(httpService.get_audio(path));
 		player.load();
-	
-		// fail catch
-		loadCheck = $interval(function() {
-			if (isNaN(player.duration))
-				player.load();
-			else
-				$interval.cancel(loadCheck);
-		}, 1000, 0, false);
 	
 		// delay getting profile so view will update
 		$timeout(function() {
@@ -307,7 +326,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			diff = rect.width;
 			
 			$scope.player.progress = diff + 'px';
-			$scope.$safeApply();
+			$scope.$digest();
 		};
 	
 		document.body.onmouseup = function(e) {
@@ -322,16 +341,20 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	};
   
 	$scope.closePlayer = function() {
-		$interval.cancel(loadCheck);
 		$scope.voicemail = null;
 		$scope.recorder = null;
 		
+		clearTimeout(retry);
+		
 		player.pause();
-		player.onloadeddata = null;
-		player.ontimeupdate = null;
-		player.onpause = null;
-		player.onplay = null;
+		player.removeEventListener('loadeddata', onloadeddata);
+		player.removeEventListener('timeupdate', ontimeupdate);
+		player.removeEventListener('pause', onpause);
+		player.removeEventListener('play', onplay);
+		player.removeEventListener('error', onerror);
 		player = null;
+		
+		source.removeEventListener('error', onerror);
 		source = null;
 	};
 }]);

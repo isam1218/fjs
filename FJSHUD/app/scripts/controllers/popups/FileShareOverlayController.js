@@ -1,4 +1,4 @@
-hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 'HttpService', function($scope, $location, $sce, httpService) {
+hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 'HttpService', 'PhoneService', function($scope, $location, $sce, httpService, phoneService) {
 	$scope.embedType = 'img';
 	$scope.reposts = [];
 	
@@ -73,7 +73,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 	$scope.getEmbedURL = function(url) {
 		// sanitize url for iframe embedding
 		if ($scope.embedType == 'doc')
-			return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true');
+			return $sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(httpService.get_attachment(url)) + '&embedded=true&attredirects=0&d=1');
 		else
 			return $sce.trustAsResourceUrl(httpService.get_attachment(url) + '?embedded=true');
 	};
@@ -136,6 +136,9 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 		
 		// go to chat page
         $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
+		
+		// play sfx
+		phoneService.playSound("sent");
     };
 
 	$scope.selectCurrentDownload = function(download){

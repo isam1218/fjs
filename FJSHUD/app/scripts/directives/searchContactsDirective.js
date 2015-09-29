@@ -67,12 +67,25 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				if (element.val().length > 0) {
 					var matchCount = 0;
 					// look for match
-					for (var c = 0, len = contacts.length; c < len; c++) {
-						if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
-							var line = makeLine(contacts[c], false, c);
-							rows.append(line);
-							matchCount++;
-						} 
+
+					if (attrs.id == 'SearchContactDirectiveMarker'){
+						// group member search doesn't include external contacts aka contacts[c].primaryExtension == ""
+						for (var c = 0, len = contacts.length; c < len; c++) {
+							if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 && contacts[c].primaryExtension != "" || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
+								var line = makeLine(contacts[c], false, c);
+								rows.append(line);
+								matchCount++;
+							} 
+						}	
+					} else {
+						// all other member search (favorites, conference, zoom)
+						for (var c = 0, len = contacts.length; c < len; c++) {
+							if (contacts[c].xpid != $rootScope.myPid && contacts[c].displayName !== undefined && contacts[c].displayName.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].primaryExtension !== myExtension && contacts[c].primaryExtension.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneMobile.search(new RegExp(element.val(), 'i')) != -1 || contacts[c].phoneBusiness.search(new RegExp(element.val(), 'i')) != -1 ){
+								var line = makeLine(contacts[c], false, c);
+								rows.append(line);
+								matchCount++;
+							} 
+						}
 					}
 
 					if(matchCount == 0){
@@ -168,12 +181,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 			var fullContactInfo = function(line, contact){
 				line.append('<div class="Avatar AvatarSmall"><img src="' + contact.getAvatar(14) + '" onerror="this.src=\'img/Generic-Avatar-14.png\'" /></div>');
 				var hud_status = contact.hud_status || 'offline';
-				// zoom has diff class cuz needs smaller name width...
-				if (attrs.conference == "true" || attrs.ngController == "ContactsWidget" || attrs.id == 'SearchContactDirectiveMarker')
-					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
+				if (attrs.conference == 'true')
+					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember AddConferenceMember">';
 				else
-					var name = '<div class="ListRowContent"><div class="ListRowTitle AddZoomMember">';
-				name += '<div class="name" style="font-size:12px">' + contact.displayName + '</div>';
+					var name = '<div class="ListRowContent"><div class="ListRowTitle AddTeamMember">';
+				name += '<div class="name" style="font-size:12px; max-width:100% !important">' + contact.displayName + '</div>';
 				name += '<div class="hudStatus" style="font-size:10px"><div class="ListRowStatusIcon XIcon-ChatStatus-'+ hud_status +'"></div>';
 				name +=	 contact.custom_status ? contact.custom_status : contact.hud_status ? contact.hud_status : 'offline';
 				if(contact.call){
@@ -190,7 +202,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', 'ContactService', 
 				// 1. conference - adding external #...
 				// join by phone only applies to conferences
 				if (joinByPhone && attrs.conference == "true"){
-					line.append('<div class="Avatar AvatarSmall"><img src="img/Generic-Avatar-14.png"/></div>');				
+					line.append('<div class="Avatar AvatarSmall"><img src="img/Generic-Avatar-14.png"/></div>');			
 					var name = '<div class="ListRowContent"><div class="ListRowTitle">';
 					name += '<div class="name"><strong>Unknown number</strong></div>';
 

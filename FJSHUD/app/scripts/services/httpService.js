@@ -25,10 +25,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
-	if (document.cookie.indexOf('tab=') == -1) {
-		document.cookie = 'tab=true';
-		
-		worker = new Worker("scripts/services/fdpWebWorker.js");
+	if (document.cookie.indexOf('tab=') == -1) {		
+		worker = new Worker("scripts/workers/fdpWebWorker.js");
 		
 		worker.addEventListener("message", function(event) {
 		    switch (event.data.action) {
@@ -136,7 +134,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
 			
-		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 		window.onbeforeunload = null;
 		location.href = authURL;
@@ -234,7 +232,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	localStorage.removeItem("data_obj");
     	localStorage.removeItem("instance_id");
 		
-		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     	
 		// shut off web worker
 		worker.terminate();
@@ -243,11 +241,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		location.href = authURL;
 	};
 	
-	this.setUnload = function() {			
+	this.setUnload = function() {
+		document.cookie = 'tab=true; path=/';
+		
 		// stupid warning
-		window.onbeforeunload = function() {
-			
-			document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		window.onbeforeunload = function() {			
+			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			
 			return "Are you sure you want to navigate away from this page?";
 		};

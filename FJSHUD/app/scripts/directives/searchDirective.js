@@ -20,19 +20,21 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			var timeout;
 			
 			// trigger auto clear
-			element.on('keyup', function(e) {
-				if (autoClearOn == 'true') {
-					$timeout.cancel(timeout);
-					
-					timeout = $timeout(clearSearch, autoClearTime*1000);
-				}
-			});
+			if (scope.enableChat === undefined && scope.searchEmUp === undefined) {
+				element.on('keyup', function(e) {
+					if (autoClearOn == 'true') {
+						$timeout.cancel(timeout);
+						
+						timeout = $timeout(clearSearch, autoClearTime*1000);
+					}
+				});
 			
-			// pull updated settings
-			scope.$on('settings_updated', function(event, data) {
-				autoClearOn = data.hudmw_searchautoclear;
-				autoClearTime = data.hudmw_searchautocleardelay;
-			});
+				// pull updated settings
+				scope.$on('settings_updated', function(event, data) {
+					autoClearOn = data.hudmw_searchautoclear;
+					autoClearTime = data.hudmw_searchautocleardelay;
+				});
+			}
 			
 			// firefox doesn't have a clear button
 			if (browser == 'Firefox') {
@@ -76,11 +78,8 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			// IE clear is broken
 			if (browser == 'MSIE') {
 				element.bind('input', function() {
-					if (element.val().length == 0 && attrs.ngModel) {
-						scope.$evalAsync(function() {
-							scope.$eval(attrs.ngModel + ' = "";');
-						});
-					}
+					if (element.val().length == 0)
+						clearSearch();
 				});
 			}
 			

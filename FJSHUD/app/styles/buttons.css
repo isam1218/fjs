@@ -17,6 +17,10 @@ textarea {
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
   position: relative;
 }
+select::-ms-value {
+  background: transparent;
+  color: #333;
+}
 input[type="text"],
 input[type="email"],
 input[type="search"],
@@ -123,7 +127,7 @@ input[type="tel"] {
   transition: none;
   box-shadow: none;
 }
-.XButton:disabled span,
+.XButton.disabled,
 .XButtonNormal:disabled span,
 .XButtonNormal.disabled-true span {
   height: 26px;
@@ -207,21 +211,18 @@ select[disabled] {
   padding: 3px 5px 6px 5px;
 }
 .XIcon24-Record-Off {
-  right: 0px;
-  top: -10px;
   background: url(../img/XIconSet-24x24.png) no-repeat -194px 0px;
 }
 .XIcon24-Record-On {
-  left: 40px;
-  top: 2px;
   background: url(../img/XIconSet-24x24.png) no-repeat -72px -26px;
 }
 .XIcon24-Record-Off,
 .XIcon24-Record-On {
   position: absolute;
-  margin-left: 5px;
   width: 16px;
   height: 15px;
+  right: 12px;
+  top: 2px;
 }
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
@@ -242,16 +243,6 @@ select[disabled] {
 .CurrentCallBtn.disableButton {
   cursor: default;
   pointer-events: none;
-}
-.CurrentCallBtn .XIcon24-Record-On {
-  float: right;
-  right: 12px;
-  top: 2px;
-}
-.CurrentCallBtn .XIcon24-Record-Off {
-  right: 6px;
-  top: 0px;
-  position: absolute;
 }
 .UnmuteBtn {
   border: 1px solid #F8B682;
@@ -366,6 +357,9 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .SelectBoxText .InnerIco {
   color: #719d24;
   margin-left: 10px;
+}
+.SelectBoxText .InnerIco.move {
+  margin-left: -10px;
 }
 .SelectBoxArrow {
   top: 12px;

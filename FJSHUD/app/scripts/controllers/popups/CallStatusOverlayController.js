@@ -4,6 +4,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.timeElapsed = 0;
 	$scope.recordingElapsed = 0;
 	
+	$scope.conferences = [];
 	$scope.conf = this;
 	$scope.conf.query = '';
 	$scope.confQuery = this;
@@ -15,15 +16,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.contacts = [];
 	$scope.who = {};
 	$scope.who.sendToPrimary = true;
+	$scope.alreadyBarged = false;
+	$scope.alreadyMonitored = false;
+	$scope.topAlreadyWhispered = false;
+	$scope.bottomAlreadyWhispered = false;
 
+	$scope.selectionDisplay;
+	$scope.transferResults;
 	$scope.transferContacts = [];
 	$scope.transferType;
 	$scope.recentTransfers = [];
 	var recentXpids;
 	var externalContact;
-
-
-
+	var firstArr = []
+	var secondArr = [];
 	var toClose = $scope.$parent.overlay.data.close ? true : false;
 	
 	if($scope.$parent.overlay.data.screen){		
@@ -41,8 +47,18 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				}
 				break;
 			case 'conference':
+				// sort by displaying home server conference rooms first...
 				conferenceService.getConferences().then(function(data) {
-					$scope.conferences = data.conferences;
+					var myObj = contactService.getContact($rootScope.myPid);
+					var myServerNumber = myObj.jid.split('_')[0];
+					for (var i = 0, iLen = data.conferences.length; i < iLen; i++){
+						if (myServerNumber == data.conferences[i].serverNumber.split('_')[1])
+							firstArr.push(data.conferences[i]);
+						else
+							secondArr.push(data.conferences[i]);
+					}
+					firstArr = firstArr.concat(secondArr);
+					$scope.conferences = firstArr;
 				});
 				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 	
@@ -70,7 +86,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			
 			// also get recorded time
 			if ($scope.onCall.call.recorded)
-				$scope.recordingElapsed = $filter('date')(date - JSON.parse(localStorage.recordedAt), 'mm:ss');
+				$scope.recordingElapsed = $filter('date')(date - $scope.onCall.call.recordedStartTime, 'mm:ss');
 		
 			// increment
 			if ($scope.$parent.overlay.show)
@@ -99,7 +115,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		if (!$scope.onCall.call.recorded) {
 			$scope.onCall.call.recorded = true;
 			$scope.recordingElapsed = '00:00';
-			localStorage.recordedAt = JSON.stringify(ntpService.calibrateTime(new Date().getTime()));
+			
 			action = 'startCallRecording';
 			updateTime();
 		}
@@ -125,9 +141,17 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		
 		if (screen == 'conference') {
 			conferenceService.getConferences().then(function(data) {
-				$scope.conferences = data.conferences;
+				var myObj = contactService.getContact($rootScope.myPid);
+				var myServerNumber = myObj.jid.split('_')[0];
+				for (var i = 0, iLen = data.conferences.length; i < iLen; i++){
+					if (myServerNumber == data.conferences[i].serverNumber.split('_')[1])
+						firstArr.push(data.conferences[i]);
+					else
+						secondArr.push(data.conferences[i]);
+				}
+				firstArr = firstArr.concat(secondArr);
+				$scope.conferences = firstArr;
 			});
-	
 			$scope.confQuery = '';
 			$scope.selectedConf = null;
 			$scope.meToo = {};
@@ -145,32 +169,34 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	};
 	
-	
 	$scope.selectConference = function(conference) {
 		$scope.selectedConf = conference;
 	};
+
 	
 	$scope.conferenceFilter = function(){
 		var query = $scope.conf.query.toLowerCase();
+		
 		return function(conference){
-			if (query == '' || conference.extensionNumber.indexOf(query) != 1){
-				return true;
-			}
-			else if (conference.members){
-				for (var i = 0, iLen = conference.members.length; i < iLen; i++){
-					if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
+			// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
+			// conference permissions == 0 --> can INVITE/kick/mute to conference
+			if (conference.status !== undefined && conference.permissions == 0) {
+				if (query == '')
+					return true;
+				else {
+					// check members
+					for (var i = 0, len = conference.members.length; i < len; i++) {
+						if (conference.members[i].displayName.toLowerCase().indexOf(query) != -1)
+							return true;
+					}
+					
+					// check conference itself
+					if (conference.extensionNumber.indexOf(query) != -1 || conference.name.indexOf(query) != -1)
 						return true;
 				}
 			}
 		};
 	};
-
-	$scope.conFilter = function(conference){
-		return (conference.extensionNumber.indexOf($scope.conf.query) != -1 || conference.name.indexOf($scope.conf.query.toLowerCase()) != -1);
-	};
-
-	$scope.transferToObj;
-	$scope.selectionDisplay;
 
 	$scope.transferFilter = function(){
 		var query = $scope.transfer.search.toLowerCase();
@@ -185,19 +211,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		};
 	};
 
-	$scope.transferResults;
-	
-	$scope.transferToObj = $scope.transfer.search;
-
-	$scope.isStatusUndefined = function(conference){
-		// conferences w/o the status property and that user doesn't have permission to join can't be joined and will break the overlay...
-		// conference permissions == 0 --> can INVITE/kick/mute to conference
-		if (conference.status !== undefined && conference.permissions == 0){
-			return true;
-		}
-	};
-
-	
 	$scope.joinConference = function() {
 		if ($scope.selectedConf) {
 			httpService.sendAction('conferences', 'joinCall', {
@@ -215,22 +228,33 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select conference room';
 	};
 
-	// check to make sure the call object exists...
-	if ($scope.onCall.call){
-		// check barge permission...
-		$scope.canBarge = settingsService.isEnabled($scope.onCall.call.details.permissions, 1);
-		// disable barge/monitor/whisper buttons if external caller...
-		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled($scope.onCall.call.details.permissions, 1);	
-		$scope.canRecordOthers = settingsService.isEnabled($scope.onCall.call.details.permissions, 0);
+	/* Disabling of Barge/Monitor/Whisper Buttons --> dependent on barge permission, if external caller, and whether has been barged already */
+	$scope.$watch('onCall.call.details', function(callDetails){
+		$scope.canBarge = settingsService.isEnabled(callDetails.permissions, 1);
+		// disable barge/monitor/whisper buttons for bottom user if external caller...
+		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled(callDetails.permissions, 1);
+		$scope.canRecordOthers = settingsService.isEnabled(callDetails.permissions, 0);
 		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
 		if ($scope.onCall.call.bargers && $scope.onCall.call.bargers.length > 0){
 			$scope.alreadyBarged = $scope.onCall.call.bargers[0].call.barge == 2;
 			$scope.alreadyMonitored = $scope.onCall.call.bargers[0].call.barge == 1;
 			$scope.topAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.xpid;
-			$scope.bottomAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.call.fullProfile.xpid;
+			// property doesn't exist if call is not whispered already so need to run a check before setting it up
+			if ($scope.onCall.call.fullProfile)
+				$scope.bottomAlreadyWhispered = $scope.onCall.call.bargers[0].call.barge == 3 && $scope.onCall.call.bargers[0].call.contactId == $scope.onCall.call.fullProfile.xpid;
+			else
+				$scope.bottomAlreadyWhispered = false;	
 		}
-	}
+		// need to differentiate b/w top and bottom because external calls only apply to the bottom user in CSO...
+		$scope.topUserCanBargeFinal = $scope.canBarge ? !$scope.alreadyBarged : false;
+		$scope.topUserCanMonitorFinal = $scope.canBarge ? !$scope.alreadyMonitored : false;
+		$scope.topUserCanWhisperFinal = $scope.canBarge ? !$scope.topAlreadyWhispered : false
+		$scope.bottomUserCanBargeFinal = $scope.bottomUserCanBarge ? !$scope.alreadyBarged : false;
+		$scope.bottomUserCanMonitorFinal = $scope.bottomUserCanBarge ? !$scope.alreadyMonitored : false;
+		$scope.bottomUserCanWhisperFinal = $scope.bottomUserCanBarge ? !$scope.bottomAlreadyWhispered : false;
+	});
 
+	// this isn't the isXferFromEnabled personal-permission; it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
 	$scope.determineTransferFrom = function(contactToTransfer){
 	  var contact = contactService.getContact(contactToTransfer);
 	  if (contact && contact.permissions){
@@ -241,15 +265,26 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.transferPermFilterContacts = function(){
+		// filter out contacts from transfer list if do not have [transfer to primary extension permission] AND [transfer to VM permission]
 		return function(contact){
-			return settingsService.isEnabled(contact.permissions, 4);
+			return settingsService.isEnabled(contact.permissions, 4) || settingsService.isEnabled(contact.permissions, 5);
 		};
 	};
 
+	$scope.canTransferToPrimaryExtension = function(){
+		/* Reference (DO NOT DELETE)
+		*CP Group Permission: HUD -- Transfer call to others' extensions
+		*if A is on call w/ B, and want to know if A can transfer B to C's primary extension, check the [transfer call to others' extensions permission] on B */
+		var personBeingTransferred = $scope.transferFrom;
+		return settingsService.isEnabled(personBeingTransferred.permissions, 4);
+	};
+
 	$scope.canTransferToVm = function(){
-		var myContactObj = contactService.getContact($rootScope.myPid);
-		// console.error('vm perm - ', settingsService.isEnabled(myContactObj.permissions, 5));
-		return settingsService.isEnabled(myContactObj.permissions, 5);
+		/* Reference (DO NOT DELETE)
+		*CP Group Permission: HUD -- Transfer call to VM
+		*if A is on call w/ B, and want to know if A can transfer B to C's VM --> check the transferToVM permission on B. */
+		var personBeingTransferred = $scope.transferFrom;
+		return settingsService.isEnabled(personBeingTransferred.permissions, 5);
 	};
 
 	var createTmpExternalContact = function(contactNumber){
@@ -262,6 +297,14 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.selectDestination = function(selectionInput, display) {
 		// if clicking on the selectionBox
 		if (display == 'selectionBox'){
+			// if selected box is an external phone #
+			if (!isNaN(selectionInput) && selectionInput.length > 4){
+				$scope.transferType = 'external';
+				$scope.transferTo = createTmpExternalContact(selectionInput);
+			} 
+			// if user does not have transfer to primary extension permission AND doesn't have transfer to VM perm -> can't advance to next transfer screen
+			if (!$scope.canTransferToPrimaryExtension() && !$scope.canTransferToVm())
+				return;
 			// if selected is an internal contact, grab their contact data...
 			contactService.getContacts().then(function(data){
 				for (var i = 0; i < data.length; i++){
@@ -271,11 +314,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 					}
 				}
 			});
-			// if selected box is an external phone #
-			if (!isNaN(selectionInput) && selectionInput.length > 4){
-				$scope.transferType = 'external';
-				$scope.transferTo = createTmpExternalContact(selectionInput);
-			}
 		} else {
 			// else if clicking on recent or contacts, can't transfer my call to me or to the person i'm talking to...
 			if (selectionInput.xpid != $rootScope.myPid && selectionInput.xpid != $scope.transferFrom.xpid)
@@ -298,7 +336,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 					toContactId: $scope.transferTo.xpid
 				});
 			}
-			recentXpids.push($scope.transferTo.xpid);
+			recentXpids[$scope.transferTo.xpid] = $scope.transferTo.xpid;
 			localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentXpids);
 			$scope.showOverlay(false);
 		}
@@ -306,21 +344,18 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.addError = 'Select destination';
 	};
 
-	// grabbing recent transfers...
 	contactService.getContacts().then(function(data){
 		$scope.transferContacts = data;
-		recentXpids = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : [];
-		for (var j = 0; j < recentXpids.length; j++){
-			var singleRecent = recentXpids[j];
+		recentXpids = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : {};
+		for (var xpid in recentXpids){
 			for (var i = 0; i < data.length; i++){
-				if (data[i].xpid == singleRecent){
+				if (data[i].xpid == xpid){
 					$scope.recentTransfers.push(data[i]);
 					break;
 				}
 			}
 		}
 	});
-
 
   $scope.$on("$destroy", function() {
 		updateTime = null;

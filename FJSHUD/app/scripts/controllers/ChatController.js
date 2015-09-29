@@ -128,7 +128,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 
 	$scope.uploadAttachments = function($files){
       	
-		if(!$scope.showFileShare){
+		if($scope.showAlerts || !$scope.enableChat){
 			return;
 		}
       	
@@ -237,14 +237,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			
 			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '');
 
-			if ( (streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
-				if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
-					if (from == $scope.meModel.my_pid){
-						phoneService.playSound("sent");
-					}else{
-						phoneService.playSound("received");
-					}
-				}
+			if ((streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
+				// play sfx for incoming only
+				if (from != $scope.meModel.my_pid)
+					phoneService.playSound("received");
 				
 				found.push(data[i]);				
 			}
@@ -291,7 +287,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}		
 		
 		$scope.chat.message = '';
-		storageService.saveChatMessage(chat.targetId);
+		storageService.saveChatMessage(chat.targetId);		
+		document.getElementById('ChatMessageText').style.height = '1px';
+		
+		// play sfx
+		phoneService.playSound("sent");
 	};
 	
 	$scope.searchChat = function(increment) {

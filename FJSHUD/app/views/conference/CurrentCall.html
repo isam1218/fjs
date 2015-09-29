@@ -19,30 +19,32 @@
 </div>
 
 <div class="ListView fj-scrollable"> 
-	<a ng-href="#/contact/{{::member.contactId}}" class="ListRow" ng-repeat="member in conference.members" > 
+	<a ng-href="#/contact/{{::member.contactId}}" class="ListRow ConferenceListRow" ng-repeat="member in conference.members" > 
 
 		<avatar profile="member" type="4" context="conference:conference"></avatar>
 
 		<div class="ListRowContent" dockable="member.fullProfile"> 
-			<div class="ListRowTitle">
-				<div class="name">
-					<strong> {{ ::member.displayName }} </strong>
-					<div>
-						<div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>						
-						<div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
-						<div class=" ConferenceStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-						<span class="ConferenceListRowStatusText">{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}</span>
-					</div>
-				</div> 
-			</div>
-			
-			<div class="ListRowStatus">
-				<div class="vmtime" timer="member.started" ng-if="!member.ring"></div>
-				<div class="joining" ng-if="member.ring">
-					<img src="img/XLoading.gif" />
-					joining...
+            <div class="ListRowTitle">
+    			<div class="name">
+    				<strong> {{ ::member.displayName }} </strong>
+                </div>
+                <div class="vmtime" timer="member.started" ng-if="!member.ring"></div>
+                <div class="vmtime" ng-if="member.ring">{{ ::member.fullProfile.primaryExtension}}</div>
+            </div>
+            <div class="ListRowTitle">
+                <div class="ListRowStatusLeftSide">
+					<div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>						
+					<div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
+					<div class=" ConferenceStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+					<span class="ConferenceListRowStatusText">{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}</span>
 				</div>
-			</div>
+    			<div class="ListRowStatus">
+                    <div class="joining" ng-if="member.ring">
+    					<img src="img/XLoading.gif" />
+    					joining...
+    				</div>
+    			</div>
+            </div>
 		</div>
     </a>
     <div class="noJoinConf" ng-if="membersRefused.length > 0">
@@ -62,21 +64,21 @@
 
         <div class="ListRowContent" dockable="member.fullProfile"> 
             <div class="ListRowTitle">
-                <div class="name">
-                    <strong> {{ ::member.displayName }} </strong>
-                    <div>
-                        <div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>                        
-                        <div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
-                        <div class=" ConferenceStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-                        <span class="ConferenceListRowStatusText">{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}</span>
-                    </div>
-                </div>                 
+                <div class="ListRowStatusLeftSideNoJoin">
+                    <div class="name">
+                        <strong> {{ ::member.displayName }} </strong>
+                    </div>                 
+                    <div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>                        
+                    <div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
+                    <div class=" ConferenceStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+                    <span class="ConferenceListRowStatusText">{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}</span>
+                </div>
+                <div class="action-buttons">
+                    <div class="XButton XButtonNormal" ng-click="removeRefused(member)"><span>Remove</span></div>
+                    <div class="XButton XButtonNormal" ng-click="tryCall(member)"><span>Try again</span></div>
+                </div>
             </div>
             <span>{{ ::contact.primaryExtension }}</span>
-            <div class="action-buttons">
-                <div class="XButton XButtonNormal" ng-click="removeRefused(member)"><span>Remove</span></div>
-                <div class="XButton XButtonNormal" ng-click="tryCall(member)"><span>Try again</span></div>
-            </div>
         </div>
     </div>
    </div>
