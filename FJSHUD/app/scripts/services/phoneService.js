@@ -1199,22 +1199,30 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.setMicSensitivity = setMicSensitivity;
 
 	//look for audio tag and play sound based on key
-	this.playSound= function(sound_key){
-		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
+	this.playSound = function(sound_key){
+		if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
+			var audio;
+			
 			switch(sound_key){
 				case 'received':
 					if($rootScope.meModel.chat_status != "dnd"){
 						if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
-							$("audio.received")[0].play();
+							audio = new Audio('res/audio/received.mp3');
+							audio.play();
 						}
 					}
+					
 					break;
 				case 'sent':
 					if(settingsService.getSetting('hudmw_chat_sound_sent') ==  "true"){
-						$("audio.send")[0].play();
+						audio = new Audio('res/audio/sent.mp3');
+						audio.play();
 					}
+					
 					break;
 			}
+			
+			audio = null;
 		}
 	};
 
