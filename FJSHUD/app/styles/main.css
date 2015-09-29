@@ -2860,8 +2860,8 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-transition: all 0.1s linear;
 }
 .Preferences-Holder .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
-  box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
-  -webkit-box-shadow: #ffffff 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  -webkit-box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
 }
 .Preferences-Holder .Avatar .QueueBlockAvatar {
   left: 6px;
@@ -3600,6 +3600,9 @@ div.NewCall .XButton.XButtonNormal {
 .CallLog .rows {
   border: 1px solid #eee;
   margin-bottom: 10px;
+}
+.CallLog #createdVido a {
+  text-decoration: underline;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
@@ -4727,7 +4730,7 @@ div.NewCall .XButton.XButtonNormal {
   border-radius: 3px;
   -webkit-border-radius: 3px;
   padding: .5em .5em .5em 2em;
-  background: url("../img/search.png") no-repeat #ffffff;
+  background: url("../img/search.png") no-repeat white;
   background-position: 1%;
   max-width: 100%;
 }
@@ -5447,7 +5450,7 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
 }
 @-moz-document url-prefix() {
-  .SearchHolder {
+  .Widget.Intellinote .Right .SearchHolder {
     position: relative;
     margin-bottom: 40px;
   }
@@ -8940,7 +8943,7 @@ a.Messages {
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
 }
 .MenuWindow.BargeDropDown {
   width: 231px !important;
