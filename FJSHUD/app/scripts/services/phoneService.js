@@ -429,19 +429,34 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			return;
 		}
 		number = number.replace(/\D+/g, '');
-        if($rootScope.meModel.location.locationType == 'w'){
-        	if(context.webphone && number)
-        	{
-        		messageSoftphone({a : 'call', value : number});
-        	}else if(phone && number != ""){
-        		phone.makeCall(number);
-			}else{
-        		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-			}
-		}else{
-			httpService.sendAction('me', 'callTo', {phoneNumber: number});
-
+		var call_already_in_progress = false;
+		
+		if(!$.isEmptyObject(callsDetails))
+		{
+			for(var cd in callsDetails)	
+			{
+				if(callsDetails[cd].phone == number)
+				{							
+						call_already_in_progress = true;
+				}
+			}	
 		}
+		if(!call_already_in_progress)
+		{	
+	        if($rootScope.meModel.location.locationType == 'w'){
+	        	if(context.webphone && number)
+	        	{	
+	        		messageSoftphone({a : 'call', value : number});
+	        	}else if(phone && number != ""){
+	        		phone.makeCall(number);
+				}else{
+	        		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+				}
+			}else{
+				httpService.sendAction('me', 'callTo', {phoneNumber: number});
+				
+			}	
+		}  
     };
 
 	var acceptCall = function(xpid){
@@ -833,7 +848,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '/CallBack':
 					makeCall(xpid);
 					break;
-
 				case '/contact':
 					$location.path('/contact/'+xpid);
 					$location.replace();
