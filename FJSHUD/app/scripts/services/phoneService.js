@@ -216,9 +216,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	this.isInFocus = function(){
+	var isInFocus = function(){
 		return tabInFocus;
 	};
+
+    this.isInFocus = isInFocus;
 
 	var registerPhone = function(isRegistered){
 		if(context.webphone){
@@ -1524,7 +1526,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(data.notificationEventType){
 			switch(data.notificationEventType){
         case 'ACTIVITY_REPORTED':
-          reportActivity();
+          // Only process activity from webphone when not in focus.
+          if (! isInFocus()) {
+            reportActivity();
+          }
           return;
 				case 'CALL_DECLINED':
 					hangUp(data.notificationId);
