@@ -29,12 +29,9 @@
 
 			<div class="DirectionArrow"></div>
 		</div>
-		<div data-ng-click="sort('incoming')"
+		<div data-ng-click="sortType('incoming', 'missed', 'incomingNotMissed', 'outgoing')"
 			 class="ListLineContentCell CallType {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
-			<span class="upper">{{::verbage.type}}</span>
-
-		
-			<div class="DirectionArrow"></div>
+			<span class="upper">{{::verbage.type}}</span>		
 		</div>
 	</div>
 
