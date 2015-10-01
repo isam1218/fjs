@@ -1,18 +1,18 @@
 <div class="ListLineContent Header LeftContactsColumns">
 	<div ng-show="$parent.tab != 'recent'">
-		<div data-ng-click="sort('displayName', '')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
 			<span>{{::verbage.name}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
-		<div  ng-if="$parent.tab != 'external'" data-ng-click="sort('primaryExtension', '')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div  ng-if="$parent.tab != 'external'" data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
 			/<span>{{::verbage.extension}}</span>
 			<div class="DirectionArrow"></div>
 		</div>
-		<div ng-if="$parent.tab != 'external'" data-ng-click="sort('hud_status', 'hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div ng-if="$parent.tab != 'external'" data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
             <span>{{::verbage.hud_status}}</span>
             <div class="DirectionArrow"></div>
         </div>
-		<div data-ng-click="sort('call.fullProfile.call.displayName', 'call')"  class="ListLineContentCell CallStatus {{(sortField == 'call.fullProfile.call.displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}} ng-class:{'external': $parent.tab == 'external'}">
+    <div data-ng-click="sort('call')"  class="ListLineContentCell CallStatus {{(sortField == 'call' && ((sortReverse && 'Down') || 'Up')) || 'None'}} ng-class:{'external': $parent.tab == 'external'}">
 			<span>{{::verbage.call_status}}</span>
 			<div class="DirectionArrow"></div>
 		</div>		
@@ -21,8 +21,7 @@
 
 <div class="ContactList">
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: [orderByAttribute,'displayName']  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
-			 
+		<a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
