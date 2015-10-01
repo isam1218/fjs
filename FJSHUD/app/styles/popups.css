@@ -695,8 +695,7 @@
   overflow-y: auto;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
-<<<<<<< HEAD
-=======
+
 }
 .SearchContactOverlay .Inset.TransferInset {
   overflow-x: hidden;
@@ -707,7 +706,6 @@
 }
 .SearchContactOverlay .Inset .rows .ListRow {
   width: 100%;
->>>>>>> fon_dev_stable
 }
 .SearchContactOverlay .Inset .ListRowContent {
   left: 36px !important;
