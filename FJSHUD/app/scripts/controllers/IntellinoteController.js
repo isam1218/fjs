@@ -71,17 +71,11 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	  	if ($scope.addedContacts[i].xpid == xpid) {
 	    	$scope.addedContacts.splice(i, 1);
 				break;
-<<<<<<< HEAD
-            }
-        }
-    };
 
-=======
 	    }
 	  }
   };
 	
->>>>>>> fon_dev_stable
 	$scope.showList = function($event) {
 
 			$http.get(fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1').
