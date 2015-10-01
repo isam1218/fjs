@@ -289,6 +289,7 @@
 		&.Expand {
 			.TitleBar .XButton { visibility: visible; }
 			.scroller { padding-top: 20px; }
+			.Messages { display: block; }
 		}
 		
 		.TitleBar .XButton { visibility: hidden; }
@@ -314,9 +315,6 @@
 	.NotificationDivider { height: 1px; }
 }
 
-.NotificationMessages.LeftBarNotifications.noMessages{   
-      top: -5px;
-}
 .LeftBarNotificationSection:hover > .LeftBarNotifications{	
 	visibility:visible;
 	overflow-y:auto;
@@ -345,11 +343,7 @@
 	/*width: 83%;*/	
 	width: 95%;
 	height: 0px;
-	padding-bottom: 10px;
-	
-	&.last{
-	  height: auto !important;
-	}	
+	padding-bottom: 10px;	
 }
 .NotificationSection.open {
   height: auto;
@@ -450,6 +444,16 @@
             border-left:1px solid #ccc;
         }
     }
+	
+	&:last-child {
+		.NotificationSection {
+			height: auto !important;
+		}
+	}
+	
+	&:nth-last-child(n+6) {
+		display: none;
+	}
 	
 	&:after {
 		clear: both;

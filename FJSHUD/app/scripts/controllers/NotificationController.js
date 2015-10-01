@@ -51,22 +51,6 @@ hudweb.controller('NotificationController',
   $scope.clearOld;
   
   $scope.phoneSessionEnabled = phoneService.isPhoneActive();  
-  
-  $scope.showHideElements = function(index){
-    var showing = $scope.todaysNotifications.length - 5;
-    if(!$scope.phoneSessionEnabled || $scope.anotherDevice)
-      showing = $scope.todaysNotifications.length - 4;
-    if(!$scope.phoneSessionEnabled && $scope.anotherDevice)
-      showing = $scope.todaysNotifications.length - 3;
-    $scope.showing = showing;
-    if (!$scope.showAllNotifications && $scope.todaysNotifications){
-      if (index >= showing)
-        return true;
-      else
-        return false;
-    }
-    return true;
-  };
 
   $scope.showTodayHeader = function(index, anotherDevice){
     if ($scope.todaysNotifications.length <= 4){
