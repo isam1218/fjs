@@ -4,7 +4,7 @@
 
 <div class="ListView fj-scrollable"> 
 	<div>
-		<div class="vmsection ng-class:{'last': $last}" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid">
+		<div class="vmsection" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid">
 			<avatar profile="recording" context="recordings" type="{{::recording.type}}"></avatar>
 			<div class="vminfo" ng-click="playRecording(recording)"> 
 				<div class="displayName">

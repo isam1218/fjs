@@ -1,71 +1,47 @@
-hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', function ($scope, $rootScope, $routeParams, httpService, queueService) {
+hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', function ($scope, $rootScope, $routeParams, httpService, queueService, settingsService) {
 
 	$scope.tabs = [{upper: $scope.verbage.my_queue, lower: 'myqueue'},
 	{upper: $scope.verbage.all_queues, lower: 'allqueues'},
 	{upper: $scope.verbage.my_status, lower: 'mystatus'}];
 
-
-  var getXpidInCC = $rootScope.$watch('myPid', function(newVal, oldVal){
-  	if (!$scope.globalXpid){
-  		$scope.globalXpid = newVal;
-		if($routeParams.route != undefined){
-	  		$scope.selected = $routeParams.route;
-	  		localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-			for(var i = 0; i < $scope.tabs.length;i++){
-	  			if($scope.tabs[i].lower == $routeParams.route){
-	  				$scope.toggleObject = {item: i};
-	  				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-
-	           break;
-	  			}
-	  		}
-		}else{
-			$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-			$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
-			getXpidInCC();
-  		}
-  	} else {
-  		getXpidInCC();
-  	}
-  });
-
-	$scope.selected = localStorage['CallCenter_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-	$scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+	// if route is defined (click on specific tab or manaully enter url)...
+	if ($routeParams.route){
+		$scope.selected = $routeParams.route;
+		for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
+			if ($scope.tabs[i].lower == $routeParams.route){
+				$scope.toggleObject = {item: i};
+				break;
+			}
+		}
+		localStorage['CallCenter_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+		localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+	} else {
+		// otherwise when route isn't defined, use the tabs set in app.js 
+    $scope.selected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
+    $scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
+	}
 
 	$scope.saveTab = function(tab, index){
 		switch(tab){
 			case "myqueue":
-				$scope.selected = $scope.tabs[0].lower;
-				localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-				$scope.toggleObject = {item: index};
-				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+				var tabName = $scope.tabs[0].lower;
 				break;
 			case "allqueues":
-				$scope.selected = $scope.tabs[1].lower;
-				localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-				$scope.toggleObject = {item: index};
-				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+				var tabName = $scope.tabs[1].lower;
 				break;
 			case "mystatus":
-				$scope.selected = $scope.tabs[2].lower;
-				localStorage['CallCenter_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-				$scope.toggleObject = {item: index};
-				localStorage['CallCenter_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+				var tabName = $scope.tabs[2].lower;
 				break;
 		}
+		
+		localStorage['CallCenter_tabs_of_' + $rootScope.myPid] = JSON.stringify(tabName);
+		$scope.toggleObject = {item: index};
+		localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
 	};
 
 	$scope.total = {};
 	
-	queueService.getQueues().then(function(data) {
-		// show all or my queues
-		// console.log('my qs -', data.mine);
-		// console.log('all qs - ', data.queues);
-		if ($scope.selected == 'allqueues')
-			$scope.queues = data.queues;	
-		else if ($scope.selected == 'myqueue')
-			$scope.queues = data.mine;
-		
+	queueService.getQueues().then(function(data) {		
 		$scope.total = data.total;
 	});
 	

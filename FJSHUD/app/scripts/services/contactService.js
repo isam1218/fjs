@@ -1,14 +1,7 @@
-hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q, $rootScope, httpService) {
+hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService', function($q, $rootScope, ntpService, httpService) {
 	var deferred = $q.defer();	
 	var contacts = [];
 	var service = this;
-	var xFerFromPermObj = {};
-  var xFerToPermObj = {};
-
-	
-	var isEnabled = function(permission, bit) {
-		return ((permission & (1 << bit)) == 0);
-	};
 
 	service.getContact = function(xpid) {
 		for (var i = 0, len = contacts.length; i < len; i++) {
@@ -32,7 +25,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		// first time
 		if (contacts.length == 0) {
 			contacts = data;
-			deferred.resolve(contacts);
 			
 			// add avatars
 			for (var i = 0, len = contacts.length; i < len; i++) {
@@ -49,6 +41,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 					if (contacts[c].xpid == data[i].xpid) {
 						// contact was deleted
 						if (data[i].xef001type == 'delete') {
+							$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetContact_' + contacts[c].xpid);
+					
 							contacts.splice(c, 1);
 							cLen--;
 						}
@@ -62,7 +56,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 				}
 				
 				// add new contact
-				if (!match) {
+				if (!match && data[i].xef001type != 'delete') {
 					contacts.push(data[i]);
 					
 					// add avatar
@@ -74,9 +68,9 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		}
 		
 		// retrieve child data
-		httpService.getFeed('contactstatus');
+		/*httpService.getFeed('contactstatus');
 		httpService.getFeed('calls');
-		httpService.getFeed('contactpermissions');
+		httpService.getFeed('contactpermissions');*/
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
@@ -96,35 +90,62 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
 		}
 	});
 	
-	$rootScope.$on('all_calls_updated', function(event, data) {
-		for (var i = 0, iLen = contacts.length; i < iLen; i++) {
-			contacts[i].call = null;
+	$rootScope.$on('calls_synced', function(event, data) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			var match = false;
 			
 			// find caller
-			for (key in data) {
-				if (contacts[i].xpid == data[key].xpid) {
-					contacts[i].call = data[key];
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				if (contacts[c].xpid == data[i].xpid && data[i].xef001type != 'delete') {
+					// recording status
+					var time = 0;
+					
+					if (data[i].recorded) {
+						// don't replace if already there
+						if (contacts[c].call && contacts[c].call.recordedStartTime)
+							time = contacts[c].call.recordedStartTime;
+						else
+							time = ntpService.calibrateTime(new Date().getTime());
+					}
+					else
+						time = 0;
+					
+					// update call object
+					contacts[c].call = data[i];
+					contacts[c].call.recordedStartTime = time;
 					
 					// attach full profile, if present
-					if (data[key].contactId)
-						contacts[i].call.fullProfile = angular.copy(service.getContact(data[key].contactId));
+					if (data[i].contactId)
+						contacts[c].call.fullProfile = angular.extend({}, service.getContact(data[i].contactId));
 					
+					match = true;
 					break;
 				}
 			}
 			
-			if (contacts[i].call) {
-				contacts[i].call.bargers = [];
+			// remove call object
+			if (!match)
+				contacts[c].call = null;
+			else {
+				contacts[c].call.bargers = [];
 			
 				// find people barging call
-				for (key in data) {
-					if (data[key].barge > 0 && data[key].xpid != contacts[i].xpid && (data[key].contactId == contacts[i].call.xpid || data[key].contactId == contacts[i].call.contactId)) {
-						for (var c = 0, cLen = contacts.length; c < cLen; c++) {
-							if (contacts[c].xpid == data[key].xpid) {
-								contacts[i].call.bargers.push(contacts[c]);
-								break;
-							}
-						}
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					if (data[i].barge > 0 && data[i].xpid != contacts[c].xpid && (data[i].contactId == contacts[c].call.xpid || data[i].contactId == contacts[c].call.contactId)) {
+						contacts[c].call.bargers.push(service.getContact(data[i].xpid));
+					}
+				}
+			}
+		}
+	});
+	
+	$rootScope.$on('calldetails_synced', function(event, data) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			if (contacts[c].call) {
+				for (var i = 0, iLen = data.length; i < iLen; i++) {
+					if (contacts[c].xpid == data[i].xpid) {
+						contacts[c].call.details = data[i];
+						break;
 					}
 				}
 			}
@@ -144,20 +165,16 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'HttpService', function($q
     });
 
 	$rootScope.$on('contactpermissions_synced', function(event, data){
-		for (var i = 0; i < contacts.length; i++){
-			for (var j = 0; j < data.length; j++){
+		for (var i = 0, iLen = contacts.length; i < iLen; i++){
+			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (contacts[i].xpid == data[j].xpid && data[j].permissions){
-					xFerFromPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 3);
-					xFerToPermObj[contacts[i].xpid] = isEnabled(data[j].permissions, 4);
+					contacts[i].permissions = data[j].permissions;					
+					break;
 				}
 			}
 		}
-		for (var k = 0; k < contacts.length; k++){
-			if (contacts[k].xpid == $rootScope.myPid){
-				contacts[k].xFerFromPermObj = xFerFromPermObj;
-				contacts[k].xFerToPermObj = xFerToPermObj;
-			}
-		}
+		
+		deferred.resolve(contacts);
 	});
 
 

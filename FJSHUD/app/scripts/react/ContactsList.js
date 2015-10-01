@@ -5,7 +5,7 @@ fjs.hud.react.ContactsList = React.createClass({
         var scope = this.props.scope;
         var keys = Object.keys(scope.contacts), contacts=[];
 
-        for(var i=0; i<keys.length; i++) {
+        for(var i = 0, iLen = keys.length; i < iLen; i++) {
             if(!scope.query || scope.contacts[keys[i]].pass(scope.query)) {
 				// add missing field
 				if (scope.contacts[keys[i]][scope.sortField] === undefined)

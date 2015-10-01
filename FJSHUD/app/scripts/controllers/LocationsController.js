@@ -4,9 +4,9 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     /*
     when loading controller get the necessary feeds 
     */
-    //httpService.getFeed("me");
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
+    var call = phoneService.getCallDetail($routeParams.callId);
     $scope.locations = {};
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
@@ -15,7 +15,7 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     
     $scope.moveLocation = function(locationId){
     	var callId = $routeParams.callId;
-        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":$scope.meModel["current_location"] = locationId, "variance": "native", "options": "0"});
+        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":locationId, "variance": "native", "options": "0"});
         $scope.onBodyClick();
     };
     
@@ -40,14 +40,18 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
 
 
     $scope.getCurrentLocationId = function() {
-        return $scope.meModel["current_location"] && $scope.meModel["current_location"];
-    }
+        if(call && $scope.currentPopup.model.callTransfer){
+            return call.locationId;
+        }else{
+            return $scope.meModel["current_location"] && $scope.meModel["current_location"];
+        }
+    };
 
    
     $scope.$on('locations_synced', function(event,data){
         if(data){
             var me = {};
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
                 if(data[i].locationType != 'a'){
                      $scope.locations[data[i].xpid] = data[i];
                 }
@@ -58,7 +62,7 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
      $scope.$on('location_status_synced', function(event,data){
         if(data){
             var me = {};
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
                 if($scope.locations[data[i].xpid]){
                     $scope.locations[data[i].xpid].status = data[i];
                     if($scope.locations[data[i].xpid].locationType == 'w'){

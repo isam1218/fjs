@@ -1,33 +1,22 @@
-<a href="{{getRef(member, myself)}}" class='ListRow' droppable="Call">
+<a href="#/contact/{{::member.contactId}}" class='ListRow' droppable="Call">
   <avatar profile="member"></avatar>
   
-  <div class="ListRowContent" dockable="member.fullProfile">
+  <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null">
     <div class="ListRowTitle">
-		<strong> {{ ::member.fullProfile.displayName}}</strong>
+		{{ ::member.fullProfile.displayName}}
 		<br/>
-		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
+		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}"></div>
 
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}"></div>
-		{{ verbage[member.fullProfile.hud_status] || verbage['offline'] }}
+		<span>{{ (member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</span>
     </div>
-	<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
-		<avatar 
-			profile="member.fullProfile.call.fullProfile"
-			context="callstatus"
-			type="{{::member.fullProfile.call.type}}">
-		</avatar>
-		<div class="Details">
-			<div class="Name">{{::member.fullProfile.call.displayName}}</div>
-			<div class="Phone">{{::member.fullProfile.call.phone}}</div>
-			<div class="Time" timer="member.fullProfile.call.startedAt"></div>
-		</div>
-	</div>
-			
-	<div ng-if="!member.fullProfile.call">
-		<div class="ListRowStatus">
-			<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
-		</div>
-		<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
+
+    <callStatus profile="member.fullProfile" ng-switch-when="true"></callStatus>
+	<div ng-switch-when="false">
+			<div class="ListRowStatus">
+				<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
+			</div>
+			<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
 	</div>
 	</div>
 </a>

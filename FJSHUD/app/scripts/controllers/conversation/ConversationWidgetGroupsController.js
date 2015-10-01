@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', 'GroupService', function($scope, $routeParams, groupService) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', 'GroupService', 'ContactService', function($scope, $routeParams, groupService, contactService) {
     var context = this;
 	var favoriteID;
 	
@@ -35,7 +35,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 		
 		return function(group) {
 			if (group.xpid != favoriteID && group != $scope.userGroup && groupService.isMember(group, $scope.contactId) && groupService.isMine(group.xpid)) {
-				if (query == '' || group.name.toLowerCase().indexOf(query) != -1)
+				if (query == '' || group.name.toLowerCase().indexOf(query) != -1 || group.description.toLowerCase().indexOf(query) != -1)
 					return true;
 			}
 		};
@@ -44,6 +44,11 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 	$scope.isTheirGroup = function() {
 		if ($scope.userGroup && $scope.userGroup.name.toLowerCase().indexOf($scope.que.query.toLowerCase()) != -1)
 			return true;
+	};
+
+	$scope.findGroupOwner = function(group){
+		var owner = contactService.getContact(group.ownerId);
+		return owner.displayName;
 	};
 	
     $scope.$on("$destroy", function() {

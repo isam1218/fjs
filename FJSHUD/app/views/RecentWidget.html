@@ -1,31 +1,35 @@
 <div class="ListLineContent Header LeftContactsColumns">
     <div>
-        <div data-ng-click="sort('timeline')" class="ListLineContentCell Name {{(sortField == 'timeline' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <div data-ng-click="sort('timeline')" class="ListLineContentCell Name {{sortField == 'timeline' ? 'Up' : 'None'}}">
             <span>Timeline</span>
             <div class="DirectionArrow"></div>
         </div>
-        <div data-ng-click="sort('grouped')"  class="ListLineContentCell HudStatus {{(sortField == 'grouped' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+        <div data-ng-click="sort('grouped')"  class="ListLineContentCell HudStatus {{sortField == 'grouped' ? 'Up' : 'None'}}">
             <span>Grouped</span>
             <div class="DirectionArrow"></div>
         </div>
     </div>
 </div>
-<div class="ContactList" ng-style="{'height': RecentTabHeight}">
-    <div class='timeline' ng-if="sortField =='timeline'" ng-style="{'height': RecentTabHeight}">     
-        <a href="#/{{::item.recent_type}}/{{::item.xpid}}" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: customSort(): customReverse() track by item.xpid" class="ListRowFirst ListRow ListRow-Contact">            
+<div class="ContactList" ng-switch="sortField">
+    <div class='timeline' ng-switch-when="timeline">     
+        
+        <a href="#/{{::item.recent_type}}/{{::item.xpid}}" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> 
+           
             <avatar profile="item"></avatar>
 			
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'contact'">
 
-                <div class="ListRowTitle">
+                <div class="ListRowTitle RecentsRowTitle">
                     <div class="name">
-                        <strong>{{ ::item.displayName || item.name }}</strong>  
-                        <div class="status">                     
-	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
-	                        <span class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{item.call ? ' + on call' : ''}}</span>
-                        </div>
+						<strong ng-if="::item.primaryExtension">{{ ::item.displayName }}</strong>  
+						<strong ng-if="::!item.primaryExtension">{{ item.displayName }}</strong>
                     </div>
-                </div>                
+                    <div class="status">                     
+                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
+                        <div class="desc">{{item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline'] }}{{item.call ? ' + ' + verbage['on_call'] : ''}}</div>
+                    </div> 
+                </div>
+                
                 <div class="CallStatus" ng-if="item.call.startedAt">
                     <avatar 
                         ng-if="item.call.startedAt" 
@@ -40,12 +44,11 @@
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type =='group'">
                 <div class="ListRowTitle">
                     <div class="name">
-                        <strong>{{ item.name }}</strong>
-                        <div class="status">
-	                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>                       
-	                        <span class="details" ng-if="deptHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
-						    <span class="details" ng-if="nonVisibleTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
-						    <span class="details" ng-if="publicTeamHeaderDisplay(item.type)" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
+                        <strong ng-bind-html="item.name"></strong>
+                        <div class="status" ng-switch="item.type">                      
+	                        <span class="details" ng-switch-when="0" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
+						    <span class="details" ng-switch-when="2" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
+						    <span class="details" ng-switch-when="4" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
                         </div>                 
                     </div>
                 </div>
@@ -54,60 +57,78 @@
 
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'queue'">
                 <div class="ListRowTitle">
-                    <strong>Q:{{ ::item.name }}</strong>
+                    <strong>{{ ::item.name }}</strong>
                     <br/>
-                    <div class="status queue">
-	                    <div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>	                    
-	                    <span class="desc">{{ ::item.name }}</span>
-                    </div>
+                    <span class="status">
+	                    <div class="ListRowStatusIcon XIcon-QueueStatus-{{ item.me.status.status }}"></div>
+	                    <span class="desc">{{ queueStatusLabel(item.me.status.status) }}</span>
+                    </span>
                 </div>
             </div>            
 
-            <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'conference'">
+            <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'conference'" ng-switch="item.members.length">
                 <div class="ListRowTitle">
                     <div class="name"> <strong>{{::verbage.room}} # {{::item.roomNumber}} ({{::item.extensionNumber}})</strong> </div>
-                    <div data-ng-if="item.members.length == 0" class="status conference">
+                    <div ng-switch-when="0" class="status conference">
                         <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
                        <span class="desc">{{::verbage.free_room}}</span>
                     </div>                            
-                    <div data-ng-if="item.members.length > 0" class="status conference">
+                    <div ng-switch-default class="status conference">
                         <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
                         <span class="desc">{{item.members.length}} {{::verbage.members_on_call}}</span>
                     </div> 
                 </div>
-                <div data-fj-local-id="membersList" data-ng-if="item.members.length > 0" class="CallStatus">                   
-                         <avatar profile="member.fullProfile" type="4"></avatar>                                                                     
+                <div ng-switch-default class="CallStatus">
+                        <avatar profile="member.fullProfile" type="4"></avatar>            
                 </div>
             </div>
-            
         </a>
     </div>
 
-    <div class='grouped' ng-if="sortField == 'grouped'">
+    <div class='grouped' ng-switch-when="grouped">
 
         <!-- need to sort based on most recently clicked at the top -->
         <div data-ng-repeat="section in groupedSections | orderBy:'-lastTime.time'">
             <!-- if its the contact section -> display the recent contacts div -->
             <div ng-if="section.type === 'contact' && recentContactFlag">
                 <div class="RecentContacts">
-                    <h4>{{::verbage.recent_contacts}}</h4>
-                    <em>{{::verbage.contact_name_status}}</em>
-                    <a href="#/contact/{{::contact.xpid}}" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact">
+                 <div class="group_title">
+                   <div class="group_header">
+                    <div class="group">{{::verbage.recent_contacts}}</div>
+                    <div class="dept">{{::verbage.contact_name_status}}</div>
+                   </div> 
+                 </div>
+                 <a href="#/contact/{{::contact.xpid}}/{{::lastContactTabRoute(contact.xpid)}}" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">
                         <avatar profile="contact"></avatar>
                         
                         <div class="ListRowContent" dockable="contact">
+
+							<div class="ListRowTitle RecentsRowTitle">
+								<div class="name">
+									<strong ng-if="::contact.primaryExtension">{{ ::contact.displayName }}</strong>  
+									<strong ng-if="::!contact.primaryExtension">{{ contact.displayName }}</strong>  
+								</div>
+								<div class="status">                     
+									<div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+									<div class="desc">{{contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline'] }}{{contact.call ? ' + ' + verbage['on_call'] : ''}}</div>
+								</div> 
+							</div>
+				
+							<!--
                             <div class="ListRowTitle">
                                 <div class="name">
                                     <strong>{{ contact.displayName || contact.name }}</strong>
                                     <span>#{{ ::contact.primaryExtension || contact.extension }}</span>
                                 </div>
                             </div>
+							
                             <div class="ListRowStatus">
                                 <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                                 <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                                 <br/>
-                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}{{contact.call ? ' + on call' : ''}}</div>
+                                <div class="ListRowStatusText">{{contact.hud_status || 'offline'}}{{contact.call ? ' + ' + verbage['on_call'] : ''}}</div>
                             </div> 
+							-->
                             
                             <div class="CallStatus" ng-if="contact.call.startedAt">
                                 <avatar 
@@ -119,24 +140,30 @@
                                 </avatar>
                             </div>              
                         </div>
-                    </a>
+                </a>
                     <button class="loadmore" ng-show="hasMoreContactsToLoad()" ng-click="loadMoreContacts()"><strong>LOAD MORE</strong></button>
                 </div>
             </div>
 
             <div ng-if="section.type === 'group' && recentGroupFlag">
                 <div class="RecentGroups">
-                    <h4>{{::verbage.recent_groups}}</h4>
-                    <em>{{::verbage.recent_group_name_members}}</em>
-                    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
+                  <div class="group_title">
+                    <div class="group_header">
+                    <div class="group">{{::verbage.recent_groups}}</div>
+                    <div class="dept">{{::verbage.recent_group_name_members}}</div>
+                    </div>
+                  </div>
+                    <a href="#/group/{{::group.xpid}}" data-ng-repeat="group in totalGroups | filter: searchRecentGroupFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: groupsLimit() track by group.xpid" class="ListRowFirst ListRow ListRow-Contact">
                         <avatar profile="group"></avatar>
                         <div class="ListRowContent" dockable="group">
                             <div class="ListRowTitle">
                                 <div class="name">
-                                    <strong>{{ group.name }}</strong>
-                                    <span class="details">
-                                        {{ ::group.extension ? '#' + group.extension : getOwner(group) }}
-                                    </span>
+                                    <strong ng-bind-html="group.name"></strong>
+									<div class="status" ng-switch="group.type">
+										<span class="details" ng-switch-when="0" class="WidgetHeaderTitle Full">{{::verbage.department}}</span>
+										<span class="details" ng-switch-when="2" class="WidgetHeaderTitle Full">{{::verbage.team}}</span>
+										<span class="details" ng-switch-when="4" class="WidgetHeaderTitle Full">{{::verbage.public_team}}</span>     
+									</div> 
                                 </div>
                             </div>
                             <!-- <div class="ListRowStatus Members">{{ group.members.length }}</div> -->
@@ -148,9 +175,13 @@
 
             <div ng-if="section.type === 'queue' && recentQueueFlag">
                 <div class="RecentQueues">
-                    <h4>{{::verbage.recent_queues}}</h4>
-                    <em>{{::verbage.recent_queue_name_status}}</em>
-                    <a href="#/queue/{{::queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: queuesLimit() track by queue.xpid"> 
+                  <div class="group_title"> 
+                   <div class="group_header">
+                    <div class="group">{{::verbage.recent_queues}}</div>
+                    <div class="dept">{{::verbage.recent_queue_name_status}}</div>
+                   </div> 
+                  </div>
+                    <a href="#/queue/{{::queue.xpid}}" class="ListRowFirst ListRow ListRow-Contact" data-ng-repeat="queue in totalQueues | filter: {name: $parent.$parent.query} | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: queuesLimit() track by queue.xpid"> 
                         <avatar profile="queue"></avatar>
                     
                         <div class="ListRowContent" dockable="queue">
@@ -170,26 +201,30 @@
 
             <div ng-if="section.type === 'conference' && recentConfFlag">
                 <div class="RecentConferenes">
-                    <h4>{{::verbage.recent_conferences}}</h4>
-                    <em>{{::verbage.recent_conference_room_extension}}</em>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: customSort(): customReverse() | limitTo: conferencesLimit() track by conference.xpid">
+                  <div class="group_title">
+                    <div class="group_header">
+	                    <div class="group">{{::verbage.recent_conferences}}</div>
+	                    <div class="dept">{{::verbage.recent_conference_room_extension}}</div>
+                    </div>
+                  </div>
+                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRowFirst ListRow-Conference" data-ng-repeat="conference in totalConferences | filter: searchRecentConfFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: conferencesLimit() track by conference.xpid" droppable="Call,Contact">
                         <avatar profile="conference"></avatar>
-                        <div class="ListRowContent" dockable="conference">
+                        <div class="ListRowContent" dockable="conference" ng-switch="conference.members.length">
                             <div class="ListRowTitle">
                                 <div class="name"> <strong>{{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</strong></div>
                                 
-                                <div data-ng-if="conference.members.length == 0" class="status conference">
+                                <div ng-switch-when="0" class="status conference">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
                                     <span class="desc">{{::verbage.free_room}}</span>
                                 </div>                            
-                                <div data-ng-if="conference.members.length > 0" class="status conference">
+                                <div ng-switch-default class="status conference">
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
                                     <span class="desc">{{conference.members.length}} {{::verbage.members_on_call}}</span>
                                 </div> 
                             </div>
                         
-                            <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="CallStatus">                               
-                                    <avatar profile="member.fullProfile" type="4"></avatar>                                                                    
+                            <div ng-switch-default class="CallStatus">        
+                                 <avatar profile="member.fullProfile" type="4"></avatar>   
                             </div>
                         </div>
                     </a>

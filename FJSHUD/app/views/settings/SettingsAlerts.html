@@ -14,7 +14,7 @@
       	<div class="Dialog-settings-row"><input type="checkbox"
           ng-model="alertOnAlways" ng-change="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" 
         > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
-      	<div class="Dialog-settings-row"><input type="button" value="{{::verbage.reset_alert_position}}"></div>
+      	<div class="Dialog-settings-row" ng-if="::browser != 'Chrome'"><input type="button" value="{{::verbage.reset_alert_position}}" ng-click="resetAlertPosition()"></div>
       </div>
        
      </div>
@@ -22,7 +22,7 @@
       <div class="ListSeciontHeader">   
           <div class="ListSectionHeaderTitle">{{::verbage.voicemail_alerts}}</div>
       </div>
-      <div class="ListSectionBody">{{::verbage.configure_desktop_alerts}}</div>
+      <div class="ListSectionBody">{{::verbage.configure_vm_desktop_alerts}}</div>
       <div class="ListPage">
       	<div class="Dialog-settings-row"><input type="checkbox"
            ng-model="alertShowVM" ng-change="update_settings('alert_vm_show_new','update',alertShowVM)" 
@@ -69,71 +69,73 @@
 
       </div>
 
-      <div class="ListPage">
         <div class="table Queues">
-          <div class="QueueHeader">
-            <div class="QueueSetting QueueSettingCol1"></div>
-            <div class="QueueSetting QueueSettingHeader" > {{::verbage.long_waiting_call}}</div>
-            <div class="QueueSetting QueueSettingHeader" > {{::verbage.abandoned_calls}}</div>
+          <div class="QueueHeader top">
+            <div class="QueueSetting QueueSettingHeader QueueSettingCol1">&nbsp; &nbsp;</div>
+            <div class="QueueSetting QueueSettingHeader" colspan="2"> {{::verbage.long_waiting_call}}</div>
+            <div class="QueueSetting QueueSettingHeader" colspan="2"> {{::verbage.abandoned_calls}}</div>
           </div>
-          <div class="QueueHeader" style="display:inline-block"> 
-            <div class="QueueSetting QueueSettingCol1"></div>
-            <div class="QueueSetting QueueSettingCheckBox"> {{::verbage.notifications}}</div>
-            <div class="QueueSetting QueueSettingCheckBox"> {{::verbage.desktop_alerts}} </div>
-            <div class="QueueSetting QueueSettingCheckBox">  {{::verbage.notifications}} </div>
-            <div class="QueueSetting QueueSettingCheckBox"> {{::verbage.desktop_alerts}} </div>
+          <div class="QueueHeader"> <!--  style="display:inline-block" -->
+            <div class="QueueSetting QueueSettingHeader QueueSettingCol1">&nbsp; &nbsp;</div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"> {{::verbage.notifications}}</div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"> {{::verbage.desktop_alerts}} </div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox">  {{::verbage.notifications}} </div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"> {{::verbage.desktop_alerts}} </div>
           </div>
-          <div class="QueueHeader" style="display:inline-block"> 
-            <div class="QueueSetting QueueSettingCol1">{{::verbage.select_all}}</div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+          <div class="QueueHeader"> <!--  style="display:inline-block" -->
+            <div class="QueueSetting QueueSettingHeader QueueSettingCol1">{{::verbage.select_all}}</div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueNotificationsLW"
-                ng-change = "update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW)"
+                ng-change="update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW)"
             ></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueAlertsLW"
-                ng-change = "update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW)"
-                ng-disabled = "!allQueueNotificationsLW"
+                ng-change="update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW)"
+                ng-disabled="!allQueueNotificationsLW"
            ></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueNotificationsAB"
-                ng-change = "update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB)"
+                ng-change="update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB)"
                 
             ></div>
-            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueAlertsAB"
-                ng-change = "update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB)"
-                ng-disabled = "!allQueueNotificationsAB"
+                ng-change="update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB)"
+                ng-disabled="!allQueueNotificationsAB"
            
             ></div>
           </div>
-          <div ng-repeat="queue in queues" class="QueueHeader" style="display:inline-block; background-color:white;">  
+          <div class="queueList">          
+          <div ng-repeat="queue in queues track by queue.xpid" class="ListRow">       
+            <div class="SettingsListLineContent">
             <div class="QueueSetting QueueSettingCol1"> {{::queue.name}} </div>
             
             <div class="QueueSetting QueueSettingCheckBox">
               <input type="checkbox"
-                ng-model="settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
-                ng-change ="update_settings('HUDw_QueueNotificationsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsLW_'+queue.xpid] ? 'true' : 'false')"
+                ng-model="settings['HUDw_QueueNotificationsLW_'+queue.xpid]"                
+                ng-change="update_settings('HUDw_QueueNotificationsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsLW_'+queue.xpid] ? 'true' : 'false')"
               >
             </div>
             
             <div class="QueueSetting QueueSettingCheckBox">
               <input type="checkbox" 
-              ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"
+              ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"                            
               ng-change ="update_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
               ng-disabled = "!settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
               >
             </div>
             <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
-              ng-model = "settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
-              ng-change ="update_settings('HUDw_QueueNotificationsAb_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
+              ng-model = "settings['HUDw_QueueNotificationsAb_'+queue.xpid]"              
+              ng-change="update_settings('HUDw_QueueNotificationsAb_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
               
             ></div>
             <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
-              ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"
+              ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"              
               ng-change ="update_settings('HUDw_QueueAlertsAb_' + queue.xpid,'update', settings['HUDw_QueueAlertsAb_'+queue.xpid] ? 'true' : 'false')"
               ng-disabled = "!settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
            ></div>
+           </div>
          </div>
-        </div>
+        </div>       
       </div>
       </div>

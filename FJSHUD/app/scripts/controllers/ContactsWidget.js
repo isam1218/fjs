@@ -1,4 +1,4 @@
-hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeout', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, $filter, $timeout, myHttpService, contactService, groupService) {
+hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, myHttpService, contactService, groupService) {
 	$scope.query = "";
 	$scope.sortField = "displayName";
 	$scope.sortReverse = false;
@@ -15,16 +15,17 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		$scope.favorites = data.favorites;
 	});
 
-  $scope.sort = function(field) {
-      if($scope.sortField != field) {
-          $scope.sortField = field;
-          $scope.sortReverse = false;
-      }
-      else {
-          $scope.sortReverse = !$scope.sortReverse;
-      }
-  };
+    $scope.sort = function(field) {
+        if($scope.sortField != field) {
+            $scope.sortField = field;
+            $scope.sortReverse = false;
+        }
+        else {
+            $scope.sortReverse = !$scope.sortReverse;
+        }
+    };
 	
+	/*
 	// filter contacts down
 	$scope.customFilter = function() {
 		var tab = $scope.$parent.tab;
@@ -58,6 +59,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', '$filter', '$timeou
 		else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
 			return true;
 	};
+	*/
 	
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();

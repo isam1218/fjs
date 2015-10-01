@@ -1,4 +1,4 @@
-hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($scope, $timeout, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', function($scope, $rootScope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService) {
 	$scope.searched = false;
 
 	$scope.searchEmUp = function() {
@@ -56,24 +56,36 @@ hudweb.controller('SearchWidgetController', ['$scope', '$timeout', 'ContactServi
 		});
 	};
 	
-	$scope.clearSearch = function() {
-		$timeout(function() {
-			if ($scope.query == '') {
+	// reset search field on clear
+	$scope.$watch('query', function(val) {
+		if (val == '') {
+			$scope.$evalAsync(function() {
 				$scope.contacts = [];
 				$scope.groups = [];
 				$scope.conferences = [];
 				$scope.queues = [];
-				
 				$scope.searched = false;
-				$scope.$safeApply();
-			}
-		}, 100);
-	};
+			});
+		}
+	});
+
+	// clicked on call button
+    $scope.callExtension = function($event, contact){
+		$event.stopPropagation();
+		$event.preventDefault();
+	  
+	    httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+	  
+	    storageService.saveRecent('contact', contact.xpid);
+    };
 	
-	$scope.onKeyDown = function($event) {
-		// enter
-		if ($event.keyCode == 13)
-			$scope.searchEmUp();
+	$scope.getOwner = function(group) {
+		if (group.ownerId == $rootScope.myPid)
+			return 'owner: me';
+		else {
+			var contact = contactService.getContact(group.ownerId);
+			return (contact ? 'owner: ' + contact.displayName : '');
+		}
 	};
 
     $scope.$on("$destroy", function() {

@@ -2,11 +2,7 @@
   position: relative;
   width: 100%;
   height: 100px;
-  min-width: 1000px;
-  /*display: flex;
-  display: -webkit-flex;
-  flex-direction: row;
-  -webkit-flex-direction: row;*/
+  min-width: 1000px;  
   border-bottom: 1px solid white;
   box-shadow: 0 -1px 1px #ccc inset;
 }
@@ -108,10 +104,8 @@
           overflow-x: hidden;
           overflow-y: auto;
           
-          #apps{
-              /*overflow-y: auto;
-              overflow-x: hidden;*/
-              
+          #apps{              
+                        
               .TopBar2MenuItemApp {
                   position: relative;
                   height: 60px;
@@ -260,8 +254,7 @@
   width: 110px;
   float: right;
   
-  .Logout {     
-	/*padding-left: 24px;*/
+  .Logout {    	
 	padding: 3px 14px 4px 14px;
 	
 	.icon {
@@ -274,8 +267,7 @@
 	}	
   }
   
-  .XButton span{
-    /*width: 58px;*/
+  .XButton span{   
     left: 8px;
   }
   .Status {   
@@ -295,11 +287,13 @@
 .cust_status{
   float: right;
 }
-.TopBarVoicemailControls {
-  /*position: absolute;*/
+
+/* VOICEMAIL PLAYER */
+
+.TopBarVoicemailControls { 
   position: relative;
   float: right;
-  top: 0;  
+  top: -5px;  
   background-color: #eee;
   min-height: 100px;
   max-height: 100%;
@@ -309,7 +303,8 @@
   overflow: hidden;
   text-align: left;
   padding: 10px 20px;
-  font-size: .9em;
+  /*font-size: .9em;*/
+  font-size: 12px;
   z-index: 0;
   clear: none;
   margin-top: -80px;
@@ -324,6 +319,7 @@
 	
 	.Buttons {
 	  opacity: 1;
+	  & > div:first-child{padding-right: 1px;}
 	}
   }
   
@@ -333,24 +329,60 @@
 	right: 5px;
   }
   
-  .Caller {
+  .Callers {
+	position: relative;
     background-color: white;
 	margin: 0 20px 15px 0;
 	border-radius: 4px;
 	border: 1px solid #ccc;
 	padding: .25em .5em;
 	line-height: 1.5em;
+	overflow: hidden;
+	
+	.Voicemail {
+	  float: left;
+	  width: 40%;
+		
+	  & > div {
+		vertical-align: middle;
+	  }
+	}
+	
+	.Recording {
+	  float: right;
+	  width: 40%;
+	  display: flex;
+	  display: -webkit-flex;
+	  flex-direction: row;
+	  -webkit-flex-direction: row;
+	  align-items: center;
+	  -webkit-align-items: center;
+	  
+	  .RecordingIcon {
+	  	position: absolute;
+	  	top: 50%;
+	  	left: 50%;
+	  	margin-left: -13px;
+	  }
+	  
+	  .Details {
+	  	flex: 1;
+	  	-webkit-flex: 1;
+	  }
+	}
 	
 	.Details {
 	  display: inline-block;
+	  text-overflow: ellipsis;
+	  overflow: hidden;
 	  
 	  em {
 	    color: #999;
+		padding-right: .75em;
 	  }
 	  
 	  strong {
 	    color: #009cff;
-		margin-left: .75em;
 	  }
 	}
   }

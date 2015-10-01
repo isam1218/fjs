@@ -1,5 +1,4 @@
 .DockPanel {
-  position: relative;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
   -ms-flex: 1 1 auto;
@@ -8,8 +7,27 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: auto;
-  overflow-y: hidden;
+  max-width: 60%;
+  font-size: 0.9em;
+  position: fixed;
+  left: 820px;
+  top: 100px;
+  bottom: 20px;
+  border-right: none;
+  min-width: 200px;
+  right: 10px;
+}
+.DockPanel .NoneParked {
+  max-height: 42px !important;
+}
+.DockPanel .ListRowTitle {
+  max-width: 100%;
+  padding-top: 5px;
+  font-size: 11px;
+}
+.DockPanel .Header.ListSectionGadget {
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 .DockPanel.Moving {
   border: 1px dashed #358503;
@@ -19,14 +37,17 @@
 }
 .DockPanel .InnerDock {
   position: absolute;
+  overflow-x: auto;
+  overflow-y: hidden;
   height: 100%;
-  width: 39%;
+  width: 100%;
   column-width: 170px;
   -webkit-column-width: 170px;
   -moz-column-width: 170px;
   column-gap: 5px;
   -webkit-column-gap: 5px;
   -moz-column-gap: 5px;
+  -webkit-transform: translateZ(0);
 }
 .DockPanel .InnerDock.ui-sortable:not(.ui-sortable-disabled) .Gadget {
   position: static;
@@ -58,13 +79,14 @@
   display: -webkit-inline-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  border-radius: 5px;
   border: 1px solid #aaa;
-  overflow: hidden;
   width: 160px;
   background-color: #EBEBEB;
   margin: .5em;
   opacity: .9;
+}
+.Gadget.Hide {
+  display: none !important;
 }
 .Gadget.Positioned {
   position: absolute;
@@ -92,20 +114,48 @@
 .Gadget:hover {
   box-shadow: 0 0 8px gray;
 }
+.Gadget #parked_calls .ListRow .ListRowTitle {
+  padding: 0px;
+  white-space: nowrap;
+  max-width: 70px;
+  padding-top: 5px;
+  text-overflow: ellipsis;
+  padding-left: 3px;
+  margin-top: .1px;
+}
+.Gadget #parked_calls .ListRow .ListRowTitle .ParkedCallDisplayName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #555;
+  text-shadow: 0px 1px 0px #fff;
+}
+.Gadget #parked_calls .timer {
+  float: right;
+  font-size: .65em;
+  margin-top: 7px;
+  margin-right: 2px;
+}
 .Gadget .Header {
   cursor: pointer;
   background-color: #ECECEC;
   padding: .25em;
   text-decoration: none;
   white-space: nowrap;
-  font-size: .8em;
+  /*font-size: .8em;*/
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
+  max-height: 40px;
+}
+.Gadget .Header span {
+  margin-top: -3px;
 }
 .Gadget .Header > .Avatar {
-  font-size: 1.25em;
+  margin-top: 0;
+  height: 32px;
+  width: 32px;
 }
 .Gadget .Header.Single {
   background: linear-gradient(to bottom, #eeeeef, #ddddde);
@@ -114,15 +164,65 @@
   display: inline-block;
   vertical-align: top;
 }
+.Gadget .Header > div.CallStatus {
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #fff;
+  height: 34px;
+  width: 34px;
+  padding: 1px;
+}
+.Gadget .Header > div.CallStatus .CallAvatar.CallAvatar_Office,
+.Gadget .Header > div.CallStatus .CallAvatar_Office,
+.Gadget .Header > div.CallStatus .CallAvatar {
+  width: 30px;
+  height: 30px;
+}
+.Gadget .Header > div.CallStatus .CallAvatar.CallAvatar_Office img,
+.Gadget .Header > div.CallStatus .CallAvatar_Office img,
+.Gadget .Header > div.CallStatus .CallAvatar img {
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+}
+.Gadget .Header > div.CallStatus .CallAvatar.CallAvatar_Office img.default,
+.Gadget .Header > div.CallStatus .CallAvatar_Office img.default,
+.Gadget .Header > div.CallStatus .CallAvatar img.default {
+  margin-left: -2px;
+}
 .Gadget .Header .Title {
   margin-left: .5em;
   overflow: hidden;
   flex: 1;
   -webkit-flex: 1;
+  text-shadow: #fff 0 1px 0;
+  font-size: 12px;
+  padding: 6px 3px 0px;
+  margin-top: -3px;
 }
 .Gadget .Header .Title div {
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #555;
+  cursor: pointer;
+  margin-top: -2px;
+  /*padding: 0;*/
+}
+.Gadget .Header .Title div.titleHeader {
+  text-shadow: #fff 0 1px 0;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: -2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.Gadget .Header .Title div.titleHeader.header {
+  margin-top: 0px;
+}
+.Gadget .Header .Title div.subTitle {
+  font-size: 11px;
+  white-space: nowrap;
 }
 .Gadget .Header .Title .Name {
   font-weight: bold;
@@ -130,17 +230,41 @@
   text-overflow: ellipsis;
 }
 .Gadget .Header .Title .Agents {
-  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+  /*background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+				border-radius: 6px;
+				margin-top: 0px;
+				text-align: center;				
+				font-size: 10px;
+				padding-left: 5px;
+				margin-left: -3px;
+				text-align: left;	
+				margin-top: 1px;	
+				line-height: 1.4em;	
+				color: #808080;	*/
+  right: 5px;
+  height: 14px;
+  line-height: 14px;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: 10px;
   border-radius: 6px;
-  margin-top: .5em;
+  -webkit-border-radius: 6px;
   text-align: center;
-  padding: .25em;
-  font-size: .8em;
+  color: #888;
+  top: 23px;
+  left: 42px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  white-space: nowrap;
+  background: linear-gradient(to bottom, #cfcfcf, #eeeeee);
+  margin-top: 3px;
 }
 .Gadget .Header .TopBarItemAppIcon.CallCenter {
   position: relative;
   top: 0;
   left: 0;
+  background-position: 37% -4px;
 }
 .Gadget .Content {
   flex: 1;
@@ -151,33 +275,117 @@
   -webkit-flex-direction: column;
   overflow-y: auto;
   min-height: 6em;
+  position: relative;
 }
 .Gadget .Content .SubHeader {
   background: linear-gradient(to bottom, #d4d4d5, #d9d9da);
+  background: -webkit-linear-gradient(to bottom, #d4d4d5, #d9d9da);
   border-top: 1px solid #aaa;
-  border-bottom: 1px solid white;
   text-align: center;
-  font-size: .75em;
-  padding: .25em;
   font-weight: bold;
   color: #888;
   text-shadow: whiteSmoke 0 1px 0;
+  height: 20px;
+  border-bottom: solid 1px #fff;
+  font-size: 12px;
+  line-height: 20px;
 }
 .Gadget .Content .List {
-  flex: 1;
-  -webkit-flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
   background: linear-gradient(to bottom, #dcdcdc, #eaeaeb);
+  background: -webkit-linear-gradient(to bottom, #dcdcdc, #eaeaeb);
+}
+.Gadget .Content .List .free {
+  font-size: 12px;
+  padding: 5px;
+}
+.Gadget .Content .List .free p {
+  text-align: center;
+}
+.Gadget .Content .List .free p input {
+  font-size: 11px;
+  width: 50px;
 }
 .Gadget .Content .List .ListRow {
   background-color: #eee;
+  max-height: 40px;
+}
+.Gadget .Content .List .ListRow .ConfMemberRowTitle {
+  float: left;
+  padding: .5em;
+  font-size: 12px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #888;
+  white-space: nowrap;
+  max-width: 66%;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  margin-top: -3px;
+}
+.Gadget .Content .List .ListRow .ConfMemberRowTitle .name {
+  font-size: 12px !important;
+  color: #555;
+  text-shadow: 0px 1px 0px #fff;
+  white-space: nowrap;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
 }
 .Gadget .Content .List .ListRow .ListRowTitle {
-  padding: 0;
+  max-width: 100% !important;
+  padding: 5px 0 5px 5px;
+  width: 100%;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .name {
+  font-size: 12px !important;
+  color: #555;
+  text-shadow: 0px 1px 0px #fff;
+  white-space: nowrap;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  margin-bottom: -4px;
+  margin-top: 3px;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .ListRowStatusIcon {
+  float: left;
+  margin-left: 0 !important;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .status {
+  max-width: 80%;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 11px;
+  color: #888;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  margin-top: 5px;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .IconDisplay {
+  float: none;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .IconDisplay.XIcon-ChatStatus-offline {
+  background-position: -78px 0px;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .IconDisplay.XIcon-ChatStatus-available {
+  background-position: -6px 0px;
+}
+.Gadget .Content .List .ListRow .ListRowTitle .IconDisplay.XIcon-ChatStatus-away {
+  background-position: -30px 0px;
 }
 .Gadget .Content .List.Stats {
   font-size: .7em;
   text-align: center;
-  color: #9B9B9B;
+  color: #808080;
   padding: 1em 0;
   line-height: 1.5em;
   border-top: 1px solid #D5D6D6;
@@ -262,6 +470,18 @@
 }
 .FileUploadStatus progress[aria-valuenow]:before {
   background: #72E673;
+}
+.FileUploadStatus .Gadget:hover progress {
+  display: none;
+}
+.FileUploadStatus .Gadget:hover .CancelUploadIcon {
+  display: block;
+}
+.FileUploadStatus .Gadget progress {
+  display: block;
+}
+.FileUploadStatus .Gadget .CancelUploadIcon {
+  display: none;
 }
 @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
   .FileUploadStatus {

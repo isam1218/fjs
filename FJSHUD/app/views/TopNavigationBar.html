@@ -52,23 +52,40 @@
 	
 	<div class="TopBarVoicemailControls" ng-if="voicemail">		
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
-		<div class="Caller">
-			<avatar profile="voicemail" type="4"></avatar>
-			<div class="Details">
-				<em>...{{ voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
-				<strong>{{ voicemail.displayName || voicemail.name }}</strong>
-				<br/>
-				<span>{{ voicemail.primaryExtension || voicemail.extensionNumber }}</span>
+		
+		<div class="Callers">
+			<div class="Voicemail">
+				<avatar profile="voicemail" context="drag" type="{{ ::voicemail.primaryExtension ? 4 : 1 }}"></avatar>
+				<div class="Details">
+					<em ng-if="::!recorder">...{{ ::voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
+					<strong>{{ ::voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
+					<br/>
+					<span>{{ ::voicemail.primaryExtension || voicemail.extensionNumber || voicemail.calleePhone }} &nbsp;</span>
+				</div>
+			</div>
+			
+			<div class="Recording" ng-if="::recorder">
+				<div class="RecordingIcon"></div>
+				
+				<div class="Details">
+					<strong>{{ ::recorder.displayName }}</strong>
+					<br/>
+					<span>{{ ::recorder.primaryExtension }} &nbsp;</span>
+				</div>
+				<avatar profile="recorder" context="drag" type="{{ ::voicemail.type ? voicemail.type : 1 }}"></avatar>
 			</div>
 		</div>
-		<div class="Loading" ng-show="!player.loaded">{{::verbage.loading}}...</div>
+		
+		<div class="Loading" ng-show="!player.loaded">{{ attempts > 2 ? 'Load failed' : verbage.loading + '...' }}</div>
+		
 		<div class="Progress" ng-show="player.loaded">
 			<div class="Time">{{ player.position | duration }}</div>
 			<div class="Left"></div><div class="Bar">
 				<div class="MediaPlayerProgressButton" ng-style="{'left':player.progress}" ng-mousedown="moveSlider($event)"></div>
 			</div><div class="Right"></div>
-			<div class="Time">{{ player.duration | duration }}</div>
+			<div class="Time">{{ ::player.duration | duration }}</div>
 		</div>
+		
 		<div class="Buttons">
 			<div>
 				<div class="MediaPlayerBack" ng-click="changeSeek(-2)"></div>

@@ -9,7 +9,6 @@ body, html {
   padding: 0;
   margin: 0;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
-  /*font-size: 1em;*/
   color: #555;
   background: #ccc url(../img/bg.png);
   box-shadow: 0 4px 5px rgba(255,255,255,0.3) inset;
@@ -38,7 +37,6 @@ p {
   color: #0093f0;
   font-size: 11px;
   font-weight: bold;
-  //height: 29px;
   line-height: 18px;
   width: auto;
   text-transform: uppercase;
@@ -49,7 +47,9 @@ p {
 }
 
 #App {
-  position: relative;
+  //position: relative;
+  position: fixed;
+  top: 0;
   height: 100%;
   width: 100%;
   min-width: 300px;
@@ -61,7 +61,8 @@ p {
 }
 
 .PanelWrapper {
-  position: absolute;
+  //position: absolute;
+  position: fixed;
   padding: 0 10px 10px 10px;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
@@ -70,12 +71,14 @@ p {
   flex-direction: row;
   -webkit-flex-direction: row;
   width: 100%;
-  height: 85%;
+  //height: 90%;
+  height: 100%;
 }
-
-.col1{
-  width:180px;
-  display:inline-block;
+.PanelWrapper:after {
+  padding-top: 25%;
+  /* 16:9 ratio */
+  display: block;
+  content: '';
 }
 
 .text[contenteditable] {
@@ -117,12 +120,16 @@ p {
   }
 }
 
-.LocationSelector {
-  width: 100%;
+.LocationSelector {  
+   position: relative;
+   width: 182px;
+   height: 28px;
+   left: 0px;
   
-  .SelectBox {
-    width: 100%;
-    padding: 5px 10px 5px 0px;
+  .SelectBox {              
+      width: 100%;
+      height: 100%;
+      padding: 5px 10px 5px 0px;
   }
 }
 
@@ -243,14 +250,12 @@ p {
 @import "tables";
 @import "buttons";
 @import "icons";
-//@import "nativeAlert";
 @import "notification";
 @import "popups";
 @import "voicemail";
 @import "queue";
 @import "media";
-@import "firefox";
-
+@import "nativeAlert";
 
 .LeftBar .Recent {
   flex: 1 1 0;
@@ -281,4 +286,13 @@ p {
   margin: 0 0 .5em .5em;
   font-size: .8em;
   display: block;
+}
+
+
+.Overlay .Foreground {
+  max-height: 575px;
+}
+
+.jp{
+ font-size: 0.67em !important;
 }

@@ -4,12 +4,13 @@
   <div class="XButton QueueButtonToggle XButtonNormal" ng-click="viewIcon = !viewIcon">
     <div class="QueueViewIcon" ng-class="viewIcon ? 'QueueListView' : 'QueueTileView'"></div>
   </div>
-    <select ng-if="viewIcon" class="XButton XButtonNormal XButtonDropDown XSortButton"
-			ng-model="selectedQueue"
-            ng-options="queue_option.display_name for queue_option in queue_options track by queue_option.display_name" 
-			ng-change="setSort(selectedQueue.type, selectedQueue)">
+  <div class="SelectBox selectWrapper queue" ng-if="viewIcon">
+    <select
+		ng-model="selectedQueue"
+        ng-options="queue_option.display_name for queue_option in queue_options | filter: truncateLongAction() track by queue_option.display_name" 
+		ng-change="setSort(selectedQueue.type, selectedQueue)">
     </select>
-
+  </div>
 </div>
 
 <div class="ListViewTopSpace"></div>
@@ -25,23 +26,24 @@
 		</a>
 		
 		<div class="Stats">
-			<div ng-class="(queue.info.waiting > queueThresholds.waiting && queueThresholds.waiting != 0) ? 'RedText' : ''">
+			<div ng-class="{'RedText': queueThresholds.waiting && queue.info.waiting > queueThresholds.waiting}">
 				<strong>{{ queue.info.waiting }}</strong>
 				{{::verbage.waiting}}
 			</div>
-			<div ng-class="(queue.info.esa > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
-				<strong>{{ queue.info.esa*1000 | duration }}</strong>
-				{{::verbage.avg_wait}}
+			<div ng-switch="queue.longestWait">
+				<strong ng-switch-default timer="queue.longestWait"></strong>
+				<strong ng-switch-when="0">00:00</strong>
+				{{::verbage.longest_hold}}
 			</div>
-			<div ng-class="(queue.info.avgTalk > queueThresholds.avg_wait && queueThresholds.avg_wait != 0) ? 'RedText' : ''">
+			<div ng-class="{'RedText': queueThresholds.avg_talk && queue.info.avgTalk/60 > queueThresholds.avg_talk}">
 				<strong>{{ queue.info.avgTalk*1000 | duration }}</strong>
 				{{::verbage.avg_talk}}
 			</div>
-			<div >
+			<div>
 				<strong>{{ queue.info.abandon + queue.info.completed }}</strong>
-				{{::verbage.talk}}
+				{{::verbage.total}}
 			</div>
-			<div ng-class="(queue.info.abandonPercent > queueThresholds.abandoned && queueThresholds.abandoned != 0) ? 'RedText' : ''">
+			<div ng-class="{'RedText': queueThresholds.abandoned && queue.info.abandonPercent > queueThresholds.abandoned}">
 				<strong>{{ queue.info.abandonPercent }}%</strong>
 				{{::verbage.aban}}
 			</div>
@@ -56,46 +58,46 @@
 <div ng-if="!viewIcon" class="QueueList">
 	<div class="Grid">
 		<div class="Header">
-			<div ng-click="setSort('name', selectedQueue)">
+			<div ng-click="setSort('name', queue_options[0])">
 				<span>{{::verbage.queue_name}}</span>
 				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
-			</div>
-			<div ng-click="setSort('info.waiting', selectedQueue)">
-				<span>{{::verbage.waiting}}</span>		
-				<div ng-if="sortColumn == 'info.waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-			</div>
-			<div ng-click="setSort('info.esa', selectedQueue)">
+			</div>			
+			<div ng-click="setSort('longestWait', queue_options[1])">
+                <span>{{::verbage.longest_hold}}</span>     
+                <div ng-if="sortColumn == 'longestWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+            </div>
+            <div ng-click="setSort('info.waiting', queue_options[2])">
+                <span>{{::verbage.waiting}}</span>      
+                <div ng-if="sortColumn == 'info.waiting'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+            </div>
+			<div ng-click="setSort('info.esa', queue_options[3])">
 				<span>{{::verbage.avg_wait}}</span>		
 				<div ng-if="sortColumn == 'info.esa'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.avgTalk', selectedQueue)">
+			<div ng-click="setSort('info.avgTalk', queue_options[4])">
 				<span>{{::verbage.avg_talk}}</span>		
 				<div ng-if="sortColumn == 'info.avgTalk'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-			</div>
-			<div ng-click="setSort('longestWait', selectedQueue)">
-				<span>{{::verbage.hold}}</span>		
-				<div ng-if="sortColumn == 'longestWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
-			</div>
-			<div ng-click="setSort('info.abandonPercent', selectedQueue)">
+			</div>			
+			<div ng-click="setSort('info.abandonPercent', queue_options[5])">
 				<span>{{::verbage.abandoned}}</span>		
 				<div ng-if="sortColumn == 'info.abandonPercent'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
-			<div ng-click="setSort('info.active', selectedQueue)">
+			<div ng-click="setSort('info.active', queue_options[6])">
 				<span>{{::verbage.active}}</span>		
 				<div ng-if="sortColumn == 'info.active'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
 			</div>
 		</div>
 		<div class="Table">
-			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
-                <div>{{ ::queue.name }}</div>
-				<div>{{ queue.info.waiting}}</div>
-				<div>{{ queue.info.esa*1000 | duration}}</div>
-				<div>{{ queue.info.avgTalk*1000 | duration}}</div>
-				<div>
-					<span ng-if="queue.longestWait > 0" timer="queue.longestWait"></span>
-					<span ng-if="queue.longestWait == 0">00:00</span>
-				</div>
-				<div>{{ queue.info.abandonPercent }}%</div>
+			<a href="#queue/{{::queue.xpid}}" class="Row" ng-repeat="queue in queues | filter: que.query | orderBy: [sortColumn, '-name']: isAscending track by queue.xpid" dockable="queue">
+                <div>{{ ::queue.name }}</div>				
+				<div ng-switch="queue.longestWait">
+                    <span ng-switch-default timer="queue.longestWait"></span>
+                    <span ng-switch-when="0">00:00</span>
+                </div>
+                <div ng-class="{'RedText': queueThresholds.waiting && gadget.data.info.waiting > queueThresholds.waiting}">{{ queue.info.waiting}}</div>
+				<div ng-class="{'RedText': queueThresholds.avg_wait && queue.info.esa/60 > queueThresholds.avg_wait}">{{ queue.info.esa*1000 | duration}}</div>
+				<div ng-class="{'RedText': queueThresholds.avg_talk && queue.info.avgTalk/60 > queueThresholds.avg_talk}">{{ queue.info.avgTalk*1000 | duration}}</div>				
+				<div ng-class="{'RedText': queueThresholds.abandoned && queue.info.abandonPercent > queueThresholds.abandoned}">{{ queue.info.abandonPercent }}%</div>
 				<div>{{ queue.info.active }}</div>
 			</a>
 		</div>

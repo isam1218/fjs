@@ -6,15 +6,46 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
-    <link rel="stylesheet" href="styles/main.css">
-  	<script type="text/javascript">
-			(function(){
+    <link rel="stylesheet" href="styles/main.css">   
+    <!--[if lt IE ]> 
+        <link rel="stylesheet" href="styles/ie.css">  
+    <![endif]-->
+  	<script type="text/javascript">   	
+			(function(){				
 				var uv=document.createElement('script');
 				uv.type='text/javascript';
 				uv.async=true;
 				uv.src='//widget.uservoice.com/Tn3xl4wYXZ7m5rjTNJnOQ.js';
 				var s=document.getElementsByTagName('script')[0];
 				s.parentNode.insertBefore(uv,s);
+				
+					            
+	            var isIE11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
+	            var isIE10 = !!navigator.userAgent.match(/Trident.*rv[ :]*10\./);
+	                
+	            if(isIE10 || isIE11)
+	            {
+	                    	
+	              var ie_css = document.createElement('link');
+	              ie_css.setAttribute('rel','stylesheet');
+	              ie_css.setAttribute('href','styles/ie.css');
+	              var l=document.getElementsByTagName('link')[0];
+	              l.parentNode.appendChild(ie_css,l);	                    	
+	            }
+	            if(navigator.userAgent.toLowerCase().indexOf('firefox') != -1){	            	
+	            	var FF_css = document.createElement('link');
+	            	FF_css.setAttribute('rel','stylesheet');
+	            	FF_css.setAttribute('href','styles/firefox.css');
+	                var li=document.getElementsByTagName('link')[0];
+	                li.parentNode.appendChild(FF_css,li);  
+	            }
+	            if(navigator.userAgent.toLowerCase().indexOf('safari') != -1){                    
+                    var safari_css = document.createElement('link');
+                    safari_css.setAttribute('rel','stylesheet');
+                    safari_css.setAttribute('href','styles/safari.css');
+                    var sli=document.getElementsByTagName('link')[0];
+                    sli.parentNode.appendChild(safari_css,sli);  
+                }
 			})();
 		</script>
 		<script type="text/javascript">
@@ -42,75 +73,77 @@
   <body data-ng-controller="MainController" flow-prevent-drop>
     <div id="AppLoading">
 		<div ng-cloak>
-			<div>{{::verbage.loading}}...</div>
+			<div ng-bind="::verbage.loading"></div>
 			<img src="img/ajax-loader.gif" />
 		</div>
     </div>
 	
 	<div id="App">
-		<div class="TopBar" include-once="views/TopNavigationBar.html" ng-mouseleave="showDropdown = false; showHideiconsDropdown()" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
+		<div class="TopBar" include-once="views/TopNavigationBar.html" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
 
 		<div class="PanelWrapper" data-ng-click="onBodyClick()">
 			<div class="LeftBar" ng-controller="LeftBarController">
 				<div class="RoundedTop"></div>
 
-				<div class="LeftBarTop">
-					<div class="ContactSearch">
-						<div ng-show=" tab != 'favorites' && tab != 'recent'">
-							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
+				<div class="LeftBarWrapper" ng-switch="tab">
+					<div class="LeftBarTop">
+						<div class="ContactSearch">
+							<div ng-show=" tab != 'favorites' && tab != 'recent'">
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
+								
+								<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+							</div>
 							
-							<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+							<div ng-show="tab == 'favorites'">
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+							</div>
 						</div>
-						
-						<div ng-show="tab == 'favorites'">
-							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+						<div class="WidgetTabBar">
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.all}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.favorites}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.recent}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">								
+								<div class="inner {{language}}">{{::verbage.external}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('groups')" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.Groups}}</div>
+								<div class="arrow"></div>
+							</a>
 						</div>
 					</div>
-					<div class="WidgetTabBar">
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.all}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.favorites}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.recent}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.external}}</div>
-							<div class="arrow"></div>
-						</a>
-						<a href="" class="WidgetTabBarButton Ready" ng-click="tab = 'groups'" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
-							<div class="inner">{{::verbage.Groups}}</div>
-							<div class="arrow"></div>
-						</a>
-					</div>
-				</div>
 
-				<div class="Contacts"
-					ng-if="tab != 'recent' && tab != 'groups'"
-					include-once="views/ContactsWidget.html"
-					ng-controller="ContactsWidget">
-				</div>
-				<div class="Groups"
-					ng-if="tab == 'groups'"
-					include-once="views/GroupsWidget.html"
-					ng-controller="GroupsController">
-				</div>
-				<div class="Recent"
-					ng-if="tab == 'recent'"
-					include-once="views/RecentWidget.html"
-					ng-controller="RecentController">
+					<div class="Contacts"
+						contact-filters
+						include-once="views/ContactsWidget.html"
+						ng-controller="ContactsWidget">
+					</div>
+					<div class="Groups"
+						ng-switch-when="groups"
+						include-once="views/GroupsWidget.html"
+						ng-controller="GroupsController">
+					</div>
+					<div class="Recent"
+						ng-switch-when="recent"
+						include-once="views/RecentWidget.html"
+						ng-controller="RecentController">
+					</div>
 				</div>
 
 				<div class="Notifications" include-once="views/Notifications.html" ng-controller="NotificationController"></div>
                 
 				<div class="Phone">
 					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" 
-						ng-keypress="makePhoneCall('dialpad',$event)"
+						on-submit="makeCall(number)"
 					/>
 					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number)"/>
 				</div>
@@ -138,35 +171,34 @@
 	</div>
 
     <!--bower components-->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
-    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
 
-	<script src="../bower_components/moment/moment.js"></script>
-	<script src="../bower_components/moment/locale/ja.js"></script>
-  
+	<script src="bower_components/moment/moment.js"></script>
+	<script src="bower_components/moment/locale/ja.js"></script>
+  	<script src="properties.js"></script>
 
+	<!-- @if NODE_ENV='development' --> 
 	<!--config-->
-    <script src="properties.js"></script>
     <script src="languageMap.js"></script>   
     <script src="scripts/app.js"></script>
 
     <!--filters-->
     <script src="scripts/filters/highlightTextFilter.js"></script>
     <script src="scripts/filters/durationFilter.js"></script>
-     <script src="scripts/filters/dateFilter.js"></script>
-     <script src="scripts/filters/linkFilter.js"></script>
+    <script src="scripts/filters/dateFilter.js"></script>
+    <script src="scripts/filters/chatTextFilter.js"></script>
 	<script src="scripts/filters/sortVoiceMailFilter.js"></script>
+	<script src="scripts/filters/sortItemsFilter.js"></script>
 	
 	<!--directives-->
 	<script src="scripts/directives/windowResizeDirective.js"></script>
 	<script src="scripts/directives/searchDirective.js"></script>
-	<script src="scripts/directives/scrollDirective.js"></script>
-	<script src="scripts/directives/showOnHoverParentDirective.js"></script>
     <script src="scripts/directives/dockableDirective.js"></script>
     <script src="scripts/directives/droppableDirective.js"></script>
     <script src="scripts/directives/dockDraggerDirective.js"></script>
@@ -174,10 +206,15 @@
     <script src="scripts/directives/searchContactsDirective.js"></script>
     <script src="scripts/directives/avatarDirective.js"></script>
     <script src="scripts/directives/timeElapsedDirective.js"></script>
-    <script src="scripts/directives/myCurrentTimeDirective.js"></script>
     <script src="scripts/directives/includeDirective.js"></script>
     <script src="scripts/directives/expandContractNotificationsDirective.js"></script>
     <script src="scripts/directives/topNavBehaviorDirective.js"></script>
+    <script src="scripts/directives/heightChangeDirective.js"></script>
+	<script src="scripts/directives/callStatusDirective.js"></script>
+    <script src="scripts/directives/onSubmitDirective.js"></script>
+    <script src="scripts/directives/contactFiltersDirective.js"></script>
+    <script src="scripts/directives/messageScrollDirective.js"></script>
+    <script src="scripts/directives/autofocusDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>
@@ -229,7 +266,6 @@
     <script src="scripts/controllers/RecentController.js"></script>
 
 	<!--services-->
-    <script src="scripts/services/fdpRequest.js"></script>
     <script src="scripts/services/settingsService.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/groupService.js"></script>
@@ -238,10 +274,19 @@
     <script src="scripts/services/queueService.js"></script>
     <script src="scripts/services/conferenceService.js"></script>
     <script src="scripts/services/phoneService.js"></script>
+   	<script src="scripts/services/notificationService.js"></script>
     <script src="scripts/services/ntpService.js"></script>
     <script src="scripts/services/detectBrowserService.js"></script>
     
     <!-- factory -->
-    <script src="scripts/factory/windowDimensionsFactory.js"></script>
+    <script src="scripts/factory/windowDimensionsFactory.js"></script>   
+   	<script src="scripts/services/notificationService.js"></script>
+    <!-- @endif -->   
+	
+	<!-- @if NODE_ENV='production' -->
+	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
+	<!-- @endif --> 
+    
+
 </body>
 </html>

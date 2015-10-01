@@ -1,52 +1,37 @@
-<div class="ToolBar">
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder"><input class="SearchInputBoxInput" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query"></div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
+<div class="ToolBar">        
+        <input class="SearchBox" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query">
+      
+        <div class="SelectBox selectWrapper members">
+	        <select ng-model="selectedSort"
+	                    ng-options="sort_option.name for sort_option in sort_options"
+	                ng-change="sortBy(selectedSort.type)"
+	        > 
+	        </select>
         </div>
-        <div></div>
-        <select style="width:150px"class="XButton XButtonNormal XButtonDropDown XSortButton" ng-model="selectedSort"
-                    ng-options="sort_option.name for sort_option in sort_options"
-                ng-change="sortBy(selectedSort.type)"
-        > 
-        </select>
-        
 </div>
 
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <a ng-href="{{getRef(member, myself)}}" class=" GroupRow ListRow ListRow-Contact vmsection ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
-        <avatar profile="member.fullProfile"></avatar>
+    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
+        <a ng-href="#/contact/{{::member.contactId}}">
+            <avatar profile="member.fullProfile"></avatar>
+            <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
+                    <a class="ListRowTitle GroupListRowTitle" ng-href="#/contact/{{::member.contactId}}">
+                        <span> {{ ::member.fullProfile.displayName }} </span>
+        				<br/>
+                        <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
+                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+        				{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}
+                    </a>
+        			
 
-        <div class="ListRowContent" dockable="member.fullProfile"> 
-            <div class="ListRowTitle">
-                <span> {{ ::member.fullProfile.displayName }} </span>
-				<br/>
-                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
-                <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
-				{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}
+        			<callStatus profile="member.fullProfile" ng-switch-when="true"></callStatus>
+        			<a ng-href="#/contact/{{::member.contactId}}" class="vmalternate"  ng-switch-when="false">
+                        <div class="ListRowStatus extension">#{{ ::member.fullProfile.primaryExtension }}</div>
+                        <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
+                    </a>
             </div>
-			
-			<div class="CallStatus Full" ng-if="member.fullProfile.call" ng-click="showCallStatus($event, member.fullProfile)">
-				<avatar 
-					profile="member.fullProfile.call.fullProfile"
-					context="callstatus"
-					type="{{::member.fullProfile.call.type}}">
-				</avatar>
-				<div class="Details">
-					<div class="Name">{{::member.fullProfile.call.displayName}}</div>
-					<div class="Phone">{{::member.fullProfile.call.phone}}</div>
-					<div class="Time" timer="member.fullProfile.call.startedAt"></div>
-				</div>
-			</div>
-			
-            <div class="vmalternate" ng-if="!member.fullProfile.call">
-                <div class="vmtime">#{{ ::member.fullProfile.primaryExtension }}</div>
-                <input style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
-            </div>
-            
-        </div>
-    </a>
+        </a>
+    </div>
 </div>

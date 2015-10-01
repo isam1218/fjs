@@ -1,23 +1,26 @@
 <div class="ToolBar">
-  <select class="SelectBox XButton HideFirst" ng-model="checkSelect" ng-change="selectQueues(checkSelect); checkSelect = ''">
+ <div class="SelectBox selectWrapper status">
+  <select class="HideFirst" ng-model="checkSelect" ng-change="selectQueues(checkSelect); checkSelect = ''">
 	<option value="">{{::verbage.select}}</option>
 	<option value="all">{{::verbage.select_all}}</option>
 	<option value="clear">{{::verbage.clear_selection}}</option>
   </select>
-  
-  <select class="SelectBox XButton" 
+ </div> 
+ <div class="SelectBox selectWrapper status"> 
+  <select 
+    class="calllogout"
 	ng-model="mystatus.logoutReason" 
-	ng-change="loginQueues(false)" 
-	ng-disabled="disableLogout"
+	ng-change="loginQueues(false)"	
+	ng-disabled="disableLogout"	
 	ng-options="reason.name for reason in reasons | orderBy:'name' track by reason.xpid">
 		<option value="">{{::verbage.logout}}</option>
   </select>
-  
+ </div> 
   <input type="button" class="XButton" value="{{::verbage.login}}" ng-click="loginQueues(true)" ng-disabled="disableLogin" />
 </div>
 
 <div class="QueueList">
-	<div class="ListRow" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]" dockable="queue">	
+	<div class="ListRow myStatus" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]" dockable="queue">	
 		<avatar profile="queue"></avatar>
 
 		<div class="ListRowContent">

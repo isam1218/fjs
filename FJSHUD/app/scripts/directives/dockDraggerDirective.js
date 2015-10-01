@@ -2,6 +2,9 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+			// super important for droppable to work
+			element.data('_scope', scope);
+			
 			// snap to position
 			if ((scope.gadget.value.config.x > 0 || scope.gadget.value.config.y > 0) && (!$('#InnerDock').hasClass('ui-sortable') || $('#InnerDock').hasClass('ui-sortable-disabled'))) {
 				element.addClass('Positioned');
@@ -19,6 +22,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				helper: 'clone',
 				appendTo: 'body',
 				scroll: false,
+				iframeFix: true,
 				cursorAt: { top: 25 },
 				zIndex: 50,
 				stack: '#InnerDock .Gadget',
@@ -26,19 +30,20 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				start: function() {
 					// show container area
 					$('#DockPanel').scrollLeft(0);
-					$(this).hide().addClass('Positioned');
+					
+					$(this).addClass('Hide Positioned');
 				},
 				stop: function(event, ui) {
 					$(event.toElement).one('click', function(e) {
 						e.preventDefault(); 
 					});	
 
-					$(this).show();
+					$(this).removeClass('Hide');
 					
 					var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 					// if inside dock...
-					if (ui.position.left >= rect.left && ui.position.top >= rect.top) {
+					if (ui.position.left >= rect.left && ui.position.top >= rect.top && ui.position.top < rect.bottom - 25) {
 						var top = ui.position.top - rect.top;
 						var left = ui.position.left - rect.left;
 						

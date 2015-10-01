@@ -39,6 +39,7 @@
 .Widget.Intellinote .Right .Contacts {
   max-height: 200px;
   overflow-y: auto;
+  font-size: 14px;
 }
 .Widget.Intellinote .Right .Workspaces {
   position: relative;

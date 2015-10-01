@@ -28,7 +28,7 @@ httpRequest = function(){
     this.SF_LOGIN_PATH = "/accounts/salesforce";
 
 
-}
+};
 httpRequest.prototype.getXmlHttp = function() {
         /**
          * @type {XMLHttpRequest}
@@ -54,7 +54,7 @@ httpRequest.prototype.getXmlHttp = function() {
 
 httpRequest.prototype.getParamData = function(data) {
       var paramStrings = [], keys = Object.keys(data);
-      for (var i=0; i<keys.length; i++) {
+      for (var i = 0, iLen = keys.length; i < iLen; i++) {
           var key = keys[i];
           paramStrings.push(key + '=' + data[key]);
       }
@@ -72,7 +72,7 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
 
         if (headers) {
             var keys = Object.keys(headers);
-            for (var i=0; i<keys.length; i++) {
+            for (var i = 0, iLen = keys.length; i < iLen; i++) {
                 var key = keys[i];
                 xmlhttp.setRequestHeader(key,headers[key]);
             }
@@ -100,4 +100,4 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
         xmlhttp.send(this.getParamData(data));
 
         return xmlhttp;
-}
+};

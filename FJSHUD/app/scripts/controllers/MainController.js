@@ -6,7 +6,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.url = null;
 	$scope.currentPopup.x = 0;
 	$scope.currentPopup.y = 0;
-	$scope.pluginDownloadUrl = fjs.CONFIG.PLUGINS[$scope.platform];
+	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
 
 	$scope.overlay = {
 		show: false,
@@ -51,7 +51,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 					}, 10000);
 				}
 			};
-		}, 3000);
+		}, 3000, false);
 	});
 
     $scope.onBodyClick = function() {
@@ -77,6 +77,13 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     	}
     };
 
+    $scope.barge_call = function(call,bargeType){
+    	var xpid = call.fullProfile.xpid;
+    	myHttpService.sendAction('contacts', bargeType + 'Call', {contactId: xpid});
+    	$scope.onBodyClick();
+	};
+
+
     $scope.showPopup = function(data, target) {
         if(!data.key) {
             $scope.currentPopup.url = null;
@@ -91,6 +98,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     };
 	
 	$scope.showOverlay = function(show, url, data) {
+
 		$scope.overlay.show = show;
 		$scope.overlay.url = url ? 'views/popups/' + url + '.html' : '';
 		$scope.overlay.data = data ? data : null;
@@ -113,15 +121,36 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.reloadPage = function(){
 		window.onbeforeunload = function(){};
 		myHttpService.logout();
-	}
+	};
+
+	$scope.reload = function(){
+		window.onbeforeunload = function(){};
+		document.cookie = "tab=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		location.reload();
+	};
+
+	$scope.closeError = function(){
+		if(!$scope.isFirstSync){
+			$scope.showOverlay(false);
+		}
+	};
+
+	$scope.$on('network_issue', function(event,data){
+		$scope.showOverlay(true,'NetworkErrorsOverlay',data);
+		$scope.$safeApply();
+	
+	});
 
 	$scope.$on('no_license',function(event,data){
-		var data = {}
+		var data = {};
+		
 		setTimeout(function(){
 			window.onbeforeunload = function(){};
 			myHttpService.logout();
 		},10000);
 
 		$scope.showOverlay(true,'NoPermission',data);
+		$scope.$safeApply();
+
 	});
 }]);

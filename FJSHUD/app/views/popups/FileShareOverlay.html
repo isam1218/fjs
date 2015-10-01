@@ -1,15 +1,13 @@
-<div class="Overlay" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
+<div class="Overlay fileShare" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
     <div ng-click="showOverlay(false)" class="Background"></div>
- <div class="wrapper" style="width: 90%;max-width: 1000px;">	
-    <div class="Foreground" ng-if="audience">
-        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->                
+ <div class="wrapper">	
+    <div class="Foreground" ng-if="audience">                      
         <div class="Header">
             <div ng-click="showOverlay(false)" class="Close">
 	           <div class="CloseIcon2"></div>
 	        </div>
             <div class="headerIcon share"></div>
-            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>
-           <!-- <h2>{{::verbage.file_share_to}}<span style="color:#729c00">{{ toName }}</span></h2> -->
+            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>          
         </div>
         
         <div class="Sections">
@@ -28,19 +26,27 @@
                 </div>
             </div>            
             
-            <div class="Section">
+            <div class="Section ">
                 <div id="attachments">
                  <h4 class="upper">{{::verbage.attachments}}  </h4>
                  <span class="XButton" flow-btn>{{::verbage.attach}}</span>                   
                  <p>{{::verbage.attach_files_to_share}}</p>
                 </div>
                 <div class="Members">
-                    <div ng-repeat="file in $flow.files" class="ListRow">
-                        <div style="margin-left:5px;display:inline-block;width:70%">  
-                        <p style="border-bottom:1px solid #ccc;width:100%;color:#009cff;font-weight:bold">{{::verbage.file}}</p>
-                        <span style="margin-top:0px"><p>{{file.name}} ({{file.size}} {{::verbage.bytes}})</p></span>
+                    <div ng-repeat="file in reposts" class="ListRow">
+                        <div class="file">  
+	                        <p>{{::verbage.file}}</p>
+	                        <span><p>{{::file.fileName}}</p></span>
                         </div>
-                        <div class="XButton" style="float:right;margin-top:10px;margin-right:5px" ng-click="$flow.removeFile(file)">{{::verbage.Remove}}</div>
+                        <div class="XButton" ng-click="reposts.splice($index, 1)">{{::verbage.Remove}}</div>
+                    </div>
+					
+                    <div ng-repeat="file in $flow.files" class="ListRow">
+                        <div class="file">  
+	                        <p>{{::verbage.file}}</p>
+	                        <span><p>{{::file.name + ' (' + file.size + ' ' + verbage.bytes + ')'}}</p></span>
+                        </div>
+                        <div class="XButton" ng-click="$flow.removeFile(file)">{{::verbage.Remove}}</div>
                     </div>
                 </div>
             </div>
@@ -59,13 +65,13 @@
 	           <div class="CloseIcon2"></div>
 	        </div> 
             <div class="headerIcon share"></div>
-            <div class="HeaderTitle">{{::verbage.Preview}}: <span class="name">{{ currentDownload.fileName }}</span></div>          
+            <div class="HeaderTitle DownloadHeader">{{::verbage.Preview}}: <span class="name">{{ currentDownload.fileName }}</span></div>          
         </div>
         <div class="Sections" >
             <div class="Section">
-                <div style="background-color:#FFF;height:inherit">
+                <div class="review">
 					<!-- embed types -->
-					<img class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
+					<img class="CurrentDownload DownloadPreview" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
 					
 					<iframe class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'doc' || embedType == 'text'"></iframe>
 					
@@ -75,7 +81,11 @@
                 </div>
             </div>            
             
-            <div class="Section">
+            <div class="Section" style="
+                min-width: 42%;
+                max-width: 42%;
+                margin-left: 9%
+            ">
                 <div style="margin-bottom:10px">
                     <span> 
                         <h4 class="upper">{{::verbage.items}} </h4>

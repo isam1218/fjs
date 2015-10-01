@@ -1,5 +1,4 @@
-.LeftBar {
-  position: relative;
+.LeftBar {  
   max-width: 300px;
   min-width: 300px;
   background-color: white;
@@ -10,8 +9,12 @@
   flex-direction: column;
   -webkit-flex-direction: column;
   display: flex;
-  display: -webkit-flex;
-  height: 100%;
+  display: -webkit-flex;  
+  position : fixed;
+  top : 100px;
+  left : 10px;
+  width : 300px;
+  bottom : 10px;
 
   .RoundedTop {
     position: absolute;
@@ -25,19 +28,96 @@
 	border-top-right-radius: 50%;
 	box-shadow: 0px 1px 1px #ccc inset;
   }
+  
+  .LeftBarWrapper {
+    flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1;
+    display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	overflow: hidden;	
+  }
 
+  .ListRow{
+    max-height: 41px;
+	
+	&.Hide {
+		display: none !important;
+	}
+	
+	.Avatar .GroupAvatarItem img{ margin: 0px;}
+     
+    .CallStatus{
+         height: 36px;
+         width: 36px;
+         
+         .Avatar{
+            margin: 2px !important;
+         }       
+    }
+
+    .ListRowTitle.GroupListRowTitle{
+      max-width: 100%;
+      width: 80%;
+    }
+    .ListRowContent div:first-child:nth-last-child(2){max-width: 64%;}
+    .ListRowContent div:first-child:nth-last-child(3){max-width: 50%;}
+    .ListRowTitle{
+         //width: 48%;
+         //max-width: 64%;
+         
+         .status{      
+           margin-left: -5px; 
+           
+           .ListRowStatusIcon{
+            margin-left: 0 !important;
+           }
+         }
+         
+         .name{
+            width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden; 
+            
+            strong{
+              width: 100%;
+              text-overflow: ellipsis;
+              overflow: hidden; 
+              white-space: nowrap;
+            }
+         }
+         .status{
+                .desc{
+                    font-size:10px;
+                    overflow:hidden;
+                    white-space:nowrap;
+                    text-overflow:ellipsis;
+                }
+          }
+     } 
+    .RecentsRowTitle{
+        width:100%;
+        max-width:85%;
+    }
+
+  }    
+  
   .LeftBarTop{
    .WidgetTabBar{
       background: url() transparent !important;
    }
-  }
-  .ContactSearch {
-   /* display: flex;
-	display: -webkit-flex;
-	flex-direction: row;
-	-webkit-flex-direction: row;
-	width: 100%;*/
+  }   
+  
+  .grouped{
+    a.ListRow:nth-child(odd) {
+      background-color: #fff !important;
+    }
+  } 
+  .ContactSearch {   
 	width: 300px;
+	height: 43px;
 
 	span{
        position: absolute;
@@ -55,6 +135,7 @@
     .SearchBox {
 	  margin: .5em;
 	  width: 70%;
+    z-index:  99;
     }
 
     .New {
@@ -81,7 +162,7 @@
 	flex-direction: column;
 	-webkit-flex-direction: column;
     position: relative;
-    moin-height: 50%;
+    min-height: 50%;
 
 	.ContactList {
 	  flex: 1;
@@ -140,10 +221,32 @@
 	  }
 	  a.ListRow{
 	    background-color: #fff;
+        
+        .GroupListRowStatus{
+          right: 0px !important;
+          left: -5px;
+          width: 30px !important;
+        }
 
+        .ListRowStatus{
+            top: 10px;           
+            width: 83px;
+            text-align: center;           
+            right: -5px;
+            
+            .ListRowStatusText{              
+                max-width: 100%;
+            }                                   
+        }
+        
+        .CallStatus{          
+           margin-left: -10px;
+            
+        } 
         .Members{
           top: 2px;
-          height: 24px;
+          min-height: 24px;
+          height: auto;
           line-height: 24px;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -163,8 +266,7 @@
           overflow-y: auto;
           overflow-x: hidden;
           position: absolute;
-          width: 100%;
-          /*height: 100%;*/
+          width: 100%;          
       }
       h4 {
 	    margin: .5em 0 0 .5em;
@@ -190,53 +292,46 @@
         .timeline{
             overflow-y: auto;
         }
+        .ListRow .ListRowContent div:first-child:nth-last-child(1),
+        .ListRow .ListRowContent div:first-child:nth-last-child(1) div:first-child{
+           &.name, &.ListRowTitle{
+            width: 100%;
+        	max-width: 100%;  
+           } 	      	
+        }
+        .ListRow .ListRowContent div:first-child:nth-last-child(2),
+        .ListRow .ListRowContent div:first-child:nth-last-child(2) div:first-child{
+           &.name, &.ListRowTitle{
+            width: 85%;
+        	max-width: 85%;
+           }	
+        }
+    }
+    .status{
+      margin-left: 0 !important;
+    }
+    .ListRowTitle{
+    	width: 85%;
+    	max-width: 85%;
     }
   }
- /* .Recent {
-      flex: 1 1 0;
-      -webkit-flex: 1 1 0;
-      display: flex;
-      display: -webkit-flex;
-      flex-direction: column;
-      -webkit-flex-direction: column;
-      overflow: hidden;
-
-      .ContactList {
-          flex: 1 1 0;
-          -ms-flex: 1 1 0;
-          -webkit-flex: 1 1 0;
-          overflow-y: auto;
-          min-height: 60px;
-
-          h4 {
-              margin: .5em 0 0 .5em;
-              color: #0093f0;
-              font-variant: small-caps;
-              font-size: .9em;
-
-              & + em {
-                  margin: 0 0 .5em .5em;
-                  font-size: .8em;
-                  display: block;
-              }
-          }
-
-      }
-  }  */
 
   .Notifications{
     position: relative;
-    width: 100%;
+    width: 100%;  
     display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
-    z-index: 99;
+    z-index: 97;
 
-    & > div:first-child {
-    	/*font-size: .9em;*/
+    & > div:first-child {    	
     	transition: .25s;
-	} 	
+	}
+
+	&:hover .scroller {
+	  overflow-x: hidden;
+	}
 	
 	.Footer{
 	  padding-bottom: 10px;
@@ -249,7 +344,6 @@
 	   padding: .25em;
 	   transition: 1s;
 	   border-top: 1px solid #ccc;
-       border-right:1px solid #ccc;
        font-size: 12px;
 
 	  & > * {

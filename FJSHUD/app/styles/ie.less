@@ -1,0 +1,123 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .LeftBar
+  {   
+   .ListRow .Avatar img {margin-right: 0px !important;}
+  }  
+  
+  .Gadget {
+	border-radius: 5px;
+	overflow: hidden;
+  }
+		
+  .WidgetMe{ 
+    .WidgetBody{ 
+        .Conference .ToolBar{
+	  		input[type=button],   
+	    	.selectWrapper.conf{ 
+	    		width: 140px !important;
+	    	}
+	  	}             
+        .CurrentCall{
+          .LeftSide{
+           .Dialog-settings-row{
+              margin: 0px !important;
+              min-height: none !important;
+              max-height: 30px;
+              
+             .XButtonToggleSmall{
+                vertical-align: middle !important;
+             }   
+           }  
+          }
+        }
+        
+        .queueList{
+            .ListRow{
+                .SettingsListLineContent .QueueSetting{ 
+                    &:first-child{                       
+                        width: 33.1%;
+                      }                     
+                      &:nth-child(5){
+                        width: 16.5%;
+                      }
+                }
+            }
+        }        
+    }
+  }  
+  .XIcon24-Record-Off{
+    right: 10px;
+    top: 0px;
+  }  
+  
+    .ToolBar{
+          .selectWrapper{
+                &.vm{
+                    width: 110px !important;
+                }
+                
+                &.queue,
+                &.status,
+                &.conf,
+                &.members{ 
+                    width: 130px !important;
+                }
+                 
+                &.convQueue{
+                    width: 80px !important;
+                }
+                
+                select:hover{
+                    background: transparent !important;
+                }
+           }   
+     }
+     .Conference {
+            .ToolBar{
+                    //input[type=button],   
+                    .selectWrapper.conf{  
+                        width: 130px !important;
+                    } 
+                    input[type=button]{
+                    	padding-top: 6px !important;
+                    }
+            }
+     }
+     
+     .WidgetStat {
+        .row{
+            &.second{
+                .Left{
+                    width: 35%;
+                }
+            }    
+        }
+     }
+     
+     .Widget.Queues {
+        .Grid {
+            .Header > div, .Row > div {
+                 &:nth-child(1) { 
+                    width: 19%; 
+                    padding-left: 1px;
+                 }                
+                 &:nth-child(2) { 
+                    width: 15%;                    
+                 }
+                 &:nth-child(3) { 
+                    width: 13%;                    
+                 }
+                 &:nth-child(4),
+                 &:nth-child(5) { 
+                    width: 14.5%;                    
+                 }
+                 &:nth-child(6) { 
+                    width: 12%;                    
+                 }
+                 &:nth-child(7) { 
+                    width: 11.2%;                    
+                 }
+            }
+        }
+     }
+}

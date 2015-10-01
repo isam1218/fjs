@@ -4,31 +4,130 @@
         width: 34.8%;
     }
     select.XButton {padding: 5px 0px;}
-    .SearchInputBox{width: 27%;}        
+    .SearchBox {width: 27%;}  
+    
+    input[type=button],   
+    .selectWrapper.conf{        
+        height: 30px !important;
+        width: 150px !important;       
+        font-size: 11px;
+        font-weight: bold;
+        font-color: #333;
+     }             
+ }
+ @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  	
+ }
+ .XButton.joinConference{
+    float:right; 
+    margin-top:5px; 
+    margin-right:5px;
+ } 
+    .ListRow{
+    min-height: 50px;
+    max-height: none;
+    height: auto;
+
+    .ListRowContent{
+        min-height: 50px;
+        max-height: none;
+        height: auto;  
+        
+        .Avatar.CallAvatar_Office{
+            margin: auto !important;
+        }                 
+    }
+    .Avatar.AvatarNormal{
+        width: 40px;
+        height: 40px;
+    }
+    .ListConferenceStatusIcon{
+        margin: 0 -3px -3px -5px;
+        vertical-align: bottom;
+    } 
+    
+    .ListRowTitle{
+        & > div:not(.name) {
+            margin-top: 3px;
+        } 
+    }   
   }
  
-  &.fj-widget-area{
-    .ToolBar{margin-top: 5px;}
-  }
   .ListViewTopNoteClose{top: 30%;}
   .ListViewTopNote{font-size: 12px;}
 }
 
+.conference.currentCall{
+    .ListRowTitle{
+        max-width: 100%;
+        float: none;
+        padding: .3em !important;
+        display: flex;
+        display: -webkit-flex;
+
+        .name,
+        .name > * {
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;   
+        }
+        .vmtime{
+          font-weight: bold;
+          font-size: 11px;
+          color: #222;
+        }
+      .ListRowStatusLeftSide{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;    
+      }
+      .ListRowStatusLeftSideNoJoin{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 55%;
+      }
+    }
+}
 .ListViewTopNote {
   position: relative;
   margin-top: 10px;
   margin-bottom: 10px;
   background-color: #FFE;
-  border: solid 1px #EEE;
+  border: solid 1px #EEE;  
+  height: 50px;
   border-radius: 3px;
-  padding: .5em;
-  height: 55px;
-  width: 96%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 1px 1px 5px #888888;
+  -webkit-border-radius: 3px;
+  
+  .XButton.joinConference{
+    float: right;
+    font-size: 11px;
+    width: 55px;
+    height: 26px;
+    margin: 10px;
+  }
+  
+  span{
+    font-size:12px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 40px;
+  }   
 }
-
+.ConferenceMembers{
+    margin-top: 30px;
+}
+ .searchboxWrapper{
+    position:relative;   
+    
+    .SearchBox.Add{
+        width: 160px !important;
+        height: 30px !important;
+    } 
+ }
+ 
 .Conference-HeaderTitle{
   color: #0093f0;
   font-size: 11px;
@@ -41,6 +140,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.ConferenceMembers{
+    .Conference-HeaderTitle{margin-left: 0px;}
+}
 
 .ListViewTopNoteClose {
   position: absolute;
@@ -49,20 +151,12 @@
   width: 24px;
   height: 24px;
   background: url("../img/XIconSet-24x24.png") -24px -24px;
+  cursor: pointer;
 }
 
 .ListRow-Conference-Members {
   clear: both;
-  position: relative;
-  /*
-  &.status{
-      display: block;
-      width: 36px;
-      float: right;
-      top: 0px;
-      position: absolute;
-      right: 0;
-  }*/
+  position: relative;  
 }
 
 .conferences-room-item-member {
@@ -119,7 +213,7 @@ color: #729c00;
   font-size:12px;
   .TabWarningHeader{
     position: relative;
-    margin-left: 10px;
+    margin: 0 10px;
     font-weight: bold;
     height: 30px;
     line-height: 30px;
@@ -160,3 +254,17 @@ color: #729c00;
   -webkit-border-radius:30px;
   color: #0093f0;
 }
+.noJoinConf{
+        .ListRow .ListRowContent{
+            display: flex;
+
+            span{
+               font-size: 11px;
+               font-weight: bold; 
+               color: #333;
+               text-shadow: 0px 1px 0px #FFF;
+               transition: border 0.3s ease 0s;
+            }
+        }
+        .ListSection{margin-bottom: 10px;}
+ }

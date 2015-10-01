@@ -1,7 +1,7 @@
+<div ng-if="contextShow"> 
 <div class="Arrow Left"></div>
-
-<div class="TopRow">
-	<div class="Contact" ng-if="type == 'Contact'">
+<div class="TopRow" ng-switch="type == 'Contact' && profile != null">
+	<div class="Contact" ng-switch-when="true">
 		<div>
 			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
@@ -25,7 +25,7 @@
 		</div>
 	</div>
 	
-	<div ng-if="type != 'Contact'">
+	<div ng-switch-when="false">
 		<strong>{{ profile.displayName || profile.name || 'private' }}</strong>
 	</div>
 </div>
@@ -37,8 +37,8 @@
 		<span>{{::verbage.delete_word}}</span>
 	</a>
 		
-	<!-- voicemails -->
-	<div ng-if="widget == 'voicemails' && profile.xpid != myPid">
+	<!-- voicemails -->	
+	<div ng-if="widget == 'voicemails' && profile.xpid && profile.xpid != myPid">
 		<a class="Button" href="" ng-click="deleteRecording()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
@@ -54,7 +54,7 @@
 		<a class="Button" href="" ng-show="!profile && original.phone" ng-click="callNumber(original.phone)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.call_back}}</span>
-		</a>
+		</a>		
 	</div>
 	
 	<!-- queue calls -->
@@ -71,10 +71,10 @@
 			<div class="ListRowActionButtonRecord"></div>
 			<span>Stop Rec</span>
 		</a>
-	</div>
-	
+	</div>	
+
 	<!-- myself -->
-	<div ng-if="profile.xpid == myPid && type == 'Contact'">
+	<div ng-if="profile.xpid && profile.xpid == myPid && type == 'Contact'">	
 		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
 			<div class="ListRowActionButtonMute"></div>
 			<span>{{::verbage.Mute}}</span>
@@ -87,10 +87,29 @@
 			<div class="ListRowActionButtonLeave"></div>
 			<span>{{::verbage.leave}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'chat' && original.data.attachment" ng-click="deleteAttachment()">
+		
+		<div ng-show="widget == 'chat' && original.data.attachment">
+			<a class="Button" href="" ng-click="fileShare(true)">
+				<div class="ListRowActionButtonFileShare"></div>
+				<span>Repost</span>
+			</a>
+			<a class="Button" href="" ng-click="deleteAttachment()">
+				<div class="ListRowActionButtonRemove"></div>
+				<span>{{::verbage.delete_word}}</span>
+			</a>
+		</div>
+		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid" ng-click="deleteRecording()">			
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
 		</a>
+		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid && !original.readStatus" ng-click="markAsRead(true)">
+			<div class="ListRowActionButtonRead"></div>
+			<span>Read</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid && original.readStatus" ng-click="markAsRead(false)">
+			<div class="ListRowActionButtonUnread"></div>
+			<span>Unread</span>
+		</a>		
 		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
@@ -103,11 +122,15 @@
 			<div class="ListRowActionButtonVoicemail"></div>
 			<span>{{::verbage.voicemail}}</span>
 		</a>
+		<a class="Button" href="" ng-show="profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
+			<div class="ListRowActionButtonMobile"></div>
+			<span>{{::verbage.mobile}}</span>
+		</a>
 	</div>
 		
 	<!-- contact -->
-	<div ng-if="(profile.xpid != myPid && type == 'Contact') || type == 'ParkedCall'">
-		<a class="Button" href="" ng-show="type == 'ParkedCall'" ng-click="takeParkedCall()">
+	<div ng-if="profile.xpid != myPid && type == 'Contact'">
+		<a class="Button" href="" ng-show="original.parkExt" ng-click="takeParkedCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
 		</a>
@@ -159,7 +182,7 @@
 			<span>{{::verbage.Call_Later}}</span>
 		</a>
 		
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callInternal('callIntercom')">
+		<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension" ng-click="callInternal('callIntercom')">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
 		</a>
@@ -176,7 +199,7 @@
 			<span>{{::verbage.mobile}}</span>
 		</a>
 		
-		<div ng-if="profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid ">
+		<div ng-if="canBarge && profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid">
 			<a class="Button" href="" ng-click="bargeCall('barge')">
 				<div class="ListRowActionButtonBarge"></div>
 				<span>{{::verbage.barge}}</span>
@@ -203,7 +226,7 @@
 	
 	<!-- group -->
 	<div ng-if="type == 'Group'">
-		<a class="Button" href="" ng-show="profile.ownerId == myPid" ng-click="editGroup()">
+		<a class="Button" href="" ng-show="profile.ownerId && profile.ownerId == myPid" ng-click="editGroup()">
 			<div class="ListRowActionButtonEdit"></div>
 			<span>{{::verbage.Edit}}</span>
 		</a>
@@ -215,15 +238,15 @@
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('page', profile)">
+		<a class="Button" href="" ng-show="canGroupPage && profile.extension" ng-click="callInternal('page', profile)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.page}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('intercom', profile)">
+		<a class="Button" href="" ng-show="canGroupIntercom && profile.extension" ng-click="callInternal('intercom', profile)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Intercom}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.extension" ng-click="callInternal('voicemail', profile)">
+		<a class="Button" href="" ng-show="canGroupVoicemail && profile.extension" ng-click="callInternal('voicemail', profile)">
 			<div class="ListRowActionButtonVoicemail"></div>
 			<span>{{::verbage.voicemail}}</span>
 		</a>
@@ -243,54 +266,54 @@
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>
-		<a class="Button" href="" ng-click="resetQueue()">
-			<div class="ListRowActionButtonReset"></div>
-			<span>{{::verbage.Reset_Stats}}</span>
-		</a>
+		<a class="Button" href="" ng-show="myQueue" ng-click="fileShare()">
+            <div class="ListRowActionButtonFileShare"></div>
+            <span>{{::verbage.file_share}}</span>
+        </a>
 		<a class="Button" href="#/queue/{{profile.xpid}}/chat" ng-show="myQueue">
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
-		</a>
-		<a class="Button" href="" ng-show="myQueue" ng-click="fileShare()">
-			<div class="ListRowActionButtonFileShare"></div>
-			<span>{{::verbage.file_share}}</span>
-		</a>
+		</a>		
+		<a class="Button" href="" ng-click="resetQueue()">
+            <div class="ListRowActionButtonReset"></div>
+            <span>{{::verbage.Reset_Stats}}</span>
+        </a>
 	</div>
 	
 	<!-- conference -->
 	<div ng-if="type == 'ConferenceRoom'">
-		<a class="Button" href="" ng-show="!profile.status.isMeJoined" ng-click="joinConference(true)">
+		<a class="Button" href="" ng-show="profile.status && !profile.status.isMeJoined" ng-click="joinConference(true)">
 			<div class="ListRowActionButtonJoin"></div>
 			<span>{{::verbage.join}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.status.isMeJoined" ng-click="joinConference(false)">
+		<a class="Button" href="" ng-show="profile.status && profile.status.isMeJoined" ng-click="joinConference(false)">
 			<div class="ListRowActionButtonLeave"></div>
 			<span>{{::verbage.leave}}</span>
 		</a>
-		<a class="Button" href="" ng-show="canRecord && profile.members.length > 0 && !profile.status.recorded" ng-click="recordConference(true)">
+		<a class="Button" href="" ng-show="canRecord && profile.members && profile.members.length > 0 && profile.status && !profile.status.recorded" ng-click="recordConference(true)">
 			<div class="ListRowActionButtonRecord"></div>
 			<span>{{::verbage.start}}</span>
 		</a>
-		<a class="Button" href="" ng-show="canRecord && profile.members.length > 0 && profile.status.recorded" ng-click="recordConference(false)">
+		<a class="Button" href="" ng-show="canRecord  && profile.members && profile.members.length > 0 && profile.status && profile.status.recorded" ng-click="recordConference(false)">
 			<div class="ListRowActionButtonRecord"></div>
 			<span>{{::verbage.stop}}</span>
 		</a>
-		<a class="Button" href="#/conference/{{profile.xpid}}/chat" ng-show="profile.status.isMeJoined">
+		<a class="Button" href="#/conference/{{profile.xpid}}/chat" ng-show="profile.status && profile.status.isMeJoined">
 			<div class="ListRowActionButtonChat"></div>
 			<span>{{::verbage.chat}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.members.length > 0" ng-click="sendGroupMail(profile)">
+		<a class="Button" href="" ng-show="profile.members && profile.members.length > 0" ng-click="sendGroupMail(profile)">
 			<div class="ListRowActionButtonEmail"></div>
 			<span>{{::verbage.email}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.status.isMeJoined" ng-click="fileShare()">
+		<a class="Button" href="" ng-show="profile.status && profile.status.isMeJoined" ng-click="fileShare()">
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
 	</div>
 	
 	<!-- dockable -->
-	<div ng-show="profile.xpid != myPid && (profile.displayName !== undefined || profile.name !== undefined)">
+	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">
 		<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 			<div class="ListRowActionButtonDock"></div>
 			<span>{{::verbage.dock}}</span>
@@ -300,6 +323,10 @@
 			<span>{{::verbage.undock}}</span>
 		</a>
 	</div>
+
+	<div ng-if="profile.xpid && profile.xpid != myPid && profile.call"> 
+		<callStatus profile="profile"></callStatus>
+	</div>
 </div>
 
 <div class="BottomRow Reasons" ng-show="reasons.show">
@@ -307,9 +334,10 @@
 	<em>{{::verbage.select_logout_reason}}</em>
 	
 	<div class="List">
-		<div class="Button" ng-repeat="reason in reasons.list | orderBy: 'name'"
+		<div class="Button" ng-repeat="reason in ::reasons.list | orderBy: 'name'"
 			ng-click="logoutQueue(reason.xpid)">
 			{{ ::reason.name }}
 		</div>
 	</div>
+</div>
 </div>

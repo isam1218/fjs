@@ -1,6 +1,6 @@
-<div class="ToolBar">
-        <div class="LocationSelector " style="float: right;margin-top: 5px;text-align: center; width: 30%;">
-            <select class="SelectBox HideFirst" ng-model="action.selected" ng-options="option.text for option in callOptions track by option.type" ng-change="makeCall(action.selected.type)"></select>
+<div class="ToolBar">        
+        <div class="SelectBox selectWrapper members">
+            <select class="HideFirst" ng-model="action.selected" ng-options="option.text for option in callOptions track by option.type" ng-change="makeCall(action.selected.type)"></select>
         </div>
 </div>
 

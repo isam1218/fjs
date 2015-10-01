@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, contactService, settingsService, storageService) {
+hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$routeParams', 'ContactService', 'SettingsService', 'StorageService', '$location', function($scope, $rootScope, $routeParams, contactService, settingsService, storageService, $location) {
     $scope.contactID = $routeParams.contactId;
     $scope.contact = contactService.getContact($scope.contactID);
 	$scope.messages = [];
@@ -10,9 +10,6 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 	var CONTACT_CALL_TYPE = 4;
 
     $scope.conversationType = 'conversation';
-    $scope.enableChat = true;
-    $scope.enableFileShare = true;
-    $scope.enableTextInput = true;
     $scope.call = {};
     $scope.targetId = $scope.contactID;
     $scope.targetAudience="contact";
@@ -26,70 +23,27 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
     {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
-    var getXpidInC = $rootScope.$watch('myPid', function(newVal, oldVal){
-        if (!$scope.globalXpid){
-            
-            if($routeParams.route != undefined ){
-                $scope.selected = $routeParams.route;
-				localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-
-                for(var i = 0; i < $scope.tabs.length;i++){
-                    if($scope.tabs[i].lower == $routeParams.route){
-                        $scope.toggleObject = {item: i};
-                        localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                    }
-                }
-            }else{
-                $scope.globalXpid = newVal;
-                $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0].lower;
-                $scope.toggleObject = localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
+    // if route is defined (click on specific tab or manaully enter url)...
+    if ($routeParams.route){
+        $scope.selected = $routeParams.route;
+        for (var i = 0; i < $scope.tabs.length; i++){
+            if ($scope.tabs[i].lower == $routeParams.route){
+                $scope.toggleObject = {item: i};
+                break;
             }
-
-            getXpidInC();
-        } else {
-            getXpidInC();
         }
-    });
+        localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
+        localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
+    } else{
+        // otherwise when route isn't defined --> used LS-saved or default
+        $scope.selected = localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
+        $scope.toggleObject = localStorage['ConversationWidget_' + finalContactId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
+    }
 
     $scope.saveCTab = function(tab, index){
-        switch(tab){
-            case "chat":
-                $scope.selected = $scope.tabs[0].lower;
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-            case "voicemails":
-                $scope.selected = $scope.tabs[1].lower;
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-            case "groups":
-                $scope.selected = $scope.tabs[2].lower;
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-            case "queues":
-                $scope.selected = $scope.tabs[3].lower;
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-            case "calllog":
-                $scope.selected = $scope.tabs[4].lower;
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-            case "recordings":
-                $scope.selected = $scope.tabs[5].lower;
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                break;
-        }
+        $scope.toggleObject = {item: index};
+        localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify(tab);
+        localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
     };
 
     $scope.tabFilter = function(){

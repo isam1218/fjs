@@ -6,8 +6,8 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.log_out_option;
     $scope.sort;
     $scope.queues = [];
-    $scope.que = {};
-    $scope.que.query = '';
+    $scope.search = {};
+    $scope.search.query = '';
 
     $scope.getAvatarUrl = function(queue, index) {
         
@@ -29,131 +29,62 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.queueLogoutAll = function(reasonId){
         httpService.sendAction("contacts", "agentLogoutAll", {contactId:$scope.contactId,reason:reasonId});
 		
-		$scope.log_out_option = '';
+		$scope.actionObj.selectedAction = '';
     };
 
     var initialAction = {name: "Logout All"};
     $scope.actionObj = {};
     $scope.actionObj.selectedAction = $scope.actionObj.currentAction = initialAction;
-    $scope.handleLogoutAction = function(reasonId){
-        $scope.actionObj.selectedAction = initialAction;
-        switch(reasonId){
-            case "0_130083":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("7670_Reason");
-                break;
-            case "0_142483":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("7978_Reason");
-                break;                
-            case "0_118808":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Do we need a reason?");
-                break;
-            case "0_80843":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("just got fired");
-                break;
-            case "0_116580":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Public Affair");
-                break;
-            case "0_13":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Smoking break");
-                break;
-            case "0_78033":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("rational reasoning");
-                break;                            
-            case "0_19":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Slacking off");
-                break;
-            case "0_37":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Hiding from the customers");
-                break;
-            case "0_71485":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("i have my reasons");
-                break;
-            case "0_132627":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Reason_for_Build_7673");
-                break;
-            case "0_39":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Playing games");
-                break;
-            case "0_67456":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Taking a nap");
-                break;
-            case "0_114866":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("A New Test Reason");
-                break;
-            case "0_3164":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("feeding the geese");
-                break;
-            case "0_29":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Walking the company dog");
-                break;
-            case "0_31":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Feeding the ducks");
-                break;
-            case "0_122102":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("HUDweb Test");
-                break;
-            case "0_130085":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("Doing The Harlem Shake");
-                break;
-            case "0_73873":
-                $scope.actionObj.selectedAction = initialAction;
-                $scope.queueLogoutAll(reasonId);
-                // console.log("give me a reason to login");
-                break;
-        }
+    
+    $scope.handleLogoutAction = function(reasonId, event){    
+    	var logout_select = event.target;
+    	$(logout_select).find('option').css('background-color', '#fff').css('color', '#333');
+    	var option  = $(logout_select).find('option:selected');
+    	$(option).css('background-color', '#729c00').css('color', '#fff');
+	    $scope.actionObj.selectedAction = initialAction;
+	    $scope.queueLogoutAll(reasonId);
+	    
+	    
     };
 
-    $scope.sort_options = [{name:$scope.verbage.queue_name, id:1,type:'name'},
-    {name:$scope.verbage.queue_sort_calls_wait,id:2, type:'waiting'},
-    {name: $scope.verbage.queue_sort_avg_wait_time,id:3, type:'avgwaiting'},
-    {name:$scope.verbage.queue_sort_avg_talk_time,id:4, type:'avgtalk'},
-    {name:$scope.verbage.queue_sort_total_calls, id:5, type:'total'},
-    {name:$scope.verbage.queue_abandoned_calls,id:6, type:'abandoned'},
-    {name:$scope.verbage.queue_active_calls, id:7, type:'active'}
+    $scope.trancateSelectedName = function(){
+    	if($scope.selectedConversationQueueOption.name.length > 13)
+    	{
+    		$scope.selectedConversationQueueOption.name = $scope.selectedConversationQueueOption.name.substring(0, 12) + '...';
+    	}    	
+    };       
+    
+    $scope.truncateLongString = function()
+    { 
+    	return function(opt){
+    		var truncated_name = opt.name;
+    		var opt_name = opt.display_name;
+    		
+    		if(opt.name.length > 13)
+    			truncated_name = opt.name.substring(0, 12) + '...';
+		    if(truncated_name == $scope.selectedConversationQueueOption.name || opt_name == $scope.selectedConversationQueueOption.name)
+		    	opt.name =  truncated_name;
+		    else
+		    	opt.name = opt.orig_name;
+		    return opt;
+    	};
+    };   
+    
+    $scope.sort_options = [{name:$scope.verbage.queue_name, orig_name:$scope.verbage.queue_name, id:1,type:'name'},
+    {name:$scope.verbage.queue_sort_calls_wait, orig_name:$scope.verbage.queue_sort_calls_wait, id:2, type:'waiting'},
+    {name: $scope.verbage.queue_sort_avg_wait_time, orig_name:$scope.verbage.queue_sort_avg_wait_time,id:3, type:'avgwaiting'},
+    {name:$scope.verbage.queue_sort_avg_talk_time, orig_name:$scope.verbage.queue_sort_avg_talk_time,id:4, type:'avgtalk'},
+    {name:$scope.verbage.queue_sort_total_calls, orig_name:$scope.verbage.queue_sort_total_calls, id:5, type:'total'},
+    {name:$scope.verbage.queue_abandoned_calls, orig_name:$scope.verbage.queue_abandoned_calls,id:6, type:'abandoned'},
+    {name:$scope.verbage.queue_active_calls, orig_name:$scope.verbage.queue_active_calls, id:7, type:'active'}
     ];
 
-    $scope.selectedConversationQueueOption = localStorage.selectedConversationQueueOption ? JSON.parse(localStorage.selectedConversationQueueOption) : $scope.sort_options[0];
+    $scope.selectedConversationQueueOption = localStorage.selectedConversationQueueOption ? JSON.parse(localStorage.selectedConversationQueueOption) : $scope.sort_options[0];    
 
     $scope.sortConversationQueue = function(queueSelection){
         $scope.selectedConversationQueueOption = queueSelection;
+        $scope.trancateSelectedName();
+        
         switch(queueSelection.type){
             case "name":
                 $scope.queues.sort(function(a,b){
@@ -225,9 +156,9 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
 		
     	var queues = data.queues;
 		
-        for(var q = 0; q < queues.length; q++){
+        for(var q = 0, qLen = queues.length; q < qLen; q++){
             if(queues[q].members){
-                for(var i = 0; i < queues[q].members.length; i++){
+                for(var i = 0, iLen = queues[q].members.length; i < iLen; i++){
                    if(queues[q].members[i].contactId == $scope.contactId){
                         queues[q].you = queues[q].members[i];
                         $scope.queues.push(queues[q]);

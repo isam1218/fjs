@@ -1,38 +1,53 @@
-hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService', '$q', function($q, $rootScope, httpService,$compile,$location,settingsService, storageService, $q) {
+hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService','NotificationService','$routeParams','NtpService',
+	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams,ntpService) {
 
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
-
-	//$("body").append($compile('<object typemustmatch="true" id="phone" type="application/x-fonalityplugin" border="0" width="0" height="0" style="position:absolute"><param value="true" name="windowless"></object>')($rootScope));
-	$("body").append($compile(pluginHtml)($rootScope));
-	
-
-	var phonePlugin = document.getElementById('fonalityPhone');
-	var version = phonePlugin.version;
+	var phonePlugin;
+	var version;
 	var deferred = $q.defer();
-
-	
+	var deferredVM = $q.defer();
+	var deferredCalls = $q.defer();
+	var deferredInputDevices = $q.defer();
+	var deferredOutputDevices = $q.defer();
+	$rootScope.volume = {};
+	$rootScope.volume.spkVolume = 0;
+	$rootScope.volume.micVolume = 0;
+	$rootScope.pluginVersion = undefined;
+	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.platform + '_' + ($rootScope.browser == "Chrome" ? 'NEW' : 'OLD')];
 	var devices = [];
+	var inputDevices = [];
+	var outputDevices = [];
+
 	var session;
+	var context = {};
 	var alertPlugin;
 	var phone;
+	var notificationCache = {};
 	var soundManager;
-	var meModel = {};
 	var sipCalls = {};
-	var xpid2Sip = {};
 	var tabInFocus = true;
 	var callsDetails = {};
-	var allCallDetails = {};
 	$rootScope.meModel = {};
-	$rootScope.bargeObj = {};
 	var isRegistered = false;
-	var isAlertShown = true;
+	var isAlertShown = false;
+	var selectedDevices = {};
+	var	spkVolume;
+	var micVolume;
+	var locations = {};
+	var activityChecker;
+	var lastActivityCheck = 0;
+	
+	var soundEstablished = false;
+	var selectedDevices = {};
+	var	spkVolume;
+	var micVolume;
 
-	var voicemails = [];
 	var weblauncher = {};
 	var alertPosition = {};
 	alertPosition.x = 0;
 	alertPosition.y = 0;
-	//fjs.CONFIG.SERVER.serverURL 
+
+	var voicemails = [];
 	
 	 var CALL_STATUS_UNKNOWN = "-1";
      var CALL_STATUS_RINGING = "0";
@@ -40,8 +55,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      var CALL_STATUS_HOLD = "4";
      var CALL_STATUS_CLOSED = "2";
      var CALL_STATUS_ERROR = "3";
-
-
      $rootScope.callState = {};
 
      $rootScope.callState.CALL_UNKNOWN = -1;
@@ -54,18 +67,136 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
 	
+	var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
+	if($rootScope.browser != "Chrome"){
+		$("body").append($compile(pluginHtml)($rootScope));
+		phonePlugin = document.getElementById('fonalityPhone');
+		if(phonePlugin){
+			version = phonePlugin.version;
+			$rootScope.pluginVersion = phonePlugin.version;
+		}	
+	}
+
+	this.getDeferredCalls = function(){
+		return deferredCalls.promise;
+	};
+
+	var isDocumentHidden  = function(isForceHidden){
+		clearInterval(activityChecker);
+				
+		var hidden; 
+		if(document.hidden || !isForceHidden){
+			tabInFocus = false;
+			if(context.shouldAlertDisplay()){
+				if(nservice.isEnabled()){
+					for(var detail in callsDetails){
+						context.displayCallAlert(callsDetails[detail]);
+					}
+				}else{
+					if(notificationCache.html && notificationCache.html != '' && !isAlertShown){
+						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+						}
+					}					
+				}
+			}
+			
+			if (session) {
+				activityChecker = setInterval(function() {
+					// check if user is active outside of hudweb
+					if (session.getLastUserActivity() < lastActivityCheck) {
+						httpService.sendAction('useractivity', 'reportActivity', {});
+						lastActivityCheck = 0;
+					}
+					else
+						lastActivityCheck = session.getLastUserActivity();
+				}, 5000);
+			}
+		}else{
+			tabInFocus = true;
+			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
+				if(nservice.isEnabled()){
+					for(var detail in callsDetails){
+						nservice.dismiss('INCOMING_CALL',detail);
+					}
+				}else{
+					removeNotification();
+				}
+			}
+			if($routeParams.contactId && $routeParams.route == "chat"){
+				$rootScope.$broadcast("phone_event",{event:'deleteChatNots',contactId:$routeParams.contactId});
+			}
+		}
+	};
+
+	var messageSoftphone = function(data,retry){
+		if(retry == undefined)retry = 0;
+		if(context.webphone){
+			if(context.webphone.readyState == 1){
+				context.webphone.send(JSON.stringify(data));
+			}else{
+				if(retry > 3){
+					setTimeout(messageSoftphone(data,retry),5000);
+				}
+			} 
+		}
+	};
 	
+	if(document.attachEvent){
+		document.attachEvent("onVisibilitychange",isDocumentHidden);
+		document.attachEvent("onFocus",function(){
+			isDocumentHidden(true);
+		});
+		document.attachEvent("onBlur",function(){
+				isDocumentHidden(false);
+			}
+		);
+		window.attachEvent("onFocus",function(){
+			isDocumentHidden(true);
 
-	window.onfocus = function(){
-		tabInFocus = true;
+		});
+		window.attachEvent("onBlur",function(){
+			isDocumentHidden(false);
+		});
+
+	}else{
+		document.addEventListener("visibilitychange", isDocumentHidden, false);
+		document.addEventListener("focus", function(){
+			isDocumentHidden(true);
+		}, false);
+		document.addEventListener("blur", function(){
+			isDocumentHidden(false);
+		}, false);
+		window.addEventListener("focus", function(){
+			isDocumentHidden(true);
+		}, false);
+		window.addEventListener("blur", function(){
+			isDocumentHidden(false);
+		}, false);
+	
+	}
+
+	var messageSoftphone = function(data,retry){
+		if(retry == undefined)retry = 0;
+		if(context.webphone){
+			if(context.webphone.readyState == 1){
+				context.webphone.send(JSON.stringify(data));
+			}else{
+				if(retry > 3){
+					setTimeout(messageSoftphone(data,retry),5000);
+				}
+			} 
+		}
 	};
-
-	window.onblur = function(){
-		tabInFocus = false;
+	
+	this.isInFocus = function(){
+		return tabInFocus;
 	};
-
 
 	var registerPhone = function(isRegistered){
+		if(context.webphone){
+			messageSoftphone({a : 'reg', value : isRegistered});
+		}
 		if(phone){
 			phone.register(isRegistered);
 		}
@@ -80,124 +211,213 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}; 
 	
+
 	settingsService.getMe().then(function(data){
-		if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
-        	username = $rootScope.meModel.my_jid.split("@")[0];
-			if(!isRegistered && phonePlugin.getSession){
-				session = phonePlugin.getSession(username);
-				session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
-					
-				if(session.attachEvent){
-					session.attachEvent("onStatus", sessionStatus);
-	                session.attachEvent("onNetworkStatus", onNetworkStatus);
+		
+		if($rootScope.browser == "Chrome"){
+			if(!context.webphone && $rootScope.meModel.my_pid){
+				getWSVersion();
+        		nservice.initNSService();
+        	}	
+		}else{
+			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
+	        var username = $rootScope.meModel.my_jid.split("@")[0];
+				if(!isRegistered && phonePlugin.getSession){
+					session = phonePlugin.getSession(username);
+					session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
+						
+					if(session.attachEvent){
+						session.attachEvent("onStatus", sessionStatus);
+		                session.attachEvent("onNetworkStatus", onNetworkStatus);
 
 				}else{
 					 session.addEventListener("Status",sessionStatus, false);
 	               	 session.addEventListener("NetworkStatus", onNetworkStatus);
 				}
-
 				if(session.status == 0){
 				}
 			}
+		}
 		}	
 	});
 
 	var setVolume = function(volume){
+		if(context.webphone){
+			context.setSpeakerVolume(volume);
+		}
 		if(soundManager){
 			soundManager.speaker = volume;
 		}
 	};
 
+
 	var setMicSensitivity = function(sensitivity){
+		if(context.webphone){
+			context.setMicrophoneVolume(sensitivity);
+		}
 		if(soundManager){
 			soundManager.microphone = sensitivity;
 		}
 	};
 
+	var formatData = function(event) {
+		// format data that controller needs
+		return {
+			mycalls: callsDetails,
+			devices: devices,
+			event:event
+			//totals: totals
+		};
+	};
 	
+	this.getMyCalls = function(){
+		return deferred.promise;
+	};
 
 	var hangUp = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		delete xpid2Sip[xpid];
-		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-		//}
+		var call = context.getCall(xpid);
+		if(call){
+			if(context.webphone){
+				//messageSoftphone({a : 'hangUp', value : call.sip_id});
+				httpService.sendAction('mycalls','hangup',{mycallId:xpid});
+			}else{
+				call.hangUp();
+			}
+		}else{
+			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
+		}	
 	};
 
 	var holdCall = function(xpid,isHeld){
+		//var call = context.getCall(xpid);
+		/*var calldetail = context.getCallDetail(xpid);
+		var call = calldetail.sipCall;
+		if(calldetail.sipCall && calldetail.state != fjs.CONFIG.CALL_STATES.CALL_RINGING){
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'hold', value : call.sip_id}));
+			}else{
+				call.hold = isHeld;
+			}
+		}*/
 		if(isHeld){
-           	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
+        	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
-           	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-		}
+	       	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
+		}	
 	};
 
 	var makeCall = function(number){
 		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
 			return;
 		}
-		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-				
-	};
+		number = number.replace(/\D+/g, '');
+        if($rootScope.meModel.location.locationType == 'w'){
+        	if(context.webphone && number)
+        	{	
+        		messageSoftphone({a : 'call', value : number});
+        	}else if(phone && number != ""){
+        		phone.makeCall(number);
+			}else{
+        		httpService.sendAction('me', 'callTo', {phoneNumber: number});
+			}
+		}else{
+			httpService.sendAction('me', 'callTo', {phoneNumber: number});
+			
+		}		
+    };
 
 	var acceptCall = function(xpid){
-
 		var call = context.getCall(xpid);
-		call.accept();
-		httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+		if(call){
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'accept', value : call.sip_id}));
+			}else{
+				call.accept();
+			}
+
+		}else{
+			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
+		}
 	
-		/*for(i in callsDetails){
+		for(var i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 				holdCall(i,true);		
 			}
-		}*/
+		}
 	};
-
 	var playVm = function(xpid){
-		for (var i = 0; i < voicemails.length; i++) {
+		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
 				$rootScope.$broadcast('play_voicemail', voicemails[i]);
+				voicemails[i].readStatus = true;
 				break;
 			}
 		}
 	};
 
-	var displayNotification = function(content, width,height){
-		
+
+	var addonActivateTab = function() {
+            if(!context.addonProxyElement) {
+                context.addonProxyElement = document.createElement("MyExtensionDataElement");
+                context.addonProxyElement.setAttribute("url", location.href);
+                document.documentElement.appendChild(context.addonProxyElement);
+            }
+            var evt = document.createEvent("Events");
+            evt.initEvent("MyExtensionEvent", true, false);
+            context.addonProxyElement.dispatchEvent(evt);
+     };
+     //we are using this to cache the previous notification section 
+	this.cacheNotification = function(content,width,height){
+		notificationCache.html = content;
+		notificationCache.height = height;
+		notificationCache.width = width;
+	};
+
+
+
+
+	this.shouldAlertDisplay = function(){
 		var displayNotification = false;
-		if(!alertPlugin){
-			return;
-		}
 
 		if(settingsService.getSetting('alert_show') == 'true'){
-			
-			if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
-					displayNotification = true;	
-				
-			}else{
-				if(!tabInFocus){
-						displayNotification = true;	
-				
-				}
-				if(document.visibilityState == "hidden"){
-						displayNotification = true;	
-
-				}		
-			}
-
 			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
 				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
-					displayNotification = true;
+					if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
+						displayNotification = true;	
+					}else{
+						if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
+								displayNotification = true;	
+						}else{
+							displayNotification = false;
+						}		
+					}
 				}else{
 					displayNotification = false;
 				}
+			}else{
+				if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
+					displayNotification = true;	
+				}else{
+					if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
+							displayNotification = true;	
+					}else{
+						displayNotification = false;
+					}		
+				}
 			}
 		}
+
+		return displayNotification;
+	};
+	var displayNotification = function(content, width,height){
+		if(!alertPlugin){
+			return;
+		}
+		var displayNotification = context.shouldAlertDisplay();
 		
-
-			
-	if(alertPlugin && displayNotification){
-
+		context.cacheNotification(content,width,height);
+					
+		if(alertPlugin && displayNotification){
 				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
@@ -207,31 +427,42 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+	var displayWebphoneNotification = function(data,type, isNative){
+		var displayNotification = context.shouldAlertDisplay();
+		if(displayNotification){
+			if(isNative){
+				nservice.sendData(data,0,type);
+			}else{
+				nservice.displayWebNotification(data);	
+			}
+		}
+	};
+
+
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
-        data = {}
+        var data = {};
         sipCalls[call.sip_id] = call;
 		
 		switch(status){
 			case CALL_STATUS_RINGING:
 				data = {
 					event: 'ringing',
-				}
+				};
 				break;
 			case CALL_STATUS_ACCEPTED:
 				data = {
 					event: 'accepted',
-				}
+				};
 				break;
 			case CALL_STATUS_HOLD:
 				data = {
 					event: 'onhold'
-				}
+				};
 			
 				break;
 			case CALL_STATUS_ERROR:
 				removeNotification();
-				delete sipCalls[call.sip_id];
 				break;
 			case CALL_STATUS_UNKNOWN:
 				removeNotification();
@@ -240,9 +471,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				data = {
 					event: 'onclose',
 					sipId: call.sip_id
-				}
+				};
 				removeNotification();
-				delete sipCalls[call.sip_id];
 				break;
 		}
 		
@@ -258,19 +488,34 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
-                } else {
+                	$rootScope.phoneError = false;
+                     
+                } else if(account_.status == REG_STATUS_UNKNOWN){
+                  	 $rootScope.phoneError = true;
                      isRegistered = false;
+					 if($rootScope.isFirstSync){
+					 	$rootScope.$evalAsync($rootScope.$broadcast('network_issue',data));
+	     			 }
+		 
+				}else{
+					$rootScope.phoneError = false;
+                    isRegistered = false;
 				}
 
-				data = {
+				var data = {
 					event:'state',
 					registration: isRegistered,
-				}
+				};
 				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 	      }
     };
    var showCallControls = function(call){
     	$rootScope.$broadcast("current_call_control", call);
+	};
+
+	var onVolumeChanged = function(spkVolume,microphoneLevel){
+		$rootScope.volume.spkVolume = spkVolume;
+		$rootScope.volume.micVolume = microphoneLevel;
 	};
 
 	var sessionStatus = function(session_status){
@@ -282,40 +527,79 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html";
          		alertPlugin.initAlert(url);
 				removeNotification();
-         		setupListeners();
-				activatePhone();
+         		activatePhone();
+			
+            //isRegistered = true;
+			if(!soundEstablished){
+				soundManager = session.soundManager;
+				if(soundManager){
+					if(soundManager.attachEvent){
+						soundManager.attachEvent("onVolume", onVolumeChanged);
+					}else{
+						soundManager.addEventListener("Volume",onVolumeChanged,false);
+					}
+				}
 
-			 	soundManager = session.soundManager;
 				devices = soundManager.devs;
-				deferred.resolve(devices);
-				spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
-				micVolume = settingsService.getSetting('hudmw_webphone_mic');
+				inputDevices.length = 0;
+				outputDevices.length = 0;
+
+    			for(var i = 0; i < devices.length;i++){
+    			  	if(devices[i].input_count > 0){
+    			  		inputDevices.push(devices[i]);
+    			  	}
+    			  	if(devices[i].output_count > 0){
+    			  		outputDevices.push(devices[i]);
+    			  	}
+    			}
+				deferredInputDevices.resolve(inputDevices);
+				deferredOutputDevices.resolve(outputDevices);
+						
+
+				
+				var spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
+				var micVolume = settingsService.getSetting('hudmw_webphone_mic');
+				$rootScope.volume.spkVolume = spkVolume;
+				$rootScope.volume.micVolume = micVolume;
 				if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
 					soundManager.speaker = parseFloat(spkVolume);
 					soundManager.microphone = parseFloat(micVolume);
-				}
-			 }
-            //isRegistered = true;
-			
+			        soundEstablished = true;
+			    }
+			     
+			}
+			setupListeners();
+		
+		}
+
+				
 			//registerPhone(true);
 			
          } else if (session_status.status == 1) {
                 isRegistered = false;
                 return;
         } else if (session_status.status == 2) {
+        	$rootScope.$broadcast('network_status',undefined);
             isRegistered = false;
             return;
         }
 	};
 
+	this.resetAlertPosition = function(){
+		alertPosition.x = 0;
+		alertPosition.y = 0;
+	};
+
+
 	onNetworkStatus = function(st){
-        //console.log("Network is "+ ((st==0)?" not available":"available") +" native="+st);
-    };
+   	};
+
 
     var onLocationChanged = function(x,y){
     	alertPosition.x = x;
     	alertPosition.y = y;
     };
+
 
     var activateBrowserTab = function(tabId){
 
@@ -324,60 +608,80 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			session.activateIE("#/");
 				break;
     		case "Chrome":
-    			session.activateChrome("#/");
+    			addonActivateTab();
+				session.activateChrome("#/");
+				addonActivateTab();
 				break;
     		case "Safari":
     			session.activateSafari("#/");
 				break;
-    		case "FireFox":
-    			session.activateFirefox("#/");
+    		case "Firefox":
+    			addonActivateTab();
+				session.activateFirefox("#/");
+				addonActivateTab();
+
 				break;
     	}
     };
 
     var onAlert = function(urlhash){
-    	console.log("AlertClicked: " + urlhash);
-    	var arguments = urlhash.split("?");
-    	var url = arguments[0];
-    	var query = arguments[1];
-    	var queryArray;
-    	var id;
-		if(query){
+    	var arguments,url,query,queryArray,id,data,xpid;
+    	arguments = urlhash.split("?");
+    	//we need to decode the uri because the plugin will sometimes return an html encoded string
+    	url = decodeURI(arguments[0].replace("#",''));
+    	
+    	if(arguments.length > 1){
+	    	query = arguments[1];
+	    }	
+    	if(query){
 			queryArray = query.split('&');
 			xpid = queryArray[0];
     	}
-    	activateBrowserTab();
-    	
-    	window.focus();
-    	if(url.indexOf('#') === -1){
-
-			switch(url){
+		
+		// re-focus tab/window
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1 
+			&& url.indexOf('/RemoveNotification') === -1
+		) {
+			activateBrowserTab();
+			window.focus();
+		}		
+		
+    	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			break;
+					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
 	    			break;
 	    		case '/EndCall':
 	    			hangUp(xpid);
-	    			break;
+	    			removeNotification();
+					break;
 	    		case '/HoldCall':
 	    			holdCall(xpid,true);
 	    			break;
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
 	    			break;
 	    		case '/AcceptCall':
 					acceptCall(xpid);
-	    			break;
+					if(settingsService.getSetting('alert_call_duration') == "while_ringing"){
+						removeNotification();
+	    			}else if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
+	    				if(!document.hidden){
+							remove_notification();
+						}
+	    			}
+					break;
 	    		case '/AcceptZoom':
-					window.open(xpid,'_blank');
-	    			removeNotification();
-	    			break;
+					var apiUrl = queryArray[1].split(': ')[1];
+					window.open(apiUrl,'_blank');
+					remove_notification(xpid);
+					break;
 
 	    		case '/RejectZoom':
 	    			removeNotification();
@@ -385,7 +689,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/OpenNotifications':
 	    			data = {
 	    				event:'openNot'
-	    			}
+	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
 				case '/PlayVM':
@@ -407,7 +711,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case '/goToChat':
 					var context = queryArray[0];
 					var audience = context.split(":")[0];
-					var xpid = context.split(":")[1];
+					xpid = context.split(":")[1];
 					var messagexpid = queryArray[1];
 					goToNotificationChat(xpid, audience,messagexpid); 
 					break;	
@@ -434,97 +738,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					showQueue(queueId,audience, type,messagexpid);
 					break;
 			}
-    	}else{
-    		switch(url){
-	    		case '#/Close':
-	    			removeNotification();
-	    			break;
-	    		case '#/CancelCall':
-	    			hangUp(xpid);
-	    			break;
-	    		case '#/EndCall':
-	    			hangUp(xpid);
-	    			break;
-	    		case '#/HoldCall':
-	    			holdCall(xpid,true);
-	    			break;
-	    		case '#/ResumeCall':
-	    			data = {
-	    				event: 'resume'
-	    			}
-	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-					holdCall(xpid,false);
-	    			break;
-	    		case '#/AcceptCall':
-					acceptCall(xpid);
-	    			break;
-	    		case '#/OpenNotifications':
-	    			data = {
-	    				event:'openNot'
-	    			}
-	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-					break;
-				case '#/AcceptZoom':
-					window.open(xpid,'_blank');
-	    			removeNotification();
-	    			break;
-				case '#/RejectZoom':
-					removeNotification();
-					break;
-				case '#/PlayVM':
-					playVm(xpid);
-					break;
-				case '#/CallBack':
-					makeCall(xpid);
-					break;
-				case '#/contact':
-					$location.path('/contact/'+xpid);
-					$location.replace();
-					//$rootScope.$apply();
-					removeNotification();
-					break;
-				case '#/RemoveNotification':
-				    remove_notification(xpid);
-					break;	
-				case '#/goToChat':
-					var context = queryArray[0];
-					var audience = context.split(":")[0];
-					var xpid = context.split(":")[1];
-					var messagexpid = queryArray[1];
-					goToNotificationChat(xpid, audience,messagexpid); 
-					break;	
-				case '#/callAndRemove':
-					var phone = queryArray[1];
-					makeCall(phone); 
-					remove_notification(xpid); 
-					break;	
-				case '#/getPlugins':
-					showOverlay(true,'DownloadPlugin',{});
-					window.open(xpid,'_blank');
-					break;	
-				case '#/activatePhone':
-					activatePhone();
-					break;
-				case '#/showCallControlls':
-					showCurrentCallControls(xpid);
-					break;
-				case '#/showQueue':
-					var queueId = queryArray[0];
-					var audience = queryArray[1];
-					var type = queryArray[2];
-					var messagexpid = queryArray[3];
-					showQueue(queueId,audience, type,messagexpid);
-					
-					break;
-	    	}
-    	}
-	};
-
+    };
 	var removeNotification = function(){
-		/*if(alertPlugin){
-			isAlertShown = false;
+		if(alertPlugin){
+			
 			alertPlugin.removeAlert();
-		}*/
+			isAlertShown = false;
+		}
 	};
 	
 	var remove_notification = function(xpid){		
@@ -542,17 +762,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				audience = "group";
 				break;
 		}
-
 		$location.path("/" + audience + "/" + xpid + "/chat");
-		
 		remove_notification(mxpid);
-		//showOverlay(false);
 		
-		//storeRecent(xpid);
 	};
 	
 	var storeRecent = function(xpid){
-		localPid = JSON.parse(localStorage.me);
+		var localPid = JSON.parse(localStorage.me);
 		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
 		// are all notifications sent from a contact? can they be sent via a group/queue/conf? if so, need to adjust the type...
 		recent[xpid] = {
@@ -563,17 +779,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
 	};
 
+
 	var getAvatar = function(pid){
 		return HttpService.get_avatar(pid,40,40);
 	};
 	
-	/*var activatePhone = function(){
-		   httpService.updateSettings('instanceId','update',localStorage.instance_id); 
-	};*/
+	
 	
 	var showCurrentCallControls = function(currentCall){
-		$location.path("settings/callid/"+currentCall.xpid);
-		phoneService.showCallControls(currentCall);
+		$location.path("settings/callid/"+currentCall);
 	};
 	
 	var showQueue = function(qid, audience, type,messagexpid)
@@ -595,22 +809,210 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 		remove_notification(messagexpid);
     };	
-    onAlertMouseEvent = function(event,x,y){
-    	//this.removeNotification();
+	
+    var onAlertMouseEvent = function(event,x,y){
     };
 
-    var onSoundDeviceChanged = function(event){
-    	console.log(event);
+    var onSoundDeviceChanged = function(data){
+    	devices = soundManager.devs;
+		inputDevices.splice(0,inputDevices.length);
+		outputDevices.splice(0,outputDevices.length);
+
+    	for(var i = 0; i < devices.length;i++){
+    		if(devices[i].input_count > 0){
+    			inputDevices.push(devices[i]);
+    		}
+    		if(devices[i].output_count > 0){
+    			 outputDevices.push(devices[i]);
+    		}
+    	}
+
+    	$rootScope.$broadcast("phone_event",{event:"updateDevices"});
     };
 
-   var setupListeners = function(){
+    var getWSVersion = function(){
+    	var webphone = new WebSocket('wss://webphone.fonality.com:10443/version');
+		webphone.onopen = function(e){};
+		webphone.onclose = function(e){};
+
+		webphone.onerror = function(e){};
+
+		webphone.onmessage = function(e){
+			if(e.data){
+				context.version = e.data;
+				$rootScope.pluginVersion = context.version;	
+				initWS();
+				webphone.close();
+			}
+		};
+
+	};
+
+    var initWS = function(){
+    	 if(context.webphone || session){
+    	 	setTimeout(initWS(),5000);
+    	 	return;
+    	 }
+    	authticket = localStorage.authTicket;
+        server = fjs.CONFIG.SERVER.serverURL;
+    	node = localStorage.nodeID; 
+    	context.webphone = new WebSocket('wss://webphone.fonality.com:10443/' + encodeURIComponent(server) + '/' + encodeURIComponent(authticket) + '/' + encodeURIComponent(node));
+    	context.webphone.onopen = function(e){
+    			context.setEACTailLength = function(val) {
+                    if(context.webphone && val != context.getEACTailLength()) {
+                    	context.webphone.send(JSON.stringify({a : 'ec', value :val}));
+                    }
+                };
+               	context.setSpeakerVolume = function(val) {
+                    if(context.webphone && context.getSpeakerVolume() != val) {
+                    	context.webphone.send(JSON.stringify({a : 'soundvolume', value : parseFloat(val)}));
+                    }
+                };
+                context.setMicrophoneVolume = function(val) {
+                    if(context.webphone  && context.getMicrophoneVolume() != val) {
+                    	context.webphone.send(JSON.stringify({a : 'micvolume', value :parseFloat(val)}));
+                    }
+                };
+            	context.setInputDeviceId = function(devId) {
+                	var devices = context.getDevices();
+                    if(context.webphone  && context.getInputDeviceId() != devId) {
+                    	if(devices.length <= devId || !devices[devId] || devices[devId].input_count <= 0)devId = -1;
+                		context.webphone.send(JSON.stringify({a : 'inpdevs', value : devId}));
+                    }
+            	}
+            	context.setOutputDeviceId = function(devId) {
+                	var devices = context.getDevices();
+                    if(context.webphone  && context.getOutputDeviceId() != devId) {
+                    	if(devices.length <= devId || !devices[devId] || devices[devId].output_count <= 0)devId = -2;
+                		context.webphone.send(JSON.stringify({a : 'outdevs', value : devId}));
+                    }
+            	}
+            context.setRingDeviceId = function(devId) {
+                var devices = context.getDevices();
+                  if(context.webphone && context.getRingDeviceId() != devId) {
+                    	if(devices.length <= devId || !devices[devId] || devices[devId].output_count <= 0)devId = -2;
+                		context.webphone.send(JSON.stringify({a : 'ringdevs', value : devId}));
+                    }
+            	}
+
+            	$rootScope.$broadcast('phone_event',{event:"enabled"});
+
+		};
+		context.webphone.onclose = function(e){
+				context.webphone = false;
+				
+            	$rootScope.$broadcast('phone_event',{event:"disabled"});
+
+				context.getSessionStatus = function() {return 0};
+				context.getPhoneStatus = function() {return 5};
+			    setTimeout(function(){initWS()}, 500);
+    	};
+		context.webphone.onerror = function(e){
+			if(context.webphone)context.webphone.close();
+
+		};
+		context.webphone.onmessage = function(e){
+			
+			try
+    		  {
+    			  var msg = JSON.parse(e.data);
+
+    			  if (msg.sip_id){
+					
+				  	sipCalls[msg.sip_id] = msg;
+				  }
+
+    			  if (msg.session_status!=undefined)
+    			  {
+      				var ss = parseInt(msg.session_status, 10);
+    				context.getSessionStatus = function(){return ss};
+    			  }
+    			  if (msg.phone_status!=undefined)
+    			  {
+       				var ps = parseInt(msg.phone_status, 10);
+    				
+					if(phone == undefined){
+						isRegistered = ps == 1;
+						data = {
+							event:'state',
+							registration: isRegistered,
+						}
+						$rootScope.$broadcast('phone_event',data);
+
+					}	
+    				
+    				context.getPhoneStatus = function(){return ps};
+    			  }
+    			  if (msg.devices!=undefined)
+    			  {
+    			  		devices = msg.devices;
+    			  		inputDevices.splice(0,inputDevices.length);
+						outputDevices.splice(0,outputDevices.length);
+
+    			  		for(var i = 0; i < msg.devices.length;i++){
+    			  			if(msg.devices[i].input_count > 0){
+    			  				inputDevices.push(msg.devices[i]);
+    			  			}
+    			  			if(msg.devices[i].output_count > 0){
+    			  				outputDevices.push(msg.devices[i]);
+    			  			}
+    			  		}
+						deferredInputDevices.resolve(inputDevices);
+						deferredOutputDevices.resolve(outputDevices);
+						
+
+						deferred.resolve(formatData());
+						if( !$rootScope.isFirstSync){
+							$rootScope.$broadcast("phone_event",{event:"updateDevices"});
+						}
+						context.getDevices = function() {return msg.devices};
+		          }
+    			  if (msg.inpdevs!=undefined)
+    			  {
+    				var id = parseInt(msg.inpdevs, 10);
+    				context.getInputDeviceId = function() {return id};
+                  }
+    			  if (msg.outdevs!=undefined) 
+    			  {
+    				  var od = parseInt(msg.outdevs, 10);
+    				  context.getOutputDeviceId = function() {return od};
+    			  }
+    			  if (msg.ringdevs!=undefined) 
+    			  {
+    				  var rd = parseInt(msg.ringdevs, 10);
+    				  context.getRingDeviceId = function() {return rd};
+    			  }
+    			  if (msg.micvolume!=undefined) 
+    			  {
+    				  var mv = parseFloat(msg.micvolume);
+    				  $rootScope.volume.micVolume = mv;
+    				  context.getMicrophoneVolume = function() {return mv};
+    			  }    				  
+    			  if (msg.soundvolume!=undefined) 
+    			  {
+    				  var sv = parseFloat(msg.soundvolume);
+    				  $rootScope.volume.spkVolume = sv;
+    				  context.getSpeakerVolume = function() {return sv};
+    			  }
+    			  if (msg.ec!=undefined) 
+    			  {
+    				  context.getEACTailLength = function() {return msg.ec};
+    			  }
+    			  if(msg.status!=undefined)thus.onCallStateChanged(msg);
+    		  } catch (ex) {console.log(e.data)}
+		}; 
+
+    };
+
+    var setupListeners = function(){
+
     	if(phone){
     		if(phone.attachEvent){
 				phone.attachEvent("onCall", onCallStateChanged);
                 phone.attachEvent("onStatus", accStatus);
     		}else{
     			phone.addEventListener("Call",onCallStateChanged);
-    			phone.addEventListener("Status",accStatus)
+    			phone.addEventListener("Status",accStatus);
     		}
     	}
 
@@ -641,6 +1043,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 	
 	this.displayNotification = displayNotification;
+	this.displayWebphoneNotification = displayWebphoneNotification;
 
 
 	this.removeNotification = removeNotification;
@@ -653,17 +1056,62 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+	this.getSelectedDevice = function(input){
+		if(context.webphone){
+			switch(input){
+				case 'inpdefid':
+					return context.getInputDeviceId();
+				case 'outdefid':
+					return context.getOutputDeviceId();
+				case 'ringdefid':
+					return context.getRingDeviceId();
+			}
+		}else{
+			return soundManager[input];
+		}
+	};
+
+	this.setAudioDevice = function(type, value){
+		switch(type){
+            case 'Ring':
+                if(context.webphone){
+                	context.setRingDeviceId(value);
+                }else{
+                	soundManager.ringdefid = value;
+                }
+                break;
+            case 'Input':
+                if(context.webphone){
+                	 context.setInputDeviceId(value);
+               }else{
+                	soundManager.inpdefid = value;
+                }
+                break;
+            case 'Output':
+                if(context.webphone){
+                	context.setOutputDeviceId(value);
+                }else{
+                	soundManager.outdefid = value;
+                }
+                break;
+        }
+	};
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		var call = context.getCall(xpid);
 		if(call){
-			call.transfer(number);
-		}	
+			if(context.webphone && number){
+				context.webphone.send(JSON.stringify({a : 'transfer', value : call.sip_id, ext: number}));
+			}else{
+				call.transfer(number);
+			}
+		}else{
+			httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
+		}
 	};
 
 	this.getPhoneState = function(){
@@ -672,22 +1120,54 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	this.getDtmfToneGenerator = function(){
 		return session.getDTMFToneGenerator();
+	}
+
+	this.playTone = function(key,toPlay){
+		if(toPlay){
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'play', value : key}));
+			}else{
+				session.getDTMFToneGenerator().play(key);
+			}
+
+		}else{
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'stop'}));
+			}else{
+				session.getDTMFToneGenerator().stop();
+			}
+		}
 	};
-	/*this.playDtmfSound=function(entry){
-			//session.getDTMFToneGenerator().setToneEnabled(true);
-			session.getDTMFToneGenerator().play(entry);
-	}*/
+
+	this.playTone = function(key,toPlay){
+		if(toPlay){
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'play', value : key}));
+			}else{
+				session.getDTMFToneGenerator().play(key);
+			}
+
+		}else{
+			if(context.webphone){
+				context.webphone.send(JSON.stringify({a : 'stop'}));
+			}else{
+				session.getDTMFToneGenerator().stop();
+			}
+		}
+	};
+
 	this.setVolume = setVolume;
 	this.setMicSensitivity = setMicSensitivity;
 
+	//look for audio tag and play sound based on key
 	this.playSound= function(sound_key){
-		var audio = $('audio.send')
-
 		if(settingsService.getSetting('hudmw_chat_sounds') == "true"){
 			switch(sound_key){
 				case 'received':
-					if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
-						$("audio.received")[0].play();
+					if($rootScope.meModel.chat_status != "dnd"){
+						if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
+							$("audio.received")[0].play();
+						}
 					}
 					break;
 				case 'sent':
@@ -699,32 +1179,52 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	this.sendDtmf = function(xpid,entry){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
-		if(call){
 
-			call.dtmf(entry);
+	//this method will find the call object within the native - mycallsfeed mapping and place a dtmf call
+	this.sendDtmf = function(xpid,entry){
+		var call = context.getCall(xpid);
+		if(call){
+			if(context.webphone)
+				context.webphone.send(JSON.stringify({a : 'dtmf', value : call.sip_id, digits : entry}));
+			else
+				call.dtmf(entry);
 		}	
 	};
-
-	this.getDevices = function(){
-		return deferred.promise;	
-	};
-
-	this.isPhoneActive = function(){
-		if(phonePlugin.getSession){
-			return true;
-		}else{
-			return false;
+	this.holdCalls = function(){
+		for(var callId in callsDetails){
+			holdCall(callId,true);		
 		}
 	};
+	this.getDevicesPromise = function(){
+		return deferred.promise;	
+	};
+	
+	this.getInputDevices = function(){
+		return deferredInputDevices.promise;
+	};
+
+	this.getOutputDevices = function(){
+		return deferredOutputDevices.promise;
+	};
+
+
+	this.isPhoneActive = function(){
+		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : ( (phonePlugin && phonePlugin.getSession) ? 'old_webphone' : false);
+
+	};
+
+	this.getVersion = function(){
+	return context.version ? context.version : (version ? version : 'undefined');
+	}
+
 	/*this returns the call object provided by the phone plugin which gives you control over the call such 
 	holding the call resuming the call and ending the call
 	*/
 	this.getCall = function(xpid){
-		sip_id = xpid2Sip[xpid];
-		call = sipCalls[sip_id];
+		var call;
+		if(callsDetails[xpid]){
+			call = sipCalls[callsDetails[xpid].sipId];
+		}
 		return call;
 	};
 	/**
@@ -733,9 +1233,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.getCallDetail = function(xpid){
 		return callsDetails[xpid];
 	};
-
+ 
 	this.getCallByContactId = function(contactId){
-		for(call in callsDetails){
+		for(var call in callsDetails){
 			if(callsDetails[call].contactId){
 				if(callsDetails[call].contactId == contactId){
 					return callsDetails[call];
@@ -753,32 +1253,110 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return isAlertShown;
 	};
 	
-	this.parkCall = function(call_id){
-		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
+	this.setAlertShown = function(value){
+		isAlertShown = value;
 	};
 
-	$rootScope.$on("calls_synced",function(event,data){
-		var displayHangUpLauncher = false;
-		var displayLauncher = false;
-		
-		for(i = 0; i < data.length; i ++){
-				if(data[i].xef001type == "delete"){
-					if(allCallDetails[data[i].xpid]){
-						delete allCallDetails[data[i].xpid];
-					}
-				}else{
-					allCallDetails[data[i].xpid] = data[i];
-				}
-		}
-		$rootScope.$broadcast('all_calls_updated', allCallDetails);
-	});
-	
-	httpService.getFeed('voicemailbox');
+	this.parkCall = function(call_id){
+		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
+	};	
 	
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
-		voicemails = data;
+		// first time
+		if (voicemails.length == 0) {
+			voicemails = data;
+			
+			// add full profile
+			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
+				voicemails[v].fullProfile = contactService.getContact(voicemails[v].contactId);
+			}
+			
+			deferredVM.resolve(voicemails);
+		}
+		else {
+			for (var i = 0, iLen = data.length; i < iLen; i++) {
+				var match = false;
+				
+				for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
+					// find and update or delete
+					if (voicemails[v].xpid == data[i].xpid) {
+						if (data[i].xef001type == 'delete') {
+							voicemails.splice(v, 1);
+							vLen--;
+						}
+						else
+							voicemails[v].readStatus = data[i].readStatus;
+						
+						match = true;
+						break;
+					}
+				}
+				
+				if (!match && data[i].xef001type != 'delete') {
+					data[i].fullProfile = contactService.getContact(data[i].contactId);
+					voicemails.push(data[i]);
+
+				}
+			}
+		}
 	});
+
+	this.mute = function(callId,toMute){
+		if(toMute){
+			httpService.sendAction('mycalls','mute',{mycallId: callId});
+		}else{
+			httpService.sendAction('mycalls','unmute',{mycallId: callId});
+		}
+	};
+	this.getVm = function(){
+		return deferredVM.promise;
+	};
 	
+	this.getVoiceMail = function(xpid){
+		for(var i = 0, iLen = voicemails.length; i < iLen ;i++){
+			if(voicemails[i].xpid == xpid){
+				return voicemails[i];
+			}
+		}
+	};
+	
+	this.getVoiceMailsFor = function(id, type){
+		switch(type){
+			case 'contact':
+				return voicemails.filter(function(data){
+					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
+				});
+			break;
+			case 'group':
+				var group = groupService.getGroup(id);
+				var groupVm = [];
+				if(group){
+					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
+						groupVm.push(voicemails.filter(function(item){
+							return item.contactId == group.members[g].contactId	 && !item.readStatus	
+						}));
+
+					}		
+				}
+				return groupVm;
+			break;
+			default: 
+				return voicemails;
+			break;
+		}
+	};
+	
+	$rootScope.$on("mycalldetails_synced", function(event,data){
+		if(data){
+			for(var i = 0, iLen = data.length; i < iLen; i++){
+				if (data[i].xpid)
+					if(callsDetails[data[i].xpid]){
+						callsDetails[data[i].xpid].details = data[i];
+				}
+			}
+		}	
+	});
+
 	$rootScope.$on("mycalls_synced",function(event,data){
 		
 		var displayHangUpLauncher = false;
@@ -787,17 +1365,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			
 		if(data){
 			var i = 0;
-			for(i = 0; i < data.length; i ++){
+			for(var i = 0, iLen = data.length; i < iLen; i++){
 					
 				if(data[i].xef001type == "delete"){
 					var call = callsDetails[data[i].xpid];
-				
+					nservice.dismiss('INCOMING_CALL',data[i].xpid);
+
 					if(call){
-						
-						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
+						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD || call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							if(call.incoming){
 								if(weblauncher.inboundHangupAuto){
-										url = weblauncher.inboundHangup;
+										var url = weblauncher.inboundHangup;
 										url = settingsService.formatWebString(url,call);
 										if(weblauncher.inboundHangupSilent){
 											$.ajax(url,{});
@@ -807,7 +1385,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}else{
 								if(weblauncher.outboundHangupAuto){
-										url = weblauncher.outboundHangup;
+										var url = weblauncher.outboundHangup;
 										url = settingsService.formatWebString(url,call);
 										if(weblauncher.outboundHangupSilent){
 											$.ajax(url,{});
@@ -817,8 +1395,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}
 						}
+						delete sipCalls[callsDetails[data[i].xpid].sipId];
 						delete callsDetails[data[i].xpid];
-						delete xpid2Sip[data[i].xpid];
 					}
 
 				}else{
@@ -828,24 +1406,47 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(call != undefined && (call.record || call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD)){
 						doesExist = true;
 					}
-
+					
+					if(call && call.details){
+						data[i].details = call.details;
+					}
+					data[i].location = locations[data[i].locationId];
 					callsDetails[data[i].xpid] = data[i];
-					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-						if(data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record && !doesExist){
+					callsDetails[data[i].xpid].sipCall = sipCalls[callsDetails[data[i].xpid].sipId];
+					if(data[i].contactId){
+						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
+					}
 
+					if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
 							if(data[i].incoming){
 								if(weblauncher.inboundAuto){
-										url = weblauncher.inbound;
-										url = settingsService.formatWebString(url,data[i]);
-										if(weblauncher.inboundSilent){
-											$.ajax(url,{});
-										}else{
-											window.open(url, "_blank");
+									if(weblauncher.launchWhenCallAnswered){
+										if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+											var url = weblauncher.inbound;
+											url = settingsService.formatWebString(url,data[i]);
+											if(weblauncher.inboundSilent){
+												$.ajax(url,{});
+											}else{
+												window.open(url, "_blank");
+											}
 										}
+									}else{
+										if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+											var url = weblauncher.inbound;
+											url = settingsService.formatWebString(url,data[i]);
+											if(weblauncher.inboundSilent){
+												$.ajax(url,{});
+											}else{
+												window.open(url, "_blank");
+											}
+										}
+									}
+																		
+										
 								}
 							}else{
-								if(weblauncher.outboundAuto){
-										url = weblauncher.outbound;
+								if(weblauncher.outboundAuto && data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+										var url = weblauncher.outbound;
 										url = settingsService.formatWebString(url,data[i]);
 										if(weblauncher.outboundSilent){
 											$.ajax(url,{});
@@ -855,20 +1456,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}
 						}					
-					}
-					for(sipCall in sipCalls){
-						var toBreak = false;
-						
-						if(xpid2Sip[data[i].xpid]){
-							if(xpid2Sip[data[i].xpid] != sipCall){
-								xpid2Sip[data[i].xpid] = sipCall;
-							}
-						}else{
-							xpid2Sip[data[i].xpid] = sipCall;
-						}
-
-					}
-
+					
 				}
 			}
 		}
@@ -876,21 +1464,143 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			storageService.saveRecent('contact', data[0].contactId);
 		}
 
+		deferred.resolve(formatData());
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
-	this.registerPhone = registerPhone;	
+	this.registerPhone = registerPhone;
+	
+	var storeIncomingCallToRecent = function(incomingCallerXpid){
+		var localPid = JSON.parse(localStorage.me);
+		var recent = JSON.parse(localStorage['recents_of_' + localPid]);
+		recent[incomingCallerXpid] = {
+			type: 'contact',
+			time: new Date().getTime()
+		};
+		localStorage['recents_of_' + localPid] = JSON.stringify(recent);
+		$rootScope.$broadcast('recentAdded', {id: incomingCallerXpid, type: 'contact', time: new Date().getTime()});
+	};
 
-	$rootScope.$on("calldetails_synced",function(event,data){
-		if(data){
-			for(var i = 0; i < data.length; i++){
-				if (data[i].xpid)
-					$rootScope.bargeObj[data[i].xpid] = isEnabled(data[i].permissions, 1);
-				if(callsDetails[data[i].xpid]){
-					callsDetails[data[i].xpid].details = data[i];
-				}
+	$rootScope.$on('notification_action', function(event,data){
+		if(data.notificationEventType){
+			switch(data.notificationEventType){
+				case 'CALL_DECLINED':
+					hangUp(data.notificationId);
+					return;
+				case 'CALL_ACCEPTED':
+					acceptCall(data.notificationId);
+					return;
+				case 'CHAT_REQUEST':
+					break;
+				case 'CALL_REQUEST':
+					break;
+				case 'CALL_ON_HOLD':
+					holdCall(data.notificationId,true);
+					return;
+				case 'talk':					
+					for(call in callsDetails){
+						if(call != data.notificationId){
+							holdCall(call, true);
+						}
+					}
+					holdCall(data.notificationId,false);
+					return;
 			}
-		}		
+			
+			focusBrowser();
+		}
 	});
+
+	var focusBrowser = function(){
+			if($rootScope.browser == "Chrome"){
+            	chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+			}
+			nservice.sendData({message:"focus"},0,"FOCUS");
+	};
+
+	this.displayCallAlert = function(call){
+		var data = {};
+	    var left_buttonText;
+	    var right_buttonText;
+	    var left_buttonID;
+	    var right_buttonID;
+	    var right_buttonEnabled;
+	    var callType;
+
+	    if(call.state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+	              left_buttonText = call.incoming ? "Decline" : "Cancel";
+	              right_buttonText = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm' ? "Accept" : "";
+	              left_buttonID = "CALL_DECLINED";
+	              right_buttonID = "CALL_ACCEPTED";
+	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm';
+	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+	              left_buttonText = "END";
+	              left_buttonID = "CALL_DECLINED";
+	              if(call.type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
+	                  right_buttonID = "CALL_ON_HOLD";
+	                  right_buttonEnabled = true;
+	                  right_buttonText = "HOLD";  
+	              }else{
+	                  //right_buttonID = "CALL_ON_HOLD";
+	                  right_buttonEnabled = false;
+	                  right_buttonText = "HOLD";  
+	                
+	              }
+
+	            }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
+	              right_buttonText = "TALK";
+	              right_buttonEnabled = true;
+	              right_buttonID = "talk";
+	            }
+	            if(call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+	              callType = "Queue";
+	            }else if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+	              callType = "External";
+	            }else{
+	              callType = "Office";
+	            }
+	          
+
+	            var callStart = ntpService.calibrateNativeTime(call.created);
+	            var holdStart = ntpService.calibrateNativeTime(call.holdStart);
+
+	            data = {
+	                  "notificationId": call.xpid, 
+	                  "leftButtonText" : left_buttonText,
+	                  "rightButtonText" : right_buttonText,
+	                  "leftButtonId" : left_buttonID,
+	                  "rightButtonId" : right_buttonID,
+	                  "leftButtonEnabled" : true,
+	                  "rightButtonEnabled" : right_buttonEnabled,
+	                  "callerName" : call.displayName, 
+	                  "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
+	                  "callCategory" : callType,
+	                  "muted" : call.mute ? "1" : "0",
+	                  "record" : call.record ? "1" : "0",
+	                "created": callStart,
+	                "holdStart": holdStart
+	            };
+	            this.displayWebphoneNotification(data,"INCOMING_CALL",true);
+	 };
+
+	 $rootScope.$on('locations_synced', function(event,data){
+        if(data){
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
+                if(data[i].locationType != 'a'){
+                     locations[data[i].xpid] = data[i];
+                }
+            }
+        }
+    });
+
+     $rootScope.$on('location_status_synced', function(event,data){
+        if(data){
+            for (var i = 0, iLen = data.length; i < iLen; i++) {
+                if(locations[data[i].xpid]){
+                    locations[data[i].xpid].status = data[i];
+                }
+            }
+        }
+    });
 
 	var context = this;
 

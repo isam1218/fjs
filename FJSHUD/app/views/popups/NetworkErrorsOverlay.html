@@ -1,0 +1,49 @@
+<div class="Overlay" style="z-index:1200"> <!--  style="z-index:1200" -->  
+    <div   class="Background"></div>
+    <div class="Foreground">
+        <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->                
+        <div class="Header">
+          <div ng-click="closeError()" class="Close">
+           <div class="CloseIcon2"></div>
+          </div>
+          <div class="headerIcon network"></div>          
+          <div class="HeaderTitle">We are so sorry, but we have network problems</div>           
+        </div>
+        
+        <div class="Sections">
+            <div class="Section" style="min-width:32%">
+                 <div>
+                    <div style="display:inline-block" class="TwentyFourIcon" name="softphone" ng-class="phoneError ? 'CheckboxItem-false' : 'CheckboxItem-true'"></div>
+                    <div style="line-height:28px" id="network_error_label">Fonality Web softphone</div>
+                    <div id="softPhoneReason" ng-if="phoneError">can't register</div>
+                    <br/> 
+                    <div style="display:inline-block" class="TwentyFourIcon" type="checkbox" name="cloud" ng-class="networkError ? 'CheckboxItem-false' : 'CheckboxItem-true'"></div>
+                    <div id="network_error_label">Fonality Cloud Services</div>
+                    <div id="cloudReason" ng-if="networkError">Check your Internet connection</div>
+                    <br/>
+                    
+                    <div  style="display:inline-block" class="TwentyFourIcon" type="checkbox" name="server" ng-class="pbxError ? 'CheckboxItem-false' : 'CheckboxItem-true'"></div>
+                    <div id="network_error_label">PBX server</div>
+                    <div id="serverReason" ng-if="pbxError">If problem persists contact your administrator</div>
+                </div>
+            </div>
+            
+            <div class="Section">
+                <div style="height:320px;width:500px;position:relative;background:#FFF;border:1px solid #ccc">
+                  <div class="WebIcon ErrorIcon"> </div>
+                  <div class="ErrorArrowIcon WebArrowIcon" ng-class="phoneError ? 'Active-false' : 'Active-true'"></div>
+                  <div class="PbxIcon ErrorIcon"> </div>
+                  <div class="PbxArrowIcon" ng-class="pbxError ? 'Active-false' : 'Active-true'"></div>
+                  
+                  <div class="FonalityIcon ErrorIcon" ng-class=""> </div>
+                  <div class="ErrorArrowIcon InternetArrowIcon" ng-class="networkError ? 'Active-false' : 'Active-true'"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="Footer">                                      
+            <input type="button" class="XButton" value="Close" ng-click="closeError()"/>
+            <input style="width:20%" type="button" class="XButton XButtonRed" value="Clean up & reload" ng-click="reload()"/>           
+        </div>
+    </div>
+</div>

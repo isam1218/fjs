@@ -57,13 +57,6 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
     $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 
-  $scope.getRef = function(member, myself){
-    if (member.contactId == myself)
-      return '#/queue/' + queueId;
-    else
-      return '#/contact/' + member.contactId;
-  };
-
   $scope.$on("$destroy", function () {
 
   });

@@ -1,6 +1,26 @@
-hudweb.service('StorageService', ['$rootScope', 'ContactService', function($rootScope,contactService) {
+hudweb.service('StorageService', ['$rootScope', 'ContactService', 'SettingsService', function($rootScope, contactService, settingsService) {
 	var service = this;
 	var recents;
+	var chats;
+	var selected;
+	var tabs;
+	var toggleObj;
+	
+	// wait for user xpid
+	settingsService.getSettings().then(function() {
+		if (localStorage['recents_of_' + $rootScope.myPid] === undefined)
+			localStorage['recents_of_' + $rootScope.myPid] = '{}';
+		
+		if (localStorage['chats_of_' + $rootScope.myPid] === undefined)
+			localStorage['chats_of_' + $rootScope.myPid] = '{}';
+			
+		recents = JSON.parse(localStorage['recents_of_' + $rootScope.myPid]);
+		chats = JSON.parse(localStorage['chats_of_' + $rootScope.myPid]);
+	});
+	
+	/**
+		RECENTS
+	*/
 	
 	service.getRecents = function() {
 		return recents;
@@ -32,15 +52,25 @@ hudweb.service('StorageService', ['$rootScope', 'ContactService', function($root
         });
 	};
 	
-	// wait for user xpid
-	var watcher = $rootScope.$watch('myPid', function() {
-		if ($rootScope.myPid) {
-			watcher();
-			
-			if (localStorage['recents_of_' + $rootScope.myPid] === undefined)
-				localStorage['recents_of_' + $rootScope.myPid] = '{}';
-			
-			recents = JSON.parse(localStorage['recents_of_' + $rootScope.myPid]);
-		}
-	});
+	/**
+		CHAT MESSAGES
+	*/
+	
+	service.saveChatMessage = function(xpid, message) {
+		if (!chats)
+			return;
+		else if (!message || message == '')
+			delete chats[xpid];
+		else
+			chats[xpid] = message;
+		
+		localStorage['chats_of_' + $rootScope.myPid] = JSON.stringify(chats);
+	};
+	
+	service.getChatMessage = function(xpid) {
+		if (chats && chats[xpid])
+			return chats[xpid];
+		else
+			return '';
+	};
 }]);

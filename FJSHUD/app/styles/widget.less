@@ -2,8 +2,8 @@
   position: relative;
   border-bottom: solid 1px #ccc;
   width: 100%;
-  margin: 0 auto;
-  padding: .3em 0 .7em 0;
+  margin: 0 auto;  
+  padding: 10px 0;
   
   .XButton {     
      width: 32.5%;
@@ -11,42 +11,33 @@
      margin-left: .5em;	    
   }
 }
-.MyStatus{
- .ToolBar{
-     .XButton{
-        width: 31% !important;
-        float: left !important;        
-        padding-left: 0.5em !important;
-     }
-     select.XButton{
-        padding-left: 4em !important;
-     }
- }
-}
-.WidgetPanel {
-  position: relative;
-  margin: -40px 0 0 10px;
-  width: 500px;
-    
-  .Widget {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-	box-shadow: 1px 0 10px gray;
-	/*padding-top: 10px;*/
-  }
+
+.WidgetPanel {    
+  position : fixed;
+  top : 60px;
+  left : 320px;
+  width : 500px;
+  bottom : 10px;
+  display : -webkit-box;
+  border-radius : 10px;
+  -webkit-border-radius : 10px;
+  border-top-left-radius : 10px;
+  -webkit-border-top-left-radius : 10px;
+  border-top-right-radius : 10px;
+  -webkit-border-top-right-radius : 10px;
+  background-image : url("../img/XTile-Widget.png?v=1425679800685");
+  box-shadow : 1px 0px 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
+  -webkit-box-shadow : 1px 0px 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
+  border : solid 1px #ccc;
+  z-index : 1;  
 }
 
 .Widget {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 500px;
-  height: 100%;
-  background-image: url(../img/XTile-Widget.png);
-  border: solid 1px #ccc;
-  z-index: 1;
+  left: 0;  
+  width: 100%;
+  height: 100%; 
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -55,6 +46,7 @@
   .WidgetTabContent {
     flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+	-ms-flex: 1;
     display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
@@ -66,19 +58,15 @@
   .ListView {
       position: relative;
       flex: 1 1 0;
-	  -ms-flex: 1 1 0;
+	  -ms-flex: 1;
 	  -webkit-flex: 1 1 0;
       overflow-y: auto;
       width: 100%;
-      margin-top: 10px;
-      
-      .vmsection.last{
-        border-bottom: 1px solid #ccc;
-        margin-bottom: 10px;
-      }
+      margin-top: 5px;            
       
       &.ChatView.WithToolBar{
         overflow: hidden;
+        margin: 0;
         
         .ListViewContent{
             overflow-y: auto;
@@ -90,6 +78,145 @@
       width: 30%;
       float: left;
    }
+   
+ .ToolBar{
+   .selectWrapper{     
+     overflow: hidden;
+     background: url(../img/arrowDown_8.png)no-repeat 96%, linear-gradient(#fefefe, #ebebeb);
+     background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+     background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+     background: url(../img/arrowDown_8.png)no-repeat 96%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+     background: url(../img/arrowDown_8.png)no-repeat 96%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+     background: url(../img/arrowDown_8.png)no-repeat 96%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+     border-radius: 2px;
+     -webkit-border-radius: 2px;
+     border: 1px solid rgba(0,0,0,0.2);       
+      transition: border .3s;
+     -webkit-transition: border .3s;
+     padding-right: 5px;
+     
+     &:hover{            
+            background: url(../img/arrowDown_8.png)no-repeat 96%, linear-gradient(#fefefe, #ebebeb);
+            background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+            background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+            background: url(../img/arrowDown_8.png)no-repeat 96%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+            background: url(../img/arrowDown_8.png)no-repeat 96%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+            background: url(../img/arrowDown_8.png)no-repeat 96%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+     } 
+     
+     select{
+        background: url() no-repeat 0 0 transparent;
+        line-height: 1;
+        border: 0;
+        border-radius: 0;                   
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        text-align: left; 
+        font-size: 11px;
+        font-weight: bold;
+        color: #333;
+        text-shadow: 0 1px 0px #fff;
+        font-family: Arial,Tahoma,"Helvetica Neue",Helvetica,sans-serif;
+        padding: 0 0 0 3px;
+  
+        &:hover{            
+            background: url(../img/arrowDown_8.png)no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
+            background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+            background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+            background: url(../img/arrowDown_8.png)no-repeat 94%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+            background: url(../img/arrowDown_8.png)no-repeat 94%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+            background: url(../img/arrowDown_8.png)no-repeat 94%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+        }   
+        
+        option{
+            text-align: left;
+            //padding: 0 5px;
+            background-color: #fff;
+        }           
+     }
+     
+     &.vm{
+        width: 130px;
+        float: right;
+        margin-left: 10px;
+        width: 110px\9;/* ie6/7/8/9  */
+       
+        select{                    
+            height: 24px;   
+            width: 130px;                 
+        }
+     }
+     
+     &.status,
+     &.conf,
+     &.convQueue{
+         margin-left: 10px;
+     }
+     
+     &.queue,
+     &.status,
+     &.conf,
+     &.members{    
+        width: 150px;       
+        float: right; 
+        width: 130px\9; /* ie6/7/8/9  */        
+        
+        select{
+            width: 150px;
+            height: 24px;
+            &:hover{            
+                background: url(../img/arrowDown_8.png)no-repeat 94.5%, linear-gradient(#fefefe, #ebebeb);
+                background: url(../img/arrowDown_8.png)no-repeat 94.5%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+                background: url(../img/arrowDown_8.png)no-repeat 94.5%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+                background: url(../img/arrowDown_8.png)no-repeat 94.5%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+                background: url(../img/arrowDown_8.png)no-repeat 94.5%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+                background: url(../img/arrowDown_8.png)no-repeat 94.5%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+            } 
+        }  
+     }
+     &.conf{                             
+        select{            
+            height: 28px;                                                           
+        }
+     }
+     
+     &.convQueue{
+       width: 100px;   
+       width: 80px\9; /* ie6/7/8/9  */     
+       float: right;
+     
+       select{
+            width: 100px;
+            height: 24px;
+            &:hover{            
+                background: url(../img/arrowDown_8.png)no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
+                background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+                background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+                background: url(../img/arrowDown_8.png)no-repeat 94%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+                background: url(../img/arrowDown_8.png)no-repeat 94%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+                background: url(../img/arrowDown_8.png)no-repeat 94%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+            } 
+        }  
+     }
+           
+   }
+   &.fj-stream{
+       .XButton.convQueueInput{            
+            span{
+                vertical-align: top;
+            }
+       }
+   }
+  }
+  
+  &.WidgetZoom{
+    height: 100%;
+    
+    .WidgetHeader{min-height: 60px;}
+    .WidgetZoomBody{height: 92%;} 
+    
+  } 
 }
 .WidgetHeader {
   position: relative;
@@ -102,6 +229,17 @@
 	top: 0;
 	left: 0;
   }
+  
+  .Avatar{
+    width: 40px !important;
+    height: 40px !important;
+    
+    img:not(.GroupAvatarItemImg){
+        width: 38px !important;
+        height: 38px !important;
+    }
+  }
+  
 }
 
 .WidgetBody {
@@ -145,13 +283,13 @@
               &.CallAvatar_Queue
               {
                 margin-top: 6px;
-                margin-left: 5px;            
+                margin-left: 4px;            
                 border: none;
                 
                 img{
-                    height: 22px !important;
-                    width: 22px !important;
-                    margin: 4px !important;
+                    height: 22px;
+                    width: 22px;
+                    margin: 4px;
                     border-radius: 30px;
                     -webkit-border-radius: 30px;
                 }
@@ -205,13 +343,13 @@
      {
         margin: auto 2px !important;           
         border: none;
-        width: 40px !important;
-        height: 40px !important;
+        width: 40px;
+        height: 40px;
         
         img{
-            height: 32px !important;
-            width: 32px !important;
-            margin: 4px !important;
+            height: 32px;
+            width: 32px;
+            margin: 4px;
             border-radius: 40px;
             -webkit-border-radius: 40px;
         }
@@ -255,6 +393,11 @@
     width: auto !important;
   }
   
+  &.Single{
+    span{
+        margin-left: 5px;
+    }
+  }
   span.ChatStatus{
      font-weight: normal !important;
      font-size: 0.875em;
@@ -265,6 +408,15 @@
   {
     margin-left: -5px;
   }
+}
+.WidgetHeaderSubTitle{
+  position: relative;
+  text-align: left;
+  font-size: 12px;
+  color: #555;
+  margin-top: 20px;
+  left: 10px;
+  width: 50%;
 }
 .WidgetHeaderCallStatus .NoCallText
 {
@@ -279,7 +431,6 @@
 }
 
 .WidgetSectionTitle {
-  /*height: 32px;*/
   height: 2.5em;
   text-align: center;
   font-size: 14px;
@@ -295,9 +446,11 @@
   clear: both;
 }
 
+.WidgetHeaderCallStatus {
+    min-width: 30%;
+}
 .WidgetStat, .WidgetHeaderCallStatus {
-  float: right;
-  min-width: 30%;
+  float: right;  
   border-radius: 4px;
   background-color: #fff;
   border: solid 1px #ccc;
@@ -309,15 +462,51 @@
 .WidgetStat {
   text-align: right;
   line-height: 1.75em;
-  font-size: .7em;
+  font-size: .7em; 
+  width: 300px;
   
+  &.agents{
+    width: 230px;
+  }
+  
+  .row{
+    width: 100%;
+    float: left;
+    clear: both;
+    text-align: right;
+    white-space: nowrap;
+    
+    &.first{
+        .Left{
+          width: 50%;
+        }
+        .Right{
+            width: 35%;
+            margin-right: .3em;
+        }
+    }
+    
+    &.second{
+        .Left{
+            width: 34%;
+            width: 35%\9; /* ie9 and less */
+        }
+        .Right{
+            width: 55%;
+            margin-right: .3em;
+        }
+    }
+  }
   .Left, .Right, .Labels, .Data {
 	display: inline-block;
 	vertical-align: top;
 	
 	&.Left {
-	  margin-right: 1em;
+	  margin-right: 1em;	
+	  float: left;  
 	}
+
+	&.Right{float: right;}
 	
 	&.Labels { 
 		text-align: right; 
@@ -340,7 +529,8 @@
   background: #fefefe linear-gradient(#fefefe, #eee);
   user-select: none;
   -webkit-user-select: none;
-  height: 35px;
+  height: auto;
+  max-height: 35px;
 }
 
 .WidgetTabBarButton {

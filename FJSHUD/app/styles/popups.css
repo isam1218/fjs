@@ -1,3 +1,13 @@
+.DownloadHeader {
+  width: 85%;
+}
+.DownloadsSection {
+  min-width: 42%;
+  margin-left: 30px;
+}
+.Downloadables {
+  height: 40px;
+}
 .Overlay {
   position: fixed;
   left: 0;
@@ -5,6 +15,51 @@
   width: 100%;
   height: 100%;
   z-index: 160;
+}
+.Overlay.fileShare .wrapper {
+  width: 90%;
+}
+.Overlay.fileShare .wrapper .Section .review {
+  background-color: #FFF;
+  height: 340px;
+  text-align: center;
+}
+.Overlay.fileShare .wrapper .Section .review img.CurrentDownload {
+  max-width: 100%;
+  max-height: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+.Overlay.fileShare .wrapper .Section .review iframe.CurrentDownloadDocument {
+  width: 100%;
+  height: 100%;
+}
+.Overlay.fileShare .wrapper .Section .Members .ListRow .file {
+  margin-left: 5px;
+  display: inline-block;
+  width: 70%;
+  padding-top: 10px;
+}
+.Overlay.fileShare .wrapper .Section .Members .ListRow .file > p:first-child {
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  color: #009cff;
+  font-weight: bold;
+}
+.Overlay.fileShare .wrapper .Section .Members .ListRow .file span {
+  margin-top: 0px;
+}
+.Overlay.fileShare .wrapper .Section .Members .ListRow .XButton {
+  float: right;
+  margin-top: 10px;
+  right: -30px;
+  height: 28px;
+}
+.Overlay.fileShare .wrapper .XButton.XButtonBlue {
+  font-size: 12px;
+  height: 26px;
 }
 .Overlay.notifications .overlayNotificationsSection {
   background: url() #ffffff;
@@ -16,7 +71,7 @@
 .Overlay.notifications .Conference-HeaderSubTitle {
   font-size: 11px;
   line-height: 18px;
-  width: 50%;
+  width: 60%;
   margin-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -25,12 +80,14 @@
   color: #555;
   float: left;
 }
+.Overlay.notifications .HeaderTitle {
+  left: -5px !important;
+}
 .Overlay.notifications .NotificationMessages {
   display: block;
 }
 .Overlay.notifications .Messages {
   background: url('') #ffffff !important;
-  /*padding-bottom:8px !important;*/
   padding-bottom: 0 !important;
   margin-top: 0px;
 }
@@ -157,7 +214,7 @@
 .Overlay.notifications .Foreground {
   width: 500px;
   background: url('') #ffffff !important;
-  height: 500px;
+  height: 575px;
 }
 .Overlay.notifications .Foreground .footer {
   border-top: none 0px !important;
@@ -175,14 +232,10 @@
   background-color: #fafafa;
   box-shadow: 0 0 50px #333;
   position: absolute;
-  /*top: 10%;*/
   top: 0;
   left: 20%;
   width: 836px;
   max-height: 500px;
-  /*min-width: 300px;
-	min-height: 300px;
-	padding: 1em;*/
   padding: 20px;
   display: flex;
   display: -webkit-flex;
@@ -209,12 +262,19 @@
   background: url("../img/XIconSet-24x24.png?v=1425679800685") -24px -24px;
 }
 .Overlay .Foreground .Sections {
-  /*flex: 1;
-	  -webkit-flex: 1;*/
   overflow-y: hidden;
   overflow-x: hidden;
   padding-top: 10px;
   padding-bottom: 20px;
+}
+.Overlay .Foreground .Sections.no_permission {
+  margin-top: 10px;
+}
+.Overlay .Foreground .Sections.callStatus .Section .Contact {
+  margin-bottom: 0px !important;
+}
+.Overlay .Foreground .Sections.callStatus .Section .Contact.top {
+  margin-bottom: 20px !important;
 }
 .Overlay .Foreground .Sections #attachments .XButton {
   float: right;
@@ -241,6 +301,11 @@
   font-size: .9em;
   height: inherit;
 }
+.Overlay .Foreground .Section .network {
+  background: url("../img/Network-Problems.png?v=1425679800685") no-repeat 0px 0px;
+  width: 504px;
+  height: 323px;
+}
 .Overlay .Foreground .Section .visibility {
   font-size: 12px;
 }
@@ -263,6 +328,9 @@
 .Overlay .Foreground .Section > div {
   margin-bottom: .5em;
 }
+.Overlay .Foreground .Section > div.transferSearch {
+  margin-bottom: 0px;
+}
 .Overlay .Foreground .Section > div > * {
   vertical-align: top;
 }
@@ -278,6 +346,13 @@
 .Overlay .Foreground .Section label {
   display: inline-block;
   width: 38%;
+}
+.Overlay .Foreground .Section #network_error_label {
+  width: 80%;
+  line-height: 26px;
+  margin-left: 5px;
+  display: inline-block;
+  font-weight: bold;
 }
 .Overlay .Foreground .Section textarea {
   /*width: 80%;*/
@@ -306,6 +381,9 @@
 }
 .Overlay .Foreground .Section .Contact .Buttons {
   margin: 2em 0 .5em 0;
+}
+.Overlay .Foreground .Section .Contact .Buttons input {
+  margin-right: 10px;
 }
 .Overlay .Foreground .Section .Contact .Buttons input[disabled] {
   cursor: default;
@@ -346,13 +424,17 @@
   background-position: -398px -38px;
 }
 .Overlay .Foreground .Header .headerIcon.callTransfer {
-  background-position: -365px -38px;
+  background-position: -358px -40px;
 }
 .Overlay .Foreground .Header .headerIcon.plugin {
   background-position: -320px -40px;
 }
 .Overlay .Foreground .Header .headerIcon.notifications {
   background-position: -486px -38px;
+  margin-top: -12px;
+}
+.Overlay .Foreground .Header .headerIcon.network {
+  background-position: -207px -40px;
 }
 .Overlay .Foreground .Header .HeaderTitle {
   position: relative;
@@ -372,6 +454,9 @@
   float: left;
   top: -8px;
 }
+.Overlay .Foreground .Header .HeaderTitle.no_permission {
+  font-size: 12px;
+}
 .Overlay .Foreground .Header .HeaderTitle .name {
   color: #729c00;
   font-weight: bold;
@@ -379,7 +464,6 @@
 .Overlay .Foreground .Footer {
   border-top: 1px solid #ccc;
   padding-top: 20px;
-  /*	  padding-bottom: 10px;*/
   text-align: right;
 }
 .Overlay .Foreground .Footer .Error {
@@ -393,7 +477,7 @@
 .Overlay .Bargers {
   border: 1px solid #999999;
   background-color: #999999;
-  height: 235px;
+  height: 250px;
   margin-top: 10px;
   overflow-y: auto;
 }
@@ -421,6 +505,22 @@
   height: 286px;
   overflow-y: auto;
 }
+.Overlay .Members .TransferSubHeader {
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFF;
+  background-color: #888;
+  border-top: solid 1px #999;
+  position: relative;
+}
+.Overlay .Members .TransferSelectBox {
+  position: relative;
+  margin: 10px;
+  height: 60px;
+  width: auto;
+}
 .Overlay .Members .ListRow:first-child .Delete {
   display: none !important;
 }
@@ -440,13 +540,44 @@
   right: .25em;
   cursor: pointer;
 }
+.Overlay .Members .ListRow .TransferSelectTitlePadding {
+  padding: 15px;
+  overflow: visible !important;
+}
+.Overlay .Members .ListRow .TransferText {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  height: 29px;
+  width: auto;
+  text-transform: uppercase;
+}
+.Overlay .Members .ListRow .TransferSubText {
+  font-style: italic;
+}
 .Overlay .AttachmentDownload {
   background-color: #ccc;
   border: 1px solid gray;
   width: 100%;
   height: 286px;
   overflow-y: auto;
-  height: inherit;
+  width: 280px;
+}
+.Overlay .AttachmentDownload .TransferSubHeader {
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFF;
+  background-color: #888;
+  border-top: solid 1px #999;
+  position: relative;
+}
+.Overlay .AttachmentDownload .TransferSelectBox {
+  position: relative;
+  margin: 10px;
+  height: 60px;
+  width: auto;
 }
 .Overlay .AttachmentDownload .ListRow:first-child .Delete {
   display: none !important;
@@ -467,6 +598,21 @@
   right: .25em;
   cursor: pointer;
 }
+.Overlay .AttachmentDownload .ListRow .TransferSelectTitlePadding {
+  padding: 15px;
+  overflow: visible !important;
+}
+.Overlay .AttachmentDownload .ListRow .TransferText {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  height: 29px;
+  width: auto;
+  text-transform: uppercase;
+}
+.Overlay .AttachmentDownload .ListRow .TransferSubText {
+  font-style: italic;
+}
 .Overlay .AttachmentDownload .Downloadables:hover {
   background-color: #f0f0ff;
 }
@@ -481,10 +627,6 @@
 }
 .Overlay .AttachmentDownload .Selected {
   border-left: 3px solid #292;
-}
-.CurrentDownload {
-  height: auto;
-  max-height: 100%;
 }
 .SearchContactOverlay {
   position: absolute;
@@ -506,32 +648,165 @@
 .SearchContactOverlay .Header {
   text-align: center;
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
   color: #729c00;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: relative;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-bottom: solid 1px #999;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+.SearchContactOverlay .ExpandedToolBarHelp {
+  position: absolute;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  background-color: #ffe;
+  border: solid 1px #eee;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  text-align: center;
+  top: 16.8%;
+  right: 15px;
+}
+.SearchContactOverlay .XButton.XButtonNormal.JoinByPhoneBtn {
+  width: 115px !important;
+  position: absolute;
+  left: 33% !important;
+  top: 16.8%;
+  height: 30px !important;
+  padding-top: 6px !important;
+}
+.SearchContactOverlay .XButton.XButtonNormal.JoinByPhoneBtnSecond {
+  width: 100px !important;
+  position: relative;
+  left: 33% !important;
+  top: 16.8%;
+  height: 25px !important;
+  margin-right: 70px !important;
+  margin-top: -9px !important;
 }
 .SearchContactOverlay .Inset {
   overflow-y: auto;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+<<<<<<< HEAD
+=======
+}
+.SearchContactOverlay .Inset.TransferInset {
+  overflow-x: hidden;
+}
+.SearchContactOverlay .Inset .rows {
+  border: solid 1px #eee;
+  width: 99.5%;
+}
+.SearchContactOverlay .Inset .rows .ListRow {
+  width: 100%;
+>>>>>>> fon_dev_stable
 }
 .SearchContactOverlay .Inset .ListRowContent {
   left: 36px !important;
   display: block !important;
   padding: .3em 0 0 .5em;
+  font-size: 11px;
 }
 .SearchContactOverlay .Inset .ListRowContent .Name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: bold;
+  max-width: 120px;
+  margin-top: 10px;
 }
 .SearchContactOverlay .Inset .ListRowContent .Extension {
   font-size: .9em;
   color: gray;
-  position: relative;
   float: right;
   right: 5px;
   top: -10px;
+}
+.SearchContactOverlay.favoritesSearch {
+  top: -40px;
+  height: 330px;
+  z-index: 98;
+}
+.SearchContactOverlay.favoritesSearch .Inset {
+  overflow: hidden;
+}
+.SearchContactOverlay.favoritesSearch .Inset .Header {
+  position: absolute;
+  top: 0px;
+  width: 95%;
+  left: -3px;
+}
+.SearchContactOverlay.favoritesSearch .Inset .rows {
+  margin-top: 40px;
+  height: 230px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+.SearchContactOverlay.favoritesSearch .Inset .AddTeamMember {
+  width: 75%;
+  max-width: 100%;
+}
+.SearchContactOverlay.conferenceSearch {
+  width: 500px !important;
+  top: -55px !important;
+  left: -10px;
+}
+.SearchContactOverlay.conferenceSearch .Header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 12px;
+}
+.SearchContactOverlay.conferenceSearch .TransferHeader {
+  font-size: 15px;
+  color: #0093f0;
+  font-variant: small-caps;
+}
+.SearchContactOverlay.conferenceSearch .Inset {
+  margin-top: 60px !important;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow {
+  height: 44px;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .Avatar {
+  margin: 6px 5px !important;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent {
+  padding: .3em .5em 0 .5em !important;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowStatus {
+  margin-top: 6px !important;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle {
+  margin-top: -5px;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle.AddConferenceMember {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  max-width: 85%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .ListRowStatusIcon {
+  margin-left: 0px;
+}
+.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .hudStatus {
+  margin-top: -2px;
+}
+.SearchContactOverlay.transferSearch {
+  width: 415px !important;
+  top: -45px !important;
+  height: 400px;
 }
 #ContextMenu {
   display: none;
@@ -552,6 +827,13 @@
 }
 #ContextMenu.NoWrap .BottomRow {
   white-space: nowrap;
+}
+#ContextMenu.Bump {
+  margin-top: -6em;
+}
+#ContextMenu.Bump .Arrow {
+  top: auto;
+  bottom: 1em;
 }
 #ContextMenu .Arrow {
   position: absolute;
@@ -586,6 +868,7 @@
 #ContextMenu .TopRow div.Contact .info {
   font-size: 12px;
   font-weight: bold;
+  margin-left: 5px;
 }
 #ContextMenu .TopRow div.Contact .Numbers span {
   font-weight: bold;
@@ -593,6 +876,12 @@
 #ContextMenu .TopRow .Numbers div {
   min-width: 3em;
   text-align: right;
+}
+#ContextMenu .TopRow strong {
+  font-weight: bold;
+}
+#ContextMenu .TopRow .ListRowStatusIcon {
+  margin-left: -5px;
 }
 #ContextMenu .BottomRow {
   border-top: 1px solid #ccc;
@@ -648,6 +937,17 @@
   background-color: #5A9801;
   color: white;
 }
+#ContextMenu .WidgetHeaderCallStatus {
+  float: none;
+  display: inline-block !important;
+  width: 100px;
+  min-width: 185px;
+  height: 50px;
+}
+#ContextMenu .WidgetHeaderCallStatus .Avatar {
+  height: 40px;
+  width: 40px;
+}
 .MenuWindow {
   position: absolute;
   z-index: 1000;
@@ -656,7 +956,10 @@
   max-width: 500px;
   background: #ffffff url("../img/XTile-Widget.png");
   border: solid 1px #aaa;
-  box-shadow: white 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: #ffffff 0 -1px 15px inset, 3px 3px 12px rgba(0, 0, 0, 0.3);
+}
+.MenuWindow.BargeDropDown {
+  width: 231px !important;
 }
 .MenuWindowTitle {
   position: relative;
@@ -712,6 +1015,12 @@
   text-overflow: ellipsis;
   display: inline-block;
   vertical-align: top;
+}
+.MenuItemText.BargeMenuItemText {
+  margin-left: 24px;
+}
+.MenuItemText.BargeMenuItemText.BargeMenuItemTextAdjuster {
+  margin-left: -3px !important;
 }
 .MenuItem .SelectedIcon {
   display: inline-block;
@@ -779,4 +1088,18 @@
 .AutoDelete input {
   position: relative;
   top: 3px;
+}
+#dialogheadicon {
+  left: 0px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("img/XApp-Icons.png") no-repeat -320px -40px;
+  font-size: 12px;
+}
+#header_label {
+  display: inline-block;
+  position: absolute;
+  left: 10%;
+  top: 4%;
 }

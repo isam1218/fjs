@@ -1,22 +1,18 @@
-
-<div class="ToolBar chatTop" ng-if="(conversationType == 'group' && enableChat) || (conversationType == 'queue' && enableChat) || (conversationType == 'conference' && enableChat) || (conversationType == 'conversation' && enableChat)">
+<div class="ToolBar chatTop">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="chat.query" class="Search" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" class="Search chat" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
 			<input type="button" value="&#x25B2;" ng-click="searchChat(-1)" />
 			<input type="button" value="&#x25BC;" ng-click="searchChat(1)" />
 		</div>
     </div>
-    <button class="XButton XButtonNormal" ng-if="showFileShare" ng-disabled="!enableFileShare" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button>
+    <button class="XButton XButtonNormal group" ng-if="::!showAlerts" ng-disabled="!enableChat" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button>
+
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
 
-<div class="ListViewContent" id="ListViewContent">
-   
-    <div  class="attachmentDrag" > 
-
-    </div>
+<div class="ListViewContent" id="ListViewContent">       
     <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" >
         <div class="ListMessageLeft">
             <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
@@ -30,7 +26,7 @@
             
             </div>
             <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag">
-                <div class="ListMessageText" ng-bind-html="message.message | links | highlight:chat.query"></div>
+                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
                 <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment.url,attachment.fileName)}}" />               
                     <p> {{ ::attachment.fileName }}</p>
@@ -40,16 +36,25 @@
     </div>
 </div>
 
-<div class="fj-vbox-cell fj-expanded-true" ng-if="conversationType == 'conference'  && !joined">
-    <div class="TabWarning" >
-        <div class="TabWarningHeader">{{::verbage.join_to_chat}}</div>
-        <div class="TabWarningMessage">{{::verbage.only_see_messages_during_chat}}</div>
-        <div class="XButton XButtonGreen TabWarningButton" ng-click="joinConference()"><span>{{::verbage.join}}</span></div>
-    </div>
-</div>
+<div class="ChatInputBox">
+	<div ng-if="!enableChat">
+		<div ng-if="conversationType == 'conference'">
+			<div class="TabWarning">
+				<div class="TabWarningHeader">{{::verbage.join_to_chat}}</div>
+				<div class="TabWarningMessage">{{::verbage.only_see_messages_during_chat}}</div>
+				<div class="XButton XButtonGreen TabWarningButton" ng-click="joinConference()"><span>{{::verbage.join}}</span></div>
+			</div>
+		</div>
+		
+		<div ng-if="conversationType == 'conversation'">
+			<div class="TabWarning">
+				<div class="TabWarningHeader">You don't have permission to use chat.</div>
+				<div class="TabWarningMessage">You can only see messages.</div>
+			</div>
+		</div>
+	</div>
 
-<div class="ChatInputBox" >	
-	<div class="ChatAlertOptions" ng-if="conversationType === 'queue' && enableAlertBroadcast">
+	<div class="ChatAlertOptions" ng-if="::showAlerts">
 		<div class="Left">
             <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
 			<input type="radio" ng-model="chat.status" name="alertStatus" value="1" /> {{::verbage.logged_in}}
@@ -60,8 +65,8 @@
 		</div>
 	</div>
 	
-	<div class="ChatInputFields" ng-if="enableTextInput">
-		<textarea ng-model="message" class="text ChatInputBoxInput" ng-keypress="chatKeypress($event)" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}"></textarea>
+	<div class="ChatInputFields" ng-if="enableChat">
+		<textarea id="ChatMessageText" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
         <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()"><span>{{::verbage.send}}</span></div>
 	</div>
 </div>

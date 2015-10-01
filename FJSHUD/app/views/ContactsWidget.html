@@ -19,19 +19,19 @@
 	</div>
 </div>
 
-<div class="ContactList" ng-style="{'height': contentHeight}">
-	<div class="LeftBarTabContentList" ng-style="{'height': contentHeight}">
-		<a href="#contact/{{::contact.xpid}}" data-ng-repeat="contact in contacts | filter: customFilter() | orderBy: sortField: sortReverse track by contact.xpid" ng-show="searchFilter(contact)" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">	
+<div class="ContactList">
+	<div class="LeftBarTabContentList">
+		<a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
 					<div class="name" ng-if="::contact.primaryExtension">
-						<strong ng-bind-html="::contact.displayName">{{ ::contact.displayName }}</strong>
+						<strong ng-bind-html="::contact.displayName"></strong>
 						<span>#{{ ::contact.primaryExtension }}</span>
 					</div>
 					<div class="name" ng-if="::!contact.primaryExtension" >
-						<strong ng-bind-html="contact.displayName">{{ ::contact.displayName }}</strong>
+						<strong ng-bind-html="contact.displayName"></strong>
 					</div>
 				</div>	
 				
@@ -39,7 +39,7 @@
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                     <br/>                   
-                    <div class="ListRowStatusText">{{ (contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + on call' : '') }}</div>
+                    <div class="ListRowStatusText">{{ (contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '') }}</div>
                 </div>	
                 
                 <div class="CallStatus" ng-if="contact.call">

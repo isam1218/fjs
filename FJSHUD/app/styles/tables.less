@@ -6,8 +6,7 @@
 }
 
 .ListLineContent.Header {
-  background-color: #fff;
-  /*width: auto;*/
+  background-color: #fff;  
   position: relative;
   border-bottom: solid 1px #999;
   min-height: 25px;
@@ -88,7 +87,7 @@
   cursor: pointer;
   overflow: hidden;
   border-bottom: solid 1px #dee1e5;
-  background-color: #fff;
+  background-color: #f9f9f9;
   width: 100%;
   display: block;
   display: flex;
@@ -96,7 +95,8 @@
   flex-direction: row;
   -webkit-flex-direction: row;
   text-decoration: none;
-  height: 40px;
+  min-height: 40px;
+  height: auto;
   
   .vmcallbtn{
         visibility:hidden;
@@ -105,9 +105,24 @@
         position:absolute;
   }
   
+  .vmtime{
+        visibility:visible;
+   }
   .ListRowStatus{
     visibility:visible;
   }
+  
+  .action-buttons {
+    position: absolute;
+    right: 0px;
+    top: 14px;
+     .XButton{
+        height: 28px;
+        width: 80px;
+        span{ float: none;}
+     }
+  }
+  
   &:not(.ListRow-Conference):not(.ListRow-Contact):hover{ 
    .Remove {
       display: block;
@@ -139,6 +154,10 @@
        }
     }
     
+    .vmtime{
+        visibility:hidden;
+    }
+    
     .ListRowStatus:not(.Members){
         visibility:hidden;
       }
@@ -156,24 +175,21 @@
   }
   
   .Avatar {
-	margin: .25em;
+	/*margin: .25em;*/
+	margin: 5px;
 	width: 30px;
 	height: 30px;
 	
 	img{
-	  width: 28px;
-	  height: 28px;
-	  margin: 1px;
-	  
-	  &.GroupAvatarItemImg{
-          width: 100%;
-          height: 100%;         
-      }
+	  width: 26px;
+	  height: 26px;
+	  margin: 1px;	
+	  margin-left: -1px;  	 
 	}
 	
 	&.CallAvatar_Office{
 	  img{
-	    margin: 0px;
+	    margin: -1px;
 	  }
 	}
   }
@@ -181,9 +197,16 @@
   .ListRowContent {
     flex: 1;
 	-webkit-flex: 1;
+	-ms-flex:  1;
     border-left: solid 1px #DEE1E5;
 	overflow: hidden;
-	max-height: 40px;
+	min-height: 40px;
+	height: auto;
+  }
+
+  .GroupListRowContent {
+    display: -ms-flexbox;
+    display: flex;
   }
   
   .ListRowTitle {
@@ -191,11 +214,14 @@
     padding: .5em;    
     font-size: 12px;
     text-decoration: none;
-    color: #555;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #888;
     white-space: nowrap;
-	max-width: 55%;
+	max-width: 50%;
 	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
+	-ms-flex: 4;
 	margin-top: -3px;
     
     .status{      
@@ -218,11 +244,19 @@
       }
     }
     
-    .name {
-      strong {
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	  }
+    .ListRowStatusIcon{
+        margin-left: -6px;
+    }
+    strong {           
+        font-weight: bold;
+        font-size: 13px;
+        color: #222;
+    }
+    .name {      
+      font-size: 13px;
+      color: #222; 
+      text-overflow:ellipsis;
+      overflow:hidden;         
 	  
 	  & > * {
 	    display: block;
@@ -232,41 +266,56 @@
 	    color: gray;
 	    font-size: 10px;
 	  }
+    .ConferenceListRowStatusText{
+      font-size: 12px !important;
     }
+    }
+  }
+  .GroupListRowTitle{
+    max-width: 100%;
   }
   
   .ListRowStatus {
       float: right;
       color: #888;
-      font-size: .8em;
+      font-size: 11px;
       text-align: center;
       line-height: 1em;
       height: 1em;
       position: relative;
-      top: 10px;
+      top: 5px;
       right: 5px;
       display: inline-block;
+      text-align: right;
       
       .ListRowStatusIcon, .ListRowStatusText {
           display: inline-block;
           position: relative;
           top: -10px;
+          font-size: 10px;   
+          margin-left: -4px;      
+       }
+
+       .ConferenceStatusIcon {
+          display: inline-block;
+          position: relative;
+          top: -10px;
           font-size: 10px;
+          margin-left: -1px !important;
        }
        
        .ListRowStatusText {
            top: -15px;
            text-overflow: ellipsis;
-           max-width: 8em;
-           /*min-width: 2em;*/
+           max-width: 8em;           
            white-space: nowrap;
-           overflow: hidden;           
+           overflow: hidden;   
+           margin-right: 5px;        
        }
   }
   
   .CallStatus {
-    float: right;
-	/*margin-right: .5em;*/
+    float: right;	
 	margin: 2px .5em 2px 0;
 	border: 1px solid #ccc;
 	border-radius: 3px;
@@ -278,10 +327,46 @@
 	  border: 1px solid #ccc;
 	  border-radius: 3px;
 	  width: 150px;
+	  display: flex;
+	  display: -webkit-flex;
+	  flex-direction: row;
+	  -webkit-flex-direction: row;
+	  padding-top: 3px;
+	  
+	  .CallAvatar {
+		width: 36px;
+		height: 36px;
+		
+		&.CallAvatar_Office {
+		  background-position: -92px -95px;
+		}
+		
+		img {
+		  height: 24px;
+		  width: 24px;
+		  margin: 3px;
+		}
+	  }
 	  
 	  .Details {
-	    display: inline-block;
-		font-size: 12px;
+	    font-size: 12px;
+		color: #333;
+		
+		.Name {
+	      text-overflow: ellipsis;
+		  overflow: hidden;
+		  width: 70px;
+		  white-space: nowrap;
+		  font-weight: bold;
+		}
+	  }
+	  
+	  .Time {
+	    text-align: right;
+		flex: 1;
+		font-size: 11px;
+		color: gray;
+		padding-right: 2px;
 	  }
 	}
 	
@@ -292,17 +377,36 @@
 } 
 
 .Widget, .LeftBar{
- .ListRow, .vmsection{
-    background-color: #fff;
+  .vmsection{
+    background-color: #f9f9f9;
     
     &:nth-child(odd) {
-      background-color: #f9f9f9 !important;
+      background-color: #eee !important;
     }
     &:hover {
-          background-color: #eee;
+          background-color: #ddd;
     }
  }
-}    
+} 
+
+.ListRow{
+      background-color: #fff;
+     
+      &:nth-child(odd) {
+          background-color: #f9f9f9 !important;
+      }
+      &:hover {
+          background-color: #f0f0ff !important;
+      }
+}
+
+.Groups{
+    .ListRow{
+        &:nth-child(odd) {
+          background-color: #fff !important;
+        }
+    }
+}   
 
 .Groups .ListRow > div {
   flex: 1;
@@ -318,7 +422,7 @@
 }
 
 .ListRowOdd {
-  background-color: #f9f9f9;
+  background-color: #eee;
 }
 .ListRowLast{
   border-bottom: 1px solid #ccc !important;
@@ -423,8 +527,7 @@
 .ListSectionHeaderTitle {
   color: #0093f0;
   font-size: 11px;
-  font-weight: bold;
-  //height: 29px;
+  font-weight: bold; 
   line-height: 18px;
   margin-top:10px;
   width: auto;
@@ -436,12 +539,19 @@
 }
 
 .ListPage {
-  border:1px solid #999;
+  //border:1px solid #999;
   border-radius:6px;
   padding-top:7px;
   padding-bottom:20px;
   padding-left:10px;
-  font-size: .8em;
+  //font-size: .8em;
+  font-size: 12px;
+  border: solid 1px #efefef;  
+  background-color: #fff; 
+  -webkit-border-radius: 6px;
+  box-shadow: 0px 0px 2px #999 inset;
+  -webkit-box-shadow: 0px 0px 2px #999 inset;
+  min-height: 60px;
 }
 
 .ListSection {
@@ -464,8 +574,7 @@
 .ListSectionHeaderTitle {
   color: #0093f0;
   font-size: 11px;
-  font-weight: bold;
-  //height: 29px;
+  font-weight: bold; 
   line-height: 18px;
   margin-top:10px;
   width: auto;
@@ -476,12 +585,10 @@
   white-space: nowrap;
 }
 
-.InlineList {
-  /*border : solid 1px #eee;*/
+.InlineList {  
   border-radius : 3px;
   -webkit-border-radius : 3px;
   position : relative;
-  /*margin: 0 10px 10px;*/
   .ListRow{width: 96%; margin: 0 auto;}
 }
 
@@ -522,6 +629,7 @@
     margin-left: .5em;
     flex: 1;
 	-webkit-flex: 1;
+	overflow: hidden;
   }
   
   .ChatMessageItem {
@@ -549,4 +657,58 @@
   	  color: gray;
     }
   }
+}
+.vmsection.group_members{
+  .vmalternate{
+    display:inline-block;
+    float:right;
+    position:relative;
+    margin-top:3px;
+    margin-right:5px;
+    height: 40px;
+    -ms-flex:   1;
+   
+    .vmcallbtn{
+        visibility:hidden;
+        right:0;
+        top:0;
+        position:absolute;
+    }
+    .extension{
+        visibility:visible;
+        position:relative;
+        font-size:11px;
+        font-weight: bold;
+    }
+   }    
+   &:hover{
+    .vmalternate{
+      .vmcallbtn {                      
+         background: #3c9c00 linear-gradient(#3c9c00, #328400);           
+         color: #e8e8e8;
+          border: 1px solid rgba(155,155,155,0.3);
+          text-shadow: none;
+          visibility:visible;      
+          height: 26px;
+           width: 40px;
+           text-align: center;
+           border-radius: 2px;
+           -webkit-border-radius: 2px;
+           text-decoration: none;
+           cursor: pointer;
+           font-size: 11px;
+           font-weight: bold;
+           &:hover{
+             border: 1px solid rgba(0,0,0,0.3);
+             color: #fff;
+             text-shadow: 0 -1px 0 #000;
+             box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+           }
+      }
+      .extension{
+        visibility:hidden;
+      }
+
+     }
+    }           
 }

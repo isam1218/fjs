@@ -40,38 +40,32 @@
 		
         <div class="WidgetTabContent">
             <div class="ToolBar">
-                <select class="SelectBox XButton" ng-model="selectedConf" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortConf(selectedConf)"></select>
-
+             <div class="SelectBox selectWrapper conf">
+                <select ng-model="selectedConf" ng-options="sort_option.display_name for sort_option in sort_options track by sort_option.display_name" ng-change="sortConf(selectedConf)"></select>
+             </div>
                 <input type="button" value="{{::verbage.find_free_room}}" class="XButtonWide XButton XButtonNormal disabled-{{isFindMyFreeAndJoinDisabled}}" data-ng-click="findRoom()" />
-                <div class="SearchInputBox">
-                    <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput" data-ng-model="query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
-                    </div>
-                    <div class="SearchInputBoxStateButton">
-                        <div class="SearchInputBoxStateButtonIcon"></div>
-                    </div>
-                </div>
+                <input class="SearchBox" data-ng-model="query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
             </div>
            
             <div class="ListView WithToolBar">
                 <div class="InlineList">
-                    <div class="ListViewTopNote" data-ng-hide="hideNote">
-                        <span ng-if="tab == 'all'">{{::verbage.conf_summary_all_rooms}}</span>
-						<span ng-if="tab == 'my'">{{::verbage.conf_summary_my_rooms}}</span>
+                    <div class="ListViewTopNote" ng-if="!hideNote" ng-switch="tab">
+                        <span ng-switch-when="all">{{::verbage.conf_summary_all_rooms}}</span>
+						<span ng-switch-when="my">{{::verbage.conf_summary_my_rooms}}</span>
 						
-                        <div class="ListViewTopNoteClose" data-ng-click="hideNote=true"></div>
+                        <div class="ListViewTopNoteClose" data-ng-click="$parent.hideNote=true"></div>
                     </div>
-                    <a href="#/conference/{{::conference.xpid}}/currentcall" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: [selectedConf.type, 'location'] track by conference.xpid" droppable="Contact,Call">
+                    <a href="#/conference/{{::conference.xpid}}" class="ListRow ListRow-Conference ng-class:{'last': $last}" data-ng-repeat="conference in conferences | filter: customFilter() | orderBy: [selectedConf.type, 'location'] track by conference.xpid" droppable="Contact,Call">
                         <avatar profile="conference"></avatar>
-                        <div class="ListRowContent" dockable="conference">
+                        <div class="ListRowContent" dockable="conference" ng-switch="conference.members.length">
                             <div class="ListRowTitle">
                                 <div class="name"> {{::verbage.room}} # {{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
 								
-                                <div data-ng-if="conference.members.length == 0">
+                                <div ng-switch-when="0">
                                     <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
 									{{::verbage.free_room}}
                                 </div>                            
-                                <div data-ng-if="conference.members.length > 0">
+                                <div ng-switch-default>
                                     <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
 									{{conference.members.length}} {{::verbage.members_on_call}}
 								</div> 
@@ -80,12 +74,12 @@
 								at {{::conference.location}}
 							</div>
 						
-                        <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
-                            <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
-                                <avatar profile="member" type="4" context="conference:conference"></avatar>
-                                <div class="first-name">{{::member.displayName}}</div>
-                            </div>
-                        </div>
+							<div ng-switch-default class="ListRow-Conference-Members">
+								<div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
+									<avatar profile="member" type="4" context="conference:conference"></avatar>
+									<div class="first-name">{{::member.displayName}}</div>
+								</div>
+							</div>
                         </div>
                     </a>
                 </div>

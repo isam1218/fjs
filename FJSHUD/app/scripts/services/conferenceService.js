@@ -1,4 +1,5 @@
-hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService', function($q, $rootScope, $location, contactService, httpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService','NtpService', 
+function($q, $rootScope, $location, contactService, httpService,ntpService) {
 	var service = this;
 	var deferred = $q.defer();
 	
@@ -74,8 +75,10 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 							cLen--;
 						}
 						// regular update
-						else
+						else {
 							angular.extend(conferences[c], data[i]);
+							conferences[c].permissions = null;
+						}
 						
 						match = true;
 						break;
@@ -83,7 +86,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 				}
 				
 				// add new conference
-				if (!match) {
+				if (!match && data[i].xef001type != 'delete') {
 					conferences.push(data[i]);
 					
 					conferences[conferences.length-1].members = [];
@@ -100,17 +103,16 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 		}
 		
 		// retrieve child data
-		httpService.getFeed('conferencemembers');
+		/*httpService.getFeed('conferencemembers');
 		httpService.getFeed('server');
 		httpService.getFeed('conferencestatus');
-		httpService.getFeed('conferencepermissions');
+		httpService.getFeed('conferencepermissions');*/
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
 		totals.occupied = 0;
 		totals.talking = 0;
 		totals.all = 0;
-		
 		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
 			var conference = conferences[c];
 			
@@ -120,8 +122,6 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 					for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
 						if (conference.members[m].xpid == data[i].xpid) {
 							conference.members.splice(m, 1);
-							data.splice(i, 1);
-							iLen--;
 							
 							break;
 						}
@@ -152,7 +152,7 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 								
 						// redirect self
 						if ($rootScope.myPid == data[i].contactId)
-							$location.path('/conference/' + data[i].fdpConferenceId);
+							$location.path('/conference/' + data[i].fdpConferenceId + '/currentcall');
 					}
 				}
 			}
@@ -180,6 +180,11 @@ hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactSe
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if(data[i].xpid == conferences[c].xpid){
 					conferences[c].status = data[i];
+					if(conferences[c].status.recorded){
+						conferences[c].status.recordedStartTime = ntpService.calibrateTime(new Date().getTime());
+					}else{
+						conferences[c].status.recordedStartTime = 0;
+					}
 					break;
 				}
 			}

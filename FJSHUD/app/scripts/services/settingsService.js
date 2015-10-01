@@ -1,4 +1,6 @@
-hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService','ContactService', function($q, $timeout, $rootScope, httpService,contactService) {	
+hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactService', function($q, $rootScope, httpService, contactService) {	
+	var service = this;
+	
 	var deferSettings = $q.defer();
 	var deferPermissions = $q.defer();
 	var deferMe = $q.defer();
@@ -20,49 +22,53 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 		$rootScope.verbage = fjs.i18n.us;
 	}
 	
-	this.getSettings = function() {
+	service.getSettings = function() {
 		// waits until data is present before sending back
 		return deferSettings.promise;
 	};
 
-	this.getSetting = function(setting_key){
+	service.getSetting = function(setting_key){
 		return settings[setting_key];
 	};
+
+	service.setSetting = function(key,value){
+		settings[key] = value;
+	};
 	
-	this.getPermissions = function() {
+	service.getPermissions = function() {
 		// waits until data is present before sending back
 		return deferPermissions.promise;
 	};
 	
-	this.getPermission = function(key) {
+	service.getPermission = function(key) {
 		return permissions[key];
 	};
 
-	this.getActiveWebLauncher = function(){
+	service.getActiveWebLauncher = function(){
 		return weblaunchers.filter(function(item){
 			return item.id == settings['hudmw_launcher_config_id'];
 		})[0];
 	};
 	
-	this.reset_app_menu = function(){
-		data = {};
+	service.reset_app_menu = function(){
+		var data = {};
 		$rootScope.$broadcast('reset_app_menu', data);
 	};
 
-	this.enable_box = function(){
+	service.enable_box = function(){
 		// console.error('in setting service');
 		$rootScope.$broadcast('enable_box', {});
 	};
 
-	this.getMe = function(){
+	service.getMe = function(){
 		return deferMe.promise;	
 	};
 	
-	this.getWl = function(){
+	service.getWl = function(){
 		return deferWl.promise;
 	};
 
-	this.formatWebString = function(url,call){
+	service.formatWebString = function(url,call){
 		var val = $rootScope.meModel;
 		var me = contactService.getContact($rootScope.meModel.my_pid);
 		//var callContact = contactService.getContact(call.contactId);
@@ -82,7 +88,7 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 		return url;
 	};
 	
-	var isEnabled = function(permission, bit) {
+	service.isEnabled = function(permission, bit) {
 		return ((permission & (1 << bit)) == 0);
 	};
 
@@ -96,18 +102,20 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 			
 			if(data[i].propertyKey == 'personal_permissions'){			
 				// licenses from MyPermissions.java
-				permissions.showCallCenter = isEnabled(data[i].propertyValue, 10);
+				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
 				// Call Center license determines whether or not a user can record
-				permissions.showVideoCollab = true;//isEnabled(data[i].propertyValue, 1);
-				permissions.showIntellinote = isEnabled(data[i].propertyValue, 15);
-				permissions.showZipwhip = isEnabled(data[i].propertyValue, 16);
-				permissions.showZipwhip_Power = isEnabled(data[i].propertyValue, 17);
+
+				permissions.showIntellinote = service.isEnabled(data[i].propertyValue, 15);
+				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
+				permissions.showZipwhip_Power = service.isEnabled(data[i].propertyValue, 17);
+				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
+				permissions.showIntellinote = service.isEnabled(data[i].propertyValue, 15);
+				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
 
 				// group permissions from MyPermissions.java
-				permissions.enableAgentLogin = isEnabled(data[i].propertyValue, 7);
-				permissions.recordingEnabled = isEnabled(data[i].propertyValue, 14);
-				// permissions.deleteMyRecordingEnabled = isEnabled(data[i].propertyValue, 15);
-				// permissions.deleteOtherRecordingEnabled = isEnabled(data[i].propertyValue, 16);
+				permissions.recordingEnabled = service.isEnabled(data[i].propertyValue, 14);
+				permissions.deleteMyRecordingEnabled = service.isEnabled(data[i].propertyValue, 15);
+				permissions.deleteOtherRecordingEnabled = service.isEnabled(data[i].propertyValue, 16);
 
 				// // QUEUE PERMISSIONS... from QueuePermissions.java
 				// permissions.isEditQueueDetailsEnabled = isEnabled(data[i].propertyValue, 2);
@@ -144,13 +152,12 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
     });
 	
 	$rootScope.$on('locations_synced', function(event,data){
-        for(var i = 0; i < data.length; i++){
-			locations[data[i].xpid] = data[i];
-			if(data[i].xpid == $rootScope.meModel.current_location){
-				$rootScope.meModel.location = data[i];
-				break;	
-			}
-        }
+	    for(var i = 0, iLen = data.length; i < iLen; i++){
+				locations[data[i].xpid] = data[i];
+				if(data[i].xpid == $rootScope.meModel.current_location){
+					$rootScope.meModel.location = data[i];
+				}
+	    }
 
         if($rootScope.meModel){
         	$rootScope.meModel.location = locations[$rootScope.meModel.current_location];
@@ -167,9 +174,93 @@ hudweb.service('SettingsService', ['$q', '$timeout', '$rootScope', 'HttpService'
 			for (var i = 0, len = data.length; i < len; i++)
 				settings[data[i].key] = data[i].value;
 			
-			deferSettings.resolve(settings);
+			if(settings.hudmw_auto_away_timeout == undefined){
+				settings.hudmw_auto_away_timeout = 30000;            	
+            }
+            if(settings.hudmw_searchautocleardelay == undefined){
+            	settings.hudmw_searchautocleardelay = 30;
+            }
+
+            if(settings.avatar_hover_delay == undefined){
+            	settings.avatar_hover_delay = 1;
+            }
+
+            if(settings.alert_show == undefined){
+            	settings.alert_show = "true";
+            }
+
+            if(settings.alert_vm_show_new == undefined){
+            	settings.alert_vm_show_new = "true";
+            }
+
+            if(settings.alert_call_incoming == undefined){
+            	settings.alert_call_incoming = "true";
+            }
+
+            if(settings['alert_call_outgoing'] == undefined){
+            	settings['alert_call_outgoing'] = "true";
+            }
+
+            if(settings['hudmw_show_alerts_always'] == undefined){
+            	settings['hudmw_show_alerts_always'] = "false";
+            }
+
+            if(settings['hudmw_show_alerts_in_busy_mode'] == undefined){
+            	settings['hudmw_show_alerts_in_busy_mode'] = "false";
+            }
+             if(settings['alert_call_display_for'] == undefined){
+            	settings['alert_call_display_for'] = "all";
+            }
+           if(settings['alert_call_duration'] == undefined){
+            	settings['alert_call_duration'] = "entire";
+            }
+
+            if(settings['hudmw_searchautocleardelay'] == undefined){
+            	settings['hudmw_searchautoclear'] = "entire";
+            }
+          	if(settings['hudmw_box_enabled'] == undefined){
+            	settings['hudmw_box_enabled'] = "true";
+            }
+
+            if(settings['hudmw_chat_sounds'] == undefined){
+            	settings['hudmw_chat_sounds'] = "true";
+            }
+            if(settings['hudmw_chat_sound_received'] == undefined){
+            	settings['hudmw_chat_sound_received'] = "true";
+            }
+             if(settings['hudmw_chat_sound_sent'] == undefined){
+            	settings['hudmw_chat_sound_sent'] = "true";
+            }
+
+             if(settings['busy_ring_back'] == undefined){
+            	settings['busy_ring_back'] = "false";
+            }
+			
+			if(settings['use_column_layout'] == undefined){
+            	settings['use_column_layout'] = "false";
+            }
+			if(settings['recent_call_history_length'] == undefined){
+            	settings['recent_call_history_length'] = 50;
+            }
+
+            if(settings['queueWaitingThreshold'] == undefined){
+            	settings['queueWaitingThreshold'] = 0;
+            }
+          
+          	if(settings['queueAvgWaitThreshold'] == undefined){
+            	settings['queueAvgWaitThreshold'] = 3;
+            }
+          if(settings['queueAvgTalkThresholdThreshold'] == undefined){
+            	settings['queueAvgTalkThresholdThreshold'] = 20;
+            }
+          if(settings['queueAbandonThreshold'] == undefined){
+            	settings['queueAbandonThreshold'] = 10;
+            }
+           
+           deferSettings.resolve(settings);
 			
 			$rootScope.$evalAsync($rootScope.$broadcast('settings_updated', settings));
 		}
 	});
+
 }]);

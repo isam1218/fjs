@@ -1,4 +1,4 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, $parse, $location, $rootScope) {
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, settingsService ,$parse, $location, $rootScope) {
 	var timeout;
 	
 	// used as droppable="Type,Type,Type"
@@ -13,11 +13,13 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 				tolerance: 'pointer',
 				greedy: true,
 				over: function(event, ui) {
+					var isolatedScope = angular.element(ui.draggable).data('_scope');
+					
 					// find original draggable object
 					if (ui.draggable[0].attributes.dockable)
-						obj = $parse(ui.draggable[0].attributes.dockable.nodeValue)(angular.element(ui.draggable).scope());
-					else if (angular.element(ui.draggable).scope().gadget.data)
-						obj = angular.element(ui.draggable).scope().gadget.data;
+						obj = $parse(ui.draggable[0].attributes.dockable.nodeValue)(isolatedScope);
+					else if (isolatedScope.gadget.data)
+						obj = isolatedScope.gadget.data;
 					else
 						obj = null;
 					
@@ -34,7 +36,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						type = 'Call';
 					
 					// check for allowed cases
-					if (drops.indexOf(type) != -1) {
+					if (drops.indexOf(type) != -1 && (!$(this).hasClass('InnerDock') || obj.xpid != $rootScope.myPid)) {
 						$(this).addClass('DroppableArea');
 						$(ui.helper).removeClass('not-allowed');
 					}
@@ -46,7 +48,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 						$(ui.helper).addClass('not-allowed');
 				},
 				drop: function(event, ui) {
-					$(this).removeClass('DroppableArea');
+					$('.DroppableArea').removeClass('DroppableArea');
 					
 					// re-check basic criteria
 					if (timeout || drops.indexOf(type) == -1)
@@ -54,6 +56,10 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					
 					// dock new item
 					if ($(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
+						// can't dock yourself
+						if (obj.xpid == $rootScope.myPid)
+							return;
+						
 						var rect = document.getElementById('InnerDock').getBoundingClientRect();
 					
 						var data = {
@@ -81,7 +87,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							
 							// find first empty room on same server
 							for (var i = 0; i < len; i++) {
-								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && (!conferences[i].members || conferences[i].members.length == 0)) {
+								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && conferences[i].status && (!conferences[i].members || conferences[i].members.length == 0)) {
 									found = conferences[i].xpid;
 									break;
 								}
@@ -91,7 +97,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							if (!found) {
 								for (var i = 0; i < len; i++) {
 									// find first room on same server
-									if (!conferences[i].members || conferences[i].members.length == 0) {
+									if (conferences[i].status && !conferences[i].members || conferences[i].members.length == 0) {
 										found = conferences[i].xpid;
 										break;
 									}
@@ -105,19 +111,23 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 									conferenceId: found
 								});
 								
-								// connect third party
-								httpService.sendAction('conferences', 'joinContact', {
-									conferenceId: found,
-									contactId: obj.xpid
-								});
+								// add a brief timeout before adding the second user to the conference
+								timeout = setTimeout(function() {
+									httpService.sendAction('conferences', 'joinContact', {
+										conferenceId: found,
+										contactId: obj.xpid
+									});
+
+								}, 2000);
+								
 								
 								$location.path('/conference/' + found + '/currentcall');
 							}
 						});
 					}
 					// join conference normally
-					else if (scope.conference || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
-						var xpid = scope.conference ? scope.conference.xpid : scope.gadget.data.xpid;
+					else if (scope.conference || (scope.item && scope.item.recent_type == 'conference') || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
+						var xpid = scope.conference ? scope.conference.xpid : scope.gadget ? scope.gadget.data.xpid : scope.item.xpid;
 						
 						if (type == 'Contact') {
 							httpService.sendAction('conferences', 'joinContact', {
@@ -142,6 +152,9 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 					}
 					// transfer call
 					else {
+						// check if I have isXFerFromIsEnabled personal permission...
+						if (!settingsService.getPermission('canTransferFrom'))
+							return;
 						// contact id comes from multiple places
 						var xpid;
 						
@@ -151,6 +164,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', '$parse', '$l
 							xpid = scope.member.contactId;
 						else if (scope.gadget)
 							xpid = scope.gadget.data.xpid;
+						else if (scope.item)
+							xpid = scope.item.xpid;
 						
 						httpService.sendAction('calls', 'transferToContact', {
 							fromContactId: $rootScope.myPid,

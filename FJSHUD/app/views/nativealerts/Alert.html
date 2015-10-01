@@ -3,15 +3,9 @@
 	<head> 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<!--[if IE]>
-			<link rel="stylesheet" type="text/css" href="/repository/fj.ui/1.3/style_ie.css?v=1425062658987">
-			<link rel="stylesheet" type="text/css" href="/repository/fj.hud/1.3/style_ie.css?v=1425062658987">
-		<![endif]-->
-		<!--[if !IE]> -->
-	
-			<!--<link rel="stylesheet" type="text/css" href="https://dev4.fon9.com/repository/fj.hud/1.3/style_wk.css?v=1425062658987">-->
-		<!-- <![endif]-->
-	
+		
+		<link rel="stylesheet" href="../../styles/main.css" />
+		
 		<style> 
 			body{
 				padding: 0px;
@@ -20,8 +14,6 @@
 				background-color: #ccc;
 				font-size:.9em;
 			}
-
-
 		</style>
 	
 		<script> 
@@ -46,13 +38,13 @@
 				};
 
 				function addAlert(html)  {
-				    //fj.alert.App.destroyScrolls();
-				    //fj.alert.Duration.clear();
-
-
-
-
 				   document.body.innerHTML = html;
+				   
+					// scroll to bottom
+					setTimeout(function() {
+						document.getElementById('scroller').scrollTop = document.getElementById('scroller').scrollHeight;
+					}, 100);
+					
 				   /*document.getElementById("body").innerHTML = html;
 				   
 
@@ -66,335 +58,26 @@
 
 				     develop.appendChild(btnOpenConsole);*/
 				      //document.body.appendChild(btnOpenConsole);
-				    
-					//fj.alert.App.update(html);
-				    //fj.alert.App.checkSize();
-				    //fj.alert.App.initScrolls();
-				    //fj.alert.App.prepareBottomScrolls();
-				    fj.alert.Duration.start();
+					fj.alert.Duration.start();
 
-				    
-				    
 				}
 
 				function alertScroll(x,y,dx) {
-				    var scrolls = fj.alert.App.__scrolls
-				    for(var i=0; i <scrolls.length; i++) {
-				        scrolls[i].onWheel({wheelDelta:(-1*dx)});
-				    }
+					var scrollable = document.getElementById("scroller");
+					if(scrollable){
+						var delta = 0;
+					    if(dx !==undefined) {
+					        delta = (1 * dx) / 120;
+					    }
+						scrollable.scrollTop += delta * 20;
+					}
 				}
 
-				(function(){
-				    if(!fj.alert.App) {
-				        function updateNode( src,  dst, isChild)
-				        {
-				            if((dst.tagName != src.tagName) && (src.nodeType == dst.nodeType))
-				            {
-				                if(isChild)
-				                {
-				                    dst.parentNode.insertBefore(src.cloneNode(true), dst);
-				                    dst.parentNode.removeChild(dst);
-				                    return;
-				                }
-				            }
-				            if(src.nodeType == 3)
-				            {
-				                dst.nodeValue = src.nodeValue;
-				                return;
-				            }
-
-				            updateNodeAttrs(src, dst, isChild);
-
-				            var dstChild = null;
-				            for (var i = 0; i < src.childNodes.length;i++)
-				            {
-				                var srcChild = src.childNodes[i];
-				                dstChild = dst.childNodes[i];
-				                if(dstChild == null)
-				                {
-				                    //insert
-				                    dst.appendChild(srcChild.cloneNode(true));
-				                }
-				                else if((srcChild.id == dstChild.id) && (srcChild.tagName == dstChild.tagName) && (srcChild.nodeType == dstChild.nodeType))
-				                {
-				                    //update
-				                    updateNode( srcChild,  dstChild, isChild)
-				                }
-				                else
-				                {
-				                    // id si not the same - remove dst node.
-				                    dstChild.parentNode.removeChild(dstChild);
-				                    dst.appendChild(srcChild.cloneNode(true));
-				                }
-				            }
-				            // remove tail
-				            for (var j = src.childNodes.length; j < dst.childNodes.length;j++)
-				            {
-				                dstChild = dst.childNodes[j];
-				                dstChild.parentNode.removeChild(dstChild);
-				            }
-				        }
-				        function updateNodeAttrs( src,  dst, isChild)
-				        {
-				            for (var i = 0; i < src.attributes.length;i++)
-				            {
-				                var attr = src.attributes[i];
-				                if(!isChild && attr.name == "id") continue;
-				                dst.setAttribute && dst.setAttribute(attr.name, attr.value);
-				            }
-				        }
-				        fj.alert.App = {
-				            __scrolls:[]
-				            , init: function() {
-				                this.fireEvent({type:"onLoad"});
-				            }
-				            , initScrolls: function() {
-				                var scrolls = fj.Utils.DOMUtils.getElementsByClassName(document, "fj-scrollable");
-				                for(var i=0; i <scrolls.length; i++) {
-				                    this.__scrolls.push(new fj.Scrollable(scrolls[i]));
-				                }
-				            }
-				            
-				            , prepareBottomScrolls: function() {
-				            	var scrolls = [];;
-				                if(window.document.querySelectorAll) {
-				                    scrolls = window.document.querySelectorAll('*[data-bottom-scroll=on]');
-				                }
-				                else {
-				                    var _els = document.getElementsByTagName("*");
-				                    var val; 
-				                    for(var i=0; i < _els.length; i++) {
-				                    	val = _els[i].getAttribute("data-bottom-scroll");  	 
-				                        if('on' == val) {
-				                            scrolls.push(_els[i]);
-				                        }
-				                    }
-				                }
-				                if(scrolls && scrolls.length>0){
-				                	setTimeout(function(){
-				                		for(var i=0; i<scrolls.length; i++){
-				                			scrolls[i].scrollTop = scrolls[i].scrollHeight;
-				                		}
-				                	},100);
-				                }
-				            }
-
-				            
-				            , destroyScrolls: function() {
-				                for(var i=0; i <this.__scrolls.length; i++) {
-				                    this.__scrolls[i].destroy();
-				                }
-				                this.__scrolls = [];
-				            }
-				            , fireEvent:function(event) {
-				                var json=[];
-				                for(var key in event) {
-				                    if (event.hasOwnProperty(key)) {
-				                        var val=event[key];
-				                        if(typeof(val) !== "string") {
-				                            val = val+"";
-				                        }
-				                        json.push('"'+key + '":"' + val + '"');
-				                    }
-				                }
-				                json.push('"ts":"' + new Date().getTime() + '"');
-				                window.location = "fonality://action#{" + json.join(",") + "}";
-				                return !!event && event.type != "close";
-				            }
-				            , update:function(htmlStr) {
-				                var wrap = document.createElement('body');
-				                wrap.innerHTML = htmlStr;
-				                updateNode(wrap, document.body, false);
-				            }
-				            , checkSize: function() {
-				            	if(document.body.childNodes[0].clientHeight != window.innerHeight || document.body.childNodes[0].clientWidth != window.innerWidth) {
-				            		this.fireEvent({"type":"resize", "height": document.body.childNodes[0].clientHeight, "width": document.body.childNodes[0].clientWidth});
-				            	}
-				            }
-				        }
-				    }
-				})();
-
-				(function(){
-				    fj.alert.AlertEventManager = new Function();
-
-				    fj.alert.AlertEventManager.prototype.isChildOf = function(item, parent)
-				    {
-				        if(item && parent){
-				            var itemParent = item.parentNode;
-				            while(itemParent){
-				                if(itemParent == parent){
-				                    return true;
-				                }
-				                itemParent = itemParent.parentNode;
-				            }
-				        }
-				        return false;
-				    };
-
-				    fj.alert.AlertEventManager.prototype.customEvents = {
-				        "click":{
-				            close: function(uiEvent){
-				                var target = uiEvent.target || uiEvent.srcElement;
-				                return target.getAttribute('data-event') == "close";
-				            }
-				        },
-				        "mouseover": {
-				            mouseenter: function(uiEvent) {
-				                var relatedTarget = uiEvent.event.relatedTarget || uiEvent.event.fromElement;
-				                return !this.isChildOf(relatedTarget, uiEvent.srcElement) && relatedTarget!=uiEvent.srcElement;
-				            }
-				        },
-				        "mouseout": {
-				            mouseleave: function(uiEvent) {
-				                var relatedTarget = uiEvent.event.relatedTarget || uiEvent.event.toElement;
-				                return !this.isChildOf(relatedTarget, uiEvent.srcElement) && relatedTarget!=uiEvent.srcElement;
-				            }
-				        }
-				    };
-
-				    fj.alert.AlertEventManager.prototype.init = function() {
-				        var context = this;
-				        if(window.onclick===undefined) {
-				            document.onclick
-				                = document.ondblclick
-				                = document.onmousedown
-				                = document.onmouseup
-				                = function(e) {
-				                e = e || window.event;
-				                if(e){
-				                    context.onEvent(e);
-				                }
-				            }
-				        }
-				        else {
-				            window.onclick
-				                = window.ondblclick
-				                = window.onmousedown
-				                = window.onmouseup
-				                = function(e) {
-				                e = e || window.event;
-				                if(e){
-				                    context.onEvent(e);
-				                }
-				            }
-				        }
-
-				        window.onkeypress
-				            = window.onkeyup
-				            = window.onkeydown
-				            = function(e) {
-				            e = e || window.event;
-				            if(e){
-				                context.onEvent(e);
-				            }
-				        };
-				    };
-
-				    fj.alert.AlertEventManager.prototype.onEvent = function(e) {
-				        var sender = e.target || e.srcElement;
-				        var el = sender;
-				        var id, controllerPath = [];
-
-				        if(/mousedown/i.test(e.type)){
-				            this.setDrugNDropEnable(sender);
-				        }
-
-				        while(el) {
-				            if(el.getAttribute){
-				                id = el.getAttribute('data-controller-id');
-				                if(id){
-				                    controllerPath.unshift(id);
-				                }
-				            }
-				            el = el.parentNode;
-				        }
-				        var _customEvents =  this.customEvents[e.type];
-				        if(_customEvents) {
-				            for(var i in _customEvents) {
-				                if (_customEvents.hasOwnProperty(i) && this.customEvents[e.type][i](e) && this.fire(e, i, controllerPath.join(',')) === false) {
-				                    return;
-				                }
-				            }
-				        }
-				        this.fire(e, e.type,controllerPath.join(','));
-				    };
-
-				    fj.alert.AlertEventManager.prototype.setDrugNDropEnable = function (sender) {
-				        var el = this.getElement("click", sender) || this.getElement("close", sender);
-				        window.dropEnabled = !!el;
-				    };
-
-				    fj.alert.AlertEventManager.prototype.fire = function(e, eventType, controllerPath) {
-
-				        var sender = e.target || e.srcElement;
-				        var el = this.getElement(eventType, sender);
-				        if(el && !el.getAttribute("disabled")) {
-				            var _sender = null;
-				            var _param = null;
-				            var _senderAttr = (el.getAttribute('data-template-id') && "this") || el.getAttribute('data-fj-local-id');
-				            if(_senderAttr) {
-				                var _senderAttrArr = _senderAttr.split(":");
-				                _sender = _senderAttrArr[0];
-				                _param = _senderAttrArr[1];
-				            }
-
-				            if(_sender)
-
-				                var uiEvent = {
-				                    type: eventType,
-				                    action: _sender,
-				                    event: e,
-				                    srcElement: el,
-				                    target: sender,
-				                    sender: controllerPath,
-				                    param: _param
-				                };
-				            return fj.alert.App.fireEvent(uiEvent);
-				        }
-				    };
-
-				    fj.alert.AlertEventManager.prototype.checkEventAttribute = function(htmlElement, eventType) {
-				        var dataEvent, eventAttr, hasDataEvent;
-				        if(htmlElement && htmlElement.getAttribute) {
-				            dataEvent = htmlElement.getAttribute('data-event');
-				            eventAttr = htmlElement.getAttribute('on'+eventType);
-				            hasDataEvent = dataEvent && dataEvent.indexOf(eventType)>-1;
-				        }
-				        return hasDataEvent || eventAttr;
-				    };
-
-				    fj.alert.AlertEventManager.prototype.getEventAttributes = function(htmlElement) {
-				        var dataEventAttr;
-				        if(htmlElement && htmlElement.getAttribute) {
-				            dataEventAttr = htmlElement.getAttribute('data-event').split(" ");
-				        }
-				        return dataEventAttr;
-				    };
-
-				    fj.alert.AlertEventManager.prototype.getElement = function(eventType, target) {
-				        var el = target;
-				        while(el){
-
-				            if(this.checkEventAttribute(el, eventType)) {
-				                return el;
-				            }
-				            el = el.parentNode;
-				        }
-				        return undefined;
-				    };
-
-				    fj.alert.AlertEventManager.getInstance = function () {
-				        if (!fj.alert.AlertEventManager.Instance) {
-				            var em = fj.alert.AlertEventManager.Instance = new fj.alert.AlertEventManager();
-				            em.init();
-				        }
-				        return fj.alert.AlertEventManager.Instance;
-				    };
-
-				    fj.alert.AlertEventManager.getInstance();
-
-				})();
+				function mouseClick(element){
+					var action = element.getAttribute('action');
+					window.location.replace(action);
+				}
+				
 
 				var FormatUtils = {
 				    duration: {
@@ -448,7 +131,7 @@
 
 				        }
 				    }
-				}
+				};
 
 
 				fj.alert.Duration = {
@@ -458,7 +141,7 @@
 				        var context =this;
 				        this.getElements();
 				        this.__intervalId = setInterval(function(){
-				            for(var i=0; i<context.elements.length; i++) {
+				            for(var i = 0, iLen = context.elements.length; i < iLen; i++) {
 				                context.setDurationValue(context.elements[i]);
 				            }
 				        }, 1000);
@@ -491,7 +174,7 @@
 				        else {
 				            var _els = document.getElementsByTagName("*");
 				            var arr= [];
-				            for(var i=0; i < _els.length; i++) {
+				            for(var i = 0, iLen = _els.length; i < iLen; i++) {
 				                if(_els[i].getAttribute("data-duration") || _els[i].getAttribute("data-human-duration")) {
 				                    arr.push(_els[i]);
 				                }
@@ -586,215 +269,6 @@
 				    }
 				};
 
-				fj.Scrollable = function (scrollableArea) {
-				    this.scrollableArea = scrollableArea;
-				    this.isDrug = false;
-				    this.init();
-				};
-
-				fj.Scrollable.prototype.initDOM = function() {
-				    try {
-				        this.frame = this.scrollableArea.childNodes[0];
-				        this.frame.style.overflow = "hidden";
-				        this.scrollerPlaseholder = this.scrollableArea.childNodes[1];
-				        this.scrollerPlaseholder.innerHTML ="";
-				        this.scrollerPlaseholder.className +=" fj-ui-scrollerFr";
-				        var scrollerFrDecoration = document.createElement("div");
-				        scrollerFrDecoration.className = "fj-ui-scrollerFr-decoration";
-				        this.scrollerPlaseholder.appendChild(scrollerFrDecoration);
-				        this.scroller = document.createElement("div");
-				        this.scroller.className = "fj-ui-scroller";
-				        this.scrollerPlaseholder.appendChild(this.scroller);
-				        var scrollerDecoration = document.createElement("div");
-				        scrollerDecoration.className = "fj-ui-scroller-decoration";
-				        this.scroller.appendChild(scrollerDecoration);
-				    } catch(e) {}
-				};
-
-				fj.Scrollable.prototype.initEvents = function () {
-				    var context = this;
-				    this.__onWheel = function(e){e=e || window.event; context.onWheel(e);};
-				    this.__onScroll = function(){context.onScroll();};
-				    this.__onScrollerMouseDown = function(e){e=e || window.event; context.onScrollerMouseDown(e);};
-				    this.__onMouseDown = function(e){e=e || window.event; context.onMouseDown(e)};
-				    this.__onResize = function(){context.onResize();};
-
-				    fj.Utils.DOMUtils.addEventListener(this.frame, "mousewheel", this.__onWheel);
-				    fj.Utils.DOMUtils.addEventListener(this.frame, "scroll", this.__onScroll);
-				    fj.Utils.DOMUtils.addEventListener(this.scroller, "mousedown", this.__onScrollerMouseDown);
-				    fj.Utils.DOMUtils.addEventListener(this.scrollerPlaseholder, "mousedown", this.__onMouseDown);
-				    fj.Utils.DOMUtils.addEventListener(window, "resize", this.__onResize);
-				};
-
-				fj.Scrollable.prototype.init = function() {
-				    var context = this;
-					this.initDOM();
-				    this.initEvents();
-				    var scrollDirection = this.scrollableArea.getAttribute("data-scrolldirection");
-					if(scrollDirection == "bottom") {
-						setTimeout(function(){
-							context.scrollBottom();
-						},100);     
-				    }
-					else {
-						setTimeout(function(){
-							context.refresh();
-						},100);    
-					}
-				};
-
-				fj.Scrollable.prototype.onWheel = function(event) {
-				    var delta = 0;
-				    if(event.wheelDelta!==undefined) {
-				        delta = (-1 * event.wheelDelta) / 120;
-				    }
-				    else if(event.detail!==undefined) {
-				        delta = event.detail / 3;
-				    }
-				    this.frame.scrollTop += delta * 20;
-				    this.setScrollPosition();
-				};
-
-				fj.Scrollable.prototype.registerDrugNDropEvents = function () {
-				    var context = this;
-				    window.dropEnabled = true;
-				    this.__onMouseMove = function (e) {
-				        e = e || window.event;
-				        context.onMouseMove(e);
-				    };
-				    this.__onMouseUp = function () {
-				        context.onMouseUp();
-				    };
-				    fj.Utils.DOMUtils.addEventListener(document, "mousemove", this.__onMouseMove);
-				    fj.Utils.DOMUtils.addEventListener(document, "mouseup", this.__onMouseUp);
-				    fj.Utils.DOMUtils.addEventListener(window, "blur", this.__onMouseUp);
-				};
-
-				fj.Scrollable.prototype.onMouseDown = function(event) {
-				    this.registerDrugNDropEvents();
-				    this.scrollerPlaseholder.style.opacity = "0.6";
-				    this.scrollToPos(event);
-				    this.prepareScroll();
-				};
-
-				fj.Scrollable.prototype.onScrollerMouseDown = function(event) {
-				    this.registerDrugNDropEvents();
-				    this.scrollerPlaseholder.style.opacity = "0.6";
-				    this.prepareScroll();
-				    fj.Utils.DOMUtils.stopPropagation(event);
-				};
-
-				fj.Scrollable.prototype.onScroll = function() {
-				    this.setScrollPosition();
-				    this.setScrollerHeight();
-				};
-
-				fj.Scrollable.prototype.onMouseMove = function(event) {
-				    if(this.isDrug)  {
-				        this.scrollToPos(event);
-				    }
-				};
-
-				fj.Scrollable.prototype.onMouseUp = function() {
-				    document.onselectstart = null;
-				    window.dropEnabled = false;
-				    fj.Utils.DOMUtils.removeEventListener(document, "mousemove", this.__onMouseMove);
-				    fj.Utils.DOMUtils.removeEventListener(document, "mouseup", this.__onMouseUp);
-				    fj.Utils.DOMUtils.removeEventListener(window, "blur", this.__onMouseUp);
-				    this.scrollerPlaseholder.style.opacity = "";
-				    this.isDrug = false;
-				};
-
-				fj.Scrollable.prototype.onResize = function() {
-				    this.refresh();
-				};
-
-				fj.Scrollable.prototype.setScrollPosition = function() {
-				    try {
-				        var frHeight = this.scrollerPlaseholder.clientHeight;
-				        var height = parseInt(this.scroller.style.height) || 30;
-
-				        if(this.frame.scrollTop==0 || this.frame.scrollHeight - this.frame.clientHeight == 0) {
-				            this.scroller.style.top = "0px";
-				        }
-				        else {
-				            this.scroller.style.top = ((frHeight - height) / ((this.frame.scrollHeight - this.frame.clientHeight) / this.frame.scrollTop))
-				                + "px";
-				        }
-				    }
-				    catch(e){}
-				};
-
-				fj.Scrollable.prototype.scrollToPos = function(event) {
-				    try {
-				        var _y = event.clientY - this.yOffset(this.frame);
-				        this.frame.scrollTop = (this.frame.scrollHeight - this.frame.clientHeight)
-				            * (_y / this.scrollerPlaseholder.clientHeight);
-				    }
-				    catch(e) {}
-				};
-
-				fj.Scrollable.prototype.prepareScroll = function() {
-				    document.onselectstart = fj.Utils.returnFalseFn;
-				    this.isDrug = true;
-				};
-
-				fj.Scrollable.prototype.setScrollerHeight = function () {
-				    try {
-				        if (this.frame.clientHeight < this.frame.scrollHeight) {
-				            this.scroller.style.height = ((this.frame.clientHeight / this.frame.scrollHeight) * this.scrollerPlaseholder.clientHeight)
-				                + "px";
-				            this.scrollerPlaseholder.style.visibility = "";
-				        }
-				        else {
-				            this.scrollerPlaseholder.style.visibility = "hidden";
-				        }
-				    }
-				    catch(e) {}
-				};
-
-				fj.Scrollable.prototype.refresh = function () {
-				    var context = this;
-				    this.setScrollerHeight();
-				    this.setScrollPosition();
-				};
-
-				fj.Scrollable.prototype.yOffset = function (el) {
-				    var y = 0;
-				    while (el) {
-				        y += el.offsetTop;
-				        el = el.offsetParent;
-				    }
-				    return y;
-				};
-
-				fj.Scrollable.prototype.destroy = function() {
-				    fj.Utils.DOMUtils.removeEventListener(this.frame, "mousewheel", this.__onWheel);
-				    fj.Utils.DOMUtils.removeEventListener(this.frame, "scroll", this.__onScroll);
-				    fj.Utils.DOMUtils.removeEventListener(this.scrollerPlaseholder, "mousedouwn", this.__onMouseDown);
-				    fj.Utils.DOMUtils.removeEventListener(window, "mousemove", this.__onMouseMove);
-				    fj.Utils.DOMUtils.removeEventListener(window, "mouseup", this.__onMouseUp);
-				};
-
-				fj.Scrollable.prototype.getScrollPosition = function() {
-				    return this.frame.scrollTop;
-				};
-
-				fj.Scrollable.prototype.getFrameHeight = function() {
-				    return this.frame.clientHeight;
-				};
-
-				fj.Scrollable.prototype.scrollTop = function() {
-				    this.frame.scrollTop = 0;
-				};
-
-				fj.Scrollable.prototype.scrollBottom = function() {
-				    this.frame.scrollTop = this.frame.scrollHeight;
-				};
-
-				fj.Scrollable.prototype.scrollToPosition = function (position) {
-				    this.frame.scrollTop = position;
-				};
 		</script>
 	</head>
 	<body>

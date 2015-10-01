@@ -4,15 +4,17 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
-			// object to dock
-			var obj = $parse(attrs.dockable)(scope);
+			// super important for droppable to work
+			element.data('_scope', scope);
 			
 			$(element).draggable({
 				cursorAt: { top: 25, left: 25 },
-				zIndex: 50,
+				zIndex: 100,
 				appendTo: 'body',
+				iframeFix: true,
 				helper: function() {
-					scope.obj = obj;
+					// object to dock
+					var obj = $parse(attrs.dockable)(scope);
 			
 					// create visible element
 					var gadget = $('<div class="Gadget"></div>');
@@ -20,7 +22,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 					var title = $('<div class="Title"></div>');
 					
 					// avatar
-					$(header).append($compile('<avatar profile="obj" context="drag"></avatar>')(scope));
+					$(header).append($compile('<avatar profile="' + attrs.dockable + '" context="drag"></avatar>')(scope));
 					
 					// single title
 					if (obj.firstName !== undefined) {						
@@ -39,10 +41,17 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 				},
 				start: function(event, ui) {
 					$(ui.helper).addClass('not-allowed');
+					
+					// disable droppable for overflow elements
+					$('.Gadget .Content .ui-droppable').each(function() {
+						if ($(this).position().top >= $(this).closest('.Content').height())
+							$(this).droppable('option', 'disabled', true);
+					});
 				},
 				stop: function(event, ui) {
-					// destroy scope
-					scope.obj = null;
+					ui.helper.empty();
+					
+					$('.Gadget .Content .ui-droppable').droppable('option', 'disabled', false);
 				}
 			});
 		}

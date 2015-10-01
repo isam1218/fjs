@@ -1,10 +1,19 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', function($rootScope, $parse, $timeout, settingsService) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', function($rootScope, $parse, $timeout, settingsService, httpService) {
+	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
 	var timer;
 	var current;
 	
-	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar>
-	// where context and type are optional
+	// show updated avatars
+	$rootScope.$on('fdpImage_synced', function(event, data) {
+		if (!document.getElementById('AppLoading')) {
+			for (var i = 0, len = data.length; i < len; i++) {
+				$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+			}
+		}
+	});
+	
+	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar> where context and type are optional
 	return {
 		restrict: 'E',
 		replace: true,
@@ -12,8 +21,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
-			var context, widget;
-			
+			var context, widget, rect;
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
@@ -63,19 +71,22 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				showSingle();
 			
 			// set up watchers for avatars that may change
-			if (widget == 'context') {
+			if (widget == 'context' || widget == 'callstatus') {
 				scope.$watch($parse(attrs.profile), function (newObj) {
 					showSingle();
-					loadImage(element.find('img'), newObj.getAvatar(28));
+					loadImage(element.find('img'), newObj ? newObj.getAvatar(28) : '');
 				});
 			}
 			
+			// also attach xpid to listen for updates
+			element.addClass(profile.xpid);
+			
 			function showSingle() {
-				element.html('<img class="AvatarImgPH" src="' + url + 'img/Generic-Avatar-28.png" />');
+				element.html('<img class="AvatarImgPH default" src="' + url + 'img/Generic-Avatar-28.png" />');
 			}
 			
 			function showGroup() {
-				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
+				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
 			}
 			
 			function loadImage(el, url) {
@@ -113,16 +124,10 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			// add arrow to indicate menu
 			element.append('<div class="AvatarForeground AvatarInteractable"></div>');
 			
-			// set up overlay
-			var overlay = angular.element(document.getElementById('ContextMenu'));
-			var arrow = angular.element(overlay[0].getElementsByClassName('Arrow')[0]);
-			var buttons = overlay[0].getElementsByClassName('Button');
-			var rect;
-			
 			element.bind('mouseenter', function(e) {
 				rect = element[0].getBoundingClientRect();
 				$timeout.cancel(timer);
-				
+
 				if (overlay.css('display') != 'block') {
 					// delay
 					timer = $timeout(function() {
@@ -130,7 +135,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				
 						overlay.bind('mouseleave', function(e) {							
 							// keep open if user moves back onto avatar
-							for (i = 0; i < element.children().length; i++)  {
+							for (var i = 0, iLen = element.children().length; i < iLen; i++)  {
 								if (e.relatedTarget == element.children()[i])
 									return;
 							}
@@ -162,6 +167,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			function showOverlay() {				
 				// send data to controller		
+				
 				var data = {
 					obj: obj,
 					widget: widget,
@@ -169,10 +175,12 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				};
 				
 				$rootScope.$broadcast('contextMenu', data);
-				
+				$rootScope.contextShow = true;
+
 				$timeout(function() {
 					// position pop-pop				
 					overlay.addClass('NoWrap');
+					overlay.removeClass('Bump');
 					
 					overlay.css('display', 'block');
 					overlay.css('width', 'auto');
@@ -180,25 +188,31 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					
 					var oRect = overlay[0].getBoundingClientRect();
 					
+					// can't fit on screen
+					if (oRect.bottom >= window.innerHeight)
+						overlay.addClass('Bump');
+					
 					// can fit on right side
 					if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {
 						overlay.css('left', (rect.left + rect.width/2) + 'px');
 						overlay.css('right', 'auto');
-						arrow.removeClass('Right').addClass('Left');
+						
+						$('#ContextMenu .Arrow').removeClass('Right').addClass('Left');
 					}
 					// can fit on left side
 					else {
 						overlay.css('right', (window.innerWidth - rect.left - rect.width/2) + 'px');
 						overlay.css('left', 'auto');
-						arrow.removeClass('Left').addClass('Right');
+						
+						$('#ContextMenu .Arrow').removeClass('Left').addClass('Right');
 					}
 					
 					// set width for logout reasons
 					overlay.removeClass('NoWrap');
-					overlay.css('width', overlay[0].getBoundingClientRect().width + 'px');
+					overlay.css('width', (overlay[0].getBoundingClientRect().width + 2) + 'px');
 			
 					// button clicks
-					angular.element(buttons).bind('click', function(e) {
+					$('#ContextMenu .Button').bind('click', function(e) {
 						e.stopPropagation();
 						
 						// logout button shouldn't close
@@ -209,13 +223,16 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 							$('#ContextMenu .List').css('height', diff + 'px');
 						}
 					});
-				}, 10);
+				}, 10, false);
 			}
 			
 			function hideOverlay(t) {
 				timer = $timeout(function() {
 					overlay.css('display', 'none');
 					overlay.unbind();
+					
+					$('#ContextMenu .Button').unbind('click');
+					$rootScope.contextShow = false;
 				}, t);
 			}
 		}

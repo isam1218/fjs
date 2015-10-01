@@ -4,9 +4,9 @@
 		<a href="#/callcenter" class="Header">
 			<div class="Icon TopBarItemAppIcon CallCenter"></div>
 			<div class="Title">
-				<div>{{::verbage.my_queue}}</div>
-				<div ng-if="gadget.data.queues.length == 0">Not an agent</div>
-				<div ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.logged_out }}</div>
+				<div class="titleHeader header">{{::verbage.my_queue}}</div>
+				<div class="subTitle" ng-if="gadget.data.queues.length == 0">Not an agent</div>
+				<div class="subTitle" ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.logged_out }}</div>
 			</div>
 		</a>
 			
@@ -19,10 +19,9 @@
 				
 					<div class="ListRowContent" dockable="queue">
 						<div class="ListRowTitle">
-							{{ ::queue.name }}
-							<br/>
+							<div class="name">{{ ::queue.name }}</div>							
 							<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
-							{{ queueStatusLabel(queue.me.status.status) }}
+							<div class="status">{{ queueStatusLabel(queue.me.status.status) }}</div>
 						</div>
 					</div>
 				</a>
@@ -38,33 +37,36 @@
 		<resizer></resizer>
 	</div>
 
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
+	<div ng-class="{'NoneParked' : parkedCalls.length == 0}" class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
 		<div class="Header Single">
 			<avatar profile="4"></avatar>
-			<div class="Title">
-				<div>{{::verbage.parked_calls}}</div>
-				<div class = "GadgetStatusText" ng-if="parkedCalls.length < 1">{{::verbage.no_calls_on_park}}</div>
-				<div class = "GadgetStatusText" ng-if="parkedCalls.length == 1"> {{ parkedCalls.length }} call on park </div> 
-				<div class = "GadgetStatusText" ng-if="parkedCalls.length > 1"> {{ parkedCalls.length }} calls on park </div> 
+			<div class="Title" ng-switch="parkedCalls.length">
+				<div class="titleHeader header">{{::verbage.parked_calls}}</div>
+				<div class="subTitle GadgetStatusText" ng-switch-when="0">{{::verbage.no_calls_on_park}}</div>
+				<div class="subTitle GadgetStatusText" ng-switch-when="1"> 1 call on park </div> 
+				<div class="subTitle GadgetStatusText" ng-switch-default> {{ parkedCalls.length }} calls on park </div> 
 			</div>
 		</div>
-		<div class="Header ListSectionGadget" ng-if="parkedCalls.length > 0"> {{::verbage.calls}} </div>
-		<div> 
-			<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
-				<avatar profile="call"></avatar>
-				
-				<div class="ListRowContent" style="display:inline-block;margin-right:2px">
-					<div class="ListRowTitle" style="width:80px;padding:0px;text-overflow:ellipssis;white-space:nowrap">
-						<div>{{ ::call.displayName }}</div>
-						<div>{{ ::call.phone }}</div>
+		
+		<div ng-if="parkedCalls.length > 0" class="Content">
+			<div class="SubHeader ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
+			<div id="parked_calls"> 
+				<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
+					<avatar profile="call"></avatar>
+					
+					<div class="ListRowContent" style="display:inline-block;margin-right:2px">
+						<div class="ListRowTitle">
+							<div class="ParkedCallDisplayName">{{ ::call.displayName }}</div>
+							<div>{{ ::call.phone}}</div>
+						</div>
+							<div timer="call.created" class="timer"></div>
 					</div>
-						
-						
 				</div>
-				<div timer="call.created" style="float:right;font-size:.65em;margin-top:2px;margin-right:2px"></div>
 				
 			</div>		
 		</div>
+
+		<resizer ng-if="parkedCalls.length > 0"></resizer>
 	</div>
 
 	<!-- contacts -->
@@ -72,7 +74,8 @@
 		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div>{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::contact.primaryExtension">{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::!contact.primaryExtension">{{ gadget.data.displayName }}</div>
 				<div>
 					<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
 					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
@@ -95,8 +98,8 @@
 		<a href="#/group/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
-				<div>{{ ::gadget.data.name }}</div>
-				<div>None</div>
+				<div class="titleHeader">{{ ::gadget.data.name }}</div>
+				<div class="subTitle">None</div>
 			</div>
 		</a>
 		
@@ -104,7 +107,7 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid" droppable="Call">
+				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'fullProfile.displayName' track by member.xpid" droppable="Call">
 					<avatar profile="member.fullProfile"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
@@ -112,7 +115,7 @@
 							{{ ::member.fullProfile.displayName }}
 							<br/>
 							<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-							{{verbage[member.fullProfile.hud_status] || verbage['offline']}}
+							<div class="status">{{(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</div>
 						</div>
 					</div>
 				</a>
@@ -126,10 +129,10 @@
 	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
 		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
-			<div class="Title">
-				<div>Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
-				<div ng-if="gadget.data.members.length == 0">{{ ::gadget.data.location }}</div>
-				<div ng-if="gadget.data.members.length > 0">Talking: {{ gadget.data.members.length }}</div>
+			<div class="Title" ng-switch="gadget.data.members.length">
+				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
+				<div class="subTitle" ng-switch-when="0">{{ ::gadget.data.location }}</div>
+				<div class="subTitle" ng-switch-default>Talking: {{ gadget.data.members.length }}</div>
 			</div>
 		</a>
 		
@@ -137,20 +140,20 @@
 			<div class="SubHeader">{{::verbage.member}}</div>
 			
 			<div class="List">
-				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
+				<a class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
 					<avatar profile="member" context="conference:gadget.data"></avatar>
 				
 					<div class="ListRowContent" dockable="member.fullProfile">
-						<div class="ListRowTitle">
-							{{ ::member.fullProfile.displayName }}
-							<br/>
-							{{ ::member.fullProfile.primaryExtension }}
+						<div class="ConfMemberRowTitle">
+							<div class="name">{{ ::member.fullProfile.displayName || member.displayName }}</div>
+<!-- 							<br/> -->
+							<div class="">{{ ::member.fullProfile.primaryExtension || member.phone }}</div>
 						</div>
-						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt"></div>
+						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt || member.started"></div>
 					</div>
 				</a>
 				
-				<div ng-if="!gadget.data.members || gadget.data.members.length == 0">
+				<div class="free" ng-if="!gadget.data.members || gadget.data.members.length == 0">
 					{{::verbage.room_is_free}}...
 					<p>
 						<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
@@ -174,15 +177,16 @@
 		
 		<div class="Content">
 			<div class="List Stats">
-				<div>
-					<strong>{{ gadget.data.info.waiting }}</strong>
+				<div ng-class="{'RedText': queueThresholds.waiting && gadget.data.info.waiting > queueThresholds.waiting}">
+					<strong>{{ gadget.data.info.waiting }}</strong> 
 					{{::verbage.waiting}}
 				</div>
-				<div>
-					<strong>{{ gadget.data.info.esa*1000 | duration }}</strong>
-					{{::verbage.avg_wait}}
+				<div ng-switch="gadget.data.longestWait">
+					<strong ng-switch-default timer="gadget.data.longestWait"></strong>
+					<strong ng-switch-when="0">00:00</strong>
+					{{::verbage.longest_hold}}
 				</div>
-				<div>
+				<div ng-class="{'RedText': queueThresholds.avg_talk && gadget.data.info.avgTalk/60 > queueThresholds.avg_talk}">
 					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
                     {{::verbage.avg_talk}}
 				</div>
@@ -190,7 +194,7 @@
 					<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
 					{{::verbage.total}}
 				</div>
-				<div>
+				<div ng-class="{'RedText': queueThresholds.abandoned && gadget.data.info.abandonPercent > queueThresholds.abandoned}">
 					<strong>{{ gadget.data.info.abandonPercent }}%</strong>
 					{{::verbage.Abandon}}
 
@@ -207,13 +211,13 @@
 </div>
 <!---->
 <div class="FileUploadStatus" ng-if="upload_progress > 0">
-				<div class="progress_text text-style"><span >Progress</span></div>
-	<div class="Gadget" >
+	<div class="progress_text text-style"><span >Progress</span></div>
+	<div class="Gadget">
 		<div class="text-style" >
 			<div class="timer" timer="now"></div>
 			<div> <span>Form Upload<span></div>
-			<progress ng-value="upload_progress" max="100"> </progress>
-		
+			<progress ng-value="upload_progress" max="100"  > </progress>
+			<div class="CancelUploadIcon" ng-click="cancelUpload()" style="float:right" > </div>
 		</div>
 	</div>
 </div>

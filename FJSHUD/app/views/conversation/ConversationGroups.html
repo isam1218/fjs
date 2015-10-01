@@ -1,12 +1,6 @@
-    <div class="ToolBar">
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-model="que.query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" /></div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
-        </div>
-        <div class="XButton XButtonNormal" ng-click="showOverlay(true, 'GroupEditOverlay', contact)"><span>{{::verbage.new_word}}</span></div>
+    <div class="ToolBar">        
+        <input class="SearchBox" data-ng-model="que.query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
+        <div class="XButton XButtonNormal group" ng-click="showOverlay(true, 'GroupEditOverlay', contact)"><span>{{::verbage.new_word}}</span></div>
     </div>
   
     <div class="ListView">
@@ -43,7 +37,7 @@
                     <span class="details">{{ ::group.members.length }} members</span>
                 </div>
             </div>
-            <div class="ListRowStatus">#{{ ::group.extension }}</div>
+            <div class="ListRowStatus">Owner: {{ ::findGroupOwner(group) }}</div>
             <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(group.extension)"></input>
         </div>
     </a>
