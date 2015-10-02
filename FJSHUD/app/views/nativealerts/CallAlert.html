@@ -81,7 +81,7 @@
 					</avatar>
 				
 					<div class="LeftBarNotificationMessageSection">
-						<div onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}" class="chatNotification" action=>
+						<div onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}" class="chatNotification">
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
 								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{ ::message.displayName}}</span>
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
@@ -137,7 +137,7 @@
 				</div>
 				<div class="NotificationDivider"></div>
 
-				<div class="NotificationSection" ng-class="::{'last' : !anotherDevice}" >
+				<div class="NotificationSection" ng-class="::{'last' : !displayAnotherDeviceNotification}" >
 					<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 						<div class="AvatarWarningSmall"></div>
 					</div>
@@ -155,7 +155,7 @@
 			  </a>
 			</div>
 			
-			<div class="Messages webphone" ng-if="::anotherDevice">                
+			<div class="Messages webphone" ng-if="::displayAnotherDeviceNotification" onclick="mouseClick(this)" action="#/displayAnotherDevice">                
 			    <div class="NotificationHeader">
                     <div class="NotificationHeaderBackground"> 
                         <div class="NotificationClose" ></div>

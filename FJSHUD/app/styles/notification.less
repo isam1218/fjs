@@ -4,6 +4,7 @@
 	padding-left: 5px;
 	width: 92%;
 	padding-top: 5px;
+	-webkit-flex: 1;
 		
 	.NotificationDisplayName{
 		height: 2.5em;
@@ -44,8 +45,7 @@
 		font-weight:normal;
 		position: relative;
 		float:right;
-		/*right:20%;	*/
-		right: 20px;	
+		right: 5px;	
 	}
 
 	.NotificationMessage{
@@ -172,8 +172,8 @@
         &.ringing{     
         	max-width: 45%; 
         }
-        &.accepted{
-        	max-width: 55%;
+        &.accepted{        	
+        	max-width: 45%;
         }	                                      
                         
         .callStatus{
@@ -200,10 +200,6 @@
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              
-              &.truncate{
-                width: 90%;
-              }
             } 
             
             .MyCallBlock_Rec {
@@ -211,8 +207,8 @@
                 background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
                 width: 36px;
                 height: 19px;
-                display: none;                
-                right: 38%;
+                display: none;                               
+                right: 26%;
                 margin-top: -15px;
                 &.true {
                     display: block;
@@ -285,7 +281,8 @@
     position: relative;
     bottom: 0px;
 
-	&.hasMessages {
+	&.hasMessages,
+	&.noMessages {
 		&.Expand {
 			.TitleBar .XButton { visibility: visible; }
 			.scroller { padding-top: 20px; }
@@ -337,8 +334,7 @@
 
 .NotificationSection{
 	margin-top:5px;	
-	-webkit-box-orient:horizontal;
-	display:-webkit-box;
+	display:-webkit-flex;
 	display:-ms-flexbox;
 	padding-left: 5px;
 	overflow: hidden;

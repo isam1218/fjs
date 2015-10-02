@@ -6,8 +6,12 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     */
     httpService.getFeed("locations");
     httpService.getFeed("location_status");
+    // need settings feed to update device notification if user disregarded updating device and removed msg
+    httpService.getFeed("settings");
+
     var call = phoneService.getCallDetail($routeParams.callId);
     $scope.locations = {};
+    
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
         $scope.onBodyClick();

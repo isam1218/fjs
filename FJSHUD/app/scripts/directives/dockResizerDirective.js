@@ -6,8 +6,7 @@ hudweb.directive('resizer', ['HttpService', function(httpService) {
 		link: function(scope, element, attrs) {
 			var diff;
 			
-			element.parent().css('height', '150px');
-			element.parent().css('min-height', '150px');
+			element.parent().addClass('Resizable');
 			
 			element.bind('mousedown', function() {
 				document.body.onmousemove = function(e) {
@@ -22,6 +21,9 @@ hudweb.directive('resizer', ['HttpService', function(httpService) {
 					// calculate new height
 					rect = element.parent()[0].getBoundingClientRect();
 					diff = e.clientY - rect.top;
+					
+					// minimum size
+					if (diff < 150) diff = 150;
 					
 					element.parent().css('height', diff + 'px');
 				};
@@ -41,8 +43,8 @@ hudweb.directive('resizer', ['HttpService', function(httpService) {
 				};
 			});
 			scope.$on('$destroy', function(){
+				element.parent().removeClass('Resizable');
 				element.parent().css('height', 'auto');
-				element.parent().css('min-height', '0px');
 			});
 		}
 	};

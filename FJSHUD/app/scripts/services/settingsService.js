@@ -142,6 +142,13 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
     $rootScope.$on('weblauncher_synced', function(event,data){
     	if(data && data.length > 0){
 			weblaunchers = data;
+			
+			// decode URLs
+			for (var i = 0, len = weblaunchers.length; i < len; i++) {
+				weblaunchers[i].inbound = weblaunchers[i].inbound.replace(/&amp;/g, '&');
+				weblaunchers[i].outbound = weblaunchers[i].outbound.replace(/&amp;/g, '&');
+			}
+			
 			deferWl.resolve(weblaunchers);
 		}
     });

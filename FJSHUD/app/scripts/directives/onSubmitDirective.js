@@ -15,7 +15,7 @@ hudweb.directive('onSubmit', function() {
 				}
 				
 				// grow
-				if (this.tagName == 'TEXTAREA') {
+				if (this.id == 'ChatMessageText') {
 					clearTimeout(timer);
 					
 					timer = setTimeout(function() {

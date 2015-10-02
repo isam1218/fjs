@@ -306,16 +306,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
      */
     $scope.chatStatuses = [{"title":$scope.verbage.available, "key":"available"}, {"title":$scope.verbage.away, "key":"away"}, {"title":$scope.verbage.busy, "key":"dnd"}];
 
-    $scope.setChatStatus = function(chatStatus){
-        myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status = chatStatus,"customMessage":$scope.meModel.chat_custom_status});
+    $scope.setChatStatus = function(status){
+		$scope.meModel.chat_status = status;
+		
+        myHttpService.sendAction("me", "setXmppStatus", {
+			"xmppStatus": status,
+			"customMessage": document.getElementById('CustomStatusText').value
+		});
     };
     
     $scope.setCustomStatus = function() {
-        $timeout.cancel(timer);
-        timer = $timeout(function(){
-			text = $scope.meModel.chat_custom_status;
-            myHttpService.sendAction("me", "setXmppStatus", {"xmppStatus":$scope.meModel.chat_status ,"customMessage":text});
-        }, 3000, false);
+		// get value from dom to preserve html entities
+        myHttpService.sendAction("me", "setXmppStatus", {
+			"xmppStatus": $scope.meModel.chat_status,
+			"customMessage": document.getElementById('CustomStatusText').value
+		});
     };
 
     this.getElementOffset = function(element) {
@@ -541,7 +546,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.queueSummaryStats.avg_talk = parseInt(settings['queueAvgTalkThresholdThreshold']);
             $scope.queueSummaryStats.abandoned = parseInt(settings['queueAbandonThreshold']);
             
-            if(settings.auto_away_timeout){
+            if(settings.auto_away_timeout && settings.auto_away_timeout != 2147483647){
                 $scope.enableAutoAway = true;    
             }else{
                 $scope.enableAutoAway = false;

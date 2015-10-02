@@ -1,7 +1,13 @@
 <div id="InnerDock" class="InnerDock" droppable="Contact,Group,ConferenceRoom,QueueStat">
-	<!-- standard gadgets -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetUserQueues" dragger>
-		<a href="#/callcenter" class="Header">
+	<div 
+		class="Gadget" 
+		ng-repeat="gadget in gadgets | orderBy:'value.index' track by gadget.name" 
+		ng-class="::{'Parked' : gadget.value.factoryId == 'GadgetParkedCalls'}"
+		droppable="{{::getDroppableType(gadget.value.factoryId)}}"
+		dragger>
+	
+		<!-- my queues -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetUserQueues'" href="#/callcenter" class="Header">
 			<div class="Icon TopBarItemAppIcon CallCenter"></div>
 			<div class="Title">
 				<div class="titleHeader header">{{::verbage.my_queue}}</div>
@@ -34,11 +40,10 @@
 			</div>
 		</div>
 		
-		<resizer></resizer>
-	</div>
+		<resizer ng-if-end></resizer>
 
-	<div ng-class="{'NoneParked' : parkedCalls.length == 0}" class="Gadget" ng-repeat="gadget in gadgets.GadgetParkedCalls" droppable="Call" dragger>
-		<div class="Header Single">
+		<!-- parked calls -->
+		<div ng-if-start="::gadget.value.factoryId == 'GadgetParkedCalls'" class="Header Single">
 			<avatar profile="4"></avatar>
 			<div class="Title" ng-switch="parkedCalls.length">
 				<div class="titleHeader header">{{::verbage.parked_calls}}</div>
@@ -49,9 +54,9 @@
 		</div>
 		
 		<div ng-if="parkedCalls.length > 0" class="Content">
-			<div class="SubHeader ListSectionGadget" ng-if="parkedCalls.length > 0"> <span>{{::verbage.calls}}</span> </div>
+			<div class="SubHeader ListSectionGadget"> <span>{{::verbage.calls}}</span> </div>
 			<div id="parked_calls"> 
-				<div ng-repeat="call in parkedCalls"class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
+				<div ng-repeat="call in parkedCalls" class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
 					<avatar profile="call"></avatar>
 					
 					<div class="ListRowContent" style="display:inline-block;margin-right:2px">
@@ -59,19 +64,17 @@
 							<div class="ParkedCallDisplayName">{{ ::call.displayName }}</div>
 							<div>{{ ::call.phone}}</div>
 						</div>
-							<div timer="call.created" class="timer"></div>
+						<div timer="call.created" class="timer"></div>
 					</div>
 				</div>
 				
 			</div>		
 		</div>
 
-		<resizer ng-if="parkedCalls.length > 0"></resizer>
-	</div>
+		<resizer ng-if-end ng-if="parkedCalls.length > 0"></resizer>
 
-	<!-- contacts -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetContact" droppable="Call" dragger>
-		<a href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
+		<!-- contacts -->
+		<a ng-if="::gadget.value.factoryId == 'GadgetContact'" href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="titleHeader" ng-if="::contact.primaryExtension">{{ ::gadget.data.displayName }}</div>
@@ -91,11 +94,9 @@
 				</avatar>
 			</div>	
 		</a>
-	</div>
 
-	<!-- groups -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetGroup" dragger>
-		<a href="#/group/{{::gadget.data.xpid}}" class="Header">
+		<!-- groups -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetGroup'" href="#/group/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="titleHeader">{{ ::gadget.data.name }}</div>
@@ -115,19 +116,17 @@
 							{{ ::member.fullProfile.displayName }}
 							<br/>
 							<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-							<div class="status">{{(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</div>
+							<div class="status" ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></div>
 						</div>
 					</div>
 				</a>
 			</div>
 		</div>
 		
-		<resizer></resizer>
-	</div>
+		<resizer ng-if-end></resizer>
 
-	<!-- conferences -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetConferenceRoom" droppable="Contact,Call" dragger>
-		<a href="#/conference/{{::gadget.data.xpid}}" class="Header">
+		<!-- conferences -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetConferenceRoom'" href="#/conference/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title" ng-switch="gadget.data.members.length">
 				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
@@ -146,7 +145,6 @@
 					<div class="ListRowContent" dockable="member.fullProfile">
 						<div class="ConfMemberRowTitle">
 							<div class="name">{{ ::member.fullProfile.displayName || member.displayName }}</div>
-<!-- 							<br/> -->
 							<div class="">{{ ::member.fullProfile.primaryExtension || member.phone }}</div>
 						</div>
 						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt || member.started"></div>
@@ -162,12 +160,10 @@
 			</div>
 		</div>
 		
-		<resizer></resizer>
-	</div>
+		<resizer ng-if-end></resizer>
 
-	<!-- queues -->
-	<div class="Gadget" ng-repeat="gadget in gadgets.GadgetQueueStat" dragger>
-		<a href="#/queue/{{::gadget.data.xpid}}" class="Header">
+		<!-- queues -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetQueueStat'" href="#/queue/{{::gadget.data.xpid}}" class="Header">
 			<avatar profile="gadget.data"></avatar>
 			<div class="Title">
 				<div class="Name">{{ ::gadget.data.name }}</div>
@@ -175,7 +171,7 @@
 			</div>
 		</a>
 		
-		<div class="Content">
+		<div ng-if-end class="Content">
 			<div class="List Stats">
 				<div ng-class="{'RedText': queueThresholds.waiting && gadget.data.info.waiting > queueThresholds.waiting}">
 					<strong>{{ gadget.data.info.waiting }}</strong> 
@@ -205,11 +201,10 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
-
-	
 </div>
-<!---->
+
 <div class="FileUploadStatus" ng-if="upload_progress > 0">
 	<div class="progress_text text-style"><span >Progress</span></div>
 	<div class="Gadget">

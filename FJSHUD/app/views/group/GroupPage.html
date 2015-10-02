@@ -5,35 +5,28 @@
 </div>
 
 <div class="ListView fj-scrollable page">   
-        <p style="font-size:12px;margin:10px" ng-if="group.originator == ''"> {{::verbage.tab_shows_group_call_members}} </p>
+    <p style="font-size:12px;margin:10px" ng-if="group.originator == ''"> {{::verbage.tab_shows_group_call_members}} </p>
 
-        <div ng-if="group.originator != ''">
-            <div id="" style="margin:10px;padding:5px;width:97%;background-color:#EDEDED"> 
-                <div style="color:#009cff;font-weight:bold;font-size:.7em">{{::group.name}} {{ ::verbage.group_page}}</div>
-                <i style="margin-top:0px;font-size:.7em">{{::verbage.created_by }} {{group.originator}}</i>
-            </div>
+    <div ng-if="group.originator != ''">
+        <div id="" style="margin:10px;padding:5px;width:97%;background-color:#EDEDED"> 
+            <div style="color:#009cff;font-weight:bold;font-size:.7em">{{::group.name}} {{ ::verbage.group_page}}</div>
+            <i style="margin-top:0px;font-size:.7em">{{::verbage.created_by }} {{group.originator}}</i>
+        </div>
 
-            <!--ng-repeat= "member in members | filter: {displayName:query}"-->
-            <a href="#/contact/{{ ::member.fullProfile.xpid }}" class=" GroupRow ListRowFirst ListRow-Contact vmsection ng-class:{'last': $last}" style="height:50px;margin:auto" ng-repeat="member in members | filter: memberFilter() track by member.xpid"> 
-            
-                <avatar profile="member"></avatar>
-
-                <div class="vminfo"> 
-                    <div class="displayName">
-                        <p class="ListDisplayName">
-                            <span> {{::member.fullProfile.displayName }} </span>
-                        </p>
-                        <div class="vmalternate">
-                           <div class="vmtime1">#{{ ::member.fullProfile.primaryExtension }}</div>
-                           <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension(member.fullProfile.primaryExtension)"></input>
-                        </div>
-                    </div> 
-                    <div class="footnote">
-                        <div class="QueueStatus IconDisplay XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
-                        <div class="ListRowStatusText">{{verbage[member.fullProfile.hud_status]}}</div>
-                    </div>
-                    
+        <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in members | filter: memberFilter() track by member.xpid" droppable="Call">        
+            <a ng-href="#/contact/{{::member.contactId}}">
+                <avatar profile="member.fullProfile"></avatar>
+                <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
+                    <a class="ListRowTitle GroupListRowTitle" ng-href="#/contact/{{::member.contactId}}">
+                        <span class="GroupPageDisplayName"> {{ ::member.fullProfile.displayName }} </span>
+                        <br/>
+                        <div class="ListRowStatusIcon ListRowStatusIconGroupPage XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+                        {{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}
+                    </a>
+                    <div class="ListRowStatus extension">#{{ ::member.fullProfile.primaryExtension }}</div>
                 </div>
             </a>
         </div>
+
     </div>
+</div>
