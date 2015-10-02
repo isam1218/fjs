@@ -112,6 +112,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 		
 
 		$http.post(fjs.CONFIG.SERVER.ppsServer + getURL('userListToWorkspace') + '&workspaceId=' + workspace.workspace_id + '&fonalityUserList=' + users.join(',')).success(function(data) {
+				console.log(data);
 				if (data && data.status) {
 					if (data.status == 0)
 						$scope.inviteStatus = 'All contacts were added.';
@@ -133,6 +134,8 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 						
 						$scope.inviteStatus += users.join(', ') + '.';
 					}
+					if($scope.addedContacts.length == 0)
+						$scope.inviteStatus ="There were no contacts added";
 				}
 				
 				$scope.addedContacts = [];

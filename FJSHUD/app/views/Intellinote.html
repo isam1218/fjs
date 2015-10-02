@@ -32,7 +32,7 @@
 				</div>				
 				
 				<div class="Contacts widget-zoom-contacts">
-					<div class="ListRow Small" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
+					<div class="ListRow Small " data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid ">
 						<avatar profile="contact" widget="zoom"></avatar>
 						<div class="ListRowContent" dockable="contact">
 							<div class="ZoomRowTitle">
@@ -55,7 +55,7 @@
 						<div class="Down">&#9660;</div>
 					</div>
 					
-					<div class="List" ng-show="showInvite">
+					<div class="List fj-scrollable" ng-show="showInvite">
 						<div class="Header">
 							Invite to Workspace
 							<div class="Down">&#9660;</div>
