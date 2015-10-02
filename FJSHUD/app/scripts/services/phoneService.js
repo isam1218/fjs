@@ -1,6 +1,7 @@
 hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService', 'StorageService','GroupService','ContactService','NotificationService','$routeParams','NtpService',
 	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams,ntpService) {
-
+    
+	var top_window = window.top;	
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
 	var phonePlugin;
 	var version;
@@ -30,6 +31,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.meModel = {};
 	var isRegistered = false;
 	var isAlertShown = false;
+	var browser_on_focus = true;
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
@@ -92,12 +94,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					for(var detail in callsDetails){
 						context.displayCallAlert(callsDetails[detail]);
 					}
-				}else{
-					if(notificationCache.html && notificationCache.html != '' && !isAlertShown){
-						if(($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls))){
+				}else{					
+						if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(sipCalls)) && isAlertShown){
 							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 						}
-					}					
 				}
 			}
 			
@@ -137,9 +137,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			isDocumentHidden(true);
 		});
 		document.attachEvent("onBlur",function(){
-				isDocumentHidden(false);
-			}
-		);
+			isDocumentHidden(false);			
+		});
 		window.attachEvent("onFocus",function(){
 			isDocumentHidden(true);
 
@@ -147,7 +146,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		window.attachEvent("onBlur",function(){
 			isDocumentHidden(false);
 		});
-
+		//attach events to the browser
+		if(top_window == window.self)
+		{	
+			top_window.attachEvent("onFocus",function(){		
+				console.log("onFocus - top_window");
+				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					browser_on_focus = false;					
+			});
+			top_window.attachEvent("onBlur",function(){		
+				console.log("onBlur - top_window");
+				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					browser_on_focus = true;
+			});
+		}
 	}else{
 		document.addEventListener("visibilitychange", isDocumentHidden, false);
 		document.addEventListener("focus", function(){
@@ -162,7 +174,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		window.addEventListener("blur", function(){
 			isDocumentHidden(false);
 		}, false);
-	
+		//attach events to the browser
+		if(top_window == window.self)
+		{	
+			top_window.addEventListener("focus", function(){	
+				console.log("focus - top_window");
+				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					browser_on_focus = false;
+			}, false);
+			top_window.addEventListener("blur", function(){		
+				console.log("blur - top_window");
+				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					browser_on_focus = true;
+			}, false);	
+		}	
 	}
 
 	//this will attempt to send the web phone actions it will attempt three times before quitting
@@ -368,37 +393,50 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//these function will run through the settings for regular alerts and determine whether or not the alert should display
 	this.shouldAlertDisplay = function(){
-		var displayNotification = false;
+		var display_Notification = false;
 
 		if(settingsService.getSetting('alert_show') == 'true'){
 			if($rootScope.meModel.chat_status == 'busy' || $rootScope.meModel.chat_status == "dnd"){
 				if(settingsService.getSetting('hudmw_show_alerts_in_busy_mode') == 'true'){
 					if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
-						displayNotification = true;	
+						display_Notification = true;	
 					}else{
-						if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
-								displayNotification = true;	
-						}else{
-							displayNotification = false;
-						}		
+						if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){						
+								display_Notification = true;						
+						}						
+						else
+						{
+							display_Notification = false;
+						}							
 					}
 				}else{
-					displayNotification = false;
+					display_Notification = false;
 				}
 			}else{
 				if(settingsService.getSetting('hudmw_show_alerts_always') == 'true'){
-					displayNotification = true;	
+					display_Notification = true;	
 				}else{
-					if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){
-							displayNotification = true;	
-					}else{
-						displayNotification = false;
-					}		
+					if(document.visibilityState == "hidden" || document.hidden || !document.hasFocus()){				
+							display_Notification = true;					
+					}					
+					else{
+						display_Notification = false;
+					}						
 				}
+			}
+			if(settingsService.getSetting('hudmw_show_alerts_always') != 'true'){
+				if (browser_on_focus)
+				{
+					display_Notification = false;
+				}	
+				else
+				{					
+					display_Notification = true;
+				}	
 			}
 		}
 
-		return displayNotification;
+		return display_Notification;
 	};
 
 	//this method is used  for display the old Plugin (for safari,firefox and IE)
@@ -406,11 +444,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(!alertPlugin){
 			return;
 		}
-		var displayNotification = context.shouldAlertDisplay();
+		var display_Notification = context.shouldAlertDisplay();
 		
 		context.cacheNotification(content,width,height);
 					
-		if(alertPlugin && displayNotification){
+		if(alertPlugin && display_Notification ){
 				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
@@ -422,8 +460,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//this will display either HTML 5 notifications or the new webphone notifications (Chrome)
 	var displayWebphoneNotification = function(data,type, isNative){
-		var displayNotification = context.shouldAlertDisplay();
-		if(displayNotification){
+		var display_Notification = context.shouldAlertDisplay();
+		if(display_Notification){
 			if(isNative){
 				nservice.sendData(data,0,type);
 			}else{
@@ -739,7 +777,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(alertPlugin){
 			
 			alertPlugin.removeAlert();
-			isAlertShown = false;
+			//isAlertShown = false;
 		}
 	};
 	
