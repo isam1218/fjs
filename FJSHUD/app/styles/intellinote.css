@@ -18,7 +18,7 @@
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #00ad33;
+  color: #015d73;
   margin-bottom: 5px;
   text-transform: uppercase;
 }
@@ -85,7 +85,7 @@
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
-  background-color: #00ad33;
+  background-color: #015d73;
   margin: 20px 0;
   cursor: pointer;
 }
