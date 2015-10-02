@@ -115,6 +115,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}else{
 			tabInFocus = true;
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
+				//if the new notification service is running it will dismiss the incoming call
 				if(nservice.isEnabled()){
 					for(var detail in callsDetails){
 						nservice.dismiss('INCOMING_CALL',detail);
@@ -129,18 +130,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-	var messageSoftphone = function(data,retry){
-		if(retry == undefined)retry = 0;
-		if(context.webphone){
-			if(context.webphone.readyState == 1){
-				context.webphone.send(JSON.stringify(data));
-			}else{
-				if(retry > 3){
-					setTimeout(messageSoftphone(data,retry),5000);
-				}
-			} 
-		}
-	};
 	
 	if(document.attachEvent){
 		document.attachEvent("onVisibilitychange",isDocumentHidden);
@@ -176,6 +165,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	}
 
+	//this will attempt to send the web phone actions it will attempt three times before quitting
 	var messageSoftphone = function(data,retry){
 		if(retry == undefined)retry = 0;
 		if(context.webphone){
@@ -345,6 +335,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			}
 		}
 	};
+	//Given an Xpid we loop through the list of voicemails and broadcast to the controller that will play the voicemail
 	var playVm = function(xpid){
 		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
 			if (voicemails[i].xpid == xpid) {
@@ -375,7 +366,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 
 
-
+	//these function will run through the settings for regular alerts and determine whether or not the alert should display
 	this.shouldAlertDisplay = function(){
 		var displayNotification = false;
 
@@ -409,6 +400,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		return displayNotification;
 	};
+
+	//this method is used  for display the old Plugin (for safari,firefox and IE)
 	var displayNotification = function(content, width,height){
 		if(!alertPlugin){
 			return;
@@ -427,6 +420,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+	//this will display either HTML 5 notifications or the new webphone notifications (Chrome)
 	var displayWebphoneNotification = function(data,type, isNative){
 		var displayNotification = context.shouldAlertDisplay();
 		if(displayNotification){
@@ -438,7 +432,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-
+	//Call back used for the old alert
 	var onCallStateChanged = function(call){
 		status = parseInt(call.status);
         var data = {};
@@ -483,6 +477,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
+
+	//call back to verify account status of the old softphone.
    var accStatus = function(account_) {
 
             if (account_) {
