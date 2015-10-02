@@ -5091,15 +5091,14 @@ div.NewCall .XButton.XButtonNormal {
   margin-left: 0px;
 }
 .widget-zoom-contacts {
-  top: 30px;
+  top: 10px;
   position: relative;
-  width: 48%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 1 0;
   overflow-y: auto;
   overflow-x: hidden;
-  float: right;
   max-height: 55%;
 }
 .widget-zoom-contacts .ListRow {
