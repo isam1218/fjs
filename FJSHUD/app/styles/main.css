@@ -5197,7 +5197,7 @@ div.NewCall .XButton.XButtonNormal {
   }
 }
 .Widget.Intellinote .Right .Contacts {
-  max-height: 200px;
+  max-height: 120px;
   overflow-y: auto;
   font-size: 14px;
 }
@@ -5251,7 +5251,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Intellinote .Right .WorkspaceButton div {
   position: absolute;
-  top: 10%;
+  top: 15%;
   right: 0;
   height: 80%;
   border-left: 1px solid white;
