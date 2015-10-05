@@ -5,6 +5,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		var enabled = false;
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
 
+
+		//initialize the Notification service for the new webphone notifications
 		var initNSService = function(){
 			if(notifyPipe) return;
 

@@ -14,7 +14,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	groupService.getGroups().then(function(data) {
 		$scope.favorites = data.favorites;
 	});
-
+	
     $scope.sort = function(field) {
         if($scope.sortField != field) {
             $scope.sortField = field;

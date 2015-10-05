@@ -2,10 +2,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	var column;
 	var request;
 	
-	$scope.gadgets = {};
+	$scope.gadgets = [];
+	$scope.parkedCalls = [];
 	$scope.upload_time = 0;	
 	$scope.upload_progress = 0;
 	$scope.queueThresholds = {};
+	
+	$rootScope.dockIndex = 0;
 	
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
@@ -32,18 +35,14 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		for (var key in data) {
 			// look for gadgets
 			if (key.indexOf('GadgetConfig') != -1) {
-				// check for dupes
+				// check for dupes				
 				var found = false;
 				
-				for (var g in $scope.gadgets) {
-					for (var i = 0, len = $scope.gadgets[g].length; i < len; i++) {
-						if (key == $scope.gadgets[g][i].name) {
-							found = true;
-							break;
-						}
+				for (var i = 0, len = $scope.gadgets.length; i < len; i++) {
+					if (key == $scope.gadgets[i].name) {
+						found = true;
+						break;
 					}
-					
-					if (found) break;
 				}
 				
 				if (found) continue;
@@ -55,10 +54,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					data: {}
 				};
 				
-				// create new array for each type of gadget
-				if ($scope.gadgets[gadget.value.factoryId] === undefined)
-					$scope.gadgets[gadget.value.factoryId] = [];
-				
 				switch (gadget.value.factoryId) {
 					case 'GadgetContact':
 						gadget.data = contactService.getContact(gadget.value.entityId);
@@ -67,7 +62,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						gadget.data = groupService.getGroup(gadget.value.entityId);
 						break;
 					case 'GadgetConferenceRoom':
-						gadget.data = conferenceService.getConference(gadget.value.entityId);							
+						gadget.data = conferenceService.getConference(gadget.value.entityId);
 						break;
 					case 'GadgetQueueStat':
 						gadget.data = queueService.getQueue(gadget.value.entityId);
@@ -77,8 +72,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						break;
 				}
 				
-				if (gadget.data)
-					$scope.gadgets[gadget.value.factoryId].push(gadget);
+				if (gadget.data) {
+					$scope.gadgets.push(gadget);
+					
+					// update index
+					if (gadget.value.index >= $rootScope.dockIndex)
+						$rootScope.dockIndex = (gadget.value.index + 1);
+				}
 			}
 		}
 		
@@ -131,32 +131,46 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	};
 	
 	var makeDefault = function(name) {
-		$scope.gadgets[name] = [
-			{
-				name: 'GadgetConfig__empty_' + name + '_',
-				value: {
-					factoryId: name,
-					index: 1,
-					contextId: 'empty',
-					entityId: '',
-					config: {}
-				},
-				data: {}
-			}
-		];
+		// add gadget manually
+		$scope.gadgets.push({
+			name: 'GadgetConfig__empty_' + name + '_',
+			value: {
+				factoryId: name,
+				index: 1,
+				contextId: 'empty',
+				entityId: '',
+				config: {}
+			},
+			data: {}
+		});
+		
+		// bump up dock index
+		if ($rootScope.dockIndex <= 1)
+			$rootScope.dockIndex++;
 	};
 
 	// initial sync
 	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {		
 		updateDock(data[0]);
 		
-		// default gadgets
-		if (!$scope.gadgets['GadgetUserQueues']) {
-			makeDefault('GadgetUserQueues');
-			$scope.gadgets['GadgetUserQueues'][0].data = queueService.getMyQueues();
+		// check for default gadgets
+		var hasQueues = false;
+		var hasParked = false;
+		
+		for (var i = 0, len = $scope.gadgets.length; i < len; i++) {
+			if ($scope.gadgets[i].value.factoryId == 'GadgetUserQueues')
+				hasQueues = true;
+			
+			if ($scope.gadgets[i].value.factoryId == 'GadgetParkedCalls')
+				hasParked = true;
 		}
 		
-		if (!$scope.gadgets['GadgetParkedCalls'])
+		if (!hasQueues) {
+			makeDefault('GadgetUserQueues');
+			$scope.gadgets[$scope.gadgets.length-1].data = queueService.getMyQueues();
+		}
+		
+		if (!hasParked)
 			makeDefault('GadgetParkedCalls');
 		
 		// normal updates
@@ -164,31 +178,28 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			updateDock(data);
 		});
 	});
+  
+	$scope.getDroppableType = function(type) {
+		if (type == 'GadgetConferenceRoom')
+			return 'Contact,Call';
+		else if (type == 'GadgetParkedCalls' || type == 'GadgetContact')
+			return 'Call';
+		
+		return '';
+	};
 	
 	$scope.$on('delete_gadget', function(event, data) {
 		// remove from fdp
 		httpService.sendAction('settings', 'delete', {name: data});
 		
 		// remove from ui
-		for (var g in $scope.gadgets) {
-			for (var i = 0, len = $scope.gadgets[g].length; i < len; i++) {
-				if (data == $scope.gadgets[g][i].name) {
-					$scope.gadgets[g].splice(i, 1);
-					return;
-				}
+		for (var i = 0, len = $scope.gadgets.length; i < len; i++) {
+			if (data == $scope.gadgets[i].name) {
+				$scope.gadgets.splice(i, 1);
+				break;
 			}
 		}
 	});
-	
-	$scope.getContact = function(xpid) {
-		return contactService.getContact(xpid);
-	};
-
-	$scope.isObjectEmpty = function(object){
-		return !$.isEmptyObject(object);
-	};
-	
-	$scope.parkedCalls = [];
 	
 	$scope.$on('parkedcalls_synced',function(event,data){
 		for (var i = 0, len = data.length; i < len; i++){

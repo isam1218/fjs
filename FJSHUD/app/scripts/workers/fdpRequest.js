@@ -62,12 +62,11 @@ httpRequest.prototype.getParamData = function(data) {
  };
 
 httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
-
-
 	   var xmlhttp = this.getXmlHttp();
 
         xmlhttp.open(method,url);
 
+		xmlhttp.timeout = 60000; // 1-minue timeout
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
         if (headers) {
@@ -77,6 +76,7 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
                 xmlhttp.setRequestHeader(key,headers[key]);
             }
         }
+		
         xmlhttp.onreadystatechange = function() {
 			// waaaaiiiiiit!
             if (xmlhttp.readyState == 4) {
@@ -90,8 +90,7 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
 						}
 					}
 					catch (e) {
-
-						callback(/**@type XMLHttpRequest*/{"status":0, responseText:"", aborted:true}, "", false);
+						callback({"status":0, responseText:"", aborted:true}, "", false);
 					}
 				}
 			}

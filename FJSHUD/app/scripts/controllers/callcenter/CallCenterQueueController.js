@@ -60,10 +60,18 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
   $scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
   
   // default view
-  if ($scope.selected == 'My Queue')
-	  $scope.viewIcon = false;
+  if ($scope.selected == 'myqueue')
+    $scope.viewIcon = localStorage['myqueue_ViewIcon_of_' + $rootScope.myPid] ? JSON.parse(localStorage['myqueue_ViewIcon_of_' + $rootScope.myPid]) : true;
   else
-	  $scope.viewIcon = true;
+    $scope.viewIcon = localStorage['allqueues_ViewIcon_of_' + $rootScope.myPid] ? JSON.parse(localStorage['allqueues_ViewIcon_of_' + $rootScope.myPid]) : true;
+  
+  $scope.setViewIcon = function(){
+    $scope.viewIcon = !$scope.viewIcon;
+    if ($scope.selected == 'myqueue')
+      localStorage['myqueue_ViewIcon_of_' + $rootScope.myPid] = JSON.stringify($scope.viewIcon);
+    else
+      localStorage['allqueues_ViewIcon_of_' + $rootScope.myPid] = JSON.stringify($scope.viewIcon);
+  };
   
   var queue_option = {};
 
