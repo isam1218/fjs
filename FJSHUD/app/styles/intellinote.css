@@ -33,12 +33,9 @@
 @-moz-document url-prefix() {
   .Widget.Intellinote .Right .SearchHolder {
     position: relative;
-    margin-bottom: 30px;
   }
 }
 .Widget.Intellinote .Right .Contacts {
-  max-height: 120px;
-  overflow-y: auto;
   font-size: 14px;
 }
 .Widget.Intellinote .Right .Workspaces {
