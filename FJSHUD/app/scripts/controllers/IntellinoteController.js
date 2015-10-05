@@ -3,6 +3,10 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	$scope.workspaces = [];
 	$scope.showInvite = false;
 	$scope.inviteStatus = '';
+	$scope.disableInvite = true;
+	$scope.workspaceBtnColor =  "#b5b5b5";
+	$scope.myColor = {};
+	$scope.myColor.myVar ='WorkspaceButtonDisabled';
 	
 	// pps url
 	var getURL = function(action) {
@@ -64,6 +68,14 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 		}
 		
     $scope.addedContacts.push(contact);
+    if($scope.addedContacts.length > 0){
+    $scope.disableInvite = false;
+    $scope.myColor.myVar ='WorkspaceButtonEnabled';
+	}if($scope.addedContacts.length == 0){
+    $scope.disableInvite = true;
+    $scope.myColor.myVar ='WorkspaceButtonDisabled';
+	}
+	
   };
 
   $scope.deleteContact = function(xpid){
@@ -74,10 +86,20 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 
 	    }
 	  }
+	  if($scope.addedContacts.length > 0){
+    $scope.disableInvite = false;
+    $scope.myColor.myVar ='WorkspaceButtonEnabled';
+	}if($scope.addedContacts.length == 0){
+    $scope.disableInvite = true;
+    $scope.myColor.myVar ='WorkspaceButtonDisabled';
+	}
+
   };
 	
-	$scope.showList = function($event) {
+	$scope.showList = function($event,color) {
 
+    
+	
 			$http.get(fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1').
 			  success(function(data, status, headers, config) {
 			   if (data && data.workspace_list) {

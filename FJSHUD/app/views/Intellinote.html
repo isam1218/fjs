@@ -50,7 +50,7 @@
 				</div>
 				
 				<div class="Workspaces">
-					<div class="WorkspaceButton" ng-click="showList($event)">
+					<div class="{{myColor.myVar}}"  ng-disabled="disableInvite" ng-click="disableInvite || showList($event)">
 						Invite to Workspace
 						<div class="Down">&#9660;</div>
 					</div>

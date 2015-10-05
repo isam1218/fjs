@@ -103,3 +103,45 @@
 .Widget.Intellinote .Right .WorkspaceButton div.Down {
   padding-top: 4px;
 }
+.Widget.Intellinote .Right .WorkspaceButtonEnabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled div.Down {
+  padding-top: 4px;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #b5b5b5;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled div.Down {
+  padding-top: 4px;
+}
