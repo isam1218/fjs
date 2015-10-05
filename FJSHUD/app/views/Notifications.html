@@ -62,7 +62,7 @@
 						</div>
 
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
-							<span class="XButton chatNotification" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+							<span class="XButton chatNotification" ng-if="::message.fullProfile != null" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
 							<span class="XButton XButtonGreen" ng-click="makeCall(message);remove_notification(message.xpid)">{{::verbage.Call}}</span>	
 						</div>
 						

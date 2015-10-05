@@ -79,7 +79,7 @@
 						profile="message.fullProfile" 
 						type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 					</avatar>
-				
+
 					<div class="LeftBarNotificationMessageSection">
 						<div onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}" class="chatNotification">
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
@@ -111,7 +111,7 @@
 						</div>
 
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
-							<div class="XButton chatNotification" onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}">{{::verbage.chat}}</div>
+							<div class="XButton chatNotification" ng-if="::message.fullProfile != null" onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}">{{::verbage.chat}}</div>
 							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/callAndRemove?{{::message.xpid}}&{{::message.phone}}">{{::verbage.Call}}</div>	
 						</div>
 						
