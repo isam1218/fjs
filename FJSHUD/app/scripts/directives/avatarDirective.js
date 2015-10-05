@@ -1,4 +1,4 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', function($rootScope, $parse, $timeout, settingsService, httpService) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', 'GroupService', function($rootScope, $parse, $timeout, settingsService, httpService, groupService) {
 	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
 	var timer;
@@ -20,33 +20,50 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		template: '<div class="Avatar"></div>',
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
-			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
+
+			// retrieval of group avatar requires substituting in the group profile rather than fullProfile property
+			if (scope.$parent != undefined && scope.$parent.message != undefined && scope.$parent.message.audience == 'group'){
+				var groupId = scope.$parent.message.context.split(':')[1];
+				var ourGroup = groupService.getGroup(groupId);
+			} else if (attrs.id == "OverlayAvatarId" && scope.message.audience == 'group'){
+				var groupId = scope.message.context.split(':')[1];
+				var ourGroup = groupService.getGroup(groupId);
+			}
+			var profile = ourGroup ? ourGroup : obj && obj.fullProfile ? obj.fullProfile : obj;
 			var context, widget, rect;
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
 			}
-			
+
 			/**
 				AVATAR IMAGES
 			*/
-			
 			// change class for special circle avatar
 			if (attrs.type) {
 				var classy = 'CallAvatar CallAvatar_';
-				
-				if (attrs.type == 3)
+				if (attrs.type == 3){
 					classy += 'Queue';
-				else if ((profile && profile.displayName) || attrs.type == 4 || attrs.type == 0)
-					classy += 'Office';
-				else
+					element.addClass(classy);
+				}
+				else if ((profile && profile.displayName) ||  attrs.type == 0){
+					// if group --> don't want circle avatar, also take into account if on external user tabs (will get JS error if don't do 1st 3 checks for recording, call, parent.voicemail, parent.contact, parent.gadget)
+					// console.error('scope for ext - ', scope);
+					if (scope.recording || scope.call || scope.$parent.voicemail || scope.$parent.contact || scope.$parent.gadget || scope.$parent != undefined && scope.$parent.message != undefined && scope.$parent.message.audience == 'group' || scope.message.audience == 'group'){
+						element.addClass('AvatarNormal');
+					}else {
+						classy += 'Office';
+						element.addClass(classy)
+					}
+				}
+				else if (attrs.type == 5){
 					classy += 'External';
-				
-				element.addClass(classy);
+					element.addClass(classy)
+				}
 			}
 			else
 				element.addClass('AvatarNormal');
-			
+
 			// not a valid object, but still show an avatar
 			if (!profile || !profile.xpid) {
 				if (attrs.profile && attrs.profile == 4)

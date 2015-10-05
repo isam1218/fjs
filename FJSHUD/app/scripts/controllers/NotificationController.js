@@ -266,6 +266,8 @@ hudweb.controller('NotificationController',
   };
 
   $scope.go_to_notification_chat = function(message){
+    console.error('message obj - ', message);
+
     var endPath;
     var calllogPath = '/calllog/calllog';
 
@@ -287,7 +289,10 @@ hudweb.controller('NotificationController',
         endPath = "/" + message.audience + "/" + xpid + '/chat';
         break;
       case 'missed-call':
-        if (message.senderId || message.fullProfile)
+        // external contact --> go to voicemails tab
+        if (message.fullProfile && message.fullProfile.primaryExtension == "")
+          endPath = "/" + message.audience + "/" + xpid + '/voicemails'
+        else if (message.senderId || message.fullProfile)
           endPath = "/" + message.audience + "/" + xpid + '/chat';
         else
           endPath = calllogPath;
@@ -822,6 +827,7 @@ hudweb.controller('NotificationController',
         } else {
                // otherwise add to todaysNotes
                $scope.todaysNotifications.push(item);
+
         }
 
         if (displayDesktopAlert){
@@ -898,6 +904,9 @@ hudweb.controller('NotificationController',
         var vm = phoneService.getVoiceMail(notification.vmId);
         notification.vm = vm;
         notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+        // if displayname is a phone number -> add the hypens to make external notifications consistent...
+        if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
+          notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
         break;
       case 'chat':
         notification.label = 'chat message';
