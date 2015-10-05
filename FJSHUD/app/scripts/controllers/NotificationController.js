@@ -266,7 +266,6 @@ hudweb.controller('NotificationController',
   };
 
   $scope.go_to_notification_chat = function(message){
-    console.error('message obj - ', message);
 
     var endPath;
     var calllogPath = '/calllog/calllog';
