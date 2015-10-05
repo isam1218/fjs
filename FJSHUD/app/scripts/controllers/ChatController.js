@@ -349,9 +349,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		if (index === 0){
 			return true;
 		} else {
-			// if same msg owner on same day  --> do not display
 			if(curMsgDate && prvMsgDate){
-				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid){
+        var curHour = parseInt(moment(curMsgDate).format('H mm').split(' ')[0]);
+        var prvHour = parseInt(moment(prvMsgDate).format('H mm').split(' ')[0]);
+        var hourDiff = curHour - prvHour;
+        // if same owner on same day + w/in 2hrs 59 min -> do not display name/avatar/time
+				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid && hourDiff < 3){
 					return false;
 				} else {
 					// otherwise display
