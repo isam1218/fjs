@@ -5168,13 +5168,21 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Intellinote .Logo {
   margin-left: 20px;
 }
-.Widget.Intellinote .Section {
-  min-height: 110px;
-}
 .Widget.Intellinote .Left {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
   float: left;
   width: 48%;
   background-color: #f9f9f9;
+}
+.Widget.Intellinote .Left .Section {
+  min-height: 110px;
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
@@ -5183,9 +5191,21 @@ div.NewCall .XButton.XButtonNormal {
   text-transform: uppercase;
 }
 .Widget.Intellinote .Right {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  margin-top: 20px;
   float: right;
   width: 48%;
   clear: right;
+}
+.Widget.Intellinote .Right .Section {
+  min-height: 110px;
 }
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
@@ -5245,7 +5265,7 @@ div.NewCall .XButton.XButtonNormal {
   color: white;
   padding: 7px 0 7px 30px;
   background-color: #015d73;
-  margin: 20px 0;
+  margin: 7px 0;
   cursor: pointer;
 }
 .Widget.Intellinote .Right .WorkspaceButton div {

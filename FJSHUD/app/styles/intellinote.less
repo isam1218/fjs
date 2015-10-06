@@ -10,11 +10,22 @@
 		margin-left: 20px;
 	}
 	
-	.Section {
-		min-height: 110px;
-	}
+	
+
+	
 	
 	.Left {
+	    display: flex;
+		display:-webkit-flex;
+	    flex-direction: column;
+	    -webkit-flex-direction: column;
+	    flex: 1; 
+	    flex:1 1 0;
+	    -webkit-flex:1;
+	    -ms-flex:1;
+		.Section {
+		min-height: 110px;
+		}
 		float: left;
 		width: 48%;
 		background-color: #f9f9f9;
@@ -28,6 +39,18 @@
 	}
 	
 	.Right {
+		display: flex;
+		display:-webkit-flex;
+	    flex-direction: column;
+	    -webkit-flex-direction: column;
+	    flex: 1; 
+	    flex:1 1 0;
+	    -webkit-flex:1;
+	    -ms-flex:1;
+        margin-top: 20px;
+		.Section {
+		min-height: 110px;
+	}
 		float: right;
 		width: 48%;
 		clear: right;
@@ -103,7 +126,7 @@
 			color: white;
 			padding: 7px 0 7px 30px;
 			background-color: #015d73;
-			margin: 20px 0;
+			margin: 7px 0;
 			cursor: pointer;
 			
 			div {

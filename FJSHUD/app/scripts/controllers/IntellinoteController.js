@@ -4,9 +4,26 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	$scope.showInvite = false;
 	$scope.inviteStatus = '';
 	$scope.disableInvite = true;
-	$scope.workspaceBtnColor =  "#b5b5b5";
+	
 	$scope.myColor = {};
-	$scope.myColor.myVar ='WorkspaceButtonDisabled';
+	$scope.myColor.myVar ='WorkspaceButtonEnabled';
+	
+	$scope.removeText = function(){
+		$scope.inviteStatus = "";
+	}
+	$scope.checkContacts = function(){
+		if($scope.addedContacts.length > 0){
+    $scope.disableInvite = false;
+    $scope.myColor.myVar ='WorkspaceButtonEnabled';
+	}if($scope.addedContacts.length == 0){
+    $scope.disableInvite = true;
+    $scope.myColor.myVar ='WorkspaceButtonDisabled';
+	}
+	$scope.inviteStatus = "";
+	}
+
+
+	
 	
 	// pps url
 	var getURL = function(action) {
@@ -91,7 +108,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
     $scope.myColor.myVar ='WorkspaceButtonEnabled';
 	}if($scope.addedContacts.length == 0){
     $scope.disableInvite = true;
-    $scope.myColor.myVar ='WorkspaceButtonDisabled';
+    //$scope.myColor.myVar ='WorkspaceButtonDisabled';
 	}
 
   };
@@ -136,8 +153,10 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 		$http.post(fjs.CONFIG.SERVER.ppsServer + getURL('userListToWorkspace') + '&workspaceId=' + workspace.workspace_id + '&fonalityUserList=' + users.join(',')).success(function(data) {
 				console.log(data);
 				if (data && data.status) {
-					if (data.status == 0)
+					if (data.status == 0){
 						$scope.inviteStatus = 'All contacts were added.';
+						$scope.disableInvite = true;
+					}
 					else if (data.status == -1)
 						$scope.inviteStatus = 'Failed to add contacts.';
 					else if (data.user && data.user.length > 0) {
@@ -156,8 +175,8 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 						
 						$scope.inviteStatus += users.join(', ') + '.';
 					}
-					if($scope.addedContacts.length == 0)
-						$scope.inviteStatus ="There were no contacts added";
+
+					
 				}
 				
 				$scope.addedContacts = [];
