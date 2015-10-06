@@ -12,11 +12,12 @@
 			<div class="Left">
 				<div class="Section">
 					<h4>Intellinote Home</h4>
-					Users can directly access their Intellinote application by launching it directly from here. No additional login required.
+					Users can directly access their Intellinote home page.
 				</div>
-				
+				<div class="SectionInvite">
 				<h4>Invite</h4>
 				Users can add individuals and groups.
+				</div>
 			</div>
 			
 			<div class="Right">
@@ -26,9 +27,9 @@
 						<div>&#9654;</div>
 					</div>
 				</div>
-				
+				<div class="SectionWorkspace">
 				<div class="SearchHolder">
-					<input type="search" ng-focus="removeText()"  ng-model-options="{debounce: 200}" style="border-color:#015d73" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+					<input type="search" ng-focus="removeText()"  ng-model-options="{debounce: 200}" style="border:1px solid #015d73" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
 				</div>				
 				<div id="contacts-height" style="max-height:120px;overflow-y:auto">
 				<div class="Contacts widget-zoom-contacts" style="float:none;width:100%;max-height:none">
@@ -40,7 +41,7 @@
 								<div class="link">#{{::contact.primaryExtension }}</div>
 							</div>
 							<div class="ZoomRowStatus">
-								<div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div>
+								<!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
 								<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
 								<div class="ListRowDesc">{{contact.hud_status}}</div>
 							</div>
@@ -69,6 +70,7 @@
 						</div>
 					</div>
 				</div>
+			</div>
 				
 				<div ng-bind-html="inviteStatus"></div>
 			</div>
