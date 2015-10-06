@@ -59,73 +59,86 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					// dock new item
 					if ($(this).hasClass('InnerDock') && ui.draggable[0].attributes.dockable) {
 						// can't dock yourself
-						if (obj.xpid == $rootScope.myPid)
-							return;
+						if (obj.xpid != $rootScope.myPid) {						
+							var rect = document.getElementById('InnerDock').getBoundingClientRect();
 						
-						var rect = document.getElementById('InnerDock').getBoundingClientRect();
-					
-						var data = {
-							name: 'GadgetConfig__empty_Gadget' + type + '_' + obj.xpid,
-							value: JSON.stringify({
-								"contextId": "empty",
-								"factoryId": "Gadget" + type,
-								"entityId": obj.xpid,
-								"config": {
-									"x": (ui.position.left - rect.left)/rect.width*100, 
-									"y": (ui.position.top - rect.top)/rect.height*100
-								},
-								"index": $rootScope.dockIndex
-							})
-						};
-						
-						httpService.sendAction('settings', 'update', data);
+							var data = {
+								name: 'GadgetConfig__empty_Gadget' + type + '_' + obj.xpid,
+								value: JSON.stringify({
+									"contextId": "empty",
+									"factoryId": "Gadget" + type,
+									"entityId": obj.xpid,
+									"config": {
+										"x": (ui.position.left - rect.left)/rect.width*100, 
+										"y": (ui.position.top - rect.top)/rect.height*100
+									},
+									"index": $rootScope.dockIndex
+								})
+							};
+							
+							httpService.sendAction('settings', 'update', data);
+						}
 					}
 					// start conference via active call
 					else if (scope.$parent.currentCall) {
-						conferenceService.getConferences().then(function(data) {
-							var conferences = data.conferences;
-							var found = null;
-							var len = conferences.length;
+						var currentConf = scope.$parent.currentCall.details.conferenceId;
+						
+						// already on a conference call
+						if (currentConf) {
+							httpService.sendAction('conferences', 'joinContact', {
+								conferenceId: currentConf,
+								contactId: obj.xpid
+							});
 							
-							// find first empty room on same server
-							for (var i = 0; i < len; i++) {
-								if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && conferences[i].status && (!conferences[i].members || conferences[i].members.length == 0)) {
-									found = conferences[i].xpid;
-									break;
-								}
-							}
-							
-							// try again for linked server
-							if (!found) {
+							$location.path('/conference/' + currentConf + '/currentcall');
+						}
+						// new conference
+						else {
+							conferenceService.getConferences().then(function(data) {
+								var conferences = data.conferences;
+								var found = null;
+								var len = conferences.length;
+								
+								// find first empty room on same server
 								for (var i = 0; i < len; i++) {
-									// find first room on same server
-									if (conferences[i].status && !conferences[i].members || conferences[i].members.length == 0) {
+									if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1 && conferences[i].status && (!conferences[i].members || conferences[i].members.length == 0)) {
 										found = conferences[i].xpid;
 										break;
 									}
 								}
-							}
-							
-							if (found) {
-								// transfer existing call
-								httpService.sendAction('mycalls', 'transferToConference', {
-									mycallId: scope.$parent.currentCall.xpid,
-									conferenceId: found
-								});
 								
-								// add a brief timeout before adding the second user to the conference
-								timeout = setTimeout(function() {
-									httpService.sendAction('conferences', 'joinContact', {
-										conferenceId: found,
-										contactId: obj.xpid
+								// try again for linked server
+								if (!found) {
+									for (var i = 0; i < len; i++) {
+										// find first room on same server
+										if (conferences[i].status && !conferences[i].members || conferences[i].members.length == 0) {
+											found = conferences[i].xpid;
+											break;
+										}
+									}
+								}
+								
+								if (found) {
+									// transfer existing call
+									httpService.sendAction('mycalls', 'transferToConference', {
+										mycallId: scope.$parent.currentCall.xpid,
+										conferenceId: found
 									});
+									
+									// add a brief timeout before adding the second user to the conference
+									timeout = setTimeout(function() {
+										httpService.sendAction('conferences', 'joinContact', {
+											conferenceId: found,
+											contactId: obj.xpid
+										});
 
-								}, 2000);
-								
-								
-								$location.path('/conference/' + found + '/currentcall');
-							}
-						});
+									}, 2000);
+									
+									
+									$location.path('/conference/' + found + '/currentcall');
+								}
+							});
+						}
 					}
 					// join conference normally
 					else if (scope.conference || (scope.item && scope.item.recent_type == 'conference') || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
@@ -155,24 +168,24 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					// transfer call
 					else {
 						// check if I have isXFerFromIsEnabled personal permission...
-						if (!settingsService.getPermission('canTransferFrom'))
-							return;
-						// contact id comes from multiple places
-						var xpid;
-						
-						if (scope.contact)
-							xpid = scope.contact.xpid;
-						else if (scope.member)
-							xpid = scope.member.contactId;
-						else if (scope.gadget)
-							xpid = scope.gadget.data.xpid;
-						else if (scope.item)
-							xpid = scope.item.xpid;
-						
-						httpService.sendAction('calls', 'transferToContact', {
-							fromContactId: $rootScope.myPid,
-							toContactId: xpid
-						});
+						if (settingsService.getPermission('canTransferFrom')) {
+							var xpid;
+							
+							// contact id comes from multiple places
+							if (scope.contact)
+								xpid = scope.contact.xpid;
+							else if (scope.member)
+								xpid = scope.member.contactId;
+							else if (scope.gadget)
+								xpid = scope.gadget.data.xpid;
+							else if (scope.item)
+								xpid = scope.item.xpid;
+							
+							httpService.sendAction('calls', 'transferToContact', {
+								fromContactId: $rootScope.myPid,
+								toContactId: xpid
+							});
+						}
 					}
 					
 					// prevent sibling overlap
