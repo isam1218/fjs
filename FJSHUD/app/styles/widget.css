@@ -543,7 +543,7 @@
 .WidgetTabBarButton .arrow {
   display: none;
   position: absolute;
-  bottom: -1px;
+  bottom: 2px;
   left: 50%;
   margin-left: -7px;
   width: 0;
