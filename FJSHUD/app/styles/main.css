@@ -5093,7 +5093,8 @@ div.NewCall .XButton.XButtonNormal {
 .widget-zoom-contacts {
   top: 10px;
   position: relative;
-  width: 100%;
+  width: 48%;
+  float: right;
   display: flex;
   flex-direction: column;
   flex: 1 1 0;

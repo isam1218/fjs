@@ -31,7 +31,7 @@
 					<input type="search" ng-focus="removeText()"  ng-model-options="{debounce: 200}" style="border-color:#015d73" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
 				</div>				
 				<div id="contacts-height" style="max-height:120px;overflow-y:auto">
-				<div class="Contacts widget-zoom-contacts">
+				<div class="Contacts widget-zoom-contacts" style="float:none;width:100%;max-height:none">
 					<div class="ListRow Small " data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid ">
 						<avatar profile="contact" widget="zoom"></avatar>
 						<div class="ListRowContent" dockable="contact">
