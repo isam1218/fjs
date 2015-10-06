@@ -6,7 +6,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	$scope.disableInvite = true;
 	
 	$scope.myColor = {};
-	$scope.myColor.myVar ='WorkspaceButtonEnabled';
+	$scope.myColor.myVar ='WorkspaceButtonDisabled';
 	
 	$scope.removeText = function(){
 		$scope.inviteStatus = "";
@@ -108,7 +108,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
     $scope.myColor.myVar ='WorkspaceButtonEnabled';
 	}if($scope.addedContacts.length == 0){
     $scope.disableInvite = true;
-    //$scope.myColor.myVar ='WorkspaceButtonDisabled';
+    $scope.myColor.myVar ='WorkspaceButtonDisabled';
 	}
 
   };
@@ -156,6 +156,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 					if (data.status == 0){
 						$scope.inviteStatus = 'All contacts were added.';
 						$scope.disableInvite = true;
+						$scope.myColor.myVar ='WorkspaceButtonDisabled';
 					}
 					else if (data.status == -1)
 						$scope.inviteStatus = 'Failed to add contacts.';
