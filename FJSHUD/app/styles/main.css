@@ -5236,6 +5236,20 @@ div.NewCall .XButton.XButtonNormal {
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
 }
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay {
+  left: -10px;
+  width: 240px;
+  padding-left: 10px;
+  border-radius: 0px;
+  border-color: #015d73;
+  padding-right: 10px;
+}
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Header {
+  color: #015d73;
+  width: 220px;
+  margin-left: 13px;
+  padding-bottom: 9px;
+}
 .Widget.Intellinote .Right .SearchHolder input {
   width: 100%;
   border-radius: 0px;
