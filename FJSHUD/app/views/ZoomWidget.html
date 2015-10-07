@@ -60,17 +60,26 @@
 <div id="btnContainer">
     <div class="ListSectionBtn">
         <div id="scheduleMeetingBtn" >
-        <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting</button>
+       <!--  <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting<div>&#9654;</div></button> -->
+        <div class="WorkspaceButton" ng-click="open('lg')" style="padding-left:40px">
+                        Schedule Meeting
+                        <div>&#9654;</div>
+                    </div>
+
        </div>
     </div>
     <div class="ListSectionBtn">
         <div id="joinMeeting">
-                <div class="SearchInputBox">
+                <div class="SearchInputBox" style="float:none">
                     <div class="SearchInputBoxInputHolder">
                         <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" ng-attr-placeholder="{{::verbage.meeting_id}}" />
                     </div>
                 </div>
-                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
+                <!-- <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button> -->
+                <div class="WorkspaceButton" data-ng-click="joinMeeting(meetingId)" style="padding-left:60px">
+                        Join Now
+                        <div>&#9654;</div>
+                    </div>
 
         </div>
     </div>
@@ -83,8 +92,16 @@
                         <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
                     </div>
                  </div>
-                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">Start Without Video</button>
-                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
+                <!-- <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">Start Without Video</button> -->
+                <div class="WorkspaceButton" ng-click="startMeeting('screen_share')" style="margin-bottom:10px;margin-top:8px;padding-left:40px">
+                        Start Without Video
+                        <div>&#9654;</div>
+                    </div>
+               <!--  <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button> -->
+                <div class="WorkspaceButton" ng-click="startMeeting('video')" style="padding-left:50px">
+                        Start With Video
+                        <div>&#9654;</div>
+                    </div>
                
             <div class="widget-zoom-contacts">
                     <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'" >

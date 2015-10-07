@@ -131,7 +131,7 @@
     width: 100%;
     left: 0px;
     top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .WidgetFont{
@@ -414,7 +414,29 @@
 .WidgetZoomBody{
   top:35px;
   background-image: url(../img/XTile-Widget.png);
-  
+  .WorkspaceButton {
+          position: relative;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 7px 0 7px 30px;
+    background-color: #015d73;
+    cursor: pointer;
+      
+      div {
+        position: absolute;
+        top: 14%;
+        right: 0;
+        height: 75%;
+        border-left: 1px solid white;
+        width: 15%;
+        text-align: center;
+        
+        &.Down {
+          padding-top: 4px;
+        }
+      }
+    }
   
   .ListSection {
     position: relative;    
@@ -440,15 +462,16 @@
   }
   .ListSectionBtn #scheduleMeetingBtn{
     margin:0px 0px 15px 0px;
-    padding: 15px 10px 27px 20px;
+    padding: 24px 10px 27px 20px;
   }
+  
   .ListSectionBtn #joinMeeting{
-    margin:0px 0px 16px 0px;
+    margin:0px 0px 20px 0px;
     padding: 10px 10px 10px 20px;
   }
   .ListSectionBtn #joinVideoScreen{
     margin:0px 0px 0px 0px;
-    padding: 20px 10px 10px 20px;
+    padding: 15px 10px 10px 20px;
   }
 }
 

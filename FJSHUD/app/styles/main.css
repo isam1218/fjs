@@ -5063,7 +5063,7 @@ div.NewCall .XButton.XButtonNormal {
   width: 100%;
   left: 0px;
   top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 .WidgetFont {
   font-size: 12px;
@@ -5318,6 +5318,27 @@ div.NewCall .XButton.XButtonNormal {
   top: 35px;
   background-image: url(../img/XTile-Widget.png);
 }
+.WidgetZoomBody .WorkspaceButton {
+  position: relative;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  cursor: pointer;
+}
+.WidgetZoomBody .WorkspaceButton div {
+  position: absolute;
+  top: 14%;
+  right: 0;
+  height: 75%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.WidgetZoomBody .WorkspaceButton div.Down {
+  padding-top: 4px;
+}
 .WidgetZoomBody .ListSection {
   position: relative;
   background-color: #f9f9f9;
@@ -5339,15 +5360,15 @@ div.NewCall .XButton.XButtonNormal {
 }
 .WidgetZoomBody .ListSectionBtn #scheduleMeetingBtn {
   margin: 0px 0px 15px 0px;
-  padding: 15px 10px 27px 20px;
+  padding: 24px 10px 27px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinMeeting {
-  margin: 0px 0px 16px 0px;
+  margin: 0px 0px 20px 0px;
   padding: 10px 10px 10px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinVideoScreen {
   margin: 0px 0px 0px 0px;
-  padding: 20px 10px 10px 20px;
+  padding: 15px 10px 10px 20px;
 }
 .widget-zoom-contacts {
   top: 30px;
