@@ -18,8 +18,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var devices = [];
 	var inputDevices = [];
 	var outputDevices = [];
-	var stayHidden = false;
-
+	var stayHidden = false;   
 	var session;
 	var context = {};
 	var alertPlugin;
@@ -32,7 +31,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.meModel = {};
 	var isRegistered = false;
 	var isAlertShown = false;
-	var browser_on_focus = true;
+	
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
@@ -81,16 +80,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}	
 	}
 
+	this.cancelled = false;
+	this.browser_on_focus = true;
+	
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
 	};
 
-	var isDocumentHidden  = function(isForceHidden){
+	this.isDocumentHidden  = function(isForceHidden){
 		clearInterval(activityChecker);
 		var alertDuration = settingsService.getSetting('alert_call_duration');      
 
 		var hidden; 
-		if((document.hidden || !isForceHidden) && !isAlertShown){
+		if(document.hidden || !isForceHidden){//) && !isAlertShown
 			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
 				if(nservice.isEnabled()){
@@ -106,7 +108,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						}
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails))){
+					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails)) && isAlertShown){
 						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 					}					
 				}
@@ -143,60 +145,129 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	
 	if(document.attachEvent){
-		document.attachEvent("onVisibilitychange",isDocumentHidden);
-		document.attachEvent("onFocus",function(){
-			isDocumentHidden(true);
-		});
-		document.attachEvent("onBlur",function(){
-			isDocumentHidden(false);			
-		});
-		window.attachEvent("onFocus",function(){
-			isDocumentHidden(true);
-
-		});
-		window.attachEvent("onBlur",function(){
-			isDocumentHidden(false);
-		});
+		document.attachEvent("onVisibilitychange",context.isDocumentHidden);		
 		//attach events to the browser
 		if(top_window == window.self)
 		{	
 			top_window.attachEvent("onFocus",function(){		
-				console.log("onFocus - top_window");
-				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					browser_on_focus = false;					
+				console.log("onFocus - top_window");	
+				context.browser_on_focus = true;				
+				//remove if the alert was closed
+				if(context.cancelled)
+				{
+					if(nservice.isEnabled()){
+						for(var detail in callsDetails){
+							nservice.dismiss('INCOMING_CALL',detail);
+						}
+					}else{
+						removeNotification();
+					}
+					context.isDocumentHidden(true);
+					console.log('focus - hidden');					
+				}
+				else
+				{
+					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					{	
+						context.isDocumentHidden(true);
+					}
+					else
+					{
+						context.isDocumentHidden(false);
+					}				
+				}	
 			});
 			top_window.attachEvent("onBlur",function(){		
-				console.log("onBlur - top_window");
-				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					browser_on_focus = true;
+				console.log("onBlur - top_window");				
+				context.browser_on_focus = false;				
+				//remove if the alert was closed
+				if(context.cancelled)
+				{
+					if(nservice.isEnabled()){
+						for(var detail in callsDetails){
+							nservice.dismiss('INCOMING_CALL',detail);
+						}
+					}else{
+						removeNotification();
+					}
+					context.isDocumentHidden(true);
+					console.log('blur - hidden');					
+				}
+				else
+				{
+					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					{	
+						context.isDocumentHidden(false);
+					}
+					else
+					{
+						context.isDocumentHidden(true);
+					}					
+				}	
 			});
 		}
 	}else{
-		document.addEventListener("visibilitychange", isDocumentHidden, false);
-		document.addEventListener("focus", function(){
-			isDocumentHidden(true);
-		}, false);
-		document.addEventListener("blur", function(){
-			isDocumentHidden(false);
-		}, false);
-		window.addEventListener("focus", function(){
-			isDocumentHidden(true);
-		}, false);
-		window.addEventListener("blur", function(){
-			isDocumentHidden(false);
-		}, false);
+		document.addEventListener("visibilitychange", context.isDocumentHidden, false);		
 		//attach events to the browser
 		if(top_window == window.self)
 		{	
 			top_window.addEventListener("focus", function(){	
 				console.log("focus - top_window");
-				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					browser_on_focus = false;
+				context.browser_on_focus = true;							
+				//remove if the alert was closed
+				if(context.cancelled)
+				{
+					if(nservice.isEnabled()){
+						for(var detail in callsDetails){
+							nservice.dismiss('INCOMING_CALL',detail);
+						}
+					}else{
+						removeNotification();
+					}
+					context.isDocumentHidden(true);
+					console.log('focus - hidden');					
+				}
+				else
+				{
+					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					{
+						context.isDocumentHidden(true);
+					}
+					else
+					{
+						context.isDocumentHidden(false);
+					}					
+				}	
+				
 			}, false);
 			top_window.addEventListener("blur", function(){		
 				console.log("blur - top_window");
-				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					browser_on_focus = true;
+				context.browser_on_focus = false;					
+				//remove if the alert was closed
+				if(context.cancelled)
+				{
+					if(nservice.isEnabled()){
+						for(var detail in callsDetails){
+							nservice.dismiss('INCOMING_CALL',detail);
+						}
+					}else{
+						removeNotification();
+					}
+					context.isDocumentHidden(true);
+					console.log('blur - hidden');						
+				}
+				else
+				{
+					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					{
+						context.isDocumentHidden(false);
+					}
+					else
+					{
+						context.isDocumentHidden(true);
+					}					
+				}	
+					
 			}, false);	
 		}	
 	}
@@ -426,7 +497,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 			}
 			if(settingsService.getSetting('hudmw_show_alerts_always') != 'true'){
-				if (browser_on_focus)
+				if (context.browser_on_focus)
 				{
 					display_Notification = false;
 				}	
@@ -434,7 +505,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				{					
 					display_Notification = true;
 				}	
-			}
+			}else
+			{
+				if (context.browser_on_focus)
+				{
+					display_Notification = true;
+				}	
+				else
+				{					
+					display_Notification = false;
+				}
+			}	
 		}
 
 		return display_Notification;
@@ -679,14 +760,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			&& url.indexOf('/RemoveNotification') === -1
 		) {
 			activateBrowserTab();
-			window.focus();
+			window.focus();			
 		}		
 		
     	switch(url){
 	    		case '/Close':
-	    			removeNotification();
-	    			isAlertShown = false;
-	    			stayHidden = true;
+	    			removeNotification();	    		
+	    			context.cancelled = true;		    			
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -1444,7 +1524,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 				}else{
 					var doesExist = false;
-
+					//context.cancelled = false;//reset the 'cancelled' flag
 					var call = callsDetails[data[i].xpid];
 					if(call != undefined && (call.record || call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD)){
 						doesExist = true;
@@ -1499,7 +1579,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 								}
 							}
 						}					
-					
 				}
 			}
 		}
