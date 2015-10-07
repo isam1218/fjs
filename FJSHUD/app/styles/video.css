@@ -19,18 +19,6 @@
 #scheduleInputContainer ul li label {
   margin-right: 5px;
 }
-#joinMeeting {
-  width: 200px;
-  height: 100px;
-  border: 1px solid none;
-  margin: 10px 10px 15px 10px;
-}
-#joinVideoScreen {
-  width: 200px;
-  height: 150px;
-  border: 1px solid none;
-  margin: 10px 10px 10px 10px;
-}
 #homeContainer {
   border: 1px solid none;
   height: 780px;
@@ -102,19 +90,13 @@
 }
 #btnContainer {
   float: right;
-  width: 220px;
+  width: 238px;
   height: 400px;
   padding-top: 20px;
   border: 1px solid none;
 }
 #btnContainer .SearchContactOverlay {
   width: 300px;
-}
-#scheduleMeetingBtn {
-  width: 200px;
-  height: 50px;
-  border: 1px solid none;
-  margin: 15px 10px 20px 10px;
 }
 .WidgetZoom .WidgetBody {
   top: 75px;
@@ -404,9 +386,31 @@
   background-color: #f9f9f9;
   left: 0px;
   margin-left: 0px;
+  width: 100%;
+  padding: 0px 5px 5px 10px;
 }
 .WidgetZoomBody .ListSection .ListSectionHeaderTitle {
   margin-left: 0px;
+}
+.WidgetZoomBody .ListSectionBtn {
+  position: relative;
+  background-color: white;
+  left: 0px;
+  min-height: 60px;
+  margin-left: 0px;
+  width: 100%;
+}
+.WidgetZoomBody .ListSectionBtn #scheduleMeetingBtn {
+  margin: 0px 0px 15px 0px;
+  padding: 15px 10px 27px 20px;
+}
+.WidgetZoomBody .ListSectionBtn #joinMeeting {
+  margin: 0px 0px 16px 0px;
+  padding: 10px 10px 10px 20px;
+}
+.WidgetZoomBody .ListSectionBtn #joinVideoScreen {
+  margin: 0px 0px 0px 0px;
+  padding: 20px 10px 10px 20px;
 }
 .widget-zoom-contacts {
   top: 30px;

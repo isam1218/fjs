@@ -46,22 +46,24 @@
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader" style="margin-bottom:15px"> 
                 <div class="ListSectionHeaderTitle">SCHEDULE A MEETING</div>
-                <div class="WidgetFont">Click here to schedule a meeting.</div>
+                <div class="WidgetFont">To schedule your meeting click the 'Schedule Meeting' button and fill out the details.</div>
             </div>
-            <div class="ListSection WidgetTextHeader" style="margin-bottom:10px"> 
+            <div class="ListSection WidgetTextHeader" style="margin-bottom:18px"> 
                     <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
                     <div class="WidgetFont">{{::verbage.join_summary}}</div>
             </div>
-            <div class="ListSection WidgetTextHeader"> 
+            <div class="ListSection WidgetTextHeader" style="padding-bottom:15px"> 
                             <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
                             <div class="WidgetFont">{{::verbage.create_summary}}</div>
             </div>       
         </div>
 <div id="btnContainer">
-        <div id="scheduleMeetingBtn">
+    <div class="ListSectionBtn">
+        <div id="scheduleMeetingBtn" >
         <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting</button>
        </div>
-
+    </div>
+    <div class="ListSectionBtn">
         <div id="joinMeeting">
                 <div class="SearchInputBox">
                     <div class="SearchInputBoxInputHolder">
@@ -71,16 +73,17 @@
                 <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
 
         </div>
+    </div>
 
      
-            
+            <div class="ListSectionBtn">
                 <div id="joinVideoScreen">
                  <div class="addContact">
                     <div >
                         <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
                     </div>
                  </div>
-                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
+                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">Start Without Video</button>
                 <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
                
             <div class="widget-zoom-contacts">
@@ -102,7 +105,8 @@
             </div>
         
 
-    </div>
+            </div>
+            </div>
 
 </div>
 
