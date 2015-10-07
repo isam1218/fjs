@@ -5064,6 +5064,8 @@ div.NewCall .XButton.XButtonNormal {
   left: 0px;
   top: 5px;
   margin-bottom: 15px;
+  border-radius: 0px;
+  border-color: #015d73;
 }
 .WidgetFont {
   font-size: 12px;
