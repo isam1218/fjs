@@ -511,8 +511,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}						
 				}
 			}
-			if(settingsService.getSetting('hudmw_show_alerts_always') != 'true'){
-				if (browser_on_focus)
+			/*if(settingsService.getSetting('hudmw_show_alerts_always') != 'true'){
+				if (context.browser_on_focus)
+>>>>>>> Stashed changes
 				{
 					display_Notification = false;
 				}	
@@ -530,7 +531,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				{					
 					display_Notification = false;
 				}
-			}	
+			}*/	
 		}
 
 		return display_Notification;

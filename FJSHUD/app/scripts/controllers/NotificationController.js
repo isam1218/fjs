@@ -598,7 +598,6 @@ hudweb.controller('NotificationController',
 				 		if(alertDuration != "entire"){
 			              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 			                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-			                return;
 			              }
 				 		}
 				 		phoneService.displayCallAlert($scope.calls[i]);
