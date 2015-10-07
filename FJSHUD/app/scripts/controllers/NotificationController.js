@@ -417,7 +417,7 @@ hudweb.controller('NotificationController',
       }
     }
 
-    if(!phoneService.cancelled && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){// 
+    if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){// 
         if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
           $timeout(displayNotification
@@ -508,7 +508,7 @@ hudweb.controller('NotificationController',
 
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
-    phoneService.cancelled = false;
+    phoneService.setCancelled(false);
     var toDisplayFor = settingsService.getSetting('alert_call_display_for');
     var alertDuration = settingsService.getSetting('alert_call_duration');      
     if(!phoneService.getPhoneState() && $rootScope.meModel.location.locationType == 'w'){
@@ -592,6 +592,7 @@ hudweb.controller('NotificationController',
 		
        	
     if(displayDesktopAlert){
+    	phoneService.setCancelled(false);
 			if(nservice.isEnabled()){//chrome
 					for (var i = 0; i < $scope.calls.length; i++){
 				 		if(alertDuration != "entire"){
@@ -720,7 +721,7 @@ hudweb.controller('NotificationController',
 		}
 		if($scope.isRinging)
 		{
-			if(phoneService.browser_on_focus)
+			if(phoneService.getBrowserOnFocus())
 			{
 				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
 				{	
@@ -853,7 +854,7 @@ hudweb.controller('NotificationController',
         }
       
         if (displayDesktopAlert){
-        	phoneService.cancelled = false;
+        	phoneService.setCancelled(false);
                if ($scope.todaysNotifications.length > 0){
                       phoneService.setStayHidden(false);
                        if(nservice.isEnabled()){
@@ -878,11 +879,11 @@ hudweb.controller('NotificationController',
 
 		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
-      $timeout(displayNotification, 1500);		
+		    $timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
-      phoneService.cacheNotification(undefined,0,0);
-    }
+			phoneService.cacheNotification(undefined,0,0);
+		}
 	};
 
 	var deleteLastLongWaitNotification = function(){

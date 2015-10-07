@@ -79,9 +79,32 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			$rootScope.pluginVersion = phonePlugin.version;
 		}	
 	}
+    
+	//this.cancelled = false;
+	browser_on_focus = true;
+	var isCancelled = false;
+	
+	//set the 'cancelled' flag
+	this.setCancelled = function(is_cancelled)
+	{
+		isCancelled = is_cancelled;
+	}
+	//get the 'cancelled' flag
+	this.getCancelled = function()
+	{
+		return isCancelled ;
+	}
 
-	this.cancelled = false;
-	this.browser_on_focus = true;
+	//set the browser onFocus flag
+	/*this.setBrowserOnFocus = function(onFocus)
+	{
+		browser_on_focus = onFocus;
+	}*/
+	//get the browser onFocus flag
+	this.getBrowserOnFocus = function()
+	{
+		return browser_on_focus;
+	}
 	
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
@@ -150,10 +173,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(top_window == window.self)
 		{	
 			top_window.attachEvent("onFocus",function(){		
-				console.log("onFocus - top_window");	
-				context.browser_on_focus = true;				
+				console.log("onFocus - top_window: cancelled? " + isCancelled);	
+				browser_on_focus = true;				
 				//remove if the alert was closed
-				if(context.cancelled)
+				if(isCancelled)
 				{
 					if(nservice.isEnabled()){
 						for(var detail in callsDetails){
@@ -166,22 +189,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					console.log('focus - hidden');					
 				}
 				else
-				{
+				{					
 					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
 					{	
 						context.isDocumentHidden(true);
+						console.log('focus - hide alert');	
 					}
 					else
 					{
 						context.isDocumentHidden(false);
+						console.log('focus - show alert');	
 					}				
 				}	
 			});
 			top_window.attachEvent("onBlur",function(){		
-				console.log("onBlur - top_window");				
-				context.browser_on_focus = false;				
+				console.log("onBlur - top_window: cancelled? " + isCancelled);				
+				browser_on_focus = false;				
 				//remove if the alert was closed
-				if(context.cancelled)
+				if(isCancelled)
 				{
 					if(nservice.isEnabled()){
 						for(var detail in callsDetails){
@@ -195,14 +220,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 				else
 				{
-					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					{	
-						context.isDocumentHidden(false);
-					}
-					else
-					{
-						context.isDocumentHidden(true);
-					}					
+					context.isDocumentHidden(false);
+					console.log('blur - show alert');						
 				}	
 			});
 		}
@@ -212,10 +231,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(top_window == window.self)
 		{	
 			top_window.addEventListener("focus", function(){	
-				console.log("focus - top_window");
-				context.browser_on_focus = true;							
+				console.log("focus - top_window: cancelled? " + isCancelled);
+				browser_on_focus = true;							
 				//remove if the alert was closed
-				if(context.cancelled)
+				if(isCancelled)
 				{
 					if(nservice.isEnabled()){
 						for(var detail in callsDetails){
@@ -232,19 +251,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
 					{
 						context.isDocumentHidden(true);
+						console.log('focus - hide alert');	
 					}
 					else
 					{
 						context.isDocumentHidden(false);
+						console.log('focus - show alert');	
 					}					
 				}	
 				
 			}, false);
 			top_window.addEventListener("blur", function(){		
-				console.log("blur - top_window");
-				context.browser_on_focus = false;					
+				console.log("blur - top_window : " + isCancelled);
+				browser_on_focus = false;					
 				//remove if the alert was closed
-				if(context.cancelled)
+				if(isCancelled)
 				{
 					if(nservice.isEnabled()){
 						for(var detail in callsDetails){
@@ -258,14 +279,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 				else
 				{
-					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					{
-						context.isDocumentHidden(false);
-					}
-					else
-					{
-						context.isDocumentHidden(true);
-					}					
+					context.isDocumentHidden(false);
+					console.log('blur - show alert');									
 				}	
 					
 			}, false);	
@@ -497,7 +512,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 			}
 			if(settingsService.getSetting('hudmw_show_alerts_always') != 'true'){
-				if (context.browser_on_focus)
+				if (browser_on_focus)
 				{
 					display_Notification = false;
 				}	
@@ -507,7 +522,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}	
 			}else
 			{
-				if (context.browser_on_focus)
+				if (browser_on_focus)
 				{
 					display_Notification = true;
 				}	
@@ -766,7 +781,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();	    		
-	    			context.cancelled = true;		    			
+	    			isCancelled = true;		    			
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
