@@ -63,6 +63,7 @@
   background-color: white;
 }
 .Widget.Intellinote .Right .SearchBox.Add {
+  color: gray;
   background: url("../img/add-blue.png") no-repeat;
   background-position: 2%;
 }
