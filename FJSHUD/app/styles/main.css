@@ -5164,7 +5164,7 @@ div.NewCall .XButton.XButtonNormal {
   padding: 10px;
 }
 .Widget.Intellinote .Intro {
-  margin: 10px 0 10px 0;
+  margin: 0px 0 10px 0;
 }
 .Widget.Intellinote .Logo {
   margin-left: 20px;
@@ -5192,7 +5192,7 @@ div.NewCall .XButton.XButtonNormal {
   width: 230px;
   padding-left: 10px;
   background-color: #f9f9f9;
-  margin-top: 45px;
+  margin-top: 30px;
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
@@ -5219,7 +5219,7 @@ div.NewCall .XButton.XButtonNormal {
   width: 240px;
   padding-left: 10px;
   padding-right: 10px;
-  padding-top: 10px;
+  padding-top: 13px;
   margin-left: -10px;
   background-color: white;
 }
@@ -5231,7 +5231,7 @@ div.NewCall .XButton.XButtonNormal {
   padding-top: 10px;
   margin-left: -10px;
   background-color: white;
-  margin-top: 45px;
+  margin-top: 30px;
 }
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
@@ -5295,7 +5295,7 @@ div.NewCall .XButton.XButtonNormal {
   color: white;
   padding: 7px 0 7px 30px;
   background-color: #015d73;
-  margin: 7px 0;
+  margin: 15px 0;
   cursor: pointer;
 }
 .Widget.Intellinote .Right .WorkspaceButton div {
@@ -5316,7 +5316,7 @@ div.NewCall .XButton.XButtonNormal {
   color: white;
   padding: 7px 0 7px 30px;
   background-color: #015d73;
-  margin: 20px 0;
+  margin: 15px 0;
   cursor: pointer;
 }
 .Widget.Intellinote .Right .WorkspaceButtonEnabled div {
@@ -5337,7 +5337,7 @@ div.NewCall .XButton.XButtonNormal {
   color: white;
   padding: 7px 0 7px 30px;
   background-color: #b5b5b5;
-  margin: 20px 0;
+  margin: 15px 0;
   cursor: pointer;
 }
 .Widget.Intellinote .Right .WorkspaceButtonDisabled div {
