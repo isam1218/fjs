@@ -613,6 +613,102 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.$safeApply();
     };
 
+    var alertFlags = {};
+
+    $scope.selectAllBoxes = function(){
+        // if user UNCHECKS --> deselect all other selected checkboxes + save what was selected to LS
+        if ($scope.alertShow){
+            // Show when status is "Busy"
+            if ($scope.settings.alertOnBusy){
+                $scope.settings.alertOnBusy = false;
+                alertFlags.alertOnBusyFlag = "selected_before";
+            }
+            // Show when app is in focus
+            if ($scope.alertOnAlways){
+                $scope.alertOnAlways = false;
+                alertFlags.alertOnAlwaysFlag = "selected_before";
+            }
+            // Show when new VM arrives
+            if ($scope.alertShowVM){
+                $scope.alertShowVM = false;
+                alertFlags.alertShowVMFlag = "selected_before";
+            } 
+            // Incoming Calls
+            if ($scope.alertShowIncoming){
+                $scope.alertShowIncoming = false;
+                alertFlags.alertShowIncoming = "selected_before";
+            }
+            // Outgoing Calls
+            if ($scope.alertShowOutgoing){
+                $scope.alertShowOutgoing = false;
+                alertFlags.alertShowOutgoing = "selected_before";
+            }
+            // Display For Bubbles
+            switch($scope.alertDisplayFor){
+                case "all":
+                    alertFlags.alertDisplayFor = "all";
+                    break;
+                case "known":
+                    alertFlags.alertDisplayFor = "known";
+                    break;
+                case "never":
+                    alertFlags.alertDisplayFor = "never";
+                    break;
+            }
+            // Duration
+            switch($scope.alertDuration){
+                case "entire":
+                    alertFlags.alertDuration = "entire";
+                    break;
+                case "while_ringing":
+                    alertFlags.alertDuration = "while_ringing";
+                    break;
+            }
+            localStorage.alertFlags = JSON.stringify(alertFlags);
+            $scope.alertShow = !$scope.alertShow;
+            $scope.update_settings('alert_show','update',$scope.alertShow);
+        }
+        else{
+            // if user CHECKS show alerts box -> load previously set checkboxes from LS and set those
+            alertFlags = localStorage.alertFlags ? JSON.parse(localStorage.alertFlags) : {};
+            if (alertFlags.alertOnBusyFlag == "selected_before")
+                $scope.settings.alertOnBusy = true;
+
+            if (alertFlags.alertOnAlways == "selected_before")
+                $scope.alertOnAlways = true;
+
+            if (alertFlags.alertShowVMFlag == "selected_before")
+                $scope.alertShowVM = true;
+
+            if (alertFlags.alertShowIncoming == "selected_before")
+                $scope.alertShowIncoming = true;
+
+            if (alertFlags.alertShowOutgoing == "selected_before")
+                $scope.alertShowOutgoing = true;
+
+            switch(alertFlags.alertDisplayFor){
+                case "all":
+                    $scope.alertDisplayFor = "all";
+                    break;
+                case "known":
+                    $scope.alertDisplayFor = "known";
+                    break;
+                case "never":
+                    $scope.alertDisplayFor = "never";
+                    break;
+            }
+            switch(alertFlags.alertDuration){
+                case "entire":
+                    $scope.alertDuration = "entire";
+                    break;
+                case "while_ringing":
+                    $scope.alertDuration = "while_ringing";
+                    break;
+            }
+            $scope.alertShow = !$scope.alertShow;
+            $scope.update_settings('alert_show','update',$scope.alertShow);
+        }
+    };
 
     var update_queues = function(){
 		if ($scope.settings && $scope.queues) {
