@@ -394,6 +394,9 @@
   background-color: #015d73;
   cursor: pointer;
 }
+.dateImg {
+  background-image: url("img/datePicker.png");
+}
 .WorkspaceButton {
   position: relative;
   color: white;
@@ -415,6 +418,17 @@
 .WorkspaceButton div.Down {
   padding-top: 4px;
 }
+.WorkspaceButton img {
+  position: absolute;
+  top: 14%;
+  right: 0;
+  margin: 3px 5px;
+  border-left: 1px solid none;
+  text-align: center;
+}
+.WorkspaceButton img.Down {
+  padding-top: 4px;
+}
 .WidgetZoomBody {
   top: 35px;
   background-image: url(../img/XTile-Widget.png);
@@ -429,6 +443,7 @@
 }
 .WidgetZoomBody .ListSection .ListSectionHeaderTitle {
   margin-left: 0px;
+  font-size: 12px;
 }
 .WidgetZoomBody .ListSectionBtn {
   position: relative;
