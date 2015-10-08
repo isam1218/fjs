@@ -172,18 +172,22 @@ function do_version_check(){
             else
 				setTimeout('do_version_check();', sync_delay);
 		}
-		else if(xmlhttp.status == 404 || xmlhttp.status == 500){
-			self.postMessage({
-				"action": "network_error"
-			});
-		}
-		else if (xmlhttp.status == 0) {
-			setTimeout('do_version_check();', sync_delay);
-		}
 		else {
-			self.postMessage({
-				"action": "auth_failed"
-			});
+			if (xmlhttp.status == 404 || xmlhttp.status == 500){
+				self.postMessage({
+					"action": "network_error"
+				});
+			}
+			else if (xmlhttp.status != 0) {
+				self.postMessage({
+					"action": "auth_failed"
+				});
+				
+				// don't version check anymore
+				return;
+			}
+			
+			setTimeout('do_version_check();', sync_delay);
 		}
 	});
 }	
