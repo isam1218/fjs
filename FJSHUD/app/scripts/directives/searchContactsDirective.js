@@ -29,7 +29,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			var isArray = false;
 			
 			element.bind('click', function(e) {
-				e.stopPropagation();
+				if (overlay)
+					e.stopPropagation();
 			});
 			
 			element.bind('search', function(e) {
@@ -39,7 +40,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			
 			element.bind('keyup', function(e) {
 				// add overlay for the first time
-				if (!overlay) {
+				if (!overlay && element.val().length > 0) {
 					overlay = angular.element('<div class="SearchContactOverlay"></div>');
 					overlay.css('top', element[0].offsetTop - 50 + 'px');
 					
