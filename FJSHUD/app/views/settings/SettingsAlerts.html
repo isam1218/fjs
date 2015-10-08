@@ -1,18 +1,18 @@
     <div class="ListSection ">
-      <div class="ListSeciontHeader">   
+      <div class="ListSectionHeader">   
           <div class="ListSectionHeaderTitle">{{::verbage.general}}</div>
       </div>
 
       <div class="ListSectionBody">{{::verbage.configure_desktop_alerts}}</div>
       <div class="ListPage">
       	<div class="Dialog-settings-row"><input type="checkbox"
-          ng-model="alertShow" ng-change="update_settings('alert_show','update',alertShow)" 
+          ng-model="alertShow" ng-click="selectAllBoxes()" ng-change="update_settings('alert_show','update',alertShow)" 
         > <label>{{::verbage.show_alerts}}</label> </div>
       	<div class="Dialog-settings-row"><input type="checkbox"
-          ng-model="settings.alertOnBusy" ng-change="update_settings('hudmw_show_alerts_in_busy_mode','update',settings.alertOnBusy)" 
+          ng-model="settings.alertOnBusy" ng-change="update_settings('hudmw_show_alerts_in_busy_mode','update',settings.alertOnBusy)" ng-disabled="!alertShow"
         > <label>{{::verbage.show_status_when_busy}}</label> </div>
       	<div class="Dialog-settings-row"><input type="checkbox"
-          ng-model="alertOnAlways" ng-change="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" 
+          ng-model="alertOnAlways" ng-change="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" ng-disabled="!alertShow" 
         > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
       	<div class="Dialog-settings-row" ng-if="::browser != 'Chrome'"><input type="button" value="{{::verbage.reset_alert_position}}" ng-click="resetAlertPosition()"></div>
       </div>
@@ -25,43 +25,43 @@
       <div class="ListSectionBody">{{::verbage.configure_vm_desktop_alerts}}</div>
       <div class="ListPage">
       	<div class="Dialog-settings-row"><input type="checkbox"
-           ng-model="alertShowVM" ng-change="update_settings('alert_vm_show_new','update',alertShowVM)" 
+           ng-model="alertShowVM" ng-change="update_settings('alert_vm_show_new','update',alertShowVM)" ng-disabled="!alertShow"
         > <label>{{::verbage.show_when_new_voicemail}}</label> </div>
       </div>
        
      </div>
      
      <div class="ListSection ">
-      <div class="ListSeciontHeader">   
+      <div class="ListSectionHeader">   
           <div class="ListSectionHeaderTitle">{{::verbage.call_alerts}}</div>
       </div>
 	<div class="ListSectionBody">{{::verbage.configure_call_desktop_alerts}}</div>
       <div class="ListPage">
         <div class="ListPageHeaderText">{{::verbage.type}}</div>
-        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowIncoming" ng-change="update_settings('alert_call_incoming','update',alertShowIncoming)"> 
+        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowIncoming" ng-change="update_settings('alert_call_incoming','update',alertShowIncoming)" ng-disabled="!alertShow"> 
 
         <label>{{::verbage.incoming_calls}}</label> </div>
-        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowOutgoing" ng-change="update_settings('alert_call_outgoing','update',alertShowOutgoing)" > 
+        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowOutgoing" ng-change="update_settings('alert_call_outgoing','update',alertShowOutgoing)" ng-disabled="!alertShow"> 
 
         <label>{{::verbage.outbound_calls}}</label> </div>
         
         <div class="ListPageHeaderText">{{::verbage.display_for}}</div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="all" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" > <label>{{::verbage.all_my_calls}}</label> </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="known" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" > <label>{{::verbage.only_for_known_numbers}}</label> </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)"> <label>{{::verbage.never_display}}</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="all" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" ng-disabled="!alertShow" > <label>{{::verbage.all_my_calls}}</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="known" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" ng-disabled="!alertShow" > <label>{{::verbage.only_for_known_numbers}}</label> </div>
+        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" ng-disabled="!alertShow"> <label>{{::verbage.never_display}}</label> </div>
         
         <div class="ListPageHeaderText">{{::verbage.duration}}</div>
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="entire"
-         ng-change="update_settings('alert_call_duration','update',alertDuration)"
+         ng-change="update_settings('alert_call_duration','update',alertDuration)" ng-disabled="!alertShow"
         > <label></label>{{::verbage.entire_call_recommended}} </div>
         <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="while_ringing"
-          ng-change="update_settings('alert_call_duration','update',alertDuration)"
+          ng-change="update_settings('alert_call_duration','update',alertDuration)" ng-disabled="!alertShow"
         > <label>{{::verbage.while_phone_is_ringing}}</label> </div>
       </div>
        
      </div>
      <div class="ListSection ">
-      <div class="ListSeciontHeader">   
+      <div class="ListSectionHeader">   
           <div class="ListSectionHeaderTitle">{{::verbage.queue_alerts}}</div>
       </div>
       <div class="ListSectionBody">
