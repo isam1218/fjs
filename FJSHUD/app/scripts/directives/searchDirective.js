@@ -40,15 +40,14 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			if (browser == 'Firefox') {
 				var xImg;
 				
-				element.on('keydown mouseenter', function(e) {
+				element.on('keyup mouseenter', function(e) {
 					if (element.val() != '') {
 						// create x for first time
 						if ($(element).parent().find('.x').length == 0) {
-							 xImg = angular.element('<img class="x" src="img/clear.png"/>');
-				            if($(element).closest('#WidgetSearch').length > 0)
-				            	xImg.css('top', (element[0].offsetTop - 3) + 'px');
-				            else
-				            	xImg.css('top', element[0].offsetTop + 'px');
+							xImg = angular.element('<img class="x" src="img/clear.png"/>');
+							
+							// position
+							xImg.css('top', element[0].offsetTop + element[0].offsetHeight/2 + 'px');
 							xImg.css('left', element[0].offsetLeft + element[0].offsetWidth + 'px');
 				
 							// clear on click

@@ -95,7 +95,7 @@
 							</div>
 							
 							<div ng-show="tab == 'favorites'">
-								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search ng-controller="ContactsWidget" />
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|favorites" ng-controller="ContactsWidget" />
 							</div>
 						</div>
 						<div class="WidgetTabBar">

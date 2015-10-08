@@ -294,9 +294,7 @@
       }
 	}		
 	
-	.Sections {	 	 
-	  overflow-y: hidden;	
-	  overflow-x: hidden;
+	.Sections {
 	  padding-top: 10px;
 	  padding-bottom: 20px;
 	  
@@ -672,10 +670,11 @@
 	}
   }
 }
+
 .SearchContactOverlay {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -5px;
   width: 100%;
   height: 330px;
   background-color: white;
@@ -689,7 +688,7 @@
   flex-direction: column;
   -webkit-flex-direction: column;
   
-  .Header {
+  .SearchHeader {
 	  text-align: center;
       font-weight: bold;
       color: #729c00;
@@ -698,12 +697,38 @@
       position: relative;
       text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
       font-size: 12px;
-      margin-left: 10px;
-      margin-right: 10px;
+      margin: 0 5px;
       border-bottom: solid 1px #999;
-      overflow: hidden;
-      text-overflow: clip;
-      white-space: nowrap;
+  }
+  
+  .ListRowContent {
+	  display: flex;
+	  display: -webkit-flex;
+	  flex-direction: row;
+	  -webkit-flex-direction: row;
+	  margin: 3px 0 -3px 0;
+	  padding-left: 5px;
+	  
+	  .ListRowTitle {
+		  display: block;
+		  max-width: 100% !important;
+		  
+		  .name {
+			  max-width: 100% !important;
+			  font-size: 12px;
+		  }
+		  
+		  .hudStatus {
+			  font-size: 11px;
+			  margin-top: -3px;
+			  overflow: hidden;
+			  text-overflow: ellipsis;
+		  }
+		  
+		  .ListRowStatusIcon {
+			  margin-left: -1px;
+		  }
+	  }
   }
   
   .ExpandedToolBarHelp {
@@ -716,162 +741,70 @@
       border-radius: 3px;
       -webkit-border-radius: 3px;
       text-align: center;
-      top: 16.8%;
+      top: 15%;
       right: 15px;
   }
-  .XButton.XButtonNormal.JoinByPhoneBtn{
+  
+  .XButton.JoinByPhoneBtn{
       width: 115px !important;
       position: absolute;
       left: 33% !important;
-      top: 16.8%;
+      top: 15%;
       height: 30px !important;
       padding-top: 6px !important;
   }
-  .XButton.XButtonNormal.JoinByPhoneBtnSecond{
+  
+  .XButton.JoinByPhoneBtnSecond{
       width: 100px !important;
       position: relative;
-      left: 33% !important;
-      top: 16.8%;
       height: 25px !important;
-      margin-right: 70px !important;
-      margin-top: -9px !important;
   }
 
   .Inset {
   	overflow-y: auto;
   	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
-
-    &.TransferInset{
-      overflow-x: hidden;
-    }
+	margin: 5px;
 	
-	.rows{
-	   border: solid 1px #eee;
+	.rows {
+	   border-top: solid 1px #eee;
+	   border-left: solid 1px #eee;
+	   border-right: solid 1px #eee;
 	   width: 99.5%;
 	   
 	   .ListRow{
 	       width: 100%;
 	   }
 	}
-		
-	.ListRowContent {
-	  left: 36px !important;
-	  display: block !important;
-	  padding: .3em 0 0 .5em;
-	  font-size: 11px;
 	  
-	  .Name {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		font-weight: bold;
-		max-width: 120px;
-		margin-top: 10px;
-	  }
-	  
-	  .Extension {
+	.Extension {
+		visibility: visible !important;
 	    font-size: .9em;
-		color: gray;
-		// position: relative;
-		float: right;
-		right: 5px;
-		top: -10px;		
-	  }
+		color: gray;	
 	}
   }
-  
-  &.favoritesSearch{
-    top: -40px;
-    height: 330px;
-    z-index: 98;
-    
-    .Inset{
-        overflow: hidden;
-        
-        .Header{
-            position: absolute;
-            top: 0px;
-            width: 95%;
-            left: -3px;
-        }
-        .rows{
-            margin-top: 40px;
-            height: 230px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            width: 100%;
-        }
-        
-        .AddTeamMember{
-          width: 75%;
-          max-width: 100%;
-        }
-    }
-  }
-  
-  &.conferenceSearch{
-    width: 500px !important; 
-    top: -55px !important; 
-    left: -10px;
-    
-    .Header{
-        padding-top: 10px;
-        padding-bottom: 10px;
-        font-size: 12px;
-    }
-    .TransferHeader{
-      font-size: 15px;
-      color: #0093f0;
-      font-variant: small-caps;
-    }
-    .Inset {
-      margin-top: 60px !important;
-      
-      .ListRow{
-        height: 44px;
-        
-        .Avatar{
-            margin: 6px 5px !important;
-        }
-        
-        .ListRowContent {
-            padding: .3em .5em 0 .5em !important;       
-                    
-            .ListRowStatus{
-                margin-top: 6px !important;
-            }
-      
-            .ListRowTitle{
-                margin-top: -5px;
+}
 
-              &.AddConferenceMember{
-                display: flex;
-                flex-direction: column;
-                float: left;
-                max-width: 85%;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-              }
-                
-                .ListRowStatusIcon{
-                    margin-left: 0px;
-                }
-                .hudStatus{
-                    margin-top: -2px;
-                }     
-            }
-         }
-        
-      }                       
-    }     
-  }
-  &.transferSearch{
-    width: 415px !important;
-    top: -45px !important;
-    height: 400px;
-  }
+/* directive overrides */
+.LeftBarWrapper .SearchContactOverlay {
+	width: 308px;
+}
+.conference.currentCall .SearchContactOverlay {
+	width: 510px;
+	left: -15px;
+}
+.Overlay .ContactSearchHolder .SearchContactOverlay {
+	width: 410px;
+}
+.WidgetZoom, .Intellinote {
+	.SearchContactOverlay {
+		width: 230px;
+		left: -10px;
+	
+		.SearchHeader {
+			color: #015d73;
+		}
+	}
 }
 
 #ContextMenu {
