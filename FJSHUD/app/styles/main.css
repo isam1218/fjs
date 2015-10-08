@@ -4945,6 +4945,7 @@ div.NewCall .XButton.XButtonNormal {
 #scheduleInputContainer {
   border: 1px solid none;
   padding: 0px;
+  margin-top: -15px;
 }
 #scheduleInputContainer ul {
   padding: 0px;
@@ -4955,6 +4956,8 @@ div.NewCall .XButton.XButtonNormal {
 }
 #scheduleInputContainer ul li label {
   margin-right: 5px;
+  font-size: 14px;
+  font-weight: bold;
 }
 #homeContainer {
   border: 1px solid none;
@@ -4965,6 +4968,8 @@ div.NewCall .XButton.XButtonNormal {
   border: 1px solid none;
   height: 780px;
   padding: 0px 10px 0px 10px;
+  max-height: 78%;
+  overflow-y: auto;
 }
 .meetingHeader {
   border-bottom: 1px solid #B3B3B3;
@@ -5313,11 +5318,20 @@ div.NewCall .XButton.XButtonNormal {
   }    
 >>>>>>> tickets/Test1.1.1*/
 }
-.WidgetZoomBody {
-  top: 35px;
-  background-image: url(../img/XTile-Widget.png);
+.SchedulingBtns {
+  position: relative;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 7px 25px 7px 25px;
+  border-style: none;
+  border-radius: 3px;
+  margin-right: 5px;
+  border: 1px solid #D3D3D3;
+  background-color: #015d73;
+  cursor: pointer;
 }
-.WidgetZoomBody .WorkspaceButton {
+.WorkspaceButton {
   position: relative;
   color: white;
   font-size: 12px;
@@ -5326,7 +5340,7 @@ div.NewCall .XButton.XButtonNormal {
   background-color: #015d73;
   cursor: pointer;
 }
-.WidgetZoomBody .WorkspaceButton div {
+.WorkspaceButton div {
   position: absolute;
   top: 14%;
   right: 0;
@@ -5335,8 +5349,12 @@ div.NewCall .XButton.XButtonNormal {
   width: 15%;
   text-align: center;
 }
-.WidgetZoomBody .WorkspaceButton div.Down {
+.WorkspaceButton div.Down {
   padding-top: 4px;
+}
+.WidgetZoomBody {
+  top: 35px;
+  background-image: url(../img/XTile-Widget.png);
 }
 .WidgetZoomBody .ListSection {
   position: relative;

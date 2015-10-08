@@ -8,6 +8,7 @@
 #scheduleInputContainer{
   border:1px solid none;
   padding:0px;
+  margin-top: -15px;
 }
 #scheduleInputContainer ul{
   padding:0px;
@@ -19,6 +20,8 @@
 }
 #scheduleInputContainer ul li label{
   margin-right:5px;
+  font-size: 14px;
+    font-weight: bold;
 }
 #homeContainer{
   border: 1px solid none;
@@ -29,6 +32,8 @@
   border:1px solid none;
   height: 780px;
   padding: 0px 10px 0px 10px;
+  max-height: 78%;
+  overflow-y: auto;
 }
 .meetingHeader{
   border-bottom:1px solid #B3B3B3;
@@ -410,11 +415,20 @@
   }    
 >>>>>>> tickets/Test1.1.1*/
 }
-
-.WidgetZoomBody{
-  top:35px;
-  background-image: url(../img/XTile-Widget.png);
-  .WorkspaceButton {
+ .SchedulingBtns{
+   position: relative;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding:7px 25px 7px 25px;
+    border-style:none;
+    border-radius:3px;
+    margin-right:5px;
+    border:1px solid #D3D3D3;
+    background-color: #015d73;
+    cursor: pointer;
+ }
+ .WorkspaceButton {
           position: relative;
     color: white;
     font-size: 12px;
@@ -437,6 +451,10 @@
         }
       }
     }
+.WidgetZoomBody{
+  top:35px;
+  background-image: url(../img/XTile-Widget.png);
+ 
   
   .ListSection {
     position: relative;    

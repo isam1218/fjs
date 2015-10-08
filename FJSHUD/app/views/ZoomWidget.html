@@ -26,7 +26,7 @@
 
                 
 
-        <div class="ListSection WidgetFont" style="padding:0px 15px 0px 15px"> 
+        <div class="ListSection WidgetFont" style="padding:0px 15px 10px 15px"> 
             <div> {{::verbage.video_collaboration_summary}}</div>
 
         </div>
@@ -136,7 +136,7 @@
           <li><h3 ng-model="pmi_id.pmi">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button ng-click="copyPmi(x.topic,pmi_id.pmi)">Copy</button></li>
         </ul>
     </div>
-    <div id="scrollArea" ng-controller="ScrollController">
+    
 
 
         <div class="meetingBody" >
@@ -162,7 +162,7 @@
             </ul>
 
         </div>
-</div>
+
 
 </div>
 </div>
@@ -177,7 +177,7 @@
             Fonality Video Collaboration - Schedule A Meeting
         </div>
     </div>
-    <div class="modal-body" ng-controller="ZoomWidgetController">
+    <div class="modal-body" ng-controller="ZoomWidgetController" style="    padding: 15px 10px 10px 20px;">
     <div ng-controller="DatepickerDemoCtrl">
        
         <div id="scheduleInputContainer">
@@ -220,9 +220,9 @@
                     <label>Meeting Options:</label>
                     <input type="checkbox" ng-model="checked">Require meeting password
                     <br>
-                    <input ng-model="meeting.password" type="password" style="margin-left:125px" ng-hide="!checked">
+                    <input ng-model="meeting.password" type="password" style="margin: 7px 10px 7px 130px;border: 1px solid #D3D3D3;" ng-hide="!checked">
                     <br>
-                    <input type="checkbox" style="margin-left:125px" ng-model="meeting.jbh">Enable join before host
+                    <input type="checkbox" style="margin-left:129px" ng-model="meeting.jbh">Enable join before host
                 
             </form>
         </div>
@@ -233,9 +233,10 @@
 
     
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-show="scheduleBtn" ng-click="scheduleMeeting(meeting.AmPm); openClipboard(meetingTopic);" >Schedule</button>
-        <button class="btn btn-primary" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm)">Update</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+       
+        <button class="SchedulingBtns" style="background: linear-gradient(rgb(254, 254, 254), rgb(235, 235, 235)) rgb(254, 254, 254);color:black;" type="button" ng-click="cancel()">Cancel</button>
+         <button class="SchedulingBtns" type="button" ng-show="scheduleBtn" ng-click="scheduleMeeting(meeting.AmPm); openClipboard(meetingTopic);">Schedule Meeting</button>
+        <button class="SchedulingBtns" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm)">Update</button>
     </div>
     </div>
     </div>
