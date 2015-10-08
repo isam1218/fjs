@@ -220,6 +220,15 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 			storageService.saveRecent('contact', $scope.profile.xpid);
 		}
 	};
+
+	$scope.callLaterEnabled = function(){
+		var settingIsEnabled = settingsService.getSetting('busy_ring_back');
+		if (settingIsEnabled == "true")
+			settingIsEnabled = true;
+		else
+			settingIsEnabled = false;
+		return (settingIsEnabled && $scope.profile.call != null);
+	};
 	
 	$scope.bargeCall = function(action) {
 		httpService.sendAction('contacts', action + 'Call', {contactId: $scope.profile.xpid});
