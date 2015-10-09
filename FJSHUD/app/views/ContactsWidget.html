@@ -28,7 +28,7 @@
 				<div class="ListRowTitle">
 					<div class="name" ng-if="::contact.primaryExtension">
 						<strong ng-bind-html="::contact.displayName"></strong>
-						<span>#{{ ::contact.primaryExtension }}</span>
+						<span class="ListRowTitleExtension">#{{ ::contact.primaryExtension }}</span>
 					</div>
 					<div class="name" ng-if="::!contact.primaryExtension" >
 						<strong ng-bind-html="contact.displayName"></strong>
