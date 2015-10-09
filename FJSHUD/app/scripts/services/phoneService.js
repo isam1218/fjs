@@ -60,12 +60,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      var CALL_STATUS_ERROR = "3";
      $rootScope.callState = {};
 
-     $rootScope.callState.CALL_UNKNOWN = -1;
-     $rootScope.callState.CALL_RINGING = 0;
-     $rootScope.callState.CALL_ACCEPTED = 2;
-     $rootScope.callState.CALL_HOLD = 3;
-
-
+     $rootScope.callState = fjs.CONFIG.CALL_STATES;          
+     $rootScope.calltype = fjs.CONFIG.CALL_TYPES;
+     $rootScope.bargetype = fjs.CONFIG.BARGE_TYPE;
+     
     var REG_STATUS_UNKNOWN = -1;
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
@@ -801,17 +799,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/EndCall':
 	    			hangUp(xpid);
 	    			removeNotification();
-					return;
+					break;
 	    		case '/HoldCall':
 	    			holdCall(xpid,true);
-	    			return;
+	    			break;
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
 	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
-	    			return;
+	    			break;
 	    		case '/AcceptCall':
 					acceptCall(xpid);
 					if(settingsService.getSetting('alert_call_duration') == "while_ringing"){
@@ -821,7 +819,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							remove_notification();
 						}
 	    			}
-					return;
+					break;
 	    		case '/AcceptZoom':
 					var apiUrl = queryArray[1].split(': ')[1];
 					window.open(apiUrl,'_blank');
@@ -851,7 +849,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/RemoveNotification':
 				    remove_notification(xpid);
-					return;
+					break;
 				case '/goToChat':
 					var context = queryArray[0];
 					var audience = context.split(":")[0];
@@ -1257,7 +1255,16 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
+		var call = context.getCall(xpid);
+		if(call){
+			if(context.webphone && number){
+				context.webphone.send(JSON.stringify({a : 'transfer', value : call.sip_id, ext: number}));
+			}else{
+				call.transfer(number);
+			}
+		}else{
+			httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
+		}
 	};
 
 	this.getPhoneState = function(){
@@ -1314,16 +1321,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				case 'received':
 					if($rootScope.meModel.chat_status != "dnd"){
 						if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
-							audio = new Audio('res/audio/received.mp3');
-							audio.play();
+							$("audio.received")[0].play();
 						}
 					}
-
 					break;
 				case 'sent':
 					if(settingsService.getSetting('hudmw_chat_sound_sent') ==  "true"){
-						audio = new Audio('res/audio/sent.mp3');
-						audio.play();
+						$("audio.send")[0].play();
 					}
 
 					break;
@@ -1738,8 +1742,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	                  "callerName" : call.displayName,
 	                  "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
 	                  "callCategory" : callType,
-	                  "muted" : call.mute,
-	                  "recorded" : call.record,
+	                  "muted" : call.mute ? "1" : "0",
+	                  "record" : call.record ? "1" : "0",
 	                "created": callStart,
 	                "holdStart": holdStart
 	            };
