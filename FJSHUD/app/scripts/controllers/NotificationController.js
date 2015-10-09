@@ -638,7 +638,7 @@ hudweb.controller('NotificationController',
             phoneService.cacheNotification(undefined,0,0);
         }  
       }
-      }
+    }
     
 
     
@@ -659,12 +659,13 @@ hudweb.controller('NotificationController',
 		
     var element = document.getElementById("Alert");
 		if(element){
-			var content = element.innerHTML;
-			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
-          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-       }else{
-          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-        }
+				var content = element.innerHTML;
+				 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+			          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+			     }else{
+			    	  phoneService.removeNotification();
+			          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+			     }
 		}
 		element = null;
 		$scope.displayAlert = false;
