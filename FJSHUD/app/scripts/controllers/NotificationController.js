@@ -49,17 +49,7 @@ hudweb.controller('NotificationController',
   $scope.anotherDevice = false;
   $scope.clearOld;
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');
-  
-  $scope.is_ringing = fjs.CONFIG.CALL_STATES.CALL_RINGING;
-  $scope.is_call_hold = fjs.CONFIG.CALL_STATES.CALL_HOLD;
-  $scope.group_call = fjs.CONFIG.CALL_TYPES.GROUP_CALL;
-  $scope.conference_call = fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL;
-  $scope.individual_call = fjs.CONFIG.CALL_TYPES.INDIVIDUAL_CALL;
-  $scope.queue_call = fjs.CONFIG.CALL_TYPES.QUEUE_CALL;
-  $scope.barge_call = fjs.CONFIG.CALL_TYPES.BARGE_CALL;
-  $scope.external_call = fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL;
-  $scope.call_menu = fjs.CONFIG.CALL_TYPES.CALL_MENU;
-  
+    
   $scope.phoneSessionEnabled = phoneService.isPhoneActive();  
   
   $scope.showHideElements = function(index){
