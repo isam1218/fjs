@@ -250,7 +250,8 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
-          
+          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
+
         ]
       },
       dev: {
@@ -265,7 +266,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
-          
+          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
@@ -290,6 +291,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
           
           {expand: true, src: [
              'app/languageMap.js',
