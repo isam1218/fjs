@@ -62,7 +62,10 @@
       max-width: 100%;
       width: 80%;
     }
-    .ListRowContent div:first-child:nth-last-child(2){max-width: 64%;}
+    .ListRowContent div:first-child:nth-last-child(2){
+      max-width: 64%;
+      margin-top: 0px;
+    }
     .ListRowContent div:first-child:nth-last-child(3){max-width: 50%;}
     .ListRowTitle{
          //width: 48%;
@@ -174,6 +177,9 @@
 
       .ListRowContent{
          .name{
+            .ListRowTitleExtension{
+              margin-top: .1em;
+            }
             span.details{
               margin-top: 2px;
             }
@@ -229,13 +235,14 @@
         }
 
         .ListRowStatus{
-            top: 10px;           
+            top: 11px;           
             width: 83px;
             text-align: center;           
             right: -5px;
             
             .ListRowStatusText{              
                 max-width: 100%;
+                margin-top: .2em;
             }                                   
         }
         
