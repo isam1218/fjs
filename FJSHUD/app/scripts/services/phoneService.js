@@ -60,12 +60,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      var CALL_STATUS_ERROR = "3";
      $rootScope.callState = {};
 
-     $rootScope.callState.CALL_UNKNOWN = -1;
-     $rootScope.callState.CALL_RINGING = 0;
-     $rootScope.callState.CALL_ACCEPTED = 2;
-     $rootScope.callState.CALL_HOLD = 3;
-
-
+     $rootScope.callState = fjs.CONFIG.CALL_STATES;          
+     $rootScope.calltype = fjs.CONFIG.CALL_TYPES;
+     $rootScope.bargetype = fjs.CONFIG.BARGE_TYPE;
+     
     var REG_STATUS_UNKNOWN = -1;
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
