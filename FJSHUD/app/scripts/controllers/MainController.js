@@ -135,12 +135,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		}
 	};
 
-	$scope.$on('network_issue', function(event,data){
-		$scope.showOverlay(true,'NetworkErrorsOverlay',data);
-		$scope.$safeApply();
-	
-	});
-
 	$scope.$on('no_license',function(event,data){
 		var data = {};
 		

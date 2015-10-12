@@ -861,10 +861,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					makeCall(phone);
 					remove_notification(xpid);
 					break;
-				case '/getPlugins':
-					showOverlay(true,'DownloadPlugin',{});
-					window.open(xpid,'_blank');
-					break;
 				case '/activatePhone':
 					activatePhone();
 					break;
@@ -878,18 +874,26 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var messagexpid = queryArray[3];
 					showQueue(queueId,audience, type,messagexpid);
 					break;
-				case '/displayAnotherDevice':
-	       	httpService.updateSettings('instanceId','update',localStorage.instance_id);
+				case '/CloseError':
+					var data = {
+						event: 'dismissError',
+						type: xpid
+					};
+					
+					$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
-		}
-
-		// re-focus tab/window
-		if (url.indexOf('"ts"') === -1) {
-			activateBrowserTab();
-			window.focus();
-		}
-  };
-
+				case '/HandleError':
+					var el = document.getElementById('error-' + xpid);
+					
+					// use notification click handler
+					if (el)
+						el.click();
+					
+					el = null;
+					break;
+			}
+    };
+	
 	var removeNotification = function(){
 		if(alertPlugin){
 
@@ -1111,8 +1115,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						deferredInputDevices.resolve(inputDevices);
 						deferredOutputDevices.resolve(outputDevices);
 
-
-						deferred.resolve(formatData());
 						if( !$rootScope.isFirstSync){
 							$rootScope.$broadcast("phone_event",{event:"updateDevices"});
 						}
@@ -1351,9 +1353,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		for(var callId in callsDetails){
 			holdCall(callId,true);
 		}
-	};
-	this.getDevicesPromise = function(){
-		return deferred.promise;
 	};
 
 	this.getInputDevices = function(){

@@ -231,19 +231,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
      }
 
-    phoneService.getDevicesPromise().then(function(data){
-        
-        if(!phoneService.isPhoneActive()){
-            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
-                if($scope.tabs[i].option == 'Phone'){
-                    $scope.tabs[i].isActive = false;
-                    break;
-                }
-            }
-        }
-
-	});
-
 	var setInputAudioDevice = function(){
 		$scope.selectedInput = $scope.inputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('inpdefid');
@@ -281,6 +268,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		$scope.inputDevices = data;
 		setInputAudioDevice();
 		
+        // disable phone tab
+        if(!phoneService.isPhoneActive()){
+            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
+                if($scope.tabs[i].option == 'Phone'){
+                    $scope.tabs[i].isActive = false;
+                    break;
+                }
+            }
+        }
     });
 
 	phoneService.getOutputDevices().then(function(data){

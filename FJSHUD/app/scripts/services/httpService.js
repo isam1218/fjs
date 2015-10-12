@@ -43,6 +43,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		            if (event.data.data) {
 		                broadcastSyncData(event.data.data);
 						synced = true;
+						
+						if ($rootScope.networkError)
+							$rootScope.$broadcast('network_issue', {show: false});
 		            }
 		            break;
 		        case "feed_request":
@@ -56,9 +59,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
       				break;
       			case "network_error":
       				if(!synced){
-      					
-      					$rootScope.networkError = true;
-      					$rootScope.$broadcast('network_issue',{});
+      					$rootScope.$broadcast('network_issue', {show: true});
 						worker.terminate();
 					}
       				break;
@@ -431,6 +432,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				'Authorization': 'auth='+authTicket,
 				'node': nodeID,
 			}
+		})
+		.error(function() {
+			// network error
+			$rootScope.$broadcast('network_issue', {show: true});
 		});
 	};
 	
