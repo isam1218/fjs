@@ -292,7 +292,7 @@
       conf_summary_all_rooms:'You may have limited control over some rooms in this list, such as adding or removing other users',
       free_room:'Free room',
       occupied:'Occupied',
-      talking:'talking',
+      talking:'Talking',
       rooms:'Rooms',
       room:'Room',
       total:'Total',
