@@ -1042,9 +1042,6 @@ p {
   min-width: 200px;
   right: 10px;
 }
-.DockPanel .NoneParked {
-  max-height: 42px !important;
-}
 .DockPanel .ListRowTitle {
   max-width: 100%;
   padding-top: 5px;
@@ -1135,6 +1132,12 @@ p {
 }
 .Gadget.NoFixedHeight {
   height: initial !important;
+}
+.Gadget.Resizable {
+  min-height: 150px;
+}
+.Gadget.Parked:not(.Resizable) {
+  height: 42px !important;
 }
 .Gadget:hover {
   box-shadow: 0 0 8px gray;
@@ -5086,6 +5089,10 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-margin-end: 0px;
   font-weight: bold;
   color: #666;
+}
+.WidgetHeader .WidgetHeaderTitle {
+  margin-top: 10px;
+  margin-left: 10px;
 }
 .ZoomWidgetSection {
   width: 48%;

@@ -2,7 +2,8 @@
     <div class="WidgetHeader" >
         <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
-            Fonality Video Collaboration
+            Fonality Video Collaboration<br>
+            <img src="img/poweredby-zoom.png">
         </div>
     </div>
 
@@ -133,7 +134,7 @@
     <div class="meetingHeader" >
         <ul>
           <li><h4>Personal Meeting ID (PMI)</h4><button ng-click="joinScheduledMeeting(pmi_id.pmi)">Start</button></li>
-          <li><h3 ng-model="pmi_id.pmi">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button ng-click="copyPmi(x.topic,pmi_id.pmi)">Copy</button></li>
+          <li><h3 ng-model="pmi_id.pmi" style="margin-left:30px">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button ng-click="copyPmi(x.topic,pmi_id.pmi)">Copy</button></li>
         </ul>
     </div>
     

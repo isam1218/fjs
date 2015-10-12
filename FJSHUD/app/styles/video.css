@@ -150,6 +150,10 @@
   font-weight: bold;
   color: #666;
 }
+.WidgetHeader .WidgetHeaderTitle {
+  margin-top: 10px;
+  margin-left: 10px;
+}
 .ZoomWidgetSection {
   width: 48%;
   position: relative;
