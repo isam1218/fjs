@@ -34,7 +34,7 @@
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
 								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{ ::message.displayName}}</span>
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
-								<div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
+								<div class="NotificationTime">{{ message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
 							</div> 
 							<div class="NotificationType">
 								...{{message.label }} 
