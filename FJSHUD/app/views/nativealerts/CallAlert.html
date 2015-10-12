@@ -129,10 +129,10 @@
  
 			<!-- errors -->
 			<!--
-			<div class="Messages error" ng-repeat="error in errors" ng-switch="::error">	
+			<div class="Messages error" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
 				<div class="NotificationHeader"> 
 					<div class="NotificationHeaderBackground"> 
-						<div class="NotificationClose" onclick="mouseClick(this)" action="#/RemoveError?{{::error}}"></div>
+						<div class="NotificationClose" onclick="mouseClick(this)" action="#/RemoveError?{{::error.xpid}}"></div>
 					</div>
 				</div>
 				
@@ -145,41 +145,40 @@
 						</div>
 					
 						<div class="LeftBarNotificationMessageSection"> 
-							<div class="chatNotification plugins">
-								<div class="content"><span>Browser Plugin</span></div> 
+							<div class="chatNotification error">
+								<div class="content"><span ng-bind-html="::error.displayName"></span></div> 
 								<div ></div>
-								<div class="NotificationMessage" ng-if="::!pluginVersion">Click to download & Install</div>
-								<div class="NotificationMessage" ng-if="::!isPluginUptoDate()">Click to Update</div>
+								<div class="NotificationMessage" ng-bind-html="::error.message"></div>
 							</div>
 						</div>
 					</div>
 				</a>
 				
-                <div ng-switch-when="anotherDevice" class="NotificationSection webphone" onclick="mouseClick(this)" action="#/displayAnotherDevice">
+                <div ng-switch-when="anotherDevice" class="NotificationSection error" onclick="mouseClick(this)" action="#/displayAnotherDevice">
                     <div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
                         <div class="AvatarWarningSmall"></div>
                     </div>
                 
                     <div class="LeftBarNotificationMessageSection"> 
-                        <div class="chatNotification webphone">
-                            <div class="content"><span>Web Phone</span> <div class="NotificationTime"></div></div> 
+                        <div class="chatNotification error">
+                            <div class="content"><span ng-bind-html="::error.displayName"></span> <div class="NotificationTime"></div></div> 
                             <div ></div>
-                            <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
+                            <div class="NotificationMessage" ng-bind-html="::error.message"></div>
                         </div>
                         
                     </div>
                  </div> 
 				
-                <div ng-switch-when="networkError" class="NotificationSection webphone" onclick="mouseClick(this)" action="#/showNetworkErrors">
+                <div ng-switch-when="networkError" class="NotificationSection error" onclick="mouseClick(this)" action="#/showNetworkErrors">
                     <div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
                         <div class="AvatarWarningSmall"></div>
                     </div>
                 
                     <div class="LeftBarNotificationMessageSection"> 
-                        <div class="chatNotification webphone">
-                            <div class="content"><span>Error</span> <div class="NotificationTime"></div></div> 
+                        <div class="chatNotification error">
+                            <div class="content"><span ng-bind-html="::error.displayName"></span> <div class="NotificationTime"></div></div> 
                             <div ></div>
-                            <div class="NotificationMessage">Click to open details</div>
+                            <div class="NotificationMessage" ng-bind-html="::error.message"></div>
                         </div>
                         
                     </div>

@@ -60,18 +60,50 @@ hudweb.controller('NotificationController',
     $scope.addError = function(type) {
         for (var i = 0, len = $scope.errors.length; i < len; i++) {
             // find existing
-            if ($scope.errors[i] == type)
+            if ($scope.errors[i].xpid == type)
                 return;
         }
+		
+		// add new
+		var data = {
+			xpid: type,
+			type: 'error',
+			displayName: '',
+			message: ''
+		};
+			
+		switch(type) {
+			case 'anotherDevice':
+				data.displayName = 'Web Phone';
+				data.message = 'Phone registered on another device. Click on this message to set this instance as active.';
+				break;
+			case 'networkError':
+				data.displayName = 'Error';
+				data.message = 'Click to open details';
+				break;
+			case 'browserPlugin':
+				data.displayName = 'Browser Plugin';
+				
+				if (!$rootScope.pluginVersion)
+					data.message = 'Click to download & install';
+				else if (!$scope.isPluginUptoDate())
+					data.message = 'Click to update';
+				
+				break;
+		}
         
-        // add new
-        $scope.errors.push(type);
+        $scope.errors.push(data);
+		
+		// native alert
+		if (displayDesktopAlert && nservice.isEnabled()) {		
+			phoneService.displayWebphoneNotification(data, 'error', false);
+		}
     };
     
     $scope.dismissError = function(type) {
         for (var i = 0, len = $scope.errors.length; i < len; i++) {
             // find existing
-            if ($scope.errors[i] == type) {
+            if ($scope.errors[i].xpid == type) {
                 $scope.errors.splice(i, 1);
               
                 break;
