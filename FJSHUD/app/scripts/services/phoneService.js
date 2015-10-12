@@ -1469,8 +1469,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 				if(settingsService.getSetting('alert_call_duration') != "entire"){
 			          if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-			            nservice.dismiss("INCOMING_CALL",data[i].xpid);   
-			            return;
+			            nservice.dismiss("INCOMING_CALL",data[i].xpid);  			            
 			          }
 			    }
 			}
