@@ -72,7 +72,7 @@
         accept: 'Accept',
         decline:'Decline',
         talk:'talk',
-        recent_calls:'Recent Calls',
+        recent_calls:'Recent calls',
   		time:'Time',
     	today:'Today' , 
     	yesterday:'Yesterday',
