@@ -58,7 +58,7 @@
 		<div class="TitleBar" id="TitleBar">
 			<div class="HasNotificationIcon"></div>
 			<div>{{::verbage.notifications}}</div>
-			<div class="Event"> - {{ notifications.length + errors.length }} </div>
+			<div class="Event"> - {{ notifications.length + errors.length }} {{::verbage.events}} </div>
 			<input type="button" value="{{::verbage.open}}" class="XButton" onclick="window.location.replace('#/OpenNotifications')" />
 		</div>   
 		

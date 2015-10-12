@@ -4,7 +4,7 @@
 			<div class="HasNotificationIcon" ng-switch-when="true"></div>
 			<div class="NoNotificationIcon" ng-switch-when="false"></div>
 			<div>{{::verbage.notifications}}</div>
-			<div class="Event" ng-switch-when="true"> - {{ notifications.length + errors.length }} </div>
+			<div class="Event" ng-switch-when="true"> - {{ notifications.length + errors.length }} {{::verbage.events}}</div>
 			<input type="button" value="{{::verbage.open}}" class="XButton" ng-click="showOverlay(true, 'NotificationsOverlay', {})"/> <!-- "$parent.overlay = 'notifications'" -->
 		</div>   
 		

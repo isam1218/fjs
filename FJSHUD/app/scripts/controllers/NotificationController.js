@@ -118,8 +118,10 @@ hudweb.controller('NotificationController',
             $rootScope.networkError = true;
         
             // show pop-up
-            if ($rootScope.isFirstSync || data.alert)
+            if ($rootScope.isFirstSync || data.alert) {
                 $scope.showOverlay(true,'NetworkErrorsOverlay', {});
+				$scope.$safeApply();
+			}
         }
         else {
             $scope.dismissError('networkError');
