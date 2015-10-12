@@ -147,6 +147,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             sharedData.meeting.start_url = response.meetings.start_url;
             sharedData.meeting.meetingTopic = topic;
             sharedData.meeting.timeSelect = startTime;
+            sharedData.meeting.AmPm = "";
             sharedData.meeting.timezone = timezone;
           });
 
