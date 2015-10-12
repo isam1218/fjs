@@ -79,8 +79,21 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
         }
     };
 	
-	$scope.makeCall = function(number) {
-		phoneService.makeCall(number);
+	$scope.makeCall = function(call) {
+		var number = call.phone;
+		if(call.conferenceId && call.conferenceId != undefined && call.conferenceId != '')
+		{
+			params = {
+				conferenceId: call.conferenceId,
+				contactId: $rootScope.meModel.my_pid
+			};
+
+			httpService.sendAction("conferences","joinContact",params);	
+		}	
+		else
+		{			
+			phoneService.makeCall(number);
+		}	
 	};
 
 }]);
