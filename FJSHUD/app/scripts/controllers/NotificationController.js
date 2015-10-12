@@ -580,8 +580,8 @@ hudweb.controller('NotificationController',
       return a.created - b.created;
     });
       	
-		$scope.inCall = $scope.calls.length > 0;
-		$scope.isRinging = true;
+	//$scope.inCall = $scope.calls.length > 0;
+	//$scope.isRinging = true;
 		
 		if($scope.inCall)
         	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
@@ -592,23 +592,26 @@ hudweb.controller('NotificationController',
        	
     if(displayDesktopAlert){
 			if(nservice.isEnabled()){
-					for (var i = 0; i < $scope.calls.length; i++){
-				 		if(alertDuration != "entire"){
-              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-                return;
-              }
-            }
-            phoneService.displayCallAlert($scope.calls[i]);
-					}
-			}else{
-        		if(alertDuration != "entire"){
+				for (var i = 0; i < $scope.calls.length; i++){
+				 if(alertDuration != "entire"){
+					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING)
+		            	  phoneService.displayCallAlert($scope.calls[i]);
+		             else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
+		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);  
+				 }
+				 else
+					 phoneService.displayCallAlert($scope.calls[i]);
+				}
+			}else{//other browsers
+				for (var i = 0; i < $scope.calls.length; i++){
+					if(alertDuration != "entire"){
 				 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 				 		   phoneService.removeNotification();
 
 				 		   return;
 				 	    }
 				    }
+				}	
         		$scope.displayAlert = true;
         		$timeout(displayNotification, 1500);
 			}
@@ -649,9 +652,11 @@ hudweb.controller('NotificationController',
 		if(element){
 			var content = element.innerHTML;
 			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
-          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-       }
-		}
+               phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+             }
+		}else{
+          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+        }
 		element = null;
 		$scope.displayAlert = false;
 	};
