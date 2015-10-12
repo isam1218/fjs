@@ -297,6 +297,9 @@ hudweb.controller('NotificationController',
 
     $scope.notifications = [];
     $scope.todaysNotifications = [];
+	
+	// empty errors array
+	$scope.errors.splice(0, $scope.errors.length);
 
     myHttpService.sendAction('quickinbox','removeAll');
       
