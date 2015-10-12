@@ -94,21 +94,38 @@ hudweb.controller('NotificationController',
         
         $scope.errors.push(data);
 		
-		// native alert
-		if (displayDesktopAlert && nservice.isEnabled()) {		
-			phoneService.displayWebphoneNotification(data, 'error', false);
+		// update native alert
+		if (displayDesktopAlert) {
+			if (nservice.isEnabled())
+				phoneService.displayWebphoneNotification(data, 'error', false);
+			else {
+				$scope.displayAlert = true;
+				$timeout(displayNotification, 1500);
+			}
 		}
     };
     
     $scope.dismissError = function(type) {
         for (var i = 0, len = $scope.errors.length; i < len; i++) {
-            // find existing
+            // find existing and remove
             if ($scope.errors[i].xpid == type) {
                 $scope.errors.splice(i, 1);
               
                 break;
             }
         }
+		
+		// update native alert
+		if (displayDesktopAlert && !nservice.isEnabled()) {
+			if ($scope.todaysNotifications.length > 0 || $scope.calls.length > 0 || $scope.errors.length > 0) {
+			  $scope.displayAlert = true;
+			  $timeout(displayNotification, 1500);    
+			}
+			else {
+			  phoneService.cacheNotification(undefined,0,0);
+			  phoneService.removeNotification();
+			}
+		}
     };
 
     // connectivity error
@@ -675,7 +692,7 @@ hudweb.controller('NotificationController',
     var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0 || $scope.errors.length > 0){
           phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
        }else{
           phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
@@ -740,7 +757,7 @@ hudweb.controller('NotificationController',
 		              }
 		          }
 		          break;
-            case 'removeError':
+            case 'dismissError':
                 $scope.dismissError(data.type);
                 break;
 		}

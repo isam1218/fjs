@@ -834,10 +834,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					makeCall(phone); 
 					remove_notification(xpid); 
 					break;	
-				case '/getPlugins':
-					showOverlay(true,'DownloadPlugin',{});
-					window.open(xpid,'_blank');
-					break;	
 				case '/activatePhone':
 					activatePhone();
 					break;	
@@ -851,24 +847,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var messagexpid = queryArray[3];
 					showQueue(queueId,audience, type,messagexpid);
 					break;
-				case '/RemoveError':
+				case '/CloseError':
 					var data = {
-						event: 'removeError',
+						event: 'dismissError',
 						type: xpid
 					};
 					
 					$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
-				case '/showNetworkErrors':
-					var data = {
-						show: true,
-						alert: true
-					};
+				case '/HandleError':
+					var el = document.getElementById('error-' + xpid);
 					
-					$rootScope.$evalAsync($rootScope.$broadcast('network_issue', data));
-					break;
-				case '/displayAnotherDevice':
-					httpService.updateSettings('instanceId','update',localStorage.instance_id);
+					// use notification click handler
+					if (el)
+						el.click();
+					
+					el = null;
 					break;
 			}
     };

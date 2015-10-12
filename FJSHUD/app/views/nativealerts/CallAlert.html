@@ -128,33 +128,16 @@
 			</div>
  
 			<!-- errors -->
-			<!--
-			<div class="Messages error" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
+			<div class="Messages error" ng-repeat="error in errors track by error.xpid">	
 				<div class="NotificationHeader"> 
 					<div class="NotificationHeaderBackground"> 
-						<div class="NotificationClose" onclick="mouseClick(this)" action="#/RemoveError?{{::error.xpid}}"></div>
+						<div class="NotificationClose" onclick="mouseClick(this)" action="#/CloseError?{{::error.xpid}}"></div>
 					</div>
 				</div>
 				
 				<div class="NotificationDivider"></div>
 				
-				<a ng-switch-when="browserPlugin" href="{{::pluginDownloadUrl}}" download target="_blank" onclick="mouseClick(this)" action="#/getPlugins">
-					<div class="NotificationSection">
-						<div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
-							<div class="AvatarWarningSmall"></div>
-						</div>
-					
-						<div class="LeftBarNotificationMessageSection"> 
-							<div class="chatNotification error">
-								<div class="content"><span ng-bind-html="::error.displayName"></span></div> 
-								<div ></div>
-								<div class="NotificationMessage" ng-bind-html="::error.message"></div>
-							</div>
-						</div>
-					</div>
-				</a>
-				
-                <div ng-switch-when="anotherDevice" class="NotificationSection error" onclick="mouseClick(this)" action="#/displayAnotherDevice">
+                <div class="NotificationSection error" onclick="mouseClick(this)" action="#/HandleError?{{::error.xpid}}">
                     <div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
                         <div class="AvatarWarningSmall"></div>
                     </div>
@@ -167,24 +150,8 @@
                         </div>
                         
                     </div>
-                 </div> 
-				
-                <div ng-switch-when="networkError" class="NotificationSection error" onclick="mouseClick(this)" action="#/showNetworkErrors">
-                    <div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
-                        <div class="AvatarWarningSmall"></div>
-                    </div>
-                
-                    <div class="LeftBarNotificationMessageSection"> 
-                        <div class="chatNotification error">
-                            <div class="content"><span ng-bind-html="::error.displayName"></span> <div class="NotificationTime"></div></div> 
-                            <div ></div>
-                            <div class="NotificationMessage" ng-bind-html="::error.message"></div>
-                        </div>
-                        
-                    </div>
-                 </div>   
+                </div>   
 			</div>
-			-->
         </div>    
 	</div>
 	</div>
