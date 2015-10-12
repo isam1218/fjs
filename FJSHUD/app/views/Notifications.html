@@ -1,6 +1,6 @@
 <div class="LeftBarNotificationSection notificationsSection" expand-contract-notifications>
 	<div class="NotificationMessages LeftBarNotifications">     
-		<div class="TitleBar" ng-switch="notifications.length > 0">
+		<div class="TitleBar" ng-switch="notifications.length > 0 || errors.length > 0">
 			<div class="HasNotificationIcon" ng-switch-when="true"></div>
 			<div class="NoNotificationIcon" ng-switch-when="false"></div>
 			<div>{{::verbage.notifications}}</div>
