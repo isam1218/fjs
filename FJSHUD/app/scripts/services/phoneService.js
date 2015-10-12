@@ -1620,11 +1620,16 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							}
 						}
 				}
+				if(settingsService.getSetting('alert_call_duration') != "entire"){
+			          if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+			            nservice.dismiss("INCOMING_CALL",data[i].xpid);  			            
+			          }
+			    }
 			}
 		}
 		if (data[0].incoming){
 			storageService.saveRecent('contact', data[0].contactId);
-		}
+		}		
 
 		deferred.resolve(formatData());
 		$rootScope.$broadcast('calls_updated', callsDetails);
