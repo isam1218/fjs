@@ -122,12 +122,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(!$.isEmptyObject(callsDetails)){
 						for(var detail in callsDetails){
 							if(alertDuration != "entire"){
-								if(callsDetails[detail].state != fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-									context.displayCallAlert(callsDetails[detail]);
-								} 
-							}else{
-								context.displayCallAlert(callsDetails[detail]);
+								if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
+									nservice.dismiss("INCOMING_CALL",callsDetails[detail]);  
+								}								
 							}
+							context.displayCallAlert(callsDetails[detail]);							
 						}
 					}
 				}else{
