@@ -4,11 +4,11 @@ hudweb.controller('NotificationController',
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
+  $scope.errors = nservice.errors || [];
   $scope.calls = [];
   var long_waiting_calls = {};
   var msgXpid;
   var numberOfMyCalls = 0;
-  $scope.pluginErrorEnabled = true;
   $scope.inCall = false;
   $scope.inRinging = false;
   $scope.path = $location.absUrl().split("#")[0];
@@ -16,7 +16,6 @@ hudweb.controller('NotificationController',
   $scope.showNotificationBody = true;
   $scope.showHeader = false;  
   $scope.hasMessages = false;
-  $scope.phoneSessionEnabled = true;
   $scope.showTimer = false;
   $scope.selectedStatsTab = false;
   $scope.selectedCallsTab = false;
@@ -46,44 +45,55 @@ hudweb.controller('NotificationController',
   $scope.showAway = false;
   $scope.showOld = false;
   $scope.displayAlert = false;
-  $scope.anotherDevice = false;
-  $scope.displayAnotherDeviceNotification = false;
-  $scope.clearOld;
-  
-  $scope.phoneSessionEnabled = phoneService.isPhoneActive();  
-
-  $scope.showTodayHeader = function(index, anotherDevice){
-    if ($scope.todaysNotifications.length <= 4){
-      if (index == 0)
-        return true
-      else
-        return false
-    } else {
-      if (!anotherDevice){
-        if (index == $scope.todaysNotifications.length - 5)
-          return true
-        else
-          return false;
-      } else {
-        if (index == $scope.todaysNotifications.length - 4)
-          return true;
-        else
-          return false;
-      }
-    }
-  };        
+  $scope.clearOld;       
     
-  phoneService.getDevicesPromise().then(function(data){
-    $scope.phoneSessionEnabled = true;
+  phoneService.getInputDevices().then(function(data){
+    // can't find plugin or it's outdated
+    if (!phoneService.isPhoneActive() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
+        $scope.addError('browserPlugin');
   });
 
   $scope.getAvatar = function(pid){
     return myHttpService.get_avatar(pid,40,40);
   };
+  
+    $scope.addError = function(type) {
+        for (var i = 0, len = $scope.errors.length; i < len; i++) {
+            // find existing
+            if ($scope.errors[i] == type)
+                return;
+        }
+        
+        // add new
+        $scope.errors.push(type);
+    };
+    
+    $scope.dismissError = function(type) {
+        for (var i = 0, len = $scope.errors.length; i < len; i++) {
+            // find existing
+            if ($scope.errors[i] == type) {
+                $scope.errors.splice(i, 1);
+              
+                break;
+            }
+        }
+    };
 
-  $scope.disableWarning = function(){
-    $scope.pluginErrorEnabled = false;
-  };
+    // connectivity error
+    $scope.$on('network_issue', function(event, data) {
+        if (data.show) {
+            $scope.addError('networkError');
+            $rootScope.networkError = true;
+        
+            // show pop-up
+            if ($rootScope.isFirstSync || data.alert)
+                $scope.showOverlay(true,'NetworkErrorsOverlay', {});
+        }
+        else {
+            $scope.dismissError('networkError');
+            $rootScope.networkError = false;
+        }
+    });
   
   $scope.getMultipleNotifications = function(message){	
 	  var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';
@@ -115,12 +125,6 @@ hudweb.controller('NotificationController',
     }
     return messages;
   };
-
-  $scope.getNotificationsLength = function(length)
-  {
-    var length = $scope.phoneSessionEnabled ? length : length + 1;
-    return length;
-  };
   
   $scope.remove_notification = function(xpid){
     
@@ -135,13 +139,6 @@ hudweb.controller('NotificationController',
     }
     // call this method so can delete tmp barge notifications
     delete_notification_from_notifications_and_today(xpid);
-  };
-
-  $scope.remove_anotherDevice_notification = function(){
-    if ($scope.displayAnotherDeviceNotification)
-      $scope.displayAnotherDeviceNotification = false;
-    else if (!$scope.displayAnotherDeviceNotification)
-      $scope.displayAnotherDeviceNotification = true;
   };
 
   $scope.showNotifications = function(flag)
@@ -399,14 +396,12 @@ hudweb.controller('NotificationController',
   $scope.$on('settings_updated',function(event,data){
     if(data['instanceId'] != undefined){
       if(data['instanceId'] != localStorage.instance_id){
-        $scope.anotherDevice = true;
         // another instance being used --> display msg
-        $scope.displayAnotherDeviceNotification = true;
+        $scope.addError('anotherDevice');
         phoneService.registerPhone(false);
       }else{
-        $scope.anotherDevice = false;
         // no other device -> remove msg
-        $scope.displayAnotherDeviceNotification = false;
+        $scope.dismissError('anotherDevice');
         phoneService.registerPhone(true);
       }
     }
@@ -688,10 +683,11 @@ hudweb.controller('NotificationController',
 				$scope.showOverlay(true, 'NotificationsOverlay', {});
 				break;
 			case "enabled":
-				$scope.phoneSessionEnabled = true;
+				//$scope.phoneSessionEnabled = true;
 				break;
 			case "disabled":
-				$scope.phoneSessionEnabled = false;
+				//$scope.phoneSessionEnabled = false;
+				break;
 			case 'displayNotification':
 				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 		          $scope.displayAlert = true;
@@ -710,7 +706,9 @@ hudweb.controller('NotificationController',
 		              }
 		          }
 		          break;
-
+            case 'removeError':
+                $scope.dismissError(data.type);
+                break;
 		}
 		if($scope.isRinging)
 		{

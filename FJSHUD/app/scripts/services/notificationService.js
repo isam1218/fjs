@@ -1,6 +1,7 @@
 hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compile','$location','SettingsService','$q', '$sce',
 	function($q, $rootScope, httpService,$compile,$location,settingsService,$q,$sce) {
 		this.notifications = [];
+		this.errors = [];
 		var notifyPipe = false;
 		var enabled = false;
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";

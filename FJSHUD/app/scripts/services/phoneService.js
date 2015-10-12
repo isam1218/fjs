@@ -851,8 +851,24 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var messagexpid = queryArray[3];
 					showQueue(queueId,audience, type,messagexpid);
 					break;
+				case '/RemoveError':
+					var data = {
+						event: 'removeError',
+						type: xpid
+					};
+					
+					$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
+					break;
+				case '/showNetworkErrors':
+					var data = {
+						show: true,
+						alert: true
+					};
+					
+					$rootScope.$evalAsync($rootScope.$broadcast('network_issue', data));
+					break;
 				case '/displayAnotherDevice':
-	       	httpService.updateSettings('instanceId','update',localStorage.instance_id);
+					httpService.updateSettings('instanceId','update',localStorage.instance_id);
 					break;
 			}
     };
@@ -1077,8 +1093,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						deferredInputDevices.resolve(inputDevices);
 						deferredOutputDevices.resolve(outputDevices);
 						
-
-						deferred.resolve(formatData());
 						if( !$rootScope.isFirstSync){
 							$rootScope.$broadcast("phone_event",{event:"updateDevices"});
 						}
@@ -1311,9 +1325,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		for(var callId in callsDetails){
 			holdCall(callId,true);		
 		}
-	};
-	this.getDevicesPromise = function(){
-		return deferred.promise;	
 	};
 	
 	this.getInputDevices = function(){
