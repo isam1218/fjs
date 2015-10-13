@@ -148,14 +148,14 @@
                                         <div ng-init="getTimezone(x.start_time)"></div>
 
                    <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE , MMM dd, yyyy"}}</h5>
-                   <p>{{x.start_hour}}</p>
+                   <p ng-model="x.start_time">{{x.start_time|date:"hh:mma"}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting ID: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
                    <div class="meetingBtnsContainer">
-                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.timezone,x.password,x.option_jbh,x.start_hour)">Edit</button>
+                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.timezone,x.password,x.option_jbh)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
-                       <button ng-click="copy(x.start_hour,x.topic,x.meeting_id,x.timezone)">Copy</button>
+                       <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
                     </div>
                 </li>
