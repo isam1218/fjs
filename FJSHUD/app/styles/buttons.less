@@ -63,7 +63,12 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   text-shadow: 0 1px 0 #fff;
   vertical-align: middle;  
   text-overflow: ellipsis;
-  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;  
+  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
+
+  &[disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }  
   
   span{
     vertical-align: middle;   

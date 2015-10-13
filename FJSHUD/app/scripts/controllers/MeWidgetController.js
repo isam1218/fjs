@@ -1,5 +1,5 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'QueueService',
-    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService,queueService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'ConferenceService', 'QueueService',
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService, conferenceService, queueService) {
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;    
     var soundManager;
@@ -15,13 +15,28 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.avatar ={};
     $scope.phoneType = false;
     $scope.settings = {};
-    //we get the call meta data based on call id provided by the route params if tehre is no route param provided then we display the regular recent calls    
-    $scope.currentCall = phoneService.getCallDetail(callId);
-  
+	
+	// listens for route param to populate current call object
+	$scope.$on('$routeChangeSuccess', function() {    
+		$scope.currentCall = phoneService.getCallDetail(callId);
+		
+        if ($scope.currentCall) {
+        	$scope.onCall = true;
+			
+			// attach full profile			
+			if ($scope.currentCall.contactId)
+				$scope.currentCall.fullProfile = contactService.getContact($scope.currentCall.contactId);
+			else if ($scope.currentCall.details.conferenceId)
+				$scope.currentCall.fullProfile = conferenceService.getConference($scope.currentCall.details.conferenceId);
+        }
+        else {
+            $scope.call_obj.phoneNumber = "";
+            $scope.onCall = false;
+        }
+	});  
 
     $scope.phoneState = phoneService.getPhoneState();
-    $scope.timeElapsed = "00:00";
-    
+    $scope.timeElapsed = "00:00";    
 
     $scope.getCurrentLocationTitle = function() {
         /**
@@ -966,23 +981,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.locations[data[i].xpid] = data[i];
             }
         }
-    });
-
-
-    $scope.$on('current_call_control', function(event,currentCall){
-         $scope.currentCall = currentCall;
-        if($scope.currentCall){
-        	$scope.onCall = true;
-            if($scope.currentCall.contactId){
-                var contact = contactService.getContact(currentCall.contactId);
-                currentCall.contact = contact;
-            }
-        }
-        if(currentCall  == null){
-            $scope.call_obj.phoneNumber = "";
-            $scope.onCall = false;
-        }
-
     });
 
     settingsService.getPermissions().then(function(data){
