@@ -80,13 +80,13 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option){
       $scope.topic = topic;
       var start_hour = $filter('date')(start_time,"hh:mma");
-      alert(start_hour);
+      
       $scope.start_time = start_time;
       $scope.meeting_id = meetingId;
       $scope.timezone = timezone;
       $scope.password = password;
       $scope.option = option;
-      alert(start_hour);
+     
       $scope.start_hour = start_hour.substr(0,5);
       $scope.AmPm = start_hour.substr(5,2);
      
@@ -769,7 +769,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
  if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '+'){
   $scope.hourUTC = parseInt($scope.startHourUTC) - parseInt(dates.substr(1,2));
     $scope.startDay = $scope.startTime.getDate();
-    alert($scope.startHour.substr(0,2));
+    
     
     if($scope.startHour.substr(0,2) == 12){
       $scope.hourUTC = parseInt(dates.substr(1,2))-(parseInt(dates.substr(1,2)*2));
@@ -784,7 +784,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
     
  if($scope.startHour.substr(0,2) == 12){
       $scope.hourUTC = parseInt($scope.hourUTC)-12;
-      alert($scope.hourUTC);
+      
     }
  }
 /* if($scope.hourUTC >= dates.substr(1,2) && dates.charAt(0) == "-"){
@@ -887,7 +887,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
  if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '+'){
   $scope.hourUTC = parseInt($scope.startHourUTC) - parseInt(dates.substr(1,2));
     $scope.startDay = $scope.startTime.getDate();
-    alert($scope.startHour.substr(0,2));
+    
     
     if($scope.startHour.substr(0,2) == 12){
       $scope.hourUTC = parseInt(dates.substr(1,2))-(parseInt(dates.substr(1,2)*2));
@@ -902,7 +902,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
     
  if($scope.startHour.substr(0,2) == 12){
       $scope.hourUTC = parseInt($scope.hourUTC)-12;
-      alert($scope.hourUTC);
+      
     }
  }
 
