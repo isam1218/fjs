@@ -84,8 +84,8 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       $scope.timezone = timezone;
       $scope.password = password;
       $scope.option = option;
-      $scope.start_hour = start_hour.substr(0,4);
-      $scope.AmPm = start_hour.substr(4,2);
+      $scope.start_hour = start_hour.substr(0,5);
+      $scope.AmPm = start_hour.substr(5,2);
      
 
 
@@ -358,7 +358,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         for(var i = 0; i<=30;i++){
            $scope.meetingList[i].start_time.toString();
            if($scope.meetingList[i].start_time.substr(11,2) < 13){
-           var x =$scope.meetingList[i].start_time.substr(12,1);
+           var x =$scope.meetingList[i].start_time.substr(11,2);
          
             $scope.meetingList[i].start_hour = x + ":00AM";
           }
@@ -403,7 +403,7 @@ $scope.$on('modalInstance', function() {
 
            if($scope.meetingList[i].start_time.substr(11,2) < 13){
            $scope.meetingList[i].start_time.toString();
-           var x =$scope.meetingList[i].start_time.substr(12,1);
+           var x =$scope.meetingList[i].start_time.substr(11,2);
            
 
             $scope.meetingList[i].start_hour = x + ":00AM";
@@ -448,7 +448,7 @@ $scope.$on('modalInstance', function() {
 
            if($scope.meetingList[i].start_time.substr(11,2) < 13){
            $scope.meetingList[i].start_time.toString();
-           var x =$scope.meetingList[i].start_time.substr(12,1);
+           var x =$scope.meetingList[i].start_time.substr(11,2);
            
 
             $scope.meetingList[i].start_hour = x + ":00AM";
@@ -591,7 +591,7 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedul
  /* $scope.selected = {
     item: $scope.items[0]
   };*/
-$scope.times = ["1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00"];
+$scope.times = ["01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00"];
 //$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -720,12 +720,15 @@ $scope.reloadRoute = function() {
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
  $scope.hourUTC = $scope.startHourUTC;
-
-
+var dates = $filter('date')($scope.startTime,'Z');
+alert(dates.substr(1,2));
 if($scope.meeting.AmPm == "AM"){
   $scope.hourUTC = $scope.startHourUTC;
     $scope.startDay = $scope.startTime.getDate()+1;
 
+ }
+ if($scope.hourUTC >= dates.substr(1,2) || $scope.hourUTC <= dates.substr(1,2)){
+  $scope.startDay = $scope.startTime.getDate();
  }
  if($scope.meeting.AmPm =="PM"){
   $scope.startHourUTC = parseInt($scope.startHourUTC);
