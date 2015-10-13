@@ -5,39 +5,41 @@
   
     <div class="ListView">
 	<div ng-show="isTheirGroup()">
-		<div class="HeaderTitle">{{::verbage.department}}</div>
-		<div class="footnote"> {{::verbage.member_of_department}} </div>
+		<div class="DepartmentHeader">
+      <div class="HeaderTitle DeptTeamHeader">{{::verbage.department}}</div>
+		  <div class="footnote"> {{::verbage.member_of_department}} </div>
+    </div>
 		
 		<a href="#/group/{{::userGroup.xpid}}" class="GroupRow ListRow ListRow-Contact">
 			<avatar profile="userGroup"></avatar>
 			<div class="ListRowContent">
-				<div class="ListRowTitle">
+				<div class="ListRowTitle Department">
 					<div class="name">
-						<b ng-bind-html="::userGroup.name">{{ ::userGroup.name }}</b>
+						<b class="DepartmentName" ng-bind-html="::userGroup.name">{{ ::userGroup.name }}</b>
 						<span class="details">{{ ::userGroup.members.length }} members</span>
 					</div>
 				</div>
 			</div>
 			
-			<div class="ListRowStatus">#{{ ::userGroup.extension }}</div>
+			<div class="ListRowStatus Extension">#{{ ::userGroup.extension }}</div>
 			<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(userGroup.extension)"></input>
 		</a>
 	</div>
     
-	<div ng-show="filteredResults.length > 0">
-		<div class="HeaderTitle">{{::verbage.our_teams}}</div>
-		<div class="footnote"> {{::verbage.both_in_these_teams}} </div>
+	<div class="OurTeamsSection" ng-show="filteredResults.length > 0">
+		<div class="HeaderTitle DeptTeamHeader">{{::verbage.our_teams}}</div>
+		<div class="footnote"> {{::verbage.both_on_these_teams}} </div>
 	</div>
     <a href="#group/{{::group.xpid}}" data-ng-repeat="group in filteredResults = (groups | filter: customFilter()) | orderBy: 'name' track by group.xpid"  class=" GroupRow ListRow ListRow-Contact">
         <avatar profile="group"></avatar>
         <div class="ListRowContent">
-            <div class="ListRowTitle">
+            <div class="ListRowTitle OurTeamsContent">
                 <div class="name">
                     <b ng-bind-html="::group.name"></b>
-                    <span class="details">{{ ::group.members.length }} members</span>
+                    <span class="details TeamDetails">{{ ::group.members.length }} members</span>
                 </div>
             </div>
-            <div class="ListRowStatus">Owner: {{ ::findGroupOwner(group) }}</div>
+            <div class="ListRowStatus OurTeamsContent">Owner: {{ ::findGroupOwner(group) }}</div>
             <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.call}}" ng-click="callExtension(group.extension)"></input>
         </div>
     </a>
