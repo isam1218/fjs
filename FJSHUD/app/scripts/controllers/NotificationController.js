@@ -801,7 +801,7 @@ hudweb.controller('NotificationController',
   var addTodaysNotifications = function(item){
     displayDesktopAlert = true;
     
-    var context, contextId, targetId, groupContextId, queueContextId;
+    var context, contextId;
     var today = moment(ntpService.calibrateTime(new Date().getTime()));
     var itemDate = moment(item.time);
     var isAdded = false;
@@ -809,35 +809,15 @@ hudweb.controller('NotificationController',
     if(item.context){
       context = item.context.split(":")[0];
       contextId = item.context.split(":")[1];
-
     }
-
-    if (context){
-      var context = item.context.split(":")[0];
-      var contextId = item.context.split(":")[1];
-      switch(context){
-        case "groups":
-          groupContextId = contextId;
-          targetId = $routeParam.groupId;
-          break;
-        case "contacts":
-          targetId = $routeParam.contactId;
-          break;
-        case "conferences":
-          targetId = $routeParam.conferenceId;
-          break;
-        case "queues":
-          queueContextId = contextId;
-          break;
-      }
-    }
+	
     if(item.queueId){
       var queue = queueService.getQueue(item.queueId);
       if(queue){
         item.displayName = queue.name;
       }
-
     }
+	
     if(settingsService.getSetting('alert_vm_show_new') != 'true'){
       if(item.type == 'vm'){
         displayDesktopAlert = false;
@@ -848,21 +828,19 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      if (phoneService.isInFocus()){
-        if (item.senderId != undefined && item.senderId == $routeParam.contactId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-          if(item.type == "chat")
-            $scope.remove_notification(item.xpid);
-          return false;
-        }else if (groupContextId != undefined && groupContextId == $routeParam.groupId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-          if(item.type == "gchat")
-            $scope.remove_notification(item.xpid);
-          return false;
-        }else if (queueContextId != undefined && queueContextId == $routeParam.queueId && ($routeParam.route == undefined || $routeParam.route == 'chat')){
-          $scope.remove_notification(item.xpid);
-          return false;
-        } else if (targetId != undefined && targetId == contextId && $routeParam.route == "chat"){
-          return false;
-        }
+      if (phoneService.isInFocus() && contextId && $routeParam.route) {
+		if (item.type.indexOf('chat') != -1 && $routeParam.route == 'chat') {
+			if (($routeParam.contactId && $routeParam.contactId == contextId) || ($routeParam.conferenceId && $routeParam.conferenceId == contextId) || ($routeParam.groupId && $routeParam.groupId == contextId) || ($routeParam.queueId && $routeParam.queueId == contextId)) {
+				$scope.remove_notification(item.xpid);
+				return false;
+			}
+		}
+		else if (item.type == 'q-broadcast' && $routeParam.route == 'alerts') {
+			if ($routeParam.queueId && $routeParam.queueId == contextId) {
+				$scope.remove_notification(item.xpid);
+				return false;
+			}
+		}
       }
       
        var dupe = false;
