@@ -359,31 +359,42 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 
         for(var i = 0; i<=30;i++){
-           $scope.meetingList[i].start_time.toString();
-           if($scope.meetingList[i].start_time.substr(11,2) < 13){
-           var x =$scope.meetingList[i].start_time.substr(11,2);
-         
-            $scope.meetingList[i].start_hour = x + ":00AM";
-          }
-           if($scope.meetingList[i].start_time.substr(11,2) >= 13 && $scope.meetingList[i].start_time.substr(11,2) <= 22){
-                 var x =$scope.meetingList[i].start_time.substr(11,2);
-                  x -= 12;
-                          $scope.meetingList[i].start_hour = x + ":00PM";
-                            $scope.meetingList[i].start_hour = "0" + $scope.meetingList[i].start_hour;
-            }
-            if($scope.meetingList[i].start_time.substr(11,2) >= 22){
-                 var x =$scope.meetingList[i].start_time.substr(11,2);
-                  x -= 12;
-                          $scope.meetingList[i].start_hour = x + ":00PM";
-                            //$scope.meetingList[i].start_hour = "0" + $scope.meetingList[i].start_hour;
-            }
+           var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
           
-            if($scope.meetingList[i].start_time.substr(11,2) == 0){
-                    $scope.meetingList[i].start_hour = "12:00PM";
 
-            }         
-          
-                    //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
+           var duration = $scope.meetingList[i].duration.toString();
+           if($scope.meetingList[i].duration == 0){
+                $scope.meetingList[i].duration = "00";
+              }
+
+             
+               
+               if($scope.meetingList[i].duration.toString().length == 3){
+                $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
+              var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().charAt(0));
+
+              if($scope.meetingList[i].start_time.charAt(11)== 0){
+              var strHourString = "T0"+ strHour;
+            }
+            if($scope.meetingList[i].start_time.charAt(11)>0){
+              var strHourString = "T"+strHour;
+            }
+              var strMin = $scope.meetingList[i].duration.toString().substr(1,2);
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              //alert($scope.meetingList[i].start_time.slice(0,10));
+               }
+
+
+               if($scope.meetingList[i].duration.toString().length == 2){
+              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
+              //alert($scope.meetingList[i].duration.toString().substr(0,2));
+              var strMin = $scope.meetingList[i].duration.toString().substr(0,2);
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+             
+               }
+               
+               
+
 
         }
 
@@ -410,34 +421,39 @@ $scope.$on('modalInstance', function() {
                 console.log("START_HOUR",$scope.start_hour);*/
 
         for(var i = 0; i<=30;i++){
+          var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
+          
 
-           if($scope.meetingList[i].start_time.substr(11,2) < 13){
-           $scope.meetingList[i].start_time.toString();
-           var x =$scope.meetingList[i].start_time.substr(11,2);
+           var duration = $scope.meetingList[i].duration.toString();
+           if($scope.meetingList[i].duration == 0){
+                $scope.meetingList[i].duration = "00";
+              }
+
+              
+                 if($scope.meetingList[i].duration.toString().length == 3){
+                $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
+              var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().charAt(0));
+              if($scope.meetingList[i].start_time.charAt(11)==0){
+              var strHourString = "T0"+strHour;
+            }
+            if($scope.meetingList[i].start_time.charAt(11)>0){
+              var strHourString = "T"+strHour;
+            }
+              var strMin = $scope.meetingList[i].duration.toString().substr(1,2);
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+               }
+
+
+                if($scope.meetingList[i].duration.toString().length == 2){
+              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
+              //alert($scope.meetingList[i].duration.toString().substr(0,2));
+              var strMin = $scope.meetingList[i].duration.toString().substr(0,2);
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+               }
+
+
            
-
-            $scope.meetingList[i].start_hour = x + ":00AM";
-           //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
-
-            }
-             if($scope.meetingList[i].start_time.substr(11,2) >= 13 && $scope.meetingList[i].start_time.substr(11,2) <= 22){
-                 var x =$scope.meetingList[i].start_time.substr(11,2);
-                  x -= 12;
-                          $scope.meetingList[i].start_hour = x + ":00PM";
-                            $scope.meetingList[i].start_hour = "0" + $scope.meetingList[i].start_hour;
-            } 
-             if($scope.meetingList[i].start_time.substr(11,2) >= 22){
-                 var x =$scope.meetingList[i].start_time.substr(11,2);
-                  x -= 12;
-                          $scope.meetingList[i].start_hour = x + ":00PM";
-                            //$scope.meetingList[i].start_hour = "0" + $scope.meetingList[i].start_hour;
-            }
-             if($scope.meetingList[i].start_time.substr(11,2) == 0){
-                   var x =$scope.meetingList[i].start_time.substr(11,2);
-
-                    $scope.meetingList[i].start_hour = "12:00PM";
-
-            }  
 
         }
         
@@ -462,33 +478,46 @@ $scope.$on('modalInstance', function() {
 
         for(var i = 0; i<=30;i++){
 
-           if($scope.meetingList[i].start_time.substr(11,2) < 13){
-           $scope.meetingList[i].start_time.toString();
-           var x =$scope.meetingList[i].start_time.substr(11,2);
-           
+          var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
+          
+          //alert(dateFilter.toString().substr(0,2));
 
-            $scope.meetingList[i].start_hour = x + ":00AM";
-           //$scope.meetingList[i].push({"start_hour":$scope.meetingList[i].start_hour});
+           var duration = $scope.meetingList[i].duration.toString();
+           if($scope.meetingList[i].duration == 0){
+                $scope.meetingList[i].duration = "00";
+              }
+            /*if($scope.meetingList[i].duration.toString().length == 2){
+              $scope.meetingList[i].duration = "0" + $scope.meetingList[i].duration;
+            }*/
 
+          
+                 if($scope.meetingList[i].duration.toString().length == 3){
+                $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
+              var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().charAt(0));
+              if($scope.meetingList[i].start_time.charAt(11)==0){
+              var strHourString = "T0"+strHour;
             }
-              if($scope.meetingList[i].start_time.substr(11,2) >= 13 && $scope.meetingList[i].start_time.substr(11,2) <= 22){
-                 var x =$scope.meetingList[i].start_time.substr(11,2);
-                  x -= 12;
-                          $scope.meetingList[i].start_hour = x + ":00PM";
-                            $scope.meetingList[i].start_hour = "0" + $scope.meetingList[i].start_hour;
-            } 
-              if($scope.meetingList[i].start_time.substr(11,2) >= 13 && $scope.meetingList[i].start_time.substr(11,2) >= 22){
-                 var x =$scope.meetingList[i].start_time.substr(11,2);
-                  x -= 12;
-                          $scope.meetingList[i].start_hour = x + ":00PM";
-                            //$scope.meetingList[i].start_hour = "0" + $scope.meetingList[i].start_hour;
+            if($scope.meetingList[i].start_time.charAt(11)>0){
+              var strHourString = "T"+strHour;
             }
-             if($scope.meetingList[i].start_time.substr(11,2) == 0){
-                   var x =$scope.meetingList[i].start_time.substr(11,2);
+              var strMin = $scope.meetingList[i].duration.toString().substr(1,2);
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+               }
 
-                    $scope.meetingList[i].start_hour = "12:00PM";
 
-            }  
+
+                if($scope.meetingList[i].duration.toString().length == 2){
+              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
+              //alert($scope.meetingList[i].duration.toString().substr(0,2));
+              var strMin = $scope.meetingList[i].duration.toString().substr(0,2);
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+               }
+              
+
+
+            
 
         }
         
@@ -586,17 +615,17 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
 
-  $scope.hourOption = [];
+  $scope.hourOption = ['00','01','02','03','04','05'];
 
-  for(var hour = 0; hour <=12; hour++){
+  /*for(var hour = 0; hour <=12; hour++){
     $scope.hourOption.push(hour);
-  }
+  }*/
 
-  $scope.minOption = [];
+  $scope.minOption = ['00','15','30','45'];
 
-  for(var min = 0; min <60; min+=15){
+  /*for(var min = 0; min <60; min+=15){
     $scope.minOption.push(min);
-  }
+  }*/
 
 }]);
 
@@ -820,6 +849,8 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
           $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
               console.log("PUT",data);
               console.log("PUT MEETING ID",sharedData.meeting.meeting_id);
+              
+
 
           });
 
@@ -860,6 +891,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
     $scope.hourUTC = $scope.startHourUTC;
+
 var dates = $filter('date')($scope.startTime,'Z');
 
 
