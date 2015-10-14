@@ -75,10 +75,10 @@ module.exports = function(grunt) {
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
               version: "HUDW" + getBuildNumber(),
-              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
-              MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
-              WINDOWS_PLUGIN_VERSION:'1.1.011219',
-              MAC_PLUGIN_VERSION:'1.1.011218',
+              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011383.msi',
+              MAC_PLUGIN:'/webphone/WebPhone-1.1.011382.pkg',
+              WINDOWS_PLUGIN_VERSION:'1.1.011383',
+              MAC_PLUGIN_VERSION:'1.1.011382',
             }
           },
           files:{
@@ -91,10 +91,10 @@ module.exports = function(grunt) {
             serverUrl:"https://dev4.fon9.com:8081",
             loginUrl: "https://dev4.fon9.com:5501",
             version: "HUDW" + getBuildNumber(),
-            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
-            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
-            WINDOWS_PLUGIN_VERSION:'1.1.011219',
-            MAC_PLUGIN_VERSION:'1.1.011218',
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011383.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011382.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011383',
+            MAC_PLUGIN_VERSION:'1.1.011382',
           }
         },
           files:{
@@ -108,10 +108,10 @@ module.exports = function(grunt) {
             serverUrl:"https://huc-dev.fonality.com:8081",
             loginUrl: "https://huc-dev.fonality.com:5501",
             version: "HUDW" + getBuildNumber(),
-            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
-            MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
-            WINDOWS_PLUGIN_VERSION:'1.1.011219',
-            MAC_PLUGIN_VERSION:'1.1.011218',
+            WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011383.msi',
+            MAC_PLUGIN:'/webphone/WebPhone-1.1.011382.pkg',
+            WINDOWS_PLUGIN_VERSION:'1.1.011383',
+            MAC_PLUGIN_VERSION:'1.1.011382',
           }
         },
           files:{

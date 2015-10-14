@@ -47,19 +47,19 @@ fjs.CONFIG = {
     PLUGINS:{
         MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
-        WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
-        MAC_NEW:'<%= MAC_PLUGIN %>'
+        WINDOWS_NEW:'http://repo.build01.lax01.fonality.com/hud/webphone/WebPhone-1.1.011383.msi', //'<%= WINDOWS_PLUGIN %>',
+        MAC_NEW:'http://repo.build01.lax01.fonality.com/hud/webphone/WebPhone-1.1.011382.pkg'//'<%= MAC_PLUGIN %>'
 
     },
     PLUGIN_VERSION:{
         MAC_OLD:'5.17.008986',
         WINDOWS_OLD:'5.17.008986',
-        WINDOWS_NEW:'1.1.011219',
-        MAC_NEW:'1.1.011218'
+        WINDOWS_NEW:'1.1.011383',
+        MAC_NEW:'1.1.011382'
     },
     DEBUG:true,
 };
-//fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
+fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
 
-//fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
+fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
 
