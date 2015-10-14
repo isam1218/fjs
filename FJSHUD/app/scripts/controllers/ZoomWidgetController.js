@@ -37,6 +37,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.host_id = null;
      $scope.meetingList = [];
      $scope.Time = "Time: ";
+
     
     
 
@@ -77,11 +78,38 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       window.open(start_url);
     }
 
-    $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option){
+    $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option,end_time){
       $scope.topic = topic;
       var start_hour = $filter('date')(start_time,"hh:mma");
       
       $scope.start_time = start_time;
+      $scope.end_time = end_time;
+
+      var startHour = $scope.start_time.substr(11,2);
+      var endHour = $scope.end_time.substr(11,2);
+      
+      $scope.hourDuration = endHour - startHour;
+      if($scope.hourDuration == 0){
+        $scope.hourDuration = "00";
+      }
+      else{
+      $scope.hourDuration = "0" + $scope.hourDuration;
+    }
+    
+      var startMin = $scope.start_time.substr(14,2);
+      var endMin = $scope.end_time.substr(14,2);
+     
+      
+      $scope.minDuration = endMin - startMin;
+      
+      if($scope.minDuration == 0){
+        $scope.minDuration = "00";
+      }
+      
+
+
+     
+
       $scope.meeting_id = meetingId;
       $scope.timezone = timezone;
       $scope.password = password;
@@ -120,19 +148,25 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
           return $scope.start_time;
         },
         timezone:function(){
-            return $scope.timezone;
+          return $scope.timezone;
         },
         password:function(){
-            return $scope.password;
+          return $scope.password;
         },
         option:function(){
-           return $scope.option; 
+          return $scope.option; 
         },
         start_hour: function(){
-            return $scope.start_hour;
+          return $scope.start_hour;
         },
         AmPm: function(){
-            return $scope.AmPm;
+          return $scope.AmPm;
+        },
+        hourDuration: function(){
+          return $scope.hourDuration;
+        },
+        minDuration: function(){
+          return $scope.minDuration;
         }
       }
     });
@@ -201,6 +235,12 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         },
         AmPm: function(){
             
+        },
+        hourDuration: function(){
+          
+        },
+        minDuration: function(){
+          
         }
       }
     });
@@ -599,6 +639,12 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
         },
         AmPm: function(){
             
+        },
+        hourDuration: function(){
+          
+        },
+        minDuration: function(){
+          
         }
 
       }
@@ -615,13 +661,13 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
 
-  $scope.hourOption = ['00','01','02','03','04','05'];
+ // $scope.hourOption = ['00','01','02','03','04','05'];
 
   /*for(var hour = 0; hour <=12; hour++){
     $scope.hourOption.push(hour);
   }*/
 
-  $scope.minOption = ['00','15','30','45'];
+  //$scope.minOption = ['00','15','30','45'];
 
   /*for(var min = 0; min <60; min+=15){
     $scope.minOption.push(min);
@@ -632,12 +678,15 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,hourDuration,minDuration,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
   $scope.updateBtn = update;
   $scope.host_id = host;
+
+$scope.hourOption = ['00','01','02','03','04','05'];
+$scope.minOption = ['00',15,30,45];
 
  /* $scope.selected = {
     item: $scope.items[0]
@@ -698,6 +747,9 @@ $scope.meeting.password = password;
 $scope.meeting.jbh = option;
 $scope.meeting.timeSelect = start_hour;
 $scope.meeting.AmPm = AmPm;
+$scope.meeting.hourDuration = hourDuration;
+$scope.meeting.minDuration = minDuration;
+
 
 if($scope.meeting.timeSelect != undefined){
 $scope.meeting.timeSelect = start_hour;
@@ -718,6 +770,22 @@ if($scope.meeting.timezone != undefined){
 }
 else{
     $scope.meeting.timezone = $scope.timeZone[0];
+}
+
+if($scope.meeting.hourDuration != undefined){
+    $scope.meeting.hourDuration = hourDuration;
+    alert($scope.meeting.hourDuration);
+}
+else{
+    $scope.meeting.hourDuration = $scope.hourOption[0];
+}
+
+if($scope.meeting.minDuration != undefined){
+    $scope.meeting.minDuration = minDuration;
+    alert($scope.meeting.minDuration);
+}
+else{
+    $scope.meeting.minDuration = $scope.minOption[2];
 }
 
 if($scope.meeting.times != undefined){

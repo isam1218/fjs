@@ -148,12 +148,12 @@
                                         <div ng-init="getTimezone(x.start_time)"></div>
 
                    <h5 style="font-weight:bold" ng-model="x.start_time">{{x.start_time|date:"EEEE , MMM dd, yyyy"}}</h5>
-                   <p ng-model="x.start_time">{{x.start_time|date:"hh:mma"}} to {{x.end_time|date:"hh:mma"}}</p>
+                   <p ng-model="x.start_time">{{x.start_time|date:"hh:mma"}} to </p><p ng-model="x.end_time" style="margin-top: -15px;margin-left: 72px;">{{x.end_time|date:"hh:mma"}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting ID: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
                    <div class="meetingBtnsContainer">
-                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.timezone,x.password,x.option_jbh)">Edit</button>
+                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.timezone,x.password,x.option_jbh,x.end_time)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.start_time,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
@@ -202,10 +202,10 @@
                 </li>
                 <li>
                 <label style="margin-left:35px">Duration:</label>
-                <select name="hourDuration" ng-model="meeting.hourDuration" ng-init="meeting.hourDuration = hourOption[0]"  ng-options="hr for hr in hourOption">
+                <select name="hourDuration" ng-model="meeting.hourDuration" ng-init="meeting.hourDuration"  ng-options="hr for hr in hourOption">
                 </select>
                 <label>hr</label>
-                <select name="minDuration" ng-model="meeting.minDuration" ng-init="meeting.minDuration = minOption[2]" ng-options="min for min in minOption">
+                <select name="minDuration" ng-model="meeting.minDuration" ng-init="meeting.minDuration" ng-options="min for min in minOption">
                 </select>
                 <label>min</label>
                 </li>
