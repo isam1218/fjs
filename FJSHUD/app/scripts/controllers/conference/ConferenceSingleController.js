@@ -128,14 +128,22 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
      }
   };
 
-  $scope.searchContact = function(contact){
-		if(contact){
+	$scope.searchContact = function(contact, number){
+		if (contact) {
 			var params = {
 				conferenceId: $scope.conferenceId,
 				contactId: contact.xpid
 			};
 
-			httpService.sendAction("conferences","joinContact",params);
+			httpService.sendAction("conferences", "joinContact", params);
+		}
+		else {
+			var params = {
+				conferenceId: $scope.conferenceId,
+				phone: number
+			};
+			
+			httpService.sendAction("conferences", "joinPhone", params);
 		}
 	};
 
