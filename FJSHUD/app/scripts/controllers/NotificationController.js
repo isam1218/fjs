@@ -1,6 +1,6 @@
 hudweb.controller('NotificationController', 
-  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService','$timeout','NtpService','NotificationService', '$sce',
-  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,$timeout,ntpService,nservice, $sce){
+  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 'GroupService', '$timeout','NtpService','NotificationService', '$sce',
+  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,groupService,$timeout,ntpService,nservice, $sce){
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
@@ -266,6 +266,7 @@ hudweb.controller('NotificationController',
   };
 
   $scope.go_to_notification_chat = function(message){
+
     var endPath;
     var calllogPath = '/calllog/calllog';
 
@@ -287,7 +288,10 @@ hudweb.controller('NotificationController',
         endPath = "/" + message.audience + "/" + xpid + '/chat';
         break;
       case 'missed-call':
-        if (message.senderId || message.fullProfile)
+        // external contact --> go to voicemails tab
+        if (message.fullProfile && message.fullProfile.primaryExtension == "")
+          endPath = "/" + message.audience + "/" + xpid + '/voicemails'
+        else if (message.senderId || message.fullProfile)
           endPath = "/" + message.audience + "/" + xpid + '/chat';
         else
           endPath = calllogPath;
@@ -828,6 +832,7 @@ hudweb.controller('NotificationController',
         } else {
                // otherwise add to todaysNotes
                $scope.todaysNotifications.push(item);
+
         }
       
         if (displayDesktopAlert){
@@ -905,6 +910,9 @@ hudweb.controller('NotificationController',
         var vm = phoneService.getVoiceMail(notification.vmId);
         notification.vm = vm;
         notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+        // if displayname is a phone number -> add the hypens to make external notifications consistent...
+        if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
+          notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
         break;
       case 'chat':
         notification.label = 'chat message';
@@ -953,6 +961,16 @@ hudweb.controller('NotificationController',
         return $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) > -1;
     }else{
         return true;
+    }
+  };
+
+  $scope.checkIfGroup = function(msg){
+    if (msg != undefined && msg.audience == 'group'){
+      var groupId = msg.context.split(':')[1];
+      var ourGroup = groupService.getGroup(groupId);
+      return ourGroup;
+    } else {
+      return msg.fullProfile;
     }
   };
 

@@ -34,8 +34,10 @@
                         <avatar 
                             class="LeftBarNotificationAvatarSection NotificationAvatar"
                             ng-click="go_to_notification_chat(message)"
-                            profile="message.fullProfile"
-                            type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
+                            profile="::checkIfGroup(message)"
+                            id="OverlayAvatarId"
+                            type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}"
+                            ng-attr-isgroup="{{::message.audience == 'group'}}">>
                         </avatar>                  
                         <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message); multiple_new_notifications = getMultipleNotifications(message)">                         
                             <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
@@ -62,7 +64,7 @@
                             </div>
     
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
-                               <span class="XButton chatNotification" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+                               <span class="XButton chatNotification" ng-if="::message.fullProfile != null" style="width:70px"  ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
                                <span class="XButton XButtonGreen" style="width:70px" ng-click="makeCall(message)">{{::verbage.Call}}</span>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.audience == 'queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">

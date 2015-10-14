@@ -1,4 +1,4 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', function($rootScope, $parse, $timeout, settingsService, httpService) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', 'GroupService', function($rootScope, $parse, $timeout, settingsService, httpService, groupService) {
 	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
 	var timer;
@@ -20,33 +20,36 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		template: '<div class="Avatar"></div>',
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
+			var isGroup = attrs.isgroup;
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
 			var context, widget, rect;
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
 			}
-			
+
 			/**
 				AVATAR IMAGES
 			*/
-			
 			// change class for special circle avatar
-			if (attrs.type) {
-				var classy = 'CallAvatar CallAvatar_';
-				
-				if (attrs.type == 3)
-					classy += 'Queue';
-				else if ((profile && profile.displayName) || attrs.type == 4 || attrs.type == 0)
-					classy += 'Office';
+			if (attrs.type){
+				if (!isGroup){
+					var classy = 'CallAvatar CallAvatar_';
+					if (attrs.type == 3)
+						classy += 'Queue';
+					else if ((profile && profile.displayName) || attrs.type == 4 || attrs.type == 0)
+						classy += 'Office';
+					else
+						classy += 'External';
+
+					element.addClass(classy);
+				} 
 				else
-					classy += 'External';
-				
-				element.addClass(classy);
+					element.addClass('AvatarNormal');
 			}
 			else
 				element.addClass('AvatarNormal');
-			
+
 			// not a valid object, but still show an avatar
 			if (!profile || !profile.xpid) {
 				if (attrs.profile && attrs.profile == 4)
