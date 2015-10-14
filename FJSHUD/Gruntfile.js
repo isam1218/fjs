@@ -75,8 +75,8 @@ module.exports = function(grunt) {
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
               version: "HUDW" + getBuildNumber(),
-              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011219.msi',
-              MAC_PLUGIN:'/webphone/WebPhone-1.1.011218.pkg',
+              WINDOWS_PLUGIN:'/webphone/WebPhone-1.1.011383.msi',
+              MAC_PLUGIN:'/webphone/WebPhone-1.1.011382.pkg',
               WINDOWS_PLUGIN_VERSION:'1.1.011219',
               MAC_PLUGIN_VERSION:'1.1.011218',
             }
