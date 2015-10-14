@@ -18,7 +18,7 @@
 
                 
 
-        <div class="ListSection WidgetFont" style="padding:0px 15px 10px 15px"> 
+        <div class="ListSection WidgetFont" style="padding:0px 15px 15px 15px"> 
             <div> {{::verbage.video_collaboration_summary}}</div>
 
 
@@ -34,7 +34,7 @@
                             <div class="arrow"></div>
                         </a>
             </div>
-<div id="createdVideo" ng-show="inMeeting" style="padding:10px 10px 10px 25px">
+<div id="createdVideo" ng-show="inMeeting" style="padding:10px 10px 15px 25px">
              <div>
               <h2 style="font-size: 27px;font-weight: 600;color: gray">{{::verbage.zoom_created}}</h2>
             </div>
@@ -47,13 +47,13 @@
             </div>
                 <a href="" ng-click="setScheduleTab('Home')">Back to Fonality Video Conferencing</a>
             </div>
-<div id="homeContainer" ng-show="showHome"  >
+<div id="homeContainer" ng-show="showHome" style="max-height: 75%;overflow-y: auto;" >
         <div class="ZoomWidgetSection left"> 
-            <div class="ListSection WidgetTextHeader" style="margin-bottom:5px"> 
+            <div class="ListSection WidgetTextHeader" style="margin-bottom:10px"> 
                 <div class="ListSectionHeaderTitle">SCHEDULE A MEETING</div>
                 <div class="WidgetFont">To schedule your meeting click the 'Schedule Meeting' button and fill out the details.</div>
             </div>
-            <div class="ListSection WidgetTextHeader" style="margin-bottom:5px"> 
+            <div class="ListSection WidgetTextHeader" style="margin-bottom:10px"> 
                     <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
                     <div class="WidgetFont">{{::verbage.join_summary}}</div>
             </div>
@@ -94,9 +94,28 @@
                 <div id="joinVideoScreen">
                  <div class="addContact">
                     <div >
-                        <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search />
+                        <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|addedContacts" />
                     </div>
                  </div>
+                 <div id="contacts-height" style="max-height:400px;overflow-y:auto">
+                <div class="Contacts widget-zoom-contacts" style="float:none;width:100%;max-height:none">
+                    <div class="ListRow Small " data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid ">
+                        <avatar profile="contact" widget="zoom"></avatar>
+                        <div class="ListRowContent" dockable="contact">
+                            <div class="ZoomRowTitle">
+                                <div class="name">{{::contact.displayName}}</div>
+                                <div class="link">#{{::contact.primaryExtension }}</div>
+                            </div>
+                            <div class="ZoomRowStatus">
+                                <!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
+                                <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
+                                <div class="ListRowDesc">{{contact.hud_status}}</div>
+                            </div>
+                        </div>
+                        <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
+                    </div>
+                </div>
+            </div>
                 <!-- <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">Start Without Video</button> -->
                 <div class="WorkspaceButton" ng-click="startMeeting('screen_share')" style="margin-bottom:10px;margin-top:8px;padding-left:40px">
                         Start Without Video
@@ -108,24 +127,7 @@
                         <img src="img/Icon-Video.png">
                     </div>
                
-            <div class="widget-zoom-contacts">
-                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'" >
-
-						<avatar profile="contact" widget="zoom"></avatar>
-                        <div class="ListRowContent" dockable="contact">
-                            <div class="ZoomRowTitle">
-                                <div class="name">{{contact.displayName}}</div>
-                                <div class="link">#{{::contact.primaryExtension }}</div>
-                            </div>
-                            <div class="ZoomRowStatus">
-                                <!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
-                                <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
-                                <div class="ListRowDesc">{{::contact.hud_status}}</div>
-                            </div>
-                        </div>
-                        <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
-                    </div>
-            </div>
+            
         
 
             </div>

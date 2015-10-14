@@ -5054,7 +5054,7 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
   top: 10px;
   float: right;
-  width: 238px;
+  width: 229px;
   height: 400px;
   border: 1px solid none;
 }
@@ -5419,11 +5419,11 @@ div.NewCall .XButton.XButtonNormal {
   padding: 24px 10px 27px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinMeeting {
-  margin: 0px 0px 6px 0px;
+  margin: 10px 0px 6px 0px;
   padding: 10px 10px 10px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinVideoScreen {
-  margin: 0px 0px 0px 0px;
+  margin: 11px 0px 0px 0px;
   padding: 15px 10px 10px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinVideoScreen .SearchBox {
