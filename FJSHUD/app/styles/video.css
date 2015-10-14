@@ -463,16 +463,25 @@
   width: 100%;
 }
 .WidgetZoomBody .ListSectionBtn #scheduleMeetingBtn {
-  margin: 0px 0px 15px 0px;
+  margin: 0px 0px 5px 0px;
   padding: 24px 10px 27px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinMeeting {
-  margin: 0px 0px 20px 0px;
+  margin: 0px 0px 6px 0px;
   padding: 10px 10px 10px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinVideoScreen {
   margin: 0px 0px 0px 0px;
   padding: 15px 10px 10px 20px;
+}
+.WidgetZoomBody .ListSectionBtn #joinVideoScreen .SearchBox {
+  width: 100%;
+  border-radius: 0px;
+  border-color: #015d73;
+}
+.WidgetZoomBody .ListSectionBtn #joinVideoScreen .SearchBox.Add {
+  background: url("../img/add-blue.png") no-repeat;
+  background-position: 2%;
 }
 .widget-zoom-contacts {
   top: 30px;

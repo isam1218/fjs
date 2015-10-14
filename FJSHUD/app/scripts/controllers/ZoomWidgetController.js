@@ -781,7 +781,7 @@ else{
 }
 
 if($scope.meeting.minDuration != undefined){
-    $scope.meeting.minDuration = minDuration;
+    $scope.meetgiting.minDuration = minDuration;
     alert($scope.meeting.minDuration);
 }
 else{
