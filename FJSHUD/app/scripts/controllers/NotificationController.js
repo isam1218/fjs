@@ -655,7 +655,6 @@ hudweb.controller('NotificationController',
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
-		phoneService.showCallControls(currentCall);
 	};
 
 	var displayNotification = function(){

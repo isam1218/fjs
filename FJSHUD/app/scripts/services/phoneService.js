@@ -630,9 +630,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 	      }
     };
-   var showCallControls = function(call){
-    	$rootScope.$broadcast("current_call_control", call);
-	};
 
 	var onVolumeChanged = function(spkVolume,microphoneLevel){
 		$rootScope.volume.spkVolume = spkVolume;
@@ -1369,8 +1366,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		}
 	};
-
-	this.showCallControls = showCallControls;
 
 	this.makeCall = makeCall;
 
