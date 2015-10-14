@@ -54,8 +54,8 @@ fjs.CONFIG = {
     PLUGIN_VERSION:{
         MAC_OLD:'5.17.008986',
         WINDOWS_OLD:'5.17.008986',
-        WINDOWS_NEW:'1.1.011219',
-        MAC_NEW:'1.1.011218'
+        WINDOWS_NEW:'1.1.011383',
+        MAC_NEW:'1.1.011382'
     },
     DEBUG:true,
 };
