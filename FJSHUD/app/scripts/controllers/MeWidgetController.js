@@ -541,7 +541,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.queueSummaryStats.avg_talk = parseInt(settings['queueAvgTalkThresholdThreshold']);
             $scope.queueSummaryStats.abandoned = parseInt(settings['queueAbandonThreshold']);
             
-            if(settings.auto_away_timeout){
+            if(settings.auto_away_timeout && settings.auto_away_timeout != 2147483647){
                 $scope.enableAutoAway = true;    
             }else{
                 $scope.enableAutoAway = false;
