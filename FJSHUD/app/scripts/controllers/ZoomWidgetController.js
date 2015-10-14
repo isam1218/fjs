@@ -20,10 +20,12 @@ hudweb.service("sharedData",function(){
         if(tab == "Meetings"){
             this.showHome =false;
             this.showMeetings=true;
+            this.inMeeting = false;
         }
         if(tab =="Home"){
             this.showHome=true;
             this.showMeetings = false;
+            this.inMeeting = false;
         }
     }; 
 });
@@ -31,7 +33,10 @@ hudweb.service("sharedData",function(){
 hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log','$filter',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log,$filter) {
 $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.tab = 'Home';
+    
      $scope.showHome=true;
+ 
+
      $scope.pmi_id = {};
      $scope.pmi_id.pmi =null;
      $scope.host_id = null;
@@ -300,7 +305,8 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     $scope.startMeeting = function(option){
         var data = {};
         var users = "";
-
+        $scope.inMeeting = true;
+        $scope.showHome = false;
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             users = users + $scope.addedContacts[i].xpid + ",";
         }
@@ -322,7 +328,16 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             $scope.startUrl = response.data.start_url;
             $scope.joinUrl = response.data.join_url;
             window.open($scope.startUrl, '_blank');
-            $scope.inMeeting = true;
+            if(sharedData.showHome == true || sharedData.showMeetings == true){
+                $scope.inMeeting = false;
+
+            }
+            else{
+                $scope.inMeeting = true;
+                sharedData.showHome=false;
+            sharedData.showMeetings=false;
+            }
+            
             $scope.$safeApply();
 
         });

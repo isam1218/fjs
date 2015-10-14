@@ -7,22 +7,13 @@
         </div>
     </div>
 
-    <div class="ListSection WidgetFont WidgetZoomBody" ng-if="inMeeting"> 
-             <div>
-              <h2>{{::verbage.zoom_created}}</h2>
-            </div>
-            <div> {{::verbage.zoom_your_meeting_will_begin}} <a target="_blank" href="{{joinUrl}}"> {{::verbage.link}} </a> </div>
-            <br>
-            <div> 
-                {{::verbage.link_to_join}}
-                <br>
-                <a target="_blank" href="{{joinUrl}}">{{ joinUrl}} </a>
-            </div>
-        </div>
+    
+             
+            
 
 
 
-    <div class="WidgetZoomBody "ng-if="!inMeeting"> 
+    <div class="WidgetZoomBody "> 
         
 
                 
@@ -33,7 +24,7 @@
 
         </div>
 
-            <div class="ScheduleTabBar">
+            <div class="ScheduleTabBar" >
                         <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Home')" ng-class="tab == 'Home' ? 'fj-selected-item' : ''">
                             <div class="inner">Home</div>
                             <div class="arrow"></div>
@@ -43,7 +34,19 @@
                             <div class="arrow"></div>
                         </a>
             </div>
-
+<div id="createdVideo" ng-show="inMeeting" style="padding:10px 10px 10px 25px">
+             <div>
+              <h2 style="font-size: 27px;font-weight: 600;color: gray">{{::verbage.zoom_created}}</h2>
+            </div>
+            <div> {{::verbage.zoom_your_meeting_will_begin}} <a target="_blank" href="{{joinUrl}}"> {{::verbage.link}} </a> </div>
+            <br>
+            <div style="margin-bottom:30px"> 
+                {{::verbage.link_to_join}}
+                <br>
+                <a target="_blank" href="{{joinUrl}}">{{ joinUrl}} </a>
+            </div>
+                <a href="" ng-click="setScheduleTab('Home')">Back to Fonality Video Conferencing</a>
+            </div>
 <div id="homeContainer" ng-show="showHome"  >
         <div class="ZoomWidgetSection left"> 
             <div class="ListSection WidgetTextHeader" style="margin-bottom:5px"> 

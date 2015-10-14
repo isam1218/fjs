@@ -3603,6 +3603,9 @@ div.NewCall .XButton.XButtonNormal {
   border: 1px solid #eee;
   margin-bottom: 10px;
 }
+.CallLog #createdVido a {
+  text-decoration: underline;
+}
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
 }
