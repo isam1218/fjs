@@ -138,6 +138,10 @@ hudweb.controller('NotificationController',
     return length;
   };
   
+  $scope.$on('play_voicemail', function(event, data){
+    $scope.remove_notification(data.xpid); 
+  });
+
   $scope.remove_notification = function(xpid){
     
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
@@ -503,6 +507,9 @@ hudweb.controller('NotificationController',
       if($scope.notifications[i].xpid == xpid){
         $scope.notifications.splice(i,1);
         break;
+      } else if ($scope.notifications[i].vmId == xpid){
+        $scope.notifications.splice(i,1);
+        break;
       }
     }
 
@@ -510,7 +517,10 @@ hudweb.controller('NotificationController',
       if($scope.todaysNotifications[j].xpid == xpid){
         $scope.todaysNotifications.splice(j,1);
         break;
-      } 
+      } else if ($scope.todaysNotifications[j].vmId == xpid){
+        $scope.todaysNotifications.splice(j,1);
+        break;
+      }
     }
   };
   
