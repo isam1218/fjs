@@ -191,6 +191,7 @@
        sound_settings_general_desc:'Sound settings for chat and notifications',
        call_preferences:'Call preferences',
        call_log_size:'Call log size',
+       enable_call_later: 'Enable call later',
        busy_ring_back:'Busy ring back',
        auto_away: 'Auto Away',
        auto_away_settings_desc: 'Auto away settings',
