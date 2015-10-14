@@ -311,6 +311,7 @@
       /*****QUEUES******/
       login_all:'Login All',
       logout_all:'Logout All',
+      logged_in_perm: 'Logged In Permanent',
       logged_in:'Logged In',
       logged_out:'Logged Out',
       logout:'Log Out',
