@@ -666,25 +666,22 @@ hudweb.controller('NotificationController',
 			$timeout(displayNotification, 1500);
 		}
     }else{
-
-      if(nservice.isEnabled()){
-        for (var i = 0; i < $scope.calls.length; i++){
-           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-        } 
-      }else{
-        if($scope.calls.length > 0){
-           $scope.displayAlert = true;
-            phoneService.removeNotification();
-            $timeout(cacheNotification,1000);
-        }else{
-            phoneService.cacheNotification(undefined,0,0);
-        }  
-      }
-    }
-    
-
-    
-	});
+	      if(nservice.isEnabled()){
+	        for (var i = 0; i < $scope.calls.length; i++){
+	           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+	        } 
+	      }else{
+	        phoneService.removeNotification();
+	        
+	        if($scope.calls.length > 0){
+	           $scope.displayAlert = true;	           
+	            $timeout(cacheNotification,1000);
+	        }else{	        		        	
+	            phoneService.cacheNotification(undefined,0,0);
+	        }  
+	      }
+      }          
+  });
 
   $scope.playVm = function(msg){
     phoneService.playVm(msg.vmId);
