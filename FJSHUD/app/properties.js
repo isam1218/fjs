@@ -6,9 +6,11 @@ fjs.CONFIG = {
 
         serverURL: "<%= serverUrl %>"
 	   	, loginURL: "<%= loginUrl %>"
-
-    
-        //      serverURL: "https://huc-dev.fonality.com:8081"
+       //loginURL:'https://auth.fonality.com',
+       // serverURL: 'https://fdp-huc-v5.fonality.com'
+//      serverURL: "https://lb-stage3.fonality.com:446"
+//      , loginURL: "https://lb-stage3.fonality.com:444"
+//      serverURL: "https://huc-dev.fonality.com:8081"
 //      , loginURL: "https://huc-dev.fonality.com:5501"
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
      // serverURL: "https://huc-qa.fonality.com:8080"
@@ -59,6 +61,9 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 };
+fjs.CONFIG.SERVER.serverURL = "https://lb-stage4.fonality.com:446";
+fjs.CONFIG.SERVER.loginURL = "https://lb-stage4.fonality.com:444";
+fjs.CONFIG.SERVER.ppsServer = 'https://lb-stage4.fonality.com:8443/pps/';
 //fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
 
 //fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";

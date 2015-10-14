@@ -77,7 +77,7 @@ p {
   padding-left: 12px;
   font-size: 12px;
   border-radius: 3px;
-  -webkit-border-radius: 3px;
+  -webkit-border-radi53us: 3px;
   color: #333;
   border: solid 1px #C7C7C7;
   box-shadow: 0px 0px 1px #DDD inset;
@@ -746,7 +746,6 @@ p {
 .LeftBar .ContactSearch .SearchBox {
   margin: .5em;
   width: 70%;
-  z-index: 99;
 }
 .LeftBar .ContactSearch .New {
   float: right;
@@ -4725,10 +4724,9 @@ div.NewCall .XButton.XButtonNormal {
   font-weight: bold;
 }
 .SearchBox {
-  color: #729c00;
-  border: 1px solid #729c00;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
+  color: #00ad33;
+  border: 1px solid #00ad33;
+  border-radius: 2px;
   padding: .5em .5em .5em 2em;
   background: url("../img/search.png") no-repeat white;
   background-position: 1%;
@@ -4741,6 +4739,17 @@ div.NewCall .XButton.XButtonNormal {
 .SearchBox.TransferSearchBox {
   width: 382px;
   background-position: 1% !important;
+}
+.SearchBox[contact-search] {
+  position: relative;
+  z-index: 100;
+}
+.WidgetZoom input[contact-search],
+.Intellinote input[contact-search] {
+  border: 1px solid #015d73;
+  color: #222;
+  background: url("../img/add-blue.png") no-repeat white;
+  background-position: 2%;
 }
 .SearchInputBox {
   position: relative;
@@ -5424,7 +5433,7 @@ div.NewCall .XButton.XButtonNormal {
   background-position: 2%;
 }
 .widget-zoom-contacts {
-  top: 30px;
+  top: 10px;
   position: relative;
   width: 100%;
   display: flex;
@@ -5497,42 +5506,110 @@ div.NewCall .XButton.XButtonNormal {
   padding: 10px;
 }
 .Widget.Intellinote .Intro {
-  margin: 10px 0 10px 0;
+  margin: 0px 0 10px 0;
 }
 .Widget.Intellinote .Logo {
   margin-left: 20px;
 }
-.Widget.Intellinote .Section {
-  min-height: 110px;
-}
 .Widget.Intellinote .Left {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
   float: left;
   width: 48%;
+}
+.Widget.Intellinote .Left .Section {
+  min-height: 70px;
+  width: 230px;
+  padding-left: 10px;
   background-color: #f9f9f9;
+}
+.Widget.Intellinote .Left .SectionInvite {
+  min-height: 110px;
+  width: 230px;
+  padding-left: 10px;
+  background-color: #f9f9f9;
+  margin-top: 30px;
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #00ad33;
+  color: #015d73;
   margin-bottom: 5px;
+  margin-top: 10px;
   text-transform: uppercase;
 }
 .Widget.Intellinote .Right {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
   float: right;
   width: 48%;
   clear: right;
 }
+.Widget.Intellinote .Right .Section {
+  min-height: 70px;
+  width: 240px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  margin-left: -10px;
+  background-color: white;
+}
+.Widget.Intellinote .Right .SearchBox.Add {
+  color: gray;
+  background: url("../img/add-blue.png") no-repeat;
+  background-position: 2%;
+}
+.Widget.Intellinote .Right .SectionWorkspace {
+  min-height: 110px;
+  width: 240px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  margin-left: -10px;
+  background-color: white;
+  margin-top: 30px;
+}
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
+}
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay {
+  left: -10px;
+  width: 240px;
+  padding-left: 10px;
+  border-radius: 0px;
+  border-color: #015d73;
+  padding-right: 10px;
+}
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Header {
+  color: #015d73;
+  width: 220px;
+  margin-left: 13px;
+  padding-bottom: 9px;
+}
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Avatar {
+  border-color: #015d73;
+}
+.Widget.Intellinote .Right .SearchHolder input {
+  width: 100%;
+  border-radius: 0px;
 }
 @-moz-document url-prefix() {
   .Widget.Intellinote .Right .SearchHolder {
     position: relative;
-    margin-bottom: 40px;
   }
 }
 .Widget.Intellinote .Right .Contacts {
-  max-height: 200px;
-  overflow-y: auto;
   font-size: 14px;
 }
 .Widget.Intellinote .Right .Workspaces {
@@ -5565,6 +5642,8 @@ div.NewCall .XButton.XButtonNormal {
   font-size: 13px;
   border-top: 1px solid #333;
   margin: 0 10px 10px 10px;
+  max-height: 75px;
+  overflow-y: auto;
 }
 .Widget.Intellinote .Right .Workspaces .List .Items div {
   cursor: pointer;
@@ -5579,13 +5658,13 @@ div.NewCall .XButton.XButtonNormal {
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
-  background-color: #00ad33;
-  margin: 20px 0;
+  background-color: #015d73;
+  margin: 15px 0;
   cursor: pointer;
 }
 .Widget.Intellinote .Right .WorkspaceButton div {
   position: absolute;
-  top: 10%;
+  top: 15%;
   right: 0;
   height: 80%;
   border-left: 1px solid white;
@@ -5593,6 +5672,48 @@ div.NewCall .XButton.XButtonNormal {
   text-align: center;
 }
 .Widget.Intellinote .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled div.Down {
+  padding-top: 4px;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #b5b5b5;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled div.Down {
   padding-top: 4px;
 }
 .Widget.Zipwhip {
@@ -8327,8 +8448,6 @@ a.Messages {
   background: url("../img/XIconSet-24x24.png?v=1425679800685") -24px -24px;
 }
 .Overlay .Foreground .Sections {
-  overflow-y: hidden;
-  overflow-x: hidden;
   padding-top: 10px;
   padding-bottom: 20px;
 }
@@ -8696,7 +8815,7 @@ a.Messages {
 .SearchContactOverlay {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -5px;
   width: 100%;
   height: 330px;
   background-color: white;
@@ -8710,7 +8829,7 @@ a.Messages {
   flex-direction: column;
   -webkit-flex-direction: column;
 }
-.SearchContactOverlay .Header {
+.SearchContactOverlay .SearchHeader {
   text-align: center;
   font-weight: bold;
   color: #729c00;
@@ -8719,12 +8838,33 @@ a.Messages {
   position: relative;
   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
   font-size: 12px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0 5px;
   border-bottom: solid 1px #999;
+}
+.SearchContactOverlay .ListRowContent {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  margin: 3px 0 -3px 0;
+  padding-left: 5px;
+}
+.SearchContactOverlay .ListRowContent .ListRowTitle {
+  display: block;
+  max-width: 100% !important;
+}
+.SearchContactOverlay .ListRowContent .ListRowTitle .name {
+  max-width: 100% !important;
+  font-size: 12px;
+}
+.SearchContactOverlay .ListRowContent .ListRowTitle .hudStatus {
+  font-size: 11px;
+  margin-top: -3px;
   overflow: hidden;
-  text-overflow: clip;
-  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.SearchContactOverlay .ListRowContent .ListRowTitle .ListRowStatusIcon {
+  margin-left: -1px;
 }
 .SearchContactOverlay .ExpandedToolBarHelp {
   position: absolute;
@@ -8736,139 +8876,61 @@ a.Messages {
   border-radius: 3px;
   -webkit-border-radius: 3px;
   text-align: center;
-  top: 16.8%;
+  top: 15%;
   right: 15px;
 }
-.SearchContactOverlay .XButton.XButtonNormal.JoinByPhoneBtn {
+.SearchContactOverlay .XButton.JoinByPhoneBtn {
   width: 115px !important;
   position: absolute;
   left: 33% !important;
-  top: 16.8%;
+  top: 15%;
   height: 30px !important;
   padding-top: 6px !important;
 }
-.SearchContactOverlay .XButton.XButtonNormal.JoinByPhoneBtnSecond {
+.SearchContactOverlay .XButton.JoinByPhoneBtnSecond {
   width: 100px !important;
   position: relative;
-  left: 33% !important;
-  top: 16.8%;
   height: 25px !important;
-  margin-right: 70px !important;
-  margin-top: -9px !important;
 }
 .SearchContactOverlay .Inset {
   overflow-y: auto;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
-}
-.SearchContactOverlay .Inset.TransferInset {
-  overflow-x: hidden;
+  margin: 5px;
 }
 .SearchContactOverlay .Inset .rows {
-  border: solid 1px #eee;
+  border-top: solid 1px #eee;
+  border-left: solid 1px #eee;
+  border-right: solid 1px #eee;
   width: 99.5%;
 }
 .SearchContactOverlay .Inset .rows .ListRow {
   width: 100%;
 }
-.SearchContactOverlay .Inset .ListRowContent {
-  left: 36px !important;
-  display: block !important;
-  padding: .3em 0 0 .5em;
-  font-size: 11px;
-}
-.SearchContactOverlay .Inset .ListRowContent .Name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: bold;
-  max-width: 120px;
-  margin-top: 10px;
-}
-.SearchContactOverlay .Inset .ListRowContent .Extension {
+.SearchContactOverlay .Inset .Extension {
+  visibility: visible !important;
   font-size: .9em;
   color: gray;
-  float: right;
-  right: 5px;
-  top: -10px;
 }
-.SearchContactOverlay.favoritesSearch {
-  top: -40px;
-  height: 330px;
-  z-index: 98;
+/* directive overrides */
+.LeftBarWrapper .SearchContactOverlay {
+  width: 308px;
 }
-.SearchContactOverlay.favoritesSearch .Inset {
-  overflow: hidden;
+.conference.currentCall .SearchContactOverlay {
+  width: 510px;
+  left: -15px;
 }
-.SearchContactOverlay.favoritesSearch .Inset .Header {
-  position: absolute;
-  top: 0px;
-  width: 95%;
-  left: -3px;
+.Overlay .ContactSearchHolder .SearchContactOverlay {
+  width: 410px;
 }
-.SearchContactOverlay.favoritesSearch .Inset .rows {
-  margin-top: 40px;
-  height: 230px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: 100%;
-}
-.SearchContactOverlay.favoritesSearch .Inset .AddTeamMember {
-  width: 75%;
-  max-width: 100%;
-}
-.SearchContactOverlay.conferenceSearch {
-  width: 500px !important;
-  top: -55px !important;
+.WidgetZoom .SearchContactOverlay,
+.Intellinote .SearchContactOverlay {
+  width: 230px;
   left: -10px;
 }
-.SearchContactOverlay.conferenceSearch .Header {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 12px;
-}
-.SearchContactOverlay.conferenceSearch .TransferHeader {
-  font-size: 15px;
-  color: #0093f0;
-  font-variant: small-caps;
-}
-.SearchContactOverlay.conferenceSearch .Inset {
-  margin-top: 60px !important;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow {
-  height: 44px;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .Avatar {
-  margin: 6px 5px !important;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent {
-  padding: .3em .5em 0 .5em !important;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowStatus {
-  margin-top: 6px !important;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle {
-  margin-top: -5px;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle.AddConferenceMember {
-  display: flex;
-  flex-direction: column;
-  float: left;
-  max-width: 85%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .ListRowStatusIcon {
-  margin-left: 0px;
-}
-.SearchContactOverlay.conferenceSearch .Inset .ListRow .ListRowContent .ListRowTitle .hudStatus {
-  margin-top: -2px;
-}
-.SearchContactOverlay.transferSearch {
-  width: 415px !important;
-  top: -45px !important;
-  height: 400px;
+.WidgetZoom .SearchContactOverlay .SearchHeader,
+.Intellinote .SearchContactOverlay .SearchHeader {
+  color: #015d73;
 }
 #ContextMenu {
   display: none;

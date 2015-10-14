@@ -30,6 +30,7 @@
         <div class="ListSection WidgetFont" style="padding:0px 15px 10px 15px"> 
             <div> {{::verbage.video_collaboration_summary}}</div>
 
+
         </div>
 
             <div class="ScheduleTabBar">
@@ -106,6 +107,7 @@
                
             <div class="widget-zoom-contacts">
                     <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName'" >
+
 						<avatar profile="contact" widget="zoom"></avatar>
                         <div class="ListRowContent" dockable="contact">
                             <div class="ZoomRowTitle">

@@ -3,31 +3,86 @@
 	padding: 10px;
 	
 	.Intro {
-		margin: 10px 0 10px 0;
+		margin: 0px 0 10px 0;
 	}
 	
 	.Logo {
 		margin-left: 20px;
 	}
 	
-	.Section {
-		min-height: 110px;
-	}
+	
+
+	
 	
 	.Left {
+	    display: flex;
+		display:-webkit-flex;
+	    flex-direction: column;
+	    -webkit-flex-direction: column;
+	    flex: 1; 
+	    flex:1 1 0;
+	    -webkit-flex:1;
+	    -ms-flex:1;
+		.Section {
+		min-height: 70px;
+		width:230px;
+		padding-left:10px;
+		background-color: #f9f9f9;
+		}
+		.SectionInvite {
+		min-height:110px;
+		width:230px;
+		padding-left:10px;
+		background-color: #f9f9f9;
+		margin-top:30px;
+		}
 		float: left;
 		width: 48%;
-		background-color: #f9f9f9;
+		
 	
 		h4 {
 			font-size: 14px;
-			color: #00ad33;
+			color: #015d73;
 			margin-bottom: 5px;
+			margin-top:10px;
 			text-transform: uppercase;
 		}
 	}
 	
 	.Right {
+		display: flex;
+		display:-webkit-flex;
+	    flex-direction: column;
+	    -webkit-flex-direction: column;
+	    flex: 1; 
+	    flex:1 1 0;
+	    -webkit-flex:1;
+	    -ms-flex:1;
+        
+		.Section {
+		min-height: 70px;
+		width:240px;
+		padding-left:10px;
+		padding-right:10px;
+		padding-top:5px;
+		margin-left:-10px;
+		background-color: white;
+		}
+		  .SearchBox.Add {
+		  	color:gray;
+    background: url("../img/add-blue.png") no-repeat;
+    background-position: 2%;
+  }
+		.SectionWorkspace {
+		min-height:110px;
+		width:240px;
+		padding-left:10px;
+		padding-right:10px;
+		padding-top:10px;
+		margin-left:-10px;
+		background-color: white;
+		margin-top:30px;
+		}
 		float: right;
 		width: 48%;
 		clear: right;
@@ -36,17 +91,40 @@
 			position: relative;
 
 		}
+		.SectionWorkspace .SearchContactOverlay{
+		    left: -10px;
+		    width: 240px;
+		    padding-left: 10px;
+		    border-radius: 0px;
+		    border-color: #015d73;
+		    padding-right: 10px;
+
+		    .Header{
+		    	color: #015d73;
+			    width: 220px;
+			    margin-left: 13px;
+			    padding-bottom:9px;
+		    }
+		    .Avatar{
+		    	border-color:#015d73;
+		    }
+		   
+		}
+		.SearchHolder input{
+		width: 100%;
+		border-radius:0px;
+		}
 		@-moz-document url-prefix() {
 			.SearchHolder {
 				position: relative;
-				margin-bottom:40px;
+
+				
 
 			}
 		}
 		
 		.Contacts {
-			max-height: 200px;
-			overflow-y: auto;
+			
 			font-size: 14px;
 		}
 		
@@ -82,6 +160,8 @@
 					font-size: 13px;
 					border-top: 1px solid #333;
 					margin: 0 10px 10px 10px;
+					max-height:75px;
+					overflow-y: auto;
 					
 					div {
 						cursor: pointer;
@@ -101,13 +181,59 @@
 			font-weight: bold;
 			color: white;
 			padding: 7px 0 7px 30px;
-			background-color: #00ad33;
-			margin: 20px 0;
+			background-color: #015d73;
+			margin: 15px 0;
 			cursor: pointer;
 			
 			div {
 				position: absolute;
-				top: 10%;
+				top: 15%;
+				right: 0;
+				height: 80%;
+				border-left: 1px solid white;
+				width: 15%;
+				text-align: center;
+				
+				&.Down {
+					padding-top: 4px;
+				}
+			}
+		}
+		.WorkspaceButtonEnabled {
+			position: relative;
+			font-weight: bold;
+			color: white;
+			padding: 7px 0 7px 30px;
+			background-color: #015d73;
+			margin: 15px 0;
+			cursor: pointer;
+			
+			div {
+				position: absolute;
+				top: 15%;
+				right: 0;
+				height: 80%;
+				border-left: 1px solid white;
+				width: 15%;
+				text-align: center;
+				
+				&.Down {
+					padding-top: 4px;
+				}
+			}
+		}
+		.WorkspaceButtonDisabled {
+			position: relative;
+			font-weight: bold;
+			color: white;
+			padding: 7px 0 7px 30px;
+			background-color: #b5b5b5;
+			margin: 15px 0;
+			cursor: pointer;
+			
+			div {
+				position: absolute;
+				top: 15%;
 				right: 0;
 				height: 80%;
 				border-left: 1px solid white;

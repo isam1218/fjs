@@ -695,6 +695,10 @@
   overflow-y: auto;
   flex: 1 1 0;
   -webkit-flex: 1 1 0;
+<<<<<<< HEAD
+=======
+
+>>>>>>> sprints/zipwhip_1.0.0
 }
 .SearchContactOverlay .Inset.TransferInset {
   overflow-x: hidden;
