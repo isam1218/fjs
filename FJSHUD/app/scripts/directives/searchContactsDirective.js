@@ -142,12 +142,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 						joinBtn.attr('disabled', false);
 					else
 						joinBtn.attr('disabled', true);
-				}
-
-				if (count == 0){
+				} else if (count == 0){
 					rows.empty();
 					makeLine(null, true);
 				}
+
 			});
 			
 			scope.$on('$destroy', function() {
@@ -178,7 +177,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 					content += '</div>';
 				}
 				// no result (all sections except conferences)
-				else if (noResult && attrs.id != "searchContactConference"){
+				else if (noResult){
 					line = angular.element('<div class="ListViewIsEmpty">No Search Results</div>');
 				}
 				// conferences
