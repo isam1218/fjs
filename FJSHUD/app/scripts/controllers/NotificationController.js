@@ -601,15 +601,17 @@ hudweb.controller('NotificationController',
        	
     if(displayDesktopAlert){
     	phoneService.setCancelled(false);
-			if(nservice.isEnabled()){//chrome
-					for (var i = 0; i < $scope.calls.length; i++){
-				 		if(alertDuration != "entire"){
-			              if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-			                nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-			              }
-				 		}
-				 		phoneService.displayCallAlert($scope.calls[i]);
-					}
+			if(nservice.isEnabled()){
+				for (var i = 0; i < $scope.calls.length; i++){
+				 if(alertDuration != "entire"){
+					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING)
+		            	  phoneService.displayCallAlert($scope.calls[i]);
+		             else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
+		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);  
+				 }
+				 else
+					 phoneService.displayCallAlert($scope.calls[i]);
+				}
 			}else{//other browsers
 				for (var i = 0; i < $scope.calls.length; i++){
 					if(alertDuration != "entire"){
@@ -661,11 +663,11 @@ hudweb.controller('NotificationController',
 		if(element){
 			var content = element.innerHTML;
 			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
-          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-       }else{
+               phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+             }
+		}else{
           phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
         }
-		}
 		element = null;
 		$scope.displayAlert = false;
 	};

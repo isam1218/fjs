@@ -122,12 +122,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(!$.isEmptyObject(callsDetails)){
 						for(var detail in callsDetails){
 							if(alertDuration != "entire"){
-								if(callsDetails[detail].state != fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-									context.displayCallAlert(callsDetails[detail]);
-								}
-							}else{
-								context.displayCallAlert(callsDetails[detail]);
-							}
+				              if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+				            	  context.displayCallAlert(callsDetails[detail]);
+				              }
+				              else if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
+				            	  nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);  
+					 		}
+					 		else
+					 			context.displayCallAlert(callsDetails[detail]);
 						}
 					}
 				}else{
@@ -1577,11 +1579,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							}
 						}
 				}
+				if(settingsService.getSetting('alert_call_duration') != "entire"){
+					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING)
+		            	  context.displayCallAlert(data[i]);
+		            else if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
+		            	  nservice.dismiss("INCOMING_CALL",data[i].xpid);
+			    }
+				else
+					context.displayCallAlert(data[i]);
 			}
 		}
 		if (data[0].incoming){
 			storageService.saveRecent('contact', data[0].contactId);
-		}
+		}		
 
 		deferred.resolve(formatData());
 		$rootScope.$broadcast('calls_updated', callsDetails);
