@@ -974,7 +974,14 @@ tbody.collapse.in {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
+
+
+
 }
+.dropdown-menu tbody tr td:first-child{
+  visibility: hidden;
+}
+
 .dropdown-menu.pull-right {
   right: 0;
   left: auto;
@@ -1148,7 +1155,7 @@ a.thumbnail.active {
   background-color: #ffffff;
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
+  border-radius: 0px;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   -webkit-background-clip: padding-box;
@@ -1247,9 +1254,7 @@ a.thumbnail.active {
 .pull-right {
   float: right !important;
 }
-.pull-left {
-  float: left !important;
-}
+
 .hide {
   display: none !important;
 }

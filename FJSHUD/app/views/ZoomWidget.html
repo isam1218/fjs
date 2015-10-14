@@ -19,7 +19,7 @@
                 
 
         <div class="ListSection WidgetFont" style="padding:0px 15px 15px 15px"> 
-            <div> {{::verbage.video_collaboration_summary}}</div>
+            <div>You are licensed to use Fonality's Video Collaboration. With this feature, conduct interactive two-way audio/video collaboration and launch screen-sharing sessions directly from HUD Web. Video Collaboration includes a self-serve Web-based scheduler, and the ability to host stand-alone screen share or audio-only conferencing directly from HUD Web. Get started today using any of the available features.</div>
 
 
         </div>
@@ -181,16 +181,16 @@
 
    <div class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
         <div class="TopBarItemAppIcon Zoom"></div>
-        <div class="WidgetHeaderTitle">
+        <div class="ScheduleHeaderTitle">
             Fonality Video Collaboration - Schedule A Meeting
         </div>
     </div>
-    <div class="modal-body" ng-controller="ZoomWidgetController" style="    padding: 15px 10px 10px 20px;">
+    <div class="modal-body" ng-controller="ZoomWidgetController" style="padding: 15px 10px 10px 20px;">
     <div ng-controller="DatepickerDemoCtrl">
        
         <div id="scheduleInputContainer">
             <ul>
-               <li><label>Meeting Topic:</label><input ng-model="meeting.meetingTopic"  style="width:310px"></li>
+               <li><label style="margin-left: 5px;margin-right: 7px;">Meeting Topic:</label><input ng-model="meeting.meetingTopic"  style="width:310px"></li>
                <li>
                        
                   <label style="margin-left:55px">When:</label>     
@@ -217,7 +217,7 @@
                 <label>min</label>
                 </li>
                 <li>
-                <label style="margin-left:22px">Time Zone:</label>
+                <label style="margin-left:25px">Time Zone:</label>
                 <select name="timezone" ng-model="meeting.timezone"ng-init="meeting.timezone" ng-options="t as t for t in timeZone">
                 </select>
                 </li>
@@ -226,11 +226,11 @@
             <form>
                 
                     <label>Meeting Options:</label>
-                    <input type="checkbox" ng-model="checked">Require meeting password
+                    <input type="checkbox" ng-model="checked"><label>Require meeting password</label>
                     <br>
-                    <input ng-model="meeting.password" type="password" style="margin: 7px 10px 7px 130px;border: 1px solid #D3D3D3;" ng-hide="!checked">
+                    <input ng-model="meeting.password" type="text" style="margin: 7px 10px 7px 130px;border: 1px solid #D3D3D3;" ng-hide="!checked">
                     <br>
-                    <input type="checkbox" style="margin-left:129px" ng-model="meeting.jbh">Enable join before host
+                    <input type="checkbox" style="margin-left:114px" ng-model="meeting.jbh"><label>Enable join before host</label>
                 
             </form>
         </div>
@@ -244,7 +244,7 @@
        
         <button class="SchedulingBtns" style="background: linear-gradient(rgb(254, 254, 254), rgb(235, 235, 235)) rgb(254, 254, 254);color:black;" type="button" ng-click="cancel()">Cancel</button>
          <button class="SchedulingBtns" type="button" ng-show="scheduleBtn" ng-click="scheduleMeeting(meeting.AmPm); openClipboard(meetingTopic);">Schedule Meeting</button>
-        <button class="SchedulingBtns" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm)">Update</button>
+        <button class="SchedulingBtns" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm)">Update Meeting</button>
     </div>
     </div>
     </div>
@@ -254,7 +254,7 @@
 <script type="text/ng-template" id="copyToClipboard.html">
    <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
         <div class="TopBarItemAppIcon Zoom"></div>
-        <div class="WidgetHeaderTitle">
+        <div class="ScheduleHeaderTitle">
             Fonality Video Collaboration - Add To Calendar
         </div>
     </div>
