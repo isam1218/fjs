@@ -646,9 +646,9 @@ hudweb.controller('NotificationController',
            nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
         } 
       }else{
-        if($scope.calls.length > 0){
+        phoneService.removeNotification();
+        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
            $scope.displayAlert = true;
-            phoneService.removeNotification();
             $timeout(cacheNotification,1000);
         }else{
             phoneService.cacheNotification(undefined,0,0);
