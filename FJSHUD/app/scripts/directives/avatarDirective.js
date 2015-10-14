@@ -20,7 +20,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		template: '<div class="Avatar"></div>',
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
-			var isGroup = $parse(attrs.isgroup)(scope);
+			var isGroup = attrs.isgroup;
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
 			var context, widget, rect;
 			if (attrs.context) {
