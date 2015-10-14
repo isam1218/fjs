@@ -1,4 +1,4 @@
-<div class="LeftBarNotificationSection notificationsSection" ng-class="todaysNotifications.length == 0 && !anotherDevice && phoneSessionEnabled ? 'noMessages' : 'hasMessages'"  expand-contract-notifications>
+<div class="LeftBarNotificationSection notificationsSection" ng-class="todaysNotifications.length == 0 && !displayAnotherDeviceNotification && phoneSessionEnabled ? 'noMessages' : 'hasMessages'"  expand-contract-notifications>
 	<div class="NotificationMessages LeftBarNotifications ng-class:{'noMessages' : todaysNotifications.length == 0}">     
 		<div class="TitleBar">
 			<div ng-class="notifications.length > 0 ? 'HasNotificationIcon': 'NoNotificationIcon'"></div>
@@ -16,8 +16,7 @@
 
 				</div>
 				<div class="NotificationDivider"></div>
-				<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
-					
+				<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !displayAnotherDeviceNotification};" >
 					<avatar 
 						class="LeftBarNotificationAvatarSection NotificationAvatar"
 						ng-if="::message.type != 'error'"
@@ -90,7 +89,7 @@
 			
 				<div class="NotificationDivider"></div>
 
-				<div class="NotificationSection ng-class:{'last' : !anotherDevice}" >
+				<div class="NotificationSection ng-class:{'last' : !displayAnotherDeviceNotification}" >
 					<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
 						<div class="AvatarWarningSmall"></div>
 					</div>
@@ -108,15 +107,14 @@
 				</div>
 			  </a>
 			</div>
-			
-			<div class="Messages webphone" ng-if="anotherDevice" ng-click="$parent.activatePhone()">                
+			<div class="Messages webphone" ng-if="displayAnotherDeviceNotification">
 			    <div class="NotificationHeader">
                     <div class="NotificationHeaderBackground"> 
-                        <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+                        <div class="NotificationClose" ng-click="remove_anotherDevice_notification()"></div>
                     </div>
                 </div>
                 <div class="NotificationDivider" ></div>
-                <div class="NotificationSection webphone last"> 
+                <div class="NotificationSection webphone last" ng-click="$parent.activatePhone()"> 
                     
                     <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
                         <div class="AvatarWarningSmall"></div>
@@ -127,7 +125,7 @@
                             <div class="content"><span>Web Phone</span></span> <div class="NotificationTime">{{   }} </div></div> 
                             <div ></div>
 
-                            <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
+                            <div class="NotificationMessage">Phone registered on another device. Click </br>on this message to set this instance as </br>active.</div>
                         </div>
                         
                     </div>
