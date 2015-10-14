@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', function($scope,httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService) {
+hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', function($scope,httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService) {
 	
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
@@ -10,6 +10,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	}
 
 	var version = 0;
+	var cutoff = ntpService.calibrateTime(new Date().getTime());
 	var scrollbox = {};
 	var chat = {}; // internal controller data
 	
@@ -209,6 +210,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
 		var found = [];
+		var incoming = false;
 		
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			// prevent duplicates
@@ -228,19 +230,18 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			}
 
 			if (dupe || data[i].xef001type == 'delete') 
-				continue;
-			
-			var from = data[i].from.replace('contacts:', '');			
+				continue;		
 
 			// only attach messages related to this page
 			var context = data[i].context.split(":")[1];
-			
 			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '');
 
-			if ((streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId) {
-				// play sfx for incoming only
+			if ((streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId && data[i].created >= cutoff) {
+				var from = data[i].from.replace('contacts:', '');
+			
+				// mark as incoming				
 				if (from != $scope.meModel.my_pid)
-					phoneService.playSound("received");
+					incoming = true;
 				
 				found.push(data[i]);				
 			}
@@ -248,6 +249,11 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 
 		if (found.length > 0) {
 			addMessages(found);
+			
+			// only play sound once per sync
+			// isInFocus is required to avoid conflicts with notification sfx
+			if (phoneService.isInFocus() && incoming)
+				phoneService.playSound("received");
 			
 			// jump to bottom if new messages were found
 			$timeout(function() {
@@ -329,6 +335,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			if (data[i].type == 'f.conversation.chat.group.remove'){
 				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + data[i].message;
 			}
+			
+			// keep track of which messages should be on screen based on date
+			if (data[i].created < cutoff)
+				cutoff = data[i].created;
 			
 			// update html per message
 			data[i].message = $filter('chatify')(data[i].message);
