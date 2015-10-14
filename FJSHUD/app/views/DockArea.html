@@ -116,7 +116,7 @@
 							{{ ::member.fullProfile.displayName }}
 							<br/>
 							<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-							<div class="status">{{(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</div>
+							<div class="status" ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></div>
 						</div>
 					</div>
 				</a>
