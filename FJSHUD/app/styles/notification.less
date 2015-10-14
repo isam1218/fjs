@@ -40,7 +40,7 @@
 	}
 
 	.NotificationTime{
-		font-size:1em;
+		font-size:11px;
 		color:black;
 		font-weight:normal;
 		position: relative;
@@ -56,14 +56,20 @@
 		color: #222;
 		white-space: normal;		
 		max-height: 75px;
-		top: 5px;		
+		top: 7px;		
         padding-right: 10px;
         -ms-word-wrap: break-word;
         white-space:normal;
-        word-break: break-all;
-
+        // word-break: break-all;
+        overflow-wrap:  break-word;
+        word-wrap:  break-word;
+        word-break: break-word;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hypens: auto;
+        hypens: auto;
 		p{
-			font-size:.8em;
+			font-size:13px;
 		}
 	}		
 }
@@ -324,10 +330,11 @@
 }
 
 .NotificationType{
-	font-size:.6em;
+	font-size: 11px;
 	font-style:italic;
 	font-color:#ccc;
 	border-bottom: 1px solid #888;
+  margin-bottom: -5px;
 }
 
 .NotificationSection{

@@ -72,7 +72,7 @@
         accept: 'Accept',
         decline:'Decline',
         talk:'talk',
-        recent_calls:'Recent Calls',
+        recent_calls:'Recent calls',
   		time:'Time',
     	today:'Today' , 
     	yesterday:'Yesterday',
@@ -291,7 +291,7 @@
       conf_summary_all_rooms:'You may have limited control over some rooms in this list, such as adding or removing other users',
       free_room:'Free room',
       occupied:'Occupied',
-      talking:'talking',
+      talking:'Talking',
       rooms:'Rooms',
       room:'Room',
       total:'Total',
@@ -306,7 +306,7 @@
       department:'Department',
       member_of_department:'Contact is a member of this department',
       our_teams:'Our Teams',
-      both_in_these_teams:'We are both in these teams',
+      both_on_these_teams:'We are both on these teams',
 
       /*****QUEUES******/
       login_all:'Login All',

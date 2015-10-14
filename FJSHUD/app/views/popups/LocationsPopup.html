@@ -4,7 +4,7 @@
             <div ng-if="currentPopup.target != 'move'"><span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span></div>
             <span class="InnerIco move" ng-if="currentPopup.target == 'move'">Select phone to use</span>
         </div>
-        <div class="SelectBoxArrow"></div>
+        <div ng-click="onBodyClick()" class="SelectBoxArrow"></div>
     </div>   
     <div class="MenuContent">
         <div class="MenuSection">       
