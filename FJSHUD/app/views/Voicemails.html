@@ -32,9 +32,9 @@
 	                        <input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, voicemail)"></input>
 	                    </div>
 	                </div> 
-	                <div class="footnote">
+	                <div class="footnote voicemails">
 	                    <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
-	                    <div class="vmfootnote">{{ ::voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
+	                    <div class="vmfootnote" ng-class="::voicemail.transcription != '' ? 'transcription' : 'no_transcription'">{{ ::voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
 	                </div>
 	            </div>
 	        </div>
