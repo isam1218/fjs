@@ -43,6 +43,18 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 			if (!match && data[i].xef001type != 'delete' && !data[i].filterId && 
 				(!pageFilter || ((data[i].queueId !== undefined && pageFilter == data[i].queueId) || (data[i].contactId !== undefined && pageFilter == data[i].contactId)))) {
 					
+				// if an incoming + non-missed call, create property and set to true (adding this property in order to help 3-way sort under 'type')...
+				if (data[i].incoming === true && data[i].missed === false)
+					data[i]['incomingNotMissed'] = true;
+				else
+					data[i]['incomingNotMissed'] = false;
+
+				// create outgoing property
+				if (data[i].incoming == false)
+					data[i]['outgoing'] = true;
+				else
+					data[i]['outgoing'] = false;
+
 				$scope.calls.push(data[i]);
 				
 				// add contextual menu info
@@ -69,15 +81,28 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 		};
 	};
 
-    $scope.sort = function(field) {
-        if($scope.sortField!=field) {
-            $scope.sortField = field;
-            $scope.sortReverse = false;
-        }
-        else {
-            $scope.sortReverse = !$scope.sortReverse;
-        }
-    };
+	$scope.sortType = function(incoming, missed, incomingNotMissed, outgoing){
+		$scope.sortReverse = true;
+		if ($scope.sortField != outgoing && $scope.sortField != incomingNotMissed)
+			// outgoing/green
+			$scope.sortField = outgoing;
+		else if ($scope.sortField == outgoing)
+			// incoming + not missed --> turquoise...
+			$scope.sortField = incomingNotMissed;
+		else if ($scope.sortField == incomingNotMissed)
+			// missed --> red...
+			$scope.sortField = missed;
+	};
+
+  $scope.sort = function(field) {
+      if($scope.sortField!=field) {
+          $scope.sortField = field;
+          $scope.sortReverse = false;
+      }
+      else {
+          $scope.sortReverse = !$scope.sortReverse;
+      }
+  };
 	
 	$scope.makeCall = function(number) {
 		phoneService.makeCall(number);
