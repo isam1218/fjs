@@ -22,7 +22,8 @@
 }
 #homeContainer {
   border: 1px solid none;
-  height: 780px;
+  max-height: 75%;
+  overflow-y: auto;
   padding: 0px 20px 0px 20px;
 }
 #meetingContainer {

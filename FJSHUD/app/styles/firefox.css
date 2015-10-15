@@ -1,6 +1,19 @@
 .SearchBox {
   padding: .5em .5em .5em 2.3em !important;
 }
+#homeContainer {
+  border: 1px solid none;
+  max-height: 79%;
+  overflow-y: auto;
+  padding: 0px 20px 0px 20px;
+}
+#meetingContainer {
+  border: 1px solid none;
+  height: 780px;
+  padding: 0px 10px 0px 10px;
+  max-height: 79%;
+  overflow-y: auto;
+}
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
 }
@@ -55,7 +68,7 @@ img.x {
   border: 0px none;
   position: absolute;
   margin-left: -15px;
-  margin-top: 12px;
+  margin-top: -3px;
   cursor: pointer;
   z-index: 100;
 }
