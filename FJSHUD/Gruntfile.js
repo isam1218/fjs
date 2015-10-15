@@ -1,8 +1,7 @@
 module.exports = function(grunt) {
 
   var currentTime = getCurrentTime()
-    , buildNumber;
-
+    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber;
   grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
   function getCurrentTime() {
@@ -27,6 +26,30 @@ module.exports = function(grunt) {
       }
     }
     return buildNumber;
+  }
+
+  function getWebphoneMSINumber() {
+    if(!WebphoneMSINumber) {
+      try {
+        WebphoneMSINumber = grunt.file.read('../msi_number');
+      }
+      catch(e) {
+        WebphoneMSINumber = -1
+      }
+    }
+    return WebphoneMSINumber;
+  }
+
+  function getWebphoneOSXNumber() {
+    if(!WebphoneOSXNumber) {
+      try {
+        WebphoneOSXNumber = grunt.file.read('../osx_number');
+      }
+      catch(e) {
+        WebphoneOSXNumber = -1
+      }
+    }
+    return WebphoneOSXNumber;
   }
 
   grunt.initConfig({
@@ -75,10 +98,10 @@ module.exports = function(grunt) {
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
               version: "HUDW" + getBuildNumber(),
-              WINDOWS_PLUGIN:'webphone/WebPhone-1.1.011383.msi',
-              MAC_PLUGIN:'webphone/WebPhone-1.1.011382.pkg',
-              WINDOWS_PLUGIN_VERSION:'1.1.011383',
-              MAC_PLUGIN_VERSION:'1.1.011382',
+              WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
+              MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
+              WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
+              MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
             }
           },
           files:{
@@ -91,10 +114,10 @@ module.exports = function(grunt) {
             serverUrl:"https://dev4.fon9.com:8081",
             loginUrl: "https://dev4.fon9.com:5501",
             version: "HUDW" + getBuildNumber(),
-            WINDOWS_PLUGIN:'webphone/WebPhone-1.1.011383.msi',
-            MAC_PLUGIN:'webphone/WebPhone-1.1.011382.pkg',
-            WINDOWS_PLUGIN_VERSION:'1.1.011383',
-            MAC_PLUGIN_VERSION:'1.1.011382',
+            WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
+            MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
+            WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
+            MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
           }
         },
           files:{
@@ -108,10 +131,10 @@ module.exports = function(grunt) {
             serverUrl:"https://huc-dev.fonality.com:8081",
             loginUrl: "https://huc-dev.fonality.com:5501",
             version: "HUDW" + getBuildNumber(),
-            WINDOWS_PLUGIN:'webphone/WebPhone-1.1.011383.msi',
-            MAC_PLUGIN:'webphone/WebPhone-1.1.011382.pkg',
-            WINDOWS_PLUGIN_VERSION:'1.1.011383',
-            MAC_PLUGIN_VERSION:'1.1.011382',
+            WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
+            MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
+            WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
+            MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
           }
         },
           files:{
