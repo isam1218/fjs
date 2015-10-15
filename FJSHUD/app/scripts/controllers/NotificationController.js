@@ -47,10 +47,13 @@ hudweb.controller('NotificationController',
   $scope.displayAlert = false;
   $scope.clearOld;       
     
-  phoneService.getInputDevices().then(function(data){
-    // can't find plugin or it's outdated
-    if (!phoneService.isPhoneActive() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
-        $scope.addError('browserPlugin');
+  settingsService.getMe().then(function() {
+	// delayed so phoneService can do its thing
+	$timeout(function() {
+		// can't find plugin or it's outdated
+		if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
+			$scope.addError('browserPlugin');
+	}, 1000, false);
   });
 
   $scope.getAvatar = function(pid){
