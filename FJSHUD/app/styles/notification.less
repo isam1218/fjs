@@ -4,6 +4,7 @@
 	padding-left: 5px;
 	width: 92%;
 	padding-top: 5px;
+	-webkit-flex: 1;
 		
 	.NotificationDisplayName{
 		height: 2.5em;
@@ -39,13 +40,12 @@
 	}
 
 	.NotificationTime{
-		font-size:1em;
+		font-size:11px;
 		color:black;
 		font-weight:normal;
 		position: relative;
 		float:right;
-		/*right:20%;	*/
-		right: 20px;	
+		right: 5px;	
 	}
 
 	.NotificationMessage{
@@ -56,14 +56,20 @@
 		color: #222;
 		white-space: normal;		
 		max-height: 75px;
-		top: 5px;		
+		top: 7px;		
         padding-right: 10px;
         -ms-word-wrap: break-word;
         white-space:normal;
-        word-break: break-all;
-
+        // word-break: break-all;
+        overflow-wrap:  break-word;
+        word-wrap:  break-word;
+        word-break: break-word;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hypens: auto;
+        hypens: auto;
 		p{
-			font-size:.8em;
+			font-size:13px;
 		}
 	}		
 }
@@ -172,8 +178,8 @@
         &.ringing{     
         	max-width: 45%; 
         }
-        &.accepted{
-        	max-width: 55%;
+        &.accepted{        	
+        	max-width: 45%;
         }	                                      
                         
         .callStatus{
@@ -200,10 +206,6 @@
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              
-              &.truncate{
-                width: 90%;
-              }
             } 
             
             .MyCallBlock_Rec {
@@ -211,8 +213,8 @@
                 background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
                 width: 36px;
                 height: 19px;
-                display: none;                
-                right: 38%;
+                display: none;                               
+                right: 26%;
                 margin-top: -15px;
                 &.true {
                     display: block;
@@ -285,10 +287,12 @@
     position: relative;
     bottom: 0px;
 
-	&.hasMessages {
+	&.hasMessages,
+	&.noMessages {
 		&.Expand {
 			.TitleBar .XButton { visibility: visible; }
 			.scroller { padding-top: 20px; }
+			.Messages { display: block; }
 		}
 		
 		.TitleBar .XButton { visibility: hidden; }
@@ -314,9 +318,6 @@
 	.NotificationDivider { height: 1px; }
 }
 
-.NotificationMessages.LeftBarNotifications.noMessages{   
-      top: -5px;
-}
 .LeftBarNotificationSection:hover > .LeftBarNotifications{	
 	visibility:visible;
 	overflow-y:auto;
@@ -329,27 +330,23 @@
 }
 
 .NotificationType{
-	font-size:.6em;
+	font-size: 11px;
 	font-style:italic;
 	font-color:#ccc;
 	border-bottom: 1px solid #888;
+  margin-bottom: -5px;
 }
 
 .NotificationSection{
 	margin-top:5px;	
-	-webkit-box-orient:horizontal;
-	display:-webkit-box;
+	display:-webkit-flex;
 	display:-ms-flexbox;
 	padding-left: 5px;
 	overflow: hidden;
 	/*width: 83%;*/	
 	width: 95%;
 	height: 0px;
-	padding-bottom: 10px;
-	
-	&.last{
-	  height: auto !important;
-	}	
+	padding-bottom: 10px;	
 }
 .NotificationSection.open {
   height: auto;
@@ -451,6 +448,16 @@
         }
     }
 	
+	&:last-child {
+		.NotificationSection {
+			height: auto !important;
+		}
+	}
+	
+	&:nth-last-child(n+6) {
+		display: none;
+	}
+	
 	&:after {
 		clear: both;
 		content: "";
@@ -485,7 +492,7 @@
            }
     }
     
-	&.plugins, &.webphone{
+	&.error{
 	   cursor:pointer;
 	   text-decoration:none;
 	   color:inherit;
@@ -505,7 +512,7 @@ a.Messages{
 .chatNotification{
     cursor: pointer;
     
-    &.plugins, &.webphone{
+    &.error{
       & > div{
          font-weight:bold;
          font-size:.7em;

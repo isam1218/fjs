@@ -37,7 +37,7 @@
 					<div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>						
 					<div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
 					<div class=" ConferenceStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-					<span class="ConferenceListRowStatusText">{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}</span>
+					<span class="ConferenceListRowStatusText" ng-bind-html="member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']"></span>
 				</div>
     			<div class="ListRowStatus">
                     <div class="joining" ng-if="member.ring">
@@ -72,7 +72,7 @@
                     <div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>                        
                     <div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
                     <div class=" ConferenceStatusIcon XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
-                    <span class="ConferenceListRowStatusText">{{member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline'] }}</span>
+                    <span class="ConferenceListRowStatusText" ng-bind-html="member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']"></span>
                 </div>
                 <div class="action-buttons">
                     <div class="XButton XButtonNormal" ng-click="removeRefused(member)"><span>Remove</span></div>

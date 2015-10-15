@@ -58,12 +58,11 @@
 		<div class="TitleBar" id="TitleBar">
 			<div class="HasNotificationIcon"></div>
 			<div>{{::verbage.notifications}}</div>
-			<div class="Event"> - {{getNotificationsLength(notifications.length)+ ' ' + verbage.events}} </div>
+			<div class="Event"> - {{ notifications.length + errors.length }} {{::verbage.events}} </div>
 			<input type="button" value="{{::verbage.open}}" class="XButton" onclick="window.location.replace('#/OpenNotifications')" />
 		</div>   
 		
 		<div class="scroller" id="scroller">  	
-		<!--ng-show="showHideElements($index)"-->
 	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" >			
 				<div class="NotificationHeader">
 					<div class="NotificationHeaderBackground">
@@ -79,7 +78,7 @@
 						profile="message.fullProfile" 
 						type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
 					</avatar>
-				
+
 					<div class="LeftBarNotificationMessageSection">
 						<div onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}" class="chatNotification" action=>
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
@@ -111,7 +110,7 @@
 						</div>
 
 						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
-							<div class="XButton chatNotification" onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}">{{::verbage.chat}}</div>
+							<div class="XButton chatNotification" ng-if="::message.fullProfile != null" onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}">{{::verbage.chat}}</div>
 							<div class="XButton XButtonGreen" onclick="mouseClick(this)" action="#/callAndRemove?{{::message.xpid}}&{{::message.phone}}">{{::verbage.Call}}</div>	
 						</div>
 						
@@ -128,57 +127,31 @@
 
 			</div>
  
-			<div class="Messages plugins" ng-if="::!phoneSessionEnabled">		
-			  <a href="{{::pluginDownloadUrl}}" download target="_blank">
+			<!-- errors -->
+			<div class="Messages error" ng-repeat="error in errors track by error.xpid">	
 				<div class="NotificationHeader"> 
 					<div class="NotificationHeaderBackground"> 
-						<div class="NotificationClose"></div>
+						<div class="NotificationClose" onclick="mouseClick(this)" action="#/CloseError?{{::error.xpid}}"></div>
 					</div>
 				</div>
-				<div class="NotificationDivider"></div>
-
-				<div class="NotificationSection" ng-class="::{'last' : !anotherDevice}" >
-					<div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
-						<div class="AvatarWarningSmall"></div>
-					</div>
 				
-					<div class="LeftBarNotificationMessageSection" > 
-						<div class="chatNotification plugins">
-							<div class="content"><span>Browser Plugin</span></span> <div class="NotificationTime"></div></div> 
-							<div ></div>
-
-							<div class="NotificationMessage">Click to download & Install</div>
-						</div>
-						
-					</div>
-				</div>
-			  </a>
-			</div>
-			
-			<div class="Messages webphone" ng-if="::anotherDevice">                
-			    <div class="NotificationHeader">
-                    <div class="NotificationHeaderBackground"> 
-                        <div class="NotificationClose" ></div>
-                    </div>
-                </div>
-                <div class="NotificationDivider" ></div>
-                <div class="NotificationSection webphone last"> 
-                    
-                    <div class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
+				<div class="NotificationDivider"></div>
+				
+                <div class="NotificationSection error" onclick="mouseClick(this)" action="#/HandleError?{{::error.xpid}}">
+                    <div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
                         <div class="AvatarWarningSmall"></div>
                     </div>
                 
-                    <div class="LeftBarNotificationMessageSection" > 
-                        <div class="chatNotification webphone">
-                            <div class="content"><span>Web Phone</span></span> <div class="NotificationTime"></div></div> 
+                    <div class="LeftBarNotificationMessageSection"> 
+                        <div class="chatNotification error">
+                            <div class="content"><span ng-bind-html="::error.displayName"></span> <div class="NotificationTime"></div></div> 
                             <div ></div>
-
-                            <div class="NotificationMessage">Phone registered on another device. Click on this message to set this instance as active.</div>
+                            <div class="NotificationMessage" ng-bind-html="::error.message"></div>
                         </div>
                         
                     </div>
-                 </div>               
-            </div> 
+                </div>   
+			</div>
         </div>    
 	</div>
 	</div>

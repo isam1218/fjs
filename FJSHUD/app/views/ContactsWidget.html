@@ -28,7 +28,7 @@
 				<div class="ListRowTitle">
 					<div class="name" ng-if="::contact.primaryExtension">
 						<strong ng-bind-html="::contact.displayName"></strong>
-						<span>#{{ ::contact.primaryExtension }}</span>
+						<span class="ListRowTitleExtension">#{{ ::contact.primaryExtension }}</span>
 					</div>
 					<div class="name" ng-if="::!contact.primaryExtension" >
 						<strong ng-bind-html="contact.displayName"></strong>
@@ -39,7 +39,7 @@
                     <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                     <br/>                   
-                    <div class="ListRowStatusText">{{ (contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '') }}</div>
+                    <div class="ListRowStatusText" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div>
                 </div>	
                 
                 <div class="CallStatus" ng-if="contact.call">

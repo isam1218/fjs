@@ -149,6 +149,13 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
     $rootScope.$on('weblauncher_synced', function(event,data){
     	if(data && data.length > 0){
 			weblaunchers = data;
+			
+			// decode URLs
+			for (var i = 0, len = weblaunchers.length; i < len; i++) {
+				weblaunchers[i].inbound = weblaunchers[i].inbound.replace(/&amp;/g, '&');
+				weblaunchers[i].outbound = weblaunchers[i].outbound.replace(/&amp;/g, '&');
+			}
+			
 			deferWl.resolve(weblaunchers);
 		}
     });
@@ -177,7 +184,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				settings[data[i].key] = data[i].value;
 			
 			if(settings.hudmw_auto_away_timeout == undefined){
-				settings.hudmw_auto_away_timeout = 30000;            	
+				settings.hudmw_auto_away_timeout = 240000;//30000;            	
             }
             if(settings.hudmw_searchautocleardelay == undefined){
             	settings.hudmw_searchautocleardelay = 30;

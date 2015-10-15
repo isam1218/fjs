@@ -2,6 +2,15 @@
 .displayName{
 	font-size:12px;
 }
+.voicemail.vmails{
+	.vmsection{
+	  .displayName{
+	  	em, p{float: left;}
+	  	p{clear: none; max-width: 50%;}
+	  	.vmalternate{margin-top: 0px !important;}
+	  }
+	}
+}
 .vmsection{
 	margin:0px;
 	border: 0px;	
@@ -111,7 +120,16 @@
           }
           .footnote{
             position: relative;
-            margin-top: 20px;            
+            margin-top: 20px;   
+            
+            &.voicemails{
+            	white-space: normal;
+			    color: #222;
+			    font-size: 13px;
+			    line-height: 15px;
+			    word-wrap: break-word;
+			    width: 100%;
+            }         
           }
 	}
 		
@@ -152,7 +170,21 @@
 	overflow:hidden;
 	text-overflow:ellipsis;
 	white-space:nowrap;
-	
+	&.transcription,
+	&.no_transcription{
+		white-space:normal;
+		overflow: inherit;
+		text-overflow:inherit;
+		line-height: 16px;
+	}
+	&.transcription{
+		color: #888;
+    	font-size: 12px;    
+	}
+	&.no_transcription{
+		color: #999;
+    	font-size: 11px;
+	}
 }
 
 .vmdisplay{

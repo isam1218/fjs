@@ -5,7 +5,7 @@
 	        </select>
         </div>
         <div class="SelectBox selectWrapper convQueue">
-	        <select class="fj-hbox SelectBox SelectBoxSettings" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons | filter: truncateLongAction()" ng-change="queueLogoutAll(actionObj.selectedAction.xpid)">
+	        <select class="fj-hbox SelectBox SelectBoxSettings LogoutSelect" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons | filter: truncateLongAction()" ng-change="queueLogoutAll(actionObj.selectedAction.xpid)">
 	            <option value="">{{::verbage.logout_all}}</option>
 	        </select>
         </div>
@@ -23,9 +23,9 @@
                     <b>{{ ::queue.name }}</b>
                 </div>
                 <div > 
-                    <div class="XIcon-QueueStatus QueueStatus" ng-class="chatStatus"></div>
-                    <div class=" XIcon-QueueStatus  QueueStatus" ng-class="queue.you.status.status == 'login' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' "></div>                  
-                    {{queue.you.status.status == 'login' ||  queue.you.status.status == 'login-permanent'  ?  verbage.logged_in : verbage.logged_out}}
+                    <div class="XIcon-ChatStatus-{{ queue.you.fullProfile.hud_status || 'offline' }}" ></div>
+                    <div class="XIcon-QueueStatus  QueueStatus" ng-class="queue.you.status.status == 'login' || queue.you.status.status == 'login-permanent' ? 'XIcon-QueueStatus-login' : 'XIcon-QueueStatus-logout' "></div>                  
+                    {{queue.you.status.status == 'logout' ? verbage.logged_out : queue.you.status.status == 'login' ? verbage.logged_in : verbage.logged_in_perm }}
                 </div>
             </div>
         </div>

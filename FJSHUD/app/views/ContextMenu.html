@@ -177,7 +177,7 @@
 			<span>{{::verbage.Call}}</span>
 		</a>
 
-		<a class="Button" href="" ng-show="profile.call" ng-click="callInternal('callLater')">
+		<a class="Button" href="" ng-show="callLaterEnabled()" ng-click="callInternal('callLater')">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.Call_Later}}</span>
 		</a>

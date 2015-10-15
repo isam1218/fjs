@@ -35,7 +35,14 @@
 	    padding-right: 20px;
 	    -ms-word-wrap: break-word;
 	    white-space:normal;
-	    word-break: break-all;
+	    // word-break: break-all;
+      overflow-wrap:  break-word;
+      word-wrap:  break-word;
+      word-break: break-word;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hypens: auto;
+      hypens: auto;
 	    height: auto;
 	    max-height: none;
 	    padding-bottom: 20px;
@@ -146,6 +153,11 @@
               height: auto !important;  
               width: 100% !important;
             }
+			
+			&.error {
+				font-size: 15px;
+				padding-bottom: 10px;
+			}
           }
         }  
       }

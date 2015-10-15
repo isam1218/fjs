@@ -3,11 +3,22 @@ hudweb.directive('expandContractNotifications', function() {
          link : function(scope, element, attrs) {
         	var animTime = 50, hoverFlag = false;
 			var scrollWatcher;
+			var container = element[0].getElementsByClassName('scroller')[0];
         	var nua = navigator.userAgent;
         	var browser = nua.match(/(chrome|safari|firefox|msie)/i);
         	//if not found, default to IE mode
         	browser = browser && browser[0] ? browser[0] : "MSIE";
         	var $scope = scope;
+			
+			// update class when length of messages changes
+			scope.$watch(function() {				
+				return container.children.length;
+			}, function(val) {
+				if (val > 0)
+					element.removeClass('noMessages').addClass('hasMessages');
+				else
+					element.removeClass('hasMessages').addClass('noMessages');
+			});
         	
             $(element).on('hoverIntent mouseenter', function() {
 				$(this).addClass('Expand');

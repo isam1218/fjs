@@ -1,4 +1,4 @@
-hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', 'GroupService', 'ContactService', function($scope, $routeParams, groupService, contactService) {
+hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams', 'GroupService', 'ContactService', '$rootScope', function($scope, $routeParams, groupService, contactService, $rootScope) {
     var context = this;
 	var favoriteID;
 	
@@ -28,6 +28,7 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 			
 			if ($scope.userGroup) break;
 		}
+
 	});
 	
 	$scope.customFilter = function() {
@@ -48,7 +49,10 @@ hudweb.controller('ConversationWidgetGroupsController', ['$scope', '$routeParams
 
 	$scope.findGroupOwner = function(group){
 		var owner = contactService.getContact(group.ownerId);
-		return owner.displayName;
+		if (group.ownerId == $rootScope.myPid)
+			return 'Me';
+		else
+			return owner.displayName;
 	};
 	
     $scope.$on("$destroy", function() {
