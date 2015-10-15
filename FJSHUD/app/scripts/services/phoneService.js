@@ -122,17 +122,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(!$.isEmptyObject(callsDetails)){
 						for(var detail in callsDetails){
 							if(alertDuration != "entire"){
-				              if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && data[i].xef001type != 'delete'){
+				              if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && callsDetails[detail].xef001type != 'delete'){
 				            	  context.displayCallAlert(callsDetails[detail]);
 				              }
 				              else if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
 				            	  nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);  
-				              else if (data[i].xef001type == 'delete') 
+				              else if (callsDetails[detail].xef001type == 'delete') 
 									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
 					 		}
 					 		else
 					 		{
-					 			if (data[i].xef001type == 'delete') 
+					 			if (callsDetails[detail].xef001type == 'delete') 
 									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
 					 			else
 					 				context.displayCallAlert(callsDetails[detail]);
