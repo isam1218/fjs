@@ -12,6 +12,7 @@ hudweb.service("sharedData",function(){
   this.meeting.start_url = '';
   this.password = '';
   this.jbh=null;
+ 
 
     this.setScheduleTab = function(tab) {
         this.tab = tab;
@@ -186,6 +187,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             console.log("DATA",response);
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
+
             sharedData.meeting.start_url = response.meetings.start_url;
             sharedData.meeting.meetingTopic = topic;
             sharedData.meeting.timeSelect = startTime;
@@ -1073,7 +1075,8 @@ $scope.$on('$destroy', function() {
 
 
 hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http,$rootScope,$modal,sharedData,$route) {
-    
+    $scope.loadingGif1 = false;
+    $scope.loadingGif2 = true;
     var getURL = function(action) {
 
         var url = 
@@ -1096,7 +1099,7 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http
   $scope.meeting.minDuration = sharedData.meeting.minDuration;
   $scope.meeting.timezone = sharedData.meeting.timezone;
   $scope.meeting.meeting_id = sharedData.meeting_meeting_id;
-
+ 
    
 
 
