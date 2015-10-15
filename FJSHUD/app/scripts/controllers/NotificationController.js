@@ -660,13 +660,21 @@ hudweb.controller('NotificationController',
 			if(nservice.isEnabled()){
 				for (var i = 0; i < $scope.calls.length; i++){
 				 if(alertDuration != "entire"){
-					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING)
+					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && $scope.calls[i].xef001type != 'delete')
 		            	  phoneService.displayCallAlert($scope.calls[i]);
 		             else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
-		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);  
+		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);
+		             else if ($scope.calls[i].xef001type == 'delete') 
+		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid); 
 				 }
 				 else
-					 phoneService.displayCallAlert($scope.calls[i]);
+				 {
+					 if ($scope.calls[i].xef001type == 'delete') 
+						 nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);
+					 else
+						 phoneService.displayCallAlert($scope.calls[i]); 
+				 }	 
+					 
 				}
 			}else{//other browsers
 				for (var i = 0; i < $scope.calls.length; i++){
