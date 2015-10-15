@@ -527,6 +527,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	this.preload('img/XAvatarBorder.png');
 	this.preload('img/Generic-Error.png');
 	this.preload('img/XApp-Icons.png');
+	this.preload('img/XEvent.png');
 	this.preload('img/XIconSet-24x24.png');
 	this.preload('img/XDialog-Errors.png');
 }]);
