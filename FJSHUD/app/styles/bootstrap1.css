@@ -1152,6 +1152,7 @@ a.thumbnail.active {
 }
 .modal-content {
   position: relative;
+  width:95%;
   background-color: #ffffff;
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
