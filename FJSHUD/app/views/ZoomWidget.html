@@ -266,22 +266,25 @@
         <p style="font-family:ariel;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
         
     </div>
-    <textarea   rows="15" cols="50" style="position:relative;bottom:195px;left:400px;font-size:12px;font-family:ariel;width:420px;height:285px;padding:15px 10px 0px 15px;margin-top:10px" >
-    Hi there,
+   <div id="textArea" contentEditable="true" >
+    <ul>
 
-    {{userName}} is inviting you to a scheduled Zoom meeting.
+    <li>Hi there,</li>
 
-    Topic: {{meeting.meetingTopic}}
+    <li>{{userName}} is inviting you to a scheduled Zoom meeting.</li>
 
-    Time: {{meeting.timeSelect|date:'h:mm a'}}{{meeting.AmPm}}  {{meeting.timezone}}
+    <li>Topic: {{meeting.meetingTopic}}</li>
 
-    Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}
+    <li>Time: {{meeting.timeSelect|date:'h:mm a'}}{{meeting.AmPm}}  {{meeting.timezone}}</li>
 
-    Or join by phone:
+    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}</li>
 
-    +1 646 7788 (US Toll) or +1 415 762 9988 (US Toll)
-    Meeting ID:{{meeting.meeting_id}}
-    </textarea>
+    <li>Or join by phone:</li>
+
+    <li>+1 646 7788 (US Toll) or +1 415 762 9988 (US Toll)<br>
+    Meeting ID:{{meeting.meeting_id}}</li>
+    </ul>
+    </div>
 
     
     <div class="modal-footer" style="margin-top:-155px">
@@ -305,20 +308,23 @@
         <p style="font-family:ariel;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
         
     </div>
-    <textarea   rows="15" cols="50" style="position:relative;bottom:195px;left:400px;font-size:12px;font-family:ariel;width:420px;height:285px;padding:15px 10px 0px 15px;margin-top:10px" >
-    Hi there,
+    <div id="textArea" contentEditable="true" >
+    <ul>
 
-    {{userName}} is inviting you to a scheduled Zoom meeting.
+    <li>Hi there,</li>
 
-    Topic: {{meeting.meetingTopic}}
+    <li>{{userName}} is inviting you to a scheduled Zoom meeting.</li>
 
-    Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}
+    <li>Topic: {{meeting.meetingTopic}}</li>
 
-    Or join by phone:
+    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}</li>
 
-    +1 646 7788 (US Toll) or +1 415 762 9988 (US Toll)
-    Meeting ID:{{meeting.meeting_id}}
-    </textarea>
+    <li>Or join by phone:</li>
+
+    <li>+1 646 7788 (US Toll) or +1 415 762 9988 (US Toll)
+    Meeting ID:{{meeting.meeting_id}}</li>
+    </ul>
+    </div>
 
     
     <div class="modal-footer" style="margin-top:-155px">

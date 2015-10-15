@@ -4985,6 +4985,29 @@ div.NewCall .XButton.XButtonNormal {
   max-height: 75%;
   overflow-y: auto;
 }
+#textArea {
+  position: relative;
+  bottom: 195px;
+  left: 400px;
+  font-size: 12px;
+  font-family: ariel;
+  width: 420px;
+  height: 230px;
+  padding: 5px 10px 0px 15px;
+  margin-top: 25px;
+  border: solid;
+  border-width: 1px;
+  border-color: lightgray;
+}
+#textArea ul {
+  padding-left: 0px;
+  list-style: none;
+}
+#textArea ul li {
+  font-style: ariel;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
 .meetingHeader {
   border-bottom: 1px solid #B3B3B3;
   height: 115px;
