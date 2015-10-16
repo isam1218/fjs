@@ -510,6 +510,8 @@ hudweb.controller('NotificationController',
     }
   };
 
+  var bargeFlag = false;
+
   var sendBargeNotification = function(callBarger, msgDate, msgXpid, type, whisperId){
     var extraNotification, typeLabel;
     switch (type) {
@@ -535,6 +537,7 @@ hudweb.controller('NotificationController',
     };
     // don't send notification to the party that's NOT being whispered to
     if (type != 'whisper' || type == 'whisper' && $rootScope.myPid == whisperId){
+      bargeFlag = true;
       $scope.notifications.unshift(extraNotification);
       $scope.todaysNotifications.push(extraNotification);
       if (displayDesktopAlert && nservice.isEnabled())
@@ -543,23 +546,25 @@ hudweb.controller('NotificationController',
   };
 
   var delete_notification_from_notifications_and_today = function(xpid){
-    for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
-      if($scope.notifications[i].xpid == xpid){
-        $scope.notifications.splice(i,1);
-        break;
-      } else if ($scope.notifications[i].vmId == xpid){
-        $scope.notifications.splice(i,1);
-        break;
+    if (xpid){
+      for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+        if($scope.notifications[i].xpid == xpid){
+          $scope.notifications.splice(i,1);
+          break;
+        } else if ($scope.notifications[i].vmId == xpid){
+          $scope.notifications.splice(i,1);
+          break;
+        }
       }
-    }
 
-    for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
-      if($scope.todaysNotifications[j].xpid == xpid){
-        $scope.todaysNotifications.splice(j,1);
-        break;
-      } else if ($scope.todaysNotifications[j].vmId == xpid){
-        $scope.todaysNotifications.splice(j,1);
-        break;
+      for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
+        if($scope.todaysNotifications[j].xpid == xpid){
+          $scope.todaysNotifications.splice(j,1);
+          break;
+        } else if ($scope.todaysNotifications[j].vmId == xpid){
+          $scope.todaysNotifications.splice(j,1);
+          break;
+        }
       }
     }
   };
@@ -627,12 +632,15 @@ hudweb.controller('NotificationController',
     var myContactObj = contactService.getContact($rootScope.myPid);
     
     // if someone barges...
-    if (!myContactObj.call || myContactObj.call.bargers.length == 0){
+    if ((bargeFlag && !myContactObj.call) || (bargeFlag && myContactObj.call.bargers && myContactObj.call.bargers.length == 0)){
       delete_notification_from_notifications_and_today(msgXpid);
-    } else if (myContactObj.call.bargers.length > 0){
+      bargeFlag = false;
+    } else if (myContactObj.call.bargers && myContactObj.call.bargers.length > 0){
       // delete any existing barge-notification...
-      if (msgXpid)
+      if (bargeFlag && msgXpid){
         delete_notification_from_notifications_and_today(msgXpid);
+        bargeFlag = false;
+      }
       // start creation of new barge notification...
       prepareBargeNotification(myContactObj);
     } 
