@@ -198,7 +198,7 @@
                     <img src="img/datePicker.png" ng-click="open($event)" style="height:15px">
               
                           
-                
+
                <select ng-init="meeting.timeSelect" ng-options="o for o in times" name="timeSelect" ng-model="meeting.timeSelect" >
                </select>
                <select name="AmPm" ng-model="meeting.AmPm" ng-init="meeting.AmPm" ng-options="a for a in meridian">
@@ -225,13 +225,13 @@
         <div id="passwordContainer">
             <form>
                 
-                    
+                    <label>Meeting Options:</label>
                     <ul>
-                    <li><label>Meeting Options:</label><input type="checkbox" ng-model="checked"><label>Require meeting password</label></li>
+                    <li><input type="checkbox" ng-model="checked"><label>Require meeting password</label></li>
                     
-                    <li><input style="margin-left: 129px" ng-model="meeting.password"   ng-hide="!checked"></li>
+                    <li><input style="margin-left: 20px;"  ng-model="meeting.password"   ng-hide="!checked"></li>
                     
-                    <li><input style="margin-left: 129px;" type="checkbox" ng-model="meeting.jbh"><label>Enable join before host</label></li></ul>
+                    <li><input type="checkbox" ng-model="meeting.jbh"><label>Enable join before host</label></li></ul>
 
                 
             </form>
