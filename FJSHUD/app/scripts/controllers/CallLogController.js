@@ -85,22 +85,9 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 			if (query == '' || call.displayName.toLowerCase().indexOf(query) != -1 || call.phone.indexOf(query) != -1)
 				return true;
 		};
-	};
+	};	
 
-	$scope.sortType = function(incoming, missed, incomingNotMissed, outgoing){
-		$scope.sortReverse = true;
-		if ($scope.sortField != outgoing && $scope.sortField != incomingNotMissed)
-			// outgoing/green
-			$scope.sortField = outgoing;
-		else if ($scope.sortField == outgoing)
-			// incoming + not missed --> turquoise...
-			$scope.sortField = incomingNotMissed;
-		else if ($scope.sortField == incomingNotMissed)
-			// missed --> red...
-			$scope.sortField = missed;
-	};
-
-  $scope.sort = function(field) {
+    $scope.sort = function(field) {
       if($scope.sortField!=field) {
           $scope.sortField = field;
           $scope.sortReverse = false;
@@ -108,7 +95,7 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
       else {
           $scope.sortReverse = !$scope.sortReverse;
       }
-  };
+    };
 	
 	$scope.makeCall = function(number) {
 		phoneService.makeCall(number);
