@@ -436,7 +436,10 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             if($scope.meetingList[i].start_time.charAt(11)>0){
               var strHourString = "T"+strHour;
             }
-              var strMin = $scope.meetingList[i].duration.toString().substr(1,2);
+              var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(1,2));
+              if(strMin == 0){
+                strMin = "00";
+              }
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
               //alert($scope.meetingList[i].start_time.slice(0,10));
                }
@@ -496,7 +499,10 @@ $scope.$on('modalInstance', function() {
             if($scope.meetingList[i].start_time.charAt(11)>0){
               var strHourString = "T"+strHour;
             }
-              var strMin = $scope.meetingList[i].duration.toString().substr(1,2);
+              var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(1,2));
+              if(strMin == 0){
+                strMin = "00";
+              }
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
                }
 
@@ -557,7 +563,10 @@ $scope.$on('modalInstance', function() {
             if($scope.meetingList[i].start_time.charAt(11)>0){
               var strHourString = "T"+strHour;
             }
-              var strMin = $scope.meetingList[i].duration.toString().substr(1,2);
+              var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(1,2));
+              if(strMin == 0){
+                strMin = "00";
+              }
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
               
                }
@@ -708,7 +717,7 @@ $scope.minOption = ['00',15,30,45];
  /* $scope.selected = {
     item: $scope.items[0]
   };*/
-$scope.times = ["01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00"];
+$scope.times = ["01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"];
 //$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -852,10 +861,13 @@ $scope.reloadRoute = function() {
    $scope.startTime = new Date($scope.meeting.dt);
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startHour = $scope.meeting.timeSelect;
+  $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
+  alert($scope.startMinute);
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
  $scope.hourUTC = $scope.startHourUTC;
+
 var dates = $filter('date')($scope.startTime,'Z');
 
 
@@ -926,7 +938,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 
 
  
-   $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
+   $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
     sharedData.meeting.update_meeting_id = shared;
 
    //alert($scope.starts);
@@ -975,6 +987,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
+
     $scope.hourUTC = $scope.startHourUTC;
 
 var dates = $filter('date')($scope.startTime,'Z');
