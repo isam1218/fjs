@@ -22,13 +22,13 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 		$scope.logSize = data['recent_call_history_length'] || 100; 
 	});
 	
-	$scope.$on('calllog_synced', function(event, data) {
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
+	$scope.$on('calllog_synced', function(event, data) {				//if(i < $scope.logSize)
+		  for (var i = 0, iLen = data.length; i < iLen; i++) {
 			var match = false;
 			
 			for (var c = 0, cLen = $scope.calls.length; c < cLen; c++) {
-				// find existing (and maybe delete)
-				if ($scope.calls[c].xpid == data[i].xpid) {
+			    // find existing (and maybe delete)
+			   if ($scope.calls[c].xpid == data[i].xpid) {
 					if (data[i].xef001type == 'delete') {
 						$scope.calls.splice(c, 1);
 						cLen--;
@@ -37,8 +37,7 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 					match = true;
 					break;
 				}
-			}
-			
+			}			
 			// add new (if it also meets page type)
 			if (!match && data[i].xef001type != 'delete' && !data[i].filterId && 
 				(!pageFilter || ((data[i].queueId !== undefined && pageFilter == data[i].queueId) || (data[i].contactId !== undefined && pageFilter == data[i].contactId)))) {
@@ -54,6 +53,13 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 					data[i]['outgoing'] = true;
 				else
 					data[i]['outgoing'] = false;
+				
+				if(data[i].missed == true)
+					data[i].callType = 'phoneMissed';
+				else if(data[i].incoming == true)
+					data[i].callType = 'incoming';
+				else
+					data[i].callType = 'outgoing';
 
 				$scope.calls.push(data[i]);
 				
