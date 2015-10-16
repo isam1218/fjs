@@ -14,6 +14,10 @@
   max-height: 79%;
   overflow-y: auto;
 }
+.WidgetZoomBody .ListSectionBtn #joinVideoScreen {
+  margin: 16px 0px 0px;
+  padding: 15px 10px 27px 20px;
+}
 .CallLog .ListLineContent.Header .ListLineContentCell {
   max-width: none !important;
 }
@@ -83,7 +87,7 @@ img.x {
   top: 0 !important;
 }
 .TopBarMeStatus .XButton span {
-  top: 3px !important;
+  top: .05em !important;
 }
 .Widget.Queues .Block .Avatar {
   width: 42px !important;
@@ -316,6 +320,7 @@ img.x {
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
   padding-left: 5px;
+  height: 20px !important;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName span {
   width: auto !important;
@@ -327,9 +332,12 @@ img.x {
   position: relative;
   left: 5px;
   top: -5px;
+  margin-bottom: -10px;
 }
 .LeftBarNotificationMessageSection .NotificationTime {
+  font-size: 11px;
   right: 0;
+  bottom: 10px !important;
 }
 .LeftBarNotificationMessageSection .NotificationMessage {
   padding-left: 5px;
@@ -342,22 +350,15 @@ img.x {
   max-width: 86%;
   padding-left: 10px;
 }
-.CallStatusText .memberName .name.truncate {
-  width: 90% !important;
-}
 .CallStatusText.ringing {
   max-width: 40% !important;
 }
-.MyCallBlock_Rec {
-  right: 33% !important;
-}
 .XIcon24-Record-Off {
   right: 12px !important;
-  top: 1px !important;
 }
 .XIcon24-Record-On {
   right: 12px !important;
-  top: 3px !important;
+  top: 1px !important;
 }
 .ZoomWidgetSection .XButtonWide.XButtonBlue.first {
   margin-top: 5px;

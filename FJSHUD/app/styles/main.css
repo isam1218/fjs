@@ -422,7 +422,11 @@ p {
   font-size: 12px;
 }
 .TopBarMeStatus {
-  position: relative;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
   flex: 1;
   -webkit-flex: 1;
   padding: 5px 10px 0 0;
@@ -690,6 +694,7 @@ p {
 }
 .LeftBar .ListRow .ListRowContent div:first-child:nth-last-child(2) {
   max-width: 64%;
+  margin-top: 0px;
 }
 .LeftBar .ListRow .ListRowContent div:first-child:nth-last-child(3) {
   max-width: 50%;
@@ -785,6 +790,11 @@ p {
   width: 100%;
   overflow-y: auto;
 }
+.LeftBar .Contacts .ContactList .ListRowContent .name .ListRowTitleExtension,
+.LeftBar .Groups .ContactList .ListRowContent .name .ListRowTitleExtension,
+.LeftBar .Recent .ContactList .ListRowContent .name .ListRowTitleExtension {
+  margin-top: .1em;
+}
 .LeftBar .Contacts .ContactList .ListRowContent .name span.details,
 .LeftBar .Groups .ContactList .ListRowContent .name span.details,
 .LeftBar .Recent .ContactList .ListRowContent .name span.details {
@@ -849,7 +859,7 @@ p {
 .LeftBar .Contacts .ContactList a.ListRow .ListRowStatus,
 .LeftBar .Groups .ContactList a.ListRow .ListRowStatus,
 .LeftBar .Recent .ContactList a.ListRow .ListRowStatus {
-  top: 10px;
+  top: 11px;
   width: 83px;
   text-align: center;
   right: -5px;
@@ -858,6 +868,7 @@ p {
 .LeftBar .Groups .ContactList a.ListRow .ListRowStatus .ListRowStatusText,
 .LeftBar .Recent .ContactList a.ListRow .ListRowStatus .ListRowStatusText {
   max-width: 100%;
+  margin-top: .2em;
 }
 .LeftBar .Contacts .ContactList a.ListRow .CallStatus,
 .LeftBar .Groups .ContactList a.ListRow .CallStatus,
@@ -1316,6 +1327,7 @@ p {
   border-bottom: solid 1px #fff;
   font-size: 12px;
   line-height: 20px;
+  min-height: 20px;
 }
 .Gadget .Content .List {
   flex: 1 1 0;
@@ -1635,7 +1647,7 @@ p {
   color: #333;
   text-shadow: 0 1px 0px #fff;
   font-family: Arial, Tahoma, "Helvetica Neue", Helvetica, sans-serif;
-  padding: 0 0 0 3px;
+  padding: 0 0 0 10px;
 }
 .Widget .ToolBar .selectWrapper select:hover {
   background: url(../img/arrowDown_8.png) no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
@@ -1727,6 +1739,9 @@ p {
   /* Opera 11.10+ */
   background: url(../img/arrowDown_8.png) no-repeat 94%, linear-gradient(to bottom, #fefefe, #ebebeb);
   /* W3C */
+}
+.Widget .ToolBar .selectWrapper.convQueue select.LogoutSelect {
+  padding-top: 4px;
 }
 .Widget .ToolBar.fj-stream .XButton.convQueueInput span {
   vertical-align: top;
@@ -2196,6 +2211,9 @@ p {
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowTitle {
   width: 60%;
   max-width: none;
+}
+.WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowTitle.ListRowTitleName {
+  width: 100%;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .ListRowTitle > div {
   float: left;
@@ -3940,10 +3958,10 @@ div.NewCall .XButton.XButtonNormal {
   width: 7%;
 }
 .RecentCallSection .RecentDate {
-  width: 32%;
+  width: 25%;
 }
 .RecentCallSection .RecentFromTo {
-  width: 25%;
+  width: 30%;
   text-align: center;
 }
 .RecentCallSection .RecentFromTo.call {
@@ -3952,7 +3970,7 @@ div.NewCall .XButton.XButtonNormal {
   color: #91B139 !important;
 }
 .RecentCallSection .RecentDur {
-  width: 14%;
+  width: 15%;
   text-align: center;
 }
 .NoRecentCalls {
@@ -4001,7 +4019,7 @@ div.NewCall .XButton.XButtonNormal {
   height: 40px;
 }
 .Conference .ListRow .ListConferenceStatusIcon {
-  margin: 0 -3px -3px -5px;
+  margin: 0 -3px -3px 0px;
   vertical-align: bottom;
 }
 .Conference .ListRow .ListRowTitle > div:not(.name) {
@@ -4012,6 +4030,9 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Conference .ListViewTopNote {
   font-size: 12px;
+}
+.Conference .WidgetStat {
+  width: 200px;
 }
 .conference.currentCall .ListRowTitle {
   max-width: 100%;
@@ -4228,7 +4249,6 @@ div.NewCall .XButton.XButtonNormal {
   -ms-flex: 1;
   -webkit-flex: 1 1 0;
   overflow-y: auto;
-  padding: .5em 2.5%;
 }
 .Widget.Queues .QueueList .ListSectionHeader {
   margin-bottom: -5px;
@@ -4238,6 +4258,17 @@ div.NewCall .XButton.XButtonNormal {
 }
 .Widget.Queues .QueueList .ListRow.myStatus [class*="XIcon-ChatStatus"] {
   margin-left: -5px;
+}
+.Widget.Queues .QueueList .ListRow.myStatus .ListRowTitle {
+  padding: .4em;
+  padding-top: .6em;
+}
+.Widget.Queues .QueueList .ListRow.myStatus .ListRowTitle .ListRowStatusIcon {
+  margin-left: 0px;
+}
+.Widget.Queues .QueueList .ListRow.myStatus .ListRowStatus {
+  margin: 0px;
+  padding-top: 10px;
 }
 .Widget.Queues .MyStatus {
   font-size: 1em !important;
@@ -4974,7 +5005,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 #homeContainer {
   border: 1px solid none;
-  max-height: 75%;
+  min-height: 75%;
   overflow-y: auto;
   padding: 0px 20px 0px 20px;
 }
@@ -5075,6 +5106,7 @@ div.NewCall .XButton.XButtonNormal {
 #btnContainer {
   position: relative;
   top: 10px;
+  right: 7px;
   float: right;
   width: 229px;
   height: 400px;
@@ -5406,19 +5438,31 @@ div.NewCall .XButton.XButtonNormal {
   background-color: #015d73;
   cursor: pointer;
 }
-.WorkspaceButton div {
+.WorkspaceButton .line {
   position: absolute;
-  top: 14%;
+  top: 13%;
   right: 0;
   height: 75%;
   border-left: 1px solid white;
   width: 15%;
   text-align: center;
 }
-.WorkspaceButton div.Down {
+.WorkspaceButton .line .rightArrow {
+  margin-top: 1px;
+}
+.WorkspaceButton .line.Down {
   padding-top: 4px;
 }
-.WorkspaceButton img {
+.WorkspaceImgButton {
+  position: relative;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  cursor: pointer;
+}
+.WorkspaceImgButton img {
   position: absolute;
   top: 14%;
   right: 0;
@@ -5426,7 +5470,7 @@ div.NewCall .XButton.XButtonNormal {
   border-left: 1px solid none;
   text-align: center;
 }
-.WorkspaceButton img.Down {
+.WorkspaceImgButton img.Down {
   padding-top: 4px;
 }
 .WidgetZoomBody {
@@ -5463,7 +5507,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .WidgetZoomBody .ListSectionBtn #joinVideoScreen {
   margin: 11px 0px 0px 0px;
-  padding: 15px 10px 24px 20px;
+  padding: 10px 10px 17px 20px;
 }
 .WidgetZoomBody .ListSectionBtn #joinVideoScreen .SearchBox {
   width: 100%;
@@ -5888,6 +5932,33 @@ div.NewCall .XButton.XButtonNormal {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.Widget.Conversation .ListView .footnote {
+  margin-left: 10px;
+}
+.Widget.Conversation .ListView .ListRowTitle.Department {
+  padding: .5em;
+}
+.Widget.Conversation .ListView .ListRowTitle .DepartmentName {
+  padding: .15em 0 .3em 0;
+}
+.Widget.Conversation .ListView .ListRowTitle.OurTeamsContent {
+  padding-top: .65em;
+}
+.Widget.Conversation .ListView .ListRowTitle.OurTeamsContent .details {
+  padding-top: .25em;
+}
+.Widget.Conversation .ListView .OurTeamsSection {
+  padding-top: 15px;
+}
+.Widget.Conversation .ListView .ListRowStatus.Extension {
+  padding-top: .15em;
+}
+.Widget.Conversation .ListView .ListRowStatus.OurTeamsContent {
+  padding-top: .15em;
+}
+.Widget.Conversation .ListView .HeaderTitle.DeptTeamHeader {
+  margin-bottom: -0.25em;
+}
 .Widget.Conversation .WidgetHeader {
   top: 0;
   right: 0;
@@ -6025,6 +6096,7 @@ div.NewCall .XButton.XButtonNormal {
   top: -2px;
   left: -5px;
   vertical-align: bottom;
+  width: 100%;
 }
 .Widget.Conversation .page .vmsection .vminfo .footnote .QueueStatus {
   float: left;
@@ -6181,7 +6253,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ChatInputBox .ChatInputFields .text.ChatInputBoxInput {
   margin-right: 10px;
-  font-size: .95em;
+  font-size: 13px;
   padding: 5px;
   overflow: auto;
   background-color: #fff;
@@ -6194,7 +6266,7 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ChatInputBox .ChatInputFields .XButton.ChatInputBoxSend {
   height: 28px !important;
-  padding-top: 6px;
+  padding: 3px;
   float: right;
   right: 0px;
   width: 80px;
@@ -6208,14 +6280,20 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
   left: 10px;
   width: 99%;
-  min-height: 26px;
+  min-height: 15px;
 }
 .ChatMessageItem:not(:last-child) {
   border-bottom: solid 1px #DEE1E5;
 }
 .ChatMessageItem .ListMessageText {
   padding-right: 10px;
+  overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hypens: auto;
+  hypens: auto;
   white-space: normal;
 }
 .ChatMessageItem .time {
@@ -6519,6 +6597,7 @@ div.NewCall .XButton.XButtonNormal {
 .ListRow .GroupListRowContent {
   display: -ms-flexbox;
   display: flex;
+  display: -webkit-flex;
 }
 .ListRow .ListRowTitle {
   float: left;
@@ -6534,6 +6613,9 @@ div.NewCall .XButton.XButtonNormal {
   -webkit-flex: 1 1 0;
   -ms-flex: 4;
   margin-top: -3px;
+}
+.ListRow .ListRowTitle .GroupPageDisplayName {
+  color: #222;
 }
 .ListRow .ListRowTitle .status {
   margin-left: -5px;
@@ -6554,6 +6636,10 @@ div.NewCall .XButton.XButtonNormal {
 }
 .ListRow .ListRowTitle .ListRowStatusIcon {
   margin-left: -6px;
+}
+.ListRow .ListRowTitle .ListRowStatusIcon.ListRowStatusIconGroupPage {
+  margin-right: -5px;
+  margin-top: -3px;
 }
 .ListRow .ListRowTitle strong {
   font-weight: bold;
@@ -7035,6 +7121,13 @@ input[type="tel"] {
   /* blue */
   /* red */
 }
+.XButton[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.XButton .CallControlButton {
+  vertical-align: text-top;
+}
 .XButton span {
   vertical-align: middle;
   position: relative;
@@ -7190,7 +7283,7 @@ select[disabled] {
   width: 16px;
   height: 15px;
   right: 12px;
-  top: 2px;
+  top: 0px;
 }
 .XIcon24-MuteOff {
   background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
@@ -7766,6 +7859,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   padding-left: 5px;
   width: 92%;
   padding-top: 5px;
+  -webkit-flex: 1;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
   height: 2.5em;
@@ -7801,13 +7895,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   float: left;
 }
 .LeftBarNotificationMessageSection .NotificationTime {
-  font-size: 1em;
+  font-size: 11px;
   color: black;
   font-weight: normal;
   position: relative;
   float: right;
-  /*right:20%;	*/
-  right: 20px;
+  right: 5px;
 }
 .LeftBarNotificationMessageSection .NotificationMessage {
   width: 100%;
@@ -7816,14 +7909,20 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   font-size: 13px;
   color: #222;
   max-height: 75px;
-  top: 5px;
+  top: 7px;
   padding-right: 10px;
   -ms-word-wrap: break-word;
   white-space: normal;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hypens: auto;
+  hypens: auto;
 }
 .LeftBarNotificationMessageSection .NotificationMessage p {
-  font-size: .8em;
+  font-size: 13px;
 }
 .CallStatusContainer {
   position: relative;
@@ -7925,7 +8024,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerInbound .CallStatusText.accepted,
 .CallStatusContainerOutbound .CallStatusText.accepted,
 .CallStatusContainerQueue .CallStatusText.accepted {
-  max-width: 55%;
+  max-width: 45%;
 }
 .CallStatusContainerInbound .CallStatusText .callStatus,
 .CallStatusContainerOutbound .CallStatusText .callStatus,
@@ -7960,11 +8059,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.CallStatusContainerInbound .CallStatusText .memberName .name.truncate,
-.CallStatusContainerOutbound .CallStatusText .memberName .name.truncate,
-.CallStatusContainerQueue .CallStatusText .memberName .name.truncate {
-  width: 90%;
-}
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerQueue .CallStatusText .memberName .MyCallBlock_Rec {
@@ -7973,7 +8067,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 36px;
   height: 19px;
   display: none;
-  right: 38%;
+  right: 26%;
   margin-top: -15px;
 }
 .CallStatusContainerInbound .CallStatusText .memberName .MyCallBlock_Rec.true,
@@ -8048,13 +8142,20 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   position: relative;
   bottom: 0px;
 }
-.LeftBarNotificationSection.hasMessages.Expand .TitleBar .XButton {
+.LeftBarNotificationSection.hasMessages.Expand .TitleBar .XButton,
+.LeftBarNotificationSection.noMessages.Expand .TitleBar .XButton {
   visibility: visible;
 }
-.LeftBarNotificationSection.hasMessages.Expand .scroller {
+.LeftBarNotificationSection.hasMessages.Expand .scroller,
+.LeftBarNotificationSection.noMessages.Expand .scroller {
   padding-top: 20px;
 }
-.LeftBarNotificationSection.hasMessages .TitleBar .XButton {
+.LeftBarNotificationSection.hasMessages.Expand .Messages,
+.LeftBarNotificationSection.noMessages.Expand .Messages {
+  display: block;
+}
+.LeftBarNotificationSection.hasMessages .TitleBar .XButton,
+.LeftBarNotificationSection.noMessages .TitleBar .XButton {
   visibility: hidden;
 }
 .LeftBarNotificationSection:hover,
@@ -8078,9 +8179,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .LeftBarNotificationSection .NotificationDivider {
   height: 1px;
 }
-.NotificationMessages.LeftBarNotifications.noMessages {
-  top: -5px;
-}
 .LeftBarNotificationSection:hover > .LeftBarNotifications {
   visibility: visible;
   overflow-y: auto;
@@ -8091,15 +8189,15 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   -ms-overflow-y: auto;
 }
 .NotificationType {
-  font-size: .6em;
+  font-size: 11px;
   font-style: italic;
   font-color: #ccc;
   border-bottom: 1px solid #888;
+  margin-bottom: -5px;
 }
 .NotificationSection {
   margin-top: 5px;
-  -webkit-box-orient: horizontal;
-  display: -webkit-box;
+  display: -webkit-flex;
   display: -ms-flexbox;
   padding-left: 5px;
   overflow: hidden;
@@ -8107,9 +8205,6 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 95%;
   height: 0px;
   padding-bottom: 10px;
-}
-.NotificationSection.last {
-  height: auto !important;
 }
 .NotificationSection.open {
   height: auto;
@@ -8195,6 +8290,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Messages:not(.first) .NotificationDivider > div {
   border-left: 1px solid #ccc;
 }
+.Messages:last-child .NotificationSection {
+  height: auto !important;
+}
+.Messages:nth-last-child(n+6) {
+  display: none;
+}
 .Messages:after {
   clear: both;
   content: "";
@@ -8226,14 +8327,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Messages.first .header_text {
   display: block;
 }
-.Messages.plugins,
-.Messages.webphone {
+.Messages.error {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
 }
-.Messages.plugins .content,
-.Messages.webphone .content {
+.Messages.error .content {
   font-weight: bold;
   font-size: .7em;
   height: 2.5em;
@@ -8244,8 +8343,7 @@ a.Messages {
 .chatNotification {
   cursor: pointer;
 }
-.chatNotification.plugins > div,
-.chatNotification.webphone > div {
+.chatNotification.error > div {
   font-weight: bold;
   font-size: .7em;
 }
@@ -8315,8 +8413,7 @@ a.Messages {
 .Overlay.notifications .overlayNotificationsSection {
   background: url() #ffffff;
 }
-.Overlay.notifications .plugins .LeftBarNotificationAvatarSection,
-.Overlay.notifications .webphone .LeftBarNotificationAvatarSection {
+.Overlay.notifications .error .LeftBarNotificationAvatarSection {
   border-right: none 0px;
 }
 .Overlay.notifications .Conference-HeaderSubTitle {
@@ -8355,22 +8452,22 @@ a.Messages {
   max-width: 90%;
 }
 .Overlay.notifications .Messages .LeftBarNotificationMessageSection .NotificationDisplayName {
+  font-size: 12px;
   height: auto;
+  padding-bottom: 5px;
 }
-.Overlay.notifications .Messages .LeftBarNotificationMessageSection .chatNotification.webphone,
-.Overlay.notifications .Messages .LeftBarNotificationMessageSection .chatNotification.plugins {
+.Overlay.notifications .Messages .LeftBarNotificationMessageSection .chatNotification.error {
   padding-top: 10px;
 }
 .Overlay.notifications .Messages .NotificationSection {
   height: auto !important;
   width: 100%;
 }
-.Overlay.notifications .Messages .NotificationSection.plugins,
-.Overlay.notifications .Messages .NotificationSection.webphone {
+.Overlay.notifications .Messages .NotificationSection.error {
   padding-bottom: 20px;
 }
 .Overlay.notifications .Messages .NotificationMessage {
-  max-height: none !important;
+  max-height: 35px !important;
 }
 .Overlay.notifications .XButton.header {
   float: right;
@@ -8381,7 +8478,13 @@ a.Messages {
   cursor: pointer;
 }
 .Overlay.notifications .NotificationMessage {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hypens: auto;
+  hypens: auto;
 }
 .Overlay.notifications .notification_border {
   border-bottom: 1px solid #ccc;
@@ -9295,6 +9398,17 @@ a.Messages {
 .displayName {
   font-size: 12px;
 }
+.voicemail.vmails .vmsection .displayName em,
+.voicemail.vmails .vmsection .displayName p {
+  float: left;
+}
+.voicemail.vmails .vmsection .displayName p {
+  clear: none;
+  max-width: 50%;
+}
+.voicemail.vmails .vmsection .displayName .vmalternate {
+  margin-top: 0px !important;
+}
 .vmsection {
   margin: 0px;
   border: 0px;
@@ -9390,6 +9504,14 @@ a.Messages {
   position: relative;
   margin-top: 20px;
 }
+.vmsection .vminfo .footnote.voicemails {
+  white-space: normal;
+  color: #222;
+  font-size: 13px;
+  line-height: 15px;
+  word-wrap: break-word;
+  width: 100%;
+}
 .vmsection:hover {
   background-color: #f0f0ff;
 }
@@ -9425,6 +9547,21 @@ a.Messages {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.vmfootnote.transcription,
+.vmfootnote.no_transcription {
+  white-space: normal;
+  overflow: inherit;
+  text-overflow: inherit;
+  line-height: 16px;
+}
+.vmfootnote.transcription {
+  color: #888;
+  font-size: 12px;
+}
+.vmfootnote.no_transcription {
+  color: #999;
+  font-size: 11px;
 }
 .vmdisplay {
   display: inline-block;
@@ -9539,7 +9676,13 @@ a.Messages {
   padding-right: 20px;
   -ms-word-wrap: break-word;
   white-space: normal;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hypens: auto;
+  hypens: auto;
   height: auto;
   max-height: none;
   padding-bottom: 20px;
@@ -9635,6 +9778,10 @@ a.Messages {
 #CallAlert .Notifications .NotificationMessages .scroller .Messages .NotificationSection {
   height: auto !important;
   width: 100% !important;
+}
+#CallAlert .Notifications .NotificationMessages .scroller .Messages.error {
+  font-size: 15px;
+  padding-bottom: 10px;
 }
 #CallAlert .LeftBarNotificationSection {
   position: static;
