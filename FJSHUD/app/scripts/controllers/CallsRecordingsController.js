@@ -53,7 +53,14 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     return url;
   };
 
-  settingsService.getSettings().then(function() {
+ 
+  });
+
+}]);
+
+ // $scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'},{upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
+
+/* settingsService.getSettings().then(function() {
     var date = new Date();
     var month = date.getMonth() + 1;
     var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
@@ -63,7 +70,4 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
             console.log("DATA",response);
             $scope.meetingList = response.meetings;
            
-          });
-  });
-
-}]);
+          });*/
