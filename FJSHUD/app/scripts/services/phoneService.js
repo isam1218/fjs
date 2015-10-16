@@ -18,7 +18,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var devices = [];
 	var inputDevices = [];
 	var outputDevices = [];
-	var stayHidden = false;   
+	var stayHidden = false;
 	var session;
 	var context = {};
 	var alertPlugin;
@@ -31,7 +31,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.meModel = {};
 	var isRegistered = false;
 	var isAlertShown = false;
-	
+
 	var selectedDevices = {};
 	var	spkVolume;
 	var micVolume;
@@ -77,11 +77,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			$rootScope.pluginVersion = phonePlugin.version;
 		}
 	}
-    
+
 	//this.cancelled = false;
 	browser_on_focus = true;
 	var isCancelled = false;
-	
+
 	//set the 'cancelled' flag
 	this.setCancelled = function(is_cancelled)
 	{
@@ -98,7 +98,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	{
 		return browser_on_focus;
 	}
-	
+
 	this.getDeferredCalls = function(){
 		return deferredCalls.promise;
 	};
@@ -107,7 +107,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		clearInterval(activityChecker);
 		var alertDuration = settingsService.getSetting('alert_call_duration');
 
-		var hidden; 
+		var hidden;
 		if(document.hidden || !isForceHidden){//) && !isAlertShown
 			tabInFocus = false;
 			if(context.shouldAlertDisplay()){
@@ -128,7 +128,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}else{
 					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails)) && isAlertShown){
 						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
-					}					
+					}
 				}
 			}
 
@@ -199,7 +199,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	
 	//attach the events to the window
 	if(document.attachEvent){
-		document.attachEvent("onVisibilitychange",context.isDocumentHidden);		
+		document.attachEvent("onVisibilitychange",context.isDocumentHidden);
 		//attach events to the browser
 		if(top_window == window.self)
 		{	
@@ -207,11 +207,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				displayHideAlert(true);				
 			});
 			top_window.attachEvent("onBlur",function(){		
-				displayHideAlert(false);				
+				displayHideAlert(false);		
 			});
 		}
 	}else{
-		document.addEventListener("visibilitychange", context.isDocumentHidden, false);		
+		document.addEventListener("visibilitychange", context.isDocumentHidden, false);
 		//attach events to the browser
 		if(top_window == window.self)
 		{	
@@ -222,6 +222,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				displayHideAlert(false);									
 			}, false);			
 		}	
+
 	}
 
 	//this will attempt to send the web phone actions it will attempt three times before quitting
@@ -356,6 +357,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			return;
 		}
 		number = number.replace(/\D+/g, '');
+		
 		var call_already_in_progress = false;
 		
 		if(!$.isEmptyObject(callsDetails))
@@ -469,6 +471,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}
 				}
 			}
+
 		}
 
 		return display_Notification;
@@ -704,18 +707,19 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			queryArray = query.split('&');
 			xpid = queryArray[0];
     	}
+
 		// re-focus tab/window
-		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1 
+		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1
 			&& url.indexOf('/RemoveNotification') === -1
 		) {
 			activateBrowserTab();
-			window.focus();			
-		}		
-		
+			window.focus();
+		}
+
     	switch(url){
 	    		case '/Close':
-	    			removeNotification();	    		
-	    			isCancelled = true;		    			
+	    			removeNotification();
+	    			isCancelled = true;
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -1174,7 +1178,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 break;
         }
 	};
+
     this.reportActivity = reportActivity;
+
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
@@ -1574,12 +1580,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.$on('notification_action', function(event,data){
 		if(data.notificationEventType){
 			switch(data.notificationEventType){
-        case 'ACTIVITY_REPORTED':
-          // Only process activity from webphone when not in focus.
-          if (! isInFocus()) {
-            reportActivity();
-          }
-          return;
+		        case 'ACTIVITY_REPORTED':
+		          // Only process activity from webphone when not in focus.
+		          if (! isInFocus()) {
+		            reportActivity();
+		          }
+		          return;
+		
 				case 'CALL_DECLINED':
 					hangUp(data.notificationId);
 					return;

@@ -130,7 +130,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			    message = data.message;
 			    break;
 		    }
-			
+
 			message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">").replace(/&amp;/g , "&");
 
 			var notification = new Notification(data.displayName, {
