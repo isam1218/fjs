@@ -190,7 +190,7 @@
        
         <div id="scheduleInputContainer">
             <ul>
-               <li><label style="margin-left: 5px;margin-right: 7px;">Meeting Topic:</label><input ng-model="meeting.meetingTopic"  style="width:310px"></li>
+               <li><label style="margin-left: -3px;margin-right: 7px;">Meeting Topic:</label><input ng-model="meeting.meetingTopic"  style="width:310px"></li>
                <li>
                        
                   <label style="margin-left:55px">When:</label>     
@@ -225,12 +225,14 @@
         <div id="passwordContainer">
             <form>
                 
-                    <label>Meeting Options:</label>
-                    <input type="checkbox" ng-model="checked"><label>Require meeting password</label>
-                    <br>
-                    <input ng-model="meeting.password" type="text" style="margin: 7px 10px 7px 130px;border: 1px solid #D3D3D3;" ng-hide="!checked">
-                    <br>
-                    <input type="checkbox" style="margin-left:114px" ng-model="meeting.jbh"><label>Enable join before host</label>
+                    
+                    <ul>
+                    <li><label>Meeting Options:</label><input type="checkbox" ng-model="checked"><label>Require meeting password</label></li>
+                    
+                    <li><input style="margin-left: 129px;border:solid;border-width:1px;border-radius:0px;border-color:#777777" ng-model="meeting.password" type="text" style="border: 1px solid #D3D3D3;" ng-hide="!checked"></li>
+                    
+                    <li><input style="margin-left: 129px;" type="checkbox" ng-model="meeting.jbh"><label>Enable join before host</label></li></ul>
+
                 
             </form>
         </div>
@@ -261,9 +263,9 @@
     <div id="calendarContainer" style="padding:0px 10px 0px 25px">
         <div style="font-size:14px;font-weight:bold;border:1px solid none;width:225px;margin-bottom:10px">Your Meeting is Scheduled</div>
         
-        <p style="font-family:ariel;font-size:14px;width:280px;line-height:1.4">Highlight the text in the box to the right and Ctrl+C (Win) or Cmd+C (Mac) and paste it in to your Calendar invitation.</p>
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">Highlight the text in the box to the right and Ctrl+C (Win) or Cmd+C (Mac) and paste it in to your Calendar invitation.</p>
 
-        <p style="font-family:ariel;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
         
     </div>
    <div id="textArea" contentEditable="true" >
@@ -303,9 +305,9 @@
     <div id="calendarContainer" style="padding:0px 10px 0px 25px">
         <div style="font-size:14px;font-weight:bold;border:1px solid none;width:225px;margin-bottom:10px">Your Meeting is Scheduled</div>
         
-        <p style="font-family:ariel;font-size:14px;width:280px;line-height:1.4">Highlight the text in the box to the right and Ctrl+C (Win) or Cmd+C (Mac) and paste it in to your Calendar invitation.</p>
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">Highlight the text in the box to the right and Ctrl+C (Win) or Cmd+C (Mac) and paste it in to your Calendar invitation.</p>
 
-        <p style="font-family:ariel;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard</p>
         
     </div>
     <div id="textArea" contentEditable="true" >

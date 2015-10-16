@@ -14,11 +14,32 @@
   padding: 0px;
   list-style: none;
 }
+form ul {
+  list-style: none;
+  padding-left: 0px;
+  margin: 0px 0px 0px -30px;
+}
+form ul li {
+  margin: 0px 0px 0px 0px;
+}
 #scheduleInputContainer ul li {
   margin-bottom: 10px;
 }
 #scheduleInputContainer ul li label {
+  color: #777777;
+  font-family: Arial;
+  font-size: 14px;
   margin-right: 5px;
+}
+#scheduleInputContainer ul li input {
+  color: #777777;
+  font-family: Arial;
+  font-size: 12px;
+}
+#scheduleInputContainer ul li select {
+  color: #777777;
+  font-family: Arial;
+  font-size: 12px;
 }
 #homeContainer {
   border: 1px solid none;
@@ -35,13 +56,13 @@
 }
 #textArea {
   position: relative;
-  bottom: 195px;
+  bottom: 210px;
   left: 400px;
   font-size: 12px;
-  font-family: ariel;
+  font-family: Arial;
   width: 420px;
   height: 230px;
-  padding: 5px 10px 0px 15px;
+  padding: 5px 10px 0px 10px;
   margin-top: 25px;
   border: solid;
   border-width: 1px;
@@ -52,7 +73,7 @@
   list-style: none;
 }
 #textArea ul li {
-  font-style: ariel;
+  font-style: Arial;
   font-size: 12px;
   margin-bottom: 10px;
 }
@@ -544,17 +565,17 @@
   margin-bottom: 10px;
 }
 .modal-body label {
-  font-family: ariel;
+  font-family: Arial;
   font-weight: bold;
   font-size: 14px;
 }
 .modal-body input[placeholder] {
-  font-family: ariel;
+  font-family: Arial;
   color: #777777;
   font-size: 12px;
 }
 .modal-body option {
-  font-family: ariel;
+  font-family: Arial;
   color: #777777;
   font-size: 12px;
 }
