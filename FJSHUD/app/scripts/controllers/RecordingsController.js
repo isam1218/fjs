@@ -2,6 +2,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	$scope.rec = this;
 	$scope.rec.query = '';
 	$scope.recordings = [];
+	$scope.loading = true;
 	
 	httpService.getFeed('callrecording');
 

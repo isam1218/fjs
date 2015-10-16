@@ -37,7 +37,7 @@
 				<!-- <div>
 					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
 				</div> -->
-				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ ::call.topic }}</div></div>
+				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ call.topic }}</div></div>
 				
 				<div class="MeetingId"> <span>{{ call.meeting_id }}</span></div>
 				
@@ -45,8 +45,8 @@
  <div class="Time"> <span>{{ call.start_time |  date:'hh:mm a':fon_lang_code }}</span></div>
     			
 			</div>
+			<img src="img/XLoading.gif" ng-if="!meetingList" />
 			
-			<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 			
 			<div class="Empty" ng-if="!loading && calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
 		</div>
