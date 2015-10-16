@@ -635,7 +635,7 @@ hudweb.controller('NotificationController',
     if ((bargeFlag && !myContactObj.call) || (bargeFlag && myContactObj.call.bargers && myContactObj.call.bargers.length == 0)){
       delete_notification_from_notifications_and_today(msgXpid);
       bargeFlag = false;
-    } else if (myContactObj.call.bargers && myContactObj.call.bargers.length > 0){
+    } else if (myContactObj.call && myContactObj.call.bargers && myContactObj.call.bargers.length > 0){
       // delete any existing barge-notification...
       if (bargeFlag && msgXpid){
         delete_notification_from_notifications_and_today(msgXpid);
@@ -1063,21 +1063,21 @@ hudweb.controller('NotificationController',
       if (singleMsg != undefined){
         switch(singleMsg.audience){
           case 'group':
-            if (singleMsg.context){
+            if (singleMsg.context && singleMsg.type == 'gchat'){
               var groupNoteId = singleMsg.context.split(':')[1];
               if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
                 $scope.remove_notification(singleMsg.xpid);
             }
             break;
           case 'queue':
-            if (singleMsg.context){
+            if (singleMsg.context && singleMsg.type == 'gchat'){
               var queueNoteId = singleMsg.context.split(':')[1];
               if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
                 $scope.remove_notification(singleMsg.xpid);              
             }
             break;
           case 'contact':
-            if (singleMsg.context){
+            if (singleMsg.context && singleMsg.type == 'chat'){
               var contactNoteId = singleMsg.context.split(':')[1];
               if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
                 $scope.remove_notification(singleMsg.xpid);
