@@ -448,9 +448,9 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                if($scope.meetingList[i].duration.toString().length == 2){
               //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               //alert($scope.meetingList[i].duration.toString().substr(0,2));
-              var strMin = $scope.meetingList[i].duration.toString().substr(0,2);
+              var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
-             
+              
                }
                
                
@@ -510,7 +510,7 @@ $scope.$on('modalInstance', function() {
                 if($scope.meetingList[i].duration.toString().length == 2){
               //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               //alert($scope.meetingList[i].duration.toString().substr(0,2));
-              var strMin = $scope.meetingList[i].duration.toString().substr(0,2);
+              var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
               
                }
@@ -576,7 +576,7 @@ $scope.$on('modalInstance', function() {
                 if($scope.meetingList[i].duration.toString().length == 2){
               //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               //alert($scope.meetingList[i].duration.toString().substr(0,2));
-              var strMin = $scope.meetingList[i].duration.toString().substr(0,2);
+              var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
               
                }
@@ -862,7 +862,7 @@ $scope.reloadRoute = function() {
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
-  alert($scope.startMinute);
+
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
   console.log("UTC",$scope.startHourUTC);
