@@ -680,6 +680,18 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     alertFlags.alertDuration = "while_ringing";
                     break;
             }
+            for (var i = 0, iLen = $scope.queues.length; i < iLen; i++){
+                // if the ng-model for that particular queue Long Waiting Desktop Alert is set to true...
+                if (settings['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid]){
+                    settings['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid] = false;
+                    alertFlags['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid] = "selected_before";
+                }
+                // Abandoned Call Desktop Alerts
+                if (settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid]){
+                    settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid] = false;
+                    alertFlags['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid] = "selected_before";
+                }
+            }
             localStorage.alertFlags = JSON.stringify(alertFlags);
             $scope.alertShow = !$scope.alertShow;
             $scope.update_settings('alert_show','update',$scope.alertShow);
@@ -720,6 +732,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 case "while_ringing":
                     $scope.alertDuration = "while_ringing";
                     break;
+            }
+            for (var j = 0, jLen = $scope.queues.length; j < jLen; j++){
+                if (alertFlags['HUDw_QueueAlertsLW_' + $scope.queues[j].xpid] == "selected_before")
+                    settings['HUDw_QueueAlertsLW_' + $scope.queues[j].xpid] = true;
+                if (alertFlags['HUDw_QueueAlertsAb_' + $scope.queues[j].xpid] == "selected_before")
+                    settings['HUDw_QueueAlertsAb_' + $scope.queues[j].xpid] = true;
             }
             $scope.alertShow = !$scope.alertShow;
             $scope.update_settings('alert_show','update',$scope.alertShow);
