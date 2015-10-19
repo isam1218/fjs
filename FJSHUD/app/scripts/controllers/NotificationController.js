@@ -945,7 +945,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + decoded.replace(/<\/?[^>]+(>|$)/g, '');//remove the html tags//$sce.trustAsHtml(notification.message);
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + decoded;//.replace(/<\/?[^>]+(>|$)/g, '');
         break;
       case 'wall':
         notification.label = "share";
