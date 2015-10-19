@@ -533,10 +533,10 @@ table {
   content: "\e078";
 }
 .glyphicon-chevron-left:before {
-  content: "\e079";
+  
 }
 .glyphicon-chevron-right:before {
-  content: "\e080";
+  
 }
 .glyphicon-plus-sign:before {
   content: "\e081";
@@ -3603,6 +3603,10 @@ tbody.collapse.in {
   right: 0;
   left: auto;
 }
+.dropdown-menu li:first-child table thead tr:first-child th:nth-of-type(3) button{
+   background-image:url("img/rightarrow.png");
+}
+
 .dropdown-menu .divider {
   height: 1px;
   margin: 9px 0;

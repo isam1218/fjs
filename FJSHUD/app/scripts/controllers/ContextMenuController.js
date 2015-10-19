@@ -343,42 +343,7 @@ console.log("Contact",contact);
                context.onAjaxResult(isOk, data)
         });*/
     };
-    $scope.startMeeting = function(option,contacts){
-        var data = {};
-        var users = "";
-        $scope.inMeeting = true;
-        $scope.showHome = false;
-        $scope.addedContacts.push(contacts);
-        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
-            users = users + $scope.addedContacts[i].xpid + ",";
-        }
-
-        data["topic"]="";
-        data["users"]= users;
-        data["option_start_type"]= option;
-        $http({
-            method:'POST',
-            url:fjs.CONFIG.SERVER.serverURL + "/v1/zoom",
-           data: $.param(data),
-           headers:{
-                'Authorization': 'auth=' + localStorage.authTicket,//'auth=7aa21bf443b5c6c7b5d6e28a23ca5479061f36f5181b7677',
-                'node':localStorage.nodeID,//'afdp37_1',
-                'Content-Type':'application/x-www-form-urlencoded',
-            }
-        }).then(function(response){
-            var data = response;
-            $scope.startUrl = response.data.start_url;
-            $scope.joinUrl = response.data.join_url;
-            window.open($scope.startUrl, '_blank');
-          
-            
-            $scope.$safeApply();
-
-        });
-        /*dataManager.sendFDPRequest("/v1/zoom", data, function(xhr, data, isOk) {
-               context.onAjaxResult(isOk, data)
-        });*/
-    };
+   
 
 	$scope.loginQueue = function() {
 		httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.original.xpid});
