@@ -687,20 +687,7 @@ hudweb.controller('NotificationController',
 				}	
         		$scope.displayAlert = true;
         		$timeout(displayNotification, 1500);
-			}
-		}else{//other browsers
-			for (var i = 0; i < $scope.calls.length; i++){
-				if(alertDuration != "entire"){
-			 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-			 		   phoneService.removeNotification();
-
-			 		   return;
-			 	    }
-			    }
-			}	
-    		$scope.displayAlert = true;
-    		$timeout(displayNotification, 1500);
-		}
+			}		
     }else{
     	 if(nservice.isEnabled()){
  	        for (var i = 0; i < $scope.calls.length; i++){
