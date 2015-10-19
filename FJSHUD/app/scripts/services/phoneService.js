@@ -115,14 +115,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					if(!$.isEmptyObject(callsDetails)){
 						for(var detail in callsDetails){
 							if(alertDuration != "entire"){
-				              if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
+				              if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && callsDetails[detail].xef001type != 'delete'){
 				            	  context.displayCallAlert(callsDetails[detail]);
 				              }
 				              else if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
 				            	  nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);  
+				              else if (callsDetails[detail].xef001type == 'delete') 
+									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
 					 		}
 					 		else
-					 			context.displayCallAlert(callsDetails[detail]);
+					 		{
+					 			if (callsDetails[detail].xef001type == 'delete') 
+									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
+					 			else
+					 				context.displayCallAlert(callsDetails[detail]);
+					 		}	
+					 			
 						}
 					}
 				}else{
@@ -1548,13 +1556,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						}
 				}
 				if(settingsService.getSetting('alert_call_duration') != "entire"){
-					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING)
+					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && data[i].xef001type != 'delete')
 		            	  context.displayCallAlert(data[i]);
 		            else if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
-		            	  nservice.dismiss("INCOMING_CALL",data[i].xpid);
+		            	nservice.dismiss("INCOMING_CALL",data[i].xpid);
+		            else if (data[i].xef001type == 'delete')
+		            	nservice.dismiss("INCOMING_CALL",data[i].xpid);
 			    }
 				else
-					context.displayCallAlert(data[i]);
+				{
+					if (data[i].xef001type == 'delete') 
+						nservice.dismiss("INCOMING_CALL",data[i].xpid);
+					else
+						context.displayCallAlert(data[i]);
+				}	
+					
 			}
 		}
 		if (data[0].incoming){
