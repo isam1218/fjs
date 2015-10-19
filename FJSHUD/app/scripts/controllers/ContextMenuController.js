@@ -291,15 +291,32 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	};
  $scope.addedContacts = [];
 	$scope.screenShare = function(contact){
+
 		        $scope.addedContacts.push(contact);
 
-		console.log("Contact",contact);
+
+
+		      
+
+		
         var data = {};
         var users = "";
+
+         if(contact.length > 1){
+		       	$scope.addedContacts = contact;
+		       	for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+            users = users + $scope.addedContacts[i].contactId + ",";
+            
+        }
+		       }
+		       else{
 
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             users = users + $scope.addedContacts[i].xpid + ",";
         }
+    }
+console.log("Contact",contact);
+		console.log("USERS", users);
 
         data["topic"]="";
         data["users"]= users;
@@ -319,6 +336,42 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
             $scope.joinUrl = response.data.join_url;
             window.open($scope.startUrl, '_blank');
             $scope.inMeeting = true;
+            $scope.$safeApply();
+
+        });
+        /*dataManager.sendFDPRequest("/v1/zoom", data, function(xhr, data, isOk) {
+               context.onAjaxResult(isOk, data)
+        });*/
+    };
+    $scope.startMeeting = function(option,contacts){
+        var data = {};
+        var users = "";
+        $scope.inMeeting = true;
+        $scope.showHome = false;
+        $scope.addedContacts.push(contacts);
+        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+            users = users + $scope.addedContacts[i].xpid + ",";
+        }
+
+        data["topic"]="";
+        data["users"]= users;
+        data["option_start_type"]= option;
+        $http({
+            method:'POST',
+            url:fjs.CONFIG.SERVER.serverURL + "/v1/zoom",
+           data: $.param(data),
+           headers:{
+                'Authorization': 'auth=' + localStorage.authTicket,//'auth=7aa21bf443b5c6c7b5d6e28a23ca5479061f36f5181b7677',
+                'node':localStorage.nodeID,//'afdp37_1',
+                'Content-Type':'application/x-www-form-urlencoded',
+            }
+        }).then(function(response){
+            var data = response;
+            $scope.startUrl = response.data.start_url;
+            $scope.joinUrl = response.data.join_url;
+            window.open($scope.startUrl, '_blank');
+          
+            
             $scope.$safeApply();
 
         });

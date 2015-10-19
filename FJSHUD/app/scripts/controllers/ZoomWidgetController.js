@@ -309,6 +309,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         var users = "";
         $scope.inMeeting = true;
         $scope.showHome = false;
+        $scope.addedContacts.push(contacts);
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             users = users + $scope.addedContacts[i].xpid + ",";
         }
