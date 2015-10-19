@@ -409,7 +409,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
   settingsService.getSettings().then(function() {
      
-   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$scope.meModel.email).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
@@ -473,7 +473,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 $scope.$on('modalInstance', function() {
 
- $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+ $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$scope.meModel.email).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
@@ -532,7 +532,7 @@ $scope.$on('modalInstance', function() {
   $scope.getData = function(){
   
   
-     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$scope.meModel.email).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
@@ -944,11 +944,11 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 
    //alert($scope.starts);
 
-          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
+          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&email='+$scope.meModel.email+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
               console.log("PUT",data);
               console.log("PUT MEETING ID",sharedData.meeting.meeting_id);
               
-
+              console.log("Email",$scope.meModel.email);
 
           });
 
@@ -1046,11 +1046,11 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 */ 
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+":00:00Z";
 
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&email='+$scope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
 
-
+      console.log("Email",$scope.meModel.email);
 
 
         
