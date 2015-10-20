@@ -3,13 +3,18 @@
 var hudweb = angular.module('fjshudApp', [
     'ngRoute',
     'ngSanitize',
-    'flow'
+    'flow',
+    'angulartics',
+    'angulartics.google.analytics'
 ]);
 
-hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
+hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyticsProvider) {
 	// disables debugger injection 
 	$compileProvider.debugInfoEnabled(false);
 	
+	//enable route provider for google analytics
+	$analyticsProvider.virtualPageviews(true);
+
 	// combines responses into one digest cycle
 	$httpProvider.useApplyAsync(true);
 	
