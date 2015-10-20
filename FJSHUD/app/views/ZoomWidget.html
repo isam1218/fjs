@@ -97,7 +97,7 @@
                         <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|addedContacts" />
                     </div>
                  </div>
-                 <div id="contacts-height" style="max-height:400px;overflow-y:auto">
+                 <div id="contacts-height" style="max-height:150px;overflow-y:auto">
                 <div class="Contacts widget-zoom-contacts" style="float:none;width:100%;max-height:none">
                     <div class="ListRow Small " data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid ">
                         <avatar profile="contact" widget="zoom"></avatar>
