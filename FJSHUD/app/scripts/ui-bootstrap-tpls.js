@@ -5329,7 +5329,7 @@ angular.module("template/datepicker/popup.html", []).run(["$templateCache", func
     "	<li ng-transclude></li>\n" +
     "	<li ng-if=\"showButtonBar\" style=\"padding:10px 9px 2px\">\n" +
     "		<span class=\"btn-group pull-left\">\n" +
-    "			<button type=\"button\" class=\"btn btn-sm \" style=\"background-color:#015d73;color:white;border: 1px solid #D3D3D3;\"ng-click=\"select('today')\">{{ getText('current') }}</button>\n" +
+    "			<button type=\"button\" class=\"btn btn-sm \" style=\"background-color:#015d73;color:white;border: 1px solid #D3D3D3;margin-bottom:10px\"ng-click=\"select('today')\">{{ getText('current') }}</button>\n" +
     "			<button type=\"button\" class=\"btn btn-sm \" style=\"background:linear-gradient(rgb(254, 254, 254), rgb(235, 235, 235)) rgb(254, 254, 254);color:black;border: 1px solid #D3D3D3;\" ng-click=\"select(null)\">{{ getText('clear') }}</button>\n" +
     "		</span>\n" +
     "		<button type=\"button\" class=\"btn btn-sm  pull-right\" style=\"background-color:#015d73;color:white;border: 1px solid #D3D3D3;\" ng-click=\"close()\">{{ getText('close') }}</button>\n" +
