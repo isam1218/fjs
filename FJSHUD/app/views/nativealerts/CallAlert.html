@@ -73,11 +73,12 @@
 				</div>
 				<div class="NotificationDivider"></div>
 				<div class="NotificationSection open" >
-					<avatar 
-						class="LeftBarNotificationAvatarSection NotificationAvatar"
-						profile="message.fullProfile" 
-						type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
-					</avatar>
+          <avatar
+              ng-class="message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
+              ng-click="go_to_notification_chat(message)"
+              profile="::checkIfGroup(message)"
+              type="::determineAvatarType(message)">
+          </avatar>  
 
 					<div class="LeftBarNotificationMessageSection">
 						<div onclick="mouseClick(this)" action="#/goToChat?{{::message.context}}&{{::message.xpid}}" class="chatNotification">

@@ -976,7 +976,11 @@ hudweb.controller('NotificationController',
         notification.label = 'broadcast message';
         break;
       case 'gchat':
-        notification.label = "group chat to";
+        // differentiate b/w group chat and queue chat
+        if (notification.audience == 'group')
+          notification.label = "group chat to";
+        else if (notification.audience == 'queue')
+          notification.label = 'queue chat to';
         break;
       case 'vm':
         var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
@@ -1039,12 +1043,25 @@ hudweb.controller('NotificationController',
 
   $scope.checkIfGroup = function(msg){
     if (msg != undefined && msg.audience == 'group'){
+      // display group avatar rather than individual
       var groupId = msg.context.split(':')[1];
       var ourGroup = groupService.getGroup(groupId);
       return ourGroup;
+    } else if (msg != undefined && msg.audience == 'queue'){
+      // display queue avatar rather than individual avatar
+      var queueId = msg.context.split(':')[1];
+      var ourQueue = queueService.getQueue(queueId);
+      return ourQueue;
     } else {
       return msg.fullProfile;
     }
+  };
+
+  $scope.determineAvatarType = function(msg){
+    if (msg.type == 'vm' || msg.type == 'missed-call')
+      return 4;
+    else if (msg.audience == 'queue')
+      return 3;
   };
 
   $scope.$on('$routeChangeSuccess', function(event,data){
