@@ -314,7 +314,8 @@
   .NotificationHeader{
     position: relative;
     z-index: 100;
-    top: 0;   
+    top: 0;
+    height: auto !important; 
   }
   .NotificationSection {
     float: left;
@@ -323,7 +324,7 @@
     position: relative;
     margin-top: 0px;  
     height: 15px;  
-    padding-bottom: 10px;
+    padding-bottom: 10px !important;
     margin-bottom: -10px;
     
     &.last{
@@ -343,7 +344,11 @@
      &:not(.firstsection){
        top: -10px;
        margin-bottom: -10px;
-     }     
+     }
+
+     .CallAvatar{
+      float:  left;
+     }    
   }
   
   .LeftBarNotificationMessageSection{
