@@ -1,5 +1,6 @@
 hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService','PhoneService', 
 	function($rootScope, $scope, $routeParams, groupService, contactService, httpService, storageService,phoneService) {
+
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
@@ -36,20 +37,15 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     {
     	if(voicemail)
     	{
-    		if(voicemail.phone == $scope.meModel.primary_extension)
+    		if(voicemail.phone == $scope.meModel.primary_vm_box || voicemail.phone == $scope.meModel.primary_extension)
     		{
-    			if(voicemail.fullProfile && voicemail.fullProfile.xpid != $scope.meModel.my_pid)
-    				return true;
-    			else
-    				return false;
+    			return true;    			
     		}    		
     		else
     			return false;
     	}
     	return false;
-    	
-    	//$scope.fromTo = (voicemail.phone == $scope.meModel.primary_extension) ? (voicemail.fullProfile && voicemail.fullProfile.xpid != $scope.meModel.my_pid) ? $scope.verbage.me + ' ...' + $scope.verbage.to : '...' + $scope.verbage.from:  '...' + $scope.verbage.from;
-    	//$scope.fromToClass = (voicemail.phone == $scope.meModel.primary_extension) ? (voicemail.fullProfile && voicemail.fullProfile.xpid != $scope.meModel.my_pid) ? $scope.verbage.me :  $scope.verbage.from : $scope.verbage.from;
+    	//{{ ::voicemail.phone == meModel.primary_vm_box || voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}</em>    	
     };
     
     $scope.sortBy = function(selectedVoice){
@@ -160,7 +156,22 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
             }
         };
     
-    };       
+    };
+    var locations = {};
+    phoneService.getLocationPromise().then(function(data){
+    	locations = data;
+    });
+
+    $scope.getVmProfile = function(voicemail){
+    	//loop through the locations checking to see if the voicemail phone matches any location otherwise just use the voicemail profile
+    	for (var loc in locations){
+    		if(voicemail.phone == locations[loc].phone){
+    			return $scope.vm.myProfile;
+    		}
+    	}
+		return voicemail.fullProfile;
+    };
+
     $rootScope.$on('voicemailbox_synced', function(event, data) {
     	// first time
     	$scope.myProfile = contactService.getContact($rootScope.myPid);

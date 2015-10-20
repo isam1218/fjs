@@ -134,6 +134,10 @@
                 font-size: 11px;
              }
             }
+            
+            em, p.vmdisplay{
+			 	float: left;
+		    }
           }
           .footnote{
             position: relative;           
@@ -147,6 +151,7 @@
 			    width: 100%;
 			    vertical-align: bottom;
                 height: 20px;
+                margin-bottom: -3px;
             }         
           }
 	}
@@ -181,6 +186,28 @@
           visibility: hidden;
        }          
 	}
+	&.recording{
+			.vminfo{
+				.footnote {
+					height: 30px;
+    				vertical-align: bottom;
+    				margin-left: 5px;
+    				
+    				.vmduration {
+    					margin-bottom: -4px;    					
+    				}
+    				
+    				.no_transcription,.transcription {
+    					margin-bottom: -18px;
+    					vertical-align: bottom;
+    				}
+    				
+				}
+				 em, p.vmdisplay{
+				 	float: left;
+				 }
+			}
+	}
 }
 
 .vmfootnote{
@@ -210,6 +237,7 @@
 		margin-right: 10px;
 		height: 15px;
 		line-height: 10px;
+		/*vertical-align: bottom;*/
 	}
 }
 
