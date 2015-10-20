@@ -8,6 +8,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
+	var deferredLocations = $q.defer();
 	var deferredInputDevices = $q.defer();
 	var deferredOutputDevices = $q.defer();
 	$rootScope.volume = {};
@@ -1701,6 +1702,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         this.displayWebphoneNotification(data,"INCOMING_CALL",true);
 	 };
 
+	 this.getLocationPromise = function(){
+	 	return deferredLocations.promise;
+	 }
 	 $rootScope.$on('locations_synced', function(event,data){
         if(data){
             for (var i = 0, iLen = data.length; i < iLen; i++) {
@@ -1709,6 +1713,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 }
             }
         }
+        deferredLocations.resolve(locations);
+    
     });
 
      $rootScope.$on('location_status_synced', function(event,data){
@@ -1719,6 +1725,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 }
             }
         }
+
     });
 
 	var context = this;

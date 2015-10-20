@@ -22,19 +22,20 @@
 	            var isIE11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
 	            var isIE10 = !!navigator.userAgent.match(/Trident.*rv[ :]*10\./);
 				var agent = navigator.userAgent.toLowerCase();
-	                
+	            var links = document.getElementsByTagName('link');
+				
 	            if(isIE10 || isIE11) {	                    	
 	              var ie_css = document.createElement('link');
 	              ie_css.setAttribute('rel','stylesheet');
-	              ie_css.setAttribute('href','styles/ie.css');
-	              var l=document.getElementsByTagName('link')[0];
+	              ie_css.setAttribute('href','styles/ie.css');	              
+	              var l = links[links.length-1];
 	              l.parentNode.appendChild(ie_css,l);	                    	
 	            }
 	            else if(agent.indexOf('firefox') != -1){
 	            	var FF_css = document.createElement('link');
 	            	FF_css.setAttribute('rel','stylesheet');
 	            	FF_css.setAttribute('href','styles/firefox.css');
-	                var li=document.getElementsByTagName('link')[0];
+	                var li = links[links.length-1];
 	                li.parentNode.appendChild(FF_css,li);  
 	            }
 	            else if(agent.indexOf('safari') != -1 && agent.indexOf('chrome') == -1){
