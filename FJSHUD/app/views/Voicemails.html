@@ -21,9 +21,9 @@
 	        	<avatar ng-if="::voicemail.phone != meModel.primary_extension || voicemail.fullProfile.xpid == meModel.my_pid" profile="voicemail" context="voicemails:voicemail" type="4"></avatar>
 				<avatar ng-if="::voicemail.phone == meModel.primary_extension && voicemail.fullProfile.xpid != meModel.my_pid" profile="vm.myProfile" context="voicemails:voicemail" type="4"></avatar>
 	            	             
-	            <div class="vminfo" ng-click="playVoicemail(voicemail)"> 
-	                <div class="displayName">	                
-						<em>{{ ::voicemail.phone == meModel.primary_extension ? voicemail.fullProfile.xpid != meModel.my_pid ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' :  verbage.from + '...' }}</em>
+	            <div class="vminfo voicemails" ng-click="playVoicemail(voicemail)"> 
+	                <div class="displayName" ng-init="fromTo = getVerbage(voicemail)">	                                   
+						<em ng-class="fromTo ? '' : 'from' ">{{ fromTo ? verbage.me + ' ...' + verbage.to  : '...' + verbage.from}} &nbsp;</em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && (voicemail.phone != meModel.primary_extension  || (voicemail.phone == meModel.primary_extension && voicemail.fullProfile.xpid == meModel.my_pid)) ? 'bold' : 'normal'}">
 							{{ ::voicemail.displayName + ' <' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '>' }}
 	                    </p>

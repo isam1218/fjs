@@ -4,6 +4,9 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
+    $scope.fromTo = false;
+    //$scope.fromToClass = "";
+    
 	  $scope.vm = {};
 
     	// single group widget
@@ -29,6 +32,26 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
 
+    $scope.getVerbage = function(voicemail)
+    {
+    	if(voicemail)
+    	{
+    		if(voicemail.phone == $scope.meModel.primary_extension)
+    		{
+    			if(voicemail.fullProfile && voicemail.fullProfile.xpid != $scope.meModel.my_pid)
+    				return true;
+    			else
+    				return false;
+    		}    		
+    		else
+    			return false;
+    	}
+    	return false;
+    	
+    	//$scope.fromTo = (voicemail.phone == $scope.meModel.primary_extension) ? (voicemail.fullProfile && voicemail.fullProfile.xpid != $scope.meModel.my_pid) ? $scope.verbage.me + ' ...' + $scope.verbage.to : '...' + $scope.verbage.from:  '...' + $scope.verbage.from;
+    	//$scope.fromToClass = (voicemail.phone == $scope.meModel.primary_extension) ? (voicemail.fullProfile && voicemail.fullProfile.xpid != $scope.meModel.my_pid) ? $scope.verbage.me :  $scope.verbage.from : $scope.verbage.from;
+    };
+    
     $scope.sortBy = function(selectedVoice){
         $scope.selectedVoice = selectedVoice;
         localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);

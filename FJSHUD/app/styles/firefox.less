@@ -421,7 +421,7 @@
     }
    } 
    
-   .vminfo{
+   .vminfo:not(.voicemails){
     .vmalternate{
        .vmcallbtn{margin-top: -15px;}        
     }
@@ -477,3 +477,34 @@
         }
     }
 }
+.voicemail.vmails{
+	.vmsection{
+		.vminfo{
+			line-height: 38px !important;
+			
+			.displayName{
+				margin-top: -4px !important;
+			}
+			.footnote{
+			    font-size: 11px;
+			    line-height: 12px;
+			    bottom: -2px;
+			    			    
+				.vmduration{
+					margin-bottom: -10px;
+					padding: 2px;
+					font-size: 9px;
+					height: 14px;
+					line-height: 10px;
+					padding: 2px 2px 1px 2px;
+				}
+				.no_transcription, 
+				.transcription
+				{
+				 	margin-bottom: -7px;
+					vertical-align: bottom;
+				}
+			}
+		}
+	}
+}	

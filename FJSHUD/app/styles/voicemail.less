@@ -6,6 +6,13 @@
 	.vmsection{
 	  .displayName{
 	  	em, p{float: left;}
+	  	em{
+	  	  font-size: 10px;
+	  	  font-style: normal;
+	  	}
+	  	em.from{
+	  	  font-style: italic;
+	  	}
 	  	p{clear: none; max-width: 50%;}
 	  	.vmalternate{margin-top: 0px !important;}
 	  }
@@ -18,9 +25,16 @@
 	display: -webkit-flex;
 	flex-direction: row;
 	-webkit-flex-direction: row;
-	max-width: 480px;
+	max-width: 480px;	
+	border-bottom: solid 1px #dee1e5;
+	background-color: #f9f9f9;
+		
+	&:nth-child(odd) {
+      background-color: #fff !important;
+    }    
 	
 	&:hover{
+	    background-color: #fff !important;
     	.displayName{
              .vmtime{
                visibility: hidden;
@@ -59,6 +73,8 @@
 		display:block;			
 		padding: 5px;
 		cursor: pointer;
+		font-size: 11px;
+		line-height: 48px;
 		
 		&:hover{
 		  .displayName{
@@ -84,14 +100,15 @@
             position: absolute;
             top: 5px;
             left: 5px;
-            right: 5px;           
-            font-size: 12px;
+            right: 5px;                      
             text-align: left;
             text-overflow: ellipsis;
             overflow: hidden;
             text-decoration: none;
             color: #555;
             white-space: nowrap;
+            line-height: 20px;
+            height: 30px;
             
             .ListDisplayName {
               span{
@@ -112,23 +129,24 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
-                color: #888;
-                font-weight: bold;
+                color: #666;
+                font-weight: normal;
                 font-size: 11px;
              }
             }
           }
           .footnote{
-            position: relative;
-            margin-top: 20px;   
-            
+            position: relative;           
+                        
             &.voicemails{
             	white-space: normal;
-			    color: #222;
-			    font-size: 13px;
-			    line-height: 15px;
+			    color: #222;			   
+			    font-style: normal;
+			    line-height: 16px;
 			    word-wrap: break-word;
 			    width: 100%;
+			    vertical-align: bottom;
+                height: 20px;
             }         
           }
 	}
@@ -175,7 +193,7 @@
 		white-space:normal;
 		overflow: inherit;
 		text-overflow:inherit;
-		line-height: 16px;
+		line-height: 16px;		
 	}
 	&.transcription{
 		color: #888;
@@ -184,6 +202,14 @@
 	&.no_transcription{
 		color: #999;
     	font-size: 11px;
+	}
+	&.vmduration{		
+		color: #fff;
+		font-size: 10px;
+		padding: 3px 2px;
+		margin-right: 10px;
+		height: 15px;
+		line-height: 10px;
 	}
 }
 
