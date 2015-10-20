@@ -147,6 +147,8 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			for (var i = 0, len = weblaunchers.length; i < len; i++) {
 				weblaunchers[i].inbound = weblaunchers[i].inbound.replace(/&amp;/g, '&');
 				weblaunchers[i].outbound = weblaunchers[i].outbound.replace(/&amp;/g, '&');
+				weblaunchers[i].inboundHangup = weblaunchers[i].inboundHangup.replace(/&amp;/g, '&');
+				weblaunchers[i].outboundHangup = weblaunchers[i].outboundHangup.replace(/&amp;/g, '&');
 			}
 			
 			deferWl.resolve(weblaunchers);
