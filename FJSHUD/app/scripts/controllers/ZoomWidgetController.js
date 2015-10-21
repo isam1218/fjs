@@ -775,6 +775,7 @@ $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name
   $scope.meeting.timezone = '';
   $scope.meeting.password ='';
   $scope.meeting.jbh = null;
+
   
  // SET EDIT VALUES
 $scope.meeting.meetingTopic = topic;
@@ -824,17 +825,21 @@ if($scope.meeting.minDuration != undefined){
 else{
     $scope.meeting.minDuration = $scope.minOption[2];
 }
-if($scope.meeting.password != ''){
+if($scope.meeting.password !== ''){
     $scope.meeting.checked = true;
     
 }
 else{
   $scope.meeting.checked = false;
 }
-if($scope.meeting.password == ''){
+if($scope.meeting.password === ''){
     $scope.meeting.checked = false;
     
 }
+if($scope.meeting.password === undefined){
+  $scope.meeting.checked = false;
+}
+
 
 
 if($scope.meeting.times != undefined){
