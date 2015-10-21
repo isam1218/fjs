@@ -227,9 +227,9 @@
                 
                     <label>Meeting Options:</label>
                     <ul>
-                    <li><input type="checkbox" ng-model="checked"> <label style="font-weight:inherit"> Require meeting password</label></li>
+                    <li><input type="checkbox" ng-model="meeting.checked"> <label style="font-weight:inherit"> Require meeting password</label></li>
                     
-                    <li><input style="margin-left: 20px;"  ng-model="meeting.password"   ng-hide="!checked"></li>
+                    <li><input style="margin-left: 20px;"  ng-model="meeting.password"   ng-hide="!meeting.checked"></li>
                     
                     <li><input type="checkbox" ng-model="meeting.jbh"> <label style="font-weight:inherit"> Enable join before host</label></li></ul>
 
@@ -277,7 +277,7 @@
 
     <li>Topic: {{meeting.meetingTopic}}</li>
 
-    <li>Time: {{meeting.timeSelect|date:'h:mm a'}}{{meeting.AmPm}}  {{meeting.timezone}}</li></li>
+    <li>Time: {{meeting.dt|date:"MMM dd, yyyy "}} {{meeting.timeSelect|date:'h:mma'}}{{meeting.AmPm}}  {{meeting.timezone}}</li></li>
 
     <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
 
