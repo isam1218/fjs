@@ -41,10 +41,8 @@
 				};
 
 				function addAlert(html)  {
-					// ain't got no body
-					while (!document.body)
-						document.documentElement.appendChild(document.createElement('body'));
-						
+					// create <body> manually, because reasons
+					document.documentElement.appendChild(document.createElement('body'));
 					document.body.innerHTML = html;
 				   
 					// scroll to bottom
@@ -249,8 +247,4 @@
 
 		</script>
 	</head>
-	
-	<body>
-		
-	</body>
 </html>
