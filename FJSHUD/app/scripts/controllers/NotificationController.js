@@ -918,7 +918,7 @@ hudweb.controller('NotificationController',
 
         }
       
-        if (displayDesktopAlert){
+      if (displayDesktopAlert){
         	phoneService.setCancelled(false);
                if ($scope.todaysNotifications.length > 0){
                       phoneService.setStayHidden(false);
@@ -926,8 +926,9 @@ hudweb.controller('NotificationController',
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
                        }else{
-                          $scope.displayAlert = true;
-                          $timeout(displayNotification, 1500);
+                          $scope.displayAlert = true;  
+                          //displayNotification();
+                          $timeout(displayNotification, 500);
                        }
              }
       }else{
