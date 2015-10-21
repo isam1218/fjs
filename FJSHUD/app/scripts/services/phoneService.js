@@ -544,6 +544,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 		if(alertPlugin && display_Notification ){
 				alertPlugin.setAlertBounds(alertPosition.x,alertPosition.y,width,height);
+				console.log(content);
 				alertPlugin.addAlertEx(content);
 				alertPlugin.setShadow(true);
 				alertPlugin.setBorderRadius(5);
