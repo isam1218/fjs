@@ -1129,7 +1129,7 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http
         
         return url;
       };
-      $scope.userName=$rootScope.meModel.my_jid.split("@")[0];
+      $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
 
        $scope.meeting = sharedData.meeting;
   $scope.meeting.meetingTopic = sharedData.meeting.meetingTopic;
