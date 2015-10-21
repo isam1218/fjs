@@ -1,21 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head> 
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		
-		<link rel="stylesheet" href="../../styles/main.css" />
-		
-		<style> 
-			body{
-				padding: 0px;
-				margin: 0px;
-				background-image: none;
-				background-color: #ccc;
-				font-size:.9em;
-			}
-		</style>
-	
 		<script> 
 				// for debugging
 				// window.location="devtools://open";
@@ -41,6 +26,8 @@
 				};
 
 				function addAlert(html)  {
+					fj.alert.Duration.clear();
+					
 					// ain't got no body
 					if (!document.body)
 						document.documentElement.appendChild(document.createElement('body'));
