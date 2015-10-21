@@ -41,18 +41,19 @@
 				};
 
 				function addAlert(html)  {
-					// ain't got no body
-					if (!document.body)
+					// make sure body exists
+					if (document.body) {
 						document.documentElement.appendChild(document.createElement('body'));
 						
-					document.body.innerHTML = html;
-				   
-					// scroll to bottom
-					setTimeout(function() {
-						document.getElementById('scroller').scrollTop = document.getElementById('scroller').scrollHeight;
-					}, 100);
-					
-					fj.alert.Duration.start();
+						document.body.innerHTML = html;
+					   
+						// scroll to bottom
+						setTimeout(function() {
+							document.getElementById('scroller').scrollTop = document.getElementById('scroller').scrollHeight;
+						}, 100);
+						
+						fj.alert.Duration.start();
+					}
 				}
 
 				function alertScroll(x,y,dx) {
