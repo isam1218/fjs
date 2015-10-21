@@ -944,11 +944,11 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 
    //alert($scope.starts);
 
-          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&email='+$scope.meModel.email+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
+          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
               console.log("PUT",data);
               console.log("PUT MEETING ID",sharedData.meeting.meeting_id);
               
-              console.log("Email",$scope.meModel.email);
+              
 
           });
 
@@ -1138,19 +1138,19 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
 
   
 
-  /*$scope.clear = function () {
+  $scope.clear = function () {
     $scope.meeting.dt = null;
-  };*/
+  };
 
   // Disable weekend selection
-/*  $scope.disabled = function(date, mode) {
+  $scope.disabled = function(date, mode) {
     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-  };*/
+  };
 
- /* $scope.toggleMin = function() {
+  $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
-  $scope.toggleMin();*/
+  $scope.toggleMin();
 
   $scope.open = function($event) {
     $scope.status.opened = true;
@@ -1168,7 +1168,7 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
     opened: false
   };
 
-/*  var tomorrow = new Date();
+  var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   var afterTomorrow = new Date();
   afterTomorrow.setDate(tomorrow.getDate() + 2);
@@ -1182,9 +1182,9 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
         date: afterTomorrow,
         status: 'partially'
       }
-    ];*/
+    ];
 
-/*  $scope.getDayClass = function(date, mode) {
+  $scope.getDayClass = function(date, mode) {
     if (mode === 'day') {
       var dayToCheck = new Date(date).setHours(0,0,0,0);
 
@@ -1198,7 +1198,7 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
     }
 
     return '';
-  };*/
+  };
 });
 
 hudweb.controller('ScrollController', ['$scope', '$location', '$anchorScroll',
