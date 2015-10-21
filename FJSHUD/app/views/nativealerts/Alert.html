@@ -42,7 +42,7 @@
 
 				function addAlert(html)  {
 					// ain't got no body
-					if (!document.body)
+					while (!document.body)
 						document.documentElement.appendChild(document.createElement('body'));
 						
 					document.body.innerHTML = html;
