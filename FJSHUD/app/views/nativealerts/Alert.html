@@ -26,9 +26,6 @@
 
 				window.isIE = /*@cc_on!@*/false;
 
-				document.oncontextmenu = function () { return false;};
-				window.oncontextmenu = function () { return false;};
-
 				function isDropEnabled(){
 				    return window.dropEnabled;
 				};
@@ -53,22 +50,6 @@
 					}, 100);
 					
 					fj.alert.Duration.start();
-				}
-
-				function alertScroll(x,y,dx) {
-					var scrollable = document.getElementById("scroller");
-					if(scrollable){
-						var delta = 0;
-					    if(dx !==undefined) {
-					        delta = (1 * dx) / 120;
-					    }
-						scrollable.scrollTop += delta * 20;
-					}
-				}
-
-				function mouseClick(element){
-					var action = element.getAttribute('action');
-					window.location.replace(action);
 				}
 				
 
