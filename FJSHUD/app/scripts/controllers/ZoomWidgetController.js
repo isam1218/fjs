@@ -36,7 +36,8 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.tab = 'Home';
     
      $scope.showHome=true;
- 
+     $scope.loading = {};
+    
 
      $scope.pmi_id = {};
      $scope.pmi_id.pmi =null;
@@ -85,6 +86,8 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     }
 
     $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option,end_time){
+      
+
       $scope.topic = topic;
       var start_hour = $filter('date')(start_time,"hh:mma");
       
@@ -415,7 +418,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
-
+        
 
         for(var i = 0; i<=30;i++){
            var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
@@ -473,12 +476,13 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
   }*/
 
 $scope.$on('modalInstance', function() {
-
+$scope.loading.meetingLoaded = true;
  $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
+        $scope.loading.meetingLoaded = false;
         /*$scope.meetingList.push({"start_hour":$scope.start_hour});
                 console.log("START_HOUR",$scope.start_hour);*/
 
@@ -540,6 +544,7 @@ $scope.$on('modalInstance', function() {
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
+
         /*$scope.meetingList.push({"start_hour":$scope.start_hour});
                 console.log("START_HOUR",$scope.start_hour);*/
 
