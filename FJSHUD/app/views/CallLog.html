@@ -29,16 +29,18 @@
 
 			<div class="DirectionArrow"></div>
 		</div>
-		<div data-ng-click="sortType('incoming', 'missed', 'incomingNotMissed', 'outgoing')"
-			 class="ListLineContentCell CallType {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+		<div data-ng-click="sort('callType')"
+			 class="ListLineContentCell CallType {{(sortField == 'callType' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
 			<span class="upper">{{::verbage.type}}</span>		
+			<div class="DirectionArrow"></div>
 		</div>
 	</div>
 
 	<div class="ListView">	
 		<div class="rows">
-			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | filter: customFilter() | orderBy:sortField:sortReverse | limitTo:logSize track by call.xpid">
+			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | orderBy: ['displayName','startedAt'] | filter: customFilter() | orderBy:sortField:sortReverse track by call.xpid">
 				<div>
+					
 					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
 				</div>
 				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ ::call.displayName }}</div></div>
@@ -46,7 +48,7 @@
 					<span ng-click="makeCall(call.phone)">{{ ::call.phone }}</span>
 				</div>
 				<div class="Duration"> <span>{{ ::call.duration | duration }}</span></div>
-				<div class="Date"> <span>{{ ::call.startedAt |  fondate:'MMMM D, hh:mm a':fon_lang_code }}</span></div>
+				<div class="Date"> <span>{{ ::call.startedAt |  fondate:'YYYY MMMM D, hh:mm a':fon_lang_code }}</span></div>
     			<div class="Type">
 					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ :: call.missed ? 'Missed' : (call.incoming ? 'Incoming' : 'Outbound') }}"></div>
 				</div>
