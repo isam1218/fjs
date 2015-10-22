@@ -120,8 +120,8 @@
             <div class="QueueSetting QueueSettingCheckBox">
               <input type="checkbox" 
               ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"                            
-              ng-change ="update_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
-              ng-disabled = "!settings['HUDw_QueueNotificationsLW_'+queue.xpid]"
+              ng-change ="update_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueAlertsLW_'+queue.xpid] ? 'true' : 'false')"
+              ng-disabled = "!settings['HUDw_QueueAlertsLW_'+queue.xpid]; !alertShow"
               >
             </div>
             <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
@@ -132,7 +132,7 @@
             <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
               ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"              
               ng-change ="update_settings('HUDw_QueueAlertsAb_' + queue.xpid,'update', settings['HUDw_QueueAlertsAb_'+queue.xpid] ? 'true' : 'false')"
-              ng-disabled = "!settings['HUDw_QueueNotificationsAb_'+queue.xpid]"
+              ng-disabled = "!settings['HUDw_QueueAlertsAb_'+queue.xpid]; !alertShow"
            ></div>
            </div>
          </div>
