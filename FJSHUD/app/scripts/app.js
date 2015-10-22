@@ -111,6 +111,8 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 	// cache native alert template
 	$http.get('views/nativealerts/Alert.html', { cache: $templateCache });
 	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
+	$http.get('views/popups/NotificationsOverlay.html', { cache: $templateCache });
+	$http.get('views/popups/NetworkErrorsOverlay.html', { cache: $templateCache });
 	
     $rootScope.$on("$locationChangeStart", function(e, next, current) {
     	  
