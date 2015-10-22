@@ -90,7 +90,7 @@
                      <div class="NotificationSection"> 
     
                         <avatar
-                            ng-class="message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
+                            ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
                             profile="::checkIfGroup(message)"
                             id="OverlayAvatarId"
@@ -155,10 +155,9 @@
                      <div class="NotificationSection"> 
     
                         <avatar
-                            ng-class="message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
+                            ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
                             profile="::checkIfGroup(message)"
-                            id="OverlayAvatarId"
                             type="::determineAvatarType(message)">
                         </avatar>                  
 
@@ -216,10 +215,9 @@
                      <div class="NotificationSection"> 
     
                         <avatar
-                            ng-class="message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
+                            ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
                             profile="::checkIfGroup(message)"
-                            id="OverlayAvatarId"
                             type="::determineAvatarType(message)">
                         </avatar>                  
 
