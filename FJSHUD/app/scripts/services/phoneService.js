@@ -535,6 +535,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//this method is used  for display the old Plugin (for safari,firefox and IE)
 	var displayNotification = function(content, width,height){
+		setTimeout(function() {
 		if(!alertPlugin){
 			return;
 		}
@@ -550,6 +551,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				alertPlugin.setTransparency(255);
 				isAlertShown = true;
 		}
+		}, 10000);
 	};
 
 	//this will display either HTML 5 notifications or the new webphone notifications (Chrome)
