@@ -10,6 +10,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var deferredCalls = $q.defer();
 	var deferredInputDevices = $q.defer();
 	var deferredOutputDevices = $q.defer();
+	var deferredPlugin = $q.defer();
 	$rootScope.volume = {};
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
@@ -654,6 +655,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		alertPlugin.initAlert(url);
 				removeNotification();
          		activatePhone();
+				
+				deferredPlugin.resolve(alertPlugin);
 
             //isRegistered = true;
 			if(!soundEstablished){
@@ -709,6 +712,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             isRegistered = false;
             return;
         }
+	};
+	
+	this.getPlugin = function() {
+		return deferredPlugin.promise;
 	};
 
 	this.resetAlertPosition = function(){
