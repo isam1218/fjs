@@ -45,8 +45,8 @@ hudweb.controller('NotificationController',
   $scope.showAway = false;
   $scope.showOld = false;
   $scope.displayAlert = false;
-  $scope.clearOld;       
-    
+  $scope.clearOld;
+  $scope.alertDuration = settingsService.getSetting('alert_call_duration');      
   phoneService.getInputDevices().then(function(data){
     // can't find plugin or it's outdated
     if (!phoneService.isPhoneActive() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
@@ -474,7 +474,8 @@ hudweb.controller('NotificationController',
         phoneService.registerPhone(true);
       }
     }
-
+    $scope.alertDuration = data['alert_call_duration'];
+    
     if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){// 
         if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
