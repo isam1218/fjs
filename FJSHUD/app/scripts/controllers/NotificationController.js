@@ -926,8 +926,10 @@ hudweb.controller('NotificationController',
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
                        }else{
-                          $scope.displayAlert = true;
-                          $timeout(displayNotification, 1500);
+							phoneService.getPlugin().then(function() {
+								$scope.displayAlert = true;
+								$timeout(displayNotification, 1500);
+							});
                        }
              }
       }else{

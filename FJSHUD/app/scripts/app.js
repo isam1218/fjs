@@ -109,6 +109,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 })
 .run(function ($http, $templateCache, $rootScope, $location, $routeParams, StorageService, SettingsService, GroupService, $timeout) {
 	// cache native alert template
+	$http.get('views/nativealerts/Alert.html', { cache: $templateCache });
 	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
 	
     $rootScope.$on("$locationChangeStart", function(e, next, current) {
