@@ -314,7 +314,8 @@
   .NotificationHeader{
     position: relative;
     z-index: 100;
-    top: 0;   
+    top: 0;
+    height: auto !important; 
   }
   .NotificationSection {
     float: left;
@@ -323,7 +324,7 @@
     position: relative;
     margin-top: 0px;  
     height: 15px;  
-    padding-bottom: 10px;
+    padding-bottom: 10px !important;
     margin-bottom: -10px;
     
     &.last{
@@ -343,7 +344,11 @@
      &:not(.firstsection){
        top: -10px;
        margin-bottom: -10px;
-     }     
+     }
+
+     .CallAvatar{
+      float:  left;
+     }    
   }
   
   .LeftBarNotificationMessageSection{
@@ -354,6 +359,7 @@
     
     .NotificationDisplayName {
         padding-left: 5px;
+        padding-bottom: 25px;
         height: 20px !important;
         
         span{
@@ -369,12 +375,6 @@
         left: 5px;
         top: -5px;
         margin-bottom: -10px;
-    }
-	
-    .NotificationTime{
-        font-size: 11px;
-        right: 0;
-        bottom: 10px !important;
     }
     
     .NotificationMessage {
@@ -392,6 +392,13 @@
          /*width: 90%;*/
          max-width: 86%;
          padding-left: 10px;
+
+      }
+       .LeftBarNotificationMessageSection .NotificationDisplayName{
+        padding-bottom: 25px !important;
+       }
+      .NotificationMessages .NotificationTime{
+        bottom: 15px;
       }
     }
   }

@@ -89,16 +89,15 @@
                      <div class="NotificationDivider"></div>
                      <div class="NotificationSection"> 
     
-                        <avatar 
-                            class="LeftBarNotificationAvatarSection NotificationAvatar"
+                        <avatar
+                            ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
                             profile="::checkIfGroup(message)"
                             id="OverlayAvatarId"
-                            type="{{::message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}"
-                            ng-attr-isgroup="{{::message.audience == 'group'}}">>
+                            type="::determineAvatarType(message)">
                         </avatar>                  
                         <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message); multiple_new_notifications = getMultipleNotifications(message)">                         
-                            <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
+                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)">{{::message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
                                <div class="NotificationType">...{{ message.label }} <span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
                                 {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
                                 
@@ -155,14 +154,15 @@
                      <div class="NotificationDivider"></div>
                      <div class="NotificationSection"> 
     
-                        <avatar 
-                            class="LeftBarNotificationAvatarSection NotificationAvatar"
+                        <avatar
+                            ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
-                            profile="message.fullProfile"
-                            type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
-                        </avatar>                               
+                            profile="::checkIfGroup(message)"
+                            type="::determineAvatarType(message)">
+                        </avatar>                  
+
                         <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message);multiple_away_notifications = getMultipleNotifications(message)">
-                            <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
+                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
                                <div class="NotificationType">...{{ ::message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
                             
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)"><p ng-if="multiple_away_notifications" ng-repeat="sub_message in away_notifications_to_display track by $index">{{ ::sub_message }}</p>
@@ -214,15 +214,16 @@
                      <div class="NotificationDivider"></div>
                      <div class="NotificationSection"> 
     
-                        <avatar 
-                            class="LeftBarNotificationAvatarSection NotificationAvatar"
+                        <avatar
+                            ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
-                            profile="message.fullProfile"
-                            type="{{message.type == 'chat' ? 11 : message.audience == 'queue' ? 3 : 4}}">
-                        </avatar>            
+                            profile="::checkIfGroup(message)"
+                            type="::determineAvatarType(message)">
+                        </avatar>                  
+
                    
                         <div class="LeftBarNotificationMessageSection" ng-init="old_notifications_to_display = getMessage(message); multiple_old_notifications = getMultipleNotifications(message)">
-                            <div class="NotificationDisplayName chatNotification" ng-click="go_to_notification_chat(message)">{{::message.displayName}} <div class="NotificationTime">{{::  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
+                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'"  ng-click="go_to_notification_chat(message)">{{::message.displayName}}<div class="NotificationTime">{{::  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
                                <div class="NotificationType">...{{ message.label }} <span ng-if="::message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">
