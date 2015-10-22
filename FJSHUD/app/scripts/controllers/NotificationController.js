@@ -689,22 +689,23 @@ hudweb.controller('NotificationController',
         		$timeout(displayNotification, 1500);
 			}		
     }else{
-    	 if(nservice.isEnabled()){
- 	        for (var i = 0; i < $scope.calls.length; i++){
- 	           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
- 	        } 
- 	      }else{
- 	        phoneService.removeNotification();
- 	        
- 	        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
- 	           $scope.displayAlert = true;	           
- 	            $timeout(cacheNotification,1000);
- 	        }else{	        		        	
- 	            phoneService.cacheNotification(undefined,0,0);
- 	        }  
- 	      }
-      }          
-  });
+      if(nservice.isEnabled()){
+        for (var i = 0; i < $scope.calls.length; i++){
+           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+        } 
+      }else{
+        if($scope.calls.length > 0){
+           $scope.displayAlert = true;
+            phoneService.removeNotification();
+            $timeout(cacheNotification,1000);
+        }else{
+            phoneService.cacheNotification(undefined,0,0);
+        }  
+      }
+    }
+
+    
+	});
 
   $scope.playVm = function(msg){
     phoneService.playVm(msg.vmId);
@@ -721,13 +722,11 @@ hudweb.controller('NotificationController',
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-			if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0 || $scope.errors.length > 0){
-		          phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-		    }else{
-		    	  phoneService.removeNotification();
-		          phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-		    }
-
+			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+               phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+             }else{
+               phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+             }
 		}
 		element = null;
 		$scope.displayAlert = false;
@@ -913,9 +912,8 @@ hudweb.controller('NotificationController',
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
                        }else{
-                          $scope.displayAlert = true;  
-                          //displayNotification();
-                          $timeout(displayNotification, 500);
+                          $scope.displayAlert = true;
+                          $timeout(displayNotification, 1500);
                        }
              }
       }else{
