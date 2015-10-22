@@ -793,7 +793,7 @@ if($scope.meeting.timeSelect != undefined){
 $scope.meeting.timeSelect = start_hour;
 }
 else{
-    $scope.meeting.timeSelect = $scope.times[0];
+    $scope.meeting.timeSelect = $scope.times[16];
 }
 
 if($scope.meeting.AmPm != undefined){
