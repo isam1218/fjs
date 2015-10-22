@@ -656,7 +656,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				removeNotification();
          		activatePhone();
 				
-				deferredPlugin.resolve(alertPlugin);
+				setTimeout(function() {
+					deferredPlugin.resolve(alertPlugin);
+				}, 1000);
 
             //isRegistered = true;
 			if(!soundEstablished){
