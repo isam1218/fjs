@@ -97,7 +97,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					else {
 						$('#InnerDock').sortable({
 							revert: 1,
-							handle: '.Header, .Content',
+							handle: '.Header, .List',
 							helper: 'clone',
 							appendTo: 'body',
 							cursorAt: { top: 25 },
