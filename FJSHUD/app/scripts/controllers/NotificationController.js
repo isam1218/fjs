@@ -1088,10 +1088,18 @@ hudweb.controller('NotificationController',
             }
             break;
           case 'queue':
-            if (singleMsg.context && singleMsg.type == 'gchat'){
+            if (singleMsg.context){
               var queueNoteId = singleMsg.context.split(':')[1];
-              if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
-                $scope.remove_notification(singleMsg.xpid);              
+              switch(singleMsg.type){
+                case 'gchat':
+                  if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
+                    $scope.remove_notification(singleMsg.xpid);              
+                  break;
+                case 'q-broadcast':
+                  if (data.params.route == 'alerts' && data.params.queueId == queueNoteId)
+                    $scope.remove_notification(singleMsg.xpid);
+                  break;
+              }
             }
             break;
           case 'contact':
