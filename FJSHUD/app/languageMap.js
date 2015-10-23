@@ -430,7 +430,7 @@
       recent_conference_room_extension:'Conference Room (extension number)',
       members_on_call:'member(s) on a call',
       nothing_found:'Nothing found',
-      characters_lefts:'characters left',
+      characters_left:'characters left',
       no_recent_calls_in_view:"No Recent Calls in View",
       Reporting:'Reporting',
       pbxtra_systems_come: 'PBXtra systems come installed by default with incredibly robust reporting tools.',

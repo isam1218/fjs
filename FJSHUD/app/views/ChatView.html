@@ -61,7 +61,7 @@
 			<input type="radio" ng-model="chat.status" name="alertStatus" value="2" /> {{::verbage.logged_out}}
 		</div>
 		<div class="Right">
-			{{ 150 - message.length }} {{::verbage.characters_left}}
+			{{ 150 - (chat.message.length) }} {{::verbage.characters_left}}
 		</div>
 	</div>
 	
