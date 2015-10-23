@@ -25,7 +25,7 @@
 		<div class="ListRowContent" dockable="member.fullProfile"> 
             <div class="ListRowTitle">
     			<div class="name">
-    				<strong> {{ ::member.displayName }} </strong>
+    				<strong> {{::member.fullProfile == null ? member.phone : member.displayName}} </strong>
                 </div>
                 <div class="vmtime" timer="member.started" ng-if="!member.ring"></div>
                 <div class="vmtime" ng-if="member.ring">{{ ::member.fullProfile.primaryExtension}}</div>
