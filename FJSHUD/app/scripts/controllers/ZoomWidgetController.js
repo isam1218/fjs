@@ -829,15 +829,14 @@ if($scope.meeting.password !== ''){
     $scope.meeting.checked = true;
     
 }
-else{
-  $scope.meeting.checked = false;
-}
-if($scope.meeting.password === ''){
+ if($scope.meeting.password === ''){
     $scope.meeting.checked = false;
+    $scope.meeting.password = '';
     
 }
-if($scope.meeting.password === undefined){
+ if($scope.meeting.password === undefined){
   $scope.meeting.checked = false;
+  $scope.meeting.password = '';
 }
 
 
