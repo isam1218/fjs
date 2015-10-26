@@ -38,9 +38,8 @@
 
 	<div class="ListView">	
 		<div class="rows">
-			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | orderBy: ['displayName','startedAt'] | filter: customFilter() | orderBy:sortField:sortReverse track by call.xpid">
+			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | orderBy: [sortField, '-startedAt']:sortReverse | filter: customFilter() track by call.xpid">
 				<div>
-					
 					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
 				</div>
 				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ ::call.displayName }}</div></div>
@@ -53,8 +52,6 @@
 					<div class="ListRowStatusIcon Small XIcon-CallLog-{{ :: call.missed ? 'Missed' : (call.incoming ? 'Incoming' : 'Outbound') }}"></div>
 				</div>
 			</div>
-			
-			<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 			
 			<div class="Empty" ng-if="!loading && calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
 		</div>

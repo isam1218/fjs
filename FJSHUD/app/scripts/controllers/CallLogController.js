@@ -18,62 +18,52 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 	if (!$rootScope.isFirstSync)
 		httpService.getFeed('calllog');
 	
-	settingsService.getSettings().then(function(data){
-		$scope.logSize = data['recent_call_history_length'] || 100; 
-	});
-	
-	$scope.$on('calllog_synced', function(event, data) {				//if(i < $scope.logSize)
-		  for (var i = 0, iLen = data.length; i < iLen; i++) {
-			var match = false;
-			
-			for (var c = 0, cLen = $scope.calls.length; c < cLen; c++) {
-			    // find existing (and maybe delete)
-			   if ($scope.calls[c].xpid == data[i].xpid) {
-					if (data[i].xef001type == 'delete') {
-						$scope.calls.splice(c, 1);
-						cLen--;
-					}
-					
-					match = true;
-					break;
-				}
-			}			
-			// add new (if it also meets page type)
-			if (!match && data[i].xef001type != 'delete' && !data[i].filterId && 
-				(!pageFilter || ((data[i].queueId !== undefined && pageFilter == data[i].queueId) || (data[i].contactId !== undefined && pageFilter == data[i].contactId)))) {
-					
+	$scope.$on('calllog_synced', function(event, data) {
+		var count = 0;
+		var logSize = settingsService.getSetting('recent_call_history_length') || 100; 
+		
+		// sort by date first
+		$scope.calls = data.sort(function(a, b){
+			return b.startedAt - a.startedAt;
+		});
+		
+		// trim down to call log size + page filter
+		$scope.calls = $scope.calls.filter(function(item) {
+			if (count < logSize && item.xef001type != "delete" && !item.filterId && (!pageFilter || ((item.queueId !== undefined && pageFilter == item.queueId) || (item.contactId !== undefined && pageFilter == item.contactId)))) {
+				
 				// if an incoming + non-missed call, create property and set to true (adding this property in order to help 3-way sort under 'type')...
-				if (data[i].incoming === true && data[i].missed === false)
-					data[i]['incomingNotMissed'] = true;
+				if (item.incoming === true && item.missed === false)
+					item['incomingNotMissed'] = true;
 				else
-					data[i]['incomingNotMissed'] = false;
+					item['incomingNotMissed'] = false;
 
 				// create outgoing property
-				if (data[i].incoming == false)
-					data[i]['outgoing'] = true;
+				if (item.incoming == false)
+					item['outgoing'] = true;
 				else
-					data[i]['outgoing'] = false;
+					item['outgoing'] = false;
 				
-				if(data[i].missed == true)
-					data[i].callType = 'phoneMissed';
-				else if(data[i].incoming == true)
-					data[i].callType = 'incoming';
+				if (item.missed == true)
+					item.callType = 'phoneMissed';
+				else if (item.incoming == true)
+					item.callType = 'incoming';
 				else
-					data[i].callType = 'outgoing';
-
-				$scope.calls.push(data[i]);
+					item.callType = 'outgoing';
 				
 				// add contextual menu info
-				if (data[i].queueId !== undefined)
-					$scope.calls[$scope.calls.length-1].fullProfile = queueService.getQueue(data[i].queueId);
-				else if (data[i].departmentId !== undefined)
-					$scope.calls[$scope.calls.length-1].fullProfile = groupService.getGroup(data[i].departmentId);
-				else if (data[i].conferenceId !== undefined)
-					$scope.calls[$scope.calls.length-1].fullProfile = conferenceService.getConference(data[i].conferenceId);
-				else if (data[i].contactId !== undefined)
-					$scope.calls[$scope.calls.length-1].fullProfile = contactService.getContact(data[i].contactId);
+				if (item.queueId !== undefined)
+					item.fullProfile = queueService.getQueue(item.queueId);
+				else if (item.departmentId !== undefined)
+					item.fullProfile = groupService.getGroup(item.departmentId);
+				else if (item.conferenceId !== undefined)
+					item.fullProfile = conferenceService.getConference(item.conferenceId);
+				else if (item.contactId !== undefined)
+					item.fullProfile = contactService.getContact(item.contactId);
+			
+				count++;
+				return true;
 			}
-		}
+		});
 			
 		$scope.loading = false;
 	});
