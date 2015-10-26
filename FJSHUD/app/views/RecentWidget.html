@@ -25,7 +25,7 @@
 						<strong ng-if="::!item.primaryExtension">{{ item.displayName }}</strong>
                     </div>
                     <div class="status">                     
-                        <div class="ListRowStatusIcon external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
+                        <div class="ListRowStatusIcon Recent external XIcon-ChatStatus-{{item.hud_status || 'offline' }}"></div>
                         <div class="desc" ng-bind-html="(item.custom_status ? item.custom_status : item.hud_status ? verbage[item.hud_status] : verbage['offline']) + (item.call ? ' + ' + verbage['on_call'] : '')"></div>
                     </div> 
                 </div>
@@ -109,7 +109,7 @@
 									<strong ng-if="::!contact.primaryExtension">{{ contact.displayName }}</strong>  
 								</div>
 								<div class="status">                     
-									<div class="ListRowStatusIcon external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+									<div class="ListRowStatusIcon Recent external XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
 									<div class="desc" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div>
 								</div> 
 							</div>
