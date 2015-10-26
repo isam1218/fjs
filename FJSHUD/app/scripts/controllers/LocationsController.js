@@ -1,16 +1,16 @@
-hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','HttpService','PhoneService',function($scope, $routeParams, $element,httpService,phoneService) {
-    //fjs.ui.Controller.call(this, $scope);
-
-    /*
-    when loading controller get the necessary feeds 
-    */
-    httpService.getFeed("locations");
-    httpService.getFeed("location_status");
-    // need settings feed to update device notification if user disregarded updating device and removed msg
-    httpService.getFeed("settings");
-
+hudweb.controller('LocationsController',['$scope', '$rootScope', '$routeParams', '$element', 'HttpService', 'SettingsService', 'PhoneService', function($scope, $rootScope, $routeParams, $element, httpService, settingsService, phoneService) {
     var call = phoneService.getCallDetail($routeParams.callId);
     $scope.locations = {};
+	
+	// get locations
+	phoneService.getLocationPromise().then(function(data) {
+		$scope.locations = data;
+	});
+	
+	// show another device error
+	if (settingsService.getSetting('instanceId') != localStorage.instance_id) {
+		$rootScope.$broadcast('another_device', true);
+	}
     
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
@@ -50,33 +50,5 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
             return $scope.meModel["current_location"] && $scope.meModel["current_location"];
         }
     };
-
-   
-    $scope.$on('locations_synced', function(event,data){
-        if(data){
-            var me = {};
-            for (var i = 0, iLen = data.length; i < iLen; i++) {
-                if(data[i].locationType != 'a'){
-                     $scope.locations[data[i].xpid] = data[i];
-                }
-            }
-        }
-    });
-
-     $scope.$on('location_status_synced', function(event,data){
-        if(data){
-            var me = {};
-            for (var i = 0, iLen = data.length; i < iLen; i++) {
-                if($scope.locations[data[i].xpid]){
-                    $scope.locations[data[i].xpid].status = data[i];
-                    if($scope.locations[data[i].xpid].locationType == 'w'){
-                        var state = phoneService.getPhoneState();
-                        $scope.locations[data[i].xpid].status.deviceStatus = state ? 'r' : 'u';
-                    }
-                }
-            }
-        }
-
-    });
 
 }]);

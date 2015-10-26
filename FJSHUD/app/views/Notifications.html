@@ -18,16 +18,12 @@
 				</div>
 				<div class="NotificationDivider"></div>
 				<div class="NotificationSection" >
-					<avatar 
+					<avatar
 						ng-class="::message.type == 'vm' || message.type == 'missed-call' || message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'"
-						ng-if="::message.type != 'error'"
 						ng-click="go_to_notification_chat(message)" 
 						profile="::checkIfGroup(message)"
 						type="::determineAvatarType(message)">
 					</avatar>
-					<div ng-if="::message.type == 'error'" class="LeftBarNotificationAvatarSection " style="display:inline-block"> 
-						<div class="AvatarWarningSmall"></div>
-					</div>
 				
 					<div class="LeftBarNotificationMessageSection"> 
 						<div ng-click="go_to_notification_chat(message)" class="chatNotification">
