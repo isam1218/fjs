@@ -412,6 +412,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		request.send(fd);
 		
 	};
+	
+	this.preload = function(src) {
+		var img = new Image();
+		img.src = src;
+	};
   
 	// generic 'save' function
 	this.sendAction = function(feed, action, data) {
@@ -518,4 +523,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		return deferred.promise;
 	};
 
+	// preload images
+	this.preload('img/XAvatarBorder.png');
+	this.preload('img/Generic-Error.png');
+	this.preload('img/XApp-Icons.png');
+	this.preload('img/XEvent.png');
+	this.preload('img/XIconSet-24x24.png');
+	this.preload('img/XDialog-Errors.png');
 }]);

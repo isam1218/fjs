@@ -13,7 +13,9 @@
     "jquery": "~2.1.4",
     "jquery-ui": "~1.11.4",
     "jquery-hoverintent": "~1.8.1",
-    "moment": "~2.10.2"
+    "moment": "~2.10.2",
+    "angulartics": "~0.20.1",
+    "angulartics-google-analytics": "~0.1.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.1",

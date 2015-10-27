@@ -19,7 +19,7 @@
 				<div class="NotificationDivider"></div>
 						<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
 					<avatar 
-						ng-class="message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'"
+						ng-class="::message.type == 'vm' || message.type == 'missed-call' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'"
 						ng-if="::message.type != 'error'"
 						ng-click="go_to_notification_chat(message)" 
 						profile="::checkIfGroup(message)"

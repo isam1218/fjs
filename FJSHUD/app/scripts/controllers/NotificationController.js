@@ -157,11 +157,27 @@ hudweb.controller('NotificationController',
   };
   
   $scope.getMessage = function(message){              
-    var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';      
-     	
-   	if(typeof messages == 'undefined' || typeof messages == 'null')      
-    	      messages="";           
-   
+    //var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';      
+    var messages = '';
+    
+    if(message.message && message.message != null && message.message != "")
+    {
+    	if((message.message).indexOf('\n') != -1)//array
+    	{	
+    		messages = (message.message).split('\n');
+    		for(var j=0; j < messages.length; j++)
+		   	{
+    			var decoded = $('<div/>').html(messages[j]).text();
+		   		messages[j] = decoded;
+		   	}
+    	}	
+    	else //string
+    	{	
+    		var decoded = $('<div/>').html(message.message).text();
+    		messages = decoded;
+    	}       
+    } 
+    
     switch(message.type){
 
       case "vm":
@@ -911,8 +927,10 @@ hudweb.controller('NotificationController',
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
                        }else{
-                          $scope.displayAlert = true;
-                          $timeout(displayNotification, 1500);
+							phoneService.getPlugin().then(function() {
+								$scope.displayAlert = true;
+								$timeout(displayNotification, 1500);
+							});
                        }
              }
       }else{
@@ -1047,9 +1065,12 @@ hudweb.controller('NotificationController',
       return ourGroup;
     } else if (msg != undefined && msg.audience == 'queue'){
       // display queue avatar rather than individual avatar
-      var queueId = msg.context.split(':')[1];
-      var ourQueue = queueService.getQueue(queueId);
-      return ourQueue;
+      if(msg.context)	
+      {	  
+	      var queueId = msg.context.split(':')[1];
+	      var ourQueue = queueService.getQueue(queueId);
+	      return ourQueue;
+      }
     } else {
       return msg.fullProfile;
     }

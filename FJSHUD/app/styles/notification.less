@@ -128,7 +128,7 @@
 .CallStatusIconContainer .CallStatusIcon {
   width: 38px;
   height: 38px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -82px -242px;
+  background: url('../img/XActionSet-40x40.png') no-repeat -82px -242px;
 }
 
 .CallStatusContainerInbound,
@@ -211,7 +211,7 @@
             
             .MyCallBlock_Rec {
                 position: absolute;
-                background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
+                background: transparent url("../img/XIconSet-24x24.png") no-repeat scroll -152px -4px;
                 width: 36px;
                 height: 19px;
                 display: none;                               
@@ -249,7 +249,7 @@
 	display:inline-block;
 	text-align:center;
 	.NotificationSectionHeaderImage{
-		background:url("../img/XApp-Icons.png?v=1418381374907") no-repeat -0px -0px;
+		background:url("../img/XApp-Icons.png") no-repeat -0px -0px;
 	}
 	.NotificationHeaderTitle{
 		display:inline-block;
@@ -353,7 +353,6 @@
     min-height: 60px;
     height: auto !important;
   } 
-
 }
 .NotificationSection.open {
   height: auto;
@@ -406,7 +405,7 @@
 	right: 20px;
 	width: 51px;
 	height: 21px;
-	background: url("../img/XEvent.png?v=1418381374907") no-repeat 0px 0px;
+	background: url("../img/XEvent.png") no-repeat 0px 0px;
 	position: relative;
 	right: 0;
 	bottom: 14px;
@@ -415,7 +414,7 @@
 		width: 50%;
 		height: 24px;
 		margin:-3px auto 0 auto;
-		background: url("../img/XIconSet-24x24.png?v=1418381374907") no-repeat -24px -24px;
+		background: url("../img/XIconSet-24x24.png") no-repeat -24px -24px;
 }
 
 .NotificationAvatar{
@@ -462,7 +461,7 @@
 		}
 	}
 	
-	&:nth-last-child(n+6) {
+	&:not(.overlay):nth-last-child(n+6) {
 		display: none;
 	}
 	
