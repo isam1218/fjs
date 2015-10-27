@@ -340,10 +340,10 @@
   width: 7%;
 }
 .RecentCallSection .RecentDate {
-  width: 32%;
+  width: 25%;
 }
 .RecentCallSection .RecentFromTo {
-  width: 25%;
+  width: 30%;
   text-align: center;
 }
 .RecentCallSection .RecentFromTo.call {
@@ -352,7 +352,7 @@
   color: #91B139 !important;
 }
 .RecentCallSection .RecentDur {
-  width: 14%;
+  width: 15%;
   text-align: center;
 }
 .NoRecentCalls {

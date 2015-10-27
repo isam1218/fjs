@@ -255,9 +255,16 @@ img.x {
   float: left;
 }
 /******* notifications **********/
-.LeftBar .Notifications .TitleBar .XButton,
-.LeftBar .Notifications .NotificationDivider > div .XButton {
-  top: -3px !important;
+.LeftBar {
+  /*
+   .Notifications
+   {        
+        .TitleBar .XButton,
+        .NotificationDivider > div .XButton
+        {
+           top: -3px !important;
+        }
+   }*/
 }
 .LeftBar .ListRow .Avatar img.CallAvatar_Office img {
   margin: -1px !important;
@@ -286,6 +293,7 @@ img.x {
   position: relative;
   z-index: 100;
   top: 0;
+  height: auto !important;
 }
 .NotificationSection {
   float: left;
@@ -294,7 +302,7 @@ img.x {
   position: relative;
   margin-top: 0px;
   height: 15px;
-  padding-bottom: 10px;
+  padding-bottom: 10px !important;
   margin-bottom: -10px;
 }
 .NotificationSection.last {
@@ -312,6 +320,9 @@ img.x {
   top: -10px;
   margin-bottom: -10px;
 }
+.NotificationSection .CallAvatar {
+  float: left;
+}
 .LeftBarNotificationMessageSection {
   float: left;
   padding-left: 0px;
@@ -320,6 +331,7 @@ img.x {
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
   padding-left: 5px;
+  padding-bottom: 25px;
   height: 20px !important;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName span {
@@ -334,11 +346,6 @@ img.x {
   top: -5px;
   margin-bottom: -10px;
 }
-.LeftBarNotificationMessageSection .NotificationTime {
-  font-size: 11px;
-  right: 0;
-  bottom: 10px !important;
-}
 .LeftBarNotificationMessageSection .NotificationMessage {
   padding-left: 5px;
 }
@@ -349,6 +356,12 @@ img.x {
   /*width: 90%;*/
   max-width: 86%;
   padding-left: 10px;
+}
+.Overlay.notifications .LeftBarNotificationMessageSection .NotificationDisplayName {
+  padding-bottom: 25px !important;
+}
+.Overlay.notifications .NotificationMessages .NotificationTime {
+  bottom: 15px;
 }
 .CallStatusText.ringing {
   max-width: 40% !important;

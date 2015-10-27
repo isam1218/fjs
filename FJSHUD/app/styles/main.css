@@ -265,7 +265,7 @@ p {
   left: 10px;
   width: 40px;
   height: 40px;
-  background: url("../img/XApp-Icons.png?v=1425679800685") no-repeat 0px 0px;
+  background: url("../img/XApp-Icons.png") no-repeat 0px 0px;
 }
 .DropDownMoreList {
   position: absolute;
@@ -727,7 +727,7 @@ p {
   max-width: 85%;
 }
 .LeftBar .LeftBarTop .WidgetTabBar {
-  background: url() transparent !important;
+  background: transparent !important;
 }
 .LeftBar .grouped a.ListRow:nth-child(odd) {
   background-color: #fff !important;
@@ -743,10 +743,10 @@ p {
   width: 24px;
   height: 24px;
   z-index: 101;
-  background: url("../img/XIconSet-24x24.png?v=1432149616933") no-repeat -168px -24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -168px -24px;
 }
 .LeftBar .ContactSearch span.favorites {
-  background: url('../img/XIconSet-24x24.png?v=1432149616933') no-repeat -284px -24px;
+  background: url('../img/XIconSet-24x24.png') no-repeat -284px -24px;
 }
 .LeftBar .ContactSearch .SearchBox {
   margin: .5em;
@@ -1552,7 +1552,7 @@ p {
   -webkit-border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   -webkit-border-top-right-radius: 10px;
-  background-image: url("../img/XTile-Widget.png?v=1425679800685");
+  background-image: url("../img/XTile-Widget.png");
   box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
   -webkit-box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.3), 0px 5px 10px #ffffff inset;
   border: solid 1px #ccc;
@@ -1634,7 +1634,7 @@ p {
   /* W3C */
 }
 .Widget .ToolBar .selectWrapper select {
-  background: url() no-repeat 0 0 transparent;
+  background: no-repeat 0 0 transparent;
   line-height: 1;
   border: 0;
   border-radius: 0;
@@ -1790,22 +1790,22 @@ p {
   padding-right: 10px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_Office {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -95px;
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -95px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_Office .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -95px;
+  background: url("../img/XAvatarBorder.png") no-repeat -130px -95px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_External {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -140px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_External .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -130px -140px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_Queue {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -95px -185px;
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -185px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_Queue .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -130px -185px;
+  background: url("../img/XAvatarBorder.png") no-repeat -130px -185px;
 }
 .WidgetBody .ListRow .Avatar.CallAvatar_Office,
 .WidgetBody .ListRow .Avatar.CallAvatar_External,
@@ -1842,22 +1842,22 @@ p {
   display: none;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_Office {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -95px;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_Office .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -95px;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_External {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -140px;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_External .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -140px;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_Queue {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -185px;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_Queue .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -185px;
 }
 .WidgetBody .vmsection .Avatar.CallAvatar_Office,
 .WidgetBody .vmsection .Avatar.CallAvatar_External,
@@ -1938,7 +1938,7 @@ p {
 .WidgetHeaderCallStatus .NoCallIcon {
   height: 16px;
   width: 24px;
-  background: url("../img/XIconSet-24x24.png?v=1383213555647") no-repeat -24px -72px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -24px -72px;
 }
 .WidgetSectionTitle {
   height: 2.5em;
@@ -2256,28 +2256,28 @@ p {
   height: 40px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -140px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -140px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Office {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -95px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Office .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -95px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -140px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_External .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -140px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -140px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Queue {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -185px;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -185px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar.CallAvatar_Queue .AvatarInteractable {
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -185px;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -185px;
 }
 .WidgetMe .WidgetBody .CurrentCall .LeftSide .Avatar img {
   height: 32px;
@@ -4483,7 +4483,7 @@ div.NewCall .XButton.XButtonNormal {
   height: 24px;
 }
 .Widget.Queues .QueueStatTable .ContentCellIcon.ChatHeader {
-  background: url("../img/XStatus.png?v=1425679800685") no-repeat -103px -8px;
+  background: url("../img/XStatus.png") no-repeat -103px -8px;
   border: none;
   width: 13px;
   height: 11px;
@@ -4491,7 +4491,7 @@ div.NewCall .XButton.XButtonNormal {
   top: 8px;
 }
 .Widget.Queues .QueueStatTable .ContentCellIcon.QueueHeader {
-  background: url(../img/XStatus.png?v=1425679800685) no-repeat -144px -24px;
+  background: url("../img/XStatus.png") no-repeat -144px -24px;
 }
 .Widget.Queues .QueueStatTable .statusCell {
   color: #666;
@@ -6042,7 +6042,7 @@ form ul li {
 .Widget.Conversation.conference .WidgetTabContent.currentCall .ListRow .Avatar.CallAvatar.CallAvatar_Office {
   width: 40px !important;
   height: 40px !important;
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -5px -95px !important;
+  background: url("../img/XAvatarBorder.png") no-repeat -5px -95px !important;
   margin: 2px 5px !important;
   border: none;
 }
@@ -6066,7 +6066,7 @@ form ul li {
   left: 0 !important;
   top: 0 !important;
   display: none;
-  background: url("../img/XAvatarBorder.png?v=1425679800685") no-repeat -50px -95px !important;
+  background: url("../img/XAvatarBorder.png") no-repeat -50px -95px !important;
 }
 .Widget.Conversation .WidgetBody {
   position: relative;
@@ -7578,10 +7578,10 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3), 0px 2px 2px #ffffff inset;
 }
 .CheckboxItem-true {
-  background: url("../img/XIconSet-24x24.png?v=1383302254789") no-repeat -96px -48px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -96px -48px;
 }
 .CheckboxItem-false {
-  background: url("../img/XIconSet-24x24.png?v=1383302254789") no-repeat -120px -48px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -120px -48px;
 }
 .ImgBtnUpload {
   display: inline-block;
@@ -7806,53 +7806,53 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .IsCallHold {
   height: 40px;
   width: 40px;
-  background: url("../img/XActionSet-40x40.png?v=1433885191397") no-repeat 0px -240px;
+  background: url("../img/XActionSet-40x40.png") no-repeat 0px -240px;
 }
 .IsOnCall {
   height: 40px;
   width: 40px;
-  background: url("../img/XActionSet-40x40.png?v=1433885191397") no-repeat -80px -240px;
+  background: url("../img/XActionSet-40x40.png") no-repeat -80px -240px;
 }
 .CallIsMuted {
   height: 40px;
   width: 40px;
-  background: url("../img/XActionSet-40x40.png?v=1433885191397") no-repeat -40px -240px;
+  background: url("../img/XActionSet-40x40.png") no-repeat -40px -240px;
 }
 .FonalityIcon {
   position: absolute;
   top: 180px;
   left: 30px;
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat 0px 0px;
+  background: url("../img/XDialog-Errors.png") no-repeat 0px 0px;
 }
 .PbxIcon {
   position: absolute;
   top: 180px;
   right: 30px;
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat 0px -90px;
+  background: url("../img/XDialog-Errors.png") no-repeat 0px -90px;
 }
 .WebIcon {
   position: absolute;
   top: 10px;
   left: 190px;
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -140px 0px;
+  background: url("../img/XDialog-Errors.png") no-repeat -140px 0px;
 }
 .PbxArrowIcon.Active-true {
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -470px 0px;
+  background: url("../img/XDialog-Errors.png") no-repeat -470px 0px;
 }
 .WebArrowIcon.Active-true {
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -280px 0px;
+  background: url("../img/XDialog-Errors.png") no-repeat -280px 0px;
 }
 .InternetArrowIcon.Active-true {
-  background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -380px 0px;
+  background: url("../img/XDialog-Errors.png") no-repeat -380px 0px;
 }
 .InternetArrowIcon.Active-false {
-  background: url("../img/XDialog-Errors.png?v=1383302254789") no-repeat -380px -90px;
+  background: url("../img/XDialog-Errors.png") no-repeat -380px -90px;
 }
 .PbxArrowIcon.Active-false {
-  background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -470px -80px;
+  background: url("../img/XDialog-Errors.png") no-repeat -470px -80px;
 }
 .WebArrowIcon.Active-false {
-  background: url("../img/XDialog-Errors.png?v=1425679800685") no-repeat -280px -90px;
+  background: url("../img/XDialog-Errors.png") no-repeat -280px -90px;
 }
 .RecordingIcon {
   background: transparent url("../img/XIconSet-24x24.png") no-repeat -152px -4px;
@@ -7896,7 +7896,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   -webkit-flex: 1;
 }
 .LeftBarNotificationMessageSection .NotificationDisplayName {
-  height: 2.5em;
+  height: 2em;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -7996,7 +7996,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusIconContainer .CallStatusIcon {
   width: 38px;
   height: 38px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -82px -242px;
+  background: url('../img/XActionSet-40x40.png') no-repeat -82px -242px;
 }
 .CallStatusContainerInbound,
 .CallStatusContainerOutbound,
@@ -8097,7 +8097,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .CallStatusContainerOutbound .CallStatusText .memberName .MyCallBlock_Rec,
 .CallStatusContainerQueue .CallStatusText .memberName .MyCallBlock_Rec {
   position: absolute;
-  background: transparent url("../img/XIconSet-24x24.png?v=1425679800685") no-repeat scroll -152px -4px;
+  background: transparent url("../img/XIconSet-24x24.png") no-repeat scroll -152px -4px;
   width: 36px;
   height: 19px;
   display: none;
@@ -8144,7 +8144,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   text-align: center;
 }
 .NotificationSectionHeader .NotificationSectionHeaderImage {
-  background: url("../img/XApp-Icons.png?v=1418381374907") no-repeat 0px 0px;
+  background: url("../img/XApp-Icons.png") no-repeat 0px 0px;
 }
 .NotificationSectionHeader .NotificationHeaderTitle {
   display: inline-block;
@@ -8240,12 +8240,17 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   height: 0px;
   padding-bottom: 10px;
 }
+.NotificationSection.last {
+  min-height: 60px;
+  height: auto !important;
+}
 .NotificationSection.open {
   height: auto;
 }
 .NotificationHeader {
   float: right;
   margin-right: -1px;
+  height: 0px;
 }
 .NotificationHeader .firstHeaderTitle {
   position: relative;
@@ -8284,7 +8289,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   right: 20px;
   width: 51px;
   height: 21px;
-  background: url("../img/XEvent.png?v=1418381374907") no-repeat 0px 0px;
+  background: url("../img/XEvent.png") no-repeat 0px 0px;
   position: relative;
   right: 0;
   bottom: 14px;
@@ -8293,11 +8298,11 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
   width: 50%;
   height: 24px;
   margin: -3px auto 0 auto;
-  background: url("../img/XIconSet-24x24.png?v=1418381374907") no-repeat -24px -24px;
+  background: url("../img/XIconSet-24x24.png") no-repeat -24px -24px;
 }
 .NotificationAvatar {
-  width: 40px;
-  height: 40px;
+  width: 33px;
+  height: 33px;
   margin: 0 auto;
   border: 1px solid #3c9c00;
   border-radius: 2px;
@@ -8445,7 +8450,7 @@ a.Messages {
   height: 26px;
 }
 .Overlay.notifications .overlayNotificationsSection {
-  background: url() #ffffff;
+  background: #fff;
 }
 .Overlay.notifications .error .LeftBarNotificationAvatarSection {
   border-right: none 0px;
@@ -8476,9 +8481,6 @@ a.Messages {
 .Overlay.notifications .Messages .AvatarWarningSmall {
   left: 5px;
   top: 10px;
-}
-.Overlay.notifications .Messages .NotificationAvatar {
-  top: 10px !important;
 }
 .Overlay.notifications .Messages .LeftBarNotificationMessageSection {
   margin-left: 5px;
@@ -8584,7 +8586,7 @@ a.Messages {
   width: 94%;
   left: 15px;
   margin-bottom: 20px;
-  background: url() #ffffff;
+  background: #fff;
 }
 .Overlay.notifications .NotificationMessages .overlayNotificationsSection:before {
   content: '';
@@ -8647,7 +8649,7 @@ a.Messages {
   left: -1px;
   width: 24px;
   height: 24px;
-  background: url("../img/XIconSet-24x24.png?v=1425679800685") -24px -24px;
+  background: url("../img/XIconSet-24x24.png") -24px -24px;
 }
 .Overlay .Foreground .Sections {
   padding-top: 10px;
@@ -8688,7 +8690,7 @@ a.Messages {
   height: inherit;
 }
 .Overlay .Foreground .Section .network {
-  background: url("../img/Network-Problems.png?v=1425679800685") no-repeat 0px 0px;
+  background: url("../img/Network-Problems.png") no-repeat 0px 0px;
   width: 504px;
   height: 323px;
 }
@@ -8795,7 +8797,7 @@ a.Messages {
   margin-top: -8px;
   width: 40px;
   height: 40px;
-  background: url("../img/XApp-Icons.png?v=1425679800685") no-repeat 0px 0px;
+  background: url("../img/XApp-Icons.png") no-repeat 0px 0px;
 }
 .Overlay .Foreground .Header .headerIcon.share {
   background-position: -240px 0px;
@@ -9683,7 +9685,7 @@ a.Messages {
   width: 300px;
   max-height: 500px;
   font-size: 1em;
-  background: url() #ffffff;
+  background: #fff;
 }
 @font-face {
   font-family: Comic Sans;
@@ -9699,7 +9701,7 @@ a.Messages {
 #CallAlert .CallStatusIconContainer .CallStatusIcon {
   width: 30px;
   height: 30px;
-  background: url('../img/XActionSet-40x40.png?v=1418381374907') no-repeat -80px -240px;
+  background: url('../img/XActionSet-40x40.png') no-repeat -80px -240px;
   margin-left: -5px;
   margin-top: -5px;
 }

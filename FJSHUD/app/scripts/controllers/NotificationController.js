@@ -45,8 +45,8 @@ hudweb.controller('NotificationController',
   $scope.showAway = false;
   $scope.showOld = false;
   $scope.displayAlert = false;
-  $scope.clearOld;       
-    
+  $scope.clearOld;
+  $scope.alertDuration = settingsService.getSetting('alert_call_duration');      
   phoneService.getInputDevices().then(function(data){
     // can't find plugin or it's outdated
     if (!phoneService.isPhoneActive() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
@@ -474,7 +474,8 @@ hudweb.controller('NotificationController',
         phoneService.registerPhone(true);
       }
     }
-
+    $scope.alertDuration = data['alert_call_duration'];
+    
     if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){// 
         if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
@@ -510,6 +511,8 @@ hudweb.controller('NotificationController',
     }
   };
 
+  var bargeFlag = false;
+
   var sendBargeNotification = function(callBarger, msgDate, msgXpid, type, whisperId){
     var extraNotification, typeLabel;
     switch (type) {
@@ -535,6 +538,7 @@ hudweb.controller('NotificationController',
     };
     // don't send notification to the party that's NOT being whispered to
     if (type != 'whisper' || type == 'whisper' && $rootScope.myPid == whisperId){
+      bargeFlag = true;
       $scope.notifications.unshift(extraNotification);
       $scope.todaysNotifications.push(extraNotification);
       if (displayDesktopAlert && nservice.isEnabled())
@@ -543,23 +547,25 @@ hudweb.controller('NotificationController',
   };
 
   var delete_notification_from_notifications_and_today = function(xpid){
-    for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
-      if($scope.notifications[i].xpid == xpid){
-        $scope.notifications.splice(i,1);
-        break;
-      } else if ($scope.notifications[i].vmId == xpid){
-        $scope.notifications.splice(i,1);
-        break;
+    if (xpid){
+      for(var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
+        if($scope.notifications[i].xpid == xpid){
+          $scope.notifications.splice(i,1);
+          break;
+        } else if ($scope.notifications[i].vmId == xpid){
+          $scope.notifications.splice(i,1);
+          break;
+        }
       }
-    }
 
-    for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
-      if($scope.todaysNotifications[j].xpid == xpid){
-        $scope.todaysNotifications.splice(j,1);
-        break;
-      } else if ($scope.todaysNotifications[j].vmId == xpid){
-        $scope.todaysNotifications.splice(j,1);
-        break;
+      for(var j = 0, jLen = $scope.todaysNotifications.length; j < jLen; j++){
+        if($scope.todaysNotifications[j].xpid == xpid){
+          $scope.todaysNotifications.splice(j,1);
+          break;
+        } else if ($scope.todaysNotifications[j].vmId == xpid){
+          $scope.todaysNotifications.splice(j,1);
+          break;
+        }
       }
     }
   };
@@ -627,12 +633,15 @@ hudweb.controller('NotificationController',
     var myContactObj = contactService.getContact($rootScope.myPid);
     
     // if someone barges...
-    if (!myContactObj.call || myContactObj.call.bargers.length == 0){
+    if ((bargeFlag && !myContactObj.call) || (bargeFlag && myContactObj.call.bargers && myContactObj.call.bargers.length == 0)){
       delete_notification_from_notifications_and_today(msgXpid);
-    } else if (myContactObj.call.bargers.length > 0){
+      bargeFlag = false;
+    } else if (myContactObj.call && myContactObj.call.bargers && myContactObj.call.bargers.length > 0){
       // delete any existing barge-notification...
-      if (msgXpid)
+      if (bargeFlag && msgXpid){
         delete_notification_from_notifications_and_today(msgXpid);
+        bargeFlag = false;
+      }
       // start creation of new barge notification...
       prepareBargeNotification(myContactObj);
     } 
@@ -691,22 +700,19 @@ hudweb.controller('NotificationController',
 			}
     }else{
 
-	      if(nservice.isEnabled()){
-	        for (var i = 0; i < $scope.calls.length; i++){
-	           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-	        } 
-	      }else{
-	        phoneService.removeNotification();
-	        
-	        if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
-	           $scope.displayAlert = true;	           
-	            $timeout(cacheNotification,1000);
-	        }else{	        		        	
-	            phoneService.cacheNotification(undefined,0,0);
-	        }  
-	      }
+      if(nservice.isEnabled()){
+        for (var i = 0; i < $scope.calls.length; i++){
+           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
+        } 
+      }else{
+    	phoneService.removeNotification();
+    	
+        if($scope.calls.length > 0){
+           $scope.displayAlert = true;            
+            $timeout(cacheNotification,1000);
+        }
       }
-    
+    }
 
     
 	});
@@ -726,13 +732,11 @@ hudweb.controller('NotificationController',
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-			
-			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0 || $scope.errors.length > 0){
-			      phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-			 }else{
-				  phoneService.removeNotification();
-			      phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-			}
+			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+               phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
+             }else{
+               phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
+             }
 		}
 		element = null;
 		$scope.displayAlert = false;
@@ -910,7 +914,7 @@ hudweb.controller('NotificationController',
 
         }
       
-        if (displayDesktopAlert){
+      if (displayDesktopAlert){
         	phoneService.setCancelled(false);
                if ($scope.todaysNotifications.length > 0){
                       phoneService.setStayHidden(false);
@@ -918,8 +922,10 @@ hudweb.controller('NotificationController',
                           phoneService.displayWebphoneNotification(item,"",false);
                           //nservice.displayWebNotification(item);
                        }else{
-                          $scope.displayAlert = true;
-                          $timeout(displayNotification, 1500);
+							phoneService.getPlugin().then(function() {
+								$scope.displayAlert = true;
+								$timeout(displayNotification, 1500);
+							});
                        }
              }
       }else{
@@ -959,7 +965,10 @@ hudweb.controller('NotificationController',
 	};
 
   var updateNotificationLabel  = function(notification){
-    var type = notification.type;
+    var type = notification.type; 
+    //decode the notification message before stripping it's html tags
+    var decoded = $('<div/>').html(notification.message).text();
+    
     switch(type){
       case 'q-alert-rotation':
             notification.label = $scope.verbage.long_waiting_call;
@@ -978,7 +987,11 @@ hudweb.controller('NotificationController',
         notification.label = 'broadcast message';
         break;
       case 'gchat':
-        notification.label = "group chat to";
+        // differentiate b/w group chat and queue chat
+        if (notification.audience == 'group')
+          notification.label = "group chat to";
+        else if (notification.audience == 'queue')
+          notification.label = 'queue chat to';
         break;
       case 'vm':
         var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
@@ -1003,7 +1016,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(notification.message);
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(decoded);//.replace(/<\/?[^>]+(>|$)/g, '');//remove the html tags//$sce.trustAsHtml(notification.message);
         break;
       case 'wall':
         notification.label = "share";
@@ -1041,12 +1054,25 @@ hudweb.controller('NotificationController',
 
   $scope.checkIfGroup = function(msg){
     if (msg != undefined && msg.audience == 'group'){
+      // display group avatar rather than individual
       var groupId = msg.context.split(':')[1];
       var ourGroup = groupService.getGroup(groupId);
       return ourGroup;
+    } else if (msg != undefined && msg.audience == 'queue'){
+      // display queue avatar rather than individual avatar
+      var queueId = msg.context.split(':')[1];
+      var ourQueue = queueService.getQueue(queueId);
+      return ourQueue;
     } else {
       return msg.fullProfile;
     }
+  };
+
+  $scope.determineAvatarType = function(msg){
+    if (msg.type == 'vm' || msg.type == 'missed-call')
+      return 4;
+    else if (msg.audience == 'queue')
+      return 3;
   };
 
   $scope.$on('$routeChangeSuccess', function(event,data){
@@ -1055,21 +1081,21 @@ hudweb.controller('NotificationController',
       if (singleMsg != undefined){
         switch(singleMsg.audience){
           case 'group':
-            if (singleMsg.context){
+            if (singleMsg.context && singleMsg.type == 'gchat'){
               var groupNoteId = singleMsg.context.split(':')[1];
               if (data.params.route == 'chat' && data.params.groupId == groupNoteId)
                 $scope.remove_notification(singleMsg.xpid);
             }
             break;
           case 'queue':
-            if (singleMsg.context){
+            if (singleMsg.context && singleMsg.type == 'gchat'){
               var queueNoteId = singleMsg.context.split(':')[1];
               if (data.params.route == 'chat' && data.params.queueId == queueNoteId)
                 $scope.remove_notification(singleMsg.xpid);              
             }
             break;
           case 'contact':
-            if (singleMsg.context){
+            if (singleMsg.context && singleMsg.type == 'chat'){
               var contactNoteId = singleMsg.context.split(':')[1];
               if (data.params.route == 'chat' && data.params.contactId == contactNoteId)
                 $scope.remove_notification(singleMsg.xpid);

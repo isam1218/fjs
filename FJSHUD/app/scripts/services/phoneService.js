@@ -2,7 +2,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	function($q, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams,ntpService) {
 
 	var top_window = window.top;
-	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"><param name="debug" value="1" /></object>';
+	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"></object>';
 	var phonePlugin;
 	var version;
 	var deferred = $q.defer();
@@ -10,6 +10,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var deferredCalls = $q.defer();
 	var deferredInputDevices = $q.defer();
 	var deferredOutputDevices = $q.defer();
+	var deferredPlugin = $q.defer();
 	$rootScope.volume = {};
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
@@ -60,12 +61,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      var CALL_STATUS_ERROR = "3";
      $rootScope.callState = {};
 
-     $rootScope.callState.CALL_UNKNOWN = -1;
-     $rootScope.callState.CALL_RINGING = 0;
-     $rootScope.callState.CALL_ACCEPTED = 2;
-     $rootScope.callState.CALL_HOLD = 3;
-
-
+     $rootScope.callState = fjs.CONFIG.CALL_STATES;          
+     $rootScope.calltype = fjs.CONFIG.CALL_TYPES;
+     $rootScope.bargetype = fjs.CONFIG.BARGE_TYPE;
+     
     var REG_STATUS_UNKNOWN = -1;
 	var REG_STATUS_OFFLINE = 0;
 	var REG_STATUS_ONLINE = 1;
@@ -654,6 +653,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
          		alertPlugin.initAlert(url);
 				removeNotification();
          		activatePhone();
+				
+				setTimeout(function() {
+					deferredPlugin.resolve(alertPlugin);
+				}, 1000);
 
             //isRegistered = true;
 			if(!soundEstablished){
@@ -709,6 +712,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
             isRegistered = false;
             return;
         }
+	};
+	
+	this.getPlugin = function() {
+		return deferredPlugin.promise;
 	};
 
 	this.resetAlertPosition = function(){
