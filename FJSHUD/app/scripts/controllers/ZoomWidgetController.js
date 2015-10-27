@@ -889,6 +889,7 @@ $scope.reloadRoute = function() {
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
+  alert($scope.startMinute);
 
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -917,6 +918,13 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
       $scope.hourUTC = parseInt(dates.substr(1,2)) + 12;
       
     }
+ }
+ // for 30 min timezones
+ if(dates.substr(3,2) == 30 && dates.charAt(0) == '-'){
+  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) + 30);
+ }
+ if(dates.substr(3,2) == 30 && dates.charAt(0) == '+'){
+  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) - 30);
  }
 //for timezones with +
  if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '+'){
@@ -1040,6 +1048,13 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
       $scope.hourUTC = parseInt(dates.substr(1,2)) + 12;
       
     }
+ }
+// for 30 min timezones
+ if(dates.substr(3,2) == 30 && dates.charAt(0) == '-'){
+  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) + 30);
+ }
+ if(dates.substr(3,2) == 30 && dates.charAt(0) == '+'){
+  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) - 30);
  }
 //for timezones with +
  if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '+'){
