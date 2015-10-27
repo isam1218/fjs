@@ -81,12 +81,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//this.cancelled = false;
 	browser_on_focus = true;
-	var isCancelled = false;
-
+	var isCancelled = localStorage['isCancelled'] || false;	
+	
 	//set the 'cancelled' flag
 	this.setCancelled = function(is_cancelled)
 	{
 		isCancelled = is_cancelled;
+		localStorage['isCancelled'] = is_cancelled;
 	}
 	//get the 'cancelled' flag
 	this.getCancelled = function()
@@ -182,6 +183,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(top_window == window.self)
 		{
 			top_window.attachEvent("onFocus",function(){
+				isCancelled = localStorage['isCancelled'];
 				console.log("onFocus - top_window: cancelled? " + isCancelled);
 				browser_on_focus = true;
 				//remove if the alert was closed
@@ -212,6 +214,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				}
 			});
 			top_window.attachEvent("onBlur",function(){
+				isCancelled = localStorage['isCancelled'];
 				console.log("onBlur - top_window: cancelled? " + isCancelled);
 				browser_on_focus = false;
 				//remove if the alert was closed
@@ -240,6 +243,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(top_window == window.self)
 		{
 			top_window.addEventListener("focus", function(){
+				isCancelled = localStorage['isCancelled'];
 				console.log("focus - top_window: cancelled? " + isCancelled);
 				browser_on_focus = true;
 				//remove if the alert was closed
@@ -271,6 +275,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 			}, false);
 			top_window.addEventListener("blur", function(){
+				isCancelled = localStorage['isCancelled'];
 				console.log("blur - top_window : " + isCancelled);
 				browser_on_focus = false;
 				//remove if the alert was closed
@@ -783,6 +788,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/Close':
 	    			removeNotification();
 	    			isCancelled = true;
+	    			localStorage['isCancelled'] = isCancelled;
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
