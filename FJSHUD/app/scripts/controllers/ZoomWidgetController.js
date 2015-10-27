@@ -889,7 +889,7 @@ $scope.reloadRoute = function() {
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
-  alert($scope.startMinute);
+ 
 
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
