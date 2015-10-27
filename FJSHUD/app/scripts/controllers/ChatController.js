@@ -342,7 +342,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				cutoff = data[i].created;
 			
 			// update html per message
-			data[i].message = decoded;//$filter('chatify')(data[i].message);
+			data[i].message = $filter('chatify')(decoded);//$filter('chatify')(data[i].message);
 			
 			$scope.messages.push(data[i]);
 		}
