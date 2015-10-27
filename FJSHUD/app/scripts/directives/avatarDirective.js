@@ -44,10 +44,17 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					classy += 'External';
 					element.addClass(classy);
 				}
-				else
-					element.addClass('AvatarNormal');
+				else{
+					// if not recording view -> display sq avatar, else in recording view -> only display circle avatars
+					if (attrs.profile !== 'recording')
+						element.addClass('AvatarNormal');
+					else{
+						classy += 'Office';
+						element.addClass(classy);
+					}
+				}
 			}
-			else{
+			else {
 				element.addClass('AvatarNormal');
 			}
 
