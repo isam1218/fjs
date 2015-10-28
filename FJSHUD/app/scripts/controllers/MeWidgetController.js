@@ -832,21 +832,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         myHttpService.update_avatar(data);
     };
 
-    $scope.$on('contacts_synced', function(event, data) {
-
-        
-        if(data && data != undefined){
-            var meUser = data.filter(function(item){
-                return item.xpid == $scope.meModel['my_pid'];
-            });
-            if(meUser.length >  0){
-                $scope.meModel.first_name=meUser[0].firstName;
-                $scope.meModel.last_name=meUser[0].lastName;
-                $scope.meModel.email = meUser[0].email;
-                $scope.meModel.ims = meUser[0].ims;
-            }
-        }
-    });
     $scope.calllogs = [];
     $scope.isAscending = false;
     $scope.$on('calllog_synced',function(event,data){
