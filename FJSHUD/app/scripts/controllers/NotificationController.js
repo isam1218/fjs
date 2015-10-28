@@ -166,19 +166,9 @@ hudweb.controller('NotificationController',
     if(message.message && message.message != null && message.message != "")
     {
     	if((message.message).indexOf('\n') != -1)//array
-    	{	
-    		messages = (message.message).split('\n');
-    		for(var j=0; j < messages.length; j++)
-		   	{
-    			var decoded = $('<div/>').html(messages[j]).text();
-		   		messages[j] = decoded;
-		   	}
-    	}	
+    		messages = (message.message).split('\n');    		
     	else //string
-    	{	
-    		var decoded = $('<div/>').html(message.message).text();
-    		messages = decoded;
-    	}       
+    		messages = message.message;
     } 
     
     switch(message.type){
@@ -1036,7 +1026,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(decoded);//.replace(/<\/?[^>]+(>|$)/g, '');//remove the html tags//$sce.trustAsHtml(notification.message);
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
