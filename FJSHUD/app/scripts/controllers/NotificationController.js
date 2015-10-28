@@ -52,7 +52,7 @@ hudweb.controller('NotificationController',
     // can't find plugin or it's outdated
     if (!phoneService.isPhoneActive() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
         $scope.addError('browserPlugin');
-
+  });
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
     
   settingsService.getMe().then(function() {
