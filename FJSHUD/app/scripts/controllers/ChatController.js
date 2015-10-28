@@ -333,10 +333,10 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		for (var i = 0, len = data.length; i < len; i++) {
 			var decoded =  $('<div/>').html(data[i].message).text();
 			data[i].fullProfile = contactService.getContact(data[i].from.replace('contacts:', ''));
-			var decoded = $('<div/>').html(data[i].message).text();
+			//var decoded = $('<div/>').html(data[i].message).text();
 			
 			if (data[i].type == 'f.conversation.chat.group.remove'){
-				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + decoded;
+				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + data[i].message;
 			}
 			
 			// keep track of which messages should be on screen based on date
