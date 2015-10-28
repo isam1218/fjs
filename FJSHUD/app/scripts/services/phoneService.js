@@ -95,11 +95,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return isCancelled ;
 	}
 
-	//set the browser onFocus flag
-	/*this.setBrowserOnFocus = function(onFocus)
-	{
-		browser_on_focus = onFocus;
-	}*/
 	//get the browser onFocus flag
 	this.getBrowserOnFocus = function()
 	{
@@ -176,128 +171,67 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-
+	//display or hide alert on browser focus change
+	var displayHideAlert = function(focused)
+	{
+		browser_on_focus = focused;
+		isCancelled = localStorage['isCancelled'];
+		
+		if(nservice.isEnabled()){
+			isCancelled = nservice.getCancelled();
+		}
+		console.log("cancelled? " + isCancelled);	
+		//remove if the alert was closed
+		if(isCancelled)
+		{
+			if(nservice.isEnabled()){
+				for(var detail in callsDetails){
+					nservice.dismiss('INCOMING_CALL',detail);
+				}
+			}
+			else
+				removeNotification();
+			
+			context.isDocumentHidden(true);								
+		}
+		else
+		{
+			if(focused)
+			{									
+				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
+					context.isDocumentHidden(true);	
+				else
+					context.isDocumentHidden(false);				
+			}
+			else		
+				context.isDocumentHidden(false);
+		}
+	};
+	
+	//attach the events to the window
 	if(document.attachEvent){
 		document.attachEvent("onVisibilitychange",context.isDocumentHidden);
 		//attach events to the browser
 		if(top_window == window.self)
-		{
-			top_window.attachEvent("onFocus",function(){
-				isCancelled = localStorage['isCancelled'];
-				console.log("onFocus - top_window: cancelled? " + isCancelled);
-				browser_on_focus = true;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}else{
-						removeNotification();
-					}
-					context.isDocumentHidden(true);
-					console.log('focus - hidden');
-				}
-				else
-				{
-					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					{
-						context.isDocumentHidden(true);
-						console.log('focus - hide alert');
-					}
-					else
-					{
-						context.isDocumentHidden(false);
-						console.log('focus - show alert');
-					}
-				}
+		{	
+			top_window.attachEvent("onFocus",function(){	
+				displayHideAlert(true);				
 			});
-			top_window.attachEvent("onBlur",function(){
-				isCancelled = localStorage['isCancelled'];
-				console.log("onBlur - top_window: cancelled? " + isCancelled);
-				browser_on_focus = false;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}else{
-						removeNotification();
-					}
-					context.isDocumentHidden(true);
-					console.log('blur - hidden');
-				}
-				else
-				{
-					context.isDocumentHidden(false);
-					console.log('blur - show alert');
-				}
+			top_window.attachEvent("onBlur",function(){		
+				displayHideAlert(false);			
 			});
 		}
 	}else{
 		document.addEventListener("visibilitychange", context.isDocumentHidden, false);
 		//attach events to the browser
 		if(top_window == window.self)
-		{
-			top_window.addEventListener("focus", function(){
-				isCancelled = localStorage['isCancelled'];
-				console.log("focus - top_window: cancelled? " + isCancelled);
-				browser_on_focus = true;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}else{
-						removeNotification();
-					}
-					context.isDocumentHidden(true);
-					console.log('focus - hidden');
-				}
-				else
-				{
-					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					{
-						context.isDocumentHidden(true);
-						console.log('focus - hide alert');
-					}
-					else
-					{
-						context.isDocumentHidden(false);
-						console.log('focus - show alert');
-					}
-				}
-
+		{	
+			top_window.addEventListener("focus", function(){	
+				displayHideAlert(true);								
 			}, false);
-			top_window.addEventListener("blur", function(){
-				isCancelled = localStorage['isCancelled'];
-				console.log("blur - top_window : " + isCancelled);
-				browser_on_focus = false;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}else{
-						removeNotification();
-					}
-					context.isDocumentHidden(true);
-					console.log('blur - hidden');
-				}
-				else
-				{
-					context.isDocumentHidden(false);
-					console.log('blur - show alert');
-				}
-
-			}, false);
+			top_window.addEventListener("blur", function(){	
+				displayHideAlert(false);									
+			}, false);			
 		}
 	}
 
@@ -1709,53 +1643,53 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	              right_buttonID = "CALL_ACCEPTED";
 	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm';
 	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-	              left_buttonText = "END";
-	              left_buttonID = "CALL_DECLINED";
-	              if(call.type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
-	                  right_buttonID = "CALL_ON_HOLD";
-	                  right_buttonEnabled = true;
-	                  right_buttonText = "HOLD";
-	              }else{
-	                  //right_buttonID = "CALL_ON_HOLD";
-	                  right_buttonEnabled = false;
-	                  right_buttonText = "HOLD";
+          left_buttonText = "END";
+          left_buttonID = "CALL_DECLINED";
+          if(call.type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
+              right_buttonID = "CALL_ON_HOLD";
+              right_buttonEnabled = true;
+              right_buttonText = "HOLD";  
+          }else{
+              //right_buttonID = "CALL_ON_HOLD";
+              right_buttonEnabled = false;
+              right_buttonText = "HOLD";  
+            
+          }
 
-	              }
+        }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
+          right_buttonText = "TALK";
+          right_buttonEnabled = true;
+          right_buttonID = "talk";
+        }
+        if(call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
+          callType = "Queue";
+        }else if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
+          callType = "External";
+        }else{
+          callType = "Office";
+        }
+      
 
-	            }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
-	              right_buttonText = "TALK";
-	              right_buttonEnabled = true;
-	              right_buttonID = "talk";
-	            }
-	            if(call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-	              callType = "Queue";
-	            }else if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
-	              callType = "External";
-	            }else{
-	              callType = "Office";
-	            }
+        var callStart = ntpService.calibrateNativeTime(call.created);
+        var holdStart = ntpService.calibrateNativeTime(call.holdStart);
 
-
-	            var callStart = ntpService.calibrateNativeTime(call.created);
-	            var holdStart = ntpService.calibrateNativeTime(call.holdStart);
-
-	            data = {
-	                  "notificationId": call.xpid,
-	                  "leftButtonText" : left_buttonText,
-	                  "rightButtonText" : right_buttonText,
-	                  "leftButtonId" : left_buttonID,
-	                  "rightButtonId" : right_buttonID,
-	                  "leftButtonEnabled" : true,
-	                  "rightButtonEnabled" : right_buttonEnabled,
-	                  "callerName" : call.displayName,
-	                  "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
-	                  "callCategory" : callType,
-	                  "muted" : call.mute,
-	                  "recorded" : call.record,
-	                "created": callStart,
-	                "holdStart": holdStart
-	            };
-	            this.displayWebphoneNotification(data,"INCOMING_CALL",true);
+        data = {
+              "notificationId": call.xpid, 
+              "leftButtonText" : left_buttonText,
+              "rightButtonText" : right_buttonText,
+              "leftButtonId" : left_buttonID,
+              "rightButtonId" : right_buttonID,
+              "leftButtonEnabled" : true,
+              "rightButtonEnabled" : right_buttonEnabled,
+              "callerName" : call.displayName, 
+              "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
+              "callCategory" : callType,
+              "muted" : call.mute ? "1" : "0",
+              "record" : call.record ? "1" : "0",
+            "created": callStart,
+            "holdStart": holdStart
+        };
+        this.displayWebphoneNotification(data,"INCOMING_CALL",true);
 	 };
 
 	 $rootScope.$on('locations_synced', function(event,data){
