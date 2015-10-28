@@ -103,9 +103,10 @@
                                 
                                </span></div>                             
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">
+                              <p>
 	                            <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>                                                     
 	                            <span messagescroll></span>  
-                            </p>
+                              </p>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                                 <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
@@ -162,8 +163,10 @@
                                <div class="NotificationType">...{{ ::message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
                             
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">                            	
+                            	<p>
                             	<span class="vmfootnote vmduration" ng-if="message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
                             	<span messagescroll></span>                                                         
+                            	</p>
                              </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                                 <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
@@ -221,8 +224,10 @@
                                <div class="NotificationType">...{{ message.label }} <span ng-if="::message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">
+	                           <p>
 	                            <span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
 	                            <span messagescroll></span>  
+	                            </p>
                             </div>
                             <div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
                                 <span class="XButton XButtonRed" style="width:70px" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>

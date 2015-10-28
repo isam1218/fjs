@@ -21,11 +21,7 @@ hudweb.directive('messagescroll', ['$compile',
         		return "Missed call from extension " + message.phone; 
             break;
           default:
-           if(message.type == "description")
-            return message.message.replace(/\n/g, '<br/>');   
-           else
-            return $('<div/>').html(message.message).text().replace(/\n/g, '<br/>');  
-                         
+            return message.message.replace(/\n/g, '<br/>');
         }
       };
 
