@@ -66,14 +66,15 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		{
 			return isCancelled ;
 		}
-		
-		this.initNSService = initNSService;
+
+		this.initNSService = initNSService;		
 
 		this.isEnabled = function(){
 			return enabled;
 		};
 
-		this.sendData =  function(data,retry,type){
+	    this.sendData =  function(data,retry,type){
+
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
@@ -112,7 +113,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				iconUrl = 'img/Generic-Error.png';
 
 			var message = "";
-			
+
 		    switch(data.type){
 			  case 'vm':
 			  case 'q-alert-abandoned':

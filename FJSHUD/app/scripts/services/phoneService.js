@@ -82,12 +82,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//this.cancelled = false;
 	browser_on_focus = true;
-	var isCancelled = false;
-
+	var isCancelled = localStorage['isCancelled'] || false;	
+	
 	//set the 'cancelled' flag
 	this.setCancelled = function(is_cancelled)
 	{
 		isCancelled = is_cancelled;
+		localStorage['isCancelled'] = is_cancelled;
 	}
 	//get the 'cancelled' flag
 	this.getCancelled = function()
@@ -175,6 +176,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	var displayHideAlert = function(focused)
 	{
 		browser_on_focus = focused;
+		isCancelled = localStorage['isCancelled'];
 		
 		if(nservice.isEnabled()){
 			isCancelled = nservice.getCancelled();
@@ -231,8 +233,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			top_window.addEventListener("blur", function(){	
 				displayHideAlert(false);									
 			}, false);			
-		}	
-
+		}
 	}
 
 	//this will attempt to send the web phone actions it will attempt three times before quitting
@@ -738,6 +739,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/Close':
 	    			removeNotification();
 	    			isCancelled = true;
+	    			localStorage['isCancelled'] = isCancelled;
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -1316,6 +1318,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.isPhoneActive = function(){
 		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : ( (phonePlugin && phonePlugin.getSession) ? 'old_webphone' : false);
 
+	};
+	
+	this.isPluginInstalled = function() {
+		return (context.webphone || (phonePlugin && phonePlugin.version));
 	};
 
 	this.getVersion = function(){
