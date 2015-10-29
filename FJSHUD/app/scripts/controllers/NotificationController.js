@@ -867,7 +867,7 @@ hudweb.controller('NotificationController',
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
       // if user is in chat conversation (on chat tab) w/ other contact already (convo on screen), don't display notification...
-      if (phoneService.isInFocus() && contextId && $routeParam.route) {
+      if (phoneService.getBrowserOnFocus() && contextId && $routeParam.route) {
 		if (item.type.indexOf('chat') != -1 && $routeParam.route == 'chat') {
 			if (($routeParam.contactId && $routeParam.contactId == contextId) || ($routeParam.conferenceId && $routeParam.conferenceId == contextId) || ($routeParam.groupId && $routeParam.groupId == contextId) || ($routeParam.queueId && $routeParam.queueId == contextId)) {
 				$scope.remove_notification(item.xpid);
