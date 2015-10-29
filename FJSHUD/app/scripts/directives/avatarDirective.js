@@ -45,16 +45,63 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					element.addClass(classy);
 				}
 				else{
-					if (attrs.profile == 'call.fullProfile'){
-						// if c&r --> display circles only
-						classy += 'Office';
-						element.addClass(classy);
+					// directive's type-attribute uses a scope-function which isn't being evaluated in certain areas of the app...
+					switch(attrs.profile){
+						case '::checkIfGroup(message)':
+							// notification views, groups and queues:
+							if ( (scope.message && scope.message.audience == 'group') || (scope.$parent && scope.$parent.message && scope.$parent.message.audience == 'group') ){
+								// if left bar notification or notification overlay view and it's a group chat --> display square avatar
+								element.addClass('AvatarNormal');
+							}
+							// if left bar notification view + queue chat, q broadcast, or q call
+							if (scope.message && scope.message.audience == 'queue'){
+								// if chat or alert --> square avatar
+								switch(scope.message.type){
+									case 'gchat':
+									case 'q-broadcast':
+									case 'q-alert-rotation':
+										element.addClass('AvatarNormal');
+										break;
+									default:
+										// circle avatar for q abandoned and long-wait calls
+										classy += 'Office';
+										element.addClass(classy);
+										break;
+								}
+							}
+							// if notification overlay view + queue chat, broadcast, or call 
+							else if (scope.$parent && scope.$parent.message && scope.$parent.message.audience == 'queue'){
+								// if chat or alert --> square avatar
+								switch(scope.$parent.message.type){
+									case 'gchat':
+									case 'q-broadcast':
+									case 'q-alert-rotation':
+										element.addClass('AvatarNormal');
+										break;
+									default:
+										// circle avatar for q abandoned and long-wait calls
+										classy += 'Office';
+										element.addClass(classy);
+										break;
+								}
+							}
+							break;
+						case 'call.fullProfile':
+								classy += 'Office';
+								element.addClass(classy);
+							break;
+						case 'currentCall.fullProfile':
+								// current call section
+								classy += 'Office';
+								element.addClass(classy);
+							break;
 					}
 					// if not recording view --> display square avatars
-					else if (attrs.profile !== 'recording'){
+					if (attrs.profile !== 'recording'){
 						element.addClass('AvatarNormal');
 					}
 					else{
+						// otherwise -> display circle avatars
 						classy += 'Office';
 						element.addClass(classy);
 					}
