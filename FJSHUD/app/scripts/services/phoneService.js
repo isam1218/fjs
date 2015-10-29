@@ -169,9 +169,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					removeNotification();
 				}
 			}
-			if($routeParams.contactId && $routeParams.route == "chat"){
-				$rootScope.$broadcast("phone_event",{event:'deleteChatNots',contactId:$routeParams.contactId});
-			}
 		}
 	};
 
@@ -182,7 +179,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(top_window == window.self)
 		{
 			top_window.attachEvent("onFocus",function(){
-				console.log("onFocus - top_window: cancelled? " + isCancelled);
 				browser_on_focus = true;
 				//remove if the alert was closed
 				if(isCancelled)
@@ -195,24 +191,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						removeNotification();
 					}
 					context.isDocumentHidden(true);
-					console.log('focus - hidden');
 				}
 				else
 				{
 					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
 					{
 						context.isDocumentHidden(true);
-						console.log('focus - hide alert');
 					}
 					else
 					{
 						context.isDocumentHidden(false);
-						console.log('focus - show alert');
 					}
 				}
 			});
 			top_window.attachEvent("onBlur",function(){
-				console.log("onBlur - top_window: cancelled? " + isCancelled);
 				browser_on_focus = false;
 				//remove if the alert was closed
 				if(isCancelled)
@@ -225,12 +217,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						removeNotification();
 					}
 					context.isDocumentHidden(true);
-					console.log('blur - hidden');
 				}
 				else
 				{
 					context.isDocumentHidden(false);
-					console.log('blur - show alert');
 				}
 			});
 		}
@@ -240,7 +230,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(top_window == window.self)
 		{
 			top_window.addEventListener("focus", function(){
-				console.log("focus - top_window: cancelled? " + isCancelled);
 				browser_on_focus = true;
 				//remove if the alert was closed
 				if(isCancelled)
@@ -253,25 +242,21 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						removeNotification();
 					}
 					context.isDocumentHidden(true);
-					console.log('focus - hidden');
 				}
 				else
 				{
 					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
 					{
 						context.isDocumentHidden(true);
-						console.log('focus - hide alert');
 					}
 					else
 					{
 						context.isDocumentHidden(false);
-						console.log('focus - show alert');
 					}
 				}
 
 			}, false);
 			top_window.addEventListener("blur", function(){
-				console.log("blur - top_window : " + isCancelled);
 				browser_on_focus = false;
 				//remove if the alert was closed
 				if(isCancelled)
@@ -284,12 +269,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						removeNotification();
 					}
 					context.isDocumentHidden(true);
-					console.log('blur - hidden');
 				}
 				else
 				{
 					context.isDocumentHidden(false);
-					console.log('blur - show alert');
 				}
 
 			}, false);
