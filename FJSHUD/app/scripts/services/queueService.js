@@ -95,6 +95,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				queues[i].calls = [];
 				queues[i].members = [];
 				queues[i].longestWait = 0;
+				queues[i].longestWaitDuration = 0;
 				queues[i].longestActive = 0;
 				
 				queues[i].getAvatar = function (index, size) {
@@ -229,8 +230,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			}
 			
 			// no change, so set to zero
-			if (queues[q].longestWait == timestamp)
+			if (queues[q].longestWait == timestamp) {
 				queues[q].longestWait = 0;
+				queues[q].longestWaitDuration = 0;
+			}
+			else
+				queues[q].longestWaitDuration = timestamp - queues[q].longestWait;
 			
 			if (queues[q].longestActive == timestamp)
 				queues[q].longestActive = 0;
