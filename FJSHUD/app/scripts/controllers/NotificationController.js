@@ -984,6 +984,10 @@ hudweb.controller('NotificationController',
             notification.label = $scope.verbage.long_waiting_call;
             var long_waiting_notification = angular.copy(notification);
             long_waiting_calls[notification.xpid] = notification;
+            $timeout(function(){
+              // if user unchecks abandoned call notifications, still need to delete long wait notification
+              deleteLastLongWaitNotification();
+            }, 60000);
         break;
       case 'q-alert-abandoned':
             notification.label = '...abandoned call';
@@ -1154,7 +1158,7 @@ hudweb.controller('NotificationController',
 					//addTodaysNotifications(notification);
 
 				}else if(notification.xef001type == "delete"){
-					if(long_waiting_calls[notification.xpid] == undefined){
+          if(long_waiting_calls[notification.xpid] == undefined){
 						deleteNotification(notification);
 					}
 				}
