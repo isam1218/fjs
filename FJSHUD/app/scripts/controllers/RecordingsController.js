@@ -97,6 +97,15 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	
 	/* action items: */
 	
+	$scope.getLabel = function(rec) {
+		// use "to" or "from" depending on incoming/callee status
+		if (rec.queueId || ((rec.incoming && rec.calleeUserId == $rootScope.myPid) || (!rec.incoming && rec.callerUserId == $rootScope.myPid))) {
+			return $scope.verbage.to;
+		}
+		
+		return $scope.verbage.from;
+	};
+	
 	$scope.playRecording = function(recording) {
 		$rootScope.$broadcast('play_voicemail', recording);
 	};

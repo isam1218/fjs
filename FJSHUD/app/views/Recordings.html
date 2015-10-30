@@ -8,11 +8,11 @@
 			<avatar profile="recording" context="recordings" type="{{::recording.type}}"></avatar>
 			<div class="vminfo" ng-click="playRecording(recording)"> 
 				<div class="displayName">
-					<em>{{::verbage.to}}...</em>
+					<em>{{::getLabel(recording)}}...</em>
 					<p class="vmdisplay">
 						{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.calleePhone }}
 						
-						&lt;{{ ::recording.calleePhone }}&gt;
+						&lt;{{ ::recording.fullProfile.primaryExtension || recording.calleePhone }}&gt;
 					</p>
 					<div class="vmalternate">
 						<div class="vmtime">{{ ::recording.created | fondate: 'MMMM D, hh:mm a':fon_lang_code }}</div>
