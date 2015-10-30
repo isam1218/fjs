@@ -79,7 +79,7 @@
 				  </div>
 				  
 				  <!-- normal messages -->
-                  <div class="Messages" ng-repeat="message in get_new_notifications()">             
+                  <div class="Messages" ng-repeat="message in get_new_notifications() track by message.xpid">             
                      <div class="NotificationHeader"> 
                             <div class="NotificationHeaderBackground"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>

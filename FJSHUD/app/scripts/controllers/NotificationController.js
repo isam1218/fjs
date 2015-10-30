@@ -850,13 +850,6 @@ hudweb.controller('NotificationController',
       contextId = item.context.split(":")[1];
     }
 	
-    if(item.queueId){
-      var queue = queueService.getQueue(item.queueId);
-      if(queue){
-        item.displayName = queue.name;
-      }
-    }
-	
     if(settingsService.getSetting('alert_vm_show_new') != 'true'){
       if(item.type == 'vm'){
         displayDesktopAlert = false;
@@ -995,6 +988,10 @@ hudweb.controller('NotificationController',
         break;
       case 'q-broadcast':
         notification.label = 'broadcast message';
+		
+		// add queue name
+		var queue = queueService.getQueue(notification.queueId);
+		notification.displayName = queue.name;
         break;
       case 'gchat':
         // differentiate b/w group chat and queue chat
