@@ -1070,21 +1070,12 @@ hudweb.controller('NotificationController',
       return ourGroup;
     } else if (msg != undefined && msg.audience == 'queue'){
       // display queue avatar rather than individual avatar
-<<<<<<< HEAD
-      if(msg.context)	
-      {	  
-	      var queueId = msg.context.split(':')[1];
-	      var ourQueue = queueService.getQueue(queueId);
-	      return ourQueue;
-      }
-=======
       if (msg.context)
         var queueId = msg.context.split(':')[1];
       else
         var queueId = msg.queueId;
       var ourQueue = queueService.getQueue(queueId);
       return ourQueue;
->>>>>>> HUDF-1228: set up directive to handle current call avatars and also differentiate b/w group and queue chats vs calls (HUDF-1213) @razlymiles
     } else {
       return msg.fullProfile;
     }
