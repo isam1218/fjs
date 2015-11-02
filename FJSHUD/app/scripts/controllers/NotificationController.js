@@ -862,6 +862,11 @@ hudweb.controller('NotificationController',
         displayDesktopAlert = false;
       }
     }
+    if(settingsService.getSetting('alert_call_outgoing') != 'true' && item.incoming == 'false' || 
+	   settingsService.getSetting('alert_call_incoming') != 'true' && item.incoming == 'true')
+	{
+    	displayDesktopAlert = false;
+	}
 
     // if message is from today...
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
