@@ -86,16 +86,30 @@
 		overflow: hidden;
 	  }
 	}
+
+  .Table a:hover{
+    background: #dddddd;
+  }
 	
-	.Row{
-	   color: gray;
-	   font-size: 11px;
-	   
+  .Row{
+     color: #555;
+     font-size: 12px;
+     padding: 1px 0 1px 0;
+      
+     >div{
+      border-right: 1px solid #fff;
+     }
+
     	&:nth-child(odd) {
-    	  background-color: #eeeeee;
+    	  background-color: #EEE;
     	  overflow: hidden;
     	}
+      &:nth-child(even) {
+        background-color: #F9F9F9;
+        overflow: hidden;
+      }
 	}
+
 	.Header > div, .Row > div {
 	  float: left;
 	  overflow: hidden;
@@ -105,12 +119,12 @@
 	  position: relative;
 	
 	  &:nth-child(1) { 
-		width: 18%; 
-		padding-left: 1px;
+		width: 22%; 
+		padding-left: 3px;
 	  }
 	  
 	  &:nth-child(n+2) { 
-	    width: 13.65%; 
+	    width: 13%; 
 	  }
 	}
   }
