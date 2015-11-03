@@ -862,8 +862,8 @@ hudweb.controller('NotificationController',
         displayDesktopAlert = false;
       }
     }
-    if(settingsService.getSetting('alert_call_outgoing') != 'true' && item.incoming == 'false' || 
-	   settingsService.getSetting('alert_call_incoming') != 'true' && item.incoming == 'true')
+    if((settingsService.getSetting('alert_call_outgoing') != 'true' && item.incoming == 'false') || 
+	   (settingsService.getSetting('alert_call_incoming') != 'true' && item.incoming == 'true'))
 	{
     	displayDesktopAlert = false;
 	}
