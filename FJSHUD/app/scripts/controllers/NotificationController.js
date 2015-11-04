@@ -918,6 +918,22 @@ hudweb.controller('NotificationController',
                // dupe --> don't add to todaysNotifications
                return;
         } else {
+        	if(item.audience == 'queue')
+      	  {
+      			if(item.type == 'q-alert-abandoned')
+      			{
+      				if(settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId))
+      					$scope.todaysNotifications.push(item);				
+      			}
+      			else if(item.type == 'q-alert-rotation')
+      			{
+      				if(settingsService.getSetting('HUDw_QueueNotificationsLW_'+ item.queueId))
+      					$scope.todaysNotifications.push(item);				
+      			}	
+      			else
+      				$scope.todaysNotifications.push(item);
+      	  }	
+          else	
                // otherwise add to todaysNotes
                $scope.todaysNotifications.push(item);
 
