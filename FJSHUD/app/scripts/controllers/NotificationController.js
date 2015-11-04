@@ -922,7 +922,21 @@ hudweb.controller('NotificationController',
                $scope.todaysNotifications.push(item);
 
         }
-      
+      if(item.audience == 'queue')
+	  {
+			if(item.type == 'q-alert-abandoned')
+			{
+				if(!settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId))
+					displayDesktopAlert = false;				
+			}
+			if(item.type == 'q-alert-rotation')
+			{
+				if(!settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId))
+					displayDesktopAlert = false;				
+			}	
+				
+	  }							 
+   
       if (displayDesktopAlert){
         	phoneService.setCancelled(false);
                if ($scope.todaysNotifications.length > 0){
