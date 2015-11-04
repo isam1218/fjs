@@ -918,7 +918,7 @@ hudweb.controller('NotificationController',
                // dupe --> don't add to todaysNotifications
                return;
         } else {
-        	/*if(item.audience == 'queue')
+          if(item.audience == 'queue')
       	  {
       			if(item.type == 'q-alert-abandoned')
       			{
@@ -933,7 +933,7 @@ hudweb.controller('NotificationController',
       			else
       				$scope.todaysNotifications.push(item);
       	  }	
-          else	*/
+          else	
                // otherwise add to todaysNotes
                $scope.todaysNotifications.push(item);
 
