@@ -515,10 +515,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     
     $scope.init_settings = function(type,action){
     	$timeout(function(){
-    		if(!settings[type])
+    		if(!$scope.settings[type])
     			$scope.init_settings(type, action);
     		
-    		var model = settings[type];
+    		var model = $scope.settings[type];
     		var selected = model ? 'true' : 'false';    		
             $scope.update_settings(type,action,model, selected);            
         },1500);
