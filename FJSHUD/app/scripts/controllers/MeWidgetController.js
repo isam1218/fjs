@@ -515,7 +515,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     
     $scope.init_settings = function(type,action){
     	$timeout(function(){
-    		if(!$scope.settings[type])
+    		if(typeof $scope.settings[type] == 'undefined')
     			$scope.init_settings(type, action);
     		
     		var model = $scope.settings[type];
