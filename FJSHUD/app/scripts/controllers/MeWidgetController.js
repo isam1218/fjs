@@ -513,18 +513,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     };
     
-    $scope.init_settings = function(type){
-    	//var settingTime = $timeout(function(){
-    		//if(typeof $scope.settings[type] != 'undefined')
-    		//{    				   
-	    		//$scope.$safeApply(function(){
-	    			$('#'+type).prop('checked', $scope.settings[type]);	
-	    			//$timeout.cancel(settingTime);
-	    		//});
-    		//}	
-       // },1500);
-    };
-
     $scope.queueSummaryStats = {};
 
     $scope.update_queue_treshold = function(type,value){
@@ -829,6 +817,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		$scope.settings = settings = data;
 		update_queues();
         update_settings();
+        $scope.$safeApply();
 	});
     
     $scope.$on('settings_updated',function(event,data){
