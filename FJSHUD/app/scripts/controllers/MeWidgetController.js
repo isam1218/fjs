@@ -515,13 +515,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     
     $scope.init_settings = function(type){
     	//var settingTime = $timeout(function(){
-    		if(typeof $scope.settings[type] != 'undefined')
-    		{    				   
+    		//if(typeof $scope.settings[type] != 'undefined')
+    		//{    				   
 	    		//$scope.$safeApply(function(){
 	    			$('#'+type).prop('checked', $scope.settings[type]);	
 	    			//$timeout.cancel(settingTime);
 	    		//});
-    		}	
+    		//}	
        // },1500);
     };
 
