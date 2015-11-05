@@ -759,13 +759,26 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		}
 		$scope.$safeApply();
     };
-
-    $scope.update_queue_settings = function(type,isActive){
-        for (var i = 0, len = $scope.queues.length; i < len; i++) {
+    
+    var update_queues_settings = function(type,isActive)
+    {
+    	for (var i = 0, len = $scope.queues.length; i < len; i++) {
             $scope.settings[type +$scope.queues[i].xpid] = isActive;
             $scope.update_settings(type+$scope.queues[i].xpid,'update',isActive ? "true" : "false");    
         }
     };
+
+    $scope.update_queue_settings = function(type,isActive, init){
+    	if(init)
+    	{
+    		$timeout(function(){update_queues_settings(type,isActive);}, 2000);
+    	}
+    	else
+    	{	
+    		update_queues_settings(type,isActive);
+    	}
+    };
+    
     $scope.currentWebLauncher = {};
 
     $scope.update_weblauncher_settings = function(){

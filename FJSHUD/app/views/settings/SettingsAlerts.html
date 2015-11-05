@@ -86,27 +86,26 @@
             <div class="QueueSetting QueueSettingHeader QueueSettingCol1">{{::verbage.select_all}}</div>
             <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueNotificationsLW"
-                ng-init="update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW)"
+                ng-init="update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW, true)"
                 ng-change="update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW)"
             ></div>
             <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueAlertsLW"
-                ng-init="update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW)"
+                ng-init="update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW, true)"
                 ng-change="update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW)"
                 ng-disabled="!allQueueNotificationsLW"
            ></div>
             <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueNotificationsAB"
-                ng-init="update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB)"
+                ng-init="update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB, true)"
                 ng-change="update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB)"
                 
             ></div>
             <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"><input type="checkbox"
                 ng-model="allQueueAlertsAB"
-                ng-init="update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB)"
+                ng-init="update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB, true)"
                 ng-change="update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB)"
-                ng-disabled="!allQueueNotificationsAB"
-           
+                ng-disabled="!allQueueNotificationsAB"           
             ></div>
           </div>
           <div class="queueList">          
