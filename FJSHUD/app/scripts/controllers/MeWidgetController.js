@@ -512,6 +512,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
          }
 
     };
+    
+    $scope.init_settings = function(type,action){
+    	$timeout(function(){
+    		if(!settings[type])
+    			$scope.init_settings(type, action);
+    		
+    		var model = settings[type];
+    		var selected = model ? 'true' : 'false';    		
+            $scope.update_settings(type,action,model, selected);            
+        },1500);
+    };
 
     $scope.queueSummaryStats = {};
 
