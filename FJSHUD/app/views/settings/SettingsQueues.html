@@ -7,29 +7,25 @@
         
         <div><span class="queueBlock">{{::verbage.waiting}}</span><input type="number" min="0" style="width:50px"
         ng-model="queueSummaryStats.waiting_calls"
-        ng-init="update_queue_treshold('queueWaitingThreshold',queueSummaryStats.waiting_calls)"
         ng-change="update_queue_treshold('queueWaitingThreshold',queueSummaryStats.waiting_calls)"
         >  {{::verbage.calls}}</div>
         
         <br>
         <div><span class="queueBlock">{{::verbage.avg_wait}}</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
-          ng-model="queueSummaryStats.avg_wait"
-          ng-init="update_queue_treshold('queueAvgWaitThreshold',queueSummaryStats.avg_wait)"
+           ng-model="queueSummaryStats.avg_wait"
           ng-change="update_queue_treshold('queueAvgWaitThreshold',queueSummaryStats.avg_wait)"
         >   {{::verbage.minutes}} </div>
         
         <br>
         <div><span class="queueBlock">{{::verbage.avg_talk}}</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
-          ng-model="queueSummaryStats.avg_talk"
-          ng-init="update_queue_treshold('queueAvgWaitThreshold',queueSummaryStats.avg_wait)"
+             ng-model="queueSummaryStats.avg_talk"
           ng-change="update_queue_treshold('queueAvgTalkThresholdThreshold',queueSummaryStats.avg_talk)"
         >   {{::verbage.minutes}} </div>
         
         <br>
         <div><span class="queueBlock">{{::verbage.abandoned}}</span><input type="number" min="0" pattern="[0-9.]+" style="width:50px"
                ng-model="queueSummaryStats.abandoned"
-               ng-init="update_queue_treshold('queueAbandonThreshold',queueSummaryStats.abandoned)"
-          	   ng-change="update_queue_treshold('queueAbandonThreshold',queueSummaryStats.abandoned)"
+          ng-change="update_queue_treshold('queueAbandonThreshold',queueSummaryStats.abandoned)"
         >   %</div>
       
       </div>
