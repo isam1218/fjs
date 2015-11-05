@@ -517,10 +517,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     	$timeout(function(){
     		if(typeof $scope.settings[type] == 'undefined')
     			$scope.init_settings(type, action);
-    		
-    		var model = $scope.settings[type];
-    		var selected = model ? 'true' : 'false';    		
-            $scope.update_settings(type,action,model, selected);            
+    		else
+    			$scope.update_settings(type,action,$scope.settings[type].toString());            
         },1500);
     };
 
