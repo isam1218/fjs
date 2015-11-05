@@ -514,13 +514,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
     
     $scope.init_settings = function(type){
-    	$timeout(function(){
+    	var settingTime = $timeout(function(){
     		if(typeof $scope.settings[type] == 'undefined')
+    		{	
+    			$timeout.cancel(settingTime);
     			$scope.init_settings(type);
+    		}	
     		else
     		{	   
 	    		$scope.$safeApply(function(){
-	    			$('#'+type).prop('checked', $scope.settings[type]);	    			
+	    			$('#'+type).prop('checked', $scope.settings[type]);	
+	    			$timeout.cancel(settingTime);
 	    		});
     		}	
         },1500);
