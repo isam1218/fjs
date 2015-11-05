@@ -513,12 +513,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     };
     
-    $scope.init_settings = function(type,action){
+    $scope.init_settings = function(type){
     	$timeout(function(){
     		if(typeof $scope.settings[type] == 'undefined')
-    			$scope.init_settings(type, action);
+    			$scope.init_settings(type);
     		else
-    			$scope.update_settings(type,action,$scope.settings[type].toString());            
+    		{	   
+	    		$scope.$safeApply(function(){
+	    			$('#'+type).prop('checked', $scope.settings[type]);	    			
+	    		});
+    		}	
         },1500);
     };
 
