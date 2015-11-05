@@ -93,7 +93,7 @@
 .ChatSearch {
   position: relative;  
   left: 2px;
-  height: 1.8em;
+  height: 28px;
   border-radius: 3px;
   background-color: white;
   border: solid 1px #729C00;
@@ -107,13 +107,23 @@
   .SearchIcon {
     width: 24px;
     height: 24px;
+    margin-top: 2px;
     background: url("../img/XIconSet-24x24.png") no-repeat -168px -24px;
+  }
+
+  .ChatSearchUpArrow{
+    background: url("../img/Chat-Search-Arrow-Up.png") no-repeat 8px 11px;
+  }
+
+  .ChatSearchDownArrow{
+    background: url("../img/Chat-Search-Arrow-Down.png") no-repeat 8px 11px;
   }
   
   .Search {
     border: none;
 	padding: .25em;
 	margin-top: 2px;	
+  padding-bottom: 6px;
   }
   
   .XButton{
@@ -130,6 +140,7 @@
 	  border-left: solid 1px #729C00;
 	  float: right;
 	  cursor: pointer;
+    width: 28px;
 	}
   }
 }
