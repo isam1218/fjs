@@ -5201,6 +5201,9 @@ div.NewCall .XButton.XButtonNormal {
   font-size: 12px;
   padding: 10px;
 }
+.Widget.Intellinote input[type="search"] {
+  float: none;
+}
 .Widget.Intellinote .Intro {
   margin: 0px 0 10px 0;
 }
