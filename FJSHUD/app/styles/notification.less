@@ -451,6 +451,17 @@
         }
     }
 	
+
+	&:last-child {
+		.NotificationSection {
+			height: auto !important;
+		}
+	}
+	
+	&:not(.overlay):nth-last-child(n+6) {
+		display: none;
+	}
+	
 	&:after {
 		clear: both;
 		content: "";

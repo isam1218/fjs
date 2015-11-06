@@ -5850,7 +5850,7 @@ div.NewCall .XButton.XButtonNormal {
   position: relative;
   margin-bottom: 5px;
 }
-.ListMessageChatWidget .ListMessageContent,
+.ListMessage .ListMessageContent,
 .ChatItemTypeRoot-false.ListMessageChatWidget {
   min-height: 22px;
 }
@@ -7801,6 +7801,12 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Messages:not(.first) .NotificationDivider > div {
   border-left: 1px solid #ccc;
 }
+.Messages:last-child .NotificationSection {
+  height: auto !important;
+}
+.Messages:not(.overlay):nth-last-child(n+6) {
+  display: none;
+}
 .Messages:after {
   clear: both;
   content: "";
@@ -7947,6 +7953,9 @@ a.Messages {
   background: url('') #ffffff !important;
   padding-bottom: 0 !important;
   margin-top: 0px;
+  /*.NotificationMessage{
+          max-height: 35px !important;
+        } */
 }
 .Overlay.notifications .Messages .AvatarWarningSmall {
   left: 5px;
@@ -7974,9 +7983,6 @@ a.Messages {
 .Overlay.notifications .Messages .NotificationSection.plugins,
 .Overlay.notifications .Messages .NotificationSection.webphone {
   padding-bottom: 20px;
-}
-.Overlay.notifications .Messages .NotificationMessage {
-  max-height: none !important;
 }
 .Overlay.notifications .XButton.header {
   float: right;

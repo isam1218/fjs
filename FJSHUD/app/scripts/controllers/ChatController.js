@@ -324,7 +324,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	// apply name and avatar and push to view
 	var addMessages = function(data) {
 		for (var i = 0, len = data.length; i < len; i++) {
-			data[i].fullProfile = contactService.getContact(data[i].from.replace('contacts:', ''));
+			data[i].fullProfile = contactService.getContact(data[i].from.replace('contacts:', ''));			
 			
 			if (data[i].type == 'f.conversation.chat.group.remove'){
 				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + data[i].message;

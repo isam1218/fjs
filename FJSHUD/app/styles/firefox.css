@@ -7,7 +7,7 @@ img.x {
   border: 0px none;
   position: absolute;
   margin-left: -15px;
-  margin-top: 12px;
+  margin-top: -3px;
   cursor: pointer;
   z-index: 100;
 }
@@ -280,6 +280,15 @@ img.x {
   /*width: 90%;*/
   max-width: 86%;
   padding-left: 10px;
+}
+.Overlay.notifications .LeftBarNotificationMessageSection .NotificationDisplayName {
+  padding-bottom: 25px !important;
+}
+.Overlay.notifications .NotificationMessages .NotificationTime {
+  bottom: 15px;
+}
+.Overlay.notifications .NotificationMessages .NotificationMessage {
+  max-height: inherit !important;
 }
 .CallStatusText .memberName .name.truncate {
   width: 90% !important;

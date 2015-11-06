@@ -48,48 +48,16 @@ hudweb.controller('NotificationController',
   $scope.displayAlert = false;
   $scope.anotherDevice = false;
   $scope.clearOld;
-  
-  $scope.phoneSessionEnabled = phoneService.isPhoneActive();  
-  
-  $scope.showHideElements = function(index){
-    var showing = $scope.todaysNotifications.length - 5;
-    if(!$scope.phoneSessionEnabled || $scope.anotherDevice)
-      showing = $scope.todaysNotifications.length - 4;
-    if(!$scope.phoneSessionEnabled && $scope.anotherDevice)
-      showing = $scope.todaysNotifications.length - 3;
-    $scope.showing = showing;
-    if (!$scope.showAllNotifications && $scope.todaysNotifications){
-      if (index >= showing)
-        return true;
-      else
-        return false;
-    }
-    return true;
-  };
 
-  $scope.showTodayHeader = function(index, anotherDevice){
-    if ($scope.todaysNotifications.length <= 4){
-      if (index == 0)
-        return true
-      else
-        return false
-    } else {
-      if (!anotherDevice){
-        if (index == $scope.todaysNotifications.length - 5)
-          return true
-        else
-          return false;
-      } else {
-        if (index == $scope.todaysNotifications.length - 4)
-          return true;
-        else
-          return false;
-      }
-    }
-  };        
+  $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
     
-  phoneService.getDevicesPromise().then(function(data){
-    $scope.phoneSessionEnabled = true;
+  settingsService.getMe().then(function() {
+	// delayed so phoneService can do its thing
+	$timeout(function() {
+		// can't find plugin or it's outdated
+		if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
+			$scope.addError('browserPlugin');
+	}, 1000, false);
   });
 
   $scope.getAvatar = function(pid){
@@ -110,11 +78,17 @@ hudweb.controller('NotificationController',
   };
   
   $scope.getMessage = function(message){              
-    var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';      
-     	
-   	if(typeof messages == 'undefined' || typeof messages == 'null')      
-    	      messages="";           
-   
+    //var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';      
+    var messages = '';
+    
+    if(message.message && message.message != null && message.message != "")
+    {
+    	if((message.message).indexOf('\n') != -1)//array
+    		messages = (message.message).split('\n');    		
+    	else //string
+    		messages = message.message;
+    } 
+    
     switch(message.type){
 
       case "vm":
@@ -941,7 +915,8 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(notification.message);
+
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
@@ -975,6 +950,33 @@ hudweb.controller('NotificationController',
     }else{
         return true;
     }
+  };
+
+
+  $scope.checkIfGroup = function(msg){
+    if (msg != undefined && msg.audience == 'group'){
+      // display group avatar rather than individual
+      var groupId = msg.context.split(':')[1];
+      var ourGroup = groupService.getGroup(groupId);
+      return ourGroup;
+    } else if (msg != undefined && msg.audience == 'queue'){
+      // display queue avatar rather than individual avatar
+      if(msg.context)	
+      {	  
+	      var queueId = msg.context.split(':')[1];
+	      var ourQueue = queueService.getQueue(queueId);
+	      return ourQueue;
+      }
+    } else {
+      return msg.fullProfile;
+    }
+  };
+
+  $scope.determineAvatarType = function(msg){
+    if (msg.type == 'vm' || msg.type == 'missed-call')
+      return 4;
+    else if (msg.audience == 'queue')
+      return 3;
   };
 
   $scope.$on('$routeChangeSuccess', function(event,data){

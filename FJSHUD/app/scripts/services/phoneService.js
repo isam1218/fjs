@@ -1326,6 +1326,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : ( (phonePlugin && phonePlugin.getSession) ? 'old_webphone' : false);
 
 	};
+	
+	this.isPluginInstalled = function() {
+		return (context.webphone || (phonePlugin && phonePlugin.version));
+	};
 
 	this.getVersion = function(){
 	return context.version ? context.version : (version ? version : 'undefined');

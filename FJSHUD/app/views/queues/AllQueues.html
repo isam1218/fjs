@@ -62,9 +62,9 @@
 				<span>{{::verbage.queue_name}}</span>
 				<div ng-if="sortColumn == 'name'" ng-class="isAscending ? 'desc_arrow' : 'asc_arrow'"></div>
 			</div>			
-			<div ng-click="setSort('longestWait', queue_options[1])">
+			<div ng-click="setSort('longestWaitDuration', queue_options[1])">
                 <span>{{::verbage.longest_hold}}</span>     
-                <div ng-if="sortColumn == 'longestWait'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
+                <div ng-if="sortColumn == 'longestWaitDuration'" ng-class="isAscending ? 'asc_arrow' : 'desc_arrow'"></div>
             </div>
             <div ng-click="setSort('info.waiting', queue_options[2])">
                 <span>{{::verbage.waiting}}</span>      
