@@ -3,13 +3,18 @@
 var hudweb = angular.module('fjshudApp', [
     'ngRoute',
     'ngSanitize',
-    'flow'
+    'flow',
+    'angulartics',
+    'angulartics.google.analytics'
 ]);
 
-hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
+hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyticsProvider) {
 	// disables debugger injection 
 	$compileProvider.debugInfoEnabled(false);
 	
+	//enable route provider for google analytics
+	$analyticsProvider.virtualPageviews(true);
+
 	// combines responses into one digest cycle
 	$httpProvider.useApplyAsync(true);
 	
@@ -98,18 +103,16 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 			templateUrl: 'views/Intellinote.html',
 			controller: 'IntellinoteController'
 		})
-		.when('/zipwhip',
-		{
-			templateUrl: 'views/Zipwhip.html',
-			controller: 'ZipwhipController'
-		})
 		.otherwise({
 			redirectTo: '/settings'
 		});
 })
 .run(function ($http, $templateCache, $rootScope, $location, $routeParams, StorageService, SettingsService, GroupService, $timeout) {
 	// cache native alert template
+	$http.get('views/nativealerts/Alert.html', { cache: $templateCache });
 	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
+	$http.get('views/popups/NotificationsOverlay.html', { cache: $templateCache });
+	$http.get('views/popups/NetworkErrorsOverlay.html', { cache: $templateCache });
 	
     $rootScope.$on("$locationChangeStart", function(e, next, current) {
     	  
@@ -198,3 +201,9 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider) {
 	  });
 
 });
+
+
+
+
+
+
