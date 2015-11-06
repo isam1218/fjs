@@ -1605,6 +1605,12 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.$on('notification_action', function(event,data){
 		if(data.notificationEventType){
 			switch(data.notificationEventType){
+				case 'ACTIVITY_REPORTED':
+		          // Only process activity from webphone when not in focus.
+		          if (! isInFocus()) {
+		            reportActivity();
+		          }
+		          return;
 				case 'CALL_DECLINED':
 					hangUp(data.notificationId);
 					return;
