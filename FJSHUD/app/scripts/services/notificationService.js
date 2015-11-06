@@ -58,12 +58,12 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		this.setCancelled = function(is_cancelled)
 		{
 			isCancelled = is_cancelled;
-		}
+		};
 		//get the 'cancelled' flag
 		this.getCancelled = function()
 		{
 			return isCancelled ;
-		}
+		};
 		
 		this.initNSService = initNSService;		
 
