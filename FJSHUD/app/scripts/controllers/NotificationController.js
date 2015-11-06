@@ -485,11 +485,10 @@ hudweb.controller('NotificationController',
     }
     $scope.alertDuration = data['alert_call_duration'];
     
-    if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){// 
+    if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){
         if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
-          $timeout(displayNotification
-              , 2500); 
+          //$timeout(displayNotification, 2500); 
         }
     }else{ 
         phoneService.removeNotification();
