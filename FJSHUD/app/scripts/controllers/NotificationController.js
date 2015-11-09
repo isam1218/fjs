@@ -701,9 +701,19 @@ hudweb.controller('NotificationController',
 				 		   return;
 				 	    }
 				    }
+					else
+					{
+						
+						for (var j = 0, tLen = $scope.todaysNotifications.length; j < tLen; j++){
+							if($scope.todaysNotifications[tLen].senderId && $scope.todaysNotifications[tLen].senderId == $scope.calls[i].contactId)
+							{								        		
+				        		$timeout(displayNotification, 1500);
+							}	
+						}				 
+						$scope.displayAlert = true;
+					}					
 				}	
-        		$scope.displayAlert = true;
-        		$timeout(displayNotification, 1500);
+        		
 			}
     }else{
 
