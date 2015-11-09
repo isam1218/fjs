@@ -196,6 +196,20 @@ hudweb.controller('NotificationController',
 
     if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
       $scope.displayAlert = true;
+      if($scope.calls[xpid].audience == 'queue')
+  	  {
+      	if($scope.calls[xpid].type == 'q-alert-abandoned')
+		{
+			if(!settingsService.getSetting('HUDw_QueueAlertsAb_'+ $scope.calls[xpid].queueId))
+				displayDesktopAlert = false;				
+		}
+		if($scope.calls[xpid] .type == 'q-alert-rotation')
+		{
+			if(!settingsService.getSetting('HUDw_QueueAlertsLW_'+ $scope.calls[xpid].queueId))
+				displayDesktopAlert = false;				
+		}	
+  			
+  	  }
       $timeout(displayNotification, 1500);    
     }else{
       phoneService.cacheNotification(undefined,0,0);
@@ -616,6 +630,20 @@ hudweb.controller('NotificationController',
                 displayDesktopAlert = true;
               }
             }
+            if(data[i].audience == 'queue')
+        	{
+            	if(data[i].type == 'q-alert-abandoned')
+    			{
+    				if(!settingsService.getSetting('HUDw_QueueAlertsAb_'+ data[i].queueId))
+    					displayDesktopAlert = false;				
+    			}
+    			if(data[i].type == 'q-alert-rotation')
+    			{
+    				if(!settingsService.getSetting('HUDw_QueueAlertsLW_'+ data[i].queueId))
+    					displayDesktopAlert = false;				
+    			}	
+        			
+        	}
             break;
           case 'known':
             if(data[i].contactId){
@@ -628,6 +656,20 @@ hudweb.controller('NotificationController',
                   displayDesktopAlert = true;
                 }
               } 
+              if(data[i].audience == 'queue')
+          	  {
+              	if(data[i].type == 'q-alert-abandoned')
+      			{
+      				if(!settingsService.getSetting('HUDw_QueueAlertsAb_'+ data[i].queueId))
+      					displayDesktopAlert = false;				
+      			}
+      			if(data[i] .type == 'q-alert-rotation')
+      			{
+      				if(!settingsService.getSetting('HUDw_QueueAlertsLW_'+ data[i].queueId))
+      					displayDesktopAlert = false;				
+      			}	
+          			
+          	  }
             }else{
               displayDesktopAlert = false;
             }
