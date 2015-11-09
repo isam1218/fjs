@@ -859,6 +859,23 @@ hudweb.controller('NotificationController',
       }
     }
 
+    if(item.audience == 'queue')
+	{
+			if(item.type == 'q-alert-abandoned')
+			{
+				if(typeof settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId) == 'undefined' || 
+				   !settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId))
+					displayDesktopAlert = false;				
+			}
+			if(item.type == 'q-alert-rotation')
+			{
+				if(typeof settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId) !== 'undefined' || 
+				   !settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId))
+					displayDesktopAlert = false;				
+			}	
+				
+	}
+    item.displayDesktopAlert =  displayDesktopAlert;
     // if message is from today...
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
@@ -935,22 +952,7 @@ hudweb.controller('NotificationController',
                $scope.todaysNotifications.push(item);
 
         }
-      if(item.audience == 'queue')
-	  {
-			if(item.type == 'q-alert-abandoned')
-			{
-				if(typeof settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId) == 'undefined' || 
-				   !settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId))
-					displayDesktopAlert = false;				
-			}
-			if(item.type == 'q-alert-rotation')
-			{
-				if(typeof settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId) !== 'undefined' || 
-				   !settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId))
-					displayDesktopAlert = false;				
-			}	
-				
-	  }							 
+      					 
    
       if (displayDesktopAlert){
         	phoneService.setCancelled(false);
