@@ -112,6 +112,9 @@
 .Widget.Intellinote .Right .Contacts {
   font-size: 14px;
 }
+.Widget.Intellinote .Right .widget-zoom-contacts {
+  top: 0px;
+}
 .Widget.Intellinote .Right .Workspaces {
   position: relative;
 }
