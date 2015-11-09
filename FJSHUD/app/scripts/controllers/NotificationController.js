@@ -210,7 +210,8 @@ hudweb.controller('NotificationController',
 		}	
   			
   	  }
-      $timeout(displayNotification, 1500);    
+      if(displayDesktopAlert)
+    	  $timeout(displayNotification, 1500);    
     }else{
       phoneService.cacheNotification(undefined,0,0);
       phoneService.removeNotification();
@@ -832,8 +833,7 @@ hudweb.controller('NotificationController',
 			case 'displayNotification':
 				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 		          $scope.displayAlert = true;
-		          $timeout(displayNotification
-		              , 2000); 
+		          $timeout(displayNotification, 2000); 
 		        }else{
 		          phoneService.cacheNotification(undefined,0,0);
 		        }
@@ -1022,7 +1022,8 @@ hudweb.controller('NotificationController',
 
 		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
-		    $timeout(displayNotification, 1500);		
+			if(displayDesktopAlert)
+				$timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
 			phoneService.cacheNotification(undefined,0,0);
