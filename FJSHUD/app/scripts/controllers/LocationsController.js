@@ -14,13 +14,13 @@ hudweb.controller('LocationsController',['$scope', '$routeParams', '$element','H
     
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
-        $scope.onBodyClick();
+        $scope.closePopup();
     };
     
     $scope.moveLocation = function(locationId){
     	var callId = $routeParams.callId;
         httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":locationId, "variance": "native", "options": "0"});
-        $scope.onBodyClick();
+        $scope.closePopup();
     };
     
     $scope.getCurrentLocationTitle = function() {
