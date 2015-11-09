@@ -25,7 +25,7 @@
   </a>
   
 
-  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusContainerOutbound' : ( currentCall.type == calltype.QUEUE_CALL ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" ng-if="alertDuration == 'while_ringing' ? (currentCall.state == callState.CALL_RINGING) : true">   
+  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusContainerOutbound' : ( currentCall.type == calltype.QUEUE_CALL ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" ng-if="alertDuration == 'while_ringing' && displayDesktopAlert ? (currentCall.state == callState.CALL_RINGING) : true">   
      <div onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusIconContainer" 
 		ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusIconExternalBorder' : ( currentCall.type == calltype.QUEUE_CALL ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
      >
