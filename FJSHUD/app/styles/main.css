@@ -3643,7 +3643,7 @@ div.NewCall .XButton.XButtonNormal {
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 150px;
+  width: 118px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Topic {
   width: 130px;
@@ -3652,25 +3652,26 @@ div.NewCall .XButton.XButtonNormal {
   width: 74px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 70px;
-  margin-left: 10px;
+  /*width: 50px; margin-left: 10px;*/
+  width: 65px;
+  margin-left: -3px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Meeting_Id {
   width: 70px;
   margin-left: 58px;
 }
-.CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-  width: 70px;
-}
 .CallLog .ListLineContent.Header .ListLineContentCell.videoStartedAt {
   width: 110px;
 }
-.CallLog .ListLineContent.Header .ListLineContentCell.CallType {
-  width: 10%;
+.CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
+  width: 95px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Start_time {
   width: 20%;
   margin-left: 20px;
+}
+.CallLog .ListLineContent.Header .ListLineContentCell.CallType {
+  width: 10%;
 }
 .CallLog .vmails .ToolBar {
   width: 100%;
@@ -3786,14 +3787,6 @@ div.NewCall .XButton.XButtonNormal {
   max-width: 80px;
   margin-left: 60px;
 }
-.CallLog .ListRow > div.Date {
-  flex: 2 1 0;
-  -webkit-flex: 3.5 1 0;
-  font-size: 11px;
-  -ms-flex: 3;
-  white-space: nowrap;
-  max-width: 119px;
-}
 .CallLog .ListRow > div.Time {
   flex: 2 1 0;
   -webkit-flex: 3.5 1 0;
@@ -3801,6 +3794,14 @@ div.NewCall .XButton.XButtonNormal {
   -ms-flex: 3;
   white-space: nowrap;
   max-width: 60px;
+}
+.CallLog .ListRow > div.Date {
+  flex: 2 1 0;
+  -webkit-flex: 3.5 1 0;
+  font-size: 11px;
+  -ms-flex: 3;
+  white-space: nowrap;
+  max-width: 125px;
 }
 .CallLog .ListRow > div.Type {
   width: 6%;
@@ -6356,7 +6357,7 @@ form ul li {
   position: relative;
   margin-bottom: 5px;
 }
-.ListMessageChatWidget .ListMessageContent,
+.ListMessage .ListMessageContent,
 .ChatItemTypeRoot-false.ListMessageChatWidget {
   min-height: 22px;
 }
@@ -8332,7 +8333,7 @@ DO NOT CHANGE .XIcon24-Speaker-On/Off style. Fix order in HUDweb 2.0
 .Messages:last-child .NotificationSection {
   height: auto !important;
 }
-.Messages:nth-last-child(n+6) {
+.Messages:not(.overlay):nth-last-child(n+6) {
   display: none;
 }
 .Messages:after {
@@ -8477,6 +8478,9 @@ a.Messages {
   background: url('') #ffffff !important;
   padding-bottom: 0 !important;
   margin-top: 0px;
+  /*.NotificationMessage{
+          max-height: 35px !important;
+        } */
 }
 .Overlay.notifications .Messages .AvatarWarningSmall {
   left: 5px;
@@ -8501,9 +8505,6 @@ a.Messages {
 }
 .Overlay.notifications .Messages .NotificationSection.error {
   padding-bottom: 20px;
-}
-.Overlay.notifications .Messages .NotificationMessage {
-  max-height: 35px !important;
 }
 .Overlay.notifications .XButton.header {
   float: right;

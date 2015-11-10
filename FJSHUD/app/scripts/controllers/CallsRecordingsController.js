@@ -57,7 +57,7 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
     var prevMonth = date.getMonth();
     var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
-    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$scope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
+    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
             console.log("DATA",response);
             $scope.meetingList = response.meetings;
            

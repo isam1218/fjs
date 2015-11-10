@@ -25,7 +25,7 @@
   }
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Name {
-  width: 150px;
+  width: 118px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Topic {
   width: 130px;
@@ -34,25 +34,26 @@
   width: 74px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Duration {
-  width: 70px;
-  margin-left: 10px;
+  /*width: 50px; margin-left: 10px;*/
+  width: 65px;
+  margin-left: -3px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Meeting_Id {
   width: 70px;
   margin-left: 58px;
 }
-.CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
-  width: 70px;
-}
 .CallLog .ListLineContent.Header .ListLineContentCell.videoStartedAt {
   width: 110px;
 }
-.CallLog .ListLineContent.Header .ListLineContentCell.CallType {
-  width: 10%;
+.CallLog .ListLineContent.Header .ListLineContentCell.StartedAt {
+  width: 95px;
 }
 .CallLog .ListLineContent.Header .ListLineContentCell.Start_time {
   width: 20%;
   margin-left: 20px;
+}
+.CallLog .ListLineContent.Header .ListLineContentCell.CallType {
+  width: 10%;
 }
 .CallLog .vmails .ToolBar {
   width: 100%;
@@ -168,14 +169,6 @@
   max-width: 80px;
   margin-left: 60px;
 }
-.CallLog .ListRow > div.Date {
-  flex: 2 1 0;
-  -webkit-flex: 3.5 1 0;
-  font-size: 11px;
-  -ms-flex: 3;
-  white-space: nowrap;
-  max-width: 119px;
-}
 .CallLog .ListRow > div.Time {
   flex: 2 1 0;
   -webkit-flex: 3.5 1 0;
@@ -183,6 +176,14 @@
   -ms-flex: 3;
   white-space: nowrap;
   max-width: 60px;
+}
+.CallLog .ListRow > div.Date {
+  flex: 2 1 0;
+  -webkit-flex: 3.5 1 0;
+  font-size: 11px;
+  -ms-flex: 3;
+  white-space: nowrap;
+  max-width: 125px;
 }
 .CallLog .ListRow > div.Type {
   width: 6%;
