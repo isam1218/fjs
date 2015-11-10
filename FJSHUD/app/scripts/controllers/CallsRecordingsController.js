@@ -1,6 +1,6 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService', function($scope, $rootScope, $routeParams, settingsService) {
-	// routing
-	$scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'}];
+hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService','$http', function($scope, $rootScope, $routeParams, settingsService,$http) {
+  // routing
+  $scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'},{upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
 
   // if route is defined (click on specific tab or manaully enter url)...
   if ($routeParams.route){
@@ -38,4 +38,44 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     };
   }; 
 
+  var getURL = function(action) {
+
+    var url = 
+       action
+      + '?callback=JSON_CALLBACK'
+      + '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
+      + '&serverId=' + $rootScope.meModel.server_id
+      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+      + '&authToken=' + localStorage.authTicket;
+    
+    return url;
+  };
+
+  settingsService.getSettings().then(function() {
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
+    var prevMonth = date.getMonth();
+    var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
+    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$scope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
+            console.log("DATA",response);
+            $scope.meetingList = response.meetings;
+           
+          });
+  });
+
 }]);
+
+ // $scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'},{upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
+
+/* settingsService.getSettings().then(function() {
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
+    var prevMonth = date.getMonth();
+    var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
+    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.my_jid.split("@")[1]+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
+            console.log("DATA",response);
+            $scope.meetingList = response.meetings;
+           
+          });*/

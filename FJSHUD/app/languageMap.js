@@ -249,8 +249,8 @@
       start_screen_share_only:"Start with Screen Share Only",
       start_with_video:"Start with Video",
       join_now:'Join Now',
-      join:'Join',
-      create:'Create',
+      join:'Join a Meeting',
+      create:'Start a Meeting',
       link:'Link',
       meeting_id:'Meeting ID',
       zoom_created:'Video Meeting has been created',
@@ -266,6 +266,7 @@
       call_log_tab:'Call Log',
       voicemail_tab:'Voicemails',
       my_recordings_tab:'My Recordings',
+      my_videos_tab:'Video Collaborations',
       no_transcriptions:'no transcription available',
 
       action:'Actions',

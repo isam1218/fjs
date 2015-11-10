@@ -8,6 +8,8 @@ popd
 
 pushd $FJ_ROOT_DIR/FJSHUD/app
 bower install
+npm install angular-ui-bootstrap
+bower install angular-bootstrap
 popd
 
 

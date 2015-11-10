@@ -1,0 +1,138 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .LeftBar .ListRow .Avatar img {
+    margin-right: 0px !important;
+  }
+  #homeContainer {
+    border: 1px solid none;
+    height: 81%;
+    overflow-y: auto;
+    padding: 0px 20px 0px 20px;
+  }
+  #meetingContainer {
+    border: 1px solid none;
+    height: 780px;
+    padding: 0px 10px 0px 10px;
+    height: 81%;
+    overflow-y: auto;
+  }
+  #btnContainer {
+    position: relative;
+    top: 10px;
+    right: 7px;
+    float: right;
+    width: 229px;
+    height: 400px;
+    border: 1px solid none;
+  }
+  .WorkspaceButton {
+    position: relative;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 7px 0 7px 30px;
+    background-color: #015d73;
+    cursor: pointer;
+  }
+  .WorkspaceButton .line {
+    position: absolute;
+    top: 13%;
+    right: 0;
+    height: 75%;
+    border-left: 1px solid white;
+    width: 15%;
+    text-align: center;
+  }
+  .WorkspaceButton .line .rightArrow {
+    margin-top: 4px;
+  }
+  .WorkspaceButton .line.Down {
+    padding-top: 4px;
+  }
+  .WidgetZoomBody .ListSectionBtn #joinVideoScreen {
+    margin: 11px 0px 0px 0px;
+    padding: 10px 10px 12px 20px;
+  }
+  .Gadget {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .WidgetMe .WidgetBody .Conference .ToolBar input[type=button],
+  .WidgetMe .WidgetBody .Conference .ToolBar .selectWrapper.conf {
+    width: 140px !important;
+  }
+  .WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row {
+    margin: 0px !important;
+    min-height: none !important;
+    max-height: 30px;
+  }
+  .WidgetMe .WidgetBody .CurrentCall .LeftSide .Dialog-settings-row .XButtonToggleSmall {
+    vertical-align: middle !important;
+  }
+  .WidgetMe .WidgetBody .queueList .ListRow .SettingsListLineContent .QueueSetting:first-child {
+    width: 33.1%;
+  }
+  .WidgetMe .WidgetBody .queueList .ListRow .SettingsListLineContent .QueueSetting:nth-child(5) {
+    width: 16.5%;
+  }
+  .XIcon24-Record-Off {
+    right: 10px;
+    top: 0px;
+  }
+  .ToolBar .selectWrapper.vm {
+    width: 110px !important;
+  }
+  .ToolBar .selectWrapper.queue,
+  .ToolBar .selectWrapper.status,
+  .ToolBar .selectWrapper.conf,
+  .ToolBar .selectWrapper.members {
+    width: 130px !important;
+  }
+  .ToolBar .selectWrapper.convQueue {
+    width: 80px !important;
+  }
+  .ToolBar .selectWrapper select:hover {
+    background: transparent !important;
+  }
+  .Conference .ToolBar .selectWrapper.conf {
+    width: 130px !important;
+  }
+  .Conference .ToolBar input[type=button] {
+    padding-top: 6px !important;
+  }
+  .WidgetStat .row.second .Left {
+    width: 35%;
+  }
+  .Widget.Queues .Grid .Header > div:nth-child(1),
+  .Widget.Queues .Grid .Row > div:nth-child(1) {
+    width: 19%;
+    padding-left: 1px;
+  }
+  .Widget.Queues .Grid .Header > div:nth-child(2),
+  .Widget.Queues .Grid .Row > div:nth-child(2) {
+    width: 15%;
+  }
+  .Widget.Queues .Grid .Header > div:nth-child(3),
+  .Widget.Queues .Grid .Row > div:nth-child(3) {
+    width: 13%;
+  }
+  .Widget.Queues .Grid .Header > div:nth-child(4),
+  .Widget.Queues .Grid .Row > div:nth-child(4),
+  .Widget.Queues .Grid .Header > div:nth-child(5),
+  .Widget.Queues .Grid .Row > div:nth-child(5) {
+    width: 14.5%;
+  }
+  .Widget.Queues .Grid .Header > div:nth-child(6),
+  .Widget.Queues .Grid .Row > div:nth-child(6) {
+    width: 12%;
+  }
+  .Widget.Queues .Grid .Header > div:nth-child(7),
+  .Widget.Queues .Grid .Row > div:nth-child(7) {
+    width: 11.2%;
+  }
+  .Widget .ToolBar .convQueue.selectWrapper {
+    width: 100px !important;
+  }
+  .Widget .ToolBar .convQueue.selectWrapper select {
+    width: auto;
+  }
+}

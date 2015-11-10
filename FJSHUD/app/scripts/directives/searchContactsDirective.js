@@ -23,6 +23,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+
 			var overlay, inset, rows, joinBtn;
 			var range = attrs.contactSearch.split('|')[0];
 			var destination;
@@ -39,6 +40,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			});
 			
 			element.bind('keyup', function(e) {
+
 				// add overlay for the first time
 				if (!overlay && element.val().length > 0) {
 					overlay = angular.element('<div class="SearchContactOverlay"></div>');
@@ -69,6 +71,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 					inset.append(rows);
 					overlay.append(inset);
 					
+
 					element.after(overlay);
 			
 					// prevent accidental closing
@@ -98,6 +101,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 				var count = 0;
 				rows.empty();
 				
+
 				for (var i = 0, len = contacts.length; i < len; i++) {
 					var contact = contacts[i];
 					var dupe = false;
@@ -195,6 +199,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 						scope.searchContact(contact, element.val());
 						removeOverlay();
 					}
+
 				});
 				
 				line.on('$destroy', function() {

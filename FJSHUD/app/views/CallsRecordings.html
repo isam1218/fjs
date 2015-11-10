@@ -14,9 +14,10 @@
         </div>
 			
 		<!-- ng-view -->
-        <div ng-switch-when="calllog" class="fj-content WidgetTabContent" include-once="views/CallLog.html" ng-controller="CallLogController"></div>
-        <div ng-switch-when="voicemails" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Voicemails.html" ng-controller="VoicemailsController"></div>
-        <div ng-switch-when="recordings" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'calllog'" class="fj-content WidgetTabContent" include-once="views/CallLog.html" ng-controller="CallLogController"></div>
+        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Voicemails.html" ng-controller="VoicemailsController"></div>
+        <div ng-if="selected == 'recordings'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
+        <div ng-if="selected == 'videos'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/VideoCollaborations.html" ng-controller="RecordingsController"></div>
     </div>
 
 </div>

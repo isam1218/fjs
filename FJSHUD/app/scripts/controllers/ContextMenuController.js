@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService',
-	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http',
+	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -289,6 +289,61 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		
 		$scope.$parent.showOverlay(true, 'FileShareOverlay', data);
 	};
+ $scope.addedContacts = [];
+	$scope.screenShare = function(contact){
+
+		        $scope.addedContacts.push(contact);
+
+
+
+		      
+
+		
+        var data = {};
+        var users = "";
+
+         if(contact.length > 1){
+		       	$scope.addedContacts = contact;
+		       	for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+            users = users + $scope.addedContacts[i].contactId + ",";
+            
+        }
+		       }
+		       else{
+
+        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+            users = users + $scope.addedContacts[i].xpid + ",";
+        }
+    }
+console.log("Contact",contact);
+		console.log("USERS", users);
+
+        data["topic"]="";
+        data["users"]= users;
+        data["option_start_type"]= 'screen_share';
+        $http({
+            method:'POST',
+            url:fjs.CONFIG.SERVER.serverURL + "/v1/zoom",
+           data: $.param(data),
+           headers:{
+                'Authorization': 'auth=' + localStorage.authTicket,//'auth=7aa21bf443b5c6c7b5d6e28a23ca5479061f36f5181b7677',
+                'node':localStorage.nodeID,//'afdp37_1',
+                'Content-Type':'application/x-www-form-urlencoded',
+            }
+        }).then(function(response){
+            var data = response;
+            $scope.startUrl = response.data.start_url;
+            $scope.joinUrl = response.data.join_url;
+            window.open($scope.startUrl, '_blank');
+            $scope.inMeeting = true;
+            $scope.$safeApply();
+
+        });
+        /*dataManager.sendFDPRequest("/v1/zoom", data, function(xhr, data, isOk) {
+               context.onAjaxResult(isOk, data)
+        });*/
+    };
+   
 
 	$scope.loginQueue = function() {
 		httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.original.xpid});

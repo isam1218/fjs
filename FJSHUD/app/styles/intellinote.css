@@ -1,38 +1,112 @@
 .Widget.Intellinote {
   font-size: 12px;
-  padding: 20px;
+  padding: 10px;
 }
 .Widget.Intellinote .Intro {
-  margin: 20px 0 10px 0;
+  margin: 0px 0 10px 0;
 }
 .Widget.Intellinote .Logo {
   margin-left: 20px;
 }
-.Widget.Intellinote .Section {
-  min-height: 110px;
-}
 .Widget.Intellinote .Left {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
   float: left;
   width: 48%;
+}
+.Widget.Intellinote .Left .Section {
+  min-height: 70px;
+  width: 230px;
+  padding-left: 10px;
   background-color: #f9f9f9;
+}
+.Widget.Intellinote .Left .SectionInvite {
+  min-height: 110px;
+  width: 230px;
+  padding-left: 10px;
+  background-color: #f9f9f9;
+  margin-top: 30px;
 }
 .Widget.Intellinote .Left h4 {
   font-size: 14px;
-  color: #779c00;
+  color: #015d73;
   margin-bottom: 5px;
+  margin-top: 10px;
   text-transform: uppercase;
 }
 .Widget.Intellinote .Right {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
   float: right;
   width: 48%;
   clear: right;
 }
+.Widget.Intellinote .Right .Section {
+  min-height: 70px;
+  width: 240px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  margin-left: -10px;
+  background-color: white;
+}
+.Widget.Intellinote .Right .SearchBox.Add {
+  color: gray;
+  background: url("../img/add-blue.png") no-repeat;
+  background-position: 2%;
+}
+.Widget.Intellinote .Right .SectionWorkspace {
+  min-height: 110px;
+  width: 240px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  margin-left: -10px;
+  background-color: white;
+  margin-top: 30px;
+}
 .Widget.Intellinote .Right .SearchHolder {
   position: relative;
 }
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay {
+  left: -10px;
+  width: 240px;
+  padding-left: 10px;
+  border-radius: 0px;
+  border-color: #015d73;
+  padding-right: 10px;
+}
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Header {
+  color: #015d73;
+  width: 220px;
+  margin-left: 13px;
+  padding-bottom: 9px;
+}
+.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Avatar {
+  border-color: #015d73;
+}
+.Widget.Intellinote .Right .SearchHolder input {
+  width: 100%;
+  border-radius: 0px;
+}
+@-moz-document url-prefix() {
+  .Widget.Intellinote .Right .SearchHolder {
+    position: relative;
+  }
+}
 .Widget.Intellinote .Right .Contacts {
-  max-height: 200px;
-  overflow-y: auto;
   font-size: 14px;
 }
 .Widget.Intellinote .Right .Workspaces {
@@ -65,6 +139,8 @@
   font-size: 13px;
   border-top: 1px solid #333;
   margin: 0 10px 10px 10px;
+  max-height: 75px;
+  overflow-y: auto;
 }
 .Widget.Intellinote .Right .Workspaces .List .Items div {
   cursor: pointer;
@@ -79,13 +155,13 @@
   font-weight: bold;
   color: white;
   padding: 7px 0 7px 30px;
-  background-color: #779c00;
-  margin: 20px 0;
+  background-color: #015d73;
+  margin: 15px 0;
   cursor: pointer;
 }
 .Widget.Intellinote .Right .WorkspaceButton div {
   position: absolute;
-  top: 10%;
+  top: 15%;
   right: 0;
   height: 80%;
   border-left: 1px solid white;
@@ -93,5 +169,47 @@
   text-align: center;
 }
 .Widget.Intellinote .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButtonEnabled div.Down {
+  padding-top: 4px;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #b5b5b5;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.Intellinote .Right .WorkspaceButtonDisabled div.Down {
   padding-top: 4px;
 }

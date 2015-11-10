@@ -3,6 +3,10 @@
   .vmsections, .rows{
     border: 1px solid #eee;
     margin-bottom: 10px;
+   }
+
+   #createdVido a {
+    text-decoration:underline;
    }   
    
   .ListLineContent.Header{
@@ -25,11 +29,16 @@
         .DirectionArrow{margin-left: 0;}
       }                   
                   
-      &.Name{width: 118px;}   
+      &.Name{width: 150px;}
+      &.Topic{width: 130px;}   
       &.Phone{width: 74px;}
-      &.Duration{/*width: 50px; margin-left: 10px;*/ width: 65px; margin-left: -3px;}      
-      &.StartedAt{width: 95px;}
+      &.Duration{width: 70px; margin-left: 10px;} 
+      &.Meeting_Id{width:70px; margin-left: 58px;}     
+      &.StartedAt{width: 70px;}
+      &.videoStartedAt{width: 110px;}
       &.CallType{width: 10%;}
+      &.Start_time{width: 20%;margin-left: 20px;}
+
     }                                               
   }           
 
@@ -150,6 +159,15 @@
 		  -ms-flex: 1;
 		  max-width: 50px;
 	  }
+     &.MeetingId{
+      flex: 1.3 1 0;
+      -webkit-flex: 1.3 1 0;
+      font-size: 11px;
+
+      -ms-flex: 1;
+      max-width: 80px;
+      margin-left:60px;
+    }
     	   
       &.Date {
        flex: 2 1 0;
@@ -158,7 +176,16 @@
 
 		  -ms-flex: 3;
     	white-space: nowrap;
-    	max-width: 125px;
+    	max-width: 119px;
+      }
+      &.Time {
+       flex: 2 1 0;
+       -webkit-flex: 3.5 1 0;
+       font-size: 11px;
+
+      -ms-flex: 3;
+      white-space: nowrap;
+      max-width: 60px;
       }
       &.Type{
         width: 6%;
