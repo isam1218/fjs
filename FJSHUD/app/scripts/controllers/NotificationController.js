@@ -869,7 +869,7 @@ hudweb.controller('NotificationController',
 			}
 			if(item.type == 'q-alert-rotation')
 			{
-				if(typeof settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId) !== 'undefined' || 
+				if(typeof settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId) == 'undefined' || 
 				   !settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId))
 					displayDesktopAlert = false;				
 			}	
