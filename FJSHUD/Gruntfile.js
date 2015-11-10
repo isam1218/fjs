@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   var currentTime = getCurrentTime()
-    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber;
+    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber, ServerUrl, LoginUrl, PpsServer;
   grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
   function getCurrentTime() {
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     }
     return currentTime;
   }
-
+/* build number */
   function getBuildNumber() {
     if(!buildNumber) {
       try {
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     }
     return buildNumber;
   }
-
+/* webphone msi version */
   function getWebphoneMSINumber() {
     if(!WebphoneMSINumber) {
       try {
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
     }
     return WebphoneMSINumber;
   }
-
+/* webphone osx version */
   function getWebphoneOSXNumber() {
     if(!WebphoneOSXNumber) {
       try {
@@ -50,6 +50,42 @@ module.exports = function(grunt) {
       }
     }
     return WebphoneOSXNumber;
+  }
+/* server url */
+  function getServerUrl() {
+    if(!ServerUrl) {
+      try {
+        ServerUrl = grunt.file.read('../server_url');
+      }
+      catch(e) {
+        ServerUrl = -1
+      }
+    }
+    return ServerUrl;
+  }
+/* login url */
+  function getLoginUrl() {
+    if(!LoginUrl) {
+      try {
+        LoginUrl = grunt.file.read('../login_url');
+      }
+      catch(e) {
+        LoginUrl = -1
+      }
+    }
+    return LoginUrl;
+  }
+/* pps server */
+  function getPpsServer() {
+    if(!PpsServer) {
+      try {
+        PpsServer = grunt.file.read('../pps_server');
+      }
+      catch(e) {
+        PpsServer = -1
+      }
+    }
+    return PpsServer;
   }
 
   grunt.initConfig({
@@ -97,6 +133,7 @@ module.exports = function(grunt) {
             data:{
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
+              ppsServer: "unknown_atm",
               version: "HUDW" + getBuildNumber(),
               WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
               MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
@@ -111,8 +148,9 @@ module.exports = function(grunt) {
       },dev:{
         options:{
           data:{
-            serverUrl:"https://dev4.fon9.com:8081",
-            loginUrl: "https://dev4.fon9.com:5501",
+            serverUrl: getServerUrl(),
+            loginUrl: getLoginUrl(),
+            ppsServer: getPpsServer(),
             version: "HUDW" + getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
@@ -130,6 +168,7 @@ module.exports = function(grunt) {
           data:{
             serverUrl:"https://huc-dev.fonality.com:8081",
             loginUrl: "https://huc-dev.fonality.com:5501",
+            ppsServer: getPpsServer(),
             version: "HUDW" + getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
