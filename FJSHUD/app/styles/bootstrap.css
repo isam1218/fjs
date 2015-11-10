@@ -2496,7 +2496,7 @@ table th[class*="col-"] {
     border-bottom: 0;
   }
 }
-fieldset {
+/*fieldset {
   min-width: 0;
   padding: 0;
   margin: 0;
@@ -2632,8 +2632,8 @@ input[type="search"] {
   .input-group-lg input[type="month"] {
     line-height: 46px;
   }
-}
-.form-group {
+}*/
+/*.form-group {
   margin-bottom: 15px;
 }
 .radio,
@@ -3004,7 +3004,7 @@ select[multiple].input-lg {
     padding-top: 6px;
     font-size: 12px;
   }
-}
+}*/
 .btn {
   display: inline-block;
   padding: 6px 12px;
