@@ -25,8 +25,7 @@
   </a>
   
 
-  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusContainerOutbound' : ( currentCall.type == calltype.QUEUE_CALL ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" ng-if="currentCall.displayDesktopAlert ? alertDuration == 'while_ringing' ? (currentCall.state == callState.CALL_RINGING) : true : false">   
-     displayDesktopAlert {{currentCall.displayDesktopAlert}} - alert duration {{alertDuration}} - currentCall.state {{currentCall.state}} - callState.CALL_RINGING {{callState.CALL_RINGING}}
+  <div ng-repeat="currentCall in calls" ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusContainerOutbound' : ( currentCall.type == calltype.QUEUE_CALL ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')" ng-if="alertDuration == 'while_ringing' ? (currentCall.state == callState.CALL_RINGING) : true">   
      <div onclick="mouseClick(this)" action="#/showCallControlls?{{::currentCall.xpid}}" class="CallStatusIconContainer" 
 		ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusIconExternalBorder' : ( currentCall.type == calltype.QUEUE_CALL ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')"
      >
@@ -64,7 +63,7 @@
 		</div>   
 		
 		<div class="scroller" id="scroller">  	
-	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" >			
+	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-if="message.displayDesktopAlert">			
 				<div class="NotificationHeader">
 					<div class="NotificationHeaderBackground">
 						<div onclick="mouseClick(this)" action="#/RemoveNotification?{{::message.xpid}}">
