@@ -146,8 +146,8 @@ fjs.model.DataManager = function(sf) {
                 if(e.timestamp)
                     fjs.utils.TimeSync.__instance.fdpTimestamp = new Date().getTime() - e.timestamp;
 
-                //fjs.utils.Console.info(e);
-                //context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, connected:true, message:""});
+                fjs.utils.Console.info(e);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, connected:true, message:""});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
