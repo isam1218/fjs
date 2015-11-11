@@ -1996,7 +1996,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             fjs.utils.Console.error(event);
         }
         if(this.isNetworkProblem) {
-            this.fireEvent('message', {type:'connectionEstablished'});
+            var timestamp = parseInt(request.response.split(';')[0]);
+            this.fireEvent('message', {type:'connectionEstablished','timestamp':timestamp});
             this.isNetworkProblem = false;
         }
     };

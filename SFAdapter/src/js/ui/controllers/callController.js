@@ -29,7 +29,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
 
     var onDurationTimeout = function() {
         var date = new Date();
-        var time =  date.getTime()-  timeSync.getDefault() + (new Date(1).getTimezoneOffset() * 1000 * 60);
+        var time =  date.getTime()-  timeSync.getDefault() + (new Date(1).getTimezoneOffset() * 1000 * 60) +1000;
         var timeDur = time - $scope.call.created;
         var timeHoldDur = time - $scope.call.holdStart;
 
