@@ -1082,10 +1082,18 @@ hudweb.controller('NotificationController',
   };
 
   $scope.determineAvatarType = function(msg){
-    if (msg.type == 'vm' || msg.type == 'missed-call')
-      return 4;
+    var avatarObj = {};
+    avatarObj.msgType = msg.type;
+    if (msg.audience == 'group')
+      avatarObj.type = 2;
     else if (msg.audience == 'queue')
-      return 3;
+      avatarObj.type = 3;
+    else if (msg.type == 'vm' || msg.type == 'missed-call')
+      avatarObj.type = 4;
+    else if (msg.type == 'chat' || (msg.type == 'description' && msg.audience == 'contact'))
+      avatarObj.type = 5;
+
+    return avatarObj;
   };
 
   $scope.$on('$routeChangeSuccess', function(event,data){
