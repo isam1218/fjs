@@ -157,8 +157,7 @@
 					<div class="callStatus">
 						<div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div>
 						<span class="MyCallBlock_Duration" timer="currentCall.created"></span>
-						<span ng-if="currentCall.state == callState.CALL_HOLD">
-							/ <span class="MyCallBlock_Duration Hold" timer="currentCall.holdStart"></span>
+						<span ng-if="currentCall.state == callState.CALL_HOLD">	/ <span class="MyCallBlock_Duration Hold" timer="currentCall.holdStart"></span>
 						</span>
 					</div>
 				</div>				
