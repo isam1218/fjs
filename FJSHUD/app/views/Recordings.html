@@ -4,11 +4,11 @@
 
 <div class="ListView fj-scrollable"> 
 	<div>
-		<div class="vmsection" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid">
+		<div class="vmsection recording" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid">
 			<avatar profile="recording" context="recordings" type="{{::recording.type}}"></avatar>
 			<div class="vminfo" ng-click="playRecording(recording)"> 
 				<div class="displayName">
-					<em>{{::verbage.to}}...</em>
+					<em class="from">&nbsp;&nbsp;&nbsp;&nbsp;...{{::verbage.to}}&nbsp;&nbsp;</em>
 					<p class="vmdisplay">
 						{{ ::recording.fullProfile.displayName || recording.fullProfile.name || recording.calleePhone }}
 						

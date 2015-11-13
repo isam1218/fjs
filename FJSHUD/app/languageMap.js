@@ -224,7 +224,7 @@
        hud_server_version:'HUDserver Version',
        fon_core_version:'FONcore Version',
        /***TOP NAVIGATION LABELS **/
-       me:'Me',
+       me:'ME',
        call_and_recordings:'Calls & Recordings',
        conferencing:'Conferencing',
        callcenter:'Call Center',
