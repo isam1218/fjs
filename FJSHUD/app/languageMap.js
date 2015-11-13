@@ -261,6 +261,11 @@
       type_for_results:'Type for results',
       search_to_start_convo:'Search to Start Conversation',
       type_subject_name:'Type name of contact, team, queue, or conference room...',
+      contacts_search_results: 'Contacts search results',
+      groups_search_results: 'Groups search results',
+      queues_search_results: 'Queues search results',
+      conferences_search_results: 'Conferences search results',
+      waiting_calls: 'waiting call(s)',
     
       /***** Call Recordings *****/
       call_log_tab:'Call Log',
