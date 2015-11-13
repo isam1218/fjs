@@ -5203,8 +5203,7 @@ form ul li {
   color: #666;
 }
 .WidgetHeader .WidgetHeaderTitle {
-  margin-top: 10px;
-  margin-left: 10px;
+  margin: 0;
 }
 .ZoomWidgetSection {
   width: 48%;
