@@ -266,6 +266,7 @@
       call_log_tab:'Call Log',
       voicemail_tab:'Voicemails',
       my_recordings_tab:'My Recordings',
+      my_videos_tab:'Video Collaborations',
       no_transcriptions:'no transcription available',
 
       action:'Actions',
