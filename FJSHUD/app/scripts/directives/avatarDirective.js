@@ -21,6 +21,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
+			var avatarObjType = $parse(attrs.type)(scope);
 			var context, widget, rect;
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
@@ -30,24 +31,77 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				AVATAR IMAGES
 			*/
 			// change class for special circle avatar
+			// all avatars not in dock or contact widget...
 			if (attrs.type){
 				var classy = 'CallAvatar CallAvatar_';
-				if (attrs.type == 3){
-					classy += 'Queue';
-					element.addClass(classy);					
+				// notifications...
+				if (avatarObjType.type){
+					switch(avatarObjType.type){
+						case 2:
+						case 5:
+							// chat msg --> square avatar
+							element.addClass('AvatarNormal');
+							break;
+						case 3:
+							// Queues
+							if (avatarObjType.msgType == 'q-alert-abandoned' || avatarObjType.msgType == 'q-alert-rotation'){
+								// long wait/abandoned Q call --> (orange circle avatar)
+								classy += 'Queue';
+								element.addClass(classy);
+							} else {
+								// Q chat/broadcast/alert --> avatar normal [square avatar]
+								element.addClass('AvatarNormal');
+							}
+							break;
+						case 4:
+							// missed call / voicemail
+							if (profile && profile.displayName)
+								classy += 'Office';
+							else if (!profile)
+								classy += 'External';
+							element.addClass(classy);
+							break;
+					}
+				} else {
+					// non-notifications...
+					switch (attrs.profile){
+						case 'call.fullProfile':
+						case 'currentCall.fullProfile':
+						case 'gadget.data.call.fullProfile':
+						case 'callstatusContact.call.fullProfile':
+						case 'call':
+							// call controls, calls & recordings, dock call, group/queue members or agents, queue call tab --> display circle avatars
+							if (avatarObjType == 3)
+								classy += 'Queue';
+							else if (avatarObjType == 5)
+								classy += 'External';
+							else
+								classy += 'Office';
+							element.addClass(classy);
+							break;
+						case 'vm.myProfile':
+						case 'voicemail':
+						case 'member':
+							// voicemails, conference calls --> only display blue circle avatars
+							classy += 'Office';
+							element.addClass(classy);
+					}
+					if (attrs.profile !== 'recording'){
+						element.addClass('AvatarNormal');
+					} else {
+						// take into account that recordings have different type
+						if (avatarObjType == 1)
+							classy += 'Queue';
+						else if (!scope.recording.fullProfile)
+							classy += 'External';
+						else
+							classy += 'Office';
+						element.addClass(classy);
+					}
 				}
-				else if ((profile && profile.displayName) || attrs.type == 4 || attrs.type == 0){
-					classy += 'Office';
-					element.addClass(classy);
-				}
-				else if (!profile){
-					classy += 'External';
-					element.addClass(classy);
-				}
-				else
-					element.addClass('AvatarNormal');
 			}
-			else{
+			else {
+				// dock and contact widget -> all square avatars
 				element.addClass('AvatarNormal');
 			}
 
