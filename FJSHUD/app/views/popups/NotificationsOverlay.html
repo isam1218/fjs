@@ -22,7 +22,7 @@
             </div>
             <div class="new_notifications notifications_section">
 				  <!-- errors -->
-				  <div class="Messages error" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
+				  <div class="Messages error overlay" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
 					<div class="NotificationHeader"> 
 						<div class="NotificationHeaderBackground"> 
 							<div class="NotificationClose" ng-click="dismissError(error.xpid)"></div>
