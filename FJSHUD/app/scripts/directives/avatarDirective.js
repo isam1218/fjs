@@ -70,6 +70,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 						case 'getVmProfile(voicemail)':
 						case 'gadget.data.call.fullProfile':
 						case 'callstatusContact.call.fullProfile':
+						case 'contact.call.fullProfile':
 						case 'call':
 							// call controls, calls & recordings, vms, dock call, group/queue members or agents, queue call tab --> display circle avatars
 							if (avatarObjType == 3)
