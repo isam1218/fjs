@@ -190,24 +190,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 
 				if (overlay.css('display') != 'block') {
 					// delay
-					timer = $timeout(function() {
-						showOverlay();
-				
-						overlay.bind('mouseleave', function(e) {							
-							// keep open if user moves back onto avatar
-							for (var i = 0, iLen = element.children().length; i < iLen; i++)  {
-								if (e.relatedTarget == element.children()[i])
-									return;
-							}
-							
-							if (e.relatedTarget != element)
-								hideOverlay(500);
-						});
-						
-						overlay.bind('mouseenter', function(e) {
-							$timeout.cancel(timer);
-						});
-					}, settingsService.getSetting('avatar_hover_delay')*1000);
+					timer = $timeout(showOverlay, settingsService.getSetting('avatar_hover_delay')*1000);
 				}
 				else if (current != element) {
 					// hovered over a new avatar
@@ -225,7 +208,28 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					hideOverlay(500);
 			});
 			
-			function showOverlay() {				
+			// insta-menu
+			element.bind('click', function(e) {
+				e.preventDefault();
+				showOverlay();
+			});
+			
+			function showOverlay() {
+				overlay.bind('mouseleave', function(e) {
+					// keep open if user moves back onto avatar
+					for (var i = 0, iLen = current.children().length; i < iLen; i++)  {
+						if (e.relatedTarget == current.children()[i])
+							return;
+					}
+					
+					if (e.relatedTarget != current)
+						hideOverlay(500);
+				});
+				
+				overlay.bind('mouseenter', function(e) {
+					$timeout.cancel(timer);
+				});
+						
 				// send data to controller		
 				
 				var data = {
