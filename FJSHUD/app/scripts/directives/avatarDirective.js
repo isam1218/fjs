@@ -18,6 +18,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		restrict: 'E',
 		replace: true,
 		template: '<div class="Avatar"></div>',
+		priority: -1,
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
@@ -211,6 +212,8 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			// insta-menu
 			element.bind('click', function(e) {
 				e.preventDefault();
+				e.stopImmediatePropagation();
+				
 				showOverlay();
 			});
 			
