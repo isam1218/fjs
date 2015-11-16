@@ -224,7 +224,7 @@
        hud_server_version:'HUDserver Version',
        fon_core_version:'FONcore Version',
        /***TOP NAVIGATION LABELS **/
-       me:'Me',
+       me:'ME',
        call_and_recordings:'Calls & Recordings',
        conferencing:'Conferencing',
        callcenter:'Call Center',
@@ -261,6 +261,11 @@
       type_for_results:'Type for results',
       search_to_start_convo:'Search to Start Conversation',
       type_subject_name:'Type name of contact, team, queue, or conference room...',
+      contacts_search_results: 'Contacts search results',
+      groups_search_results: 'Groups search results',
+      queues_search_results: 'Queues search results',
+      conferences_search_results: 'Conferences search results',
+      waiting_calls: 'waiting call(s)',
     
       /***** Call Recordings *****/
       call_log_tab:'Call Log',
@@ -431,7 +436,7 @@
       recent_conference_room_extension:'Conference Room (extension number)',
       members_on_call:'member(s) on a call',
       nothing_found:'Nothing found',
-      characters_lefts:'characters left',
+      characters_left:'characters left',
       no_recent_calls_in_view:"No Recent Calls in View",
       Reporting:'Reporting',
       pbxtra_systems_come: 'PBXtra systems come installed by default with incredibly robust reporting tools.',

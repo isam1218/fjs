@@ -3,8 +3,8 @@
         <div class="SearchIcon"></div>
         <input ng-model="chat.query" class="Search chat" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
-			<input type="button" value="&#9650;" ng-click="searchChat(-1)" />
-			<input type="button" value="&#9660;" ng-click="searchChat(1)" />
+      <input type="button" class="ChatSearchUpArrow" ng-click="searchChat(-1)" />
+			<input type="button" class="ChatSearchDownArrow"  ng-click="searchChat(1)" />
 		</div>
     </div>
     <button class="XButton XButtonNormal group" ng-if="::!showAlerts" ng-disabled="!enableChat" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button>
@@ -61,7 +61,7 @@
 			<input type="radio" ng-model="chat.status" name="alertStatus" value="2" /> {{::verbage.logged_out}}
 		</div>
 		<div class="Right">
-			{{ 150 - message.length }} {{::verbage.characters_left}}
+			{{ 150 - (chat.message.length) }} {{::verbage.characters_left}}
 		</div>
 	</div>
 	

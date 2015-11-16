@@ -181,10 +181,8 @@
 	height: 30px;
 	
 	img{
-	  width: 26px;
-	  height: 26px;
-	  margin: 1px;	
-	  margin-left: -1px;  	 
+	  width: 28px;
+	  height: 28px;
 	}
 	
 	&.CallAvatar_Office{
@@ -259,7 +257,7 @@
     }
     strong {           
         font-weight: bold;
-        font-size: 13px;
+        font-size: 12px;
         color: #222;
     }
     .name {      
@@ -283,6 +281,15 @@
   }
   .GroupListRowTitle{
     max-width: 100%;
+    
+    .status_message{
+    	-ms-overflow-x:none;
+    	-ms-overflow-y: none;
+    	-ms-text-overflow: ellipsis;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	white-space: nowrap;
+    }
   }
   
   .ListRowStatus {
@@ -391,7 +398,7 @@
     background-color: #f9f9f9;
     
     &:nth-child(odd) {
-      background-color: #eee !important;
+      background-color: #eee;
     }
     &:hover {
           background-color: #ddd;

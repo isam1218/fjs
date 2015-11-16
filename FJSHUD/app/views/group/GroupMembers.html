@@ -22,7 +22,7 @@
         				<br/>
                         <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>
                         <div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
-        				<span ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></span>
+        				<div class="status_message" ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></div>
                     </a>
         			
 

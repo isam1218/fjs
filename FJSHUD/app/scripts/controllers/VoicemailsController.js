@@ -1,9 +1,13 @@
 hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService','PhoneService', 
 	function($rootScope, $scope, $routeParams, groupService, contactService, httpService, storageService,phoneService) {
+
     $scope.voicemails = [];     
     $scope.query = "";
     $scope.tester = {};
     $scope.tester.query = "";
+    $scope.fromTo = false;
+    //$scope.fromToClass = "";
+    
 	  $scope.vm = {};
 
     	// single group widget
@@ -29,6 +33,21 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
 
+    $scope.getVerbage = function(voicemail)
+    {
+    	if(voicemail)
+    	{
+    		if(voicemail.phone == $scope.meModel.primary_vm_box || voicemail.phone == $scope.meModel.primary_extension)
+    		{
+    			return true;    			
+    		}    		
+    		else
+    			return false;
+    	}
+    	return false;
+    	//{{ ::voicemail.phone == meModel.primary_vm_box || voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}</em>    	
+    };
+    
     $scope.sortBy = function(selectedVoice){
         $scope.selectedVoice = selectedVoice;
         localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);
@@ -137,7 +156,22 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
             }
         };
     
-    };       
+    };
+    var locations = {};
+    phoneService.getLocationPromise().then(function(data){
+    	locations = data;
+    });
+
+    $scope.getVmProfile = function(voicemail){
+    	//loop through the locations checking to see if the voicemail phone matches any location otherwise just use the voicemail profile
+    	for (var loc in locations){
+    		if(voicemail.phone == locations[loc].phone){
+    			return $scope.vm.myProfile;
+    		}
+    	}
+		return voicemail;
+    };
+
     $rootScope.$on('voicemailbox_synced', function(event, data) {
     	// first time
     	$scope.myProfile = contactService.getContact($rootScope.myPid);

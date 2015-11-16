@@ -58,6 +58,7 @@
 		max-height: 75px;
 		top: 7px;		
         padding-right: 10px;
+        padding-top: 1.5px;
         -ms-word-wrap: break-word;
         white-space:normal;
         // word-break: break-all;
@@ -160,7 +161,7 @@
         text-shadow: 0px 1px 0px #FFF;
         clear: none;
         display: inline-block;
-		padding-left: 1px;
+        left: -2px;
 		
 		&.Hold {
 			color: gray;
@@ -179,7 +180,7 @@
         	max-width: 45%; 
         }
         &.accepted{        	
-        	max-width: 45%;
+        	max-width: 55%;
         }	                                      
                         
         .callStatus{
@@ -287,8 +288,7 @@
     position: relative;
     bottom: 0px;
 
-	&.hasMessages,
-	&.noMessages {
+	&.hasMessages {
 		&.Expand {
 			.TitleBar .XButton { visibility: visible; }
 			.scroller { padding-top: 20px; }

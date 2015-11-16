@@ -23,23 +23,24 @@
 		
 			<div ng-if="contacts.length > 0">
 				<div class="ListSectionHeaderTitle">{{::verbage.contacts}}</div>
+				<div class="footnote">{{::verbage.contacts_search_results}}</div>
 				<a href="#/contact/{{ ::contact.xpid }}" ng-repeat="contact in contacts track by contact.xpid" class="ListRow" droppable="Call">		
-					<avatar profile="contact"></avatar>
+					<avatar class="SearchAvatar" profile="contact"></avatar>
 					
 					<div class="ListRowContent" dockable="contact" ng-switch="contact.call != null">
-						<div class="ListRowTitle">
+						<div class="ListRowTitle SearchRowTitle">
 							<div class="name">
 								<strong>{{ ::contact.displayName }}</strong>
 							</div>
-							<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
+							<div class="ListRowStatusIconQueue XIcon-QueueStatus XIcon-QueueStatus-{{contact.contact_status.queueStatus}}">
 								<div class="status-icon-inner"></div>
 							</div>
-							<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
+							<div class="ListRowStatusIconChat XIcon-ChatStatus-{{contact.hud_status || 'offline' }}">
 								<div class="status-icon-inner"></div>
 							</div>
-							{{contact.hud_status || 'offline'}}
+							<span class="status">{{contact.hud_status || 'offline'}}</span>
 						</div>																		
-						<div class="ListRowStatus" ng-switch-when="false" ng-if="::contact.primaryExtension">#{{ ::contact.primaryExtension }}</div>
+						<div class="ListRowStatus extension" ng-switch-when="false" ng-if="::contact.primaryExtension">#{{ ::contact.primaryExtension }}</div>
 						<input style="float:right" ng-switch-when="false" ng-if="::contact.primaryExtension" class="vmcallbtn" type="button" value="Call" ng-click="callExtension($event, contact)" />		
 
 						<callStatus profile="contact" ng-switch-when="true"></callStatus>
@@ -49,67 +50,72 @@
 			
 			<div ng-if="groups.length > 0">
 				<div class="ListSectionHeaderTitle">{{::verbage.Groups}}</div>
+				<div class="footnote">{{::verbage.groups_search_results}}</div>
 				<a href="#/group/{{ ::group.xpid }}" ng-repeat="group in groups track by group.xpid" class="ListRow">
-					<avatar profile="group"></avatar>
+					<avatar class="SearchAvatar" profile="group"></avatar>
 					
 					<div class="ListRowContent" dockable="group">
-						<div class="ListRowTitle">
+						<div class="ListRowTitle GroupSearchRowTitle">
 							<div class="name">
 								<strong>{{ ::group.name }}</strong>
-								<span class="details">
-									{{ ::group.members.length }} {{::verbage.members}}
-								</span>
+								<div>
+									<span class="ListRowStatusIconGroup XIcon-ChatStatus-{{group.hud_status || 'offline' }}"></span>
+									<span class="details">
+										{{ ::group.members.length }} {{::verbage.members}}
+									</span>
+								</div>
 							</div>
 						</div>
-						<div class="ListRowStatus GroupStatus">{{ ::group.extension ? '#' + group.extension : getOwner(group) }}</div>                     
+						<div class="GroupStatus ListRowStatus">{{ ::group.extension ? '#' + group.extension : getOwner(group) }}</div>                     
 					</div>
 				</a>
 			</div>
 			
 		    <div ng-if="conferences.length > 0">
-				<div class="ListSectionHeaderTitle">{{::verbage.Conferences}}</div>
-				<a href="#/conference/{{ ::conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow conference" droppable="Contact,Call">
-					<avatar profile="conference"></avatar>
-					
-                    <div class="ListRowContent" dockable="conference">
-                        <div class="ListRowTitle">
-                            <div class="name"> Room #{{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
-                            
-							
-                            <div data-ng-if="conference.members.length == 0">
-                                <div class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></div>
-								<div class="ListConferenceStatusText">{{::verbage.free_room}}</div>
-								<span class="link" ng-if="conference.location">at {{::conference.location}}</span>
-                            </div>                            
-                            <div data-ng-if="conference.members.length > 0">
-                                <div class="ListRowStatusIcon XIcon-ChatStatus-Available"></div>
-								<div class="ListConferenceStatusText">{{conference.members.length}} {{::verbage.members_on_call}}</div>
-								<span class="link" ng-if="conference.location">at {{::conference.location}}</span>
-							</div> 
-                        </div>
-                    </div>
-					
-                    <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
-                        <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
-							<avatar profile="member.fullProfile" type="4"></avatar>
-                            <div class="first-name">{{member.displayName}}</div>
-                        </div>
-                    </div>
-				</a>
-			</div>			
+					<div class="ListSectionHeaderTitle">{{::verbage.Conferences}}</div>
+					<div class="footnote">{{::verbage.conferences_search_results}}</div>
+					<a href="#/conference/{{ ::conference.xpid }}" ng-repeat="conference in conferences track by conference.xpid" class="ListRow conference" droppable="Contact,Call">
+						<avatar class="SearchAvatar" profile="conference"></avatar>
+	          <div class="ListRowContent" dockable="conference">
+	              <div class="ListRowTitle ConferenceSearchRowTitle">
+	                  <div class="name"> Room #{{::conference.roomNumber}} ({{::conference.extensionNumber}})</div>
+										<span class="ListRowStatus extension" ng-if="conference.location">at {{::conference.location}}</span>
+	                  <div class="ConferenceStatus" data-ng-if="conference.members.length == 0">
+	                      <span class="ListConferenceStatusIcon XIcon-ChatStatus-Offline"></span>
+												<div class="ListConferenceStatusText">{{::verbage.free_room}}</div>
+	                  </div>                            
+	                  <div class="ConferenceStatusOnCall" data-ng-if="conference.members.length > 0">
+	                      <span class="ListRowStatusIcon XIcon-ChatStatus-Available"></span>
+												<div class="ListConferenceStatusText">{{conference.members.length}} {{::verbage.members_on_call}}</div>
+										</div> 
+	              </div>
+			          <div data-fj-local-id="membersList" data-ng-if="conference.members.length > 0" class="ListRow-Conference-Members">
+			              <div class="conferences-room-item-member" data-ng-repeat="member in conference.members">
+											<avatar profile="member.fullProfile" type="4"></avatar>
+			                <div class="first-name">{{member.displayName}}</div>
+			              </div>
+			          </div>
+	          </div>
+
+					</a>
+				</div>			
 			
 			<div ng-if="queues.length > 0">
 				<div class="ListSectionHeaderTitle">{{::verbage.queues}}</div>
+				<div class="footnote">{{::verbage.queues_search_results}}</div>
 				<a href="#/queue/{{ ::queue.xpid }}" ng-repeat="queue in queues track by queue.xpid" class="ListRow">
-					<avatar profile="queue"></avatar>
-					<div class="ListRowContent" dockable="queue">
-						<div class="ListRowTitle">
+					<avatar class="SearchAvatar" profile="queue"></avatar>
+					<div class="ListRowContent QueueListRowContent" dockable="queue">
+						<div class="ListRowTitle QueueSearchRowTitle">
 							<div class="name">
 								<strong>{{ ::queue.name }}</strong>
-								<span class="details">
-									{{ ::queue.members.length }} {{::verbage.members}}
-								</span>
 							</div>
+              <span class="status">
+              	<div class="ListRowStatusIcon XIcon-ChatStatus-{{queue.loggedIn || 'offline' }}"></div>
+								<span class="details">
+									{{ ::queue.calls.length == 0 ? 'no' : queue.calls.length }} {{verbage.waiting_calls}}
+								</span>
+              </span>
 						</div>
 					</div>
 				</a>

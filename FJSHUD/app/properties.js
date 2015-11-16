@@ -14,6 +14,7 @@ fjs.CONFIG = {
 //      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
      // serverURL: "https://huc-qa.fonality.com:8080"
      // , loginURL: "https://huc-qa.fonality.com:5501"
+
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queue_stat_members',
@@ -60,5 +61,9 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 };
+fjs.CONFIG.SERVER.serverURL = "https://lb-stage4.fonality.com:446";
+fjs.CONFIG.SERVER.loginURL = "https://lb-stage4.fonality.com:444";
+fjs.CONFIG.SERVER.ppsServer = 'https://lb-stage4.fonality.com:8443/pps/';
+//fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
 
 

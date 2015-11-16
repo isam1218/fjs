@@ -1,4 +1,3 @@
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .LeftBar
   {   
    .ListRow .Avatar img {margin-right: 0px !important;}
@@ -150,6 +149,9 @@
      }
      
      .Widget.Queues {
+       .WidgetStat.agents{               
+        	.Left{margin-right: 0px;} 	
+        }
         .Grid {
             .Header > div, .Row > div {
                  &:nth-child(1) { 
@@ -183,4 +185,30 @@
      .Widget .ToolBar .convQueue.selectWrapper select{
         width: auto;
      }
-}
+
+     .Queues{
+        .ChatSearch{
+            .Search{
+                padding-bottom: 0px;
+            }
+        }
+     }
+
+     
+     .vmsection{       
+      &.recording{
+     	.vminfo{
+     	    line-height: 44px;
+     		.footnote{
+     			height: 32px;
+     			vertical-align: bottom;
+     			
+     			.vmduration{
+     				padding: 2px;     				
+     				margin-bottom: -8px;
+     				vertical-align: baseline;
+     			}
+     		}
+     	}
+     }	
+    }

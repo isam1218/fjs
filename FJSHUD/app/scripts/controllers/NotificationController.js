@@ -1070,22 +1070,30 @@ hudweb.controller('NotificationController',
       return ourGroup;
     } else if (msg != undefined && msg.audience == 'queue'){
       // display queue avatar rather than individual avatar
-      if(msg.context)	
-      {	  
-	      var queueId = msg.context.split(':')[1];
-	      var ourQueue = queueService.getQueue(queueId);
-	      return ourQueue;
-      }
+      if (msg.context)
+        var queueId = msg.context.split(':')[1];
+      else
+        var queueId = msg.queueId;
+      var ourQueue = queueService.getQueue(queueId);
+      return ourQueue;
     } else {
       return msg.fullProfile;
     }
   };
 
   $scope.determineAvatarType = function(msg){
-    if (msg.type == 'vm' || msg.type == 'missed-call')
-      return 4;
+    var avatarObj = {};
+    avatarObj.msgType = msg.type;
+    if (msg.audience == 'group')
+      avatarObj.type = 2;
     else if (msg.audience == 'queue')
-      return 3;
+      avatarObj.type = 3;
+    else if (msg.type == 'vm' || msg.type == 'missed-call')
+      avatarObj.type = 4;
+    else if (msg.type == 'chat' || (msg.type == 'description' && msg.audience == 'contact'))
+      avatarObj.type = 5;
+
+    return avatarObj;
   };
 
   $scope.$on('$routeChangeSuccess', function(event,data){
