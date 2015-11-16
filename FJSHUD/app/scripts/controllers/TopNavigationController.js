@@ -81,6 +81,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			key:"Intellinote", 
 			enabled:false, 
 			title: "Intellinote"
+		},
+		{
+			url:"#/zipwhip", 
+			key:"Zipwhip", 
+			enabled:false, 
+			title: "Zipwhip"
 		}
     ];
 	
@@ -90,6 +96,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				// toggle permission-based icons
 				if ($scope.appIcons[i].key == 'Intellinote')
 					$scope.appIcons[i].enabled = data.showIntellinote;
+				else if ($scope.appIcons[i].key == 'Zipwhip')
+					$scope.appIcons[i].enabled = data.showZipwhip;
 				else if ($scope.appIcons[i].key == 'Zoom')
 					$scope.appIcons[i].enabled = data.showVideoCollab;
 				else if ($scope.appIcons[i].key == 'CallCenter')
