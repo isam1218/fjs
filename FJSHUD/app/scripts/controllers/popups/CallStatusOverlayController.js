@@ -207,7 +207,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		
 		$scope.canBarge = settingsService.isEnabled(call.details.permissions, 1);
 		// disable barge/monitor/whisper buttons for bottom user if external caller...
-		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled(call.details.permissions, 1);
+		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 || ($scope.onCall.call.displayName == "Private" && !$scope.onCall.call.fullProfile) ? false : settingsService.isEnabled(call.details.permissions, 1);
 		$scope.canRecordOthers = settingsService.isEnabled(call.details.permissions, 0);
 		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
 		if ($scope.onCall.call.bargers && $scope.onCall.call.bargers.length > 0){
@@ -230,13 +230,22 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	});
 
 	// this isn't the isXferFromEnabled personal-permission; it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
-	$scope.determineTransferFrom = function(contactToTransfer){
-	  var contact = contactService.getContact(contactToTransfer);
+	$scope.determineTransferFrom = function(originalCall, bottom){
+	  var contact = contactService.getContact(originalCall.xpid);
 	  if (contact && contact.permissions){
-	    return settingsService.isEnabled(contact.permissions, 3);
-	  } else {
+	    // user might not have have the view-call-details-permission (if no perm -> then the bottom caller is always private) --> can't transfer bottom caller's call; otherwise if have the permission --> default to transfer permissions check
+		  // external vs private --> w/ requisite perms, you can transfer an external caller. But cannot transfer if private/don't have view-call-details perm
+	    if (bottom){
+	    	// if the bottom caller is private (remember private is different from bottom caller being external, cuz you can transfer an external) --> can't transfer
+		    if (originalCall.call.displayName == "Private" && !originalCall.call.fullProfile)
+		    	return false;
+		    else
+		    	return settingsService.isEnabled(contact.permissions, 3);
+	    }
+		  else
+		  	return settingsService.isEnabled(contact.permissions, 3);
+	  } else
 	    return true;
-	  }
 	};
 
 	$scope.canTransferToPrimaryExtension = function(){
