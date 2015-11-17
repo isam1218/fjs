@@ -70,7 +70,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		else if ($scope.profile.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
 		}
-		else if ($scope.profile.name !== undefined) {
+		else if ($scope.profile.name !== undefined && $scope.profile.name != '') {
 			$scope.type = 'Group';
 			$scope.isMine = groupService.isMine($scope.profile.xpid);
 		}
