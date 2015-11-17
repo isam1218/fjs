@@ -641,6 +641,8 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
   $scope.open = function (size) {
     $scope.scheduleBtn = true;
     $scope.updateBtn = false;
+    $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
+    $scope.topic = $scope.userName + " Meeting";
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'myModalContent.html',
@@ -660,7 +662,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 
         },
         topic: function(){
-
+          return $scope.topic;
         },
         time: function(){
 
@@ -724,9 +726,11 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedul
 */$scope.scheduleBtn = schedule;
   $scope.updateBtn = update;
   $scope.host_id = host;
+  $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
 
 $scope.hourOption = ['00','01','02','03','04','05','06','07','08','09',10,11,12];
 $scope.minOption = ['00',15,30,45];
+
 
  /* $scope.selected = {
     item: $scope.items[0]
@@ -750,7 +754,7 @@ var tzName = jstz.determine().name(); // America/Los_Angeles
   }
 }
 
-$scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
+
   var getURL = function(action) {
 
     var url = 
@@ -1087,7 +1091,10 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 /*$scope.startTime.getTimezoneOffset() = +240;
 */ 
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
-
+if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
+  alert("please enter a duration");
+}
+else{
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
@@ -1113,7 +1120,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
         }
       }
     });
-
+  }
   };
 
    $scope.cancel = function () {
