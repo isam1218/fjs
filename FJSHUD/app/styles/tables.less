@@ -98,7 +98,7 @@
     .Avatar{
       width: 30px !important;
       height: 30px !important;
-      background: url("../img/XAvatarBorder.png") no-repeat -95px -95px !important;
+      background: url("../img/XAvatarBorder.png") no-repeat -95px -95px;
 
       img{
         width: 28px !important;
@@ -731,6 +731,24 @@
   }
 }
 .vmsection.group_members{
+  .GroupListRowContent{
+    .Avatar.CallAvatar_Office{
+      // background: url("../img/XAvatarBorder.png") no-repeat -95px -95px;
+      border: 2px solid #009CFF;
+      img{
+        margin-left: -1px !important;
+        margin-top: -1px !important;
+      }
+    }
+    .Avatar.CallAvatar_Queue{
+      background: url("../img/XAvatarBorder.png") no-repeat -95px -185px;
+      margin: auto 2px !important;
+    }
+    .Avatar.CallAvatar_External{
+      background: url("../img/XAvatarBorder.png") no-repeat -95px -140px;
+    }
+  }
+
   .vmalternate{
     display:inline-block;
     float:right;
