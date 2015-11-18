@@ -64,16 +64,20 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					}
 				} else {
 					// non-notifications...
-					switch (attrs.profile){
-						case 'call.fullProfile':
-						case 'currentCall.fullProfile':
-						case 'getVmProfile(voicemail)':
-						case 'gadget.data.call.fullProfile':
-						case 'callstatusContact.call.fullProfile':
-						case 'contact.call.fullProfile':
-						case 'call':
-							// call controls, calls & recordings, vms, dock call, group/queue members or agents, queue call tab --> display circle avatars
-							if (avatarObjType == 3)
+					switch(attrs.profile){
+						case 'vm.myProfile':
+						case 'member':
+						case 'recorder':
+							// vms/confs/records --> only blue circles
+							classy += 'Office';
+							element.addClass(classy);
+							break;
+						default:
+							if (attrs.profile !== 'recording'){
+								element.addClass('AvatarNormal');
+							}
+							// all else --> queue is orange circle, external is green circle, internal is blue
+							if (avatarObjType == 3 || avatarObjType == 1)
 								classy += 'Queue';
 							else if (avatarObjType == 5)
 								classy += 'External';
@@ -81,24 +85,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 								classy += 'Office';
 							element.addClass(classy);
 							break;
-						case 'vm.myProfile':
-						case 'voicemail':
-						case 'member':
-							// voicemails, conference calls --> only display blue circle avatars
-							classy += 'Office';
-							element.addClass(classy);
-					}
-					if (attrs.profile !== 'recording'){
-						element.addClass('AvatarNormal');
-					} else {
-						// take into account that recordings have different type
-						if (avatarObjType == 1)
-							classy += 'Queue';
-						else if (!scope.recording.fullProfile)
-							classy += 'External';
-						else
-							classy += 'Office';
-						element.addClass(classy);
 					}
 				}
 			}
