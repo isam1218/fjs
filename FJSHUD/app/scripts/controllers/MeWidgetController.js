@@ -1,5 +1,5 @@
-hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'ConferenceService', 'QueueService',
-    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService, conferenceService, queueService) {
+hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'ConferenceService', 'QueueService', 'GroupService',
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService, conferenceService, queueService, groupService) {
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;    
     var soundManager;
@@ -542,6 +542,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         if($scope.meModel.my_jid){
             $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
             $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
+        }
+        if ($scope.meModel.my_department){
+            var myDept = groupService.getGroup($scope.meModel.my_department);
+            $scope.meModel.department = myDept.name;
         }
         if(settings){
         	
