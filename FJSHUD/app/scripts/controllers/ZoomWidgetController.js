@@ -641,6 +641,8 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
   $scope.open = function (size) {
     $scope.scheduleBtn = true;
     $scope.updateBtn = false;
+    $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
+    $scope.topic = $scope.userName + " Meeting";
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'myModalContent.html',
@@ -660,7 +662,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
 
         },
         topic: function(){
-
+          return $scope.topic;
         },
         time: function(){
 
@@ -724,9 +726,11 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedul
 */$scope.scheduleBtn = schedule;
   $scope.updateBtn = update;
   $scope.host_id = host;
+  $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
 
 $scope.hourOption = ['00','01','02','03','04','05','06','07','08','09',10,11,12];
 $scope.minOption = ['00',15,30,45];
+
 
  /* $scope.selected = {
     item: $scope.items[0]
@@ -750,7 +754,7 @@ var tzName = jstz.determine().name(); // America/Los_Angeles
   }
 }
 
-$scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
+
   var getURL = function(action) {
 
     var url = 
@@ -885,6 +889,9 @@ $scope.reloadRoute = function() {
 }
 
  $scope.editMeeting = function(AmPm){
+  if(sharedData.meeting.meetingTopic == ""){
+      sharedData.meeting.meetingTopic = $scope.userName + " Meeting";
+    }
    $scope.startTime = new Date($scope.meeting.dt);
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startHour = $scope.meeting.timeSelect;
@@ -977,7 +984,10 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
     sharedData.meeting.update_meeting_id = shared;
 
    //alert($scope.starts);
-
+  if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
+    alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
+  }
+  else{
           $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
               console.log("PUT",data);
               console.log("PUT MEETING ID",sharedData.meeting.meeting_id);
@@ -988,7 +998,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 
                      $modalInstance.close();
 
-
+    }
   };
 
 
@@ -1016,6 +1026,9 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 
 
   $scope.scheduleMeeting = function (AmPm) {
+    if(sharedData.meeting.meetingTopic == ""){
+      sharedData.meeting.meetingTopic = $scope.userName + " Meeting";
+    }
   $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startDay = $scope.startTime.getDate()+1;
@@ -1087,7 +1100,10 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 /*$scope.startTime.getTimezoneOffset() = +240;
 */ 
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
-
+if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
+  alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
+}
+else{
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
       console.log('SUCCESS', data);
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
@@ -1113,7 +1129,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
         }
       }
     });
-
+  }
   };
 
    $scope.cancel = function () {
