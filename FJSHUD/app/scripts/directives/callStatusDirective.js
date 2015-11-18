@@ -2,6 +2,7 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 	function($parse,$compile, $location, ntpService,conferenceService) {
 	return {
 		restrict: 'E',
+		priority: -1,
 		replace: true,
 		/*scope: {
 			timer: '=timer'
