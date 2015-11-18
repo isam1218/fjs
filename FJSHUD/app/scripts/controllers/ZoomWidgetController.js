@@ -441,6 +441,9 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
               var strHourString = "T"+ strHour;
             }
+            if(strHour <10){
+              var strHourString = "T0"+ strHour;
+            }
               var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
               if(strMin == 0){
                 strMin = "00";
@@ -505,6 +508,9 @@ $scope.loading.meetingLoaded = true;
               var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
               var strHourString = "T"+ strHour;
+            }
+            if(strHour <10){
+              var strHourString = "T0"+ strHour;
             }
               var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
               if(strMin == 0){
@@ -571,6 +577,9 @@ $scope.loading.meetingLoaded = true;
               var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
               var strHourString = "T"+ strHour;
+            }
+            if(strHour <10){
+              var strHourString = "T0"+ strHour;
             }
               var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
               if(strMin == 0){
@@ -735,7 +744,7 @@ $scope.minOption = ['00',15,30,45];
  /* $scope.selected = {
     item: $scope.items[0]
   };*/
-$scope.times = ["01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"];
+$scope.times = ["01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30"];
 //$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
 // makes sure the default time for the schedule modal is greater than 
