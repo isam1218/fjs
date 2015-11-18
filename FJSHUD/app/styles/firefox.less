@@ -504,6 +504,14 @@
 }
 .voicemail.vmails{
 	.vmsection{
+	
+	    .Avatar.CallAvatar{
+	      &.CallAvatar_Office,
+	      &.CallAvatar_External,
+	      &.CallAvatar_Queue{		   
+		   margin-top: 4px !important;
+		  } 
+		}
 		.vminfo{
 			line-height: 38px !important;
 			
@@ -522,21 +530,19 @@
 					height: 14px;
 					line-height: 10px;
 					padding: 2px 2px 1px 2px;
-				}
-				.no_transcription, 
-				.transcription
-				{
-				 	margin-bottom: -7px;
-					vertical-align: bottom;
-				}
+				}				
 			}
 		}
 		
 		&.recording{
 			.vminfo{
+			    line-height: inherit !important;
+			    .displayName{
+			    	height: 25px !important;			    	
+			    }
 				.footnote {
-					height: 30px;
-    				vertical-align: bottom;
+					//height: 30px;
+    				//vertical-align: bottom;
     				.vmduration {
     					margin-bottom: -18px;
     					vertical-align: bottom;
@@ -544,7 +550,7 @@
     				
     				.no_transcription,.transcription {
     					margin-bottom: -18px;
-    					vertical-align: bottom;
+    					//vertical-align: bottom;
     				}
     				
 				}
