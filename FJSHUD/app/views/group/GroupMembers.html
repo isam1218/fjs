@@ -17,7 +17,7 @@
         <a ng-href="#/contact/{{::member.contactId}}">
             <avatar profile="member.fullProfile"></avatar>
             <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
-                    <a class="ListRowTitle GroupListRowTitle" ng-href="#/contact/{{::member.contactId}}">
+                    <a class="ListRowTitle GroupListRowTitleWidget" ng-href="#/contact/{{::member.contactId}}">
                         <span> {{ ::member.fullProfile.displayName }} </span>
         				<br/>
                         <div class="ListRowStatusIcon XIcon-QueueStatus-{{ member.fullProfile.queue_status }}"></div>

@@ -82,6 +82,46 @@
   color: #729C00;
 }
 
+.GroupRow{
+  .Avatar{
+    width: 40px !important;
+    height: 40px !important;
+    img{
+      width: 38px !important;
+      height: 38px !important;
+    }
+  }
+  .WidgetHeaderCallStatus{
+    height: 40px;
+    margin-top: .5em;
+
+    .Avatar{
+      width: 30px !important;
+      height: 30px !important;
+      background: url("../img/XAvatarBorder.png") no-repeat -95px -95px !important;
+
+      img{
+        width: 28px !important;
+        height: 28px !important;
+        margin-left: 1px !important;
+        margin-top: 1px !important;
+      }
+    }
+    .CallLineTop{
+      margin-top: -5px;
+      width: 80px !important;
+
+      .CallerName{
+        width: 100%;
+      }
+    }
+    .CallDuration{
+      margin-top: -5px;
+      top: 11px !important;
+    }
+  }
+}
+
 .ListRow {
   position: relative;
   cursor: pointer;
@@ -206,6 +246,9 @@
     display: -ms-flexbox;
     display: flex;
     display: -webkit-flex;
+    .Avatar{
+      margin-top: 0px !important;
+    }
   }
   
   .ListRowTitle {
@@ -279,9 +322,17 @@
     }
     }
   }
-  .GroupListRowTitle{
+  .GroupListRowTitleWidget{
     max-width: 100%;
+    padding-top: 10px;
     
+    span{
+      color: #222;
+    }
+    .ListRowStatusIcon{
+      margin-left: 0px;
+    }
+
     .status_message{
     	-ms-overflow-x:none;
     	-ms-overflow-y: none;
@@ -289,6 +340,10 @@
     	overflow: hidden;
     	text-overflow: ellipsis;
     	white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: -2px;
+      width: 85%;
     }
   }
   
@@ -680,7 +735,7 @@
     display:inline-block;
     float:right;
     position:relative;
-    margin-top:3px;
+    margin-top:6px;
     margin-right:5px;
     height: 40px;
     -ms-flex:   1;
@@ -690,6 +745,7 @@
         right:0;
         top:0;
         position:absolute;
+        margin-top: 5px;
     }
     .extension{
         visibility:visible;

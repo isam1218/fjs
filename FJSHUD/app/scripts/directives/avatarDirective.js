@@ -18,6 +18,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		restrict: 'E',
 		replace: true,
 		template: '<div class="Avatar"></div>',
+		priority: -1,
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
@@ -64,16 +65,20 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					}
 				} else {
 					// non-notifications...
-					switch (attrs.profile){
-						case 'call.fullProfile':
-						case 'currentCall.fullProfile':
-						case 'getVmProfile(voicemail)':
-						case 'gadget.data.call.fullProfile':
-						case 'callstatusContact.call.fullProfile':
-						case 'contact.call.fullProfile':
-						case 'call':
-							// call controls, calls & recordings, vms, dock call, group/queue members or agents, queue call tab --> display circle avatars
-							if (avatarObjType == 3)
+					switch(attrs.profile){
+						case 'vm.myProfile':
+						case 'member':
+						case 'recorder':
+							// vms/confs/records --> only blue circles
+							classy += 'Office';
+							element.addClass(classy);
+							break;
+						default:
+							if (attrs.profile !== 'recording'){
+								element.addClass('AvatarNormal');
+							}
+							// all else --> queue is orange circle, external is green circle, internal is blue
+							if (avatarObjType == 3 || avatarObjType == 1)
 								classy += 'Queue';
 							else if (avatarObjType == 5)
 								classy += 'External';
@@ -81,24 +86,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 								classy += 'Office';
 							element.addClass(classy);
 							break;
-						case 'vm.myProfile':
-						case 'voicemail':
-						case 'member':
-							// voicemails, conference calls --> only display blue circle avatars
-							classy += 'Office';
-							element.addClass(classy);
-					}
-					if (attrs.profile !== 'recording'){
-						element.addClass('AvatarNormal');
-					} else {
-						// take into account that recordings have different type
-						if (avatarObjType == 1)
-							classy += 'Queue';
-						else if (!scope.recording.fullProfile)
-							classy += 'External';
-						else
-							classy += 'Office';
-						element.addClass(classy);
 					}
 				}
 			}
@@ -190,24 +177,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 
 				if (overlay.css('display') != 'block') {
 					// delay
-					timer = $timeout(function() {
-						showOverlay();
-				
-						overlay.bind('mouseleave', function(e) {							
-							// keep open if user moves back onto avatar
-							for (var i = 0, iLen = element.children().length; i < iLen; i++)  {
-								if (e.relatedTarget == element.children()[i])
-									return;
-							}
-							
-							if (e.relatedTarget != element)
-								hideOverlay(500);
-						});
-						
-						overlay.bind('mouseenter', function(e) {
-							$timeout.cancel(timer);
-						});
-					}, settingsService.getSetting('avatar_hover_delay')*1000);
+					timer = $timeout(showOverlay, settingsService.getSetting('avatar_hover_delay')*1000);
 				}
 				else if (current != element) {
 					// hovered over a new avatar
@@ -225,7 +195,30 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					hideOverlay(500);
 			});
 			
-			function showOverlay() {				
+			// insta-menu
+			element.bind('click', function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				
+				showOverlay();
+			});
+			
+			function showOverlay() {
+				overlay.bind('mouseleave', function(e) {
+					// keep open if user moves back onto avatar
+					for (var i = 0, iLen = current.children().length; i < iLen; i++)  {
+						if (e.relatedTarget == current.children()[i])
+							return;
+					}
+					
+					if (e.relatedTarget != current)
+						hideOverlay(500);
+				});
+				
+				overlay.bind('mouseenter', function(e) {
+					$timeout.cancel(timer);
+				});
+						
 				// send data to controller		
 				
 				var data = {
