@@ -985,7 +985,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 
    //alert($scope.starts);
   if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
-    alert("please enter a duration");
+    alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
   }
   else{
           $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
@@ -1101,7 +1101,7 @@ if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
 */ 
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
 if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
-  alert("please enter a duration");
+  alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
 }
 else{
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
