@@ -343,6 +343,17 @@ console.log("Contact",contact);
                context.onAjaxResult(isOk, data)
         });*/
     };
+
+     settingsService.getPermissions().then(function(data) {
+       $scope.getVideo = data.showVideoCollab;
+       if($scope.getVideo == false){
+        $scope.hideScreenShare = true;
+        
+       }
+       else{
+        $scope.hideScreenShare = false;
+       }
+      });
    
 
 	$scope.loginQueue = function() {

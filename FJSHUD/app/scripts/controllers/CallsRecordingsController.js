@@ -50,7 +50,17 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
     
     return url;
   };
-
+  settingsService.getPermissions().then(function(data) {
+       $scope.getVideo = data.showVideoCollab;
+       if($scope.getVideo == false){
+        $scope.showVideo = false;
+        $scope.tabs.splice(3,1);
+       }
+       else{
+        $scope.showVideo = true;
+       }
+      });
+if($routeParams.route == 'videos'){
   settingsService.getSettings().then(function() {
     var date = new Date();
     var month = date.getMonth() + 1;
@@ -63,6 +73,7 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
            
           });
   });
+}
 
 }]);
 

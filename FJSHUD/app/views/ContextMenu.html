@@ -222,9 +222,9 @@
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="screenShare(profile)">
-			<div class="ListRowActionButtonScreenShare"></div>
-			<span>Screen Share</span>
+		<a class="Button" href="" ng-show="profile.primaryExtension" ng-hide="hideScreenShare" ng-click="screenShare(profile)">
+			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
+			<span ng-hide="hideScreenShare">Screen Share</span>
 		</a>
 	</div>
 	
@@ -258,9 +258,9 @@
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
-		<a class="Button" href="" ng-show="isMine" ng-click="screenShare(profile.members)">
-			<div class="ListRowActionButtonScreenShare"></div>
-			<span>Screen Share</span>
+		<a class="Button" href="" ng-show="isMine" ng-hide="hideScreenShare" ng-click="screenShare(profile.members)">
+			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
+			<span ng-hide="hideScreenShare">Screen Share</span>
 		</a>
 		
 	</div>
