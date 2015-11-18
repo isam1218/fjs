@@ -760,7 +760,7 @@ for(var tHour = 0; tHour <= $scope.times.length; tHour++){
 
     
    
-    if($scope.times[tHour] !== undefined && $scope.currentTime.substr(0,2) == $scope.times[tHour].toString().substr(0,2) && $scope.times[tHour].toString().substr(3,2) == 0 && parseInt($scope.currentTime.substr(3,2)) > 30){
+    if($scope.times[tHour] !== undefined && $scope.currentTime.substr(0,2) == $scope.times[tHour].toString().substr(0,2) && $scope.times[tHour].toString().substr(3,2) == 0 && parseInt($scope.currentTime.substr(3,2)) >= 30){
      
       tHour+=2;
       var d = new Date();
@@ -777,6 +777,13 @@ for(var tHour = 0; tHour <= $scope.times.length; tHour++){
     $scope.currentTime = th +":"+tm;
     
     $scope.currentTime = $scope.times[tHour];
+  }
+  else if($scope.times[tHour] !== undefined && $scope.currentTime.substr(0,2) == 12 && parseInt($scope.currentTime.substr(3,2)) >= 30){    
+      var d = new Date();
+    var th = $filter('date')(d,'hh');
+    $scope.currentTime = th +":"+tm;
+    
+    $scope.currentTime = $scope.times[0];
   }
   
  
