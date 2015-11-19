@@ -522,6 +522,17 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		
 		return deferred.promise;
 	};
+	
+	// manually override 'delete' status in web worker
+	this.deleteFromWorker = function(feed, xpid) {
+		if (worker) {
+			worker.postMessage({
+	            "action": "delete",
+	            "feed": feed,
+				"xpid": xpid
+	        });
+		}
+	};
 
 	// preload images
 	this.preload('img/XAvatarBorder.png');
