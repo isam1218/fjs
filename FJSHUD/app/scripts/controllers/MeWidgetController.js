@@ -15,6 +15,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.avatar ={};
     $scope.phoneType = false;
     $scope.settings = {};
+    $scope.selectedDevices = {};
 	
 	// listens for route param to populate current call object
 	$scope.$on('$routeChangeSuccess', function() {    
@@ -247,35 +248,35 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
      }
 
 	var setInputAudioDevice = function(){
-		$scope.selectedInput = $scope.inputDevices.filter(function(item){
+		$scope.selectedDevices.selectedInput = $scope.inputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('inpdefid');
        	 })[0];
 
-        if($scope.selectedInput == undefined){
-            $scope.selectedInput = $scope.inputDevices[0];
+        if($scope.selectedDevices.selectedInput == undefined){
+            $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
 		}
-        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+        $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
 
 	};
 
 	var setOutputAudioDevice = function(){
-		$scope.selectedOutput = $scope.outputDevices.filter(function(item){
+		$scope.selectedDevices.selectedOutput = $scope.outputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('outdefid'); 
          })[0];
             
-         $scope.selectedRingput = $scope.outputDevices.filter(function(item){
+         $scope.selectedDevices.selectedRingput = $scope.outputDevices.filter(function(item){
                 return item.id == phoneService.getSelectedDevice('ringdefid'); 
           })[0];
 
-          if($scope.selectedRingput == undefined){
-                $scope.selectedRingput = $scope.outputDevices[0];
+          if($scope.selectedDevices.selectedRingput == undefined){
+                $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
                 
           }
-          if($scope.selectedOutput == undefined){
-                $scope.selectedOutput = $scope.outputDevices[0];
+          if($scope.selectedDevices.selectedOutput == undefined){
+                $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
           }
-          $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-	       $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+          $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+	       $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
           
     };	
 
@@ -1242,12 +1243,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     break;
 				case "updateDevices":
 					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
-                        $scope.selectedInput = $scope.inputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
-                        $scope.selectedRingput = $scope.outputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-                        $scope.selectedOutput = $scope.outputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+                        $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
+                        $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                        $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
+                        $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
                     }
                     break;
                   
