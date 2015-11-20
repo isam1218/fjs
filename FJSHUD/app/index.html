@@ -10,7 +10,20 @@
     <!--[if lt IE ]> 
         <link rel="stylesheet" href="styles/ie.css">  
     <![endif]-->
-  	<script type="text/javascript">   	
+  	<script type="text/javascript"> 
+		  	function isBrowserIE()
+		  	{
+			    if (navigator.userAgent.indexOf('MSIE') != -1)
+				 var detectIEregexp = /MSIE (\d+\.\d+);/ //test for MSIE x.x
+				else // if no "MSIE" string in userAgent
+				 var detectIEregexp = /Trident.*rv[ :]*(\d+\.\d+)/ //test for rv:x.x or rv x.x where Trident string exists
+			
+				if (detectIEregexp.test(navigator.userAgent)) //if some form of IE
+					return true;
+				else
+					return false;	            	 
+			};
+			
 			(function(){				
 				var uv=document.createElement('script');
 				uv.type='text/javascript';
@@ -18,33 +31,32 @@
 				uv.src='//widget.uservoice.com/Tn3xl4wYXZ7m5rjTNJnOQ.js';
 				var s=document.getElementsByTagName('script')[0];
 				s.parentNode.insertBefore(uv,s);
-					            
-	            var isIE11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
-	            var isIE10 = !!navigator.userAgent.match(/Trident.*rv[ :]*10\./);
+				            	           
 				var agent = navigator.userAgent.toLowerCase();
-	            var links = document.getElementsByTagName('link');
-				
-	            if(isIE10 || isIE11) {	                    	
+	            var links = document.getElementsByTagName('link');            	            				
+			    var isInternetExplorer = isBrowserIE();
+			    
+	             if(isInternetExplorer) {	            	 
 	              var ie_css = document.createElement('link');
 	              ie_css.setAttribute('rel','stylesheet');
 	              ie_css.setAttribute('href','styles/ie.css');	              
 	              var l = links[links.length-1];
 	              l.parentNode.appendChild(ie_css,l);	                    	
-	            }
-	            else if(agent.indexOf('firefox') != -1){
+	             }
+	             else if(agent.indexOf('firefox') != -1){
 	            	var FF_css = document.createElement('link');
 	            	FF_css.setAttribute('rel','stylesheet');
 	            	FF_css.setAttribute('href','styles/firefox.css');
 	                var li = links[links.length-1];
 	                li.parentNode.appendChild(FF_css,li);  
-	            }
-	            else if(agent.indexOf('safari') != -1 && agent.indexOf('chrome') == -1){
+	             }
+	             else if(agent.indexOf('safari') != -1 && agent.indexOf('chrome') == -1){
                     var safari_css = document.createElement('link');
                     safari_css.setAttribute('rel','stylesheet');
                     safari_css.setAttribute('href','styles/safari.css');
                     var sli=document.getElementsByTagName('link')[0];
                     sli.parentNode.appendChild(safari_css,sli);  
-                }
+                 }
 			})();
 		</script>
 		
