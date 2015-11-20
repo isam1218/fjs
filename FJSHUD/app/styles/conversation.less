@@ -583,3 +583,26 @@
   max-width:70px;
   max-height:70px;
 } 
+.ConferenceListRow .ListRowTitle{
+    .ListRowStatusLeftSide{
+      max-width: 80%;
+      & > div{
+    	float: left;
+    	clear: none;
+      }	
+    }
+	.vmtime{
+           position: relative;
+           right: 5px; 
+         }
+         .ListRowStatus{
+           width: 20% !important;           
+         }
+}
+.currentCall.conference .ConferenceListRowStatusText{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 80%;
+  overflow: hidden;
+  padding-top: 4px;  
+}
