@@ -1,7 +1,7 @@
 <div class="MenuWindow SelectMenuBox LocationsMenu" data-ng-controller="LocationsController" data-ng-style="currentPopup.position">
     <div class="SelectBoxMenu">
         <div class="SelectBoxText" style="font-size:12px">
-            <div ng-if="currentPopup.target != 'move'"><span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span></div>
+            <div ng-if="currentPopup.target != 'move'" class="locationHead"><span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span></div>
             <span class="InnerIco move" ng-if="currentPopup.target == 'move'">Select phone to use</span>
         </div>
         <div ng-click="onBodyClick()" class="SelectBoxArrow"></div>
