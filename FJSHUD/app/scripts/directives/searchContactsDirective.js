@@ -25,7 +25,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 		link: function(scope, element, attrs) {
 			var overlay, inset, rows, joinBtn;
 			var range = attrs.contactSearch.split('|')[0];
-			var destination;
+			var delay, destination;
 			var isArray = false;
 			
 			element.bind('click', function(e) {
@@ -39,114 +39,115 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			});
 			
 			element.bind('keyup', function(e) {
-				// add overlay for the first time
-				if (!overlay && element.val().length > 0) {
-					overlay = angular.element('<div class="SearchContactOverlay"></div>');
-					overlay.css('top', element[0].offsetTop - 50 + 'px');
-					
-					// conferences are a special case
-					if (scope.conference) {
-						overlay.append('<div class="SearchHeader">Join to Conference</div>');
+				// debounce
+				clearTimeout(delay);
+				
+				delay = setTimeout(function() {
+					// add overlay for the first time
+					if (!overlay && element.val().length > 0) {
+						overlay = angular.element('<div class="SearchContactOverlay"></div>');
+						overlay.css('top', element[0].offsetTop - 50 + 'px');
 						
-						joinBtn = angular.element('<input type="button" class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton" value="Join by phone" />');
+						// conferences are a special case
+						if (scope.conference) {
+							overlay.append('<div class="SearchHeader">Join to Conference</div>');
+							
+							joinBtn = angular.element('<input type="button" class="XButton XButtonNormal JoinByPhoneBtn" id="joinConfButton" value="Join by phone" />');
+							
+							joinBtn.bind('click', function() {
+								scope.searchContact(null, element.val());
+								removeOverlay();
+							});
+							
+							overlay.append(joinBtn);
+							overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
+						}
+						else
+							overlay.append('<div class="SearchHeader">Add a Team Member</div>');
 						
-						joinBtn.bind('click', function() {
-							scope.searchContact(null, element.val());
+						inset = angular.element('<div class="Inset"></div>');	
+						inset.css('margin-top', element[0].offsetHeight*1.6 + 'px');
+						
+						rows = angular.element('<div class="rows"></div>');
+						
+						inset.append(rows);
+						overlay.append(inset);
+						
+						element.after(overlay);
+				
+						// prevent accidental closing
+						overlay.bind('click', function(e) {
+							e.stopPropagation();
+						});
+				
+						// close overlay for reals
+						$document.bind('click', function(e) {
 							removeOverlay();
 						});
 						
-						overlay.append(joinBtn);
-						overlay.append('<div class="ExpandedToolBarHelp">Click on contact to join</div>');
+						// find object/array that we will add contacts to
+						destination = scope.$eval(attrs.contactSearch.split('|')[1]);
+				
+						if (Array.isArray(destination))
+							isArray = true;
 					}
-					else
-						overlay.append('<div class="SearchHeader">Add a Team Member</div>');
-					
-					inset = angular.element('<div class="Inset"></div>');	
-					inset.css('margin-top', element[0].offsetHeight*1.6 + 'px');
-					
-					rows = angular.element('<div class="rows"></div>');
-					
-					inset.append(rows);
-					overlay.append(inset);
-					
-					element.after(overlay);
-			
-					// prevent accidental closing
-					overlay.bind('click', function(e) {
-						e.stopPropagation();
-					});
-			
-					// close overlay for reals
-					$document.bind('click', function(e) {
+					// clear
+					else if (element.val().length == 0) {
 						removeOverlay();
-					});
-					
-					// find object/array that we will add contacts to
-					destination = scope.$eval(attrs.contactSearch.split('|')[1]);
-			
-					if (Array.isArray(destination))
-						isArray = true;
-				}
-				// clear
-				else if (element.val().length == 0) {
-					removeOverlay();
-					return;
-				}
-				
-				// populate
-				var query = element.val().toLowerCase();
-				var count = 0;
-				rows.empty();
-				
-				for (var i = 0, len = contacts.length; i < len; i++) {
-					var contact = contacts[i];
-					var dupe = false;
-					
-					// basic check
-					if (contact.xpid != $rootScope.myPid && (range == 'all' || contact.primaryExtension)) {
-						// dupe check
-						if (isArray) {
-							for (var j = 0, jLen = destination.length; j < jLen; j++) {
-								if (destination[j].xpid == contacts[i].xpid || (destination[j].fullProfile && destination[j].fullProfile.xpid == contacts[i].xpid)) {
-									dupe = true;
-									break;
-								}
-							}
-						}
-						else {
-							for (var key in destination) {
-								if (key == contacts[i].xpid) {
-									dupe = true;
-									break;
-								}
-							}
-						}
-						
-						if (dupe) continue;
-						
-						// final query check
-						if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1) {
-							count++;
-							makeLine(contact);
-						}
+						return;
 					}
-				}
-				
-				// conferences only
-				if (scope.conference) {
-					// add unknown row
-					if (count == 0)
-						makeLine(null);
 					
-					if (!isNaN(element.val()))
-						joinBtn.attr('disabled', false);
-					else
-						joinBtn.attr('disabled', true);
-				} else if (count == 0){
+					// populate
+					var query = element.val().toLowerCase();
+					var count = 0;
 					rows.empty();
-					makeLine(null, true);
-				}
+					
+					for (var i = 0, len = contacts.length; i < len; i++) {
+						var contact = contacts[i];
+						var dupe = false;
+						
+						// basic check
+						if (contact.xpid != $rootScope.myPid && (range == 'all' || contact.primaryExtension)) {
+							// dupe check
+							if (isArray) {
+								for (var j = 0, jLen = destination.length; j < jLen; j++) {
+									if (destination[j].xpid == contacts[i].xpid || (destination[j].fullProfile && destination[j].fullProfile.xpid == contacts[i].xpid)) {
+										dupe = true;
+										break;
+									}
+								}
+							}
+							else {
+								for (var key in destination) {
+									if (key == contacts[i].xpid) {
+										dupe = true;
+										break;
+									}
+								}
+							}
+							
+							if (dupe) continue;
+							
+							// final query check
+							if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1) {
+								count++;
+								makeLine(contact);
+							}
+						}
+					}					
 
+					// conferences only
+					if (scope.conference) {
+						// add unknown row
+						if (count == 0)
+							makeLine(null);
+						
+						if (!isNaN(element.val()))
+							joinBtn.attr('disabled', false);
+						else
+							joinBtn.attr('disabled', true);
+					}
+				}, 250);
 			});
 			
 			scope.$on('$destroy', function() {
@@ -216,6 +217,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			
 			// destroy
 			function removeOverlay() {
+				clearTimeout(delay);
+				
 				if (overlay) {
 					$document.unbind('click');
 					
