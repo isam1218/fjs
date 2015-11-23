@@ -100,13 +100,14 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 					};
 				}
 			}
+			httpService.getFeed('conferencepermissions');
 		}
 		
 		// retrieve child data
 		/*httpService.getFeed('conferencemembers');
 		httpService.getFeed('server');
 		httpService.getFeed('conferencestatus');
-		httpService.getFeed('conferencepermissions');*/
+		*/
 	});
 
 	$rootScope.$on("conferencemembers_synced",function(event,data){
