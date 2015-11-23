@@ -43,6 +43,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				break;
 			case 'conference':
 				// sort by displaying home server conference rooms first...
+				firstArr = [];
+				secondArr = [];
 				conferenceService.getConferences().then(function(data) {
 					var myObj = contactService.getContact($rootScope.myPid);
 					var myServerNumber = myObj.jid.split('_')[0];
@@ -135,6 +137,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.addError = null;
 		
 		if (screen == 'conference') {
+			firstArr = [];
+			secondArr = [];
 			conferenceService.getConferences().then(function(data) {
 				var myObj = contactService.getContact($rootScope.myPid);
 				var myServerNumber = myObj.jid.split('_')[0];
@@ -159,7 +163,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.sendToPrimary = true;
 		}
 	};
-	
+
 	$scope.selectConference = function(conference) {
 		$scope.selectedConf = conference;
 	};
