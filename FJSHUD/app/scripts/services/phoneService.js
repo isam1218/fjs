@@ -868,7 +868,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var remove_notification = function(xpid){
 		httpService.sendAction('quickinbox','remove',{'pid':xpid});
-		//$rootScope.$broadcast('quickinbox_synced', data);
+		httpService.deleteFromWorker('quickinbox', xpid);
 	};
 
 	var goToNotificationChat = function(xpid, audience,mxpid){
