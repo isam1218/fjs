@@ -5,7 +5,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		var notifyPipe = false;
 		var enabled = false;
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
-
+        var isCancelled = false;
 
 		//initialize the Notification service for the new webphone notifications
 		var initNSService = function(){
@@ -23,6 +23,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
   
 				}));
            	
+				context.setCancelled(false);
            		enabled = true;
            	};
 
@@ -33,6 +34,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             	}else{
 					response = JSON.parse(evt.data);
 					console.log(response);
+					
+					if(response.notificationEventType == 'CLOSE')
+						context.setCancelled(true);
+					else
+						context.setCancelled(false);
 					$rootScope.$broadcast("notification_action",response);
             	}
             };
@@ -49,14 +55,25 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
             };
 		};
+
+		//set the 'cancelled' flag
+		this.setCancelled = function(is_cancelled)
+		{
+			isCancelled = is_cancelled;
+		}
+		//get the 'cancelled' flag
+		this.getCancelled = function()
+		{
+			return isCancelled ;
+		}
 		
-		this.initNSService = initNSService;
+		this.initNSService = initNSService;		
 
 		this.isEnabled = function(){
 			return enabled;
 		};
 
-		this.sendData =  function(data,retry,type){
+	    this.sendData =  function(data,retry,type){
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
