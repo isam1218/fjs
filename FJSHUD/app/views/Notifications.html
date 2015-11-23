@@ -160,7 +160,7 @@
 					</div>
 				</div>				
 				<div class="controlButtons" ng-switch="currentCall.state">
-					<span ng-if="currentCall.mute" class="mute" style="font-size:9px;color:red">Muted</span>
+					<span ng-if="currentCall.mute" class="mute">Muted</span>
 					
 					<div ng-click="endCall(currentCall.xpid)" class="XButton decline" ng-switch-when="0">{{ currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
 					<div ng-click="endCall(currentCall.xpid)" class="XButton end" ng-switch-when="2">{{::verbage.end}}</div>
