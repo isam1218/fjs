@@ -274,6 +274,18 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		$scope.vmExtensionNumber = $scope.vmFrom == $scope.meModel.primary_extension ? $scope.meModel.primary_extension :  data.phone;
 
 	});
+
+	$scope.topRecordingAvatarType = function(vm){
+		// external caller...
+		if (vm.type == 2 && !vm.fullProfile)
+			return 5;
+		// queue...
+		else if (vm.info && vm.calls)
+			return 3;
+		// conference or internal contact...
+		else
+			return 4;
+	};
   
 	$scope.playAudio = function() {
 		if ($scope.player.playing)

@@ -94,6 +94,18 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 				return true;
 		};
 	};
+
+	$scope.recordingAvatarType = function(rec){
+		// external
+		if (rec.type == 2 && !rec.fullProfile)
+			return 5;
+		// queue
+		else if (rec.queueId)
+			return 3;
+		// conf/internal contact
+		else 
+			return 4;
+	};
 	
 	/* action items: */
 	
