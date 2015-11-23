@@ -148,6 +148,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
 						}
 					}	
+
 				}
 			}
 
@@ -751,8 +752,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			isCancelled = true;
-	    			localStorage['isCancelled'] = isCancelled;
+	    			isCancelled = true;	    		
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -760,17 +760,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/EndCall':
 	    			hangUp(xpid);
 	    			removeNotification();
-					break;
+					return;
 	    		case '/HoldCall':
 	    			holdCall(xpid,true);
-	    			break;
+	    			return;
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
 	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
-	    			break;
+	    			return;
 	    		case '/AcceptCall':
 					acceptCall(xpid);
 					if(settingsService.getSetting('alert_call_duration') == "while_ringing"){
@@ -780,7 +780,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							remove_notification();
 						}
 	    			}
-					break;
+					return;
 	    		case '/AcceptZoom':
 					var apiUrl = queryArray[1].split(': ')[1];
 					window.open(apiUrl,'_blank');
@@ -810,7 +810,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/RemoveNotification':
 				    remove_notification(xpid);
-					break;
+					return;
 				case '/goToChat':
 					var context = queryArray[0];
 					var audience = context.split(":")[0];
@@ -836,6 +836,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var messagexpid = queryArray[3];
 					showQueue(queueId,audience, type,messagexpid);
 					break;
+<<<<<<< HEAD
 				case '/CloseError':
 					var data = {
 						event: 'dismissError',
@@ -854,7 +855,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					el = null;
 					break;
 			}
+=======
+		}
+		
+		// re-focus tab/window
+		if (url.indexOf('"ts"') === -1) {
+			activateBrowserTab();
+			window.focus();
+		}
+>>>>>>> origin/tickets/HUDF-883
     };
+	
 	var removeNotification = function(){
 		if(alertPlugin){
 
