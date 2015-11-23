@@ -119,6 +119,9 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 			}
 		
 			httpService.upload_attachment(data, fileList);
+		
+			// play sfx
+			phoneService.playSound("sent");
 		}
 		else if (this.message && this.message != '') {
 			// send as normal chat
@@ -128,6 +131,9 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 				to: $scope.targetId,
 				message: this.message
 			});
+		
+			// play sfx
+			phoneService.playSound("sent");
 		}
 		
         this.message = "";
@@ -136,9 +142,6 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
 		
 		// go to chat page
         $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
-		
-		// play sfx
-		phoneService.playSound("sent");
     };
 
 	$scope.selectCurrentDownload = function(download){
