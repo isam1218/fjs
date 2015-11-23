@@ -142,7 +142,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 						joinBtn.attr('disabled', false);
 					else
 						joinBtn.attr('disabled', true);
+				} else if (count == 0){
+					rows.empty();
+					makeLine(null, true);
 				}
+
 			});
 			
 			scope.$on('$destroy', function() {
@@ -150,7 +154,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			});
 			
 			// fill row content
-			function makeLine(contact) {
+			function makeLine(contact, noResult) {
 				var line = angular.element('<div Class="ListRow"></div>');
 				var content = '';
 				
@@ -172,7 +176,11 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 					
 					content += '</div>';
 				}
-				// unknown
+				// no result (all sections except conferences)
+				else if (noResult){
+					line = angular.element('<div class="ListViewIsEmpty">No Search Results</div>');
+				}
+				// conferences
 				else {
 					line.append('<div class="Avatar AvatarSmall"><img src="img/Generic-Avatar-14.png"/></div>');	
 					
