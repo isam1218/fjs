@@ -639,19 +639,25 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
             if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
-                     isRegistered = true;
-                	$rootScope.phoneError = false;
-
-                } else if(account_.status == REG_STATUS_UNKNOWN){
-                  	 $rootScope.phoneError = true;
-                     isRegistered = false;
-					 if($rootScope.isFirstSync){
-					 	$rootScope.$evalAsync($rootScope.$broadcast('network_issue',data));
-	     			 }
-
-				}else{
-					$rootScope.phoneError = false;
+                    isRegistered = true;
+					
+					if ($rootScope.phoneError)
+						$rootScope.$broadcast('network_issue', null);
+                } 
+				else if(account_.status == REG_STATUS_UNKNOWN){
                     isRegistered = false;
+					
+					// delay check in case user was simply switching devices
+					$timeout(function() {
+						if (!isRegistered)
+							$rootScope.$evalAsync($rootScope.$broadcast('network_issue', 'phoneError'));
+					}, 1000, false);
+				}
+				else{
+                    isRegistered = false;
+					
+					if ($rootScope.phoneError)
+						$rootScope.$broadcast('network_issue', null);
 				}
 
 				var data = {
@@ -1777,7 +1783,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	 this.getLocationPromise = function(){
 	 	return deferredLocations.promise;
-	 }
+	 };
+
 	 $rootScope.$on('locations_synced', function(event,data){
         if(data){
             for (var i = 0, iLen = data.length; i < iLen; i++) {
@@ -1793,8 +1800,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
      $rootScope.$on('location_status_synced', function(event,data){
         if(data){
             for (var i = 0, iLen = data.length; i < iLen; i++) {
-                if(locations[data[i].xpid]){
+                if (locations[data[i].xpid]){
                     locations[data[i].xpid].status = data[i];
+					
+					// update softphone status manually
+                    if (locations[data[i].xpid].locationType == 'w'){
+                        locations[data[i].xpid].status.deviceStatus = isRegistered ? 'r' : 'u';
+                    }
                 }
             }
         }

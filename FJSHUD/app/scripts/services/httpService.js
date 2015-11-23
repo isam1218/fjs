@@ -45,7 +45,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						synced = true;
 						
 						if ($rootScope.networkError)
-							$rootScope.$broadcast('network_issue', {show: false});
+							$rootScope.$broadcast('network_issue', null);
 		            }
 		            break;
 		        case "feed_request":
@@ -59,7 +59,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
       				break;
       			case "network_error":
       				if(!synced){
-      					$rootScope.$broadcast('network_issue', {show: true});
+      					$rootScope.$broadcast('network_issue', 'networkError');
 						worker.terminate();
 					}
       				break;
@@ -185,23 +185,16 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
-					$rootScope.$broadcast('no_license', undefined);
+					$rootScope.$broadcast('no_license', 'networkError');
 
 					break;
 				case 404:
-					$rootScope.$broadcast('network_issue',undefined);
+					$rootScope.$broadcast('network_issue', 'networkError');
 					break;
 				case 500:
-					$rootScope.$broadcast('network_issue',undefined);
+					$rootScope.$broadcast('network_issue', 'networkError');
 					break;
 				default:
-					/*
-					localStorage.removeItem('me');
-					localStorage.removeItem('nodeID');
-					localStorage.removeItem('authTicket');
-					$rootScope.networkError = true;
-					$rootScope.$broadcast('network_issue',undefined);
-					*/
 					attemptLogin();
 					break;
 			}
@@ -440,7 +433,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		})
 		.error(function() {
 			// network error
-			$rootScope.$broadcast('network_issue', {show: true});
+			$rootScope.$broadcast('network_issue', 'networkError');
 		});
 	};
 	
