@@ -906,7 +906,7 @@ hudweb.controller('NotificationController',
 
         // if not a dupe, or it's the second in a string of msgs in a row, still play chat sound
         if (dupe && combinedMsg || !dupe){
-               if (item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
+               if (item.type == 'wall' || item.type == 'chat' || item.type == 'gchat' || item.type == 'description'){
                        if (!$scope.isFirstSync){
                                phoneService.playSound('received');
                        }
