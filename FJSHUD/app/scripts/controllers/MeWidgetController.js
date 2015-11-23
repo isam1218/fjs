@@ -293,9 +293,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 	});*/
 
   	$scope.updateAudioSettings = function(value, type){
-        if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
+        /*if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
             phoneService.setAudioDevice('Ring',value);    
-        }
+        }*/
         phoneService.setAudioDevice(type,value);
     };
 
