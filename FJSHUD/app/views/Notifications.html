@@ -1,5 +1,5 @@
 <div class="LeftBarNotificationSection notificationsSection" expand-contract-notifications>
-	<div class="NotificationMessages LeftBarNotifications">
+	<div class="NotificationMessages LeftBarNotifications">     
 		<div class="TitleBar" ng-switch="notifications.length > 0 || errors.length > 0">
 			<div class="HasNotificationIcon" ng-switch-when="true"></div>
 			<div class="NoNotificationIcon" ng-switch-when="false"></div>
@@ -17,7 +17,7 @@
 
 				</div>
 				<div class="NotificationDivider"></div>
-				<div class="NotificationSection" >
+						<div class="NotificationSection ng-class:{'last' : $last  && phoneSessionEnabled && !anotherDevice};" >
 					<avatar 
 						ng-class="::message.type == 'vm' || message.type == 'missed-call' || message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'"
 						ng-if="::message.type != 'error'"
@@ -33,7 +33,7 @@
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
 								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{::message.displayName}}</span>
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
-								<div class="NotificationTime">{{ ::message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
+								<div class="NotificationTime">{{ message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
 							</div> 
 							<div class="NotificationType">
 								...{{message.label }} 

@@ -45,16 +45,13 @@ hudweb.controller('NotificationController',
   $scope.showAway = false;
   $scope.showOld = false;
   $scope.displayAlert = false;
+  $scope.alertDuration = settingsService.getSetting('alert_call_duration');
   $scope.clearOld;
-  $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
-    
-  settingsService.getMe().then(function() {
-	// delayed so phoneService can do its thing
-	$timeout(function() {
-		// can't find plugin or it's outdated
-		if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
-			$scope.addError('browserPlugin');
-	}, 1000, false);
+
+  phoneService.getInputDevices().then(function(data){
+    // can't find plugin or it's outdated
+    if (!phoneService.isPhoneActive() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
+        $scope.addError('browserPlugin');
   });
 
   $scope.getAvatar = function(pid){
@@ -190,10 +187,6 @@ hudweb.controller('NotificationController',
     return messages;
   };
   
-  $scope.$on('play_voicemail', function(event, data){
-    $scope.remove_notification(data.xpid); 
-  });
-
   $scope.remove_notification = function(xpid){
     
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
@@ -206,13 +199,6 @@ hudweb.controller('NotificationController',
     }
     // call this method so can delete tmp barge notifications
     delete_notification_from_notifications_and_today(xpid);
-  };
-
-  $scope.remove_anotherDevice_notification = function(){
-    if ($scope.displayAnotherDeviceNotification)
-      $scope.displayAnotherDeviceNotification = false;
-    else if (!$scope.displayAnotherDeviceNotification)
-      $scope.displayAnotherDeviceNotification = true;
   };
 
   $scope.showNotifications = function(flag)
@@ -709,9 +695,8 @@ hudweb.controller('NotificationController',
 				}	
         		$scope.displayAlert = true;
         		$timeout(displayNotification, 1500);
-			}
+			}		
     }else{
-
       if(nservice.isEnabled()){
         for (var i = 0; i < $scope.calls.length; i++){
            nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
@@ -934,7 +919,7 @@ hudweb.controller('NotificationController',
 
         // if not a dupe, or it's the second in a string of msgs in a row, still play chat sound
         if (dupe && combinedMsg || !dupe){
-               if (item.type == 'wall' || item.type == 'chat' || item.type == 'gchat' || item.type == 'description'){
+               if (item.type == 'wall' || item.type == 'chat' || item.type == 'gchat'){
                        if (!$scope.isFirstSync){
                                phoneService.playSound('received');
                        }

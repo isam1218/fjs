@@ -154,8 +154,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
             if (voicemail.fullProfile !== null && voicemail.fullProfile.primaryExtension.indexOf(query) !== -1){
               return true;
             }
-        };
-    
+        };    
     };
     var locations = {};
     phoneService.getLocationPromise().then(function(data){
@@ -176,7 +175,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     	// first time
     	$scope.myProfile = contactService.getContact($rootScope.myPid);
 		$scope.vm.myProfile = 	$scope.myProfile;
-		
+
 		if ($scope.voicemails.length == 0) {
 			$scope.voicemails = data.filter(function(item){
 				return item.xef001type != "delete"; 

@@ -13,7 +13,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.transfer.search = '';
 	$scope.selectedConf = null;
 	$scope.addError = null;
-	$scope.contacts = [];
 	$scope.who = {};
 	$scope.who.sendToPrimary = true;
 	$scope.alreadyBarged = false;
@@ -21,7 +20,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.topAlreadyWhispered = false;
 	$scope.bottomAlreadyWhispered = false;
 
-	$scope.selectionDisplay;
 	$scope.transferResults;
 	$scope.transferContacts = [];
 	$scope.transferType;
@@ -38,9 +36,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				$scope.screen = 'transfer';
 				$scope.transferFrom = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 				$scope.transferTo = null;
-				contactService.getContacts().then(function(data) { 
-					$scope.contacts = data;
-				});
 
 				if(!$scope.transferFrom){
 					$scope.transferFrom = $scope.onCall.call;
@@ -162,10 +157,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.tranQuery = '';
 			$scope.transferTo = null;
 			$scope.sendToPrimary = true;
-			
-			contactService.getContacts().then(function(data) { 
-				$scope.contacts = data;
-			});
 		}
 	};
 	
@@ -200,14 +191,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 
 	$scope.transferFilter = function(){
 		var query = $scope.transfer.search.toLowerCase();
+		
 		return function(contact){
-				if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
-				$scope.selectionDisplay = query;
+			if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
 				return true;
-			} else if (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4)
-				$scope.selectionDisplay = query;
-			else
-				return false;
+			}
 		};
 	};
 
@@ -264,13 +252,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	  }
 	};
 
-	$scope.transferPermFilterContacts = function(){
-		// filter out contacts from transfer list if do not have [transfer to primary extension permission] AND [transfer to VM permission]
-		return function(contact){
-			return settingsService.isEnabled(contact.permissions, 4) || settingsService.isEnabled(contact.permissions, 5);
-		};
-	};
-
 	$scope.canTransferToPrimaryExtension = function(){
 		/* Reference (DO NOT DELETE)
 		*CP Group Permission: HUD -- Transfer call to others' extensions
@@ -295,6 +276,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	$scope.selectDestination = function(selectionInput, display) {
+		$scope.transferType = 'internal';
+		
 		// if clicking on the selectionBox
 		if (display == 'selectionBox'){
 			// if selected box is an external phone #
@@ -302,18 +285,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				$scope.transferType = 'external';
 				$scope.transferTo = createTmpExternalContact(selectionInput);
 			} 
+			
 			// if user does not have transfer to primary extension permission AND doesn't have transfer to VM perm -> can't advance to next transfer screen
 			if (!$scope.canTransferToPrimaryExtension() && !$scope.canTransferToVm())
 				return;
+			
 			// if selected is an internal contact, grab their contact data...
-			contactService.getContacts().then(function(data){
-				for (var i = 0; i < data.length; i++){
-					if (data[i].xpid != $rootScope.myPid && data[i].xpid != $scope.transferFrom.xpid && data[i].displayName.toLowerCase().indexOf(selectionInput.toLowerCase()) != -1 || data[i].primaryExtension.indexOf(selectionInput) != -1){
-						$scope.transferTo = data[i];
-						break;
-					}
+			for (var i = 0, len = $scope.transferContacts.length; i < len; i++) {
+				var contact = $scope.transferContacts[i];
+				
+				if (contact.xpid != $rootScope.myPid && contact.xpid != $scope.transferFrom.xpid && contact.primaryExtension == selectionInput){
+					$scope.transferTo = contact;
+					break;
 				}
-			});
+			}
 		} else {
 			// else if clicking on recent or contacts, can't transfer my call to me or to the person i'm talking to...
 			if (selectionInput.xpid != $rootScope.myPid && selectionInput.xpid != $scope.transferFrom.xpid)
@@ -323,19 +308,37 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	
 	$scope.transferCall = function() {
 		if ($scope.transferTo) {
-			if ($scope.transferType == 'external')
-				phoneService.transfer($scope.onCall.call.xpid, $scope.transferTo.contactNumber);
-			else if ($scope.onCall.xpid == $rootScope.meModel.my_pid){
-				httpService.sendAction('mycalls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					mycallId: $scope.onCall.call.xpid,
-					toContactId: $scope.transferTo.xpid
-				});
-			}else{
-				httpService.sendAction('calls', $scope.who.sendToPrimary ? 'transferToContact' : 'transferToVoicemail', {
-					fromContactId: $scope.onCall.call.xpid,
-					toContactId: $scope.transferTo.xpid
-				});
+			var feed, action;
+			var params = {};
+			
+			// set up feed and sender
+			if ($scope.onCall.xpid == $rootScope.myPid) {
+				feed = 'mycalls';
+				params.mycallId = $scope.onCall.call.xpid;
 			}
+			else {
+				feed = 'calls';
+				params.fromContactId = $scope.transferFrom.call.contactId;
+			}
+			
+			// receiver
+			if ($scope.transferType == 'external')
+				params.toNumber = $scope.transferTo.contactNumber;
+			else
+				params.toContactId = $scope.transferTo.xpid;
+			
+			// feed action
+			if ($scope.transferType == 'external')
+				action = 'transferTo';
+			else if ($scope.transferTo.primaryExtension == '')
+				action = 'transferToMobile';
+			else if ($scope.who.sendToPrimary)
+				action = 'transferToContact';
+			else
+				action = 'transferToVoicemail';
+			
+			httpService.sendAction(feed, action, params);
+			
 			recentXpids[$scope.transferTo.xpid] = $scope.transferTo.xpid;
 			localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentXpids);
 			$scope.showOverlay(false);
@@ -345,13 +348,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	contactService.getContacts().then(function(data){
-		$scope.transferContacts = data;
+		// get recent transfers
 		recentXpids = localStorage['recentTransfers_of_' + $rootScope.myPid] ? JSON.parse(localStorage['recentTransfers_of_' + $rootScope.myPid]) : {};
-		for (var xpid in recentXpids){
-			for (var i = 0; i < data.length; i++){
-				if (data[i].xpid == xpid){
-					$scope.recentTransfers.push(data[i]);
-					break;
+		
+		// populate transferrable contacts
+		for (var i = 0, len = data.length; i < len; i++) {
+			// must have valid phone #
+			if (data[i].xpid != $rootScope.myPid && (data[i].primaryExtension || data[i].phoneMobile)) {
+				// filter out contacts from transfer list if do not have [transfer to primary extension permission] AND [transfer to VM permission]
+				if (settingsService.isEnabled(data[i].permissions, 4) || settingsService.isEnabled(data[i].permissions, 5)) {
+					$scope.transferContacts.push(data[i]);
+					
+					// recents
+					if (recentXpids[data[i].xpid])
+						$scope.recentTransfers.push(data[i]);
 				}
 			}
 		}

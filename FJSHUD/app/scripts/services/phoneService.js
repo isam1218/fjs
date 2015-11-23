@@ -239,7 +239,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			top_window.addEventListener("blur", function(){	
 				displayHideAlert(false);									
 			}, false);			
+
 		}
+
 	}
 
 	//this will attempt to send the web phone actions it will attempt three times before quitting
@@ -256,9 +258,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		}
 	};
 
-    var isInFocus = function(){
-      return tabInFocus;
-    };
+	var isInFocus = function(){
+		return tabInFocus;
+	};
 
     this.isInFocus = isInFocus;
 
@@ -343,9 +345,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		return deferred.promise;
 	};
 
-  var reportActivity = function() {
-    httpService.sendAction('useractivity', 'reportActivity', {});
-  };
+    var reportActivity = function() {
+      httpService.sendAction('useractivity', 'reportActivity', {});
+    };
 
 	var hangUp = function(xpid){
 		var call = context.getCall(xpid);
@@ -374,6 +376,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			return;
 		}
 		number = number.replace(/\D+/g, '');
+
 		var call_already_in_progress = false;
 		
 		if(!$.isEmptyObject(callsDetails))
@@ -401,7 +404,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				httpService.sendAction('me', 'callTo', {phoneNumber: number});
 				
 			}	
+
 		} 
+
     };
 
 	var acceptCall = function(xpid){
@@ -749,7 +754,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
-	    			isCancelled = true;	    		
+	    			isCancelled = true;    		
 					break;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
@@ -757,17 +762,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    		case '/EndCall':
 	    			hangUp(xpid);
 	    			removeNotification();
-					return;
+					break;
 	    		case '/HoldCall':
 	    			holdCall(xpid,true);
-	    			return;
+	    			break;
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
 	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
-	    			return;
+	    			break;
 	    		case '/AcceptCall':
 					acceptCall(xpid);
 					if(settingsService.getSetting('alert_call_duration') == "while_ringing"){
@@ -777,7 +782,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							remove_notification();
 						}
 	    			}
-					return;
+					break;
 	    		case '/AcceptZoom':
 					var apiUrl = queryArray[1].split(': ')[1];
 					window.open(apiUrl,'_blank');
@@ -807,7 +812,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/RemoveNotification':
 				    remove_notification(xpid);
-					return;
+					break;
 				case '/goToChat':
 					var context = queryArray[0];
 					var audience = context.split(":")[0];
@@ -817,9 +822,9 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/callAndRemove':
 					var phone = queryArray[1];
-					makeCall(phone); 
-					remove_notification(xpid); 
-					break;	
+					makeCall(phone);
+					remove_notification(xpid);
+					break;
 				case '/activatePhone':
 					activatePhone();
 					break;
@@ -1208,14 +1213,25 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
                 break;
         }
 	};
-  this.reportActivity = reportActivity;
+
+    this.reportActivity = reportActivity;
+
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
 	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
-		httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
+		var call = context.getCall(xpid);
+		if(call){
+			if(context.webphone && number){
+				context.webphone.send(JSON.stringify({a : 'transfer', value : call.sip_id, ext: number}));
+			}else{
+				call.transfer(number);
+			}
+		}else{
+			httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
+		}
 	};
 
 	this.getPhoneState = function(){
@@ -1267,26 +1283,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	this.playSound = function(sound_key){
 		if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
 			var audio;
-			
+
 			switch(sound_key){
 				case 'received':
 					if($rootScope.meModel.chat_status != "dnd"){
 						if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
-							audio = new Audio('res/audio/received.mp3');
-							audio.play();
+							$("audio.received")[0].play();
 						}
 					}
-					
 					break;
 				case 'sent':
 					if(settingsService.getSetting('hudmw_chat_sound_sent') ==  "true"){
-						audio = new Audio('res/audio/sent.mp3');
-						audio.play();
+						$("audio.send")[0].play();
 					}
-					
+
 					break;
 			}
-			
+
 			audio = null;
 		}
 	};
@@ -1614,13 +1627,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	$rootScope.$on('notification_action', function(event,data){
 		if(data.notificationEventType){
 			switch(data.notificationEventType){
-        case 'ACTIVITY_REPORTED':
-          // Only process activity from webphone when not in focus.
-          if (! isInFocus()) {
-            reportActivity();
-          }
-          return;
-        case 'CALL_DECLINED':
+		        case 'ACTIVITY_REPORTED':
+		          // Only process activity from webphone when not in focus.
+		          if (! isInFocus()) {
+		            reportActivity();
+		          }
+		          return;
+		
+				case 'CALL_DECLINED':
 					hangUp(data.notificationId);
 					return;
 				case 'CALL_ACCEPTED':
@@ -1694,8 +1708,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
           callType = "External";
         }else{
           callType = "Office";
-        }
-      
+        }      
 
         var callStart = ntpService.calibrateNativeTime(call.created);
         var holdStart = ntpService.calibrateNativeTime(call.holdStart);
