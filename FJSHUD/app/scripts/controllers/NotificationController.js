@@ -1,6 +1,6 @@
 hudweb.controller('NotificationController', 
-  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 'GroupService', '$timeout','NtpService','NotificationService', '$sce',
-  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,groupService,$timeout,ntpService,nservice, $sce){
+  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 'GroupService', '$timeout','NtpService','NotificationService', '$sce', '$window',
+  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,groupService,$timeout,ntpService,nservice, $sce, $window){
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
@@ -764,7 +764,26 @@ hudweb.controller('NotificationController',
       $scope.displayAlert = false;
   };
 
-
+	$window.onfocus = function() {
+		// delete notifications when hudweb is back in focus
+		if ($routeParam.route) {
+			for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++) {
+				var note = $scope.todaysNotifications[i];
+				var context = note.context.split(':')[1];
+				
+				// normal chats
+				if (note.type.indexOf('chat') != -1 && $routeParam.route == 'chat') {
+					if (($routeParam.contactId && $routeParam.contactId == context) || ($routeParam.conferenceId && $routeParam.conferenceId == context) || ($routeParam.groupId && $routeParam.groupId == context) || ($routeParam.queueId && $routeParam.queueId == context))
+						$scope.remove_notification(note.xpid);
+				}
+				// alerts
+				else if (note.type == 'q-broadcast' && $routeParam.route == 'alerts') {
+					if ($routeParam.queueId && $routeParam.queueId == context)
+						$scope.remove_notification(note.xpid);
+				}
+			}
+		}
+	};
 
 	$scope.$on('phone_event',function(event,data){
 		var phoneEvent = data.event;
@@ -799,15 +818,6 @@ hudweb.controller('NotificationController',
 		          phoneService.cacheNotification(undefined,0,0);
 		        }
 				break;
-			case "deleteChatNots":
-		          var contactId = data.contactId;
-		          for(var i = 0; i < $scope.notifications.length;i++){
-		              if($scope.notifications[i].senderId == contactId && $scope.notifications[i].type == "chat"){
-		                  deleteNotification($scope.notifications[i]);
-		                  break;
-		              }
-		          }
-		          break;
             case 'dismissError':
                 $scope.dismissError(data.type);
                 break;

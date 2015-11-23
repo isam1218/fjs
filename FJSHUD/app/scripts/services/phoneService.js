@@ -175,9 +175,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					removeNotification();
 				}
 			}
-			if($routeParams.contactId && $routeParams.route == "chat"){
-				$rootScope.$broadcast("phone_event",{event:'deleteChatNots',contactId:$routeParams.contactId});
-			}
 		}
 	};
 
@@ -223,113 +220,22 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		document.attachEvent("onVisibilitychange",context.isDocumentHidden);
 		//attach events to the browser
 		if(top_window == window.self)
-<<<<<<< HEAD
 		{	
 			top_window.attachEvent("onFocus",function(){	
 				displayHideAlert(true);				
 			});
 			top_window.attachEvent("onBlur",function(){		
-				displayHideAlert(false);			
-=======
-		{
-			top_window.attachEvent("onFocus",function(){				
-				browser_on_focus = true;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}
-					else
-						removeNotification();
-					
-					context.isDocumentHidden(true);					
-				}
-				else
-				{
-					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-						context.isDocumentHidden(true);	
-					else
-						context.isDocumentHidden(false);
-				}
-			});
-			top_window.attachEvent("onBlur",function(){
-				browser_on_focus = false;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}
-					else
-						removeNotification();
-					
-					context.isDocumentHidden(true);					
-				}
-				else
-					context.isDocumentHidden(false);
->>>>>>> origin/tickets/HUDF-1239
+				displayHideAlert(false);		
 			});
 		}
 	}else{
 		document.addEventListener("visibilitychange", context.isDocumentHidden, false);
 		//attach events to the browser
 		if(top_window == window.self)
-<<<<<<< HEAD
 		{	
 			top_window.addEventListener("focus", function(){	
-				displayHideAlert(true);								
-=======
-		{
-			top_window.addEventListener("focus", function(){
-				browser_on_focus = true;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}
-					else
-						removeNotification();
-					
-					context.isDocumentHidden(true);
-					
-				}
-				else
-				{
-					if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-						context.isDocumentHidden(true);
-					else
-						context.isDocumentHidden(false);
-				}
-
-			}, false);
-			top_window.addEventListener("blur", function(){
-				browser_on_focus = false;
-				//remove if the alert was closed
-				if(isCancelled)
-				{
-					if(nservice.isEnabled()){
-						for(var detail in callsDetails){
-							nservice.dismiss('INCOMING_CALL',detail);
-						}
-					}
-					else
-						removeNotification();
-					
-					context.isDocumentHidden(true);
-				}
-				else
-					context.isDocumentHidden(false);
-
->>>>>>> origin/tickets/HUDF-1239
-			}, false);
+				displayHideAlert(true);					
+			}, false);			
 			top_window.addEventListener("blur", function(){	
 				displayHideAlert(false);									
 			}, false);			
