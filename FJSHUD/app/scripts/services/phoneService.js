@@ -135,15 +135,23 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					 			if (callsDetails[detail].xef001type == 'delete') 
 									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
 					 			else
-					 				context.displayCallAlert(callsDetails[detail]);
+					 			{
+					 				if((settingsService.getSetting('alert_call_outgoing') == 'true' && !callsDetails[detail].incoming) || 
+					 				   (settingsService.getSetting('alert_call_incoming') == 'true' && callsDetails[detail].incoming))
+					 					context.displayCallAlert(callsDetails[detail]);
+					 			}	
 					 		}	
 					 			
 						}
 					}
 				}else{
-					if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails)) && isAlertShown){
-						displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
-					}
+					if((settingsService.getSetting('alert_call_outgoing') == 'true' && !callsDetails[detail].incoming) || 
+			 		   (settingsService.getSetting('alert_call_incoming') == 'true' && callsDetails[detail].incoming))
+					{	
+						if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails)) && isAlertShown){
+							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+						}
+					}	
 				}
 			}
 
