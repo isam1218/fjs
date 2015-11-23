@@ -389,7 +389,7 @@
       group_page:'Group Page',
       group_intercom:'Group Intercom',
       group_voicemail:'Group Voicemail',
-      tab_shows_group_call_members:'this tab shows group call members. No group call at this moment',
+      tab_shows_group_call_members:'This tab shows group call members. No group call at this moment.',
       group_info: 'Info',
       no_active_call:'No active call',
 
