@@ -173,15 +173,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		.success(function(response) {
 			nodeID = response.match(/node=([^\n]+)/)[1];
 			localStorage.nodeID = nodeID;
-
 			
 			// start shared worker
 			authorizeWorker();
 		})
-		.error(function(response, status) {			
+		.error(function(response, status) {
 			switch(status){
+				case 403:
 				case 402:
-					//alert("bad authentication");
 					delete localStorage.me;
 					delete localStorage.nodeID;
 					delete localStorage.authTicket;
@@ -189,8 +188,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 
 					break;
 				case 404:
-					$rootScope.$broadcast('network_issue', 'networkError');
-					break;
 				case 500:
 					$rootScope.$broadcast('network_issue', 'networkError');
 					break;
