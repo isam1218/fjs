@@ -94,17 +94,8 @@
      border: 1px solid rgba(0,0,0,0.2);       
       transition: border .3s;
      -webkit-transition: border .3s;
-     padding-right: 5px;
-     
-     &:hover{            
-            background: url(../img/arrowDown_8.png)no-repeat 96%, linear-gradient(#fefefe, #ebebeb);
-            background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
-            background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
-            background: url(../img/arrowDown_8.png)no-repeat 96%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
-            background: url(../img/arrowDown_8.png)no-repeat 96%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
-            background: url(../img/arrowDown_8.png)no-repeat 96%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
-     } 
-     
+     padding-right: 5px;         
+          
      select{
         background: no-repeat 0 0 transparent;
         line-height: 1;
@@ -119,17 +110,8 @@
         color: #333;
         text-shadow: 0 1px 0px #fff;
         font-family: Arial,Tahoma,"Helvetica Neue",Helvetica,sans-serif;
-        padding: 0 0 0 10px;
-  
-        &:hover{            
-            background: url(../img/arrowDown_8.png)no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
-            background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
-            background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
-            background: url(../img/arrowDown_8.png)no-repeat 94%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
-            background: url(../img/arrowDown_8.png)no-repeat 94%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
-            background: url(../img/arrowDown_8.png)no-repeat 94%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
-        }   
-        
+        padding: 0 0 0 10px;          
+                
         option{
             text-align: left;
             //padding: 0 5px;
@@ -153,6 +135,13 @@
      &.conf,
      &.convQueue{
          margin-left: 10px;
+                  
+       @media screen and (-webkit-min-device-pixel-ratio:0){ 
+	         select{
+	          margin-left: -2px;
+	          margin-bottom: -2px;
+	         }
+	   }
      }
      
      &.queue,
@@ -166,14 +155,7 @@
         select{
             width: 150px;
             height: 24px;
-            &:hover{            
-                background: url(../img/arrowDown_8.png)no-repeat 94.5%, linear-gradient(#fefefe, #ebebeb);
-                background: url(../img/arrowDown_8.png)no-repeat 94.5%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
-                background: url(../img/arrowDown_8.png)no-repeat 94.5%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
-                background: url(../img/arrowDown_8.png)no-repeat 94.5%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
-                background: url(../img/arrowDown_8.png)no-repeat 94.5%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
-                background: url(../img/arrowDown_8.png)no-repeat 94.5%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
-            } 
+            
         }  
      }
      &.conf{                             
@@ -190,14 +172,7 @@
        select{
             width: 100px;
             height: 24px;
-            &:hover{            
-                background: url(../img/arrowDown_8.png)no-repeat 94%, linear-gradient(#fefefe, #ebebeb);
-                background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
-                background: url(../img/arrowDown_8.png)no-repeat 94%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
-                background: url(../img/arrowDown_8.png)no-repeat 94%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
-                background: url(../img/arrowDown_8.png)no-repeat 94%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
-                background: url(../img/arrowDown_8.png)no-repeat 94%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
-            }
+            
 
             &.LogoutSelect{
               padding-top: 4px;
