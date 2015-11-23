@@ -1053,6 +1053,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 				context.getSessionStatus = function() {return 0};
 				context.getPhoneStatus = function() {return 5};
+				inputDevices = [];
+				outputDevices = [];
 			    setTimeout(function(){initWS()}, 500);
     	};
 		context.webphone.onerror = function(e){
@@ -1091,29 +1093,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
     				context.getPhoneStatus = function(){return ps};
     			  }
-    			  if (msg.devices!=undefined)
-    			  {
-    			  		devices = msg.devices;
-    			  		inputDevices.splice(0,inputDevices.length);
-						outputDevices.splice(0,outputDevices.length);
 
-    			  		for(var i = 0; i < msg.devices.length;i++){
-    			  			if(msg.devices[i].input_count > 0){
-    			  				inputDevices.push(msg.devices[i]);
-    			  			}
-    			  			if(msg.devices[i].output_count > 0){
-    			  				outputDevices.push(msg.devices[i]);
-    			  			}
-    			  		}
-						deferredInputDevices.resolve(inputDevices);
-						deferredOutputDevices.resolve(outputDevices);
-
-						if( !$rootScope.isFirstSync){
-							$rootScope.$broadcast("phone_event",{event:"updateDevices"});
-						}
-						context.getDevices = function() {return msg.devices};
-		          }
-    			  if (msg.inpdevs!=undefined)
+    			 if (msg.inpdevs!=undefined)
     			  {
     				var id = parseInt(msg.inpdevs, 10);
     				context.getInputDeviceId = function() {return id};
@@ -1128,6 +1109,26 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     				  var rd = parseInt(msg.ringdevs, 10);
     				  context.getRingDeviceId = function() {return rd};
     			  }
+
+    			  if (msg.devices!=undefined)
+    			  {
+    			  		devices = msg.devices;
+    			  		inputDevices.splice(0,inputDevices.length);
+						outputDevices.splice(0,outputDevices.length);
+
+    			  		for(var i = 0; i < msg.devices.length;i++){
+    			  			if(msg.devices[i].input_count > 0){
+    			  				inputDevices.push(msg.devices[i]);
+    			  			}
+    			  			if(msg.devices[i].output_count > 0){
+    			  				outputDevices.push(msg.devices[i]);
+    			  			}
+    			  		}
+						context.getDevices = function() {return msg.devices};
+						//we need to use broadcast because the deferred promise is lost when the websocket connection is closed		          
+						$rootScope.$broadcast("phone_event",{event:"updateDevices"});
+				}
+    			  
     			  if (msg.micvolume!=undefined)
     			  {
     				  var mv = parseFloat(msg.micvolume);
@@ -1343,11 +1344,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	};
 
 	this.getInputDevices = function(){
-		return deferredInputDevices.promise;
+		return inputDevices;
 	};
 
 	this.getOutputDevices = function(){
-		return deferredOutputDevices.promise;
+		return outputDevices;
 	};
 
 

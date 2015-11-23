@@ -247,7 +247,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
      }
 
-	var setInputAudioDevice = function(){
+	/*var setInputAudioDevice = function(){
 		$scope.selectedDevices.selectedInput = $scope.inputDevices.filter(function(item){
                  return item.id == phoneService.getSelectedDevice('inpdefid');
        	 })[0];
@@ -278,27 +278,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
           $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
 	       $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
           
-    };	
+    };*/
 
-   phoneService.getInputDevices().then(function(data){
+   /*phoneService.getInputDevices().then(function(data){
 		$scope.inputDevices = data;
-		setInputAudioDevice();
+		//setInputAudioDevice();
 		
-        // disable phone tab
-        if(!phoneService.isPhoneActive()){
-            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
-                if($scope.tabs[i].option == 'Phone'){
-                    $scope.tabs[i].isActive = false;
-                    break;
-                }
-            }
-        }
+        
     });
 
 	phoneService.getOutputDevices().then(function(data){
 		$scope.outputDevices = data;
-		setOutputAudioDevice();
-	});
+		//setOutputAudioDevice();
+	});*/
 
   	$scope.updateAudioSettings = function(value, type){
         if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
@@ -1242,13 +1234,65 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     //$scope.pluginVersion = phoneService.getVersion();
                     break;
 				case "updateDevices":
+
+                    $scope.inputDevices = phoneService.getInputDevices();
+                    $scope.outputDevices = phoneService.getOutputDevices();
 					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
-                        $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
-                        $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
-                        $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                        var inputSelected = false;
+                        var outSelected = false;
+                        var ringSelected = false;
+                                 
+
+                        if($scope.selectedDevices.selectedInput != undefined){
+                                
+                            for(var i = 0; i < $scope.inputDevices.length;i++){
+                                if($scope.selectedDevices.selectedInput.name == $scope.inputDevices[i].name){
+                                    $scope.selectedDevices.selectedInput = $scope.inputDevices[i];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
+                                    inputSelected = true;
+                                    break;
+                                }
+                            }    
+                        }
+                        
+                        if(!inputSelected){
+                            $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
+                            $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');    
+                        }
+
+
+                        if($scope.selectedDevices.selectedOutput != undefined){
+                            for(var j = 0; j < $scope.outputDevices.length; j++){
+                                if($scope.selectedDevices.selectedOutput.name == $scope.outputDevices[j].name){
+                                    $scope.selectedDevices.selectedOutput = $scope.outputDevices[j];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                                    
+                                    outSelected = true;
+                                }
+
+                                if($scope.selectedDevices.selectedRingput.name == $scope.outputDevices[j].name){
+                                    $scope.selectedDevices.selectedRingput = $scope.outputDevices[j];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                                    ringSelected = true;
+                                }
+                            }
+                        }
+
+                        if(!outSelected){
+                            $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
+                            $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                        }
+
+                        if(!ringSelected){
+                            $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
+                            $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                        }
+                        
+                        //$scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
+                        //$scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
+                        //$scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                        //$scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
+                        //$scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
                     }
                     break;
                   
@@ -1257,17 +1301,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
     
-    /*$scope.$on("queues_synced", function(event,data){
-        if(data && data != undefined){
-            $scope.queues = data;
-            $scope.queues = $scope.queues.sort(function(a,b){
-                if(a.name < b.name){return -1;}
-                else if(a.name > b.name){return 1;}
-                else { return 0;}
-            });
-        }
-        update_queues();
-    });*/
 
     queueService.getQueues().then(function(data){
          if(data && data != undefined){
