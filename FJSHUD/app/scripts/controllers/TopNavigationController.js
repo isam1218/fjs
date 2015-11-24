@@ -12,6 +12,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 
 	$scope.vmFrom;
 	$scope.vmExtensionNumber;
+	$scope.recVmObj;
   
   //show or hide the navigation icons dropdown for small screen
   $scope.showHideiconsDropdown = function(isClicked)
@@ -272,6 +273,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		$scope.vmFrom = data.phone;
 		// grab the sender's extension here as well
 		$scope.vmExtensionNumber = $scope.vmFrom == $scope.meModel.primary_extension ? $scope.meModel.primary_extension :  data.phone;
+		$scope.recVmObj = data;
 
 	});
 
@@ -286,6 +288,16 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		else
 			return 4;
 	};
+
+  $scope.flipPlayerParties = function(obj){
+    // if it's a recording --> may need to flip the parties that are displayed in the player
+    if ($scope.recorder){
+      // flip if it's [to], if it's a [conf room], or if it's a [queue]
+      if (obj.queueId || ((obj.incoming && obj.calleeUserId == $rootScope.myPid) || (!obj.incoming && obj.callerUserId == $rootScope.myPid)) || (obj.fullProfile.roomNumber) || (obj.fullProfile.info))
+        return true;
+    }
+    return false;
+  }
   
 	$scope.playAudio = function() {
 		if ($scope.player.playing)
