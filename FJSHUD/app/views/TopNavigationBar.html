@@ -58,9 +58,9 @@
         <avatar profile="voicemail" context="drag" type="::topRecordingAvatarType(voicemail)"></avatar>
 				<div class="Details">
 					<em ng-if="::!recorder">...{{ ::voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
-					<strong>{{ ::voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
+					<strong>{{ ::vmFrom == meModel.primary_extension ? verbage.me : voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
 					<br/>
-					<span>{{ ::voicemail.primaryExtension || voicemail.extensionNumber || voicemail.calleePhone }} &nbsp;</span>
+          <span>{{ ::vmExtensionNumber }} &nbsp;</span>
 				</div>
 			</div>
 			

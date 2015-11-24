@@ -9,6 +9,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	  $scope.smallScreen = true;
   else
 	  $scope.smallScreen = false;
+
+	$scope.vmFrom;
+	$scope.vmExtensionNumber;
   
   //show or hide the navigation icons dropdown for small screen
   $scope.showHideiconsDropdown = function(isClicked)
@@ -195,10 +198,10 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			$scope.attempts++;
 		}
 	};
-  
+
 	$scope.$on('play_voicemail', function(event, data) {
 		clearTimeout(retry);
-		
+
 		// first time setup
 		if (!player) {
 			player = document.getElementById('voicemail_player');
@@ -264,6 +267,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			$scope.smallScreen = false;
 			$($scope.moreIcon).hide();
 		}
+		
+		// grab the voicemail's sender here, cuz it's a diff vm obj elsewhere in the controller
+		$scope.vmFrom = data.phone;
+		// grab the sender's extension here as well
+		$scope.vmExtensionNumber = $scope.vmFrom == $scope.meModel.primary_extension ? $scope.meModel.primary_extension :  data.phone;
+
 	});
 
 	$scope.topRecordingAvatarType = function(vm){
