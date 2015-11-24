@@ -54,27 +54,54 @@
 		<div class="XButtonClose" ng-click="closePlayer()"></div>
 		
 		<div class="Callers">
-			<div class="Voicemail">
-        <avatar profile="voicemail" context="drag" type="::topRecordingAvatarType(voicemail)"></avatar>
-				<div class="Details">
-					<em ng-if="::!recorder">...{{ ::voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
-					<strong>{{ ::voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
-					<br/>
-					<span>{{ ::voicemail.primaryExtension || voicemail.extensionNumber || voicemail.calleePhone }} &nbsp;</span>
-				</div>
-			</div>
-			
-			<div class="Recording" ng-if="::recorder">
-				<div class="RecordingIcon"></div>
-				
-				<div class="Details">
-					<strong>{{ ::recorder.displayName }}</strong>
-					<br/>
-					<span>{{ ::recorder.primaryExtension }} &nbsp;</span>
-				</div>
-				<avatar profile="recorder" context="drag" type="{{ ::voicemail.type ? voicemail.type : 1 }}"></avatar>
-			</div>
-		</div>
+      <!-- Normal display of parties / not flipped -->
+      <div ng-if="!flipPlayerParties(recVmObj)">
+  			<div class="Voicemail">
+          <avatar profile="voicemail" context="drag" type="::topRecordingAvatarType(voicemail)"></avatar>
+  				<div class="Details">
+  					<em ng-if="::!recorder">...{{ ::voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
+  					<strong>{{ ::vmFrom == meModel.primary_extension ? verbage.me : voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
+  					<br/>
+            <span>{{ ::vmExtensionNumber || vmFrom || recVmObj.fullProfile.primaryExtension}} &nbsp;</span>
+  				</div>
+  			</div>
+  			
+  			<div class="Recording" ng-if="::recorder">
+  				<div class="RecordingIcon"></div>
+  				
+  				<div class="Details">
+  					<strong>{{ ::recorder.displayName }}</strong>
+  					<br/>
+  					<span>{{ ::recorder.primaryExtension }} &nbsp;</span>
+  				</div>
+  				<avatar profile="recorder" context="drag" type="{{ ::voicemail.type ? voicemail.type : 1 }}"></avatar>
+  			</div>
+      </div>
+
+      <!-- Parties flipped (including conference, queue, and 'to' parties)-->
+      <div ng-if="flipPlayerParties(recVmObj)">
+        <div class="Voicemail">
+          <avatar profile="recorder" context="drag" type="{{ ::voicemail.type ? voicemail.type : 1 }}"></avatar>
+          <div class="Details">
+            <strong>{{ ::recorder.displayName }}</strong>
+            <br/>
+            <span>{{ ::recorder.primaryExtension}} &nbsp;</span>
+          </div>
+        </div>
+        
+        <div class="Recording" ng-if="::recorder">
+          <div class="RecordingIcon"></div>
+          <div class="Details">
+            <em ng-if="::!recorder">...{{ ::voicemail.primaryExtension == meModel.primary_extension ? verbage.to : verbage.from }}</em>
+            <strong>{{ ::vmFrom == meModel.primary_extension ? verbage.me : voicemail.displayName || voicemail.name || 'Unknown' }}</strong>
+            <br/>
+            <span>{{ ::vmExtensionNumber  || recVmObj.fullProfile.primaryExtension}} &nbsp;</span>
+          </div>
+          <avatar profile="voicemail" context="drag" type="::topRecordingAvatarType(voicemail)"></avatar>
+        </div>
+
+      </div>
+	</div>
 		
 		<div class="Loading" ng-show="!player.loaded">{{ attempts > 2 ? 'Load failed' : verbage.loading + '...' }}</div>
 		
