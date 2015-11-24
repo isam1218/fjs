@@ -145,7 +145,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		    return opt;
     	};
     }; 
-    
+
     $scope.trancateSelectedName = function(){
     	if($scope.currentWebLauncher.name.length > 20)
     	{
@@ -246,61 +246,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
             }
      }
-
-	/*var setInputAudioDevice = function(){
-		$scope.selectedDevices.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('inpdefid');
-       	 })[0];
-
-        if($scope.selectedDevices.selectedInput == undefined){
-            $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
-		}
-        $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
-
-	};
-
-	var setOutputAudioDevice = function(){
-		$scope.selectedDevices.selectedOutput = $scope.outputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('outdefid'); 
-         })[0];
-            
-         $scope.selectedDevices.selectedRingput = $scope.outputDevices.filter(function(item){
-                return item.id == phoneService.getSelectedDevice('ringdefid'); 
-          })[0];
-
-          if($scope.selectedDevices.selectedRingput == undefined){
-                $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
-                
-          }
-          if($scope.selectedDevices.selectedOutput == undefined){
-                $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
-          }
-          $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
-	       $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
-          
-    };*/
-
-   /*phoneService.getInputDevices().then(function(data){
-		$scope.inputDevices = data;
-		//setInputAudioDevice();
-		
-        
-    });
-
-	phoneService.getOutputDevices().then(function(data){
-		$scope.outputDevices = data;
-		//setOutputAudioDevice();
-	});*/
-
   	$scope.updateAudioSettings = function(value, type){
         /*if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
             phoneService.setAudioDevice('Ring',value);    
         }*/
         phoneService.setAudioDevice(type,value);
     };
-
-    
-    
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
@@ -1234,66 +1185,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     //$scope.pluginVersion = phoneService.getVersion();
                     break;
 				case "updateDevices":
-
-                    $scope.inputDevices = phoneService.getInputDevices();
-                    $scope.outputDevices = phoneService.getOutputDevices();
-					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
-                        var inputSelected = false;
-                        var outSelected = false;
-                        var ringSelected = false;
-                                 
-
-                        if($scope.selectedDevices.selectedInput != undefined){
-                                
-                            for(var i = 0; i < $scope.inputDevices.length;i++){
-                                if($scope.selectedDevices.selectedInput.name == $scope.inputDevices[i].name){
-                                    $scope.selectedDevices.selectedInput = $scope.inputDevices[i];
-                                    $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
-                                    inputSelected = true;
-                                    break;
-                                }
-                            }    
-                        }
-                        
-                        if(!inputSelected){
-                            $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
-                            $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');    
-                        }
-
-
-                        if($scope.selectedDevices.selectedOutput != undefined){
-                            for(var j = 0; j < $scope.outputDevices.length; j++){
-                                if($scope.selectedDevices.selectedOutput.name == $scope.outputDevices[j].name){
-                                    $scope.selectedDevices.selectedOutput = $scope.outputDevices[j];
-                                    $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
-                                    
-                                    outSelected = true;
-                                }
-
-                                if($scope.selectedDevices.selectedRingput.name == $scope.outputDevices[j].name){
-                                    $scope.selectedDevices.selectedRingput = $scope.outputDevices[j];
-                                    $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
-                                    ringSelected = true;
-                                }
-                            }
-                        }
-
-                        if(!outSelected){
-                            $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
-                            $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
-                        }
-
-                        if(!ringSelected){
-                            $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
-                            $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
-                        }
-                        
-                        //$scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
-                        //$scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
-                        //$scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
-                        //$scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
-                        //$scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
-                    }
+                    setAudioDevice();
                     break;
                   
             }
@@ -1323,4 +1215,95 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.resetAlertPosition = function(){
         phoneService.resetAlertPosition();
     };
+
+    setAudioDevice = function(){
+        $scope.inputDevices = phoneService.getInputDevices();
+        $scope.outputDevices = phoneService.getOutputDevices();
+                    if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
+                        var inputSelected = false;
+                        var outSelected = false;
+                        var ringSelected = false;
+                        var inputId = phoneService.getSelectedDevice("inpdefid");     
+                        var outputId = phoneService.getSelectedDevice("outdefid");
+                        var ringId = phoneService.getSelectedDevice("ringdefid");
+                        
+                        if($scope.selectedDevices.selectedInput != undefined){
+                                
+                            for(var i = 0; i < $scope.inputDevices.length;i++){
+                                if($scope.selectedDevices.selectedInput.name == $scope.inputDevices[i].name){
+                                    $scope.selectedDevices.selectedInput = $scope.inputDevices[i];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
+                                    inputSelected = true;
+                                    break;
+                                }
+                            }    
+                        }else{
+                            for(var i = 0; i < $scope.inputDevices.length;i++){
+                                if(inputId == $scope.inputDevices[i].id){
+                                    $scope.selectedDevices.selectedInput = $scope.inputDevices[i];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
+                                    inputSelected = true;
+                                    break;
+                                }
+                            } 
+                        }
+                        
+                        /*if(!inputSelected){
+                            $scope.selectedDevices.selectedInput = $scope.inputDevices[0];
+                            $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');    
+                        }*/
+
+
+                        if($scope.selectedDevices.selectedOutput != undefined){
+                            for(var j = 0; j < $scope.outputDevices.length; j++){
+                                if($scope.selectedDevices.selectedOutput.name == $scope.outputDevices[j].name){
+                                    $scope.selectedDevices.selectedOutput = $scope.outputDevices[j];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                                    
+                                    outSelected = true;
+                                }
+
+                                if($scope.selectedDevices.selectedRingput.name == $scope.outputDevices[j].name){
+                                    $scope.selectedDevices.selectedRingput = $scope.outputDevices[j];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                                    ringSelected = true;
+                                }
+                            }
+                        }else{
+                             for(var j = 0; j < $scope.outputDevices.length; j++){
+                                if(outputId == $scope.outputDevices[j].id){
+                                    $scope.selectedDevices.selectedOutput = $scope.outputDevices[j];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                                    
+                                    outSelected = true;
+                                }
+
+                                if(ringId== $scope.outputDevices[j].id){
+                                    $scope.selectedDevices.selectedRingput = $scope.outputDevices[j];
+                                    $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                                    ringSelected = true;
+                                }
+                            }
+                        }
+
+                       /* if(!outSelected){
+                            $scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
+                            $scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                        }
+
+                        if(!ringSelected){
+                            $scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
+                            $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                        }*/
+                        
+                        //$scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
+                        //$scope.selectedDevices.selectedRingput = $scope.outputDevices[0];
+                        //$scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
+                        //$scope.selectedDevices.selectedOutput = $scope.outputDevices[0];
+                        //$scope.updateAudioSettings($scope.selectedDevices.selectedOutput.id,'Output');
+                    }
+    };
+
+    setAudioDevice();
+
 }]);

@@ -682,11 +682,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     			  		outputDevices.push(devices[i]);
     			  	}
     			}
-				deferredInputDevices.resolve(inputDevices);
-				deferredOutputDevices.resolve(outputDevices);
-
-
-
+    			$rootScope.$broadcast("phone_event",{event:"updateDevices"});
 				var spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
 				var micVolume = settingsService.getSetting('hudmw_webphone_mic');
 				$rootScope.volume.spkVolume = spkVolume;
