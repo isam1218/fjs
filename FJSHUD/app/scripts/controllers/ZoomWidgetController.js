@@ -422,7 +422,10 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
         for(var i = 0; i<=30;i++){
            var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
-          
+
+
+           var strt = moment($scope.meetingList[i].start_time).lang('en');
+          $scope.meetingList[i].startHour = strt.tz($scope.meetingList[i].timezone).format('hh:mmA');
 
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
@@ -435,21 +438,44 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
              
                
              
-                 if($scope.meetingList[i].duration.toString().length == 4){
+                  if($scope.meetingList[i].duration.toString().length == 4){
                 $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
               var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
-              var strHourString = "T"+ strHour;
+              var strHourString =  strHour;
+              
             }
-            if(strHour <10){
-              var strHourString = "T0"+ strHour;
-            }
+            
               var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
               if(strMin == 0){
                 strMin = "00";
               }
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+               if(strMin == 60){
+                
+                strMin = "00";
+                var strHourString = parseInt(strHour) +1;
+               
+                
+                
+                
+              }
+               if(strMin == 75){
+                
+                strMin = "15";
+                var strHourString = parseInt(strHour) +1;
               
+                
+              }
+              
+              if(strHourString <10){
+                  strHourString = "0"+strHourString;
+                }
+                
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              alert($scope.meetingList[i].end_time);
+              var end = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHour = end.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          
                }
 
 
@@ -457,8 +483,32 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
               //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               //alert($scope.meetingList[i].duration.toString().substr(0,2));
               var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              if(strMin == 60){
+               
+                strMin = "00";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else if(strMin == 75){
+                
+                strMin = "15";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else{hourIncrement = $scope.meetingList[i].start_time.substr(11,2);}
               
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ hourIncrement+":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+              
+              var newEnd = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHalf = newEnd.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          
                }
                
                
@@ -491,6 +541,10 @@ $scope.loading.meetingLoaded = true;
 
         for(var i = 0; i<=30;i++){
           var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
+
+
+           var jun = moment($scope.meetingList[i].start_time).lang('en');
+          $scope.meetingList[i].startHour = jun.tz($scope.meetingList[i].timezone).format('hh:mmA');
           
 
            var duration = $scope.meetingList[i].duration.toString();
@@ -503,30 +557,77 @@ $scope.loading.meetingLoaded = true;
 
               
                  
-                 if($scope.meetingList[i].duration.toString().length == 4){
+                   if($scope.meetingList[i].duration.toString().length == 4){
                 $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
               var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
-              var strHourString = "T"+ strHour;
+              var strHourString =  strHour;
+              
             }
-            if(strHour <10){
-              var strHourString = "T0"+ strHour;
-            }
+            
               var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
               if(strMin == 0){
                 strMin = "00";
               }
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+               if(strMin == 60){
+                
+                strMin = "00";
+                var strHourString = parseInt(strHour) +1;
+                
+                
+                
+                
+              }
+               if(strMin == 75){
+                
+                strMin = "15";
+                var strHourString = parseInt(strHour) +1;
               
+                
+              }
+              
+              if(strHourString <10){
+                  strHourString = "0"+strHourString;
+                }
+                
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+              var end = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHour = end.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          
                }
 
 
-                if($scope.meetingList[i].duration.toString().length == 2){
+                 if($scope.meetingList[i].duration.toString().length == 2){
               //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               //alert($scope.meetingList[i].duration.toString().substr(0,2));
               var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              if(strMin == 60){
+                
+                strMin = "00";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else if(strMin == 75){
+                
+                strMin = "15";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else{hourIncrement = $scope.meetingList[i].start_time.substr(11,2);}
               
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ hourIncrement+":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+              
+              var newEnd = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHalf = newEnd.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          
                }
 
 
@@ -556,10 +657,14 @@ $scope.loading.meetingLoaded = true;
 
         for(var i = 0; i<=30;i++){
 
-          var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
+          var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mm a");
           
           //alert(dateFilter.toString().substr(0,2));
 
+          var jun = moment($scope.meetingList[i].start_time).lang('en');
+          $scope.meetingList[i].startHour = jun.tz($scope.meetingList[i].timezone).format('hh:mmA');
+         //alert(t);
+          
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
                 $scope.meetingList[i].duration = "00";
@@ -576,17 +681,40 @@ $scope.loading.meetingLoaded = true;
                 $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
               var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
-              var strHourString = "T"+ strHour;
+              var strHourString =  strHour;
+              
             }
-            if(strHour <10){
-              var strHourString = "T0"+ strHour;
-            }
+            
               var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
               if(strMin == 0){
                 strMin = "00";
               }
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) + strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+               if(strMin == 60){
+                
+                strMin = "00";
+                var strHourString = parseInt(strHour) +1;
+               
+                
+                
+                
+              }
+               if(strMin == 75){
+                
+                strMin = "15";
+                var strHourString = parseInt(strHour) +1;
               
+                
+              }
+              
+              if(strHourString <10){
+                  strHourString = "0"+strHourString;
+                }
+
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+              var end = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHour = end.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          
                }
 
 
@@ -595,8 +723,32 @@ $scope.loading.meetingLoaded = true;
               //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               //alert($scope.meetingList[i].duration.toString().substr(0,2));
               var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,14) +strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              if(strMin == 60){
+                
+                strMin = "00";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else if(strMin == 75){
+                
+                strMin = "15";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else{hourIncrement = $scope.meetingList[i].start_time.substr(11,2);}
               
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ hourIncrement+":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+              
+              var newEnd = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHalf = newEnd.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          
                }
               
 

@@ -61,9 +61,9 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 };
-/*fjs.CONFIG.SERVER.serverURL = "https://lb-stage4.fonality.com:446";
-fjs.CONFIG.SERVER.loginURL = "https://lb-stage4.fonality.com:444";
-fjs.CONFIG.SERVER.ppsServer = 'https://lb-stage4.fonality.com:8443/pps/';*/
+fjs.CONFIG.SERVER.serverURL = "https://lb-stage3.fonality.com:446";
+fjs.CONFIG.SERVER.loginURL = "https://lb-stage3.fonality.com:444";
+fjs.CONFIG.SERVER.ppsServer = 'https://lb-stage3.fonality.com:8443/pps/';
 /*fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
 fjs.CONFIG.SERVER.serverURL ="https://dev4.fon9.com:8081";*/
 
