@@ -5,7 +5,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		var notifyPipe = false;
 		var enabled = false;
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
-
+        var isCancelled = false;
 
 		//initialize the Notification service for the new webphone notifications
 		var initNSService = function(){
@@ -23,6 +23,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
   
 				}));
            	
+				context.setCancelled(false);
            		enabled = true;
            	};
 
@@ -33,6 +34,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             	}else{
 					response = JSON.parse(evt.data);
 					console.log(response);
+					
+					if(response.notificationEventType == 'CLOSE')
+						context.setCancelled(true);
+					else
+						context.setCancelled(false);
 					$rootScope.$broadcast("notification_action",response);
             	}
             };
@@ -49,14 +55,30 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
             };
 		};
+
+		//set the 'cancelled' flag
+		this.setCancelled = function(is_cancelled)
+		{
+			isCancelled = is_cancelled;
+		};
+		//get the 'cancelled' flag
+		this.getCancelled = function()
+		{
+			return isCancelled ;
+		};
 		
-		this.initNSService = initNSService;
+		this.initNSService = initNSService;		
 
 		this.isEnabled = function(){
 			return enabled;
 		};
 
-		this.sendData =  function(data,retry,type){
+	    this.sendData =  function(data,retry,type){
+
+<<<<<<< HEAD
+=======
+	    this.sendData =  function(data,retry,type){
+>>>>>>> origin/tickets/HUDF-1135
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
@@ -73,7 +95,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 	
 		this.dismiss = function(type,id){
-			context.sendData({"notificationType":type, "notificationId":id },0,"DISMISS");	
+			context.sendData({"notificationType":type, "notificationId":id },0,"DISMISS");				
 		};
 
 		this.displayWebNotification = function(data){
@@ -96,25 +118,25 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
 			var message = "";
 
-		    switch(data.type){
-			  case 'vm':
-			  case 'q-alert-abandoned':
-			    message = data.label;
-			    break;
-			  case 'description':
-			    var msgSplit = data.message.split('!</strong><br />');
-			    message = "Goodbye " + data.data.groupId + "! " + msgSplit[1];
-			    break;
-			  case 'barge message':
-			    data.displayName = data.message;
-			    message = data.label;
-			    break;
-			  default:
-			    message = data.message;
-			    break;
-		    }
-
-			message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">").replace(/&amp;/g , "&");
+			switch(data.type){
+		        case 'vm':
+		        case 'q-alert-abandoned':
+		          message = data.label;
+		          break;
+		        case 'description':
+		          var msgSplit = data.message.split('!</strong><br />');
+		          message = "Goodbye " + data.data.groupId + "! " + msgSplit[1];
+		          break;
+		        case 'barge message':
+		          data.displayName = data.message;
+		          message = data.label;
+		          break;
+		        default:
+		          message = data.message;
+		          break;
+	      	}
+	
+	      	message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">");
 
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
