@@ -73,12 +73,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			return enabled;
 		};
 
-	    this.sendData =  function(data,retry,type){
 
-<<<<<<< HEAD
-=======
 	    this.sendData =  function(data,retry,type){
->>>>>>> origin/tickets/HUDF-1135
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
