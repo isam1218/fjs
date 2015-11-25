@@ -5,7 +5,8 @@ hudweb.controller('NotificationController',
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
   $scope.errors = nservice.errors || [];
-  $scope.calls = []; 
+  $scope.calls = [];
+  var savedLongWait;
   var msgXpid;
   var numberOfMyCalls = 0;
   var pbxErrorId = null;
@@ -1014,8 +1015,13 @@ hudweb.controller('NotificationController',
     
     switch(type){
       case 'q-alert-rotation':
+            savedLongWait = notification.xpid;
             notification.label = $scope.verbage.long_waiting_call;
-            var long_waiting_notification = angular.copy(notification);            
+            var long_waiting_notification = angular.copy(notification);
+            $timeout(function(){
+              // if user unchecks abandoned call notifications, still need to delete long wait notification
+              deleteLastLongWaitNotification();
+            }, 60000);
         break;
       case 'q-alert-abandoned':
             notification.label = '...abandoned call';
@@ -1204,26 +1210,17 @@ hudweb.controller('NotificationController',
 						addTodaysNotifications(notification);
 					}
 					//addTodaysNotifications(notification);
-				}
-				else if(notification.xef001type == "delete"){					
-                    if (notification.xpid == pbxErrorId) {
-                        // remove pbxtra error
-                        pbxErrorId = null;
-                        $rootScope.pbxError = false;
-                        $scope.dismissError('networkError');
-                    }
-					
-					if (long_waiting_calls[notification.xpid] == undefined){
-						deleteNotification(notification);
-					}
-				}
-				else if (notification.type == 'error') {
+				}else if(notification.xef001type == "delete"){
+                 if (notification.xpid == savedLongWait)
+                  deleteLastLongWaitNotification();
+				 }
+				 else if (notification.type == 'error') {
                     // add pbxtra error
                     pbxErrorId = notification.xpid;
                     $rootScope.pbxError = true;
                     $scope.addError('networkError');
-				}
-			}
+				 }
+			   }
 			$scope.notifications.sort(function(a, b){
 				return b.time - a.time;
 			});
