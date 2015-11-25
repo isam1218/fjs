@@ -162,8 +162,10 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 						}
 					}
 				}
-				else
+				else {
 					httpService.sendAction('quickinbox','remove',{'pid': nd.xpid});
+					httpService.deleteFromWorker('quickinbox', nd.xpid);
+				}
 			};
 
 			notification.onerror = function () {

@@ -26,7 +26,7 @@ hudweb.controller('NotificationController',
   $scope.multiple_old_notifications = false;
   $scope.multiple_new_notifications =  false;
   $scope.multiple_away_notifications =  false;
-  $scope.message_section_notifications = ''
+  $scope.message_section_notifications = '';
   $scope.hasNewNotifications = false;
   $scope.hasAwayNotifications = false;
   $scope.hasOldNotifications = false;
@@ -194,6 +194,7 @@ hudweb.controller('NotificationController',
   $scope.remove_notification = function(xpid){
     
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
+    myHttpService.deleteFromWorker('quickinbox', xpid);
 
     if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
       $scope.displayAlert = true;
@@ -301,8 +302,11 @@ hudweb.controller('NotificationController',
       
     while($scope.oldNotifications.length > 0)
     {
-      var nIndex_xpid = $scope.oldNotifications[0].xpid;        
+		var nIndex_xpid = $scope.oldNotifications[0].xpid;  
+		
         myHttpService.sendAction('quickinbox','remove',{'pid': nIndex_xpid});
+		myHttpService.deleteFromWorker('quickinbox', nIndex_xpid);
+		
         $scope.oldNotifications.splice(0,1);
     } 
     
