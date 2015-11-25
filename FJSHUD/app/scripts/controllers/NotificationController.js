@@ -197,8 +197,7 @@ hudweb.controller('NotificationController',
     myHttpService.deleteFromWorker('quickinbox', xpid);
 
     if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-      $scope.displayAlert = true;
-      $timeout(displayNotification, 1500);    
+      $scope.displayAlert = true;     
     }else{
       phoneService.cacheNotification(undefined,0,0);
       phoneService.removeNotification();
@@ -490,11 +489,10 @@ hudweb.controller('NotificationController',
     }
     $scope.alertDuration = data['alert_call_duration'];
     
-    if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){// 
+    if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){
         if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
           $scope.displayAlert = true;
-          $timeout(displayNotification
-              , 2500); 
+          //$timeout(displayNotification, 2500); 
         }
     }else{ 
         phoneService.removeNotification();
@@ -815,8 +813,7 @@ hudweb.controller('NotificationController',
 			case 'displayNotification':
 				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 		          $scope.displayAlert = true;
-		          $timeout(displayNotification
-		              , 2000); 
+		          $timeout(displayNotification, 2000); 
 		        }else{
 		          phoneService.cacheNotification(undefined,0,0);
 		        }
@@ -870,6 +867,23 @@ hudweb.controller('NotificationController',
       }
     }
 
+    if(item.audience == 'queue')
+	{
+			if(item.type == 'q-alert-abandoned')
+			{
+				if(typeof settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId) == 'undefined' || 
+				   !settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId))
+					displayDesktopAlert = false;				
+			}
+			if(item.type == 'q-alert-rotation')
+			{
+				if(typeof settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId) == 'undefined' || 
+				   !settingsService.getSetting('HUDw_QueueAlertsLW_'+ item.queueId))
+					displayDesktopAlert = false;				
+			}	
+				
+	}
+    item.displayDesktopAlert =  displayDesktopAlert;
     // if message is from today...
     if(itemDate.startOf('day').isSame(today.startOf('day'))){
 
@@ -926,11 +940,28 @@ hudweb.controller('NotificationController',
                // dupe --> don't add to todaysNotifications
                return;
         } else {
+          if(item.audience == 'queue')
+      	  {
+      			if(item.type == 'q-alert-abandoned')
+      			{
+      				if(settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId))
+      					$scope.todaysNotifications.push(item);				
+      			}
+      			else if(item.type == 'q-alert-rotation')
+      			{
+      				if(settingsService.getSetting('HUDw_QueueNotificationsLW_'+ item.queueId))
+      					$scope.todaysNotifications.push(item);				
+      			}	
+      			else
+      				$scope.todaysNotifications.push(item);
+      	  }	
+          else	
                // otherwise add to todaysNotes
                $scope.todaysNotifications.push(item);
 
         }
-      
+      					 
+   
       if (displayDesktopAlert){
         	phoneService.setCancelled(false);
                if ($scope.todaysNotifications.length > 0){
@@ -959,7 +990,8 @@ hudweb.controller('NotificationController',
 
 		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
-		    $timeout(displayNotification, 1500);		
+			//if(displayDesktopAlert)
+			//	$timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
 			phoneService.cacheNotification(undefined,0,0);
