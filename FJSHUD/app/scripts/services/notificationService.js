@@ -69,13 +69,16 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		
 		this.initNSService = initNSService;		
 
-
 		this.isEnabled = function(){
 			return enabled;
 		};
 
 	    this.sendData =  function(data,retry,type){
 
+<<<<<<< HEAD
+=======
+	    this.sendData =  function(data,retry,type){
+>>>>>>> origin/tickets/HUDF-1135
 			if(retry == undefined)retry = 0;
 			
 			if(notifyPipe){
@@ -92,7 +95,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 	
 		this.dismiss = function(type,id){
-			context.sendData({"notificationType":type, "notificationId":id },0,"DISMISS");	
+			context.sendData({"notificationType":type, "notificationId":id },0,"DISMISS");				
 		};
 
 		this.displayWebNotification = function(data){
