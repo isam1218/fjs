@@ -613,30 +613,35 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	//call back to verify account status of the old softphone.
    var accStatus = function(account_) {
-
-            if (account_) {
+   		    if (account_) {
 			   if (account_.status == REG_STATUS_ONLINE) {
                      isRegistered = true;
                 	$rootScope.phoneError = false;
-
-                } else if(account_.status == REG_STATUS_UNKNOWN){
+                	var data = {
+						event:'state',
+						registration: isRegistered,
+					};
+					$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
+	      
+                }else if(account_.status === REG_STATUS_UNKNOWN){
                   	 $rootScope.phoneError = true;
                      isRegistered = false;
 					 if($rootScope.isFirstSync){
 					 	$rootScope.$evalAsync($rootScope.$broadcast('network_issue',data));
 	     			 }
 
-				}else{
+				}else if(account_.status == REG_STATUS_OFFLINE){
 					$rootScope.phoneError = false;
                     isRegistered = false;
+                    var data = {
+						event:'state',
+						registration: isRegistered,
+					};
+					$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
+	    
 				}
 
-				var data = {
-					event:'state',
-					registration: isRegistered,
-				};
-				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-	      }
+		}
     };
 
 	var onVolumeChanged = function(spkVolume,microphoneLevel){
