@@ -6,7 +6,7 @@ hudweb.controller('NotificationController',
   $scope.notifications = nservice.notifications  || [];
   $scope.errors = nservice.errors || [];
   $scope.calls = [];
-  var long_waiting_calls = {};
+  var savedLongWait;
   var msgXpid;
   var numberOfMyCalls = 0;
   $scope.inCall = false;
@@ -981,9 +981,9 @@ hudweb.controller('NotificationController',
     
     switch(type){
       case 'q-alert-rotation':
+            savedLongWait = notification.xpid;
             notification.label = $scope.verbage.long_waiting_call;
             var long_waiting_notification = angular.copy(notification);
-            long_waiting_calls[notification.xpid] = notification;
             $timeout(function(){
               // if user unchecks abandoned call notifications, still need to delete long wait notification
               deleteLastLongWaitNotification();
@@ -1158,9 +1158,8 @@ hudweb.controller('NotificationController',
 					//addTodaysNotifications(notification);
 
 				}else if(notification.xef001type == "delete"){
-          if(long_waiting_calls[notification.xpid] == undefined){
-						deleteNotification(notification);
-					}
+          if (notification.xpid == savedLongWait)
+            deleteLastLongWaitNotification();
 				}
 			}
 			$scope.notifications.sort(function(a, b){
