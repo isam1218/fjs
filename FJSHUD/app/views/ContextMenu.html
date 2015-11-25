@@ -258,11 +258,11 @@
 		
 	<!-- queue -->
 	<div ng-if="type == 'QueueStat'">
-		<a class="Button" href="" ng-show="(!context || canLoginAgent) && original.status.status == 'logout'" ng-click="loginQueue()">
+		<a class="Button" href="" ng-show="canLoginAgent && context.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
 		</a>
-		<a class="Button Logout" href="" ng-show="(!context || canLoginAgent) && original.status.status == 'login'" ng-click="reasons.show = true">
+		<a class="Button Logout" href="" ng-show="canLoginAgent && context.status.status == 'login'" ng-click="reasons.show = true">
 			<div class="ListRowActionButtonLogout"></div>
 			<span>{{::verbage.logout}}</span>
 		</a>
