@@ -111,21 +111,21 @@ hudweb.controller('NotificationController',
             // find existing and remove
             if ($scope.errors[i].xpid == type) {
                 $scope.errors.splice(i, 1);
-		
-				// update native alert
-				if (displayDesktopAlert && !nservice.isEnabled()) {
-					if ($scope.todaysNotifications.length > 0 || $scope.calls.length > 0 || $scope.errors.length > 0) {
-					  $scope.displayAlert = true;
-					  $timeout(displayNotification, 1500);    
-					}
-					else {
-					  phoneService.cacheNotification(undefined,0,0);
-					  phoneService.removeNotification();
-					}
-				}
-		
+              
                 break;
             }
+            
+            // update native alert
+			if (displayDesktopAlert && !nservice.isEnabled()) {
+				if ($scope.todaysNotifications.length > 0 || $scope.calls.length > 0 || $scope.errors.length > 0) {
+				  $scope.displayAlert = true;
+				  $timeout(displayNotification, 1500);    
+				}
+				else {
+				  phoneService.cacheNotification(undefined,0,0);
+				  phoneService.removeNotification();
+				}
+			}
         }
     };
 
