@@ -36,8 +36,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 					
 					if(response.notificationEventType == 'CLOSE')
 						context.setCancelled(true);
-					else
-						context.setCancelled(false);
+					//else
+					//	context.setCancelled(false);
 					$rootScope.$broadcast("notification_action",response);
             	}
             };
