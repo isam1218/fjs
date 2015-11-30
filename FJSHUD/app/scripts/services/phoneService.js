@@ -909,8 +909,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			case 'groups':
 				audience = "group";
 				break;
+			case 'queues':
+				audience = "queue";
+				break;
+			case 'conferences':
+				audience = "conference";
+				break;
 		}
-		$location.path("/" + audience + "/" + xpid + "/chat");
+		if (audience == 'queue')
+			$location.path("/" + audience + "/" + xpid + "/alerts");
+		else
+			$location.path("/" + audience + "/" + xpid + "/chat");
+		
 		remove_notification(mxpid);
 
 	};
