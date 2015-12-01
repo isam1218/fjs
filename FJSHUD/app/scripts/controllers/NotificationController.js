@@ -1127,6 +1127,10 @@ hudweb.controller('NotificationController',
     }
   });
 
+  $scope.$on('delete_long_wait', function(event, data){
+    deleteLastLongWaitNotification();
+  });
+
   $scope.$on('quickinbox_synced', function(event,data){
   	if(data){
 			data.sort(function(a,b){

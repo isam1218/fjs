@@ -976,6 +976,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 			}
 		}
+		$rootScope.$broadcast('delete_long_wait', messagexpid);
 		remove_notification(messagexpid);
     };
 
