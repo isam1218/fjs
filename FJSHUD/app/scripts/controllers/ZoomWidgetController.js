@@ -85,37 +85,34 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       window.open(start_url);
     }
 
-    $scope.openEditModal = function(meetingId,topic,start_time,timezone,password,option,end_time){
+    $scope.openEditModal = function(meetingId,topic,start_time,startHr,timezone,password,option,duration){
       
 
       $scope.topic = topic;
-      var start_hour = $filter('date')(start_time,"hh:mma");
-      
-      $scope.start_time = start_time;
-      $scope.end_time = end_time;
-
-      var startHour = $scope.start_time.substr(11,2);
-      var endHour = $scope.end_time.substr(11,2);
-      
-      $scope.hourDuration = endHour - startHour;
-      if($scope.hourDuration == 0){
-        $scope.hourDuration = "00";
-      }
-      if($scope.hourDuration > 0 && $scope.hourDuration < 10){
-        $scope.hourDuration = "0"+$scope.hourDuration;
-      }
-      
-    
-      var startMin = $scope.start_time.substr(14,2);
-      var endMin = $scope.end_time.substr(14,2);
+      var start_hour = startHr;
      
       
-      $scope.minDuration = endMin - startMin;
+      $scope.start_time = start_time;
+      $scope.duration = duration;
       
-      if($scope.minDuration == 0){
-        $scope.minDuration = "00";
+     
+
+      if($scope.duration == 15){
+        $scope.hourDuration = "00";
+        $scope.minDuration = "15";
       }
-      
+      else if($scope.duration == 30){
+        $scope.hourDuration = "00";
+        $scope.minDuration = "30";
+      }
+      else if($scope.duration == 45){
+        $scope.hourDuration = "00";
+        $scope.minDuration = "45";
+      }
+      if($scope.duration.length == 4){
+        $scope.hourDuration = $scope.duration.substr(0,2);
+        $scope.minDuration = $scope.duration.substr(2,2);
+              }
 
 
      
@@ -471,18 +468,23 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                   strHourString = "0"+strHourString;
                 }
 
-                 if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
-                  alert("hello");
-                  strHourString = "00";
-                  var sx = parseInt(parseInt($scope.meetingList[i].duration.toString().substr(0,2))-3);
+                  if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
+                  
+                  
+                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
+                  var sx = parseInt(strHourString) - 24;
+                 
                   strHourString = sx;
                   if(strHourString <10){
                     strHourString = "0" + sx;
                   }
+                  if(strHourString == 0){
+                    strHourString = "00";
+                  }
                 }
                 
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
-              alert($scope.meetingList[i].end_time);
+             
               var end = moment($scope.meetingList[i].end_time).lang('en');
           $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
           
@@ -601,12 +603,17 @@ $scope.loading.meetingLoaded = true;
                 }
 
                  if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
-                  alert("hello");
-                  strHourString = "00";
-                  var sx = parseInt(parseInt($scope.meetingList[i].duration.toString().substr(0,2))-3);
+                  
+                  
+                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
+                  var sx = parseInt(strHourString) - 24;
+                  
                   strHourString = sx;
                   if(strHourString <10){
                     strHourString = "0" + sx;
+                  }
+                  if(strHourString == 0){
+                    strHourString = "00";
                   }
                 }
                 
@@ -699,7 +706,7 @@ $scope.loading.meetingLoaded = true;
           
                  if($scope.meetingList[i].duration.toString().length == 4){
                 $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
-                 alert($scope.meetingList[i].end_time);
+                 
               var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if($scope.meetingList[i].start_time.substr(11,2)>=0){
               var strHourString =  strHour;
@@ -733,31 +740,30 @@ $scope.loading.meetingLoaded = true;
                 }
 
               
-                if(strHourString > 24  || (strHourString == 24 && parseInt(strMin) == 0)){
+                if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
                   
-                  strHourString = "00";
-                  var sx = parseInt(parseInt($scope.meetingList[i].duration.toString().substr(0,2))-3);
+                  
+                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
+                  var sx = parseInt(strHourString) - 24;
+                  
                   strHourString = sx;
-                  if(strMin == 60){
-                      strMin = "00";
-                       strHourString = sx +2;      
-                    }
-
                   if(strHourString <10){
                     strHourString = "0" + sx;
                   }
-                  
+                  if(strHourString == 0){
+                    strHourString = "00";
+                  }
                 }
                
                
                 
 
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
-              alert($scope.meetingList[i].end_time);
+              
 
 
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
           
                }
 
@@ -792,7 +798,7 @@ $scope.loading.meetingLoaded = true;
 
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz($scope.meetingList[i].timezone).format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz('Etc/GMT+12').format('hh:mmA');
           
                }
               
@@ -934,8 +940,8 @@ hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedul
   $scope.host_id = host;
   $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
 
-$scope.hourOption = ['00','01','02','03','04','05','06','07','08','09',10,11,12];
-$scope.minOption = ['00',15,30,45];
+$scope.hourOption = ['00','01','02','03','04','05','06','07','08','09','10','11','12'];
+$scope.minOption = ['00','15','30','45'];
 
 
  /* $scope.selected = {
@@ -1155,7 +1161,7 @@ $scope.reloadRoute = function() {
 
 var dates = $filter('date')($scope.startTime,'Z');
 
- if($scope.meeting.AmPm =="AM"){
+ if($scope.meeting.AmPm =="AM" && $scope.HourUTC != 12){
   
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =parseInt($scope.startHourUTC) + 12;
@@ -1293,12 +1299,8 @@ var dates = $filter('date')($scope.startTime,'Z');
     if(sharedData.meeting.meetingTopic == ""){
       sharedData.meeting.meetingTopic = $scope.userName + " Meeting";
     }
-    var jun = moment($scope.meeting.dt).lang('en');
-          var x = jun.tz('America/New_York').format();
-          y = new Date(x);
-          alert(y);
+    
   $scope.startTime = $scope.meeting.dt;
-  alert($scope.startTime);
   $scope.startMonth = $scope.startTime.getMonth()+1;
   $scope.startDay = $scope.startTime.getDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
