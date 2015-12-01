@@ -1011,8 +1011,9 @@ hudweb.controller('NotificationController',
 
 		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
-			//if(displayDesktopAlert)
-			//	$timeout(displayNotification, 1500);		
+			
+			if(displayDesktopAlert)
+				$timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
 			phoneService.cacheNotification(undefined,0,0);
