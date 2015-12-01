@@ -421,7 +421,10 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
            var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
 
 
+           
            var strt = moment($scope.meetingList[i].start_time).lang('en');
+                    $scope.meetingList[i].timeDate = strt.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
+
           $scope.meetingList[i].startHour = strt.tz('Etc/GMT+12').format('hh:mmA');
 
            var duration = $scope.meetingList[i].duration.toString();
@@ -556,6 +559,8 @@ $scope.loading.meetingLoaded = true;
 
 
            var jun = moment($scope.meetingList[i].start_time).lang('en');
+          $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
+
           $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
           
 
@@ -689,6 +694,7 @@ $scope.loading.meetingLoaded = true;
           //alert(dateFilter.toString().substr(0,2));
 
           var jun = moment($scope.meetingList[i].start_time).lang('en');
+          $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
           $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
          //alert(t);
           
