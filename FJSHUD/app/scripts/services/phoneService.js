@@ -762,7 +762,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			}
 					break;
 	    		case '/AcceptZoom':
-					var apiUrl = queryArray[1].split(': ')[1];
+	    		var apiUrl = queryArray[1].split(': ')[1];
 					window.open(apiUrl,'_blank');
 					remove_notification(xpid);
 					break;
@@ -793,10 +793,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/goToChat':
 					var context = queryArray[0];
-					var audience = context.split(":")[0];
-					xpid = context.split(":")[1];
+					// var audience = context.split(":")[0];
+					var xpid = context.split(":")[1];
 					var messagexpid = queryArray[1];
-					goToNotificationChat(xpid, audience,messagexpid);
+					var messagetype = queryArray[2];
+					var queueId = queryArray[3];
+					var audience = queryArray[4];
+
+					if (messagetype == 'q-alert-rotation' || messagetype == 'q-alert-abandoned')
+						showQueue(queueId, audience, messagetype, messagexpid);
+					else 
+						goToNotificationChat(xpid, audience, messagexpid, messagetype);
+
 					break;
 				case '/callAndRemove':
 					var phone = queryArray[1];
@@ -810,10 +818,13 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					showCurrentCallControls(xpid);
 					break;
 				case '/showQueue':
+					var context = queryArray[0];
+					var audience = context.split(':')[0];
+					xpid = context.split(':')[1];
 					var queueId = queryArray[0];
-					var audience = queryArray[1];
 					var type = queryArray[2];
 					var messagexpid = queryArray[3];
+
 					showQueue(queueId,audience, type,messagexpid);
 					break;
 				case '/CloseError':
@@ -848,7 +859,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		httpService.deleteFromWorker('quickinbox', xpid);
 	};
 
-	var goToNotificationChat = function(xpid, audience,mxpid){
+	var goToNotificationChat = function(xpid, audience,mxpid, mtype){
 
 		switch(audience){
 			case 'contacts':
@@ -857,8 +868,18 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			case 'groups':
 				audience = "group";
 				break;
+			case 'queues':
+				audience = "queue";
+				break;
+			case 'conferences':
+				audience = "conference";
+				break;
 		}
-		$location.path("/" + audience + "/" + xpid + "/chat");
+		if (audience == 'queue' && mtype == 'q-broadcast')
+			$location.path("/" + audience + "/" + xpid + "/alerts");
+		else
+			$location.path("/" + audience + "/" + xpid + "/chat");
+		
 		remove_notification(mxpid);
 
 	};
@@ -903,6 +924,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 			}
 		}
+		$rootScope.$broadcast('delete_long_wait', messagexpid);
 		remove_notification(messagexpid);
     };
 
