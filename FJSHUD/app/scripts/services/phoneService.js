@@ -813,7 +813,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	    			}
 					break;
 	    		case '/AcceptZoom':
-	    		var apiUrl = queryArrayOne.split(': ')[1];
+	    		var apiUrl = queryArray[1].split(': ')[1];
 					window.open(apiUrl,'_blank');
 					remove_notification(xpid);
 					break;
@@ -874,8 +874,8 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var audience = context.split(':')[0];
 					xpid = context.split(':')[1];
 					var queueId = queryArray[0];
-					var type = queryArrayTwo;
-					var messagexpid = queryArrayOne;
+					var type = queryArray[2];
+					var messagexpid = queryArray[3];
 
 					showQueue(queueId,audience, type,messagexpid);
 					break;
