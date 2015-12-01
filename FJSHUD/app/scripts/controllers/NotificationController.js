@@ -4,6 +4,7 @@ hudweb.controller('NotificationController',
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
+  $scope.todaysNotifications = nservice.todaysNotifications || [];
   $scope.errors = nservice.errors || [];
   $scope.calls = [];
   var long_waiting_calls = {};
@@ -36,7 +37,6 @@ hudweb.controller('NotificationController',
   $scope.newNotifications = [];
   $scope.awayNotifications = [];
   $scope.oldNotifications = []; 
-  $scope.todaysNotifications = [];
   $scope.numshowing = 0;
   $scope.totalTodaysNotifications = 0;
   $scope.showing = 4;
@@ -339,10 +339,9 @@ hudweb.controller('NotificationController',
   
   $scope.remove_all = function(){
 
-    $scope.notifications = [];
-    $scope.todaysNotifications = [];
-	
-	// empty errors array
+	// empty arrays without breaking reference
+    $scope.notifications.splice(0, $scope.notifications.length);
+    $scope.todaysNotifications.splice(0, $scope.todaysNotifications.length);
 	$scope.errors.splice(0, $scope.errors.length);
 
     myHttpService.sendAction('quickinbox','removeAll');
