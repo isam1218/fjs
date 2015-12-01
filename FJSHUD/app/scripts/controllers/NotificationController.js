@@ -234,6 +234,7 @@ hudweb.controller('NotificationController',
   };
   
   $scope.get_new_notifications= function(){
+	  
     var new_notifications = $scope.notifications.filter(function(item){
       var date = new Date(item.time);
       var today = new Date();
@@ -245,7 +246,27 @@ hudweb.controller('NotificationController',
           }
         }
       }
-
+      if(settingsService.getSetting('alert_vm_show_new') != 'true'){
+          if(item.type == 'vm'){
+        	  toReturn = false;
+          }
+      }
+      if(item.audience == 'queue')
+  	  {
+    	    if(item.type == 'q-alert-abandoned')
+			{
+				if(settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId) == 'undefined' ||
+				   !settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId))
+					toReturn = false;				
+			}
+			else if(item.type == 'q-alert-rotation')
+			{
+				if(settingsService.getSetting('HUDw_QueueNotificationsLW_'+ item.queueId)  == 'undefined' ||
+				   !settingsService.getSetting('HUDw_QueueNotificationsLW_'+ item.queueId))
+				   toReturn = false;			
+			}	
+  				
+  	  }
       return toReturn; 
     });
         if(new_notifications.length > 0 )
@@ -1181,6 +1202,52 @@ hudweb.controller('NotificationController',
 							isNotificationAdded = true;
 							break;	
 						}
+						if($scope.notifications[j].audience == 'queue')
+						{																															
+							if($scope.notifications[j].type == 'q-alert-abandoned')
+							{	
+									var QueueNotificationsAb = settingsService.getSetting('HUDw_QueueNotificationsAb_' + $scope.notifications[j].queueId);
+																						
+									if(typeof QueueNotificationsAb == 'undefined' || !QueueNotificationsAb)										
+										$scope.notifications.splice(j,1);										
+							}
+							if($scope.notifications[j].type == 'q-alert-rotation')
+							{
+								 	var QueueNotificationsLW = settingsService.getSetting('HUDw_QueueNotificationsLW_'+ $scope.notifications[j].queueId);
+									
+									if(typeof QueueNotificationsLW == 'undefined' || !QueueNotificationsLW)
+										$scope.notifications.splice(j,1);	
+									
+									if(typeof QueueNotificationsLW1 == 'undefined' || !QueueNotificationsLW1)
+									{
+										isNotificationAdded = true;
+										has_new_content = false;
+									}	
+							}
+							
+						    if(notification.type == 'q-alert-abandoned')
+						    {
+						    		var QueueNotificationsAb1 = settingsService.getSetting('HUDw_QueueNotificationsAb_' + notification.queueId);
+						    		
+						    		if(typeof QueueNotificationsAb1 == 'undefined' || !QueueNotificationsAb1)
+									{	
+										isNotificationAdded = true;
+										has_new_content = false;
+									}	
+						    }
+						    if(notification.type == 'q-alert-rotation')
+							{		
+									var QueueNotificationsLW1 = settingsService.getSetting('HUDw_QueueNotificationsLW_'+ notification.queueId);
+																							
+									if(typeof QueueNotificationsLW1 == 'undefined' || !QueueNotificationsLW1)
+									{
+										isNotificationAdded = true;
+										has_new_content = false;
+									}	
+							}
+									
+						}
+						
 					}
 					
 					if(!isNotificationAdded || has_new_content){	
