@@ -159,7 +159,7 @@
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting ID: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
-                   <p ng-model="x.duration">{{x.start_time}}</p>
+                   <p ng-model="x.duration">{{x.end_time}}</p>
                    <div class="meetingBtnsContainer">
                        <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.startHour,x.timezone,x.password,x.option_jbh,x.duration)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>

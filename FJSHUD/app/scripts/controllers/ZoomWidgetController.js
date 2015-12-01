@@ -684,7 +684,8 @@ $scope.loading.meetingLoaded = true;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
 
-        /*$scope.meetingList.push({"start_hour":$scope.start_hour});
+        /*$scope.meetingList.
+        push({"start_hour":$scope.start_hour});
                 console.log("START_HOUR",$scope.start_hour);*/
 
         for(var i = 0; i<=30;i++){
@@ -1156,9 +1157,11 @@ $scope.reloadRoute = function() {
     }
    $scope.startTime = new Date($scope.meeting.dt);
   $scope.startMonth = $scope.startTime.getMonth()+1;
+  $scope.startDay = $scope.startTime.getDate();
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
- 
+  
+ alert($scope.startMinute.substr(1,2));
 
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
@@ -1178,15 +1181,24 @@ var dates = $filter('date')($scope.startTime,'Z');
   if($scope.meeting.AmPm =="PM"){
   
   $scope.hourUTC =$scope.startHourUTC;
-    $scope.startDay = $scope.startTime.getDate();
+  $scope.startDay = $scope.startTime.getDate()+1;
     
  
  }
+ /* if($scope.meeting.AmPm =="PM" && (($scope.startHourUTC == "09" && $scope.startMinute.substr(1,2) == 30) || ($scope.startHourUTC == 12 && $scope.startMinute.substr(1,2) == 30) || $scope.startHourUTC =="10" || $scope.startHourUTC =="11")){
+  
+  $scope.hourUTC =$scope.startHourUTC;
+  $scope.startDay = $scope.startTime.getDate();
+    
+ 
+ }*/
  if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
   $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
+  $scope.startDay = $scope.startTime.getDate();
  }
- else{
+ else if($scope.meeting.AmPm == "AM" && $scope.startHourUTC == 12){
   $scope.hourUTC =$scope.startHourUTC;
+  $scope.startDay = $scope.startTime.getDate();
  }
  
  
@@ -1317,6 +1329,7 @@ var dates = $filter('date')($scope.startTime,'Z');
     
   $scope.startTime = $scope.meeting.dt;
   $scope.startMonth = $scope.startTime.getMonth()+1;
+
   $scope.startDay = $scope.startTime.getDate()+1;
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
@@ -1331,22 +1344,24 @@ if($scope.meeting.AmPm =="AM"){
   
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =parseInt($scope.startHourUTC) + 12;
-    $scope.startDay = $scope.startTime.getDate();
+    $scope.startDay = $scope.startTime.getDate()+1;
     
  
  }
   if($scope.meeting.AmPm =="PM"){
   
   $scope.hourUTC =$scope.startHourUTC;
-    $scope.startDay = $scope.startTime.getDate();
+    $scope.startDay = $scope.startTime.getDate()+1;
     
 
  }
  if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
   $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
+  $scope.startDay = $scope.startTime.getDate();
  }
- else{
+ else if($scope.meeting.AmPm == "AM" && $scope.startHourUTC == 12){
   $scope.hourUTC =$scope.startHourUTC;
+  $scope.startDay = $scope.startTime.getDate();
  }
  
  
