@@ -32,7 +32,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             		return;
             	}else{
 					response = JSON.parse(evt.data);
-					console.log(response);
+					//console.log(response);
 					$rootScope.$broadcast("notification_action",response);
             	}
             };
