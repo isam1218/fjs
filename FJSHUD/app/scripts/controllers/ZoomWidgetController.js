@@ -1167,7 +1167,7 @@ $scope.reloadRoute = function() {
 
 var dates = $filter('date')($scope.startTime,'Z');
 
- if($scope.meeting.AmPm =="AM" && $scope.HourUTC != 12){
+ if($scope.meeting.AmPm =="AM" ){
   
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =parseInt($scope.startHourUTC) + 12;
@@ -1182,6 +1182,15 @@ var dates = $filter('date')($scope.startTime,'Z');
     
  
  }
+ if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
+  $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
+ }
+ else{
+  $scope.hourUTC =$scope.startHourUTC;
+ }
+ 
+ 
+ 
 /*if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
   $scope.hourUTC = parseInt($scope.startHourUTC) + parseInt(dates.substr(1,2));
     $scope.startDay = $scope.startTime.getDate();
@@ -1331,8 +1340,16 @@ if($scope.meeting.AmPm =="AM"){
   $scope.hourUTC =$scope.startHourUTC;
     $scope.startDay = $scope.startTime.getDate();
     
- 
+
  }
+ if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
+  $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
+ }
+ else{
+  $scope.hourUTC =$scope.startHourUTC;
+ }
+ 
+ 
 
 /*if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
   $scope.hourUTC = parseInt($scope.startHourUTC) + parseInt(dates.substr(1,2));
