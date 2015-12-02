@@ -154,16 +154,16 @@
                 <li ng-repeat="x in meetingList|orderBy:'start_time'">
                                         <div ng-init="getTimezone(x.start_time)"></div>
 
-                   <h5 style="font-weight:bold" ng-model="x.start_time">{{x.timeDate}}</h5><img ng-show="loading.meetingLoaded" src="img/XLoading.gif" />
+                   <h5 style="font-weight:bold" ng-model="x.timeDate">{{x.timeDate}}</h5><img ng-show="loading.meetingLoaded" src="img/XLoading.gif" />
                    <p ng-model="x.startHour">{{x.startHour}} to </p><p ng-model="x.endHour" style="margin-top: -15px;margin-left: 72px;">{{x.endHour}}</p>
                    <p ng-model="x.topic">Topic: {{x.topic}}</p>
                    <p ng-model="x.meeting_id">Meeting ID: {{x.meeting_id}}</p>
                    <p ng-model="x.timezone">Timezone: {{x.timezone}}</p>
                    <p ng-model="x.duration" ng-hide="true">{{x.end_time}}</p>
                    <div class="meetingBtnsContainer">
-                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.start_time,x.startHour,x.timezone,x.password,x.option_jbh,x.duration)">Edit</button>
+                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.timeDate,x.startHour,x.timezone,x.password,x.option_jbh,x.duration)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
-                       <button ng-click="copy(x.startHour,x.topic,x.meeting_id,x.timezone)">Copy</button>
+                       <button ng-click="copy(x.timeDate,x.startHour,x.topic,x.meeting_id,x.timezone)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
                     </div>
                 </li>
