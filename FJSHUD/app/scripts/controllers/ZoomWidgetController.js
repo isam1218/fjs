@@ -181,7 +181,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 
           
-    $scope.copy = function(startDate, startTime,topic,meeting,timezone){
+    $scope.copy = function(startDate, startTime,topic,meeting,timezone,password){
                 
 
            $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
@@ -193,6 +193,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             sharedData.meeting.meetingTopic = topic;
             sharedData.meeting.timeSelect = startTime;
             sharedData.meeting.dt = startDate;
+            sharedData.meeting.password = password;
             sharedData.meeting.AmPm = "";
             sharedData.meeting.timezone = timezone;
           });
@@ -1047,7 +1048,18 @@ var tzName = jstz.determine().name(); // America/Los_Angeles
   
  // SET EDIT VALUES
 $scope.meeting.meetingTopic = topic;
-$scope.meeting.times = time;
+if(time != undefined){
+var clock = moment(time).lang('en');
+var day = clock.tz('Etc/GMT+12').format('DD');
+day = parseInt(day) +1;
+if(day < 10){
+  day = "0"+day;
+}
+
+$scope.date = clock.tz('Etc/GMT+12').format('MM/'+day+'/YYYY');
+}
+else{ $scope.date = new Date();}
+$scope.meeting.times = $scope.date;
 $scope.meeting.timezone = timezone;
 $scope.meeting.password = password;
 $scope.meeting.jbh = option;
@@ -1162,7 +1174,7 @@ $scope.reloadRoute = function() {
   $scope.startHour = $scope.meeting.timeSelect;
   $scope.startMinute = $scope.meeting.timeSelect.substr(2,3);
   
- alert($scope.startMinute.substr(1,2));
+
 
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);

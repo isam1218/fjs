@@ -163,7 +163,7 @@
                    <div class="meetingBtnsContainer">
                        <button ng-click="openEditModal(x.meeting_id,x.topic,x.timeDate,x.startHour,x.timezone,x.password,x.option_jbh,x.duration)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
-                       <button ng-click="copy(x.timeDate,x.startHour,x.topic,x.meeting_id,x.timezone)">Copy</button>
+                       <button ng-click="copy(x.timeDate,x.startHour,x.topic,x.meeting_id,x.timezone,x.password)">Copy</button>
                        <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
                     </div>
                 </li>
@@ -279,6 +279,7 @@
     <li>Topic: {{meeting.meetingTopic}}</li>
 
     <li>Time: {{meeting.dt|date:"MMM dd, yyyy "}} {{meeting.timeSelect|date:'h:mma'}}{{meeting.AmPm}}  {{meeting.timezone}}</li></li>
+    <li ng-hide="!meeting.password">Password: {{meeting.password}}</li>
 
     <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
 
