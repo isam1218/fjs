@@ -93,7 +93,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
      
       
       $scope.start_time = start_time;
-      $scope.duration = duration;
+      $scope.duration = duration + "";
       
      
 
