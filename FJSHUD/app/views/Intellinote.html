@@ -14,10 +14,10 @@
 					<h4>Intellinote Home</h4>
 					<i style="font-size:11px">Users can directly access their Intellinote home page.</i>
 				</div>
-				<div class="SectionInvite">
+				<!-- <div class="SectionInvite">
 				<h4>Invite</h4>
 				<i style="font-size:11px">Users can add individuals and groups.</i>
-				</div>
+				</div> -->
 			</div>
 			
 			<div class="Right">
@@ -27,7 +27,8 @@
 						<div style="padding-top:2px">&#9654;</div>
 					</div>
 				</div>
-				<div class="SectionWorkspace">
+
+				<!-- <div class="SectionWorkspace">
 				<div class="SearchHolder">
 					<input type="search" ng-focus="removeText()"  ng-model-options="{debounce: 200}" style="border:1px solid #015d73" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|addedContacts" />
 				</div>				
@@ -41,7 +42,7 @@
 								<div class="link">#{{::contact.primaryExtension }}</div>
 							</div>
 							<div class="ZoomRowStatus">
-								<!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
+								
 								<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
 								<div class="ListRowDesc">{{contact.hud_status}}</div>
 							</div>
@@ -72,8 +73,10 @@
 				</div>
 			</div>
 				
-				<div ng-bind-html="inviteStatus"></div>
+				<div ng-bind-html="inviteStatus"></div> -->
 			</div>
+
 		</div>
+		<div style="margin-top: 20px;margin-left: 5px;">*Please check your popup settings in your browser to ensure that the collaboration application launches.</div>
     </div>
 </div>
